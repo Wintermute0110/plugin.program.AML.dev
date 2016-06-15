@@ -38,19 +38,13 @@ __type__       = addon_obj.getAddonInfo('type')
 PLUGIN_DATA_DIR       = xbmc.translatePath(os.path.join('special://profile/addon_data', __addon_id__)).decode('utf-8')
 BASE_DIR              = xbmc.translatePath(os.path.join('special://', 'profile')).decode('utf-8')
 HOME_DIR              = xbmc.translatePath(os.path.join('special://', 'home')).decode('utf-8')
-KODI_FAV_FILE_PATH    = xbmc.translatePath('special://profile/favourites.xml').decode('utf-8')
 ADDONS_DIR            = xbmc.translatePath(os.path.join(HOME_DIR, 'addons')).decode('utf-8')
-CURRENT_ADDON_DIR     = xbmc.translatePath(os.path.join(ADDONS_DIR, __addon_id__)).decode('utf-8')
-ICON_IMG_FILE_PATH    = os.path.join(CURRENT_ADDON_DIR, 'icon.png').decode('utf-8')
-FANART_IMG_FILE_PATH  = os.path.join(CURRENT_ADDON_DIR, 'fanart.jpg').decode('utf-8')
+AML_ADDON_DIR         = xbmc.translatePath(os.path.join(ADDONS_DIR, __addon_id__)).decode('utf-8')
+ICON_IMG_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'icon.png').decode('utf-8')
+FANART_IMG_FILE_PATH  = os.path.join(AML_ADDON_DIR, 'fanart.jpg').decode('utf-8')
 
 # --- "Constants" ---
-URL_ROOT                      = 100
-URL_COMMAND                   = 200
-URL_LIST                      = 300
-URL_LIST_CLONES               = 400
-URL_CATEGORY_ITEM_LIST        = 500
-URL_CATEGORY_ITEM_CLONES_LIST = 600
+
 
 class Main:
     # ---------------------------------------------------------------------------------------------
@@ -84,57 +78,43 @@ class Main:
         log_debug('args = {0}'.format(args))
 
         # --- URL routing -------------------------------------------------------------------------
-        # >> Routing step 1
+        # ~~~ Routing step 1 ~~~
         args_size = len(args)
         if args_size == 0:
-            url_kind = URL_ROOT
-        elif args_size == 1:
-            if 'command' in args:   url_kind = URL_COMMAND
-            else:                   url_kind = URL_LIST
-        elif args_size == 2:
-            if 'parent' in args:    url_kind = URL_LIST_CLONES
-            elif 'command' in args: url_kind = URL_COMMAND
-            else:                   url_kind = URL_CATEGORY_ITEM_LIST
-        elif args_size == 3:
-            url_kind = URL_CATEGORY_ITEM_CLONES_LIST
-
-        # >> Routing step 2
-        if url_kind == URL_ROOT:
             self._render_root_list()
-            
-        elif url_kind == URL_LIST:
-            root_name = args['root'][0]
-            if root_name == 'Machines':
-                self._render_machine_list()
-            elif root_name == 'Manufacturer':
-                self._render_manufacturer_list()
-            elif root_name == 'SL':
-                self._render_SL_list()
+            return
 
-        elif url_kind == URL_LIST_CLONES:
-            root_name = args['root'][0]
-            parent_name = args['parent'][0]
-            if root_name == 'Machines':
-                self._render_machine_clone_list(parent_name)
+        # ~~~ Routing step 2 ~~~
+        if 'list' in args:
+            list_name = args['list'][0]
+            if 'parent' in args:
+                parent_name = args['parent'][0]
+                if list_name == 'Machines':
+                    self._render_machine_clone_list(parent_name)
             else:
-                log_error('Unknown URL_LIST_CLONES')
+                if list_name == 'Machines':
+                    self._render_machine_parent_list()
 
-        elif url_kind == URL_CATEGORY_ITEM_LIST:
-            if 'manufacturer' in args:
-                kodi_log_OK('AML', 'Code Manufacturer URL_CATEGORY_ITEM_LIST')
-            else:
-                log_error('Unknown URL_CATEGORY_ITEM_LIST')
-                
-        elif url_kind == URL_CATEGORY_ITEM_CLONES_LIST:
-            cat_parent_name = args['cat_parent'][0]
-            if 'manufacturer' in args:
-                kodi_log_OK('AML', 'Code Manufacturer URL_CATEGORY_ITEM_CLONES_LIST')
-            elif 'SL' in args:
-                kodi_log_OK('AML', 'Code Software List URL_CATEGORY_ITEM_CLONES_LIST')
-            else:
-                log_error('Unknown URL_CATEGORY_ITEM_CLONES_LIST')
+        elif 'clist' in args:
+            clist_name = args['clist'][0]
+            if clist_name == 'Manufacturer':
+                if 'manufacturer' in args:
+                    manufacturer_name = args['manufacturer'][0]
+                    if 'parent' in args:                        
+                        self._render_manufacturer_clones_list(manufacturer_name, args['parent'][0])
+                    else:
+                        self._render_manufacturer_parents_list(manufacturer_name)
+                else:
+                    self._render_manufacturer_list()
+                    
+            elif clist_name == 'SL':
+                if 'SL' in args:
+                    SL_name = args['SL'][0]
+                    self._render_SL_machine_ROM_list(SL_name)
+                else:
+                    self._render_SL_machine_list()
 
-        elif url_kind == URL_COMMAND:
+        elif 'command' in args:
             command = args['command'][0]
             if command == 'launch':
                 mame_args = args['mame_args'][0]
@@ -142,6 +122,9 @@ class Main:
             else:
                 log_error('Unknown command "{0}"'.format(command))
 
+        else:
+            log_error('Error in URL routing')
+            
         # --- So Long, and Thanks for All the Fish ---
         log_debug('Advanced MAME Launcher exit')
 
@@ -183,13 +166,13 @@ class Main:
     # Main machine list with coin slot and not mechanical
     # 1) Open machine index
     #----------------------------------------------------------------------------------------------
-    def _render_machine_list(self):
+    def _render_machine_parent_list(self):
         machines = [
            {'display_name' : 'Cadillacs and Dinosaurs (World)', 'name' : 'dino' }
         ]
         
         for machine in machines:
-            self._render_machine_list_row(machine, True)
+            self._render_machine_row(machine, True)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #
@@ -203,7 +186,7 @@ class Main:
         ]
 
         for machine in machines:
-            self._render_machine_list_row(machine, False)
+            self._render_machine_row(machine, False)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #----------------------------------------------------------------------------------------------
@@ -217,7 +200,7 @@ class Main:
     #----------------------------------------------------------------------------------------------
     #
     #----------------------------------------------------------------------------------------------
-    def _render_SL_list(self):
+    def _render_SL_machine_list(self):
         software_list = [ 
             {'name' : 'Sega 32X cartridges', 'xml_file' : '32x.xml'},
             {'name' : 'MSX1 cartridges',     'xml_file' : 'msx1_cart.xml'},
@@ -226,10 +209,10 @@ class Main:
         ]
 
         for SL in software_list:
-            self._render_SL_list_row(SL)
+            self._render_SL_machine_row(SL)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_SL_list_row(self, SL):
+    def _render_SL_machine_row(self, SL):
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
         listitem = xbmcgui.ListItem(SL['name'], iconImage = icon)
@@ -249,14 +232,14 @@ class Main:
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
     #----------------------------------------------------------------------------------------------
-    # Render Machine rows (ListItems) 
+    # Render rows (ListItems) 
     #----------------------------------------------------------------------------------------------
     #
     # Render parent or clone machines.
     # Information and artwork/assets are the same for all machines.
     # URL is different: parent URL leads to clones, clone URL launchs machine.
     #
-    def _render_machine_list_row(self, machine, parent_list):
+    def _render_machine_row(self, machine, parent_list):
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
         listitem = xbmcgui.ListItem(machine['display_name'], iconImage = icon)
