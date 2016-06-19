@@ -23,6 +23,7 @@ import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 
 # --- Modules/packages in this plugin ---
 from utils_kodi import *
+from disk_IO import *
 
 # --- Addon object (used to access settings) ---
 addon_obj      = xbmcaddon.Addon()
@@ -43,8 +44,14 @@ AML_ADDON_DIR         = xbmc.translatePath(os.path.join(ADDONS_DIR, __addon_id__
 ICON_IMG_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'icon.png').decode('utf-8')
 FANART_IMG_FILE_PATH  = os.path.join(AML_ADDON_DIR, 'fanart.jpg').decode('utf-8')
 
-# --- "Constants" ---
+# --- Plugin database indices ---
+Main_DB_filename                = os.path.join(AML_ADDON_DIR, 'MAME_info.json').decode('utf-8')
+Machines_DB_filename            = os.path.join(AML_ADDON_DIR, 'idx_Machines.json').decode('utf-8')
+Machines_NoCoin_DB_filename     = os.path.join(AML_ADDON_DIR, 'idx_Machines_NoCoin.json').decode('utf-8')
+Machines_Mechanical_DB_filename = os.path.join(AML_ADDON_DIR, 'idx_Machines_Mechanical.json').decode('utf-8')
+SL_cat_filename                 = os.path.join(AML_ADDON_DIR, 'cat_SoftwareLists.json').decode('utf-8')
 
+# --- "Constants" ---
 
 class Main:
     # ---------------------------------------------------------------------------------------------
@@ -89,24 +96,25 @@ class Main:
             list_name = args['list'][0]
             if 'parent' in args:
                 parent_name = args['parent'][0]
-                if list_name == 'Machines':
-                    self._render_machine_clone_list(parent_name)
+                if list_name == 'Machines':     self._render_machine_clone_list(list_name, parent_name)
+                elif list_name == 'NoCoin':     self._render_machine_clone_list(list_name, parent_name)
+                elif list_name == 'Mechanical': self._render_machine_clone_list(list_name, parent_name)
             else:
-                if list_name == 'Machines':
-                    self._render_machine_parent_list()
+                if list_name == 'Machines':     self._render_machine_parent_list(list_name)
+                elif list_name == 'NoCoin':     self._render_machine_parent_list(list_name)
+                elif list_name == 'Mechanical': self._render_machine_parent_list(list_name)
 
         elif 'clist' in args:
             clist_name = args['clist'][0]
             if clist_name == 'Manufacturer':
+                kodi_dialog_OK('Advanced MAME Launcher', 'Not implemented yet. Sorry.')
+                return
                 if 'manufacturer' in args:
                     manufacturer_name = args['manufacturer'][0]
-                    if 'parent' in args:                        
-                        self._render_manufacturer_clones_list(manufacturer_name, args['parent'][0])
-                    else:
-                        self._render_manufacturer_parents_list(manufacturer_name)
-                else:
-                    self._render_manufacturer_list()
-                    
+                    if 'parent' in args: self._render_machine_indexed_clone_list(clist_name, manufacturer_name, args['parent'][0])
+                    else:                self._render_machine_indexed_parent_list(clist_name, manufacturer_name)
+                else:                    self._render_machine_indexed_list(clist_name)
+
             elif clist_name == 'SL':
                 if 'SL' in args:
                     SL_name = args['SL'][0]
@@ -133,15 +141,15 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     def _render_root_list(self):
         # >> Code Machines/Manufacturer/SF first. Rest are variations of those three.
-        self._render_root_list_row('Machines',                   self._misc_url_root('Machines'))
-        # self._render_root_list_row('Machines (no coin slot)',    self._misc_url_root('NoCoin'))
-        # self._render_root_list_row('Mechanical Machines',        self._misc_url_root('Mechanical'))
-        self._render_root_list_row('Machines by Manufacturer',   self._misc_url_root('Manufacturer'))
+        self._render_root_list_row('Machines (with coin slot)',  self._misc_url_1_arg('list', 'Machines'))
+        self._render_root_list_row('Machines (no coin slot)',    self._misc_url_1_arg('list', 'NoCoin'))
+        self._render_root_list_row('Machines (mechanical)',      self._misc_url_1_arg('list', 'Mechanical'))
+        self._render_root_list_row('Machines by Manufacturer',   self._misc_url_1_arg('clist', 'Manufacturer'))
         # self._render_root_list_row('Machines by Year',           self._misc_url_root('Year'))
         # self._render_root_list_row('Machines by Driver',         self._misc_url_root('Driver'))
         # self._render_root_list_row('Machines by Control',        self._misc_url_root('Controls'))
         # self._render_root_list_row('Machines by Orientation',    self._misc_url_root('Orientation'))
-        self._render_root_list_row('Software Lists',             self._misc_url_root('SL'))
+        self._render_root_list_row('Software Lists',             self._misc_url_1_arg('clist', 'SL'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_root_list_row(self, root_name, root_URL):
@@ -166,28 +174,76 @@ class Main:
     # Main machine list with coin slot and not mechanical
     # 1) Open machine index
     #----------------------------------------------------------------------------------------------
-    def _render_machine_parent_list(self):
-        machines = [
-           {'display_name' : 'Cadillacs and Dinosaurs (World)', 'name' : 'dino' }
-        ]
-        
-        for machine in machines:
-            self._render_machine_row(machine, True)
+    def _render_machine_parent_list(self, list_name):
+        # >> Load main MAME info DB and PClone index
+        MAME_info_dic = fs_load_JSON_file(Main_DB_filename)
+        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(Machines_DB_filename)
+        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(Machines_NoCoin_DB_filename)
+        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(Machines_Mechanical_DB_filename)
+
+        # >> Render parent main list
+        self._set_Kodi_content()
+        for parent_name in Machines_PClone_dic:
+            machine = MAME_info_dic[parent_name]
+            self._render_machine_row(parent_name, machine, True, list_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #
     # Also render parent together with clones
     # If user clicks in this list then ROM is launched.
     #
-    def _render_machine_clone_list(self, parent_name):
-        machines = [
-           {'display_name' : 'Cadillacs and Dinosaurs (World)',       'name' : 'dino' },        
-           {'display_name' : 'Cadillacs and Dinosaurs (Japan clone)', 'name' : 'dinoj' }
-        ]
+    def _render_machine_clone_list(self, list_name, parent_name):
+        # >> Load main MAME info DB and PClone index
+        MAME_info_dic = fs_load_JSON_file(Main_DB_filename)
+        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(Machines_DB_filename)
+        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(Machines_NoCoin_DB_filename)
+        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(Machines_Mechanical_DB_filename)
 
-        for machine in machines:
-            self._render_machine_row(machine, False)
+        # >> Render parent first
+        self._set_Kodi_content()
+        machine = MAME_info_dic[parent_name]
+        self._render_machine_row(parent_name, machine, False)
+        # >> Render clones
+        for clone_name in Machines_PClone_dic[parent_name]:
+            machine = MAME_info_dic[clone_name]
+            self._render_machine_row(clone_name, machine, False)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    #
+    # Render parent or clone machines.
+    # Information and artwork/assets are the same for all machines.
+    # URL is different: parent URL leads to clones, clone URL launchs machine.
+    #
+    def _render_machine_row(self, machine_name, machine, is_parent_list, list_name = u''):
+        # --- Mark devices ---
+        display_name = machine['description']
+        if machine['isdevice']: display_name += ' [COLOR violet][Device][/COLOR]'
+        if machine['isbios']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+        if machine['cloneof']:  display_name += ' [COLOR orange][Clone][/COLOR]'
+        # Do not mark machines working OK
+        if   machine['driver_status'] == u'imperfect':   display_name += ' [COLOR yellow][Imperfect][/COLOR]'
+        elif machine['driver_status'] == u'preliminary': display_name += ' [COLOR red][Preliminary][/COLOR]'
+
+        # --- Create listitem row ---
+        icon = 'DefaultFolder.png'
+        listitem = xbmcgui.ListItem(display_name, iconImage = icon)
+        ICON_OVERLAY = 6
+        # listitem.setProperty('fanart_image', category_dic['fanart'])
+        listitem.setInfo('video', {'Title'   : display_name,        
+                                   'Overlay' : ICON_OVERLAY } )
+
+        # --- Create context menu ---
+        commands = []
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        listitem.addContextMenuItems(commands, replaceItems = True)
+
+        # --- Add row ---
+        if is_parent_list:
+            URL = self._misc_url_2_arg('list', list_name, 'parent', machine_name)
+        else:
+            URL = self._misc_url_1_arg('launch', machine_name)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
     #----------------------------------------------------------------------------------------------
     # 1) There should be a precompiled JSON index with Manufacturers.
@@ -201,24 +257,43 @@ class Main:
     #
     #----------------------------------------------------------------------------------------------
     def _render_SL_machine_list(self):
-        software_list = [ 
-            {'name' : 'Sega 32X cartridges', 'xml_file' : '32x.xml'},
-            {'name' : 'MSX1 cartridges',     'xml_file' : 'msx1_cart.xml'},
-            {'name' : 'MSX1 cassettes',      'xml_file' : 'msx1_cass.xml'},
-            {'name' : 'MSX1 disk images',    'xml_file' : 'msx1_flop.xml'}
-        ]
+        # >> Load Software List catalog
+        SL_catalog_dic = fs_load_JSON_file(SL_cat_filename)
 
-        for SL in software_list:
-            self._render_SL_machine_row(SL)
+        self._set_Kodi_content()
+        for SL_name in SL_catalog_dic:
+            SL = SL_catalog_dic[SL_name]
+            self._render_SL_machine_row(SL_name, SL)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_SL_machine_row(self, SL):
+    def _render_SL_machine_ROM_list(self, SL_name):
+        # >> Load Software List catalog
+        SL_catalog_dic = fs_load_JSON_file(SL_cat_filename)
+
+        # >> Load Software List ROMs
+        file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + u'.json'
+        SL_DB_filename = os.path.join(AML_ADDON_DIR, u'db_SoftwareLists', file_name).decode('utf-8')
+        log_info(u'_render_SL_machine_ROM_list() ROMs JSON "{0}"'.format(SL_DB_filename))
+        SL_roms = fs_load_JSON_file(SL_DB_filename)
+
+        self._set_Kodi_content()
+        for rom_name in SL_roms:
+            ROM = SL_roms[rom_name]
+            self._render_SL_ROM_row(SL_name, rom_name, ROM)
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_SL_machine_row(self, SL_name, SL):
+        if SL['rom_count'] == 1:
+            display_name = u'{0} ({1} ROM)'.format(SL['display_name'], SL['rom_count'])
+        else:
+            display_name = u'{0} ({1} ROMs)'.format(SL['display_name'], SL['rom_count'])
+
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
-        listitem = xbmcgui.ListItem(SL['name'], iconImage = icon)
+        listitem = xbmcgui.ListItem(display_name, iconImage = icon)
         ICON_OVERLAY = 6
         # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title'   : SL['name'],        
+        listitem.setInfo('video', {'Title'   : display_name,        
                                    'Overlay' : ICON_OVERLAY } )
 
         # --- Create context menu ---
@@ -228,53 +303,59 @@ class Main:
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        URL = self._misc_url_category_root('SL', 'sl', SL['xml_file'])
+        URL = self._misc_url_2_arg('clist', 'SL', 'SL', SL_name)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+
+    def _render_SL_ROM_row(self, SL_name, rom_name, ROM):
+        display_name = ROM['description']
+
+        # --- Create listitem row ---
+        icon = 'DefaultFolder.png'
+        listitem = xbmcgui.ListItem(display_name, iconImage = icon)
+        ICON_OVERLAY = 6
+        # listitem.setProperty('fanart_image', category_dic['fanart'])
+        listitem.setInfo('video', {'Title'   : display_name,        
+                                   'Overlay' : ICON_OVERLAY } )
+
+        # --- Create context menu ---
+        commands = []
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        listitem.addContextMenuItems(commands, replaceItems = True)
+
+        # --- Add row ---
+        URL = self._misc_url_3_arg('clist', 'SL', 'SL', SL_name, 'ROM', rom_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
     #----------------------------------------------------------------------------------------------
     # Render rows (ListItems) 
     #----------------------------------------------------------------------------------------------
-    #
-    # Render parent or clone machines.
-    # Information and artwork/assets are the same for all machines.
-    # URL is different: parent URL leads to clones, clone URL launchs machine.
-    #
-    def _render_machine_row(self, machine, parent_list):
-        # --- Create listitem row ---
-        icon = 'DefaultFolder.png'
-        listitem = xbmcgui.ListItem(machine['display_name'], iconImage = icon)
-        ICON_OVERLAY = 6
-        # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title'   : machine['display_name'],        
-                                   'Overlay' : ICON_OVERLAY } )
-
-        # --- Create context menu ---
-        commands = []
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
-        listitem.addContextMenuItems(commands, replaceItems = True)
-
-        # --- Add row ---
-        if parent_list:
-            URL = self._misc_url_parent('Machines', machine['name'])
-        else:
-            URL = self._misc_url_command('launch', machine['name'])
-        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
     # ---------------------------------------------------------------------------------------------
     # Misc functions
     # ---------------------------------------------------------------------------------------------
-    def _misc_url_root(self, root_menu):
-        return '{0}?root={1}'.format(self.base_url, root_menu)
+    def _set_Kodi_content(self):
+        # --- Set content type and sorting methods ---
+        # NOTE This code should be move to _gui_* functions which generate
+        #      list. Do not place it here because not all commands of the module
+        #      need it!
+        # Experiment to try to increase the number of views the addon supports. I do not know why
+        # programs does not support all views movies do.
+        # xbmcplugin.setContent(handle=self.addon_handle, content = 'movies')
 
-    def _misc_url_parent(self, root_menu, parent_name):
-        return '{0}?root={1}&parent={2}'.format(self.base_url, root_menu, parent_name)
+        # Adds a sorting method for the media list.
+        if self.addon_handle > 0:
+            xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_LABEL)
+            xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+            xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_STUDIO)
+            xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_GENRE)
+            xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_UNSORTED)
 
-    def _misc_url_category_root(self, root_menu, index_name, index_value):
-        return '{0}?root={1}&{2}={3}'.format(self.base_url, root_menu, index_name, index_value)
+    def _misc_url_1_arg(self, arg_name, arg_value):
+        return u'{0}?{1}={2}'.format(self.base_url, arg_name, arg_value)
 
-    def _misc_url_category_clones(self, root_menu, index_name, index_value, parent_name):
-        return '{0}?root={1}&{2}={3}&parent={4}'.format(self.base_url, root_menu, index_name, index_value, parent_name)
+    def _misc_url_2_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2):
+        return u'{0}?{1}={2}&{3}={4}'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2)
 
-    def _misc_url_command(self, command, mame_args):
-        return '{0}?command={1}&mame_args={2}'.format(self.base_url, command, mame_args)
+    def _misc_url_3_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3):
+        return u'{0}?{1}={2}&{3}={4}&{5}={6}'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3)
