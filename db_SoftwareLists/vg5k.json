@@ -1,0 +1,252 @@
+{
+  "abeille": {
+    "description": "L'Abeille - Spina the Bee",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "angl1": {
+    "description": "Anglais Volume 1",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "angl2": {
+    "description": "Anglais Volume 2 - Systeme Verbal",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "backgamm": {
+    "description": "Backgammon",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "bglace": {
+    "description": "Bris de Glace",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "budget": {
+    "description": "Budget",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "carmal": {
+    "description": "La Carotte Malicieuse - Reperage et Deplacement Sur un Plan Quadrille",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "carnet": {
+    "description": "Carnet d'Adresses",
+    "publisher": "Loriciels",
+    "year": "1984"
+  },
+  "cartfran": {
+    "description": "Carte de France - Mers, Fleuves, Villes et Montagnes de France",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "citadell": {
+    "description": "Citadelle",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "clechan": {
+    "description": "La Cle des Chants - Exercices de Solfege",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "compmult": {
+    "description": "Complements et Multiples",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "conjug": {
+    "description": "La Conjugaichouette",
+    "publisher": "Belin",
+    "year": "1985"
+  },
+  "decbas1": {
+    "description": "Decouverte du Basic - Volume 1",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "decbas2": {
+    "description": "Decouverte du Basic - Volume 2",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "divert": {
+    "description": "Divertissement",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "fichier": {
+    "description": "Fichier",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "football": {
+    "description": "Football",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "fouvol": {
+    "description": "Le Fou Volant - Air Battle",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "helicop": {
+    "description": "Helicoptere - Helicopter Rescue",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "labyprie": {
+    "description": "Le Labyrinthe et la Princesse (Edisoft)",
+    "publisher": "Edisoft",
+    "year": "1985"
+  },
+  "labyprl": {
+    "description": "Le Labyrinthe et la Princesse (Loriciels)",
+    "publisher": "Loriciels",
+    "year": "1986"
+  },
+  "lgraph": {
+    "description": "LGraph - VG5216",
+    "publisher": "Philips",
+    "year": "1985"
+  },
+  "lvb": {
+    "description": "Lire Vite et Bien - Apprentissage de la Lecture Rapide",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "mcrojeux": {
+    "description": "Microjeux - Cocktail de Juex",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "microp": {
+    "description": "Microprocesseur",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "momega": {
+    "description": "Mission Omega",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "monkeyac": {
+    "description": "Monkey Academy",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "motcr1": {
+    "description": "Mes Premiers Mots Croises Volume 1 - Francais- Vocabulaire",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "motcr2": {
+    "description": "Mes Premiers Mots Croises Volume 2 - Francais- Vocabulaire",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "motflr": {
+    "description": "Mots en Fleurs - Construire des Mots",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "motoinfe": {
+    "description": "La Moto Infernale",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "munchkin": {
+    "description": "Glouton - Munchkin",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "pphil1": {
+    "description": "La Pierre Philosophale - Chapter 1- La Pierre Philosophale",
+    "publisher": "Elite Diffusion",
+    "year": "198?"
+  },
+  "pphil2": {
+    "description": "La Pierre Philosophale - Chapter 2- La Clef de l'Ile",
+    "publisher": "Elite Diffusion",
+    "year": "198?"
+  },
+  "pphil3": {
+    "description": "La Pierre Philosophale - Chapter 3- La Porte du Jardin des Hesperides",
+    "publisher": "Elite Diffusion",
+    "year": "198?"
+  },
+  "pphil4": {
+    "description": "La Pierre Philosophale - Chapter 4- La Porte des Gnomes",
+    "publisher": "Elite Diffusion",
+    "year": "198?"
+  },
+  "pphil5": {
+    "description": "La Pierre Philosophale - Chapter 5- La Porte des Pieuvres",
+    "publisher": "Elite Diffusion",
+    "year": "198?"
+  },
+  "pphil6": {
+    "description": "La Pierre Philosophale - Chapter 6- La Porte du Harpie",
+    "publisher": "Elite Diffusion",
+    "year": "198?"
+  },
+  "pphil7": {
+    "description": "La Pierre Philosophale - Chapter 7- La Porte du Gouffre",
+    "publisher": "Elite Diffusion",
+    "year": "198?"
+  },
+  "pretstar": {
+    "description": "Preterite Star",
+    "publisher": "Belin",
+    "year": "1985"
+  },
+  "sa": {
+    "description": "Salut l'Artiste",
+    "publisher": "Nice Ideas",
+    "year": "1985"
+  },
+  "simvol": {
+    "description": "Simulateur de Vol",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "spacem": {
+    "description": "Le Monstre - Space Monster",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "staroc": {
+    "description": "Staroc",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "sysmetr": {
+    "description": "Systeme Metrique",
+    "publisher": "VIFI-Nathan",
+    "year": "1985"
+  },
+  "tarot": {
+    "description": "Jeu de Tarot",
+    "publisher": "Nice Ideas",
+    "year": "1985"
+  },
+  "tortues": {
+    "description": "Tortues - Turtles",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "usrallye": {
+    "description": "US Rallye",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "viking": {
+    "description": "Viking",
+    "publisher": "Philips",
+    "year": "1984"
+  }
+}

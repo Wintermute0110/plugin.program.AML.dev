@@ -1,0 +1,897 @@
+{
+  "3dothel": {
+    "description": "3D-Othello",
+    "publisher": "Fe",
+    "year": "1988"
+  },
+  "action3": {
+    "description": "Action/3",
+    "publisher": "Bö Games",
+    "year": "1986"
+  },
+  "action4": {
+    "description": "Action/4",
+    "publisher": "Bö Games / VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "ali": {
+    "description": "Ali",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "alliens": {
+    "description": "Alliens",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "anaconda": {
+    "description": "Anaconda",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "angeln": {
+    "description": "Angeln",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "animals": {
+    "description": "Animals",
+    "publisher": "Bö Games",
+    "year": "1986"
+  },
+  "arennen": {
+    "description": "Autorennen",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "auto4": {
+    "description": "Auto Mounting",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bellum": {
+    "description": "Bellum",
+    "publisher": "PAULIN",
+    "year": "198?"
+  },
+  "bennion": {
+    "description": "Bennion Geppy/4",
+    "publisher": "R.B. Software",
+    "year": "1988"
+  },
+  "bennion3": {
+    "description": "Bennion Geppy/3",
+    "publisher": "R.B. Software",
+    "year": "1988"
+  },
+  "bgames": {
+    "description": "Bö Games",
+    "publisher": "Bö Games",
+    "year": "1986"
+  },
+  "bgarden": {
+    "description": "Big Garden",
+    "publisher": "wega-soft",
+    "year": "198?"
+  },
+  "bigfun": {
+    "description": "Big Fun",
+    "publisher": "Advanced Programmers",
+    "year": "1990"
+  },
+  "bombjack": {
+    "description": "Bomb-Jack",
+    "publisher": "STS",
+    "year": "1991"
+  },
+  "bombswee": {
+    "description": "Bombsweeper",
+    "publisher": "Star Soft",
+    "year": "198?"
+  },
+  "boulder4": {
+    "description": "Boulderdash 4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "breakou3": {
+    "description": "Breakout/3",
+    "publisher": "SOWACO",
+    "year": "198?"
+  },
+  "breakou4": {
+    "description": "Breakout/4",
+    "publisher": "SOWACO",
+    "year": "198?"
+  },
+  "bspiele1": {
+    "description": "Bö Spiele 1",
+    "publisher": "Bö Games",
+    "year": "1986"
+  },
+  "bspiele2": {
+    "description": "Bö Spiele 2",
+    "publisher": "Bö Games",
+    "year": "1986"
+  },
+  "bspiele3": {
+    "description": "Bö Spiele 3",
+    "publisher": "Bö Games",
+    "year": "1986"
+  },
+  "burgs": {
+    "description": "Burgschlacht",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "burgs4": {
+    "description": "Burgschlacht/4",
+    "publisher": "<unknown>",
+    "year": "1990"
+  },
+  "burgsc": {
+    "description": "Burgschlacht Color",
+    "publisher": "<unknown>",
+    "year": "1988"
+  },
+  "bustle": {
+    "description": "Bustle",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "castle": {
+    "description": "The Castle",
+    "publisher": "KINGSOFT",
+    "year": "1989"
+  },
+  "castle4": {
+    "description": "Castle",
+    "publisher": "DK-Soft",
+    "year": "1988"
+  },
+  "cave3": {
+    "description": "Cave/3",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "cave4": {
+    "description": "Cave/4",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "clubx": {
+    "description": "Club-X",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "cockpit": {
+    "description": "Cockpit",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1987"
+  },
+  "dallas": {
+    "description": "Dallas",
+    "publisher": "Alro Software",
+    "year": "1988"
+  },
+  "deliro": {
+    "description": "Deliro",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "diamant3": {
+    "description": "Diamant/3",
+    "publisher": "DM-Software",
+    "year": "1990"
+  },
+  "diamant4": {
+    "description": "Diamant/4",
+    "publisher": "DM-Software",
+    "year": "1990"
+  },
+  "diamantj": {
+    "description": "Diamantenjagd",
+    "publisher": "Cancer Software",
+    "year": "198?"
+  },
+  "digger3": {
+    "description": "Digger/3",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "digger4": {
+    "description": "Digger/4",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "dschungl": {
+    "description": "Dschungelpfad",
+    "publisher": "Lehni",
+    "year": "1987"
+  },
+  "duo": {
+    "description": "Duo",
+    "publisher": "<unknown>",
+    "year": "1986"
+  },
+  "earth": {
+    "description": "Earth",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "eierfan3": {
+    "description": "Fang die Eier! (KC85/3)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "eierfan4": {
+    "description": "Fang die Eier! (KC85/4)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "enten": {
+    "description": "Entenjagd",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1987"
+  },
+  "enterpri": {
+    "description": "Enterprise",
+    "publisher": "Boe-Mie",
+    "year": "198?"
+  },
+  "fft": {
+    "description": "Fast Fourier Transformation",
+    "publisher": "VEB Mikroelektronik",
+    "year": "198?"
+  },
+  "flatter": {
+    "description": "Flatter",
+    "publisher": "EJ SOFT",
+    "year": "198?"
+  },
+  "fourfu": {
+    "description": "Fourieranalyse bis zu 5 Funktionen",
+    "publisher": "VEB Mikroelektronik",
+    "year": "198?"
+  },
+  "fourko": {
+    "description": "Fourierkoeffizienten bis zu 5 Funktionen",
+    "publisher": "VEB Mikroelektronik",
+    "year": "198?"
+  },
+  "fourpu": {
+    "description": "Fourieranalyse bis zu 40 Punkten",
+    "publisher": "VEB Mikroelektronik",
+    "year": "198?"
+  },
+  "frosch": {
+    "description": "Frosch",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "fya": {
+    "description": "Fine Young Animals",
+    "publisher": "R.B. Software",
+    "year": "1988"
+  },
+  "galaxie": {
+    "description": "Galaxie",
+    "publisher": "Bö Games",
+    "year": "1987"
+  },
+  "gatecr": {
+    "description": "Gatecrasher",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "geisterf": {
+    "description": "Geisterfahrer",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ghost": {
+    "description": "Ghost",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "goff": {
+    "description": "Goff",
+    "publisher": "<unknown>",
+    "year": "1987"
+  },
+  "goldrush": {
+    "description": "Goldrush",
+    "publisher": "DM-Software",
+    "year": "1990"
+  },
+  "gourmand": {
+    "description": "Gourmand",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gowa": {
+    "description": "Gowa",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1987"
+  },
+  "grandpri": {
+    "description": "Grand Prix",
+    "publisher": "Ja Soft",
+    "year": "1989"
+  },
+  "grush3": {
+    "description": "Goldrush 3",
+    "publisher": "ALIWE-Software",
+    "year": "198?"
+  },
+  "gunship": {
+    "description": "Gunship 3000",
+    "publisher": "STS",
+    "year": "1991"
+  },
+  "hallo": {
+    "description": "Hallo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "heli3": {
+    "description": "Helicopter/3",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "heli4": {
+    "description": "Helicopter/4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hibi": {
+    "description": "Hier bin ich",
+    "publisher": "FD Soft",
+    "year": "198?"
+  },
+  "house3": {
+    "description": "House/3",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "house4": {
+    "description": "House/4",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "hwolf3": {
+    "description": "Hase und Wolf/3",
+    "publisher": "<unknown>",
+    "year": "1988"
+  },
+  "hwolf4": {
+    "description": "Hase und Wolf/4",
+    "publisher": "<unknown>",
+    "year": "1988"
+  },
+  "inter": {
+    "description": "Interaktives Demonstrations",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "irrgarte": {
+    "description": "Irrgarten",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "jack": {
+    "description": "Jumping Jack",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "jaeger": {
+    "description": "Jaeger",
+    "publisher": "Adler-Software",
+    "year": "1989"
+  },
+  "jungle13": {
+    "description": "Jungle v1.3",
+    "publisher": "SOWACO",
+    "year": "1989"
+  },
+  "jungle14": {
+    "description": "Jungle v1.4",
+    "publisher": "SOWACO",
+    "year": "1989"
+  },
+  "jungle2": {
+    "description": "Jungle v2",
+    "publisher": "SOWACO",
+    "year": "1997"
+  },
+  "karate": {
+    "description": "Karate",
+    "publisher": "STS",
+    "year": "1991"
+  },
+  "katzmaus": {
+    "description": "Katz & Maus",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kcplus": {
+    "description": "KCPlus",
+    "publisher": "TB-Soft",
+    "year": "1991"
+  },
+  "kdp": {
+    "description": "Kampf der Piraten",
+    "publisher": "Gauß-Service",
+    "year": "198?"
+  },
+  "kspiele1": {
+    "description": "Knabi Soft Spiele 1",
+    "publisher": "Knabi Soft",
+    "year": "1988"
+  },
+  "kspiele2": {
+    "description": "Knabi Soft Spiele 2",
+    "publisher": "Knabi Soft",
+    "year": "1988"
+  },
+  "kspiele3": {
+    "description": "Knabi Soft Spiele 3",
+    "publisher": "Knabi Soft",
+    "year": "1988"
+  },
+  "laby": {
+    "description": "Labyrinth",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "labyrint": {
+    "description": "Labyrint",
+    "publisher": "SOWACO",
+    "year": "1988"
+  },
+  "ladder10": {
+    "description": "Ladder v1.0",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ladder13": {
+    "description": "Ladder v1.3",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ladder20": {
+    "description": "Ladder v2.0",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ladder3": {
+    "description": "Ladder/3",
+    "publisher": "EJ SOFT",
+    "year": "198?"
+  },
+  "ladder4": {
+    "description": "Ladder/4",
+    "publisher": "EJ SOFT",
+    "year": "198?"
+  },
+  "lekt1": {
+    "description": "Lektion 1 Demo",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "lektion1": {
+    "description": "BASIC-Lernen Lektion 1",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektion2": {
+    "description": "BASIC-Lernen Lektion 2",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektion3": {
+    "description": "BASIC-Lernen Lektion 3",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektion4": {
+    "description": "BASIC-Lernen Lektion 4",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektion5": {
+    "description": "BASIC-Lernen Lektion 5",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektion6": {
+    "description": "BASIC-Lernen Lektion 6",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektion7": {
+    "description": "BASIC-Lernen Lektion 7",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektion8": {
+    "description": "BASIC-Lernen Lektion 8",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektion9": {
+    "description": "BASIC-Lernen Lektion 9",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektiona": {
+    "description": "BASIC-Lernen Lektion 10",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektionb": {
+    "description": "BASIC-Lernen Lektion 11",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lektionc": {
+    "description": "BASIC-Lernen Lektion 12",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "lexikon": {
+    "description": "Lexikon",
+    "publisher": "VEB Mikroelektronik",
+    "year": "198?"
+  },
+  "lrescue": {
+    "description": "Lunar Rescue",
+    "publisher": "Cancer Computer's",
+    "year": "198?"
+  },
+  "mach1": {
+    "description": "Mach1",
+    "publisher": "PAULIN",
+    "year": "198?"
+  },
+  "manager": {
+    "description": "Fußball Manager",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "max": {
+    "description": "Max",
+    "publisher": "<unknown>",
+    "year": "1988"
+  },
+  "maxiall": {
+    "description": "Max im All",
+    "publisher": "PAULIN",
+    "year": "198?"
+  },
+  "mazes3": {
+    "description": "Mazes/3",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mazes4": {
+    "description": "Mazes/4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "memory": {
+    "description": "Memory Game",
+    "publisher": "<unknown>",
+    "year": "1987"
+  },
+  "mensch": {
+    "description": "Mensch ärgere Dich nicht !!!",
+    "publisher": "<unknown>",
+    "year": "1990"
+  },
+  "mine2": {
+    "description": "Mine II",
+    "publisher": "STS",
+    "year": "1990"
+  },
+  "mineswp": {
+    "description": "Minesweeper",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "minigolf": {
+    "description": "Miniatur Golf",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mrglobe": {
+    "description": "Mr. Globe",
+    "publisher": "G.E.",
+    "year": "198?"
+  },
+  "netz": {
+    "description": "Netz",
+    "publisher": "A.G. Soft",
+    "year": "1990"
+  },
+  "nuclear": {
+    "description": "Nuclear",
+    "publisher": "Gauß-Service",
+    "year": "198?"
+  },
+  "orbit": {
+    "description": "Orbit",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1987"
+  },
+  "othello": {
+    "description": "Othello",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "pacman": {
+    "description": "Pacman",
+    "publisher": "SOWACO",
+    "year": "198?"
+  },
+  "painter": {
+    "description": "The Painter",
+    "publisher": "AKKU",
+    "year": "1990"
+  },
+  "paranoia": {
+    "description": "Paranoia",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "parcour": {
+    "description": "Parcour",
+    "publisher": "WEGA-soft",
+    "year": "198?"
+  },
+  "patience": {
+    "description": "Patience",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "pengo3": {
+    "description": "Pengo/3",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "pengo4": {
+    "description": "Pengo/4",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "perestro": {
+    "description": "Perestroika",
+    "publisher": "STS",
+    "year": "1991"
+  },
+  "perlen": {
+    "description": "Perlentaucher",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "pharao3": {
+    "description": "Pharao/3",
+    "publisher": "HIGHSOFT",
+    "year": "1989"
+  },
+  "pharao4": {
+    "description": "Pharao/4",
+    "publisher": "HIGHSOFT",
+    "year": "1989"
+  },
+  "pilze": {
+    "description": "Pilzsucher",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "pinguin": {
+    "description": "Pinguin",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "poligon": {
+    "description": "Poligon/4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "pursuit3": {
+    "description": "Pursuit/3",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "pursuit4": {
+    "description": "Pursuit/4",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "pyram15": {
+    "description": "Pyramide v1.5",
+    "publisher": "<unknown>",
+    "year": "1987"
+  },
+  "pyram25": {
+    "description": "Pyramide v2.5",
+    "publisher": "<unknown>",
+    "year": "1987"
+  },
+  "rallye": {
+    "description": "Rallye",
+    "publisher": "PAULIN",
+    "year": "198?"
+  },
+  "rana": {
+    "description": "Rana",
+    "publisher": "MazeSoft",
+    "year": "1990"
+  },
+  "raus": {
+    "description": "RAUS",
+    "publisher": "Knabi-Soft",
+    "year": "1988"
+  },
+  "sahara": {
+    "description": "Sahara",
+    "publisher": "DK-Soft",
+    "year": "1989"
+  },
+  "sandburg": {
+    "description": "Sandburg",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "schach": {
+    "description": "Schach (Video Chess Master)",
+    "publisher": "VEB Mikroelektronik",
+    "year": "198?"
+  },
+  "schatz": {
+    "description": "Schatz",
+    "publisher": "J.B. Software",
+    "year": "1987"
+  },
+  "schiess": {
+    "description": "Schiessbude",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "schiffsu": {
+    "description": "Schiffesuchen",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "schwloch": {
+    "description": "Schwarzes Loch",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "sdwand": {
+    "description": "Schlag die Wand !",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "seawar": {
+    "description": "SeaWar",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ski": {
+    "description": "Ski",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "skymaste": {
+    "description": "Skymaste",
+    "publisher": "Bö Games",
+    "year": "1986"
+  },
+  "slider": {
+    "description": "Slider",
+    "publisher": "<unknown>",
+    "year": "1990"
+  },
+  "snake": {
+    "description": "Snake",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "snakes": {
+    "description": "Snakes",
+    "publisher": "RJ-SOFT",
+    "year": "198?"
+  },
+  "socoban": {
+    "description": "Socoban",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "socobana": {
+    "description": "Socoban (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sokoban": {
+    "description": "Sokoban",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sokobane": {
+    "description": "Sokoban EE",
+    "publisher": "EE Soft",
+    "year": "198?"
+  },
+  "spiele1": {
+    "description": "Spiele 1",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "spiele2": {
+    "description": "Spiele 2",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "spiele3": {
+    "description": "Spiele 3",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "spieles": {
+    "description": "Spiele-Sammlung",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "stadt": {
+    "description": "Hauptstädteraten",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1986"
+  },
+  "superski": {
+    "description": "Superski",
+    "publisher": "ALIWE-Software",
+    "year": "1988"
+  },
+  "tennis": {
+    "description": "Tennis",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tetris": {
+    "description": "Tetris",
+    "publisher": "Kurbelpower Megasoft",
+    "year": "1990"
+  },
+  "vgewinnt": {
+    "description": "Vier Gewinnt",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "vollgas": {
+    "description": "Vollgas",
+    "publisher": "STS",
+    "year": "1991"
+  },
+  "vorstell": {
+    "description": "Vorstell/4",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "wp86v1": {
+    "description": "WordPro '86 v1",
+    "publisher": "Cube-Ware",
+    "year": "1986"
+  },
+  "wp86v2": {
+    "description": "WordPro '86 v2",
+    "publisher": "Robotron",
+    "year": "1986"
+  },
+  "wp89": {
+    "description": "WordPro '89",
+    "publisher": "Cube-Ware",
+    "year": "1989"
+  }
+}

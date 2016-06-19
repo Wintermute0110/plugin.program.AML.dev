@@ -1,0 +1,57 @@
+{
+  "ados0105": {
+    "description": "Alpha-DOS 01.05 (modified MS-DOS 3.20)",
+    "publisher": "MPO VT",
+    "year": "1988"
+  },
+  "ados0201": {
+    "description": "Alpha-DOS 02.01 (modified PC-DOS 3.30)",
+    "publisher": "MPO VT",
+    "year": "1988"
+  },
+  "basic20a": {
+    "description": "BASIC 2.0 for Alpha-DOS",
+    "publisher": "MPO VT",
+    "year": "1988"
+  },
+  "basic20m": {
+    "description": "BASIC 2.0 for M86",
+    "publisher": "MPO VT",
+    "year": "1988"
+  },
+  "demo": {
+    "description": "Demo disk",
+    "publisher": "MPO VT",
+    "year": "1988"
+  },
+  "m86v32": {
+    "description": "M86 3.2 (modified CP/M-86)",
+    "publisher": "MPO VT",
+    "year": "1988"
+  },
+  "teletext": {
+    "description": "TELETEXT for M86",
+    "publisher": "MPO VT",
+    "year": "1988"
+  },
+  "textm86a": {
+    "description": "TEXTM86 1.1.0 for Alpha-DOS",
+    "publisher": "MPO VT",
+    "year": "1988"
+  },
+  "textm86m": {
+    "description": "TEXTM86 1.1.0 for M86",
+    "publisher": "MPO VT",
+    "year": "1988"
+  },
+  "tps2214": {
+    "description": "TPS release 2.2 changeset 14",
+    "publisher": "MPO VT",
+    "year": "1988"
+  },
+  "voice41": {
+    "description": "Speech syntesis software v.?.?",
+    "publisher": "??",
+    "year": "19??"
+  }
+}

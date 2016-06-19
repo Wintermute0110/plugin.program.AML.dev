@@ -1,0 +1,27 @@
+{
+  "lyrix": {
+    "description": "Lyrix Version 3.10",
+    "publisher": "Microsoft/SCO",
+    "year": "198?"
+  },
+  "multplan": {
+    "description": "Multiplan Version 2.10B",
+    "publisher": "Microsoft/SCO",
+    "year": "198?"
+  },
+  "xenixdev": {
+    "description": "Xenix Development System 3.0 Release 1.0",
+    "publisher": "Microsoft/SCO",
+    "year": "198?"
+  },
+  "xenixos": {
+    "description": "Xenix OS 3.0 Release 1.0",
+    "publisher": "Microsoft/SCO",
+    "year": "198?"
+  },
+  "xenixtxt": {
+    "description": "Xenix Text Processing System",
+    "publisher": "Microsoft/SCO",
+    "year": "198?"
+  }
+}

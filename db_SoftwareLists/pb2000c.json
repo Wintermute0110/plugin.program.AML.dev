@@ -1,0 +1,12 @@
+{
+  "basic": {
+    "description": "BASIC interpreter (OM-53B)",
+    "publisher": "Casio",
+    "year": "1989"
+  },
+  "prolog": {
+    "description": "PROLOG interpreter (OM-51P)",
+    "publisher": "Casio",
+    "year": "1989"
+  }
+}

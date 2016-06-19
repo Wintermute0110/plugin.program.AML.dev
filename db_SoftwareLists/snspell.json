@@ -1,0 +1,62 @@
+{
+  "basbuild": {
+    "description": "Basic Builders",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "etf": {
+    "description": "E.T. Fantasy",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "homohero": {
+    "description": "Homonym Heroes",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "magasrue": {
+    "description": "Les Magasins de la Rue (Module No. 4)",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "magmods": {
+    "description": "Magnificent Modifiers",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "migverbs": {
+    "description": "Mighty Verbs",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "motsbase": {
+    "description": "Les Mots de Base (Module No. 1)",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "nounends": {
+    "description": "Noun Endings",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "sstump46": {
+    "description": "Super Stumpers 4-6",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "sstump78": {
+    "description": "Super Stumpers 7-8",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "vpower": {
+    "description": "Vowel Power",
+    "publisher": "Texas Instruments",
+    "year": "1978"
+  },
+  "vventure": {
+    "description": "Vowel Ventures",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  }
+}

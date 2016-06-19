@@ -1,0 +1,2292 @@
+{
+  "128qload": {
+    "description": "128er Quickload",
+    "publisher": "Conrad Electronics",
+    "year": "19??"
+  },
+  "4040fast": {
+    "description": "4040 + Fast Hack'Em",
+    "publisher": "Basement Boys Software",
+    "year": "1990"
+  },
+  "4thsarc": {
+    "description": "Adventure 3: The Fourth Sarcophagus",
+    "publisher": "Handic Software",
+    "year": "1983"
+  },
+  "64diary": {
+    "description": "64-Diary",
+    "publisher": "Handic Software",
+    "year": "1983"
+  },
+  "64doctor": {
+    "description": "64 Doctor",
+    "publisher": "Trilogic",
+    "year": "1988"
+  },
+  "64forth": {
+    "description": "64 Forth v1.2",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "64mon": {
+    "description": "64 Mon v1.03",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "abc": {
+    "description": "A Bee Cee's",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "ablitz": {
+    "description": "Astro Blitz",
+    "publisher": "Creative Software",
+    "year": "1983"
+  },
+  "acp53": {
+    "description": "Action Cartridge Plus 5 (Ger)",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "acp6": {
+    "description": "Action Cartridge Plus 6.0",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "acp6g": {
+    "description": "Action Cartridge Plus 6.0 (Ger)",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "acp7": {
+    "description": "Action Cartridge Plus v7.0 (Derko)",
+    "publisher": "Derko",
+    "year": "1991"
+  },
+  "acp7t": {
+    "description": "Action Cartridge Plus v7.0 (Triumwyrat)",
+    "publisher": "Triumwyrat",
+    "year": "1990"
+  },
+  "acricket": {
+    "description": "Arnie Armchairs Howzat Cricket Game",
+    "publisher": "Armchair Entertainment",
+    "year": "1984"
+  },
+  "addsub23": {
+    "description": "Der Rechenlöwe: Fit in Addition und Subtraktion - 2./3. Schuljahr (Ger)",
+    "publisher": "Commodore",
+    "year": "1984"
+  },
+  "addsub34": {
+    "description": "Der Rechenlöwe: Fit in Addition und Subtraktion - 3./4. Schuljahr (Ger)",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "advcrtor": {
+    "description": "Adventure Creator",
+    "publisher": "Spinnaker Software",
+    "year": "1984"
+  },
+  "aegeanv": {
+    "description": "Aegean Voyage",
+    "publisher": "Spinnaker Software",
+    "year": "1984"
+  },
+  "afterwar": {
+    "description": "After The War",
+    "publisher": "Dinamic Software",
+    "year": "1990"
+  },
+  "alfclrcv": {
+    "description": "Alf in the Color Caves",
+    "publisher": "Spinnaker Software",
+    "year": "1984"
+  },
+  "alienss": {
+    "description": "Alien Sidestep",
+    "publisher": "Mr. Computer",
+    "year": "19??"
+  },
+  "alphabld": {
+    "description": "Alpha Build",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "alphazoo": {
+    "description": "Alphabet Zoo",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "amaze": {
+    "description": "Amazing Maze",
+    "publisher": "Mr. Computer",
+    "year": "1983"
+  },
+  "anabalt": {
+    "description": "C64anabalt (Encore)",
+    "publisher": "RGCD",
+    "year": "2012"
+  },
+  "anabaltg": {
+    "description": "C64anabalt (Gharmak)",
+    "publisher": "RGCD",
+    "year": "2012"
+  },
+  "apshai": {
+    "description": "Gateway to Apshai",
+    "publisher": "Epyx",
+    "year": "1983"
+  },
+  "ar2": {
+    "description": "Action Replay MK2",
+    "publisher": "Datel Electronics",
+    "year": "1986"
+  },
+  "ar2v2": {
+    "description": "Action Replay MK2 (v2)",
+    "publisher": "Datel Electronics",
+    "year": "1986"
+  },
+  "ar3": {
+    "description": "Action Replay MK3 (v1)",
+    "publisher": "Datel Electronics",
+    "year": "1987"
+  },
+  "ar3dm": {
+    "description": "Action Replay MK3 (Diskmate)",
+    "publisher": "Datel Electronics",
+    "year": "1987"
+  },
+  "ar3v2": {
+    "description": "Action Replay MK3 (v2)",
+    "publisher": "Datel Electronics",
+    "year": "1987"
+  },
+  "ar4": {
+    "description": "Action Replay MK4",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "ar41": {
+    "description": "Action Replay v4.1",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "ar42": {
+    "description": "Action Replay v4.2 (v1)",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "ar4250": {
+    "description": "Action Replay v4.2 (v5.0 v1)",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "ar4250v2": {
+    "description": "Action Replay v4.2 (v5.0 v2)",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "ar42v2": {
+    "description": "Action Replay v4.2 (v2)",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "ar5": {
+    "description": "Action Replay v5.0",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "ar51": {
+    "description": "Action Replay v5.1a",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "ar5flt": {
+    "description": "The Fairlight Cracking Cartridge",
+    "publisher": "Fairlight",
+    "year": "1990"
+  },
+  "ar5n": {
+    "description": "Action Replay v5.0 (NTSC)",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "ar6": {
+    "description": "Action Replay v6.0",
+    "publisher": "Datel Electronics",
+    "year": "1989"
+  },
+  "ar6t": {
+    "description": "Action Replay v6.0 (Triad)",
+    "publisher": "Triad",
+    "year": "1993"
+  },
+  "ar73": {
+    "description": "Action Replay v7.3",
+    "publisher": "Atrax",
+    "year": "1991"
+  },
+  "ar75": {
+    "description": "Action Replay v7.5",
+    "publisher": "Triumwyrat",
+    "year": "1989"
+  },
+  "ar84": {
+    "description": "Action Replay v8.4",
+    "publisher": "<unknown>",
+    "year": "1990"
+  },
+  "arcade": {
+    "description": "Arcade Classic Pak",
+    "publisher": "HES Australia",
+    "year": "1984"
+  },
+  "aspargp": {
+    "description": "Aspar GP Master",
+    "publisher": "Dinamic Software",
+    "year": "1989"
+  },
+  "atomic": {
+    "description": "Atomic Power Cartridge v1.1",
+    "publisher": "Frank & Joe",
+    "year": "1990"
+  },
+  "backup13": {
+    "description": "One-Pass Backup v1.3",
+    "publisher": "Datel Electronics",
+    "year": "19??"
+  },
+  "badlands": {
+    "description": "Badlands",
+    "publisher": "Domark",
+    "year": "1990"
+  },
+  "basex": {
+    "description": "Basex",
+    "publisher": "Peter Finch",
+    "year": "1989"
+  },
+  "batlband": {
+    "description": "Halftime Battlin' Bands featuring... the Jazz Scats!",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "batman": {
+    "description": "Batman: The Movie",
+    "publisher": "Ocean",
+    "year": "1989"
+  },
+  "battlcmd": {
+    "description": "Battle Command",
+    "publisher": "Ocean",
+    "year": "1991"
+  },
+  "bb3d": {
+    "description": "Black Box III (Pol)",
+    "publisher": "Domainsoft",
+    "year": "198?"
+  },
+  "bblburst": {
+    "description": "Bubble Burst",
+    "publisher": "Spinnaker Software",
+    "year": "1984"
+  },
+  "bcopybox": {
+    "description": "Black Copy Box",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bcquest": {
+    "description": "BC's Quest for Tires",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "beamridr": {
+    "description": "Beamrider",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "beast": {
+    "description": "Shadow of the Beast",
+    "publisher": "Ocean",
+    "year": "1990"
+  },
+  "bi80": {
+    "description": "BI-80",
+    "publisher": "Batteries Included",
+    "year": "1984"
+  },
+  "bigbrdfh": {
+    "description": "Big Bird's Funhouse",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "bigbrdsd": {
+    "description": "Big Bird's Special Delivery",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "bisplus": {
+    "description": "Bis-Plus",
+    "publisher": "Micro-LUC",
+    "year": "1990"
+  },
+  "blockhop": {
+    "description": "Block Hopper",
+    "publisher": "Fantasy Soft",
+    "year": "1983"
+  },
+  "blokcopy": {
+    "description": "Blok Copy",
+    "publisher": "RGCD",
+    "year": "2011"
+  },
+  "blueprnt": {
+    "description": "Blue-Print",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "bridge": {
+    "description": "Bridge",
+    "publisher": "Handic Software",
+    "year": "1983"
+  },
+  "btx": {
+    "description": "Btx Decoder Modul (Ger)",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "btx2": {
+    "description": "Btx Decoder Modul II v3.1 (Ger)",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "btx2v33": {
+    "description": "Btx Decoder Modul II v3.3 (Ger)",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "buckrog": {
+    "description": "Buck Rogers: Planet of Zoom",
+    "publisher": "Sega",
+    "year": "1983"
+  },
+  "bugcrush": {
+    "description": "Bug Crusher",
+    "publisher": "Mr. Computer",
+    "year": "1983"
+  },
+  "busbasic": {
+    "description": "Business Basic",
+    "publisher": "Kingsoft",
+    "year": "1985"
+  },
+  "bzone": {
+    "description": "BattleZone",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "c64dia41": {
+    "description": "C-64 Diagnostic (Rev 4.1.0)",
+    "publisher": "Commodore",
+    "year": "19??"
+  },
+  "c64diag": {
+    "description": "C-64 Diagnostic (Rev 586220)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "c64diagn": {
+    "description": "C64 Diagnostic",
+    "publisher": "Commodore",
+    "year": "19??"
+  },
+  "c64gs": {
+    "description": "Commodore 64 Game System Cartridge",
+    "publisher": "Commodore",
+    "year": "1990"
+  },
+  "c64idiag": {
+    "description": "C-64 Import Test Diagnostic",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "c64link": {
+    "description": "C64-Link",
+    "publisher": "Richvale Telecommunications",
+    "year": "1982"
+  },
+  "c64link2": {
+    "description": "C64-Link II",
+    "publisher": "Richvale Telecommunications",
+    "year": "1984"
+  },
+  "c64stat": {
+    "description": "CBM 64 Stat",
+    "publisher": "Handic Software",
+    "year": "1983"
+  },
+  "c64statg": {
+    "description": "CBM 64 Stat (Ger)",
+    "publisher": "Handic Software",
+    "year": "1982"
+  },
+  "calcres": {
+    "description": "Calc Result",
+    "publisher": "Handic Software",
+    "year": "1983"
+  },
+  "capture": {
+    "description": "Capture",
+    "publisher": "J. Ranheim",
+    "year": "1985"
+  },
+  "capture2": {
+    "description": "Capture 2",
+    "publisher": "J. Ranheim",
+    "year": "1987"
+  },
+  "castlhas": {
+    "description": "Castle Hassle",
+    "publisher": "Roklan",
+    "year": "1983"
+  },
+  "cbmieee": {
+    "description": "Commodore IEEE-488",
+    "publisher": "Commodore",
+    "year": "19??"
+  },
+  "ccastles": {
+    "description": "Crystal Castles",
+    "publisher": "Atarisoft",
+    "year": "1984"
+  },
+  "ccsmon": {
+    "description": "C.C.S. Mon",
+    "publisher": "H. Sundell",
+    "year": "1986"
+  },
+  "centiped": {
+    "description": "Centipede",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "chamelon": {
+    "description": "Turbo Chameleon 64",
+    "publisher": "Peter Wendrich",
+    "year": "2011"
+  },
+  "chasehq2": {
+    "description": "Chase H.Q. 2: Special Criminal Investigation",
+    "publisher": "Ocean",
+    "year": "1990"
+  },
+  "checkers": {
+    "description": "Checkers",
+    "publisher": "Micro-Distributors",
+    "year": "1984"
+  },
+  "choplift": {
+    "description": "Choplifter!",
+    "publisher": "Brøderbund",
+    "year": "1982"
+  },
+  "clsenctr": {
+    "description": "Close Encounters of the Worst Kind",
+    "publisher": "Mr. Computer",
+    "year": "1994"
+  },
+  "cmiky2": {
+    "description": "Captain Miky II",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "cmiky2a": {
+    "description": "Captain Miky II (Alt)",
+    "publisher": "Datel Electronics",
+    "year": "1988"
+  },
+  "coccinel": {
+    "description": "Coccinelle cherche dessinateur (Fra)",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "coconots": {
+    "description": "Coco-Notes featuring... the Jazz Scats!",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "codebust": {
+    "description": "Codebuster",
+    "publisher": "LMS Tech",
+    "year": "198?"
+  },
+  "comal80": {
+    "description": "COMAL 80 (Commodore)",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "comal80a": {
+    "description": "COMAL 80 (UniComal)",
+    "publisher": "UniComal",
+    "year": "1985"
+  },
+  "compieee": {
+    "description": "Computapix IEEE-488",
+    "publisher": "Pixstik",
+    "year": "19??"
+  },
+  "congo": {
+    "description": "Congo Bongo",
+    "publisher": "Sega",
+    "year": "1983"
+  },
+  "conraddb": {
+    "description": "Conrad Disk Booster (Ger)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "copycard": {
+    "description": "Copy Card",
+    "publisher": "Puma-Sharks",
+    "year": "1988"
+  },
+  "cosmiclf": {
+    "description": "Cosmic Life",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "cpm": {
+    "description": "CP/M",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "crisismt": {
+    "description": "Crisis Mountain",
+    "publisher": "Creative Software",
+    "year": "1983"
+  },
+  "cs64": {
+    "description": "Currah Speech 64",
+    "publisher": "Currah",
+    "year": "1984"
+  },
+  "cyberbal": {
+    "description": "Cyberball: Football in the 21st Century",
+    "publisher": "Domark",
+    "year": "1990"
+  },
+  "ddragon": {
+    "description": "Double Dragon (Ocean)",
+    "publisher": "Ocean",
+    "year": "1991"
+  },
+  "ddragonm": {
+    "description": "Double Dragon (Melbourne House)",
+    "publisher": "Melbourne House",
+    "year": "1989"
+  },
+  "deadtest": {
+    "description": "C64/C128/C128D Diagnostic Dead Test (Rev 781220)",
+    "publisher": "Commodore",
+    "year": "1988"
+  },
+  "decathln": {
+    "description": "The Activision Decathlon",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "defender": {
+    "description": "Defender",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "delas4": {
+    "description": "Dela S/4-Modul",
+    "publisher": "Dela Elektronik",
+    "year": "19??"
+  },
+  "delas4a": {
+    "description": "Dela S/4-Modul (Alt)",
+    "publisher": "Dela Elektronik",
+    "year": "19??"
+  },
+  "delep256": {
+    "description": "256k Eprom System r.5",
+    "publisher": "Dela Elektronik",
+    "year": "198?"
+  },
+  "delta323": {
+    "description": "Delta Drawing v3.23",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "designer": {
+    "description": "The Designer's Pencil",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "dgobbler": {
+    "description": "Dot Gobbler",
+    "publisher": "Mr. Computer",
+    "year": "1983"
+  },
+  "dgobblr2": {
+    "description": "Dot Gobbler v.2",
+    "publisher": "Mr. Computer",
+    "year": "1983"
+  },
+  "diag64": {
+    "description": "Diagnose64",
+    "publisher": "MicroDoctor",
+    "year": "1985"
+  },
+  "diamondm": {
+    "description": "Diamond Mine",
+    "publisher": "Roklan",
+    "year": "1983"
+  },
+  "digdug": {
+    "description": "Dig Dug",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "digduga": {
+    "description": "Dig Dug (Alt)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "dkong": {
+    "description": "Donkey Kong",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "dncfeats": {
+    "description": "Dancing Feats",
+    "publisher": "Romox",
+    "year": "1983"
+  },
+  "dncfntsy": {
+    "description": "Dance Fantasy",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "doc6422": {
+    "description": "Doc '64 v2.2",
+    "publisher": "N. Heusler",
+    "year": "19??"
+  },
+  "dolphin": {
+    "description": "Dolphin DOS Copy Rom",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dragnden": {
+    "description": "Dragon's Den",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "duckahoy": {
+    "description": "Ducks Ahoy!",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "easycalc": {
+    "description": "Easy Calc Result",
+    "publisher": "Handic Software",
+    "year": "1985"
+  },
+  "easycalca": {
+    "description": "Easy Calc Result (Alt)",
+    "publisher": "Handic Software",
+    "year": "1985"
+  },
+  "edgegrnd": {
+    "description": "Edge Grinder",
+    "publisher": "RGCD",
+    "year": "2011"
+  },
+  "email64": {
+    "description": "Electronic Mailbox-64",
+    "publisher": "Eastern House Software",
+    "year": "1984"
+  },
+  "emon23": {
+    "description": "Emon v2.3",
+    "publisher": "CIA",
+    "year": "1988"
+  },
+  "ep64": {
+    "description": "64k Eprom System",
+    "publisher": "Dela Elektronik",
+    "year": "198?"
+  },
+  "ep7x8": {
+    "description": "7x8K-EPROM-Bank (Ger)",
+    "publisher": "Dela Elektronik",
+    "year": "19??"
+  },
+  "epyxfast": {
+    "description": "Fast Load Cartridge v2",
+    "publisher": "Epyx",
+    "year": "1984"
+  },
+  "epyxfast1": {
+    "description": "Fast Load Cartridge v1",
+    "publisher": "Epyx",
+    "year": "1984"
+  },
+  "espial": {
+    "description": "Espial",
+    "publisher": "Tigervision",
+    "year": "1984"
+  },
+  "exbasl2": {
+    "description": "ExBASIC Level II v64.1",
+    "publisher": "Markt & Technik",
+    "year": "1988"
+  },
+  "exos": {
+    "description": "ExOS v.3",
+    "publisher": "Rex-Datentechnik",
+    "year": "198?"
+  },
+  "exosv4": {
+    "description": "ExOS v.4",
+    "publisher": "Rex-Datentechnik",
+    "year": "198?"
+  },
+  "expert": {
+    "description": "The Expert Cartridge",
+    "publisher": "Trilogic",
+    "year": "198?"
+  },
+  "facemakr": {
+    "description": "FaceMaker",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "fcc": {
+    "description": "The Final ChessCard (Ger)",
+    "publisher": "Tasc",
+    "year": "1989"
+  },
+  "finadv": {
+    "description": "The Financial Advisor",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "final": {
+    "description": "The Final Cartridge (v4)",
+    "publisher": "Riska H&P",
+    "year": "1986"
+  },
+  "final1": {
+    "description": "Final I (Pol)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "final2": {
+    "description": "The Final Cartridge II",
+    "publisher": "Riska H&P",
+    "year": "1987"
+  },
+  "final2pl": {
+    "description": "The Final Cartridge II (Pol)",
+    "publisher": "Micro-Luc",
+    "year": "1986"
+  },
+  "final3": {
+    "description": "The Final Cartridge III (1988-12)",
+    "publisher": "Riska H&P",
+    "year": "1988"
+  },
+  "final3_8709": {
+    "description": "The Final Cartridge III (1987-09)",
+    "publisher": "Riska H&P",
+    "year": "1987"
+  },
+  "final3_8711": {
+    "description": "The Final Cartridge III (1987-11)",
+    "publisher": "Riska H&P",
+    "year": "1987"
+  },
+  "final3_8805": {
+    "description": "The Final Cartridge III (1988-05)",
+    "publisher": "Riska H&P",
+    "year": "1988"
+  },
+  "finalcdr": {
+    "description": "The Final Coder",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "finalint": {
+    "description": "The Final Cartridge (Proto)",
+    "publisher": "Riska H&P",
+    "year": "198?"
+  },
+  "finalpls": {
+    "description": "Final Cartridge Plus (v2)",
+    "publisher": "Riska H&P",
+    "year": "1986"
+  },
+  "finalplsv1": {
+    "description": "Final Cartridge Plus (v1)",
+    "publisher": "Riska H&P",
+    "year": "1986"
+  },
+  "finalplsv1a": {
+    "description": "Final Cartridge Plus (v1, Alt)",
+    "publisher": "Riska H&P",
+    "year": "1986"
+  },
+  "finalv1": {
+    "description": "The Final Cartridge (v1)",
+    "publisher": "Riska H&P",
+    "year": "1986"
+  },
+  "finalv2": {
+    "description": "The Final Cartridge (v2)",
+    "publisher": "Riska H&P",
+    "year": "1986"
+  },
+  "finalv3": {
+    "description": "The Final Cartridge (v3)",
+    "publisher": "Riska H&P",
+    "year": "1986"
+  },
+  "flash8": {
+    "description": "Flash 8",
+    "publisher": "Elektronik-Technik-Peters",
+    "year": "1992"
+  },
+  "flcninvd": {
+    "description": "Falconian Invaders",
+    "publisher": "Turbo Software",
+    "year": "1983"
+  },
+  "formatm": {
+    "description": "Format- und Hardcopymodul (Ger)",
+    "publisher": "Rex-Datentechnik",
+    "year": "19??"
+  },
+  "fortapoc": {
+    "description": "Fort Apocalypse (Pirate)",
+    "publisher": "Synapse",
+    "year": "1982"
+  },
+  "fortnarz": {
+    "description": "Fortress of Narzod",
+    "publisher": "RGCD",
+    "year": "2011"
+  },
+  "fracfevr": {
+    "description": "Fraction Fever",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "frogger": {
+    "description": "Frogger",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "frogger2": {
+    "description": "Frogger II: Threedeep!",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "frogmstr": {
+    "description": "Frog Master",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "frzframe": {
+    "description": "Freeze Frame MK1 (v1)",
+    "publisher": "Evesham Micros",
+    "year": "1986"
+  },
+  "frzframe4": {
+    "description": "Freeze Frame MK4",
+    "publisher": "Evesham Micros",
+    "year": "1987"
+  },
+  "frzframev2": {
+    "description": "Freeze Frame MK1 (v2)",
+    "publisher": "Evesham Micros",
+    "year": "1986"
+  },
+  "frzmach": {
+    "description": "Freeze Machine (Aus) (v1)",
+    "publisher": "Evesham Micros",
+    "year": "1987"
+  },
+  "frzmachu": {
+    "description": "Freeze Machine (UK) (v1)",
+    "publisher": "Evesham Micros",
+    "year": "1987"
+  },
+  "frzmachu2": {
+    "description": "Freeze Machine (UK) (v2)",
+    "publisher": "Evesham Micros",
+    "year": "1987"
+  },
+  "funplay": {
+    "description": "Fun Play 3-in-1",
+    "publisher": "The Disc Company & Codemasters",
+    "year": "1990"
+  },
+  "futurbox": {
+    "description": "Future Box I (Pol)",
+    "publisher": "<unknown>",
+    "year": "1992"
+  },
+  "galaxian": {
+    "description": "Galaxian",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "galaxman": {
+    "description": "Galaxions + Munch Man",
+    "publisher": "Solar Software",
+    "year": "1983"
+  },
+  "gamekill": {
+    "description": "Game Killer",
+    "publisher": "Robtek",
+    "year": "1986"
+  },
+  "geomet34": {
+    "description": "Der Rechenlöwe: Fit in Geometrie - 3./4. Schuljahr (Ger)",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "ghostbst": {
+    "description": "Ghostbusters",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "goliath": {
+    "description": "1MB Goliath Eprom-Cart (Ger)",
+    "publisher": "Rex-Datentechnik",
+    "year": "19??"
+  },
+  "gorf": {
+    "description": "Gorf",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "graf64": {
+    "description": "Graf 64",
+    "publisher": "Handic Software",
+    "year": "19??"
+  },
+  "grappler": {
+    "description": "Grappler CD",
+    "publisher": "Orange Micro",
+    "year": "1984"
+  },
+  "gridrunr": {
+    "description": "Gridrunner",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "gyruss": {
+    "description": "Gyruss",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "happypac": {
+    "description": "Happy-Packer (Ger)",
+    "publisher": "Peter Arndt",
+    "year": "1987"
+  },
+  "hardcopy": {
+    "description": "Hardcopy-Modul (Ger)",
+    "publisher": "Rex-Datentechnik",
+    "year": "19??"
+  },
+  "hero": {
+    "description": "H.E.R.O.: Helicopter Emergency Rescue Operation",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "hesmon": {
+    "description": "HES Mon 2",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "hesmonp": {
+    "description": "HES Mon (Prototype)",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "heswrit1": {
+    "description": "HES Writer 64 (Alt)",
+    "publisher": "HesWare",
+    "year": "1982"
+  },
+  "heswrite": {
+    "description": "HES Writer 64",
+    "publisher": "HesWare",
+    "year": "1982"
+  },
+  "hobbiel": {
+    "description": "Hobbi Elektronika (Hun)",
+    "publisher": "<unknown>",
+    "year": "1986"
+  },
+  "hopalong": {
+    "description": "Hop Along Counting",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "hrdcpytb": {
+    "description": "Hardcopy+Turbo-Modul (Ger)",
+    "publisher": "Rex-Datentechnik",
+    "year": "1985"
+  },
+  "hsback3": {
+    "description": "High Speed Sektor Backup v3.0 (Ger)",
+    "publisher": "Rossmoeller",
+    "year": "1987"
+  },
+  "hugo": {
+    "description": "Skærmtrolden Hugo (Den)",
+    "publisher": "SilverRock Productions",
+    "year": "1990"
+  },
+  "hypra3": {
+    "description": "Hypra-Disk-Modul II v3.0 (Ger)",
+    "publisher": "Rex-Datentechnik",
+    "year": "19??"
+  },
+  "icemchne": {
+    "description": "The Ice Machine",
+    "publisher": "Eurosystems",
+    "year": "1986"
+  },
+  "ide64": {
+    "description": "IDE64 (v4.1, IDEDOS v0.90)",
+    "publisher": "<unknown>",
+    "year": "2011"
+  },
+  "instacal": {
+    "description": "Insta-Calc (v2.0)",
+    "publisher": "Cimarron",
+    "year": "1983"
+  },
+  "isoccer": {
+    "description": "International Soccer",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "jackattk": {
+    "description": "Jack Attack",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "jarsrev": {
+    "description": "Jars' Revenge",
+    "publisher": "RGCD",
+    "year": "2011"
+  },
+  "jawbreak": {
+    "description": "Jaw Breaker",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "jbond": {
+    "description": "James Bond",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "jmpmanjr": {
+    "description": "Jumpman Junior",
+    "publisher": "Epyx",
+    "year": "1983"
+  },
+  "juice": {
+    "description": "Juice!",
+    "publisher": "Tronix",
+    "year": "1983"
+  },
+  "jukebox": {
+    "description": "Juke Box",
+    "publisher": "Spinnaker Software",
+    "year": "1984"
+  },
+  "jungleh": {
+    "description": "Jungle Hunt",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "kidskeys": {
+    "description": "Kids on Keys",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "killer": {
+    "description": "Killercart",
+    "publisher": "<unknown>",
+    "year": "1986"
+  },
+  "kindcomp": {
+    "description": "KinderComp",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "koalapnt": {
+    "description": "KoalaPainter",
+    "publisher": "Koala Technologies",
+    "year": "1984"
+  },
+  "kungfum": {
+    "description": "Kung-Fu Master",
+    "publisher": "Data East",
+    "year": "1985"
+  },
+  "lastninj": {
+    "description": "The Last Ninja Remix",
+    "publisher": "System 3",
+    "year": "1990"
+  },
+  "lazarian": {
+    "description": "Lazarian",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "lazrzone": {
+    "description": "Lazer Zone",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "ldrun": {
+    "description": "Lode Runner",
+    "publisher": "Brøderbund",
+    "year": "1983"
+  },
+  "leadbg": {
+    "description": "Leaderboard Golf",
+    "publisher": "Access",
+    "year": "1986"
+  },
+  "leeper": {
+    "description": "Learning with Leeper",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "letter": {
+    "description": "Sesame Street: Letter-Go-Round",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "linklogc": {
+    "description": "Linking Logic",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "lleeper": {
+    "description": "Lunar Leeper",
+    "publisher": "Sierra On-Line",
+    "year": "1982"
+  },
+  "logiclvl": {
+    "description": "Logic Levels",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "ltkernal": {
+    "description": "Lt. Kernal",
+    "publisher": "Xetec",
+    "year": "1987"
+  },
+  "m128": {
+    "description": "M-128 (Arg)",
+    "publisher": "HAL Sociedad Anonima",
+    "year": "1985"
+  },
+  "mach5": {
+    "description": "MACH 5 v.1A",
+    "publisher": "Access Software",
+    "year": "1985"
+  },
+  "mach5_v1b1": {
+    "description": "MACH 5 v.1B",
+    "publisher": "Access Software",
+    "year": "1985"
+  },
+  "mach5_v1b2": {
+    "description": "MACH 5 v.1B (Alt)",
+    "publisher": "Access Software",
+    "year": "1985"
+  },
+  "mach5_v2a": {
+    "description": "MACH 5 v.2A",
+    "publisher": "Access Software",
+    "year": "1985"
+  },
+  "mach5_v3": {
+    "description": "MACH 5 v3.A",
+    "publisher": "Access Software",
+    "year": "1985"
+  },
+  "madness": {
+    "description": "Movie Musical Madness starring the Jazz Scats",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "magicdsk": {
+    "description": "Magic Desk I",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "magicfrm": {
+    "description": "Magic Formel (v1.1)",
+    "publisher": "Grewe Computertechnik",
+    "year": "1986"
+  },
+  "magicfrm12": {
+    "description": "Magic Formel (v1.2)",
+    "publisher": "Grewe Computertechnik",
+    "year": "1986"
+  },
+  "magicfrm20": {
+    "description": "Magic Formel (v2.0)",
+    "publisher": "Grewe Computertechnik",
+    "year": "1987"
+  },
+  "magicmon": {
+    "description": "Magic-Mon",
+    "publisher": "Champ-Rocky",
+    "year": "19??"
+  },
+  "magicvce": {
+    "description": "Magic Voice",
+    "publisher": "Commodore",
+    "year": "1984"
+  },
+  "math1": {
+    "description": "Der Rechenlöwe: Fit in Mathematik - 1. Schuljahr (Ger)",
+    "publisher": "Commodore",
+    "year": "1984"
+  },
+  "mazeman": {
+    "description": "Maze Man",
+    "publisher": "Turbo Software",
+    "year": "1983"
+  },
+  "mazemstr": {
+    "description": "Maze Master",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "mbrewery": {
+    "description": "Mario's Brewery",
+    "publisher": "Mr. Computer",
+    "year": "1983"
+  },
+  "megafun": {
+    "description": "Megafun",
+    "publisher": "Entertainment Software",
+    "year": "2004"
+  },
+  "memmanor": {
+    "description": "Memory Manor",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "mgcshaps": {
+    "description": "Ernie's Magic Shapes",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "midipp": {
+    "description": "Passport MIDI Interface (MH-01C)",
+    "publisher": "Passport Designs",
+    "year": "1984"
+  },
+  "mikroasm": {
+    "description": "Mikro Assembler",
+    "publisher": "Supersoft",
+    "year": "198?"
+  },
+  "mileage": {
+    "description": "Math Mileage",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "mine2049": {
+    "description": "Miner 2049er",
+    "publisher": "Big Five Software",
+    "year": "1982"
+  },
+  "minfats": {
+    "description": "Minnesota Fat's Pool Challenger",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "mking": {
+    "description": "Mountain King",
+    "publisher": "Beyond Software",
+    "year": "1983"
+  },
+  "mmc64": {
+    "description": "MMC64 v1.10",
+    "publisher": "Protovision",
+    "year": "2007"
+  },
+  "mmcr": {
+    "description": "MMC Replay v0.55",
+    "publisher": "Protovision",
+    "year": "2008"
+  },
+  "moogsp": {
+    "description": "Song Producer",
+    "publisher": "Moog",
+    "year": "1983"
+  },
+  "moondust": {
+    "description": "Moon Dust",
+    "publisher": "Creative Software",
+    "year": "1983"
+  },
+  "motorman": {
+    "description": "Motor Mania",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "mpatrol": {
+    "description": "Moon Patrol",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "mrcool": {
+    "description": "Mr. Cool",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "mrtnt": {
+    "description": "Mr. TNT",
+    "publisher": "HesWare",
+    "year": "1984"
+  },
+  "msdcie": {
+    "description": "C64-IEEE",
+    "publisher": "Micro Systems Development",
+    "year": "19??"
+  },
+  "mspacman": {
+    "description": "Ms. Pac-Man",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "mspiders": {
+    "description": "Adventure 1: The Mutant Spiders",
+    "publisher": "Handic Software",
+    "year": "1983"
+  },
+  "mstrtype": {
+    "description": "MasterType",
+    "publisher": "Lightning Software",
+    "year": "1983"
+  },
+  "mtntcmls": {
+    "description": "Gridrunner II: Attack of the Mutant Camels",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "muistio": {
+    "description": "Muistio 64 (Fin)",
+    "publisher": "Handic Software",
+    "year": "19??"
+  },
+  "muldiv23": {
+    "description": "Der Rechenlöwe: Fit in Multiplikation und Division - 2./3. Schuljahr (Ger)",
+    "publisher": "Commodore",
+    "year": "1984"
+  },
+  "muldiv34": {
+    "description": "Der Rechenlöwe: Fit in Multiplikation und Division - 3./4. Schuljahr (Ger)",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "multiscr": {
+    "description": "Multiscreen (Aus)",
+    "publisher": "Multiscreen Pty",
+    "year": "1987"
+  },
+  "music64": {
+    "description": "Wersiboard Music 64",
+    "publisher": "Wersi",
+    "year": "1985"
+  },
+  "myth": {
+    "description": "Myth: History in the Making",
+    "publisher": "System 3",
+    "year": "1990"
+  },
+  "narco": {
+    "description": "Narco Police",
+    "publisher": "Dinamic Software",
+    "year": "19??"
+  },
+  "navyseal": {
+    "description": "Navy SEALs",
+    "publisher": "Ocean",
+    "year": "1990"
+  },
+  "niki": {
+    "description": "Niki Cartridge Fast-Disktool",
+    "publisher": "<unknown>",
+    "year": "1987"
+  },
+  "nordic10": {
+    "description": "Nordic Power v1.0",
+    "publisher": "D&E, Venlo",
+    "year": "1989"
+  },
+  "nordic72": {
+    "description": "Nordic Power: Action Cartridge v7.2",
+    "publisher": "Gameworks",
+    "year": "1991"
+  },
+  "novablst": {
+    "description": "Nova Blast",
+    "publisher": "Imagic",
+    "year": "1984"
+  },
+  "numbrnab": {
+    "description": "Number Nabber + Shape Grabber",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "numbrtmb": {
+    "description": "Number Tumblers",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "oilswell": {
+    "description": "Oils Well",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "omegrace": {
+    "description": "Omega Race",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "pacman": {
+    "description": "Pac-Man",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "pagefox": {
+    "description": "Pagefox (Ger)",
+    "publisher": "Scanntronik",
+    "year": "1987"
+  },
+  "pagefoxa": {
+    "description": "Pagefox (Alt)",
+    "publisher": "Scanntronik",
+    "year": "1987"
+  },
+  "pagefoxfi": {
+    "description": "Pagefox (Fin)",
+    "publisher": "Scanntronik",
+    "year": "1987"
+  },
+  "paintbrs": {
+    "description": "Paint Brush",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "pancho": {
+    "description": "Pancho (Fra)",
+    "publisher": "Romox",
+    "year": "1984"
+  },
+  "pang": {
+    "description": "Pang",
+    "publisher": "Ocean",
+    "year": "1991"
+  },
+  "panicana": {
+    "description": "Panic Analogue",
+    "publisher": "RGCD",
+    "year": "2012"
+  },
+  "parkptrl": {
+    "description": "Park Patrol",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "partner": {
+    "description": "PARTNER 64",
+    "publisher": "Timeworks",
+    "year": "1985"
+  },
+  "pastfind": {
+    "description": "Pastfinder",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "pipes": {
+    "description": "Pipes",
+    "publisher": "Creative Software",
+    "year": "1983"
+  },
+  "pitfall": {
+    "description": "Pitfall!",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "pitfall2": {
+    "description": "Pitfall II: The Lost Caverns",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "pitfall2a": {
+    "description": "Pitfall II: The Lost Caverns (Alt)",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "pitstop": {
+    "description": "Pitstop",
+    "publisher": "Epyx",
+    "year": "1983"
+  },
+  "pitstop1": {
+    "description": "Pitstop (Alt)",
+    "publisher": "Epyx",
+    "year": "1983"
+  },
+  "pk232": {
+    "description": "PK-232 v2.5",
+    "publisher": "ICS Electronics",
+    "year": "1987"
+  },
+  "pnutpanc": {
+    "description": "Peanut Butter Panic",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "polepos": {
+    "description": "Pole Position",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "pop": {
+    "description": "Prince of Persia (v1.1)",
+    "publisher": "Mr. SID",
+    "year": "2011"
+  },
+  "popeye": {
+    "description": "Popeye",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "ppm": {
+    "description": "Picture-Printer Modul (Ger)",
+    "publisher": "Rex-Datentechnik",
+    "year": "1986"
+  },
+  "princess": {
+    "description": "Princess and the Frog",
+    "publisher": "Romox",
+    "year": "1983"
+  },
+  "prophet": {
+    "description": "PROPHET64",
+    "publisher": "8bit ventures",
+    "year": "2007"
+  },
+  "ps64": {
+    "description": "PS-64 puhemoduli v1.0 (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1988"
+  },
+  "ps64v2": {
+    "description": "PS-64 puhemoduli v2.0 (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1988"
+  },
+  "pthelp": {
+    "description": "Print Technik-Help",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pwrcart": {
+    "description": "Power Cartridge",
+    "publisher": "KCS Dordecht",
+    "year": "1985"
+  },
+  "pwrplay": {
+    "description": "PowerPlay",
+    "publisher": "The Disc Company & Codemasters",
+    "year": "1990"
+  },
+  "qbert": {
+    "description": "Q*bert",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "qbert1": {
+    "description": "Q*bert (Alt)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "qbert2": {
+    "description": "Q*bert (Alt 2)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "qkbyte2": {
+    "description": "Quickbyte II (Ger)",
+    "publisher": "Rex-Datentechnik",
+    "year": "1986"
+  },
+  "qkbyte2j": {
+    "description": "Quickbyte II",
+    "publisher": "Jann Datentechnik",
+    "year": "1986"
+  },
+  "quiktest": {
+    "description": "Commodore 64 Diagnostic",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "rackemup": {
+    "description": "Rack'em Up",
+    "publisher": "Roklan",
+    "year": "1983"
+  },
+  "ramflop4": {
+    "description": "Ram Floppy v4.0",
+    "publisher": "Rex-Datentechnik",
+    "year": "1988"
+  },
+  "ramlink": {
+    "description": "RAMLink",
+    "publisher": "Creative Micro Designs",
+    "year": "1990"
+  },
+  "ramlink140": {
+    "description": "RAMLink v1.40",
+    "publisher": "Creative Micro Designs",
+    "year": "1990"
+  },
+  "ramlink201": {
+    "description": "RAMLink v2.01",
+    "publisher": "Creative Micro Designs",
+    "year": "1990"
+  },
+  "ranch": {
+    "description": "Ranch",
+    "publisher": "Spinnaker Software",
+    "year": "1984"
+  },
+  "recht34": {
+    "description": "Der Rechtschreiblöwe: Fit in Rechtschreibung - 3./4. Schuljahr (Ger)",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "retrobal": {
+    "description": "Retro Ball",
+    "publisher": "HesWare",
+    "year": "1982"
+  },
+  "rexep256": {
+    "description": "Eprom Bank 256k (Ger)",
+    "publisher": "Rex-Datentechnik",
+    "year": "198?"
+  },
+  "ripper11": {
+    "description": "Hires Ripper v1.1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "riveraid": {
+    "description": "River Raid",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "robocop2": {
+    "description": "Robocop 2",
+    "publisher": "Ocean",
+    "year": "1990"
+  },
+  "robocop3": {
+    "description": "Robocop 3",
+    "publisher": "Ocean",
+    "year": "1992"
+  },
+  "robotron": {
+    "description": "Robotron 2084",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "roottoot": {
+    "description": "Rootin' Tootin'",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "rr": {
+    "description": "Retro Replay v3.8P",
+    "publisher": "CyberpunX",
+    "year": "2006"
+  },
+  "salescrt": {
+    "description": "Sales Cartridge",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "sammylf": {
+    "description": "Sammy Lightfoot",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "samson": {
+    "description": "Samson",
+    "publisher": "Roßmöller",
+    "year": "198?"
+  },
+  "satan": {
+    "description": "Satan",
+    "publisher": "Dinamic Software",
+    "year": "1990"
+  },
+  "saveny": {
+    "description": "Save New York",
+    "publisher": "Creative Software",
+    "year": "1983"
+  },
+  "scim64s": {
+    "description": "Model 64 Sequencer",
+    "publisher": "Sequential Circuits",
+    "year": "1984"
+  },
+  "seafox": {
+    "description": "Seafox",
+    "publisher": "Brøderbund",
+    "year": "1982"
+  },
+  "seahorse": {
+    "description": "Seahorse Hide'n Seek",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "seaspell": {
+    "description": "Sea Speller",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "serptine": {
+    "description": "Serpentine",
+    "publisher": "Brøderbund",
+    "year": "1982"
+  },
+  "sfxse": {
+    "description": "SFX Sound Expander",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "shuttle": {
+    "description": "Space Shuttle: A Journey into Space",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "simonbas": {
+    "description": "Simons' BASIC",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "skeleton": {
+    "description": "Human Skeleton Tutorial",
+    "publisher": "S.M. Thorpe",
+    "year": "1984"
+  },
+  "smarterm": {
+    "description": "SMART 64/C Intelligent Terminal v1.4",
+    "publisher": "Tom Wheeler",
+    "year": "1985"
+  },
+  "smore": {
+    "description": "S'more Basic",
+    "publisher": "Cardco",
+    "year": "1985"
+  },
+  "snapshot": {
+    "description": "Snapshot 64 (v1)",
+    "publisher": "LMS Tech",
+    "year": "1985"
+  },
+  "snapshot2": {
+    "description": "Snapshot 64 (v2)",
+    "publisher": "LMS Tech",
+    "year": "1985"
+  },
+  "solarfox": {
+    "description": "Solar Fox",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "songmakr": {
+    "description": "Song Maker",
+    "publisher": "Fisher-Price",
+    "year": "1985"
+  },
+  "spaceact": {
+    "description": "Space Action",
+    "publisher": "Handic Software",
+    "year": "1983"
+  },
+  "spacegun": {
+    "description": "Space Gun",
+    "publisher": "Ocean",
+    "year": "1992"
+  },
+  "spaceric": {
+    "description": "Space Ric-o-Shay",
+    "publisher": "Mr. Computer",
+    "year": "1983"
+  },
+  "spdsaver": {
+    "description": "Speedsaver $C000 (Nld)",
+    "publisher": "KCS Dordrecht",
+    "year": "1984"
+  },
+  "spdsavrc": {
+    "description": "Speedsaver Combi",
+    "publisher": "KCS Dordrecht",
+    "year": "1984"
+  },
+  "spdtape": {
+    "description": "Speed-Tape (Ger)",
+    "publisher": "Rex-Datentechnik",
+    "year": "1985"
+  },
+  "speeddos": {
+    "description": "Speed DOS Copy ROM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "spitball": {
+    "description": "Spitball",
+    "publisher": "Creative Software",
+    "year": "1983"
+  },
+  "sprexp50": {
+    "description": "Super Explode! v5.0",
+    "publisher": "The Soft Group",
+    "year": "1989"
+  },
+  "sprsmash": {
+    "description": "Super Smash",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "spyhunt": {
+    "description": "Spy Hunter",
+    "publisher": "U.S. Gold",
+    "year": "1983"
+  },
+  "sshelp64": {
+    "description": "Stack Super Help 64",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ssketch": {
+    "description": "Super Sketch",
+    "publisher": "Personal Peripherals",
+    "year": "1984"
+  },
+  "stardos": {
+    "description": "Stardos",
+    "publisher": "Starpoint Software",
+    "year": "1986"
+  },
+  "starpost": {
+    "description": "Star Post",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "starrngr": {
+    "description": "Star Ranger",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "startrek": {
+    "description": "Star Trek: Strategic Operations Simulator",
+    "publisher": "Sega",
+    "year": "1983"
+  },
+  "starwars": {
+    "description": "Star Wars: The Arcade Game",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "states": {
+    "description": "States and Capitals Tutorial",
+    "publisher": "S.M. Thorpe",
+    "year": "1984"
+  },
+  "stix": {
+    "description": "Stix",
+    "publisher": "Supersoft",
+    "year": "1983"
+  },
+  "stkieee": {
+    "description": "Stack IEEE-488",
+    "publisher": "Stack",
+    "year": "19??"
+  },
+  "storymac": {
+    "description": "Story Machine",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "subasram": {
+    "description": "Super Basic Ram",
+    "publisher": "MadMax",
+    "year": "1983"
+  },
+  "supercpu": {
+    "description": "SuperCPU",
+    "publisher": "Creative Micro Designs",
+    "year": "1997"
+  },
+  "superexp": {
+    "description": "Super Expander 64",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "supergam": {
+    "description": "Super Games",
+    "publisher": "Commodore",
+    "year": "1988"
+  },
+  "superhcm": {
+    "description": "Das Super Hard-Copy-Modul (Ger)",
+    "publisher": "Schlumph",
+    "year": "1987"
+  },
+  "supsnap2": {
+    "description": "Super Snapshot (v2.0)",
+    "publisher": "LMS Tech",
+    "year": "198?"
+  },
+  "supsnap3": {
+    "description": "Super Snapshot (v3.0, NTSC)",
+    "publisher": "LMS Tech",
+    "year": "1988"
+  },
+  "supsnap4": {
+    "description": "Super Snapshot (v4.0, NTSC)",
+    "publisher": "LMS Tech",
+    "year": "1989"
+  },
+  "supsnap4p": {
+    "description": "Super Snapshot (v4.0, PAL)",
+    "publisher": "LMS Tech",
+    "year": "1989"
+  },
+  "supsnap5": {
+    "description": "Super Snapshot (v5.x)",
+    "publisher": "LMS Tech",
+    "year": "1989"
+  },
+  "supsnap501": {
+    "description": "Super Snapshot (v5.01, NTSC)",
+    "publisher": "LMS Tech",
+    "year": "1990"
+  },
+  "supsnap522": {
+    "description": "Super Snapshot (v5.22, NTSC)",
+    "publisher": "LMS Tech",
+    "year": "1990"
+  },
+  "supsnap522p1": {
+    "description": "Super Snapshot (v5.22 v1, PAL)",
+    "publisher": "LMS Tech",
+    "year": "1990"
+  },
+  "supsnap522p2": {
+    "description": "Super Snapshot (v5.22 v2, PAL)",
+    "publisher": "LMS Tech",
+    "year": "1990"
+  },
+  "systemm1": {
+    "description": "System-M1.0 (Ger)",
+    "publisher": "Mousesoft",
+    "year": "1983"
+  },
+  "szaxxon": {
+    "description": "Super Zaxxon",
+    "publisher": "HesWare",
+    "year": "1984"
+  },
+  "tankwars": {
+    "description": "Tank Wars",
+    "publisher": "Mr. Computer",
+    "year": "1983"
+  },
+  "tapper": {
+    "description": "Tapper",
+    "publisher": "U.S. Gold",
+    "year": "1984"
+  },
+  "tdos12": {
+    "description": "Triton QD TDOS 1.2",
+    "publisher": "Radofin",
+    "year": "198?"
+  },
+  "teledata": {
+    "description": "Teledata (Swe)",
+    "publisher": "Handic Software",
+    "year": "1983"
+  },
+  "tenpins": {
+    "description": "Tenpins",
+    "publisher": "Entertainment Software",
+    "year": "1989"
+  },
+  "term2": {
+    "description": "Terminator 2 (Multicart)",
+    "publisher": "Ocean",
+    "year": "1991"
+  },
+  "tfgmodul": {
+    "description": "TFG Module",
+    "publisher": "T.F.G. Software",
+    "year": "1986"
+  },
+  "tforieee": {
+    "description": "Technofor IEEE Interface",
+    "publisher": "Technofor",
+    "year": "1984"
+  },
+  "thepit": {
+    "description": "The Pit",
+    "publisher": "HesWare",
+    "year": "1983"
+  },
+  "threshld": {
+    "description": "Threshold",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "timbound": {
+    "description": "Timebound",
+    "publisher": "CBS Software",
+    "year": "1984"
+  },
+  "tl64": {
+    "description": "Tapeload-64 v2.1",
+    "publisher": "JTC",
+    "year": "1991"
+  },
+  "toki": {
+    "description": "Toki",
+    "publisher": "Ocean",
+    "year": "1991"
+  },
+  "tool64": {
+    "description": "The Tool-64",
+    "publisher": "Micro Application",
+    "year": "1983"
+  },
+  "toothinv": {
+    "description": "Tooth Invaders",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "toybzr": {
+    "description": "Toy Bizarre",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "trashman": {
+    "description": "Trashman",
+    "publisher": "Creative Software",
+    "year": "1983"
+  },
+  "tsicycle": {
+    "description": "TSI Cycles",
+    "publisher": "Turbo Software",
+    "year": "1983"
+  },
+  "tsieprom": {
+    "description": "TSI-Eprom Module",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ttennis": {
+    "description": "Tournament Tennis",
+    "publisher": "Imagic",
+    "year": "1984"
+  },
+  "turbodsk": {
+    "description": "Turbo-Disk",
+    "publisher": "Rex-Datentechnik",
+    "year": "198?"
+  },
+  "turbomaz": {
+    "description": "Turbo Maze Man",
+    "publisher": "Turbo Software",
+    "year": "1983"
+  },
+  "turbomst": {
+    "description": "Turbo Master CPU",
+    "publisher": "Schnedler Systems",
+    "year": "1991"
+  },
+  "turborom": {
+    "description": "Turbo ROM v.2 (Pol)",
+    "publisher": "Turbo Software",
+    "year": "1983"
+  },
+  "turboroma": {
+    "description": "Turbo ROM v.2 (Pol, Alt)",
+    "publisher": "Turbo Software",
+    "year": "1983"
+  },
+  "tylrdngn": {
+    "description": "Tyler's Dungeons",
+    "publisher": "Turbo Software",
+    "year": "1984"
+  },
+  "tysim64": {
+    "description": "Tysim 64 (Ger)",
+    "publisher": "Kaudelka O.",
+    "year": "1987"
+  },
+  "ultrex": {
+    "description": "Ultrex Quadro Maze",
+    "publisher": "Turbo Software",
+    "year": "1983"
+  },
+  "upgrabs": {
+    "description": "Up for Grabs",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "upnaddem": {
+    "description": "Up'n Add'em",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "upndown": {
+    "description": "Up'n Down",
+    "publisher": "Sega",
+    "year": "1984"
+  },
+  "utahtut": {
+    "description": "Utah Counties Tutorial",
+    "publisher": "S.M. Thorpe",
+    "year": "1984"
+  },
+  "victxt64": {
+    "description": "Vic-Text 64 (Swe)",
+    "publisher": "Handic Software",
+    "year": "1983"
+  },
+  "videotex": {
+    "description": "Videotex",
+    "publisher": "Handic Software",
+    "year": "1984"
+  },
+  "vidmate": {
+    "description": "Video Mate",
+    "publisher": "The Soft Group",
+    "year": "1992"
+  },
+  "viduzzle": {
+    "description": "Viduzzles: Computerized Jigsaw Puzzles",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "vikingr": {
+    "description": "Action Adventure Series: Viking Raider",
+    "publisher": "Interphase",
+    "year": "1984"
+  },
+  "vindicat": {
+    "description": "Vindicators",
+    "publisher": "Domark",
+    "year": "1990"
+  },
+  "vizastar": {
+    "description": "VizaStar 64: The Information Processor (XL4)",
+    "publisher": "Viza",
+    "year": "1984"
+  },
+  "vizastar8": {
+    "description": "VizaStar 64: The Information Processor (XL8)",
+    "publisher": "Viza",
+    "year": "1984"
+  },
+  "vw64": {
+    "description": "VizaWrite 64",
+    "publisher": "Viza Software",
+    "year": "1984"
+  },
+  "warpspd": {
+    "description": "Warp Speed v2.0",
+    "publisher": "Cinemaware",
+    "year": "1988"
+  },
+  "warpspd1": {
+    "description": "Warp Speed v1.0",
+    "publisher": "Cinemaware",
+    "year": "1987"
+  },
+  "wboy": {
+    "description": "Wonderboy",
+    "publisher": "Activision",
+    "year": "1987"
+  },
+  "webster": {
+    "description": "Webster: The Word Game",
+    "publisher": "CBS Software",
+    "year": "1983"
+  },
+  "wiztype": {
+    "description": "The Wizard of Id's Wiztype",
+    "publisher": "Sierra On-Line",
+    "year": "1984"
+  },
+  "wowmv": {
+    "description": "Wizard of Wor",
+    "publisher": "Commodore",
+    "year": "1984"
+  },
+  "writenow": {
+    "description": "Write Now! 64",
+    "publisher": "Computer Applications",
+    "year": "1983"
+  },
+  "xl80": {
+    "description": "XL 80",
+    "publisher": "Data 20",
+    "year": "1984"
+  },
+  "zaxxon": {
+    "description": "Zaxxon",
+    "publisher": "Synapse",
+    "year": "1984"
+  },
+  "zenji": {
+    "description": "Zenji",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "zonerngr": {
+    "description": "Zone Ranger",
+    "publisher": "Activision",
+    "year": "1984"
+  }
+}

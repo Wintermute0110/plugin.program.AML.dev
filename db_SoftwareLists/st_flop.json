@@ -1,0 +1,1522 @@
+{
+  "10frame": {
+    "description": "10th Frame - Pro Bowling Simulator (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1987"
+  },
+  "500gp": {
+    "description": "500cc Grand Prix (Euro)",
+    "publisher": "Microids",
+    "year": "1987"
+  },
+  "5thgear": {
+    "description": "5th Gear (Euro)",
+    "publisher": "Hewson",
+    "year": "1989"
+  },
+  "7gatejam": {
+    "description": "The Seven Gates of Jambala (Euro)",
+    "publisher": "Grandslam",
+    "year": "1989"
+  },
+  "aburner": {
+    "description": "Afterburner (Euro)",
+    "publisher": "Activision",
+    "year": "1988"
+  },
+  "academy": {
+    "description": "Academy (Euro)",
+    "publisher": "CRL",
+    "year": "1987"
+  },
+  "actionfg": {
+    "description": "Action Fighter (Euro)",
+    "publisher": "Firebird",
+    "year": "1989"
+  },
+  "actnserv": {
+    "description": "Action Service (Euro)",
+    "publisher": "Infogrames",
+    "year": "1989"
+  },
+  "addiball": {
+    "description": "Addictaball (Euro)",
+    "publisher": "Alligata",
+    "year": "1987"
+  },
+  "advfruit": {
+    "description": "Advanced Fruit Machine Simulator (Euro)",
+    "publisher": "Codemasters",
+    "year": "1991"
+  },
+  "advrobin": {
+    "description": "The Adventures of Robin Hood (Euro)",
+    "publisher": "Millennium",
+    "year": "1991"
+  },
+  "advrugby": {
+    "description": "Advanced Rugby Simulator (Euro)",
+    "publisher": "Codemasters",
+    "year": "1988"
+  },
+  "alienwrl": {
+    "description": "Alien World (Euro)",
+    "publisher": "HiTec Software",
+    "year": "1992"
+  },
+  "altreal": {
+    "description": "Alternate Reality (Euro, v3.0)",
+    "publisher": "U.S. Gold",
+    "year": "1986"
+  },
+  "anarchy": {
+    "description": "Anarchy (Euro)",
+    "publisher": "Psyclapse",
+    "year": "1990"
+  },
+  "anotherw": {
+    "description": "Another World (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1991"
+  },
+  "apprent": {
+    "description": "Apprentice (Euro)",
+    "publisher": "Rainbow Arts",
+    "year": "1990"
+  },
+  "archipel": {
+    "description": "Archipelagos (Euro)",
+    "publisher": "Logotron",
+    "year": "1989"
+  },
+  "arctfox": {
+    "description": "Arcticfox (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1986"
+  },
+  "artdream": {
+    "description": "Artificial Dreams (Euro)",
+    "publisher": "Addictive",
+    "year": "1988"
+  },
+  "atax": {
+    "description": "Atax (Euro)",
+    "publisher": "Ramware",
+    "year": "1988"
+  },
+  "atomix": {
+    "description": "Atomix (Euro)",
+    "publisher": "Thalion",
+    "year": "1989"
+  },
+  "backgamm": {
+    "description": "Backgammon Royale (Euro, v2.50 19910104)",
+    "publisher": "CP Software",
+    "year": "1991"
+  },
+  "ballistx": {
+    "description": "Ballistix (Euro)",
+    "publisher": "Psyclapse",
+    "year": "1989"
+  },
+  "balpow90": {
+    "description": "Balance of Power - The 1990 Edition (Euro)",
+    "publisher": "Mindscape",
+    "year": "1989"
+  },
+  "barbpal": {
+    "description": "Barbarian (Euro, Palace)",
+    "publisher": "Palace",
+    "year": "1987"
+  },
+  "bchvolly": {
+    "description": "Beach Volley (Euro)",
+    "publisher": "Ocean",
+    "year": "1991"
+  },
+  "beastlrd": {
+    "description": "Beastlord (Euro)",
+    "publisher": "Grandslam",
+    "year": "1993"
+  },
+  "bhawk42": {
+    "description": "Battlehawks 1942 (Euro, v1.0 19890301)",
+    "publisher": "<unknown>",
+    "year": "1989"
+  },
+  "bhcats": {
+    "description": "Top Cat Starring in Beverly Hills Cats (Euro)",
+    "publisher": "HiTec Software",
+    "year": "1991"
+  },
+  "blktiger": {
+    "description": "Black Tiger (Euro, Les Chevaliers)",
+    "publisher": "U.S. Gold",
+    "year": "1990"
+  },
+  "blockout": {
+    "description": "Blockout (Euro)",
+    "publisher": "Rainbow Arts",
+    "year": "1990"
+  },
+  "bloodmon": {
+    "description": "Blood Money (Euro, Budget)",
+    "publisher": "Sizzlers",
+    "year": "1989"
+  },
+  "blstroid": {
+    "description": "Blasteroids (Euro)",
+    "publisher": "Image Works",
+    "year": "1988"
+  },
+  "bluesb": {
+    "description": "The Blues Brothers (Euro)",
+    "publisher": "Titus",
+    "year": "1991"
+  },
+  "blzthndr": {
+    "description": "Blazing Thunder (Euro)",
+    "publisher": "HiTec Software",
+    "year": "1991"
+  },
+  "bmx": {
+    "description": "BMX Simulator (Euro)",
+    "publisher": "Codemasters",
+    "year": "1988"
+  },
+  "bobwinnr": {
+    "description": "Bob Winner (Euro)",
+    "publisher": "Loriciel",
+    "year": "1987"
+  },
+  "bombjack": {
+    "description": "Bomb Jack (Euro, Budget)",
+    "publisher": "Encore",
+    "year": "1988"
+  },
+  "bridgema": {
+    "description": "Bridge Master (Euro)",
+    "publisher": "Atari",
+    "year": "1989"
+  },
+  "bridgepl": {
+    "description": "Bridge Player 2000 with Tutor (Euro)",
+    "publisher": "CP Software",
+    "year": "1987"
+  },
+  "btlchess": {
+    "description": "Battle Chess (Euro)",
+    "publisher": "Interplay",
+    "year": "1989"
+  },
+  "btlprobe": {
+    "description": "Battle Probe (Euro)",
+    "publisher": "Crysys",
+    "year": "1988"
+  },
+  "bumpy": {
+    "description": "Bumpy (Euro)",
+    "publisher": "Loriciel",
+    "year": "1989"
+  },
+  "burgermn": {
+    "description": "Burger Man (Euro)",
+    "publisher": "Byte Back",
+    "year": "1991"
+  },
+  "camelot": {
+    "description": "Conquests of Camelot (Euro, v1.019)",
+    "publisher": "Sierra",
+    "year": "1990"
+  },
+  "capblood": {
+    "description": "Captain Blood (Euro)",
+    "publisher": "Exxos",
+    "year": "1988"
+  },
+  "capfizz": {
+    "description": "Captain Fizz (Euro)",
+    "publisher": "Psyclapse",
+    "year": "1988"
+  },
+  "carrierc": {
+    "description": "Carrier Command (Euro)",
+    "publisher": "Rainbird",
+    "year": "1988"
+  },
+  "cartncap": {
+    "description": "Cartoon Capers (Euro)",
+    "publisher": "Mandarin",
+    "year": "1990"
+  },
+  "catch23": {
+    "description": "Catch 23 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1987"
+  },
+  "ccastles": {
+    "description": "Crystal Castles (Euro)",
+    "publisher": "Atari",
+    "year": "1986"
+  },
+  "champbb": {
+    "description": "Championship Baseball (Euro)",
+    "publisher": "Gamestar",
+    "year": "1987"
+  },
+  "champcrk": {
+    "description": "Championship Cricket (Euro)",
+    "publisher": "Crysys",
+    "year": "1988"
+  },
+  "champwrs": {
+    "description": "Championship Wrestling (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1986"
+  },
+  "chase": {
+    "description": "Chase (Euro)",
+    "publisher": "Mastertronic",
+    "year": "1988"
+  },
+  "chasehq": {
+    "description": "Chase H.Q. (Euro)",
+    "publisher": "Ocean",
+    "year": "1989"
+  },
+  "chesssim": {
+    "description": "Chess Simulator (Euro)",
+    "publisher": "Infogrames",
+    "year": "1990"
+  },
+  "chicag30": {
+    "description": "Chicago 30's (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1989"
+  },
+  "chipchal": {
+    "description": "Chip's Challenge (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1990"
+  },
+  "chsp2150": {
+    "description": "Chess Player 2150 (Euro)",
+    "publisher": "Oxford Softworks",
+    "year": "1989"
+  },
+  "chsp2150a": {
+    "description": "Chess Player 2150 (Euro, TenStar Pack)",
+    "publisher": "Oxford Softworks",
+    "year": "1989"
+  },
+  "chuckie": {
+    "description": "Chuckie Egg (Euro)",
+    "publisher": "Pick & Choose",
+    "year": "1988"
+  },
+  "chuckie2": {
+    "description": "Chuckie Egg II (Euro)",
+    "publisher": "Pick & Choose",
+    "year": "1989"
+  },
+  "cloudkng": {
+    "description": "Cloud Kingdoms (Euro)",
+    "publisher": "Millennium",
+    "year": "1990"
+  },
+  "cm2000": {
+    "description": "The Chessmaster 2000 (Euro)",
+    "publisher": "The Software Toolworks",
+    "year": "1987"
+  },
+  "contcirc": {
+    "description": "Continental Circus (Euro)",
+    "publisher": "Virgin Mastertronic",
+    "year": "1989"
+  },
+  "corruptn": {
+    "description": "Corruption (Euro, v1.9)",
+    "publisher": "Rainbird",
+    "year": "1988"
+  },
+  "cquest2": {
+    "description": "Chrono Quest II (Euro)",
+    "publisher": "Psygnosis",
+    "year": "1990"
+  },
+  "cricketc": {
+    "description": "Cricket Captain (Euro, v1.5 1991)",
+    "publisher": "D & H Games",
+    "year": "1991?"
+  },
+  "crkdown": {
+    "description": "Crack Down (Euro, Budget)",
+    "publisher": "KIXX",
+    "year": "1990"
+  },
+  "cyberbal": {
+    "description": "Cyberball (Euro)",
+    "publisher": "Domark",
+    "year": "1990"
+  },
+  "cybercn3": {
+    "description": "Cybercon III (Euro, 19910406)",
+    "publisher": "U.S. Gold",
+    "year": "1991"
+  },
+  "damesim": {
+    "description": "Dames Simulator (Fra)",
+    "publisher": "Infogrames",
+    "year": "1990"
+  },
+  "dariusp": {
+    "description": "Darius+ (Euro)",
+    "publisher": "The Edge",
+    "year": "1989"
+  },
+  "dayviper": {
+    "description": "Day of the Viper (Euro)",
+    "publisher": "Accolade",
+    "year": "1989"
+  },
+  "ddragon": {
+    "description": "Double Dragon (Euro, Magnum 4)",
+    "publisher": "Melbourne House",
+    "year": "1989"
+  },
+  "ddragon2": {
+    "description": "Double Dragon II - The Revenge (Euro, v1.2, Budget)",
+    "publisher": "16 Blitz",
+    "year": "1989"
+  },
+  "deep": {
+    "description": "The Deep (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1988"
+  },
+  "dejavu": {
+    "description": "Deja Vu - A Nightmare Comes True (Euro)",
+    "publisher": "Mirrorsoft",
+    "year": "1987"
+  },
+  "deliver": {
+    "description": "Deliverance (Euro)",
+    "publisher": "21st Century",
+    "year": "1992"
+  },
+  "demonblu": {
+    "description": "Demon Blue (Euro)",
+    "publisher": "Micro-Value",
+    "year": "19??"
+  },
+  "demoniak": {
+    "description": "Demoniak (Euro, v1.0)",
+    "publisher": "Palace",
+    "year": "1991"
+  },
+  "dicktr": {
+    "description": "Dick Tracy (Euro)",
+    "publisher": "Titus",
+    "year": "1990"
+  },
+  "disc": {
+    "description": "Disc (Euro, Budget)",
+    "publisher": "Action Sixteen",
+    "year": "1991"
+  },
+  "dizzydic": {
+    "description": "Dizzy Dice (Euro, Budget)",
+    "publisher": "Smash 16",
+    "year": "1990"
+  },
+  "drakkhen": {
+    "description": "Drakkhen (Euro, v1.1)",
+    "publisher": "Infogrames",
+    "year": "1989"
+  },
+  "driller": {
+    "description": "Driller (Euro)",
+    "publisher": "Incentive",
+    "year": "1988"
+  },
+  "dspirit": {
+    "description": "Dragon Spirit (Euro)",
+    "publisher": "Domark",
+    "year": "1990"
+  },
+  "dynawars": {
+    "description": "Dynasty Wars (Euro, Les Chevaliers)",
+    "publisher": "U.S. Gold",
+    "year": "1990"
+  },
+  "eastwest": {
+    "description": "East vs. West Berlin 1948 (Euro)",
+    "publisher": "Rainbow Arts",
+    "year": "1990"
+  },
+  "elementl": {
+    "description": "Elemental (Euro)",
+    "publisher": "Lankhor",
+    "year": "1988"
+  },
+  "elfmv": {
+    "description": "Elf (Euro, MicroValue)",
+    "publisher": "MicroValue",
+    "year": "1988"
+  },
+  "elite": {
+    "description": "Elite (Euro)",
+    "publisher": "Firebird",
+    "year": "1988"
+  },
+  "enterpr": {
+    "description": "Enterprise (Euro)",
+    "publisher": "Atari",
+    "year": "1989"
+  },
+  "erik": {
+    "description": "Erik (Euro)",
+    "publisher": "Atlantis Software",
+    "year": "1992"
+  },
+  "esb": {
+    "description": "Star Wars - The Empire Strikes Back (Euro, The Star Wars Trilogy)",
+    "publisher": "Domark",
+    "year": "1989"
+  },
+  "everton": {
+    "description": "The Official Everton F.C. Intelligensia (Euro)",
+    "publisher": "Amfas",
+    "year": "1990"
+  },
+  "exolon": {
+    "description": "Exolon (Euro)",
+    "publisher": "Hewson",
+    "year": "1988"
+  },
+  "eyehorus": {
+    "description": "Eye of Horus (Euro)",
+    "publisher": "Logotron",
+    "year": "1989"
+  },
+  "f19sf": {
+    "description": "F-19 Stealth Fighter (Euro, v1.02)",
+    "publisher": "Microprose",
+    "year": "1990"
+  },
+  "faceoff": {
+    "description": "Face-Off (Euro)",
+    "publisher": "Krisalis",
+    "year": "1991"
+  },
+  "faceoffa": {
+    "description": "Face Off (Euro)",
+    "publisher": "Anco",
+    "year": "1989"
+  },
+  "fbmang2": {
+    "description": "Football Manager 2 (Euro)",
+    "publisher": "Addictive",
+    "year": "1988"
+  },
+  "firefor2": {
+    "description": "Fire and Forget II - The Death Convoy (Euro)",
+    "publisher": "Titus",
+    "year": "1990"
+  },
+  "flimboqs": {
+    "description": "Flimbo's Quest (Euro)",
+    "publisher": "System 3",
+    "year": "1990"
+  },
+  "foundwst": {
+    "description": "Foundation's Waste (Euro, Budget)",
+    "publisher": "Klassix",
+    "year": "1988"
+  },
+  "foundwstc": {
+    "description": "Foundation's Waste (Euro, Coverdisk)",
+    "publisher": "<coverdisk>",
+    "year": "1990"
+  },
+  "fullmp": {
+    "description": "Full Metal Planete (Euro)",
+    "publisher": "Infogrames",
+    "year": "1989"
+  },
+  "futbaskt": {
+    "description": "Future Basketball (Euro)",
+    "publisher": "Hewson",
+    "year": "1990"
+  },
+  "futwars": {
+    "description": "Future Wars - Time Travellers (Euro)",
+    "publisher": "Palace",
+    "year": "1989"
+  },
+  "gameovr2": {
+    "description": "Game Over II (Euro)",
+    "publisher": "Dinamic",
+    "year": "1988"
+  },
+  "gazza": {
+    "description": "Gazza's Super Soccer (Euro)",
+    "publisher": "Empire Interactive",
+    "year": "1989"
+  },
+  "gemiwing": {
+    "description": "Gemini Wing (Euro)",
+    "publisher": "Virgin Mastertronic",
+    "year": "1989"
+  },
+  "getdextr": {
+    "description": "Get Dexter (Euro)",
+    "publisher": "Ere Informatique",
+    "year": "1987"
+  },
+  "gflchafb": {
+    "description": "GFL Championship Football (Euro)",
+    "publisher": "Gamestar",
+    "year": "1987"
+  },
+  "gforce2": {
+    "description": "Galaxy Force II (Euro)",
+    "publisher": "Activision",
+    "year": "1990"
+  },
+  "ghouls": {
+    "description": "Ghouls 'n' Ghosts (Euro, Les Chevaliers)",
+    "publisher": "U.S. Gold",
+    "year": "1989"
+  },
+  "gng": {
+    "description": "Ghosts 'n' Goblins (Euro, Finale)",
+    "publisher": "Elite",
+    "year": "1990"
+  },
+  "gomoku": {
+    "description": "Gomoku and Renju (Euro)",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "goofyexp": {
+    "description": "Goofy's Railway Express (Euro)",
+    "publisher": "Disney Software",
+    "year": "1989"
+  },
+  "goplayer": {
+    "description": "The Oxford Softworks Go Player (Euro)",
+    "publisher": "Oxford Softworks",
+    "year": "1991"
+  },
+  "gravity": {
+    "description": "Gravity (Euro)",
+    "publisher": "Image Works",
+    "year": "1990"
+  },
+  "growth": {
+    "description": "Growth (Euro)",
+    "publisher": "Axxiom",
+    "year": "1988"
+  },
+  "guardang": {
+    "description": "The Guardian Angel (Euro)",
+    "publisher": "Codemasters",
+    "year": "1989"
+  },
+  "guildthv": {
+    "description": "The Guild of Thieves (Euro, v1.0)",
+    "publisher": "Firebird",
+    "year": "1987"
+  },
+  "hacker2": {
+    "description": "Hacker II - The Doomsday Papers (Euro)",
+    "publisher": "Activision",
+    "year": "1986"
+  },
+  "hammrfst": {
+    "description": "Hammerfist (Euro)",
+    "publisher": "Activision",
+    "year": "1990"
+  },
+  "hannabar": {
+    "description": "The HiTEC Hanna-Barbera Cartoon Character Collection (Euro)",
+    "publisher": "HiTec Software",
+    "year": "1991"
+  },
+  "hardball": {
+    "description": "HardBall! (Euro, Accolade All Time Favourites)",
+    "publisher": "Accolade",
+    "year": "1987"
+  },
+  "hardnova": {
+    "description": "Hard Nova (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1991"
+  },
+  "harley": {
+    "description": "Harley-Davidson - The Road to Sturgis (Euro)",
+    "publisher": "Mindscape",
+    "year": "1990"
+  },
+  "hellraid": {
+    "description": "Hellraider (Euro)",
+    "publisher": "ARC",
+    "year": "1989"
+  },
+  "herolanc": {
+    "description": "Heroes of the Lance (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1988"
+  },
+  "hillstrt": {
+    "description": "Hill Street Blues (Euro, v1.11 19910326, Budget)",
+    "publisher": "Buzz",
+    "year": "1991"
+  },
+  "hostages": {
+    "description": "Hostages (Euro)",
+    "publisher": "Infogrames",
+    "year": "1989"
+  },
+  "hotshot": {
+    "description": "Hotshot (Euro)",
+    "publisher": "Addictive",
+    "year": "1988"
+  },
+  "houndshd": {
+    "description": "The Hound of Shadow (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1989"
+  },
+  "huntrklr": {
+    "description": "Hunter Killer (Euro, v1.01, Budget)",
+    "publisher": "16 Blitz",
+    "year": "1990"
+  },
+  "hyperbwl": {
+    "description": "Hyperbowl (Euro)",
+    "publisher": "Virgin Mastertronic",
+    "year": "1987"
+  },
+  "iball": {
+    "description": "I, Ball (Euro)",
+    "publisher": "British Telecom",
+    "year": "1987"
+  },
+  "icepalac": {
+    "description": "Beyond the Ice Palace (Euro)",
+    "publisher": "Elite",
+    "year": "1988"
+  },
+  "immortal": {
+    "description": "The Immortal (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1990"
+  },
+  "indy": {
+    "description": "Indiana Jones and the Temple of Doom (USA)",
+    "publisher": "Mindscape",
+    "year": "1989"
+  },
+  "ininjarb": {
+    "description": "International Ninja Rabbits (Euro)",
+    "publisher": "Micro-Value",
+    "year": "1991"
+  },
+  "intphase": {
+    "description": "Interphase (Euro)",
+    "publisher": "Image Works",
+    "year": "1989"
+  },
+  "inttruck": {
+    "description": "International Truck Racing (Euro)",
+    "publisher": "Zeppelin Games",
+    "year": "1992"
+  },
+  "italy90": {
+    "description": "Italy 1990 (Euro, The Lineker Collection)",
+    "publisher": "U.S. Gold",
+    "year": "1990"
+  },
+  "ivanhoe": {
+    "description": "Ivanhoe (Euro)",
+    "publisher": "Ocean",
+    "year": "1990"
+  },
+  "jedi": {
+    "description": "Return of the Jedi (Euro, The Star Wars Trilogy)",
+    "publisher": "Domark",
+    "year": "1989"
+  },
+  "jeweldrk": {
+    "description": "Jewels of Darkness (Euro)",
+    "publisher": "Rainbird",
+    "year": "1986"
+  },
+  "jpond": {
+    "description": "James Pond - Underwater Agent (Euro)",
+    "publisher": "Millennium",
+    "year": "1990"
+  },
+  "kickoff2": {
+    "description": "Kick Off 2 (Euro, v1.4e)",
+    "publisher": "Anco",
+    "year": "1990"
+  },
+  "kickoff2fw": {
+    "description": "Kick Off 2 - The Final Whistle (Euro, v2.1e)",
+    "publisher": "Anco",
+    "year": "1991"
+  },
+  "kickoff2re": {
+    "description": "Kick Off 2 - Return to Europe (Euro, v2.1e)",
+    "publisher": "Anco",
+    "year": "1991"
+  },
+  "kickoff2wt": {
+    "description": "Kick Off 2 - Winning Tactics (Euro)",
+    "publisher": "Anco",
+    "year": "1991"
+  },
+  "kilcloud": {
+    "description": "The Killing Cloud (Euro)",
+    "publisher": "Image Works",
+    "year": "1991"
+  },
+  "kingqst3": {
+    "description": "King's Quest III - To Heir is Human (Euro, v1.02 19861118)",
+    "publisher": "Sierra",
+    "year": "1989"
+  },
+  "klax": {
+    "description": "Klax (Euro)",
+    "publisher": "Domark",
+    "year": "1990"
+  },
+  "lasersqd": {
+    "description": "Laser Squad (Euro)",
+    "publisher": "Blade",
+    "year": "1989"
+  },
+  "lastnin3": {
+    "description": "Last Ninja 3 (Euro, Budget)",
+    "publisher": "KIXX",
+    "year": "1991"
+  },
+  "leadbg": {
+    "description": "Leader Board Pro Golf Simulator (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1986"
+  },
+  "leadbgt1": {
+    "description": "Leader Board Pro Golf Simulator - Tournament Disk #1 (Euro, Leader Board Birdie)",
+    "publisher": "U.S. Gold",
+    "year": "1986"
+  },
+  "lightcor": {
+    "description": "The Light Corridor (Euro)",
+    "publisher": "Infogrames",
+    "year": "1990"
+  },
+  "locomotn": {
+    "description": "Locomotion (Euro)",
+    "publisher": "Byte Back",
+    "year": "1991"
+  },
+  "logical": {
+    "description": "Logical (Euro)",
+    "publisher": "Rainbow Arts",
+    "year": "1991"
+  },
+  "lslarry": {
+    "description": "Leisure Suit Larry in The Land of the Lounge Lizards (Euro, v1.04 19870618)",
+    "publisher": "Sierra",
+    "year": "1987"
+  },
+  "luretemp": {
+    "description": "Lure of the Temptress (Fra, 19920617)",
+    "publisher": "Virgin",
+    "year": "1992"
+  },
+  "lurkinh": {
+    "description": "The Lurking Horror (Euro, r203)",
+    "publisher": "Infocom",
+    "year": "1987"
+  },
+  "lxcess": {
+    "description": "Lethal Xcess (Euro)",
+    "publisher": "Eclipse",
+    "year": "1991"
+  },
+  "mach3": {
+    "description": "Mach 3 (Euro)",
+    "publisher": "Loriciel",
+    "year": "1987"
+  },
+  "mafdet": {
+    "description": "Mafdet and the Book of the Dead (Euro)",
+    "publisher": "Software Horizons",
+    "year": "1988"
+  },
+  "manhdeal": {
+    "description": "Manhattan Dealers (Euro)",
+    "publisher": "Silmarils",
+    "year": "1988"
+  },
+  "mansell": {
+    "description": "Nigel Mansell's World Championship (Euro)",
+    "publisher": "Gremlin",
+    "year": "1992"
+  },
+  "manutd": {
+    "description": "Manchester United - The Official Computer Game (Euro)",
+    "publisher": "Krisalis",
+    "year": "1990"
+  },
+  "matrixmr": {
+    "description": "Matrix Marauders (Euro)",
+    "publisher": "Psyclapse",
+    "year": "1990"
+  },
+  "mean18": {
+    "description": "Mean 18 + Famous Courses Disk Volume I & Volume II (Euro, Accolade All Time Favourites)",
+    "publisher": "Accolade",
+    "year": "1986"
+  },
+  "megatwin": {
+    "description": "Mega Twins (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1991"
+  },
+  "mercenry": {
+    "description": "Mercenary - Escape from Targ & The Second City (Euro, Premier Collection II)",
+    "publisher": "Novagen",
+    "year": "1988"
+  },
+  "metrox": {
+    "description": "Metro-Cross (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1987"
+  },
+  "mindwhel": {
+    "description": "Mindwheel (Euro)",
+    "publisher": "Brøderbund",
+    "year": "1985"
+  },
+  "missgeno": {
+    "description": "Mission Genocide (Euro)",
+    "publisher": "Firebird",
+    "year": "1987"
+  },
+  "missing": {
+    "description": "Missing: One Droid (Euro)",
+    "publisher": "Bug-Byte",
+    "year": "1986"
+  },
+  "monstbus": {
+    "description": "Monster Business (Euro)",
+    "publisher": "Eclipse",
+    "year": "1991"
+  },
+  "mortviel": {
+    "description": "Le Manoir de Mortevielle (Fra)",
+    "publisher": "Lankhor",
+    "year": "1988"
+  },
+  "nevermnd": {
+    "description": "Never Mind (Euro)",
+    "publisher": "Psyclapse",
+    "year": "1989"
+  },
+  "nightwlk": {
+    "description": "Night Walk (Euro)",
+    "publisher": "Alternative Software",
+    "year": "1988"
+  },
+  "ninjarab": {
+    "description": "Ninja Rabbits (Euro)",
+    "publisher": "MicroValue",
+    "year": "1991"
+  },
+  "nitrobc": {
+    "description": "Nitro Boost Challenge (Euro)",
+    "publisher": "Codemasters",
+    "year": "1989"
+  },
+  "noexcuse": {
+    "description": "No Excuses (Euro)",
+    "publisher": "Arcana",
+    "year": "1988"
+  },
+  "northns": {
+    "description": "North and South (Euro)",
+    "publisher": "Infogrames",
+    "year": "1989"
+  },
+  "nshift": {
+    "description": "Night Shift (Euro)",
+    "publisher": "Lucasfilm",
+    "year": "1990"
+  },
+  "obliter": {
+    "description": "Obliterator (Euro)",
+    "publisher": "Psygnosis",
+    "year": "1988"
+  },
+  "oharrier": {
+    "description": "Operation Harrier (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1990"
+  },
+  "orbit2k": {
+    "description": "Orbit 2000 (Euro)",
+    "publisher": "Byte Back",
+    "year": "1991"
+  },
+  "orgames": {
+    "description": "Oriental Games (Euro)",
+    "publisher": "MicroStyle",
+    "year": "1990"
+  },
+  "ostealth": {
+    "description": "Operation Stealth (Fra)",
+    "publisher": "U.S. Gold",
+    "year": "1990"
+  },
+  "othunder": {
+    "description": "Operation Thunderbolt (Euro)",
+    "publisher": "Ocean",
+    "year": "1989"
+  },
+  "outcast": {
+    "description": "Outcast (Euro)",
+    "publisher": "Mastertronic",
+    "year": "1987"
+  },
+  "overland": {
+    "description": "Overlander (Euro)",
+    "publisher": "Elite",
+    "year": "1988"
+  },
+  "overlanda": {
+    "description": "Overlander (Euro, Finale)",
+    "publisher": "Elite",
+    "year": "1988"
+  },
+  "pacmania": {
+    "description": "Pac-Mania (Euro)",
+    "publisher": "Grandslam",
+    "year": "1989"
+  },
+  "pandora": {
+    "description": "Pandora (Euro)",
+    "publisher": "Firebird",
+    "year": "1988"
+  },
+  "paperboy": {
+    "description": "Paperboy (Euro, Finale)",
+    "publisher": "Elite",
+    "year": "1989"
+  },
+  "passwnd2": {
+    "description": "Passengers on the Wind 2 (Euro)",
+    "publisher": "Infogrames",
+    "year": "1988"
+  },
+  "pawn": {
+    "description": "The Pawn (Euro, v2.1)",
+    "publisher": "Rainbird",
+    "year": "1986"
+  },
+  "pharaoh3": {
+    "description": "Pharaoh III (Euro)",
+    "publisher": "Digita International",
+    "year": "1989"
+  },
+  "piction": {
+    "description": "Pictionary - The Game of Quick Draw (Euro)",
+    "publisher": "Domark",
+    "year": "1989"
+  },
+  "pirabarb": {
+    "description": "Pirates of the Barbary Coast (Euro)",
+    "publisher": "Cascade Games",
+    "year": "1987"
+  },
+  "pmanger": {
+    "description": "Player Manager (Euro, Football Crazy Challenge)",
+    "publisher": "Anco",
+    "year": "1990"
+  },
+  "populopl": {
+    "description": "Populous - The Promised Lands (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1989"
+  },
+  "pquest": {
+    "description": "Police Quest - In Pursuit of the Death Angel (Euro, v2.0G 19870312)",
+    "publisher": "Sierra",
+    "year": "1987"
+  },
+  "presidnt": {
+    "description": "The President is Missing (Euro)",
+    "publisher": "MicroProse",
+    "year": "1988"
+  },
+  "prince": {
+    "description": "Prince (Euro)",
+    "publisher": "ARC",
+    "year": "1989"
+  },
+  "prison": {
+    "description": "Prison (Euro)",
+    "publisher": "Krisalis",
+    "year": "1989"
+  },
+  "puzznic": {
+    "description": "Puzznic (Euro)",
+    "publisher": "Ocean",
+    "year": "1990"
+  },
+  "quink": {
+    "description": "Quink (USA)",
+    "publisher": "Mindscape",
+    "year": "1984"
+  },
+  "raffles": {
+    "description": "Raffles (Euro)",
+    "publisher": "The Edge",
+    "year": "1989"
+  },
+  "rallyx": {
+    "description": "Rally Cross (Euro)",
+    "publisher": "Anco",
+    "year": "1989"
+  },
+  "redheat": {
+    "description": "Red Heat (Euro)",
+    "publisher": "Ocean",
+    "year": "1989"
+  },
+  "redstorm": {
+    "description": "Red Storm Rising (Euro, v743.01)",
+    "publisher": "MicroProse",
+    "year": "1990"
+  },
+  "resol101": {
+    "description": "Resolution 101 (Euro)",
+    "publisher": "Millennium",
+    "year": "1990"
+  },
+  "revmutcm": {
+    "description": "Revenge of the Mutant Camels II (Euro)",
+    "publisher": "Mastertronic",
+    "year": "1988"
+  },
+  "rghostb": {
+    "description": "The Real Ghostbusters (Euro)",
+    "publisher": "Activision",
+    "year": "1988"
+  },
+  "roadwars": {
+    "description": "Road Wars (Euro)",
+    "publisher": "Melbourne House",
+    "year": "1987"
+  },
+  "robocod": {
+    "description": "James Pond II - Codename RoboCod (Euro)",
+    "publisher": "Millennium",
+    "year": "1991"
+  },
+  "robocop": {
+    "description": "RoboCop (Euro)",
+    "publisher": "Ocean",
+    "year": "1989"
+  },
+  "rockstar": {
+    "description": "Rock Star Ate My Hamster (Euro)",
+    "publisher": "Codemasters",
+    "year": "1989"
+  },
+  "rodymas3": {
+    "description": "Rody & Mastico III (Fra)",
+    "publisher": "Lankhor",
+    "year": "1991"
+  },
+  "rotor": {
+    "description": "Rotor (Euro)",
+    "publisher": "Arcana",
+    "year": "1989"
+  },
+  "sargon3": {
+    "description": "Sargon III (Euro)",
+    "publisher": "Logotron",
+    "year": "1988"
+  },
+  "sascombs": {
+    "description": "SAS Combat Simulator (Euro)",
+    "publisher": "Codemasters",
+    "year": "1990"
+  },
+  "shadgate": {
+    "description": "Shadowgate (Euro)",
+    "publisher": "Mindscape",
+    "year": "1987"
+  },
+  "sharrie2": {
+    "description": "Space Harrier II (Euro)",
+    "publisher": "Grandslam",
+    "year": "1990"
+  },
+  "sharrier": {
+    "description": "Space Harrier (Euro)",
+    "publisher": "Elite",
+    "year": "1988"
+  },
+  "sharriera": {
+    "description": "Space Harrier (Euro, Finale)",
+    "publisher": "Elite",
+    "year": "1988"
+  },
+  "sidewind": {
+    "description": "SideWinder (Euro)",
+    "publisher": "Mastertronic",
+    "year": "1988"
+  },
+  "silkworm": {
+    "description": "Silkworm (Euro)",
+    "publisher": "Virgin Mastertronic",
+    "year": "1990"
+  },
+  "sinbad": {
+    "description": "Sinbad and the Throne of the Falcon (Euro)",
+    "publisher": "Mirror Image",
+    "year": "1988"
+  },
+  "sphericl": {
+    "description": "Spherical (Euro)",
+    "publisher": "Rainbow Arts",
+    "year": "1989"
+  },
+  "spidertr": {
+    "description": "Spidertronic (Euro)",
+    "publisher": "ERE",
+    "year": "1988"
+  },
+  "spitfr40": {
+    "description": "Spitfire 40 (Euro)",
+    "publisher": "Mirrorsoft",
+    "year": "1988"
+  },
+  "spitimag": {
+    "description": "Spitting Image (Euro)",
+    "publisher": "Domark",
+    "year": "1988"
+  },
+  "starblaz": {
+    "description": "Starblaze (Euro)",
+    "publisher": "Logotron",
+    "year": "1989"
+  },
+  "starfl": {
+    "description": "Starflight (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1989"
+  },
+  "stargld2": {
+    "description": "Starglider 2 (Euro)",
+    "publisher": "Rainbird",
+    "year": "1988"
+  },
+  "starglid": {
+    "description": "Starglider (Euro)",
+    "publisher": "Rainbird",
+    "year": "1987"
+  },
+  "starwrek": {
+    "description": "Star Wrek (Euro)",
+    "publisher": "Castlesoft",
+    "year": "1989"
+  },
+  "steel": {
+    "description": "Steel (Euro)",
+    "publisher": "Hewson",
+    "year": "1989"
+  },
+  "stormstr": {
+    "description": "Storm Master (Euro)",
+    "publisher": "Silmarils",
+    "year": "1992"
+  },
+  "strider": {
+    "description": "Strider (Euro, Les Chevaliers)",
+    "publisher": "U.S. Gold",
+    "year": "1989"
+  },
+  "strike": {
+    "description": "Strike (Euro)",
+    "publisher": "Mastertronic",
+    "year": "1987"
+  },
+  "strquake": {
+    "description": "Starquake (Euro)",
+    "publisher": "Mandarin",
+    "year": "1988"
+  },
+  "stryx": {
+    "description": "Stryx (Euro)",
+    "publisher": "Psyclapse",
+    "year": "1989"
+  },
+  "sundog": {
+    "description": "Sundog - Frozen Legacy (Euro)",
+    "publisher": "Mirrorsoft",
+    "year": "1988"
+  },
+  "swap": {
+    "description": "Swap (Euro, Budget)",
+    "publisher": "Fox Hits",
+    "year": "1991"
+  },
+  "taipan": {
+    "description": "Tai-Pan (Euro)",
+    "publisher": "Ocean",
+    "year": "1987"
+  },
+  "tasstime": {
+    "description": "Tass Times in Tonetown (Euro)",
+    "publisher": "Activision",
+    "year": "1986"
+  },
+  "tauceti": {
+    "description": "Tau Ceti (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1987"
+  },
+  "tburner": {
+    "description": "Thunder Burner (Euro)",
+    "publisher": "Loriciel",
+    "year": "1992"
+  },
+  "tdriv": {
+    "description": "Test Drive (Euro, Accolade All Time Favourites)",
+    "publisher": "Accolade",
+    "year": "1987"
+  },
+  "tenniscp": {
+    "description": "Tennis Cup (Euro, Budget)",
+    "publisher": "Action Sixteen",
+    "year": "1990"
+  },
+  "terramex": {
+    "description": "Terramex (Euro)",
+    "publisher": "Grandslam",
+    "year": "1987"
+  },
+  "thdrcats": {
+    "description": "ThunderCats (Euro, Budget)",
+    "publisher": "Encore",
+    "year": "1988"
+  },
+  "thdrwing": {
+    "description": "ThunderWing (Euro)",
+    "publisher": "Artronic Products",
+    "year": "1989"
+  },
+  "thrust": {
+    "description": "Thrust (Euro)",
+    "publisher": "Firebird",
+    "year": "1989"
+  },
+  "tiebreak": {
+    "description": "Adidas Championship Tie Break (Euro)",
+    "publisher": "Ocean",
+    "year": "1990"
+  },
+  "timeblst": {
+    "description": "Time Blast (Euro)",
+    "publisher": "Micro-Value",
+    "year": "19??"
+  },
+  "timemag": {
+    "description": "Time and Magik (Euro)",
+    "publisher": "Mandarin",
+    "year": "1988"
+  },
+  "tintin": {
+    "description": "Tintin on the Moon (Euro)",
+    "publisher": "Infogrames",
+    "year": "1989"
+  },
+  "toobin": {
+    "description": "Toobin' (Euro)",
+    "publisher": "Domark",
+    "year": "1989"
+  },
+  "toutrun": {
+    "description": "Turbo Out Run (Euro, Budget)",
+    "publisher": "KIXX",
+    "year": "1989"
+  },
+  "towbabel": {
+    "description": "Tower of Babel (Euro)",
+    "publisher": "Rainbird",
+    "year": "1990"
+  },
+  "tparkmys": {
+    "description": "Theme Park Mystery - Variations on a Theme (Euro)",
+    "publisher": "Image Works",
+    "year": "1991"
+  },
+  "trailblz": {
+    "description": "Trailblazer (Euro)",
+    "publisher": "Gremlin",
+    "year": "1987"
+  },
+  "trasheap": {
+    "description": "Trash Heap (Euro)",
+    "publisher": "Robtek",
+    "year": "1987"
+  },
+  "trauma": {
+    "description": "Trauma (Euro)",
+    "publisher": "Infogrames",
+    "year": "1989"
+  },
+  "treblech": {
+    "description": "Treble Champions (Euro, v1.0)",
+    "publisher": "Challenge Software",
+    "year": "1990"
+  },
+  "trinity": {
+    "description": "Trinity (Euro, r11)",
+    "publisher": "Infocom",
+    "year": "1986"
+  },
+  "trivianb": {
+    "description": "Trivial Pursuit - A New Beginning (Euro)",
+    "publisher": "Domark",
+    "year": "1988"
+  },
+  "turbogt": {
+    "description": "Turbo GT (Euro)",
+    "publisher": "Infogrames",
+    "year": "1989"
+  },
+  "turricn2": {
+    "description": "Turrican II (Euro, Budget)",
+    "publisher": "KIXX",
+    "year": "1991"
+  },
+  "tvfootbl": {
+    "description": "TV Sports Football (Euro)",
+    "publisher": "Mirrorsoft",
+    "year": "1989"
+  },
+  "twylyte": {
+    "description": "Twylyte (Euro)",
+    "publisher": "Wicked",
+    "year": "1989"
+  },
+  "ums": {
+    "description": "UMS - The Universal Military Simulator (Euro)",
+    "publisher": "Rainbird",
+    "year": "1988"
+  },
+  "univers3": {
+    "description": "Universe 3 (Euro, v1.0)",
+    "publisher": "Impressions",
+    "year": "1990"
+  },
+  "untouch": {
+    "description": "The Untouchables (Euro)",
+    "publisher": "Ocean",
+    "year": "1990"
+  },
+  "vectball": {
+    "description": "Vectorball (Euro)",
+    "publisher": "MAD",
+    "year": "1988"
+  },
+  "vindictr": {
+    "description": "Vindicators (Euro)",
+    "publisher": "Domark",
+    "year": "1989"
+  },
+  "virus": {
+    "description": "Virus (Euro)",
+    "publisher": "Firebird",
+    "year": "1988"
+  },
+  "wander3d": {
+    "description": "Wanderer 3D (Euro, Budget)",
+    "publisher": "Encore",
+    "year": "1988"
+  },
+  "wanted": {
+    "description": "Wanted (Euro)",
+    "publisher": "Infogrames",
+    "year": "1988"
+  },
+  "warhawk": {
+    "description": "Warhawk (Euro)",
+    "publisher": "Silverbird",
+    "year": "1988"
+  },
+  "warlock": {
+    "description": "Warlock's Quest (Euro, Budget)",
+    "publisher": "Pocket Soft",
+    "year": "1988"
+  },
+  "warlocke": {
+    "description": "Warlock (Euro, The Edge)",
+    "publisher": "The Edge",
+    "year": "19??"
+  },
+  "warmidle": {
+    "description": "War in Middle Earth (Euro)",
+    "publisher": "Melbourne House",
+    "year": "1989"
+  },
+  "wcbox": {
+    "description": "World Championship Boxing Manager (Euro)",
+    "publisher": "Krisalis",
+    "year": "1990"
+  },
+  "wclead": {
+    "description": "World Class Leader Board (Euro, Budget)",
+    "publisher": "Klassix",
+    "year": "1990"
+  },
+  "whirligg": {
+    "description": "Whirligig (Euro)",
+    "publisher": "Firebird",
+    "year": "1988"
+  },
+  "wildstrt": {
+    "description": "Wild Streets (Euro, Budget)",
+    "publisher": "Fox Hits",
+    "year": "1990"
+  },
+  "wrangler": {
+    "description": "Wrangler (Euro)",
+    "publisher": "Alternative Software",
+    "year": "1988"
+  },
+  "wtsstill": {
+    "description": "Where Time Stood Still (Euro)",
+    "publisher": "Ocean",
+    "year": "1988"
+  },
+  "xenon": {
+    "description": "Xenon (Euro, Budget)",
+    "publisher": "16 Blitz",
+    "year": "1988"
+  },
+  "xout": {
+    "description": "X-Out (Euro)",
+    "publisher": "Rainbow Arts",
+    "year": "1990"
+  }
+}

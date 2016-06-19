@@ -1,0 +1,42 @@
+{
+  "amazes": {
+    "description": "Amazing Mazes",
+    "publisher": "Video Technology",
+    "year": "1989"
+  },
+  "aworld": {
+    "description": "Around the World",
+    "publisher": "Video Technology",
+    "year": "1989"
+  },
+  "cad": {
+    "description": "CAD Professor Maus",
+    "publisher": "Video Technology",
+    "year": "1989"
+  },
+  "facts": {
+    "description": "Facts'N Fraction",
+    "publisher": "Video Technology",
+    "year": "1988"
+  },
+  "gwizard": {
+    "description": "Game Wizard / Magische Spiele",
+    "publisher": "Video Technology",
+    "year": "1990"
+  },
+  "hodgepod": {
+    "description": "Hodge-Podge",
+    "publisher": "Video Technology",
+    "year": "1989"
+  },
+  "memmania": {
+    "description": "Memory Mania (Rev. B)",
+    "publisher": "Video Technology",
+    "year": "1988"
+  },
+  "state": {
+    "description": "State to State",
+    "publisher": "Video Technology",
+    "year": "1989"
+  }
+}

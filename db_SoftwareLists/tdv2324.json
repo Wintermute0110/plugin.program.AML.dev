@@ -1,0 +1,37 @@
+{
+  "basicc": {
+    "description": "Microsoft BASIC Compiler v5.30",
+    "publisher": "Microsoft",
+    "year": "19??"
+  },
+  "bdsc": {
+    "description": "BDS-C-COMPILER v1.50A",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "fortran": {
+    "description": "Microsoft Fortran-80 Compiler v3.43",
+    "publisher": "Microsoft",
+    "year": "19??"
+  },
+  "mbasic": {
+    "description": "Microsoft BASIC v5.21",
+    "publisher": "Microsoft",
+    "year": "19??"
+  },
+  "multplan": {
+    "description": "Multiplan 1.05",
+    "publisher": "Microsoft",
+    "year": "19??"
+  },
+  "tos21": {
+    "description": "TOS 21 v1.81",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tos21a": {
+    "description": "TOS 21 v1.81 (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

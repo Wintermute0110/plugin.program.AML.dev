@@ -1,0 +1,712 @@
+{
+  "aburner3": {
+    "description": "After Burner III (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "advbatr": {
+    "description": "The Adventures of Batman and Robin (Euro)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "animals": {
+    "description": "The San Diego Zoo Presents The Animals! - A Multimedia Experience (Euro)",
+    "publisher": "Mindscape",
+    "year": "1994"
+  },
+  "batmanrn": {
+    "description": "Batman Returns (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "batmanrna": {
+    "description": "Batman Returns (Euro, Alt)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "bcracers": {
+    "description": "BC Racers (Euro)",
+    "publisher": "Core Design",
+    "year": "1994"
+  },
+  "bcracersd": {
+    "description": "BC Racers (Euro, Demo) [Mega Power - Issue 18]",
+    "publisher": "Core",
+    "year": "1994"
+  },
+  "bcracersda": {
+    "description": "BC Racers (Euro, Demo) [Sega Pro CD - Issue 41]",
+    "publisher": "Core",
+    "year": "1994"
+  },
+  "beast2": {
+    "description": "Shadow of the Beast II (Euro)",
+    "publisher": "Sega",
+    "year": "19??"
+  },
+  "billwlsh": {
+    "description": "Bill Walsh College Football (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1993"
+  },
+  "blackh": {
+    "description": "Blackhole Assault (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "bloodsht": {
+    "description": "Bloodshot (Euro)",
+    "publisher": "Domark",
+    "year": "1994"
+  },
+  "brutal": {
+    "description": "Brutal - Paws of Fury (Euro)",
+    "publisher": "GameTek",
+    "year": "1994"
+  },
+  "btlcorps": {
+    "description": "Battlecorps (Euro)",
+    "publisher": "Core Design",
+    "year": "1994"
+  },
+  "btlcorpsd": {
+    "description": "Battlecorps (Euro, Demo) [Mega Power - Issue 11, Sega Pro CD - Issue 50]",
+    "publisher": "Core",
+    "year": "1994"
+  },
+  "btlcorpsssd": {
+    "description": "Battlecorps and SoulStar (Euro, Demo) [Mega Power - Issue 14]",
+    "publisher": "Core",
+    "year": "1994"
+  },
+  "ccmusic": {
+    "description": "Power Factory featuring C+C Music Factory (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "chuckrck": {
+    "description": "Chuck Rock (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "chukrck2": {
+    "description": "Chuck Rock II - Son of Chuck (Euro)",
+    "publisher": "Core Design",
+    "year": "1993"
+  },
+  "cobra": {
+    "description": "The Space Adventure - Cobra: The Legendary Bandit (Euro)",
+    "publisher": "Hudson Soft",
+    "year": "1995"
+  },
+  "cobracom": {
+    "description": "Cobra Command (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "cobracoma": {
+    "description": "Cobra Command (Euro) [MK-4402P-00032 2]",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "cobracomb": {
+    "description": "Cobra Command (Euro) [MK-4402P-00032-R1M]",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "corpse": {
+    "description": "Corpse Killer (Euro)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "dblswtch": {
+    "description": "Double Switch (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "dlair": {
+    "description": "Dragon's Lair (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "dngmstr2": {
+    "description": "Dungeon Master II - Skullkeep v1.0 (Euro)",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "dracunl": {
+    "description": "Dracula Unleashed (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "dune": {
+    "description": "Dune (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "dungexpl": {
+    "description": "Dungeon Explorer (Euro)",
+    "publisher": "Hudson Soft",
+    "year": "1995"
+  },
+  "ecco": {
+    "description": "Ecco the Dolphin (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "ecco2": {
+    "description": "Ecco - The Tides of Time (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "eccoa": {
+    "description": "Ecco the Dolphin (Euro) [I-2647 A]",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "eccob": {
+    "description": "Ecco the Dolphin (Euro) [MK-4408P-00135 1]",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "ejimse": {
+    "description": "Earthworm Jim - Special Edition (Euro)",
+    "publisher": "Interplay",
+    "year": "1994"
+  },
+  "espnbb": {
+    "description": "ESPN Baseball Tonight (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "eternalc": {
+    "description": "Eternal Champions - Challenge From the Dark Side (Euro)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "eyebehol": {
+    "description": "Eye of the Beholder (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "f1btl": {
+    "description": "Formula One World Championship - Beyond the Limit (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "fahrenhe": {
+    "description": "Fahrenheit (Euro)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "fahrenhef": {
+    "description": "Fahrenheit (Fra)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "fatfursp": {
+    "description": "Fatal Fury Special (Euro)",
+    "publisher": "JVC",
+    "year": "1995"
+  },
+  "fatfurspd": {
+    "description": "Fatal Fury Special (Euro, Demo) [Sega Pro CD - Issue 46]",
+    "publisher": "JVC",
+    "year": "1995"
+  },
+  "ffightcd": {
+    "description": "Final Fight CD (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "fifa": {
+    "description": "FIFA International Soccer - Championship Edition (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1994"
+  },
+  "fifad": {
+    "description": "FIFA International Soccer - CE (Euro, Demo) [Mega Power - Issue 13]",
+    "publisher": "Electronic Arts",
+    "year": "1994"
+  },
+  "fifada": {
+    "description": "FIFA International Soccer - CE (Euro, Demo) [Sega Pro CD - Issue 43]",
+    "publisher": "Electronic Arts",
+    "year": "1994"
+  },
+  "flashbd": {
+    "description": "Flashback - The Quest for Identity (Euro, Demo) [Sega Pro CD - Issue 42]",
+    "publisher": "U.S. Gold",
+    "year": "1994"
+  },
+  "flink": {
+    "description": "Flink (Euro)",
+    "publisher": "Psygnosis ~ Sony Electronic Publishing",
+    "year": "1994"
+  },
+  "gztexas": {
+    "description": "Ground Zero Texas (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "holmes": {
+    "description": "Sherlock Holmes - Consulting Detective Vol. I (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "holmes2": {
+    "description": "Sherlock Holmes - Consulting Detective Vol. II v1.0 (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "hook": {
+    "description": "Hook (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "inxs": {
+    "description": "INXS (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "jagxj220": {
+    "description": "Jaguar XJ220 (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "jpark": {
+    "description": "Jurassic Park (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "jparkg": {
+    "description": "Jurassic Park (Ger)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "keio": {
+    "description": "Keio Flying Squadron (Euro)",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "keiod": {
+    "description": "Keio Flying Squadron (Euro, Demo) [Sega Pro CD - Issue 03]",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "kidssite": {
+    "description": "Kids on Site (Euro)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "kriskros": {
+    "description": "Kris Kross (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "lawnmowr": {
+    "description": "The Lawnmower Man (Euro, Demo) [Mega Power - Issue 16]",
+    "publisher": "Time Warner Interactive",
+    "year": "1994"
+  },
+  "le2": {
+    "description": "Lethal Enforcers II - Gun Fighters (Euro)",
+    "publisher": "Konami",
+    "year": "1994"
+  },
+  "le2d": {
+    "description": "Lethal Enforcers II - Gun Fighters (Euro, Demo) [Mega Power - Issue 19]",
+    "publisher": "Konami",
+    "year": "1994"
+  },
+  "lethalen": {
+    "description": "Lethal Enforcers (Euro)",
+    "publisher": "Konami",
+    "year": "1993"
+  },
+  "lordthun": {
+    "description": "Lords of Thunder (Euro)",
+    "publisher": "Hudson Soft",
+    "year": "1995"
+  },
+  "marko": {
+    "description": "Marko's Magic Football (Euro)",
+    "publisher": "Domark",
+    "year": "1994"
+  },
+  "microcos": {
+    "description": "Microcosm (Euro) [T-113015-50 14]",
+    "publisher": "Psygnosis",
+    "year": "1993"
+  },
+  "microcosa": {
+    "description": "Microcosm (Euro) [T-113015-50 24]",
+    "publisher": "Psygnosis",
+    "year": "1993"
+  },
+  "midnight": {
+    "description": "Midnight Raiders (Euro)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "mk": {
+    "description": "Mortal Kombat (Euro)",
+    "publisher": "Arena",
+    "year": "1994"
+  },
+  "mmania": {
+    "description": "Mickey Mania (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "mmaniad": {
+    "description": "Mickey Mania (Euro, Demo) [MegaSEGA]",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "mmaniada": {
+    "description": "Mickey Mania (Euro, Demo) [Mega Power - Issue 17, Sega Pro CD - Issue 40]",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "mmpr": {
+    "description": "Mighty Morphin Power Rangers (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "mystmans": {
+    "description": "Yumemi Mystery Mansion (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbajam": {
+    "description": "NBA Jam (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1994"
+  },
+  "nhl94": {
+    "description": "NHL Hockey '94 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1994"
+  },
+  "novastm": {
+    "description": "Novastorm (Euro)",
+    "publisher": "Psygnosis ~ Sony Electronic Publishing",
+    "year": "1994"
+  },
+  "novastmd": {
+    "description": "Novastorm (Euro, Demo) [Sega Pro CD - Issue 02]",
+    "publisher": "Psygnosis ~ Sony Electronic Publishing",
+    "year": "1994"
+  },
+  "ntrap": {
+    "description": "Night Trap (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "ntrap32": {
+    "description": "Night Trap (Euro, 32X)",
+    "publisher": "Digital Pictures",
+    "year": "1995"
+  },
+  "ntrapfr": {
+    "description": "Night Trap (Fra)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "pitfall": {
+    "description": "Pitfall - The Mayan Adventure (Euro)",
+    "publisher": "Activision",
+    "year": "1994"
+  },
+  "pitfalld": {
+    "description": "Pitfall - The Mayan Adventure (Euro, Demo) [Sega Pro CD - Issue 41]",
+    "publisher": "Activision",
+    "year": "1994"
+  },
+  "pmonger": {
+    "description": "Power Monger (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1994"
+  },
+  "ppersia": {
+    "description": "Prince of Persia (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "prizefig": {
+    "description": "Prize Fighter (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "psygnosd": {
+    "description": "Microcosm, Puggsy and Wiz 'N' Liz (Euro, Demo) [Mega Power - Issue 06]",
+    "publisher": "Psygnosis",
+    "year": "1994"
+  },
+  "puggsy": {
+    "description": "Puggsy (Euro)",
+    "publisher": "Psygnosis",
+    "year": "1993"
+  },
+  "ragecage": {
+    "description": "WWF Rage in the Cage (Euro)",
+    "publisher": "Arena",
+    "year": "1993"
+  },
+  "roadaven": {
+    "description": "Road Avenger (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "roboales": {
+    "description": "Robo Aleste (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "samsho": {
+    "description": "Samurai Shodown (Euro)",
+    "publisher": "JVC",
+    "year": "1995"
+  },
+  "samshod": {
+    "description": "Samurai Shodown (Euro, Demo) [Sega Pro CD - Issue 47]",
+    "publisher": "JVC",
+    "year": "1995"
+  },
+  "segaac": {
+    "description": "Sega Classics Arcade Collection - Limited Edition (Euro) [6105411P-00036A-R1M]",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "segaaca": {
+    "description": "Sega Classics Arcade Collection - Limited Edition (Euro) [610-5411P-00036A 2]",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "sensible": {
+    "description": "Sensible Soccer (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "sensibled": {
+    "description": "Sensible Soccer v1.08 (Euro, Demo) [Mega Power - Issue 12, Sega Pro CD - Issue 44]",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "shinfrce": {
+    "description": "Shining Force CD (Euro)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "silpheed": {
+    "description": "Silpheed (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "slamcity": {
+    "description": "Slam City with Scottie Pippen (Euro)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "slamcity32": {
+    "description": "Slam City with Scottie Pippen (Euro, 32X)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "slamcitya": {
+    "description": "Slam City with Scottie Pippen (Euro, Alt)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "slamcityd": {
+    "description": "Slam City with Scottie Pippen (Euro, Demo)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "smurfs": {
+    "description": "The Smurfs (Euro)",
+    "publisher": "Infogrames",
+    "year": "1994"
+  },
+  "snatcher": {
+    "description": "Snatcher (Euro)",
+    "publisher": "Konami",
+    "year": "1994"
+  },
+  "solfeace": {
+    "description": "Sol-Feace (Euro)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "solfeacea": {
+    "description": "Sol-Feace (Euro) [MK-4130P-00033 2]",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "solfeaceb": {
+    "description": "Sol-Feace (Euro) [MK-4130P-00033-R1M]",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "soniccd": {
+    "description": "Sonic CD (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "soulstar": {
+    "description": "SoulStar (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "soulstard": {
+    "description": "SoulStar (Euro, Demo) [Mega Power - Issue 10, Sega Pro CD - Issue 49]",
+    "publisher": "Core",
+    "year": "1994"
+  },
+  "spidking": {
+    "description": "The Amazing Spider-Man Vs. The Kingpin (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "sshark": {
+    "description": "Sewer Shark (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "starblad": {
+    "description": "StarBlade (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "supremew": {
+    "description": "Supreme Warrior - Ying Heung (Euro)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "supremew32": {
+    "description": "Supreme Warrior - Ying Heung (Euro, 32X)",
+    "publisher": "Digital Pictures",
+    "year": "1995"
+  },
+  "surgical": {
+    "description": "Surgical Strike (Euro)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "swchess": {
+    "description": "The Software Toolworks' Star Wars Chess (Euro)",
+    "publisher": "Mindscape",
+    "year": "1994"
+  },
+  "swra": {
+    "description": "Star Wars - Rebel Assault (Euro)",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "swrad": {
+    "description": "Star Wars - Rebel Assault (Euro, Demo) [Mega Power - Issue 15]",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "swrada": {
+    "description": "Star Wars - Rebel Assault (Euro, Demo) [Sega Pro CD - Issue 01]",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "syndicat": {
+    "description": "Syndicate (Euro)",
+    "publisher": "Domark",
+    "year": "1995"
+  },
+  "tcataly": {
+    "description": "Tomcat Alley (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tcatalyfr": {
+    "description": "Tomcat Alley (Fra)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tcatalyg": {
+    "description": "Tomcat Alley (Ger)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tcatalysp": {
+    "description": "Tomcat Alley (Spa)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "termintr": {
+    "description": "The Terminator (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "thawk": {
+    "description": "Thunderhawk (Euro)",
+    "publisher": "Core Design",
+    "year": "1993"
+  },
+  "thawka": {
+    "description": "Thunderhawk (Euro) [SEGAT115015RE R5C]",
+    "publisher": "Core Design",
+    "year": "1993"
+  },
+  "thawkb": {
+    "description": "Thunderhawk (Euro) [SEGAT115015RE R4C]",
+    "publisher": "Core Design",
+    "year": "1993"
+  },
+  "thawkd": {
+    "description": "Thunderhawk (Euro, Demo) [Mega Power - Issue 04]",
+    "publisher": "Core",
+    "year": "1993"
+  },
+  "thawkda": {
+    "description": "Thunderhawk (Euro, Demo)",
+    "publisher": "Core",
+    "year": "1993"
+  },
+  "themeprk": {
+    "description": "Theme Park (Euro)",
+    "publisher": "Domark",
+    "year": "1995"
+  },
+  "timecop": {
+    "description": "Time Cop (Euro, Prototype)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "timecopd": {
+    "description": "TimeCop (Euro, Demo) [Sega Pro CD - Issue 45]",
+    "publisher": "JVC",
+    "year": "1995"
+  },
+  "timecope": {
+    "description": "Time Cop (Euro, Early Prototype)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "timegal": {
+    "description": "Time Gal (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "wcup94": {
+    "description": "World Cup USA 94 (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1994"
+  },
+  "wolfchld": {
+    "description": "Wolfchild (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "wonderdg": {
+    "description": "Wonder Dog (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  }
+}

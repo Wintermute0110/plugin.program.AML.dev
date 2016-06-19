@@ -1,0 +1,27 @@
+{
+  "ffreddy": {
+    "description": "Frantic Freddy",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  },
+  "flipper": {
+    "description": "Flipper Slipper",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  },
+  "prerelea": {
+    "description": "Pre-Release",
+    "publisher": "Five Finger Punch",
+    "year": "2015"
+  },
+  "secalpha": {
+    "description": "Sector Alpha",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  },
+  "supxfrce": {
+    "description": "Super Cross Force",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  }
+}

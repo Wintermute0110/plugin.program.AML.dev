@@ -1,0 +1,27 @@
+{
+  "cmk49": {
+    "description": "CMK 49 Computer Musical Keyboard",
+    "publisher": "Siel",
+    "year": "198?"
+  },
+  "getrdyrd": {
+    "description": "Get Ready to Read with BJ Bear",
+    "publisher": "Commodore",
+    "year": "1984"
+  },
+  "jacknip2": {
+    "description": "Jack the Nipper II: In Coconut Capers",
+    "publisher": "Gremlin Graphics",
+    "year": "1987"
+  },
+  "mono64": {
+    "description": "Mono-64",
+    "publisher": "Novel International",
+    "year": "198?"
+  },
+  "poly64": {
+    "description": "Poly-64",
+    "publisher": "Novel International",
+    "year": "198?"
+  }
+}

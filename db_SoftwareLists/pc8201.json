@@ -1,0 +1,22 @@
+{
+  "r2c": {
+    "description": "ROM2/Cleuseau",
+    "publisher": "Polar Engineering",
+    "year": "198?"
+  },
+  "tsdos": {
+    "description": "TS-DOS v4.00",
+    "publisher": "Traveling Software",
+    "year": "1987"
+  },
+  "tword": {
+    "description": "T-Word with Sardine v1.33",
+    "publisher": "Traveling Software",
+    "year": "1986"
+  },
+  "ur2": {
+    "description": "The Ultimate ROM II v2.11",
+    "publisher": "Traveling Software",
+    "year": "1986"
+  }
+}

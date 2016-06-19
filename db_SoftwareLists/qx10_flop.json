@@ -1,0 +1,22 @@
+{
+  "cpm22": {
+    "description": "CP/M-80 R2.2 for QX-10 & QX-16",
+    "publisher": "Epson",
+    "year": "198?"
+  },
+  "cpm22mf": {
+    "description": "QX-10 MultiFonts CP/M v.2.2",
+    "publisher": "Epson",
+    "year": "198?"
+  },
+  "cpmplus": {
+    "description": "QX-10 CP/M Plus (v3.1A)",
+    "publisher": "MML Systems",
+    "year": "1984"
+  },
+  "tmp2": {
+    "description": "TMP-II for QX-10 256K (v2.44)",
+    "publisher": "C.D.L.",
+    "year": "1983"
+  }
+}

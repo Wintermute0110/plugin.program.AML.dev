@@ -1,0 +1,3857 @@
+{
+  "5in1fun": {
+    "description": "5 in 1 Funpak (USA)",
+    "publisher": "Interplay",
+    "year": "1994"
+  },
+  "aaharima": {
+    "description": "Aa Harimanada (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "addfam": {
+    "description": "The Addams Family (World)",
+    "publisher": "Flying Edge / Acclaim Entertainment",
+    "year": "1993"
+  },
+  "advbatmr": {
+    "description": "The Adventures of Batman & Robin (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "advbatmrp1": {
+    "description": "The Adventures of Batman & Robin (Prototype, 19950507)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "advbatmrp2": {
+    "description": "The Adventures of Batman & Robin (Prototype, 19950506)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "advbatmrp3": {
+    "description": "The Adventures of Batman & Robin (Prototype, 19950506-B)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "advbatmrp4": {
+    "description": "The Adventures of Batman & Robin (Prototype, 19950504)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "advbatmrp5": {
+    "description": "The Adventures of Batman & Robin (Prototype, 19950502)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "advbatmrp6": {
+    "description": "The Adventures of Batman & Robin (Prototype, 19950430)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "advbatmrp7": {
+    "description": "The Adventures of Batman & Robin (Prototype, 19950429-A)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "advbatmrp8": {
+    "description": "The Adventures of Batman & Robin (Prototype, 19950427)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "aerialas": {
+    "description": "Aerial Assault (World, v0)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "aerialasj": {
+    "description": "Aerial Assault (Jpn, v1)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "agassi": {
+    "description": "Andre Agassi Tennis (USA)",
+    "publisher": "TecMagik",
+    "year": "1993"
+  },
+  "aladdin": {
+    "description": "Disney's Aladdin (Euro, USA, Bra)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "aladdinj": {
+    "description": "Disney's Aladdin (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "aladdinp1": {
+    "description": "Disney's Aladdin (Prototype, 19940113)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "aladdinp2": {
+    "description": "Disney's Aladdin (Prototype, 19940111)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "aladdinp3": {
+    "description": "Disney's Aladdin (Prototype, 19931229)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "alexkidd": {
+    "description": "Alex Kidd in Miracle World (Tw, SMS Mode)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "alien3": {
+    "description": "Alien³ (Euro, USA)",
+    "publisher": "Arena",
+    "year": "1992"
+  },
+  "alien3j": {
+    "description": "Alien³ (Jpn)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1992"
+  },
+  "aliensyn": {
+    "description": "Alien Syndrome (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "aliensynj": {
+    "description": "Alien Syndrome (Jpn)",
+    "publisher": "SIMS",
+    "year": "1992"
+  },
+  "arcadecl": {
+    "description": "Arcade Classics (USA)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "archrivl": {
+    "description": "Arch Rivals (USA)",
+    "publisher": "Flying Edge",
+    "year": "1992"
+  },
+  "arena": {
+    "description": "Arena (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "ariel": {
+    "description": "Disney's Ariel the Little Mermaid (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "arliel": {
+    "description": "Arliel - Crystal Densetsu (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "astergre": {
+    "description": "Astérix and the Great Rescue (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "astergrep1": {
+    "description": "Astérix and the Great Rescue (Prototype, 19940315)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "astergrep2": {
+    "description": "Astérix and the Great Rescue (Prototype, 19940313)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "astergrep3": {
+    "description": "Astérix and the Great Rescue (Prototype, 19940125)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "astergrep4": {
+    "description": "Astérix and the Great Rescue (Prototype, 19940222)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "astergrep5": {
+    "description": "Astérix and the Great Rescue (Prototype, 19940216)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "astergreu": {
+    "description": "Astérix and the Great Rescue (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "astermis": {
+    "description": "Asterix and the Secret Mission (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "axbattlr": {
+    "description": "Ax Battler - A Legend of Golden Axe (Euro, USA, v2.4)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "axbattlrj": {
+    "description": "Ax Battler - Golden Axe Densetsu (Jpn, v1.5)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "axbattlrp": {
+    "description": "Ax Battler - A Legend of Golden Axe (Euro, USA, Prototype v2.0)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "bakubaku": {
+    "description": "Baku Baku Animal (Euro)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "bakubakuj": {
+    "description": "Baku Baku Animal - Sekai Shiikugakari Senshu-ken (Jpn)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "bakubakuu": {
+    "description": "Baku Baku Animal (USA)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "bam": {
+    "description": "Bust-A-Move (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "barbiesm": {
+    "description": "Barbie Super Model (Prototype)",
+    "publisher": "Hi Tech Expressions",
+    "year": "1993"
+  },
+  "bartman": {
+    "description": "The Simpsons - Bartman Meets Radioactive Man (USA)",
+    "publisher": "Flying Edge",
+    "year": "1992"
+  },
+  "bartvssm": {
+    "description": "The Simpsons - Bart vs. The Space Mutants (Euro, USA)",
+    "publisher": "Flying Edge",
+    "year": "1992"
+  },
+  "bartvswd": {
+    "description": "The Simpsons - Bart vs. The World (World)",
+    "publisher": "Flying Edge",
+    "year": "1993"
+  },
+  "batmanf": {
+    "description": "Batman Forever (World)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "batmanrn": {
+    "description": "Batman Returns (World)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "batterup": {
+    "description": "Batter Up (Euro, USA)",
+    "publisher": "Namco",
+    "year": "1991"
+  },
+  "beavis": {
+    "description": "Beavis and Butt-head (Euro, USA)",
+    "publisher": "Viacom New Media",
+    "year": "1994"
+  },
+  "beavisp": {
+    "description": "Beavis and Butt-head (Prototype?)",
+    "publisher": "Viacom New Media",
+    "year": "1994"
+  },
+  "berens": {
+    "description": "The Berenstain Bears' Camping Adventure (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp01": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940826)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp02": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940826-B)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp03": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940825-B)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp04": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940824)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp05": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940820)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp06": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940819)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp07": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940814)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp08": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940813)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp09": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940812)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp10": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940811)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp11": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940811-A)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp12": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940801)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp13": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940727)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp14": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940722)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp15": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940721)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp16": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940715-B)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berensp17": {
+    "description": "The Berenstain Bears' Camping Adventure (Prototype, 19940628)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "berlin": {
+    "description": "Berlin no Kabe - The Berlin Wall (Jpn)",
+    "publisher": "Kaneko",
+    "year": "1991"
+  },
+  "bighurt": {
+    "description": "Frank Thomas Big Hurt Baseball (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "bonkers": {
+    "description": "Disney's Bonkers Wax Up! (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "bonkersp01": {
+    "description": "Disney's Bonkers Wax Up! (Prototype, 19941212-D)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp02": {
+    "description": "Disney's Bonkers Wax Up! (Prototype, 19941211)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp03": {
+    "description": "Disney's Bonkers Wax Up! (Prototype, 19941208-C)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp04": {
+    "description": "Disney's Bonkers Wax Up! (Prototype, 19941208-B)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp05": {
+    "description": "Disney's Bonkers Wax Up! (Prototype, 19941207-C)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp06": {
+    "description": "Disneys Bonkers Wax Up! (Prototype, 19941205)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp07": {
+    "description": "Disneys Bonkers Wax Up! (Prototype, 19941203)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp08": {
+    "description": "Bonkers Wax Up! (Prototype, 19941129)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp09": {
+    "description": "Bonkers Wax Up! (Prototype, 19941126)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp10": {
+    "description": "Bonkers Wax Up! (Prototype, 19941123)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp11": {
+    "description": "Bonkers Wax Up! (Prototype, 19941121)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp12": {
+    "description": "Bonkers Wax Up! (Prototype, 19941115)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bonkersp13": {
+    "description": "Bonkers Wax Up! (Prototype, 19941031)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "bship": {
+    "description": "Battleship (Euro, USA)",
+    "publisher": "Mindscape",
+    "year": "1993"
+  },
+  "btoads": {
+    "description": "Battletoads (Euro, Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "btoadsu": {
+    "description": "Battletoads (USA)",
+    "publisher": "Tradewest",
+    "year": "1993"
+  },
+  "bublbobl": {
+    "description": "Bubble Bobble (Euro, USA)",
+    "publisher": "Taito",
+    "year": "1994"
+  },
+  "bugsbun": {
+    "description": "Bugs Bunny in Double Trouble (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "busterb": {
+    "description": "Buster Ball (Jpn)",
+    "publisher": "Riverhill Software",
+    "year": "1992"
+  },
+  "busterf": {
+    "description": "Buster Fight (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "caesars": {
+    "description": "Caesars Palace (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "captaven": {
+    "description": "Captain America and the Avengers (Euro, USA)",
+    "publisher": "Mindscape",
+    "year": "1993"
+  },
+  "carlicen": {
+    "description": "Car Licence (Jpn)",
+    "publisher": "Mitsubishi Chemical",
+    "year": "1995"
+  },
+  "casinofn": {
+    "description": "Casino Funpak (USA)",
+    "publisher": "Interplay",
+    "year": "1995"
+  },
+  "castlill": {
+    "description": "Castle of Illusion Starring Mickey Mouse (Euro, USA, SMS Mode)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "castlillj": {
+    "description": "Mickey Mouse no Castle Illusion (Jpn, SMS Mode)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "chakan": {
+    "description": "Chakan (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "champhck": {
+    "description": "Championship Hockey (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1992"
+  },
+  "chasehq": {
+    "description": "Taito Chase H.Q. (USA, SMS Mode)",
+    "publisher": "Taito",
+    "year": "1991"
+  },
+  "chasehqj": {
+    "description": "Taito Chase H.Q. (Jpn, SMS Mode)",
+    "publisher": "Taito",
+    "year": "1991"
+  },
+  "cheese": {
+    "description": "Cheese Cat-astrophe Starring Speedy Gonzales (Euro)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chessmst": {
+    "description": "The Chessmaster (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "chicago": {
+    "description": "Chicago Syndicate (USA, Bra)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop01": {
+    "description": "Chicago Syndicate (Prototype, 19950721)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop02": {
+    "description": "Chicago Syndicate (Prototype, 19950721-B)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop03": {
+    "description": "Chicago Syndicate (Prototype, 19950720)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop04": {
+    "description": "Chicago Syndicate (Prototype, 19950719)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop05": {
+    "description": "Chicago Syndicate (Prototype, 19950711)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop06": {
+    "description": "Chicago Syndicate (Prototype, 19950710)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop07": {
+    "description": "Chicago Syndicate (Prototype, 19950707)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop08": {
+    "description": "Chicago Syndicate (Prototype, 19950705)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop09": {
+    "description": "Chicago Syndicate (Prototype, 19950703)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop10": {
+    "description": "Chicago Syndicate (Prototype, 19950630-B)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop11": {
+    "description": "Chicago Syndicate (Prototype, 19950629)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop12": {
+    "description": "Chicago Syndicate (Prototype, 19950629-B)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop13": {
+    "description": "Chicago Syndicate (Prototype, 19950628)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop14": {
+    "description": "Chicago Syndicate (Prototype, 19950626)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop15": {
+    "description": "Chicago Syndicate (Prototype, 19950622)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop16": {
+    "description": "Chicago Syndicate (Prototype, 19950620)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop17": {
+    "description": "Chicago Syndicate (Prototype, 19950619)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop18": {
+    "description": "Chicago Syndicate (Prototype, 19950614)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop19": {
+    "description": "Chicago Syndicate (Prototype, 19950612)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop20": {
+    "description": "Chicago Syndicate (Prototype, 19950608)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop21": {
+    "description": "Chicago Syndicate (Prototype, 19950607)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop22": {
+    "description": "Chicago Syndicate (Prototype, 19950605)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop23": {
+    "description": "Chicago Syndicate (Prototype, 19950601)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "chicagop24": {
+    "description": "Chicago Syndicate (Prototype, 19950505)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "choplft3": {
+    "description": "Choplifter III (USA)",
+    "publisher": "Extreme Entertainment Group",
+    "year": "1993"
+  },
+  "chuckrck": {
+    "description": "Chuck Rock (World)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "chuckrckp": {
+    "description": "Chuck Rock (World, Prototype)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "chukrck2": {
+    "description": "Chuck Rock II - Son of Chuck (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "chukrck2u": {
+    "description": "Chuck Rock II - Son of Chuck (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "cj": {
+    "description": "CJ Elephant Fugitive (Euro)",
+    "publisher": "Codemasters",
+    "year": "1991"
+  },
+  "cliffh": {
+    "description": "Cliffhanger (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "clutchit": {
+    "description": "Clutch Hitter (USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "cocakid": {
+    "description": "Coca Cola Kid (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "columns": {
+    "description": "Columns (Euro, USA, Bra)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "columnsj": {
+    "description": "Columns (Jpn)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "columnsj1": {
+    "description": "Columns (Jpn, Older)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "coolspot": {
+    "description": "Cool Spot (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "coolspotu": {
+    "description": "Cool Spot (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "cosmic": {
+    "description": "Cosmic Spacehead (Euro)",
+    "publisher": "Codemasters",
+    "year": "1993"
+  },
+  "crashdum": {
+    "description": "The Incredible Crash Dummies (World)",
+    "publisher": "Acclaim Entertainment / Flying Edge",
+    "year": "1992"
+  },
+  "crayon": {
+    "description": "Crayon Shin-chan - Taiketsu! Kantamu Panic!! (Jpn)",
+    "publisher": "Bandai",
+    "year": "1995"
+  },
+  "crazyfac": {
+    "description": "Crazy Faces (Euro, Prototype)",
+    "publisher": "Domark",
+    "year": "1993"
+  },
+  "crystalw": {
+    "description": "Crystal Warriors (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "cutthr": {
+    "description": "Cutthroat Island (Euro, USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "cutthrp": {
+    "description": "Cutthroat Island (Prototype 19950916)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "daffy": {
+    "description": "Daffy Duck in Hollywood (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "daisenrg": {
+    "description": "Taisen-gata Daisenryaku G (Jpn)",
+    "publisher": "SystemSoft",
+    "year": "1991"
+  },
+  "dcrystal": {
+    "description": "Dragon Crystal (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "dcrystalj": {
+    "description": "Dragon Crystal - Tsurani no Meikyuu (Jpn)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "ddanpei": {
+    "description": "Honoo no Toukyuuji - Dodge Danpei (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "ddragon": {
+    "description": "Double Dragon (Euro, USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "ddragonp": {
+    "description": "Double Dragon (Euro, USA, Prototype)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "deepduck": {
+    "description": "Deep Duck Trouble Starring Donald Duck (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "defoasis": {
+    "description": "Defenders of Oasis (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "defoasisp": {
+    "description": "Defenders of Oasis (Euro, USA, Prototype)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "desert": {
+    "description": "Desert Speedtrap Starring Road Runner and Wile E. Coyote (Euro)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "desertu": {
+    "description": "Desert Speedtrap Starring Road Runner and Wile E. Coyote (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "devilish": {
+    "description": "Devilish (Euro, Bra)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "devilishj": {
+    "description": "Devilish (Jpn)",
+    "publisher": "Genki",
+    "year": "1991"
+  },
+  "devilishu": {
+    "description": "Devilish (USA)",
+    "publisher": "Sage's Creations",
+    "year": "1991"
+  },
+  "dhead": {
+    "description": "Dynamite Headdy (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "dheadj": {
+    "description": "Dynamite Headdy (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "dheadp1": {
+    "description": "Dynamite Headdy (Prototype, 19940705)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "dheadp2": {
+    "description": "Dynamite Headdy (Prototype, 19940701)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "dheadp3": {
+    "description": "Dynamite Headdy (Prototype, 19940615)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "donald42": {
+    "description": "Donald Duck no 4-Tsu no Hihou (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "donaldld": {
+    "description": "Donald Duck no Lucky Dime (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "donaldmw": {
+    "description": "Donald no Magical World (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "doraemon": {
+    "description": "Doraemon - Waku Waku Pocket Paradise (Jpn)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "dracula": {
+    "description": "Bram Stoker's Dracula (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "draculau": {
+    "description": "Bram Stoker's Dracula (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "dragon": {
+    "description": "Dragon - The Bruce Lee Story (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "dragonu": {
+    "description": "Dragon - The Bruce Lee Story (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "drfrankn": {
+    "description": "Dr. Franken (Prototype Demo)",
+    "publisher": "Elite",
+    "year": "1993"
+  },
+  "dropzone": {
+    "description": "Dropzone (Euro)",
+    "publisher": "Codemasters",
+    "year": "1994"
+  },
+  "drrobotn": {
+    "description": "Dr. Robotnik's Mean Bean Machine (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "dstrike": {
+    "description": "Desert Strike (Euro)",
+    "publisher": "Domark",
+    "year": "1992"
+  },
+  "dstrikeu": {
+    "description": "Desert Strike - Return to the Gulf (USA)",
+    "publisher": "Domark",
+    "year": "1992"
+  },
+  "dunkkids": {
+    "description": "Dunk Kids (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "ecco": {
+    "description": "Ecco the Dolphin (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "ecco2": {
+    "description": "Ecco II - The Tides of Time (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "ecco2j": {
+    "description": "Ecco the Dolphin II (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "eccoj": {
+    "description": "Ecco the Dolphin (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "ejim": {
+    "description": "Earthworm Jim (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1995"
+  },
+  "ejimu": {
+    "description": "Earthworm Jim (USA)",
+    "publisher": "Playmates Interactive",
+    "year": "1995"
+  },
+  "ernieeg": {
+    "description": "Ernie Els Golf (Euro)",
+    "publisher": "Codemasters",
+    "year": "1994"
+  },
+  "eternleg": {
+    "description": "Eternal Legend - Eien no Densetsu (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "evander": {
+    "description": "Evander Holyfield Boxing (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "excdizzy": {
+    "description": "The Excellent Dizzy Collection (Euro, SMS Mode)",
+    "publisher": "Codemasters",
+    "year": "1995"
+  },
+  "excdizzyp": {
+    "description": "The Excellent Dizzy Collection (Prototype, SMS Mode)",
+    "publisher": "Codemasters",
+    "year": "1995"
+  },
+  "f1": {
+    "description": "F1 (Euro, USA)",
+    "publisher": "Domark",
+    "year": "1993"
+  },
+  "f15se": {
+    "description": "F-15 Strike Eagle (Euro, USA)",
+    "publisher": "Microprose",
+    "year": "1993"
+  },
+  "f1wce": {
+    "description": "F1 World Championship Edition (Euro)",
+    "publisher": "Domark",
+    "year": "1995"
+  },
+  "faceball": {
+    "description": "Faceball 2000 (Jpn)",
+    "publisher": "Riverhill Software",
+    "year": "1993"
+  },
+  "factoryp": {
+    "description": "Factory Panic (Euro, Bra)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "fantdizz": {
+    "description": "Fantastic Dizzy (Euro, SMS Mode)",
+    "publisher": "Codemasters",
+    "year": "1993"
+  },
+  "fantzone": {
+    "description": "Fantasy Zone Gear (Euro, Jpn)",
+    "publisher": "Sanritsu",
+    "year": "1991"
+  },
+  "fantzoneu": {
+    "description": "Fantasy Zone Gear (USA)",
+    "publisher": "Sega / Sanritsu",
+    "year": "1991"
+  },
+  "fatfursp": {
+    "description": "Fatal Fury Special (Euro)",
+    "publisher": "Takara",
+    "year": "1994"
+  },
+  "fatfurspu": {
+    "description": "Fatal Fury Special (USA)",
+    "publisher": "Takara",
+    "year": "1994"
+  },
+  "fifa": {
+    "description": "FIFA International Soccer (Euro, USA)",
+    "publisher": "Electronic Arts",
+    "year": "1994"
+  },
+  "fifa96": {
+    "description": "FIFA Soccer 96 (Euro, USA)",
+    "publisher": "Black Pearl",
+    "year": "1995"
+  },
+  "fifaj": {
+    "description": "FIFA International Soccer (Jpn)",
+    "publisher": "Electronic Arts Victor",
+    "year": "1995"
+  },
+  "foreman": {
+    "description": "Foreman for Real (World)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "fray": {
+    "description": "Fray - Shugyou Hen (Jpn)",
+    "publisher": "Micro Cabin",
+    "year": "1991"
+  },
+  "fredcoup": {
+    "description": "Fred Couples' Golf (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "fredcoupj": {
+    "description": "Fred Couples' Golf (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "frogger": {
+    "description": "Frogger (USA, Prototype)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "galaga2": {
+    "description": "Galaga 2 (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "galaga91": {
+    "description": "Galaga '91 (Jpn)",
+    "publisher": "Namcot",
+    "year": "1991"
+  },
+  "gamble": {
+    "description": "Gamble Panic (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "gambler": {
+    "description": "Gambler Jikochuushinha (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "garfield": {
+    "description": "Garfield - Caught in the Act (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "garousp": {
+    "description": "Garou Densetsu Special (Jpn)",
+    "publisher": "Takara",
+    "year": "1994"
+  },
+  "gearstad": {
+    "description": "Gear Stadium (Jpn)",
+    "publisher": "Namcot",
+    "year": "1991"
+  },
+  "gearstah": {
+    "description": "Gear Stadium Heiseiban (Jpn)",
+    "publisher": "Namcot",
+    "year": "1995"
+  },
+  "gearwork": {
+    "description": "Gear Works (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "georgeko": {
+    "description": "George Foreman's KO Boxing (Euro, USA)",
+    "publisher": "Flying Edge",
+    "year": "1992"
+  },
+  "ggaleste": {
+    "description": "GG Aleste (Jpn)",
+    "publisher": "Compile",
+    "year": "1991"
+  },
+  "ggdora": {
+    "description": "GG Doraemon - Noranosuke no Yabou (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "ggorby": {
+    "description": "Ganbare Gorby! (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "ggport": {
+    "description": "GG Portrait - Pai Chen (Jpn)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "ggport1": {
+    "description": "GG Portrait - Yuuki Akira (Jpn)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "gloc": {
+    "description": "G-LOC Air Battle (Euro, USA, Bra)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "glocj": {
+    "description": "G-LOC Air Battle (Jpn, v1)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "glocj1": {
+    "description": "G-LOC Air Battle (Jpn, v0)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "godzilla": {
+    "description": "Godzilla - Kaijuu Daishingeki (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "gprider": {
+    "description": "GP Rider (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "gpriderj": {
+    "description": "GP Rider (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "gpriderp": {
+    "description": "GP Rider (Prototype, 19940104)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "greendog": {
+    "description": "Greendog (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "griffin": {
+    "description": "Griffin (Jpn)",
+    "publisher": "Riot",
+    "year": "1991"
+  },
+  "gunstar": {
+    "description": "Gunstar Heroes (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "halleyw": {
+    "description": "Halley Wars (Euro, USA, Bra)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "halleywj": {
+    "description": "Halley Wars (Jpn)",
+    "publisher": "Taito",
+    "year": "1991"
+  },
+  "headbust": {
+    "description": "Head Buster (Jpn)",
+    "publisher": "Masaya",
+    "year": "1991"
+  },
+  "heavyw": {
+    "description": "Heavy Weight Champ (Jpn)",
+    "publisher": "SIMS",
+    "year": "1991"
+  },
+  "homea": {
+    "description": "Home Alone (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "hook": {
+    "description": "Hook (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "hooku": {
+    "description": "Hook (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "hulk": {
+    "description": "The Incredible Hulk (Euro, USA)",
+    "publisher": "U.S. Gold",
+    "year": "1994"
+  },
+  "hurrican": {
+    "description": "Hurricanes (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1994"
+  },
+  "hyokkohj": {
+    "description": "Hyokkori Hyoutan-jima - Hyoutan-jima no Daikoukai (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "hypyak92": {
+    "description": "Hyper Pro Yakyuu '92 (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "ichirgg": {
+    "description": "Puzzlle & Action Ichidant~R GG (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "indycrus": {
+    "description": "Indiana Jones and the Last Crusade (Euro, USA)",
+    "publisher": "U.S. Gold",
+    "year": "1992"
+  },
+  "inudais": {
+    "description": "Pet Club Inu Daisuki! (Jpn)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "ironman": {
+    "description": "Iron Man X-O Manowar in Heavy Metal (Euro, USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1996"
+  },
+  "ironman1": {
+    "description": "Iron Man X-O Manowar in Heavy Metal (USA, Alt)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1996"
+  },
+  "itchy": {
+    "description": "The Itchy & Scratchy Game (Euro, USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "jangpun2": {
+    "description": "Jang Pung II (Kor, SMS Mode)",
+    "publisher": "Sieco",
+    "year": "1993"
+  },
+  "jb007": {
+    "description": "James Bond 007 - The Duel (Euro)",
+    "publisher": "Domark",
+    "year": "1993"
+  },
+  "jdredd": {
+    "description": "Judge Dredd (Euro, USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "jeopards": {
+    "description": "Jeopardy! - Sports Edition (Euro, USA)",
+    "publisher": "GameTek",
+    "year": "1994"
+  },
+  "jeopardy": {
+    "description": "Jeopardy! (USA)",
+    "publisher": "GameTek",
+    "year": "1993"
+  },
+  "jleagu94": {
+    "description": "J.League GG Pro Striker '94 (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "jleague": {
+    "description": "J.League Soccer - Dream Eleven (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "joemont": {
+    "description": "Joe Montana's Football (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "joemontj": {
+    "description": "Joe Montana's Football (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "jpark": {
+    "description": "Jurassic Park (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "jparkj": {
+    "description": "Jurassic Park (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "jpond3": {
+    "description": "James Pond 3 - Operation Starfish (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1994"
+  },
+  "jstrike": {
+    "description": "Jungle Strike (USA)",
+    "publisher": "Black Pearl Software",
+    "year": "1995"
+  },
+  "junction": {
+    "description": "Junction (USA)",
+    "publisher": "Micronet",
+    "year": "1991"
+  },
+  "junctionj": {
+    "description": "Junction (Jpn)",
+    "publisher": "Micronet",
+    "year": "1991"
+  },
+  "jungle": {
+    "description": "The Jungle Book (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "jungleu": {
+    "description": "The Jungle Book (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "kawasaki": {
+    "description": "Kawasaki Superbike Challenge (Euro, USA)",
+    "publisher": "Domark",
+    "year": "1995"
+  },
+  "kickrush": {
+    "description": "Kick & Rush (Jpn)",
+    "publisher": "SIMS",
+    "year": "1993"
+  },
+  "kineticc": {
+    "description": "Kinetic Connection (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "klax": {
+    "description": "Klax (Euro, USA)",
+    "publisher": "Tengen",
+    "year": "1992"
+  },
+  "krustyfh": {
+    "description": "Krusty's Fun House (Euro, USA)",
+    "publisher": "Flying Edge",
+    "year": "1992"
+  },
+  "kunichan": {
+    "description": "Kuni-chan no Game Tengoku (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "kunichn2": {
+    "description": "Kuni-chan no Game Tengoku Part 2 (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "landill": {
+    "description": "Land of Illusion Starring Mickey Mouse (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "landillj": {
+    "description": "Mickey Mouse no Mahou no Crystal (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "lastact": {
+    "description": "Last Action Hero (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "lastbibl": {
+    "description": "Megami Tensei Gaiden - Last Bible (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "lastbibs": {
+    "description": "Megami Tensei Gaiden - Last Bible S (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "legndill": {
+    "description": "Legend of Illusion Starring Mickey Mouse (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "legndillj": {
+    "description": "Mickey Mouse Densetsu no Oukoku - Legend of Illusion (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "legndillp1": {
+    "description": "Legend of Illusion Starring Mickey Mouse (Prototype, 19941017)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "legndillp2": {
+    "description": "Legend of Illusion Starring Mickey Mouse (Prototype, 19941014)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "legndillp3": {
+    "description": "Legend of Illusion Starring Mickey Mouse (Prototype, 19941011)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "legndillp4": {
+    "description": "Legend of Illusion Starring Mickey Mouse (Prototype, 19940930)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "legndillp5": {
+    "description": "Legend of Illusion Starring Mickey Mouse (Prototype, 19940930-SEL)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "legndillp6": {
+    "description": "Legend of Illusion Starring Mickey Mouse (Prototype, 19940922)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "lemming2": {
+    "description": "Lemmings 2 - The Tribes (Euro, Prototype)",
+    "publisher": "Psygnosis",
+    "year": "1994"
+  },
+  "lemmings": {
+    "description": "Lemmings (World)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "lemmingsp": {
+    "description": "Lemmings (World, Prototype)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "lionking": {
+    "description": "The Lion King (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lionkingj": {
+    "description": "The Lion King (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "lionkingp1": {
+    "description": "The Lion King (Prototype, 19940820)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lionkingp2": {
+    "description": "The Lion King (Prototype, 19940817)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lionkingp3": {
+    "description": "The Lion King (Prototype, 19940817-2)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lionkingp4": {
+    "description": "Disney's The Lion King (Prototype, 19940816)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lionkingp5": {
+    "description": "Disney's The Lion King (Prototype, 19940814)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lionkingp6": {
+    "description": "Disney's The Lion King (Prototype, 19940813)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lionkingp7": {
+    "description": "Disney's The Lion King (Prototype, 19940812)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lionkingp8": {
+    "description": "Disney's The Lion King (Prototype, 19940811)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lionkingp9": {
+    "description": "Disney's The Lion King (Prototype, 19940803)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lionkingu": {
+    "description": "The Lion King (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "lostwrld": {
+    "description": "The Lost World - Jurassic Park (USA)",
+    "publisher": "Sega",
+    "year": "1997"
+  },
+  "luckydim": {
+    "description": "The Lucky Dime Caper (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "lunar": {
+    "description": "Lunar - Sanposuru Gakuen (Jpn)",
+    "publisher": "Game Arts",
+    "year": "1996"
+  },
+  "madden95": {
+    "description": "Madden NFL '95 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1995"
+  },
+  "madden96": {
+    "description": "Madden NFL '96 (Euro, USA)",
+    "publisher": "Black Pearl",
+    "year": "1995"
+  },
+  "madoumn2": {
+    "description": "Madou Monogatari II - Arle 16-Sai (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "madoumn3": {
+    "description": "Madou Monogatari III - Kyuukyoku Joou-sama (Jpn, v1)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "madoumn3a": {
+    "description": "Madou Monogatari III - Kyuukyoku Joou-sama (Jpn, v0)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "madoumna": {
+    "description": "Madou Monogatari A - Dokidoki Vacation (Jpn)",
+    "publisher": "Compile",
+    "year": "1995"
+  },
+  "madoumon": {
+    "description": "Madou Monogatari I - 3-Tsu no Madoukyuu (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "magiclpp": {
+    "description": "Magical Puzzle Popils (World)",
+    "publisher": "Tengen",
+    "year": "1991"
+  },
+  "majors": {
+    "description": "The Majors Pro Baseball (USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "mappy": {
+    "description": "Mappy (Jpn)",
+    "publisher": "Namcot",
+    "year": "1991"
+  },
+  "marble": {
+    "description": "Marble Madness (Euro, USA)",
+    "publisher": "Tengen",
+    "year": "1992"
+  },
+  "marko": {
+    "description": "Marko's Magic Football (Euro)",
+    "publisher": "Domark",
+    "year": "1993"
+  },
+  "mastdark": {
+    "description": "Master of Darkness (Euro)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "megaman": {
+    "description": "Mega Man (Euro, USA)",
+    "publisher": "U.S. Gold",
+    "year": "1995"
+  },
+  "mgear": {
+    "description": "Master Gear Converter",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "mickeyuc": {
+    "description": "Mickey's Ultimate Challenge (Euro, USA)",
+    "publisher": "Hi Tech Expressions",
+    "year": "1994"
+  },
+  "mickmack": {
+    "description": "Mick & Mack as the Global Gladiators (Euro, USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1992"
+  },
+  "micromac": {
+    "description": "Micro Machines (Euro)",
+    "publisher": "Codemasters",
+    "year": "1993"
+  },
+  "micromc2": {
+    "description": "Micro Machines 2 - Turbo Tournament (Euro)",
+    "publisher": "Codemasters",
+    "year": "1995"
+  },
+  "mk": {
+    "description": "Mortal Kombat (Euro, USA, v2.6)",
+    "publisher": "Arena",
+    "year": "1993"
+  },
+  "mk2": {
+    "description": "Mortal Kombat II (World)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1994"
+  },
+  "mk3": {
+    "description": "Mortal Kombat 3 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "mkj": {
+    "description": "Mortal Kombat (Jpn, v3.3)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1993"
+  },
+  "mlbpa": {
+    "description": "MLBPA Baseball (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1995"
+  },
+  "mmpr": {
+    "description": "Mighty Morphin Power Rangers (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "mmprp": {
+    "description": "Mighty Morphin Power Rangers (Prototype, 19940716)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "mmprtm": {
+    "description": "Mighty Morphin Power Rangers - The Movie (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "mmprtmp": {
+    "description": "Mighty Morphin Power Rangers - The Movie (Prototype, 19950530)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "moldoran": {
+    "description": "Moldorian - Hikari to Yami no Sister (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "monstwar": {
+    "description": "Monster Truck Wars (Euro, USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1994"
+  },
+  "mspacman": {
+    "description": "Ms. Pac-Man (USA)",
+    "publisher": "Namco",
+    "year": "1993"
+  },
+  "mtaruru": {
+    "description": "Magical Taruruuto-kun (Jpn)",
+    "publisher": "Tsukuda Original",
+    "year": "1991"
+  },
+  "mworld2": {
+    "description": "Monster World II - Dragon no Wana (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "nazopuyo": {
+    "description": "Nazo Puyo (Jpn, v1)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "nazopuyo1": {
+    "description": "Nazo Puyo (Jpn, v0)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "nazpuyo2": {
+    "description": "Nazo Puyo 2 (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "nazpyoar": {
+    "description": "Nazo Puyo Arle no Roux (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nazpyoarp": {
+    "description": "Nazo Puyo Arle no Roux (Jpn, Prototype)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaact": {
+    "description": "NBA Action Starring David Robinson (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp01": {
+    "description": "NBA Action Starring David Robinson (Final H,  19940308)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp02": {
+    "description": "NBA Action Starring David Robinson (Final G,  19940305)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp03": {
+    "description": "NBA Action Starring David Robinson (Final F,  19940304)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp04": {
+    "description": "NBA Action Starring David Robinson (Final E,  19940304)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp05": {
+    "description": "NBA Action Starring David Robinson (Final D,  19940303)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp06": {
+    "description": "NBA Action Starring David Robinson (Final C,  19940302)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp07": {
+    "description": "NBA Action Starring David Robinson (Final B,  19940301)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp08": {
+    "description": "NBA Action Starring David Robinson (Final A,  19940228)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp09": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940228)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp10": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940227)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp11": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940226)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp12": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940225)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp13": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940225-B)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp14": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940224)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp15": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940221)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp16": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940220)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp17": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940217)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp18": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19941215)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp19": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940212)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp20": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940208)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp21": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940206)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp22": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940203)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp23": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940202)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp24": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940129)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp25": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940124)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp26": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940110)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp27": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940106)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp28": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19940104)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nbaactp29": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19931201)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "nbaactp30": {
+    "description": "NBA Action Starring David Robinson (Prototype, 19931128)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "nbajam": {
+    "description": "NBA Jam (USA, v1.1)",
+    "publisher": "Arena",
+    "year": "1993"
+  },
+  "nbajam1": {
+    "description": "NBA Jam (Euro, USA)",
+    "publisher": "Arena",
+    "year": "1993"
+  },
+  "nbajamj": {
+    "description": "NBA Jam (Jpn)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1994"
+  },
+  "nbajamte": {
+    "description": "NBA Jam Tournament Edition (World)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1994"
+  },
+  "nekodais": {
+    "description": "Pet Club Neko Daisuki! (Jpn)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "nfl95": {
+    "description": "NFL '95 (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p01": {
+    "description": "NFL '95 (Prototype, 19940914)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p02": {
+    "description": "NFL '95 (Prototype, 19940914-F)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p03": {
+    "description": "NFL '95 (Prototype, 19940912)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p04": {
+    "description": "NFL '95 (Prototype, 19940911-C)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p05": {
+    "description": "NFL '95 (Prototype, 19940911-B)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p06": {
+    "description": "NFL '95 (Prototype, 19940910)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p07": {
+    "description": "NFL '95 (Prototype, 19940908)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p08": {
+    "description": "NFL '95 (Prototype, 19940902)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p09": {
+    "description": "NFL '95 (Prototype, 19940831)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p10": {
+    "description": "NFL '95 (Prototype, 19940826)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p11": {
+    "description": "NFL '95 (Prototype, 19940825)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p12": {
+    "description": "NFL '95 (Prototype, 19940825-A)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nfl95p13": {
+    "description": "NFL '95 (Prototype, 19940808)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nflqb": {
+    "description": "NFL Quarterback Club (World)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1994"
+  },
+  "nflqb96": {
+    "description": "NFL Quarterback Club '96 (Euro, USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "ngaiden": {
+    "description": "Ninja Gaiden (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "ngaidenj": {
+    "description": "Ninja Gaiden (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "nhl": {
+    "description": "NHL Hockey (Euro, USA)",
+    "publisher": "Electronic Arts",
+    "year": "1995"
+  },
+  "nhlas": {
+    "description": "NHL All-Star Hockey (USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp01": {
+    "description": "NHL All-Star Hockey (Prototype, 19950125)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp02": {
+    "description": "NHL All-Star Hockey (Prototype, 19950124)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp03": {
+    "description": "NHL All-Star Hockey (Prototype, 19950124-C)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp04": {
+    "description": "NHL All-Star Hockey (Prototype, 19950124-B)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp05": {
+    "description": "NHL All-Star Hockey (Prototype, 19950124-A)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp06": {
+    "description": "NHL All-Star Hockey (Prototype, 19950121)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp07": {
+    "description": "NHL All-Star Hockey (Prototype, 19950120)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp08": {
+    "description": "NHL All-Star Hockey (Prototype, 19950116)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp09": {
+    "description": "NHL All-Star Hockey (Prototype, 19950113)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp10": {
+    "description": "NHL All-Star Hockey (Prototype, 19950111)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp11": {
+    "description": "NHL All-Star Hockey (Prototype, 19950107)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp12": {
+    "description": "NHL All-Star Hockey (Prototype, 19950103)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp13": {
+    "description": "NHL All-Star Hockey (Prototype, 19950102)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nhlasp14": {
+    "description": "NHL All-Star Hockey (Prototype, 19941231)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nhlasp15": {
+    "description": "NHL All-Star Hockey (Prototype, 19941229)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nhlasp16": {
+    "description": "NHL All-Star Hockey (Prototype, 19941222)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "nhlasp17": {
+    "description": "NHL All-Star Hockey (Prototype, 19941215)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "ninku": {
+    "description": "Ninku (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "ninku2": {
+    "description": "Ninku 2 - Tenkuuryuu e no Michi (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "ninkug": {
+    "description": "Ninku Gaiden - Hiroyuki Daikatsugeki (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "nomowsb": {
+    "description": "Nomo's World Series Baseball (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "olympgld": {
+    "description": "Olympic Gold (Euro, v1, SMS Mode)",
+    "publisher": "U.S. Gold",
+    "year": "1992"
+  },
+  "olympglda": {
+    "description": "Olympic Gold (Jpn, USA, v0, SMS Mode)",
+    "publisher": "U.S. Gold",
+    "year": "1992"
+  },
+  "ottifant": {
+    "description": "The Ottifants (Euro)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "outrneur": {
+    "description": "Out Run Europa (Euro, Bra, SMS Mode)",
+    "publisher": "U.S. Gold",
+    "year": "1992"
+  },
+  "outrneuru": {
+    "description": "Out Run Europa (USA, SMS Mode)",
+    "publisher": "U.S. Gold",
+    "year": "1992"
+  },
+  "outrun": {
+    "description": "Out Run (Euro)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "outrunj": {
+    "description": "Out Run (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "pacattak": {
+    "description": "Pac-Attack (Euro, USA)",
+    "publisher": "Namco",
+    "year": "1994"
+  },
+  "pacintim": {
+    "description": "Pac-In-Time (Prototype)",
+    "publisher": "Namco",
+    "year": "1994"
+  },
+  "pacman": {
+    "description": "Pac-Man (USA)",
+    "publisher": "Namco",
+    "year": "1991"
+  },
+  "pacmanj": {
+    "description": "Pac-Man (Jpn)",
+    "publisher": "Namcot",
+    "year": "1991"
+  },
+  "panzer": {
+    "description": "Panzer Dragoon Mini (Jpn)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "paperbo2": {
+    "description": "Paperboy II (Euro, USA)",
+    "publisher": "Tengen",
+    "year": "1992"
+  },
+  "paperbo2p": {
+    "description": "Paperboy II (Prototype)",
+    "publisher": "Tengen",
+    "year": "1992"
+  },
+  "paperboy": {
+    "description": "Paperboy (Euro, USA)",
+    "publisher": "Tengen",
+    "year": "1991"
+  },
+  "pbdreams": {
+    "description": "Pinball Dreams (USA)",
+    "publisher": "GameTek",
+    "year": "1993"
+  },
+  "pbobble": {
+    "description": "Puzzle Bobble (Jpn)",
+    "publisher": "Taito",
+    "year": "1996"
+  },
+  "pdrive": {
+    "description": "Power Drive (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1994"
+  },
+  "pengo": {
+    "description": "Pengo (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "pengoj": {
+    "description": "Pengo (Jpn)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "pga96": {
+    "description": "PGA Tour 96 (Euro, USA)",
+    "publisher": "Black Pearl",
+    "year": "1996"
+  },
+  "pgatour": {
+    "description": "PGA Tour Golf (USA, v1.1)",
+    "publisher": "Electronic Arts?",
+    "year": "1994"
+  },
+  "pgatour2": {
+    "description": "PGA Tour Golf II (Euro, USA)",
+    "publisher": "Time Warner Interactive",
+    "year": "1992"
+  },
+  "pgatourt": {
+    "description": "PGA Tour Golf (Euro, USA)",
+    "publisher": "Tengen",
+    "year": "1991"
+  },
+  "phantom": {
+    "description": "Phantom 2040 (Euro, USA)",
+    "publisher": "Viacom New Media",
+    "year": "1995"
+  },
+  "pocketj": {
+    "description": "Pocket Jansou (Jpn)",
+    "publisher": "Namcot",
+    "year": "1992"
+  },
+  "pokerfbj": {
+    "description": "Poker Face Paul's Blackjack (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "pokerfg": {
+    "description": "Poker Faced Paul's Gin (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "pokerfp": {
+    "description": "Poker Face Paul's Poker (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "pokerfs": {
+    "description": "Poker Face Paul's Solitaire (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "popbreak": {
+    "description": "Pop Breaker (Jpn)",
+    "publisher": "Micro Cabin",
+    "year": "1991"
+  },
+  "popeye": {
+    "description": "Popeye no Beach Volleyball (Jpn)",
+    "publisher": "Technos Japan",
+    "year": "1994"
+  },
+  "ppersia": {
+    "description": "Prince of Persia (Euro, SMS Mode)",
+    "publisher": "Domark",
+    "year": "1992"
+  },
+  "ppersiau": {
+    "description": "Prince of Persia (USA, SMS Mode)",
+    "publisher": "Domark",
+    "year": "1992"
+  },
+  "predatr2": {
+    "description": "Predator 2 (Euro, USA, SMS Mode)",
+    "publisher": "Arena",
+    "year": "1992"
+  },
+  "primal": {
+    "description": "Primal Rage (Euro, USA)",
+    "publisher": "Time Warner Interactive",
+    "year": "1994"
+  },
+  "proyak91": {
+    "description": "The Pro Yakyuu '91 (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "proyak94": {
+    "description": "Pro Yakyuu GG League '94 (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "proyakgg": {
+    "description": "Pro Yakyuu GG League (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "proyaktl": {
+    "description": "Tatakae! Pro Yakyuu Twin League (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "pstaradv": {
+    "description": "Phantasy Star Adventure (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "pstargdn": {
+    "description": "Phantasy Star Gaiden (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "pstrike2": {
+    "description": "Power Strike II (Euro) ~ GG Aleste II (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "psychicw": {
+    "description": "Psychic World (Euro, USA, Bra)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "psychicwj": {
+    "description": "Psychic World (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "puttputt": {
+    "description": "Putt & Putter (Euro, USA, Bra)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "puttputtj": {
+    "description": "Putt & Putter (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "puyopuy2": {
+    "description": "Puyo Puyo 2 (Jpn)",
+    "publisher": "Compile",
+    "year": "1994"
+  },
+  "puyopuyo": {
+    "description": "Puyo Puyo (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "quizgear": {
+    "description": "The Quiz Gear Fight!! (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "rastan": {
+    "description": "Rastan Saga (Jpn, SMS Mode)",
+    "publisher": "Taito",
+    "year": "1991"
+  },
+  "rayeart2": {
+    "description": "Magic Knight Rayearth 2 - Making of Magic Knight (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "rayearth": {
+    "description": "Magic Knight Rayearth (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "rbibb94": {
+    "description": "R.B.I. Baseball '94 (USA)",
+    "publisher": "Time Warner Interactive",
+    "year": "1994"
+  },
+  "rcgp": {
+    "description": "R.C. Grand Prix (USA, SMS Mode)",
+    "publisher": "Absolute Entertainment",
+    "year": "1992"
+  },
+  "revenged": {
+    "description": "Revenge of Drancon (USA, Bra)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "riddick": {
+    "description": "Riddick Bowe Boxing (USA)",
+    "publisher": "Extreme Entertainment Group",
+    "year": "1993"
+  },
+  "riddickj": {
+    "description": "Riddick Bowe Boxing (Jpn)",
+    "publisher": "Micronet",
+    "year": "1994"
+  },
+  "riserobo": {
+    "description": "Rise of the Robots (Euro, USA)",
+    "publisher": "Time Warner Interactive / Absolute Entertainment",
+    "year": "1994"
+  },
+  "ristar": {
+    "description": "Ristar - The Shooting Star (World)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "ristarp1": {
+    "description": "Ristar - The Shooting Star (Prototype, 19941102)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "ristarp2": {
+    "description": "Ristar - The Shooting Star (Prototype, 19941101)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "ristarp3": {
+    "description": "Ristar - The Shooting Star (Prototype, 19941026)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "ristarp4": {
+    "description": "Ristar - The Shooting Star (Prototype, 19941019)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "ristarp5": {
+    "description": "Ristar - The Shooting Star (Prototype, 19940909)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "roadrash": {
+    "description": "Road Rash (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1993"
+  },
+  "roadrashu": {
+    "description": "Road Rash (USA)",
+    "publisher": "U.S. Gold",
+    "year": "1993"
+  },
+  "robocod": {
+    "description": "James Pond II - Codename RoboCod (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1993"
+  },
+  "robocodu": {
+    "description": "James Pond II - Codename RoboCod (USA)",
+    "publisher": "U.S. Gold",
+    "year": "1993"
+  },
+  "robocop3": {
+    "description": "RoboCop 3 (World)",
+    "publisher": "Flying Edge",
+    "year": "1993"
+  },
+  "roboterm": {
+    "description": "RoboCop versus The Terminator (Euro, USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "royalstn": {
+    "description": "Royal Stone - Hirakareshi Toki no Tobira (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "ryukyu": {
+    "description": "Ryuukyuu (Jpn)",
+    "publisher": "Face",
+    "year": "1991"
+  },
+  "sailorms": {
+    "description": "Bishoujo Senshi Sailor Moon S (Jpn)",
+    "publisher": "Bandai",
+    "year": "1995"
+  },
+  "sainttal": {
+    "description": "Kaitou Saint Tale (Jpn)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "sampras": {
+    "description": "Pete Sampras Tennis (Euro)",
+    "publisher": "Codemasters",
+    "year": "1994"
+  },
+  "samsho": {
+    "description": "Samurai Shodown (USA)",
+    "publisher": "Takara",
+    "year": "1994"
+  },
+  "samspir": {
+    "description": "Samurai Spirits (Jpn)",
+    "publisher": "Takara",
+    "year": "1994"
+  },
+  "sbtank": {
+    "description": "Super Battletank (USA)",
+    "publisher": "Majesco",
+    "year": "1992"
+  },
+  "scratchg": {
+    "description": "Scratch Golf (USA)",
+    "publisher": "Vic Tokai",
+    "year": "1994"
+  },
+  "scratchgj": {
+    "description": "Scratch Golf (Jpn)",
+    "publisher": "Vic Tokai",
+    "year": "1994"
+  },
+  "sdgundam": {
+    "description": "SD Gundam - Winner's History (Jpn)",
+    "publisher": "Bandai",
+    "year": "1995"
+  },
+  "sega4in1": {
+    "description": "Sega Game Pack 4 in 1 (Euro)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "sega4in1p": {
+    "description": "Sega Game Pack 4 in 1 (Euro, Prototype)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "sensible": {
+    "description": "Sensible Soccer (Euro)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "shadam": {
+    "description": "Shadam Crusader - Harukanaru Oukoku (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "shangh2": {
+    "description": "Shanghai II (Jpn, v1)",
+    "publisher": "Sunsoft",
+    "year": "1990"
+  },
+  "shangh2a": {
+    "description": "Shanghai II (Jpn, v0)",
+    "publisher": "Sunsoft",
+    "year": "1990"
+  },
+  "shaqfu": {
+    "description": "Shaq Fu (Euro, USA)",
+    "publisher": "Electronic Arts",
+    "year": "1995"
+  },
+  "sharrier": {
+    "description": "Space Harrier (World)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "shavnyak": {
+    "description": "Quest for the Shaven Yak Starring Ren Hoëk & Stimpy (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "shero": {
+    "description": "Street Hero (USA, Prototype, SMS Mode)",
+    "publisher": "Innovation Tech",
+    "year": "1993"
+  },
+  "sheroa": {
+    "description": "Street Hero (USA, Prototype Alt, SMS Mode)",
+    "publisher": "Innovation Tech",
+    "year": "1993"
+  },
+  "shikinjo": {
+    "description": "Shikinjou (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "1991"
+  },
+  "shinfrc2": {
+    "description": "Shining Force II - The Sword of Hajya (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "shinfrc2p1": {
+    "description": "Shining Force II - The Sword of Hajya (Prototype, 19940708)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "shinfrc2p2": {
+    "description": "Shining Force II - The Sword of Hajya (Prototype, 19940627)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "shinfrc2p3": {
+    "description": "Shining Force II - The Sword of Hajya (Prototype, 19940530)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "shinfrc2p4": {
+    "description": "Shining Force II - The Sword of Hajya (Prototype, 19940427)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "shinfrcg": {
+    "description": "Shining Force Gaiden - Ensei, Jashin no Kuni e (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "shinfrg2": {
+    "description": "Shining Force Gaiden II - Jashin no Kakusei (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "shinfrgf": {
+    "description": "Shining Force Gaiden - Final Conflict (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "shinobi": {
+    "description": "The GG Shinobi (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "shinobi2": {
+    "description": "The GG Shinobi II (World)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "shinobij": {
+    "description": "The GG Shinobi (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "sidepock": {
+    "description": "Side Pocket (USA)",
+    "publisher": "Data East",
+    "year": "1994"
+  },
+  "skickoff": {
+    "description": "Super Kick Off (Euro, SMS Mode)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "skweek": {
+    "description": "Skweek (Jpn)",
+    "publisher": "Victor Musical Industries",
+    "year": "1991"
+  },
+  "slamdunk": {
+    "description": "From TV Animation - Slam Dunk - Shouri e no Starting 5 (Jpn)",
+    "publisher": "Bandai",
+    "year": "1994"
+  },
+  "slider": {
+    "description": "Slider (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "smashtv": {
+    "description": "Smash T.V. (World)",
+    "publisher": "Flying Edge",
+    "year": "1992"
+  },
+  "smgp": {
+    "description": "Super Monaco GP (Euro, USA, Bra)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "smgp2": {
+    "description": "Ayrton Senna's Super Monaco GP II (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "smgp2j": {
+    "description": "Ayrton Senna's Super Monaco GP II (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "smgp2p": {
+    "description": "Ayrton Senna's Super Monaco GP II (Euro, USA, Prototype)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "smgpj": {
+    "description": "Super Monaco GP (Jpn)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "smomo3": {
+    "description": "Super Momotarou Dentetsu III (Jpn)",
+    "publisher": "Hudson",
+    "year": "1995"
+  },
+  "smurfs": {
+    "description": "The Smurfs (Euro)",
+    "publisher": "Infogrames",
+    "year": "1994"
+  },
+  "smurfs2": {
+    "description": "The Smurfs 2 (Euro)",
+    "publisher": "Infogrames",
+    "year": "1995"
+  },
+  "sokoban": {
+    "description": "Soukoban (Jpn)",
+    "publisher": "Riverhill Software",
+    "year": "1990"
+  },
+  "solitair": {
+    "description": "Solitaire Funpak (USA)",
+    "publisher": "Interplay",
+    "year": "1994"
+  },
+  "solitarp": {
+    "description": "Solitaire Poker (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "sonic": {
+    "description": "Sonic The Hedgehog (Euro, Jpn, v1)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "sonic2": {
+    "description": "Sonic The Hedgehog 2 (World)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "sonic2d": {
+    "description": "Sonic The Hedgehog 2 (Rolling Demo)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "sonicbls": {
+    "description": "Sonic Blast (Euro, USA) ~ G Sonic (Jpn)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "sonicblsp1": {
+    "description": "Sonic Blast (Prototype 94, 19960902, 17.47)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "sonicblsp2": {
+    "description": "Sonic Blast (Prototype 827, 19960828, 11.13)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "sonicblsp3": {
+    "description": "Sonic Blast (Prototype 821, 19960822, 09.38)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "sonicblsp4": {
+    "description": "Sonic Blast (Prototype 806, 19960806, 18.37)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "sonicblsp5": {
+    "description": "Sonic Blast (Prototype 74, 19960717, 09.11)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "sonicblsp6": {
+    "description": "Sonic Blast (Prototype 611, 19960531, 13.49)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "sonicc": {
+    "description": "Sonic Chaos (Euro, USA, Bra)",
+    "publisher": "Sega",
+    "year": "199?"
+  },
+  "sonicdr": {
+    "description": "Sonic Drift (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sonicdr2": {
+    "description": "Sonic Drift 2 (Jpn, USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "sonicdrs": {
+    "description": "Sonic Drift (Jpn, Demo Sample)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sonicj": {
+    "description": "Sonic The Hedgehog (Jpn, USA, v0)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "soniclab": {
+    "description": "Sonic Labyrinth (World)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "sonicp": {
+    "description": "Sonic The Hedgehog (World, Prototype)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "sonictl2": {
+    "description": "Sonic & Tails 2 (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sonictls": {
+    "description": "Sonic & Tails (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "sonictlss": {
+    "description": "Sonic & Tails (Jpn, Jitsuenyou Sample)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "sonictri": {
+    "description": "Sonic The Hedgehog - Triple Trouble (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sonictrip": {
+    "description": "Sonic The Hedgehog - Triple Trouble (Prototype 0808, 19940808, 18.05)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sor": {
+    "description": "Streets of Rage (World) ~ Bare Knuckle (Jpn)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "sor2": {
+    "description": "Streets of Rage II (World) ~ Bare Knuckle II - Shitou e no Chingonka (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "spidermn": {
+    "description": "Spider-Man - Return of the Sinister Six (Euro, USA)",
+    "publisher": "Flying Edge",
+    "year": "1993"
+  },
+  "spidking": {
+    "description": "Spider-Man vs. The Kingpin (Euro, USA)",
+    "publisher": "Flying Edge",
+    "year": "1992"
+  },
+  "spidxmen": {
+    "description": "Spider-Man and the X-Men in Arcade's Revenge (USA)",
+    "publisher": "Flying Edge",
+    "year": "1992"
+  },
+  "spirou": {
+    "description": "Spirou (Euro, Prototype)",
+    "publisher": "Infogrames",
+    "year": "1996"
+  },
+  "sportill": {
+    "description": "Sports Illustrated Championship Football & Baseball (Euro, USA)",
+    "publisher": "Black Pearl",
+    "year": "1995"
+  },
+  "sporttrv": {
+    "description": "Sports Trivia (USA)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp01": {
+    "description": "Sports Trivia (Prototype, 19950504-1MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp02": {
+    "description": "Sports Trivia (Prototype, 19950427-1MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp03": {
+    "description": "Sports Trivia (Prototype, 19950425-QTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp04": {
+    "description": "Sports Trivia (Prototype, 19950425-1MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp05": {
+    "description": "Sports Trivia (Prototype, 19950320-QTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp06": {
+    "description": "Sports Trivia (Prototype, 19950320-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp07": {
+    "description": "Sports Trivia (Prototype, 19950317-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp08": {
+    "description": "Sports Trivia (Prototype, 19950316-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp09": {
+    "description": "Sports Trivia (Prototype, 19950316-1MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp10": {
+    "description": "Sports Trivia (Prototype, 19950313)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp11": {
+    "description": "Sports Trivia (Prototype, 19950309)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sporttrvp12": {
+    "description": "Sports Trivia (Prototype, 19950308)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvce": {
+    "description": "Sports Trivia - Championship Edition (Euro, USA)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep01": {
+    "description": "Sports Trivia (Prototype, 19950502-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep02": {
+    "description": "Sports Trivia (Prototype, 19950428-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep03": {
+    "description": "Sports Trivia (Prototype, 19950412-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep04": {
+    "description": "Sports Trivia (Prototype, 19950411-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep05": {
+    "description": "Sports Trivia (Prototype, 19950407-QTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep06": {
+    "description": "Sports Trivia (Prototype, 19950407-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep07": {
+    "description": "Sports Trivia (Prototype, 19950406-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep08": {
+    "description": "Sports Trivia (Prototype, 19950405-QTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep09": {
+    "description": "Sports Trivia (Prototype, 19950405-2MEG-C)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep10": {
+    "description": "Sports Trivia (Prototype, 19950405-2MEG-B)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep11": {
+    "description": "Sports Trivia (Prototype, 19950404-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep12": {
+    "description": "Sports Trivia (Prototype, 19950403-QTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep13": {
+    "description": "Sports Trivia (Prototype, 19950403-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep14": {
+    "description": "Sports Trivia (Prototype, 19950330-QTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep15": {
+    "description": "Sports Trivia (Prototype, 19950330-2MEG-D)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep16": {
+    "description": "Sports Trivia (Prototype, 19950329-QTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep17": {
+    "description": "Sports Trivia (Prototype, 19950329-ALGOTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep18": {
+    "description": "Sports Trivia (Prototype, 19950329-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep19": {
+    "description": "Sports Trivia (Prototype, 19950327-ALGOTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep20": {
+    "description": "Sports Trivia (Prototype, 19950327-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep21": {
+    "description": "Sports Trivia (Prototype, 19950323-QTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep22": {
+    "description": "Sports Trivia (Prototype, 19950323-ALGOTEST)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep23": {
+    "description": "Sports Trivia (Prototype, 19950323-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "sprtrvcep24": {
+    "description": "Sports Trivia (Prototype, 19950321-2MEG)",
+    "publisher": "Sega?",
+    "year": "1995"
+  },
+  "ssinv": {
+    "description": "Super Space Invaders (Euro, USA)",
+    "publisher": "Domark",
+    "year": "1992"
+  },
+  "sslucifr": {
+    "description": "S.S. Lucifer - Man Overboard! (Euro)",
+    "publisher": "Codemasters",
+    "year": "1994"
+  },
+  "sspin": {
+    "description": "Sonic Spinball (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "sspinp01": {
+    "description": "Sonic Spinball (Prototype 0530, 19940530, 23.25)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp02": {
+    "description": "Sonic Spinball (Prototype 0525, 19940525, 13.24)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp03": {
+    "description": "Sonic Spinball (Prototype 0506, 19940506, 13.04)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp04": {
+    "description": "Sonic Spinball (Prototype 0505, 19940505, 04.47)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp05": {
+    "description": "Sonic Spinball (Prototype 503B, 19940503, 19.27)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp06": {
+    "description": "Sonic Spinball (Prototype 0430, 19940429, 21.48)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp07": {
+    "description": "Sonic Spinball (Prototype 0429, 19940429, 06.01)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp08": {
+    "description": "Sonic Spinball (Prototype 0427, 19940427, 04.51)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp09": {
+    "description": "Sonic Spinball (Prototype 0421, 19940421, 05.30)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp10": {
+    "description": "Sonic Spinball (Prototype 0415, 19940415, 17.33)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp11": {
+    "description": "Sonic Spinball (Prototype 0413, 19940413, 02.54)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp12": {
+    "description": "Sonic Spinball (Prototype 0412, 19940412, 07.26)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp13": {
+    "description": "Sonic Spinball (Prototype 0405, 19940405, 18.07)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp14": {
+    "description": "Sonic Spinball (Prototype 0330, 19940330, 06.54)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp15": {
+    "description": "Sonic Spinball (Prototype 0329, 19940329, 07.35)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp16": {
+    "description": "Sonic Spinball (Prototype 0328, 19940328, 06.54)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp17": {
+    "description": "Sonic Spinball (Prototype 032194, 19940321, 07.12)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp18": {
+    "description": "Sonic Spinball (Prototype 031194, 19940311, 12.09)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp19": {
+    "description": "Sonic Spinball (Prototype 031094, 19940310, 17.41)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "sspinp20": {
+    "description": "Sonic Spinball (Prototype 0307, 19940307, 05.24)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "stargate": {
+    "description": "Stargate (World)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1994"
+  },
+  "starwars": {
+    "description": "Star Wars (Euro)",
+    "publisher": "U.S. Gold",
+    "year": "1993"
+  },
+  "starwarsu": {
+    "description": "Star Wars (USA)",
+    "publisher": "U.S. Gold",
+    "year": "1993"
+  },
+  "stetris": {
+    "description": "Super Tetris (Kor, SMS Mode?)",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "stgbeyn": {
+    "description": "Star Trek Generations - Beyond the Nexus (Euro, USA)",
+    "publisher": "Absolute Entertainment",
+    "year": "1994"
+  },
+  "stng": {
+    "description": "Star Trek - The Next Generation (USA)",
+    "publisher": "Absolute Entertainment",
+    "year": "1994"
+  },
+  "striderr": {
+    "description": "Journey from Darkness - Strider Returns (Euro, USA)",
+    "publisher": "U.S. Gold",
+    "year": "1992"
+  },
+  "striker": {
+    "description": "Striker (Euro)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "supercol": {
+    "description": "Super Columns (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "supercolj": {
+    "description": "Super Columns (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "supercolp1": {
+    "description": "Super Columns (Prototype, 19950106)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "supercolp2": {
+    "description": "Super Columns (Prototype, 19941228)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "supercolp3": {
+    "description": "Super Columns (Prototype, 19941226)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "supercolp4": {
+    "description": "Super Columns (Prototype, 19941221)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "supercolp5": {
+    "description": "Super Columns (Prototype, 19941215)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "supercolp6": {
+    "description": "Super Columns (Prototype, 19941201)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "supercolp7": {
+    "description": "Super Columns (Prototype, 19941111)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "superman": {
+    "description": "Superman - The Man of Steel (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "supermanp": {
+    "description": "Superman - The Man of Steel (Euro, Prototype)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "superoff": {
+    "description": "Super Off Road (Euro, USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1992"
+  },
+  "supgolf": {
+    "description": "Super Golf (USA)",
+    "publisher": "Sage's Creations",
+    "year": "1991"
+  },
+  "supgolfj": {
+    "description": "Super Golf (Jpn)",
+    "publisher": "Sigma Enterprises",
+    "year": "1991"
+  },
+  "suprjedi": {
+    "description": "Super Return of the Jedi (Euro, USA)",
+    "publisher": "Black Pearl",
+    "year": "1995"
+  },
+  "surfninj": {
+    "description": "Surf Ninjas (USA, Bra)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "sylvan": {
+    "description": "Sylvan Tale (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "t2ag": {
+    "description": "T2 - The Arcade Game (Euro, USA)",
+    "publisher": "Arena",
+    "year": "1993"
+  },
+  "t2agj": {
+    "description": "T2 - The Arcade Game (Jpn)",
+    "publisher": "Acclaim",
+    "year": "1993"
+  },
+  "tailsadv": {
+    "description": "Tails Adventures (World)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "tailskyp": {
+    "description": "Tails no Skypatrol (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "taisnmj": {
+    "description": "Taisen Mahjong HaoPai (Jpn)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "taisnmj2": {
+    "description": "Taisen Mahjong HaoPai 2 (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "talespin": {
+    "description": "Tale Spin (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "tamalymp": {
+    "description": "Tama & Friends Sanchoume Kouen - Tamalympic (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "tantr": {
+    "description": "Puzzle & Action Tant~R (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tarot": {
+    "description": "Tarot no Yakata (Jpn)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "tarzan": {
+    "description": "Tarzan - Lord of the Jungle (Euro)",
+    "publisher": "GameTek",
+    "year": "1994"
+  },
+  "tazmania": {
+    "description": "Taz-Mania - The Search for the Lost Seabirds (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "tazmars": {
+    "description": "Taz in Escape from Mars (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp01": {
+    "description": "Taz in Escape from Mars (Prototype, 19940910)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp02": {
+    "description": "Taz in Escape from Mars (Prototype, 19940909-B)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp03": {
+    "description": "Taz in Escape from Mars (Prototype, 19940906-D)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp04": {
+    "description": "Taz in Escape from Mars (Prototype, 19940905-C)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp05": {
+    "description": "Taz in Escape from Mars (Prototype, 19940905-B)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp06": {
+    "description": "Taz in Escape from Mars (Prototype, 19940902)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp07": {
+    "description": "Taz in Escape from Mars (Prototype, 19940830)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp08": {
+    "description": "Taz in Escape from Mars (Prototype, 19940829-B)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp09": {
+    "description": "Taz in Escape from Mars (Prototype, 19940823)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp10": {
+    "description": "Taz in Escape from Mars (Prototype, 19940819)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp11": {
+    "description": "Taz in Escape from Mars (Prototype, 19940814)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp12": {
+    "description": "Taz in Escape from Mars (Prototype, 19940812)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp13": {
+    "description": "Taz in Escape from Mars (Prototype, 19940810)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tazmarsp14": {
+    "description": "Taz in Escape from Mars (Prototype, 19940511)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tempojr": {
+    "description": "Tempo Jr. (World)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "tempojrp1": {
+    "description": "Tempo Jr. (Prototype, 19950215)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "tempojrp2": {
+    "description": "Tempo Jr. (Prototype, 19950206)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "tempojrp3": {
+    "description": "Tempo Jr. (Prototype, 19950131)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "tempojrp4": {
+    "description": "Tempo Jr. (Prototype, 19950120)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "tempojrp5": {
+    "description": "Tempo Jr. (Prototype, 19950117)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "tempojrp6": {
+    "description": "Tempo Jr. (Prototype, 19941226)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tempojrp7": {
+    "description": "Tempo Jr. (Prototype, 19941212)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tempojrp8": {
+    "description": "Tempo Jr. (Prototype, 19941205)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tempojrp9": {
+    "description": "Tempo Jr. (Prototype, 19941128)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tengenwc": {
+    "description": "Tengen World Cup Soccer (Euro, USA)",
+    "publisher": "Tengen",
+    "year": "1993"
+  },
+  "term2": {
+    "description": "Terminator 2 - Judgment Day (Euro, USA)",
+    "publisher": "Flying Edge",
+    "year": "1993"
+  },
+  "termntr": {
+    "description": "The Terminator (Euro, USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1992"
+  },
+  "tesserae": {
+    "description": "Tesserae (Euro, USA)",
+    "publisher": "GameTek",
+    "year": "1993"
+  },
+  "tintin": {
+    "description": "Tintin in Tibet (Euro)",
+    "publisher": "Infogrames",
+    "year": "1996"
+  },
+  "tomjermv": {
+    "description": "Tom and Jerry - The Movie (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "tomjermvj": {
+    "description": "Tom and Jerry - The Movie (Jpn)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "torarete": {
+    "description": "Torarete Tamaru ka!? (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "truelies": {
+    "description": "True Lies (World)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1995"
+  },
+  "ultsoccr": {
+    "description": "Ultimate Soccer (Euro, Jpn, Bra)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "ustrike": {
+    "description": "Urban Strike (Euro, USA)",
+    "publisher": "Black Pearl",
+    "year": "1995"
+  },
+  "vampire": {
+    "description": "Vampire - Master of Darkness (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "vfa": {
+    "description": "Virtua Fighter Animation (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "vfmini": {
+    "description": "Virtua Fighter Mini (Jpn)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "vrtroop": {
+    "description": "VR Troopers (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "wagyan": {
+    "description": "Wagyan Land (Jpn)",
+    "publisher": "Namcot",
+    "year": "1991"
+  },
+  "wagyana": {
+    "description": "Wagyan Land (Jpn, Alt)",
+    "publisher": "Namcot",
+    "year": "1991"
+  },
+  "wakevamp": {
+    "description": "In the Wake of Vampire (Jpn)",
+    "publisher": "SIMS",
+    "year": "1992"
+  },
+  "wboy": {
+    "description": "Wonder Boy (Euro)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "wboydtrp": {
+    "description": "Wonder Boy - The Dragon's Trap (Euro)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "wboydtrpp": {
+    "description": "Wonder Boy III - The Dragon's Trap (Euro, Prototype)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "wboyj": {
+    "description": "Wonder Boy (Jpn)",
+    "publisher": "Sega",
+    "year": "1990"
+  },
+  "wclead": {
+    "description": "World Class Leader Board (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "wcup94": {
+    "description": "World Cup USA 94 (Euro, USA)",
+    "publisher": "U.S. Gold",
+    "year": "1994"
+  },
+  "wderby": {
+    "description": "World Derby (Jpn)",
+    "publisher": "CRI",
+    "year": "1994"
+  },
+  "wheelof": {
+    "description": "Wheel of Fortune (USA)",
+    "publisher": "GameTek",
+    "year": "1992"
+  },
+  "wildsnak": {
+    "description": "WildSnake (Prototype)",
+    "publisher": "Bullet-Proof Software",
+    "year": "1994"
+  },
+  "wimbled": {
+    "description": "Wimbledon (World)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "wintol": {
+    "description": "Winter Olympics - Lillehammer '94 (Euro, USA)",
+    "publisher": "U.S. Gold",
+    "year": "1993"
+  },
+  "wintolj": {
+    "description": "Winter Olympics - Lillehammer '94 (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "wizard": {
+    "description": "Wizard Pinball (Euro)",
+    "publisher": "Domark",
+    "year": "1995"
+  },
+  "wolfchld": {
+    "description": "Wolfchild (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "woodypop": {
+    "description": "Woody Pop (Euro, USA, v1.1)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "woodypop1": {
+    "description": "Woody Pop (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1991"
+  },
+  "wsb": {
+    "description": "World Series Baseball (USA, v1)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "wsb1": {
+    "description": "World Series Baseball (USA, v0)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "wsb95": {
+    "description": "World Series Baseball '95 (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "wsb95p1": {
+    "description": "World Series Baseball '95 (Prototype, 19940729)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "wsb95p2": {
+    "description": "World Series Baseball '95 (Prototype, 19940728)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "wsb95p3": {
+    "description": "World Series Baseball '95 (Prototype, 19940722)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "wsb95p4": {
+    "description": "World Series Baseball '95 (Prototype, 19940719)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "wsb95p5": {
+    "description": "World Series Baseball '95 (Prototype, 19940709)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "wsb95p6": {
+    "description": "World Series Baseball '95 (Prototype, 19940629)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "wwfraw": {
+    "description": "WWF Raw (Euro, USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1994"
+  },
+  "wwfsteel": {
+    "description": "WWF Wrestlemania Steel Cage Challenge (Euro, SMS Mode)",
+    "publisher": "Flying Edge",
+    "year": "1993"
+  },
+  "xmen": {
+    "description": "X-Men (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "xmengl": {
+    "description": "X-Men - Gamemaster's Legacy (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "xmenglp1": {
+    "description": "X-Men - Gamemaster's Legacy (Prototype 51, 19940906)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "xmenglp2": {
+    "description": "X-Men - Gamemaster's Legacy (Prototype 36, 19940831)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "xmenglp3": {
+    "description": "X-Men - Gamemaster's Legacy (Prototype, 19940810)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "xmenmojo": {
+    "description": "X-Men - Mojo World (Euro, USA)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "xmenmojop1": {
+    "description": "X-Men - Mojo World (Prototype, 19960629)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "xmenmojop2": {
+    "description": "X-Men - Mojo World (Prototype, 19960628)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "xmenmojop3": {
+    "description": "X-Men - Mojo World (Prototype, 19960627)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "xmenmojop4": {
+    "description": "X-Men - Mojo World (Prototype, 19960625)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "xmenmojop5": {
+    "description": "X-Men - Mojo World (Prototype, 19960624)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "xmenmojop6": {
+    "description": "X-Men - Mojo World (Prototype, 19960613)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "xmenmojop7": {
+    "description": "X-Men - Mojo World (Prototype, 19960605)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "yaiba": {
+    "description": "Kenyuu Densetsu Yaiba (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "yogibear": {
+    "description": "Yogi Bear in Yogi Bear's Goldrush (Prototype)",
+    "publisher": "GameTek",
+    "year": "1994"
+  },
+  "yuyu": {
+    "description": "Yu Yu Hakusho - Horobishimono no Gyakushuu (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "yuyu2": {
+    "description": "Yu Yu Hakusho 2 - Gekitou! Nanakyou no Tatakai (Jpn)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "zangear": {
+    "description": "Zan Gear (Jpn)",
+    "publisher": "Wolf Team",
+    "year": "1990"
+  },
+  "zenki": {
+    "description": "Kishin Douji Zenki (Jpn)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "zool": {
+    "description": "Zool (Euro)",
+    "publisher": "Gremlin",
+    "year": "1994"
+  },
+  "zoolj": {
+    "description": "Zool no Yume Bouken (Jpn)",
+    "publisher": "Infocom",
+    "year": "1994"
+  },
+  "zoolu": {
+    "description": "Zool (USA)",
+    "publisher": "GameTek",
+    "year": "1993"
+  },
+  "zoop": {
+    "description": "Zoop (USA)",
+    "publisher": "Viacom New Media",
+    "year": "1995"
+  },
+  "zoopp": {
+    "description": "Zoop (USA, Prototype)",
+    "publisher": "Viacom New Media",
+    "year": "1995"
+  }
+}

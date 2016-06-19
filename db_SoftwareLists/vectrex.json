@@ -1,0 +1,227 @@
+{
+  "3dminest": {
+    "description": "3D Mine Storm",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "animactn": {
+    "description": "Animaction",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "armora": {
+    "description": "Armor Attack",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "artmastr": {
+    "description": "Art Master",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "bedlam": {
+    "description": "Bedlam",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "berzerk": {
+    "description": "Berzerk",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "berzerkd": {
+    "description": "Berzerk (Debugged Prototype)",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "blitz": {
+    "description": "Blitz!",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "blitza": {
+    "description": "Blitz! (Alt)",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "cchasm": {
+    "description": "Cosmic Chasm",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "ccoaster": {
+    "description": "Crazy Coaster",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "cleanswp": {
+    "description": "Clean Sweep",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "darktowr": {
+    "description": "Dark Tower (Prototype)",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "enginean": {
+    "description": "Engine Analyzer (Prototype)",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "fnarzod": {
+    "description": "Fortress of Narzod",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "headsup": {
+    "description": "Heads Up",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "hyprchas": {
+    "description": "Hyperchase",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "mailplan": {
+    "description": "Mail Plane (Prototype)",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "mailplan1": {
+    "description": "Mail Plane (Early Prototype)",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "melody": {
+    "description": "Melody Master",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "minestr2": {
+    "description": "Mine Storm II",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "minestrm": {
+    "description": "Mine Storm",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "mrboston": {
+    "description": "Mr. Boston Clean Sweep",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "narrowes": {
+    "description": "Narrow Escape",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "polarres": {
+    "description": "Polar Rescue",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "polarresp": {
+    "description": "Polar Rescue (Prototype)",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "polepos": {
+    "description": "Pole Position",
+    "publisher": "GCE / Namco Ltd.",
+    "year": "1983"
+  },
+  "poleposa": {
+    "description": "Pole Position (Alt)",
+    "publisher": "GCE / Namco Ltd.",
+    "year": "1983"
+  },
+  "ptchduel": {
+    "description": "Pitcher's Duel (Prototype)",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "ripoff": {
+    "description": "Rip-Off",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "rocksled": {
+    "description": "Rocket Sledge (Sample)",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "scramble": {
+    "description": "Scramble",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "solarq": {
+    "description": "Solar Quest",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "spacewar": {
+    "description": "Space Wars",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "spike": {
+    "description": "Spike",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "spinball": {
+    "description": "Spinball",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "starcas": {
+    "description": "Star Castle",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "starhawk": {
+    "description": "Star Hawk",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "starship": {
+    "description": "Star Ship",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "startrek": {
+    "description": "Star Trek - The Game",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "startrekd": {
+    "description": "Star Trek (Debugged Prototype)",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "testrev4": {
+    "description": "Test (Rev. 4)",
+    "publisher": "GCE",
+    "year": "1982"
+  },
+  "tourfrnc": {
+    "description": "Tour de France (Prototype)",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "webwarp": {
+    "description": "Web Warp",
+    "publisher": "GCE",
+    "year": "1983"
+  },
+  "webwars": {
+    "description": "Web Wars",
+    "publisher": "GCE",
+    "year": "1983"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "carsg": {
+    "description": "Cars - Auf der Überholspur (Ger)",
+    "publisher": "VTech",
+    "year": "200?"
+  },
+  "incredib": {
+    "description": "The Incredibles - Mission Incredible (USA)",
+    "publisher": "VTech",
+    "year": "200?"
+  },
+  "msportg": {
+    "description": "Multisports (Ger)",
+    "publisher": "VTech",
+    "year": "200?"
+  },
+  "scoobyaa": {
+    "description": "Scooby-Doo! Ancient Adventure (USA)",
+    "publisher": "VTech",
+    "year": "200?"
+  },
+  "shrekg": {
+    "description": "Shrek - Der Dritte (Ger)",
+    "publisher": "VTech",
+    "year": "200?"
+  },
+  "spidey93": {
+    "description": "The Amazing Spider-Man - Countdown to Doom (USA)",
+    "publisher": "VTech",
+    "year": "200?"
+  },
+  "wacky931": {
+    "description": "Wacky Race on Jumpin' Bean Island (USA)",
+    "publisher": "VTech",
+    "year": "200?"
+  }
+}

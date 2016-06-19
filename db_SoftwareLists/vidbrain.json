@@ -1,0 +1,87 @@
+{
+  "blckjack": {
+    "description": "Blackjack",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "checkers": {
+    "description": "Checkers",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "demo": {
+    "description": "Demonstration",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "financie": {
+    "description": "Financier",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "gladiatr": {
+    "description": "Gladiator",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "infoman": {
+    "description": "Information Manager (Proto)",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "lemstand": {
+    "description": "Lemonade Stand",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "mathttr1": {
+    "description": "Math Tutor 1",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "moneymin": {
+    "description": "Money Minder",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "musictch": {
+    "description": "Music Teacher 1",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "pinball": {
+    "description": "Pinball",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "tennis": {
+    "description": "Tennis",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "timeshar": {
+    "description": "Timeshare",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "vicevers": {
+    "description": "Vice Versa",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "vidartst": {
+    "description": "VideoArtist",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "wrdwise1": {
+    "description": "Wordwise 1",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  },
+  "wrdwise2": {
+    "description": "Wordwise 2",
+    "publisher": "VideoBrain Computer Company",
+    "year": "1978"
+  }
+}

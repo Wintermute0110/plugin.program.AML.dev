@@ -1,0 +1,27 @@
+{
+  "english": {
+    "description": "English",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "french": {
+    "description": "French",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "german": {
+    "description": "German",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "ingles": {
+    "description": "Ingles Britanico",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "spanish": {
+    "description": "Spanish",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  }
+}

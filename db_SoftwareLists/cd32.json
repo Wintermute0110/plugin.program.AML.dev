@@ -1,0 +1,57 @@
+{
+  "big6diz": {
+    "description": "The Big 6 (Dizzy Collection)",
+    "publisher": "Codemasters",
+    "year": "1994"
+  },
+  "clockwsr": {
+    "description": "Clockwiser",
+    "publisher": "Rasputin",
+    "year": "1994"
+  },
+  "diggoscr": {
+    "description": "Diggers + Oscar",
+    "publisher": "Commodore",
+    "year": "1993"
+  },
+  "libcap2": {
+    "description": "Liberation - Captive II",
+    "publisher": "Mindscape",
+    "year": "1994"
+  },
+  "morph": {
+    "description": "Morph",
+    "publisher": "Millennium",
+    "year": "1993"
+  },
+  "pballfnt": {
+    "description": "Pinball Fantasies CD Edition",
+    "publisher": "21st Century Entertainment",
+    "year": "1993"
+  },
+  "pballill": {
+    "description": "Pinball Illusions",
+    "publisher": "21st Century Entertainment",
+    "year": "1995"
+  },
+  "sskid": {
+    "description": "Super Skidmarks",
+    "publisher": "Guildhall Leisure",
+    "year": "1995"
+  },
+  "sstardst": {
+    "description": "Super Stardust",
+    "publisher": "Team 17",
+    "year": "1994"
+  },
+  "vital": {
+    "description": "Vital Light",
+    "publisher": "Millennium",
+    "year": "1994"
+  },
+  "wormstdc": {
+    "description": "Worms - The Director's Cut",
+    "publisher": "Ocean",
+    "year": "1995"
+  }
+}

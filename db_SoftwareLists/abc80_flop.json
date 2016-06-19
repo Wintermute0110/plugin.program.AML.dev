@@ -1,0 +1,32 @@
+{
+  "abcdemo": {
+    "description": "ABCDemo",
+    "publisher": "Genesis Project",
+    "year": "2015"
+  },
+  "cpm": {
+    "description": "CP/M BIOS 3.7",
+    "publisher": "Myab",
+    "year": "19??"
+  },
+  "demo": {
+    "description": "Demo",
+    "publisher": "Luxor",
+    "year": "19??"
+  },
+  "dosgen": {
+    "description": "Dosgen",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kundreg": {
+    "description": "Kundregister",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "system10": {
+    "description": "System disk v1.0",
+    "publisher": "Luxor",
+    "year": "19??"
+  }
+}

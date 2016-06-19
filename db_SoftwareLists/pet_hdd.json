@@ -1,0 +1,17 @@
+{
+  "d9060": {
+    "description": "Commodore D9060",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "d9090": {
+    "description": "Commodore D9090",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "softbox": {
+    "description": "SoftBox CP/M 2.2",
+    "publisher": "Small Systems Engineering",
+    "year": "1981"
+  }
+}

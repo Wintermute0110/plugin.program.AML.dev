@@ -1,0 +1,57 @@
+{
+  "i7113": {
+    "description": "I-7113 v1.2 R02 (Mar 4th, 1986)",
+    "publisher": "Itautec",
+    "year": "1986"
+  },
+  "redator": {
+    "description": "I-7105 REDATOR v1.2 R02 (Sept 16th, 1983)",
+    "publisher": "Itautec",
+    "year": "1983"
+  },
+  "redelocl": {
+    "description": "I-7119 REDE LOCAL v1.0 R01 (Mar 21st, 1987)",
+    "publisher": "Itautec",
+    "year": "1987"
+  },
+  "redtrv12": {
+    "description": "I-71XX REDATOR v1.2 R04",
+    "publisher": "Itautec",
+    "year": "198?"
+  },
+  "set3278": {
+    "description": "I-7106 SET 3278 v1.2 R00 (Mar 21st, 1985) IBM-3278 terminal emulation",
+    "publisher": "Itautec",
+    "year": "1985"
+  },
+  "set78": {
+    "description": "I-7101 SET 78 COML v1.3 R01",
+    "publisher": "Itautec",
+    "year": "198?"
+  },
+  "setdisc": {
+    "description": "I-71XX SETDISC",
+    "publisher": "Itautec",
+    "year": "198?"
+  },
+  "setvt52": {
+    "description": "I-7107 SET VT52 v1.0 R02 (Feb 25th, 1986)",
+    "publisher": "Itautec",
+    "year": "1986"
+  },
+  "telex": {
+    "description": "I-7104 TELEX v1.0 R4 (Aug 31st, 1987)",
+    "publisher": "Itautec",
+    "year": "1987"
+  },
+  "telex2": {
+    "description": "I-7120 TELEX II v1.0 R04 (Aug 31st, 1987)",
+    "publisher": "Itautec",
+    "year": "1987"
+  },
+  "vdeotxto": {
+    "description": "I-71XX VIDEOTEXTO",
+    "publisher": "Itautec",
+    "year": "198?"
+  }
+}

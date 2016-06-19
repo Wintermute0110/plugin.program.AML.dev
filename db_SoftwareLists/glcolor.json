@@ -1,0 +1,27 @@
+{
+  "carlchen": {
+    "description": "Carlchen Clever - Wort- und Zahlenlabyrinth",
+    "publisher": "Video Technology",
+    "year": "199?"
+  },
+  "fling": {
+    "description": "Fling - Die Buchstaben-Schleuder",
+    "publisher": "Video Technology",
+    "year": "199?"
+  },
+  "spiellrn": {
+    "description": "Spiel-und Lernspaß",
+    "publisher": "Video Technology",
+    "year": "199?"
+  },
+  "tatortum": {
+    "description": "Tatort Umwelt",
+    "publisher": "Video Technology",
+    "year": "199?"
+  },
+  "zahlenkn": {
+    "description": "Zahlenknacker",
+    "publisher": "Video Technology",
+    "year": "199?"
+  }
+}

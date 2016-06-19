@@ -1,0 +1,242 @@
+{
+  "64kbf": {
+    "description": "64Kbf Expansion memory 64Kb",
+    "publisher": "unknown",
+    "year": "199?"
+  },
+  "64kbi": {
+    "description": "EM-64 Expansion memory 64Kb",
+    "publisher": "unknown",
+    "year": "198?"
+  },
+  "64krx": {
+    "description": "64Krx Expansion board 64Kb",
+    "publisher": "unknown",
+    "year": "199?"
+  },
+  "adidas": {
+    "description": "Adidas Lucky Shoot",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "apploon": {
+    "description": "Apploon",
+    "publisher": "Takara",
+    "year": "1983"
+  },
+  "baseball": {
+    "description": "Baseball",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basicf": {
+    "description": "BASIC-F",
+    "publisher": "Sord",
+    "year": "198?"
+  },
+  "basicg": {
+    "description": "BASIC-G",
+    "publisher": "Sord",
+    "year": "198?"
+  },
+  "basici": {
+    "description": "BASIC-I",
+    "publisher": "Sord",
+    "year": "198?"
+  },
+  "basicw": {
+    "description": "BASIC-W",
+    "publisher": "Sord?",
+    "year": "198?"
+  },
+  "bosco": {
+    "description": "Star Destroyer Bosconian",
+    "publisher": "Namco",
+    "year": "1981"
+  },
+  "brno_con": {
+    "description": "Boot for Brno ramdisk [console version]",
+    "publisher": "<Pavel Brychta a spol.>",
+    "year": "1989"
+  },
+  "brno_win": {
+    "description": "Boot for Brno ramdisk [windows version]",
+    "publisher": "<Ladislav Novak>",
+    "year": "1989"
+  },
+  "digdug": {
+    "description": "Dig Dug",
+    "publisher": "Namco",
+    "year": "1982"
+  },
+  "drgnatck": {
+    "description": "Dragon Attack",
+    "publisher": "Takara",
+    "year": "1983"
+  },
+  "drops": {
+    "description": "Drops",
+    "publisher": "SPC",
+    "year": "1986"
+  },
+  "em-5": {
+    "description": "EM-5 Expansion memory 32Kb",
+    "publisher": "Sord",
+    "year": "198?"
+  },
+  "eskimon": {
+    "description": "Eskimon",
+    "publisher": "Takara",
+    "year": "1984"
+  },
+  "falc": {
+    "description": "FALC",
+    "publisher": "Sord",
+    "year": "198?"
+  },
+  "fruitsrc": {
+    "description": "Fruit Search",
+    "publisher": "Takara",
+    "year": "1983"
+  },
+  "funnym": {
+    "description": "Funny Mouse",
+    "publisher": "Takara",
+    "year": "1983"
+  },
+  "galax": {
+    "description": "Galax",
+    "publisher": "Namco",
+    "year": "1981"
+  },
+  "gutangtn": {
+    "description": "Guttang Gottong",
+    "publisher": "Konami",
+    "year": "1981"
+  },
+  "heavybox": {
+    "description": "Heavy Boxing",
+    "publisher": "Takara",
+    "year": "1983"
+  },
+  "jongkyo": {
+    "description": "Jong Kyo",
+    "publisher": "Hudson Soft",
+    "year": "1983?"
+  },
+  "jumpjack": {
+    "description": "Jumping Jack",
+    "publisher": "SPC",
+    "year": "1986"
+  },
+  "m5term": {
+    "description": "M5 Terminal",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mappy": {
+    "description": "Mappy",
+    "publisher": "Namco",
+    "year": "1983"
+  },
+  "mchess": {
+    "description": "Masterchess",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mpatrol": {
+    "description": "Moon Patrol",
+    "publisher": "Irem",
+    "year": "1981"
+  },
+  "peditor": {
+    "description": "P-Editor",
+    "publisher": "Sord",
+    "year": "198?"
+  },
+  "pitchase": {
+    "description": "Pit Chaser",
+    "publisher": "Takara",
+    "year": "1983"
+  },
+  "pooyan": {
+    "description": "Pooyan",
+    "publisher": "Konami",
+    "year": "1982"
+  },
+  "pooyana": {
+    "description": "Pooyan (Alt)Modified version cooperating with 64kB RAM",
+    "publisher": "Konami",
+    "year": "1982"
+  },
+  "powerpac": {
+    "description": "Power Pac",
+    "publisher": "Namco",
+    "year": "1982"
+  },
+  "reversi": {
+    "description": "Reversi",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rtennis": {
+    "description": "Real Tennis",
+    "publisher": "Takara",
+    "year": "1983"
+  },
+  "scobra": {
+    "description": "Super Cobra",
+    "publisher": "Konami",
+    "year": "1981"
+  },
+  "stepup": {
+    "description": "Step Up (Euro)",
+    "publisher": "Takara",
+    "year": "1983"
+  },
+  "stepupj": {
+    "description": "Step Up (Jpn)",
+    "publisher": "Takara",
+    "year": "1983"
+  },
+  "tankbtl": {
+    "description": "Tank Battalion",
+    "publisher": "Namco",
+    "year": "1980"
+  },
+  "unk_intr": {
+    "description": "Unknown Intruder",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "unk_maze": {
+    "description": "Unknown CSMAZE",
+    "publisher": "<unknown>",
+    "year": "1983"
+  },
+  "upupball": {
+    "description": "Up Up Balloon",
+    "publisher": "Takara ~ Monkey Punch",
+    "year": "1983"
+  },
+  "warpwarp": {
+    "description": "Warp & Warp",
+    "publisher": "Namco",
+    "year": "1981"
+  },
+  "wondhole": {
+    "description": "Wonder Hole",
+    "publisher": "Irem",
+    "year": "1982"
+  },
+  "wordmaze": {
+    "description": "Word Maze",
+    "publisher": "Sord",
+    "year": "1983"
+  },
+  "zacbanic": {
+    "description": "Zac Banic",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

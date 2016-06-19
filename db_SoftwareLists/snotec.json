@@ -1,0 +1,47 @@
+{
+  "angelmt": {
+    "description": "Angel Mail Town",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "catdog": {
+    "description": "Cats and Dogs",
+    "publisher": "Bandai",
+    "year": "1995"
+  },
+  "caudit": {
+    "description": "Challenge Audition",
+    "publisher": "Bandai",
+    "year": "1998"
+  },
+  "conan": {
+    "description": "Detective Conan",
+    "publisher": "Bandai",
+    "year": "1996"
+  },
+  "conan2": {
+    "description": "Detective Conan 2",
+    "publisher": "Bandai",
+    "year": "1996"
+  },
+  "conan3": {
+    "description": "Detective Conan 3",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "magicalf": {
+    "description": "Magical Fortune",
+    "publisher": "Bandai",
+    "year": "1996"
+  },
+  "notepadn": {
+    "description": "Notepad",
+    "publisher": "Bandai",
+    "year": "1995"
+  },
+  "tamago": {
+    "description": "Tamagotchi",
+    "publisher": "Bandai",
+    "year": "1997"
+  }
+}

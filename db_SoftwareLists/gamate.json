@@ -1,0 +1,272 @@
+{
+  "1milwhys": {
+    "description": "One Million Whys",
+    "publisher": "United Microelectronics Corporation",
+    "year": "1993"
+  },
+  "4in1": {
+    "description": "4-in-1 (Mini Golf, Cube-Up, Brick Blaster, and Vindicators)",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "baoqingt": {
+    "description": "Bao Qing Tian",
+    "publisher": "Unknown",
+    "year": "199?"
+  },
+  "basketba": {
+    "description": "Basketball",
+    "publisher": "Unknown",
+    "year": "199?"
+  },
+  "bomblast": {
+    "description": "Bomb Blaster",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "bomblasta": {
+    "description": "Bomb Blaster (Alt)",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "boom": {
+    "description": "Boom",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "boxforum": {
+    "description": "Box Forum",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "brikblst": {
+    "description": "Brick Blaster",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "cosmicfg": {
+    "description": "Cosmic Fighter",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "cubeup": {
+    "description": "Cube Up",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "dinoball": {
+    "description": "Dino Ball",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "dinobibo": {
+    "description": "Dino Bibo",
+    "publisher": "<unknown>",
+    "year": "1991"
+  },
+  "dinopark": {
+    "description": "Dinosaur Park",
+    "publisher": "Phinnex Co., Ltd.",
+    "year": "1993"
+  },
+  "dknight": {
+    "description": "Legend of Dragon Knight",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "dvcastle": {
+    "description": "Devil Castle",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "encbrick": {
+    "description": "Enchanted Bricks",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "famous7": {
+    "description": "Famous 7",
+    "publisher": "United Microelectronics Corporation",
+    "year": "1993"
+  },
+  "fanttrav": {
+    "description": "Fantasy Travel",
+    "publisher": "United Microelectronics Corporation",
+    "year": "1993"
+  },
+  "fistofth": {
+    "description": "Fist of Thunder",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "flgoblin": {
+    "description": "Flying Goblin",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "flipuzle": {
+    "description": "Flipuzzle",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "galaxinv": {
+    "description": "Galaxy Invaders",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "goldpyra": {
+    "description": "The Golden Pyramid",
+    "publisher": "Unknown",
+    "year": "199?"
+  },
+  "gprace": {
+    "description": "GP Race",
+    "publisher": "Bit Corporation",
+    "year": "1992"
+  },
+  "hannibal": {
+    "description": "Further Adventures of Hannibal The Cat",
+    "publisher": "Unknown",
+    "year": "1993"
+  },
+  "insectwa": {
+    "description": "Insect War",
+    "publisher": "United Microelectronics Corporation",
+    "year": "1995"
+  },
+  "jewelris": {
+    "description": "Jewelriss",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "killshot": {
+    "description": "Kill Shot",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "kungfu": {
+    "description": "Kung-Fu Fighter",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "marauder": {
+    "description": "Marauder",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "marsvoya": {
+    "description": "Mars Voyage",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "mightytk": {
+    "description": "Mighty Tank",
+    "publisher": "Bit Corporation",
+    "year": "199?"
+  },
+  "minigolf": {
+    "description": "Mini Golf",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "mjigsaw": {
+    "description": "Magic Jigsaw",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "moneymaz": {
+    "description": "Money Maze",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "monstpit": {
+    "description": "Monster Pitfall",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "mythasam": {
+    "description": "Myth of Asamia",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "pharaoh": {
+    "description": "Pharaoh Revenger",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "pipemani": {
+    "description": "Pipemania",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "punkboy": {
+    "description": "Punk Boy",
+    "publisher": "Bit Corporation",
+    "year": "1992"
+  },
+  "quizfigh": {
+    "description": "QuizFighter",
+    "publisher": "United Microelectronics Corporation",
+    "year": "1993"
+  },
+  "robinhoo": {
+    "description": "Robin Hood",
+    "publisher": "Phinnex Co., Ltd.",
+    "year": "1994"
+  },
+  "rotat": {
+    "description": "Riddle of the Ancient Tomb",
+    "publisher": "Unknown",
+    "year": "1994"
+  },
+  "santa": {
+    "description": "Nightmare of Santa Claus",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "snowman": {
+    "description": "Snowman Legend",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "tennis": {
+    "description": "Tennis",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "timewarr": {
+    "description": "Time Warrior",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "tornado": {
+    "description": "Tornado",
+    "publisher": "Bit Corporation",
+    "year": "1991"
+  },
+  "toughguy": {
+    "description": "Tough Guy",
+    "publisher": "United Microelectronics Corporation",
+    "year": "1993"
+  },
+  "treashnt": {
+    "description": "Treasure Hunter",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "vindicat": {
+    "description": "Vindicators",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  },
+  "wcupsocc": {
+    "description": "World Cup Soccer",
+    "publisher": "Unknown",
+    "year": "199?"
+  },
+  "wittyape": {
+    "description": "Witty Apee",
+    "publisher": "Bit Corporation",
+    "year": "1990"
+  }
+}

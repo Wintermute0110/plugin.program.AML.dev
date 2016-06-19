@@ -1,0 +1,67 @@
+{
+  "800demo": {
+    "description": "MZ-800 Demo",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "abusimbl": {
+    "description": "Abu Simbel",
+    "publisher": "Dynamic Soft Program / Alco%.Soft",
+    "year": "19??"
+  },
+  "adrsdata": {
+    "description": "Adress Data",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "breakout": {
+    "description": "Break out-800",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cyrus": {
+    "description": "Cyrus is Chess",
+    "publisher": "Intelligent Software",
+    "year": "1987"
+  },
+  "egg": {
+    "description": "Intellectual Game - Egg",
+    "publisher": "dB-SOFT",
+    "year": "1984"
+  },
+  "gps2": {
+    "description": "Grand Prix Simulator 2",
+    "publisher": "Proton Software",
+    "year": "19??"
+  },
+  "highway": {
+    "description": "Highway",
+    "publisher": "Vortex Software/Ladinek Software",
+    "year": "19??"
+  },
+  "james": {
+    "description": "James v1.0c (Cz)",
+    "publisher": "Pilsoft",
+    "year": "19??"
+  },
+  "mucmac": {
+    "description": "Muc Mac",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "pcgrally": {
+    "description": "PCG Rally",
+    "publisher": "Namco/HAL Laboratory",
+    "year": "1983"
+  },
+  "uridium": {
+    "description": "Uridium",
+    "publisher": "Hewson",
+    "year": "1990"
+  },
+  "wayotef": {
+    "description": "The Way of the Exploding Fist (Cz)",
+    "publisher": "MiKrSoft",
+    "year": "1987"
+  }
+}

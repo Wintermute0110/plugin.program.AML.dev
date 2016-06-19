@@ -1,0 +1,6142 @@
+{
+  "10yard": {
+    "description": "10-Yard Fight (Jpn)",
+    "publisher": "Irem",
+    "year": "1986"
+  },
+  "10yarda": {
+    "description": "10-Yard Fight (Jpn, Alt)",
+    "publisher": "Irem",
+    "year": "1986"
+  },
+  "123": {
+    "description": "123 (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "123a": {
+    "description": "123 (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "1942": {
+    "description": "1942 (Jpn)",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "1942a": {
+    "description": "1942 (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "1942k": {
+    "description": "1942 (Kor)",
+    "publisher": "Zemina",
+    "year": "1987"
+  },
+  "2face": {
+    "description": "Double Face (Arab, v1.1)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "2face2": {
+    "description": "Double Face 2 (Arab, v1.8)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "2face2a": {
+    "description": "Double Face 2 (Arab, v1.7)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "2facea": {
+    "description": "Double Face (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "2jaw": {
+    "description": "Double Jaw (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "2jawa": {
+    "description": "Double Jaw (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "3dgolf": {
+    "description": "3-D Golf Simulation (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1983"
+  },
+  "3dgolfa": {
+    "description": "3-D Golf Simulation (Jpn, Alt)",
+    "publisher": "T&E Soft",
+    "year": "1983"
+  },
+  "3dgolfhs": {
+    "description": "3-D Golf Simulation - High Speed (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1984"
+  },
+  "3dragon": {
+    "description": "The Three Dragon Story (Kor)",
+    "publisher": "Zemina",
+    "year": "1989"
+  },
+  "3dtennis": {
+    "description": "3D Tennis (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "a1spirit": {
+    "description": "A1 Spirit - The Way to Formula-1 (Jpn)",
+    "publisher": "Panasoft",
+    "year": "1987"
+  },
+  "abcar": {
+    "description": "Aleph Ba Ta (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "abcar1": {
+    "description": "Aleph Ba Ta (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "abcen": {
+    "description": "ABC (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "actman": {
+    "description": "Actman (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "actmana": {
+    "description": "Actman (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "addsub": {
+    "description": "Add & Subtract (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "advenchu": {
+    "description": "Adven' Chuta! (Jpn)",
+    "publisher": "MIA",
+    "year": "1983"
+  },
+  "ae": {
+    "description": "A.E. (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1982"
+  },
+  "agramm11": {
+    "description": "Perfect Arabic Grammar for First Preparatory Class - Part 1-1 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "agramm12": {
+    "description": "Perfect Arabic Grammar for First Preparatory Class - Part 1-2 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "agramm21": {
+    "description": "Perfect Arabic Grammar for Second Preparatory Class - Part 1-1 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "aladdin": {
+    "description": "Aladdin (Arab)",
+    "publisher": "Barq",
+    "year": "1986"
+  },
+  "aladdina": {
+    "description": "Aladdin (Arab, Alt)",
+    "publisher": "Barq",
+    "year": "1986"
+  },
+  "alamona": {
+    "description": "A'lamona (Arab)",
+    "publisher": "Barq",
+    "year": "1985"
+  },
+  "alamonaa": {
+    "description": "A'lamona (Arab, Alt)",
+    "publisher": "Barq",
+    "year": "1985"
+  },
+  "albasic": {
+    "description": "Arabic Learn BASIC (Arab, v1.10)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "albasica": {
+    "description": "Arabic Learn BASIC (Arab, v1.09)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "albatros": {
+    "description": "Albatross (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "1986"
+  },
+  "albatrosa": {
+    "description": "Albatross (Jpn, Alt)",
+    "publisher": "Nihon Telenet",
+    "year": "1986"
+  },
+  "alcazar": {
+    "description": "Alcazar - The Forgotten Fortress (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "alcazara": {
+    "description": "Alcazar - The Forgotten Fortress (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "alibaba": {
+    "description": "Alibaba and 40 Thieves (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "alibabaa": {
+    "description": "Alibaba and 40 Thieves (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "alibabab": {
+    "description": "Alibaba and 40 Thieves (Jpn, Alt 2)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "alien8": {
+    "description": "Alien 8 (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1987"
+  },
+  "alien8h": {
+    "description": "Alien 8 (Jpn, Hacked?)",
+    "publisher": "A.C.G.",
+    "year": "1985"
+  },
+  "aliens": {
+    "description": "Aliens - Alien 2 (Jpn)",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "aliensa": {
+    "description": "Aliens - Alien 2 (Jpn, Alt)",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "aliensb": {
+    "description": "Aliens - Alien 2 (Jpn, Alt 2)",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "alnrom": {
+    "description": "Language of Numbers (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1989"
+  },
+  "amazkid": {
+    "description": "Amazing Kid (Arab)",
+    "publisher": "Husnisoft",
+    "year": "1990"
+  },
+  "amc": {
+    "description": "Astro Marine Corps (Spa)",
+    "publisher": "Dinamic Software?",
+    "year": "1989"
+  },
+  "amtruck": {
+    "description": "American Truck (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "1985"
+  },
+  "amtrucka": {
+    "description": "American Truck (Jpn, Alt)",
+    "publisher": "Nihon Telenet",
+    "year": "1985"
+  },
+  "amtruckb": {
+    "description": "American Truck (Jpn, Alt 2)",
+    "publisher": "Nihon Telenet",
+    "year": "1985"
+  },
+  "amtruckk": {
+    "description": "American Truck (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "anaza": {
+    "description": "A Na Za - Kaleidoscope Special (Jpn)",
+    "publisher": "GA-Yume / HOT・B",
+    "year": "1987"
+  },
+  "angelo": {
+    "description": "Angelo (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "angeloa": {
+    "description": "Angelo (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "animllnd": {
+    "description": "Animal Land - Satsujin Jiken (Jpn)",
+    "publisher": "Enix",
+    "year": "1987"
+  },
+  "antarct": {
+    "description": "Antarctic Adventure (Euro)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "antarcta": {
+    "description": "Antarctic Adventure (Euro, Alt)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "antarctj": {
+    "description": "Antarctic Adventure (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "antarctk": {
+    "description": "Antarctic Adventure (Kor)",
+    "publisher": "Prosoft",
+    "year": "19??"
+  },
+  "anty": {
+    "description": "Anty (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "antya": {
+    "description": "Anty (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "aquasos": {
+    "description": "Aqua Polis SOS (Jpn)",
+    "publisher": "Paxon",
+    "year": "1983"
+  },
+  "aquatack": {
+    "description": "Aquattack (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1984"
+  },
+  "arabhist": {
+    "description": "Arab History (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "arabhista": {
+    "description": "Arab History (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "arabhome": {
+    "description": "Arab Homeland (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "arabhomea": {
+    "description": "Arab Homeland (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "arablogo": {
+    "description": "Sulhof Arab Logo (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "arabwrld": {
+    "description": "Our Arabic World (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "arabwrlda": {
+    "description": "Our Arabic World (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "aramo": {
+    "description": "Aramo (Jpn)",
+    "publisher": "Sein Soft",
+    "year": "1986"
+  },
+  "arkanoid": {
+    "description": "Arkanoid (Euro?)",
+    "publisher": "Taito ~ Imagine",
+    "year": "1986"
+  },
+  "arkanoida": {
+    "description": "Arkanoid (Euro?, Alt)",
+    "publisher": "Taito ~ Imagine",
+    "year": "1986"
+  },
+  "arkanoidj": {
+    "description": "Arkanoid (Jpn)",
+    "publisher": "Taito",
+    "year": "1986"
+  },
+  "arkanoidja": {
+    "description": "Arkanoid (Jpn, Alt)",
+    "publisher": "Taito",
+    "year": "1986"
+  },
+  "arkanoidk": {
+    "description": "Arkanoid (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "aroid": {
+    "description": "αRoid (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "aroida": {
+    "description": "αRoid (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "aroidk": {
+    "description": "αRoid (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "aroundcl": {
+    "description": "Around the Clock (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "aroundcla": {
+    "description": "Around the Clock (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "asquad": {
+    "description": "αSquadron (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "assist": {
+    "description": "Assistant (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "athland": {
+    "description": "Athletic Land (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "athlanda": {
+    "description": "Athletic Land (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "athlandp": {
+    "description": "Athletic Land (Jpn, Prototype)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "athlball": {
+    "description": "Athletic Ball (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "attack4": {
+    "description": "Attack Four - VolleyBall (Jpn)",
+    "publisher": "Pax Softonica",
+    "year": "1986"
+  },
+  "babasanf": {
+    "description": "Baba Sanfour (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "babasanfa": {
+    "description": "Baba Sanfour (Arab, Alt)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "back": {
+    "description": "Back (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "backgamj": {
+    "description": "Back Gammon (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "backgamja": {
+    "description": "Back Gammon (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "backgamm": {
+    "description": "Backgammon (Euro)",
+    "publisher": "Electric Software",
+    "year": "1984"
+  },
+  "backtof": {
+    "description": "Back to the Future (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "backtofa": {
+    "description": "Back to the Future (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "baduk": {
+    "description": "Zemmix Baduk Gyosil (Kor)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "balance": {
+    "description": "Balance (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "balance1": {
+    "description": "Balance (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "balance2": {
+    "description": "Balance (Jpn, Alt 2)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "balance3": {
+    "description": "Balance (Jpn, Alt 3)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "balance4": {
+    "description": "Balance (Jpn, Alt 4)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "banana": {
+    "description": "Banana (Jpn)",
+    "publisher": "Studio GEN",
+    "year": "19??"
+  },
+  "bankp": {
+    "description": "Bank Panic (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "bankpa": {
+    "description": "Bank Panic (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "bankpk": {
+    "description": "Bank Panic (Kor)",
+    "publisher": "Prosoft",
+    "year": "19??"
+  },
+  "barqwrit": {
+    "description": "Barq Writer (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "basicny2": {
+    "description": "BASIC Nyuumon II - Programming-hen (Jpn)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "basicnyu": {
+    "description": "Basic Nyuumon (Jpn)",
+    "publisher": "Casio",
+    "year": "1984"
+  },
+  "batman": {
+    "description": "Batman (Jpn)",
+    "publisher": "Pack-In-Video",
+    "year": "1987"
+  },
+  "battlex": {
+    "description": "Battle Cross (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "bbasic": {
+    "description": "Arabic Barq BASIC (Arab)",
+    "publisher": "Barq",
+    "year": "1986"
+  },
+  "bcquest": {
+    "description": "B.C.'s Quest (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "bcquesta": {
+    "description": "B.C.'s Quest (Jpn, Alt)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "bdash": {
+    "description": "Boulder Dash (Jpn)",
+    "publisher": "Comptiq",
+    "year": "1985"
+  },
+  "beachead": {
+    "description": "Beach-Head (Euro)",
+    "publisher": "Access Software?",
+    "year": "19??"
+  },
+  "beamridr": {
+    "description": "Beam Rider (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "becky": {
+    "description": "Becky (Jpn)",
+    "publisher": "MIA",
+    "year": "1983"
+  },
+  "beckya": {
+    "description": "Becky (Jpn, Alt)",
+    "publisher": "MIA",
+    "year": "1983"
+  },
+  "beckyb": {
+    "description": "Becky (Jpn, Alt 2)",
+    "publisher": "MIA",
+    "year": "1983"
+  },
+  "beeflowr": {
+    "description": "Bee & Flower (Jpn)",
+    "publisher": "Reizon",
+    "year": "1983"
+  },
+  "beeflowra": {
+    "description": "Bee & Flower (Jpn, Alt)",
+    "publisher": "Reizon",
+    "year": "1983"
+  },
+  "beeflowrb": {
+    "description": "Bee & Flower (Jpn, Alt 2)",
+    "publisher": "Reizon",
+    "year": "1983"
+  },
+  "begbasic": {
+    "description": "Beginner's BASIC I (Euro?)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "belnot": {
+    "description": "Believe It or Not (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1990"
+  },
+  "bgames": {
+    "description": "Barq Games",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "bioman4": {
+    "description": "BIOMAN4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "blagger": {
+    "description": "Blagger MSX (Jpn)",
+    "publisher": "MicroCabin",
+    "year": "1984"
+  },
+  "blckony2": {
+    "description": "The Black Onyx II - Search For The Fire Crystal (Jpn)",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "blckonyx": {
+    "description": "The Black Onyx (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "blockhol": {
+    "description": "Block Hole (Kor)",
+    "publisher": "Zemina",
+    "year": "1990"
+  },
+  "blockrun": {
+    "description": "Blockade Runner (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "boggy84": {
+    "description": "Boggy '84 (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1984"
+  },
+  "boggy84a": {
+    "description": "Boggy '84 (Jpn, Alt)",
+    "publisher": "Nihon Columbia",
+    "year": "1984"
+  },
+  "boggy84b": {
+    "description": "Boggy '84 (Jpn, Alt 2)",
+    "publisher": "Nihon Columbia",
+    "year": "1984"
+  },
+  "boing2": {
+    "description": "Boing Boing (Spa)",
+    "publisher": "Sony Spain",
+    "year": "1985"
+  },
+  "bokosuka": {
+    "description": "Bokosuka Wars (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "bokosukaa": {
+    "description": "Bokosuka Wars (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "bombking": {
+    "description": "Bomber King (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1988"
+  },
+  "bombman": {
+    "description": "Bomber Man (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1983"
+  },
+  "bombmank1": {
+    "description": "Bomber Man (Kor)",
+    "publisher": "Korea Soft Bank",
+    "year": "1986"
+  },
+  "bombmank2": {
+    "description": "Bomber Man (Kor, Alt)",
+    "publisher": "Korea Soft Bank",
+    "year": "1986"
+  },
+  "bombmnsp": {
+    "description": "Bomber Man Special (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1986"
+  },
+  "boogie": {
+    "description": "Boogie Woogi Jungle (Jpn)",
+    "publisher": "Ample Software",
+    "year": "1983"
+  },
+  "boogie1": {
+    "description": "Boogie Woogi Jungle (Jpn, Alt)",
+    "publisher": "Ample Software",
+    "year": "1983"
+  },
+  "boogie2": {
+    "description": "Boogie Woogi Jungle (Jpn, Alt 2)",
+    "publisher": "Ample Software",
+    "year": "1983"
+  },
+  "boomrang": {
+    "description": "Boomerang (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "boomranga": {
+    "description": "Boomerang (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "borfes": {
+    "description": "Borfes to 5-nin no Akuma - An Adventure Story (Jpn)",
+    "publisher": "Xtal Soft",
+    "year": "1987"
+  },
+  "bosco": {
+    "description": "Star Destroyer Bosconian (Jpn)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "boscoa": {
+    "description": "Star Destroyer Bosconian (Jpn, Alt)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "boscob": {
+    "description": "Star Destroyer Bosconian (Jpn, Alt 2)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "boullata": {
+    "description": "Boullata (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "brain": {
+    "description": "The Brain (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "breakinj": {
+    "description": "Break In (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1987"
+  },
+  "breakout": {
+    "description": "Break Out (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "brosadv": {
+    "description": "Brother Adventure - Hyeongje Moheom (Kor)",
+    "publisher": "Zemina",
+    "year": "1987"
+  },
+  "brosadva": {
+    "description": "Brother Adventure - Hyeongje Moheom (Kor, Alt)",
+    "publisher": "Zemina",
+    "year": "1987"
+  },
+  "brucelee": {
+    "description": "Bruce Lee (Jpn)",
+    "publisher": "Comptiq",
+    "year": "1985"
+  },
+  "btanuki": {
+    "description": "Batten Tanuki no Daibouken (Jpn, v1.03)",
+    "publisher": "Tecno Soft",
+    "year": "1986"
+  },
+  "btanukia": {
+    "description": "Batten Tanuki no Daibouken (Jpn)",
+    "publisher": "Tecno Soft",
+    "year": "1986"
+  },
+  "btanukib": {
+    "description": "Batten Tanuki no Daibouken (Jpn, Alt)",
+    "publisher": "Tecno Soft",
+    "year": "1986"
+  },
+  "btime": {
+    "description": "Burgertime (Jpn)",
+    "publisher": "Dempa",
+    "year": "1986"
+  },
+  "bullmigt": {
+    "description": "Bull to Mighty Kiki Ippatsu (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1986"
+  },
+  "butampan": {
+    "description": "Butam Pants (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "butampana": {
+    "description": "Butam Pants (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "butampanb": {
+    "description": "Butam Pants (Jpn, Alt 2)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "cabbagep": {
+    "description": "Cabbage Patch Kids (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "cabbagepa": {
+    "description": "Cabbage Patch Kids (Jpn, Older?)",
+    "publisher": "Konami?",
+    "year": "1983"
+  },
+  "cabbagepk": {
+    "description": "Cabbage Patch Kids (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "candoon": {
+    "description": "Candoo Ninja (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "candoona": {
+    "description": "Candoo Ninja (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "cannonbl": {
+    "description": "Cannon Ball (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1983"
+  },
+  "cannonbla": {
+    "description": "Cannon Ball (Jpn, Alt)",
+    "publisher": "Hudson Soft",
+    "year": "1983"
+  },
+  "cannont": {
+    "description": "Cannon Turbo (Jpn)",
+    "publisher": "Brother Kougyou",
+    "year": "198?"
+  },
+  "captchef": {
+    "description": "Captain Chef (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1984"
+  },
+  "carfight": {
+    "description": "Car Fighter (Jpn)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "carjamb": {
+    "description": "Car Jamboree (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "carjamba": {
+    "description": "Car Jamboree (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "carrace": {
+    "description": "Car-Race (Jpn)",
+    "publisher": "Ample Software",
+    "year": "1983"
+  },
+  "carracea": {
+    "description": "Car-Race (Jpn, Alt)",
+    "publisher": "Ample Software",
+    "year": "1983"
+  },
+  "carraceb": {
+    "description": "Car-Race (Jpn, Alt 2)",
+    "publisher": "Ample Software",
+    "year": "1983"
+  },
+  "castle": {
+    "description": "The Castle (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "castlek": {
+    "description": "The Castle (Kor)",
+    "publisher": "Static Soft",
+    "year": "1987"
+  },
+  "castlex": {
+    "description": "Castle Excellent (Jpn)",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "castlexa": {
+    "description": "Castle Excellent (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "cbilliar": {
+    "description": "Computer Billiards (Jpn)",
+    "publisher": "Sony",
+    "year": "1983"
+  },
+  "chackn": {
+    "description": "Chack'n Pop (Jpn)",
+    "publisher": "Taito",
+    "year": "1984"
+  },
+  "chackna": {
+    "description": "Chack'n Pop (Jpn, Alt)",
+    "publisher": "Taito",
+    "year": "1984"
+  },
+  "chaldrby": {
+    "description": "Challenge Derby (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "champbox": {
+    "description": "Champion Boxing (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "champice": {
+    "description": "Champion Ice Hockey (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "champken": {
+    "description": "Champion Kendou (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "champkena": {
+    "description": "Champion Kendou (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "champpwr": {
+    "description": "Champion Pro Wrestling (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "champpwra": {
+    "description": "Champion Pro Wrestling (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "champpwrb": {
+    "description": "Champion Pro Wrestling (Jpn, Alt 2)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "champscr": {
+    "description": "Champion Soccer (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "cheese": {
+    "description": "Cheese (Jpn)",
+    "publisher": "Nihon Electronics",
+    "year": "1984"
+  },
+  "chess": {
+    "description": "Chess (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "chima": {
+    "description": "Youkai Tantei Chima Chima (Jpn)",
+    "publisher": "Bothtec",
+    "year": "1985"
+  },
+  "choplift": {
+    "description": "Choplifter (Jpn)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "choplifta": {
+    "description": "Choplifter (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "chopliftb": {
+    "description": "Choplifter (Jpn, Alt 2)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "choroq": {
+    "description": "Choro Q (Jpn)",
+    "publisher": "Taito",
+    "year": "1984"
+  },
+  "choroqa": {
+    "description": "Choro Q (Jpn, Alt)",
+    "publisher": "Taito",
+    "year": "1984"
+  },
+  "choroqk": {
+    "description": "Choro Q (Kor)",
+    "publisher": "Prosoft",
+    "year": "19??"
+  },
+  "chuheib1": {
+    "description": "Chuugaku Hisshuu Eibunpou 1 (Jpn)",
+    "publisher": "Stratford Computer Center",
+    "year": "1984"
+  },
+  "circusc": {
+    "description": "Circus Charlie (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "citycon": {
+    "description": "City Connection (Jpn)",
+    "publisher": "Nihon Dexter",
+    "year": "1986"
+  },
+  "citycona": {
+    "description": "City Connection (Jpn, Alt)",
+    "publisher": "Nihon Dexter",
+    "year": "1986"
+  },
+  "clapton2": {
+    "description": "Battleship Clapton II (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1984"
+  },
+  "clapton2a": {
+    "description": "Battleship Clapton II (Jpn, Alt)",
+    "publisher": "T&E Soft",
+    "year": "1984"
+  },
+  "cloderun": {
+    "description": "Championship Lode Runner (Jpn)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "cloderunk1": {
+    "description": "Championship Lode Runner (Kor, Bad?)",
+    "publisher": "Prosoft",
+    "year": "19??"
+  },
+  "cloderunk2": {
+    "description": "Championship Lode Runner (Kor, Bad 2?)",
+    "publisher": "Prosoft",
+    "year": "19??"
+  },
+  "cmp01": {
+    "description": "Yamaha FM Auto Arranger CMP-01 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "cnyumon": {
+    "description": "Computer Nyuumon (Jpn)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "coastrac": {
+    "description": "Coaster Race (Jpn)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "coastraca": {
+    "description": "Coaster Race (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "coastracb": {
+    "description": "Coaster Race (Jpn, Alt 2)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "colball": {
+    "description": "Color Ball (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "colballa": {
+    "description": "Color Ball (Jpn, Alt)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "colballb": {
+    "description": "Color Ball (Jpn, Alt 2)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "comecoco": {
+    "description": "Comecocos (Spa)",
+    "publisher": "Idealogic",
+    "year": "198?"
+  },
+  "cometail": {
+    "description": "Comet Tail (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "comicbak": {
+    "description": "Comic Bakery (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "comicbaka": {
+    "description": "Comic Bakery (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "comicbakb": {
+    "description": "Comic Bakery (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "computat": {
+    "description": "Computation (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "computer": {
+    "description": "The Computer (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "condori": {
+    "description": "Con-Dori (Jpn)",
+    "publisher": "Cross Talk",
+    "year": "1983"
+  },
+  "condoria": {
+    "description": "Con-Dori (Jpn, Alt)",
+    "publisher": "Cross Talk",
+    "year": "1983"
+  },
+  "condorib": {
+    "description": "Con-Dori (Jpn, Alt 2)",
+    "publisher": "Cross Talk",
+    "year": "1983"
+  },
+  "confused": {
+    "description": "Confused? (Euro)",
+    "publisher": "Eaglesoft",
+    "year": "198?"
+  },
+  "cosmo": {
+    "description": "Cosmo (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "cosmoa": {
+    "description": "Cosmo (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "cosmoexp": {
+    "description": "Cosmo-Explorer (Jpn)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "cosmoexpa": {
+    "description": "Cosmo-Explorer (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "cothello": {
+    "description": "Othello (Jpn, Sony)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "cothelloa": {
+    "description": "Othello (Jpn, Sony, Alt)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "count1": {
+    "description": "Let's Count 1 (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1989"
+  },
+  "count3": {
+    "description": "Let's Count 3 (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1990"
+  },
+  "cpachi": {
+    "description": "Computer Pachinko (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "craze": {
+    "description": "Craze (Jpn)",
+    "publisher": "Heart Soft",
+    "year": "1988"
+  },
+  "crazybul": {
+    "description": "Crazy Bullet (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "crazycar": {
+    "description": "Crazy Cars (Euro)",
+    "publisher": "Titus",
+    "year": "1988"
+  },
+  "crazytrn": {
+    "description": "Crazy Train (Jpn)",
+    "publisher": "Sony",
+    "year": "1983"
+  },
+  "crazytrna": {
+    "description": "Crazy Train (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1983"
+  },
+  "crossblm": {
+    "description": "Cross Blaim (Jpn)",
+    "publisher": "dB-Soft",
+    "year": "1986"
+  },
+  "crusader": {
+    "description": "Crusader (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "crusadera": {
+    "description": "Crusader (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "crusaderb": {
+    "description": "Crusader (Jpn, Alt 2)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "crusaderk": {
+    "description": "Crusader (Kor)",
+    "publisher": "Clover",
+    "year": "198?"
+  },
+  "cso": {
+    "description": "C_So! (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "csok": {
+    "description": "C_So! (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "cyborgz": {
+    "description": "Cyborg Z (Kor)",
+    "publisher": "Zemina",
+    "year": "1991"
+  },
+  "daidasso": {
+    "description": "Dai Dassou (Jpn)",
+    "publisher": "Carry Lab",
+    "year": "1985"
+  },
+  "daiva4": {
+    "description": "Daiva Story 4 - Asura's Bloodfeud (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1987"
+  },
+  "dambustr": {
+    "description": "The Dam Busters (Euro?)",
+    "publisher": "Comptiq",
+    "year": "1985"
+  },
+  "dambustra": {
+    "description": "The Dam Busters (Jpn)",
+    "publisher": "Comptiq",
+    "year": "1985"
+  },
+  "dangerx4": {
+    "description": "Danger X4 (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "dangerx4a": {
+    "description": "Danger X4 (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "dangerx4b": {
+    "description": "Danger X4 (Jpn, Alt 2)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "david2": {
+    "description": "David II (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "david2k": {
+    "description": "David II (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "dawnpatr": {
+    "description": "Dawn Patrol (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "dcrystal": {
+    "description": "The Demon Crystal (Jpn)",
+    "publisher": "Dempa",
+    "year": "1986"
+  },
+  "dday": {
+    "description": "D-Day (Jpn)",
+    "publisher": "Toshiba",
+    "year": "1984"
+  },
+  "ddaya": {
+    "description": "D-Day (Jpn, Alt)",
+    "publisher": "Toshiba",
+    "year": "1984"
+  },
+  "ddayb": {
+    "description": "D-Day (Jpn, Alt 2)",
+    "publisher": "Toshiba",
+    "year": "1984"
+  },
+  "ddayc": {
+    "description": "D-Day (Jpn, Alt 3)",
+    "publisher": "Toshiba",
+    "year": "1984"
+  },
+  "ddayk": {
+    "description": "D-Day (Kor)",
+    "publisher": "San Ho",
+    "year": "198?"
+  },
+  "ddragon": {
+    "description": "Double Dragon (Kor)",
+    "publisher": "Zemina",
+    "year": "1989"
+  },
+  "decathln": {
+    "description": "Decathlon (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "deepdng": {
+    "description": "Deep Dungeon (Jpn)",
+    "publisher": "ScapTrust",
+    "year": "1988"
+  },
+  "deepdng2": {
+    "description": "Deep Dungeon II - Yuushi no Monshou (Jpn)",
+    "publisher": "ScapTrust",
+    "year": "1988"
+  },
+  "designer": {
+    "description": "The Designer's Pencil (Euro)",
+    "publisher": "Activision?",
+    "year": "1984"
+  },
+  "devilhvn": {
+    "description": "D.H. - Devil's Heaven (Jpn)",
+    "publisher": "General",
+    "year": "1984"
+  },
+  "digdug": {
+    "description": "Dig Dug (Jpn)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "digduga": {
+    "description": "Dig Dug (Jpn, Alt)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "discomp": {
+    "description": "Discover the Computer (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "dngmster": {
+    "description": "Dungeon Master (Jpn)",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "dngnhntr": {
+    "description": "Dungeon Hunter (Jpn)",
+    "publisher": "ASCII",
+    "year": "1989"
+  },
+  "dokidoki": {
+    "description": "Doki Doki Penguin Land (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "dokidokia": {
+    "description": "Doki Doki Penguin Land (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "dooly": {
+    "description": "Baby Dinosaur Dooly",
+    "publisher": "Daou",
+    "year": "1991"
+  },
+  "doordoor": {
+    "description": "Doordoor (Jpn)",
+    "publisher": "Enix",
+    "year": "1985"
+  },
+  "dorodon": {
+    "description": "Dorodon (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "dota": {
+    "description": "Bouken Roman - Dota (Jpn)",
+    "publisher": "System Soft",
+    "year": "1986"
+  },
+  "dotaa": {
+    "description": "Bouken Roman - Dota (Jpn, Alt)",
+    "publisher": "System Soft",
+    "year": "1986"
+  },
+  "dquest": {
+    "description": "Dragon Quest (Jpn)",
+    "publisher": "Enix",
+    "year": "1986"
+  },
+  "dquest2": {
+    "description": "Dragon Quest II - Akuryou no Kamigami (Jpn)",
+    "publisher": "Enix",
+    "year": "1987"
+  },
+  "dquest2a": {
+    "description": "Dragon Quest II (Jpn, Alt)",
+    "publisher": "Enix",
+    "year": "1987"
+  },
+  "drainer": {
+    "description": "Drainer (Jpn)",
+    "publisher": "Victor",
+    "year": "1987"
+  },
+  "drcopy": {
+    "description": "Dr. Copy (Jpn)",
+    "publisher": "Emiiru?",
+    "year": "1987"
+  },
+  "drgnatck": {
+    "description": "Dragon Attack (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "drgnatcka": {
+    "description": "Dragon Attack (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "druaga": {
+    "description": "The Tower of Druaga (Jpn)",
+    "publisher": "Namcot",
+    "year": "1986"
+  },
+  "dskeiba": {
+    "description": "Dai Shougai Keiba (Jpn)",
+    "publisher": "Casio",
+    "year": "1984"
+  },
+  "dslayer": {
+    "description": "Dragon Slayer (Jpn)",
+    "publisher": "Square",
+    "year": "1985"
+  },
+  "dslayer4": {
+    "description": "Dragon Slayer IV - Drasle Family (Jpn)",
+    "publisher": "Nihon Falcom",
+    "year": "1987"
+  },
+  "dunkshot": {
+    "description": "Dunk Shot (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1986"
+  },
+  "dunkshota": {
+    "description": "Dunk Shot (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1986"
+  },
+  "dynabowl": {
+    "description": "Dynamite Bowl (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1988"
+  },
+  "eagle5": {
+    "description": "Eagles 5 (Kor)",
+    "publisher": "Zemina",
+    "year": "1990"
+  },
+  "eaglefgt": {
+    "description": "Eagle Fighter (Jpn)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "eaglefgta": {
+    "description": "Eagle Fighter (Jpn, Alt)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "eddy2": {
+    "description": "Eddy 2 (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "eddy2a": {
+    "description": "Eddy 2 (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "eggerlnd": {
+    "description": "Eggerland Mystery (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "eiwajite": {
+    "description": "MSX Eiwa Jiten (Jpn)",
+    "publisher": "Hi-Score Software",
+    "year": "1989"
+  },
+  "electric": {
+    "description": "Electricity (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "electrom": {
+    "description": "Electromatic (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "electroma": {
+    "description": "Electromatic (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "elevator": {
+    "description": "Elevator Action (Jpn)",
+    "publisher": "Nidecom",
+    "year": "1985"
+  },
+  "empcity": {
+    "description": "Magnum Kiki Ippatsu - Empire City 1931 (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1988"
+  },
+  "empcitya": {
+    "description": "Magnum Kiki Ippatsu - Empire City 1931 (Jpn, Alt)",
+    "publisher": "Toshiba EMI",
+    "year": "1988"
+  },
+  "energy": {
+    "description": "The Energy (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "energya": {
+    "description": "The Energy (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "english": {
+    "description": "English (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "equation": {
+    "description": "Equations (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "erika": {
+    "description": "Erika (Jpn)",
+    "publisher": "Jast",
+    "year": "1987"
+  },
+  "exainnov": {
+    "description": "E.I. - Exa Innova (Jpn)",
+    "publisher": "Sony",
+    "year": "1983"
+  },
+  "exainnov1": {
+    "description": "E.I. - Exa Innova (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1983"
+  },
+  "exchangr": {
+    "description": "Exchanger (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "exchangra": {
+    "description": "Exchanger (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "exerion": {
+    "description": "Exerion (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1984"
+  },
+  "exerion2": {
+    "description": "Exerion II - Zorni (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "exerion2a": {
+    "description": "Exerion II - Zorni (Jpn, Alt)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "exeriona": {
+    "description": "Exerion (Jpn, Alt)",
+    "publisher": "Jaleco",
+    "year": "1984"
+  },
+  "exerionb": {
+    "description": "Exerion (Jpn, Alt 2)",
+    "publisher": "Jaleco",
+    "year": "1984"
+  },
+  "exerionk": {
+    "description": "Exerion (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "exinfo1": {
+    "description": "Examine Your Information 1 (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "exinfo1a": {
+    "description": "Examine Your Information 1 (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "exinfo2": {
+    "description": "Examine Your Information 2 (Arab, v2.07)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "exinfo2a": {
+    "description": "Examine Your Information 2 (Arab, v2.05)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "exinfo3": {
+    "description": "Examine Your Information 3 (Arab, v1.12)",
+    "publisher": "Al Alamiah",
+    "year": "1988"
+  },
+  "exinfo3a": {
+    "description": "Examine Your Information 3 (Arab, v1.10)",
+    "publisher": "Al Alamiah",
+    "year": "1988"
+  },
+  "exoidez": {
+    "description": "Exoide-Z (Jpn)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "exoidez5": {
+    "description": "Exoide-Z Area 5 (Jpn)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "exoidez5k": {
+    "description": "Exoide-Z Area 5 (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "exoideza": {
+    "description": "Exoide-Z (Jpn, Alt)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "exoidezb": {
+    "description": "Exoide-Z (Jpn, Alt 2)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "express": {
+    "description": "Express (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "expressa": {
+    "description": "Express (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "f16ff": {
+    "description": "F16 Fighting Falcon (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "f1spirit": {
+    "description": "F-1 Spirit - The Way to Formula-1 (Jpn)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "f1spirita": {
+    "description": "F-1 Spirit - The Way to Formula-1 (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "f1spiritk": {
+    "description": "F-1 Spirit - The Way to Formula-1 (Kor)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "faces": {
+    "description": "Faces (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "fairy": {
+    "description": "Fairy (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "falc": {
+    "description": "Family Automation Language Community (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "fandom1": {
+    "description": "MSX-FAN Fandom Library 1 (Jpn)",
+    "publisher": "Tecnopolis",
+    "year": "1988"
+  },
+  "fandom2": {
+    "description": "MSX-FAN Fandom Library 2 (Jpn)",
+    "publisher": "Tecnopolis",
+    "year": "1988"
+  },
+  "fandom3": {
+    "description": "MSX-FAN Fandom Library 3 (Jpn)",
+    "publisher": "Tecnopolis",
+    "year": "1988"
+  },
+  "fantzone": {
+    "description": "Fantasy Zone (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "fantzonek": {
+    "description": "Fantasy Zone (Kor)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "farmkit": {
+    "description": "Farm Kit (Euro)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "fatetris": {
+    "description": "FA Tetris (Kor)",
+    "publisher": "FA Soft",
+    "year": "1989"
+  },
+  "fatetrisa": {
+    "description": "FA Tetris (Kor, Alt)",
+    "publisher": "FA Soft",
+    "year": "1989"
+  },
+  "fatetrisb": {
+    "description": "FA Tetris (Kor, Alt 2)",
+    "publisher": "FA Soft",
+    "year": "1989"
+  },
+  "fathom": {
+    "description": "Fathom (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "fddtest": {
+    "description": "Service Floppy Disk Drive Test (Euro?)",
+    "publisher": "Philips",
+    "year": "19??"
+  },
+  "finalmj": {
+    "description": "Final Mahjong (Jpn)",
+    "publisher": "MIA",
+    "year": "1983"
+  },
+  "fireresc": {
+    "description": "Fire Rescue (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "fireresca": {
+    "description": "Fire Rescue (Jpn, Alt)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "fjustice": {
+    "description": "Final Justice (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "fjusticea": {
+    "description": "Final Justice (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "fjusticeb": {
+    "description": "Final Justice (Jpn, Alt 2)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "flappy": {
+    "description": "Flappy (Jpn)",
+    "publisher": "dB-Soft",
+    "year": "1985"
+  },
+  "flappy85": {
+    "description": "Flappy - Limited 85 (Jpn)",
+    "publisher": "dB-Soft",
+    "year": "1985"
+  },
+  "flappya": {
+    "description": "Flappy (Jpn, Alt)",
+    "publisher": "dB-Soft",
+    "year": "1985"
+  },
+  "flicky": {
+    "description": "Flicky (Jpn)",
+    "publisher": "Micronet",
+    "year": "1986"
+  },
+  "flideck": {
+    "description": "Flight Deck (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "flidecka": {
+    "description": "Flight Deck (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "flipper": {
+    "description": "Flipper Slipper (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "flippera": {
+    "description": "Flipper Slipper (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "flstory": {
+    "description": "The Fairyland Story (Jpn)",
+    "publisher": "Hot-B",
+    "year": "1987"
+  },
+  "flstorya": {
+    "description": "The Fairyland Story (Jpn, Alt)",
+    "publisher": "Hot-B",
+    "year": "1987"
+  },
+  "fmpac": {
+    "description": "FM Pana Amusement Cartridge",
+    "publisher": "Panasoft",
+    "year": "19??"
+  },
+  "formatz": {
+    "description": "Formation Z (Jpn)",
+    "publisher": "Nihon Dexter",
+    "year": "1985"
+  },
+  "formatza": {
+    "description": "Formation Z (Jpn, Alt)",
+    "publisher": "Nihon Dexter",
+    "year": "1985"
+  },
+  "fpoint": {
+    "description": "Flashpoint (Kor)",
+    "publisher": "Zemina",
+    "year": "1991"
+  },
+  "fpointa": {
+    "description": "Flashpoint (Kor, Alt)",
+    "publisher": "Zemina",
+    "year": "1991"
+  },
+  "fract": {
+    "description": "Fraction (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "fract1": {
+    "description": "Fractions 1 (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "fract2": {
+    "description": "Fractions 2 (Arab, v2.04)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "fract2a": {
+    "description": "Fractions 2 (Arab, v2.03)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "fracta": {
+    "description": "Fraction (Arab, Alt)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "frogger": {
+    "description": "Frogger (Jpn)",
+    "publisher": "Konami",
+    "year": "1983"
+  },
+  "froggera": {
+    "description": "Frogger (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1983"
+  },
+  "frontlin": {
+    "description": "Front Line (Jpn)",
+    "publisher": "Taito",
+    "year": "1984"
+  },
+  "frontlina": {
+    "description": "Front Line (Jpn, Alt)",
+    "publisher": "Taito",
+    "year": "1984"
+  },
+  "frontlinb": {
+    "description": "Front Line (Jpn, Alt 2)",
+    "publisher": "Taito",
+    "year": "1984"
+  },
+  "fruitsrc": {
+    "description": "Fruit Search (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "fruitsrca": {
+    "description": "Fruit Search (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "fsca1": {
+    "description": "Panasonic FS-CA1 MSX-Audio + BASIC (Jpn)",
+    "publisher": "Panasonic",
+    "year": "1988"
+  },
+  "fscf351": {
+    "description": "FS-CF351 Controller + FS-FD351 DSDD 3.5\" Floppy drive",
+    "publisher": "National",
+    "year": "198?"
+  },
+  "fsfd1": {
+    "description": "FS-FD1 (Floppy controller + 3.5\" DSDD floppy drive)",
+    "publisher": "Panasonic",
+    "year": "198?"
+  },
+  "fsfd1a": {
+    "description": "FS-FD1A (3.5\" DSDD floppy drive with integrated controller)",
+    "publisher": "Panasonic",
+    "year": "198?"
+  },
+  "fsim": {
+    "description": "Flight Simulator - Gyorai Kougeki (Jpn)",
+    "publisher": "subLOGIC",
+    "year": "1988"
+  },
+  "fsplash": {
+    "description": "Flash Splash (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1984"
+  },
+  "funmouse": {
+    "description": "Funky Mouse (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "futbol": {
+    "description": "Futbol (Spa)",
+    "publisher": "Indescomp",
+    "year": "1985"
+  },
+  "fzone": {
+    "description": "Final Zone (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "1986"
+  },
+  "fzonek": {
+    "description": "Final Zone (Kor)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "gabalin": {
+    "description": "Mashou no Yakata - Gabalin (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1987"
+  },
+  "gabalina": {
+    "description": "Mashou no Yakata - Gabalin (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1987"
+  },
+  "galaga": {
+    "description": "Galaga (Jpn)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "galagaa": {
+    "description": "Galaga (Jpn, Alt)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "galagab": {
+    "description": "Galaga (Jpn, Alt 2)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "galagac": {
+    "description": "Galaga (Jpn, Alt 3)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "galagak": {
+    "description": "Galaga (Kor)",
+    "publisher": "San Ho",
+    "year": "198?"
+  },
+  "galaxian": {
+    "description": "Galaxian (Jpn)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "galaxiana": {
+    "description": "Galaxian (Jpn, Alt)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "galaxianb": {
+    "description": "Galaxian (Jpn, Alt 2)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "galforce": {
+    "description": "Gall Force - Defense of Chaos (Jpn)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "galforcea": {
+    "description": "Gall Force - Defense of Chaos (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "galforceb": {
+    "description": "Gall Force - Defense of Chaos (Jpn, Alt 2)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "gambler": {
+    "description": "Gambler Jikochuushinha (Jpn)",
+    "publisher": "Game Arts",
+    "year": "1988"
+  },
+  "gamebox": {
+    "description": "Game Box (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "gameland": {
+    "description": "Game Land (Jpn)",
+    "publisher": "Casio",
+    "year": "1984"
+  },
+  "gangmstr": {
+    "description": "Gang Master (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "gatelab": {
+    "description": "Gate of Labyrinth (Jpn)",
+    "publisher": "Dempa",
+    "year": "1987"
+  },
+  "gberet": {
+    "description": "Green Beret (Euro)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "gbereta": {
+    "description": "Green Beret (Euro, Alt)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "gberetk": {
+    "description": "Green Beret (Kor)",
+    "publisher": "Zemina",
+    "year": "1987"
+  },
+  "genghis": {
+    "description": "Aoki Ookami to Shiroki Mejika - Genghis Khan (Jpn)",
+    "publisher": "Koei",
+    "year": "1986"
+  },
+  "geometry": {
+    "description": "Geometry (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "ghostbst": {
+    "description": "Ghostbusters (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "glider": {
+    "description": "Glider (Jpn)",
+    "publisher": "ZAP",
+    "year": "1985"
+  },
+  "glidera": {
+    "description": "Glider (Jpn, Alt)",
+    "publisher": "ZAP",
+    "year": "1985"
+  },
+  "glory": {
+    "description": "Glory (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "gmaster": {
+    "description": "Game Master (Euro)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "gmaster2": {
+    "description": "Konami no Shin 10-bai Cartridge (Jpn)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "gmaster2a": {
+    "description": "Konami no Shin 10-bai Cartridge (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "gmastera": {
+    "description": "Game Master (Euro, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "gmasterj": {
+    "description": "Konami no Game wo 10-bai Tanoshimu Cartridge (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "gmasterja": {
+    "description": "Konami no Game wo 10-bai Tanoshimu Cartridge (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "godzikun": {
+    "description": "Godzilla-kun (Jpn)",
+    "publisher": "Toho",
+    "year": "1985"
+  },
+  "godzikuna": {
+    "description": "Godzilla-kun (Jpn, Alt)",
+    "publisher": "Toho",
+    "year": "1985"
+  },
+  "godzilla": {
+    "description": "Godzilla (Jpn)",
+    "publisher": "Bandai",
+    "year": "1984"
+  },
+  "godzillaa": {
+    "description": "Godzilla (Jpn, Hacked?)",
+    "publisher": "Bandai",
+    "year": "1984"
+  },
+  "gokiburi": {
+    "description": "Gokiburi Daisakusen (Jpn)",
+    "publisher": "Magicsoft",
+    "year": "1983"
+  },
+  "golfgame": {
+    "description": "Golf Game (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "golgo13": {
+    "description": "Okami no Su - Golgo 13 Adventure Game (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "golvell": {
+    "description": "Golvellius (Jpn)",
+    "publisher": "Compile",
+    "year": "1987"
+  },
+  "gomokuna": {
+    "description": "Gomoku Narabe (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1984"
+  },
+  "gomokunaa": {
+    "description": "Gomoku Narabe (Jpn, Alt)",
+    "publisher": "Toshiba EMI",
+    "year": "1984"
+  },
+  "goonies": {
+    "description": "The Goonies (Jpn)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "gooniesa": {
+    "description": "The Goonies (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "gooniesb": {
+    "description": "The Goonies (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "gpworld": {
+    "description": "GP World (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "gradius": {
+    "description": "Nemesis (Euro) ~ Gradius (Jpn)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "gradius2": {
+    "description": "Nemesis 2 (Euro) ~ Gradius 2 (Jpn)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "gradius2a": {
+    "description": "Nemesis 2 (Euro) ~ Gradius 2 (Jpn) (Alt)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "gradius2d": {
+    "description": "Nemesis 2 (Euro) ~ Gradius 2 (Jpn) (Demo)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "gradius2p": {
+    "description": "Nemesis 2 (Euro) ~ Gradius 2 (Jpn) (Prototype)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "gradiusa": {
+    "description": "Nemesis (Euro) ~ Gradius (Jpn) (Alt)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "greatlng": {
+    "description": "Great Language (Arab)",
+    "publisher": "Barq",
+    "year": "1988"
+  },
+  "grogrev": {
+    "description": "Grog's Revenge (Jpn)",
+    "publisher": "Comptiq",
+    "year": "1985"
+  },
+  "grogreva": {
+    "description": "Grog's Revenge (Jpn, Alt)",
+    "publisher": "Comptiq",
+    "year": "1985"
+  },
+  "guardic": {
+    "description": "Guardic (Jpn)",
+    "publisher": "Compile",
+    "year": "1986"
+  },
+  "guardica": {
+    "description": "Guardic (Jpn, Alt)",
+    "publisher": "Compile",
+    "year": "1986"
+  },
+  "gulkave": {
+    "description": "Gulkave (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "gulkavea": {
+    "description": "Gulkave (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "gulkavek": {
+    "description": "Gulkave (Kor)",
+    "publisher": "ProSoft",
+    "year": "198?"
+  },
+  "gundam": {
+    "description": "Mobile-Suit Gundam - Last Shooting (Jpn)",
+    "publisher": "Bandai",
+    "year": "1984"
+  },
+  "gundama": {
+    "description": "Mobile-Suit Gundam - Last Shooting (Jpn, Alt)",
+    "publisher": "Bandai",
+    "year": "1984"
+  },
+  "gundamk": {
+    "description": "Mobile-Suit Gundam - Last Shooting (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "gunfrght": {
+    "description": "Gun Fright (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1986"
+  },
+  "gunfrghta": {
+    "description": "Gun Fright (Jpn, Hacked?)",
+    "publisher": "A.C.G.",
+    "year": "1985"
+  },
+  "gunsmoke": {
+    "description": "Gun.Smoke",
+    "publisher": "Prosoft",
+    "year": "1990"
+  },
+  "gw126": {
+    "description": "Game World - 126 Games (Kor)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "gw126a": {
+    "description": "Game World - 126 Games (Kor, Hacked?)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "gw30": {
+    "description": "Game World - 30 Games (Kor)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "gw64": {
+    "description": "Game World - 64 Games (Kor)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "gw80": {
+    "description": "Game World - 80 Games (Kor)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "gw80a": {
+    "description": "Game World - 80 Games (Kor, Hacked?)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "gw90": {
+    "description": "Game World - 90 Games (Kor)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "gw90a": {
+    "description": "Game World - 90 Games (Kor, Alt?)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "gyrodine": {
+    "description": "Gyrodine (Jpn)",
+    "publisher": "Nidecom",
+    "year": "1986"
+  },
+  "gyrodinek": {
+    "description": "Gyrodine (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "hades": {
+    "description": "Yami no Ryuuou - Hades no Monshou (Jpn)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "hadesa": {
+    "description": "Yami no Ryuuou - Hades no Monshou (Jpn, Alt)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "hajafuin": {
+    "description": "Haja no Fuuin (Jpn)",
+    "publisher": "Kogado",
+    "year": "1987"
+  },
+  "hanafuda": {
+    "description": "Hanafuda (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "hanakoi": {
+    "description": "MSX Hanafuda Koi Koi (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "hangon": {
+    "description": "Hang-On (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "hangona": {
+    "description": "Hang-On (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "hangonb": {
+    "description": "Hang-On (Jpn, Alt 2)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "harapeko": {
+    "description": "Harapeko Pakkun (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "hbdemo": {
+    "description": "Hit-Bit Demo",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "headtail": {
+    "description": "Head & Tail (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "headtaila": {
+    "description": "Head & Tail (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "heavybox": {
+    "description": "Heavy Boxing (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "heavyboxa": {
+    "description": "Heavy Boxing (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "heavyboxk": {
+    "description": "Heavy Boxing (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "heist": {
+    "description": "The Heist (Jpn)",
+    "publisher": "Comptiq",
+    "year": "1985"
+  },
+  "helitank": {
+    "description": "Helitank (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "hero": {
+    "description": "H.E.R.O. (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "hfox": {
+    "description": "Hurry Fox MSX Special (Jpn)",
+    "publisher": "MicroCabin",
+    "year": "1986"
+  },
+  "hfox2": {
+    "description": "Hurry Fox - Yuki no Maou hen (Jpn)",
+    "publisher": "MicroCabin",
+    "year": "1985"
+  },
+  "highway": {
+    "description": "High Way Star (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "highwayk": {
+    "description": "High Way Star (Kor)",
+    "publisher": "Qnix",
+    "year": "1983"
+  },
+  "hisha": {
+    "description": "Hisha (Jpn)",
+    "publisher": "MicroCabin",
+    "year": "1985"
+  },
+  "hitsuji": {
+    "description": "Hitsuji-Ya (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "holein1": {
+    "description": "Hole in One (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "holein1a": {
+    "description": "Hole in One (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "holein1b": {
+    "description": "Hole in One (Jpn, Alt 2)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "holein1c": {
+    "description": "Hole in One (Jpn, Alt 3)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "holein1p": {
+    "description": "Hole in One Professional (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "holein1pa": {
+    "description": "Hole in One Professional (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "homecalc": {
+    "description": "Home Calc (Jpn)",
+    "publisher": "Matsushita",
+    "year": "1984"
+  },
+  "homewrtr": {
+    "description": "Home Writer (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "hopper": {
+    "description": "Hopper (Euro)",
+    "publisher": "Eaglesoft",
+    "year": "1986"
+  },
+  "hud3dglf": {
+    "description": "Hudson 3D Golf (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "hud3dglfa": {
+    "description": "Hudson 3D Golf (Jpn, Alt)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "hustle": {
+    "description": "Hustle! Chumy (Jpn)",
+    "publisher": "General",
+    "year": "1984"
+  },
+  "hustlea": {
+    "description": "Hustle! Chumy (Jpn, Alt)",
+    "publisher": "General",
+    "year": "1984"
+  },
+  "hustler": {
+    "description": "Video Hustler (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "hustlera": {
+    "description": "Video Hustler (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "hxmu900": {
+    "description": "Toshiba HX-MU900 MSX-Audio",
+    "publisher": "Toshiba",
+    "year": "1985"
+  },
+  "hydlide": {
+    "description": "Hydlide (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1985"
+  },
+  "hydlide2": {
+    "description": "Hydlide II - Shine of Darkness (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1986"
+  },
+  "hydlide2a": {
+    "description": "Hydlide II - Shine of Darkness (Jpn, Alt)",
+    "publisher": "T&E Soft",
+    "year": "1986"
+  },
+  "hydlide3": {
+    "description": "Hydlide 3 - The Space Memories (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1987"
+  },
+  "hydlide3k": {
+    "description": "Hydlide 3 - The Space Memories (Kor)",
+    "publisher": "Zemina",
+    "year": "1987"
+  },
+  "hype": {
+    "description": "Hype (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "hyperol1": {
+    "description": "Hyper Olympic 1 (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "hyperol1k": {
+    "description": "Hyper Olympic 1 (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "hyperol2": {
+    "description": "Hyper Olympic 2 (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "hypersp2": {
+    "description": "Hyper Sports 2 (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "hypersp2k": {
+    "description": "Hyper Sports 2 (Kor)",
+    "publisher": "Topia",
+    "year": "198?"
+  },
+  "hypersp3": {
+    "description": "Hyper Sports 3 (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "hypersp3a": {
+    "description": "Hyper Sports 3 (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "hypersp3b": {
+    "description": "Hyper Sports 3 (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "hyperspt": {
+    "description": "Hyper Sports 1 (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "hyperspta": {
+    "description": "Hyper Sports 1 (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "hyprally": {
+    "description": "Hyper Rally (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "hyprallya": {
+    "description": "Hyper Rally (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "hyprallyb": {
+    "description": "Hyper Rally (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "hyprallyc": {
+    "description": "Hyper Rally (Jpn, Alt 3)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "ibnmal": {
+    "description": "Ibn Maleck (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "ibnmala": {
+    "description": "Ibn Maleck (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "ibnsina1": {
+    "description": "Ibn Sina 1 (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "ibnsina1a": {
+    "description": "Ibn Sina 1 (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "ibnsina2": {
+    "description": "Ibn Sina 2 (Arab, v1.01)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "ibnsina2a": {
+    "description": "Ibn Sina 2 (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "iceworld": {
+    "description": "Ice World (Jpn)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "iganinp2": {
+    "description": "Iga Ninpouchou - Mangetsujou no Tatakai (Jpn)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "iganinpo": {
+    "description": "Iga Ninpouchou (Jpn)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "iligks": {
+    "description": "Iligks (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "indianb": {
+    "description": "Indian no Bouken (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1983"
+  },
+  "infobank": {
+    "description": "Information Bank (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "inforace": {
+    "description": "Info Race (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1990"
+  },
+  "instruct": {
+    "description": "Instructor (Arab)",
+    "publisher": "Barq",
+    "year": "1985"
+  },
+  "instructa": {
+    "description": "Instructor (Arab, Alt)",
+    "publisher": "Barq",
+    "year": "1985"
+  },
+  "islam5": {
+    "description": "Islam Built on Five (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "islam5a": {
+    "description": "Islam Built on Five (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "islam5b": {
+    "description": "Islam Built on Five (Arab, Alt 2)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "issun": {
+    "description": "Issunboushi no Donnamondai (Jpn)",
+    "publisher": "Casio",
+    "year": "1987"
+  },
+  "issuna": {
+    "description": "Issunboushi no Donnamondai (Jpn, Alt)",
+    "publisher": "Casio",
+    "year": "1987"
+  },
+  "issunh": {
+    "description": "Issunboushi no Donnamondai (Jpn, Hacked?)",
+    "publisher": "Angel?",
+    "year": "1987"
+  },
+  "jagur": {
+    "description": "Jagur (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1987"
+  },
+  "jagura": {
+    "description": "Jagur (Jpn, Alt)",
+    "publisher": "Hudson Soft",
+    "year": "1987"
+  },
+  "janka": {
+    "description": "Janka (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "janyuu": {
+    "description": "Janyuu (Jpn)",
+    "publisher": "Technosoft",
+    "year": "1987"
+  },
+  "jetbomb": {
+    "description": "Jet Bomber (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "jetsetw": {
+    "description": "Jet Set Willy (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1985"
+  },
+  "jetsetwa": {
+    "description": "Jet Set Willy (Jpn, Alt)",
+    "publisher": "Hudson Soft",
+    "year": "1985"
+  },
+  "jigsaw": {
+    "description": "Jigsaw Set (Jpn)",
+    "publisher": "MIA",
+    "year": "1983"
+  },
+  "jis4mj": {
+    "description": "Jissen - 4-nin Mahjong (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "jongfrnd": {
+    "description": "Jong Friend (Jpn)",
+    "publisher": "Nidecom",
+    "year": "1984"
+  },
+  "jongkyo": {
+    "description": "Jong Kyo (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1983"
+  },
+  "joytelop": {
+    "description": "Joytelop (Jpn)",
+    "publisher": "Victor",
+    "year": "1985"
+  },
+  "jpwinkle": {
+    "description": "J.P. Winkle (Jpn)",
+    "publisher": "ASCII ~ MSX Magazine",
+    "year": "1986"
+  },
+  "jpwinklek": {
+    "description": "J.P. Winkle (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "jump": {
+    "description": "Jump (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "jumpcstr": {
+    "description": "Jump Coaster (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1984"
+  },
+  "junofrst": {
+    "description": "Juno First (Jpn)",
+    "publisher": "Sony",
+    "year": "1983"
+  },
+  "kakikuke": {
+    "description": "Kakikukekon (Jpn)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "karamaru": {
+    "description": "Karamaru - Chindou Chuu (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "karuizaw": {
+    "description": "Karuizawa Yuukai Annai (Jpn)",
+    "publisher": "Enix",
+    "year": "1985"
+  },
+  "keiba": {
+    "description": "The Keiba (Jpn)",
+    "publisher": "Champion Soft",
+    "year": "1986"
+  },
+  "keybmstr": {
+    "description": "Keyboard Master (Prototype)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "keykaper": {
+    "description": "Keystone Kapers (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "kickit": {
+    "description": "Kick It (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1986"
+  },
+  "kickita": {
+    "description": "Kick It (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1986"
+  },
+  "kinasai": {
+    "description": "Kinasai (Jpn)",
+    "publisher": "<unknown>",
+    "year": "1984"
+  },
+  "kingball": {
+    "description": "King & Balloon (Jpn)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "kingballa": {
+    "description": "King & Balloon (Jpn, Alt)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "kingkngt": {
+    "description": "King's Knight (Jpn)",
+    "publisher": "Square",
+    "year": "1986"
+  },
+  "kingkngta": {
+    "description": "King's Knight (Jpn, Alt)",
+    "publisher": "Square",
+    "year": "1986"
+  },
+  "kingkngtb": {
+    "description": "King's Knight (Jpn, Alt 2)",
+    "publisher": "Square",
+    "year": "1986"
+  },
+  "kingval": {
+    "description": "King's Valley (Euro, Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kingval2": {
+    "description": "King's Valley II (Euro) ~ Ouke no Tani - El Giza no Fuuin (Jpn)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "kingvala": {
+    "description": "King's Valley (Euro, Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kingvalb": {
+    "description": "King's Valley (Euro, Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kingvalc": {
+    "description": "King's Valley (Euro, Jpn, Alt 3)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kingvald": {
+    "description": "King's Valley (Euro, Jpn, Alt 4)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kinnikum": {
+    "description": "Kinnikuman - Colosseum Deathmatch (Jpn)",
+    "publisher": "Bandai",
+    "year": "1985"
+  },
+  "kinnikuma": {
+    "description": "Kinnikuman - Colosseum Deathmatch (Jpn, Alt)",
+    "publisher": "Bandai",
+    "year": "1985"
+  },
+  "kinnikumk": {
+    "description": "Kinnikuman - Colosseum Deathmatch (Kor)",
+    "publisher": "San Ho",
+    "year": "198?"
+  },
+  "knightlr": {
+    "description": "Knight Lore (Jpn)",
+    "publisher": "Nihon Dexter",
+    "year": "1986"
+  },
+  "knightm2": {
+    "description": "Knightmare II - The Maze of Galious (Jpn)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "knightm2k": {
+    "description": "Knightmare II - The Maze of Galious (Kor)",
+    "publisher": "Zemina",
+    "year": "1987"
+  },
+  "knightm3": {
+    "description": "Knightmare III - Shalom (Jpn)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "knightmr": {
+    "description": "Knightmare - Majou Densetsu (Jpn)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "knightmra": {
+    "description": "Knightmare - Majou Densetsu (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "knightmrb": {
+    "description": "Knightmare - Majou Densetsu (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "knightmrk": {
+    "description": "Knightmare - Majou Densetsu (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "knithers": {
+    "description": "Knither Special (Jpn)",
+    "publisher": "Dempa",
+    "year": "1987"
+  },
+  "knowledg": {
+    "description": "Knowledge (Arab)",
+    "publisher": "Barq",
+    "year": "1988"
+  },
+  "knucklej": {
+    "description": "Knuckle Joe (Kor)",
+    "publisher": "Prosoft",
+    "year": "1989"
+  },
+  "koedoli": {
+    "description": "Koedoli (Kor)",
+    "publisher": "Aproman",
+    "year": "1988"
+  },
+  "konbball": {
+    "description": "Konami's Baseball (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konbballa": {
+    "description": "Konami's Baseball (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konbill": {
+    "description": "Konami's Billiards (Euro)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "konboxin": {
+    "description": "Konami's Boxing (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konboxina": {
+    "description": "Konami's Boxing (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konboxinb": {
+    "description": "Konami's Boxing (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "koneko": {
+    "description": "Koneko no Daibouken - Chibi-chan ga Iku (Jpn)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "konfootb": {
+    "description": "Konami's Football (Euro)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konfootba": {
+    "description": "Konami's Football (Euro, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konfootbb": {
+    "description": "Konami's Football (Euro, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kongolf": {
+    "description": "Konami's Golf (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kongolfa": {
+    "description": "Konami's Golf (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kongolfb": {
+    "description": "Konami's Golf (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konsoccr": {
+    "description": "Konami's Soccer (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konsoccra": {
+    "description": "Konami's Soccer (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konsoccrb": {
+    "description": "Konami's Soccer (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konsoccrc": {
+    "description": "Konami's Soccer (Jpn, Alt 3)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "konsynth": {
+    "description": "ShinyoSizer - Konami's Synthesizer (Jpn)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "kontenn": {
+    "description": "Konami's Tennis (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kontenna": {
+    "description": "Konami's Tennis (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kontennk": {
+    "description": "Konami's Tennis (Kor)",
+    "publisher": "Prosoft",
+    "year": "19??"
+  },
+  "koufi": {
+    "description": "Koufi (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1984"
+  },
+  "koufia": {
+    "description": "Koufi (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1984"
+  },
+  "kungfum": {
+    "description": "Kung Fu Master (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "kungfuma": {
+    "description": "Kung Fu Master (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "kungfumb": {
+    "description": "Kung Fu Master (Jpn, Alt 2)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "kungfut": {
+    "description": "Kung-Fu Taikun (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "kungfuta": {
+    "description": "Kung-Fu Taikun (Jpn, Alt)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "kungfutk": {
+    "description": "Kung-Fu Taikun (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "laddrbld": {
+    "description": "Ladder Building (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "laptick2": {
+    "description": "Laptick 2 (Jpn)",
+    "publisher": "dB-Soft",
+    "year": "1986"
+  },
+  "ldrun": {
+    "description": "Lode Runner (Jpn)",
+    "publisher": "Sony",
+    "year": "1983"
+  },
+  "ldrun2": {
+    "description": "Lode Runner II (Jpn)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "ldruna": {
+    "description": "Lode Runner (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1983"
+  },
+  "legendk": {
+    "description": "Legendly Knight - Daemaseong (Kor)",
+    "publisher": "Topia",
+    "year": "1988"
+  },
+  "legendka": {
+    "description": "Legendly Knight - Daemaseong (Kor, Alt)",
+    "publisher": "Topia",
+    "year": "1988"
+  },
+  "legkage": {
+    "description": "Kage no Densetsu - The Legend of Kage (Jpn)",
+    "publisher": "Taito",
+    "year": "1986"
+  },
+  "legkagea": {
+    "description": "Kage no Densetsu - The Legend of Kage (Jpn, Alt)",
+    "publisher": "Taito",
+    "year": "1986"
+  },
+  "lemans2": {
+    "description": "Le Mans 2 (Euro)",
+    "publisher": "Electric Software",
+    "year": "1984"
+  },
+  "lightcor": {
+    "description": "The Light Corridor (Euro)",
+    "publisher": "Infogrames",
+    "year": "1990"
+  },
+  "lordover": {
+    "description": "Lord Over (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "lotlot": {
+    "description": "Lot Lot (Jpn)",
+    "publisher": "Tokuma Shoten",
+    "year": "1985"
+  },
+  "lunarbal": {
+    "description": "Lunar Ball (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "m36": {
+    "description": "A Life Planet - M36 - Mother Brain has been aliving (Jpn)",
+    "publisher": "Pixel",
+    "year": "1987"
+  },
+  "macross": {
+    "description": "Choujikuu Yousai Macross (Jpn)",
+    "publisher": "Bothtec",
+    "year": "1985"
+  },
+  "macrossa": {
+    "description": "Choujikuu Yousai Macross (Jpn, Alt)",
+    "publisher": "Bothtec",
+    "year": "1985"
+  },
+  "magnetic": {
+    "description": "Magnetics (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "magnetica": {
+    "description": "Magnetics (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "magtouch": {
+    "description": "Magic Touch (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "magtoucha": {
+    "description": "Magic Touch (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "magtree": {
+    "description": "Magical Tree (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "magtreea": {
+    "description": "Magical Tree (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "magtune": {
+    "description": "Magic Tune (Arab, v1.02)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "magtunea": {
+    "description": "Magic Tune (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "magwrite": {
+    "description": "Magic Writer (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "manes": {
+    "description": "Manes (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "manesa": {
+    "description": "Manes (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "manesb": {
+    "description": "Manes (Jpn, Alt 2)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "mappy": {
+    "description": "Mappy (Jpn)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "mappya": {
+    "description": "Mappy (Jpn, Alt)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "mappyb": {
+    "description": "Mappy (Jpn, Alt 2)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "marchen": {
+    "description": "Märchen Veil I (Jpn)",
+    "publisher": "System Sacom",
+    "year": "1987"
+  },
+  "marinbat": {
+    "description": "Marine Battle (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "mars2": {
+    "description": "Mars II (Jpn)",
+    "publisher": "Nagi-P Soft",
+    "year": "1990"
+  },
+  "masteng1": {
+    "description": "Master in English - Intermediate Second Grade - Pt. 1-2 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "masteng2": {
+    "description": "Master in English - Intermediate Second Grade - Pt. 2-2 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "math12": {
+    "description": "Perfect Math for First Preparatory Class - Part 1-2 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "math21": {
+    "description": "Perfect Math for Second Preparatory Class - Part 1-1 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "math22": {
+    "description": "Perfect Math for Second Preparatory Class - Part 1-2 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "math31": {
+    "description": "Perfect Math for Third Preparatory Class - Part 1-1 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "math32": {
+    "description": "Perfect Math for Third Preparatory Class - Part 1-2 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "meaning": {
+    "description": "Meaning (Arab)",
+    "publisher": "Barq",
+    "year": "1986"
+  },
+  "meaninga": {
+    "description": "Meaning (Arab, Alt)",
+    "publisher": "Barq",
+    "year": "1986"
+  },
+  "mecca": {
+    "description": "Voyage to Mecca (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "meccaa": {
+    "description": "Voyage to Mecca (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "meccab": {
+    "description": "Voyage to Mecca (Arab, Alt 2)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "megalsos": {
+    "description": "Megalopolis SOS (Jpn)",
+    "publisher": "Paxon",
+    "year": "1983"
+  },
+  "megalsosa": {
+    "description": "Megalopolis SOS (Jpn, Alt)",
+    "publisher": "Paxon",
+    "year": "1983"
+  },
+  "megalsosb": {
+    "description": "Megalopolis SOS (Jpn, Alt 2)",
+    "publisher": "Paxon",
+    "year": "1983"
+  },
+  "megamit": {
+    "description": "Digital Devil Monogatari - Megami Tensei (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "1987"
+  },
+  "megamita": {
+    "description": "Digital Devil Monogatari - Megami Tensei (Jpn, Alt)",
+    "publisher": "Nihon Telenet",
+    "year": "1987"
+  },
+  "meikyush": {
+    "description": "Meikyuu Shinwa (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1986"
+  },
+  "meikyusha": {
+    "description": "Meikyuu Shinwa (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1986"
+  },
+  "memory": {
+    "description": "Memory (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1984"
+  },
+  "memorya": {
+    "description": "Memory (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1984"
+  },
+  "mgunjoe": {
+    "description": "Machinegun Joe vs The Mafia (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "midbros": {
+    "description": "Midnight Brothers (Jpn)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "midbrosa": {
+    "description": "Midnight Brothers (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "midbuild": {
+    "description": "Midnight Building (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "midimacr": {
+    "description": "Yamaha MIDI Macro (Jpn)",
+    "publisher": "Yamaha",
+    "year": "1986"
+  },
+  "midway": {
+    "description": "Midway (Jpn)",
+    "publisher": "Magicsoft",
+    "year": "1983"
+  },
+  "milcaras": {
+    "description": "Mil Caras (Spa)",
+    "publisher": "Sony Spain",
+    "year": "1985"
+  },
+  "minigolf": {
+    "description": "Mini Golf (Jpn)",
+    "publisher": "Namcot",
+    "year": "1985"
+  },
+  "minigolfa": {
+    "description": "Mini Golf (Jpn, Alt)",
+    "publisher": "Namcot",
+    "year": "1985"
+  },
+  "mirai": {
+    "description": "Mirai (Jpn)",
+    "publisher": "Xain Soft",
+    "year": "1987"
+  },
+  "mitsumgt": {
+    "description": "Mitsume Ga Tooru - The Three-Eyed One Comes Here (Jpn)",
+    "publisher": "Natsume",
+    "year": "1989"
+  },
+  "mjdojo": {
+    "description": "Mahjong Dojo (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "mkidwiz": {
+    "description": "Magical Kid Wiz (Jpn)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "mkidwiza": {
+    "description": "Magical Kid Wiz (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "mkidwizb": {
+    "description": "Magical Kid Wiz (Jpn, Alt 2)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "mnstfair": {
+    "description": "Monster's Fair (Jpn)",
+    "publisher": "Toho",
+    "year": "1986"
+  },
+  "moaihiho": {
+    "description": "Moai no Hihou (Jpn)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "moaihihok": {
+    "description": "Moai no Hihou (Kor)",
+    "publisher": "Static Soft",
+    "year": "1986?"
+  },
+  "mokarima": {
+    "description": "Mokari Makka? Bochibochi Denna! (Jpn)",
+    "publisher": "Leben Pro",
+    "year": "1986"
+  },
+  "mole": {
+    "description": "Mole (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "molemol": {
+    "description": "Mole Mole (Bra)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "molemol2": {
+    "description": "Mole Mole 2 (Jpn)",
+    "publisher": "Victor",
+    "year": "1987"
+  },
+  "monkeyac": {
+    "description": "Monkey Academy (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "monkeyaca": {
+    "description": "Monkey Academy (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "monkeyacb": {
+    "description": "Monkey Academy (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "monkeyacc": {
+    "description": "Monkey Academy (Jpn, Alt 3)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "moonland": {
+    "description": "Moon Landing (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "moonswep": {
+    "description": "Moonsweeper (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "mopirang": {
+    "description": "Mopiranger (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "mopiranga": {
+    "description": "Mopiranger (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "mopirangb": {
+    "description": "Mopiranger (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "mopirangc": {
+    "description": "Mopiranger (Jpn, Alt 3)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "mopirangd": {
+    "description": "Mopiranger (Jpn, Alt 4)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "mopirangk": {
+    "description": "Mopiranger (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "moritaot": {
+    "description": "Morita Kazuo no Othello (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1986"
+  },
+  "mouser": {
+    "description": "Mouser (Jpn)",
+    "publisher": "Sony",
+    "year": "1983"
+  },
+  "mpatrol": {
+    "description": "Moon Patrol (Jpn)",
+    "publisher": "Dempa",
+    "year": "1984"
+  },
+  "mpatrolk": {
+    "description": "Moon Patrol (Kor)",
+    "publisher": "Prosoft",
+    "year": "19??"
+  },
+  "mrchin": {
+    "description": "Mr. Chin (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "mrchink": {
+    "description": "Mr. Chin (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "mrdo": {
+    "description": "Mr. Do (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1984"
+  },
+  "mrdok": {
+    "description": "Mr. Do (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "mrdovsun": {
+    "description": "Mr. Do! vs Unicorns (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "mrdowild": {
+    "description": "Mr. Do's Wild Ride (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1985"
+  },
+  "mrdowildh": {
+    "description": "Mr. Do's Wild Ride (Jpn, Hacked?)",
+    "publisher": "Angel?",
+    "year": "1985"
+  },
+  "msx21": {
+    "description": "MSX 21 (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "msxaid": {
+    "description": "MSX-Aid (Jpn)",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "msxbasic": {
+    "description": "MSX Basic-kun Plus 2.0 (Jpn)",
+    "publisher": "ASCII",
+    "year": "1988"
+  },
+  "msxbbal2": {
+    "description": "MSX Baseball II National (Jpn)",
+    "publisher": "Panasoft",
+    "year": "1986"
+  },
+  "msxbball": {
+    "description": "MSX Baseball (Jpn)",
+    "publisher": "Panasoft",
+    "year": "1984"
+  },
+  "msxbballa": {
+    "description": "MSX Baseball (Jpn, Alt)",
+    "publisher": "Panasoft",
+    "year": "1984"
+  },
+  "msxderby": {
+    "description": "MSX Derby (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "msxlogo": {
+    "description": "MSX~Logo (Ned)",
+    "publisher": "Philips",
+    "year": "1985"
+  },
+  "msxrugby": {
+    "description": "MSX Rugby (Jpn)",
+    "publisher": "Panasoft",
+    "year": "1985"
+  },
+  "msxsoccr": {
+    "description": "MSX Soccer (Jpn)",
+    "publisher": "Panasoft",
+    "year": "1985"
+  },
+  "msxsoccra": {
+    "description": "MSX Soccer (Jpn, Alt)",
+    "publisher": "Panasoft",
+    "year": "1985"
+  },
+  "msxsoccrk": {
+    "description": "MSX Soccer (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "msxwritj": {
+    "description": "Japanese MSX-Write (Jpn)",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "mtbase": {
+    "description": "MT-Base (Ned, Cracked)",
+    "publisher": "Micro Technology",
+    "year": "1987"
+  },
+  "multdiv": {
+    "description": "Multiply & Divide (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "multdiva": {
+    "description": "Multiply & Divide (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "museuman": {
+    "description": "Museum & Ancient (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1990"
+  },
+  "musicedi": {
+    "description": "Music Editor - MUE (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "musicg7": {
+    "description": "Music Studio G7 (Jpn)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "musicha3": {
+    "description": "Music Harmonizer 3 (Jpn)",
+    "publisher": "MCS",
+    "year": "1984"
+  },
+  "musiwrtr": {
+    "description": "Musiwriter - PSG (Jpn)",
+    "publisher": "MCS",
+    "year": "1984"
+  },
+  "myclock": {
+    "description": "My Clock (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "myclocka": {
+    "description": "My Clock (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "mydict": {
+    "description": "My Small Dictionary (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1989"
+  },
+  "mylady": {
+    "description": "My Lady (Arab)",
+    "publisher": "Barq",
+    "year": "1986"
+  },
+  "natjis": {
+    "description": "National FS-SR022 Bunsetsu Henkan Jisho (Jpn)",
+    "publisher": "Matsushita",
+    "year": "1985"
+  },
+  "nausicaa": {
+    "description": "Nausicaä (Jpn)",
+    "publisher": "Technopolis Soft",
+    "year": "1984"
+  },
+  "nemesis3": {
+    "description": "Nemesis 3 - The Eve of Destruction (Euro) ~ Gopher no Yabou - Episode II (Jpn)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "nemesis3a": {
+    "description": "Nemesis 3 - The Eve of Destruction (Euro) ~ Gopher no Yabou - Episode II (Jpn) (Alt)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "nemesis3b": {
+    "description": "Nemesis 3 - The Eve of Destruction (Euro) ~ Gopher no Yabou - Episode II (Jpn) (Alt 2)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "newbogle": {
+    "description": "New Boggle Boggle (Kor)",
+    "publisher": "Zemina",
+    "year": "1988"
+  },
+  "newboglea": {
+    "description": "New Boggle Boggle (Kor, Alt)",
+    "publisher": "Zemina",
+    "year": "1988"
+  },
+  "newbogleb": {
+    "description": "New Boggle Boggle (Kor, Alt 2)",
+    "publisher": "Zemina",
+    "year": "1988"
+  },
+  "newhoriz": {
+    "description": "New Horizon - English Course 1 (Jpn)",
+    "publisher": "Tokyo Shoseki",
+    "year": "1987"
+  },
+  "nga": {
+    "description": "The Links - NGA - Network Game Adapter (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "198?"
+  },
+  "nga2": {
+    "description": "The Links - NGA II - Network Game Adapter II (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "198?"
+  },
+  "nga2a": {
+    "description": "The Links - NGA II - Network Game Adapter II (Jpn, Alt)",
+    "publisher": "Nihon Telenet",
+    "year": "198?"
+  },
+  "nightshd": {
+    "description": "Night Shade (Jpn)",
+    "publisher": "Nihon Dexter",
+    "year": "1986"
+  },
+  "nihonshi": {
+    "description": "Nihon-Shi Nenpyou (Jpn)",
+    "publisher": "Stratford Computer Center",
+    "year": "1987"
+  },
+  "ninja2": {
+    "description": "Ninja II (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "ninjajaj": {
+    "description": "Ninja Jajamaru-kun (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1986"
+  },
+  "ninjajajk": {
+    "description": "Ninja Jajamaru-kun (Kor)",
+    "publisher": "Prosoft",
+    "year": "19??"
+  },
+  "ninjakag": {
+    "description": "Ninjya Kage (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "ninjakaga": {
+    "description": "Ninjya Kage (Jpn, Alt)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "ninjakmb": {
+    "description": "Ninja-kun - Majou no Bouken (Jpn)",
+    "publisher": "Nihon Dexter",
+    "year": "1985"
+  },
+  "ninjakun": {
+    "description": "Ninja-kun (Jpn)",
+    "publisher": "Toshiba",
+    "year": "1983"
+  },
+  "ninjapri": {
+    "description": "Ninja Princess (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "ninjapria": {
+    "description": "Ninja Princess (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "nkoshien": {
+    "description": "Nessen Koushien (Jpn)",
+    "publisher": "Casio",
+    "year": "1984"
+  },
+  "nms1205": {
+    "description": "Philips NMS-1205 Music Module v1.2",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "nnprowrs": {
+    "description": "Miku to Shiori no Nyan Nyan Pro Wres (Jpn)",
+    "publisher": "Victor",
+    "year": "1986"
+  },
+  "nobuzenk": {
+    "description": "Nobunaga no Yabou - Zenkokuban (Jpn)",
+    "publisher": "Koei",
+    "year": "1987"
+  },
+  "numbtarg": {
+    "description": "Number & Target (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "numbtarga": {
+    "description": "Number & Target (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "numbwrld": {
+    "description": "Numbers' World (Arab)",
+    "publisher": "Barq",
+    "year": "1985"
+  },
+  "nutsmilk": {
+    "description": "Nuts & Milk (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1983"
+  },
+  "nyorols": {
+    "description": "Nyorols (Jpn)",
+    "publisher": "MIA",
+    "year": "1983"
+  },
+  "oilswell": {
+    "description": "Oil's Well (Jpn)",
+    "publisher": "Comptiq",
+    "year": "1985"
+  },
+  "oilswella": {
+    "description": "Oil's Well (Jpn, Alt)",
+    "publisher": "Comptiq",
+    "year": "1985"
+  },
+  "omacfarm": {
+    "description": "O'Mac Farmer (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "optics": {
+    "description": "Optics (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "organize": {
+    "description": "Organizer (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "othello": {
+    "description": "Othello (Jpn, Pony Canyon)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "ourhome": {
+    "description": "Our Homeland (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "ourhomea": {
+    "description": "Our Homeland (Arab, Alt)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "oyotango": {
+    "description": "Oyoide Tango (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "pachicom": {
+    "description": "Pachi Com (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "pachicomk": {
+    "description": "Pachi Com (Kor)",
+    "publisher": "Boram Soft",
+    "year": "1986"
+  },
+  "pachiufo": {
+    "description": "Pachinko-U.F.O. (Jpn)",
+    "publisher": "Casio",
+    "year": "1984"
+  },
+  "pacman": {
+    "description": "Pac-Man (Jpn)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "pacmana": {
+    "description": "Pac-Man (Jpn, Alt)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "pacmanb": {
+    "description": "Pac-Man (Jpn, Alt 2)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "pacmank": {
+    "description": "Pac-Man (Kor)",
+    "publisher": "Clover",
+    "year": "198?"
+  },
+  "paipanic": {
+    "description": "Pai Panic (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "pairs": {
+    "description": "Pairs (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "pairsa": {
+    "description": "Pairs (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "panther": {
+    "description": "Panther (Jpn)",
+    "publisher": "Irem",
+    "year": "1986"
+  },
+  "parodius": {
+    "description": "Parodius - Tako wa Chikyuu wo Sukuu (Jpn)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "parodiusa": {
+    "description": "Parodius - Tako wa Chikyuu wo Sukuu (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "passball": {
+    "description": "Pass Ball (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "pastfind": {
+    "description": "Pastfinder (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "payload": {
+    "description": "Pay Load (Jpn)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "payloada": {
+    "description": "Pay Load (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "pcsakkyo": {
+    "description": "Pasokon Sakkyokka (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "peetan": {
+    "description": "Peetan (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1984"
+  },
+  "pegasus": {
+    "description": "Pegasus (Jpn)",
+    "publisher": "Victor",
+    "year": "1986"
+  },
+  "pengadv": {
+    "description": "Penguin Adventure (Euro) ~ Yume Tairiku Adventure (Jpn)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "pengadvk1": {
+    "description": "Yume Tairiku Adventure (Kor, Zemina)",
+    "publisher": "Zemina",
+    "year": "1987"
+  },
+  "pengadvk2": {
+    "description": "Yume Tairiku Adventure (Kor, Screen Software)",
+    "publisher": "Screen Software",
+    "year": "1988"
+  },
+  "penguinw": {
+    "description": "Penguin-kun Wars (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "penguinwk": {
+    "description": "Penguin-kun Wars (Kor)",
+    "publisher": "Prosoft",
+    "year": "19??"
+  },
+  "perseus": {
+    "description": "Courageous Perseus (Jpn)",
+    "publisher": "Cosmos Computer",
+    "year": "1985"
+  },
+  "perseusa": {
+    "description": "Courageous Perseus (Jpn, Alt)",
+    "publisher": "Cosmos Computer",
+    "year": "1985"
+  },
+  "pertabla": {
+    "description": "Periodic Table (Arab, Al Alamiah)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "pertablaa": {
+    "description": "Periodic Table (Arab, Al Alamiah, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "pertablm": {
+    "description": "Periodic Table (Arab, Methali)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "physhas": {
+    "description": "Physics Hasan ibn al-Haytham (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "physics": {
+    "description": "Physics (Arab)",
+    "publisher": "Barq",
+    "year": "1988"
+  },
+  "picopico": {
+    "description": "Pico Pico (Jpn)",
+    "publisher": "Microcabin",
+    "year": "1983"
+  },
+  "picot": {
+    "description": "Come On! Picot (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "pictpuzl": {
+    "description": "Picture Puzzle (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "pictpuzla": {
+    "description": "Picture Puzzle (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "picword": {
+    "description": "Pictures & Words (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1989"
+  },
+  "pillbox": {
+    "description": "Pillbox (Jpn)",
+    "publisher": "Magicsoft",
+    "year": "1983"
+  },
+  "pillboxa": {
+    "description": "Pillbox (Jpn, Alt)",
+    "publisher": "Magicsoft",
+    "year": "1983"
+  },
+  "pinblast": {
+    "description": "Pinball Blaster (Euro)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "pineappl": {
+    "description": "Pine Applin (Jpn)",
+    "publisher": "ZAP",
+    "year": "1984"
+  },
+  "pineappla": {
+    "description": "Pine Applin (Jpn, Alt)",
+    "publisher": "ZAP",
+    "year": "1984"
+  },
+  "pingball": {
+    "description": "Pingball Maker (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1985"
+  },
+  "pingpong": {
+    "description": "Konami's Ping-Pong (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "pingponga": {
+    "description": "Konami's Ping-Pong (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "pingpongb": {
+    "description": "Konami's Ping-Pong (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "pingpongc": {
+    "description": "Konami's Ping-Pong (Jpn, Alt 3)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "pingpongk": {
+    "description": "Konami's Ping-Pong (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "pinkychs": {
+    "description": "Pinky Chase (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1984"
+  },
+  "pipi": {
+    "description": "Pipi (Jpn)",
+    "publisher": "Nihon Dexter",
+    "year": "1985"
+  },
+  "pippols": {
+    "description": "Pippols (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "pippolsa": {
+    "description": "Pippols (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "pippolsb": {
+    "description": "Pippols (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "pippolsc": {
+    "description": "Pippols (Jpn, Alt 3)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "pitfall": {
+    "description": "Pitfall! (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "pitfall2": {
+    "description": "Pitfall II - Lost Caverns (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "pitfall2a": {
+    "description": "Pitfall II - Lost Caverns (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "pitfalla": {
+    "description": "Pitfall! (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "pitfallb": {
+    "description": "Pitfall! (Jpn, Alt 2)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "playball": {
+    "description": "Play Ball (Jpn)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "pointx": {
+    "description": "Point X Senryou Sakusen - S.F.3.D. Original - Operation Thanksgiving (Jpn)",
+    "publisher": "Victor",
+    "year": "1986"
+  },
+  "policest": {
+    "description": "The Police Story (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "policesta": {
+    "description": "The Police Story (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "pooyan": {
+    "description": "Pooyan (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1985"
+  },
+  "poppaq": {
+    "description": "Poppaq the Fish (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "poppaqk": {
+    "description": "Poppaq the Fish (Kor)",
+    "publisher": "Boram Soft",
+    "year": "1986"
+  },
+  "pricemag": {
+    "description": "The Price of Magik (Euro)",
+    "publisher": "Level 9 Computing",
+    "year": "1986"
+  },
+  "profbb": {
+    "description": "Professional Baseball (Jpn)",
+    "publisher": "Technopolis Soft",
+    "year": "1986"
+  },
+  "profmj": {
+    "description": "Professional Mahjong (Jpn)",
+    "publisher": "Chat Noir",
+    "year": "1985"
+  },
+  "project": {
+    "description": "Projectiles (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "protectr": {
+    "description": "The Protector (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "proverbs": {
+    "description": "Proverbs (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "psyched": {
+    "description": "Psychedelia (Euro)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "psychwar": {
+    "description": "Psychic War - Cosmic Soldier 2 (Jpn)",
+    "publisher": "Kogado",
+    "year": "1987"
+  },
+  "puznic": {
+    "description": "Puznic",
+    "publisher": "Zemina",
+    "year": "1990"
+  },
+  "puzpanic": {
+    "description": "Puzzle Panic (Jpn)",
+    "publisher": "System Soft",
+    "year": "1986"
+  },
+  "puzzle": {
+    "description": "Puzzle (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "pyramidw": {
+    "description": "Pyramid Warp (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1983"
+  },
+  "qbert": {
+    "description": "Q*bert (Jpn)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "qberta": {
+    "description": "Q*bert (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "queenglf": {
+    "description": "Queen's Golf (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "queenglfa": {
+    "description": "Queen's Golf (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "queenglfb": {
+    "description": "Queen's Golf (Jpn, Hacked?)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "quran": {
+    "description": "The Holy Quran",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "raidbung": {
+    "description": "Raid on Bungeling Bay (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "rainbows": {
+    "description": "Rainbow Stories (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "rallyx": {
+    "description": "Rally-X (Jpn)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "rallyxa": {
+    "description": "Rally-X (Jpn, Alt)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "rallyxb": {
+    "description": "Rally-X (Jpn, Alt 2)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "rallyxk": {
+    "description": "Rally-X (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "rambo": {
+    "description": "Rambo (Jpn)",
+    "publisher": "Pack-In-Video",
+    "year": "1985"
+  },
+  "ramboa": {
+    "description": "Rambo (Jpn, Alt)",
+    "publisher": "Pack-In-Video",
+    "year": "1985"
+  },
+  "rambob": {
+    "description": "Rambo (Jpn, Alt 2)",
+    "publisher": "Pack-In-Video",
+    "year": "1985"
+  },
+  "ramboc": {
+    "description": "Rambo (Jpn, Alt 3)",
+    "publisher": "Pack-In-Video",
+    "year": "1985"
+  },
+  "realtenn": {
+    "description": "Real Tennis (Jpn)",
+    "publisher": "Takara",
+    "year": "1983"
+  },
+  "redzone": {
+    "description": "Red Zone (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "redzonea": {
+    "description": "Red Zone (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "relics": {
+    "description": "Relics (Jpn)",
+    "publisher": "Bothtec",
+    "year": "1986"
+  },
+  "renjuod": {
+    "description": "Renju & Ojama Dogs (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "rhetoric": {
+    "description": "Rhetoric (Arab)",
+    "publisher": "Barq",
+    "year": "1988"
+  },
+  "risedung": {
+    "description": "Rise Out from Dungeons (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "risedunga": {
+    "description": "Rise Out from Dungeons (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "riveraid": {
+    "description": "River Raid (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "roadfght": {
+    "description": "Road Fighter (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "roadfghta": {
+    "description": "Road Fighter (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "robocop": {
+    "description": "RoboCop",
+    "publisher": "Sieco",
+    "year": "1992"
+  },
+  "robofrog": {
+    "description": "Robofrog (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "robofroga": {
+    "description": "Robofrog (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "robowres": {
+    "description": "Robo Wres (Jpn)",
+    "publisher": "Micronet",
+    "year": "1987"
+  },
+  "rockbolt": {
+    "description": "Rock'n Bolt (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "rogerrub": {
+    "description": "Roger Rubbish (Euro)",
+    "publisher": "Spectravideo",
+    "year": "1985"
+  },
+  "rogerruba": {
+    "description": "Roger Rubbish (Euro, Alt)",
+    "publisher": "Spectravideo",
+    "year": "1985"
+  },
+  "rollerbl": {
+    "description": "Roller Ball (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "rollerbla": {
+    "description": "Roller Ball (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "romancia": {
+    "description": "Romancia (Jpn)",
+    "publisher": "Nihon Falcom",
+    "year": "1987"
+  },
+  "rotors": {
+    "description": "Rotors (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "rtseq": {
+    "description": "Real Time Sequencer DMS1 (Euro?)",
+    "publisher": "Digital Music Systems",
+    "year": "19??"
+  },
+  "rtype": {
+    "description": "R-Type (Jpn)",
+    "publisher": "Irem",
+    "year": "1988"
+  },
+  "rtypea": {
+    "description": "R-Type (Jpn, Alt)",
+    "publisher": "Irem",
+    "year": "1988"
+  },
+  "sakhrbas": {
+    "description": "Arabic Sakhr BASIC (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "sakhrdic": {
+    "description": "Sakhr Dictionary (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "sakhrfil": {
+    "description": "Sakhr Files (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "sakhrlog": {
+    "description": "Sakhr Logo (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "salamand": {
+    "description": "Salamander (Jpn)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "salamandk": {
+    "description": "Salamander - Operation X (Kor)",
+    "publisher": "Zemina",
+    "year": "1988"
+  },
+  "sangoku": {
+    "description": "Sangokushi (Jpn)",
+    "publisher": "Koei",
+    "year": "1986"
+  },
+  "sangokua": {
+    "description": "Sangokushi (Jpn, Alt)",
+    "publisher": "Koei",
+    "year": "1986"
+  },
+  "sangokub": {
+    "description": "Sangokushi (Jpn, Alt 2)",
+    "publisher": "Koei",
+    "year": "1986"
+  },
+  "sasa": {
+    "description": "Sasa (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "sasaa": {
+    "description": "Sasa (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "saurus": {
+    "description": "Saurusland (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1983"
+  },
+  "sbillard": {
+    "description": "Super Billiards (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "sbioman4": {
+    "description": "Super Bioman 4 (Kor)",
+    "publisher": "Zemina",
+    "year": "199?"
+  },
+  "sboy1": {
+    "description": "Super Boy I (Kor)",
+    "publisher": "Zemina",
+    "year": "1989"
+  },
+  "sboy2": {
+    "description": "Super Boy II. (Kor)",
+    "publisher": "Zemina",
+    "year": "1989"
+  },
+  "sboy2a": {
+    "description": "Super Boy II. (Kor, Alt)",
+    "publisher": "Zemina",
+    "year": "1989"
+  },
+  "sboy3": {
+    "description": "Super Boy 3 (Kor)",
+    "publisher": "Zemina",
+    "year": "1991"
+  },
+  "sboy3a": {
+    "description": "Super Boy 3 (Kor, Alt)",
+    "publisher": "Zemina",
+    "year": "1991"
+  },
+  "sbw1": {
+    "description": "Super Bros. World 1",
+    "publisher": "Clover",
+    "year": "19??"
+  },
+  "scarlet7": {
+    "description": "Scarlet 7 - The Mightiest Women (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1986"
+  },
+  "scienc11": {
+    "description": "Perfect Science for First Preparatory Class - Part 1-1 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "scienc21": {
+    "description": "Perfect Science for Second Preparatory Class - Part 1-1 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "scienc22": {
+    "description": "Perfect Science for Second Preparatory Class - Part 1-2 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "scienc23": {
+    "description": "Perfect Science for Second Preparatory Class - Part 1-3 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "scienc31": {
+    "description": "Perfect Science for Third Preparatory Class - Part 1-1 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "scienc32": {
+    "description": "Perfect Science for Third Preparatory Class - Part 2-2 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "scion": {
+    "description": "Scion (Jpn)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "scobra": {
+    "description": "Super Cobra (Jpn)",
+    "publisher": "Konami",
+    "year": "1983"
+  },
+  "scobraa": {
+    "description": "Super Cobra (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1983"
+  },
+  "scopeon": {
+    "description": "Scope On - Fight in Space (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "scramegg": {
+    "description": "Scramble Eggs (Jpn)",
+    "publisher": "Ample Software",
+    "year": "1983"
+  },
+  "seahorse": {
+    "description": "Sea Horse (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1984"
+  },
+  "seahuntr": {
+    "description": "Sea Hunter (Euro)",
+    "publisher": "DynaData?",
+    "year": "1984"
+  },
+  "sebaweh1": {
+    "description": "Sebaweh I (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "sebaweh2": {
+    "description": "Sebaweh II (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "secretwd": {
+    "description": "Secret Word (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "seikacho": {
+    "description": "Seiken Achou (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "seikachoa": {
+    "description": "Seiken Achou (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "seikachok": {
+    "description": "Seiken Achou (Kor)",
+    "publisher": "Clover",
+    "year": "198?"
+  },
+  "senjokam": {
+    "description": "Senjou no Ookami (Jpn)",
+    "publisher": "ASCII",
+    "year": "1987"
+  },
+  "senjyo": {
+    "description": "Senjyo (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "senjyoa": {
+    "description": "Senjyo (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "sets": {
+    "description": "Sets (Arab, v1.23)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "setsa": {
+    "description": "Sets (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "sewersam": {
+    "description": "Sewer Sam (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1984"
+  },
+  "shaterb": {
+    "description": "Shater Hassan (Arab, Barq)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "shaterba": {
+    "description": "Shater Hassan (Arab, Barq, Alt)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "shathera": {
+    "description": "Shater Hassan (Arab, Al Alamiah)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "shogigam": {
+    "description": "MSX Shogi Game (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "shogimc": {
+    "description": "Shougi (Jpn, MicroCabin)",
+    "publisher": "MicroCabin",
+    "year": "1985"
+  },
+  "shogimrs": {
+    "description": "Gunjin Shogi Gunshin Mars (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1986"
+  },
+  "shogipc": {
+    "description": "Shougi (Jpn, Pony Canyon)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "shogun": {
+    "description": "Shougun (Jpn)",
+    "publisher": "Nihon Dexter",
+    "year": "1987"
+  },
+  "shougime": {
+    "description": "Shougi Meijin (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1985"
+  },
+  "shoutmat": {
+    "description": "Shout Match (Jpn)",
+    "publisher": "Victor",
+    "year": "1987"
+  },
+  "sidbad": {
+    "description": "Sidbad (Arab)",
+    "publisher": "Barq",
+    "year": "1985"
+  },
+  "simplasm": {
+    "description": "Simple ASM 1.0 (Jpn)",
+    "publisher": "Coral",
+    "year": "1984"
+  },
+  "sinbad": {
+    "description": "Sinbad - Nanatsu no Bouken (Jpn)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "skicomm": {
+    "description": "Ski Command (Jpn)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "skicomma": {
+    "description": "Ski Command (Jpn, Alt)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "skicommk1": {
+    "description": "Ski Command (Kor, Aproman)",
+    "publisher": "Aproman",
+    "year": "198?"
+  },
+  "skicommk2": {
+    "description": "Ski Command (Kor, ProSoft)",
+    "publisher": "ProSoft",
+    "year": "198?"
+  },
+  "skooter": {
+    "description": "Skooter (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1988"
+  },
+  "skootera": {
+    "description": "Skooter (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1988"
+  },
+  "skygaldo": {
+    "description": "Skygaldo (Jpn)",
+    "publisher": "Magical Zoo",
+    "year": "1986"
+  },
+  "skyjag": {
+    "description": "Sky Jaguar (Jpn)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "skyjagk": {
+    "description": "Sky Jaguar (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "skywolf": {
+    "description": "Sky Wolf (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "skywolfa": {
+    "description": "Sky Wolf (Arab, Alt)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "slapshot": {
+    "description": "Slapshot (Spa)",
+    "publisher": "Sony Spain",
+    "year": "1985"
+  },
+  "slaydock": {
+    "description": "Super Laydock - Mission Striker (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1987"
+  },
+  "slaydockk": {
+    "description": "Super Laydock - Mission Striker (Kor)",
+    "publisher": "Zemina",
+    "year": "1988"
+  },
+  "smartex1": {
+    "description": "Smartness Examine 1 (Arab, v1.02)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "smartex1a": {
+    "description": "Smartness Examine 1 (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "smartex2": {
+    "description": "Smartness Examine 2 (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "snakeit": {
+    "description": "Snake It (Euro)",
+    "publisher": "Eaglesoft",
+    "year": "1986?"
+  },
+  "sofia": {
+    "description": "Sofia (Jpn)",
+    "publisher": "Dempa",
+    "year": "1988"
+  },
+  "sokoban": {
+    "description": "MSX Soukoban (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "sokobana": {
+    "description": "MSX Soukoban (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "sokobanb": {
+    "description": "MSX Soukoban (Jpn, Alt 2)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "sokobank": {
+    "description": "Soukoban (Kor)",
+    "publisher": "Qnix",
+    "year": "1984?"
+  },
+  "spacecmp": {
+    "description": "Space Camp (Jpn)",
+    "publisher": "Pack-In-Video",
+    "year": "1986"
+  },
+  "spacecmpa": {
+    "description": "Space Camp (Jpn, Alt)",
+    "publisher": "Pack-In-Video",
+    "year": "1986"
+  },
+  "spaceinv": {
+    "description": "Space Invaders (Jpn)",
+    "publisher": "Nidecom",
+    "year": "1985"
+  },
+  "spacetrb": {
+    "description": "Space Trouble (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1984"
+  },
+  "spacmaze": {
+    "description": "Space Maze Attack (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "spacmazea": {
+    "description": "Space Maze Attack (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "spacmazeb": {
+    "description": "Space Maze Attack (Jpn, Alt 2)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "spactrip": {
+    "description": "Space Trip (Arab)",
+    "publisher": "Barq",
+    "year": "1986"
+  },
+  "sparithm": {
+    "description": "Space Arithmetic (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "sparkie": {
+    "description": "Sparkie (Jpn)",
+    "publisher": "Sony",
+    "year": "1983"
+  },
+  "spelunkr": {
+    "description": "Spelunker (Jpn)",
+    "publisher": "Irem",
+    "year": "1986"
+  },
+  "spelunkra": {
+    "description": "Spelunker (Jpn, Alt)",
+    "publisher": "Irem",
+    "year": "1986"
+  },
+  "spenguin": {
+    "description": "Super Penguin",
+    "publisher": "Sieco",
+    "year": "198?"
+  },
+  "spider": {
+    "description": "The Spider (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "spierrot": {
+    "description": "Super Pierrot (Jpn)",
+    "publisher": "Nidecom",
+    "year": "1987"
+  },
+  "spreadsh": {
+    "description": "Spread Sheet (Euro)",
+    "publisher": "Computermates",
+    "year": "1984"
+  },
+  "squardan": {
+    "description": "Square Dancer (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1984"
+  },
+  "squishem": {
+    "description": "Squish'em (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "squishema": {
+    "description": "Squish'em (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "starblaz": {
+    "description": "Star Blazer (Jpn)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "starblaza": {
+    "description": "Star Blazer (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "starblazb": {
+    "description": "Star Blazer (Jpn, Alt 2)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "starcomm": {
+    "description": "Star Command (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "starfrce": {
+    "description": "Star Force (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1985"
+  },
+  "starfrcea": {
+    "description": "Star Force (Jpn, Alt)",
+    "publisher": "Hudson Soft",
+    "year": "1985"
+  },
+  "starship": {
+    "description": "Starship Simulator (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "starshipa": {
+    "description": "Starship Simulator (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "starsold": {
+    "description": "Star Soldier (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1986"
+  },
+  "starsolda": {
+    "description": "Star Soldier (Jpn, Alt)",
+    "publisher": "Hudson Soft",
+    "year": "1986"
+  },
+  "startrap": {
+    "description": "Star Trap (Jpn)",
+    "publisher": "Jast",
+    "year": "1987"
+  },
+  "starwars": {
+    "description": "Star Wars (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1986"
+  },
+  "stepper": {
+    "description": "Stepper (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "stepup": {
+    "description": "Step Up (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "stepupa": {
+    "description": "Step Up (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "stepupk": {
+    "description": "Step Up (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "stonewis": {
+    "description": "Kenja no Ishi - The Stone of Wisdom (Jpn)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "stranglp": {
+    "description": "Strange Loop (Jpn)",
+    "publisher": "Nihon Dexter",
+    "year": "1987"
+  },
+  "strtmast": {
+    "description": "Street Master (Kor)",
+    "publisher": "Zemina",
+    "year": "1992"
+  },
+  "suparobo": {
+    "description": "Suparobo (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "supdrink": {
+    "description": "Super Drinker (Jpn)",
+    "publisher": "Ample Software",
+    "year": "1983"
+  },
+  "supercol": {
+    "description": "Super Columns (Kor)",
+    "publisher": "Hi-Com",
+    "year": "1990"
+  },
+  "superglf": {
+    "description": "Super Golf (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "supermon": {
+    "description": "Super Monitor (Jpn, v1.2)",
+    "publisher": "Emiiru?",
+    "year": "1985"
+  },
+  "supermona": {
+    "description": "Super Monitor (Jpn, v1.1)",
+    "publisher": "Emiiru?",
+    "year": "1985"
+  },
+  "superswa": {
+    "description": "Super Swangi - Super Altered Beast",
+    "publisher": "Clover",
+    "year": "1990"
+  },
+  "supersyn": {
+    "description": "Super Synth (Jpn)",
+    "publisher": "Victor",
+    "year": "1984"
+  },
+  "supersyna": {
+    "description": "Super Synth (Jpn, Alt)",
+    "publisher": "Victor",
+    "year": "1984"
+  },
+  "superxf": {
+    "description": "Super Cross Force (Euro)",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  },
+  "suppachi": {
+    "description": "Super Pachinko (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1985"
+  },
+  "suprbubl": {
+    "description": "Super Bubble Bobble (Kor)",
+    "publisher": "Zemina",
+    "year": "1989"
+  },
+  "supsnake": {
+    "description": "Super Snake (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "supsnakea": {
+    "description": "Super Snake (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "supsnakeb": {
+    "description": "Super Snake (Jpn, Alt 2)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1983"
+  },
+  "supsoccr": {
+    "description": "Super Soccer (Jpn)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "suptenn": {
+    "description": "MSX Super Tennis (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "suptrip": {
+    "description": "Supertripper (Spa)",
+    "publisher": "Sony Spain",
+    "year": "1985"
+  },
+  "suthir": {
+    "description": "Mobile Planet Suthirus - Approach from the Westgate (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1986"
+  },
+  "sweetacr": {
+    "description": "Sweet Acorn (Jpn)",
+    "publisher": "Taito",
+    "year": "1984"
+  },
+  "sweetacra": {
+    "description": "Sweet Acorn (Jpn, Alt)",
+    "publisher": "Taito",
+    "year": "1984"
+  },
+  "swing": {
+    "description": "Swing (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "swinga": {
+    "description": "Swing (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "takameij": {
+    "description": "Takahashi Meijin no Boukenjima (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1986"
+  },
+  "takameija": {
+    "description": "Takahashi Meijin no Boukenjima (Jpn, Alt)",
+    "publisher": "Hudson Soft",
+    "year": "1986"
+  },
+  "takameijk1": {
+    "description": "Takahashi Meijin no Boukenjima (Kor, Star Frontiers)",
+    "publisher": "Star Frontiers",
+    "year": "1988"
+  },
+  "takameijk2": {
+    "description": "Takahashi Meijin no Boukenjima (Kor, Zemina)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "takeru": {
+    "description": "Takeru Densetsu (Jpn)",
+    "publisher": "Brother Kougyou",
+    "year": "1987"
+  },
+  "tankbatt": {
+    "description": "Tank Battalion (Jpn)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "tantan": {
+    "description": "Checkers in Tan Tan Tanuki (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "tatica": {
+    "description": "Tatica (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "tawarakn": {
+    "description": "Tawara-kun (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "tawarakna": {
+    "description": "Tawara-kun (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "tawaraknb": {
+    "description": "Tawara-kun (Jpn, Alt 2)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "tearnile": {
+    "description": "Tear of Nile (Jpn)",
+    "publisher": "Victor",
+    "year": "1986"
+  },
+  "telebunn": {
+    "description": "Telebunnie (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "telebunna": {
+    "description": "Telebunnie (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "tensaird": {
+    "description": "Tensai Rabbian Daifunsen (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1986"
+  },
+  "tenshit": {
+    "description": "Tenshi-tachi no Gogo (Jpn)",
+    "publisher": "Jast",
+    "year": "1987"
+  },
+  "testcart": {
+    "description": "Service Test Cart MSX1 (Euro?)",
+    "publisher": "Philips",
+    "year": "19??"
+  },
+  "tetrahor": {
+    "description": "Tetra Horror (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "tetrahora": {
+    "description": "Tetra Horror (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "tetris": {
+    "description": "Tetris (Kor)",
+    "publisher": "Zemina",
+    "year": "19??"
+  },
+  "tetris2": {
+    "description": "Tetris II (Kor)",
+    "publisher": "Prosoft",
+    "year": "1989"
+  },
+  "tetrisa": {
+    "description": "Tetris (Kor, Alt)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "tetsuman": {
+    "description": "Tetsuman (Jpn)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "tetsumana": {
+    "description": "Tetsuman (Jpn, Alt)",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1985"
+  },
+  "theseus": {
+    "description": "Theseus - Iligks I (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "theseusa": {
+    "description": "Theseus - Iligks I (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "theseusk": {
+    "description": "Theseus - Iligks I (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "thexder": {
+    "description": "Thexder (Jpn)",
+    "publisher": "Game Arts?",
+    "year": "1986"
+  },
+  "thexdera": {
+    "description": "Thexder (Jpn, Alt)",
+    "publisher": "Game Arts?",
+    "year": "1986"
+  },
+  "thexderb": {
+    "description": "Thexder (Jpn, Alt 2)",
+    "publisher": "Game Arts?",
+    "year": "1986"
+  },
+  "think": {
+    "description": "Let's Think (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1989"
+  },
+  "thinkme": {
+    "description": "Think with Me (Arab)",
+    "publisher": "Barq",
+    "year": "1988"
+  },
+  "thndbolt": {
+    "description": "Thunderbolt (Jpn)",
+    "publisher": "Pixel",
+    "year": "1986"
+  },
+  "thndbolta": {
+    "description": "Thunderbolt (Jpn, Alt)",
+    "publisher": "Pixel",
+    "year": "1986"
+  },
+  "thndboltb": {
+    "description": "Thunderbolt (Jpn, Alt 2)",
+    "publisher": "Pixel",
+    "year": "1986"
+  },
+  "thndrbal": {
+    "description": "Thunder Ball (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "thndrbala": {
+    "description": "Thunder Ball (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "timeplt": {
+    "description": "Time Pilot (Jpn)",
+    "publisher": "Konami",
+    "year": "1983"
+  },
+  "timeplta": {
+    "description": "Time Pilot (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1983"
+  },
+  "titipang": {
+    "description": "Ti Ti! Pang Pang! (Kor)",
+    "publisher": "Aproman",
+    "year": "1989"
+  },
+  "tkshogi": {
+    "description": "Tanigawa Kouji no Shougi Shinan (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "tomjmat1": {
+    "description": "Tom & Jerry Math 1 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "tomjmat2": {
+    "description": "Tom & Jerry Math 2 (Arab)",
+    "publisher": "Methali",
+    "year": "1988"
+  },
+  "toprollr": {
+    "description": "Top Roller! (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1984"
+  },
+  "topzip": {
+    "description": "Topple Zip (Jpn)",
+    "publisher": "Bothtec",
+    "year": "1986"
+  },
+  "toque": {
+    "description": "Toque! (Bra)",
+    "publisher": "Gradiente",
+    "year": "19??"
+  },
+  "trackfl2": {
+    "description": "Track & Field 2 (Euro)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "trackfld": {
+    "description": "Track & Field 1 (Euro)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "traffic": {
+    "description": "Traffic (Jpn)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "traffica": {
+    "description": "Traffic (Jpn, Alt)",
+    "publisher": "Sony",
+    "year": "1986"
+  },
+  "trafficb": {
+    "description": "Traffic (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "treasure": {
+    "description": "Treasure (Arab)",
+    "publisher": "Barq",
+    "year": "1987"
+  },
+  "trialski": {
+    "description": "Trial Ski (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "trickboy": {
+    "description": "Trick Boy (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1984"
+  },
+  "triton": {
+    "description": "Triton (Jpn)",
+    "publisher": "Sein Soft",
+    "year": "1986"
+  },
+  "trumpaid": {
+    "description": "Trump Aid (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1986"
+  },
+  "tsumego": {
+    "description": "Tsumego 120 (Jpn)",
+    "publisher": "Champion Soft",
+    "year": "1987"
+  },
+  "turboat": {
+    "description": "Turboat (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "turmoil": {
+    "description": "Turmoil (Jpn)",
+    "publisher": "ASCII",
+    "year": "1984"
+  },
+  "turmoilk": {
+    "description": "Turmoil (Kor)",
+    "publisher": "Qnix",
+    "year": "1984?"
+  },
+  "twinbee": {
+    "description": "Twin Bee (Jpn)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "twinbeea": {
+    "description": "Twin Bee (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "twinbeeb": {
+    "description": "Twin Bee (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "twinbeec": {
+    "description": "Twin Bee (Jpn, Alt 3)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "twinhamm": {
+    "description": "Twin Hammer (Euro)",
+    "publisher": "Best",
+    "year": "1989"
+  },
+  "tzr": {
+    "description": "TZR - GrandPrix Rider (Jpn)",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "ultraman": {
+    "description": "Ultraman (Jpn)",
+    "publisher": "Bandai",
+    "year": "1984"
+  },
+  "valis": {
+    "description": "Mugen Senshi Valis (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "1986"
+  },
+  "valisk": {
+    "description": "Mugen Senshi Valis (Kor)",
+    "publisher": "Zemina",
+    "year": "1987"
+  },
+  "vaxol": {
+    "description": "Vaxol (Jpn)",
+    "publisher": "Heart Soft",
+    "year": "1987"
+  },
+  "venusfir": {
+    "description": "Venus Fire (Jpn)",
+    "publisher": "Victor",
+    "year": "1987"
+  },
+  "vifam": {
+    "description": "Vifam (Jpn)",
+    "publisher": "Bandai",
+    "year": "1984"
+  },
+  "vifama": {
+    "description": "Vifam (Jpn, Alt)",
+    "publisher": "Bandai",
+    "year": "1984"
+  },
+  "vigilant": {
+    "description": "Vigilante (Kor)",
+    "publisher": "Clover",
+    "year": "1990"
+  },
+  "volguard": {
+    "description": "Volguard (Jpn)",
+    "publisher": "dB-Soft",
+    "year": "1985"
+  },
+  "vy0010": {
+    "description": "VY-0010 (Floppy controller + 3.5\" SSDD floppy drive)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "warpwarp": {
+    "description": "Warp & Warp (Jpn)",
+    "publisher": "Namcot",
+    "year": "1984"
+  },
+  "warpwarpk": {
+    "description": "Warp & Warp (Kor)",
+    "publisher": "Zemina",
+    "year": "198?"
+  },
+  "warrior": {
+    "description": "Warrior (Jpn)",
+    "publisher": "ASCII",
+    "year": "1983"
+  },
+  "warroid": {
+    "description": "Warroid (Jpn)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "warroida": {
+    "description": "Warroid (Jpn, Alt)",
+    "publisher": "ASCII",
+    "year": "1985"
+  },
+  "waterdrv": {
+    "description": "Water Driver (Jpn)",
+    "publisher": "Colpax?",
+    "year": "1984"
+  },
+  "wbells": {
+    "description": "Wedding Bells (Jpn)",
+    "publisher": "Nihon Columbia",
+    "year": "1984"
+  },
+  "wbellsa": {
+    "description": "Wedding Bells (Jpn, Alt)",
+    "publisher": "Nihon Columbia",
+    "year": "1984"
+  },
+  "who": {
+    "description": "Who? (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "whoa": {
+    "description": "Who? (Arab, Alt)",
+    "publisher": "Al Alamiah",
+    "year": "1987"
+  },
+  "wingman2": {
+    "description": "Wing Man 2 - Kitakura no Fukkatsu (Jpn)",
+    "publisher": "Enix",
+    "year": "1987"
+  },
+  "winwrld": {
+    "description": "Window on the World (Arab, v1.02)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "winwrlda": {
+    "description": "Window on the World (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "wondchld": {
+    "description": "Wonderful Child (Arab, v1.02)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "wondchlda": {
+    "description": "Wonderful Child (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "wonsiin": {
+    "description": "Wonsiin (Kor)",
+    "publisher": "Zemina",
+    "year": "1991"
+  },
+  "wrangler": {
+    "description": "Wrangler (Spa)",
+    "publisher": "Sony Spain",
+    "year": "1985"
+  },
+  "wreck": {
+    "description": "The Wreck (Euro)",
+    "publisher": "Electric Software",
+    "year": "1984"
+  },
+  "wrldopen": {
+    "description": "Casio Worldopen (Jpn)",
+    "publisher": "Casio",
+    "year": "1985"
+  },
+  "wrldopenk": {
+    "description": "Casio Worldopen (Kor)",
+    "publisher": "Boram Soft",
+    "year": "1986"
+  },
+  "xanadu": {
+    "description": "Xanadu - Dragon Slayer II (Jpn)",
+    "publisher": "Nihon Falcom",
+    "year": "1987"
+  },
+  "xanaduk": {
+    "description": "Xanadu - Dragon Slayer II (Kor)",
+    "publisher": "Zemina",
+    "year": "1987"
+  },
+  "xevious": {
+    "description": "Xevious",
+    "publisher": "Zemina",
+    "year": "1990"
+  },
+  "xword": {
+    "description": "Cross Word (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1985"
+  },
+  "xyzolog": {
+    "description": "Xyzolog (Jpn)",
+    "publisher": "Nidecom",
+    "year": "1984"
+  },
+  "xyzologa": {
+    "description": "Xyzolog (Jpn, Alt)",
+    "publisher": "Nidecom",
+    "year": "1984"
+  },
+  "yabyum": {
+    "description": "Yab Yum (Ned)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "yakyukyo": {
+    "description": "Yakyu Kyo (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1985"
+  },
+  "yamahapc": {
+    "description": "Yamaha Play Card System UPA-01 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "1985"
+  },
+  "yellowsb": {
+    "description": "Yellow Submarine (Jpn)",
+    "publisher": "Brother Kougyou",
+    "year": "1987"
+  },
+  "yiear": {
+    "description": "Yie Ar Kung-Fu (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "yiear2": {
+    "description": "Yie Ar Kung-Fu II - The Emperor Yie-Gah (Jpn)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "yiear2a": {
+    "description": "Yie Ar Kung-Fu II - The Emperor Yie-Gah (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "yiear2b": {
+    "description": "Yie Ar Kung-Fu II - The Emperor Yie-Gah (Jpn, Alt 2)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "yieara": {
+    "description": "Yie Ar Kung-Fu (Jpn, Alt)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "yieark": {
+    "description": "Yie Ar Kung-Fu (Kor)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "youkaiya": {
+    "description": "Youkai Yashiki (Jpn)",
+    "publisher": "Casio",
+    "year": "1986"
+  },
+  "youngart": {
+    "description": "Young Artist (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1988"
+  },
+  "youngres": {
+    "description": "Young Researcher (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1989"
+  },
+  "yrm101": {
+    "description": "Yamaha FM Music Composer YRM-101 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "1984"
+  },
+  "yrm101a": {
+    "description": "Yamaha FM Music Composer YRM-101 (Jpn, Alt)",
+    "publisher": "Yamaha",
+    "year": "1984"
+  },
+  "yrm102": {
+    "description": "Yamaha FM Voicing Program (Jpn)",
+    "publisher": "Yamaha",
+    "year": "1985"
+  },
+  "yrm102a": {
+    "description": "Yamaha FM Voicing Program YRM-102 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm103": {
+    "description": "Yamaha DX7 Voicing Program YRM-103 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm103a": {
+    "description": "Yamaha DX7 Voicing Program YRM-103 (Jpn, Alt)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm104": {
+    "description": "Yamaha FM Music Macro YRM-104 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "1984"
+  },
+  "yrm105": {
+    "description": "Yamaha DX9 Voicing Program YRM-105 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm301": {
+    "description": "Yamaha MIDI Recorder YRM-301 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm302": {
+    "description": "Yamaha Rhythm Editor YRM-302 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm303": {
+    "description": "Yamaha MIDI Macro & Monitor YRM-303 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm304": {
+    "description": "Yamaha DX7 Voicing Program II YRM-304 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm305": {
+    "description": "Yamaha DX21 Voicing Program YRM-305 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm501": {
+    "description": "Yamaha FM Music Composer II YRM-501 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "1984"
+  },
+  "yrm502": {
+    "description": "Yamaha FM Voicing Program II YRM-502 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm504": {
+    "description": "Yamaha FM Music Macro II YRM-504 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "198?"
+  },
+  "yrm506": {
+    "description": "Yamaha FB-01 Voicing Program YRM-506 (Jpn)",
+    "publisher": "Yamaha",
+    "year": "1985"
+  },
+  "ysherlck": {
+    "description": "Young Sherlock - Doyle no Isan (Jpn)",
+    "publisher": "Pack-In-Video",
+    "year": "1985"
+  },
+  "zaider": {
+    "description": "Chou Senshi Zaider - Battle of Peguss (Jpn)",
+    "publisher": "Cosmos Computer",
+    "year": "1986"
+  },
+  "zaidera": {
+    "description": "Chou Senshi Zaider - Battle of Peguss (Jpn, Alt)",
+    "publisher": "Cosmos Computer",
+    "year": "1986"
+  },
+  "zanac": {
+    "description": "Zanac (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "zanac2": {
+    "description": "Zanac 2nd Version (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1987"
+  },
+  "zanac2a": {
+    "description": "Zanac 2nd Version (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1987"
+  },
+  "zanaca": {
+    "description": "Zanac (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "zaxxon": {
+    "description": "Zaxxon (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "zaxxona": {
+    "description": "Zaxxon (Jpn, Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "zen": {
+    "description": "Zen Assembler (Euro)",
+    "publisher": "Kuma Computers?",
+    "year": "1986"
+  },
+  "zenji": {
+    "description": "Zenji (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1984"
+  },
+  "zexasltd": {
+    "description": "Zexas Limited (Jpn)",
+    "publisher": "dB-Soft",
+    "year": "1985"
+  },
+  "zexasltda": {
+    "description": "Zexas Limited (Jpn, Alt)",
+    "publisher": "dB-Soft",
+    "year": "1985"
+  },
+  "zexasltdb": {
+    "description": "Zexas Limited (Jpn, Alt 2)",
+    "publisher": "dB-Soft",
+    "year": "1985"
+  },
+  "zoo": {
+    "description": "The Zoo (Arab)",
+    "publisher": "Al Alamiah",
+    "year": "1989"
+  },
+  "zoom909": {
+    "description": "Zoom 909 (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "zoom909k": {
+    "description": "Zoom 909 (Kor)",
+    "publisher": "Prosoft",
+    "year": "19??"
+  }
+}

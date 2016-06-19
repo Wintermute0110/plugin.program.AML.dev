@@ -1,0 +1,47 @@
+{
+  "factory": {
+    "description": "Game Factory (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "flintkf": {
+    "description": "Flintstones Keyboard Fun (Unreleased)",
+    "publisher": "IntelligentVision",
+    "year": "200?"
+  },
+  "jetsons": {
+    "description": "The Jetsons - Ways With Words",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "jumble": {
+    "description": "Number Jumble (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "melody": {
+    "description": "Melody Blaster",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "mindstrk": {
+    "description": "Mind Strike!",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "mrbasic": {
+    "description": "Mr. Basic Meets Bits 'n Bytes",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "scooby": {
+    "description": "Scooby Doo's Maze Chase",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "wsmlbase": {
+    "description": "World Series Major League Baseball",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  }
+}

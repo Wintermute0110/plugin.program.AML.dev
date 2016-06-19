@@ -1,0 +1,572 @@
+{
+  "bakumats": {
+    "description": "Bakumatsu Rouman Tokubetsu Hen - Gekka no Kenshi - Tsuki ni Saku Hana, Chiri Yuku Hana (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "bam": {
+    "description": "Bust-A-Move Pocket (USA)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "bamp": {
+    "description": "Bust-A-Move Pocket (Prototype)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "bigbang": {
+    "description": "Big Bang Pro Wrestling (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "bikkuri": {
+    "description": "Bikkuriman 2000 - Viva! Pocket Festiva! (Jpn)",
+    "publisher": "Sega Toys",
+    "year": "2000"
+  },
+  "biomotor": {
+    "description": "BioMotor Unitron (Euro, USA)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "biomotorj": {
+    "description": "BioMotor Unitron (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "bstarsc": {
+    "description": "Pocket Sport Series - Baseball Stars Color (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "coolboar": {
+    "description": "Cool Boarders Pocket (Euro, Jpn)",
+    "publisher": "UEP Systems",
+    "year": "2000"
+  },
+  "coolcool": {
+    "description": "Cool Cool Jam (Euro, USA, Sample)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "coolcoolj": {
+    "description": "Cool Cool Jam (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "cotton": {
+    "description": "Fantastic Night Dreams Cotton (Euro)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "cottonj": {
+    "description": "Fantastic Night Dreams Cotton (Jpn)",
+    "publisher": "Success",
+    "year": "2000"
+  },
+  "crushrol": {
+    "description": "Crush Roller (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "darkarms": {
+    "description": "Dark Arms - Beast Buster 1999 (Euro, USA) ~ Beast Buster - Yami no Seitai Heiki (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "darkarmsp": {
+    "description": "Dark Arms - Beast Buster 1999 (Prototype)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "deltawrp": {
+    "description": "Delta Warp (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "dendego2": {
+    "description": "Densha de Go! 2 on Neo Geo Pocket (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "dendego2p": {
+    "description": "Densha de Go! 2 on Neo Geo Pocket (Jpn, Prototype)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "divealrb": {
+    "description": "Dive Alert - Becky's Version (Euro, USA)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "divealrbj": {
+    "description": "Dive Alert - Rebecca Hen (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "divealrm": {
+    "description": "Dive Alert - Matt's Version (Euro, USA)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "divealrmj": {
+    "description": "Dive Alert - Barn Hen (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "divealrmjp": {
+    "description": "Dive Alert - Barn Hen (Jpn, Prototype)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "dokodemo": {
+    "description": "Dokodemo Mahjong (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "dynaslug": {
+    "description": "Dynamite Slugger (Euro, Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "evolutn": {
+    "description": "Evolution - Eternal Dungeons (Euro)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "evolutnj": {
+    "description": "Shinki Sekai Evolution - Hateshinai Dungeon (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "faselei": {
+    "description": "Faselei! (Euro)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "faseleij": {
+    "description": "Faselei! (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "fatfury": {
+    "description": "Pocket Fighting Series - Garou Densetsu First Contact ~ Fatal Fury F-Contact (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "fatfuryd": {
+    "description": "Pocket Fighting Series - Garou Densetsu First Contact ~ Fatal Fury F-Contact (World, Demo)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "ganbaren": {
+    "description": "Ganbare Neo Poke-kun (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "hanadojo": {
+    "description": "Soreike!! Hanafuda Doujou (Jpn)",
+    "publisher": "Dyna",
+    "year": "1999"
+  },
+  "infinity": {
+    "description": "Infinity Cure (Jpn)",
+    "publisher": "KID",
+    "year": "2000"
+  },
+  "kikousei": {
+    "description": "Kikou Seiki Unitron - Sono Tsuide. Hikari Umareru Chi Yori. (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "kofpara": {
+    "description": "The King of Fighters - Battle de Paradise (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "kofr2": {
+    "description": "Pocket Fighting Series - King of Fighters R-2 (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "kofr2d": {
+    "description": "Pocket Fighting Series - King of Fighters R-2 (World, Demo)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "kofr2d2": {
+    "description": "Pocket Fighting Series - King of Fighters R-2 (World, Demo Version 2)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "koikoi": {
+    "description": "Koi Koi Mahjong (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "lastblad": {
+    "description": "The Last Blade - Beyond the Destiny (Euro)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "magdrop": {
+    "description": "Magical Drop Pocket (Euro, USA)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "magdropj": {
+    "description": "Magical Drop Pocket (Jpn)",
+    "publisher": "Data East",
+    "year": "1999"
+  },
+  "magdropjd": {
+    "description": "Magical Drop Pocket (Demo)",
+    "publisher": "Data East",
+    "year": "1999"
+  },
+  "memories": {
+    "description": "Memories Off - Pure (Jpn)",
+    "publisher": "KID",
+    "year": "2000"
+  },
+  "mezase": {
+    "description": "Mezase! Kanji Ou (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "mizuki": {
+    "description": "Mizuki Shigeru no Youkai Shashinkan (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "mslug1st": {
+    "description": "Metal Slug - 1st Mission (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "mslug2nd": {
+    "description": "Metal Slug - 2nd Mission (World)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "mslug2ndd": {
+    "description": "Metal Slug - 2nd Mission (Demo)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "neo21": {
+    "description": "Pocket Casino Series - Neo 21 (Euro, USA)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "neobacca": {
+    "description": "Pocket Casino Series - Neo Baccarat (Euro)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "neobaccap": {
+    "description": "Pocket Casino Series - Neo Baccarat (Prototype)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "neocherc": {
+    "description": "Pocket Casino Series - Neo Cherry Master Color (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "neochercp": {
+    "description": "Pocket Casino Series - Neo Cherry Master Color (World, Prototype)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "neocuppl": {
+    "description": "Pocket Sport Series - Neo Geo Cup '98 Plus (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "neoderby": {
+    "description": "Neo Derby Champ Daiyosou (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "neodrag": {
+    "description": "Pocket Casino Series - Neo Dragon's Wild (World, v13)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "neodraga": {
+    "description": "Pocket Casino Series - Neo Dragon's Wild (World, v11)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "neomystr": {
+    "description": "Pocket Casino Series - Neo Mystery Bonus (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "neoproyk": {
+    "description": "Pocket Sport Series - Neo Poke Pro Yakyuu (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "neoturfm": {
+    "description": "Pocket Sport Series - Big Tournament Golf ~ Neo Turf Masters (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "nigeronp": {
+    "description": "Nige-ron-pa (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "oekakip": {
+    "description": "Oekaki Puzzle (Jpn)",
+    "publisher": "Success",
+    "year": "2000"
+  },
+  "ogrebatl": {
+    "description": "Densetsu no Ogre Battle Gaiden - Zenobia no Ouji (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "pachinko": {
+    "description": "Pachinko Hisshou Guide - Pocket Parlor (Jpn)",
+    "publisher": "Japan Vistec",
+    "year": "1999"
+  },
+  "pacman": {
+    "description": "Pac-Man (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "pbobble": {
+    "description": "Puzzle Bobble Mini (Euro, Jpn, v10)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "pbobblea": {
+    "description": "Puzzle Bobble Mini (Euro, Jpn, v09)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "pbobbleb": {
+    "description": "Puzzle Bobble Mini (Euro, Jpn, v09 Prototype?)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "picturep": {
+    "description": "Picture Puzzle (Euro, USA)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "pockrev": {
+    "description": "Pocket Reversi (Euro)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "pockrevj": {
+    "description": "Pocket Reversi (Jpn)",
+    "publisher": "Success",
+    "year": "2000"
+  },
+  "poktlove": {
+    "description": "Pocket Love if (Jpn)",
+    "publisher": "KID",
+    "year": "1999"
+  },
+  "ppaa01": {
+    "description": "Prize Game - PP-AA01 Pusher Program (Jpn)",
+    "publisher": "Aruze",
+    "year": "19??"
+  },
+  "prtymail": {
+    "description": "Party Mail (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "prtymailp": {
+    "description": "Party Mail (Prototype)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "pslotazt": {
+    "description": "Pachi-Slot Aruze Oukoku Pocket - Azteca (Jpn)",
+    "publisher": "Aruze",
+    "year": "2000"
+  },
+  "pslotdk2": {
+    "description": "Pachi-Slot Aruze Oukoku Pocket - Dekahel 2 (Jpn)",
+    "publisher": "Aruze",
+    "year": "2001"
+  },
+  "pslotds2": {
+    "description": "Pachi-Slot Aruze Oukoku Pocket - Delsol 2 (Jpn)",
+    "publisher": "Aruze",
+    "year": "2000"
+  },
+  "pslotecp": {
+    "description": "Pachi-Slot Aruze Oukoku Pocket - e-Cup (Jpn)",
+    "publisher": "Aruze",
+    "year": "2001"
+  },
+  "pslothan": {
+    "description": "Pachi-Slot Aruze Oukoku Pocket - Hanabi (Jpn, v5)",
+    "publisher": "Aruze",
+    "year": "1999"
+  },
+  "pslothana": {
+    "description": "Pachi-Slot Aruze Oukoku Pocket - Hanabi (Jpn, v3)",
+    "publisher": "Aruze",
+    "year": "1999"
+  },
+  "pslotooh": {
+    "description": "Pachi-Slot Aruze Oukoku Pocket - Oohanabi (Jpn)",
+    "publisher": "Aruze",
+    "year": "2000"
+  },
+  "pslotpc2": {
+    "description": "Pachi-Slot Aruze Oukoku Pocket - Porcano 2 (Jpn)",
+    "publisher": "Aruze",
+    "year": "2000"
+  },
+  "pslotwrd": {
+    "description": "Pachi-Slot Aruze Oukoku Pocket - Ward of Lights (Jpn)",
+    "publisher": "Aruze",
+    "year": "2000"
+  },
+  "ptennisc": {
+    "description": "Pocket Sport Series - Pocket Tennis Color (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "puyopop": {
+    "description": "Puyo Pop (World, v6) ~ Puyo Pyuo Tsuu (Jpn, v6)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "puyopopa": {
+    "description": "Puyo Pop (World, v5) ~ Puyo Pyuo Tsuu (Jpn, v5)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "puzzlink": {
+    "description": "Puzzle Link (Euro)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "puzzlnk2": {
+    "description": "Puzzle Link 2 (Euro, USA)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "rockmanb": {
+    "description": "Rockman - Battle & Fighters (Jpn)",
+    "publisher": "Capcom",
+    "year": "2000"
+  },
+  "samsho2": {
+    "description": "Pocket Fighting Series - Samurai Shodown! 2 (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "shanghai": {
+    "description": "Shanghai Mini (World)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "shanghaipj": {
+    "description": "Shanghai Mini (Jpn, Prototype)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "shanghaipu": {
+    "description": "Shanghai Mini (USA, Prototype)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "shougic": {
+    "description": "Shougi no Tatsujin Color (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "snkgals": {
+    "description": "SNK Gals' Fighters (Euro, USA)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "snkgalsj": {
+    "description": "SNK Gals' Fighters (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "sonic": {
+    "description": "Sonic the Hedgehog - Pocket Adventure (World)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "sonicp": {
+    "description": "Sonic the Hedgehog - Pocket Adventure (World, Prototype)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "srmp": {
+    "description": "Super Real Mahjong - Premium Collection (Jpn)",
+    "publisher": "SNK",
+    "year": "2001"
+  },
+  "svc": {
+    "description": "SNK vs. Capcom - The Match of the Millennium (World) ~ Choujou Kessen Saikyou Fighters - SNK vs Capcom (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "svccard2": {
+    "description": "SNK vs. Capcom - Card Fighters 2 - Expand Edition (Jpn)",
+    "publisher": "SNK",
+    "year": "2001"
+  },
+  "svccardc": {
+    "description": "SNK vs. Capcom - Card Fighters' Clash - Capcom Cardfighter's Version (Euro, USA)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "svccardcj": {
+    "description": "SNK vs. Capcom - Gekitotsu Card Fighters - Capcom Supporters Version (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "svccardp": {
+    "description": "SNK vs. Capcom - Gekitotsu Card Fighters (Jpn, Demo)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "svccards": {
+    "description": "SNK vs. Capcom - Card Fighters' Clash - SNK Cardfighter's Version (Euro, USA)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "svccardsj": {
+    "description": "SNK vs. Capcom - Gekitotsu Card Fighters - SNK Supporters Version (Jpn, v7)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "svccardsja": {
+    "description": "SNK vs. Capcom - Gekitotsu Card Fighters - SNK Supporters Version (Jpn, v6)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "tsunapn2": {
+    "description": "Tsunagete Pon! 2 (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "tsunapnc": {
+    "description": "Renketsu Puzzle Tsunagete Pon! Color (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "wrestmad": {
+    "description": "Wrestling Madness (Euro, USA, Prototype)",
+    "publisher": "SNK",
+    "year": "2000"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "a3kin203": {
+    "description": "A3000 Install Disk 2.03",
+    "publisher": "Commodore",
+    "year": "1991"
+  },
+  "amix11": {
+    "description": "UNIX System V Release 4 Amiga Version 1.1",
+    "publisher": "Commodore",
+    "year": "1990"
+  },
+  "amix201": {
+    "description": "UNIX System V Release 4 Amiga Version 2.01",
+    "publisher": "Commodore",
+    "year": "199?"
+  },
+  "amix203": {
+    "description": "UNIX System V Release 4 Amiga Version 2.03",
+    "publisher": "Commodore",
+    "year": "199?"
+  },
+  "amix21": {
+    "description": "UNIX System V Release 4 Amiga Version 2.1",
+    "publisher": "Commodore",
+    "year": "199?"
+  },
+  "sk201": {
+    "description": "Kickstart 2.01",
+    "publisher": "Commodore",
+    "year": "1990"
+  },
+  "sk204": {
+    "description": "Kickstart 2.04",
+    "publisher": "Commodore",
+    "year": "1991"
+  }
+}

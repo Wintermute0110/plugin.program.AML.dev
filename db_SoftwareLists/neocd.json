@@ -1,0 +1,522 @@
+{
+  "2020bb": {
+    "description": "2020 Super Baseball (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "3countb": {
+    "description": "3 Count Bout (USA) ~ Fire Suplex (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "adkworld": {
+    "description": "ADK World (Jpn)",
+    "publisher": "ADK",
+    "year": "1995"
+  },
+  "alpham2": {
+    "description": "Alpha Mission II (USA) ~ ASO II - Last Guardian (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "aodk": {
+    "description": "Aggressors of Dark Kombat (USA) ~ Tsuukai GanGan Koushinkyoku (Jpn)",
+    "publisher": "ADK",
+    "year": "1995"
+  },
+  "aof": {
+    "description": "Ryuuko no Ken (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "aof2": {
+    "description": "Art of Fighting 2 (USA) ~ Ryuuko no Ken 2 (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "aof3": {
+    "description": "Art of Fighting - Ryuuko no Ken Gaiden (Jpn)",
+    "publisher": "SNK",
+    "year": "1996"
+  },
+  "aof3a": {
+    "description": "Art of Fighting 3 - Path of the Warrior (USA) ~ Art of Fighting - Ryuuko no Ken Gaiden (Jpn)",
+    "publisher": "SNK",
+    "year": "1996"
+  },
+  "bjourney": {
+    "description": "Raguy (Jpn)",
+    "publisher": "ADK",
+    "year": "1994"
+  },
+  "breakers": {
+    "description": "Breakers (Jpn)",
+    "publisher": "Visco",
+    "year": "1997"
+  },
+  "bstars": {
+    "description": "Baseball Stars Professional (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "bstars2": {
+    "description": "Baseball Stars 2 (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "burningf": {
+    "description": "Burning Fight (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "crsword": {
+    "description": "Crossed Swords (Jpn)",
+    "publisher": "ADK",
+    "year": "1994"
+  },
+  "crsword2": {
+    "description": "Crossed Swords II (Jpn)",
+    "publisher": "ADK",
+    "year": "1995"
+  },
+  "cyberlip": {
+    "description": "Cyber-Lip (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "ddragon": {
+    "description": "Double Dragon (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "fatfursp": {
+    "description": "Fatal Fury Special (USA) ~ Garou Densetsu Special (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "fatfury1": {
+    "description": "Fatal Fury - The Battle of Fury (USA) ~ Garou Densetsu - Shukumei no Tatakai (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "fatfury2": {
+    "description": "Fatal Fury 2 (USA) ~ Garou Densetsu 2 - Aratanaru Tatakai (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "fatfury3": {
+    "description": "Fatal Fury 3 - Road to the Final Victory (USA) ~ Garou Densetsu 3 - Harukanaru Tatakai (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "fatfury3a": {
+    "description": "Fatal Fury 3 - Road to the Final Victory (USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "fbfrenzy": {
+    "description": "Football Frenzy (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "fromanc2": {
+    "description": "Idol Mahjong Final Romance 2 (Jpn)",
+    "publisher": "Video System",
+    "year": "1995"
+  },
+  "galaxyfg": {
+    "description": "Galaxy Fight - Universal Warriors (Jpn, USA)",
+    "publisher": "Sunsoft",
+    "year": "1995"
+  },
+  "gowcaizr": {
+    "description": "Choujin Gakuen Gowcaizer (Jpn)",
+    "publisher": "Technos",
+    "year": "1995"
+  },
+  "gpilots": {
+    "description": "Ghost Pilots (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "ironclad": {
+    "description": "Choutetsu Brikin'ger (Jpn)",
+    "publisher": "Saurus",
+    "year": "1996"
+  },
+  "janshin": {
+    "description": "Janshin Densetsu - Quest of the Jongmaster (Jpn)",
+    "publisher": "Aicom",
+    "year": "1995"
+  },
+  "joyjoy": {
+    "description": "Puzzled (USA) ~ Joy Joy Kid (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "kabukikl": {
+    "description": "Tengai Makyou Shinden - Far East of Eden (Jpn)",
+    "publisher": "Hudson",
+    "year": "1995"
+  },
+  "karnovr": {
+    "description": "Karnov's Revenge (USA) ~ Fighter's History Dynamite (Jpn)",
+    "publisher": "Data East",
+    "year": "1994"
+  },
+  "kof94": {
+    "description": "The King of Fighters '94 (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "kof94a": {
+    "description": "The King of Fighters '94 (Jpn, USA, Alt)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "kof95": {
+    "description": "The King of Fighters '95 (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "kof95a": {
+    "description": "The King of Fighters '95 (Jpn, USA, Alt)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "kof96": {
+    "description": "The King of Fighters '96 (Jpn)",
+    "publisher": "SNK",
+    "year": "1996"
+  },
+  "kof96a": {
+    "description": "The King of Fighters '96 (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1996"
+  },
+  "kof96col": {
+    "description": "The King of Fighters '96 NEOGEO Collection (Jpn)",
+    "publisher": "SNK",
+    "year": "1997"
+  },
+  "kof97": {
+    "description": "The King of Fighters '97 (Jpn)",
+    "publisher": "SNK",
+    "year": "1997"
+  },
+  "kof98": {
+    "description": "The King of Fighters '98 - Dream Match Never Ends (Jpn)",
+    "publisher": "SNK",
+    "year": "1998"
+  },
+  "kof99": {
+    "description": "The King of Fighters '99 - Millennium Battle (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "kotm2": {
+    "description": "King of the Monsters 2 (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "lastblad": {
+    "description": "Bakumatsu Roman - Gekka no Kenshi (Jpn)",
+    "publisher": "SNK",
+    "year": "1998"
+  },
+  "lastbld2": {
+    "description": "Bakumatsu Roman Daini Maku - Gekka no Kenshi - Tsuki ni Saku Hana, Chiri Yuku Hana (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "lasthope": {
+    "description": "Last Hope (Euro)",
+    "publisher": "NG:DEV.TEAM",
+    "year": "2007"
+  },
+  "lbowling": {
+    "description": "League Bowling (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "lresort": {
+    "description": "Last Resort (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "magdrop2": {
+    "description": "Magical Drop 2 (Jpn)",
+    "publisher": "Data East",
+    "year": "1996"
+  },
+  "maglord": {
+    "description": "Magician Lord (Jpn)",
+    "publisher": "ADK",
+    "year": "1994"
+  },
+  "mahretsu": {
+    "description": "Mahjong Kyo Retsuden - Nishi Nihon Hen (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "mosyougi": {
+    "description": "Shougi no Tatsujin - Master of Syougi (Jpn)",
+    "publisher": "ADK",
+    "year": "1995"
+  },
+  "mslug": {
+    "description": "Metal Slug (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1996"
+  },
+  "mslug2": {
+    "description": "Metal Slug 2 (Jpn)",
+    "publisher": "SNK",
+    "year": "1998"
+  },
+  "mutnat": {
+    "description": "Mutation Nation (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "nam1975": {
+    "description": "NAM-1975 (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "ncombat": {
+    "description": "Ninja Combat (Jpn)",
+    "publisher": "ADK",
+    "year": "1994"
+  },
+  "ncommand": {
+    "description": "Ninja Commando (Jpn)",
+    "publisher": "ADK",
+    "year": "1994"
+  },
+  "neodrift": {
+    "description": "Neo DriftOut (Jpn)",
+    "publisher": "Visco",
+    "year": "1996"
+  },
+  "ngcdspec": {
+    "description": "Neo Geo CD Special (Jpn)",
+    "publisher": "SNK",
+    "year": "1996"
+  },
+  "ninjamas": {
+    "description": "Ninja Master's - Haou Ninpou-Chou (Jpn)",
+    "publisher": "ADK",
+    "year": "1996"
+  },
+  "overtop": {
+    "description": "OverTop (Jpn)",
+    "publisher": "ADK",
+    "year": "1996"
+  },
+  "pbobble": {
+    "description": "Bust-A-Move (USA) ~ Puzzle Bobble (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "pgoal": {
+    "description": "Futsal - 5 on 5 Mini Soccer (Jpn)",
+    "publisher": "Saurus",
+    "year": "1996"
+  },
+  "pspikes2": {
+    "description": "Power Spikes II (Jpn)",
+    "publisher": "Video System",
+    "year": "1995"
+  },
+  "pulstar": {
+    "description": "Pulstar (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "quizkof": {
+    "description": "Quiz King of Fighters (Jpn)",
+    "publisher": "Saurus",
+    "year": "1995"
+  },
+  "ragnagrd": {
+    "description": "Shin-Oh-Ken (Jpn)",
+    "publisher": "Saurus",
+    "year": "1996"
+  },
+  "rbff1": {
+    "description": "Real Bout Fatal Fury (USA) ~ Real Bout Garou Densetsu (Jpn)",
+    "publisher": "SNK",
+    "year": "1996"
+  },
+  "rbff2": {
+    "description": "Real Bout Fatal Fury 2 - The Newcomers (USA) ~ Real Bout Garou Densetsu 2 - The Newcomers (Jpn)",
+    "publisher": "SNK",
+    "year": "1998"
+  },
+  "rbffspec": {
+    "description": "Real Bout Special (Jpn)",
+    "publisher": "SNK",
+    "year": "1997"
+  },
+  "ridhero": {
+    "description": "Riding Hero (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "roboarmy": {
+    "description": "Robo Army (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "samsho": {
+    "description": "Samurai Shodown (USA) ~ Samurai Spirits (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "samsho2": {
+    "description": "Samurai Shodown II (USA) ~ Shin Samurai Spirits - Haoumaru Jigoku Hen (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "samsho3": {
+    "description": "Samurai Spirits - Zankurou Musouken (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "samsho4": {
+    "description": "Samurai Shodown IV - Amakusa's Revenge (USA) ~ Samurai Spirits - Amakusa Kourin (Jpn)",
+    "publisher": "SNK",
+    "year": "1996"
+  },
+  "samsprpg": {
+    "description": "Shinsetsu Samurai Spirits - Bushidohretsuden (Jpn)",
+    "publisher": "SNK",
+    "year": "1997"
+  },
+  "savagere": {
+    "description": "Savage Reign (USA) ~ Fu'un Mokujiroku - Kakutou Sousei (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "sengoku": {
+    "description": "Sengoku (USA) ~  Sengoku Denshou (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "sengoku2": {
+    "description": "Sengoku 2 (USA) ~ Sengoku Denshou 2 (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "socbrawl": {
+    "description": "Soccer Brawl (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "sonicwi2": {
+    "description": "Aero Fighters 2 (USA) ~ Sonic Wings 2 (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "sonicwi3": {
+    "description": "Aero Fighters 3 (USA) ~ Sonic Wings 3 (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "ssideki": {
+    "description": "Super Sidekicks (USA) ~ Tokuten Ou (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "ssideki2": {
+    "description": "Super Sidekicks 2 (USA) ~ Tokuten Ou 2 (Jpn)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "ssideki3": {
+    "description": "Super Sidekicks 3 - The Next Glory (USA) ~ Tokuten Ou 3 - Eikou e no Chousen (Jpn)",
+    "publisher": "SNK",
+    "year": "1995"
+  },
+  "stakwin": {
+    "description": "Stakes Winner - GI Kanzen Seiha e no Machi (Jpn)",
+    "publisher": "Saurus",
+    "year": "1996"
+  },
+  "strhoop": {
+    "description": "Street Hoop (USA) ~ Dunk Dream (Jpn)",
+    "publisher": "Data East",
+    "year": "1995"
+  },
+  "superspy": {
+    "description": "The Super Spy (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "tophuntr": {
+    "description": "Top Hunter - Roddy & Cathy (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "totc": {
+    "description": "Treasure of the Caribbean (Fra)",
+    "publisher": "Neo Conception International",
+    "year": "2011?"
+  },
+  "tpgolf": {
+    "description": "Top Player's Golf (Jpn, USA)",
+    "publisher": "SNK",
+    "year": "1994"
+  },
+  "trally": {
+    "description": "Rally Chase (Jpn)",
+    "publisher": "ADK",
+    "year": "1994"
+  },
+  "turfmast": {
+    "description": "Big Tournament Golf (Jpn)",
+    "publisher": "SNK",
+    "year": "1996"
+  },
+  "twinspri": {
+    "description": "Twinkle Star Sprites (Jpn)",
+    "publisher": "ADK",
+    "year": "1997"
+  },
+  "viewpoin": {
+    "description": "Viewpoint (Jpn, USA)",
+    "publisher": "Aicom",
+    "year": "1995"
+  },
+  "wh1": {
+    "description": "World Heroes (Jpn, USA)",
+    "publisher": "ADK",
+    "year": "1995"
+  },
+  "wh2": {
+    "description": "World Heroes 2 (Jpn, USA)",
+    "publisher": "ADK",
+    "year": "1995"
+  },
+  "wh2j": {
+    "description": "World Heroes 2 Jet (Jpn)",
+    "publisher": "ADK",
+    "year": "1994"
+  },
+  "whp": {
+    "description": "World Heroes Perfect (Jpn, USA)",
+    "publisher": "ADK",
+    "year": "1995"
+  },
+  "wjammers": {
+    "description": "Windjammers (USA) ~ Flying Power Disc (Jpn)",
+    "publisher": "Data East",
+    "year": "1995"
+  },
+  "zintrick": {
+    "description": "Oshidashi Zintrick (Jpn)",
+    "publisher": "ADK",
+    "year": "1996"
+  }
+}

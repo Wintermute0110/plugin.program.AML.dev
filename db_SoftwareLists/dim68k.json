@@ -1,0 +1,47 @@
+{
+  "cpm102": {
+    "description": "CP/M-68K Release 1.02",
+    "publisher": "Micro Craft Corporation",
+    "year": "1984"
+  },
+  "cpm103": {
+    "description": "CP/M-68K Release 1.03",
+    "publisher": "Micro Craft Corporation",
+    "year": "1984"
+  },
+  "cpm104": {
+    "description": "CP/M-68K Release 1.04",
+    "publisher": "Micro Craft Corporation",
+    "year": "1984"
+  },
+  "cpm121": {
+    "description": "CP/M-68K Release 1.21",
+    "publisher": "Micro Craft Corporation",
+    "year": "1984"
+  },
+  "cpm124": {
+    "description": "CP/M-68K Release 1.24",
+    "publisher": "Micro Craft Corporation",
+    "year": "1984"
+  },
+  "d68brnin": {
+    "description": "Dimension 68000 Burnin Test",
+    "publisher": "Micro Craft Corporation",
+    "year": "1984"
+  },
+  "d68fort": {
+    "description": "Fortran 68K",
+    "publisher": "Silicon Valley Software",
+    "year": "1983"
+  },
+  "ibmcopy": {
+    "description": "IBM Program Copy for CP/M-68K",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ibmemu": {
+    "description": "IBM Emulator",
+    "publisher": "<unknown>",
+    "year": "198?"
+  }
+}

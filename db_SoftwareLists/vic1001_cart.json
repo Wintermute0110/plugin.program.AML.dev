@@ -1,0 +1,1432 @@
+{
+  "4encntr": {
+    "description": "The Fourth Encounter",
+    "publisher": "Thorn EMI",
+    "year": "1983"
+  },
+  "advland": {
+    "description": "Adventure #1 - Adventureland",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "ae": {
+    "description": "A.E.",
+    "publisher": "Brøderbund",
+    "year": "1982"
+  },
+  "ae1": {
+    "description": "A.E. (Alt)",
+    "publisher": "Brøderbund",
+    "year": "1982"
+  },
+  "agressor": {
+    "description": "Aggressor",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "agressora": {
+    "description": "Aggressor (Alt)",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "alien": {
+    "description": "Alien / Super Alien (NTSC)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "alienblz": {
+    "description": "Alien Blitz",
+    "publisher": "UMI",
+    "year": "1981"
+  },
+  "alienss": {
+    "description": "Alien Sidestep (NTSC)",
+    "publisher": "OEM",
+    "year": "1983"
+  },
+  "alphazoo": {
+    "description": "Alphabet Zoo (NTSC)",
+    "publisher": "HES",
+    "year": "1983"
+  },
+  "amaze": {
+    "description": "Amazing Maze",
+    "publisher": "Machine Language Games",
+    "year": "198?"
+  },
+  "amidar": {
+    "description": "Amidar (PAL)",
+    "publisher": "F. Janke",
+    "year": "198?"
+  },
+  "amok": {
+    "description": "Amok!",
+    "publisher": "UMI",
+    "year": "1981"
+  },
+  "apescape": {
+    "description": "Ape Escape",
+    "publisher": "Spectravideo",
+    "year": "1982"
+  },
+  "applpanc": {
+    "description": "Apple Panic (NTSC)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "aracnoid": {
+    "description": "Arachnoid",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "arcadia": {
+    "description": "Arcadia (PAL)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "artduel": {
+    "description": "Artillery Duel (NTSC)",
+    "publisher": "Xonox",
+    "year": "1983"
+  },
+  "artist": {
+    "description": "Commodore Artist (NTSC)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "assam": {
+    "description": "Assam - Assembler",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "astblitz": {
+    "description": "Astroblitz (NTSC)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "astblitzp": {
+    "description": "Astroblitz (PAL)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "atlantis": {
+    "description": "Atlantis (NTSC)",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "atlantisp": {
+    "description": "Atlantis (PAL)",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "avenger": {
+    "description": "Avenger / VIC Avenger",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "baldor": {
+    "description": "Baldor's Castle (NTSC)",
+    "publisher": "Daedalus",
+    "year": "1983"
+  },
+  "bandits": {
+    "description": "Bandits (NTSC)",
+    "publisher": "Sirius",
+    "year": "1983"
+  },
+  "bankrobr": {
+    "description": "Bank Robber",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "basic4": {
+    "description": "CBM BASIC v4.0",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "basic5": {
+    "description": "CBM BASIC v5.0",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "bewitch": {
+    "description": "Bewitched",
+    "publisher": "Imagine",
+    "year": "1995"
+  },
+  "blakhole": {
+    "description": "Black Hole (NTSC)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "blakholep": {
+    "description": "Black Hole (PAL)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "bridge20": {
+    "description": "Bridge 20 (PAL)",
+    "publisher": "Handic",
+    "year": "1983"
+  },
+  "buckrog": {
+    "description": "Buck Rogers: Planet of Zoom",
+    "publisher": "Sega",
+    "year": "1983"
+  },
+  "bugcrush": {
+    "description": "Bug Crusher",
+    "publisher": "OEM",
+    "year": "1983"
+  },
+  "buti": {
+    "description": "BUTI - Basic UTIlity",
+    "publisher": "UMI",
+    "year": "198?"
+  },
+  "bzone": {
+    "description": "Battle Zone (NTSC)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "cannonbb": {
+    "description": "Cannonball Blitz (NTSC)",
+    "publisher": "Sierra",
+    "year": "1982"
+  },
+  "capflag": {
+    "description": "Capture the Flag (NTSC)",
+    "publisher": "Sirius",
+    "year": "1983"
+  },
+  "capflag1": {
+    "description": "Capture the Flag (NTSC-M)",
+    "publisher": "Sirius",
+    "year": "1983"
+  },
+  "carrace": {
+    "description": "Car Race (NTSC)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "casturbo": {
+    "description": "Cassette Turbo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cavein": {
+    "description": "Cave-In (NTSC)",
+    "publisher": "Spectravideo",
+    "year": "1982"
+  },
+  "caveinp": {
+    "description": "Cave-In (PAL)",
+    "publisher": "Spectravideo",
+    "year": "1982"
+  },
+  "centiped": {
+    "description": "Centipede (NTSC)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "choplift": {
+    "description": "Choplifter (NTSC)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "chucknor": {
+    "description": "Chuck Norris Superkicks",
+    "publisher": "Xonox",
+    "year": "1983"
+  },
+  "cloudbst": {
+    "description": "Cloudburst (NTSC)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "cloudbstp": {
+    "description": "Cloudburst (PAL)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "clowns": {
+    "description": "Clowns (NTSC)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "clownspd": {
+    "description": "Clowns (NTSC, Paddle Version)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "colrtest": {
+    "description": "VIC Color Test (Ger)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "combasic": {
+    "description": "ComBASIC",
+    "publisher": "ComBasic",
+    "year": "1982"
+  },
+  "composer": {
+    "description": "The VIC Music Composer (NTSC)",
+    "publisher": "Thorn EMI",
+    "year": "1982"
+  },
+  "composer1": {
+    "description": "The VIC Music Composer (NTSC, Alt)",
+    "publisher": "Thorn EMI",
+    "year": "1982"
+  },
+  "compwar": {
+    "description": "Computer War",
+    "publisher": "Thorn EMI",
+    "year": "1983"
+  },
+  "compwar1": {
+    "description": "Computer War (Alt)",
+    "publisher": "Thorn EMI",
+    "year": "1983"
+  },
+  "congo": {
+    "description": "Congo Bongo (NTSC)",
+    "publisher": "Sega",
+    "year": "1983"
+  },
+  "cosmic": {
+    "description": "Cosmic Cruncher",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "cosmic1": {
+    "description": "Cosmic Cruncher (Alt)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "cratrrdr": {
+    "description": "Crater Raider",
+    "publisher": "Boone",
+    "year": "1983"
+  },
+  "creepy": {
+    "description": "Creepy Corridors (NTSC)",
+    "publisher": "Sierra",
+    "year": "1983"
+  },
+  "ctchsnch": {
+    "description": "Catch-a-Snatch (PAL)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cyclon": {
+    "description": "Cyclon",
+    "publisher": "Boone",
+    "year": "1983"
+  },
+  "deadduck": {
+    "description": "Deadly Duck (PAL)",
+    "publisher": "Sirius",
+    "year": "1982"
+  },
+  "deadskys": {
+    "description": "Deadly Skies (PAL)",
+    "publisher": "Tronix",
+    "year": "1983"
+  },
+  "debug98": {
+    "description": "VIC Debug 98",
+    "publisher": "Flat Earth Software",
+    "year": "1998"
+  },
+  "defender": {
+    "description": "Defender",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "demonatk": {
+    "description": "Demon Attack (NTSC)",
+    "publisher": "Tronix",
+    "year": "1983"
+  },
+  "demonatkp": {
+    "description": "Demon Attack (PAL)",
+    "publisher": "Tronix",
+    "year": "1983"
+  },
+  "dfuse": {
+    "description": "D'Fuse",
+    "publisher": "Tymac",
+    "year": "1984"
+  },
+  "dgobbler": {
+    "description": "Dot Gobbler (NTSC)",
+    "publisher": "Machine Language Games",
+    "year": "198?"
+  },
+  "digdug": {
+    "description": "Dig Dug (NTSC)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "dkong": {
+    "description": "Donkey Kong (NTSC)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "dncgbear": {
+    "description": "Dancing Bear (NTSC)",
+    "publisher": "Koala",
+    "year": "1983"
+  },
+  "drgnfire": {
+    "description": "Dragonfire",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "droids": {
+    "description": "Droids",
+    "publisher": "TG Software",
+    "year": "1983"
+  },
+  "encountr": {
+    "description": "Close Encounters",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "et": {
+    "description": "E.T.: The Extra Terrestrial (PAL)",
+    "publisher": "H. Jans",
+    "year": "1983"
+  },
+  "et1": {
+    "description": "E.T.: The Extra Terrestrial (PAL, Alt)",
+    "publisher": "H. Jans",
+    "year": "1983"
+  },
+  "exbasic": {
+    "description": "ExBasic Level II",
+    "publisher": "Andreas Dipke & Michael Krause",
+    "year": "1982"
+  },
+  "facemakr": {
+    "description": "Face Maker",
+    "publisher": "HES",
+    "year": "1983"
+  },
+  "fasteddy": {
+    "description": "Fast Eddie",
+    "publisher": "Sirius",
+    "year": "1982"
+  },
+  "fe3": {
+    "description": "Final Expansion 3",
+    "publisher": "Denial",
+    "year": "2011"
+  },
+  "finalorb": {
+    "description": "Final Orbit + Bumper Bash (NTSC)",
+    "publisher": "Sirius",
+    "year": "1983"
+  },
+  "finance": {
+    "description": "Personal Finance",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "flipper": {
+    "description": "Flipper 1.0",
+    "publisher": "Micro Digital",
+    "year": "198?"
+  },
+  "fltsim": {
+    "description": "IFR: Flight Simulator",
+    "publisher": "Academy",
+    "year": "1983"
+  },
+  "fltsima": {
+    "description": "IFR: Flight Simulator (Alt)",
+    "publisher": "Academy",
+    "year": "1983"
+  },
+  "forth10": {
+    "description": "VIC Forth v1.0",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "forth11": {
+    "description": "VIC Forth v1.1",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "fortknox": {
+    "description": "Raid on Fort Knox",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "fp": {
+    "description": "Vic Flash Plugin",
+    "publisher": "Marko Mäkelä",
+    "year": "2008"
+  },
+  "frogger": {
+    "description": "Frogger",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "frogman": {
+    "description": "Frogman",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "funmusic": {
+    "description": "Fun with Music",
+    "publisher": "Epyx",
+    "year": "1983"
+  },
+  "galaxian": {
+    "description": "Galaxian",
+    "publisher": "Atarisoft",
+    "year": "1984"
+  },
+  "gardnwar": {
+    "description": "Garden Wars (NTSC)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "ghostman": {
+    "description": "Ghost Manor (NTSC)",
+    "publisher": "Xonox",
+    "year": "1983"
+  },
+  "goldfvr": {
+    "description": "Gold Fever",
+    "publisher": "Tronix",
+    "year": "1983"
+  },
+  "gorf": {
+    "description": "Gorf",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "gridrunr": {
+    "description": "Gridrunner (NTSC)",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "gridrunrp": {
+    "description": "Gridrunner (PAL)",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "handykit": {
+    "description": "Handy Toolkit (NL)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hbabysit": {
+    "description": "Home Baby Sitter II",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "hesmon": {
+    "description": "HesMon v1.1",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "hesmona": {
+    "description": "HesMon v1.1 (Alt)",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "heswritr": {
+    "description": "HesWriter v1.1",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "hfinance": {
+    "description": "Household Finance",
+    "publisher": "Creative",
+    "year": "1983"
+  },
+  "hireskit": {
+    "description": "HiRes Toolkit",
+    "publisher": "TSP",
+    "year": "198?"
+  },
+  "ieee488": {
+    "description": "IEEE-488",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "inchips": {
+    "description": "In The Chips (NTSC)",
+    "publisher": "Creative",
+    "year": "1983"
+  },
+  "jailbrk": {
+    "description": "Cosmic Jailbreak",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "jawbrek2": {
+    "description": "Jawbreaker II (NTSC)",
+    "publisher": "Sierra",
+    "year": "1981"
+  },
+  "jawbrek2p": {
+    "description": "Jawbreaker II (PAL)",
+    "publisher": "Sierra",
+    "year": "1981"
+  },
+  "jellym1": {
+    "description": "Jelly Monster v.1",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "jellym2": {
+    "description": "Jelly Monster v.2",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "jlander": {
+    "description": "Jupiter Lander (NTSC)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "jungleh": {
+    "description": "Jungle Hunt (NTSC)",
+    "publisher": "Atarisoft",
+    "year": "1984"
+  },
+  "kantiks": {
+    "description": "K-Razy Antiks (NTSC)",
+    "publisher": "CBS Software",
+    "year": "1982"
+  },
+  "kantiksp": {
+    "description": "K-Razy Antiks (PAL)",
+    "publisher": "CBS Software",
+    "year": "1982"
+  },
+  "keyquest": {
+    "description": "Key-Quest",
+    "publisher": "Microware",
+    "year": "1983"
+  },
+  "kidskeys": {
+    "description": "Kids on Keys",
+    "publisher": "HES",
+    "year": "1983"
+  },
+  "kindcomp": {
+    "description": "Kindercomp",
+    "publisher": "HES",
+    "year": "1984"
+  },
+  "kpatrol": {
+    "description": "K-Star Patrol (PAL)",
+    "publisher": "CBS Software",
+    "year": "1982"
+  },
+  "lancelot": {
+    "description": "Sir Lancelot (NTSC)",
+    "publisher": "Xonox",
+    "year": "1983"
+  },
+  "laserzne": {
+    "description": "Laser Zone",
+    "publisher": "HES",
+    "year": "1983"
+  },
+  "ldrun": {
+    "description": "Lode Runner",
+    "publisher": "Brøderbund",
+    "year": "1983"
+  },
+  "lleeper": {
+    "description": "Lunar Leeper (NTSC)",
+    "publisher": "Sierra",
+    "year": "1981"
+  },
+  "madboogy": {
+    "description": "VC Song-Cartridge: The Mad Boogy (Ger)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "madboogy1": {
+    "description": "VC Song-Cartridge: The Mad Boogy (Ger, Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "maze": {
+    "description": "Maze (NTSC)",
+    "publisher": "HES",
+    "year": "1983"
+  },
+  "megacart": {
+    "description": "Mega-Cart",
+    "publisher": "Denial",
+    "year": "2008"
+  },
+  "meteorun": {
+    "description": "Meteor Run (PAL)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "micromon": {
+    "description": "VIC 20 Micromon v1.2",
+    "publisher": "Bill Yee",
+    "year": "1983"
+  },
+  "mikro": {
+    "description": "VIC 20 Mikro Assembler",
+    "publisher": "Supersoft",
+    "year": "1982"
+  },
+  "mine2049": {
+    "description": "Miner 2049er (PAL)",
+    "publisher": "Reston",
+    "year": "1983"
+  },
+  "mine2049a": {
+    "description": "Miner 2049er (PAL, Alt)",
+    "publisher": "Reston",
+    "year": "1983"
+  },
+  "minemad": {
+    "description": "Mine Madness (NTSC)",
+    "publisher": "Thorn EMI",
+    "year": "1983"
+  },
+  "mission": {
+    "description": "Adventure #3 - Mission Impossible",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "mjoust": {
+    "description": "Medieval Joust",
+    "publisher": "Thorn EMI",
+    "year": "1983"
+  },
+  "mjousta": {
+    "description": "Medieval Joust (Alt)",
+    "publisher": "Thorn EMI",
+    "year": "1983"
+  },
+  "mking": {
+    "description": "Mountain King (NTSC)",
+    "publisher": "Beyond",
+    "year": "1983"
+  },
+  "mobilatk": {
+    "description": "Mobile Attack",
+    "publisher": "MSD",
+    "year": "1982"
+  },
+  "moleattk": {
+    "description": "Mole Attack (NTSC)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "moneywar": {
+    "description": "Money Wars (NTSC)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "moneywar1": {
+    "description": "Money Wars (NTSC, Alt)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "moneywar2": {
+    "description": "Money Wars (NTSC, Alt 2)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "monitor": {
+    "description": "Machine Language Monitor",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "monstrmz": {
+    "description": "Monster Maze",
+    "publisher": "Epyx",
+    "year": "1982"
+  },
+  "mosquito": {
+    "description": "Mosquito Infestation",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "mpatrol": {
+    "description": "Moon Patrol (NTSC)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "mspacman": {
+    "description": "Ms. Pac-Man (NTSC)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "mstrtype": {
+    "description": "Mastertype",
+    "publisher": "Brøderbund",
+    "year": "1983"
+  },
+  "mtcracer": {
+    "description": "Motocross Racer (NTSC)",
+    "publisher": "Xonox",
+    "year": "1984"
+  },
+  "mtntcmls": {
+    "description": "Attack of the Mutant Camels",
+    "publisher": "HES",
+    "year": "1983"
+  },
+  "mutnthrd": {
+    "description": "Mutant Herd (PAL)",
+    "publisher": "Thorn EMI",
+    "year": "1982"
+  },
+  "numbrcrn": {
+    "description": "Number Crunch (NTSC)",
+    "publisher": "Spectravideo",
+    "year": "1982"
+  },
+  "numbrnab": {
+    "description": "Number Nabber & Shape Grabber (NTSC)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "omegrace": {
+    "description": "Omega Race",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "outworld": {
+    "description": "Outworld (NTSC)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "outworldp": {
+    "description": "Outworld (PAL)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "pacman": {
+    "description": "Pac-Man",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "petloder": {
+    "description": "PET Loader (PAL)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "pharaoh": {
+    "description": "Pharaoh's Curse",
+    "publisher": "HES",
+    "year": "1983"
+  },
+  "pinball": {
+    "description": "Pinball (PAL)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "pinspec": {
+    "description": "Pinball Spectacular (NTSC)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "pipes": {
+    "description": "Pipes (NTSC)",
+    "publisher": "Creative",
+    "year": "1983"
+  },
+  "piratecv": {
+    "description": "Adventure #2 - Pirate's Cove",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "poker": {
+    "description": "Poker (AKA Draw Poker)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "poker1": {
+    "description": "Poker (AKA Draw Poker, Alt)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "polaris": {
+    "description": "Polaris (NTSC)",
+    "publisher": "Tigervision",
+    "year": "1983"
+  },
+  "polepos": {
+    "description": "Pole Position",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "predator": {
+    "description": "Predator (NTSC)",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "princess": {
+    "description": "Princess and Frog (NTSC)",
+    "publisher": "Romox",
+    "year": "1983"
+  },
+  "progaid": {
+    "description": "Programmer's Aid Cartridge",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "protectr": {
+    "description": "Protector",
+    "publisher": "HES",
+    "year": "1983"
+  },
+  "ptroopr": {
+    "description": "Paratrooper",
+    "publisher": "Antiram",
+    "year": "198?"
+  },
+  "qbert": {
+    "description": "Q*bert",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "qbfox": {
+    "description": "Quick Brown Fox",
+    "publisher": "Parker Brothers",
+    "year": "1982"
+  },
+  "quackers": {
+    "description": "Quackers (PAL)",
+    "publisher": "Interesting Software",
+    "year": "1982"
+  },
+  "radarrr": {
+    "description": "Radar Rat Race (NTSC)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "radarrr1": {
+    "description": "Radar Rat Race (NTSC, Alt)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "rallyx": {
+    "description": "Rally-X (NTSC)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "rallyxp": {
+    "description": "Rally-X (PAL)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "rathotel": {
+    "description": "Rat Hotel (NTSC)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "renais": {
+    "description": "Renaissance",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "ricoshay": {
+    "description": "Space Ric-o-Shay (NTSC)",
+    "publisher": "OEM",
+    "year": "198?"
+  },
+  "rivrresc": {
+    "description": "River Rescue",
+    "publisher": "Thorn EMI",
+    "year": "1982"
+  },
+  "roadrace": {
+    "description": "Road Race",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "robinh": {
+    "description": "Robin Hood (NTSC)",
+    "publisher": "Xonox",
+    "year": "1983"
+  },
+  "robopanc": {
+    "description": "Robot Panic",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "robotron": {
+    "description": "Robotron: 2084",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "sammon": {
+    "description": "SamMON",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sargon2": {
+    "description": "Sargon II Chess (NTSC)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "satmet": {
+    "description": "Satellite and Meteorites! (NTSC)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "satmetp": {
+    "description": "Satellite and Meteorites! (PAL)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "satpatrl": {
+    "description": "Satellite Patrol (NTSC)",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "scorpion": {
+    "description": "Scorpion (PAL)",
+    "publisher": "Tronix",
+    "year": "1983"
+  },
+  "scram20": {
+    "description": "Scram 20",
+    "publisher": "Nalin Sharma",
+    "year": "1983"
+  },
+  "scrnmstr": {
+    "description": "Screen Master",
+    "publisher": "Handic",
+    "year": "1982"
+  },
+  "seafox": {
+    "description": "Seafox (NTSC)",
+    "publisher": "Brøderbund",
+    "year": "1983"
+  },
+  "seawolf": {
+    "description": "Sea Wolf",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "serptine": {
+    "description": "Serpentine (NTSC)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "serptinep": {
+    "description": "Serpentine (PAL)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "shamus": {
+    "description": "Shamus",
+    "publisher": "HES",
+    "year": "1983"
+  },
+  "skibern": {
+    "description": "Skibbereen (NTSC)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "skibernp": {
+    "description": "Skibbereen (PAL)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "skyblazr": {
+    "description": "Skyblazer (NTSC)",
+    "publisher": "Brøderbund",
+    "year": "1983"
+  },
+  "skyfall": {
+    "description": "The Sky is Falling",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "skyfall1": {
+    "description": "The Sky is Falling (Alt)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "slot": {
+    "description": "Slot",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "snakbyte": {
+    "description": "Snake Byte",
+    "publisher": "Sirius",
+    "year": "1982"
+  },
+  "spcsnake": {
+    "description": "Space Snake",
+    "publisher": "Handic",
+    "year": "1982"
+  },
+  "spedmath": {
+    "description": "Speed Math & Bingo Math (NTSC)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "spidcity": {
+    "description": "Spider City (NTSC)",
+    "publisher": "Sirius",
+    "year": "1983"
+  },
+  "spidcity1": {
+    "description": "Spider City (NTSC, Alt)",
+    "publisher": "Sirius",
+    "year": "1983"
+  },
+  "spidmars": {
+    "description": "Spider of Mars (NTSC)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "spidmarsp": {
+    "description": "Spider of Mars (PAL)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "spikpeak": {
+    "description": "Spike's Peak (NTSC)",
+    "publisher": "Xonox",
+    "year": "1983"
+  },
+  "spills": {
+    "description": "Spills & Fills (NTSC)",
+    "publisher": "Creative",
+    "year": "1983"
+  },
+  "spramok": {
+    "description": "Super Amok (NTSC)",
+    "publisher": "UMI",
+    "year": "198?"
+  },
+  "sprexpnd": {
+    "description": "Super Expander",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "springer": {
+    "description": "Springer (NTSC)",
+    "publisher": "UMI",
+    "year": "1983"
+  },
+  "sprslot": {
+    "description": "Super Slot",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "sprsmash": {
+    "description": "Super Smash (NTSC)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "sprsmash1": {
+    "description": "Super Smash (NTSC, Alt)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "squishem": {
+    "description": "Squish 'em (NTSC)",
+    "publisher": "Sirius",
+    "year": "1983"
+  },
+  "starbatl": {
+    "description": "Star Battle (NTSC)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "starpost": {
+    "description": "Star Post",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "startrek": {
+    "description": "Star Trek: Strategic Operations Simulator",
+    "publisher": "Sega",
+    "year": "1983"
+  },
+  "storymac": {
+    "description": "Story Machine",
+    "publisher": "HES",
+    "year": "1983"
+  },
+  "subchase": {
+    "description": "Sub Chase (PAL)",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "subcomm": {
+    "description": "Sub Commander",
+    "publisher": "Thorn EMI",
+    "year": "1982"
+  },
+  "synthsnd": {
+    "description": "Synthesound",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "syntsong": {
+    "description": "VC Song-Cartridge: The Synthe-Song (Ger)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tankatak": {
+    "description": "Tank Atak (PAL)",
+    "publisher": "Supersoft",
+    "year": "1982"
+  },
+  "tankwars": {
+    "description": "Tank Wars",
+    "publisher": "Machine Language Games",
+    "year": "198?"
+  },
+  "teragard": {
+    "description": "Terraguard (NTSC)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "teragard1": {
+    "description": "Terraguard (NTSC, Alt)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "teragardp": {
+    "description": "Terraguard (PAL)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "thecount": {
+    "description": "Adventure #5 - The Count",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "threshld": {
+    "description": "Threshold (NTSC)",
+    "publisher": "Sierra",
+    "year": "1981"
+  },
+  "titan": {
+    "description": "Titan",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "tomarc": {
+    "description": "Tomarc the Barbarian",
+    "publisher": "Xonox",
+    "year": "1984"
+  },
+  "toothinv": {
+    "description": "Tooth Invaders (NTSC)",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "topper": {
+    "description": "Topper (NTSC)",
+    "publisher": "Romox",
+    "year": "1983"
+  },
+  "trashman": {
+    "description": "Trashman",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "turmoil": {
+    "description": "Turmoil",
+    "publisher": "Sirius",
+    "year": "1982"
+  },
+  "turtle": {
+    "description": "Turtle Graphics",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "turtle1": {
+    "description": "Turtle Graphics (Alt)",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "turtle2": {
+    "description": "Turtle Graphics (Alt 2)",
+    "publisher": "HES",
+    "year": "1982"
+  },
+  "tutankhm": {
+    "description": "Tutankham",
+    "publisher": "Parker Brothers",
+    "year": "198?"
+  },
+  "typeatak": {
+    "description": "Type Attack (NTSC)",
+    "publisher": "Sirius",
+    "year": "1982"
+  },
+  "typo": {
+    "description": "Typo (NTSC)",
+    "publisher": "Romox",
+    "year": "1983"
+  },
+  "vcextra": {
+    "description": "VC Extra",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "vicdiag": {
+    "description": "VIC 20 Diagnostic Cartridge (NTSC)",
+    "publisher": "Commodore",
+    "year": "1980"
+  },
+  "vicdiagp": {
+    "description": "VIC 20 Diagnostic Cartridge (PAL)",
+    "publisher": "Commodore",
+    "year": "1980"
+  },
+  "vicgraph": {
+    "description": "VIC Graph",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "vickit1": {
+    "description": "VICKIT 1: Programming Aids",
+    "publisher": "STACK",
+    "year": "198?"
+  },
+  "vickit2": {
+    "description": "VICKIT 2: Supergraphics Programming Aids",
+    "publisher": "STACK",
+    "year": "198?"
+  },
+  "vickit3": {
+    "description": "VICKIT 3: Supergraphics",
+    "publisher": "STACK",
+    "year": "198?"
+  },
+  "vickit4": {
+    "description": "VICKIT 4: High Speed Cassette Operations & Machine Code Monitor",
+    "publisher": "STACK",
+    "year": "198?"
+  },
+  "vickit5": {
+    "description": "VICKIT 5: 6502 Assembler",
+    "publisher": "STACK",
+    "year": "198?"
+  },
+  "vicmenag": {
+    "description": "VIC Menagerie",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "vicmenag1": {
+    "description": "VIC Menagerie (Alt)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "vicstat": {
+    "description": "VIC Stat",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "victerm": {
+    "description": "VICterm 40",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "victool": {
+    "description": "Vic Tool",
+    "publisher": "VCC",
+    "year": "198?"
+  },
+  "vidmania": {
+    "description": "Videomania (NTSC)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "vidmaniap": {
+    "description": "Videomania (PAL)",
+    "publisher": "Creative",
+    "year": "1982"
+  },
+  "vidverm": {
+    "description": "Video Vermin",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "vlander": {
+    "description": "VIC Super Lander (NTSC)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "voodoo": {
+    "description": "Adventure #4 - Voodoo Castle",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "vsolsys": {
+    "description": "Visible Solar System",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "vsolsys1": {
+    "description": "Visible Solar System (Alt)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "vsolsys2": {
+    "description": "Visible Solar System (Alt 2)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "wacky": {
+    "description": "Wacky Waiters",
+    "publisher": "Imagine",
+    "year": "1982"
+  },
+  "waterloo": {
+    "description": "Waterloo BASIC",
+    "publisher": "Waterloo Computing Systems",
+    "year": "1983"
+  },
+  "witchway": {
+    "description": "Witch Way (NTSC)",
+    "publisher": "Commercial Data Systems",
+    "year": "1983"
+  },
+  "wordcrft": {
+    "description": "Wordcraft 20",
+    "publisher": "UMI",
+    "year": "1982"
+  },
+  "worldwar": {
+    "description": "A World at War (PAL)",
+    "publisher": "Handic",
+    "year": "198?"
+  },
+  "writenow": {
+    "description": "Write Now!",
+    "publisher": "Cardco",
+    "year": "1983"
+  },
+  "xfire": {
+    "description": "Crossfire (NTSC)",
+    "publisher": "Sierra",
+    "year": "1981"
+  },
+  "xfirep": {
+    "description": "Crossfire (PAL)",
+    "publisher": "Sierra",
+    "year": "1981"
+  }
+}

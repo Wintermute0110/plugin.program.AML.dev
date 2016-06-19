@@ -1,0 +1,802 @@
+{
+  "adskok": {
+    "description": "ADSKOK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "adventur": {
+    "description": "ADVENTUR",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "almaz": {
+    "description": "ALMAZ",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "arcanoid": {
+    "description": "ARCANOID",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "asmed1": {
+    "description": "ASM-ED1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "asmed2": {
+    "description": "ASM-ED2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "assm": {
+    "description": "ASSM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ball": {
+    "description": "BALL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bascir": {
+    "description": "BAS-CIR",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basgr": {
+    "description": "BAS-GR",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basic": {
+    "description": "BASIC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basic1": {
+    "description": "BASIC1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basic2": {
+    "description": "BASIC2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basic3": {
+    "description": "BASIC3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basica": {
+    "description": "BASIC-A",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "baskbh": {
+    "description": "BAS-KBH",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basmag": {
+    "description": "BAS-MAG",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basmag2": {
+    "description": "BAS-MAG2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basmic2": {
+    "description": "BAS-MIC2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basmic87": {
+    "description": "BASMIC87",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basmicr": {
+    "description": "BAS-MICR",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basnew": {
+    "description": "BAS-NEW",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basrdk": {
+    "description": "BAS-RDK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bass": {
+    "description": "BAS-S",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bassg": {
+    "description": "BAS-SG",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basspec": {
+    "description": "BAS-SPEC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bassrv": {
+    "description": "BAS-SRV",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bkt": {
+    "description": "BKT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "budi": {
+    "description": "BUDI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "budi2": {
+    "description": "BUDI2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "buran": {
+    "description": "BURAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cat": {
+    "description": "CAT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "checkers": {
+    "description": "CHECKERS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess": {
+    "description": "CHESS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess2": {
+    "description": "CHESS2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess3": {
+    "description": "CHESS3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess4": {
+    "description": "CHESS4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "circus": {
+    "description": "CIRCUS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "const1": {
+    "description": "CONST1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "const2": {
+    "description": "CONST2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cooky": {
+    "description": "COOKY",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "copter": {
+    "description": "COPTER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cosman": {
+    "description": "COSMAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dash1": {
+    "description": "DASH1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dash2": {
+    "description": "DASH2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "debug": {
+    "description": "DEBUG",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "debug2": {
+    "description": "DEBUG2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "defence": {
+    "description": "DEFENCE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "digger": {
+    "description": "DIGGER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "downeart": {
+    "description": "DOWNEART",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dssm": {
+    "description": "DSSM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dssm2": {
+    "description": "DSSM2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dungeon": {
+    "description": "DUNGEON",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dungeon2": {
+    "description": "DUNGEON2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dushman": {
+    "description": "DUSHMAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dushman2": {
+    "description": "DUSHMAN2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "football": {
+    "description": "FOOTBALL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "forth": {
+    "description": "FORTH",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "gold": {
+    "description": "GOLD",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "grdemo": {
+    "description": "GR_DEMO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "harrier": {
+    "description": "HARRIER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "helicopt": {
+    "description": "HELICOPT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jetset": {
+    "description": "JET-SET",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jumpjek": {
+    "description": "JUMPJEK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kamikadz": {
+    "description": "KAMIKADZ",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "klad": {
+    "description": "KLAD",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "klad2": {
+    "description": "KLAD2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kolobki": {
+    "description": "KOLOBKI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kom131": {
+    "description": "KOM13_1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kom132": {
+    "description": "KOM13_2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "krestno": {
+    "description": "KRESTNO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "krot": {
+    "description": "KROT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ladder": {
+    "description": "LADDER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lamp": {
+    "description": "LAMP",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "land": {
+    "description": "LAND",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "landc": {
+    "description": "LAND_C",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lands": {
+    "description": "LAND_S",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "loderun": {
+    "description": "LODERUN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lrunner": {
+    "description": "LRUNNER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "manager": {
+    "description": "MANAGER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mars": {
+    "description": "MARS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mars2": {
+    "description": "MARS2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "music": {
+    "description": "MUSIC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mussyst": {
+    "description": "MUS-SYST",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "nardy": {
+    "description": "NARDY",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "nardy2": {
+    "description": "NARDY2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ochko": {
+    "description": "OCHKO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pacman": {
+    "description": "PACMAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pacman2": {
+    "description": "PACMAN2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pacman3": {
+    "description": "PACMAN3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "paket": {
+    "description": "PAKET",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pango": {
+    "description": "PANGO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "patrol": {
+    "description": "PATROL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pentax": {
+    "description": "PENTAX",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "peregon": {
+    "description": "PEREGON",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "peregon2": {
+    "description": "PEREGON2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pilot": {
+    "description": "PILOT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "piton1": {
+    "description": "PITON1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "piton2": {
+    "description": "PITON2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "piton3": {
+    "description": "PITON3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "piton4": {
+    "description": "PITON4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pogonya": {
+    "description": "POGONYA",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pool": {
+    "description": "POOL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "popcorn": {
+    "description": "POPCORN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progr1": {
+    "description": "PROGR1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progr2": {
+    "description": "PROGR2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "psst": {
+    "description": "PSST",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pusher": {
+    "description": "PUSHER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rain": {
+    "description": "RAIN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rally": {
+    "description": "RALLY",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rally2": {
+    "description": "RALLY2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "renum": {
+    "description": "RENUM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "reversi": {
+    "description": "REVERSI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "reversi2": {
+    "description": "REVERSI2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "reversi3": {
+    "description": "REVERSI3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "riseout": {
+    "description": "RISEOUT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "robot": {
+    "description": "ROBOT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rtest": {
+    "description": "R-TEST",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "saboteur": {
+    "description": "SABOTEUR",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "samfox": {
+    "description": "SAMFOX",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "scrap2": {
+    "description": "SCRAP2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "scrapper": {
+    "description": "SCRAPPER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "skachki": {
+    "description": "SKACHKI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "skachki2": {
+    "description": "SKACHKI2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sonata": {
+    "description": "SONATA",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "spatrol": {
+    "description": "SPATROL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "spking": {
+    "description": "SP_KING",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "spking2": {
+    "description": "SPKING2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "square": {
+    "description": "SQUARE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "stakan": {
+    "description": "STAKAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "stakan2": {
+    "description": "STAKAN2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "startrek": {
+    "description": "STARTREK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "starwar2": {
+    "description": "STARWAR2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "starwars": {
+    "description": "STARWARS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "stena": {
+    "description": "STENA",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "stena2": {
+    "description": "STENA2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "suppiton": {
+    "description": "SUPPITON",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tennis": {
+    "description": "TENNIS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tennis2": {
+    "description": "TENNIS2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tennis3": {
+    "description": "TENNIS3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetris1": {
+    "description": "TETRIS1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetris2": {
+    "description": "TETRIS2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetris3": {
+    "description": "TETRIS3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetris4": {
+    "description": "TETRIS4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetris5": {
+    "description": "TETRIS5",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetrism": {
+    "description": "TETRIS-M",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tiptop": {
+    "description": "TIP-TOP",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tiptop2": {
+    "description": "TIP-TOP2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "titan": {
+    "description": "TITAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "treasur2": {
+    "description": "TREASUR2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "treasure": {
+    "description": "TREASURE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tutankh": {
+    "description": "TUTANKH",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "udav": {
+    "description": "UDAV",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "vampir": {
+    "description": "VAMPIR",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "vertol2": {
+    "description": "VERTOL2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "vertolet": {
+    "description": "VERTOLET",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "vperehv": {
+    "description": "V-PEREHV",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "wwar": {
+    "description": "WWAR",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "xonix": {
+    "description": "XONIX",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "zoo": {
+    "description": "ZOO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

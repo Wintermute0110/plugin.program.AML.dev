@@ -1,0 +1,977 @@
+{
+  "3ninja": {
+    "description": "3 Ninjas Kick Back (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "3rdww": {
+    "description": "Third World War (USA)",
+    "publisher": "Extreme",
+    "year": "1994"
+  },
+  "aburner3": {
+    "description": "Afterburner 3 (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "advbatr": {
+    "description": "The Adventures of Batman and Robin (USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "ah3ts": {
+    "description": "AH3 - ThunderStrike (USA)",
+    "publisher": "JVC",
+    "year": "1993"
+  },
+  "animals": {
+    "description": "The San Diego Zoo Presents... The Animals! (USA)",
+    "publisher": "Software Toolworks",
+    "year": "1992"
+  },
+  "ax101": {
+    "description": "AX-101 (USA)",
+    "publisher": "Absolute Entertainment",
+    "year": "1994"
+  },
+  "bariarm": {
+    "description": "Bari-Arm (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "batmanrn": {
+    "description": "Batman Returns (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "bcracers": {
+    "description": "BC Racers (USA)",
+    "publisher": "Core Design",
+    "year": "1995"
+  },
+  "beast2": {
+    "description": "Shadow of the Beast II (USA)",
+    "publisher": "Psygnosis",
+    "year": "1993"
+  },
+  "billwlsh": {
+    "description": "Bill Walsh College Football (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1993"
+  },
+  "blackh": {
+    "description": "Blackhole Assault (USA)",
+    "publisher": "Bignet",
+    "year": "1993"
+  },
+  "blackha": {
+    "description": "Blackhole Assault (USA, Alt)",
+    "publisher": "Bignet",
+    "year": "1993"
+  },
+  "blackhp": {
+    "description": "Blackhole Assault (USA, Prototype 1002) [MP3-sourced]",
+    "publisher": "Sega",
+    "year": "19??"
+  },
+  "bouncers": {
+    "description": "Bouncers (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "brutal": {
+    "description": "Brutal - Paws of Fury (USA)",
+    "publisher": "GameTek",
+    "year": "1994"
+  },
+  "btlcorps": {
+    "description": "Battlecorps (USA)",
+    "publisher": "Core Design",
+    "year": "1994"
+  },
+  "bugblast": {
+    "description": "Bug Blasters (USA)",
+    "publisher": "Good Deal Games",
+    "year": "2003"
+  },
+  "ccmusic": {
+    "description": "Power Factory featuring C+C Music Factory (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "champs94": {
+    "description": "Championship Soccer '94 (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "chuckrck": {
+    "description": "Chuck Rock (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "chukrck2": {
+    "description": "Chuck Rock II - Son of Chuck (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "citizenx": {
+    "description": "Citizen X",
+    "publisher": "Good Deal Games",
+    "year": "2002"
+  },
+  "cliffh": {
+    "description": "Cliffhanger (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "cobra": {
+    "description": "The Space Adventure - Cobra - The Legendary Bandit (USA)",
+    "publisher": "Hudson Soft",
+    "year": "1994"
+  },
+  "cobracom": {
+    "description": "Cobra Command (USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "comptons": {
+    "description": "Compton's Interactive Encyclopedia v2.10 (USA)",
+    "publisher": "Compton's NewMedia",
+    "year": "1994"
+  },
+  "comptonsa": {
+    "description": "Compton's Interactive Encyclopedia v2.01R (USA)",
+    "publisher": "Compton's NewMedia",
+    "year": "1994"
+  },
+  "corpse": {
+    "description": "Corpse Killer (USA)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "corpse32": {
+    "description": "Corpse Killer (USA, 32X)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "cpatrol": {
+    "description": "Crime Patrol (USA)",
+    "publisher": "American Laser Games",
+    "year": "1994"
+  },
+  "darkwiz": {
+    "description": "Dark Wizard (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "dblswtch": {
+    "description": "Double Switch (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "demoman": {
+    "description": "Demolition Man (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1994"
+  },
+  "dino2": {
+    "description": "Cadillacs and Dinosaurs - The Second Cataclysm (USA)",
+    "publisher": "Rocket Science Games",
+    "year": "1994"
+  },
+  "dino2b": {
+    "description": "Cadillacs and Dinosaurs - The Second Cataclysm (Bra)",
+    "publisher": "Tec Toy",
+    "year": "1994"
+  },
+  "dlair": {
+    "description": "Dragon's Lair (USA)",
+    "publisher": "ReadySoft",
+    "year": "1993"
+  },
+  "dlaird": {
+    "description": "Dragon's Lair (USA, Demo CD)",
+    "publisher": "ReadySoft",
+    "year": "1993"
+  },
+  "dngmstr2": {
+    "description": "Dungeon Master II - Skullkeep (USA, v1.0)",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "dracula": {
+    "description": "Bram Stoker's Dracula (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "draculaa": {
+    "description": "Bram Stoker's Dracula (USA, Alt)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "draculab": {
+    "description": "Bram Stoker's Dracula (USA, v2.0)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "dracunl": {
+    "description": "Dracula Unleashed (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "dune": {
+    "description": "Dune (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "dungexpl": {
+    "description": "Dungeon Explorer (USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "ecco": {
+    "description": "Ecco the Dolphin (USA)",
+    "publisher": "Sega",
+    "year": "1996?"
+  },
+  "ecco2": {
+    "description": "Ecco - The Tides of Time (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "ejimse": {
+    "description": "Earthworm Jim - Special Edition (USA)",
+    "publisher": "Interplay",
+    "year": "1995"
+  },
+  "espnbb": {
+    "description": "ESPN Baseball Tonight (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "espnhn": {
+    "description": "ESPN National Hockey Night (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "espnnba": {
+    "description": "ESPN NBA Hang Time '95 (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "espnnfl": {
+    "description": "ESPN Sunday Night NFL (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "eternalc": {
+    "description": "Eternal Champions - Challenge from the Dark Side (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "eternalca": {
+    "description": "Eternal Champions - Challenge from the Dark Side (USA, SEGA4427 R1J)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "eternalcb": {
+    "description": "Eternal Champions - Challenge from the Dark Side (USA, SEGA4427RE R1J)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "eyebehol": {
+    "description": "Eye of the Beholder (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "f1btl": {
+    "description": "Formula One World Championship - Beyond the Limit (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "fahrenhe": {
+    "description": "Fahrenheit (USA, SCD & 32X)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "fatfursp": {
+    "description": "Fatal Fury Special (USA)",
+    "publisher": "JVC",
+    "year": "1995"
+  },
+  "fatfurspp": {
+    "description": "Fatal Fury Special (USA, Prototype) [MP3-sourced]",
+    "publisher": "JVC",
+    "year": "1995"
+  },
+  "ffightcd": {
+    "description": "Final Fight CD (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "fifa": {
+    "description": "FIFA International Soccer (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1994"
+  },
+  "flashb": {
+    "description": "Flashback - The Quest for Identity (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "flink": {
+    "description": "Flink (USA)",
+    "publisher": "Vic Tokai",
+    "year": "1994"
+  },
+  "franken": {
+    "description": "Mary Shelley's Frankenstein (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "frcestrk": {
+    "description": "Force Striker (USA)",
+    "publisher": "Good Deal Games",
+    "year": "2006"
+  },
+  "gztexas": {
+    "description": "Ground Zero Texas (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "gztexasa": {
+    "description": "Ground Zero Texas (USA, CDAC-053300 2)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "gztexasb": {
+    "description": "Ground Zero Texas (USA, CDAC-053300 1)",
+    "publisher": "Sony Imagesoft",
+    "year": "1993"
+  },
+  "heimdall": {
+    "description": "Heimdall (USA)",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "holmes": {
+    "description": "Sherlock Holmes - Consulting Detective (USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "holmes2": {
+    "description": "Sherlock Holmes - Consulting Detective Vol. II (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "hook": {
+    "description": "Hook (USA, CDAC-032400 4)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "hooka": {
+    "description": "Hook (USA, CDAC-032400 6, CDAC-032400 7)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "hota": {
+    "description": "Heart of the Alien - Out of this World Parts I and II (USA, RE)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "hothits": {
+    "description": "Hot Hits - Adventurous New Music Sampler (USA) [CD-Audio]",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "inxs": {
+    "description": "INXS (USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "ironhlx": {
+    "description": "Iron Helix (USA)",
+    "publisher": "Spectrum Holobyte",
+    "year": "1994"
+  },
+  "jagxj220": {
+    "description": "Jaguar XJ220 (USA)",
+    "publisher": "JVC",
+    "year": "1993"
+  },
+  "jeopardy": {
+    "description": "Jeopardy! (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "joemont": {
+    "description": "Joe Montana's NFL Football (USA, R2C)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "joemonta": {
+    "description": "Joe Montana's NFL Football (USA, R1C)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "johnnymn": {
+    "description": "Johnny Mnemonic (USA, Prototype)",
+    "publisher": "Sega",
+    "year": "19??"
+  },
+  "jpark": {
+    "description": "Jurassic Park (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "jparkp": {
+    "description": "Jurassic Park (USA, Prototype) [MP3-sourced]",
+    "publisher": "Sega",
+    "year": "1993?"
+  },
+  "kamenrzo": {
+    "description": "The Masked Rider - Kamen Rider ZO (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "keio": {
+    "description": "Keio Flying Squadron (USA)",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "kidssite": {
+    "description": "Kids on Site (USA)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "kriskros": {
+    "description": "Kris Kross (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "lawnmowr": {
+    "description": "The Lawnmower Man (USA)",
+    "publisher": "Time Warner Interactive",
+    "year": "1994"
+  },
+  "lawnmowra": {
+    "description": "The Lawnmower Man (USA, Alt)",
+    "publisher": "Time Warner Interactive",
+    "year": "1994"
+  },
+  "le2": {
+    "description": "Lethal Enforcers II - Gun Fighters (USA)",
+    "publisher": "Konami",
+    "year": "1994"
+  },
+  "lethalen": {
+    "description": "Lethal Enforcers (USA)",
+    "publisher": "Konami",
+    "year": "1994"
+  },
+  "links": {
+    "description": "Links - The Challenge of Golf (USA, RE)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "linksa": {
+    "description": "Links - The Challenge of Golf (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1994"
+  },
+  "loadstar": {
+    "description": "Loadstar - The Legend of Tully Bodine (USA)",
+    "publisher": "Rocket Science Games",
+    "year": "1994"
+  },
+  "lordthun": {
+    "description": "Lords of Thunder (USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "lunar": {
+    "description": "Lunar - The Silver Star (USA)",
+    "publisher": "Working Designs",
+    "year": "1993"
+  },
+  "lunar2": {
+    "description": "Lunar - Eternal Blue (USA)",
+    "publisher": "Working Designs",
+    "year": "1995"
+  },
+  "maddog": {
+    "description": "Mad Dog McCree (USA)",
+    "publisher": "American Laser Games",
+    "year": "1993"
+  },
+  "maddog2": {
+    "description": "Mad Dog II - The Lost Gold (USA)",
+    "publisher": "American Laser Games",
+    "year": "1994"
+  },
+  "mansion": {
+    "description": "Mansion of Hidden Souls (USA)",
+    "publisher": "Vic Tokai",
+    "year": "1994"
+  },
+  "marky": {
+    "description": "Marky Mark and The Funky Bunch (USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "megarace": {
+    "description": "MegaRace (USA)",
+    "publisher": "Software Toolworks",
+    "year": "1993"
+  },
+  "microcos": {
+    "description": "Microcosm (USA)",
+    "publisher": "Psygnosis",
+    "year": "1993"
+  },
+  "midnight": {
+    "description": "Midnight Raiders (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "mk": {
+    "description": "Mortal Kombat (USA)",
+    "publisher": "Arena",
+    "year": "1993"
+  },
+  "mmania": {
+    "description": "Mickey Mania - Timeless Adventures of Mickey Mouse (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "mmm": {
+    "description": "Mighty Mighty Missile (US, Demo?)",
+    "publisher": "Good Deal Games",
+    "year": "2004"
+  },
+  "mmpr": {
+    "description": "Mighty Morphin Power Rangers (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "monkey": {
+    "description": "Secret of Monkey Island (USA)",
+    "publisher": "JVC",
+    "year": "1993"
+  },
+  "mypaint": {
+    "description": "My Paint (USA) [MP3-sourced]",
+    "publisher": "Saddleback Graphics",
+    "year": "1994"
+  },
+  "nbajam": {
+    "description": "NBA Jam (USA)",
+    "publisher": "Acclaim",
+    "year": "1994"
+  },
+  "nflgreat": {
+    "description": "NFL's Greatest - San Francisco VS Dallas 1978-1993 (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "nfltriv": {
+    "description": "NFL Football Trivia Challenge (USA)",
+    "publisher": "CapDisc",
+    "year": "1994"
+  },
+  "nhl94": {
+    "description": "NHL '94 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1993"
+  },
+  "novastm": {
+    "description": "Novastorm (USA)",
+    "publisher": "Psygnosis",
+    "year": "1994"
+  },
+  "ntrap": {
+    "description": "Night Trap (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "ntrap32": {
+    "description": "Night Trap (USA, 32X)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "ntraprr": {
+    "description": "Night Trap 1994 Re-Release (USA)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "panic": {
+    "description": "Panic! (USA)",
+    "publisher": "Data East",
+    "year": "1994"
+  },
+  "pennsmok": {
+    "description": "Penn and Tellers Smoke and Mirrors (USA, Prototype) [MP3-sourced]",
+    "publisher": "Absolute Entertainment",
+    "year": "19??"
+  },
+  "pitfall": {
+    "description": "Pitfall - The Mayan Adventure (USA)",
+    "publisher": "Activision",
+    "year": "1994"
+  },
+  "pmonger": {
+    "description": "Power Monger (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1994"
+  },
+  "popmail": {
+    "description": "Popful Mail (USA)",
+    "publisher": "Working Designs",
+    "year": "1995"
+  },
+  "ppersia": {
+    "description": "Prince of Persia (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "prime": {
+    "description": "Ultraverse Prime (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "prizefig": {
+    "description": "Prize Fighter (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "puggsy": {
+    "description": "Puggsy (USA)",
+    "publisher": "Psygnosis",
+    "year": "1993"
+  },
+  "racinace": {
+    "description": "Racing Aces (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "radrex": {
+    "description": "Radical Rex (USA)",
+    "publisher": "Activision",
+    "year": "1994"
+  },
+  "ragecage": {
+    "description": "WWF Rage in the Cage (USA)",
+    "publisher": "Arena",
+    "year": "1993"
+  },
+  "rdf": {
+    "description": "RDF - Global Conflict (USA)",
+    "publisher": "Absolute Entertainment",
+    "year": "1994"
+  },
+  "revninja": {
+    "description": "Revenge of the Ninja (USA)",
+    "publisher": "Renovation",
+    "year": "1993"
+  },
+  "revoveng": {
+    "description": "Revengers of Vengeance (USA)",
+    "publisher": "Extreme",
+    "year": "1994"
+  },
+  "risedrg": {
+    "description": "Rise of the Dragon (USA)",
+    "publisher": "Dynamix",
+    "year": "1994"
+  },
+  "risedrga": {
+    "description": "Rise of the Dragon (USA, Alt)",
+    "publisher": "Dynamix",
+    "year": "1994"
+  },
+  "roadaven": {
+    "description": "Road Avenger (USA)",
+    "publisher": "Renovation",
+    "year": "1993"
+  },
+  "roadrash": {
+    "description": "Road Rash (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1995"
+  },
+  "roadrashp": {
+    "description": "Road Rash CD (Prototype 3 - 19950211) [HPZ-bad cue]",
+    "publisher": "Sega",
+    "year": "19??"
+  },
+  "roboales": {
+    "description": "Robo Aleste (USA)",
+    "publisher": "Tengen",
+    "year": "1993"
+  },
+  "samsho": {
+    "description": "Samurai Shodown (USA)",
+    "publisher": "JVC",
+    "year": "1995"
+  },
+  "segaac4": {
+    "description": "Sega Classics Arcade Collection (USA, 4 in 1)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "segaac4a": {
+    "description": "Sega Classics Arcade Collection (USA, 4 in 1, Alt)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "segaac5": {
+    "description": "Sega Classics Arcade Collection (USA, 5 in 1)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "shinfrce": {
+    "description": "Shining Force CD (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "shinfrcea": {
+    "description": "Shining Force CD (USA, Alt)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "shinfrcep": {
+    "description": "Shining Force CD (USA, Prototype) [MP3-sourced]",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "silpheed": {
+    "description": "Silpheed (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "slamcity": {
+    "description": "Slam City with Scottie Pippen (USA, RE-1)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "slamcity32": {
+    "description": "Slam City with Scottie Pippen (USA, 32X)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "slamcitya": {
+    "description": "Slam City with Scottie Pippen (USA)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "snatcher": {
+    "description": "Snatcher (USA)",
+    "publisher": "Konami",
+    "year": "1994"
+  },
+  "solfeace": {
+    "description": "Sol-Feace (USA)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "soniccd": {
+    "description": "Sonic CD (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "soniccd510": {
+    "description": "Sonic CD (USA, Prototype 510) [MP3-sourced]",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "soniccd712": {
+    "description": "Sonic CD (USA, Prototype 712)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "soniccd920": {
+    "description": "Sonic CD (USA, Prototype 920)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "soulstar": {
+    "description": "SoulStar (USA)",
+    "publisher": "Core ~ Time Warner Interactive",
+    "year": "1994"
+  },
+  "spaceace": {
+    "description": "Space Ace (USA)",
+    "publisher": "ReadySoft",
+    "year": "1994"
+  },
+  "spaceaced": {
+    "description": "Space Ace (USA, Demo Disc)",
+    "publisher": "ReadySoft",
+    "year": "1994"
+  },
+  "spidking": {
+    "description": "The Amazing Spider-Man vs. The Kingpin (USA)",
+    "publisher": "Sega",
+    "year": "1993"
+  },
+  "sshark": {
+    "description": "Sewer Shark (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1992"
+  },
+  "ssharkb": {
+    "description": "Sewer Shark (USA, Bundle)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "ssharkba": {
+    "description": "Sewer Shark (USA, Bundle, Alt)",
+    "publisher": "Sega",
+    "year": "1992"
+  },
+  "starblad": {
+    "description": "StarBlade (USA)",
+    "publisher": "Namco",
+    "year": "1994"
+  },
+  "starstrk": {
+    "description": "Star Strike (USA) [MP3-sourced]",
+    "publisher": "Good Deal Games",
+    "year": "2003"
+  },
+  "stellarf": {
+    "description": "Stellar-Fire (USA)",
+    "publisher": "Dynamix",
+    "year": "1993"
+  },
+  "supremew": {
+    "description": "Supreme Warrior - Ying Heung (USA)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "supremew32": {
+    "description": "Supreme Warrior - Ying Heung (USA, 32X)",
+    "publisher": "Digital Pictures",
+    "year": "1994"
+  },
+  "surgical": {
+    "description": "Surgical Strike (USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "swchess": {
+    "description": "The Software Toolworks' Star Wars Chess (USA)",
+    "publisher": "Software Toolworks",
+    "year": "1993"
+  },
+  "swra": {
+    "description": "Star Wars - Rebel Assault (USA)",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "swraa": {
+    "description": "Star Wars - Rebel Assault (USA, R1D)",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "swrab": {
+    "description": "Star Wars - Rebel Assault (USA, R2C)",
+    "publisher": "JVC",
+    "year": "1994"
+  },
+  "syndicat": {
+    "description": "Syndicate (USA, Prototype)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tcataly": {
+    "description": "Tomcat Alley (USA)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tcatalya": {
+    "description": "Tomcat Alley  (USA, 1008604429)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "tcatalyb": {
+    "description": "Tomcat Alley (USA, CDAC-058500 2)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "termintr": {
+    "description": "The Terminator (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1993"
+  },
+  "timecop": {
+    "description": "Time Cop (USA, Early Prototype) [MP3-sourced]",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "timegal": {
+    "description": "Time Gal (USA)",
+    "publisher": "Renovation",
+    "year": "1993"
+  },
+  "trivial": {
+    "description": "Trivial Pursuit - Interactive Multimedia Game (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "1995"
+  },
+  "vay": {
+    "description": "Vay (USA)",
+    "publisher": "Working Designs",
+    "year": "1993"
+  },
+  "virtvcr": {
+    "description": "Virtual VCR - The Colors of Modern Rock (USA)",
+    "publisher": "Sega - Warner Custom Music",
+    "year": "1993"
+  },
+  "wcup94": {
+    "description": "World Cup USA 94 (USA)",
+    "publisher": "U.S. Gold",
+    "year": "1993"
+  },
+  "wheelfor": {
+    "description": "Wheel of Fortune (USA)",
+    "publisher": "Sony Imagesoft",
+    "year": "1994"
+  },
+  "whoshot": {
+    "description": "Who Shot Johnny Rock? (USA)",
+    "publisher": "American Laser Games",
+    "year": "1994"
+  },
+  "wildwood": {
+    "description": "Wild Woody (USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "wilybeam": {
+    "description": "The Adventures of Willy Beamish (USA)",
+    "publisher": "Dynamix",
+    "year": "1993"
+  },
+  "wingcomm": {
+    "description": "Wing Commander (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1994"
+  },
+  "wirehead": {
+    "description": "Wirehead (USA)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "wolfchld": {
+    "description": "Wolfchild (USA)",
+    "publisher": "JVC",
+    "year": "1993"
+  },
+  "wonderdg": {
+    "description": "Wonder Dog (USA)",
+    "publisher": "JVC",
+    "year": "1992"
+  }
+}

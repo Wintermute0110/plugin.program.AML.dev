@@ -1,0 +1,4352 @@
+{
+  "3dbombal": {
+    "description": "3D Bomb Alley",
+    "publisher": "Software Invasion",
+    "year": "198?"
+  },
+  "3ddotty": {
+    "description": "3D Dotty",
+    "publisher": "Blue Ribbon",
+    "year": "1987"
+  },
+  "3ddottypias": {
+    "description": "3D Dotty (Play It Again Sam 10)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "3dmaze": {
+    "description": "3D Maze",
+    "publisher": "I.J.K.",
+    "year": "1983"
+  },
+  "3dpool": {
+    "description": "3D Pool",
+    "publisher": "Firebird",
+    "year": "1989"
+  },
+  "3dtankzo": {
+    "description": "3D Tank Zone",
+    "publisher": "Dynabyte",
+    "year": "1983"
+  },
+  "747": {
+    "description": "747",
+    "publisher": "Doctor Soft",
+    "year": "1984"
+  },
+  "747flsim": {
+    "description": "747 Flight Simulator",
+    "publisher": "DACC",
+    "year": "1984"
+  },
+  "9cardbd1": {
+    "description": "9 Classic Card and Board Games Vol.1",
+    "publisher": "Database",
+    "year": "198?"
+  },
+  "9cardbd2": {
+    "description": "9 Classic Card and Board Games Vol.2",
+    "publisher": "Database",
+    "year": "1986"
+  },
+  "abgenjnr": {
+    "description": "Answer Back - General Knowledge Junior Quiz",
+    "publisher": "Kosmos",
+    "year": "1984"
+  },
+  "abgensnr": {
+    "description": "Answer Back - General Knowledge Senior Quiz",
+    "publisher": "Kosmos",
+    "year": "1984"
+  },
+  "absports": {
+    "description": "Answer Back - Sports Quiz",
+    "publisher": "Kosmos",
+    "year": "1984"
+  },
+  "abyss": {
+    "description": "Abyss",
+    "publisher": "CCS",
+    "year": "1984"
+  },
+  "acornu42": {
+    "description": "Acorn User Issue 42 (Jan 1986)",
+    "publisher": "Acorn User",
+    "year": "1986"
+  },
+  "acornu48": {
+    "description": "Acorn User Issue 48 (Jul 1986)",
+    "publisher": "Acorn User",
+    "year": "1986"
+  },
+  "acornu50": {
+    "description": "Acorn User Issue 50 (Sep 1986)",
+    "publisher": "Acorn User",
+    "year": "1986"
+  },
+  "acornu52": {
+    "description": "Acorn User Issue 52 (Nov 1986)",
+    "publisher": "Acorn User",
+    "year": "1986"
+  },
+  "acornu53": {
+    "description": "Acorn User Issue 53 (Dec 1986)",
+    "publisher": "Acorn User",
+    "year": "1986"
+  },
+  "acornu54": {
+    "description": "Acorn User Issue 54 (Jan 1987)",
+    "publisher": "Acorn User",
+    "year": "1987"
+  },
+  "acornu55": {
+    "description": "Acorn User Issue 55 (Feb 1987)",
+    "publisher": "Acorn User",
+    "year": "1987"
+  },
+  "acornu56": {
+    "description": "Acorn User Issue 56 (Mar 1987)",
+    "publisher": "Acorn User",
+    "year": "1987"
+  },
+  "acornu57": {
+    "description": "Acorn User Issue 57 (Apr 1987)",
+    "publisher": "Acorn User",
+    "year": "1987"
+  },
+  "acornu58": {
+    "description": "Acorn User Issue 58 (May 1987)",
+    "publisher": "Acorn User",
+    "year": "1987"
+  },
+  "acornu59": {
+    "description": "Acorn User Issue 59 (Jun 1987)",
+    "publisher": "Acorn User",
+    "year": "1987"
+  },
+  "acornu60": {
+    "description": "Acorn User Issue 60 (Jul 1987)",
+    "publisher": "Acorn User",
+    "year": "1987"
+  },
+  "adv4pack": {
+    "description": "Adventure 4 Pack",
+    "publisher": "Potter",
+    "year": "1987"
+  },
+  "advanth": {
+    "description": "Adventure Anthology",
+    "publisher": "Database",
+    "year": "198?"
+  },
+  "advcreat": {
+    "description": "The Adventure Creator",
+    "publisher": "Incentive",
+    "year": "1986"
+  },
+  "adventur": {
+    "description": "Adventure",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "advland": {
+    "description": "Adventureland",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "airline": {
+    "description": "Airline",
+    "publisher": "CCS",
+    "year": "1983"
+  },
+  "alienbre": {
+    "description": "Alien Break In",
+    "publisher": "Romik",
+    "year": "1983"
+  },
+  "aliendro": {
+    "description": "Alien Dropout",
+    "publisher": "Superior Software",
+    "year": "1984"
+  },
+  "alphatro": {
+    "description": "Alphatron",
+    "publisher": "Tynesoft",
+    "year": "1984"
+  },
+  "amsuds": {
+    "description": "American Suds",
+    "publisher": "Riverdale",
+    "year": "1986"
+  },
+  "anarchyz": {
+    "description": "Anarchy Zone",
+    "publisher": "Atlantis",
+    "year": "1988"
+  },
+  "angles": {
+    "description": "Angles",
+    "publisher": "Garland Computing",
+    "year": "198?"
+  },
+  "annabelg": {
+    "description": "Annabel Gray",
+    "publisher": "Lee",
+    "year": "19??"
+  },
+  "arabiann": {
+    "description": "Tales of the Arabian Nights",
+    "publisher": "Interceptor",
+    "year": "1985"
+  },
+  "arcadian": {
+    "description": "Arcadians",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "arcadiang": {
+    "description": "Arcadians (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "arcadiansrr": {
+    "description": "Arcadians (The Acornsoft Hits Vol.2)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "arena3k": {
+    "description": "Arena 3000",
+    "publisher": "Microdeal",
+    "year": "198?"
+  },
+  "argcreat": {
+    "description": "Arcade Game Creator",
+    "publisher": "Database",
+    "year": "198?"
+  },
+  "arrowd1": {
+    "description": "Arrow of Death Part 1",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "arrowd2": {
+    "description": "Arrow of Death Part 2",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "arsoccer": {
+    "description": "Arcade Soccer",
+    "publisher": "4th Dimension",
+    "year": "1989"
+  },
+  "artstudi": {
+    "description": "The Art Studio",
+    "publisher": "Impact",
+    "year": "1989"
+  },
+  "aslangc": {
+    "description": "Assembly Language Course",
+    "publisher": "Honeyfold",
+    "year": "198?"
+  },
+  "astplumb": {
+    "description": "Astro Plumber",
+    "publisher": "Blue Ribbon",
+    "year": "1985"
+  },
+  "atahaulp": {
+    "description": "In Search of Atahaulpa",
+    "publisher": "Lee",
+    "year": "198?"
+  },
+  "atomsmas": {
+    "description": "Atom Smasher",
+    "publisher": "Romik",
+    "year": "1983"
+  },
+  "aufwiede": {
+    "description": "Auf Wiedersehen Pet",
+    "publisher": "Tynesoft",
+    "year": "1984"
+  },
+  "augamesc": {
+    "description": "Acorn User Games Compendium",
+    "publisher": "Acorn User",
+    "year": "198?"
+  },
+  "augraphi": {
+    "description": "Acorn User Graphics",
+    "publisher": "Acorn User",
+    "year": "1985"
+  },
+  "avousfra": {
+    "description": "A Vous La France!",
+    "publisher": "BBC Soft",
+    "year": "198?"
+  },
+  "axeofkol": {
+    "description": "The Axe of Kolt",
+    "publisher": "Elk Adventure Club",
+    "year": "1987"
+  },
+  "ballistx": {
+    "description": "Ballistix",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "balloonb": {
+    "description": "Balloon Buster",
+    "publisher": "Blue Ribbon",
+    "year": "1989"
+  },
+  "bandits3": {
+    "description": "Bandits at 3 O'clock",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "banprinc": {
+    "description": "The Banished Prince",
+    "publisher": "Orbit",
+    "year": "1984"
+  },
+  "barbar": {
+    "description": "Barbarian",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "barbar2": {
+    "description": "Barbarian 2",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "barbill": {
+    "description": "Bar Billiards",
+    "publisher": "Blue Ribbon",
+    "year": "1987"
+  },
+  "baron": {
+    "description": "Baron",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "batl1917": {
+    "description": "Battle 1917",
+    "publisher": "CCS",
+    "year": "1983"
+  },
+  "battlefi": {
+    "description": "Battlefields",
+    "publisher": "BBC Soft",
+    "year": "1985"
+  },
+  "bbgoldru": {
+    "description": "Blockbusters Gold Run",
+    "publisher": "Macsen",
+    "year": "1985"
+  },
+  "bbombs": {
+    "description": "Bouncing Bombs",
+    "publisher": "Tynesoft",
+    "year": "198?"
+  },
+  "bbusters": {
+    "description": "Blockbusters",
+    "publisher": "Macsen",
+    "year": "1985"
+  },
+  "bdash": {
+    "description": "Boulder Dash",
+    "publisher": "Tynesoft",
+    "year": "1988"
+  },
+  "beachead": {
+    "description": "Beach Head",
+    "publisher": "U.S. Gold",
+    "year": "1984"
+  },
+  "beacheada": {
+    "description": "Beach Head (Americana)",
+    "publisher": "Americana",
+    "year": "198?"
+  },
+  "beebtrek": {
+    "description": "Beebtrek",
+    "publisher": "Software For All",
+    "year": "1984"
+  },
+  "bertboot": {
+    "description": "Bert Boot",
+    "publisher": "Highlight Software",
+    "year": "1984"
+  },
+  "bestau": {
+    "description": "Best of Acorn User",
+    "publisher": "Acorn User",
+    "year": "198?"
+  },
+  "bestlang": {
+    "description": "The Best Four: Language",
+    "publisher": "ASK",
+    "year": "1985"
+  },
+  "bestpcw": {
+    "description": "Best of PCW Software",
+    "publisher": "PCW",
+    "year": "198?"
+  },
+  "biology": {
+    "description": "Biology",
+    "publisher": "Acornsoft/Ivan Berg",
+    "year": "1983"
+  },
+  "birdiecd": {
+    "description": "Birdie Barrage",
+    "publisher": "CDS",
+    "year": "1984"
+  },
+  "birdspre": {
+    "description": "Birds of Prey",
+    "publisher": "Romik",
+    "year": "1983"
+  },
+  "birdstri": {
+    "description": "Birdstrike",
+    "publisher": "Firebird",
+    "year": "198?"
+  },
+  "blagger": {
+    "description": "Blagger",
+    "publisher": "Alligata",
+    "year": "198?"
+  },
+  "blaggerpias": {
+    "description": "Blagger (Play It Again Sam 12)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1990"
+  },
+  "blitzkri": {
+    "description": "Blitzkrieg",
+    "publisher": "Software Invasion",
+    "year": "1984"
+  },
+  "bloodmut": {
+    "description": "Blood of the Mutineers",
+    "publisher": "Robico",
+    "year": "1988"
+  },
+  "bluedrag": {
+    "description": "Blue Dragon",
+    "publisher": "MP Software",
+    "year": "1984"
+  },
+  "bobbycha": {
+    "description": "Bobby Charlton Soccer",
+    "publisher": "DACC",
+    "year": "1985"
+  },
+  "boffin": {
+    "description": "Boffin",
+    "publisher": "Addictive",
+    "year": "1985"
+  },
+  "bombbaro": {
+    "description": "Bomber Baron",
+    "publisher": "Optyx",
+    "year": "198?"
+  },
+  "bonecrun": {
+    "description": "Bone Cruncher",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "boxer": {
+    "description": "Boxer",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "bozobrav": {
+    "description": "Bozo the Brave",
+    "publisher": "Tynesoft",
+    "year": "1985"
+  },
+  "braz": {
+    "description": "Braz",
+    "publisher": "Livewire",
+    "year": "1987"
+  },
+  "breakthr": {
+    "description": "Breakthrough",
+    "publisher": "Audiogenic",
+    "year": "1990"
+  },
+  "brianclo": {
+    "description": "Brian Cloughs Football Fortunes",
+    "publisher": "CDS",
+    "year": "1987"
+  },
+  "brianjac": {
+    "description": "Brian Jacks Superstar Challenge",
+    "publisher": "Martech",
+    "year": "1985"
+  },
+  "bridgema": {
+    "description": "Bridgemaster",
+    "publisher": "J Keyne",
+    "year": "19??"
+  },
+  "buckbanz": {
+    "description": "Buckaroo Banzai",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "bugblast": {
+    "description": "Bug Blaster",
+    "publisher": "Alligata",
+    "year": "1984"
+  },
+  "bugblastpias": {
+    "description": "Bug Blaster (Play It Again Sam 5)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "bugeyes": {
+    "description": "Bug Eyes",
+    "publisher": "Icon",
+    "year": "1985"
+  },
+  "bugeyesa": {
+    "description": "Bug Eyes (Audiogenic)",
+    "publisher": "Audiogenic",
+    "year": "198?"
+  },
+  "bugs": {
+    "description": "Bugs",
+    "publisher": "Virgin Games",
+    "year": "1984"
+  },
+  "bullseye": {
+    "description": "Bullseye",
+    "publisher": "Macsen",
+    "year": "1984"
+  },
+  "bumblbee": {
+    "description": "Bumble Bee",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "bunfun": {
+    "description": "Bun Fun",
+    "publisher": "Squirrel Soft",
+    "year": "1984"
+  },
+  "busgames": {
+    "description": "Business Games",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "bzone2k": {
+    "description": "Battlezone 2000",
+    "publisher": "Lothlorien",
+    "year": "1983"
+  },
+  "bzonesix": {
+    "description": "Battlezone Six",
+    "publisher": "Kansas",
+    "year": "198?"
+  },
+  "camelot": {
+    "description": "Camelot",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "cascad50": {
+    "description": "Cascade 50",
+    "publisher": "Cascade",
+    "year": "1984"
+  },
+  "castfran": {
+    "description": "Castle Frankenstein",
+    "publisher": "Epic",
+    "year": "1984"
+  },
+  "castlass": {
+    "description": "Castle Assault",
+    "publisher": "Blue Ribbon",
+    "year": "1985"
+  },
+  "castlclo": {
+    "description": "Castles and Clowns",
+    "publisher": "Macmillian",
+    "year": "198?"
+  },
+  "caterpil": {
+    "description": "Caterpillar (I.J.K.)",
+    "publisher": "I.J.K.",
+    "year": "1984"
+  },
+  "caterpir": {
+    "description": "Caterpillar (Romik)",
+    "publisher": "Romik",
+    "year": "1984"
+  },
+  "caveman": {
+    "description": "Caveman",
+    "publisher": "Kansas",
+    "year": "198?"
+  },
+  "cavemanc": {
+    "description": "Caveman Capers",
+    "publisher": "Icon",
+    "year": "1985"
+  },
+  "cavemanca": {
+    "description": "Caveman Capers (Alternative)",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "cbridge": {
+    "description": "Contract Bridge",
+    "publisher": "Alligata",
+    "year": "1984"
+  },
+  "ccastles": {
+    "description": "Crystal Castles",
+    "publisher": "U.S. Gold",
+    "year": "1986"
+  },
+  "centibug": {
+    "description": "Centibug",
+    "publisher": "Superior Software",
+    "year": "1984"
+  },
+  "chessa": {
+    "description": "Chess (Acornsoft)",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "chessmp": {
+    "description": "Chess (Micro Power)",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "chesss": {
+    "description": "Chess (Superior Software)",
+    "publisher": "Superior Software",
+    "year": "1984"
+  },
+  "chipbust": {
+    "description": "Chip Buster",
+    "publisher": "Software Invasion",
+    "year": "198?"
+  },
+  "chuckieg": {
+    "description": "Chuckie Egg",
+    "publisher": "A&F Software",
+    "year": "1984"
+  },
+  "chukee": {
+    "description": "Chukee The Upgrade",
+    "publisher": "Bit Twiddlers",
+    "year": "1984"
+  },
+  "circus": {
+    "description": "Circus",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "circusga": {
+    "description": "Circus Games",
+    "publisher": "Tynesoft",
+    "year": "1988"
+  },
+  "citadel": {
+    "description": "Citadel (Play It Again Sam 1)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "classadv": {
+    "description": "Classic Adventure",
+    "publisher": "Melbourne House",
+    "year": "1984"
+  },
+  "classarc": {
+    "description": "Classic Arcade Games",
+    "publisher": "Database",
+    "year": "198?"
+  },
+  "clogger": {
+    "description": "Clogger",
+    "publisher": "Impact",
+    "year": "1988"
+  },
+  "codedro": {
+    "description": "Codename: Droid",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "cofriddl": {
+    "description": "Castle of Riddles",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "colos4br": {
+    "description": "Colossus Bridge 4",
+    "publisher": "CDS",
+    "year": "1988"
+  },
+  "colos4ch": {
+    "description": "Colossus Chess 4",
+    "publisher": "CDS",
+    "year": "1988"
+  },
+  "comblynx": {
+    "description": "Combat Lynx",
+    "publisher": "Durell",
+    "year": "1984"
+  },
+  "comblynxa": {
+    "description": "Combat Lynx Alternative)",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "comm3joy": {
+    "description": "Commander 3 Joystick",
+    "publisher": "Bud Computers",
+    "year": "1984"
+  },
+  "commando": {
+    "description": "Commando",
+    "publisher": "Elite",
+    "year": "1985"
+  },
+  "commandopias": {
+    "description": "Commando (Play It Again Sam-3)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "condred": {
+    "description": "Condition Red",
+    "publisher": "Blue Ribbon",
+    "year": "198?"
+  },
+  "confuzio": {
+    "description": "Confuzion",
+    "publisher": "Incentive",
+    "year": "1985"
+  },
+  "confuzioa": {
+    "description": "Confuzion (Alternative)",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "constell": {
+    "description": "Constellation",
+    "publisher": "Superior Software",
+    "year": "1984"
+  },
+  "copsnrob": {
+    "description": "Cops n Robbers",
+    "publisher": "Atlantis",
+    "year": "1987"
+  },
+  "corncrop": {
+    "description": "Corn Cropper",
+    "publisher": "CCS",
+    "year": "1984"
+  },
+  "corpclim": {
+    "description": "Corporate Climber",
+    "publisher": "Dynabyte",
+    "year": "198?"
+  },
+  "cosmicca": {
+    "description": "Cosmic Camouflage",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "countfun": {
+    "description": "Counting Fun",
+    "publisher": "Gemini",
+    "year": "1984"
+  },
+  "countoli": {
+    "description": "Count with Oliver",
+    "publisher": "Mirrorsoft",
+    "year": "1985"
+  },
+  "crack_up": {
+    "description": "Crack Up",
+    "publisher": "Atlantis",
+    "year": "1989"
+  },
+  "crazeeri": {
+    "description": "Crazee Rider",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "creepyca": {
+    "description": "Creepy Cave",
+    "publisher": "Atlantis",
+    "year": "1987"
+  },
+  "crgraphsg": {
+    "description": "Kreative Graphiken (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "cricket": {
+    "description": "Cricket",
+    "publisher": "Bug Byte",
+    "year": "1986"
+  },
+  "crimedet": {
+    "description": "Crime & Detection Quiz",
+    "publisher": "Acornsoft/Ivan Berg",
+    "year": "1983"
+  },
+  "croaker": {
+    "description": "Croaker",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "crownjew": {
+    "description": "Crown Jewels",
+    "publisher": "Alligata",
+    "year": "1984"
+  },
+  "crtracer": {
+    "description": "Crazy Tracer",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "cskullord": {
+    "description": "Castle of the Skull Lord",
+    "publisher": "Samurai",
+    "year": "1984"
+  },
+  "custardp": {
+    "description": "Custard Pie Fight",
+    "publisher": "Comsoft",
+    "year": "1984"
+  },
+  "cwealthg": {
+    "description": "Commonwealth Games",
+    "publisher": "Tynesoft",
+    "year": "1986"
+  },
+  "cybermis": {
+    "description": "Cybertron Mission",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "cyborgwa": {
+    "description": "Cyborg Warriors",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1991"
+  },
+  "cylonatt": {
+    "description": "Cylon Attack",
+    "publisher": "A&F Software",
+    "year": "1984"
+  },
+  "cyloninv": {
+    "description": "Cylon Invasion",
+    "publisher": "Tynesoft",
+    "year": "1985"
+  },
+  "czerbert": {
+    "description": "Crazy Er*bert",
+    "publisher": "Alternative",
+    "year": "1987"
+  },
+  "dallas": {
+    "description": "Dallas",
+    "publisher": "CCS",
+    "year": "1983"
+  },
+  "dangruxb": {
+    "description": "Danger UXB",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "dartsbr": {
+    "description": "Darts",
+    "publisher": "Blue Ribbon",
+    "year": "1985"
+  },
+  "datafile": {
+    "description": "Data File",
+    "publisher": "Kansas",
+    "year": "198?"
+  },
+  "datingga": {
+    "description": "The Dating Game",
+    "publisher": "Acornsoft/Ivan Berg",
+    "year": "1983"
+  },
+  "dddenis": {
+    "description": "Dare Devil Dennis",
+    "publisher": "Visions",
+    "year": "1984"
+  },
+  "deadaliv": {
+    "description": "Dead or Alive",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "deathsta": {
+    "description": "Death Star (The Superior Collection Vol.3)",
+    "publisher": "Superior Software",
+    "year": "1987"
+  },
+  "deathstabr": {
+    "description": "Death Star (Blue Ribbon)",
+    "publisher": "Superior Software/Blue Ribbon",
+    "year": "198?"
+  },
+  "denisdri": {
+    "description": "Denis Through the Drinking Glass",
+    "publisher": "Melbourne House",
+    "year": "1984"
+  },
+  "despride": {
+    "description": "Despatch Rider",
+    "publisher": "Audiogenic",
+    "year": "1987"
+  },
+  "dgeezers": {
+    "description": "Dodgy Geezers",
+    "publisher": "Melbourne House",
+    "year": "1986"
+  },
+  "diamine": {
+    "description": "Diamond Mine",
+    "publisher": "MRM Software",
+    "year": "1983"
+  },
+  "diamine2": {
+    "description": "Diamond Mine 2",
+    "publisher": "Blue Ribbon",
+    "year": "1985"
+  },
+  "diaminebr": {
+    "description": "Diamond Mine (Blue Ribbon)",
+    "publisher": "Blue Ribbon",
+    "year": "1985"
+  },
+  "diampete": {
+    "description": "Diamond Pete",
+    "publisher": "Alligata",
+    "year": "198?"
+  },
+  "disassem": {
+    "description": "Disassembler",
+    "publisher": "Superior Software",
+    "year": "198?"
+  },
+  "dmfinsbu": {
+    "description": "Depot Master Finsbury Park",
+    "publisher": "Ashley Greenup",
+    "year": "1989"
+  },
+  "dmoldoak": {
+    "description": "Depot Master Old Oak Common",
+    "publisher": "Ashley Greenup",
+    "year": "1989"
+  },
+  "dmoldoakd": {
+    "description": "Depot Master Old Oak Common (Dee-Kay)",
+    "publisher": "Dee-Kay",
+    "year": "198?"
+  },
+  "dogfaces": {
+    "description": "Dogfight for Aces Only",
+    "publisher": "slogger",
+    "year": "198?"
+  },
+  "dominoeg": {
+    "description": "Dominoes (Garland)",
+    "publisher": "Garland Computing",
+    "year": "1984"
+  },
+  "dominoes": {
+    "description": "Dominoes (Blue Ribbon)",
+    "publisher": "Blue Ribbon",
+    "year": "198?"
+  },
+  "dracisla": {
+    "description": "Dracula Island",
+    "publisher": "Kansas",
+    "year": "1986"
+  },
+  "drainman": {
+    "description": "Drain Mania",
+    "publisher": "Icon",
+    "year": "1985"
+  },
+  "draughtc": {
+    "description": "Draughts (Computer Concepts)",
+    "publisher": "Computer Concepts",
+    "year": "1983"
+  },
+  "draughtr": {
+    "description": "Draughts and Reversi",
+    "publisher": "Acornsoft",
+    "year": "198?"
+  },
+  "draughts": {
+    "description": "Draughts (Superior Software)",
+    "publisher": "Superior Software",
+    "year": "1984"
+  },
+  "draw": {
+    "description": "Draw",
+    "publisher": "Micro Power",
+    "year": "198?"
+  },
+  "druidsci": {
+    "description": "The Druids Circle",
+    "publisher": "Hollsoft",
+    "year": "1984"
+  },
+  "dskdiary": {
+    "description": "Desk Diary",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "dskdiaryg": {
+    "description": "Terminkalendar (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "dunjunz": {
+    "description": "Dunjunz",
+    "publisher": "Bug Byte",
+    "year": "1987"
+  },
+  "eddiekid": {
+    "description": "Eddie Kidd Jump Challenge",
+    "publisher": "Martech",
+    "year": "1985"
+  },
+  "einvader": {
+    "description": "Electron Invaders",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "elbugint": {
+    "description": "Elbug Introductory Cassette",
+    "publisher": "Elbug",
+    "year": "1983"
+  },
+  "elcomp1": {
+    "description": "Electron Computing 1",
+    "publisher": "Electron Computing",
+    "year": "1983"
+  },
+  "elcomp2": {
+    "description": "Electron Computing 2",
+    "publisher": "Electron Computing",
+    "year": "1983"
+  },
+  "elcomp3": {
+    "description": "Electron Computing 3",
+    "publisher": "Electron Computing",
+    "year": "1983"
+  },
+  "elcomp4": {
+    "description": "Electron Computing 4",
+    "publisher": "Electron Computing",
+    "year": "1983"
+  },
+  "elcomp5": {
+    "description": "Electron Computing 5",
+    "publisher": "Electron Computing",
+    "year": "1983"
+  },
+  "elcomp6": {
+    "description": "Electron Computing 6",
+    "publisher": "Electron Computing",
+    "year": "1983"
+  },
+  "elcomp7": {
+    "description": "Electron Computing 7",
+    "publisher": "Electron Computing",
+    "year": "1983"
+  },
+  "electape": {
+    "description": "The Electron Tape - BASIC, Sound and Graphics",
+    "publisher": "Addison-Wesley",
+    "year": "1983"
+  },
+  "elite": {
+    "description": "Elite",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "elites": {
+    "description": "Elite (Superior Software)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "198?"
+  },
+  "elixir": {
+    "description": "Elixir",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "embalpha": {
+    "description": "Escape from Moonbase Alpha",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "empire": {
+    "description": "Empire",
+    "publisher": "Shards Software",
+    "year": "1985"
+  },
+  "enigma": {
+    "description": "Enigma",
+    "publisher": "Brainbox",
+    "year": "1983"
+  },
+  "erbert": {
+    "description": "Er*Bert",
+    "publisher": "Microbyte",
+    "year": "1984"
+  },
+  "escapep7": {
+    "description": "Escape from Pulsar Seven",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "etype": {
+    "description": "E-Type",
+    "publisher": "4th Dimension",
+    "year": "1990"
+  },
+  "eurknowl": {
+    "description": "European Knowledge",
+    "publisher": "Micro Power",
+    "year": "198?"
+  },
+  "euser101": {
+    "description": "Electron User Vol.1-1",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser105": {
+    "description": "Electron User Vol.1-5",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser106": {
+    "description": "Electron User Vol.1-6",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser107": {
+    "description": "Electron User Vol.1-7",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser108": {
+    "description": "Electron User Vol.1-8",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser109": {
+    "description": "Electron User Vol.1-9",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser110": {
+    "description": "Electron User Vol.1-10",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser111": {
+    "description": "Electron User Vol.1-11",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser112": {
+    "description": "Electron User Vol.1-12",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser201": {
+    "description": "Electron User Vol.2-1",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser202": {
+    "description": "Electron User Vol.2-2",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser203": {
+    "description": "Electron User Vol.2-3",
+    "publisher": "Electron User",
+    "year": "1984"
+  },
+  "euser204": {
+    "description": "Electron User Vol.2-4",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser205": {
+    "description": "Electron User Vol.2-5",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser206": {
+    "description": "Electron User Vol.2-6",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser207": {
+    "description": "Electron User Vol.2-7",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser208": {
+    "description": "Electron User Vol.2-8",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser209": {
+    "description": "Electron User Vol.2-9",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser210": {
+    "description": "Electron User Vol.2-10",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser211": {
+    "description": "Electron User Vol.2-11",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser212": {
+    "description": "Electron User Vol.2-12",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser301": {
+    "description": "Electron User Vol.3-1",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser302": {
+    "description": "Electron User Vol.3-2",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser303": {
+    "description": "Electron User Vol.3-3",
+    "publisher": "Electron User",
+    "year": "1985"
+  },
+  "euser304": {
+    "description": "Electron User Vol.3-4",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser305": {
+    "description": "Electron User Vol.3-5",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser306": {
+    "description": "Electron User Vol.3-6",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser307": {
+    "description": "Electron User Vol.3-7",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser308": {
+    "description": "Electron User Vol.3-8",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser309": {
+    "description": "Electron User Vol.3-9",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser310": {
+    "description": "Electron User Vol.3-10",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser311": {
+    "description": "Electron User Vol.3-11",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser312": {
+    "description": "Electron User Vol.3-12",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser401": {
+    "description": "Electron User Vol.4-1",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser402": {
+    "description": "Electron User Vol.4-2",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser403": {
+    "description": "Electron User Vol.4-3",
+    "publisher": "Electron User",
+    "year": "1986"
+  },
+  "euser404": {
+    "description": "Electron User Vol.4-4",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser405": {
+    "description": "Electron User Vol.4-5",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser406": {
+    "description": "Electron User Vol.4-6",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser407": {
+    "description": "Electron User Vol.4-7",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser408": {
+    "description": "Electron User Vol.4-8",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser409": {
+    "description": "Electron User Vol.4-9",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser410": {
+    "description": "Electron User Vol.4-10",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser411": {
+    "description": "Electron User Vol.4-11",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser412": {
+    "description": "Electron User Vol.4-12",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser501": {
+    "description": "Electron User Vol.5-1",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser502": {
+    "description": "Electron User Vol.5-2",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser503": {
+    "description": "Electron User Vol.5-3",
+    "publisher": "Electron User",
+    "year": "1987"
+  },
+  "euser504": {
+    "description": "Electron User Vol.5-4",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser505": {
+    "description": "Electron User Vol.5-5",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser506": {
+    "description": "Electron User Vol.5-6",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser507": {
+    "description": "Electron User Vol.5-7",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser508": {
+    "description": "Electron User Vol.5-8",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser509": {
+    "description": "Electron User Vol.5-9",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser510": {
+    "description": "Electron User Vol.5-10",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser511": {
+    "description": "Electron User Vol.5-11",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser512": {
+    "description": "Electron User Vol.5-12",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser601": {
+    "description": "Electron User Vol.6-1",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser602": {
+    "description": "Electron User Vol.6-2",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser603": {
+    "description": "Electron User Vol.6-3",
+    "publisher": "Electron User",
+    "year": "1988"
+  },
+  "euser604": {
+    "description": "Electron User Vol.6-4",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser605": {
+    "description": "Electron User Vol.6-5",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser606": {
+    "description": "Electron User Vol.6-6",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser607": {
+    "description": "Electron User Vol.6-7",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser608": {
+    "description": "Electron User Vol.6-8",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser609": {
+    "description": "Electron User Vol.6-9",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser610": {
+    "description": "Electron User Vol.6-10",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser611": {
+    "description": "Electron User Vol.6-11",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser612": {
+    "description": "Electron User Vol.6-12",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser701": {
+    "description": "Electron User Vol.7-1",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser702": {
+    "description": "Electron User Vol.7-2",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser703": {
+    "description": "Electron User Vol.7-3",
+    "publisher": "Electron User",
+    "year": "1989"
+  },
+  "euser704": {
+    "description": "Electron User Vol.7-4",
+    "publisher": "Electron User",
+    "year": "1990"
+  },
+  "euser705": {
+    "description": "Electron User Vol.7-5",
+    "publisher": "Electron User",
+    "year": "1990"
+  },
+  "euser706": {
+    "description": "Electron User Vol.7-6",
+    "publisher": "Electron User",
+    "year": "1990"
+  },
+  "euser707": {
+    "description": "Electron User Vol.7-7",
+    "publisher": "Electron User",
+    "year": "1990"
+  },
+  "euser708": {
+    "description": "Electron User Vol.7-8",
+    "publisher": "Electron User",
+    "year": "1990"
+  },
+  "euser709": {
+    "description": "Electron User Vol.7-9",
+    "publisher": "Electron User",
+    "year": "1990"
+  },
+  "euser710": {
+    "description": "Electron User Vol.7-10",
+    "publisher": "Electron User",
+    "year": "1990"
+  },
+  "evenstar": {
+    "description": "Evening Star",
+    "publisher": "Hewson Consultants",
+    "year": "1987"
+  },
+  "exile": {
+    "description": "Exile",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "expladv": {
+    "description": "Exploring Adventures",
+    "publisher": "Duckworth",
+    "year": "1984"
+  },
+  "eyezolto": {
+    "description": "The Eye of Zolton",
+    "publisher": "Softek",
+    "year": "1983"
+  },
+  "fantdiam": {
+    "description": "Fantasia Diamond",
+    "publisher": "Hewson Consultants",
+    "year": "1984"
+  },
+  "farmgirl": {
+    "description": "Felicity Farm Girl",
+    "publisher": "Gemini",
+    "year": "1984"
+  },
+  "fbjoyutl": {
+    "description": "First Byte Joystick Utility",
+    "publisher": "First Byte",
+    "year": "198?"
+  },
+  "feasexpt": {
+    "description": "Feasibility Experiment",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "felixfac": {
+    "description": "Felix in the Factory",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "felixmon": {
+    "description": "Felix and the Fruit Monsters",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "felixwee": {
+    "description": "Felix Meets the Evil Weevils",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "ferryman": {
+    "description": "The Ferryman Awaits",
+    "publisher": "Kansas",
+    "year": "1986"
+  },
+  "ffjungen": {
+    "description": "Factfile 500 - Junior General Knowledge",
+    "publisher": "Kosmos",
+    "year": "1985"
+  },
+  "ffsengen": {
+    "description": "Factfile 500 - Senior General Knowledge",
+    "publisher": "Kosmos",
+    "year": "1985"
+  },
+  "ffssport": {
+    "description": "Factfile 500 - Super Sports",
+    "publisher": "Kosmos",
+    "year": "1985"
+  },
+  "fighterp": {
+    "description": "Fighter Pilot",
+    "publisher": "Kansas",
+    "year": "1984"
+  },
+  "finestfa": {
+    "description": "Finest Favourites",
+    "publisher": "Acorn User",
+    "year": "198?"
+  },
+  "firebug": {
+    "description": "Firebug",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "fireisla": {
+    "description": "Fire Island",
+    "publisher": "Hollsoft",
+    "year": "1984"
+  },
+  "firetrak": {
+    "description": "Fire Track",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "198?"
+  },
+  "firienwo": {
+    "description": "Firien Wood",
+    "publisher": "MP Software",
+    "year": "1983"
+  },
+  "fivedoct": {
+    "description": "The Five Doctors",
+    "publisher": "DW Gore",
+    "year": "1984"
+  },
+  "fiveston": {
+    "description": "Five Stones of Anadon",
+    "publisher": "Softek",
+    "year": "1983"
+  },
+  "fivetwin": {
+    "description": "The Five Doctors & The Twin Dilemma",
+    "publisher": "W Games",
+    "year": "1984"
+  },
+  "fmchess": {
+    "description": "First Moves Chess",
+    "publisher": "Longman",
+    "year": "1985"
+  },
+  "footbman": {
+    "description": "Football Manager",
+    "publisher": "Addictive",
+    "year": "1984"
+  },
+  "footbyea": {
+    "description": "Footballer of the Year",
+    "publisher": "Gremlin",
+    "year": "198?"
+  },
+  "footbyeak": {
+    "description": "Footballer of the Year (Kixx)",
+    "publisher": "Kixx",
+    "year": "198?"
+  },
+  "forth": {
+    "description": "FORTH",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "forthg": {
+    "description": "FORTH (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "fourwand": {
+    "description": "The Four Wands",
+    "publisher": "DW Gore",
+    "year": "1988"
+  },
+  "fpath737": {
+    "description": "Flight Path 737",
+    "publisher": "Midas",
+    "year": "198?"
+  },
+  "frak": {
+    "description": "Frak!",
+    "publisher": "Aardvark",
+    "year": "1984"
+  },
+  "fraka": {
+    "description": "Frak! (Alternative)",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "frakpias": {
+    "description": "Frak! (Play It Again Sam 4)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "freefall": {
+    "description": "Free Fall",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "freefallg": {
+    "description": "Freier Fall (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "frenchru": {
+    "description": "French On The Run",
+    "publisher": "Database",
+    "year": "198?"
+  },
+  "frenchrus": {
+    "description": "French on the Run (Swift)",
+    "publisher": "Swift",
+    "year": "198?"
+  },
+  "frenzy": {
+    "description": "Frenzy",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "frnk2000": {
+    "description": "Frankenstein 2000",
+    "publisher": "Icon",
+    "year": "1985"
+  },
+  "frnk2000atrr": {
+    "description": "Frankenstein 2000 (Atlantis)",
+    "publisher": "Atlantis",
+    "year": "198?"
+  },
+  "frnk2000au": {
+    "description": "Frankenstein 2000 (Audiogenic)",
+    "publisher": "Audiogenic",
+    "year": "198?"
+  },
+  "frootrai": {
+    "description": "Froot Raid",
+    "publisher": "Audiogenic",
+    "year": "1987"
+  },
+  "fruitcat": {
+    "description": "Fruit Catcher",
+    "publisher": "Live Wire",
+    "year": "198?"
+  },
+  "fruitmac": {
+    "description": "Fruit Machine (Alligata)",
+    "publisher": "Alligata",
+    "year": "1983"
+  },
+  "fruitmd": {
+    "description": "Fruit Machine",
+    "publisher": "Doctor Soft",
+    "year": "1984"
+  },
+  "fruitms": {
+    "description": "Fruit Machine (Superior Software)",
+    "publisher": "Superior Software",
+    "year": "1983"
+  },
+  "fruitsim": {
+    "description": "Fruit Machine Simulator",
+    "publisher": "Codemasters",
+    "year": "198?"
+  },
+  "fs2-68": {
+    "description": "Fun School 2 (For 6-8 year olds)",
+    "publisher": "Database Educational Software",
+    "year": "1989"
+  },
+  "fs2-ov8": {
+    "description": "Fun School 2 (For the Over-8s)",
+    "publisher": "Database Educational Software",
+    "year": "1989"
+  },
+  "fs2-un6": {
+    "description": "Fun School 2 (For Under 6s)",
+    "publisher": "Database Educational Software",
+    "year": "1989"
+  },
+  "fss1": {
+    "description": "FSS1 - Super Spy Flint",
+    "publisher": "Potter",
+    "year": "1983"
+  },
+  "fss2": {
+    "description": "FSS2 - Return of Flint",
+    "publisher": "Potter",
+    "year": "1983"
+  },
+  "fss3": {
+    "description": "FSS3 - Flint Strikes Back",
+    "publisher": "Potter",
+    "year": "1983"
+  },
+  "funhouse": {
+    "description": "Mystery Fun House",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "funumber": {
+    "description": "Fun With Numbers",
+    "publisher": "Golem",
+    "year": "1984"
+  },
+  "futuresh": {
+    "description": "Future Shock",
+    "publisher": "Tynesoft",
+    "year": "1986"
+  },
+  "galadrie": {
+    "description": "Galadriel in Distress",
+    "publisher": "Potter",
+    "year": "1984"
+  },
+  "galafor2": {
+    "description": "Galaforce 2",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "galaforc": {
+    "description": "Galaforce",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1986"
+  },
+  "galcmder": {
+    "description": "Galactic Commander",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "galilee": {
+    "description": "Galilee",
+    "publisher": "Shards Software",
+    "year": "1985"
+  },
+  "galpatro": {
+    "description": "Galactic Patrol",
+    "publisher": "Mastertronic",
+    "year": "1984"
+  },
+  "gatecras": {
+    "description": "Gatecrasher",
+    "publisher": "Quicksilva",
+    "year": "198?"
+  },
+  "gauntlet": {
+    "description": "Gauntlet",
+    "publisher": "Micro Power",
+    "year": "198?"
+  },
+  "ggoochcr": {
+    "description": "Graham Gooch's Test Cricket",
+    "publisher": "Audiogenic",
+    "year": "1985"
+  },
+  "ggoochcra": {
+    "description": "Graham Gooch's Test Cricket (Alternative)",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "ghostown": {
+    "description": "Ghost Town",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "ghouls": {
+    "description": "Ghouls",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "ghoulspias": {
+    "description": "Ghouls (Play It Again Sam 7)",
+    "publisher": "Superior Software/Blue Ribbon",
+    "year": "1989"
+  },
+  "gisburne": {
+    "description": "Gisburne's Castle",
+    "publisher": "Martech",
+    "year": "1985"
+  },
+  "gldbaton": {
+    "description": "The Golden Baton",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "go": {
+    "description": "Go",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "goal": {
+    "description": "Goal!",
+    "publisher": "Tynesoft",
+    "year": "1986"
+  },
+  "goldenv": {
+    "description": "Golden Voyage",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "goldfigu": {
+    "description": "The Golden Figurine",
+    "publisher": "Atlantis",
+    "year": "1988"
+  },
+  "golfbr": {
+    "description": "Golf (Blue Ribbon)",
+    "publisher": "Blue Ribbon",
+    "year": "198?"
+  },
+  "golfys": {
+    "description": "Golf (Yes Software)",
+    "publisher": "Yes Software",
+    "year": "1986"
+  },
+  "gorph": {
+    "description": "Gorph",
+    "publisher": "Doctor Soft",
+    "year": "1984"
+  },
+  "graphito": {
+    "description": "Graphito",
+    "publisher": "Addison-Wesley",
+    "year": "1984"
+  },
+  "greatwal": {
+    "description": "The Great Wall",
+    "publisher": "Artic",
+    "year": "1984"
+  },
+  "greedydw": {
+    "description": "The Greedy Dwarf",
+    "publisher": "Goldstar",
+    "year": "1984"
+  },
+  "gremlins": {
+    "description": "Gremlins",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "gridirn2": {
+    "description": "Grid Iron 2",
+    "publisher": "Alternative",
+    "year": "1991"
+  },
+  "gridiron": {
+    "description": "Grid Iron",
+    "publisher": "Top Ten",
+    "year": "1988"
+  },
+  "guardian": {
+    "description": "Guardian",
+    "publisher": "Alligata",
+    "year": "198?"
+  },
+  "guardianpias": {
+    "description": "Guardian (Play It Again Sam 4)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "gunfight": {
+    "description": "Gunfighter",
+    "publisher": "Atlantis",
+    "year": "198?"
+  },
+  "gunsmoke": {
+    "description": "Gunsmoke",
+    "publisher": "Software Invasion",
+    "year": "1983"
+  },
+  "gyroscop": {
+    "description": "Gyroscope",
+    "publisher": "Melbourne House",
+    "year": "198?"
+  },
+  "hacker": {
+    "description": "The Hacker",
+    "publisher": "Firebird",
+    "year": "198?"
+  },
+  "hampstea": {
+    "description": "Hampstead",
+    "publisher": "Melbourne House",
+    "year": "1984"
+  },
+  "hardhath": {
+    "description": "Hard Hat Harry",
+    "publisher": "Retro Software",
+    "year": "2011"
+  },
+  "hareraisp": {
+    "description": "Hareraiser (Prelude)",
+    "publisher": "Haresoft",
+    "year": "198?"
+  },
+  "harleq": {
+    "description": "Harlequin",
+    "publisher": "Kansas",
+    "year": "1984"
+  },
+  "haushalt": {
+    "description": "Haushaltbudget (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "heathrow": {
+    "description": "Heathrow ATC",
+    "publisher": "Hewson Consultants",
+    "year": "1984"
+  },
+  "hellhole": {
+    "description": "Hell Hole",
+    "publisher": "Alligata",
+    "year": "198?"
+  },
+  "heltersk": {
+    "description": "Helter Skelter",
+    "publisher": "Audiogenic",
+    "year": "1990"
+  },
+  "hercules": {
+    "description": "Hercules",
+    "publisher": "Power House",
+    "year": "198?"
+  },
+  "hex": {
+    "description": "Hex",
+    "publisher": "Larsoft",
+    "year": "1988"
+  },
+  "hiqquiz": {
+    "description": "Hi-Q Quiz",
+    "publisher": "Blue Ribbon",
+    "year": "1989"
+  },
+  "histquiz": {
+    "description": "History Quiz",
+    "publisher": "Acornsoft/Ivan Berg",
+    "year": "1983"
+  },
+  "hnchback": {
+    "description": "Hunchback",
+    "publisher": "Ocean",
+    "year": "1983"
+  },
+  "hnchbackpias": {
+    "description": "Hunchback (Play It Again Sam 6)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "198?"
+  },
+  "hobgobl": {
+    "description": "Hobgoblin",
+    "publisher": "Atlantis",
+    "year": "1989"
+  },
+  "hobgobl2": {
+    "description": "Hobgoblin 2",
+    "publisher": "Atlantis",
+    "year": "1990"
+  },
+  "holedoc1": {
+    "description": "Holed Out Extra Courses Vol.1",
+    "publisher": "4th Dimension",
+    "year": "1990"
+  },
+  "holedoc2": {
+    "description": "Holed Out Extra Courses Vol.2",
+    "publisher": "4th Dimension",
+    "year": "1990"
+  },
+  "holedout": {
+    "description": "Holed Out",
+    "publisher": "4th Dimension",
+    "year": "1989"
+  },
+  "holygrai": {
+    "description": "The Quest for the Holy Grail",
+    "publisher": "Epic",
+    "year": "198?"
+  },
+  "honeylog": {
+    "description": "Honey Logo",
+    "publisher": "Honeyfold",
+    "year": "1985"
+  },
+  "hopper": {
+    "description": "Hopper",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "hopperpias": {
+    "description": "Hopper (Play It Again Sam 6)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "horserac": {
+    "description": "Horserace",
+    "publisher": "Dynabyte",
+    "year": "1983"
+  },
+  "hostages": {
+    "description": "Hostages",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1990"
+  },
+  "hulka": {
+    "description": "The Hulk",
+    "publisher": "Americana",
+    "year": "1990"
+  },
+  "hunkdory": {
+    "description": "Hunkidory",
+    "publisher": "Bug Byte",
+    "year": "1986"
+  },
+  "huntshau": {
+    "description": "The Hunt: Search for Shauna",
+    "publisher": "Robico",
+    "year": "1987"
+  },
+  "hyperdri": {
+    "description": "Hyperdrive",
+    "publisher": "I.J.K.",
+    "year": "1983"
+  },
+  "hypervpr": {
+    "description": "Hyper Viper",
+    "publisher": "Retro Software",
+    "year": "2011"
+  },
+  "hyprball": {
+    "description": "Hyperball",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1990"
+  },
+  "ianbotha": {
+    "description": "Ian Botham's Test Match",
+    "publisher": "Tynesoft",
+    "year": "1986"
+  },
+  "icarus": {
+    "description": "Icarus",
+    "publisher": "Mandarin",
+    "year": "1988"
+  },
+  "icehocky": {
+    "description": "Ice Hockey",
+    "publisher": "Bug Byte",
+    "year": "1986"
+  },
+  "identiki": {
+    "description": "Identikit",
+    "publisher": "Stell",
+    "year": "1984"
+  },
+  "ideurope": {
+    "description": "Identify Europe",
+    "publisher": "Kosmos",
+    "year": "198?"
+  },
+  "imogen": {
+    "description": "Imogen",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "impact": {
+    "description": "Impact",
+    "publisher": "Audiogenic",
+    "year": "1987"
+  },
+  "impmiss": {
+    "description": "Impossible Mission",
+    "publisher": "U.S. Gold",
+    "year": "1986"
+  },
+  "imv2tcop": {
+    "description": "ImageV2 Tape Copier",
+    "publisher": "Peter Donn",
+    "year": "198?"
+  },
+  "incatrea": {
+    "description": "The Inca Treasure",
+    "publisher": "DW Gore",
+    "year": "1989"
+  },
+  "indoorso": {
+    "description": "Indoor Soccer",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "indoorsp": {
+    "description": "Indoor Sports",
+    "publisher": "Tynesoft",
+    "year": "1988"
+  },
+  "inertia": {
+    "description": "Inertia",
+    "publisher": "4th Dimension",
+    "year": "1990"
+  },
+  "intergal": {
+    "description": "Intergalactic Trader",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "introcas": {
+    "description": "Introductory Cassette",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "introcasg": {
+    "description": "Einfuhrungs Kassette (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "inu": {
+    "description": "Inu",
+    "publisher": "MRJ",
+    "year": "19??"
+  },
+  "invaderi": {
+    "description": "Invaders (I.J.K.)",
+    "publisher": "I.J.K.",
+    "year": "198?"
+  },
+  "invaders": {
+    "description": "Invaders (Superior Software)",
+    "publisher": "Superior Software",
+    "year": "1983"
+  },
+  "jackatta": {
+    "description": "Jack Attack",
+    "publisher": "Bug Byte",
+    "year": "1986"
+  },
+  "javastar": {
+    "description": "The Mystery of the Java Star",
+    "publisher": "Shards Software",
+    "year": "1985"
+  },
+  "jetbootj": {
+    "description": "Jet-Boot Jack",
+    "publisher": "English Software",
+    "year": "1984"
+  },
+  "jetpjack": {
+    "description": "Jet-Power Jack",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "jetsetw": {
+    "description": "Jet Set Willy",
+    "publisher": "Tynesoft",
+    "year": "1984"
+  },
+  "jetsetw2": {
+    "description": "Jet Set Willy II",
+    "publisher": "Tynesoft",
+    "year": "1985"
+  },
+  "jnrmath": {
+    "description": "Junior Maths Pack",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "joeblad2": {
+    "description": "Joe Blade II",
+    "publisher": "Players",
+    "year": "1988"
+  },
+  "joeblade": {
+    "description": "Joe Blade",
+    "publisher": "Players",
+    "year": "1987"
+  },
+  "joey": {
+    "description": "Joey",
+    "publisher": "Blue Ribbon",
+    "year": "1985"
+  },
+  "johnyreb": {
+    "description": "Johnny Reb",
+    "publisher": "Lothlorien",
+    "year": "1984"
+  },
+  "joyport": {
+    "description": "Joyport",
+    "publisher": "Signpoint",
+    "year": "1984"
+  },
+  "jugglepu": {
+    "description": "Juggle Puzzle",
+    "publisher": "Acornsoft/ASK",
+    "year": "1984"
+  },
+  "jungleji": {
+    "description": "Jungle Jive",
+    "publisher": "Virgin Games",
+    "year": "1984"
+  },
+  "kamakazi": {
+    "description": "Kamakazi",
+    "publisher": "A&F Software",
+    "year": "1983"
+  },
+  "kane": {
+    "description": "Kane",
+    "publisher": "Mastertronic",
+    "year": "1986"
+  },
+  "karatecs": {
+    "description": "Karate Combat (The Superior Collection Vol.3)",
+    "publisher": "Superior Software",
+    "year": "1987"
+  },
+  "kastle": {
+    "description": "Kastle",
+    "publisher": "Tynesoft",
+    "year": "198?"
+  },
+  "kayleth": {
+    "description": "Kayleth",
+    "publisher": "U.S. Gold",
+    "year": "1986"
+  },
+  "kettrilo": {
+    "description": "The Ket Trilogy",
+    "publisher": "Incentive",
+    "year": "1985"
+  },
+  "killaped": {
+    "description": "Killapede",
+    "publisher": "Players",
+    "year": "1986"
+  },
+  "killerg2": {
+    "description": "Killer Gorilla 2 (Play It Again Sam 3)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "killergo": {
+    "description": "Killer Gorilla",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "killergopias": {
+    "description": "Killer Gorilla (Play It Again Sam 3)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "kingdomk": {
+    "description": "The Kingdom of Klein",
+    "publisher": "Epic",
+    "year": "1984"
+  },
+  "kingdomv": {
+    "description": "Twin Kingdom Valley",
+    "publisher": "Bug Byte",
+    "year": "1983"
+  },
+  "kissink": {
+    "description": "Kissin' Kousins",
+    "publisher": "English Software",
+    "year": "1985"
+  },
+  "knowpsiq": {
+    "description": "Know Your Own Personality",
+    "publisher": "Mirrorsoft",
+    "year": "1984"
+  },
+  "kourtyd": {
+    "description": "Kourtyard",
+    "publisher": "Godax",
+    "year": "1988"
+  },
+  "lastfree": {
+    "description": "The Last of the Free",
+    "publisher": "Audiogenic",
+    "year": "1986"
+  },
+  "lastfreea": {
+    "description": "The Last of the Free (Atlantis)",
+    "publisher": "Atlantis",
+    "year": "1989"
+  },
+  "lastnin2": {
+    "description": "The Last Ninja 2",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "lastninj": {
+    "description": "The Last Ninja",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "leaguech": {
+    "description": "League Challenge",
+    "publisher": "Atlantis",
+    "year": "1986"
+  },
+  "lemmsynd": {
+    "description": "Lemming Syndrome",
+    "publisher": "Dynabyte",
+    "year": "1983"
+  },
+  "letscmp1": {
+    "description": "Let's Compute Issue 1",
+    "publisher": "Let's Compute",
+    "year": "1990"
+  },
+  "lickill": {
+    "description": "Licence to Kill",
+    "publisher": "Alternative",
+    "year": "1989"
+  },
+  "liferept": {
+    "description": "The Life of Repton",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "lisp": {
+    "description": "LISP",
+    "publisher": "Acornsoft",
+    "year": "198?"
+  },
+  "lispg": {
+    "description": "LISP (Ger)",
+    "publisher": "Acornsoft",
+    "year": "198?"
+  },
+  "lockluck": {
+    "description": "Locks of Luck",
+    "publisher": "Magus",
+    "year": "1986"
+  },
+  "locomoti": {
+    "description": "Locomotion",
+    "publisher": "BBC Soft",
+    "year": "1985"
+  },
+  "logo": {
+    "description": "Logo (Extensions and Samples)",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "look_sharp": {
+    "description": "Look Sharp!",
+    "publisher": "Mirrorsoft",
+    "year": "1985"
+  },
+  "loonloco": {
+    "description": "Loony Loco",
+    "publisher": "Kansas",
+    "year": "198?"
+  },
+  "loopz": {
+    "description": "Loopz",
+    "publisher": "Audiogenic",
+    "year": "1990"
+  },
+  "lrescue": {
+    "description": "Lunar Rescue",
+    "publisher": "Alligata",
+    "year": "1983"
+  },
+  "lsreflex": {
+    "description": "Laser Reflex",
+    "publisher": "Talent",
+    "year": "1984"
+  },
+  "magicmus": {
+    "description": "Magic Mushrooms",
+    "publisher": "Acornsoft",
+    "year": "1985"
+  },
+  "magicmussrr": {
+    "description": "Magic Mushrooms (The Acornsoft Hits Vol.1)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "magnmoon": {
+    "description": "Magnetic Moon",
+    "publisher": "Elk Adventure Club",
+    "year": "1987"
+  },
+  "magsword": {
+    "description": "The Magic Sword",
+    "publisher": "Database Software",
+    "year": "1984"
+  },
+  "mango": {
+    "description": "Mango",
+    "publisher": "Blue Ribbon",
+    "year": "1987"
+  },
+  "maniacmow": {
+    "description": "Maniac Mower",
+    "publisher": "Kansas",
+    "year": "198?"
+  },
+  "masterbk": {
+    "description": "Master Break",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "198?"
+  },
+  "mathorv1": {
+    "description": "Maths 'O' Level Revision Part One",
+    "publisher": "Ampalsoft",
+    "year": "1984"
+  },
+  "mathsinv": {
+    "description": "Maths Invaders",
+    "publisher": "Stell",
+    "year": "1984"
+  },
+  "mathst1": {
+    "description": "Maths with a Story: 1",
+    "publisher": "BBC Soft",
+    "year": "1984"
+  },
+  "mathst2": {
+    "description": "Maths with a Story: 2",
+    "publisher": "BBC Soft",
+    "year": "1984"
+  },
+  "mathtuto": {
+    "description": "Maths Tutor",
+    "publisher": "Century",
+    "year": "1985"
+  },
+  "maze": {
+    "description": "Maze",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "mazesrr": {
+    "description": "Maze (The Acornsoft Hits Vol.1)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "megaforc": {
+    "description": "Mega Force",
+    "publisher": "Tynesoft",
+    "year": "198?"
+  },
+  "memicro": {
+    "description": "Me & My Micro",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "mendipst": {
+    "description": "Mendips Stone",
+    "publisher": "Dee-Kay",
+    "year": "1986"
+  },
+  "meteors": {
+    "description": "Meteors",
+    "publisher": "Acornsoft",
+    "year": "198?"
+  },
+  "meteorsg": {
+    "description": "Meteors (Ger)",
+    "publisher": "Acornsoft",
+    "year": "198?"
+  },
+  "meteorssrr": {
+    "description": "Meteors (The Acornsoft Hits Vol.2)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "mexico86": {
+    "description": "Mexico 86",
+    "publisher": "Qualsoft",
+    "year": "1986"
+  },
+  "microbal": {
+    "description": "Microball",
+    "publisher": "Alternative",
+    "year": "1986"
+  },
+  "microlym": {
+    "description": "Micro Olympics",
+    "publisher": "database",
+    "year": "1984"
+  },
+  "mikie": {
+    "description": "Mikie",
+    "publisher": "Imagine",
+    "year": "1986"
+  },
+  "milliona": {
+    "description": "Millionaire",
+    "publisher": "Incentive",
+    "year": "1984"
+  },
+  "minedout": {
+    "description": "Mined-Out",
+    "publisher": "Quicksilva",
+    "year": "1983"
+  },
+  "mineshaf": {
+    "description": "Mineshaft",
+    "publisher": "Durell",
+    "year": "1984"
+  },
+  "mineshafa": {
+    "description": "Mineshaft (Alternative)",
+    "publisher": "Alternative",
+    "year": "1990"
+  },
+  "misscont": {
+    "description": "Missile Control",
+    "publisher": "Gemini",
+    "year": "1983"
+  },
+  "missxp2": {
+    "description": "Mission XP2",
+    "publisher": "Hollsoft",
+    "year": "1984"
+  },
+  "mmindqm": {
+    "description": "BBC Mastermind Quizmaster",
+    "publisher": "Mirrorsoft-Ivan Berg",
+    "year": "1984"
+  },
+  "moffice": {
+    "description": "Mini Office",
+    "publisher": "Database",
+    "year": "1984"
+  },
+  "moffices": {
+    "description": "Mini Office (Summit)",
+    "publisher": "Summit",
+    "year": "198?"
+  },
+  "monkeynu": {
+    "description": "Monkey Nuts",
+    "publisher": "Bug Byte",
+    "year": "1988"
+  },
+  "monsters": {
+    "description": "Monsters",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "monsterspias": {
+    "description": "Monsters (Play It Again Sam 11)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1990"
+  },
+  "monsterssrr": {
+    "description": "Monsters (The Acornsoft Hits Vol.1)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "moonbugg": {
+    "description": "Moon Buggy",
+    "publisher": "Kansas",
+    "year": "1985"
+  },
+  "moonraid": {
+    "description": "Moon Raider",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "moonraidpias": {
+    "description": "Moon Raider (Play It Again Sam 5)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "mrmenfir": {
+    "description": "First Steps with the Mr.Men",
+    "publisher": "Mirrorsoft",
+    "year": "1983"
+  },
+  "mrmenher": {
+    "description": "Mr Men: Here and There",
+    "publisher": "Mirrorsoft",
+    "year": "1985"
+  },
+  "mrwiz": {
+    "description": "Mr Wiz",
+    "publisher": "Superior Software",
+    "year": "1984"
+  },
+  "mrwizbr": {
+    "description": "Mr Wiz (Blue Ribbon)",
+    "publisher": "Superior Software/Blue Ribbon",
+    "year": "198?"
+  },
+  "mrwizsc": {
+    "description": "Mr Wiz (The Superior Collection Vol.3)",
+    "publisher": "Superior Software",
+    "year": "1987"
+  },
+  "mteacht2": {
+    "description": "Merlin Teaches Tables 2",
+    "publisher": "Hodder and Stoughton",
+    "year": "1984"
+  },
+  "mtrap": {
+    "description": "Mouse Trap",
+    "publisher": "Tynesoft",
+    "year": "198?"
+  },
+  "myorem": {
+    "description": "Myorem",
+    "publisher": "Robico",
+    "year": "1986"
+  },
+  "network": {
+    "description": "Network (Play It Again Sam 15)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1991"
+  },
+  "nightstr": {
+    "description": "Night Strike",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "nightwld": {
+    "description": "Nightworld",
+    "publisher": "Alligata",
+    "year": "1986"
+  },
+  "ninedanc": {
+    "description": "The Nine Dancers",
+    "publisher": "Larsoft",
+    "year": "1986"
+  },
+  "nmaremaz": {
+    "description": "Nightmare Maze",
+    "publisher": "MRM Software",
+    "year": "1984"
+  },
+  "nmaremazbr": {
+    "description": "Nightmare Maze (Blue Ribbon)",
+    "publisher": "Blue Ribbon",
+    "year": "1984"
+  },
+  "numbergu": {
+    "description": "Number Gulper",
+    "publisher": "Acornsoft/ASK",
+    "year": "1984"
+  },
+  "olspecta": {
+    "description": "Olympic Spectacular",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "omegaorb": {
+    "description": "Omega Orb",
+    "publisher": "Audiogenic",
+    "year": "1986"
+  },
+  "omegaorba": {
+    "description": "Omega Orb (Atlantis)",
+    "publisher": "Atlantis",
+    "year": "198?"
+  },
+  "osprey": {
+    "description": "Osprey!",
+    "publisher": "Bourne Educational Software",
+    "year": "198?"
+  },
+  "overdriv": {
+    "description": "Overdrive",
+    "publisher": "Superior Software",
+    "year": "1984"
+  },
+  "overdrivesc": {
+    "description": "Overdrive (The Superior Collection Vol.3)",
+    "publisher": "Superior Software",
+    "year": "1987"
+  },
+  "oxbridge": {
+    "description": "Oxbridge",
+    "publisher": "Tynesoft",
+    "year": "1986"
+  },
+  "palmagic": {
+    "description": "Palace of Magic",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "pandemon": {
+    "description": "Pandemonium (Play It Again Sam 13)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1990"
+  },
+  "panik": {
+    "description": "Panik",
+    "publisher": "Atlantis",
+    "year": "1987"
+  },
+  "paperboy": {
+    "description": "Paperboy",
+    "publisher": "Elite",
+    "year": "1984"
+  },
+  "paras": {
+    "description": "Paras",
+    "publisher": "Lothlorien",
+    "year": "1983"
+  },
+  "pauldani": {
+    "description": "Paul Daniels' Magic Show",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "pcwgames": {
+    "description": "PCW Games Collection",
+    "publisher": "PCW",
+    "year": "198?"
+  },
+  "pedro": {
+    "description": "Pedro",
+    "publisher": "Imagine",
+    "year": "1984"
+  },
+  "peekoc": {
+    "description": "Peeko-Computer",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "peekocg": {
+    "description": "Peeko-Computer (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "pegleg": {
+    "description": "Peg Leg",
+    "publisher": "I.J.K.",
+    "year": "1984"
+  },
+  "pengi": {
+    "description": "Pengi",
+    "publisher": "Visions",
+    "year": "1984"
+  },
+  "pengwyn": {
+    "description": "Pengwyn",
+    "publisher": "Postern",
+    "year": "1984"
+  },
+  "perplex": {
+    "description": "Perplexity",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "persandr": {
+    "description": "Perseus and Andromeda",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "pettigre": {
+    "description": "Pettigrews Diary",
+    "publisher": "Shards Software",
+    "year": "1984"
+  },
+  "phancomb": {
+    "description": "Phantom Combat",
+    "publisher": "Doctor Soft",
+    "year": "1985"
+  },
+  "phartomb": {
+    "description": "Pharoahs Tomb",
+    "publisher": "A&F Software",
+    "year": "1983"
+  },
+  "phquest": {
+    "description": "Philosophers Quest",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "pinball": {
+    "description": "Pinball",
+    "publisher": "Microbyte",
+    "year": "1983"
+  },
+  "pinbarcd": {
+    "description": "Pinball Arcade",
+    "publisher": "Kansas",
+    "year": "1984"
+  },
+  "pipeline": {
+    "description": "Pipeline",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "pipemania": {
+    "description": "Pipe Mania",
+    "publisher": "Empire",
+    "year": "1989"
+  },
+  "piratead": {
+    "description": "Pirate Adventure",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "planb": {
+    "description": "Plan B",
+    "publisher": "Bug Byte",
+    "year": "1987"
+  },
+  "planb2": {
+    "description": "Plan B2",
+    "publisher": "Bug Byte",
+    "year": "1987"
+  },
+  "planecra": {
+    "description": "Plane Crash",
+    "publisher": "Labyrinth",
+    "year": "1989"
+  },
+  "plantoid": {
+    "description": "Planetoid",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "plantoidg": {
+    "description": "Planetoid (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "plantoidsrr": {
+    "description": "Planetoid (The Acornsoft Hits Vol.1)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "playbox": {
+    "description": "Playbox",
+    "publisher": "Comsoft",
+    "year": "1984"
+  },
+  "playcard": {
+    "description": "Play Your Cards Right",
+    "publisher": "Britannia",
+    "year": "198?"
+  },
+  "plunder": {
+    "description": "Plunder",
+    "publisher": "CCS",
+    "year": "1984"
+  },
+  "plus1joy": {
+    "description": "Plus 1 Joystick Utility",
+    "publisher": "Micro Power",
+    "year": "1986"
+  },
+  "podd": {
+    "description": "Podd",
+    "publisher": "Acornsoft/ASK",
+    "year": "1984"
+  },
+  "poker": {
+    "description": "Poker",
+    "publisher": "Duckworth",
+    "year": "1986"
+  },
+  "ponyexpr": {
+    "description": "Pony Express",
+    "publisher": "Hollsoft",
+    "year": "1984"
+  },
+  "poolhall": {
+    "description": "Pool Hall",
+    "publisher": "Dynabyte",
+    "year": "1984"
+  },
+  "positron": {
+    "description": "Positron",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "ppenguin": {
+    "description": "Percy Penguin",
+    "publisher": "Superior Software",
+    "year": "1984"
+  },
+  "ppenguinbr": {
+    "description": "Percy Penguin (Blue Ribbon)",
+    "publisher": "Superior Software/Blue Ribbon",
+    "year": "198?"
+  },
+  "ppenguinpias": {
+    "description": "Percy Penguin (Play It Again Sam 13)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1990"
+  },
+  "predator": {
+    "description": "Predator",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "primart": {
+    "description": "Primary Art",
+    "publisher": "Alligata",
+    "year": "1984"
+  },
+  "proboxin": {
+    "description": "Pro Boxing Simulator",
+    "publisher": "Codemasters",
+    "year": "198?"
+  },
+  "progolf": {
+    "description": "Pro Golf",
+    "publisher": "Atlantis",
+    "year": "1988"
+  },
+  "projthes": {
+    "description": "Project Thesius",
+    "publisher": "Robico",
+    "year": "1986"
+  },
+  "psycast": {
+    "description": "Psycastria",
+    "publisher": "Audiogenic",
+    "year": "1986"
+  },
+  "psycast2": {
+    "description": "Psycastria 2",
+    "publisher": "Audiogenic",
+    "year": "1989"
+  },
+  "psycast2a": {
+    "description": "Psycastria 2 (Atlantis)",
+    "publisher": "Atlantis",
+    "year": "19??"
+  },
+  "psycasta": {
+    "description": "Psycastria (Alternative)",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "puppetmn": {
+    "description": "The Puppetman",
+    "publisher": "Larsoft",
+    "year": "1987"
+  },
+  "pyrdoom": {
+    "description": "Pyramid of Doom",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "qbix": {
+    "description": "Q*Bix",
+    "publisher": "Alligata",
+    "year": "1984"
+  },
+  "qofsport": {
+    "description": "A Question of Sport",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "198?"
+  },
+  "qphulk": {
+    "description": "Questprobe: The Hulk",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "qpthing": {
+    "description": "Questprobe: Human Torch and The Thing",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "quest": {
+    "description": "Quest",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "questfr": {
+    "description": "Quest for Freedom",
+    "publisher": "I.J.K.",
+    "year": "1986"
+  },
+  "quikthin": {
+    "description": "Quick Thinking!",
+    "publisher": "Mirrorsoft",
+    "year": "1985"
+  },
+  "qwak": {
+    "description": "Qwak",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "ransack": {
+    "description": "Ransack!",
+    "publisher": "Audiogenic",
+    "year": "1987"
+  },
+  "ravage": {
+    "description": "Ravage",
+    "publisher": "Blue Ribbon",
+    "year": "1985"
+  },
+  "ravskull": {
+    "description": "Ravenskull",
+    "publisher": "Superior Software",
+    "year": "1987"
+  },
+  "ravskullpias": {
+    "description": "Ravenskull (Play It Again Sam)",
+    "publisher": "Superior Software",
+    "year": "198?"
+  },
+  "readra3": {
+    "description": "Read Right Away 3",
+    "publisher": "Highlight Software",
+    "year": "1985"
+  },
+  "rebelpla": {
+    "description": "Rebel Planet",
+    "publisher": "U.S. Gold",
+    "year": "1986"
+  },
+  "redcoats": {
+    "description": "Red Coats",
+    "publisher": "Lothlorien",
+    "year": "1985"
+  },
+  "relucthe": {
+    "description": "Reluctant Hero",
+    "publisher": "Elk Adventure Club",
+    "year": "1987"
+  },
+  "repton": {
+    "description": "Repton",
+    "publisher": "Superior Software",
+    "year": "1985"
+  },
+  "repton2": {
+    "description": "Repton 2",
+    "publisher": "Superior Software",
+    "year": "1985"
+  },
+  "repton2br": {
+    "description": "Repton 2 (Blue Ribbon)",
+    "publisher": "Superior Software/Blue Ribbon",
+    "year": "198?"
+  },
+  "repton2sc": {
+    "description": "Repton 2 (The Superior Collection Vol.3)",
+    "publisher": "Superior Software",
+    "year": "1987"
+  },
+  "repton3": {
+    "description": "Repton 3",
+    "publisher": "Superior Software",
+    "year": "1986"
+  },
+  "reptonbr": {
+    "description": "Repton (Blue Ribbon)",
+    "publisher": "Superior Software/Blue Ribbon",
+    "year": "198?"
+  },
+  "reptonin": {
+    "description": "Repton Infinity",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "reptonsc": {
+    "description": "Repton (The Superior Collection Vol.3)",
+    "publisher": "Superior Software",
+    "year": "1987"
+  },
+  "reptonti": {
+    "description": "Repton Thru Time",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "reptonwo": {
+    "description": "Repton Around the World in 40 Screens",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "retr2": {
+    "description": "Return of R2",
+    "publisher": "Blue Ribbon",
+    "year": "1987"
+  },
+  "reversik": {
+    "description": "Reversi (Kansas)",
+    "publisher": "Kansas",
+    "year": "198?"
+  },
+  "reversis": {
+    "description": "Reversi (Superior Software)",
+    "publisher": "Superior Software",
+    "year": "1983"
+  },
+  "revzor": {
+    "description": "Revenge of Zor",
+    "publisher": "Kansas",
+    "year": "1983"
+  },
+  "rhanson": {
+    "description": "Rick Hanson",
+    "publisher": "Robico",
+    "year": "1986"
+  },
+  "rhansont": {
+    "description": "The Rick Hanson Trilogy",
+    "publisher": "Robico",
+    "year": "1986"
+  },
+  "ricochet": {
+    "description": "Ricochet",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "rigattac": {
+    "description": "Rig Attack",
+    "publisher": "Tynesoft",
+    "year": "1985"
+  },
+  "rikroadi": {
+    "description": "Rik the Roadie",
+    "publisher": "Alternative",
+    "year": "1987"
+  },
+  "ringtime": {
+    "description": "Ring of Time",
+    "publisher": "Kansas",
+    "year": "1983"
+  },
+  "robinshw": {
+    "description": "Robin of Sherwood",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "roboto": {
+    "description": "Roboto",
+    "publisher": "Bug Byte",
+    "year": "1985"
+  },
+  "robotron": {
+    "description": "Robotron: 2084",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "rodeogam": {
+    "description": "Buffalo Bills Rodeo Games",
+    "publisher": "Tynesoft",
+    "year": "1989"
+  },
+  "rohak": {
+    "description": "Rohak the Swordsman",
+    "publisher": "Elk Adventure Club",
+    "year": "1987"
+  },
+  "romanemp": {
+    "description": "Roman Empire",
+    "publisher": "Lothlorien",
+    "year": "1983"
+  },
+  "roundone": {
+    "description": "Round Ones",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "rowfour": {
+    "description": "Row of Four",
+    "publisher": "Software For All",
+    "year": "1983"
+  },
+  "rtcbirmi": {
+    "description": "RTC Birmingham",
+    "publisher": "Dee-Kay",
+    "year": "1987"
+  },
+  "rtccrewe": {
+    "description": "RTC Crewe",
+    "publisher": "Dee-Kay",
+    "year": "1987"
+  },
+  "rtcdonca": {
+    "description": "RTC Doncaster",
+    "publisher": "Dee-Kay",
+    "year": "1988"
+  },
+  "rubbletr": {
+    "description": "Rubble Trouble",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "runestaf": {
+    "description": "Runestaff",
+    "publisher": "Squaresoft",
+    "year": "1987"
+  },
+  "sadimcas": {
+    "description": "Sadim Castle",
+    "publisher": "MP Software",
+    "year": "1984"
+  },
+  "saigon": {
+    "description": "Saigon",
+    "publisher": "Tynesoft",
+    "year": "1988"
+  },
+  "salandra": {
+    "description": "Rising of Salandra - Parts 1 & 2",
+    "publisher": "Larsoft",
+    "year": "1984"
+  },
+  "saracoid": {
+    "description": "Saracoid",
+    "publisher": "Audiogenic",
+    "year": "1984"
+  },
+  "sascomm": {
+    "description": "SAS Commander",
+    "publisher": "Comsoft",
+    "year": "1984"
+  },
+  "savagei1": {
+    "description": "Savage Island Part One",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "savagei2": {
+    "description": "Savage Island Part Two",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "savpondb": {
+    "description": "Savage Pond (Bug Byte)",
+    "publisher": "Bug Byte",
+    "year": "1986"
+  },
+  "savponds": {
+    "description": "Savage Pond",
+    "publisher": "Starcade",
+    "year": "1984"
+  },
+  "sbelle": {
+    "description": "Southern Belle",
+    "publisher": "Hewson Consultants",
+    "year": "1986"
+  },
+  "scfiquiz": {
+    "description": "Science Fiction Quiz",
+    "publisher": "Acornsoft/Ivan Berg",
+    "year": "1983"
+  },
+  "sdevonhy": {
+    "description": "South Devon Hydraulics",
+    "publisher": "Dee-Kay",
+    "year": "1986"
+  },
+  "seaqueen": {
+    "description": "Sea Queen",
+    "publisher": "Danosoft",
+    "year": "198?"
+  },
+  "secrmiss": {
+    "description": "Secret Mission",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "serplair": {
+    "description": "Serpents Lair",
+    "publisher": "Comsoft",
+    "year": "1984"
+  },
+  "sfruit": {
+    "description": "Super Fruit",
+    "publisher": "Simonsoft",
+    "year": "1984"
+  },
+  "shangwar": {
+    "description": "Shanghai Warriors",
+    "publisher": "Players",
+    "year": "1989"
+  },
+  "shark": {
+    "description": "Shark",
+    "publisher": "Audiogenic",
+    "year": "1988"
+  },
+  "sharkatt": {
+    "description": "Shark Attack",
+    "publisher": "Romik",
+    "year": "1984"
+  },
+  "sharrier": {
+    "description": "Strike Force Harrier",
+    "publisher": "Mirrorsoft",
+    "year": "1985"
+  },
+  "sharriera": {
+    "description": "Strike Force Harrier (Alternative)",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "shbounds": {
+    "description": "Shedmaster Bounds Green",
+    "publisher": "Dee-Kay",
+    "year": "1987"
+  },
+  "shfinpar": {
+    "description": "Shedmaster Finsbury Park",
+    "publisher": "Dee-Kay",
+    "year": "198?"
+  },
+  "shuffle": {
+    "description": "Shuffle",
+    "publisher": "Budgie",
+    "year": "1986"
+  },
+  "sim": {
+    "description": "Sim",
+    "publisher": "Viper",
+    "year": "1984"
+  },
+  "simcity": {
+    "description": "Sim City",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1990"
+  },
+  "skirmish": {
+    "description": "Skirmish",
+    "publisher": "Godax",
+    "year": "1988"
+  },
+  "skirmishpias": {
+    "description": "Skirmish (Play It Again Sam-12)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1990"
+  },
+  "skyhawk": {
+    "description": "Skyhawk",
+    "publisher": "Bug Byte",
+    "year": "1986"
+  },
+  "smashgra": {
+    "description": "Smash and Grab",
+    "publisher": "Superior Software",
+    "year": "1984"
+  },
+  "smashgrabsc": {
+    "description": "Smash and Grab (The Superior Collection Vol.3)",
+    "publisher": "Superior Software",
+    "year": "1987"
+  },
+  "snake": {
+    "description": "Snake",
+    "publisher": "Kansas",
+    "year": "198?"
+  },
+  "snapper": {
+    "description": "Snapper",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "snapperpias": {
+    "description": "Snapper (Play It Again Sam 7)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "snookera": {
+    "description": "Snooker (Acornsoft)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "snookerb": {
+    "description": "Snooker (Blue Ribbon)",
+    "publisher": "Superior Software/Blue Ribbon",
+    "year": "198?"
+  },
+  "snookerv": {
+    "description": "Snooker (Visions)",
+    "publisher": "Visions",
+    "year": "198?"
+  },
+  "soccboss": {
+    "description": "Soccer Boss",
+    "publisher": "Alternative",
+    "year": "1989"
+  },
+  "soccersu": {
+    "description": "Soccer Supremo",
+    "publisher": "Qualsoft",
+    "year": "1984"
+  },
+  "softcent": {
+    "description": "The Soft Centre Collection",
+    "publisher": "Soft Centre",
+    "year": "1985"
+  },
+  "sorcclay": {
+    "description": "Sorceror of Claymorgue Castle",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "spanisha": {
+    "description": "The Spanish Tutor - Level A",
+    "publisher": "Kosmos",
+    "year": "1984"
+  },
+  "spascal": {
+    "description": "S-Pascal (Ger)",
+    "publisher": "Acornsoft",
+    "year": "198?"
+  },
+  "spcavern": {
+    "description": "Space Caverns",
+    "publisher": "Tynesoft",
+    "year": "1985"
+  },
+  "specops": {
+    "description": "Special Operations",
+    "publisher": "Lothlorien",
+    "year": "1984"
+  },
+  "spectape": {
+    "description": "Spectapede",
+    "publisher": "Mastertronic",
+    "year": "198?"
+  },
+  "spellbin": {
+    "description": "Spellbinder",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1987"
+  },
+  "sphdest": {
+    "description": "Sphere of Destiny",
+    "publisher": "Audiogenic",
+    "year": "1986"
+  },
+  "sphdest2": {
+    "description": "Sphere of Destiny 2",
+    "publisher": "Audiogenic",
+    "year": "1988"
+  },
+  "sphinx": {
+    "description": "Sphinx Adventure",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "spidermn": {
+    "description": "Spiderman",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "spit40": {
+    "description": "Spitfire 40",
+    "publisher": "Mirrorsoft",
+    "year": "1985"
+  },
+  "spit40a": {
+    "description": "Spitfire 40 (Alternative)",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "spkbegin": {
+    "description": "Starter Pack: Beginners",
+    "publisher": "Collins Software",
+    "year": "1984"
+  },
+  "spmansid": {
+    "description": "Spaceman Sid",
+    "publisher": "English Software",
+    "year": "1984"
+  },
+  "spoker2p": {
+    "description": "Strip Poker II Plus",
+    "publisher": "Anco",
+    "year": "1989"
+  },
+  "spooksv": {
+    "description": "Spooksville",
+    "publisher": "Blue Ribbon",
+    "year": "1988"
+  },
+  "sporttri": {
+    "description": "Sporting Triangles",
+    "publisher": "CDS",
+    "year": "1990"
+  },
+  "spranger": {
+    "description": "Space Ranger",
+    "publisher": "Audiogenic",
+    "year": "1986"
+  },
+  "spshuttm": {
+    "description": "Space Shuttle",
+    "publisher": "Microdeal",
+    "year": "1983"
+  },
+  "spstatal": {
+    "description": "Space Station Alpha",
+    "publisher": "Icon",
+    "year": "198?"
+  },
+  "spycat": {
+    "description": "Spycat",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1988"
+  },
+  "spyvsspy": {
+    "description": "Spy vs Spy",
+    "publisher": "Tynesoft",
+    "year": "1984"
+  },
+  "squeakal": {
+    "description": "Squeakaliser",
+    "publisher": "Bug Byte",
+    "year": "198?"
+  },
+  "sshipcom": {
+    "description": "Starship Command",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "sshipcomb": {
+    "description": "Starship Command (Blue Ribbon)",
+    "publisher": "Superior Software/Blue Ribbon",
+    "year": "198?"
+  },
+  "sshipcomg": {
+    "description": "Starship Command (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "stafflaw": {
+    "description": "The Staff of Law",
+    "publisher": "Potter",
+    "year": "1984"
+  },
+  "stairhel": {
+    "description": "Stairway to Hell",
+    "publisher": "Software Invasion",
+    "year": "1985"
+  },
+  "stardrif": {
+    "description": "Star Drifter",
+    "publisher": "Firebird",
+    "year": "1985"
+  },
+  "starfo7": {
+    "description": "Star Force Seven",
+    "publisher": "Bug Byte",
+    "year": "198?"
+  },
+  "starmaz2": {
+    "description": "Starmaze 2",
+    "publisher": "Mastertronic",
+    "year": "1984"
+  },
+  "starport": {
+    "description": "Star Port",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1990"
+  },
+  "starques": {
+    "description": "Starship Quest",
+    "publisher": "Elk Adventure Club",
+    "year": "1987"
+  },
+  "starseek": {
+    "description": "Star Seeker",
+    "publisher": "Mirrorsoft",
+    "year": "1985"
+  },
+  "starwars": {
+    "description": "Star Wars",
+    "publisher": "Domark",
+    "year": "1987"
+  },
+  "stdnookpias": {
+    "description": "Steve Davis Snooker (Play It Again Sam 9)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "stdsnook": {
+    "description": "Steve Davis Snooker",
+    "publisher": "CDS",
+    "year": "1986"
+  },
+  "stix": {
+    "description": "Stix",
+    "publisher": "Supersoft",
+    "year": "1984"
+  },
+  "stockcar": {
+    "description": "Stock Car",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "stolenla": {
+    "description": "The Stolen Lamp",
+    "publisher": "Lothlorien",
+    "year": "1984"
+  },
+  "stormcyc": {
+    "description": "Stormcycle",
+    "publisher": "Atlantis",
+    "year": "1989"
+  },
+  "stranded": {
+    "description": "Stranded",
+    "publisher": "Superior Software",
+    "year": "1984"
+  },
+  "stratobo": {
+    "description": "Stratobomber",
+    "publisher": "I.J.K.",
+    "year": "1983"
+  },
+  "strip2": {
+    "description": "Stripper II",
+    "publisher": "Aggressive",
+    "year": "198?"
+  },
+  "strodyss": {
+    "description": "Strange Odyssey",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "strykun": {
+    "description": "Stryker's Run",
+    "publisher": "Superior Software",
+    "year": "1986"
+  },
+  "subwayvi": {
+    "description": "Subway Vigilante",
+    "publisher": "Players",
+    "year": "1989"
+  },
+  "suds": {
+    "description": "Suds",
+    "publisher": "Riverdale",
+    "year": "1986"
+  },
+  "suprgolf": {
+    "description": "Super Golf",
+    "publisher": "Squirrel",
+    "year": "1984"
+  },
+  "suprhang": {
+    "description": "Super Hangman",
+    "publisher": "I.J.K.",
+    "year": "1983"
+  },
+  "suprmang": {
+    "description": "Superman: The Game",
+    "publisher": "First Star",
+    "year": "1988"
+  },
+  "suprpool": {
+    "description": "Super Pool",
+    "publisher": "Software Invasion",
+    "year": "1984"
+  },
+  "supsocc": {
+    "description": "Superior Soccer",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "survivor": {
+    "description": "Survivor",
+    "publisher": "MP Software",
+    "year": "1985"
+  },
+  "survivrs": {
+    "description": "Survivors",
+    "publisher": "Atlantis",
+    "year": "1987"
+  },
+  "swag": {
+    "description": "Swag",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "swoop": {
+    "description": "Swoop",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "symmetry": {
+    "description": "Symmetry",
+    "publisher": "Garland Computing",
+    "year": "198?"
+  },
+  "syncron": {
+    "description": "Syncron (The Superior Collection Vol.3)",
+    "publisher": "Superior Software",
+    "year": "1987"
+  },
+  "system8": {
+    "description": "System_8",
+    "publisher": "Blue Ribbon",
+    "year": "198?"
+  },
+  "tankattc": {
+    "description": "Tank Attack",
+    "publisher": "CDS",
+    "year": "1989"
+  },
+  "tarzan": {
+    "description": "Tarzan",
+    "publisher": "Martech",
+    "year": "1987"
+  },
+  "tarzanb": {
+    "description": "Tarzan Boy",
+    "publisher": "Alligata",
+    "year": "1984"
+  },
+  "tempest": {
+    "description": "Tempest",
+    "publisher": "Superior Software",
+    "year": "1985"
+  },
+  "templetn": {
+    "description": "Templeton",
+    "publisher": "Bug Byte",
+    "year": "1986"
+  },
+  "tenbest1": {
+    "description": "Ten of the Best! Vol.1",
+    "publisher": "Database",
+    "year": "1984"
+  },
+  "tenbest2": {
+    "description": "Ten of the Best! Vol.2",
+    "publisher": "Database",
+    "year": "1984"
+  },
+  "tenbest3": {
+    "description": "Ten of the Best! Vol.3",
+    "publisher": "Database",
+    "year": "1984"
+  },
+  "tenindia": {
+    "description": "Ten Little Indians",
+    "publisher": "Adventure International",
+    "year": "1983"
+  },
+  "tennis": {
+    "description": "Tennis",
+    "publisher": "Bug Byte",
+    "year": "198?"
+  },
+  "terrormo": {
+    "description": "Terrormolinos",
+    "publisher": "Melbourne House",
+    "year": "1985"
+  },
+  "tesselat": {
+    "description": "Tesselator",
+    "publisher": "Addison-Wesley",
+    "year": "1985"
+  },
+  "tetris": {
+    "description": "Tetris",
+    "publisher": "Mirrorsoft",
+    "year": "1988"
+  },
+  "thaibox": {
+    "description": "Thai Boxing",
+    "publisher": "Anco",
+    "year": "1984"
+  },
+  "thamesl": {
+    "description": "Thames Local",
+    "publisher": "Dee-Kay",
+    "year": "1986"
+  },
+  "thebigko": {
+    "description": "The Big KO!",
+    "publisher": "Tynesoft",
+    "year": "1987"
+  },
+  "theboss": {
+    "description": "The Boss",
+    "publisher": "Peaksoft",
+    "year": "1985"
+  },
+  "thecount": {
+    "description": "The Count",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "themine": {
+    "description": "The Mine",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "thequill": {
+    "description": "The Quill",
+    "publisher": "Gilsoft",
+    "year": "198?"
+  },
+  "thrust": {
+    "description": "Thrust",
+    "publisher": "Superior Software",
+    "year": "1986"
+  },
+  "time": {
+    "description": "Time",
+    "publisher": "Stell",
+    "year": "1984"
+  },
+  "timemach": {
+    "description": "The Time Machine",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "tmatch": {
+    "description": "Test Match",
+    "publisher": "CRL",
+    "year": "1983"
+  },
+  "tombdeat": {
+    "description": "Tomb of Death",
+    "publisher": "Hollsoft",
+    "year": "1984"
+  },
+  "tomcat": {
+    "description": "Tomcat",
+    "publisher": "Players",
+    "year": "1989"
+  },
+  "topstail": {
+    "description": "Tops and Tails",
+    "publisher": "Macmillian",
+    "year": "1985"
+  },
+  "traditio": {
+    "description": "Traditional Games",
+    "publisher": "Gemini",
+    "year": "1983"
+  },
+  "trapper": {
+    "description": "Trapper",
+    "publisher": "Blue Ribbon",
+    "year": "1987"
+  },
+  "treashnt": {
+    "description": "Treasure Hunt",
+    "publisher": "Macsen",
+    "year": "1986"
+  },
+  "treeknow": {
+    "description": "Tree of Knowledge",
+    "publisher": "Acornsoft",
+    "year": "198?"
+  },
+  "treeknowg": {
+    "description": "Baum der Weisheit (Ger)",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "trekii": {
+    "description": "Trek II",
+    "publisher": "Tynesoft",
+    "year": "1985"
+  },
+  "triple1": {
+    "description": "Triple Decker 1",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "triple10": {
+    "description": "Triple Decker 10",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "triple2": {
+    "description": "Triple Decker 2",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "triple3": {
+    "description": "Triple Decker 3",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "triple4": {
+    "description": "Triple Decker 4",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "triple5": {
+    "description": "Triple Decker 5",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "triple6": {
+    "description": "Triple Decker 6",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "triple7": {
+    "description": "Triple Decker 7",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "triple8": {
+    "description": "Triple Decker 8",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "triple9": {
+    "description": "Triple Decker 09",
+    "publisher": "Alternative",
+    "year": "1988"
+  },
+  "tstruck": {
+    "description": "Thunderstruck",
+    "publisher": "Audiogenic",
+    "year": "1985"
+  },
+  "tstruck2": {
+    "description": "Thunderstruck 2: Mind Master",
+    "publisher": "Audiogenic",
+    "year": "1986"
+  },
+  "turfform": {
+    "description": "Turf Form",
+    "publisher": "Blue Ribbon",
+    "year": "1988"
+  },
+  "turtleg": {
+    "description": "Turtle Graphics",
+    "publisher": "Acornsoft",
+    "year": "198?"
+  },
+  "twelfnig": {
+    "description": "Twelfth Night",
+    "publisher": "Penguin Study Software",
+    "year": "198?"
+  },
+  "twinorbs": {
+    "description": "The Twin Orbs of Aalinor",
+    "publisher": "Potter",
+    "year": "1985"
+  },
+  "ukpm": {
+    "description": "U.K. PM",
+    "publisher": "I.J.K.",
+    "year": "1984"
+  },
+  "ultron": {
+    "description": "Ultron",
+    "publisher": "Icon",
+    "year": "1984"
+  },
+  "uranians": {
+    "description": "Uranians",
+    "publisher": "Bug Byte",
+    "year": "1986"
+  },
+  "usdragr": {
+    "description": "US Drag Racing",
+    "publisher": "Tynesoft",
+    "year": "198?"
+  },
+  "valkings": {
+    "description": "The Valley of the Kings",
+    "publisher": "MP Software",
+    "year": "1985"
+  },
+  "valley": {
+    "description": "The Valley",
+    "publisher": "ASP Software",
+    "year": "198?"
+  },
+  "vcardarc": {
+    "description": "Video Card Arcade",
+    "publisher": "Blue Ribbon",
+    "year": "1987"
+  },
+  "vegasjac": {
+    "description": "Vegas Jackpot",
+    "publisher": "Mastertronic",
+    "year": "1984"
+  },
+  "videorev": {
+    "description": "Videos Revenge",
+    "publisher": "Budgie",
+    "year": "198?"
+  },
+  "videoreva": {
+    "description": "Videos Revenge (Alternative)",
+    "publisher": "Alternative",
+    "year": "1987"
+  },
+  "videosrevf": {
+    "description": "Videos Revenge (Firebird)",
+    "publisher": "Firebird",
+    "year": "198?"
+  },
+  "videosrevpias": {
+    "description": "Videos Revenge (Play It Again Sam 17)",
+    "publisher": "Superior Software/Blue Ribbon",
+    "year": "1991"
+  },
+  "villsoul": {
+    "description": "Village of the Lost Souls",
+    "publisher": "Robico",
+    "year": "1987"
+  },
+  "vindaloo": {
+    "description": "Vindaloo",
+    "publisher": "Tynesoft",
+    "year": "1986"
+  },
+  "voodooc": {
+    "description": "Voodoo Castle",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "vortex": {
+    "description": "Vortex",
+    "publisher": "Software Invasion",
+    "year": "1983"
+  },
+  "voxbox": {
+    "description": "Voxbox Demonstration",
+    "publisher": "Millsgrade",
+    "year": "1985"
+  },
+  "walkplnk": {
+    "description": "Walk the Plank",
+    "publisher": "Mastertronic",
+    "year": "198?"
+  },
+  "warehous": {
+    "description": "Warehouse",
+    "publisher": "Top Ten",
+    "year": "1988"
+  },
+  "warp1": {
+    "description": "Warp-1",
+    "publisher": "Icon",
+    "year": "1984"
+  },
+  "waterloo": {
+    "description": "Waterloo",
+    "publisher": "Lothlorien",
+    "year": "1984"
+  },
+  "waxworks": {
+    "description": "Waxworks",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "webwar": {
+    "description": "Web War",
+    "publisher": "Artic",
+    "year": "1984"
+  },
+  "weetabix": {
+    "description": "Weetabix versus The Titchies",
+    "publisher": "Romik",
+    "year": "1984"
+  },
+  "west": {
+    "description": "West",
+    "publisher": "Talent",
+    "year": "198?"
+  },
+  "wetzone": {
+    "description": "Wet Zone",
+    "publisher": "Tynesoft",
+    "year": "198?"
+  },
+  "wheelfor": {
+    "description": "Wheel of Fortune",
+    "publisher": "Epic",
+    "year": "1984"
+  },
+  "where": {
+    "description": "Where",
+    "publisher": "Micro Power",
+    "year": "1983"
+  },
+  "whichsal": {
+    "description": "Which Salt?",
+    "publisher": "Micro Power",
+    "year": "1984"
+  },
+  "whimagic": {
+    "description": "White Magic",
+    "publisher": "4th Dimension",
+    "year": "1989"
+  },
+  "whoopsy": {
+    "description": "Whoopsy",
+    "publisher": "Shards Software",
+    "year": "1985"
+  },
+  "wizardak": {
+    "description": "Wizard of Akyrz",
+    "publisher": "Adventure International",
+    "year": "198?"
+  },
+  "wizzym": {
+    "description": "Wizzys Mansion",
+    "publisher": "Audiogenic",
+    "year": "1986"
+  },
+  "wknigh11": {
+    "description": "White Knight Mk11",
+    "publisher": "BBC Soft",
+    "year": "1983"
+  },
+  "woftef": {
+    "description": "The Way of the Exploding Fist",
+    "publisher": "Melbourne House",
+    "year": "1985"
+  },
+  "woks": {
+    "description": "Woks",
+    "publisher": "Artic",
+    "year": "1984"
+  },
+  "wolmpia": {
+    "description": "Winter Olmpiad 88",
+    "publisher": "Tynesoft",
+    "year": "1988"
+  },
+  "wolympic": {
+    "description": "Winter Olympics",
+    "publisher": "Tynesoft",
+    "year": "1986"
+  },
+  "wongo": {
+    "description": "Wongo",
+    "publisher": "Icon",
+    "year": "1986"
+  },
+  "woodbury": {
+    "description": "Woodbury End",
+    "publisher": "Shards Software",
+    "year": "1986"
+  },
+  "woodland": {
+    "description": "Woodland Terror",
+    "publisher": "MP Software",
+    "year": "1984"
+  },
+  "woodlandearly": {
+    "description": "Woodland Terror (early)",
+    "publisher": "MP Software",
+    "year": "1984"
+  },
+  "wordhunt": {
+    "description": "Word Hunt",
+    "publisher": "Acornsoft",
+    "year": "198?"
+  },
+  "wordseq": {
+    "description": "Word Sequencing",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "wrldgeo": {
+    "description": "World Geography",
+    "publisher": "Superior Software",
+    "year": "198?"
+  },
+  "wychwood": {
+    "description": "Wychwood",
+    "publisher": "Larsoft",
+    "year": "1987"
+  },
+  "xadomy": {
+    "description": "Xadomy",
+    "publisher": "Brassington Enterprises",
+    "year": "1984"
+  },
+  "xanagram": {
+    "description": "Xanagrams",
+    "publisher": "Postern",
+    "year": "1984"
+  },
+  "xor": {
+    "description": "XOR",
+    "publisher": "Logotron",
+    "year": "1987"
+  },
+  "xorproc": {
+    "description": "XOR: Procyon's Mazes",
+    "publisher": "Logotron",
+    "year": "1987"
+  },
+  "yc0504": {
+    "description": "Your Computer Vol.5-4",
+    "publisher": "Your Computer",
+    "year": "1985"
+  },
+  "yiear": {
+    "description": "Yie Ar Kung Fu",
+    "publisher": "Imagine",
+    "year": "1984"
+  },
+  "yiear2": {
+    "description": "Yie Ar Kung Fu 2",
+    "publisher": "Imagine",
+    "year": "198?"
+  },
+  "zalaga": {
+    "description": "Zalaga",
+    "publisher": "Aardvark",
+    "year": "1983"
+  },
+  "zalagaa": {
+    "description": "Zalaga (Alternative)",
+    "publisher": "Alternative",
+    "year": "198?"
+  },
+  "zalagapias": {
+    "description": "Zalaga (Play It Again Sam 10)",
+    "publisher": "Superior Software/Acornsoft",
+    "year": "1989"
+  },
+  "zeichenbr": {
+    "description": "Zeichenbrett (Ger)",
+    "publisher": "Acornsoft",
+    "year": "198?"
+  },
+  "zenon": {
+    "description": "Zenon",
+    "publisher": "Impact",
+    "year": "1989"
+  },
+  "ziggy": {
+    "description": "Ziggy",
+    "publisher": "Audiogenic",
+    "year": "1987"
+  },
+  "zkongjun": {
+    "description": "Zany Kong Junior",
+    "publisher": "Superior Software",
+    "year": "198?"
+  },
+  "zorakk": {
+    "description": "Zorakk the Conqueror",
+    "publisher": "Icon",
+    "year": "198?"
+  }
+}

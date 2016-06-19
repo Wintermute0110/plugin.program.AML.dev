@@ -1,0 +1,212 @@
+{
+  "3dtach": {
+    "description": "3D Tachyon Fighter",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "3dturbo": {
+    "description": "3D Turbo",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "agrovatr": {
+    "description": "Agrovator",
+    "publisher": "Syntax Software",
+    "year": "1985"
+  },
+  "alice": {
+    "description": "Alice in Wonderland",
+    "publisher": "Continental Software",
+    "year": "1983"
+  },
+  "alphatro": {
+    "description": "Mission Alphatron",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "alphatroa": {
+    "description": "Mission Alphatron (Alt)",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "arcazion": {
+    "description": "Arcazion",
+    "publisher": "Chris Sawyer",
+    "year": "1985"
+  },
+  "astromil": {
+    "description": "Astromilon",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "astropac": {
+    "description": "Astro-Pac",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "backgamm": {
+    "description": "Backgammon",
+    "publisher": "Continental Software",
+    "year": "1983"
+  },
+  "blobbo": {
+    "description": "Blobbo",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "canavas": {
+    "description": "Micro Canavas",
+    "publisher": "MTX ISFT",
+    "year": "2000"
+  },
+  "cbridge2": {
+    "description": "Contract Bridge II",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "cbridge2a": {
+    "description": "Contract Bridge II (Alt)",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "cosmraid": {
+    "description": "Cosmic Raiders",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "goldmine": {
+    "description": "Goldmine",
+    "publisher": "Continental Software",
+    "year": "1983"
+  },
+  "hawkwars": {
+    "description": "Hawk Wars",
+    "publisher": "Syntax Software",
+    "year": "1985"
+  },
+  "jumpjack": {
+    "description": "Jumping Jack Flash",
+    "publisher": "Syntax Software",
+    "year": "1985"
+  },
+  "jumpjacka": {
+    "description": "Jumping Jack Flash (Alt)",
+    "publisher": "Syntax Software",
+    "year": "1985"
+  },
+  "kilopede": {
+    "description": "Kilopede",
+    "publisher": "Continental Software",
+    "year": "1983"
+  },
+  "knuckles": {
+    "description": "Knuckles",
+    "publisher": "Continental Software",
+    "year": "1983"
+  },
+  "knucklesa": {
+    "description": "Knuckles (Alt)",
+    "publisher": "Continental Software",
+    "year": "1983"
+  },
+  "lildevil": {
+    "description": "Little Devils",
+    "publisher": "Continental Software",
+    "year": "1985"
+  },
+  "misomega": {
+    "description": "Mission Omega",
+    "publisher": "Chris Sawyer - Syntaxsoft",
+    "year": "1985"
+  },
+  "mtxchess": {
+    "description": "MTX Chess",
+    "publisher": "Continental Software",
+    "year": "1983"
+  },
+  "nemo": {
+    "description": "Nemo",
+    "publisher": "Continental Software",
+    "year": "1983"
+  },
+  "obloids": {
+    "description": "Obloids",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "phaid": {
+    "description": "Phaid",
+    "publisher": "Continental Software",
+    "year": "1983"
+  },
+  "phaida": {
+    "description": "Phaid (Alt)",
+    "publisher": "Continental Software",
+    "year": "1983"
+  },
+  "qogo": {
+    "description": "Qogo",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "quazzia": {
+    "description": "Quazzia",
+    "publisher": "Megastar Games",
+    "year": "1984"
+  },
+  "reversi": {
+    "description": "Reversi",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "reversia": {
+    "description": "Reversi (Alt)",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "sminefld": {
+    "description": "Super Minefield",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "spaceinv": {
+    "description": "Space Invasion",
+    "publisher": "John Dondzila",
+    "year": "1998"
+  },
+  "spaceinva": {
+    "description": "Space Invasion (Alt)",
+    "publisher": "John Dondzila",
+    "year": "1998"
+  },
+  "starcmd": {
+    "description": "Star Command",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "surfscan": {
+    "description": "Surface Scanner",
+    "publisher": "Megastar Games",
+    "year": "1984"
+  },
+  "tapeworm": {
+    "description": "Tapeworm",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "targzone": {
+    "description": "Target Zone",
+    "publisher": "Syntax Software",
+    "year": "1985"
+  },
+  "toado": {
+    "description": "Toado",
+    "publisher": "Continental Software",
+    "year": "1984"
+  },
+  "vernon": {
+    "description": "Vernon and the Vampires",
+    "publisher": "Syntax Software",
+    "year": "1983"
+  }
+}

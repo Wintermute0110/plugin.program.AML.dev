@@ -1,0 +1,512 @@
+{
+  "asmed": {
+    "description": "ASM_ED",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "assmmic": {
+    "description": "ASSM_MIC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basic80": {
+    "description": "BASIC80",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basicmus": {
+    "description": "BASICMUS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basicok": {
+    "description": "BASIC_OK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basicpc": {
+    "description": "BASICPC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basicpr": {
+    "description": "BASIC_PR",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basicrk": {
+    "description": "BASIC_RK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basicser": {
+    "description": "BASICSER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basmic": {
+    "description": "BASMIC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basmikr": {
+    "description": "BASMIKR",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bomber": {
+    "description": "BOMBER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bsmold": {
+    "description": "BS_M_OLD",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bspsf": {
+    "description": "BS_PSF",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bssvvi": {
+    "description": "BS_SVVI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "c": {
+    "description": "C",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cherv": {
+    "description": "CHERV",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess": {
+    "description": "CHESS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess2": {
+    "description": "CHESS2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "circus": {
+    "description": "CIRCUS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "constmag": {
+    "description": "CONSTMAG",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cpm": {
+    "description": "CPM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "debug": {
+    "description": "DEBUG",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "diverse": {
+    "description": "DIVERSE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dssmcpm": {
+    "description": "DSSM-CPM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dumped": {
+    "description": "DUMPED",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "eddssm": {
+    "description": "ED-DSSM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "eddssm2": {
+    "description": "ED-DSSM2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "edmasm": {
+    "description": "EDMASM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "edsort": {
+    "description": "ED-SORT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "estakan": {
+    "description": "E_STAKAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "forth": {
+    "description": "FORTH",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "fulledit": {
+    "description": "FULLEDIT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "gfire": {
+    "description": "GFIRE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "glass1": {
+    "description": "GLASS1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "glass2": {
+    "description": "GLASS2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "hexedit1": {
+    "description": "HEXEDIT1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "hexedit2": {
+    "description": "HEXEDIT2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kalah": {
+    "description": "KALAH",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "klad": {
+    "description": "KLAD",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "krestno": {
+    "description": "KRESTNO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "krestnoa": {
+    "description": "KRESTNO (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "krok": {
+    "description": "KROK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "labyrint": {
+    "description": "LABYRINT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lest": {
+    "description": "LEST",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lestn1": {
+    "description": "LESTN1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "life": {
+    "description": "LIFE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "linkrk": {
+    "description": "LINKRK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lorunner": {
+    "description": "LORUNNER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "maze": {
+    "description": "MAZE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "morse16": {
+    "description": "MORSE16",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "music": {
+    "description": "MUSIC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "muzsyst": {
+    "description": "MUZ_SYST",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "muzukred": {
+    "description": "MUZUKRED",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "otello": {
+    "description": "OTELLO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pacman": {
+    "description": "PACMAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pacman1": {
+    "description": "PACMAN1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pacmana": {
+    "description": "PACMAN (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "paket": {
+    "description": "PAKET",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "paket2": {
+    "description": "PAKET2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pascal": {
+    "description": "PASCAL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pingpong": {
+    "description": "PINGPONG",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "piton": {
+    "description": "PITON",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pitona": {
+    "description": "PITON (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progr1": {
+    "description": "PROGR1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progr2": {
+    "description": "PROGR2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progr3": {
+    "description": "PROGR3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pusher": {
+    "description": "PUSHER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pvo": {
+    "description": "PVO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "redasm": {
+    "description": "REDASM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rendzu": {
+    "description": "RENDZU",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "reversi2": {
+    "description": "REVERSI2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rikoshet": {
+    "description": "RIKOSHET",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sdemise": {
+    "description": "SDEMISE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "skachki": {
+    "description": "SKACHKI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "skvotch": {
+    "description": "SKVOTCH",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "slams": {
+    "description": "SLAMS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sos1": {
+    "description": "SOS1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sos2": {
+    "description": "SOS2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "spcomp": {
+    "description": "SP_COMP",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "spgames": {
+    "description": "SP_GAMES",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "spiton": {
+    "description": "SPITON",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "stranger": {
+    "description": "STRANGER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "svvi": {
+    "description": "SVVI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tapper": {
+    "description": "TAPPER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tennis": {
+    "description": "TENNIS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tennisa": {
+    "description": "TENNIS (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetr2": {
+    "description": "TETR2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetris1": {
+    "description": "TETRIS1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetris4": {
+    "description": "TETRIS4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tochki": {
+    "description": "TOCHKI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "udaw": {
+    "description": "UDAW",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "utka": {
+    "description": "UTKA",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "volcano": {
+    "description": "VOLCANO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "wel": {
+    "description": "WEL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "xonix": {
+    "description": "XONIX",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "xonix1": {
+    "description": "XONIX1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "xonixs": {
+    "description": "XONIX-S",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "xonixzm": {
+    "description": "XONIXZM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "zagib": {
+    "description": "ZAGIB",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "zmei": {
+    "description": "ZMEI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "zstatio": {
+    "description": "Z-STATIO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

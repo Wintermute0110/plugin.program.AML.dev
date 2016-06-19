@@ -1,0 +1,67 @@
+{
+  "arcs": {
+    "description": "Archivers",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "editor": {
+    "description": "VDE 2.66",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "extrauti": {
+    "description": "Extra Utilities",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "modems": {
+    "description": "Modem Sample & M80 & L80",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "promprog": {
+    "description": "PROM Progs",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "px4util1": {
+    "description": "PX-4 Utils",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "px4util2": {
+    "description": "PX-4 Utility Disk",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "px4util3": {
+    "description": "PX-4 Utility Disk 2",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "px4wand": {
+    "description": "PX-4 Wanderer",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "px8epstf": {
+    "description": "PX-8 EPS (TF-20 bootdisk)",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "px8games": {
+    "description": "PX-8 Games",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "scratch": {
+    "description": "Scratch",
+    "publisher": "<unofficial>",
+    "year": "????"
+  },
+  "tf20boot": {
+    "description": "TF-20 boot disk",
+    "publisher": "Epson",
+    "year": "198?"
+  }
+}

@@ -1,0 +1,312 @@
+{
+  "3dbowl": {
+    "description": "3D Bowling",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "3dsoccer": {
+    "description": "3D Soccer",
+    "publisher": "UA Ltd.",
+    "year": "1983"
+  },
+  "3dsoccera": {
+    "description": "3D Soccer (Alt)",
+    "publisher": "UA Ltd.",
+    "year": "1983"
+  },
+  "alieninv": {
+    "description": "Alien Invaders",
+    "publisher": "UA Ltd.",
+    "year": "1983"
+  },
+  "astroinv": {
+    "description": "Astro Invaders",
+    "publisher": "UA Ltd.",
+    "year": "1980"
+  },
+  "autorace": {
+    "description": "Auto Race",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "baseball": {
+    "description": "Baseball",
+    "publisher": "UA Ltd.",
+    "year": "1983"
+  },
+  "blckjack": {
+    "description": "Blackjack & Poker",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "boxing": {
+    "description": "Boxing",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "brainqz": {
+    "description": "Brain Quiz",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "breakawy": {
+    "description": "Breakaway",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "bsktball": {
+    "description": "Basketball",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "capture": {
+    "description": "Capture",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "cattrax": {
+    "description": "Cat Trax",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "cclimber": {
+    "description": "Crazy Climber",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "circus": {
+    "description": "Circus",
+    "publisher": "UA Ltd.",
+    "year": "1983"
+  },
+  "combat": {
+    "description": "Combat",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "crzygblr": {
+    "description": "Crazy Gobbler",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "doraemon": {
+    "description": "Doraemon",
+    "publisher": "Bandai",
+    "year": "1983"
+  },
+  "drslump": {
+    "description": "Dr. Slump: Arale",
+    "publisher": "Bandai",
+    "year": "1983"
+  },
+  "escape": {
+    "description": "Escape",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "football": {
+    "description": "American Football",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "funkyfsh": {
+    "description": "Funky Fish",
+    "publisher": "UA Ltd.",
+    "year": "1983"
+  },
+  "golf": {
+    "description": "Golf",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "gpmonaco": {
+    "description": "Grand Prix de Monaco",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "gstennis": {
+    "description": "Grand Slam Tennis",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "gundam": {
+    "description": "Kidou Senshi Gundam",
+    "publisher": "Bandai",
+    "year": "1983"
+  },
+  "hobo": {
+    "description": "Hobo",
+    "publisher": "UA Ltd.",
+    "year": "1983"
+  },
+  "horserac": {
+    "description": "Horse Racing",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "jumpbug": {
+    "description": "Jump Bug",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "jumpbuga": {
+    "description": "Jump Bug (Alt)",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "jungler": {
+    "description": "Jungler",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "macross": {
+    "description": "Choujikuu Yousai Macross",
+    "publisher": "Bandai",
+    "year": "1983"
+  },
+  "misslwar": {
+    "description": "Missile War",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "nibblem": {
+    "description": "Nibblemen",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "nibblema": {
+    "description": "Nibblemen (Alt)",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "oceanbat": {
+    "description": "Ocean Battle",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "parashtr": {
+    "description": "Parashooter",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "pleiades": {
+    "description": "Pleiades",
+    "publisher": "UA Ltd.",
+    "year": "1983"
+  },
+  "r2dtank": {
+    "description": "R2D Tank",
+    "publisher": "UA Ltd.",
+    "year": "1981"
+  },
+  "redclash": {
+    "description": "Red Clash",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "robtkllr": {
+    "description": "Robot Killer",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "route16": {
+    "description": "Route 16",
+    "publisher": "UA Ltd.",
+    "year": "1983"
+  },
+  "soccer": {
+    "description": "Soccer",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "spaceatt": {
+    "description": "Space Attack",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "spaceatta": {
+    "description": "Space Attack (Alt)",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "spacewar": {
+    "description": "Space War (Prototype)",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "spcemssn": {
+    "description": "Space Mission",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "spcerdrs": {
+    "description": "Space Raiders",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "spcesqdn": {
+    "description": "Space Squadron",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "spcevult": {
+    "description": "Space Vultures",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "spiders": {
+    "description": "Spiders",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "starchss": {
+    "description": "Star Chess",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "superbug": {
+    "description": "Super Bug",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "superbuga": {
+    "description": "Super Bug (Alt)",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "theend": {
+    "description": "The End",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "tnksalot": {
+    "description": "Tanks a Lot",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "turtles": {
+    "description": "Turtles Turpin",
+    "publisher": "UA Ltd.",
+    "year": "1982"
+  },
+  "vidlex": {
+    "description": "Video-Lexikon: German to English to German",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "vidlexeg": {
+    "description": "Video-Lexikon: English to German (Fixed)",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "vidlexge": {
+    "description": "Video-Lexikon: German to English (Fixed)",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  },
+  "vidpanz": {
+    "description": "Video-Panzerspiel",
+    "publisher": "UA Ltd.",
+    "year": "198?"
+  }
+}

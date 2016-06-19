@@ -1,0 +1,22 @@
+{
+  "flex33": {
+    "description": "GMX Flex-09 3.3",
+    "publisher": "Technical System Consultants / Gimix Inc.",
+    "year": "1981"
+  },
+  "flex36": {
+    "description": "GMX Flex-09 3.6",
+    "publisher": "Technical System Consultants / Gimix Inc.",
+    "year": "1981"
+  },
+  "flex43": {
+    "description": "GMX Flex-09 4.3",
+    "publisher": "Technical System Consultants / Gimix Inc.",
+    "year": "1981"
+  },
+  "os9l1_12": {
+    "description": "OS-9 GMX I",
+    "publisher": "Microware Systems Corp. / Gimix Inc.",
+    "year": "1981"
+  }
+}

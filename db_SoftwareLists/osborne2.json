@@ -1,0 +1,17 @@
+{
+  "cpm30": {
+    "description": "CP/M 3.0 System Disk",
+    "publisher": "Osborne",
+    "year": "198?"
+  },
+  "psystem": {
+    "description": "p-System",
+    "publisher": "UCSD",
+    "year": "198?"
+  },
+  "system": {
+    "description": "System Disk",
+    "publisher": "Osborne",
+    "year": "198?"
+  }
+}

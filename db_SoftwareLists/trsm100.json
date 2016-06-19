@@ -1,0 +1,57 @@
+{
+  "bp": {
+    "description": "Booster Pack",
+    "publisher": "Traveling Software",
+    "year": "198?"
+  },
+  "cardfile": {
+    "description": "Card File Program",
+    "publisher": "Tony B. Anderson",
+    "year": "1989"
+  },
+  "is": {
+    "description": "Interactive Solutions",
+    "publisher": "Tandy/Radio Shack",
+    "year": "1984"
+  },
+  "logit": {
+    "description": "Log-It 100 v1.1",
+    "publisher": "Abby Levine / Barry Minnerly",
+    "year": "1985"
+  },
+  "multipln": {
+    "description": "Microsoft Multiplan v1.00",
+    "publisher": "Tandy/Radio Shack",
+    "year": "1983"
+  },
+  "r2c": {
+    "description": "ROM2/Cleuseau",
+    "publisher": "Polar Engineering",
+    "year": "198?"
+  },
+  "ramplus": {
+    "description": "RAM+ v2.5",
+    "publisher": "PCSG",
+    "year": "1985"
+  },
+  "tsdos": {
+    "description": "TS-DOS v4.00",
+    "publisher": "Traveling Software",
+    "year": "1987"
+  },
+  "tsrandom": {
+    "description": "TS-RANDOM v1.3",
+    "publisher": "Traveling Software",
+    "year": "1986"
+  },
+  "tword": {
+    "description": "T-Word with Sardine v1.34",
+    "publisher": "Traveling Software",
+    "year": "1986"
+  },
+  "ur2": {
+    "description": "The Ultimate ROM II v2.12",
+    "publisher": "Traveling Software",
+    "year": "1986"
+  }
+}

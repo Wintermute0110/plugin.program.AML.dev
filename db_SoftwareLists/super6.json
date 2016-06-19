@@ -1,0 +1,22 @@
+{
+  "cpm22": {
+    "description": "CP/M 2.2",
+    "publisher": "Advanced Digital Corporation",
+    "year": "198?"
+  },
+  "digi56": {
+    "description": "digi56",
+    "publisher": "Advanced Digital Corporation",
+    "year": "198?"
+  },
+  "tdos122p": {
+    "description": "TurboDOS v1.22p",
+    "publisher": "Advanced Digital Corporation",
+    "year": "198?"
+  },
+  "tdos14": {
+    "description": "TurboDOS v1.4",
+    "publisher": "Advanced Digital Corporation",
+    "year": "1985"
+  }
+}

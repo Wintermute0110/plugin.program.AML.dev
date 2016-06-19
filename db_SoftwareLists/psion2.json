@@ -1,0 +1,607 @@
+{
+  "abcode": {
+    "description": "Anteta Barcode Reader v5.1",
+    "publisher": "Anteta",
+    "year": "198?"
+  },
+  "airnav": {
+    "description": "Airnav Professional 2C",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "andoverc": {
+    "description": "Andover Controls Hand-Held Operator's Terminal",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "anglerpa": {
+    "description": "Angler Pack",
+    "publisher": "Skyfact Software",
+    "year": "198?"
+  },
+  "ascribe4": {
+    "description": "AutoScribe Plus v4.11",
+    "publisher": "Widget Software",
+    "year": "1989"
+  },
+  "ascribe5": {
+    "description": "AutoScribe Plus v5.11",
+    "publisher": "Widget Software",
+    "year": "198?"
+  },
+  "assem": {
+    "description": "Assembler Pack v1.0",
+    "publisher": "A.R. Software",
+    "year": "1989"
+  },
+  "barcomm": {
+    "description": "Dynasys Barcomm 2 v4.2",
+    "publisher": "Dynasys Technologies Inc.",
+    "year": "198?"
+  },
+  "bcprinte": {
+    "description": "Barcode Printer I v1.42",
+    "publisher": "Gaascom Ltd.",
+    "year": "198?"
+  },
+  "bcread31": {
+    "description": "Bad Code Reader 3.1",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "bcread32": {
+    "description": "Bad Code Reader 3.2",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "cipher": {
+    "description": "Cipher v7.604",
+    "publisher": "British Telecom",
+    "year": "198?"
+  },
+  "clink22": {
+    "description": "Comms Link 2.2",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "clink24": {
+    "description": "Comms Link 2.4",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "clink25": {
+    "description": "Comms Link 2.5",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "clink40": {
+    "description": "Comms Link 4.0",
+    "publisher": "Psion",
+    "year": "1987"
+  },
+  "clink41": {
+    "description": "Comms Link 4.1",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "clink42": {
+    "description": "Comms Link 4.2",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "clip": {
+    "description": "Clipboard Inspection System",
+    "publisher": "Rafiq Mahmood",
+    "year": "1991"
+  },
+  "cnf41hi": {
+    "description": "CNF41 HART interface 1.0",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "coastal3": {
+    "description": "Coastal v3.1",
+    "publisher": "Maritek Ltd",
+    "year": "198?"
+  },
+  "coastal4": {
+    "description": "Coastal v4.2",
+    "publisher": "Maritek Ltd",
+    "year": "198?"
+  },
+  "cosc1": {
+    "description": "Concise Oxford Spelling Checker v0.1",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "cosc2": {
+    "description": "Concise Oxford Spelling Checker v2.0",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "dataorg": {
+    "description": "The Data Organiser v2.4",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "dataorgs": {
+    "description": "The Data Organiser v2.5 (Spanish)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "datorgd": {
+    "description": "The Data Organiser v2.52 (German)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "datorgi": {
+    "description": "The Data Organiser v2.52 (Italian)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "diallink": {
+    "description": "Dial-Link",
+    "publisher": "Widget Software",
+    "year": "198?"
+  },
+  "digit110": {
+    "description": "Digitron SF10 v1.10",
+    "publisher": "Silvertree Eng., Digitron Inst.",
+    "year": "198?"
+  },
+  "digit114": {
+    "description": "Digitron SF10 v1.14",
+    "publisher": "Silvertree Eng., Digitron Inst.",
+    "year": "198?"
+  },
+  "digit27": {
+    "description": "Digitron SF12 v2.7",
+    "publisher": "Silvertree Eng., Digitron Inst.",
+    "year": "198?"
+  },
+  "dynape43": {
+    "description": "Dynapen v4.3",
+    "publisher": "Dynasys Technologies Inc.",
+    "year": "198?"
+  },
+  "dynape44": {
+    "description": "Dynapen 4.4",
+    "publisher": "Dynasys Technologies Inc.",
+    "year": "198?"
+  },
+  "dynaplat": {
+    "description": "Dynapoll Attend",
+    "publisher": "Dynasys Technologies Inc.",
+    "year": "198?"
+  },
+  "dynapoll": {
+    "description": "Dyna/Poll 485 station v1.0",
+    "publisher": "Dynasys Technologies Inc.",
+    "year": "198?"
+  },
+  "ecm30": {
+    "description": "Comms Modem v3.0",
+    "publisher": "Extech",
+    "year": "198?"
+  },
+  "ecp2": {
+    "description": "Extech Comms Printer II 4.3",
+    "publisher": "Extech",
+    "year": "198?"
+  },
+  "ferreth": {
+    "description": "Ferret Helper v5.1N",
+    "publisher": "Ferret Information Systems",
+    "year": "198?"
+  },
+  "filepak": {
+    "description": "FilePak v2.0",
+    "publisher": "KA",
+    "year": "198?"
+  },
+  "finance": {
+    "description": "Finance Pack",
+    "publisher": "Aware",
+    "year": "198?"
+  },
+  "finance2": {
+    "description": "Finance Pack II",
+    "publisher": "Aware",
+    "year": "198?"
+  },
+  "finge14i": {
+    "description": "Finger Organiser v1.4 (Italian)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "finge15d": {
+    "description": "Finger Organiser v1.5 (German)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "finger13": {
+    "description": "Finger Organiser v1.3",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "finger14": {
+    "description": "Finger Organiser v1.4",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "flightma": {
+    "description": "Flightmaster v2.19",
+    "publisher": "Software 2000, Inc.",
+    "year": "1993"
+  },
+  "flightmb": {
+    "description": "Flightmaster v2.28",
+    "publisher": "Software 2000, Inc.",
+    "year": "1994"
+  },
+  "fm375": {
+    "description": "FileMaster v3.75",
+    "publisher": "Widget Software",
+    "year": "1988"
+  },
+  "fm376": {
+    "description": "FileMaster v3.76",
+    "publisher": "Widget Software",
+    "year": "1988"
+  },
+  "fm3762": {
+    "description": "FileMaster v3.762",
+    "publisher": "Widget Software",
+    "year": "1988"
+  },
+  "fmalt": {
+    "description": "FileMaster",
+    "publisher": "Widget Software",
+    "year": "1988"
+  },
+  "fnkey31": {
+    "description": "FnKey v3.1",
+    "publisher": "Cubsoft",
+    "year": "1989"
+  },
+  "fnkey40": {
+    "description": "FnKey v4.0",
+    "publisher": "Cubsoft",
+    "year": "1989"
+  },
+  "formmast": {
+    "description": "Form Master",
+    "publisher": "Cascade Systems Ltd.",
+    "year": "198?"
+  },
+  "formul11": {
+    "description": "Formulator v1.1",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "formul21": {
+    "description": "Formulator v2.1",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "fpakdriv": {
+    "description": "FlashPak Driver v1.9",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "gamesorg": {
+    "description": "The Games Organiser v0.2",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "geac": {
+    "description": "GEAC Program Pack",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "gorgit": {
+    "description": "The Games Organiser (Italian)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "gpack": {
+    "description": "Games Pack",
+    "publisher": "S.I.S. Ltd, Psion",
+    "year": "198?"
+  },
+  "gpackma": {
+    "description": "Games Pack (Mick Andon)",
+    "publisher": "Mick Andon",
+    "year": "198?"
+  },
+  "infor23i": {
+    "description": "The Informed Organiser 2.3 (Italian)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "infor23s": {
+    "description": "The Informed Organiser 2.3 (Spanish)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "inkas": {
+    "description": "Inkasencki v6.1",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "jotter25": {
+    "description": "Jotter v2.5",
+    "publisher": "Camel Systems Ltd",
+    "year": "198?"
+  },
+  "letor311": {
+    "description": "The Letter Organiser 3.11 (Italian)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "letor32s": {
+    "description": "The Letter Organiser 3.2 (Spanish)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "maths": {
+    "description": "Maths Pack",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "mcr20": {
+    "description": "Magnetic Card Reader 2.0",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "msp100": {
+    "description": "KDG Mobrey MSP100 v1.0",
+    "publisher": "KDG Mobrey",
+    "year": "198?"
+  },
+  "nss43": {
+    "description": "National Survey Software v4.3",
+    "publisher": "Neil Draycott (?)",
+    "year": "198?"
+  },
+  "numbase": {
+    "description": "Numbase v1.23",
+    "publisher": "Eidersoft",
+    "year": "198?"
+  },
+  "onewayin": {
+    "description": "One-Way Interface",
+    "publisher": "On-Line Design Inc",
+    "year": "198?"
+  },
+  "pager13": {
+    "description": "Pager 1.3",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "persfin": {
+    "description": "Personal Finance",
+    "publisher": "Willow Enterprises Ltd",
+    "year": "1987"
+  },
+  "plink20": {
+    "description": "Paralink 2.0",
+    "publisher": "Silvertree Engineering Ltd.",
+    "year": "198?"
+  },
+  "plink22f": {
+    "description": "Paralink 2.2 French",
+    "publisher": "Widget Software, Silvertree Eng.",
+    "year": "198?"
+  },
+  "plink33": {
+    "description": "Paralink 3.3",
+    "publisher": "Silvertree Engineering Ltd.",
+    "year": "198?"
+  },
+  "plink34": {
+    "description": "Paralink 3.4",
+    "publisher": "Silvertree Engineering Ltd.",
+    "year": "198?"
+  },
+  "portfoli": {
+    "description": "Portfolio Pack",
+    "publisher": "DIP, Psion",
+    "year": "198?"
+  },
+  "pprint16": {
+    "description": "Psion Printer 1.6",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "pprint21": {
+    "description": "Psion Printer 2.1",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "pprint22": {
+    "description": "Psion Printer 2.2",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "prakfrvc": {
+    "description": "Prakpak French Vocabulary I",
+    "publisher": "Mackay",
+    "year": "198?"
+  },
+  "prudent": {
+    "description": "Prudential Rate Book v2.33",
+    "publisher": "Prudential Plc.",
+    "year": "198?"
+  },
+  "psitex20": {
+    "description": "PsiTex v2.000",
+    "publisher": "Microtima",
+    "year": "198?"
+  },
+  "purefin": {
+    "description": "Pure Finance Pack",
+    "publisher": "DIP",
+    "year": "198?"
+  },
+  "relay42": {
+    "description": "Dynasys Relay-Comm v4.2",
+    "publisher": "Dynasys Technologies Inc.",
+    "year": "198?"
+  },
+  "result": {
+    "description": "Result Vers 4L",
+    "publisher": "Terrace Software",
+    "year": "1989"
+  },
+  "rs232l11": {
+    "description": "RS232 Link 1.1",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "rs232l15": {
+    "description": "RS232 Link 1.5",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "safe": {
+    "description": "S.A.F.E.",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "sams13": {
+    "description": "S.A.M.S. v1.3",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "schip11s": {
+    "description": "Harvester Superchip 1.1 (Spanish)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "schip12": {
+    "description": "Harvester Superchip v1.2",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "schip12i": {
+    "description": "Harvester Superchip 1.2 (Italian)",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "scior101": {
+    "description": "The Scientific Organiser v1.01",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "sdrp": {
+    "description": "SDRP 01.05",
+    "publisher": "Datacom Group Ltd.",
+    "year": "198?"
+  },
+  "sigset20": {
+    "description": "SigSet v2.01",
+    "publisher": "Microtima",
+    "year": "198?"
+  },
+  "slep": {
+    "description": "S.L.E.P",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "sold12": {
+    "description": "S.O.L.D. v1.2",
+    "publisher": "Harvester Information Systems",
+    "year": "198?"
+  },
+  "sonylisa": {
+    "description": "Sony Lisa-1 v3.0",
+    "publisher": "Sony",
+    "year": "198?"
+  },
+  "sonyprm": {
+    "description": "Sony Dealer Commander v2.2",
+    "publisher": "Sony",
+    "year": "198?"
+  },
+  "ssheet12": {
+    "description": "Pocket Spreadsheet v1.2",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "ssheet13": {
+    "description": "Pocket Spreadsheet v1.3",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "ssheet33": {
+    "description": "Pocket Spreadsheet v3.3",
+    "publisher": "Psion",
+    "year": "1987"
+  },
+  "ssheet34": {
+    "description": "Pocket Spreadsheet v3.4",
+    "publisher": "Psion",
+    "year": "1987"
+  },
+  "textbase": {
+    "description": "Textbase",
+    "publisher": "Eidersoft",
+    "year": "198?"
+  },
+  "topfin21": {
+    "description": "Top Finance v2.1",
+    "publisher": "Aware",
+    "year": "1988"
+  },
+  "topfin22": {
+    "description": "Top Finance v2.2",
+    "publisher": "Aware",
+    "year": "1988"
+  },
+  "travel12": {
+    "description": "Travel Pack v1.2",
+    "publisher": "Organised Solutions Ltd, Psion",
+    "year": "1988"
+  },
+  "travel15": {
+    "description": "Travel Pack v1.5",
+    "publisher": "Organised Solutions Ltd, Psion",
+    "year": "1988"
+  },
+  "travel20": {
+    "description": "Travel Pack v2.0",
+    "publisher": "Organised Solutions Ltd, Psion",
+    "year": "198?"
+  },
+  "trep16": {
+    "description": "T.R.E.P v1.6",
+    "publisher": "APT Projects Ltd.",
+    "year": "198?"
+  },
+  "tsc": {
+    "description": "Thesaurus and Spelling Checker",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "xbase20": {
+    "description": "XBase v2.0",
+    "publisher": "Cubsoft",
+    "year": "198?"
+  },
+  "xbase30": {
+    "description": "XBase v3.0",
+    "publisher": "Cubsoft",
+    "year": "198?"
+  },
+  "xforma": {
+    "description": "Formulator (Alt)",
+    "publisher": "Psion Ltd",
+    "year": "198?"
+  },
+  "xformtop": {
+    "description": "Formulator Top",
+    "publisher": "Psion Ltd",
+    "year": "198?"
+  }
+}

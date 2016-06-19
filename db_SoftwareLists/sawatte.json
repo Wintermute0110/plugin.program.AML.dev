@@ -1,0 +1,42 @@
+{
+  "doraemon": {
+    "description": "Doraemon Norimono Daishuugou!",
+    "publisher": "Sega",
+    "year": "1997"
+  },
+  "mickkuda": {
+    "description": "Mickey no Kudamonoya-san",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "micknatk": {
+    "description": "Tokyo Disneyland - Mickey no Nakayoshi Tankentai",
+    "publisher": "Sega?",
+    "year": "1998"
+  },
+  "micknatt": {
+    "description": "Tokyo Disneyland - Mickey no Nakayoshi Toon Town",
+    "publisher": "Sega?",
+    "year": "1998"
+  },
+  "mickshop": {
+    "description": "Tokyo Disneyland - Mickey to Minnie no Uki Uki Shopping",
+    "publisher": "Sega?",
+    "year": "1998"
+  },
+  "okaissci": {
+    "description": "NHK Okaasan to Issho Do Re Mi Fa Do~nuts! - Camp ni Ikou!",
+    "publisher": "Sega",
+    "year": "1998"
+  },
+  "poohpicn": {
+    "description": "Pooh no Picnic",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "puroland": {
+    "description": "Minna Oideyo! Sanrio Puroland",
+    "publisher": "Sega",
+    "year": "1998"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "advdiags": {
+    "description": "IBM PC Convertible Advanced Diagnostics",
+    "publisher": "IBM",
+    "year": "1986"
+  },
+  "diags": {
+    "description": "IBM PC Convertible Diagnostics/Update Diskette (v1.03)",
+    "publisher": "IBM",
+    "year": "1986"
+  },
+  "startup": {
+    "description": "IBM PC Convertible Start-Up Diskette (v1.03)",
+    "publisher": "IBM",
+    "year": "1986"
+  },
+  "startup101": {
+    "description": "IBM PC Convertible Start-Up Diskette (v1.01)",
+    "publisher": "IBM",
+    "year": "1986"
+  }
+}

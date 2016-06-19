@@ -1,0 +1,162 @@
+{
+  "apctd17": {
+    "description": "TurboDOS 8086 Linker",
+    "publisher": "Software 2000, Inc",
+    "year": "1984"
+  },
+  "cbas86": {
+    "description": "WordStar (Ver 3.30) for CP/M and CB-86 CBasic Compiler",
+    "publisher": "Digital Research Inc. / MicroPro International Corporation",
+    "year": "198?"
+  },
+  "cpm86": {
+    "description": "CP/M-86 Ver 1.1 (1.107:015;A Rev 06)",
+    "publisher": "Digital Research Inc.",
+    "year": "198?"
+  },
+  "cpm8607": {
+    "description": "CP/M-86 Ver 1.1 (1.107:015;B Rev 07)",
+    "publisher": "Digital Research Inc.",
+    "year": "1983"
+  },
+  "cpm8607a": {
+    "description": "CP/M-86 Ver 1.1 (1.107:015;B Rev 07) (Alt)",
+    "publisher": "Digital Research Inc.",
+    "year": "1983"
+  },
+  "cpm8609": {
+    "description": "CP/M-86 Ver 1.1 (1.107:015;D Rev 09)",
+    "publisher": "Digital Research Inc.",
+    "year": "1983"
+  },
+  "cpm86pda": {
+    "description": "CP/M-86 Program Development Aids",
+    "publisher": "Digital Research Inc.",
+    "year": "1983"
+  },
+  "cpmsrc": {
+    "description": "CP/M-86 Source Code (Revisions : 1.107:0015;D)",
+    "publisher": "Digital Research Inc.",
+    "year": "1983"
+  },
+  "dbaseiic": {
+    "description": "dBASE II for CP/M",
+    "publisher": "Ashton-Tate",
+    "year": "1982"
+  },
+  "dbaseiid": {
+    "description": "dBASE II for MS-DOS",
+    "publisher": "RSP Inc.",
+    "year": "1982"
+  },
+  "devdsk10": {
+    "description": "NEC APC Dev Disk 10",
+    "publisher": "NEC",
+    "year": "1984"
+  },
+  "grafdraw": {
+    "description": "Grafdraw 0.8",
+    "publisher": "Digital Research Inc.",
+    "year": "1986"
+  },
+  "msdos211": {
+    "description": "MS-DOS 2.11 Rev 1",
+    "publisher": "Microsoft",
+    "year": "1982"
+  },
+  "multplan": {
+    "description": "MultiPlan",
+    "publisher": "Microsoft",
+    "year": "1982"
+  },
+  "necbios": {
+    "description": "NEC APC Bios Source Code",
+    "publisher": "NEC",
+    "year": "198?"
+  },
+  "necbiosa": {
+    "description": "NEC APC Bios Source Code (Ver 1.1 , 1.2)",
+    "publisher": "NEC",
+    "year": "198?"
+  },
+  "necdemo": {
+    "description": "NEC APC Self Executng Demo",
+    "publisher": "NEC",
+    "year": "198?"
+  },
+  "progdisp": {
+    "description": "Program Dispatcher for CP/M(Ver 1.7)",
+    "publisher": "Metasoft Corporation",
+    "year": "1983"
+  },
+  "pubdom": {
+    "description": "CP/M Public Domain Programs (Master Copy)",
+    "publisher": "unknown",
+    "year": "198?"
+  },
+  "tdapc01": {
+    "description": "TurboDOS (cmd/sys/gen/par files)",
+    "publisher": "Software 2000, Inc",
+    "year": "1984"
+  },
+  "tdapc02": {
+    "description": "TurboDOS (do/gen/par/.a/.o files)",
+    "publisher": "Software 2000, Inc",
+    "year": "1984"
+  },
+  "tdos140": {
+    "description": "TurboDOS 1.40",
+    "publisher": "Software 2000, Inc",
+    "year": "1984"
+  },
+  "tdos141": {
+    "description": "TurboDOS 1.41",
+    "publisher": "Software 2000, Inc",
+    "year": "1984"
+  },
+  "ticom": {
+    "description": "Unknown Ticom disks",
+    "publisher": "Ticom",
+    "year": "198?"
+  },
+  "ucsd136": {
+    "description": "UCSD p-System System IV.13 (Ver 0.6)",
+    "publisher": "Bridgeport Machines / Textron",
+    "year": "1984"
+  },
+  "ucsd136d": {
+    "description": "UCSD p-System System IV.13 (Ver 3.0)",
+    "publisher": "Bridgeport Machines / Textron",
+    "year": "1985"
+  },
+  "ucsd136s": {
+    "description": "UCSD p-System System IV.13x6 (Ver 3.0, 8087 Single Precision)",
+    "publisher": "Bridgeport Machines / Textron",
+    "year": "1985"
+  },
+  "ucsd137": {
+    "description": "USCD p-System IV.13x7",
+    "publisher": "Bridgeport Machines / Textron",
+    "year": "1985"
+  },
+  "util": {
+    "description": "NEC APC Utilities Source Code",
+    "publisher": "NEC",
+    "year": "198?"
+  },
+  "util2": {
+    "description": "CP/M-86 Utility Programs",
+    "publisher": "Digital Research Inc.",
+    "year": "198?"
+  },
+  "wordstar": {
+    "description": "WordStar (Ver 3.30) for MS-DOS",
+    "publisher": "MicroPro International Corporation",
+    "year": "1983"
+  },
+  "xxxnec": {
+    "description": "Unknown Documentation Disk",
+    "publisher": "unknown",
+    "year": "198?"
+  }
+}

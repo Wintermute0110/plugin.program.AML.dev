@@ -1,0 +1,92 @@
+{
+  "acercpr": {
+    "description": "Acer CPR",
+    "publisher": "Acer America Corporation",
+    "year": "1995"
+  },
+  "kingsq6e": {
+    "description": "King's Quest VI (Windows 3.1 enhanced)",
+    "publisher": "Sierra",
+    "year": "1993"
+  },
+  "krondor": {
+    "description": "Betrayal at Krondor (1994 release, CDDA)",
+    "publisher": "Dynamix",
+    "year": "1994"
+  },
+  "krondora": {
+    "description": "Betrayal at Krondor (1998 release, no CDDA)",
+    "publisher": "Dynamix",
+    "year": "1998"
+  },
+  "nasfdu12": {
+    "description": "NASLite NAS Server Operating System (v1.x)",
+    "publisher": "Server Elements",
+    "year": "2004"
+  },
+  "pcdos2k": {
+    "description": "PC DOS 2000",
+    "publisher": "IBM",
+    "year": "1998"
+  },
+  "win2kps4": {
+    "description": "Windows 2000 Professional (with Service Pack 4) (en 5.00.2195.6717)",
+    "publisher": "Microsoft",
+    "year": "1999"
+  },
+  "win30me": {
+    "description": "Windows Multimedia Extensions 1.0",
+    "publisher": "Microsoft",
+    "year": "1992"
+  },
+  "win31ddk": {
+    "description": "Windows Device Development Kit Version 3.1",
+    "publisher": "Microsoft",
+    "year": "1992"
+  },
+  "win31rk": {
+    "description": "Windows Resource Kit for Operating System Version 3.1",
+    "publisher": "Microsoft",
+    "year": "1992"
+  },
+  "win31sdk": {
+    "description": "Windows Software Development Kit Version 3.1",
+    "publisher": "Microsoft",
+    "year": "1992"
+  },
+  "win95": {
+    "description": "Windows 95 (en 4.00.950)",
+    "publisher": "Microsoft",
+    "year": "1995"
+  },
+  "win95a": {
+    "description": "Windows 95 OSR1 (en 4.00.950.osr1)",
+    "publisher": "Microsoft",
+    "year": "1995"
+  },
+  "win95b": {
+    "description": "Windows 95 OSR2 (en 4.00.1111.osr2)",
+    "publisher": "Microsoft",
+    "year": "1995"
+  },
+  "win95c": {
+    "description": "Windows 95 OSR2.5 (en 4.03.1216.osr2.5)",
+    "publisher": "Microsoft",
+    "year": "1995"
+  },
+  "win98": {
+    "description": "Windows 98 (en 4.10.1998) (Retail Full)",
+    "publisher": "Microsoft",
+    "year": "1998"
+  },
+  "win98se": {
+    "description": "Windows 98 Second Edition (en 4.10.2222) (Retail Full)",
+    "publisher": "Microsoft",
+    "year": "1998"
+  },
+  "winme": {
+    "description": "Windows ME (en 4.90.3000) (Retail Full)",
+    "publisher": "Microsoft",
+    "year": "1999"
+  }
+}

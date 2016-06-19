@@ -1,0 +1,67 @@
+{
+  "bridzs": {
+    "description": "VT Bridzs",
+    "publisher": "Videoton",
+    "year": "1985"
+  },
+  "harcaf": {
+    "description": "Harc a föld körül",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "invaders": {
+    "description": "Space Invaders",
+    "publisher": "Videoton",
+    "year": "1986"
+  },
+  "marokko": {
+    "description": "Marokkó",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "packman": {
+    "description": "Pack Man",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "tetris": {
+    "description": "Tetris",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "trudi": {
+    "description": "Turbó Rudi",
+    "publisher": "a-Studio",
+    "year": "1987"
+  },
+  "upm": {
+    "description": "UPM diszkes OS",
+    "publisher": "Videoton",
+    "year": "1986"
+  },
+  "urhodito": {
+    "description": "Űrhódító",
+    "publisher": "Videoton",
+    "year": "1986"
+  },
+  "varazsgo": {
+    "description": "Varázsgömb",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "volleyba": {
+    "description": "Volleyball",
+    "publisher": "<unknown>",
+    "year": "1990"
+  },
+  "vtdos11": {
+    "description": "VT-DOS v1.1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "vtdos12": {
+    "description": "VT-DOS v1.2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  }
+}

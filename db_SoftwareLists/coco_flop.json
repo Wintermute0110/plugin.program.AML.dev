@@ -1,0 +1,12 @@
+{
+  "dkong": {
+    "description": "Donkey Kong (Sock Master's Donkey Kong Emulator for CoCo 3) (512Kb)",
+    "publisher": "Sock Master",
+    "year": "2007"
+  },
+  "dkremix": {
+    "description": "Donkey Kong Remix (Sock Master's Donkey Kong Remix Emulator for CoCo 3) (512Kb)",
+    "publisher": "Sock Master",
+    "year": "2015"
+  }
+}

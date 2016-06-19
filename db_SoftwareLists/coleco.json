@@ -1,0 +1,1107 @@
+{
+  "1on1": {
+    "description": "One on One",
+    "publisher": "Micro Lab",
+    "year": "1984"
+  },
+  "2010": {
+    "description": "2010: The Graphic Action Game",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "2010p": {
+    "description": "2010: The Graphic Action Game (Prototype v54)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "2010p1": {
+    "description": "2010: The Graphic Action Game (Prototype v44)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "31in1": {
+    "description": "31-in-1",
+    "publisher": "<unknown>",
+    "year": "201?"
+  },
+  "63in1": {
+    "description": "63-in-1",
+    "publisher": "<unknown>",
+    "year": "201?"
+  },
+  "alcazar": {
+    "description": "Alcazar: The Forgotten Fortress",
+    "publisher": "Telegames",
+    "year": "1985"
+  },
+  "alphazoo": {
+    "description": "Alphabet Zoo",
+    "publisher": "Spinnaker Software",
+    "year": "1984"
+  },
+  "amazing": {
+    "description": "Amazing Bumpman",
+    "publisher": "Telegames",
+    "year": "1986"
+  },
+  "antarct": {
+    "description": "Antarctic Adventure",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "apshai": {
+    "description": "Gateway to Apshai",
+    "publisher": "Epyx",
+    "year": "1984"
+  },
+  "aquatack": {
+    "description": "Aquattack",
+    "publisher": "Interphase",
+    "year": "1984"
+  },
+  "aquatacka": {
+    "description": "Aquattack (Alt)",
+    "publisher": "Interphase",
+    "year": "1984"
+  },
+  "artduel": {
+    "description": "Artillery Duel",
+    "publisher": "Xonox",
+    "year": "1983"
+  },
+  "bbears": {
+    "description": "The Berenstain Bears (Prototype)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "bcquest": {
+    "description": "BC's Quest for Tires",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "bcquest2": {
+    "description": "BC's Quest for Tires II: Grog's Revenge",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "bcquest2c": {
+    "description": "BC's Quest for Tires II: Grog's Revenge (Can)",
+    "publisher": "Coleco Canada",
+    "year": "1984"
+  },
+  "bcquest2ca": {
+    "description": "BC's Quest for Tires II: Grog's Revenge (Can, Bad?)",
+    "publisher": "Coleco Canada",
+    "year": "1984"
+  },
+  "bcquestc": {
+    "description": "BC's Quest for Tires (Can)",
+    "publisher": "Coleco Canada",
+    "year": "1983"
+  },
+  "bdash": {
+    "description": "Boulder Dash",
+    "publisher": "Telegames",
+    "year": "1987"
+  },
+  "bdashp": {
+    "description": "Boulder Dash (Prototype?)",
+    "publisher": "Micro Fun",
+    "year": "1984"
+  },
+  "beamridr": {
+    "description": "Beamrider",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "blockrun": {
+    "description": "Blockade Runner",
+    "publisher": "Interphase",
+    "year": "1984"
+  },
+  "bnj": {
+    "description": "Bump 'n' Jump",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "brainstr": {
+    "description": "Brain Strainers",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "btime": {
+    "description": "Burgertime",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "btimem": {
+    "description": "Burgertime (Prototype)",
+    "publisher": "Mattel",
+    "year": "1983"
+  },
+  "buckrog": {
+    "description": "Buck Rogers: Planet of Zoom",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "cabbage": {
+    "description": "Cabbage Patch Kids: Adventure in the Park (OAA)",
+    "publisher": "OAA / Konami",
+    "year": "1984"
+  },
+  "cabbagea": {
+    "description": "Cabbage Patch Kids: Adventure in the Park (Coleco)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "cabbagep1": {
+    "description": "Cabbage Patch Kids: Adventure in the Park (Prototype)",
+    "publisher": "OAA / Konami",
+    "year": "1984"
+  },
+  "cabbagep2": {
+    "description": "Cabbage Patch Kids: Adventure in the Park (Prototype, Alt)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "cabbshow": {
+    "description": "Cabbage Patch Kids Picture Show",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "campaign": {
+    "description": "Campaign '84",
+    "publisher": "Sunrise Software",
+    "year": "1983"
+  },
+  "carnival": {
+    "description": "Carnival",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "castelo": {
+    "description": "Castelo",
+    "publisher": "Splice Vision",
+    "year": "1985"
+  },
+  "cavenger": {
+    "description": "Cosmic Avenger",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "cavengera": {
+    "description": "Cosmic Avenger (Alt)",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "cbsmon": {
+    "description": "CBS Colecovision Monitor Test",
+    "publisher": "CBS",
+    "year": "1982"
+  },
+  "ccrisis": {
+    "description": "Cosmic Crisis",
+    "publisher": "Telegames",
+    "year": "1983"
+  },
+  "centiped": {
+    "description": "Centipede",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "choplift": {
+    "description": "Choplifter!",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "chucknor": {
+    "description": "Chuck Norris Superkicks",
+    "publisher": "Xonox",
+    "year": "1983"
+  },
+  "congo": {
+    "description": "Congo Bongo",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "dambustr": {
+    "description": "The Dam Busters",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "dambustrc": {
+    "description": "The Dam Busters (Can)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "decathln": {
+    "description": "Decathlon",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "defender": {
+    "description": "Defender",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "destruct": {
+    "description": "Destructor",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "digdug": {
+    "description": "Dig Dug (Prototype)",
+    "publisher": "Atarisoft",
+    "year": "1984"
+  },
+  "dkong": {
+    "description": "Donkey Kong",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "dkonga": {
+    "description": "Donkey Kong (Earlier)",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "dkongjr": {
+    "description": "Donkey Kong Junior",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "dlair": {
+    "description": "Dragon's Lair (Prototype, 0416)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "dncfntsy": {
+    "description": "Dance Fantasy",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "docastle": {
+    "description": "Mr. Do!'s Castle",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "drgnfire": {
+    "description": "DragonFire",
+    "publisher": "Imagic",
+    "year": "1984"
+  },
+  "drseuss": {
+    "description": "Dr. Seuss's Fix-Up the Mix-Up Puzzler",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "evolutio": {
+    "description": "Evolution",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "evolutioa": {
+    "description": "Evolution (Telegames)",
+    "publisher": "Telegames",
+    "year": "198?"
+  },
+  "evolutioc": {
+    "description": "Evolution (Can)",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "facemakr": {
+    "description": "Facemaker",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "fallguy": {
+    "description": "Fall Guy (Prototype)",
+    "publisher": "Fox Video Games",
+    "year": "1983"
+  },
+  "fathom": {
+    "description": "Fathom",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "ffreddy": {
+    "description": "Frantic Freddy",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  },
+  "finaltst": {
+    "description": "Final Test Cartridge (Prototype)",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "flipslip": {
+    "description": "Flipper Slipper",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  },
+  "flipslipa": {
+    "description": "Flipper Slipper (Bad?)",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  },
+  "flipslipb": {
+    "description": "Flipper Slipper (Telegames)",
+    "publisher": "Telegames",
+    "year": "198?"
+  },
+  "fortune": {
+    "description": "Fortune Builder",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "fracfevr": {
+    "description": "Fraction Fever",
+    "publisher": "Spinnaker Software",
+    "year": "1983"
+  },
+  "frenzy": {
+    "description": "Frenzy",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "frenzya": {
+    "description": "Frenzy (Alt 1)",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "frenzya2": {
+    "description": "Frenzy (Alt 2)",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "frogger": {
+    "description": "Frogger",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "frogger2": {
+    "description": "Frogger II: Threedeep!",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "frontlin": {
+    "description": "Front Line",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "frontlina": {
+    "description": "Front Line (Alt)",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "galaxian": {
+    "description": "Galaxian",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "galaxiana": {
+    "description": "Galaxian (Alt)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "gorf": {
+    "description": "Gorf",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "gustbust": {
+    "description": "Gust Buster",
+    "publisher": "Sunrise Software",
+    "year": "1983"
+  },
+  "gyruss": {
+    "description": "Gyruss",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "hazzard": {
+    "description": "The Dukes of Hazzard",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "heist": {
+    "description": "The Heist",
+    "publisher": "Micro Fun",
+    "year": "1983"
+  },
+  "heista": {
+    "description": "The Heist (Trained?)",
+    "publisher": "Micro Fun",
+    "year": "1983"
+  },
+  "heistb": {
+    "description": "The Heist (Trained?, Alt)",
+    "publisher": "Micro Fun",
+    "year": "1983"
+  },
+  "hero": {
+    "description": "H.E.R.O.",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "hustler": {
+    "description": "Video Hustler (Prototype)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "hustler1": {
+    "description": "Video Hustler (Prototype, 19840727)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "illusion": {
+    "description": "Illusions",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "jbond": {
+    "description": "James Bond 007",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "jmpmanjr": {
+    "description": "Jumpman Junior",
+    "publisher": "Epyx",
+    "year": "1984"
+  },
+  "jmpmanjra": {
+    "description": "Jumpman Junior (Alt)",
+    "publisher": "Epyx",
+    "year": "1984"
+  },
+  "joust": {
+    "description": "Joust (Prototype)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "jukebox": {
+    "description": "Juke Box",
+    "publisher": "Spinnaker Software Corp",
+    "year": "1984"
+  },
+  "jungleh": {
+    "description": "Jungle Hunt",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "keykaper": {
+    "description": "Keystone Kapers",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "kubjpok": {
+    "description": "Ken Uston Blackjack-Poker",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "ladybug": {
+    "description": "Lady Bug",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "lancelot": {
+    "description": "Sir Lancelot",
+    "publisher": "Xonox",
+    "year": "1983"
+  },
+  "leeper": {
+    "description": "Learning with Leeper",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "linklogc": {
+    "description": "Linking Logic",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "logiclvl": {
+    "description": "Logic Levels",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "looping": {
+    "description": "Looping",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "mash": {
+    "description": "M*A*S*H (Prototype)",
+    "publisher": "Fox Video Games",
+    "year": "1983"
+  },
+  "memmanor": {
+    "description": "Memory Manor",
+    "publisher": "Fisher-Price",
+    "year": "1984"
+  },
+  "meteosho": {
+    "description": "Meteoric Shower",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "mindmstr": {
+    "description": "Escape from the Mindmaster (Prototype)",
+    "publisher": "Epyx",
+    "year": "1983"
+  },
+  "mine2049": {
+    "description": "Miner 2049er",
+    "publisher": "Micro Fun",
+    "year": "1983"
+  },
+  "mine2049a": {
+    "description": "Miner 2049er (Alt)",
+    "publisher": "Micro Fun",
+    "year": "1983"
+  },
+  "mking": {
+    "description": "Mountain King",
+    "publisher": "Sunrise Software",
+    "year": "1984"
+  },
+  "mkinga": {
+    "description": "Mountain King (Alt)",
+    "publisher": "Sunrise Software",
+    "year": "1984"
+  },
+  "monkey": {
+    "description": "Monkey Academy",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "monkeyp": {
+    "description": "Monkey Academy (Prototype)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "monkeyp1": {
+    "description": "Monkey Academy (Prototype, 0511)",
+    "publisher": "Konami",
+    "year": "1984"
+  },
+  "montezum": {
+    "description": "Montezuma's Revenge",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "moonswpr": {
+    "description": "Moonsweeper",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "moonswpra": {
+    "description": "Moonsweeper (Alt)",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "mrdo": {
+    "description": "Mr. Do!",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "mrdoa": {
+    "description": "Mr. Do! (Alt)",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "mtcracer": {
+    "description": "Motocross Racer",
+    "publisher": "Xonox",
+    "year": "1984"
+  },
+  "mtcracera": {
+    "description": "Motocross Racer (Alt)",
+    "publisher": "Xonox",
+    "year": "1984"
+  },
+  "mtrap": {
+    "description": "Mousetrap",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "mtrapa": {
+    "description": "Mousetrap (Alt)",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "musicbox": {
+    "description": "Music Box (Demo)",
+    "publisher": "Coleco / CBS",
+    "year": "1987"
+  },
+  "novablst": {
+    "description": "Nova Blast",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "numbump": {
+    "description": "Number Bumper",
+    "publisher": "Sunrise Software",
+    "year": "1984"
+  },
+  "oilswell": {
+    "description": "Oil's Well",
+    "publisher": "Sierra On-Line",
+    "year": "1984"
+  },
+  "oilswella": {
+    "description": "Oil's Well (Alt)",
+    "publisher": "Sierra On-Line",
+    "year": "1984"
+  },
+  "omegrace": {
+    "description": "Omega Race",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "onlyrock": {
+    "description": "It's Only Rock 'n' Roll",
+    "publisher": "K-Tel",
+    "year": "1984"
+  },
+  "orbit": {
+    "description": "Orbit (Prototype)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "pacman": {
+    "description": "Pac-Man (Prototype)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "panic": {
+    "description": "Space Panic",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "pepper2": {
+    "description": "Pepper II",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "pitfall": {
+    "description": "Pitfall!",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "pitfall2": {
+    "description": "Pitfall II: Lost Caverns",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "pitstop": {
+    "description": "Pitstop (Euro, USA, Can)",
+    "publisher": "Epyx",
+    "year": "1983"
+  },
+  "pitstopa": {
+    "description": "Pitstop (USA, Alt)",
+    "publisher": "Epyx",
+    "year": "1983"
+  },
+  "popeye": {
+    "description": "Popeye",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "popeyea": {
+    "description": "Popeye (Alt)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "porkys": {
+    "description": "Porky's (Prototype)",
+    "publisher": "Fox Video Games",
+    "year": "1983"
+  },
+  "power": {
+    "description": "Power Lords: Quest for Volcan (Prototype)",
+    "publisher": "Probe 2000",
+    "year": "1984"
+  },
+  "qbert": {
+    "description": "Q*bert",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "qberta": {
+    "description": "Q*bert (Alt)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "qbertqub": {
+    "description": "Q*bert Qubes",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "qbertquba": {
+    "description": "Q*bert Qubes (Alt?)",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "quintana": {
+    "description": "Quest for Quintana Roo",
+    "publisher": "Sunrise Software",
+    "year": "1983"
+  },
+  "quintanaa": {
+    "description": "Quest for Quintana Roo (Alt)",
+    "publisher": "Sunrise Software",
+    "year": "1983"
+  },
+  "riveraid": {
+    "description": "River Raid",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "robinh": {
+    "description": "Robin Hood",
+    "publisher": "Xonox",
+    "year": "1984"
+  },
+  "robinha": {
+    "description": "Robin Hood (Alt)",
+    "publisher": "Xonox",
+    "year": "1984"
+  },
+  "rockbolt": {
+    "description": "Rock 'n Bolt",
+    "publisher": "Telegames",
+    "year": "1984"
+  },
+  "rockbolta": {
+    "description": "Rock 'n Bolt (Alt)",
+    "publisher": "Telegames",
+    "year": "1984"
+  },
+  "rocky": {
+    "description": "Rocky: Super Action Boxing",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "rocnrope": {
+    "description": "Roc 'n Rope",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "rollover": {
+    "description": "Rolloverture",
+    "publisher": "Sunrise Software",
+    "year": "1983"
+  },
+  "sabaseb": {
+    "description": "Super Action Baseball",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "safootb": {
+    "description": "Super Action Football (Euro)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "safootbu": {
+    "description": "Super Action Football (USA)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "sammylf": {
+    "description": "Sammy Lightfoot",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "sammylfa": {
+    "description": "Sammy Lightfoot (Alt)",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "scobra": {
+    "description": "Super Cobra",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "scobraa": {
+    "description": "Super Cobra (Alt)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "secalpha": {
+    "description": "Sector Alpha",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  },
+  "sewersam": {
+    "description": "Sewer Sam",
+    "publisher": "Interphase",
+    "year": "1984"
+  },
+  "skiing": {
+    "description": "Skiing",
+    "publisher": "Telegames",
+    "year": "1986"
+  },
+  "skiinga": {
+    "description": "Skiing (Bad?)",
+    "publisher": "Telegames",
+    "year": "1986"
+  },
+  "slither": {
+    "description": "Slither",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "slurpy": {
+    "description": "Slurpy",
+    "publisher": "Xonox",
+    "year": "1984"
+  },
+  "smurf": {
+    "description": "Smurf Rescue in Gargamel's Castle",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "smurfa": {
+    "description": "Smurf Rescue in Gargamel's Castle (Alt)",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "smurfply": {
+    "description": "Smurf Play and Learn (Prototype)",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "smurfpnt": {
+    "description": "Smurf Paint 'n' Play Workshop",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "spacfury": {
+    "description": "Space Fury",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "spacfurya": {
+    "description": "Space Fury (Alt)",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "spectron": {
+    "description": "Spectron",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  },
+  "sprcross": {
+    "description": "Super Cross Force",
+    "publisher": "Spectravideo",
+    "year": "1983"
+  },
+  "spyhunt": {
+    "description": "Spy Hunter",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "spyhuntp": {
+    "description": "Spy Hunter (Prototype, v22)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "spyhuntp1": {
+    "description": "Spy Hunter (Prototype, v13)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "squishem": {
+    "description": "Squish 'em Sam!",
+    "publisher": "Interphase",
+    "year": "1984"
+  },
+  "ssketch": {
+    "description": "Super Sketch",
+    "publisher": "Personal Peripherals",
+    "year": "1984"
+  },
+  "startrek": {
+    "description": "Star Trek: Strategic Operations Simulator",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "starwars": {
+    "description": "Star Wars: The Arcade Game",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "steam": {
+    "description": "Steamroller (Prototype)",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "strikeit": {
+    "description": "Strike It!",
+    "publisher": "Telegames",
+    "year": "1983"
+  },
+  "subroc": {
+    "description": "Subroc",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "subroca": {
+    "description": "Subroc (Alt?)",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "superdk": {
+    "description": "Super DK! (Prototype)",
+    "publisher": "Nintendo",
+    "year": "1982"
+  },
+  "suprdkjr": {
+    "description": "Super DK! Junior (Prototype)",
+    "publisher": "Nintendo",
+    "year": "1983"
+  },
+  "suprtest": {
+    "description": "Super Controller Test Cartridge",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "sword": {
+    "description": "Sword and Sorcerer (Prototype)",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "tankwars": {
+    "description": "Tank Wars",
+    "publisher": "Telegames",
+    "year": "1983"
+  },
+  "tapper": {
+    "description": "Tapper",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "tarzan": {
+    "description": "Tarzan: From out of the Jungle",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "telly": {
+    "description": "Telly Turtle",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "threshld": {
+    "description": "Threshold",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "timeplt": {
+    "description": "Time Pilot",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "tomarc": {
+    "description": "Tomarc the Barbarian",
+    "publisher": "Xonox",
+    "year": "1984"
+  },
+  "ttennis": {
+    "description": "Tournament Tennis",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "tunnels": {
+    "description": "Tunnels & Trolls (Demo)",
+    "publisher": "Coleco / CBS",
+    "year": "1983"
+  },
+  "turbo": {
+    "description": "Turbo",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "tutankhm": {
+    "description": "Tutankham",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "tutankhma": {
+    "description": "Tutankham (Alt)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "upndown": {
+    "description": "Up'n Down",
+    "publisher": "Sega",
+    "year": "1984"
+  },
+  "venture": {
+    "description": "Venture",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "victory": {
+    "description": "Victory (Euro)",
+    "publisher": "CBS",
+    "year": "1983"
+  },
+  "victoryu": {
+    "description": "Victory (USA)",
+    "publisher": "Coleco",
+    "year": "1983"
+  },
+  "wargames": {
+    "description": "War Games",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "wargamesp": {
+    "description": "War Games (Prototype, 0417)",
+    "publisher": "Coleco / CBS",
+    "year": "1984"
+  },
+  "warroom": {
+    "description": "War Room",
+    "publisher": "Probe 2000",
+    "year": "1983"
+  },
+  "wingwar": {
+    "description": "Wing War",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "wizmath": {
+    "description": "Wizard of Id's Wizmath",
+    "publisher": "Sierra On-Line",
+    "year": "1984"
+  },
+  "wordfeud": {
+    "description": "Word Feud",
+    "publisher": "K-Tel",
+    "year": "1984"
+  },
+  "yolk": {
+    "description": "The Yolks on You (Prototype)",
+    "publisher": "Fox Video Games",
+    "year": "1983"
+  },
+  "zaxxon": {
+    "description": "Zaxxon (Coleco)",
+    "publisher": "Coleco / CBS",
+    "year": "1982"
+  },
+  "zaxxont": {
+    "description": "Zaxxon (Taiwan Cooper)",
+    "publisher": "Taiwan Cooper",
+    "year": "198?"
+  },
+  "zenji": {
+    "description": "Zenji",
+    "publisher": "Activision",
+    "year": "1984"
+  }
+}

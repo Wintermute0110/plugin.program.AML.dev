@@ -1,0 +1,1312 @@
+{
+  "010disk": {
+    "description": "AUTOLOAD DOS & BASIC, DOC - WORD PROCESSOR NORTHSTAR IN 5/20/85",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "011disk": {
+    "description": "ARTICLE, SYNC BUSTER PRIME DISK 3/19/87",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "012disk": {
+    "description": "WORD PROCESSOR FILES, ARTICLE - RBG MONITOR, NORTHSTAR IN 8/20/85",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "013disk": {
+    "description": "AUTOLOAD DOS & BASIC, REPORT, PEMBROOK, NORTHSTAR IN 3/26/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "014disk": {
+    "description": "START 6/18/85, REPORT FILES #34",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "015disk": {
+    "description": "WORD PROCESSOR FILES, ARTICLES - RBG MONITOR, NORTHSTAR IN 5/20/85",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "016disk": {
+    "description": "DOS & BASIC AUTOLOAD & UTILITIES, STORE, PRINT, PRINT1, PRINT2, NORTHSTAR, IN 4/25/85, USE 3/12/85. USE 5/17/85",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "017disk": {
+    "description": "VIDEO GAMES FILES, VIRGINIA, FUN-PUTT, IN 4/29/84, USE 5/17/85",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "018disk": {
+    "description": "DOS & BASIC AUTOLOAD & UTILITIES, STORE, PRINT, PRINT1, PRINT2, NORTHSTAR, IN 3/27/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "019disk": {
+    "description": "VIDEO GAME FILES - 3/12/85, IN 4/24/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "020disk": {
+    "description": "BAUDOT RTTY, IN 4/24/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "021disk": {
+    "description": "DOS & BASIC AUTOLOAD W/CF, INVOICE & BID, IN 3/26/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "022disk": {
+    "description": "VIDEO GAMES - FILE 6/1/84, NORTHSTAR, IN 4/24/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "023disk": {
+    "description": "VIDEO GAME FILES INCLUDING MASTER, NORTHSTAR, IN 3/27/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "024disk": {
+    "description": "AUTOLOAD DOS & BASIC, BILLING SERVICE, NORTHSTAR, IN 6/23/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "025disk": {
+    "description": "CHART OF ACCOUNTS - GENERAL LEDGER WITH DOS, BASIC, CF   DD, IN 4/24/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "026disk": {
+    "description": "AUTOLOAD DOS & MODEM 3/30/84, NONWORKING DOS - SD?, NORTHSTAR, IN 3/26/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "027disk": {
+    "description": "WORD PROCESSING, MIKE, BACKUP 6/23/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "028disk": {
+    "description": "AUTOLOAD DOS & BASIC, LOAD MENU   NORTHSTAR, PRIME BACK-UP, 3/24/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "029disk": {
+    "description": "FULL 6/18/85, START18, REPORT FILES",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "030disk": {
+    "description": "PRIME MASTER BACKUP, IN 3/28/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "031disk": {
+    "description": "AUTOLOAD DOS & MODEM, CF, M2D00, MODEM 0100, NORTHSTAR, IN 6/23/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "032disk": {
+    "description": "MRP DEMO, JOBS DRIVE #1, SINGLE DENSITY",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "033disk": {
+    "description": "MRP DEMO, FILES DRIVE #2, SINGLE DENSE",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "034disk": {
+    "description": "WP FILE, JOHN LETTER, MDEM1, 6/20/85",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "035disk": {
+    "description": "AUTOLOAD DOS & BASIC, DOC - WORD PROCESSOR, NORTHSTAR, 6/25/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "036disk": {
+    "description": "MRP DEMO - FILES   DRIVE #2, IN 8/30/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "037disk": {
+    "description": "REPORT FILES, DRIVE #2, FULL, IN 3/27/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "038disk": {
+    "description": "DOS & BASIC & CF, MRP DEMO - JOBS   DRIVE #1, IN 8/30/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "039disk": {
+    "description": "FILES FOR BILLING SERVICE, NORTHSTAR, 3/24/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "040disk": {
+    "description": "PRIME MASTER, BACK UP, SYSTEM START UP, DD",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "041disk": {
+    "description": "AUTOLOAD DOS & BASIC, LOAD 'CHECK', NORTHSTAR, IN 4/29/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "042disk": {
+    "description": "AUTOLOAD DOS & BASIC & CF, 'LOAD CHECK', NORTHSTAR, IN 4/29/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "043disk": {
+    "description": "LIBRARY - CLIPPER DD 4/27/84, IN 3/27/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "044disk": {
+    "description": "AUTOLOAD DOS & BASIC PRINTER, 'FILL 8206, 128', 'FILL 8206, 176', LOAD MENU, BILLING SERVICE NORTHSTAR, IN 3/21/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "045disk": {
+    "description": "DOC, WORD PROCESSOR, MASTER, SER #998, DD",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "046disk": {
+    "description": "ASSEMBLER - PLAY, IN 3/26/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "047disk": {
+    "description": "ASSEMBLER, HOMEBREW, MASTER MIKES DOS, BASIC, MONITOR - M2A00",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "048disk": {
+    "description": "DOS, BASIC, DAZZ D800, TIC TAC, 11/4/83",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "049disk": {
+    "description": "SYNCBUSTER   COPY 1, IN 4/12/87",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "050disk": {
+    "description": "NSUG #7, GAME PACK, N*TREK, MEMSET 40959",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "051disk": {
+    "description": "NSUG #10, GAME PACK, ED, SCH2222, ENTER 0 IF NO CHANGE",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "052disk": {
+    "description": "NSUG #11",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "053disk": {
+    "description": "NSUG #12",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "054disk": {
+    "description": "NSUG #13, BANNER 2, COPY-DOC, (SINGLE DRIVE)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "055disk": {
+    "description": "NSUG #14, GAME PACK, (MEMSET  40959)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "056disk": {
+    "description": "NSUG #15",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "057disk": {
+    "description": "NSUG #16, STORM",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "058disk": {
+    "description": "NSUG #17",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "059disk": {
+    "description": "NSUG #18, GAME PACK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "060disk": {
+    "description": "NSSE #1, GAME PACK, STARTREK MEMSET 40959, HOMEBREW NORTHSTAR 57343",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "061disk": {
+    "description": "NSSE #2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "062disk": {
+    "description": "NSSE #3, GUESS, GAME PACK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "063disk": {
+    "description": "NSSE #4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "064disk": {
+    "description": "NSSE #5, GAUSS, LF PILOT 2A00",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "065disk": {
+    "description": "NSSE #6",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "066disk": {
+    "description": "NSSE #7, GAME PACK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "067disk": {
+    "description": "NSSE #8, GAME PACK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "068disk": {
+    "description": "NSSE #9, GOOD DISASSEMBLER, DASM",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "069disk": {
+    "description": "NSSE #10, FINANCIAL",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "070disk": {
+    "description": "NSSE #11, GAME PACK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "071disk": {
+    "description": "NSSE #12",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "072disk": {
+    "description": "NSSE #13, GAME PACK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "073disk": {
+    "description": "GENERAL LEDGER, SINGLE DENSITY",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "074disk": {
+    "description": "AUTOLOAD DOS & BASIC, GENERAL LEDGER - CHART OF ACCOUNTS, HOMEBREW, IN 4/29/84",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "075disk": {
+    "description": "PHONE BOOK (A) 7/22/83",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "076disk": {
+    "description": "DICK'S INVOICE, XMAS LETTER, FUN & PIZZA (GYRUSS) (A), CHARLIE'S ESTIMATES (LOAD 'JOB')",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "077disk": {
+    "description": "SYSTEM MASTER DISK, SYSTEM START UP, *SPARE*",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "078disk": {
+    "description": "HORIZON, SYSTEM DISK, VERSION 5.1DQ, 2034",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "079disk": {
+    "description": "CP/M 2.011, 48K SYSTEM",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "080disk": {
+    "description": "NORTHSTAR DOS & BASIC, SERIAL IN FLASHWRITER I",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "101disk": {
+    "description": "WORKING DOS BACKUP",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "102disk": {
+    "description": "COPY OF ORIGINAL CPM 2.011 (UNCONF)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "103disk": {
+    "description": "GRAPHICS BACKUP",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "104disk": {
+    "description": "BIOS BACKUP",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "105disk": {
+    "description": "WORDSTAR + DOCUMENT FILES, BOOT",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "106disk": {
+    "description": "FORTRAN, CBASIC-2, MBASIC, MAC, NO BOOT",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "107disk": {
+    "description": "CONFIGURED CPM 2.2 BACKUP",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "108disk": {
+    "description": "PICTURES (N-DOS)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "109disk": {
+    "description": "BDS 'C' COMPILER, VERSION 1.42 (COPY) S/N 0425 - VOL 2/2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "110disk": {
+    "description": "BDS 'C' COMPILER, VERSION 1.42 (COPY) S/N 0425 - VOL 1/2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "111disk": {
+    "description": "BDS C COMPILER, VOL 2/2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "112disk": {
+    "description": "BDS C COMPILER, VOL 1/2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "113disk": {
+    "description": "PASCAL/Z FOR CP/M, VOL 1/4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "114disk": {
+    "description": "PASCAL/Z FOR CP/M, VOL 2/4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "115disk": {
+    "description": "PASCAL/Z FOR CP/M, VOL 3/4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "116disk": {
+    "description": "PASCAL/Z FOR CP/M, VOL 4/4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "117disk": {
+    "description": "FORTRAN, CBASIC-2, MBASIC, MAC, NO BOOT (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "118disk": {
+    "description": "ADA COMPILER, ORIGINAL, QUAD",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "119disk": {
+    "description": "AZTEC C COMPILER",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "120disk": {
+    "description": "ADA COMPILER, WORKING DISK, QUAD",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "aca": {
+    "description": "Active Circuit Analysis",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "adven": {
+    "description": "Original Adventure",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "alps": {
+    "description": "Assembly Language Programming System",
+    "publisher": "Dave Dunfield",
+    "year": "1979"
+  },
+  "apcbasic": {
+    "description": "APCBASIC 2.4.2",
+    "publisher": "Chris Cochran",
+    "year": "1982"
+  },
+  "aztec": {
+    "description": "AZTEC 'C' compiler",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "basex": {
+    "description": "BaseX",
+    "publisher": "Interactive Microware",
+    "year": "1978"
+  },
+  "bazic": {
+    "description": "BAZIC",
+    "publisher": "Micro Mike's",
+    "year": "198?"
+  },
+  "beamdef": {
+    "description": "Beam Deflection",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bridge": {
+    "description": "Bridge 2.0",
+    "publisher": "DynaComp",
+    "year": "198?"
+  },
+  "bssv2ch4": {
+    "description": "Basic Scientific Subroutines V2 CH4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "butler": {
+    "description": "Butler Adventure",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "c145_54": {
+    "description": "LifeBoat CP/M 1.45 - 54k",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "c223_52": {
+    "description": "LifeBoat CP/M 2.23 - 52k",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "c223_56": {
+    "description": "LifeBoat CP/M 2.23 - 56k",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "c223a_24": {
+    "description": "n2212",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "chess": {
+    "description": "Chess Master",
+    "publisher": "DynaComp",
+    "year": "198?"
+  },
+  "compare": {
+    "description": "File comparison package",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "compress": {
+    "description": "File compression package",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "copyall": {
+    "description": "COPYALL",
+    "publisher": "Micro Mike's",
+    "year": "198?"
+  },
+  "cpmgames": {
+    "description": "CP/M Games disk",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmug23": {
+    "description": "NorthStar CP/M Users Group Diskette #23",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmug24": {
+    "description": "NorthStar CP/M Users Group Diskette #24",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmug25": {
+    "description": "NorthStar CP/M Users Group Diskette #25",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmug29": {
+    "description": "NorthStar CP/M Users Group Diskette #29",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmug30": {
+    "description": "NorthStar CP/M Users Group Diskette #30",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmug31": {
+    "description": "NorthStar CP/M Users Group Diskette #31",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmug32": {
+    "description": "NorthStar CP/M Users Group Diskette #32",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmug34": {
+    "description": "NorthStar CP/M Users Group Diskette #34",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmug36": {
+    "description": "NorthStar CP/M Users Group Diskette #36",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmug40": {
+    "description": "NorthStar CP/M Users Group Diskette #40",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "crans": {
+    "description": "Cranston Manor Adventure",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d01b01": {
+    "description": "CP/M RELEASE 2.2 1.2.0 DQH 013658",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d01b02": {
+    "description": "DOS/BASIC 2.1.1 QG SYSTEM DISK (SUPERCEDES DOS 5.2)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d01b03": {
+    "description": "MIKE BERNSONS SMALL 'C'",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d02b01": {
+    "description": "CP/M RELEASE 2.2 1.2.0 DQH 014254 FOR 15MB WIN",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d02b03": {
+    "description": "WORDSTAR (INSTALLED)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d03b01": {
+    "description": "CP/M RELEASE 2.2 1.2.0 DQH 013860",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d03b03": {
+    "description": "MBASIC V5.2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d04b01": {
+    "description": "HDOS 2.2.0 H SYSTEM DISK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d04b02": {
+    "description": "NORTH STAR REL 5 DOUBLE DENSITY BITSTREAMER II SYSTEM DISKETTE",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d04b03": {
+    "description": "DOS/BASIC 2.1.1 DQ",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d05b01": {
+    "description": "HDOS 2.0.0 H SYSTEM DISK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d05b02": {
+    "description": "FORTRAN-80 1.0.0.*DQH",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d05b03": {
+    "description": "BACKUP MICROMOTION FORTH 79 FLOATING POINT PACKAGE NORTHSTAR CPM",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d06b01": {
+    "description": "HDOS 2.1.0 H SYSTEM DISK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d06b02": {
+    "description": "APPLICATION SOFTWARE UTILITIES 1.1.0 DQ TRANSFER UTILITIES HORIZON VERSION",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d06b03": {
+    "description": "MICROMOTION FORTH 79 NORTHSTAR - CPM",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d07b01": {
+    "description": "HDOS 2.2.1 H INITIAL RECOVERY DISK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d07b02": {
+    "description": "MICRO 80, MACRO 80, SER 39138 VER 3.44, FORMAT NS",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d07b03": {
+    "description": "MICROMOTION FORTH 79 FLOATING POINT PACKAGE",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d08b01": {
+    "description": "HDOS 2.0.0 H INITIAL RECOVERY DISK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d08b02": {
+    "description": "DBASE II 2.35 1.0.0 *QH",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d08b03": {
+    "description": "MICROMOTION FORTH 79",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d09b01": {
+    "description": "HDOS 2.1.0 H INITIAL RECOVERY DISK",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d09b02": {
+    "description": "MICROPLAN 1.1.0 *QH 001934",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d09b03": {
+    "description": "PASCAL Z",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d10b01": {
+    "description": "TSS/C INSTALLATION DISK 1.1.0 H 301792",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d10b02": {
+    "description": "MICROPRO WORDSTAR 3.0 1.0.0 *DQH WORDSTAR 3.0 XG7995TZ",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d10b03": {
+    "description": "SAVE DISK - SUPERCALC",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d11b01": {
+    "description": "TSS/C CP/M UTILITIES DISK 1.1.0 H",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d11b02": {
+    "description": "MICROPRO WORDSTAR 3.0 WH6454S1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d11b03": {
+    "description": "DISK FROM CRAY CMOS 1.1 UTILITIES",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d12b01": {
+    "description": "TSS/A START-UP DISK 2.1.1 H",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d12b02": {
+    "description": "MICROPRO SPELLSTAR 1.2 1.0.0 *DQH SPELLSTAR 1.21 S26396BE",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d13b01": {
+    "description": "TSS/A UPDATE DISK 2.1.1 H",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d14b01": {
+    "description": "TSS/A UTILITIES DISK 1 OF 2 2.1.1 H",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d15b01": {
+    "description": "TSS/A UTILITIES DISK 2 OF 2 2.1.1 H",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "d16b01": {
+    "description": "TSS/A PASSWORD DISK 2.1.1 H",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "datasmth": {
+    "description": "Data Smoother",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "datastar": {
+    "description": "DATASTAR",
+    "publisher": "Micropro",
+    "year": "198?"
+  },
+  "dmf": {
+    "description": "DMF",
+    "publisher": "Dave Dunfield",
+    "year": "198?"
+  },
+  "dmmutil": {
+    "description": "DMM Utilities",
+    "publisher": "Elliam Associates",
+    "year": "198?"
+  },
+  "dynabase": {
+    "description": "Dynabase Database",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "f80": {
+    "description": "Fortran-80 (v3.44)",
+    "publisher": "Microsoft",
+    "year": "1980"
+  },
+  "f80_331": {
+    "description": "Fortran-80 (v3.31)",
+    "publisher": "Microsoft",
+    "year": "1980"
+  },
+  "fastgam": {
+    "description": "FastGammon",
+    "publisher": "Quality Software",
+    "year": "198?"
+  },
+  "finmgtsy": {
+    "description": "Financial Management System",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "forth": {
+    "description": "Forth",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gamepak2": {
+    "description": "Game Pak 2",
+    "publisher": "DynaComp",
+    "year": "198?"
+  },
+  "games": {
+    "description": "Games",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games1": {
+    "description": "Games 1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games10": {
+    "description": "Games 10",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games11": {
+    "description": "Games 11",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games2": {
+    "description": "Games 2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games3": {
+    "description": "Games 3",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games4": {
+    "description": "Games 4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games5": {
+    "description": "Games 5",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games6": {
+    "description": "Games 6",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games7": {
+    "description": "Games 7",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games8": {
+    "description": "Games 8",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "games9": {
+    "description": "Games 9",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "generate": {
+    "description": "Basic Disassembler",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hancapii": {
+    "description": "Handicapper II (Horse Race Handicapper)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "handicap": {
+    "description": "Horse Race Handicapper",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hd221ird": {
+    "description": "NorthStar HDOS 2.2.1 H Initial Recovery Disk",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hd221sd": {
+    "description": "NorthStar HDOS 2.2.0 H System Disk",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hearts": {
+    "description": "Hearts 1.5",
+    "publisher": "DynaComp",
+    "year": "198?"
+  },
+  "horhd1b": {
+    "description": "NorthStar HORIZON-HD System Diskette R1.B",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "icatutil": {
+    "description": "INSUA Catalog Utilities",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "insua211": {
+    "description": "INSUA NorthStar DOS 2.1.1 QuadDensity",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "inutil": {
+    "description": "INSUA DOS Utilities #1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "keeptrak": {
+    "description": "Keep Track Of It",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "keno": {
+    "description": "KENO Casino game",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "maillist": {
+    "description": "DynaComp MailList 2.2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mcd96r7": {
+    "description": "Micro Complex DOS96R7",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mcdos70d": {
+    "description": "Micro Complex Dos 7.0",
+    "publisher": "Micro Complex",
+    "year": "1980"
+  },
+  "michart": {
+    "description": "Micro Chart Program",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "monarch": {
+    "description": "Monarch",
+    "publisher": "DynaComp",
+    "year": "198?"
+  },
+  "mstuf": {
+    "description": "The MicroStuf Co. RCONS 2.1 and MESS 2.2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "multlinr": {
+    "description": "Multilinear Regression",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "n2212_64": {
+    "description": "NorthStar CP/M 2.2 release 1.20 - 64k",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "n22a_56": {
+    "description": "NorthStar CP/M 2.2 release A - 56k",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsdos20s": {
+    "description": "NorthStar DOS 2.0 Single Density (DOS only)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsdos40s": {
+    "description": "NorthStar DOS 4.0 Single Density",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsdos50d": {
+    "description": "NorthStar DOS 5.0 Double Density",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsdos51q": {
+    "description": "NorthStar DOS 5.1 Quad Density (Unconfigured I/O)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsdos51s": {
+    "description": "NorthStar DOS 5.1 Single Density",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsdos52q": {
+    "description": "NorthStar DOS 5.2 Quad Density",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsmcutil": {
+    "description": "NSM Utilities",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse1": {
+    "description": "NorthStar Software Exchange #1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse16": {
+    "description": "NorthStar Software Exchange #16",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse17": {
+    "description": "NorthStar Software Exchange #17",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse18": {
+    "description": "NorthStar Software Exchange #18",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse2": {
+    "description": "NorthStar Software Exchange #2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse20": {
+    "description": "NorthStar Software Exchange #20",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse21": {
+    "description": "NorthStar Software Exchange #21",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse22": {
+    "description": "NorthStar Software Exchange #22",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse7": {
+    "description": "NorthStar Software Exchange #7",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse8": {
+    "description": "NorthStar Software Exchange #8",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsse9": {
+    "description": "NorthStar Software Exchange #9",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nsseg1r3": {
+    "description": "NorthStar Software Exchange Games-1 Release-3",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "pascal": {
+    "description": "UCSD Pascal 1.5",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "pds": {
+    "description": "Program Development System",
+    "publisher": "Allen Ashley",
+    "year": "1978"
+  },
+  "pfm": {
+    "description": "Personal Finance Manager",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "power": {
+    "description": "POWER! Special Version for INSUA Members",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "protext": {
+    "description": "Protext and MultiEd",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "quickref": {
+    "description": "Quickref",
+    "publisher": "A. H. Bazell",
+    "year": "1979"
+  },
+  "r0": {
+    "description": "TINY",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "r1": {
+    "description": "CP/M PDS",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "r2": {
+    "description": "COMSTAR",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "r3": {
+    "description": "ALL GAMES BACKUP 1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "r4": {
+    "description": "ALL GAMES BACKUP 2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "r5": {
+    "description": "FORMATMW CM5619 [ON JACKET]",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "r6": {
+    "description": "WORKING CP/M C",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "r7": {
+    "description": "DEFENDER EPROMS",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "r8": {
+    "description": "PDS CP/M",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "rmf": {
+    "description": "Remote Micro Facility",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "roots": {
+    "description": "Find roots of polynomial",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "skpilot": {
+    "description": "Starkweather Pilot (v4.3)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "smlinreg": {
+    "description": "Stepwise Multilinear Regression",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "smms": {
+    "description": "Music Synth",
+    "publisher": "Jon Bokelman",
+    "year": "1979"
+  },
+  "spacelns": {
+    "description": "Space Lanes",
+    "publisher": "DynaComp",
+    "year": "198?"
+  },
+  "spilot41": {
+    "description": "Super-Pilot 4.1 (Pilot Plus)",
+    "publisher": "A. Banks",
+    "year": "1979"
+  },
+  "statevar": {
+    "description": "State Variables",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "stock": {
+    "description": "Microcomputer Stock Program",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "strace": {
+    "description": "Super-Trace",
+    "publisher": "Pavel Breder",
+    "year": "1989"
+  },
+  "taxopt": {
+    "description": "Tax Optimizer",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "td130": {
+    "description": "TurboDos 1.30 1.1.1 QH",
+    "publisher": "North Star Computers",
+    "year": "1984"
+  },
+  "td130a": {
+    "description": "TurboDos 1.30 1.1.1 QH (Alt)",
+    "publisher": "North Star Computers",
+    "year": "1984"
+  },
+  "tpascal": {
+    "description": "Turbo-Pascal",
+    "publisher": "Borland",
+    "year": "198?"
+  },
+  "trafunan": {
+    "description": "Traffic Function Analyzer",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "uncharry": {
+    "description": "Uncle Harrys Will",
+    "publisher": "DynaComp",
+    "year": "198?"
+  },
+  "v2212_56": {
+    "description": "NorthStar CP/M 2.2 release 1.20 - 56k for Vector/3P+S",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "valdez": {
+    "description": "Valdez (Supertanker simulation)",
+    "publisher": "DynaComp",
+    "year": "198?"
+  },
+  "vedit": {
+    "description": "VEDIT editor",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "vinsua": {
+    "description": "INSUA NorthStar DOS 2.1.1 QuadDensity for Vector/3P+S",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "windmere": {
+    "description": "Windmere Estates",
+    "publisher": "DynaComp",
+    "year": "198?"
+  },
+  "ws30": {
+    "description": "WordStar 3.0",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "xek": {
+    "description": "XEK Assembler/Disassembler",
+    "publisher": "ByteShop of Westminster",
+    "year": "198?"
+  },
+  "xitancpm": {
+    "description": "Xitan CP/M 2.26 - 48k",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "z80asm": {
+    "description": "Z80 Assembler (with LifeBoat CP/M 2.20 - 56k)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  }
+}

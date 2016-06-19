@@ -1,0 +1,42 @@
+{
+  "construc": {
+    "description": "Construction Pack",
+    "publisher": "Wessex",
+    "year": "198?"
+  },
+  "financep": {
+    "description": "Finance Pack",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "linkup": {
+    "description": "Link Up Pack",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "mathspac": {
+    "description": "Maths Pack",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "restaur": {
+    "description": "Restaurant Guide",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "sciencep": {
+    "description": "Science Pack",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "softpack": {
+    "description": "Software Pack",
+    "publisher": "Psion",
+    "year": "198?"
+  },
+  "utilityp": {
+    "description": "Utility Pack",
+    "publisher": "Psion",
+    "year": "198?"
+  }
+}

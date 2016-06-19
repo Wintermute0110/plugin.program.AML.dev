@@ -1,0 +1,32 @@
+{
+  "calcstar": {
+    "description": "CalcStar v1.45",
+    "publisher": "Micropro",
+    "year": "1981"
+  },
+  "cpm22": {
+    "description": "CP/M 2.2 System Disk and Utilities",
+    "publisher": "Digital Research Inc.",
+    "year": "1986"
+  },
+  "datastar": {
+    "description": "Data Star v1.41",
+    "publisher": "Micropro",
+    "year": "1980"
+  },
+  "repstar": {
+    "description": "ReportStar v1.02",
+    "publisher": "Micropro",
+    "year": "1982"
+  },
+  "schedule": {
+    "description": "Scheduler Plus",
+    "publisher": "Micropro",
+    "year": "198?"
+  },
+  "wordstar": {
+    "description": "WordStar v3.30",
+    "publisher": "Micropro",
+    "year": "1979"
+  }
+}

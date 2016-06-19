@@ -1,0 +1,52 @@
+{
+  "adresar": {
+    "description": "Adresar",
+    "publisher": "Ei Racunari",
+    "year": "19??"
+  },
+  "bioritam": {
+    "description": "Bioritam",
+    "publisher": "Ei Racunari",
+    "year": "1985"
+  },
+  "kompozit": {
+    "description": "Sam Svoj Kompozitor",
+    "publisher": "Ei Racunari",
+    "year": "1987"
+  },
+  "lavirint": {
+    "description": "Lavirint",
+    "publisher": "Ei Racunari",
+    "year": "1987"
+  },
+  "lopovbnk": {
+    "description": "Lopov i Bankar",
+    "publisher": "Ei Racunari",
+    "year": "1985"
+  },
+  "osvajaci": {
+    "description": "Osvajaci Svemira",
+    "publisher": "Ei Racunari",
+    "year": "1985"
+  },
+  "pecomrat": {
+    "description": "Pecom Ratuje",
+    "publisher": "Ei Racunari",
+    "year": "1985"
+  },
+  "sljive": {
+    "description": "Sljive",
+    "publisher": "Ei Racunari",
+    "year": "1986"
+  },
+  "suviajnc": {
+    "description": "Suvi Ajnc",
+    "publisher": "Ei Racunari",
+    "year": "1986"
+  },
+  "trkakonj": {
+    "description": "Trka Konja",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

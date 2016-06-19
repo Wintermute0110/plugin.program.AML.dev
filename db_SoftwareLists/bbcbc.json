@@ -1,0 +1,57 @@
+{
+  "advbidng": {
+    "description": "Advanced Bidding",
+    "publisher": "BBC",
+    "year": "198?"
+  },
+  "advdefnc": {
+    "description": "Advanced Defence",
+    "publisher": "BBC",
+    "year": "198?"
+  },
+  "bbuilder": {
+    "description": "Bridge Builder",
+    "publisher": "BBC",
+    "year": "198?"
+  },
+  "bbuildera": {
+    "description": "Bridge Builder (Alt)",
+    "publisher": "BBC",
+    "year": "198?"
+  },
+  "convent1": {
+    "description": "Conventions 1",
+    "publisher": "BBC",
+    "year": "198?"
+  },
+  "cplay1": {
+    "description": "Club Play 1",
+    "publisher": "BBC",
+    "year": "198?"
+  },
+  "cplay2": {
+    "description": "Club Play 2",
+    "publisher": "BBC",
+    "year": "198?"
+  },
+  "cplay2a": {
+    "description": "Club Play 2 (Alt)",
+    "publisher": "BBC",
+    "year": "198?"
+  },
+  "cplay3": {
+    "description": "Club Play 3",
+    "publisher": "BBC",
+    "year": "198?"
+  },
+  "duplict1": {
+    "description": "Duplicate 1",
+    "publisher": "BBC",
+    "year": "198?"
+  },
+  "mplay1": {
+    "description": "Master Play 1",
+    "publisher": "BBC",
+    "year": "198?"
+  }
+}

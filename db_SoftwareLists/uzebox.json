@@ -1,0 +1,472 @@
+{
+  "arkanoid": {
+    "description": "Arkanoid",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "arkanoida": {
+    "description": "Arkanoid (Alt)",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "arkanoidb": {
+    "description": "Arkanoid (Alt 2)",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "atomix": {
+    "description": "Atomix",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "bcdash": {
+    "description": "B.C. Dash",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "bitmapd": {
+    "description": "BitmapDemo",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "bitmapda": {
+    "description": "DitmapDemo (Alt)",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "bitmapdb": {
+    "description": "Bitmap Demo (Alt 2)",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "bomberma": {
+    "description": "Bomberman II (WIP)",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "boulderd": {
+    "description": "Boulderdash",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "calc": {
+    "description": "Calculator Demo",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "chess": {
+    "description": "chess4uzebox",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "chessa": {
+    "description": "chess4uzebox (Alt)",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "chuckiee": {
+    "description": "ChuckieEgg",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "claydemo": {
+    "description": "Clay Demo",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "corridan": {
+    "description": "Corrida Nebososa",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "ctester": {
+    "description": "Controller Tester",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "ctestera": {
+    "description": "Controller Tester (Alt)",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "dkong": {
+    "description": "Donkey Kong",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "drmario": {
+    "description": "Dr.Mario",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "drmarioa": {
+    "description": "Dr.Mario (Alt)",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "dungeons": {
+    "description": "Dungeon Slash Demo",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "emuze": {
+    "description": "Emuze EEPROM Viewer",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "emuzea": {
+    "description": "Emuze EEPROM Viewer (Alt)",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "esdattac": {
+    "description": "ESD Attack",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "fliptris": {
+    "description": "Fliptris",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "frogger": {
+    "description": "Frogger",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "gforce": {
+    "description": "G-Force WIP",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "gorillas": {
+    "description": "Gorillas",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "happyeas": {
+    "description": "Happy Easter",
+    "publisher": "Belogic",
+    "year": "2012"
+  },
+  "holidays": {
+    "description": "HolidaysDemo",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "lander": {
+    "description": "Lander",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "ldrun": {
+    "description": "Lode Runner",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "lolo": {
+    "description": "Adventures of Lolo",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "loloa": {
+    "description": "Adventures of Lolo (Alt)",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "matrix": {
+    "description": "The Matrix Screen Saver",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "maze": {
+    "description": "The Great Maze",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "mazea": {
+    "description": "The Great Maze (Alt)",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "mazeb": {
+    "description": "The Great Maze (Alt 2)",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "megabomb": {
+    "description": "Mega Bomber (WIP)",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "megasoko": {
+    "description": "MegaSokoban",
+    "publisher": "Belogic",
+    "year": "2012"
+  },
+  "megatris": {
+    "description": "Megatris",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "megatrisa": {
+    "description": "Megatris (Alt)",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "memory": {
+    "description": "Memory",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "moonpatr": {
+    "description": "Moon Patrol (WIP)",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "moviep": {
+    "description": "Uzebox Movie Player",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "musicd": {
+    "description": "Music Demo",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "musicda": {
+    "description": "Music Demo (Alt)",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "ninjabea": {
+    "description": "Ninja Beatdown",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "pacman": {
+    "description": "Pac-Man",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "pacmana": {
+    "description": "Pac-Man (Alt)",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "pengouze": {
+    "description": "PengoUze",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "pentago": {
+    "description": "Pentago",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "pong": {
+    "description": "Pong",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "rcdemo": {
+    "description": "Ray Caster Demo",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "redbull": {
+    "description": "Redbull Create Demo",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "redbulla": {
+    "description": "Redbull Create Demo (Alt)",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "rubycrus": {
+    "description": "Ruby Crush",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "scrolld": {
+    "description": "Clay's Scroll Demo",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "sdcardd": {
+    "description": "SD Card Demo",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "sdcardda": {
+    "description": "SD Card Demo (Alt)",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "simon": {
+    "description": "Simon",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "smariod": {
+    "description": "Super Mario Demo",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "smarioda": {
+    "description": "Super Mario Demo (Alt)",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "snakes": {
+    "description": "Snakes",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "sokoban": {
+    "description": "Sokoban",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "sokobanw": {
+    "description": "Sokoban World",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "sonicd": {
+    "description": "Sonic The Hedgehog Demo",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "soundpt": {
+    "description": "Sound Patch Tool (WIP)",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "spaceinv": {
+    "description": "Space Invaders",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "spaceinva": {
+    "description": "Space Invaders (Alt)",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "sprited1": {
+    "description": "Sprite Demo 1",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "sprited2": {
+    "description": "Sprite Demo 2",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "sprited2a": {
+    "description": "Sprite Demo 2 (Alt)",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "tankswip": {
+    "description": "Tanks (WIP)",
+    "publisher": "Belogic",
+    "year": "2012"
+  },
+  "tron": {
+    "description": "Tron",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "tutorial": {
+    "description": "Tutorial",
+    "publisher": "Belogic",
+    "year": "2008"
+  },
+  "utype": {
+    "description": "U-Type (WIP)",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "uzeamove": {
+    "description": "Uze-a-Move (WIP)",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "uzeamp": {
+    "description": "Uzeamp",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "uzefeud": {
+    "description": "Uze Feud",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "uzesnake": {
+    "description": "Uze Snakes",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "uzesweep": {
+    "description": "Uzesweeper",
+    "publisher": "Belogic",
+    "year": "2011"
+  },
+  "vectord": {
+    "description": "Vector Demo",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "vectord2": {
+    "description": "Vector Demo 2",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "video9d": {
+    "description": "Video Mode 9 Demo",
+    "publisher": "Belogic",
+    "year": "2010"
+  },
+  "videod": {
+    "description": "Video Demo",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "videoda": {
+    "description": "Video Demo (Alt)",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "voidfigh": {
+    "description": "Void Fighter",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "wamole": {
+    "description": "Whack-a-Mole",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "wamolea": {
+    "description": "Whack-a-Mole (Alt)",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "wamoleb": {
+    "description": "Whack-a-Mole (Alt 2)",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "zeldad": {
+    "description": "Zelda II Demo",
+    "publisher": "Belogic",
+    "year": "2009"
+  },
+  "zombiena": {
+    "description": "Zombienator",
+    "publisher": "Belogic",
+    "year": "2009"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "basprog": {
+    "description": "Sharp BASIC Programs 1",
+    "publisher": "<unknown>",
+    "year": "200?"
+  },
+  "brave": {
+    "description": "Brave",
+    "publisher": "Toshio Fukui",
+    "year": "200?"
+  },
+  "cpm22": {
+    "description": "CP/M 2.2",
+    "publisher": "Toshio Fukui",
+    "year": "2002"
+  },
+  "cpm22a": {
+    "description": "CP/M 2.2 (Release 1.1)",
+    "publisher": "Toshio Fukui",
+    "year": "2011?"
+  },
+  "dosprog1": {
+    "description": "TF-DOS Programs 1",
+    "publisher": "Toshio Fukui",
+    "year": "200?"
+  },
+  "dosprog2": {
+    "description": "TF-DOS Programs 2",
+    "publisher": "Toshio Fukui",
+    "year": "200?"
+  },
+  "gfxedit": {
+    "description": "Graphic Editor III \"Art Magic\"",
+    "publisher": "Toshio Fukui",
+    "year": "200?"
+  },
+  "lilas": {
+    "description": "Lilas",
+    "publisher": "Toshio Fukui",
+    "year": "200?"
+  },
+  "tfdos20b": {
+    "description": "TF-DOS Ver2.0B (TS)",
+    "publisher": "Toshio Fukui",
+    "year": "200?"
+  },
+  "tfdos21": {
+    "description": "TF-DOS Ver2.1 (TF)",
+    "publisher": "Toshio Fukui",
+    "year": "200?"
+  },
+  "tfdos21c": {
+    "description": "TF-DOS Ver2.1C (TF)",
+    "publisher": "Toshio Fukui",
+    "year": "200?"
+  }
+}

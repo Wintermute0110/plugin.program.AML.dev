@@ -1,0 +1,37 @@
+{
+  "aboutme": {
+    "description": "All About Me",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "alphabet": {
+    "description": "Alphabet Fun",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "animalfr": {
+    "description": "Animal Friends",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "et": {
+    "description": "E.T. the Extra-Terrestial",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "lilcreat": {
+    "description": "Little Creatures",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "numfun": {
+    "description": "Number Fun",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "wot": {
+    "description": "World of Transportation",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  }
+}

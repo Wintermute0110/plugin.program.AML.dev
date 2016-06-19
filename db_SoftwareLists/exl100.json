@@ -1,0 +1,82 @@
+{
+  "capmenkr": {
+    "description": "Capitaine Menkar",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "exelbas": {
+    "description": "ExelBASIC",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "exelbasp": {
+    "description": "ExelBASIC+",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "exeldrum": {
+    "description": "Exeldrums",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "exelmax": {
+    "description": "Exelmax v1.6",
+    "publisher": "Exelvision",
+    "year": "1986"
+  },
+  "exelogo": {
+    "description": "Exelogo v1.0",
+    "publisher": "Exelvision",
+    "year": "1985"
+  },
+  "exeltext": {
+    "description": "Exeltexte",
+    "publisher": "Exelvision",
+    "year": "1985"
+  },
+  "exlmodem": {
+    "description": "Exelmodem",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "exlpaint": {
+    "description": "Exelpaint v1.0",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "guppy": {
+    "description": "Guppy",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "imagix": {
+    "description": "Imagix",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "pindo": {
+    "description": "Pindo",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "quizzy": {
+    "description": "Quizzy",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "tennis": {
+    "description": "Tennis",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "virus": {
+    "description": "Virus",
+    "publisher": "Exelvision",
+    "year": "198?"
+  },
+  "wizord": {
+    "description": "Wizord",
+    "publisher": "Exelvision",
+    "year": "198?"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "appetide": {
+    "description": "Appetizer (De)",
+    "publisher": "Gold Disk",
+    "year": "1989"
+  },
+  "dast11de": {
+    "description": "Datastore 1.1 (De)",
+    "publisher": "Digita",
+    "year": "1995"
+  },
+  "orga11de": {
+    "description": "Organiser 1.1 (De)",
+    "publisher": "Digita",
+    "year": "1995"
+  },
+  "pg12sede": {
+    "description": "Photogenics 1.2a SE (De)",
+    "publisher": "Almathera",
+    "year": "1994"
+  },
+  "ppaint64": {
+    "description": "Personal Paint 6.4",
+    "publisher": "Cloanto",
+    "year": "1995"
+  },
+  "simplet2": {
+    "description": "Simplex Tools 2 - RAP!TOP!COP! (De)",
+    "publisher": "MSPI",
+    "year": "1992"
+  },
+  "turboc35": {
+    "description": "Turbo Calc 3.5 (De)",
+    "publisher": "Schatztruhe",
+    "year": "1995"
+  },
+  "veryfrst": {
+    "description": "The Very First",
+    "publisher": "Commodore",
+    "year": "1987"
+  },
+  "ww4se_de": {
+    "description": "Wordworth 4 SE (De)",
+    "publisher": "Digita",
+    "year": "1995"
+  },
+  "wwpm_de": {
+    "description": "Wordworth Printer Manager (De)",
+    "publisher": "Digita",
+    "year": "1995"
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "avenger": {
+    "description": "Avenger (Euro, USA)",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "avengera": {
+    "description": "Avenger (Jpn, v.02)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "basic": {
+    "description": "MAX Basic (Jpn)",
+    "publisher": "Commodore",
+    "year": "19??"
+  },
+  "bowling": {
+    "description": "Bowling (Jpn)",
+    "publisher": "HAL Laboratory",
+    "year": "1983"
+  },
+  "clowns": {
+    "description": "Clowns (Jpn, Newer)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "clownsa": {
+    "description": "Clowns (Jpn, v.01)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "jlander": {
+    "description": "Jupiter Lander (World, v.02)",
+    "publisher": "Commodore / HAL Laboratory",
+    "year": "1982"
+  },
+  "kickman": {
+    "description": "Kickman (World, v.03)",
+    "publisher": "Commodore / HAL Laboratory",
+    "year": "1982"
+  },
+  "lemans": {
+    "description": "Le Mans (Euro, USA)",
+    "publisher": "Commodore / HAL Laboratory",
+    "year": "1982"
+  },
+  "minibas": {
+    "description": "Mini Basic I (Jpn)",
+    "publisher": "Commodore",
+    "year": "19??"
+  },
+  "moleattk": {
+    "description": "Mole Attack (Jpn, v.01)",
+    "publisher": "Commodore / HAL Laboratory",
+    "year": "1982"
+  },
+  "moneywar": {
+    "description": "Money Wars (Jpn, v.01)",
+    "publisher": "Commodore / HAL Laboratory",
+    "year": "1982"
+  },
+  "musicm": {
+    "description": "Music Machine (Euro, USA)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "musicmak": {
+    "description": "Music Maker (World)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "omegrace": {
+    "description": "Omega Race (Jpn, v.02)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "pinspec": {
+    "description": "Pinball Spectacular (World)",
+    "publisher": "Commodore / HAL Laboratory",
+    "year": "1983"
+  },
+  "radarrr": {
+    "description": "Radar Rat Race (Jpn, v.02)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "radarrr1": {
+    "description": "Radar Rat Race (Jpn, v.02, Alt)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "radarrr2": {
+    "description": "Radar Rat Race (Alt)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "roadrace": {
+    "description": "Road Race (Jpn, v.02)",
+    "publisher": "Commodore / HAL Laboratory",
+    "year": "1983"
+  },
+  "seawolf": {
+    "description": "Sea Wolf (Euro, USA)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "solarsys": {
+    "description": "The Visible Solar System (Euro, USA)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "spedmath": {
+    "description": "Speed Math & Bingo Math (Euro, USA, v.01)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "supalien": {
+    "description": "Super Alien (Jpn, v.01)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "wow": {
+    "description": "Wizard of Wor (Jpn, v.02)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "wowa": {
+    "description": "Wizard of Wor (Jpn, v.01)",
+    "publisher": "Commodore",
+    "year": "1982"
+  }
+}

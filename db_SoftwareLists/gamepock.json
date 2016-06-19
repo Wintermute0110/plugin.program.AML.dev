@@ -1,0 +1,27 @@
+{
+  "astrobom": {
+    "description": "Astro Bomber",
+    "publisher": "Epoch",
+    "year": "1984"
+  },
+  "blockmaz": {
+    "description": "Block Maze",
+    "publisher": "Epoch",
+    "year": "1984"
+  },
+  "pokemahj": {
+    "description": "Pokekon Mahjongg",
+    "publisher": "Epoch",
+    "year": "1984"
+  },
+  "pokereve": {
+    "description": "Pokekon Reversi",
+    "publisher": "Epoch",
+    "year": "1984"
+  },
+  "sokoban": {
+    "description": "Soukoban - Store Keepers",
+    "publisher": "Epoch",
+    "year": "1985"
+  }
+}

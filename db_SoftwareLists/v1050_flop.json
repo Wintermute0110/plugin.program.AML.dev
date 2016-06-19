@@ -1,0 +1,37 @@
+{
+  "cbasic": {
+    "description": "CBASIC and Demonstration (v2.8)",
+    "publisher": "Digital Research",
+    "year": "1983"
+  },
+  "cpm3": {
+    "description": "CP/M Plus v3.0 (BIOS 2.0)",
+    "publisher": "Digital Research",
+    "year": "1982"
+  },
+  "cpm3b11": {
+    "description": "CP/M Plus v3.0 (BIOS 1.1)",
+    "publisher": "Digital Research",
+    "year": "1982"
+  },
+  "cpm3b14": {
+    "description": "CP/M Plus v3.0 (BIOS 1.4)",
+    "publisher": "Digital Research",
+    "year": "1982"
+  },
+  "drgraph": {
+    "description": "DR Graph (v1.01P)",
+    "publisher": "Digital Research",
+    "year": "1983"
+  },
+  "multplan": {
+    "description": "Multiplan (v1.06)",
+    "publisher": "Microsoft",
+    "year": "1982"
+  },
+  "wordstar": {
+    "description": "Word Star (v3.30)",
+    "publisher": "MicroPro",
+    "year": "1982"
+  }
+}

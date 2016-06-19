@@ -1,0 +1,62 @@
+{
+  "biblekno": {
+    "description": "Bible Knowledge",
+    "publisher": "VTech",
+    "year": "1988"
+  },
+  "cgen2": {
+    "description": "Connaissances Generales II",
+    "publisher": "VTech",
+    "year": "1988"
+  },
+  "encyclop": {
+    "description": "Encyclopedie",
+    "publisher": "VTech",
+    "year": "1988"
+  },
+  "explor": {
+    "description": "Explorations",
+    "publisher": "VTech",
+    "year": "1988"
+  },
+  "fantasyt": {
+    "description": "Fantasy Trivia",
+    "publisher": "VTech",
+    "year": "1988"
+  },
+  "ftp": {
+    "description": "Famous Things & Places",
+    "publisher": "VTech",
+    "year": "1992"
+  },
+  "ftpa": {
+    "description": "Famous Things & Places Alt",
+    "publisher": "VTech",
+    "year": "1992"
+  },
+  "generala": {
+    "description": "General Knowledge 2 Alt",
+    "publisher": "VTech",
+    "year": "1988"
+  },
+  "generalk": {
+    "description": "General Knowledge 2",
+    "publisher": "VTech",
+    "year": "1988"
+  },
+  "sportstr": {
+    "description": "Sports Trivia",
+    "publisher": "VTech",
+    "year": "1988"
+  },
+  "supers": {
+    "description": "Super Science",
+    "publisher": "VTech",
+    "year": "1991"
+  },
+  "supersa": {
+    "description": "* Super Science *",
+    "publisher": "VTech",
+    "year": "1991"
+  }
+}

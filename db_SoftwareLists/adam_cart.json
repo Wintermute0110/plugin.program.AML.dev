@@ -1,0 +1,62 @@
+{
+  "adamdemo": {
+    "description": "ADAM Demonstration Cartridge",
+    "publisher": "Coleco",
+    "year": "198?"
+  },
+  "adamdiag": {
+    "description": "ADAM Diagnostics",
+    "publisher": "Coleco",
+    "year": "198?"
+  },
+  "adamdiaga": {
+    "description": "ADAM Diagnostics (Alt)",
+    "publisher": "Coleco",
+    "year": "198?"
+  },
+  "adamtape": {
+    "description": "ADAM Tape Util (v22)",
+    "publisher": "Coleco",
+    "year": "1982"
+  },
+  "adamtest": {
+    "description": "ADAM Final Test",
+    "publisher": "Coleco",
+    "year": "198?"
+  },
+  "adamtesta": {
+    "description": "ADAM Final Test (Alt)",
+    "publisher": "Coleco",
+    "year": "198?"
+  },
+  "ard": {
+    "description": "ADAM Resident Debugger (Prototype Rev20)",
+    "publisher": "Coleco?",
+    "year": "198?"
+  },
+  "burnddp": {
+    "description": "Data Drive Burn-In DDP Test",
+    "publisher": "Coleco",
+    "year": "198?"
+  },
+  "burnprn": {
+    "description": "ADAM Printer 1 Hour Cycle Burn-In Test",
+    "publisher": "Coleco",
+    "year": "1982"
+  },
+  "ddpbasic": {
+    "description": "SmartBASIC DDP Restorer (v1.4)",
+    "publisher": "Coleco",
+    "year": "198?"
+  },
+  "ddpblank": {
+    "description": "Blank DDP Restorer (v1.4)",
+    "publisher": "Coleco",
+    "year": "198?"
+  },
+  "ddpbuck": {
+    "description": "Buck Rogers DDP Restorer (v1.4)",
+    "publisher": "Coleco",
+    "year": "198?"
+  }
+}

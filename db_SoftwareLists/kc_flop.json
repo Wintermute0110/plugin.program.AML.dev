@@ -1,0 +1,27 @@
+{
+  "caos": {
+    "description": "CAOS",
+    "publisher": "VEB Mikroelektronik",
+    "year": "198?"
+  },
+  "caosa": {
+    "description": "CAOS (Alt)",
+    "publisher": "VEB Mikroelektronik",
+    "year": "198?"
+  },
+  "mdos": {
+    "description": "MicroDOS 2.6",
+    "publisher": "IRIMS",
+    "year": "1988"
+  },
+  "mdosa": {
+    "description": "MicroDOS 2.6 (Alt)",
+    "publisher": "IRIMS",
+    "year": "1988"
+  },
+  "mldos": {
+    "description": "ML-DOS 2.2",
+    "publisher": "ML-Soft",
+    "year": "1997"
+  }
+}

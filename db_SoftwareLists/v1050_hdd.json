@@ -1,0 +1,12 @@
+{
+  "cpm3hd10": {
+    "description": "CP/M Plus v3.0 (BIOS 2.0, 10MB)",
+    "publisher": "Digital Research",
+    "year": "1982"
+  },
+  "cpm3hd5": {
+    "description": "CP/M Plus v3.0 (BIOS 2.0, 5MB)",
+    "publisher": "Digital Research",
+    "year": "1982"
+  }
+}

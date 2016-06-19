@@ -1,0 +1,12 @@
+{
+  "boot": {
+    "description": "Boot disk",
+    "publisher": "Sanyo",
+    "year": "198?"
+  },
+  "boota": {
+    "description": "Boot disk (Alt)",
+    "publisher": "Sanyo",
+    "year": "198?"
+  }
+}

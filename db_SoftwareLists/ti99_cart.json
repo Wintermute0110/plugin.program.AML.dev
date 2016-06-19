@@ -1,0 +1,1612 @@
+{
+  "4ados": {
+    "description": "4A DOS",
+    "publisher": "Schmidt",
+    "year": "19??"
+  },
+  "4aflyer": {
+    "description": "4A Flyer",
+    "publisher": "Triton",
+    "year": "1986"
+  },
+  "accasst": {
+    "description": "Accounting Assistant",
+    "publisher": "Scott, Foresman",
+    "year": "1981"
+  },
+  "actacct": {
+    "description": "Activity Accountant",
+    "publisher": "Scott, Foresman",
+    "year": "1981"
+  },
+  "addseq": {
+    "description": "Milliken Math Sequences - Addition",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "addsub1": {
+    "description": "Addition and Subtraction 1",
+    "publisher": "Scott, Foresman",
+    "year": "1981"
+  },
+  "addsub2": {
+    "description": "Addition and Subtraction 2",
+    "publisher": "Scott, Foresman",
+    "year": "1981"
+  },
+  "addsub3": {
+    "description": "Addition and Subtraction 3",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "advent": {
+    "description": "Adventure",
+    "publisher": "Scott Adams",
+    "year": "1981"
+  },
+  "alienadd": {
+    "description": "Alien Addition",
+    "publisher": "DLM Academics",
+    "year": "1982"
+  },
+  "alligmix": {
+    "description": "Alligator Mix",
+    "publisher": "DLM Academics",
+    "year": "1982"
+  },
+  "alpiner": {
+    "description": "Alpiner",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "amazeing": {
+    "description": "A-Maze-Ing",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "ambulnc": {
+    "description": "Ambulance",
+    "publisher": "Funware",
+    "year": "1983"
+  },
+  "anglerdg": {
+    "description": "Angler Dangler",
+    "publisher": "Deco",
+    "year": "1983"
+  },
+  "antcolb": {
+    "description": "Ant Colony",
+    "publisher": "Funware",
+    "year": "1983"
+  },
+  "anteater": {
+    "description": "Ant-Eater",
+    "publisher": "Romox",
+    "year": "1983"
+  },
+  "arithseq": {
+    "description": "Milliken Math Sequences - Laws of Arithmetic",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "asglink": {
+    "description": "Link v0.99",
+    "publisher": "Asgard",
+    "year": "1990"
+  },
+  "astroftr": {
+    "description": "Astro Fighter",
+    "publisher": "Deco",
+    "year": "1983"
+  },
+  "attack": {
+    "description": "Attack, The",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "attackb": {
+    "description": "The Attack",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "attrec": {
+    "description": "Attendance Recorder",
+    "publisher": "Scott, Foresman",
+    "year": "1982"
+  },
+  "barrage": {
+    "description": "Barrage",
+    "publisher": "Sofmachine",
+    "year": "1983"
+  },
+  "baseball": {
+    "description": "Championship Baseball",
+    "publisher": "Milton Bradley",
+    "year": "1983"
+  },
+  "berlin": {
+    "description": "Berlin",
+    "publisher": "Iain Johnson",
+    "year": "19??"
+  },
+  "beyspace": {
+    "description": "Beyond Space",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bgrammar": {
+    "description": "Beginning Grammar",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "bigfoot": {
+    "description": "Bigfoot",
+    "publisher": "Milton Bradley",
+    "year": "1983"
+  },
+  "blackhl": {
+    "description": "Black Hole",
+    "publisher": "DaTaBioTics",
+    "year": "1983"
+  },
+  "blasto": {
+    "description": "Blasto",
+    "publisher": "Milton Bradley",
+    "year": "1980"
+  },
+  "bljpoker": {
+    "description": "Blackjack and Poker",
+    "publisher": "Milton Bradley",
+    "year": "1980"
+  },
+  "boxer": {
+    "description": "Boxer",
+    "publisher": "DaTaBioTics",
+    "year": "1987"
+  },
+  "bparsec": {
+    "description": "Beyond Parsec",
+    "publisher": "John Phillips",
+    "year": "1988"
+  },
+  "breakth": {
+    "description": "Break Thru",
+    "publisher": "DaTaBioTics",
+    "year": "1989"
+  },
+  "buckrog": {
+    "description": "Buck Rogers - Planet of Zoom",
+    "publisher": "Sega Enterprises",
+    "year": "1983"
+  },
+  "burgerbd": {
+    "description": "Burger Builder",
+    "publisher": "DaTaBioTics",
+    "year": "1983"
+  },
+  "burgertb": {
+    "description": "Burgertime (beta)",
+    "publisher": "Data East USA",
+    "year": "1983"
+  },
+  "burgertm": {
+    "description": "Burgertime",
+    "publisher": "Data East USA",
+    "year": "1983"
+  },
+  "canballb": {
+    "description": "Cannonball Blitz",
+    "publisher": "Jlando",
+    "year": "1982"
+  },
+  "cardshp": {
+    "description": "Card Sharp",
+    "publisher": "Milton Bradley",
+    "year": "198?"
+  },
+  "carwars": {
+    "description": "Car Wars",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "castlep": {
+    "description": "The Castle",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cavecrt": {
+    "description": "Cave Creatures",
+    "publisher": "Funware",
+    "year": "1983"
+  },
+  "centipd": {
+    "description": "Centipede",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "chess": {
+    "description": "Video Chess",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "chessd": {
+    "description": "Schachmeister",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "chessf": {
+    "description": "Echecs",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "chickenc": {
+    "description": "Chicken Coop",
+    "publisher": "Navarone",
+    "year": "1986"
+  },
+  "chisholm": {
+    "description": "Chisholm Trail",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "cldata": {
+    "description": "Class Data Recorder",
+    "publisher": "Scott, Foresman",
+    "year": "1981"
+  },
+  "compwar": {
+    "description": "Computer War",
+    "publisher": "Micropal - Thorn EMI Video",
+    "year": "1983"
+  },
+  "congobng": {
+    "description": "Congo Bongo",
+    "publisher": "Sega Enterprises",
+    "year": "1983"
+  },
+  "connect4": {
+    "description": "Connect Four",
+    "publisher": "Milton Bradley",
+    "year": "1980"
+  },
+  "conswr1": {
+    "description": "Console Writer",
+    "publisher": "Navarone",
+    "year": "1984"
+  },
+  "conswr2": {
+    "description": "Console Writer v2.1",
+    "publisher": "Navarone",
+    "year": "1984"
+  },
+  "coursem": {
+    "description": "Course Manager",
+    "publisher": "Scott, Foresman",
+    "year": "1981"
+  },
+  "crossfr": {
+    "description": "Crossfire",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "decdeli2": {
+    "description": "Decimals 2",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "decseq": {
+    "description": "Milliken Math Sequences - Decimals",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "defender": {
+    "description": "Defender",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "demo": {
+    "description": "Demonstration",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "demode": {
+    "description": "Demonstration (German)",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "demoldiv": {
+    "description": "Demolition Division",
+    "publisher": "DLM Academics",
+    "year": "1982"
+  },
+  "demonat": {
+    "description": "Super Demon Attack",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "demonatb": {
+    "description": "Demon Attack",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "diag": {
+    "description": "Diagnostic",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "diagfr": {
+    "description": "Diagnostic (French)",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "digdug": {
+    "description": "Dig Dug",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "diskfx20": {
+    "description": "Disk Fixer v2.0",
+    "publisher": "Navarone",
+    "year": "1984"
+  },
+  "diskfx21": {
+    "description": "Disk Fixer",
+    "publisher": "Navarone",
+    "year": "1984"
+  },
+  "diskman1": {
+    "description": "Disk Manager 1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "diskman2": {
+    "description": "Disk Manager 2",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "diskman3": {
+    "description": "Disk Manager v3.0",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "diskmn1i": {
+    "description": "Disk Manager 1 (multilingual)",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "diskutil": {
+    "description": "Disk Utilities v4.2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "divis1": {
+    "description": "Division 1",
+    "publisher": "Scott, Foresman",
+    "year": "1982"
+  },
+  "divseq": {
+    "description": "Milliken Math Sequences - Division",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "dmbsys": {
+    "description": "Data Base Management System v2.0",
+    "publisher": "Navarone",
+    "year": "1984"
+  },
+  "donkeykg": {
+    "description": "Donkey Kong",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "dragonmx": {
+    "description": "Dragon Mix",
+    "publisher": "DLM Academics",
+    "year": "1982"
+  },
+  "drvdemon": {
+    "description": "Driving Demon",
+    "publisher": "Funware - Romox",
+    "year": "1983"
+  },
+  "dstatn1": {
+    "description": "D-Station I",
+    "publisher": "DaTaBioTics",
+    "year": "1988"
+  },
+  "dstatn2": {
+    "description": "D-Station II - The Conflict Continues!",
+    "publisher": "DaTaBioTics",
+    "year": "1988"
+  },
+  "dtpub": {
+    "description": "Desk Top Publisher",
+    "publisher": "DataBioTics",
+    "year": "1988"
+  },
+  "earlylf": {
+    "description": "Early Learning Fun",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "earlylog": {
+    "description": "Early LOGO Learning Fun",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "earlyrd": {
+    "description": "Early Reading",
+    "publisher": "Scott, Foresman",
+    "year": "1980"
+  },
+  "edasseb": {
+    "description": "Editor Assembler 1987 / Easy Debugger 2.1",
+    "publisher": "Winfried Winkler/TI",
+    "year": "1987"
+  },
+  "editass": {
+    "description": "Editor/Assembler",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "edupack": {
+    "description": "Edu-Pack",
+    "publisher": "Asgard",
+    "year": "1990"
+  },
+  "eleceng": {
+    "description": "SMU Electrical Engineering Library",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "equseq": {
+    "description": "Milliken Math Sequences - Equations",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "escape": {
+    "description": "Escape",
+    "publisher": "DaTaBioTics",
+    "year": "1984"
+  },
+  "espial": {
+    "description": "Espial",
+    "publisher": "Tigervision",
+    "year": "1983"
+  },
+  "et": {
+    "description": "E.T.",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "etatsea": {
+    "description": "E.T. In His Adventure at Sea",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "exbas25": {
+    "description": "Extended Basic v2.5",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "exbasic": {
+    "description": "Extended Basic",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "exbasic1": {
+    "description": "Extended Basic v100",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "exbasm": {
+    "description": "Mechatronic/PS Extended Basic",
+    "publisher": "Mechatronic",
+    "year": "19??"
+  },
+  "exbaspl": {
+    "description": "Extended Basic Plus",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "facechs": {
+    "description": "Face Chase",
+    "publisher": "Video Magic",
+    "year": "1984"
+  },
+  "facemake": {
+    "description": "Facemaker",
+    "publisher": "Spinnaker",
+    "year": "1983"
+  },
+  "fantasy": {
+    "description": "Fantasy",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "fathom": {
+    "description": "Fathom",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "fathomb": {
+    "description": "Fathom (beta)",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "figforth": {
+    "description": "fig FORTH",
+    "publisher": "Weiand",
+    "year": "1986"
+  },
+  "fitness": {
+    "description": "Physical Fitness",
+    "publisher": "Texas Instruments",
+    "year": "1978"
+  },
+  "football": {
+    "description": "Football",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "fracseq": {
+    "description": "Milliken Math Sequences - Fractional Numbers",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "fract1": {
+    "description": "Fractions 1",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "fract2": {
+    "description": "Fractions 2",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "frogger": {
+    "description": "Frogger",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "frogjump": {
+    "description": "Frog Jump",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "frogstk": {
+    "description": "Frog Stickers",
+    "publisher": "Navarone",
+    "year": "1982"
+  },
+  "gamevis": {
+    "description": "Milton Bradley Gamevision",
+    "publisher": "Milton Bradley",
+    "year": "198?"
+  },
+  "genetics": {
+    "description": "Introduction to Plant Genetics",
+    "publisher": "Texas Instruments",
+    "year": "1984"
+  },
+  "germpat": {
+    "description": "Germ Patrol",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "gestprv": {
+    "description": "Gestion Privee",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "gmsbasic": {
+    "description": "BASIC games",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "gramdis": {
+    "description": "GRAM-based Disassembler",
+    "publisher": "Thierry Nouspikel",
+    "year": "1992"
+  },
+  "gramdisn": {
+    "description": "GRAM-based Disassembler (w/o help)",
+    "publisher": "Thierry Nouspikel",
+    "year": "1992"
+  },
+  "greatesc": {
+    "description": "Pinocchio's Great Escape",
+    "publisher": "Walt Disney",
+    "year": "1984"
+  },
+  "hangman": {
+    "description": "Hangman",
+    "publisher": "Milton Bradley",
+    "year": "1981"
+  },
+  "hbudget": {
+    "description": "Household Budget Management",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "hbudgetf": {
+    "description": "Household Budget Management (French)",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "henhouse": {
+    "description": "Henhouse",
+    "publisher": "Funware",
+    "year": "1982"
+  },
+  "henpeck": {
+    "description": "Hen Pecked",
+    "publisher": "Romox",
+    "year": "1983"
+  },
+  "hiding": {
+    "description": "I'm Hiding",
+    "publisher": "Milton Bradley",
+    "year": "1983"
+  },
+  "homefin": {
+    "description": "Home Financial Decisions",
+    "publisher": "Texas Instruments",
+    "year": "1978"
+  },
+  "homesent": {
+    "description": "99 Home Sentry",
+    "publisher": "Corcomp",
+    "year": "1986"
+  },
+  "homework": {
+    "description": "Homework Helper+",
+    "publisher": "Navarone",
+    "year": "1984"
+  },
+  "honeyhnt": {
+    "description": "Honey Hunt",
+    "publisher": "Milton Bradley",
+    "year": "1983"
+  },
+  "hopper": {
+    "description": "Hopper",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "hustle": {
+    "description": "Hustle",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "ibmcopy": {
+    "description": "TI-IBM Copier",
+    "publisher": "Corcomp",
+    "year": "1987"
+  },
+  "intseq": {
+    "description": "Milliken Math Sequences - Integers",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "invaders": {
+    "description": "TI Invaders",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "jawbreak": {
+    "description": "Jawbreaker II",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "jumpy": {
+    "description": "Jumpy",
+    "publisher": "Sofmachine",
+    "year": "1983"
+  },
+  "jungleht": {
+    "description": "Jungle Hunt",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "junkmnj": {
+    "description": "Junkman Junior",
+    "publisher": "DaTaBioTics",
+    "year": "1986"
+  },
+  "kingcast": {
+    "description": "King of the Castle",
+    "publisher": "Navarone",
+    "year": "1984"
+  },
+  "lasso": {
+    "description": "Lasso",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "lobster": {
+    "description": "Lobster Bay",
+    "publisher": "Funware",
+    "year": "1983"
+  },
+  "logo1": {
+    "description": "TI LOGO",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "logo2": {
+    "description": "TI LOGO II",
+    "publisher": "Texas Instruments",
+    "year": "1984"
+  },
+  "logo2d": {
+    "description": "TI LOGO II (German)",
+    "publisher": "Texas Instruments",
+    "year": "1984"
+  },
+  "logo2i": {
+    "description": "TI LOGO II (Italian)",
+    "publisher": "Texas Instruments",
+    "year": "198?"
+  },
+  "manager": {
+    "description": "Milliken Manager",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "mancala": {
+    "description": "Mancala",
+    "publisher": "DaTaBioTics",
+    "year": "1983"
+  },
+  "mash": {
+    "description": "M.A.S.H",
+    "publisher": "Fox",
+    "year": "1983"
+  },
+  "mathgm1": {
+    "description": "Computer Math Games I",
+    "publisher": "Addison-Wesley",
+    "year": "1983"
+  },
+  "mathgm2": {
+    "description": "Computer Math Games II",
+    "publisher": "Addison-Wesley",
+    "year": "1982"
+  },
+  "mathgm3": {
+    "description": "Computer Math Games III",
+    "publisher": "Addison-Wesley",
+    "year": "1983"
+  },
+  "mathgm4": {
+    "description": "Computer Math Games IV",
+    "publisher": "Addison-Wesley",
+    "year": "1983"
+  },
+  "mathgm6": {
+    "description": "Computer Math Games VI",
+    "publisher": "Addison-Wesley",
+    "year": "1982"
+  },
+  "maximem": {
+    "description": "Maximem Utilities",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "measseq": {
+    "description": "Milliken Math Sequences - Measurement Formulas",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "meteorbt": {
+    "description": "Meteor Belt",
+    "publisher": "Milton Bradley",
+    "year": "1983"
+  },
+  "meteormt": {
+    "description": "Meteor Multiplication",
+    "publisher": "DLM Academics",
+    "year": "1982"
+  },
+  "micropb": {
+    "description": "Micro Pinball",
+    "publisher": "Software Specialties",
+    "year": "1984"
+  },
+  "microsur": {
+    "description": "Microsurgeon",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "midnitem": {
+    "description": "Midnite Mason",
+    "publisher": "Software Specialties",
+    "year": "1984"
+  },
+  "mimult": {
+    "description": "Multiplication 2",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "miner": {
+    "description": "Miner 2049er",
+    "publisher": "Tigervision",
+    "year": "1983"
+  },
+  "miniwr": {
+    "description": "Miniwriter II",
+    "publisher": "DataBioTics",
+    "year": "1985"
+  },
+  "minusmis": {
+    "description": "Minus Mission",
+    "publisher": "DLM Academics",
+    "year": "1982"
+  },
+  "missionx": {
+    "description": "Mission X",
+    "publisher": "Data East USA",
+    "year": "1983"
+  },
+  "molmiss": {
+    "description": "Von Drake's Molecular Mission",
+    "publisher": "Walt Disney",
+    "year": "1984"
+  },
+  "moonmine": {
+    "description": "Moon Mine",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "moonpatr": {
+    "description": "Moon Patrol",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "moonswp": {
+    "description": "Moonsweeper",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "mouskat": {
+    "description": "Mousk-Attack",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "mspacman": {
+    "description": "Ms. Pac-Man",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "multip1": {
+    "description": "Multiplication 1",
+    "publisher": "Scott, Foresman",
+    "year": "1981"
+  },
+  "multipln": {
+    "description": "Microsoft Multiplan",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "multseq": {
+    "description": "Milliken Math Sequences - Multiplication",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "munchman": {
+    "description": "Munch Man",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "munchmn2": {
+    "description": "Munch Man II",
+    "publisher": "John Phillips",
+    "year": "1987"
+  },
+  "munchmnb": {
+    "description": "Munch Man (beta)",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "munchmob": {
+    "description": "Munchmobile",
+    "publisher": "SNK Electronics",
+    "year": "1983"
+  },
+  "musicmak": {
+    "description": "Music Maker",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "musicsda": {
+    "description": "Music SDA",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "nature": {
+    "description": "Nature's Way",
+    "publisher": "unknown",
+    "year": "19??"
+  },
+  "nbrdyseq": {
+    "description": "Milliken Math Sequences - Number Readiness",
+    "publisher": "Milliken",
+    "year": "1984"
+  },
+  "numbbwl": {
+    "description": "Number Bowling",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "numbmag": {
+    "description": "Number Magic",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "numbmagi": {
+    "description": "Number Magic (multilingual)",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "numerat1": {
+    "description": "Numeration 1",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "numerat2": {
+    "description": "Numeration 2",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "opcopy": {
+    "description": "One Pass Copy SSSD",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "os9940": {
+    "description": "OS/99",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "othello": {
+    "description": "Othello",
+    "publisher": "CBS Video",
+    "year": "1982"
+  },
+  "pacman": {
+    "description": "Pac-Man",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "paddlebl": {
+    "description": "Paddleball",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "parsec": {
+    "description": "Parsec",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "pascdeb": {
+    "description": "UCSD Pascal Development System",
+    "publisher": "Texas Instruments",
+    "year": "198?"
+  },
+  "payroll": {
+    "description": "Payroll Assistant",
+    "publisher": "Scott, Foresman",
+    "year": "1982"
+  },
+  "pegasus": {
+    "description": "Starship Pegasus",
+    "publisher": "Milton Bradley",
+    "year": "1983"
+  },
+  "percseq": {
+    "description": "Milliken Math Sequences - Percents",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "perrec": {
+    "description": "Personal Record Keeping",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "perrecdi": {
+    "description": "Personal Record Keeping (German/Italian)",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "perrep": {
+    "description": "Personal Report Generator",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "pertest": {
+    "description": "Peripheral Diagnostic Module",
+    "publisher": "Corcomp",
+    "year": "1985"
+  },
+  "picnicpr": {
+    "description": "Picnic Paranoia",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "picparts": {
+    "description": "Picture Parts",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "plato": {
+    "description": "Plato Interpreter",
+    "publisher": "Control Data",
+    "year": "1982"
+  },
+  "polepos": {
+    "description": "Pole Position",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "popeye": {
+    "description": "Popeye",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "ppspcod": {
+    "description": "Peter Pan's Space Odyssey",
+    "publisher": "Walt Disney",
+    "year": "1984"
+  },
+  "prestate": {
+    "description": "Personal Real Estate",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "prfrog": {
+    "description": "Princess and Frog",
+    "publisher": "Romox",
+    "year": "1982"
+  },
+  "protectr": {
+    "description": "Protector II",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "protyper": {
+    "description": "Pro Typer",
+    "publisher": "DaTaBioTics",
+    "year": "1987"
+  },
+  "ptprgp": {
+    "description": "Paint 'N' Print A",
+    "publisher": "Navarone",
+    "year": "1985"
+  },
+  "ptpribm": {
+    "description": "Paint 'N' Print C",
+    "publisher": "Navarone",
+    "year": "1985"
+  },
+  "pyramidp": {
+    "description": "Pyramid Puzzler",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "qbert": {
+    "description": "Q-Bert",
+    "publisher": "Parker Brothers",
+    "year": "1984"
+  },
+  "rabbit": {
+    "description": "Rabbit Trail",
+    "publisher": "Funware - Romox",
+    "year": "1983"
+  },
+  "readadv": {
+    "description": "Reading Adventures",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "readchrs": {
+    "description": "Reading Cheers",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "readflt": {
+    "description": "Reading Flight",
+    "publisher": "Scott, Foresman",
+    "year": "1982"
+  },
+  "readfun": {
+    "description": "Reading Fun",
+    "publisher": "Scott, Foresman",
+    "year": "1982"
+  },
+  "readon": {
+    "description": "Reading On",
+    "publisher": "Scott, Foresman",
+    "year": "1982"
+  },
+  "readpow": {
+    "description": "Reading Power",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "readrbow": {
+    "description": "Reading Rainbows",
+    "publisher": "Scott, Foresman",
+    "year": "1982"
+  },
+  "readrly": {
+    "description": "Reading Rally",
+    "publisher": "Scott, Foresman",
+    "year": "1982"
+  },
+  "readrnd": {
+    "description": "Reading Roundup",
+    "publisher": "Scott, Foresman",
+    "year": "1982"
+  },
+  "readtrl": {
+    "description": "Reading Trail",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "readwon": {
+    "description": "Reading Wonders",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "retpirat": {
+    "description": "Return to Pirate's Isle",
+    "publisher": "Scott Adams",
+    "year": "1983"
+  },
+  "riverres": {
+    "description": "River Rescue",
+    "publisher": "Micropal - Thorn EMI Video",
+    "year": "1983"
+  },
+  "robotron": {
+    "description": "Robotron:2084",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "rotorrd": {
+    "description": "Rotor Raiders",
+    "publisher": "Romox",
+    "year": "1983"
+  },
+  "saguaro": {
+    "description": "Saguaro City",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "salaryp": {
+    "description": "Salary Planner",
+    "publisher": "Scott, Foresman",
+    "year": "1980"
+  },
+  "schnoz": {
+    "description": "Schnoz-ola",
+    "publisher": "Funware",
+    "year": "1983"
+  },
+  "scholsp3": {
+    "description": "Scholastic Spelling - Level 3",
+    "publisher": "Scholastic",
+    "year": "1982"
+  },
+  "scholsp4": {
+    "description": "Scholastic Spelling - Level 4",
+    "publisher": "Scholastic",
+    "year": "1982"
+  },
+  "scholsp5": {
+    "description": "Scholastic Spelling - Level 5",
+    "publisher": "Scholastic",
+    "year": "1982"
+  },
+  "scholsp6": {
+    "description": "Scholastic Spelling - Level 6",
+    "publisher": "Scholastic",
+    "year": "1982"
+  },
+  "schoolm": {
+    "description": "School Mailer",
+    "publisher": "Scott, Foresman",
+    "year": "1981"
+  },
+  "sdiskmn": {
+    "description": "Super Disk Manager",
+    "publisher": "<unknown>",
+    "year": "1984"
+  },
+  "securana": {
+    "description": "Securities Analysis",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "shamus": {
+    "description": "Shamus",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "shanghai": {
+    "description": "Shanghai",
+    "publisher": "Funware",
+    "year": "1983"
+  },
+  "simon": {
+    "description": "Simon Says",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "slymoids": {
+    "description": "Slymoids",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "snakepl": {
+    "description": "Snake plissken",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sneggit": {
+    "description": "Sneggit",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "soccer": {
+    "description": "Soccer",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "sorgan2": {
+    "description": "Sorgan II",
+    "publisher": "DaTaBioTics",
+    "year": "1988"
+  },
+  "soundtro": {
+    "description": "Soundtrack Trolley",
+    "publisher": "Milton Bradley",
+    "year": "1983"
+  },
+  "spacepat": {
+    "description": "Space Patrol",
+    "publisher": "Sunware",
+    "year": "1983"
+  },
+  "span12": {
+    "description": "Key to Spanish 1",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "span34": {
+    "description": "Key to Spanish 3",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "span56": {
+    "description": "Key to Spanish 4",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "spcjourn": {
+    "description": "Space Journey",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "speeched": {
+    "description": "Speech Editor",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "speedrda": {
+    "description": "Speed Reading A",
+    "publisher": "Navarone",
+    "year": "1984"
+  },
+  "speedrdb": {
+    "description": "Speed Reading B",
+    "publisher": "Navarone",
+    "year": "1984"
+  },
+  "spiesdem": {
+    "description": "Spy's Demise",
+    "publisher": "CSI Design Group",
+    "year": "1987"
+  },
+  "springer": {
+    "description": "Springer",
+    "publisher": "Tigervision",
+    "year": "1983"
+  },
+  "stargz1": {
+    "description": "Star Gazer I",
+    "publisher": "Video Magic",
+    "year": "1984"
+  },
+  "stargz2": {
+    "description": "Star Gazer II",
+    "publisher": "Video Magic",
+    "year": "1984"
+  },
+  "stargz3": {
+    "description": "Star Gazer III",
+    "publisher": "Video Magic",
+    "year": "1984"
+  },
+  "starmaze": {
+    "description": "Star Maze",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "starrun": {
+    "description": "Star Runner",
+    "publisher": "DaTaBioTics",
+    "year": "1987"
+  },
+  "startrek": {
+    "description": "Star Trek",
+    "publisher": "Sega Enterprises",
+    "year": "1983"
+  },
+  "starwars": {
+    "description": "Star Wars",
+    "publisher": "John Phillips",
+    "year": "1984"
+  },
+  "statisd": {
+    "description": "Statistik",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "statistc": {
+    "description": "Statistics",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "stnick": {
+    "description": "St. Nick",
+    "publisher": "Funware",
+    "year": "1983"
+  },
+  "storymch": {
+    "description": "Story Machine v1.4",
+    "publisher": "Spinnaker",
+    "year": "1983"
+  },
+  "strike3": {
+    "description": "Strike Three!",
+    "publisher": "John Phillips",
+    "year": "1988"
+  },
+  "subcomm": {
+    "description": "Submarine Commander",
+    "publisher": "Thorn EMI Video",
+    "year": "1983"
+  },
+  "submarin": {
+    "description": "Submarine Battle",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "subseq": {
+    "description": "Milliken Math Sequences - Subtraction",
+    "publisher": "Milliken",
+    "year": "1982"
+  },
+  "sudoku": {
+    "description": "Sudoku",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "supduper": {
+    "description": "Super Duper v1.1",
+    "publisher": "Navarone",
+    "year": "1984"
+  },
+  "supersk": {
+    "description": "Super Sketch - Model G2400",
+    "publisher": "Personal Peripherals",
+    "year": "1984"
+  },
+  "superst": {
+    "description": "Super Storm",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "supsort": {
+    "description": "Super Sort",
+    "publisher": "Navarone",
+    "year": "1983"
+  },
+  "taxrec": {
+    "description": "Tax Investment Record Keeping",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "tennis": {
+    "description": "Micro Tennis",
+    "publisher": "DaTaBioTics",
+    "year": "1983"
+  },
+  "tennisv": {
+    "description": "Tennis",
+    "publisher": "Nicesoft",
+    "year": "1983"
+  },
+  "termemu1": {
+    "description": "Terminal Emulator I",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "termemu2": {
+    "description": "Terminal Emulator II",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "testtrai": {
+    "description": "Testtrainer 1",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "tilebrk": {
+    "description": "Tile Breaker",
+    "publisher": "Magic Software",
+    "year": "19??"
+  },
+  "tiplanr": {
+    "description": "TI Planner",
+    "publisher": "DaTaBioTics",
+    "year": "1987"
+  },
+  "titoad": {
+    "description": "TI-Toad",
+    "publisher": "Software Specialties",
+    "year": "1982"
+  },
+  "tombstn": {
+    "description": "Tombstone City - 21st Century",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "topper83": {
+    "description": "Topper v1",
+    "publisher": "Navarone",
+    "year": "1983"
+  },
+  "topper86": {
+    "description": "Topper v2",
+    "publisher": "Navarone",
+    "year": "1986"
+  },
+  "touchtyp": {
+    "description": "Touch Typing Tutor",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "treaislb": {
+    "description": "Treasure Island (beta)",
+    "publisher": "Deco",
+    "year": "1983"
+  },
+  "treasure": {
+    "description": "Treasure Island",
+    "publisher": "Data East USA",
+    "year": "1983"
+  },
+  "tundoom": {
+    "description": "Tunnels of Doom",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "typo2": {
+    "description": "Typo II",
+    "publisher": "Romox",
+    "year": "1983"
+  },
+  "typoman": {
+    "description": "Typoman",
+    "publisher": "Navarone",
+    "year": "1987"
+  },
+  "uboatde": {
+    "description": "U-Boat Jagd",
+    "publisher": "Saurus",
+    "year": "1984"
+  },
+  "vatacct": {
+    "description": "VAT Accounting",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "verbvip": {
+    "description": "Verb Viper",
+    "publisher": "DLM Academics",
+    "year": "1982"
+  },
+  "vgames1": {
+    "description": "Video Games 1",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "vgames2": {
+    "description": "Mind Challengers",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "vgraphs": {
+    "description": "Video-Graphs",
+    "publisher": "Texas Instruments",
+    "year": "1979"
+  },
+  "videovg": {
+    "description": "Video Vegas",
+    "publisher": "Funware - Romox",
+    "year": "1982"
+  },
+  "vidgamlb": {
+    "description": "Romox Demo",
+    "publisher": "Romox",
+    "year": "1983"
+  },
+  "weight": {
+    "description": "Weight Control & Nutrition",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "windec": {
+    "description": "Decimals 1",
+    "publisher": "Scott, Foresman",
+    "year": "1983"
+  },
+  "windwarb": {
+    "description": "Wing War (beta)",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "wingwar": {
+    "description": "Wing War",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "wordinva": {
+    "description": "Word Invasion",
+    "publisher": "DLM Academics",
+    "year": "1982"
+  },
+  "wordradr": {
+    "description": "Word Radar",
+    "publisher": "DLM Academics",
+    "year": "1982"
+  },
+  "writer": {
+    "description": "TI-Writer",
+    "publisher": "Texas Instruments",
+    "year": "1982"
+  },
+  "writerg": {
+    "description": "TI Writer Gram Disk",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "wumpus": {
+    "description": "Hunt The Wumpus",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "yathzee": {
+    "description": "Yahtzee",
+    "publisher": "Milton Bradley",
+    "year": "1980"
+  },
+  "zerozap": {
+    "description": "Zero Zap",
+    "publisher": "Milton Bradley",
+    "year": "1981"
+  }
+}

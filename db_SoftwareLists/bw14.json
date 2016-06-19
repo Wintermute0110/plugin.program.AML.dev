@@ -1,0 +1,32 @@
+{
+  "calcstar": {
+    "description": "CalcStar v1.45",
+    "publisher": "MicroPro International",
+    "year": "1983"
+  },
+  "cpm30": {
+    "description": "CP/M 3.02",
+    "publisher": "Digital Research Inc.",
+    "year": "1984"
+  },
+  "datastar": {
+    "description": "DataStar v1.41",
+    "publisher": "MicroPro International",
+    "year": "1982"
+  },
+  "datastarc": {
+    "description": "DataStar v1.41c",
+    "publisher": "MicroPro International",
+    "year": "1982"
+  },
+  "repstar": {
+    "description": "ReportStar v1.02",
+    "publisher": "MicroPro International",
+    "year": "1982"
+  },
+  "wordstar": {
+    "description": "WordStar v3.30",
+    "publisher": "MicroPro International",
+    "year": "1983"
+  }
+}

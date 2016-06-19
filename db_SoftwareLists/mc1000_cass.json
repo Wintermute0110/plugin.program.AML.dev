@@ -1,0 +1,142 @@
+{
+  "50progs": {
+    "description": "50 Programas Para Voce",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "analeco": {
+    "description": "Analise Economica",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "analfin": {
+    "description": "Analise Financiera",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "anapatri": {
+    "description": "Analise Patrimonial",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "bataero": {
+    "description": "Batalha Aeronaval",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "batmate": {
+    "description": "Batalha de Matematica",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "calcfin": {
+    "description": "Calculo Financiero",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "calcprec": {
+    "description": "Calculo de Preco de Venda",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "calendar": {
+    "description": "Calendario",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "carro": {
+    "description": "Carro Maluco",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "compara": {
+    "description": "Comparacao de Recitas",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "cursobas": {
+    "description": "Curso de BASIC",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "guerrobo": {
+    "description": "Guerra de Robos",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "invasor": {
+    "description": "Invasores do Espaco",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "jipeguer": {
+    "description": "Jipe de Guerra",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "jogforc2": {
+    "description": "Jogo da Forca II",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "jogforca": {
+    "description": "Jogo da Forca I",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "livroraz": {
+    "description": "Livro Razao Geral",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "manualba": {
+    "description": "Manual do BASIC",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "memoria": {
+    "description": "Jogo de Memoria",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "olimpmat": {
+    "description": "Olimpiada de Matematica",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "othello": {
+    "description": "Othello",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "persegui": {
+    "description": "Perseguicao Policial",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "quebra": {
+    "description": "Quebra Cabecas",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "redepert": {
+    "description": "Rede Pert - Caminho Critico",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "resta": {
+    "description": "Resta Um",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "senha": {
+    "description": "Senha",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  },
+  "teoria": {
+    "description": "Teoria da Estimativa Estatistica",
+    "publisher": "CCE Soft",
+    "year": "198?"
+  }
+}

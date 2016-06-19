@@ -1,0 +1,4792 @@
+{
+  "007goldn": {
+    "description": "007 - GoldenEye (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "007goldnj": {
+    "description": "007 - GoldenEye (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "007goldnu": {
+    "description": "007 - GoldenEye (USA)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "007twine": {
+    "description": "007 - The World Is Not Enough (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "2000"
+  },
+  "007twineu": {
+    "description": "007 - The World Is Not Enough (USA)",
+    "publisher": "Electronic Arts",
+    "year": "2000"
+  },
+  "1080snow": {
+    "description": "1080° Snowboarding (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "1080snowu": {
+    "description": "1080° Snowboarding (Jpn, USA)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "40winks": {
+    "description": "40 Winks (Euro, Prototype)",
+    "publisher": "GT Interactive",
+    "year": "1999"
+  },
+  "64dhtama": {
+    "description": "64 de Hakken!! Tamagotchi - Minna de Tamagotchi World (Jpn)",
+    "publisher": "Bandai",
+    "year": "1997"
+  },
+  "64gbchk": {
+    "description": "64GB Checker (Jpn, v1.05)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "64hana": {
+    "description": "64 Hanafuda - Tenshi no Yakusoku (Jpn)",
+    "publisher": "Altron Corporation",
+    "year": "1999"
+  },
+  "64oozum2": {
+    "description": "64 Oozumou 2 (Jpn)",
+    "publisher": "Bottom Up",
+    "year": "1999"
+  },
+  "64oozumo": {
+    "description": "64 Oozumou (Jpn)",
+    "publisher": "Bottom Up",
+    "year": "1997"
+  },
+  "64trumpc": {
+    "description": "64 Trump Collection - Alice no Wakuwaku Trump World (Jpn)",
+    "publisher": "Bottom Up",
+    "year": "1998"
+  },
+  "aerofgt": {
+    "description": "AeroFighters Assault (Euro)",
+    "publisher": "Video System",
+    "year": "1998"
+  },
+  "aerofgtu": {
+    "description": "AeroFighters Assault (USA)",
+    "publisher": "Video System",
+    "year": "1998"
+  },
+  "aerogaug": {
+    "description": "AeroGauge (Euro)",
+    "publisher": "ASCII Entertainment",
+    "year": "1998"
+  },
+  "aerogaugj": {
+    "description": "AeroGauge (Jpn, Rev. A)",
+    "publisher": "ASCII Entertainment",
+    "year": "1997"
+  },
+  "aerogaugjd": {
+    "description": "AeroGauge (Jpn, Demo Kiosk)",
+    "publisher": "ASCII Entertainment",
+    "year": "1997"
+  },
+  "aerogaugu": {
+    "description": "AeroGauge (USA)",
+    "publisher": "ASCII Entertainment",
+    "year": "1998"
+  },
+  "aidynchr": {
+    "description": "Aidyn Chronicles - The First Mage (Euro)",
+    "publisher": "T*HQ",
+    "year": "2001"
+  },
+  "aidynchru": {
+    "description": "Aidyn Chronicles - The First Mage (USA, Rev. A)",
+    "publisher": "T*HQ",
+    "year": "2001"
+  },
+  "aidynchru1": {
+    "description": "Aidyn Chronicles - The First Mage (USA)",
+    "publisher": "T*HQ",
+    "year": "2001"
+  },
+  "airboard": {
+    "description": "Air Boarder 64 (Euro)",
+    "publisher": "Human Entertainment",
+    "year": "1998"
+  },
+  "airboardj": {
+    "description": "Air Boarder 64 (Jpn)",
+    "publisher": "Human Entertainment",
+    "year": "1998"
+  },
+  "aishogi3": {
+    "description": "AI Shougi 3 (Jpn)",
+    "publisher": "I4",
+    "year": "1998"
+  },
+  "akumajo": {
+    "description": "Akumajou Dracula Mokushiroku - Real Action Adventure (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "akumajog": {
+    "description": "Akumajou Dracula Mokushiroku Gaiden - Legend of Cornell (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "amenairc": {
+    "description": "Army Men - Air Combat (USA)",
+    "publisher": "3DO Company",
+    "year": "2000"
+  },
+  "amensar2": {
+    "description": "Army Men - Sarge's Heroes 2 (USA)",
+    "publisher": "3DO Company",
+    "year": "2000"
+  },
+  "amensarg": {
+    "description": "Army Men - Sarge's Heroes (Euro)",
+    "publisher": "3DO Company",
+    "year": "1999"
+  },
+  "amensargu": {
+    "description": "Army Men - Sarge's Heroes (USA)",
+    "publisher": "3DO Company",
+    "year": "1999"
+  },
+  "armorine": {
+    "description": "Armorines - Project S.W.A.R.M. (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "armorineg": {
+    "description": "Armorines - Project S.W.A.R.M. (Ger)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "armorineu": {
+    "description": "Armorines - Project S.W.A.R.M. (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "arp64": {
+    "description": "Action Replay Pro 64 (Euro, v3.3)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "arp64a": {
+    "description": "Action Replay Pro 64 (Euro, v3.0)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "asbas2k1": {
+    "description": "All-Star Baseball 2001 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "asbase2k": {
+    "description": "All-Star Baseball 2000 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "asbase2ku": {
+    "description": "All-Star Baseball 2000 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "asbase99": {
+    "description": "All-Star Baseball '99 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "asbase99u": {
+    "description": "All-Star Baseball '99 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "astenn99": {
+    "description": "All Star Tennis '99 (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "astenn99u": {
+    "description": "All Star Tennis '99 (USA)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "asteroid": {
+    "description": "Asteroids Hyper 64 (USA)",
+    "publisher": "Crave Entertainment",
+    "year": "1999"
+  },
+  "bakubom2": {
+    "description": "Baku Bomberman 2 (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1999"
+  },
+  "bakubomb": {
+    "description": "Baku Bomberman (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1997"
+  },
+  "bakushou": {
+    "description": "Bakushou Jinsei 64 - Mezase! Resort Ou (Jpn)",
+    "publisher": "Taito Corporation",
+    "year": "1998"
+  },
+  "bam2": {
+    "description": "Bust-A-Move 2 - Arcade Edition (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "bam2u": {
+    "description": "Bust-A-Move 2 - Arcade Edition (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "bam3dx": {
+    "description": "Bust-A-Move 3 DX (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "bam99": {
+    "description": "Bust-A-Move '99 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "bangaioh": {
+    "description": "Bakuretsu Muteki Bangaioh (Jpn)",
+    "publisher": "ESP Software",
+    "year": "1999"
+  },
+  "banjokaz": {
+    "description": "Banjo-Kazooie (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "banjokazj": {
+    "description": "Banjo to Kazooie no Daibouken (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "banjokazu": {
+    "description": "Banjo-Kazooie (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "banjokazu1": {
+    "description": "Banjo-Kazooie (USA)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "banjotoo": {
+    "description": "Banjo-Tooie (Euro)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "banjotooa": {
+    "description": "Banjo-Tooie (Aus)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "banjotooj": {
+    "description": "Banjo to Kazooie no Daibouken 2 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "banjotoou": {
+    "description": "Banjo-Tooie (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "basshunt": {
+    "description": "In-Fisherman - Bass Hunter 64 (Euro)",
+    "publisher": "Take Two Software",
+    "year": "1999"
+  },
+  "basshuntu": {
+    "description": "In-Fisherman - Bass Hunter 64 (USA)",
+    "publisher": "Take Two Software",
+    "year": "1999"
+  },
+  "bassmast": {
+    "description": "Bassmasters 2000 (USA)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "bassrush": {
+    "description": "Bass Rush - ECOGEAR PowerWorm Championship (Jpn)",
+    "publisher": "Visco Corporation",
+    "year": "2000"
+  },
+  "batmnbey": {
+    "description": "Batman Beyond - Return of the Joker (USA)",
+    "publisher": "Ubi Soft",
+    "year": "2000"
+  },
+  "batmnfut": {
+    "description": "Batman of the Future - Return of the Joker (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "2001"
+  },
+  "beastwar": {
+    "description": "Transformers - Beast Wars Transmetals (USA)",
+    "publisher": "BAM! Entertainment",
+    "year": "2000"
+  },
+  "beastwarj": {
+    "description": "Transformers - Beast Wars Metals 64 (Jpn)",
+    "publisher": "Takara",
+    "year": "1999"
+  },
+  "beetlear": {
+    "description": "Beetle Adventure Racing! (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "beetlearj": {
+    "description": "Beetle Adventure Racing! (Jpn)",
+    "publisher": "Electronic Arts Square",
+    "year": "1999"
+  },
+  "beetlearu": {
+    "description": "Beetle Adventure Racing! (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "bigmount": {
+    "description": "Big Mountain 2000 (USA)",
+    "publisher": "South Peak",
+    "year": "2000"
+  },
+  "biofreak": {
+    "description": "Bio F.R.E.A.K.S. (Euro)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "biofreaku": {
+    "description": "Bio F.R.E.A.K.S. (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "biohaz2": {
+    "description": "BioHazard 2 (Jpn)",
+    "publisher": "Capcom",
+    "year": "2000"
+  },
+  "bladestl": {
+    "description": "NHL Blades of Steel '99 (USA)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "blastcrp": {
+    "description": "Blast Corps (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "blastcrpu": {
+    "description": "Blast Corps (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "blastcrpu1": {
+    "description": "Blast Corps (USA)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "blastdoz": {
+    "description": "Blastdozer (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "blitz": {
+    "description": "NFL Blitz (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "blitz2k": {
+    "description": "NFL Blitz 2000 (USA, Rev. A)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "blitz2k1": {
+    "description": "NFL Blitz 2001 (USA)",
+    "publisher": "Midway",
+    "year": "2000"
+  },
+  "blitz2ka": {
+    "description": "NFL Blitz 2000 (USA)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "blitzsp": {
+    "description": "NFL Blitz - Special Edition (USA)",
+    "publisher": "Midway",
+    "year": "2001"
+  },
+  "bluesb2k": {
+    "description": "Blues Brothers 2000 (Euro)",
+    "publisher": "Titus",
+    "year": "2000"
+  },
+  "bluesb2ku": {
+    "description": "Blues Brothers 2000 (USA)",
+    "publisher": "Virgin Interactive",
+    "year": "2000"
+  },
+  "bodyharv": {
+    "description": "Body Harvest (Euro)",
+    "publisher": "Gremlin Interactive",
+    "year": "1998"
+  },
+  "bodyharvu": {
+    "description": "Body Harvest (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "bokujom2": {
+    "description": "Bokujou Monogatari 2 (Jpn, Rev. B)",
+    "publisher": "Pack In Soft",
+    "year": "1999"
+  },
+  "bokujom2a": {
+    "description": "Bokujou Monogatari 2 (Jpn, Rev. A)",
+    "publisher": "Pack In Soft",
+    "year": "1999"
+  },
+  "bokujom2b": {
+    "description": "Bokujou Monogatari 2 (Jpn)",
+    "publisher": "Pack In Soft",
+    "year": "1999"
+  },
+  "bombhero": {
+    "description": "Bomberman Hero (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "bombheroj": {
+    "description": "Bomberman Hero - Mirian Oujo wo Sukue! (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1998"
+  },
+  "bombherou": {
+    "description": "Bomberman Hero (USA)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "bombm2nd": {
+    "description": "Bomberman 64 - The Second Attack! (USA)",
+    "publisher": "Vatical Entertainment",
+    "year": "2000"
+  },
+  "bombmn64": {
+    "description": "Bomberman 64 (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "bombmn64u": {
+    "description": "Bomberman 64 (USA)",
+    "publisher": "Hudson Soft",
+    "year": "1997"
+  },
+  "bombmnae": {
+    "description": "Bomberman 64 - Arcade Edition (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "2001"
+  },
+  "bottom9": {
+    "description": "Bottom of the 9th (USA)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "brunswik": {
+    "description": "Brunswick Circuit Pro Bowling (USA)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "btanx": {
+    "description": "BattleTanx (USA)",
+    "publisher": "3DO Company",
+    "year": "1998"
+  },
+  "buckbumb": {
+    "description": "Buck Bumble (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "1998"
+  },
+  "buckbumbj": {
+    "description": "Buck Bumble (Jpn)",
+    "publisher": "Ubi Soft",
+    "year": "1998"
+  },
+  "buckbumbu": {
+    "description": "Buck Bumble (USA)",
+    "publisher": "Ubi Soft",
+    "year": "1998"
+  },
+  "bugslife": {
+    "description": "A Bug's Life (Euro)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "bugslifef": {
+    "description": "A Bug's Life (Fra)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "bugslifeg": {
+    "description": "A Bug's Life (Ger)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "bugslifei": {
+    "description": "A Bug's Life (Ita)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "bugslifeu": {
+    "description": "A Bug's Life (USA)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "bzone": {
+    "description": "Battlezone - Rise of the Black Dogs (USA)",
+    "publisher": "Crave Entertainment",
+    "year": "2000"
+  },
+  "calspeed": {
+    "description": "California Speed (USA)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "calspeedp": {
+    "description": "California Speed (Euro, Prototype)",
+    "publisher": "Midway",
+    "year": "1999?"
+  },
+  "carmgedd": {
+    "description": "Carmageddon 64 (Euro, English / French / German / Spanish)",
+    "publisher": "Virgin Interactive",
+    "year": "1999"
+  },
+  "carmgedda": {
+    "description": "Carmageddon 64 (Euro, English / French / Italian / Spanish)",
+    "publisher": "Virgin Interactive",
+    "year": "1999"
+  },
+  "carmgeddu": {
+    "description": "Carmageddon 64 (USA)",
+    "publisher": "Titus",
+    "year": "2000"
+  },
+  "ccourt": {
+    "description": "Centre Court Tennis (Euro)",
+    "publisher": "BigBen Interactive",
+    "year": "1999"
+  },
+  "charlieb": {
+    "description": "Charlie Blast's Territory (Euro)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "charliebu": {
+    "description": "Charlie Blast's Territory (USA)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "chopatck": {
+    "description": "Chopper Attack (Euro)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "chopatcku": {
+    "description": "Chopper Attack (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "choroq": {
+    "description": "Choro Q 64 (Jpn)",
+    "publisher": "Takara",
+    "year": "1998"
+  },
+  "choroq2": {
+    "description": "Choro Q 64 II - Hacha Mecha Grand Prix Race (Jpn)",
+    "publisher": "Takara",
+    "year": "1999"
+  },
+  "chtwist": {
+    "description": "Chameleon Twist (Euro)",
+    "publisher": "Sunsoft",
+    "year": "1997"
+  },
+  "chtwist2": {
+    "description": "Chameleon Twist 2 (Euro)",
+    "publisher": "Sunsoft",
+    "year": "1998"
+  },
+  "chtwist2j": {
+    "description": "Chameleon Twist 2 (Jpn)",
+    "publisher": "Japan System Supply",
+    "year": "1998"
+  },
+  "chtwist2u": {
+    "description": "Chameleon Twist 2 (USA)",
+    "publisher": "Sunsoft",
+    "year": "1999"
+  },
+  "chtwistj": {
+    "description": "Chameleon Twist (Jpn)",
+    "publisher": "Japan System Supply",
+    "year": "1997"
+  },
+  "chtwistu": {
+    "description": "Chameleon Twist (USA, Rev. A)",
+    "publisher": "Sunsoft",
+    "year": "1998"
+  },
+  "chtwistu1": {
+    "description": "Chameleon Twist (USA)",
+    "publisher": "Sunsoft",
+    "year": "1998"
+  },
+  "citytour": {
+    "description": "City-Tour GP - Zennihon GT Senshuken (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1998"
+  },
+  "cknight": {
+    "description": "Chou Kuukan Nighter Pro Yakyuu King (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1996"
+  },
+  "cknight2": {
+    "description": "Chou Kuukan Nighter Pro Yakyuu King 2 (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1999"
+  },
+  "clayfg63": {
+    "description": "Clay Fighter 63 1/3 (Euro)",
+    "publisher": "Interplay",
+    "year": "1997"
+  },
+  "clayfg63u": {
+    "description": "Clay Fighter 63 1/3 (USA)",
+    "publisher": "Interplay",
+    "year": "1997"
+  },
+  "clayfg63ub": {
+    "description": "Clay Fighter 63 1/3 (USA, Prototype)",
+    "publisher": "Interplay",
+    "year": "1997"
+  },
+  "clayfght": {
+    "description": "Clay Fighter - Sculptor's Cut (USA)",
+    "publisher": "Interplay",
+    "year": "1998"
+  },
+  "collegeh": {
+    "description": "Fox Sports College Hoops '99 (USA)",
+    "publisher": "Fox Interactive",
+    "year": "1998"
+  },
+  "commconq": {
+    "description": "Command & Conquer (Euro)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "commconqg": {
+    "description": "Command & Conquer (Ger)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "commconqu": {
+    "description": "Command & Conquer (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "conker": {
+    "description": "Conker's Bad Fur Day (Euro)",
+    "publisher": "T*HQ",
+    "year": "2001"
+  },
+  "conkerd": {
+    "description": "Conker's Bad Fur Day (ECTS Demo)",
+    "publisher": "Rare",
+    "year": "2001?"
+  },
+  "conkerdh": {
+    "description": "Conker's Bad Fur Day (ECTS Demo, Decrypted)",
+    "publisher": "Rare",
+    "year": "2001?"
+  },
+  "conkerp": {
+    "description": "Conker's Bad Fur Day (Prototype Debug)",
+    "publisher": "Rare",
+    "year": "2001?"
+  },
+  "conkerph": {
+    "description": "Conker's Bad Fur Day (Prototype Debug, Decrypted)",
+    "publisher": "Rare",
+    "year": "2001?"
+  },
+  "conkeru": {
+    "description": "Conker's Bad Fur Day (USA)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "crusnexo": {
+    "description": "Cruis'n Exotica (USA)",
+    "publisher": "Midway",
+    "year": "2000"
+  },
+  "crusnusa": {
+    "description": "Cruis'n USA (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "crusnusau": {
+    "description": "Cruis'n USA (USA, Rev. B)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "crusnusau1": {
+    "description": "Cruis'n USA (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "crusnusau2": {
+    "description": "Cruis'n USA (USA)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "crusnwld": {
+    "description": "Cruis'n World (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "crusnwldu": {
+    "description": "Cruis'n World (USA)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "custrob2": {
+    "description": "Custom Robo V2 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "custrobo": {
+    "description": "Custom Robo (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "cvania": {
+    "description": "Castlevania (Euro)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "cvaniald": {
+    "description": "Castlevania - Legacy of Darkness (Euro)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "cvanialdu": {
+    "description": "Castlevania - Legacy of Darkness (USA)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "cvaniau": {
+    "description": "Castlevania (USA, Rev. B)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "cvaniau1": {
+    "description": "Castlevania (USA, Rev. A)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "cvaniau2": {
+    "description": "Castlevania (USA)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "cybertgr": {
+    "description": "CyberTiger (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "2000"
+  },
+  "cybertgru": {
+    "description": "CyberTiger (USA)",
+    "publisher": "Electronic Arts",
+    "year": "2000"
+  },
+  "daikatan": {
+    "description": "John Romero's Daikatana (Euro)",
+    "publisher": "Kemco",
+    "year": "2000"
+  },
+  "daikatanj": {
+    "description": "John Romero's Daikatana (Jpn)",
+    "publisher": "Kemco",
+    "year": "2000"
+  },
+  "daikatanu": {
+    "description": "John Romero's Daikatana (USA)",
+    "publisher": "Kemco",
+    "year": "2000"
+  },
+  "darkrift": {
+    "description": "Dark Rift (Euro)",
+    "publisher": "Vic Tokai",
+    "year": "1997"
+  },
+  "darkriftu": {
+    "description": "Dark Rift (USA)",
+    "publisher": "Vic Tokai",
+    "year": "1997"
+  },
+  "dderby": {
+    "description": "Destruction Derby 64 (Euro)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "dderbyu": {
+    "description": "Destruction Derby 64 (USA)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "ddrdisny": {
+    "description": "Dance Dance Revolution - Disney Dancing Museum (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "deadly": {
+    "description": "Deadly Arts (USA)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "dendeg64": {
+    "description": "Densha de Go! 64 (Jpn)",
+    "publisher": "Taito Corporation",
+    "year": "1999"
+  },
+  "dezaemon": {
+    "description": "Dezaemon 3D (Jpn)",
+    "publisher": "Athena",
+    "year": "1998"
+  },
+  "dinho64": {
+    "description": "Mundial Ronaldinho Soccer 64 (Bra)",
+    "publisher": "<pirate>",
+    "year": "1998"
+  },
+  "dk64": {
+    "description": "Donkey Kong 64 (Euro)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "dk64j": {
+    "description": "Donkey Kong 64 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "dk64u": {
+    "description": "Donkey Kong 64 (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "dk64ud": {
+    "description": "Donkey Kong 64 (USA, Demo Kiosk)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "dkracing": {
+    "description": "Diddy Kong Racing (Euro, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "dkracing1": {
+    "description": "Diddy Kong Racing (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "dkracingj": {
+    "description": "Diddy Kong Racing (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "dkracingu": {
+    "description": "Diddy Kong Racing (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "dkracingu1": {
+    "description": "Diddy Kong Racing (USA)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "dlpnctrl": {
+    "description": "Dolphin Controller Test (Jpn)",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "doom64": {
+    "description": "Doom 64 (Euro)",
+    "publisher": "GT Interactive",
+    "year": "1997"
+  },
+  "doom64j": {
+    "description": "Doom 64 (Jpn)",
+    "publisher": "GameBank",
+    "year": "1997"
+  },
+  "doom64u": {
+    "description": "Doom 64 (USA, Rev. A)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "doom64u1": {
+    "description": "Doom 64 (USA)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "doraemn2": {
+    "description": "Doraemon 2 - Nobita to Hikari no Shinden (Jpn)",
+    "publisher": "Epoch",
+    "year": "1998"
+  },
+  "doraemn3": {
+    "description": "Doraemon 3 - Nobita no Machi SOS! (Jpn)",
+    "publisher": "Epoch",
+    "year": "2000"
+  },
+  "doraemon": {
+    "description": "Doraemon - Nobita to 3tsu no Seireiseki (Jpn)",
+    "publisher": "Epoch",
+    "year": "1997"
+  },
+  "doubutsu": {
+    "description": "Doubutsu no Mori (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "drmario": {
+    "description": "Dr. Mario 64 (USA)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "dstall64": {
+    "description": "Derby Stallion 64 (Jpn)",
+    "publisher": "Media Factory",
+    "year": "2001"
+  },
+  "dstall64p": {
+    "description": "Derby Stallion 64 (Jpn, Prototype)",
+    "publisher": "Media Factory",
+    "year": "2001"
+  },
+  "dsword": {
+    "description": "Dragon Sword (Prototype)",
+    "publisher": "Interactive Studios / Blitzgames",
+    "year": "1998"
+  },
+  "dualhero": {
+    "description": "Dual Heroes (Euro)",
+    "publisher": "Hudson Soft",
+    "year": "1998"
+  },
+  "dualheroj": {
+    "description": "Dual Heroes (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1997"
+  },
+  "dualherou": {
+    "description": "Dual Heroes (USA)",
+    "publisher": "Electro Brain",
+    "year": "1998"
+  },
+  "duckdodg": {
+    "description": "Daffy Duck Starring as Duck Dodgers (Euro)",
+    "publisher": "Infogrames",
+    "year": "2000"
+  },
+  "duckdodgu": {
+    "description": "Duck Dodgers Starring Daffy Duck (USA)",
+    "publisher": "Infogrames",
+    "year": "2000"
+  },
+  "duckdodgub": {
+    "description": "Duck Dodgers Starring Daffy Duck (USA, Prototype)",
+    "publisher": "Infogrames",
+    "year": "2000"
+  },
+  "dukenk64": {
+    "description": "Duke Nukem 64 (Euro)",
+    "publisher": "GT Interactive",
+    "year": "1997"
+  },
+  "dukenk64f": {
+    "description": "Duke Nukem 64 (Fra)",
+    "publisher": "GT Interactive",
+    "year": "1997"
+  },
+  "dukenk64u": {
+    "description": "Duke Nukem 64 (USA)",
+    "publisher": "GT Interactive",
+    "year": "1997"
+  },
+  "dukenkzh": {
+    "description": "Duke Nukem - Zero Hour (Euro)",
+    "publisher": "GT Interactive",
+    "year": "1999"
+  },
+  "dukenkzhf": {
+    "description": "Duke Nukem - Zero Hour (Fra)",
+    "publisher": "GT Interactive",
+    "year": "1999"
+  },
+  "dukenkzhu": {
+    "description": "Duke Nukem - Zero Hour (USA)",
+    "publisher": "GT Interactive",
+    "year": "1999"
+  },
+  "ecwhard": {
+    "description": "ECW Hardcore Revolution (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "ecwhardu": {
+    "description": "ECW Hardcore Revolution (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "eikousa": {
+    "description": "Eikou no Saint Andrews (Jpn)",
+    "publisher": "Seta Corporation",
+    "year": "1996"
+  },
+  "ejim3d": {
+    "description": "Earthworm Jim 3D (Euro)",
+    "publisher": "Rockstar Games",
+    "year": "1999"
+  },
+  "ejim3du": {
+    "description": "Earthworm Jim 3D (USA)",
+    "publisher": "Rockstar Games",
+    "year": "1999"
+  },
+  "elmolett": {
+    "description": "Elmo's Letter Adventure (USA)",
+    "publisher": "NewKidCo",
+    "year": "1999"
+  },
+  "elmonumb": {
+    "description": "Elmo's Number Journey (USA)",
+    "publisher": "NewKidCo",
+    "year": "1999"
+  },
+  "eltale": {
+    "description": "Eltale Monsters (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1999"
+  },
+  "evangeln": {
+    "description": "Neon Genesis Evangelion (Jpn)",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "excitbik": {
+    "description": "Excitebike 64 (Euro)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "excitbikj": {
+    "description": "Excitebike 64 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "excitbiku": {
+    "description": "Excitebike 64 (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "excitbiku1": {
+    "description": "Excitebike 64 (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "excitbikud": {
+    "description": "Excitebike 64 (USA, Demo Kiosk)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "extremeg": {
+    "description": "Extreme-G (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "extremegj": {
+    "description": "Extreme-G (Jpn)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "extremegu": {
+    "description": "Extreme-G (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "extremg2": {
+    "description": "Extreme-G XG2 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "extremg2j": {
+    "description": "Extreme-G XG2 (Jpn)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "extremg2u": {
+    "description": "Extreme-G XG2 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "f1polepo": {
+    "description": "F1 Pole Position 64 (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "1997"
+  },
+  "f1polepou": {
+    "description": "F1 Pole Position 64 (USA)",
+    "publisher": "Ubi Soft",
+    "year": "1997"
+  },
+  "f1racing": {
+    "description": "F1 Racing Championship (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "2000"
+  },
+  "f1racingb": {
+    "description": "F1 Racing Championship (Bra)",
+    "publisher": "Ubi Soft?",
+    "year": "2000"
+  },
+  "f1wgp": {
+    "description": "F-1 World Grand Prix (Euro)",
+    "publisher": "Video System",
+    "year": "1998"
+  },
+  "f1wgp2": {
+    "description": "F-1 World Grand Prix II (Euro)",
+    "publisher": "Video System",
+    "year": "1999"
+  },
+  "f1wgpf": {
+    "description": "F-1 World Grand Prix (Fra)",
+    "publisher": "Video System",
+    "year": "1998"
+  },
+  "f1wgpg": {
+    "description": "F-1 World Grand Prix (Ger)",
+    "publisher": "Video System",
+    "year": "1998"
+  },
+  "f1wgpj": {
+    "description": "F-1 World Grand Prix (Jpn)",
+    "publisher": "Video System",
+    "year": "1998"
+  },
+  "f1wgpp": {
+    "description": "F-1 World Grand Prix (Euro, Prototype)",
+    "publisher": "Video System",
+    "year": "1998"
+  },
+  "f1wgpu": {
+    "description": "F-1 World Grand Prix (USA)",
+    "publisher": "Video System",
+    "year": "1998"
+  },
+  "famista": {
+    "description": "Famista 64 (Jpn)",
+    "publisher": "Namco",
+    "year": "1997"
+  },
+  "fcmaniax": {
+    "description": "Kakutou Denshou - F-Cup Maniax (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1999"
+  },
+  "fifa": {
+    "description": "FIFA Soccer 64 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1997"
+  },
+  "fifa98": {
+    "description": "FIFA - Road to World Cup 98 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1997"
+  },
+  "fifa98j": {
+    "description": "FIFA - Road to World Cup 98 - World Cup e no Michi (Jpn)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "fifa98u": {
+    "description": "FIFA - Road to World Cup 98 (USA, Brazil)",
+    "publisher": "Electronic Arts",
+    "year": "1997"
+  },
+  "fifa99": {
+    "description": "FIFA 99 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "fifa99u": {
+    "description": "FIFA 99 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "fifau": {
+    "description": "FIFA Soccer 64 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1997"
+  },
+  "fightcup": {
+    "description": "Fighting Cup (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1998"
+  },
+  "fightds2": {
+    "description": "Fighter Destiny 2 (USA)",
+    "publisher": "South Peak",
+    "year": "2000"
+  },
+  "fightdst": {
+    "description": "Fighters Destiny (Euro)",
+    "publisher": "Ocean",
+    "year": "1998"
+  },
+  "fightdstf": {
+    "description": "Fighters Destiny (Fra)",
+    "publisher": "Ocean",
+    "year": "1998"
+  },
+  "fightdstg": {
+    "description": "Fighters Destiny (Ger)",
+    "publisher": "Ocean",
+    "year": "1998"
+  },
+  "fightdstu": {
+    "description": "Fighters Destiny (USA)",
+    "publisher": "Ocean",
+    "year": "1998"
+  },
+  "fightfrc": {
+    "description": "Fighting Force 64 (Euro)",
+    "publisher": "Crave Entertainment",
+    "year": "1999"
+  },
+  "fightfrcu": {
+    "description": "Fighting Force 64 (USA)",
+    "publisher": "Crave Entertainment",
+    "year": "1998"
+  },
+  "flyindrg": {
+    "description": "Flying Dragon (Euro)",
+    "publisher": "Natsume",
+    "year": "1998"
+  },
+  "flyindrgu": {
+    "description": "Flying Dragon (USA)",
+    "publisher": "Natsume",
+    "year": "1998"
+  },
+  "forsaken": {
+    "description": "Forsaken 64 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "forsakeng": {
+    "description": "Forsaken 64 (Ger)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "forsakenu": {
+    "description": "Forsaken 64 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "frogger2": {
+    "description": "Frogger 2 (USA, Prototype Rev. A)",
+    "publisher": "Hasbro Interactive",
+    "year": "1999"
+  },
+  "furaish2": {
+    "description": "Fushigi no Dungeon - Fuurai no Shiren 2 - Oni Shuurai! Shiren Jou! (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "fzerox": {
+    "description": "F-Zero X (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "fzeroxj": {
+    "description": "F-Zero X (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "fzeroxu": {
+    "description": "F-Zero X (USA)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "gasp": {
+    "description": "G.A.S.P!! Fighters' NEXTream (Euro)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "gaspj": {
+    "description": "G.A.S.P!! Fighters' NEXTream (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "gauntleg": {
+    "description": "Gauntlet Legends (Euro)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "gauntlegj": {
+    "description": "Gauntlet Legends (Jpn)",
+    "publisher": "Epoch",
+    "year": "2000"
+  },
+  "gauntlegu": {
+    "description": "Gauntlet Legends (USA)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "gboost": {
+    "description": "GameBooster 64 (Euro, v1.1)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "gboostu": {
+    "description": "GameBooster 64 (USA, v1.1)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "gettlove": {
+    "description": "Getter Love!! Cho Renai Party Game (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1998"
+  },
+  "gex3": {
+    "description": "Gex 3 - Deep Cover Gecko (Euro, English / Italian / Spanish)",
+    "publisher": "Crave Entertainment",
+    "year": "1998"
+  },
+  "gex3a": {
+    "description": "Gex 3 - Deep Cover Gecko (Euro, French / German)",
+    "publisher": "Crave Entertainment",
+    "year": "1998"
+  },
+  "gex3u": {
+    "description": "Gex 3 - Deep Cover Gecko (USA)",
+    "publisher": "Crave Entertainment",
+    "year": "1999"
+  },
+  "gex64": {
+    "description": "Gex 64 - Enter the Gecko (Euro)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "gex64u": {
+    "description": "Gex 64 - Enter the Gecko (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "ggoemddd": {
+    "description": "Ganbare Goemon - Dero Dero Douchuu Obake Tenkomori (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "ggoemneo": {
+    "description": "Ganbare Goemon - Neo Momoyama Bakufu no Odori (Jpn)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "globassl": {
+    "description": "BattleTanx - Global Assault (Euro)",
+    "publisher": "3DO Company",
+    "year": "1999"
+  },
+  "globasslu": {
+    "description": "BattleTanx - Global Assault (USA)",
+    "publisher": "3DO Company",
+    "year": "1999"
+  },
+  "glover": {
+    "description": "Glover (Euro)",
+    "publisher": "Hasbro Interactive",
+    "year": "1998"
+  },
+  "glover2": {
+    "description": "Glover 2 (Prototype, Newer)",
+    "publisher": "Hasbro Interactive",
+    "year": "1999"
+  },
+  "glover2o": {
+    "description": "Glover 2 (Prototype)",
+    "publisher": "Hasbro Interactive",
+    "year": "1999"
+  },
+  "gloverp": {
+    "description": "Glover (Prototype, 1998-07-16)",
+    "publisher": "Hasbro Interactive",
+    "year": "1998"
+  },
+  "gloveru": {
+    "description": "Glover (USA)",
+    "publisher": "Hasbro Interactive",
+    "year": "1998"
+  },
+  "goemnadv": {
+    "description": "Goemon's Great Adventure (USA)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "goemnsug": {
+    "description": "Goemon - Mononoke Sugoroku (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "goinquak": {
+    "description": "Donald Duck - Goin' Quackers (USA)",
+    "publisher": "Ubi Soft",
+    "year": "2000"
+  },
+  "goldnugg": {
+    "description": "Golden Nugget 64 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "gshark": {
+    "description": "GameShark Pro (USA, v3.3)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "gsharka": {
+    "description": "GameShark Pro (USA, v2.0)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "gt64": {
+    "description": "GT64 - Championship Edition (Euro)",
+    "publisher": "Ocean",
+    "year": "1998"
+  },
+  "gt64u": {
+    "description": "GT64 - Championship Edition (USA)",
+    "publisher": "Ocean",
+    "year": "1998"
+  },
+  "hamstmon": {
+    "description": "Hamster Monogatari 64 (Jpn)",
+    "publisher": "Culture Brain",
+    "year": "2001"
+  },
+  "harukana": {
+    "description": "Harukanaru Augusta - Masters '98 (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1997"
+  },
+  "harvmoon": {
+    "description": "Harvest Moon 64 (USA)",
+    "publisher": "Natsume",
+    "year": "1999"
+  },
+  "heiwapw": {
+    "description": "Heiwa Pachinko World 64 (Jpn)",
+    "publisher": "Shouei System",
+    "year": "1997"
+  },
+  "hercules": {
+    "description": "Hercules - The Legendary Journeys (Euro)",
+    "publisher": "Titus",
+    "year": "2000"
+  },
+  "herculesu": {
+    "description": "Hercules - The Legendary Journeys (USA)",
+    "publisher": "Titus",
+    "year": "2000"
+  },
+  "hexen": {
+    "description": "Hexen (Euro)",
+    "publisher": "GT Interactive",
+    "year": "1997"
+  },
+  "hexenf": {
+    "description": "Hexen (Fra)",
+    "publisher": "GT Interactive",
+    "year": "1997"
+  },
+  "hexeng": {
+    "description": "Hexen (Ger)",
+    "publisher": "GT Interactive",
+    "year": "1997"
+  },
+  "hexenj": {
+    "description": "Hexen (Jpn)",
+    "publisher": "GameBank",
+    "year": "1997"
+  },
+  "hexenu": {
+    "description": "Hexen (USA)",
+    "publisher": "GT Interactive",
+    "year": "1997"
+  },
+  "heypika": {
+    "description": "Hey You, Pikachu! (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "hiryuken": {
+    "description": "Hiryuu no Ken Twin (Jpn)",
+    "publisher": "Culture Brain",
+    "year": "1997"
+  },
+  "holymagc": {
+    "description": "Holy Magic Century (Euro)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "holymagcf": {
+    "description": "Holy Magic Century (Fra)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "holymagcg": {
+    "description": "Holy Magic Century (Ger)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "hotwheel": {
+    "description": "Hot Wheels - Turbo Racing (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "hotwheelu": {
+    "description": "Hot Wheels - Turbo Racing (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "hsvadvr": {
+    "description": "HSV Adventure Racing! (Aus)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "humangp": {
+    "description": "Human Grand Prix - The New Generation (Jpn)",
+    "publisher": "Human Entertainment",
+    "year": "1997"
+  },
+  "hybridh": {
+    "description": "Hybrid Heaven (Euro)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "hybridhj": {
+    "description": "Hybrid Heaven (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "hybridhu": {
+    "description": "Hybrid Heaven (USA)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "hydroth": {
+    "description": "Hydro Thunder (Euro)",
+    "publisher": "Midway",
+    "year": "2000"
+  },
+  "hydrothf": {
+    "description": "Hydro Thunder (Fra)",
+    "publisher": "Midway",
+    "year": "2000"
+  },
+  "hydrothu": {
+    "description": "Hydro Thunder (USA)",
+    "publisher": "Midway",
+    "year": "2000"
+  },
+  "ideyosuk": {
+    "description": "Ide Yousuke no Mahjong Juku (Jpn)",
+    "publisher": "Seta Corporation",
+    "year": "2000"
+  },
+  "iggyreck": {
+    "description": "Iggy's Reckin' Balls (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "iggyreckj": {
+    "description": "Iggy-kun no Bura Bura Poyon (Jpn)",
+    "publisher": "Acclaim Japan",
+    "year": "1998"
+  },
+  "iggyrecku": {
+    "description": "Iggy's Reckin' Balls (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "indy2k": {
+    "description": "Indy Racing 2000 (USA)",
+    "publisher": "Infogrames",
+    "year": "2000"
+  },
+  "indyinfm": {
+    "description": "Indiana Jones and the Infernal Machine (Euro, Prototype)",
+    "publisher": "LucasArts",
+    "year": "2000"
+  },
+  "indyinfmu": {
+    "description": "Indiana Jones and the Infernal Machine (USA)",
+    "publisher": "LucasArts",
+    "year": "2000"
+  },
+  "iss2k": {
+    "description": "International Superstar Soccer 2000 (Euro, English / German)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "iss2ka": {
+    "description": "International Superstar Soccer 2000 (Euro, French / Italian)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "iss2ku": {
+    "description": "International Superstar Soccer 2000 (USA)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "iss64": {
+    "description": "International Superstar Soccer 64 (Euro)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "iss64u": {
+    "description": "International Superstar Soccer 64 (USA)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "iss98": {
+    "description": "International Superstar Soccer '98 (Euro)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "iss98u": {
+    "description": "International Superstar Soccer '98 (USA)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "itf": {
+    "description": "International Track & Field - Summer Games (Euro)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "itfu": {
+    "description": "International Track & Field 2000 (USA)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "itoishig": {
+    "description": "Itoi Shigesato no Bass Tsuri No. 1 Kettei Ban! (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "jangsim": {
+    "description": "Jangou Simulation Mahjong Dou 64 (Jpn)",
+    "publisher": "Video System",
+    "year": "1997"
+  },
+  "jeopardy": {
+    "description": "Jeopardy! (USA)",
+    "publisher": "GameTek",
+    "year": "1998"
+  },
+  "jetforce": {
+    "description": "Jet Force Gemini (Euro)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "jetforceu": {
+    "description": "Jet Force Gemini (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "jetforceu1": {
+    "description": "Jet Force Gemini (USA, Demo Kiosk)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "jikkg1": {
+    "description": "Jikkyou GI Stable (Jpn, Rev. A)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "jikkg1a": {
+    "description": "Jikkyou GI Stable (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "jikkjl99": {
+    "description": "Jikkyou J.League 1999 - Perfect Striker 2 (Jpn, Rev. A)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "jikkjl99a": {
+    "description": "Jikkyou J.League 1999 - Perfect Striker 2 (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "jikkjlea": {
+    "description": "Jikkyou J.League Perfect Striker (Jpn)",
+    "publisher": "Konami",
+    "year": "1996"
+  },
+  "jikksc98": {
+    "description": "Jikkyou World Soccer - World Cup France '98 (Jpn, Rev. B)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "jikksc98a": {
+    "description": "Jikkyou World Soccer - World Cup France '98 (Jpn, Rev. A)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "jikksc98b": {
+    "description": "Jikkyou World Soccer - World Cup France '98 (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "jikkscr3": {
+    "description": "Jikkyou World Soccer 3 (Jpn)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "jinsei64": {
+    "description": "Jinsei Game 64 (Jpn)",
+    "publisher": "Takara",
+    "year": "1999"
+  },
+  "jldyna64": {
+    "description": "J.League Dynamite Soccer 64 (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1997"
+  },
+  "jleleven": {
+    "description": "J.League Eleven Beat 1997 (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1997"
+  },
+  "jllive64": {
+    "description": "J.League Live 64 (Jpn)",
+    "publisher": "Electronic Arts Victor",
+    "year": "1997"
+  },
+  "jltactic": {
+    "description": "J.League Tactics Soccer (Jpn, Rev. A)",
+    "publisher": "ASCII Entertainment",
+    "year": "1999"
+  },
+  "jltactic1": {
+    "description": "J.League Tactics Soccer (Jpn)",
+    "publisher": "ASCII Entertainment",
+    "year": "1999"
+  },
+  "jmcgrath": {
+    "description": "Jeremy McGrath Supercross 2000 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "jmcgrathu": {
+    "description": "Jeremy McGrath Supercross 2000 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "kengriff": {
+    "description": "Ken Griffey Jr.'s Slugfest (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "kigold": {
+    "description": "Killer Instinct Gold (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "kigoldu": {
+    "description": "Killer Instinct Gold (USA, Rev. B)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "kigoldu1": {
+    "description": "Killer Instinct Gold (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "kigoldu2": {
+    "description": "Killer Instinct Gold (USA)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "kinghill": {
+    "description": "King Hill 64 - Extreme Snowboarding (Jpn)",
+    "publisher": "Kemco",
+    "year": "1998"
+  },
+  "kiratt64": {
+    "description": "Kiratto Kaiketsu! 64 Tanteidan (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1998"
+  },
+  "kirby64": {
+    "description": "Kirby 64 - The Crystal Shards (Euro)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "kirby64j": {
+    "description": "Hoshi no Kirby 64 (Jpn, Rev. C)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "kirby64j1": {
+    "description": "Hoshi no Kirby 64 (Jpn, Rev. B)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "kirby64j2": {
+    "description": "Hoshi no Kirby 64 (Jpn, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "kirby64j3": {
+    "description": "Hoshi no Kirby 64 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "kirby64u": {
+    "description": "Kirby 64 - The Crystal Shards (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "kk2000": {
+    "description": "Knockout Kings 2000 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "kk2000u": {
+    "description": "Knockout Kings 2000 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "knifeedg": {
+    "description": "Knife Edge - Nose Gunner (Euro)",
+    "publisher": "Kemco",
+    "year": "1998"
+  },
+  "knifeedgj": {
+    "description": "Knife Edge - Nose Gunner (Jpn)",
+    "publisher": "Kemco",
+    "year": "1998"
+  },
+  "knifeedgu": {
+    "description": "Knife Edge - Nose Gunner (USA)",
+    "publisher": "Kemco",
+    "year": "1998"
+  },
+  "kobenba": {
+    "description": "Kobe Bryant in NBA Courtside (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "kobenbau": {
+    "description": "Kobe Bryant's NBA Courtside (USA)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "lamborg": {
+    "description": "Automobili Lamborghini (Euro)",
+    "publisher": "Titus",
+    "year": "1997"
+  },
+  "lamborgu": {
+    "description": "Automobili Lamborghini (USA)",
+    "publisher": "Titus",
+    "year": "1997"
+  },
+  "lastleg": {
+    "description": "Last Legion UX (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1999"
+  },
+  "ldrun3d": {
+    "description": "Lode Runner 3-D (Euro)",
+    "publisher": "Infogrames",
+    "year": "1999"
+  },
+  "ldrun3dj": {
+    "description": "Lode Runner 3-D (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1999"
+  },
+  "ldrun3du": {
+    "description": "Lode Runner 3-D (USA)",
+    "publisher": "Infogrames",
+    "year": "1999"
+  },
+  "legoracr": {
+    "description": "LEGO Racers (Euro)",
+    "publisher": "LEGO Media",
+    "year": "1999"
+  },
+  "legoracru": {
+    "description": "LEGO Racers (USA)",
+    "publisher": "LEGO Media",
+    "year": "1999"
+  },
+  "letsmash": {
+    "description": "Let's Smash (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1998"
+  },
+  "lylatwar": {
+    "description": "Lylat Wars (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "lylatwara": {
+    "description": "Lylat Wars (Aus)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "mace": {
+    "description": "Mace - The Dark Age (Euro)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "maceu": {
+    "description": "Mace - The Dark Age (USA)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "madden2k": {
+    "description": "Madden NFL 2000 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "madden64": {
+    "description": "Madden Football 64 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1997"
+  },
+  "madden64u": {
+    "description": "Madden Football 64 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1997"
+  },
+  "madden99": {
+    "description": "Madden NFL 99 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "madden99u": {
+    "description": "Madden NFL 99 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "maddn2k1": {
+    "description": "Madden NFL 2001 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "2000"
+  },
+  "maddn2k2": {
+    "description": "Madden NFL 2002 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "2001"
+  },
+  "mahjong": {
+    "description": "Mahjong 64 (Jpn)",
+    "publisher": "Koei",
+    "year": "1997"
+  },
+  "majleag": {
+    "description": "Major League Baseball featuring Ken Griffey Jr. (Aus)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "majleagu": {
+    "description": "Major League Baseball featuring Ken Griffey Jr. (USA)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "marioglf": {
+    "description": "Mario Golf (Euro)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "marioglfj": {
+    "description": "Mario Golf 64 (Jpn, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "marioglfj1": {
+    "description": "Mario Golf 64 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "marioglfu": {
+    "description": "Mario Golf (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "mariokrt": {
+    "description": "Mario Kart 64 (Euro, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "mariokrt1": {
+    "description": "Mario Kart 64 (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "mariokrtj": {
+    "description": "Mario Kart 64 (Jpn, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "mariokrtj1": {
+    "description": "Mario Kart 64 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "mariokrtu": {
+    "description": "Mario Kart 64 (USA)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "mariopar": {
+    "description": "Mario Party (Euro)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "marioparj": {
+    "description": "Mario Party (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "marioparu": {
+    "description": "Mario Party (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "mariopho": {
+    "description": "Mario no Photopie (Jpn)",
+    "publisher": "Tokyo Electron",
+    "year": "1998"
+  },
+  "mariopr2": {
+    "description": "Mario Party 2 (Euro)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "mariopr2j": {
+    "description": "Mario Party 2 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "mariopr2u": {
+    "description": "Mario Party 2 (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "mariopr3": {
+    "description": "Mario Party 3 (Euro)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "mariopr3j": {
+    "description": "Mario Party 3 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "mariopr3u": {
+    "description": "Mario Party 3 (USA)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "mariosto": {
+    "description": "Mario Story (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "marioten": {
+    "description": "Mario Tennis (Euro)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "mariotenj": {
+    "description": "Mario Tennis 64 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "mariotenu": {
+    "description": "Mario Tennis (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "megaman": {
+    "description": "Mega Man 64 (USA)",
+    "publisher": "Capcom",
+    "year": "2000"
+  },
+  "miahamm": {
+    "description": "Mia Hamm Soccer 64 (USA)",
+    "publisher": "South Peak",
+    "year": "2000"
+  },
+  "micksped": {
+    "description": "Mickey's Speedway USA (Euro)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "mickspedj": {
+    "description": "Mickey no Racing Challenge USA (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "mickspedu": {
+    "description": "Mickey's Speedway USA (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "micromac": {
+    "description": "Micro Machines 64 Turbo (Euro)",
+    "publisher": "Codemasters",
+    "year": "1998"
+  },
+  "micromacu": {
+    "description": "Micro Machines 64 Turbo (USA)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "midwaygh": {
+    "description": "Midway's Greatest Arcade Hits Vol. 1 (USA)",
+    "publisher": "Midway",
+    "year": "2000"
+  },
+  "mikeowen": {
+    "description": "Michael Owen's World League Soccer 2000 (Euro)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "mikepiaz": {
+    "description": "Mike Piazza's StrikeZone (USA)",
+    "publisher": "GT Interactive",
+    "year": "1998"
+  },
+  "miloastr": {
+    "description": "Milo's Astro Lanes (Euro)",
+    "publisher": "Crave Entertainment",
+    "year": "1999"
+  },
+  "miloastru": {
+    "description": "Milo's Astro Lanes (USA)",
+    "publisher": "Crave Entertainment",
+    "year": "1998"
+  },
+  "miniracr": {
+    "description": "Mini Racers (Prototype)",
+    "publisher": "Looking Glass Studios",
+    "year": "1999"
+  },
+  "mischief": {
+    "description": "Mischief Makers (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "mischiefu": {
+    "description": "Mischief Makers (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "mischiefu1": {
+    "description": "Mischief Makers (USA)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "missimp": {
+    "description": "Mission Impossible (Euro)",
+    "publisher": "Infogrames",
+    "year": "1998"
+  },
+  "missimpf": {
+    "description": "Mission Impossible (Fra)",
+    "publisher": "Infogrames",
+    "year": "1998"
+  },
+  "missimpg": {
+    "description": "Mission Impossible (Ger)",
+    "publisher": "Infogrames",
+    "year": "1998"
+  },
+  "missimpi": {
+    "description": "Mission Impossible (Ita)",
+    "publisher": "Infogrames",
+    "year": "1998"
+  },
+  "missimps": {
+    "description": "Mission Impossible (Spa)",
+    "publisher": "Infogrames",
+    "year": "1998"
+  },
+  "missimpu": {
+    "description": "Mission Impossible (USA)",
+    "publisher": "Ocean",
+    "year": "1998"
+  },
+  "mjhoroki": {
+    "description": "Mahjong Hourouki Classic (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1997"
+  },
+  "mjkiwame": {
+    "description": "Pro Mahjong Kiwame 64 (Jpn, Rev. A)",
+    "publisher": "Athena",
+    "year": "1997"
+  },
+  "mjkiwame1": {
+    "description": "Pro Mahjong Kiwame 64 (Jpn)",
+    "publisher": "Athena",
+    "year": "1997"
+  },
+  "mjmaster": {
+    "description": "Mahjong Master (Jpn)",
+    "publisher": "Konami",
+    "year": "1996"
+  },
+  "mjtsuwa": {
+    "description": "Pro Mahjong Tsuwamono 64 - Jansou Battle ni Chousen (Jpn)",
+    "publisher": "Culture Brain",
+    "year": "1999"
+  },
+  "mk4": {
+    "description": "Mortal Kombat 4 (Euro)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "mk4u": {
+    "description": "Mortal Kombat 4 (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "mkmyth": {
+    "description": "Mortal Kombat Mythologies - Sub-Zero (Euro)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "mkmythu": {
+    "description": "Mortal Kombat Mythologies - Sub-Zero (USA)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "mktrilgy": {
+    "description": "Mortal Kombat Trilogy (Euro)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "mktrilgyu": {
+    "description": "Mortal Kombat Trilogy (USA, Rev. B)",
+    "publisher": "Midway",
+    "year": "1996"
+  },
+  "mktrilgyu1": {
+    "description": "Mortal Kombat Trilogy (USA, Rev. A)",
+    "publisher": "Midway",
+    "year": "1996"
+  },
+  "mktrilgyu2": {
+    "description": "Mortal Kombat Trilogy (USA)",
+    "publisher": "Midway",
+    "year": "1996"
+  },
+  "monacogp": {
+    "description": "Monaco Grand Prix - Racing Simulation 2 (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "monacogpu": {
+    "description": "Monaco Grand Prix (USA)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "monopoly": {
+    "description": "Monopoly (USA)",
+    "publisher": "Hasbro Interactive",
+    "year": "1999"
+  },
+  "monstrck": {
+    "description": "Monster Truck Madness 64 (Euro)",
+    "publisher": "Rockstar Games",
+    "year": "1999"
+  },
+  "monstrcku": {
+    "description": "Monster Truck Madness 64 (USA)",
+    "publisher": "Rockstar Games",
+    "year": "1999"
+  },
+  "moritash": {
+    "description": "Morita Shougi 64 (Jpn)",
+    "publisher": "Seta Corporation",
+    "year": "1998"
+  },
+  "mrc": {
+    "description": "MRC - Multi Racing Championship (Euro)",
+    "publisher": "Ocean",
+    "year": "1997"
+  },
+  "mrcj": {
+    "description": "MRC - Multi Racing Championship (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1997"
+  },
+  "mrcu": {
+    "description": "MRC - Multi Racing Championship (USA)",
+    "publisher": "Ocean",
+    "year": "1997"
+  },
+  "mspacman": {
+    "description": "Ms. Pac-Man - Maze Madness (USA)",
+    "publisher": "Namco",
+    "year": "2000"
+  },
+  "mtetrisc": {
+    "description": "Magical Tetris Challenge (Euro)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "mtetriscf": {
+    "description": "Defi au Tetris Magique (Fra)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "mtetriscg": {
+    "description": "Magical Tetris Challenge (Ger)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "mtetriscj": {
+    "description": "Magical Tetris Challenge featuring Mickey (Jpn)",
+    "publisher": "Capcom",
+    "year": "1998"
+  },
+  "mtetriscu": {
+    "description": "Magical Tetris Challenge (USA)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "mystnin2": {
+    "description": "Mystical Ninja 2 Starring Goemon (Euro)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "mystninj": {
+    "description": "Mystical Ninja Starring Goemon (Euro)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "mystninju": {
+    "description": "Mystical Ninja Starring Goemon (USA)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "nagano": {
+    "description": "Nagano Winter Olympics '98 (Euro)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "naganoj": {
+    "description": "Hyper Olympics in Nagano 64 (Jpn)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "naganou": {
+    "description": "Nagano Winter Olympics '98 (USA)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "namcomus": {
+    "description": "Namco Museum 64 (USA)",
+    "publisher": "Namco",
+    "year": "1999"
+  },
+  "nascar2k": {
+    "description": "NASCAR 2000 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "nascar99": {
+    "description": "NASCAR 99 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "nascar99u": {
+    "description": "NASCAR 99 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "nbacour2": {
+    "description": "NBA Courtside 2 featuring Kobe Bryant (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "nbahang": {
+    "description": "NBA Hangtime (Euro)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "nbahangu": {
+    "description": "NBA Hangtime (USA)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "nbajam2k": {
+    "description": "NBA Jam 2000 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "nbajam2ku": {
+    "description": "NBA Jam 2000 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "nbajam99": {
+    "description": "NBA Jam 99 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "nbajam99u": {
+    "description": "NBA Jam 99 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "nbaliv2k": {
+    "description": "NBA Live 2000 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "nbaliv2ku": {
+    "description": "NBA Live 2000 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "nbaliv99": {
+    "description": "NBA Live 99 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "nbaliv99u": {
+    "description": "NBA Live 99 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "nbapro98": {
+    "description": "NBA Pro 98 (Euro)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "nbapro99": {
+    "description": "NBA Pro 99 (Euro)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "nbashowt": {
+    "description": "NBA Showtime - NBA on NBC (USA)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "nbazon2k": {
+    "description": "NBA in the Zone 2000 (Euro)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "nbazon2ku": {
+    "description": "NBA in the Zone 2000 (USA)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "nbazon98": {
+    "description": "NBA in the Zone '98 (USA)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "nbazon98j": {
+    "description": "NBA in the Zone '98 (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "nbazon99": {
+    "description": "NBA in the Zone '99 (USA)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "nbazone2": {
+    "description": "NBA in the Zone 2 (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "nflqb2k": {
+    "description": "NFL Quarterback Club 2000 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "nflqb2k1": {
+    "description": "NFL Quarterback Club 2001 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "nflqb2ku": {
+    "description": "NFL Quarterback Club 2000 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "nflqb98": {
+    "description": "NFL Quarterback Club 98 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "nflqb98u": {
+    "description": "NFL Quarterback Club 98 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "nflqb99": {
+    "description": "NFL Quarterback Club 99 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "nflqb99u": {
+    "description": "NFL Quarterback Club 99 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "nhl99": {
+    "description": "NHL 99 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "nhl99u": {
+    "description": "NHL 99 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "nhlbrk98": {
+    "description": "NHL Breakaway 98 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "nhlbrk98u": {
+    "description": "NHL Breakaway 98 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "nhlbrk99": {
+    "description": "NHL Breakaway 99 (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "nhlbrk99u": {
+    "description": "NHL Breakaway 99 (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "nhlpro99": {
+    "description": "NHL Pro 99 (Euro)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "nightcr": {
+    "description": "Nightmare Creatures (USA)",
+    "publisher": "Activision",
+    "year": "1998"
+  },
+  "nintama": {
+    "description": "Nintama Rantarou 64 Game Gallery (Jpn)",
+    "publisher": "Culture Brain",
+    "year": "2000"
+  },
+  "nstrike": {
+    "description": "Nuclear Strike 64 (Euro)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "nstrikeg": {
+    "description": "Nuclear Strike 64 (Ger)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "nstrikeu": {
+    "description": "Nuclear Strike 64 (USA)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "ntetris": {
+    "description": "The New Tetris (Euro)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "ntetrisu": {
+    "description": "The New Tetris (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "nusts64s": {
+    "description": "Nushi Tsuri 64 - Shiokaze ni Notte (Jpn)",
+    "publisher": "Victor Interactive Software",
+    "year": "2000"
+  },
+  "nustsu64": {
+    "description": "Nushi Tsuri 64 (Jpn, Rev. A)",
+    "publisher": "Pack In Soft",
+    "year": "1998"
+  },
+  "nustsu64a": {
+    "description": "Nushi Tsuri 64 (Jpn)",
+    "publisher": "Pack In Soft",
+    "year": "1998"
+  },
+  "odt": {
+    "description": "O.D.T. (Euro, Prototype)",
+    "publisher": "Infogrames",
+    "year": "1999"
+  },
+  "odtu": {
+    "description": "O.D.T. (USA, Prototype)",
+    "publisher": "Infogrames",
+    "year": "1999"
+  },
+  "offroadc": {
+    "description": "Off Road Challenge (Euro)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "offroadcu": {
+    "description": "Off Road Challenge (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "ogrebatl": {
+    "description": "Ogre Battle 64 - Person of Lordly Caliber (USA, Rev. A)",
+    "publisher": "Atlus",
+    "year": "2000"
+  },
+  "ogrebatl1": {
+    "description": "Ogre Battle 64 - Person of Lordly Caliber (USA)",
+    "publisher": "Atlus",
+    "year": "2000"
+  },
+  "ogrebatlj": {
+    "description": "Ogre Battle 64 - Person of Lordly Caliber (Jpn, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "olymp2k": {
+    "description": "Ganbare! Nippon! Olympics 2000 (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "olymph98": {
+    "description": "Olympic Hockey Nagano '98 (Euro)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "olymph98j": {
+    "description": "Olympic Hockey Nagano '98 (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "olymph98u": {
+    "description": "Olympic Hockey Nagano '98 (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "onegai": {
+    "description": "Onegai Monsters (Jpn)",
+    "publisher": "Bottom Up",
+    "year": "1999"
+  },
+  "pachinko": {
+    "description": "Pachinko 365 Nichi (Jpn)",
+    "publisher": "Seta Corporation",
+    "year": "1998"
+  },
+  "paperboy": {
+    "description": "Paperboy (Euro)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "paperboyu": {
+    "description": "Paperboy (USA)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "papermar": {
+    "description": "Paper Mario (Euro)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "papermaru": {
+    "description": "Paper Mario (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "parlrpro": {
+    "description": "Parlor! Pro 64 - Pachinko Jikki Simulation Game (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "1999"
+  },
+  "pbobble": {
+    "description": "Puzzle Bobble 64 (Jpn)",
+    "publisher": "Taito Corporation",
+    "year": "1999"
+  },
+  "pdark": {
+    "description": "Perfect Dark (Euro)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pdarkj": {
+    "description": "Perfect Dark (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pdarkp": {
+    "description": "Perfect Dark (Euro, Prototype Debug)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pdarku": {
+    "description": "Perfect Dark (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pdarku1": {
+    "description": "Perfect Dark (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pdarkup": {
+    "description": "Perfect Dark (USA, Prototype Debug)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pdarkuph": {
+    "description": "Perfect Dark (USA, Prototype Debug, Decrypted)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pdultram": {
+    "description": "PD Ultraman Battle Collection 64 (Jpn)",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "pennyrac": {
+    "description": "Penny Racers (Euro)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "pennyracu": {
+    "description": "Penny Racers (USA)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "pgaeuro": {
+    "description": "PGA European Tour Golf (Euro)",
+    "publisher": "Infogrames",
+    "year": "2000"
+  },
+  "pgaeurou": {
+    "description": "PGA European Tour (USA)",
+    "publisher": "Infogrames",
+    "year": "2000"
+  },
+  "photovw": {
+    "description": "Photo Viewer (Jpn)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pikachu": {
+    "description": "Pikachuu Genki de Chuu (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "pilotwin": {
+    "description": "Pilotwings 64 (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "pilotwinj": {
+    "description": "Pilotwings 64 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "pilotwinu": {
+    "description": "Pilotwings 64 (USA)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "pleague": {
+    "description": "Power League 64 (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1997"
+  },
+  "pokepuzl": {
+    "description": "Pokémon Puzzle League (Euro)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokepuzlf": {
+    "description": "Pokémon Puzzle League (Fra)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokepuzlg": {
+    "description": "Pokémon Puzzle League (Ger)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokepuzlu": {
+    "description": "Pokémon Puzzle League (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokesnap": {
+    "description": "Pokémon Snap (Euro)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokesnapa": {
+    "description": "Pokémon Snap (Aus)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "pokesnapf": {
+    "description": "Pokémon Snap (Fra)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokesnapg": {
+    "description": "Pokémon Snap (Ger)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokesnapi": {
+    "description": "Pokémon Snap (Ita)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokesnapj": {
+    "description": "Pocket Monsters Snap (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "pokesnaps": {
+    "description": "Pokémon Snap (Spa)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokesnapu": {
+    "description": "Pokémon Snap (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "pokesnapus": {
+    "description": "Pokémon Snap Station (USA, Promo)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "pokestad": {
+    "description": "Pokémon Stadium (Euro, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokestad1": {
+    "description": "Pokémon Stadium (Euro)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokestadf": {
+    "description": "Pokémon Stadium (Fra)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokestadg": {
+    "description": "Pokémon Stadium (Ger)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokestadi": {
+    "description": "Pokémon Stadium (Ita)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokestads": {
+    "description": "Pokémon Stadium (Spa)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokestadu": {
+    "description": "Pokémon Stadium (USA, Rev. B)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokestadu1": {
+    "description": "Pokémon Stadium (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokestadu2": {
+    "description": "Pokémon Stadium (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "pokestd2": {
+    "description": "Pokémon Stadium 2 (Euro)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokestd2f": {
+    "description": "Pokémon Stadium 2 (Fra)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokestd2g": {
+    "description": "Pokémon Stadium 2 (Ger)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokestd2i": {
+    "description": "Pokémon Stadium 2 (Ita)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokestd2j": {
+    "description": "Pocket Monsters Stadium 2 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "pokestd2s": {
+    "description": "Pokémon Stadium 2 (Spa)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokestd2u": {
+    "description": "Pokémon Stadium 2 (USA)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokestdj": {
+    "description": "Pocket Monsters Stadium (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "pokestdk": {
+    "description": "Pocket Monsters Stadium Kin Gin (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "polarsno": {
+    "description": "Polaris SnoCross (USA)",
+    "publisher": "Vatical Entertainment",
+    "year": "2000"
+  },
+  "powerpuf": {
+    "description": "The Powerpuff Girls - Chemical X-Traction (USA)",
+    "publisher": "BAM! Entertainment",
+    "year": "2001"
+  },
+  "powyak2k": {
+    "description": "Jikkyou Powerful Pro Yakyuu 2000 (Jpn, Rev. A)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "powyak2ka": {
+    "description": "Jikkyou Powerful Pro Yakyuu 2000 (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "powyak4": {
+    "description": "Jikkyou Powerful Pro Yakyuu 4 (Jpn, Rev. A)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "powyak4a": {
+    "description": "Jikkyou Powerful Pro Yakyuu 4 (Jpn)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "powyak5": {
+    "description": "Jikkyou Powerful Pro Yakyuu 5 (Jpn, Rev. B)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "powyak5a": {
+    "description": "Jikkyou Powerful Pro Yakyuu 5 (Jpn, Rev. A)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "powyak5b": {
+    "description": "Jikkyou Powerful Pro Yakyuu 5 (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "powyak6": {
+    "description": "Jikkyou Powerful Pro Yakyuu 6 (Jpn, Rev. B)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "powyak6a": {
+    "description": "Jikkyou Powerful Pro Yakyuu 6 (Jpn, Rev. A)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "powyak6b": {
+    "description": "Jikkyou Powerful Pro Yakyuu 6 (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "powyk2k1": {
+    "description": "Jikkyou Powerful Pro Yakyuu Basic Ban 2001 (Jpn, Rev. A)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "powyk2k1a": {
+    "description": "Jikkyou Powerful Pro Yakyuu Basic Ban 2001 (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "prlightr": {
+    "description": "Power Rangers - Lightspeed Rescue (Euro)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "prlightru": {
+    "description": "Power Rangers - Lightspeed Rescue (USA)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "prmang64": {
+    "description": "Premier Manager 64 (Euro)",
+    "publisher": "Gremlin Interactive",
+    "year": "1999"
+  },
+  "puyopsun": {
+    "description": "Puyo Puyo Sun 64 (Jpn)",
+    "publisher": "Compile",
+    "year": "1997"
+  },
+  "puyopuy4": {
+    "description": "Puyo Puyo 4 - Puyo Puyon Party (Jpn)",
+    "publisher": "Compile",
+    "year": "1999"
+  },
+  "puzldama": {
+    "description": "Susume! Taisen Puzzle Dama - Toukon! Marutama Chou (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "quackatk": {
+    "description": "Donald Duck - Quack Attack (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "2000"
+  },
+  "quake2": {
+    "description": "Quake II (Euro)",
+    "publisher": "Activision",
+    "year": "2000"
+  },
+  "quake2u": {
+    "description": "Quake II (USA)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "quake64": {
+    "description": "Quake 64 (Euro)",
+    "publisher": "GT Interactive",
+    "year": "1998"
+  },
+  "quake64u": {
+    "description": "Quake 64 (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "quest64": {
+    "description": "Quest 64 (USA)",
+    "publisher": "T*HQ",
+    "year": "1998"
+  },
+  "r2rumbl2": {
+    "description": "Ready 2 Rumble Boxing - Round 2 (USA)",
+    "publisher": "Midway",
+    "year": "2000"
+  },
+  "r2rumble": {
+    "description": "Ready 2 Rumble Boxing (Euro)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "r2rumbleu": {
+    "description": "Ready 2 Rumble Boxing (USA)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "racings2": {
+    "description": "Racing Simulation 2 (Ger)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "rainbow6": {
+    "description": "Tom Clancy's Rainbow Six (Euro)",
+    "publisher": "Red Storm Entertainment",
+    "year": "1999"
+  },
+  "rainbow6f": {
+    "description": "Tom Clancy's Rainbow Six (Fra)",
+    "publisher": "Red Storm Entertainment",
+    "year": "1999"
+  },
+  "rainbow6g": {
+    "description": "Tom Clancy's Rainbow Six (Ger)",
+    "publisher": "Red Storm Entertainment",
+    "year": "1999"
+  },
+  "rainbow6u": {
+    "description": "Tom Clancy's Rainbow Six (USA)",
+    "publisher": "Red Storm Entertainment",
+    "year": "1999"
+  },
+  "rakuga": {
+    "description": "Rakuga Kids (Euro)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "rakugaj": {
+    "description": "Rakuga Kids (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "rally99": {
+    "description": "Rally '99 (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1999"
+  },
+  "rallychl": {
+    "description": "Rally Challenge 2000 (USA)",
+    "publisher": "South Peak",
+    "year": "2000"
+  },
+  "rampage": {
+    "description": "Rampage - World Tour (Euro)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "rampage2": {
+    "description": "Rampage 2 - Universal Tour (Euro)",
+    "publisher": "GT Interactive",
+    "year": "1998"
+  },
+  "rampage2u": {
+    "description": "Rampage 2 - Universal Tour (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "rampageu": {
+    "description": "Rampage - World Tour (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "ratattak": {
+    "description": "Rat Attack! (Euro)",
+    "publisher": "Mindscape",
+    "year": "2000"
+  },
+  "ratattaku": {
+    "description": "Rat Attack! (USA)",
+    "publisher": "Mindscape",
+    "year": "2000"
+  },
+  "rayman2": {
+    "description": "Rayman 2 - The Great Escape (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "rayman2u": {
+    "description": "Rayman 2 - The Great Escape (USA)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "razmoket": {
+    "description": "Les Razmoket - La Chasse aux Tresors (Fra)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "razorfs": {
+    "description": "Razor Freestyle Scooter (USA)",
+    "publisher": "Crave Entertainment",
+    "year": "2001"
+  },
+  "revil2": {
+    "description": "Resident Evil 2 (Euro)",
+    "publisher": "Virgin Interactive",
+    "year": "1999"
+  },
+  "revil2u": {
+    "description": "Resident Evil 2 (USA, Rev. A)",
+    "publisher": "Capcom USA",
+    "year": "1999"
+  },
+  "revil2u1": {
+    "description": "Resident Evil 2 (USA)",
+    "publisher": "Capcom USA",
+    "year": "1999"
+  },
+  "revolt": {
+    "description": "Re-Volt (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "revoltu": {
+    "description": "Re-Volt (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "roadrash": {
+    "description": "Road Rash 64 (Euro)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "roadrashu": {
+    "description": "Road Rash 64 (USA)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "roadster": {
+    "description": "Roadsters Trophy (Euro)",
+    "publisher": "Titus",
+    "year": "1999"
+  },
+  "roadsteru": {
+    "description": "Roadsters Trophy (USA)",
+    "publisher": "Titus",
+    "year": "1999"
+  },
+  "robotech": {
+    "description": "Robotech - Crystal Dreams (USA, Prototype)",
+    "publisher": "GameTek",
+    "year": "1998"
+  },
+  "robotpon": {
+    "description": "Robot Ponkottsu 64 - 7tsu no Umi no Caramel (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1999"
+  },
+  "robotron": {
+    "description": "Robotron 64 (Euro)",
+    "publisher": "Crave Entertainment",
+    "year": "1998"
+  },
+  "robotronu": {
+    "description": "Robotron 64 (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "rocket": {
+    "description": "Rocket - Robot on Wheels (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "rocketu": {
+    "description": "Rocket - Robot on Wheels (USA)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "rockmand": {
+    "description": "Rockman Dash - Hagane no Boukenshin (Jpn)",
+    "publisher": "Capcom",
+    "year": "2000"
+  },
+  "rr64": {
+    "description": "RR64 - Ridge Racer 64 (Euro)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "rr64u": {
+    "description": "RR64 - Ridge Racer 64 (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "rtlworld": {
+    "description": "RTL World League Soccer 2000 (Ger)",
+    "publisher": "South Peak",
+    "year": "1999"
+  },
+  "rugparis": {
+    "description": "Rugrats in Paris - The Movie (Euro)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "rugparisu": {
+    "description": "Rugrats in Paris - The Movie (USA)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "rugrats": {
+    "description": "Rugrats - Treasure Hunt (Euro)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "rugratsg": {
+    "description": "Rugrats - Die grosse Schatzsuche (Ger)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "rugratsu": {
+    "description": "Rugrats - Scavenger Hunt (USA)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "rush2": {
+    "description": "Rush 2 - Extreme Racing USA (Euro)",
+    "publisher": "GT Interactive",
+    "year": "1999"
+  },
+  "rush2u": {
+    "description": "Rush 2 - Extreme Racing USA (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "saikyou": {
+    "description": "Saikyou Habu Shougi (Jpn)",
+    "publisher": "Seta Corporation",
+    "year": "1996"
+  },
+  "sbdaman": {
+    "description": "Super B-Daman - Battle Phoenix 64 (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1998"
+  },
+  "sbowling": {
+    "description": "Super Bowling (USA)",
+    "publisher": "UFO Interactive",
+    "year": "2000"
+  },
+  "sbowlingj": {
+    "description": "Super Bowling (Jpn)",
+    "publisher": "Athena",
+    "year": "1999"
+  },
+  "scars": {
+    "description": "S.C.A.R.S. (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "1998"
+  },
+  "scarsu": {
+    "description": "S.C.A.R.S. (USA)",
+    "publisher": "Ubi Soft",
+    "year": "1998"
+  },
+  "scooby": {
+    "description": "Scooby-Doo! - Classic Creep Capers (Euro)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "scoobyu": {
+    "description": "Scooby-Doo! - Classic Creep Capers (USA, Rev. A)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "scoobyu1": {
+    "description": "Scooby-Doo! - Classic Creep Capers (USA)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "sdhiryu": {
+    "description": "SD Hiryuu no Ken Densetsu (Jpn)",
+    "publisher": "Culture Brain",
+    "year": "1999"
+  },
+  "sf2049": {
+    "description": "San Francisco Rush 2049 (Euro)",
+    "publisher": "Midway",
+    "year": "2000"
+  },
+  "sf2049u": {
+    "description": "San Francisco Rush 2049 (USA)",
+    "publisher": "Midway",
+    "year": "2000"
+  },
+  "sfrush": {
+    "description": "San Francisco Rush - Extreme Racing (Euro)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "sfrushu": {
+    "description": "San Francisco Rush - Extreme Racing (USA, Rev. A)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "sfrushu1": {
+    "description": "San Francisco Rush - Extreme Racing (USA)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "shadgate": {
+    "description": "Shadowgate 64 - Trials of the Four Towers (Euro)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "shadgate1": {
+    "description": "Shadowgate 64 - Trials of the Four Towers (Euro, Italian / Spanish)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "shadgate2": {
+    "description": "Shadowgate 64 - Trials of the Four Towers (Euro, French / German / Dutch)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "shadgatej": {
+    "description": "Shadowgate 64 - Trials of the Four Towers (Jpn)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "shadgateu": {
+    "description": "Shadowgate 64 - Trials of the Four Towers (USA)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "shadowmn": {
+    "description": "Shadow Man (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "shadowmnb": {
+    "description": "Shadow Man (Bra)",
+    "publisher": "Gradiente ~ Acclaim Entertainment",
+    "year": "1999"
+  },
+  "shadowmnf": {
+    "description": "Shadow Man (Fra)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "shadowmng": {
+    "description": "Shadow Man (Ger)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "shadowmnu": {
+    "description": "Shadow Man (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "simcit2k": {
+    "description": "Sim City 2000 (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1998"
+  },
+  "sm64": {
+    "description": "Super Mario 64 (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "sm64j": {
+    "description": "Super Mario 64 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "sm64jse": {
+    "description": "Super Mario 64 (Jpn, Rev. A, Shindou Edition)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "sm64u": {
+    "description": "Super Mario 64 (USA, Hong Kong)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "smashbro": {
+    "description": "Super Smash Bros. (Euro)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "smashbroa": {
+    "description": "Super Smash Bros. (Aus)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "smashbroj": {
+    "description": "Nintendo All-Star! Dairantou Smash Brothers (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "smashbrou": {
+    "description": "Super Smash Bros. (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "snobokd2": {
+    "description": "Snowboard Kids 2 (Aus)",
+    "publisher": "Atlus",
+    "year": "1999"
+  },
+  "snobokd2j": {
+    "description": "Chou Snobo Kids (Jpn)",
+    "publisher": "Atlus",
+    "year": "1999"
+  },
+  "snobokd2u": {
+    "description": "Snowboard Kids 2 (USA)",
+    "publisher": "Atlus",
+    "year": "1999"
+  },
+  "snobokid": {
+    "description": "Snowboard Kids (Euro)",
+    "publisher": "Atlus",
+    "year": "1998"
+  },
+  "snobokidj": {
+    "description": "Snobo Kids (Jpn)",
+    "publisher": "Atlus",
+    "year": "1997"
+  },
+  "snobokidu": {
+    "description": "Snowboard Kids (USA)",
+    "publisher": "Atlus",
+    "year": "1998"
+  },
+  "snowsped": {
+    "description": "Snow Speeder (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1998"
+  },
+  "sonicwing": {
+    "description": "Sonic Wings Assault (Jpn)",
+    "publisher": "Video System",
+    "year": "1998"
+  },
+  "southprk": {
+    "description": "South Park (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "southprkb": {
+    "description": "South Park (Bra)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "southprkg": {
+    "description": "South Park (Ger)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "southprku": {
+    "description": "South Park (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "spacedyn": {
+    "description": "Space Dynamites (Jpn)",
+    "publisher": "Vic Tokai",
+    "year": "1998"
+  },
+  "spaceinv": {
+    "description": "Space Invaders (USA)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "sparkchf": {
+    "description": "South Park - Chef's Luv Shack (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "sparkchfu": {
+    "description": "South Park - Chef's Luv Shack (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "sparkral": {
+    "description": "South Park Rally (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "sparkralu": {
+    "description": "South Park Rally (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "spidermn": {
+    "description": "Spider-Man (USA)",
+    "publisher": "Activision",
+    "year": "2000"
+  },
+  "sprowres": {
+    "description": "Shin Nihon Pro Wrestling Toukon Road - Brave Spirits (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1998"
+  },
+  "sprowrs2": {
+    "description": "Shin Nihon Pro Wrestling Toukon Road 2 - The Next Generation (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1998"
+  },
+  "srobospi": {
+    "description": "Super Robot Spirits (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1998"
+  },
+  "srobot64": {
+    "description": "Super Robot Taisen 64 (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1999"
+  },
+  "ssilicon": {
+    "description": "SpaceStation Silicon Valley (Euro)",
+    "publisher": "Take Two Interactive",
+    "year": "1998"
+  },
+  "ssiliconj": {
+    "description": "SpaceStation Silicon Valley (Jpn, Prototype)",
+    "publisher": "Take Two Interactive",
+    "year": "1998"
+  },
+  "ssiliconu": {
+    "description": "SpaceStation Silicon Valley (USA)",
+    "publisher": "Take Two Interactive",
+    "year": "1998"
+  },
+  "ssrace64": {
+    "description": "Super Speed Race 64 (Jpn)",
+    "publisher": "Titus",
+    "year": "1998"
+  },
+  "starcrft": {
+    "description": "StarCraft 64 (Aus)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "starcrftg": {
+    "description": "StarCraft 64 (Ger, Prototype)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "starcrftu": {
+    "description": "StarCraft 64 (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "starcrftub": {
+    "description": "StarCraft 64 (USA, Prototype)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "starfoxj": {
+    "description": "Star Fox 64 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "starfoxu": {
+    "description": "Star Fox 64 (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "starfoxu1": {
+    "description": "Star Fox 64 (USA)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "starshot": {
+    "description": "Starshot - Space Circus Fever (Euro)",
+    "publisher": "Infogrames",
+    "year": "1998"
+  },
+  "starshotu": {
+    "description": "Starshot - Space Circus Fever (USA)",
+    "publisher": "Infogrames",
+    "year": "1999"
+  },
+  "starsold": {
+    "description": "Star Soldier - Vanishing Earth (USA)",
+    "publisher": "Electro Brain",
+    "year": "1998"
+  },
+  "starsoldj": {
+    "description": "Star Soldier - Vanishing Earth (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1998"
+  },
+  "startwin": {
+    "description": "Star Twins (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "stuntrac": {
+    "description": "Stunt Racer 64 (USA)",
+    "publisher": "Midway",
+    "year": "2000"
+  },
+  "superman": {
+    "description": "Superman (Euro)",
+    "publisher": "Titus",
+    "year": "1999"
+  },
+  "supermanp": {
+    "description": "Superman (Prototype)",
+    "publisher": "Titus",
+    "year": "1999"
+  },
+  "supermanu": {
+    "description": "Superman (USA)",
+    "publisher": "Titus",
+    "year": "1999"
+  },
+  "superx2k": {
+    "description": "Supercross 2000 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "superx2ku": {
+    "description": "Supercross 2000 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "swnaboo": {
+    "description": "Star Wars Episode I - Battle for Naboo (Euro)",
+    "publisher": "T*HQ",
+    "year": "2001"
+  },
+  "swnaboou": {
+    "description": "Star Wars Episode I - Battle for Naboo (USA)",
+    "publisher": "LucasArts",
+    "year": "2000"
+  },
+  "swracer": {
+    "description": "Star Wars Episode I - Racer (Euro)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "swracerj": {
+    "description": "Star Wars Episode I - Racer (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "swraceru": {
+    "description": "Star Wars Episode I - Racer (USA)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "swrogue": {
+    "description": "Star Wars - Rogue Squadron (Euro, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "swrogue1": {
+    "description": "Star Wars - Rogue Squadron (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "swrogueu": {
+    "description": "Star Wars - Rogue Squadron (USA, Rev. A)",
+    "publisher": "LucasArts",
+    "year": "1998"
+  },
+  "swrogueu1": {
+    "description": "Star Wars - Rogue Squadron (USA)",
+    "publisher": "LucasArts",
+    "year": "1998"
+  },
+  "swshadow": {
+    "description": "Star Wars - Shadows of the Empire (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "swshadowp": {
+    "description": "Star Wars - Shadows of the Empire (Prototype)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "swshadowu": {
+    "description": "Star Wars - Shadows of the Empire (USA, Rev. B)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "swshadowu1": {
+    "description": "Star Wars - Shadows of the Empire (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "swshadowu2": {
+    "description": "Star Wars - Shadows of the Empire (USA)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "swshutsu": {
+    "description": "Star Wars - Shutsugeki! Rogue Chuutai (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1999"
+  },
+  "swteiko": {
+    "description": "Star Wars - Teikoku no Kage (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "sydney2k": {
+    "description": "Sydney 2000 (Euro, Prototype)",
+    "publisher": "Eidos",
+    "year": "2000"
+  },
+  "sydney2ku": {
+    "description": "Sydney 2000 (USA, Prototype)",
+    "publisher": "Eidos",
+    "year": "2000"
+  },
+  "tamiyarc": {
+    "description": "Tamiya Racing 64 (Prototype)",
+    "publisher": "Looking Glass Studios",
+    "year": "1999"
+  },
+  "tarzan": {
+    "description": "Tarzan (Euro)",
+    "publisher": "Activision",
+    "year": "2000"
+  },
+  "tarzanf": {
+    "description": "Tarzan (Fra)",
+    "publisher": "Activision",
+    "year": "2000"
+  },
+  "tarzang": {
+    "description": "Tarzan (Ger)",
+    "publisher": "Activision",
+    "year": "2000"
+  },
+  "tarzanu": {
+    "description": "Tarzan (USA)",
+    "publisher": "Activision",
+    "year": "2000"
+  },
+  "tazexpr": {
+    "description": "Taz Express (Euro)",
+    "publisher": "Infogrames",
+    "year": "2000"
+  },
+  "tazexpru": {
+    "description": "Taz Express (USA, Prototype)",
+    "publisher": "Infogrames",
+    "year": "2000?"
+  },
+  "telefoot": {
+    "description": "Telefoot Soccer 2000 (Fra)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "tetris64": {
+    "description": "Tetris 64 (Jpn)",
+    "publisher": "Seta Corporation",
+    "year": "1998"
+  },
+  "tetrisph": {
+    "description": "Tetrisphere (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "tetrisphu": {
+    "description": "Tetrisphere (USA)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "tgh": {
+    "description": "Top Gear Hyper-Bike (Euro)",
+    "publisher": "Kemco",
+    "year": "2000"
+  },
+  "tghj": {
+    "description": "Top Gear Hyper-Bike (Jpn)",
+    "publisher": "Kemco",
+    "year": "2000"
+  },
+  "tghu": {
+    "description": "Top Gear Hyper-Bike (USA)",
+    "publisher": "Kemco",
+    "year": "2000"
+  },
+  "tgoverdr": {
+    "description": "Top Gear Overdrive (Euro)",
+    "publisher": "Kemco",
+    "year": "1998"
+  },
+  "tgoverdrj": {
+    "description": "Top Gear Overdrive (Jpn)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "tgoverdru": {
+    "description": "Top Gear Overdrive (USA)",
+    "publisher": "Kemco",
+    "year": "1998"
+  },
+  "tgrally": {
+    "description": "Top Gear Rally (Euro)",
+    "publisher": "Kemco",
+    "year": "1997"
+  },
+  "tgrally2": {
+    "description": "Top Gear Rally 2 (Euro)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "tgrally2a": {
+    "description": "TG Rally 2 (Euro)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "tgrally2j": {
+    "description": "Top Gear Rally 2 (Jpn)",
+    "publisher": "Kemco",
+    "year": "2000"
+  },
+  "tgrally2u": {
+    "description": "Top Gear Rally 2 (USA)",
+    "publisher": "Kemco",
+    "year": "1999"
+  },
+  "tgrallyj": {
+    "description": "Top Gear Rally (Jpn)",
+    "publisher": "Kemco",
+    "year": "1997"
+  },
+  "tgrallyu": {
+    "description": "Top Gear Rally (USA)",
+    "publisher": "Kemco",
+    "year": "1997"
+  },
+  "thps": {
+    "description": "Tony Hawk's Skateboarding (Euro)",
+    "publisher": "Activision",
+    "year": "2002"
+  },
+  "thps2": {
+    "description": "Tony Hawk's Pro Skater 2 (Euro)",
+    "publisher": "Activision",
+    "year": "2001"
+  },
+  "thps2u": {
+    "description": "Tony Hawk's Pro Skater 2 (USA)",
+    "publisher": "Activision",
+    "year": "2001"
+  },
+  "thps3": {
+    "description": "Tony Hawk's Pro Skater 3 (USA)",
+    "publisher": "Activision",
+    "year": "2002"
+  },
+  "thpsu": {
+    "description": "Tony Hawk's Pro Skater (USA, Rev. A)",
+    "publisher": "Activision",
+    "year": "2000"
+  },
+  "thpsu1": {
+    "description": "Tony Hawk's Pro Skater (USA)",
+    "publisher": "Activision",
+    "year": "2000"
+  },
+  "tiggerhh": {
+    "description": "Tigger's Honey Hunt (Euro)",
+    "publisher": "NewKidCo",
+    "year": "2000"
+  },
+  "tiggerhhu": {
+    "description": "Tigger's Honey Hunt (USA)",
+    "publisher": "NewKidCo",
+    "year": "2000"
+  },
+  "tomjerry": {
+    "description": "Tom and Jerry in Fists of Furry (Euro)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "tomjerryu": {
+    "description": "Tom and Jerry in Fists of Furry (USA)",
+    "publisher": "NewKidCo",
+    "year": "2000"
+  },
+  "tommyth": {
+    "description": "Tommy Thunder (USA, Prototype)",
+    "publisher": "Player 1",
+    "year": "1998"
+  },
+  "tonictr": {
+    "description": "Tonic Trouble (Euro)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "tonictru": {
+    "description": "Tonic Trouble (USA, Rev. A)",
+    "publisher": "Ubi Soft",
+    "year": "1999"
+  },
+  "toonpan": {
+    "description": "Toon Panic (Jpn, Prototype)",
+    "publisher": "Bottom Up",
+    "year": "2000"
+  },
+  "toystor2": {
+    "description": "Toy Story 2 (Euro)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "toystor2f": {
+    "description": "Toy Story 2 (Fra)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "toystor2g": {
+    "description": "Toy Story 2 (Ger, Rev. A)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "toystor2ga": {
+    "description": "Toy Story 2 (Ger)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "toystor2u": {
+    "description": "Toy Story 2 (USA, Rev. A)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "toystor2ua": {
+    "description": "Toy Story 2 (USA)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "tplay2k": {
+    "description": "Triple Play 2000 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "tsumibat": {
+    "description": "Tsumi to Batsu - Hoshi no Keishousha (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "turok": {
+    "description": "Turok - Dinosaur Hunter (Euro, Rev. B)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "turok2": {
+    "description": "Turok 2 - Seeds of Evil (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "turok2a": {
+    "description": "Turok 2 - Seeds of Evil (Euro, Alt)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "turok2g": {
+    "description": "Turok 2 - Seeds of Evil (Ger)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "turok2p": {
+    "description": "Turok 2 - Seeds of Evil (Euro, Demo Kiosk)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "turok2u": {
+    "description": "Turok 2 - Seeds of Evil (USA, Rev. A)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "turok2ua": {
+    "description": "Turok 2 - Seeds of Evil (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "turok2ud": {
+    "description": "Turok 2 - Seeds of Evil (USA, Demo Kiosk)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "turok3": {
+    "description": "Turok 3 - Shadow of Oblivion (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2001"
+  },
+  "turok3u": {
+    "description": "Turok 3 - Shadow of Oblivion (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "turok3up1": {
+    "description": "Turok 3 - Shadow of Oblivion (USA, Prototype)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "turok3up2": {
+    "description": "Turok 3 - Shadow of Oblivion (USA, Prototype 20000531)",
+    "publisher": "Acclaim Entertainment",
+    "year": "2000"
+  },
+  "turoka": {
+    "description": "Turok - Dinosaur Hunter (Euro, Rev. A)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "turokb": {
+    "description": "Turok - Dinosaur Hunter (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "turokg": {
+    "description": "Turok - Dinosaur Hunter (Ger, Rev. B)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "turokga": {
+    "description": "Turok - Dinosaur Hunter (Ger, Rev. A)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "turokgb": {
+    "description": "Turok - Dinosaur Hunter (Ger)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "turokj": {
+    "description": "Jikuu Senshi Turok (Jpn)",
+    "publisher": "Acclaim Japan",
+    "year": "1997"
+  },
+  "turokleg": {
+    "description": "Turok - Legenden des Verlorenen Landes (Ger)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "turokrag": {
+    "description": "Turok - Rage Wars (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "turokrag1": {
+    "description": "Turok - Rage Wars (Euro, Alt)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "turokragu": {
+    "description": "Turok - Rage Wars (USA, Rev. A)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "turokragu1": {
+    "description": "Turok - Rage Wars (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "turoku": {
+    "description": "Turok - Dinosaur Hunter (USA, Rev. B)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "turokua": {
+    "description": "Turok - Dinosaur Hunter (USA, Rev. A)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "turokub": {
+    "description": "Turok - Dinosaur Hunter (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1997"
+  },
+  "twisted": {
+    "description": "Twisted Edge - Extreme Snowboarding (Euro)",
+    "publisher": "Kemco",
+    "year": "1998"
+  },
+  "twistedu": {
+    "description": "Twisted Edge - Extreme Snowboarding (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "u64demo": {
+    "description": "U64 Demo (Jpn)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "utchan": {
+    "description": "Utchan Nanchan no Hono no Challenger - Denryuu Ira Ira Bou (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1997"
+  },
+  "vchess": {
+    "description": "Virtual Chess 64 (Euro)",
+    "publisher": "Titus",
+    "year": "1998"
+  },
+  "vchessu": {
+    "description": "Virtual Chess 64 (USA)",
+    "publisher": "Titus",
+    "year": "1998"
+  },
+  "vigil2nd": {
+    "description": "Vigilante 8 - 2nd Offense (Euro)",
+    "publisher": "Activision",
+    "year": "2000"
+  },
+  "vigil2ndu": {
+    "description": "Vigilante 8 - 2nd Offense (USA)",
+    "publisher": "Activision",
+    "year": "2000"
+  },
+  "vigilnt8": {
+    "description": "Vigilante 8 (Euro)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "vigilnt8f": {
+    "description": "Vigilante 8 (Fra)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "vigilnt8g": {
+    "description": "Vigilante 8 (Ger)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "vigilnt8u": {
+    "description": "Vigilante 8 (USA)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "vkiller": {
+    "description": "Violence Killer - Turok New Generation (Jpn)",
+    "publisher": "Media Factory",
+    "year": "1999"
+  },
+  "vpool": {
+    "description": "Virtual Pool 64 (Euro)",
+    "publisher": "Crave Entertainment",
+    "year": "1999"
+  },
+  "vpoolu": {
+    "description": "Virtual Pool 64 (USA)",
+    "publisher": "Crave Entertainment",
+    "year": "1998"
+  },
+  "vprowres": {
+    "description": "Virtual Pro Wrestling 64 (Jpn)",
+    "publisher": "Asmik Ace Entertainment",
+    "year": "1997"
+  },
+  "vprowrs2": {
+    "description": "Virtual Pro Wrestling 2 - Oudou Keishou (Jpn)",
+    "publisher": "Asmik Ace Entertainment",
+    "year": "2000"
+  },
+  "vrally99": {
+    "description": "V-Rally Edition 99 (Euro)",
+    "publisher": "Infogrames",
+    "year": "1998"
+  },
+  "vrally99j": {
+    "description": "V-Rally Edition 99 (Jpn)",
+    "publisher": "Spike",
+    "year": "1999"
+  },
+  "vrally99u": {
+    "description": "V-Rally Edition 99 (USA)",
+    "publisher": "Infogrames",
+    "year": "1999"
+  },
+  "waialae": {
+    "description": "Waialae Country Club - True Golf Classics (Euro, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "waialae1": {
+    "description": "Waialae Country Club - True Golf Classics (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "waialaeu": {
+    "description": "Waialae Country Club - True Golf Classics (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "waialaeu1": {
+    "description": "Waialae Country Club - True Golf Classics (USA)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "wargods": {
+    "description": "War Gods (Euro)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "wargodsu": {
+    "description": "War Gods (USA)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "waverace": {
+    "description": "Wave Race 64 (Euro)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "waveracej": {
+    "description": "Wave Race 64 (Jpn, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "waveracej1": {
+    "description": "Wave Race 64 (Jpn, Rev. B, Shindou Edition)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "waveracej2": {
+    "description": "Wave Race 64 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "waveraceu": {
+    "description": "Wave Race 64 (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "waveraceu1": {
+    "description": "Wave Race 64 (USA)",
+    "publisher": "Nintendo",
+    "year": "1996"
+  },
+  "wcup98": {
+    "description": "World Cup 98 (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "wcup98u": {
+    "description": "World Cup 98 (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "wcwback": {
+    "description": "WCW Backstage Assault (USA)",
+    "publisher": "Electronic Arts",
+    "year": "2000"
+  },
+  "wcwmayhm": {
+    "description": "WCW Mayhem (Euro)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "wcwmayhmu": {
+    "description": "WCW Mayhem (USA)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "wcwnitro": {
+    "description": "WCW Nitro (USA)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "wcwnitro1": {
+    "description": "WCW Nitro (USA, Alt)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "wcwrev": {
+    "description": "WCW/nWo Revenge (Euro)",
+    "publisher": "T*HQ",
+    "year": "1998"
+  },
+  "wcwrevu": {
+    "description": "WCW/nWo Revenge (USA)",
+    "publisher": "T*HQ",
+    "year": "1998"
+  },
+  "wcwvsnwo": {
+    "description": "WCW vs. nWo - World Tour (Euro)",
+    "publisher": "T*HQ",
+    "year": "1997"
+  },
+  "wcwvsnwou": {
+    "description": "WCW vs. nWo - World Tour (USA, Rev. A)",
+    "publisher": "T*HQ",
+    "year": "1997"
+  },
+  "wcwvsnwou1": {
+    "description": "WCW vs. nWo - World Tour (USA)",
+    "publisher": "T*HQ",
+    "year": "1997"
+  },
+  "wetrix": {
+    "description": "Wetrix (Euro)",
+    "publisher": "Ocean",
+    "year": "1998"
+  },
+  "wetrixj": {
+    "description": "Wetrix (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1998"
+  },
+  "wetrixu": {
+    "description": "Wetrix (USA)",
+    "publisher": "Ocean",
+    "year": "1998"
+  },
+  "wg3dh": {
+    "description": "Wayne Gretzky's 3D Hockey (Euro)",
+    "publisher": "Midway",
+    "year": "1996"
+  },
+  "wg3dh98": {
+    "description": "Wayne Gretzky's 3D Hockey '98 (Euro)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "wg3dh98u": {
+    "description": "Wayne Gretzky's 3D Hockey '98 (USA)",
+    "publisher": "Midway",
+    "year": "1997"
+  },
+  "wg3dhj": {
+    "description": "Wayne Gretzky's 3D Hockey (Jpn)",
+    "publisher": "GameBank",
+    "year": "1998"
+  },
+  "wg3dhu": {
+    "description": "Wayne Gretzky's 3D Hockey (USA, Rev. A)",
+    "publisher": "Midway",
+    "year": "1996"
+  },
+  "wg3dhu1": {
+    "description": "Wayne Gretzky's 3D Hockey (USA)",
+    "publisher": "Midway",
+    "year": "1996"
+  },
+  "wheelfor": {
+    "description": "Wheel of Fortune (USA)",
+    "publisher": "GameTek",
+    "year": "1997"
+  },
+  "wildchop": {
+    "description": "Wild Choppers (Jpn)",
+    "publisher": "Seta Corporation",
+    "year": "1997"
+  },
+  "wildwatr": {
+    "description": "Wildwaters (USA, Prototype)",
+    "publisher": "Looking Glass Studios",
+    "year": "2000"
+  },
+  "winback": {
+    "description": "Operation WinBack (Euro)",
+    "publisher": "Koei",
+    "year": "2000"
+  },
+  "winbackj": {
+    "description": "WinBack (Jpn, Rev. A)",
+    "publisher": "Koei",
+    "year": "1999"
+  },
+  "winbackj1": {
+    "description": "WinBack (Jpn)",
+    "publisher": "Koei",
+    "year": "1999"
+  },
+  "winbacku": {
+    "description": "WinBack - Covert Operations (USA)",
+    "publisher": "Koei",
+    "year": "2000"
+  },
+  "wipeout": {
+    "description": "Wipeout 64 (Euro)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "wipeoutu": {
+    "description": "Wipeout 64 (USA)",
+    "publisher": "Midway",
+    "year": "1998"
+  },
+  "wmania2k": {
+    "description": "WWF WrestleMania 2000 (Euro)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "wmania2kj": {
+    "description": "WWF WrestleMania 2000 (Jpn)",
+    "publisher": "Asmik Ace Entertainment",
+    "year": "2000"
+  },
+  "wmania2ku": {
+    "description": "WWF WrestleMania 2000 (USA)",
+    "publisher": "T*HQ",
+    "year": "1999"
+  },
+  "wormarmg": {
+    "description": "Worms Armageddon (Euro)",
+    "publisher": "Infogrames",
+    "year": "2000"
+  },
+  "wormarmgu": {
+    "description": "Worms Armageddon (USA)",
+    "publisher": "Infogrames",
+    "year": "2000"
+  },
+  "wprojj2": {
+    "description": "Wonder Project J2 - Koruro no Mori no Jozet (Jpn)",
+    "publisher": "Enix",
+    "year": "1996"
+  },
+  "wrlddriv": {
+    "description": "World Driver Championship (Euro)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "wrlddrivu": {
+    "description": "World Driver Championship (USA)",
+    "publisher": "Midway",
+    "year": "1999"
+  },
+  "wwfatt": {
+    "description": "WWF Attitude (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "wwfattg": {
+    "description": "WWF Attitude (Ger)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "wwfattu": {
+    "description": "WWF Attitude (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1999"
+  },
+  "wwfnomer": {
+    "description": "WWF No Mercy (Euro, Rev. A)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "wwfnomer1": {
+    "description": "WWF No Mercy (Euro)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "wwfnomeru": {
+    "description": "WWF No Mercy (USA, Rev. A)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "wwfnomeru1": {
+    "description": "WWF No Mercy (USA)",
+    "publisher": "T*HQ",
+    "year": "2000"
+  },
+  "wwfwarz": {
+    "description": "WWF War Zone (Euro)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "wwfwarzu": {
+    "description": "WWF War Zone (USA)",
+    "publisher": "Acclaim Entertainment",
+    "year": "1998"
+  },
+  "xena": {
+    "description": "Xena - Warrior Princess - The Talisman of Fate (Euro)",
+    "publisher": "Titus",
+    "year": "1999"
+  },
+  "xenau": {
+    "description": "Xena - Warrior Princess - The Talisman of Fate (USA)",
+    "publisher": "Titus",
+    "year": "1999"
+  },
+  "xplor64": {
+    "description": "Xplorer 64 (Ger, v1.067)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "yakouch2": {
+    "description": "Yakouchuu II - Satsujin Kouro (Jpn)",
+    "publisher": "Athena",
+    "year": "1999"
+  },
+  "yoshisto": {
+    "description": "Yoshi's Story (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "yoshistoj": {
+    "description": "Yoshi Story (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "yoshistou": {
+    "description": "Yoshi's Story (USA)",
+    "publisher": "Nintendo",
+    "year": "1997"
+  },
+  "yukeyuke": {
+    "description": "Yuke Yuke!! Trouble Makers (Jpn)",
+    "publisher": "Enix",
+    "year": "1997"
+  },
+  "zeldamaj": {
+    "description": "The Legend of Zelda - Majora's Mask (Euro, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "zeldamaj1": {
+    "description": "The Legend of Zelda - Majora's Mask (Euro)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "zeldamaj2": {
+    "description": "The Legend of Zelda - Majora's Mask (Euro, Ripped from GC)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "zeldamajd": {
+    "description": "The Legend of Zelda - Majora's Mask (Euro, Debug Build, 20000929)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "zeldamajj": {
+    "description": "Zelda no Densetsu - Mujura no Kamen (Jpn, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "zeldamajj1": {
+    "description": "Zelda no Densetsu - Mujura no Kamen (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "zeldamajj2": {
+    "description": "Zelda no Densetsu - Mujura no Kamen (Jpn, Ripped from GC)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "zeldamaju": {
+    "description": "The Legend of Zelda - Majora's Mask (USA)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "zeldamaju1": {
+    "description": "The Legend of Zelda - Majora's Mask (USA, Ripped from GC)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "zeldamaju2": {
+    "description": "The Legend of Zelda - Majora's Mask (USA, Demo)",
+    "publisher": "Nintendo",
+    "year": "2000"
+  },
+  "zeldaoot": {
+    "description": "The Legend of Zelda - Ocarina of Time (Euro, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "zeldaoot1": {
+    "description": "The Legend of Zelda - Ocarina of Time (Euro)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "zeldaoot2": {
+    "description": "The Legend of Zelda - Ocarina of Time (Euro, Ripped from GC)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "zeldaootj": {
+    "description": "Zelda no Densetsu - Toki no Ocarina (Jpn, Rev. B)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "zeldaootj1": {
+    "description": "Zelda no Densetsu - Toki no Ocarina (Jpn, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "zeldaootj2": {
+    "description": "Zelda no Densetsu - Toki no Ocarina (Jpn)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "zeldaootj3": {
+    "description": "Zelda no Densetsu - Toki no Ocarina (Jpn, Ripped from GC)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "zeldaootmq": {
+    "description": "The Legend of Zelda - Ocarina of Time - Master Quest (Euro, Ripped from GC)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "zeldaootmqd": {
+    "description": "The Legend of Zelda - Ocarina of Time - Master Quest (USA, Debug Edition, Ripped from GC)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "zeldaootmqj": {
+    "description": "Zelda no Densetsu - Toki no Ocarina Ura (Jpn, Ripped from GC)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "zeldaootmqu": {
+    "description": "The Legend of Zelda - Ocarina of Time - Master Quest (USA, Ripped from GC)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "zeldaootu": {
+    "description": "The Legend of Zelda - Ocarina of Time (USA, Rev. B)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "zeldaootu1": {
+    "description": "The Legend of Zelda - Ocarina of Time (USA, Rev. A)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "zeldaootu2": {
+    "description": "The Legend of Zelda - Ocarina of Time (USA)",
+    "publisher": "Nintendo",
+    "year": "1998"
+  },
+  "zeldaootu3": {
+    "description": "The Legend of Zelda - Ocarina of Time (USA, Ripped from GC)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "zool": {
+    "description": "Zool - Majuu Tsukai Densetsu (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1999"
+  }
+}

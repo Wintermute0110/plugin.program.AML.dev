@@ -1,0 +1,577 @@
+{
+  "100mkara": {
+    "description": "100 Metres Sprint & Karate",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "256games": {
+    "description": "256 Games Pack for Einstein 256",
+    "publisher": "Merlin Software",
+    "year": "1986"
+  },
+  "4game": {
+    "description": "Konami Four Game Arcade",
+    "publisher": "Konami",
+    "year": "19??"
+  },
+  "6in1": {
+    "description": "Fire!!! / Para-Shoot / Apocalypse / Headache / Gold Miner / Kentucky Derby",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "agrovatr": {
+    "description": "Agrovator",
+    "publisher": "Syntaxsoft",
+    "year": "19??"
+  },
+  "alice": {
+    "description": "Alice and the March Hare",
+    "publisher": "Orion Software",
+    "year": "1986"
+  },
+  "artuan": {
+    "description": "Island of Artuan",
+    "publisher": "Kuma Software",
+    "year": "19??"
+  },
+  "assembly": {
+    "description": "Assembly Language Course",
+    "publisher": "Glentop",
+    "year": "1985"
+  },
+  "basic": {
+    "description": "Basic Tutorial",
+    "publisher": "Solo Software",
+    "year": "1984"
+  },
+  "bbcbasic": {
+    "description": "BBC BASIC (v2.31)",
+    "publisher": "<homebrew>",
+    "year": "1984?"
+  },
+  "boardelo": {
+    "description": "Boardello",
+    "publisher": "Bubble Bus",
+    "year": "1985"
+  },
+  "castle": {
+    "description": "Castle Quest & Quest",
+    "publisher": "Kuma Software",
+    "year": "19??"
+  },
+  "cchamber": {
+    "description": "Cursed Chambers & ZRIM",
+    "publisher": "Kuma Software",
+    "year": "19??"
+  },
+  "cchambera": {
+    "description": "Cursed Chambers & ZRIM (Alt)",
+    "publisher": "Kuma Software",
+    "year": "19??"
+  },
+  "chuckie": {
+    "description": "Chuckie Egg",
+    "publisher": "Tatung Einsoft",
+    "year": "1984"
+  },
+  "cluedo": {
+    "description": "Cluedo",
+    "publisher": "Leisure Genius",
+    "year": "1984"
+  },
+  "conanbox": {
+    "description": "Conan & Boxing",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "cpm": {
+    "description": "CP/M+",
+    "publisher": "Duncan Elvin",
+    "year": "19??"
+  },
+  "cracker": {
+    "description": "The Cracker (v2.31c)",
+    "publisher": "Tatung",
+    "year": "1985"
+  },
+  "diamond": {
+    "description": "Dan Diamond Trilogy",
+    "publisher": "Tatung Einsoft",
+    "year": "19??"
+  },
+  "disc": {
+    "description": "The Disc",
+    "publisher": "Emsoft",
+    "year": "19??"
+  },
+  "discodan": {
+    "description": "Disco Dan",
+    "publisher": "Tatung Einsoft",
+    "year": "1984"
+  },
+  "druid": {
+    "description": "Druid",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "eazidraw": {
+    "description": "Eazidraw",
+    "publisher": "Supasoft",
+    "year": "1988"
+  },
+  "eincomp": {
+    "description": "Einstein Compendium",
+    "publisher": "Emsoft",
+    "year": "19??"
+  },
+  "eindisk1": {
+    "description": "Einstein Disk International 1",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "eindisk2": {
+    "description": "Einstein Disk International 2",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "eindisk3": {
+    "description": "Einstein Disk International 3",
+    "publisher": "<homebrew>",
+    "year": "198?"
+  },
+  "elite": {
+    "description": "Elite",
+    "publisher": "Firebird",
+    "year": "198?"
+  },
+  "fantasia": {
+    "description": "Colour Fantasia",
+    "publisher": "Kuma",
+    "year": "1984"
+  },
+  "fathom": {
+    "description": "Fathom's Deep",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "fsim": {
+    "description": "Flight Simulation",
+    "publisher": "ScreenSoft",
+    "year": "1985"
+  },
+  "fukung": {
+    "description": "Fu-Kung in Las Vegas",
+    "publisher": "Tatung Einsoft",
+    "year": "1985"
+  },
+  "gamecmp1": {
+    "description": "Game Compilation (Cracked)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "gamecomp": {
+    "description": "Games Compendium",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "gronks": {
+    "description": "Gronks",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "helimath": {
+    "description": "Heli-Maths",
+    "publisher": "Screensoft",
+    "year": "1985"
+  },
+  "highway": {
+    "description": "Highway Encounter",
+    "publisher": "Orion Software",
+    "year": "1985"
+  },
+  "hitchikr": {
+    "description": "Hitchhikers Guide to the Galaxy",
+    "publisher": "Infocom",
+    "year": "1984"
+  },
+  "hustler": {
+    "description": "Hustler",
+    "publisher": "Bubble Bus",
+    "year": "1985"
+  },
+  "jetsetw": {
+    "description": "Jet Set Willy",
+    "publisher": "Software Projects",
+    "year": "19??"
+  },
+  "kumautil": {
+    "description": "Kuma Disc Utility (v1.0)",
+    "publisher": "Kuma Software",
+    "year": "19??"
+  },
+  "lazyj": {
+    "description": "Lazy Jones",
+    "publisher": "Terminal Software",
+    "year": "1985"
+  },
+  "lesflics": {
+    "description": "Les Flics",
+    "publisher": "Electric Software",
+    "year": "1985"
+  },
+  "lostfix": {
+    "description": "Get Lost & Mr Fixit",
+    "publisher": "Solo Software",
+    "year": "1984"
+  },
+  "lottery": {
+    "description": "Lottery",
+    "publisher": "<homebrew>",
+    "year": "2005"
+  },
+  "manicmin": {
+    "description": "Manic Miner",
+    "publisher": "Software Projects",
+    "year": "1985"
+  },
+  "manikpan": {
+    "description": "Manik Panik & Galaxoids",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "mathmag": {
+    "description": "Mathe-Magic & Scoop",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "mathsq": {
+    "description": "Maths Quest & Alphabet Quest",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "maxima": {
+    "description": "Maxima",
+    "publisher": "Solo Software",
+    "year": "1985"
+  },
+  "merlin8": {
+    "description": "Escape from Merlin 8",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "microplx": {
+    "description": "Einstein Micro Plox",
+    "publisher": "Henry Philippe",
+    "year": "1989"
+  },
+  "minedick": {
+    "description": "Miner Dick",
+    "publisher": "Merlin Software",
+    "year": "1984"
+  },
+  "monopoly": {
+    "description": "Monopoly",
+    "publisher": "Leisure Genius",
+    "year": "19??"
+  },
+  "mouseart": {
+    "description": "Mouse Art",
+    "publisher": "Emsoft",
+    "year": "19??"
+  },
+  "musicomp": {
+    "description": "Music Composer",
+    "publisher": "Kuma Software",
+    "year": "1984"
+  },
+  "mworkshp": {
+    "description": "Music Workshop",
+    "publisher": "Screensoft",
+    "year": "19??"
+  },
+  "mworkshpa": {
+    "description": "Music Workshop (Alt)",
+    "publisher": "Screensoft",
+    "year": "19??"
+  },
+  "nightmar": {
+    "description": "Nightmare Park & Commando Plain",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "ohmummy": {
+    "description": "Oh Mummy!",
+    "publisher": "Tatung Einsoft",
+    "year": "1984"
+  },
+  "pakman": {
+    "description": "Pakman & Millipede",
+    "publisher": "Kuma Software",
+    "year": "198?"
+  },
+  "panzer": {
+    "description": "Panzer Attack",
+    "publisher": "Lothlorien",
+    "year": "1985"
+  },
+  "peteutil": {
+    "description": "Pete's Utilities",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "progkit": {
+    "description": "Programmers Kit",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "punchy": {
+    "description": "Punchy",
+    "publisher": "Tatung Einsoft",
+    "year": "1985"
+  },
+  "qoko2": {
+    "description": "Qoko 2",
+    "publisher": "Orion Software",
+    "year": "19??"
+  },
+  "quantum": {
+    "description": "Quantum",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "riverbnd": {
+    "description": "River Bandits",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "rocket": {
+    "description": "Rocket / Giant Maths / Mighty Writer",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "roverbal": {
+    "description": "Roverball",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "schess": {
+    "description": "Superchess",
+    "publisher": "Kuma Software",
+    "year": "1984"
+  },
+  "scrabble": {
+    "description": "Scrabble",
+    "publisher": "Leisure Genius",
+    "year": "1985"
+  },
+  "screenpl": {
+    "description": "Screen Plus",
+    "publisher": "Syntaxsoft",
+    "year": "1985"
+  },
+  "sforth": {
+    "description": "SuperFORTH (v1.12)",
+    "publisher": "Tatung Einsoft",
+    "year": "1984"
+  },
+  "skinubbl": {
+    "description": "Ski-Jump & Nubble Trubble",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "snooker": {
+    "description": "Tournament Snooker",
+    "publisher": "Hard Software",
+    "year": "198?"
+  },
+  "southbel": {
+    "description": "Southern Belle",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "spactrap": {
+    "description": "Space Trap",
+    "publisher": "Solo Software",
+    "year": "1985"
+  },
+  "specemu": {
+    "description": "Spectrum Emulator Disk 1",
+    "publisher": "Syntaxsoft",
+    "year": "19??"
+  },
+  "specops": {
+    "description": "Special Operations",
+    "publisher": "Lothlorien",
+    "year": "198?"
+  },
+  "spelbuld": {
+    "description": "Spell n' Build",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "spellbrk": {
+    "description": "Spellbreaker",
+    "publisher": "Infocom",
+    "year": "1985"
+  },
+  "spreadsh": {
+    "description": "Spreadsheet",
+    "publisher": "Kuma Computers",
+    "year": "1984"
+  },
+  "starq": {
+    "description": "Starquake",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "startrek": {
+    "description": "Star Trek",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "starx": {
+    "description": "Starcross",
+    "publisher": "Infocom",
+    "year": "198?"
+  },
+  "steamv22": {
+    "description": "Steam Computer Software Volume 22 (v1.05)",
+    "publisher": "<homebrew>",
+    "year": "1983"
+  },
+  "stepper": {
+    "description": "Stepper",
+    "publisher": "KH Scriven",
+    "year": "1986"
+  },
+  "super6b": {
+    "description": "Super 6 Games (Bell)",
+    "publisher": "Bell Software",
+    "year": "19??"
+  },
+  "super6t": {
+    "description": "Super Six Game Pack (Tatung)",
+    "publisher": "Tatung Einsoft",
+    "year": "198?"
+  },
+  "super6ta": {
+    "description": "Super Six Game Pack (Tatung, Alt)",
+    "publisher": "Tatung Einsoft",
+    "year": "198?"
+  },
+  "supstore": {
+    "description": "Superstore",
+    "publisher": "Kuma Software",
+    "year": "19??"
+  },
+  "suspend": {
+    "description": "Suspended",
+    "publisher": "A.C.E. Software",
+    "year": "19??"
+  },
+  "swordfeu": {
+    "description": "Sword Feud",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "sys80": {
+    "description": "System 80",
+    "publisher": "Tatung",
+    "year": "19??"
+  },
+  "system5": {
+    "description": "System 5",
+    "publisher": "Crystal Research",
+    "year": "19??"
+  },
+  "tasprint": {
+    "description": "Tasprint",
+    "publisher": "Tasman Software",
+    "year": "1985"
+  },
+  "tasword": {
+    "description": "Tasword",
+    "publisher": "Tasman Software",
+    "year": "1985"
+  },
+  "theatre": {
+    "description": "Theatre Europe",
+    "publisher": "Merlin Software",
+    "year": "19??"
+  },
+  "timetrap": {
+    "description": "Time Trap",
+    "publisher": "Tatung Einsoft",
+    "year": "1984"
+  },
+  "tmathcyf": {
+    "description": "Traditional 16+ Maths & Cyfax",
+    "publisher": "Solo Software",
+    "year": "198?"
+  },
+  "toadofru": {
+    "description": "Toado & Fruckles",
+    "publisher": "Syntaxsoft",
+    "year": "1986"
+  },
+  "tombkarn": {
+    "description": "Tombs of Karnak & Encounter",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "tycoon": {
+    "description": "Tycoon & Pelmanism",
+    "publisher": "Kuma Software",
+    "year": "198?"
+  },
+  "wishbrin": {
+    "description": "Wishbringer",
+    "publisher": "Infocom",
+    "year": "19??"
+  },
+  "wordproc": {
+    "description": "Word Processor 40",
+    "publisher": "Surrey Software",
+    "year": "19??"
+  },
+  "wreck": {
+    "description": "The Wreck",
+    "publisher": "Electric Software",
+    "year": "19??"
+  },
+  "xanagram": {
+    "description": "Xanagrams & Quadrax",
+    "publisher": "Kuma Software",
+    "year": "19??"
+  },
+  "xmaster": {
+    "description": "X-master",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "xtaldos": {
+    "description": "Xtaldos 1.31",
+    "publisher": "Tatung",
+    "year": "198?"
+  },
+  "zen": {
+    "description": "Zen Editor/Assembler",
+    "publisher": "Kuma Software",
+    "year": "19??"
+  },
+  "zork1": {
+    "description": "Zork I - The Great Underground Empire",
+    "publisher": "Infocom",
+    "year": "198?"
+  },
+  "zork2": {
+    "description": "Zork II",
+    "publisher": "Infocom",
+    "year": "198?"
+  },
+  "zork3": {
+    "description": "Zork III - The Dungeon Master",
+    "publisher": "Infocom",
+    "year": "198?"
+  }
+}

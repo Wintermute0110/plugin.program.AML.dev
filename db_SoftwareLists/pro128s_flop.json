@@ -1,0 +1,172 @@
+{
+  "artista": {
+    "description": "Artista",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "aviator": {
+    "description": "Aviator",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "basic": {
+    "description": "Introduzione al BASIC",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "betabase": {
+    "description": "Beta-Base (Ita)",
+    "publisher": "Clares",
+    "year": "1987"
+  },
+  "bribbon1": {
+    "description": "Blue Ribbon 1",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "bribbon2": {
+    "description": "Blue Ribbon 2",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "carambol": {
+    "description": "Carambola",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "futuresh": {
+    "description": "Future Shock",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "goal": {
+    "description": "Goal!",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "golf": {
+    "description": "Golf",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "jetsetw2": {
+    "description": "Jet Set Willy II",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "mod740": {
+    "description": "Mod. 740 S",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "modemsec": {
+    "description": "Modem's Secret",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "overdriv": {
+    "description": "Overdrive & Centibug",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "pmagico": {
+    "description": "Puzzle Magico (Ita)",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "podd": {
+    "description": "Podd (Ita)",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "revs": {
+    "description": "Revs",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "sarcade1": {
+    "description": "Super Arcade 1",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "sarcade2": {
+    "description": "Super Arcade 2",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "sarcade3": {
+    "description": "Super Arcade 3",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "sarcade4": {
+    "description": "Super Arcade 4",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "sarcade5": {
+    "description": "Super Arcade 5",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "scacchi": {
+    "description": "Scacchi (Ita)",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "smashgra": {
+    "description": "Smash & Grab & Mr Wiz",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "spingi": {
+    "description": "Spingi (Ita)",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "starstri": {
+    "description": "Star Striker & Wallaby",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "tetris": {
+    "description": "Tetris",
+    "publisher": "ConcaSoft",
+    "year": "1991"
+  },
+  "thebigko": {
+    "description": "The Big KO!",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "viewindx": {
+    "description": "ViewIndex",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "viewplot": {
+    "description": "ViewPlot",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "viewstor": {
+    "description": "ViewStore",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "vindaloo": {
+    "description": "Vindaloo",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "winter": {
+    "description": "Olimpiadi Invernali",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  },
+  "xor": {
+    "description": "XOR (Ita)",
+    "publisher": "Olivetti Prodest",
+    "year": "1987"
+  }
+}

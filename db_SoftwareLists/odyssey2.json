@@ -1,0 +1,682 @@
+{
+  "2armrsub": {
+    "description": "Air-Sea War/Battle (Euro) ~ Armored Encounter!/Sub Chase! (USA)",
+    "publisher": "Philips",
+    "year": "1978"
+  },
+  "2blckbrk": {
+    "description": "Dam Buster (Euro) ~ Blockout!/Breakdown! (USA)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "2bllcrss": {
+    "description": "Catch the Ball/Noughts and Crosses (Euro)",
+    "publisher": "Philips",
+    "year": "1979"
+  },
+  "2bmbalvo": {
+    "description": "Bombardeio Submarino!/Tiro ao Alvo! (Bra)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "2bwlbskt": {
+    "description": "Ten Pin Bowling/Basketball (Euro) ~ Bowling!/Basketball! (USA)",
+    "publisher": "Philips",
+    "year": "1978"
+  },
+  "2dpthmrk": {
+    "description": "Depth Charge/Marksman (Euro)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "2fblhcky": {
+    "description": "Football Electronique/Hockey Electronique (Fra)",
+    "publisher": "Radiola",
+    "year": "1981"
+  },
+  "2hckyscr": {
+    "description": "Electronic Ice Hockey/Electronic Soccer (Euro) ~ Hockey!/Soccer! (USA)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "2lbsprmd": {
+    "description": "A Labyrinth Game/Supermind (Euro)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "2missprg": {
+    "description": "Missão Impossível/Viagem Programada (Bra)",
+    "publisher": "Ectron Eletrônica Ltda.",
+    "year": "198?"
+  },
+  "2mlajogo": {
+    "description": "O Malabarista!/Jogo da Velha! (Bra)",
+    "publisher": "Philips",
+    "year": "1979"
+  },
+  "2mthechf": {
+    "description": "Mathématicien/Echo (Fra)",
+    "publisher": "Radiola",
+    "year": "1980"
+  },
+  "2mthecho": {
+    "description": "Mathematician/Echo (Euro) ~ Math-a-Magic!/Echo! (USA)",
+    "publisher": "Philips",
+    "year": "1978"
+  },
+  "2qllbskt": {
+    "description": "Jeu de Quilles/Basketball (Fra)",
+    "publisher": "Radiola",
+    "year": "1978"
+  },
+  "2wrldrsc": {
+    "description": "Out of this World!/Helicopter Rescue! (USA)",
+    "publisher": "Magnavox",
+    "year": "1979"
+  },
+  "3csaucpt": {
+    "description": "Course de Voitures/Autodrome/Cryptogramme (Fra)",
+    "publisher": "Radiola",
+    "year": "1978"
+  },
+  "3mkrbzlg": {
+    "description": "Matchmaker!/Buzzword!/Logix! (USA)",
+    "publisher": "Magnavox",
+    "year": "1978"
+  },
+  "3prspclg": {
+    "description": "Pairs/Space Rendezvous/Logic (Euro)",
+    "publisher": "Philips",
+    "year": "1978"
+  },
+  "3rcsocpt": {
+    "description": "Race/Spin-Out/Cryptogram (Euro) ~ Speedway/Spin-Out/Crypto-logic (USA)",
+    "publisher": "Philips (Euro) ~ Magnavox (USA)",
+    "year": "1978"
+  },
+  "4en1": {
+    "description": "4 en 1 Ligne (Fra)",
+    "publisher": "Radiola",
+    "year": "1982"
+  },
+  "4in1": {
+    "description": "4 in 1 Row (Euro)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "acrobat": {
+    "description": "Jumping Acrobats (Euro)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "acrobata": {
+    "description": "Jumping Acrobats (Euro, Alt)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "alieninv": {
+    "description": "Space Monster (Euro) ~ Alien Invaders - Plus! (USA)",
+    "publisher": "Magnavox",
+    "year": "1980"
+  },
+  "alpine": {
+    "description": "Skiing (Euro) ~ Alpine Skiing! (USA)",
+    "publisher": "Philips",
+    "year": "1979"
+  },
+  "atlantis": {
+    "description": "Atlantis (Euro, USA)",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "balao": {
+    "description": "Balão Travesso! (Bra)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "baron": {
+    "description": "Red Baron (Euro, Prototype)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "baseball": {
+    "description": "Baseball (Euro) ~ Baseball! (USA)",
+    "publisher": "Philips (Euro) ~ Magnavox (USA)",
+    "year": "1980"
+  },
+  "battle": {
+    "description": "Barão Vermelho! (Bra)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "battlef": {
+    "description": "Battlefield (Euro) ~ War of Nerves! (USA)",
+    "publisher": "Philips",
+    "year": "1979"
+  },
+  "bees": {
+    "description": "Killer Bees! (USA)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "billamer": {
+    "description": "Billard Américain (Fra)",
+    "publisher": "Radiola",
+    "year": "1978"
+  },
+  "billiard": {
+    "description": "Electronic Billiards (Euro) ~ Pocket Billiards! (USA)",
+    "publisher": "Philips (Euro) ~ Magnavox (USA)",
+    "year": "1978"
+  },
+  "blackjck": {
+    "description": "Blackjack (Fra)",
+    "publisher": "Radiola",
+    "year": "1980"
+  },
+  "blobbers": {
+    "description": "Blobbers (Euro)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "buraco": {
+    "description": "Buraco Negro! (Bra)",
+    "publisher": "Philips",
+    "year": "1984"
+  },
+  "casino": {
+    "description": "Las Vegas Gambling (Euro) ~ Casino Slot Machine! (USA)",
+    "publisher": "Magnavox",
+    "year": "1980"
+  },
+  "chat": {
+    "description": "Chat et Souris (Fra)",
+    "publisher": "Radiola",
+    "year": "1983"
+  },
+  "chess": {
+    "description": "Chess (Euro)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "chezmxme": {
+    "description": "Chez Maxime (Fra)",
+    "publisher": "Radiola",
+    "year": "198?"
+  },
+  "chinese": {
+    "description": "Chinese Logic (Euro)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "claypig": {
+    "description": "Clay Pigeon! (Bra)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "cobra": {
+    "description": "Super Cobra (Euro)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "cobrab": {
+    "description": "Super Cobra (Bra)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "comando": {
+    "description": "Comando Noturno! (Bra)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "compgolf": {
+    "description": "Computer Golf! (USA)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "compintr": {
+    "description": "Computer Intro (USA)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "compprog": {
+    "description": "Computer Programmer (Euro)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "conflit": {
+    "description": "Conflit Cosmique (Can, Fra?)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "conquest": {
+    "description": "Conquest of the World (Euro, USA)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "cosmic": {
+    "description": "Cosmic Conflict (Euro)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "cosmica": {
+    "description": "Cosmic Conflict (Euro, Alt)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "cosmicu": {
+    "description": "Cosmic Conflict! (USA)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "demon": {
+    "description": "Demon Attack (Euro, USA)",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "desafio": {
+    "description": "Desafio Chinês! (Bra)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "dynasty": {
+    "description": "Dynasty! (USA)",
+    "publisher": "Philips",
+    "year": "1979"
+  },
+  "farao": {
+    "description": "O Segredo do Faraó! (Bra)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "flipper": {
+    "description": "Flipper Game (Euro) ~ Thunderball! (USA)",
+    "publisher": "Philips (Euro) ~ Magnavox (USA)",
+    "year": "1979"
+  },
+  "flipperf": {
+    "description": "Flipper (Fra)",
+    "publisher": "Radiola",
+    "year": "1980"
+  },
+  "football": {
+    "description": "American Football (Euro) ~ Football! (USA)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "freedom": {
+    "description": "Freedom Fighters (Euro) ~ Freedom Fighters! (USA)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "frogger": {
+    "description": "Frogger (Euro)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "froggerb": {
+    "description": "Frogger (Bra)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "golf": {
+    "description": "Golf (Euro)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "gtwallst": {
+    "description": "The Great Wall Street Fortune Hunt (Euro, USA)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "guerre": {
+    "description": "Guerre Lazer (Fra)",
+    "publisher": "Radiola",
+    "year": "1980"
+  },
+  "gunfight": {
+    "description": "Gunfighter (Euro)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "interpol": {
+    "description": "Interpol (Euro, Prototype)",
+    "publisher": "GST Video",
+    "year": "198?"
+  },
+  "invaders": {
+    "description": "Invaders from Hyperspace! (USA)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "kckrazy": {
+    "description": "Crazy Chase (Euro) ~ K.C.'s Krazy Chase! (USA)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "kcmunch": {
+    "description": "K.C. Munchkin! (USA)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "keyboard": {
+    "description": "Keyboard Creations! (USA)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "kndrvrkr": {
+    "description": "Kinder im Verkehr 1 (Ger)",
+    "publisher": "CSV/Philips",
+    "year": "1982"
+  },
+  "ktaa": {
+    "description": "Kill the Attacking Aliens",
+    "publisher": "<homebrew>",
+    "year": "2003"
+  },
+  "laquete": {
+    "description": "La Quête des Anneux (Fra)",
+    "publisher": "Radiola",
+    "year": "1982"
+  },
+  "laser": {
+    "description": "Laser War (Euro)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "lasvegas": {
+    "description": "Las Vegas (Fra)",
+    "publisher": "Radiola",
+    "year": "1980"
+  },
+  "loony": {
+    "description": "Loony Balloon (Euro, Prototype)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "lsvsblck": {
+    "description": "Blackjack (Euro) ~ Las Vegas Blackjack! (USA)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "magique": {
+    "description": "Le Mûr Magique (Fra)",
+    "publisher": "Radiola",
+    "year": "1981"
+  },
+  "martian": {
+    "description": "Martian Threat (Euro, Prototype)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "moneyrun": {
+    "description": "Take the Money and Run (Euro) ~ Take the Money and Run! (USA)",
+    "publisher": "Philips (Euro) ~ Magnavox (USA)",
+    "year": "1978"
+  },
+  "monkey": {
+    "description": "Monkeyshines (Euro) ~ Monkeyshines! (USA)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "morse": {
+    "description": "Morse (Euro)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "morsef": {
+    "description": "Morse (Fra)",
+    "publisher": "Radiola",
+    "year": "1983"
+  },
+  "mousing": {
+    "description": "The Mousing Cat (Euro)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "mrroboto": {
+    "description": "Mr. Roboto!",
+    "publisher": "<homebrew>",
+    "year": "2006"
+  },
+  "munchkin": {
+    "description": "Munchkin (Euro)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "musician": {
+    "description": "Musician (Euro)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "neutron": {
+    "description": "Neutron Star (Euro, Prototype)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "newscast": {
+    "description": "Newscaster (Euro)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "night": {
+    "description": "Nightfighter (Euro, Prototype)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "nimble": {
+    "description": "Nimble Numbers Ned! (USA)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "number": {
+    "description": "Playschool Maths (Euro) ~ I've Got Your Number (USA)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "pachinko": {
+    "description": "Basket Game (Euro) ~ Pachinko! (USA)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "phantom": {
+    "description": "Phantom House (Euro, Prototype)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "pharaohs": {
+    "description": "Secret of the Pharaohs (Euro)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "pickaxe": {
+    "description": "Pickaxe Pete (Euro) ~ Pick Axe Pete! (USA)",
+    "publisher": "Philips (Euro) ~ Magnavox (USA)",
+    "year": "1980"
+  },
+  "pinball": {
+    "description": "Pinball! (USA, Prototype)",
+    "publisher": "Philips",
+    "year": "1979"
+  },
+  "plander": {
+    "description": "Planet Lander",
+    "publisher": "<homebrew>",
+    "year": "2004"
+  },
+  "playtag": {
+    "description": "Plantage ~ Play Tag (Euro, Prototype)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "popeye": {
+    "description": "Popeye (Euro)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "popeyeb": {
+    "description": "Popeye (Bra)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "powerlrd": {
+    "description": "Power Lords (USA)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "ppp": {
+    "description": "Puzzle Piece Panic!",
+    "publisher": "<homebrew>",
+    "year": "2007"
+  },
+  "prendre": {
+    "description": "Prendre l'Argent et Fuir (Fra)",
+    "publisher": "Radiola",
+    "year": "1978"
+  },
+  "ptbarnum": {
+    "description": "P.T. Barnum's Acrobats! (USA)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "qbert": {
+    "description": "Q*bert (Euro)",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "quest": {
+    "description": "Quest for the Rings (Euro, USA)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "robot": {
+    "description": "Robot City (Euro, Prototype)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "samurai": {
+    "description": "Samurai (Euro)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "satellit": {
+    "description": "Satellite Attack (Euro)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "shark": {
+    "description": "Shark Hunter (Euro, Prototype)",
+    "publisher": "Philips",
+    "year": "198?"
+  },
+  "showdown": {
+    "description": "Showdown in 2100 A.D. (USA)",
+    "publisher": "Philips",
+    "year": "1980"
+  },
+  "sidspell": {
+    "description": "Sid the Spellbinder (USA)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "ski": {
+    "description": "Ski (Fra)",
+    "publisher": "Radiola",
+    "year": "1979"
+  },
+  "smither": {
+    "description": "Smithereens! (USA)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "soccer": {
+    "description": "Electronic Table Football (Euro) ~ Electronic Table Soccer (USA)",
+    "publisher": "Magnavox",
+    "year": "1980"
+  },
+  "spider": {
+    "description": "Spider-Man (Euro, Prototype)",
+    "publisher": "Parker Brothers",
+    "year": "198?"
+  },
+  "stone": {
+    "description": "Stone Sling (Euro)",
+    "publisher": "Philips",
+    "year": "1981"
+  },
+  "superbee": {
+    "description": "Super Bee (Euro)",
+    "publisher": "GST Video",
+    "year": "1983"
+  },
+  "superbeeb": {
+    "description": "Super Bee! (Bra)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "syracuse": {
+    "description": "Syracuse (Fra)",
+    "publisher": "Jopac",
+    "year": "1981"
+  },
+  "timelord": {
+    "description": "Attack of the Timelord! (USA)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "turtles": {
+    "description": "Turtles (Euro)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "turtlesu": {
+    "description": "Turtles (USA)",
+    "publisher": "Philips",
+    "year": "1983"
+  },
+  "tutank": {
+    "description": "Tutankham (Euro, Prototype)",
+    "publisher": "Parker Brothers",
+    "year": "198?"
+  },
+  "typetell": {
+    "description": "Type & Tell! (USA)",
+    "publisher": "Philips",
+    "year": "1982"
+  },
+  "ufo": {
+    "description": "UFO! (USA)",
+    "publisher": "Magnavox",
+    "year": "1982"
+  },
+  "voice": {
+    "description": "The Voice",
+    "publisher": "Magnavox",
+    "year": "1979?"
+  },
+  "volley": {
+    "description": "Electronic Volleyball (Euro) ~ Volleyball! (USA)",
+    "publisher": "Philips (Euro) ~ Magnavox (USA)",
+    "year": "1979"
+  },
+  "volleyf": {
+    "description": "Volleyball (Fra)",
+    "publisher": "Radiola",
+    "year": "1979"
+  },
+  "vrkrspl1": {
+    "description": "Verkehrsspiele 1 (Ger)",
+    "publisher": "CSV/Philips",
+    "year": "1982"
+  },
+  "vrkrspl2": {
+    "description": "Verkehrsspiele 2 (Ger)",
+    "publisher": "CSV/Philips",
+    "year": "1982"
+  },
+  "wallst": {
+    "description": "Wall Street (Bra)",
+    "publisher": "Philips",
+    "year": "1983"
+  }
+}

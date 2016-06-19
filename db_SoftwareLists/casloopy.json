@@ -1,0 +1,42 @@
+{
+  "animelnd": {
+    "description": "Anime Land",
+    "publisher": "Casio",
+    "year": "1994"
+  },
+  "dreamchg": {
+    "description": "Dream Change - Kogane-chan no Fashion Party",
+    "publisher": "Casio",
+    "year": "1995"
+  },
+  "harihari": {
+    "description": "HariHari Seal Paradise",
+    "publisher": "Casio",
+    "year": "1995"
+  },
+  "loopytwn": {
+    "description": "Loopy Town no Oheya ga Hoshii!",
+    "publisher": "Casio",
+    "year": "1996"
+  },
+  "lupiton": {
+    "description": "Lupiton no Wonder Palette",
+    "publisher": "Casio",
+    "year": "1995"
+  },
+  "nigaoart": {
+    "description": "Nigaoe Artist",
+    "publisher": "Casio",
+    "year": "1995"
+  },
+  "pccllect": {
+    "description": "Pasokon Collection",
+    "publisher": "Casio",
+    "year": "1995"
+  },
+  "wanwanam": {
+    "description": "Wanwan Aijou Monogatari",
+    "publisher": "Casio",
+    "year": "1995"
+  }
+}

@@ -1,0 +1,5067 @@
+{
+  "007tomor": {
+    "description": "007 - Tomorrow Never Dies (Jpn)",
+    "publisher": "Electronic Arts",
+    "year": "1999"
+  },
+  "10101wil": {
+    "description": "10101 - Will the Starship (Jpn)",
+    "publisher": "Sound Technology Japan",
+    "year": "1997"
+  },
+  "19ji03pu": {
+    "description": "19 ji 03 pun Ueno Hatsu Yakou Ressha (Jpn)",
+    "publisher": "Visit",
+    "year": "1999"
+  },
+  "1on1sing": {
+    "description": "1-on-1 - Single Basketball (Jpn)",
+    "publisher": "Jorudan",
+    "year": "1998"
+  },
+  "20seikis": {
+    "description": "20 Seiki Striker Retsuden - The 20th Century's Strikers (Jpn)",
+    "publisher": "Virgin Interactive",
+    "year": "2000"
+  },
+  "70srobot": {
+    "description": "70's Robot Anime - Geppy-X - The Super Boosted Armor (Jpn)",
+    "publisher": "Aroma",
+    "year": "1999"
+  },
+  "a120bfe": {
+    "description": "Asuka 120% Burning Fest. Excellent (Jpn)",
+    "publisher": "Family Soft",
+    "year": "1997"
+  },
+  "a120bff": {
+    "description": "Asuka 120% Burning Fest. Final (Jpn)",
+    "publisher": "Family Soft",
+    "year": "1999"
+  },
+  "a120sbf": {
+    "description": "Asuka 120% Burning Fest. Special (Jpn)",
+    "publisher": "Family Soft",
+    "year": "1996"
+  },
+  "a5aressh": {
+    "description": "A5 - A Ressha de Ikou 5 (Jpn)",
+    "publisher": "Artdink",
+    "year": "1997"
+  },
+  "abeagogo": {
+    "description": "Abe a GoGo (Jpn)",
+    "publisher": "Gamebank",
+    "year": "1997"
+  },
+  "acidjapa": {
+    "description": "Acid (Jpn)",
+    "publisher": "Taki",
+    "year": "1999"
+  },
+  "aconcagu": {
+    "description": "Aconcagua (Jpn)",
+    "publisher": "SCEI",
+    "year": "2000"
+  },
+  "actionpu": {
+    "description": "Action Puzzle - Prism Land (Jpn)",
+    "publisher": "HECT",
+    "year": "2000"
+  },
+  "adlibouj": {
+    "description": "Ad Lib Ouji ...to Fuyukai na Nakamatachi!? (Jpn)",
+    "publisher": "Nippon Telenet",
+    "year": "2002"
+  },
+  "advanrac": {
+    "description": "Advan Racing (Jpn)",
+    "publisher": "Atlus",
+    "year": "1998"
+  },
+  "afraidga": {
+    "description": "Afraid Gear Another (Jpn)",
+    "publisher": "Asmik Ace",
+    "year": "2001"
+  },
+  "afraidge": {
+    "description": "Afraid Gear (Jpn)",
+    "publisher": "Asmik Ace",
+    "year": "1998"
+  },
+  "agentarm": {
+    "description": "Agent Armstrong (Jpn)",
+    "publisher": "We Net",
+    "year": "1997"
+  },
+  "airgrave": {
+    "description": "Airgrave (Jpn)",
+    "publisher": "Santos",
+    "year": "1996"
+  },
+  "airsthej": {
+    "description": "The Airs (Jpn)",
+    "publisher": "Victor Interactive Software",
+    "year": "1999"
+  },
+  "aitakute": {
+    "description": "Aitakute... Your Smiles in My Heart (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "aizouban": {
+    "description": "Aizouban Houshinengi (Jpn)",
+    "publisher": "KOEI",
+    "year": "1999"
+  },
+  "akagawaj": {
+    "description": "Akagawa Jirou - Yasoukyoku 2 (Jpn)",
+    "publisher": "Victor",
+    "year": "2001"
+  },
+  "alabamaj": {
+    "description": "Pop de Cute na Shinri Test - Alabama (Jpn)",
+    "publisher": "D3 Publisher",
+    "year": "2000"
+  },
+  "aliceinc": {
+    "description": "Alice in Cyberland (Jpn)",
+    "publisher": "Glams",
+    "year": "1996"
+  },
+  "alivejap": {
+    "description": "Alive (Jpn)",
+    "publisher": "General",
+    "year": "1998"
+  },
+  "alundra2": {
+    "description": "Alundra 2 - Mashinka no Nazo (Jpn)",
+    "publisher": "Sony",
+    "year": "1999"
+  },
+  "ananjari": {
+    "description": "A Nanjarin (Jpn)",
+    "publisher": "To One",
+    "year": "1998"
+  },
+  "ancientr": {
+    "description": "Ancient Roman - Power of the Dark Side (Jpn)",
+    "publisher": "Nihon Systems",
+    "year": "1998"
+  },
+  "angelbla": {
+    "description": "Angel Blade - Neo Tokyo Guardians (Jpn)",
+    "publisher": "On Dimand",
+    "year": "1997"
+  },
+  "angelgra": {
+    "description": "Angel Graffiti - Anatahe no Profile (Jpn)",
+    "publisher": "Coconuts Japan",
+    "year": "1996"
+  },
+  "anglduet": {
+    "description": "Angelique Duet (Jpn)",
+    "publisher": "KOEI",
+    "year": "1998"
+  },
+  "anglomoi": {
+    "description": "Anglomois '99 (Jpn, Superlite 1500 Series)",
+    "publisher": "Success",
+    "year": "1999"
+  },
+  "anglspe2": {
+    "description": "Angelique Special 2 (Jpn)",
+    "publisher": "KOEI",
+    "year": "1997"
+  },
+  "anglspec": {
+    "description": "Angelique Special (Jpn)",
+    "publisher": "KOEI",
+    "year": "1996"
+  },
+  "angltnr": {
+    "description": "Angelique Tenkuu no Requiem (Jpn)",
+    "publisher": "KOEI",
+    "year": "1999"
+  },
+  "anotherm": {
+    "description": "Another Memories (Jpn)",
+    "publisher": "Hearty Robin",
+    "year": "1998"
+  },
+  "aokiooka": {
+    "description": "Aoki Ookami to Shiroki Mezika - Genchou Hishi (Jpn)",
+    "publisher": "KOEI",
+    "year": "1998"
+  },
+  "aonoroku": {
+    "description": "Ao No Rokugou - Antarctica (Jpn)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "aozorato": {
+    "description": "Ao Zora To Nakama Tachi - Yume No Bouken (Jpn)",
+    "publisher": "MTO",
+    "year": "2003"
+  },
+  "aquanaut": {
+    "description": "Aquanaut no Kyuujitsu 2 (Jpn)",
+    "publisher": "Artdink",
+    "year": "1999"
+  },
+  "aquapara": {
+    "description": "Aqua Paradise - Boku no Suizokukan (Jpn)",
+    "publisher": "Victor Interactive Software",
+    "year": "2000"
+  },
+  "aquarian": {
+    "description": "Aquarian Age - Tokyo Wars (Jpn)",
+    "publisher": "ESP Software",
+    "year": "2000"
+  },
+  "aresshad": {
+    "description": "A Ressha de Ikou Z Mezase - Tairiku Oudan (Jpn)",
+    "publisher": "Artdink",
+    "year": "1999"
+  },
+  "arkanase": {
+    "description": "Arkana Senki Ludo (Jpn)",
+    "publisher": "Pai",
+    "year": "1998"
+  },
+  "arkanoid": {
+    "description": "Arkanoid R 2000 (Jpn)",
+    "publisher": "Taito",
+    "year": "1999"
+  },
+  "armedcor": {
+    "description": "Armored Core (Jpn, Demo)",
+    "publisher": "From Software",
+    "year": "1997"
+  },
+  "armedfig": {
+    "description": "Armed Fighter (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1998"
+  },
+  "armoredt": {
+    "description": "Soukou Kihei Votoms - Lightning Slash / Armored Trooper Votoms - Lightning Slash (Jpn)",
+    "publisher": "Takara",
+    "year": "1999"
+  },
+  "artcamia": {
+    "description": "Art Camion - Geijutsuden (Jpn, Alt)",
+    "publisher": "Alpha Unit/TYO",
+    "year": "1999"
+  },
+  "artcamio": {
+    "description": "Art Camion - Geijutsuden (Jpn, Taito the Best)",
+    "publisher": "Alpha Unit/TYO",
+    "year": "2002"
+  },
+  "arthurto": {
+    "description": "Arthur To Astaroth No Nazo Maikamura - Incredible Toons (Jpn)",
+    "publisher": "Capcom",
+    "year": "1996"
+  },
+  "arubarea": {
+    "description": "Arubarea no Otome - Uruwashi no Seishikitachi (Jpn)",
+    "publisher": "Masaya",
+    "year": "1998"
+  },
+  "astronok": {
+    "description": "Astronoka (Jpn)",
+    "publisher": "Enix",
+    "year": "1998"
+  },
+  "asuncias": {
+    "description": "Asuncia - Strategic Fantasy Role Playing Game (Jpn)",
+    "publisher": "Xing",
+    "year": "2000"
+  },
+  "athenaaw": {
+    "description": "Athena - Awakening from the Ordinary Life (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "aurabatt": {
+    "description": "Aura Battler Dunbine (Jpn)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "avg": {
+    "description": "Advanced Variable Geo (Jpn)",
+    "publisher": "TGL",
+    "year": "1996"
+  },
+  "avg2": {
+    "description": "Advanced V.G. 2 (Jpn, SuperLite 1500 Series)",
+    "publisher": "TGL",
+    "year": "2003"
+  },
+  "ayakashi": {
+    "description": "Ayakashi Ninden Kunoichiban (Jpn)",
+    "publisher": "Shoeisha",
+    "year": "1997"
+  },
+  "azito3ja": {
+    "description": "Azito 3 (Jpn)",
+    "publisher": "Banpresto",
+    "year": "2000"
+  },
+  "azitojap": {
+    "description": "Azito (Jpn)",
+    "publisher": "Astec 21",
+    "year": "1997"
+  },
+  "azumanga": {
+    "description": "Azumanga Donjara Daiou (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "backgain": {
+    "description": "Back Guiner - Yomigaeru Yuusha Tachi - Hishou Hen Uragiri no Senjou (Jpn)",
+    "publisher": "Ving",
+    "year": "1998"
+  },
+  "bakumats": {
+    "description": "Bakumatsu Roman - Gekka no Kenshi (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "bakurets": {
+    "description": "Bakuretsu Akindo (Jpn)",
+    "publisher": "Astec21",
+    "year": "1996"
+  },
+  "bakuryuu": {
+    "description": "Bakuryuu (Jpn)",
+    "publisher": "Fujimic",
+    "year": "2000"
+  },
+  "baldgate": {
+    "description": "Baldur's Gate (USA, Prototype)",
+    "publisher": "Interplay",
+    "year": "19??"
+  },
+  "baminkid": {
+    "description": "Bamin Kids (Jpn)",
+    "publisher": "Electronic Arts",
+    "year": "1996"
+  },
+  "barbapap": {
+    "description": "Kids Station Barbapapa (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "2001"
+  },
+  "bardyshj": {
+    "description": "Bardysh (Jpn)",
+    "publisher": "Imadeio",
+    "year": "1999"
+  },
+  "baroquej": {
+    "description": "Baroque (Jpn)",
+    "publisher": "Sting",
+    "year": "1999"
+  },
+  "baroques": {
+    "description": "Baroque Syndrome (Jpn)",
+    "publisher": "Sting",
+    "year": "2000"
+  },
+  "baseball": {
+    "description": "Baseball Simulation - ID Pro Yakyuu (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "bassfish": {
+    "description": "Bass Fisherman (Jpn)",
+    "publisher": "Sammy",
+    "year": "1998"
+  },
+  "battlema": {
+    "description": "Battle Master (Jpn)",
+    "publisher": "Hamster",
+    "year": "2000"
+  },
+  "battlesu": {
+    "description": "Battle Sugoroku - The Hunter (Jpn, SuperLite 1500 Series)",
+    "publisher": "Success",
+    "year": "1999"
+  },
+  "bealphar": {
+    "description": "Bealphareth (Jpn)",
+    "publisher": "Sony",
+    "year": "2000"
+  },
+  "beatplan": {
+    "description": "Beat Planet Music (Jpn)",
+    "publisher": "Sony",
+    "year": "2000"
+  },
+  "beavisbu": {
+    "description": "Beavis and Butt-head in Virtual Stupidity / MTV's Beavis and Butt-Head - Virtual Aho Shoukougun (Jpn)",
+    "publisher": "B-Factory",
+    "year": "1998"
+  },
+  "bhuntmj": {
+    "description": "Bakuretsu Hunter - Mahjong Special (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1996"
+  },
+  "biohaz2p": {
+    "description": "BioHazard 2 (Prototype)",
+    "publisher": "Capcom",
+    "year": "1998"
+  },
+  "biohaz2pa": {
+    "description": "BioHazard 2 (Prototype, Alt)",
+    "publisher": "Capcom",
+    "year": "1998"
+  },
+  "biohazp": {
+    "description": "BioHazard (Jpn, Prototype 19960131)",
+    "publisher": "Capcom",
+    "year": "1996"
+  },
+  "biohazpa": {
+    "description": "BioHazard (Jpn, Prototype 19951004)",
+    "publisher": "Capcom",
+    "year": "1995"
+  },
+  "biohazpb": {
+    "description": "BioHazard (Jpn, Prototype 19950804)",
+    "publisher": "Capcom",
+    "year": "1995"
+  },
+  "bishiba2": {
+    "description": "Bishi Bashi Special 2 (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "bishiba3": {
+    "description": "Bishi Bashi Special 3 - Step Champ (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "bishibas": {
+    "description": "Bishi Bashi Special (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "bishoujo": {
+    "description": "Bishoujo Senshi Sailor Moon Super S - Shin Shuyaku Soudatsusen (Jpn)",
+    "publisher": "Angel",
+    "year": "1996"
+  },
+  "blackjac": {
+    "description": "Blackjack vs. Matsuda Jun (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "2000"
+  },
+  "blackmat": {
+    "description": "Black Matrix 00 (Jpn, Limited Edition)",
+    "publisher": "NEC Interchannel",
+    "year": "2004"
+  },
+  "blackmx": {
+    "description": "Black Matrix Cross (Jpn)",
+    "publisher": "NEC Interchannel",
+    "year": "2000"
+  },
+  "bladeart": {
+    "description": "Blade Arts (Jpn)",
+    "publisher": "Enix",
+    "year": "2000"
+  },
+  "blademak": {
+    "description": "Blademaker: Arms Shop (Jpn)",
+    "publisher": "Shoeisha",
+    "year": "1999"
+  },
+  "blammach": {
+    "description": "Blam! Machinehead (Jpn)",
+    "publisher": "Virgin Interactive",
+    "year": "1997"
+  },
+  "blazebeq": {
+    "description": "Blaze & Blade - Eternal Quest (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1998"
+  },
+  "blazebla": {
+    "description": "Blaze & Blade Busters (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1998"
+  },
+  "blendxbr": {
+    "description": "Blend X Brand (Jpn)",
+    "publisher": "Tonkin House (Tokyo Shoseki)",
+    "year": "2000"
+  },
+  "blockku2": {
+    "description": "Block Kuzushi 2 (Jpn)",
+    "publisher": "Marvelous Entertaiment",
+    "year": "2000"
+  },
+  "blockkuz": {
+    "description": "Block Kuzushi Kowashite Help! (Jpn)",
+    "publisher": "Media Group",
+    "year": "2000"
+  },
+  "bloodfac": {
+    "description": "Blood Factory (Jpn)",
+    "publisher": "Interplay",
+    "year": "1996"
+  },
+  "bluebrea": {
+    "description": "Blue Breaker Burst - Egao no Asuni (Jpn)",
+    "publisher": "Human",
+    "year": "1998"
+  },
+  "blueknig": {
+    "description": "Blue Knight Bersaga Story - Soukou Kihei Votoms Gaiden (Jpn)",
+    "publisher": "Takura",
+    "year": "1997"
+  },
+  "bluelege": {
+    "description": "b.l.u.e. - Legend of Water (Jpn)",
+    "publisher": "Hudson",
+    "year": "1998"
+  },
+  "bluemarl": {
+    "description": "The Blue Marlin (Jpn)",
+    "publisher": "Starfish Software",
+    "year": "2000"
+  },
+  "bm3mm": {
+    "description": "Beatmania - Append 3rd Mix Mini (Jpn)",
+    "publisher": "Konami",
+    "year": "199?"
+  },
+  "bm5": {
+    "description": "Beatmania - Append 5th Mix - Time to Get Down (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "bm6core": {
+    "description": "Beatmania Append 6th Mix + Core Remix (Jpn)",
+    "publisher": "Konami",
+    "year": "2002"
+  },
+  "bmbest": {
+    "description": "Beatmania - Best Hits (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "bmclub": {
+    "description": "Beatmania - Append Club Mix (Jpn)",
+    "publisher": "Konami",
+    "year": "199?"
+  },
+  "bmdct": {
+    "description": "Beatmania - featuring Dreams Come True (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "bmgot2": {
+    "description": "Beatmania Append Gottamix 2 - Going Global (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "bmtokyo": {
+    "description": "Beatmania - The Sound of Tokyo! (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "bokuhako": {
+    "description": "Boku ha Koukuu Kanseikan (Jpn)",
+    "publisher": "Syscom",
+    "year": "1999"
+  },
+  "bokujyou": {
+    "description": "Bokujyou Keieiteki Board Game Umapoly (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "bokunoch": {
+    "description": "Boku no Choro-Q (Jpn)",
+    "publisher": "Takara",
+    "year": "2002"
+  },
+  "bonogura": {
+    "description": "Bonogurashi (Jpn)",
+    "publisher": "Amuze",
+    "year": "1996"
+  },
+  "boundary": {
+    "description": "Boundary Gate - Daughter of Kingdom (Jpn)",
+    "publisher": "Pack-In-Soft (Victor)",
+    "year": "1997"
+  },
+  "bountyar": {
+    "description": "Bounty Arms Demo (Jpn, Demo Demo No.5?, 199504)",
+    "publisher": "Data West",
+    "year": "1995"
+  },
+  "bravepro": {
+    "description": "Brave Prove (Jpn)",
+    "publisher": "Data West",
+    "year": "1998"
+  },
+  "bravesa2": {
+    "description": "Brave Saga 2 (Jpn)",
+    "publisher": "Takara",
+    "year": "2000"
+  },
+  "bravesag": {
+    "description": "Shin Sedai Robot Senki - Brave Saga (Jpn)",
+    "publisher": "Takara",
+    "year": "1998"
+  },
+  "braveswo": {
+    "description": "Brave Sword (Jpn)",
+    "publisher": "Sammy",
+    "year": "2000"
+  },
+  "breaknek": {
+    "description": "Breakneck (Prototype)",
+    "publisher": "Radical",
+    "year": "19??"
+  },
+  "breakvol": {
+    "description": "Break Volley (Jpn)",
+    "publisher": "Aqua Rouge",
+    "year": "1999"
+  },
+  "breathof": {
+    "description": "Breath of Fire III (Jpn)",
+    "publisher": "Capcom",
+    "year": "1997"
+  },
+  "bublbob2": {
+    "description": "Bubble Bobble II (Prototype)",
+    "publisher": "Taito",
+    "year": "1995"
+  },
+  "buckleup": {
+    "description": "Buckle Up! (Jpn)",
+    "publisher": "Shangri-La",
+    "year": "1998"
+  },
+  "bugijapa": {
+    "description": "Bugi (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "burningr": {
+    "description": "Burning Road (Jpn)",
+    "publisher": "Vic Tokai",
+    "year": "1997"
+  },
+  "burnoutj": {
+    "description": "Burn Out (Jpn, SuperLite 1500 Series)",
+    "publisher": "Success",
+    "year": "2000"
+  },
+  "buttsubu": {
+    "description": "Buttsubushi (Jpn)",
+    "publisher": "Selen",
+    "year": "2001"
+  },
+  "c1circui": {
+    "description": "C1 Circuit (Jpn)",
+    "publisher": "Invex",
+    "year": "1996"
+  },
+  "calcoloj": {
+    "description": "Calcolo! (Jpn)",
+    "publisher": "Clef Inventor",
+    "year": "1997"
+  },
+  "captainc": {
+    "description": "Captain Commando (Jpn)",
+    "publisher": "Capcom",
+    "year": "1998"
+  },
+  "captainj": {
+    "description": "Captain Tsubasa J - Get In The Tomorrow (Jpn)",
+    "publisher": "Bandai",
+    "year": "1996"
+  },
+  "captaint": {
+    "description": "Captain Tsubasa - Aratanaru Densetsu Joshou (Jpn)",
+    "publisher": "Konami",
+    "year": "2002"
+  },
+  "carnageh": {
+    "description": "Carnage Heart - Easy Zapping (Jpn)",
+    "publisher": "Artdink Corporation",
+    "year": "1997"
+  },
+  "caromsho": {
+    "description": "Carom Shot 2 (Jpn)",
+    "publisher": "Argent",
+    "year": "1998"
+  },
+  "cartonku": {
+    "description": "Carton-kun (Jpn)",
+    "publisher": "Irem Software Engineering",
+    "year": "2000"
+  },
+  "cclimbr": {
+    "description": "Arcade Hits - Crazy Climber (Jpn, Major Wave Series)",
+    "publisher": "Hamster",
+    "year": "2002"
+  },
+  "chaoscon": {
+    "description": "Chaos Control (Jpn)",
+    "publisher": "Virgin Interactive",
+    "year": "1996"
+  },
+  "chiisaer": {
+    "description": "Chiisana Oukoku Erutoria (Jpn)",
+    "publisher": "KSS",
+    "year": "2000"
+  },
+  "chiisana": {
+    "description": "Chiisana Kyojin Microman (Jpn)",
+    "publisher": "Takara",
+    "year": "1999"
+  },
+  "chikichi": {
+    "description": "Chiki Chiki Machine Mou Race - Wacky Races (Jpn)",
+    "publisher": "Hudson/Infogrames",
+    "year": "2001"
+  },
+  "chippoke": {
+    "description": "Chippoke Ralph no Daibouken - The Adventure of Little Ralph (Jpn)",
+    "publisher": "New Corporation",
+    "year": "1999"
+  },
+  "chocolat": {
+    "description": "Chocolate Kiss (Jpn)",
+    "publisher": "DigiCube",
+    "year": "2002"
+  },
+  "choroqja": {
+    "description": "Choro-Q (Jpn)",
+    "publisher": "Takara",
+    "year": "1996"
+  },
+  "choroqwo": {
+    "description": "Choro-Q Wonderful! (Jpn)",
+    "publisher": "Takara",
+    "year": "1999"
+  },
+  "chouanik": {
+    "description": "Chou-Aniki - Kyuukyoku Muteki Ginga Saikyou Otoko (Jpn)",
+    "publisher": "Nippon Computer System",
+    "year": "1995"
+  },
+  "chouhats": {
+    "description": "Chou Hatsumei Boy Kanipan - Hirameki Wonderland (Jpn)",
+    "publisher": "Taito",
+    "year": "1999"
+  },
+  "choujing": {
+    "description": "Choujin Gakuen Gowcaizer (Jpn)",
+    "publisher": "Urban Plant",
+    "year": "1997"
+  },
+  "choukous": {
+    "description": "Chou-Kousoku Grandoll (Jpn)",
+    "publisher": "Bandai",
+    "year": "1997"
+  },
+  "cielgris": {
+    "description": "Kuroi Hitomi no noir - Cielgris Fantasm (Jpn)",
+    "publisher": "Gust",
+    "year": "1999"
+  },
+  "circuitb": {
+    "description": "Circuit Beat (Jpn)",
+    "publisher": "Prism Arts",
+    "year": "1995"
+  },
+  "cleopatr": {
+    "description": "Cleopatra's Fortune (Jpn)",
+    "publisher": "Altron",
+    "year": "2001"
+  },
+  "clickdr1": {
+    "description": "Click Manga - Dynamic Robot Taisen 1 (Jpn)",
+    "publisher": "Tokuma Shoten",
+    "year": "1999"
+  },
+  "clickdr2": {
+    "description": "Click Manga - Dynamic Robot Taisen 2 (Jpn)",
+    "publisher": "Tokuma Shoten",
+    "year": "1999"
+  },
+  "clickman": {
+    "description": "Click Manga - Click Nohi (Jpn)",
+    "publisher": "Tokuma Shoten",
+    "year": "1998"
+  },
+  "clockto2": {
+    "description": "Clock Tower 2 (Jpn, Demo)",
+    "publisher": "Human",
+    "year": "1996"
+  },
+  "clocktow": {
+    "description": "Clock Tower - Ghost Head (Jpn)",
+    "publisher": "Human",
+    "year": "1998"
+  },
+  "colorful": {
+    "description": "Colorful Logic 3 (Jpn)",
+    "publisher": "Altron",
+    "year": "2001"
+  },
+  "convenis": {
+    "description": "The Conveni Special - 3-tsu no Sekai o Dokusen Seyo (Jpn)",
+    "publisher": "Ardink",
+    "year": "1998"
+  },
+  "cookingf": {
+    "description": "Honoo no Ryourinin Cooking Fighter Tao (Jpn)",
+    "publisher": "Nippon Ichi Software",
+    "year": "1998"
+  },
+  "cosmicra": {
+    "description": "Cosmic Race (Jpn)",
+    "publisher": "Neorex",
+    "year": "1995"
+  },
+  "cosmowar": {
+    "description": "Cosmowarrior Zero (Jpn)",
+    "publisher": "Taito",
+    "year": "2000"
+  },
+  "cotton10": {
+    "description": "Cotton 100% (Jpn, Superlite 1500 Series)",
+    "publisher": "Success",
+    "year": "2003"
+  },
+  "cpom": {
+    "description": "Community Pom (Jpn)",
+    "publisher": "Fill-In Café",
+    "year": "1997"
+  },
+  "cpomowd": {
+    "description": "Community Pom - Omoide o Dakishimete (Jpn)",
+    "publisher": "Family Soft",
+    "year": "1999"
+  },
+  "crashp": {
+    "description": "Crash Bandicoot (Prototype, 19960408)",
+    "publisher": "SCEA",
+    "year": "1996"
+  },
+  "crazycli": {
+    "description": "Crazy Climber 2000 (Jpn)",
+    "publisher": "Nihon Bussan",
+    "year": "2000"
+  },
+  "creature": {
+    "description": "Creature Shock (Jpn)",
+    "publisher": "Data East",
+    "year": "1996"
+  },
+  "crimecra": {
+    "description": "Crime Crackers 2 (Jpn)",
+    "publisher": "Sony",
+    "year": "1997"
+  },
+  "crocadve": {
+    "description": "Croc Adventure (Jpn)",
+    "publisher": "KOEI",
+    "year": "1999"
+  },
+  "crosstan": {
+    "description": "Cross Tantei Monogatari 1 - Kouhen (Jpn, Major Wave Series)",
+    "publisher": "WorkJam",
+    "year": "2000"
+  },
+  "crwcount": {
+    "description": "CRW - Counter Revolution War (Jpn)",
+    "publisher": "Acclaim",
+    "year": "1996"
+  },
+  "cuonpaja": {
+    "description": "Cu-On-Pa (Jpn)",
+    "publisher": "T&E Soft",
+    "year": "1997"
+  },
+  "cyberdai": {
+    "description": "Cyber Daisenryaku (Jpn, Superlite 1500 Series)",
+    "publisher": "Success",
+    "year": "2000"
+  },
+  "cybernet": {
+    "description": "Cybernetic Empire (Jpn)",
+    "publisher": "Telenet",
+    "year": "1999"
+  },
+  "cyberwar": {
+    "description": "Cyber War (Jpn)",
+    "publisher": "Coconuts Japan",
+    "year": "1995"
+  },
+  "daibouke": {
+    "description": "Daibouken Deluxe - Harukanaru Umi (Jpn)",
+    "publisher": "Soft Office",
+    "year": "1997"
+  },
+  "daikouk2": {
+    "description": "Daikoukai Jidai II (Jpn)",
+    "publisher": "KOEI",
+    "year": "1996"
+  },
+  "daikouka": {
+    "description": "Daikoukai Jidai Gaiden (Jpn)",
+    "publisher": "KOEI",
+    "year": "1997"
+  },
+  "dakar97j": {
+    "description": "Dakar '97 (Jpn)",
+    "publisher": "Virgin Interactive",
+    "year": "1997"
+  },
+  "dancing2": {
+    "description": "Dancing Blade 2 - Katteni Momotenshi II - Tears of Eden (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "dancingb": {
+    "description": "Dancing Blade - Katteni Momotenshi! (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "danganja": {
+    "description": "Dangan (Jpn)",
+    "publisher": "KSS",
+    "year": "2000"
+  },
+  "darkhunt": {
+    "description": "Dark Hunter - Ge Youma No Mori (Jpn)",
+    "publisher": "KOEI",
+    "year": "1997"
+  },
+  "darkseed": {
+    "description": "Darkseed II (Jpn)",
+    "publisher": "B-Factory",
+    "year": "1997"
+  },
+  "darktale": {
+    "description": "Dark Tales from the Lost Soul (Jpn)",
+    "publisher": "Sammy",
+    "year": "199?"
+  },
+  "dboxing": {
+    "description": "Dynamite Boxing (Jpn)",
+    "publisher": "Victor Interactive Software",
+    "year": "1998"
+  },
+  "ddr2rac": {
+    "description": "Dance Dance Revolution - 2nd Remix Append Club Version Vol. 2 (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "ddr5": {
+    "description": "Dance Dance Revolution - 5th Mix (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "ddrbest": {
+    "description": "Dance Dance Revolution - Best Hits (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "ddrdmp": {
+    "description": "Dance Dance Revolution - Disney Mix (Pirate)",
+    "publisher": "<pirate>",
+    "year": "2001"
+  },
+  "ddrextra": {
+    "description": "Dance Dance Revolution - Extra Mix (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "deadlysk": {
+    "description": "Deadly Skies (Jpn)",
+    "publisher": "Coconuts Japan",
+    "year": "1997"
+  },
+  "deathwin": {
+    "description": "Death Wing (Jpn)",
+    "publisher": "Cybertech Designs",
+    "year": "1996"
+  },
+  "defeatli": {
+    "description": "Defeat Lightning (Jpn)",
+    "publisher": "D Cruise",
+    "year": "1997"
+  },
+  "denpasho": {
+    "description": "Denpa Shounenteki Game (Jpn)",
+    "publisher": "Hudson",
+    "year": "1998"
+  },
+  "densetsu": {
+    "description": "Hole of the Legend Monster - Monster Complete World Ver.2 (Jpn)",
+    "publisher": "Idea Factory",
+    "year": "1999"
+  },
+  "denshada": {
+    "description": "Densha Daisuki (Jpn)",
+    "publisher": "Tomy",
+    "year": "1998"
+  },
+  "denshade": {
+    "description": "Densha de Go! Nagoya Railroad - Let's Go By Train (Jpn)",
+    "publisher": "Taito",
+    "year": "2000"
+  },
+  "derbyjoc": {
+    "description": "Derby Jockey 2001 (Jpn)",
+    "publisher": "Asmik Ace",
+    "year": "2001"
+  },
+  "descentj": {
+    "description": "Descent (Jpn)",
+    "publisher": "Interplay",
+    "year": "1996"
+  },
+  "destruct": {
+    "description": "Destruction Derby 2 (Jpn)",
+    "publisher": "Sony",
+    "year": "1997"
+  },
+  "deuce": {
+    "description": "Deuce (USA, Prototype)",
+    "publisher": "<unknown>",
+    "year": "2000"
+  },
+  "devicere": {
+    "description": "Devicereign (Jpn)",
+    "publisher": "Media Works",
+    "year": "1999"
+  },
+  "dezaekid": {
+    "description": "Dezaemon Kids! (Jpn)",
+    "publisher": "Athena",
+    "year": "1998"
+  },
+  "dezaemon": {
+    "description": "Dezaemon Plus (Jpn)",
+    "publisher": "Athena",
+    "year": "1996"
+  },
+  "diablop": {
+    "description": "Diablo (Prototype)",
+    "publisher": "Electronic Arts",
+    "year": "1997"
+  },
+  "digicall": {
+    "description": "Digical League (Jpn)",
+    "publisher": "Squaresoft",
+    "year": "1997"
+  },
+  "digimont": {
+    "description": "Digimon Tamers - Battle Evolution (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "digimonw": {
+    "description": "Digimon World (Jpn)",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "docchime": {
+    "description": "Docchi Mecha! (Jpn)",
+    "publisher": "Sony",
+    "year": "2000"
+  },
+  "dodgedeb": {
+    "description": "Dodge de Ball! (Jpn)",
+    "publisher": "Yumedia",
+    "year": "1998"
+  },
+  "dogmaste": {
+    "description": "The Dog Master (Jpn)",
+    "publisher": "Visit",
+    "year": "2003"
+  },
+  "dokidoki": {
+    "description": "Doki Doki Shutter Chance (Jpn)",
+    "publisher": "Nippon Ichi Software",
+    "year": "1997"
+  },
+  "dokomade": {
+    "description": "Dokomademo Aoku... (Jpn, Limited Edition)",
+    "publisher": "KID",
+    "year": "2002"
+  },
+  "dolphins": {
+    "description": "Dolphin's Dream (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "dominoku": {
+    "description": "Domino-Kun o Tomenaide (Jpn)",
+    "publisher": "ArtDink",
+    "year": "1998"
+  },
+  "donpachi": {
+    "description": "DonPachi (Jpn)",
+    "publisher": "SPS",
+    "year": "1996"
+  },
+  "doraemo2": {
+    "description": "Doraemon 2 - SOS! Otogi no Kuni (Jpn)",
+    "publisher": "Epoch",
+    "year": "1997"
+  },
+  "doraemon": {
+    "description": "Doraemon - Nobitaito Fukkatsu no hoshi (Jpn)",
+    "publisher": "Epoch",
+    "year": "1996"
+  },
+  "doubledr": {
+    "description": "Double Dragon (Jpn)",
+    "publisher": "Technos Japan",
+    "year": "199?"
+  },
+  "doukyuu2": {
+    "description": "Doukyuusei 2 (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1997"
+  },
+  "doukyuus": {
+    "description": "Doukyuusei Mahjong (Jpn)",
+    "publisher": "Aroma",
+    "year": "1997"
+  },
+  "dragonba": {
+    "description": "Dragon Ball Z - Ultimate Battle 22 (Jpn)",
+    "publisher": "Bandai",
+    "year": "1995"
+  },
+  "dragondr": {
+    "description": "Dragon Drive (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "dragonk4": {
+    "description": "Dragon Knight 4 (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1997"
+  },
+  "dragonkn": {
+    "description": "Dragon Knights Glorious (Jpn)",
+    "publisher": "Pandora",
+    "year": "1999"
+  },
+  "dragonmo": {
+    "description": "Dragon Money (Jpn)",
+    "publisher": "Micro Cabin",
+    "year": "1999"
+  },
+  "dragonva": {
+    "description": "Dragon Valor (Jpn)",
+    "publisher": "Namco",
+    "year": "1999"
+  },
+  "driverp": {
+    "description": "Driver (Prototype Demo)",
+    "publisher": "GT Interactive",
+    "year": "19??"
+  },
+  "drslumpj": {
+    "description": "Dr. Slump (Jpn)",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "drugstor": {
+    "description": "The Drug Store - Matsumoto Kiyoshi de Okaimono! (Jpn)",
+    "publisher": "Human",
+    "year": "1998"
+  },
+  "druidyam": {
+    "description": "Druid - Yamie no Tsuisekisha (Jpn)",
+    "publisher": "KOEI",
+    "year": "1998"
+  },
+  "dsdct": {
+    "description": "Dancing Stage featuring Dreams Come True (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "dsoc02": {
+    "description": "Dynamite Soccer 2002 (Jpn)",
+    "publisher": "A-Max",
+    "year": "2002"
+  },
+  "dsoc04": {
+    "description": "Dynamite Soccer 2004 Final (Jpn)",
+    "publisher": "A-Max",
+    "year": "2004"
+  },
+  "dstkd": {
+    "description": "Dancing Stage featuring True Kiss Destination (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "dukettkd": {
+    "description": "Duke Nukem Time to Kill (USA, Demo)",
+    "publisher": "GT Interactive",
+    "year": "1998"
+  },
+  "dukettkp": {
+    "description": "Duke Nukem Time to Kill (USA, Prototype)",
+    "publisher": "GT Interactive",
+    "year": "1998"
+  },
+  "dxjinse4": {
+    "description": "DX Jinsei Game IV - The Game of Life (Jpn)",
+    "publisher": "Takara",
+    "year": "2001"
+  },
+  "dxjinse5": {
+    "description": "DX Jinsei Game V - The Game of Life (Jpn)",
+    "publisher": "Takara",
+    "year": "2002"
+  },
+  "dxmonopo": {
+    "description": "DX Monopoly (Jpn)",
+    "publisher": "Takara",
+    "year": "2000"
+  },
+  "dxokuman": {
+    "description": "DX Okuman Chouja Game II - The Money Battle (Jpn)",
+    "publisher": "Takara",
+    "year": "1998"
+  },
+  "dxshacho": {
+    "description": "DX Shachou Game (Jpn)",
+    "publisher": "Takara",
+    "year": "1999"
+  },
+  "eggsofst": {
+    "description": "Eggs of Steel - Hello Charlie!! (Jpn)",
+    "publisher": "Enix",
+    "year": "1998"
+  },
+  "eikanhak": {
+    "description": "Eikan ha Kimini 4 (Jpn)",
+    "publisher": "ArtDink",
+    "year": "1999"
+  },
+  "eiseimei": {
+    "description": "Eisei Meijin (Jpn)",
+    "publisher": "Konami",
+    "year": "1995"
+  },
+  "elanjapa": {
+    "description": "Élan (Jpn)",
+    "publisher": "Visco",
+    "year": "1999"
+  },
+  "elanplus": {
+    "description": "Élan Plus (Jpn)",
+    "publisher": "Visco",
+    "year": "2000"
+  },
+  "eldergat": {
+    "description": "Elder Gate (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "elfwokar": {
+    "description": "Elf wo Karu Monotachi II (Jpn)",
+    "publisher": "Altron",
+    "year": "1998"
+  },
+  "emmyreaj": {
+    "description": "Emmyrea (Jpn)",
+    "publisher": "Kid",
+    "year": "2001"
+  },
+  "endsecto": {
+    "description": "End Sector (Jpn)",
+    "publisher": "ASCII",
+    "year": "1998"
+  },
+  "engachoj": {
+    "description": "Engacho! (Jpn)",
+    "publisher": "Nihon Application",
+    "year": "1999"
+  },
+  "enigmaja": {
+    "description": "Enigma (Jpn)",
+    "publisher": "KOEI",
+    "year": "1998"
+  },
+  "eosedgeo": {
+    "description": "EOS - Edge of Skyhigh (Jpn)",
+    "publisher": "Micronet",
+    "year": "1997"
+  },
+  "epicaste": {
+    "description": "Epica Stella (Jpn)",
+    "publisher": "Human",
+    "year": "1998"
+  },
+  "evergree": {
+    "description": "Evergreen Avenue (Jpn)",
+    "publisher": "Mediaworks/Datam Polystar",
+    "year": "2001"
+  },
+  "evethefa": {
+    "description": "EVE - The Fatal Attraction (Jpn)",
+    "publisher": "Game Village",
+    "year": "2001"
+  },
+  "evezeroj": {
+    "description": "Eve Zero (Jpn)",
+    "publisher": "NetVillage",
+    "year": "2000"
+  },
+  "excitin2": {
+    "description": "Exciting Bass 2 (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "exciting": {
+    "description": "Exciting Bass (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "expertja": {
+    "description": "Expert (Jpn)",
+    "publisher": "Nichibutsu (Nihon Bussan)",
+    "year": "1996"
+  },
+  "extrabri": {
+    "description": "Extra Bright (Jpn)",
+    "publisher": "ASCII",
+    "year": "1996"
+  },
+  "familydi": {
+    "description": "Family Diamond (Jpn)",
+    "publisher": "Magnolia",
+    "year": "2002"
+  },
+  "familyre": {
+    "description": "The Family Restaurant - Shijou Saikyou no Menu (Jpn)",
+    "publisher": "Human",
+    "year": "1998"
+  },
+  "farlands": {
+    "description": "Farland Story - Yottsu no Fuuin (Jpn)",
+    "publisher": "TGL",
+    "year": "1997"
+  },
+  "farlsaga": {
+    "description": "Farland Saga - Toki no Michishirube (Jpn)",
+    "publisher": "TGL",
+    "year": "1999"
+  },
+  "favoriem": {
+    "description": "Favorite Dear - Enkan no Monogatari (Jpn)",
+    "publisher": "NEC Interchannel",
+    "year": "2001"
+  },
+  "favorite": {
+    "description": "Favorite Dear - Junshiro no Yogenmono (The everlasting voices) (Jpn)",
+    "publisher": "NEC Interchannel",
+    "year": "2000"
+  },
+  "feda2whi": {
+    "description": "Feda 2 - White Surge - the Platoon (Jpn)",
+    "publisher": "Yanoman Games",
+    "year": "1997"
+  },
+  "fighters": {
+    "description": "Fighters' Impact (Jpn)",
+    "publisher": "Taito",
+    "year": "1997"
+  },
+  "fighting": {
+    "description": "Fighting Illusion - K-1 Grand Prix '98 (Jpn)",
+    "publisher": "Xing",
+    "year": "1998"
+  },
+  "finaldoo": {
+    "description": "Final Doom (Jpn)",
+    "publisher": "Soft Bank",
+    "year": "1997"
+  },
+  "finalfa2": {
+    "description": "Final Fantasy II (Jpn)",
+    "publisher": "Squaresoft",
+    "year": "2002"
+  },
+  "finalfan": {
+    "description": "Final Fantasy (Jpn)",
+    "publisher": "Squaresoft",
+    "year": "2002"
+  },
+  "finalfex": {
+    "description": "Final Fantasy Extra Collection (Jpn)",
+    "publisher": "Squaresoft",
+    "year": "199?"
+  },
+  "finalrou": {
+    "description": "Final Round (Jpn)",
+    "publisher": "Atlus",
+    "year": "1998"
+  },
+  "firebugs": {
+    "description": "Firebugs (Euro)",
+    "publisher": "Sony",
+    "year": "2002"
+  },
+  "firemen2": {
+    "description": "The Firemen 2 - Pete & Danny (Jpn)",
+    "publisher": "Human",
+    "year": "199?"
+  },
+  "firewoma": {
+    "description": "Fire Woman Matoigumi (Jpn)",
+    "publisher": "Tokuma Shoten",
+    "year": "1998"
+  },
+  "firstkis": {
+    "description": "First Kiss Monogatari (Jpn)",
+    "publisher": "HuneX",
+    "year": "1998"
+  },
+  "firstque": {
+    "description": "First Queen IV (Jpn)",
+    "publisher": "Kure Software Koubou",
+    "year": "1996"
+  },
+  "fishersr": {
+    "description": "Fisher's Road (Jpn)",
+    "publisher": "BPS",
+    "year": "1999"
+  },
+  "fisheyes": {
+    "description": "Fish Eyes II (Jpn)",
+    "publisher": "Victor",
+    "year": "2000"
+  },
+  "fishingf": {
+    "description": "Fishing Freaks - BassRise (Jpn)",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "fistjapa": {
+    "description": "Fist (Jpn)",
+    "publisher": "Imageneer",
+    "year": "1996"
+  },
+  "forgetme": {
+    "description": "Forget me not - Palette (Jpn)",
+    "publisher": "Enterbrain",
+    "year": "2001"
+  },
+  "formulac": {
+    "description": "Formula Circus (Jpn)",
+    "publisher": "Nichibutsu (Nihon Bussan)",
+    "year": "1997"
+  },
+  "formulag": {
+    "description": "Formula Grand Prix 1997 - Team Unei Simulation 2 (Jpn)",
+    "publisher": "Coconuts Japan",
+    "year": "1997"
+  },
+  "formulan": {
+    "description": "Formula Nippon '99 (Jpn)",
+    "publisher": "TYO",
+    "year": "1999"
+  },
+  "foxjunct": {
+    "description": "Fox Junction (Jpn)",
+    "publisher": "Trips",
+    "year": "1997"
+  },
+  "freetalk": {
+    "description": "Free Talk Studio - Mari no Kimama na Oshaberi (Jpn, Best of the Best)",
+    "publisher": "Media",
+    "year": "2000"
+  },
+  "frisktom": {
+    "description": "Arcade Hits - Frisky Tom (Jpn, Major Wave Serie)",
+    "publisher": "Hamster",
+    "year": "2002"
+  },
+  "frontmis": {
+    "description": "Front Mission 1St (Jpn)",
+    "publisher": "Squaresoft",
+    "year": "2003"
+  },
+  "funfunpi": {
+    "description": "Fun! Fun! Pingu (Jpn, Limited Edition)",
+    "publisher": "Sony",
+    "year": "1999"
+  },
+  "fushigid": {
+    "description": "Fushigi Deka (Fushigi Keiji) (Jpn)",
+    "publisher": "Capcom",
+    "year": "2000"
+  },
+  "fuujinry": {
+    "description": "Fuujin Ryouiki Eretzvaju (Jpn)",
+    "publisher": "Yuke's",
+    "year": "1999"
+  },
+  "fuuraiki": {
+    "description": "Fuuraiki (Jpn)",
+    "publisher": "Fog (Full On Games)",
+    "year": "2001"
+  },
+  "fuuungok": {
+    "description": "Fuuun Gokuu Ninjin (Jpn)",
+    "publisher": "Aicom",
+    "year": "1996"
+  },
+  "g1jockey": {
+    "description": "G1 Jockey 2000 (Jpn)",
+    "publisher": "KOEI",
+    "year": "2000"
+  },
+  "gaiaseed": {
+    "description": "Gaia Seed - Project Seed Trap (Jpn)",
+    "publisher": "Techno Soleil",
+    "year": "1996"
+  },
+  "gakkoude": {
+    "description": "Gakkou Deatta Kowai Hanashi S (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1997"
+  },
+  "gakkouno": {
+    "description": "Gakkou no Kowai Uwasa - Hanako Sangakita!! (Jpn)",
+    "publisher": "Capcom",
+    "year": "1995"
+  },
+  "gakkouw2": {
+    "description": "Gakkou wo Tsukurou!! 2 (Jpn)",
+    "publisher": "Victor Interactive Software",
+    "year": "1998"
+  },
+  "gakkouwo": {
+    "description": "Gakkou o Tsukurou!! Koushou Sensei Monogatari (Jpn)",
+    "publisher": "Victor Interactive Software",
+    "year": "2000"
+  },
+  "gakuense": {
+    "description": "Gakuen Sentai Solblast (Jpn)",
+    "publisher": "Creative Heads",
+    "year": "1999"
+  },
+  "galaxyfi": {
+    "description": "Galaxy Fight - Universal Warriors (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "1996"
+  },
+  "galeozja": {
+    "description": "Galeoz (Jpn)",
+    "publisher": "Atlus",
+    "year": "1996"
+  },
+  "gallopra": {
+    "description": "Gallop Racer 2000 (Jpn)",
+    "publisher": "Tecmo",
+    "year": "2000"
+  },
+  "gamblerj": {
+    "description": "Gambler Jiko Chuushinka Ippatsushoubu! Tokyo Mahjong Land (Jpn)",
+    "publisher": "Game Arts",
+    "year": "2000"
+  },
+  "gamemake": {
+    "description": "The Game Maker (Jpn)",
+    "publisher": "Axela",
+    "year": "1998"
+  },
+  "gamera20": {
+    "description": "Gamera 2000 (Jpn)",
+    "publisher": "Virgin Interactive",
+    "year": "1997"
+  },
+  "gamesoft": {
+    "description": "Gamesoft wo Tsukurou - Let's Be a Super Game Creator (Jpn)",
+    "publisher": "Imageneer",
+    "year": "1999"
+  },
+  "ganbareg": {
+    "description": "Ganbare Goemon - Uchuu Kaizoku Akogingu (Jpn)",
+    "publisher": "Konami",
+    "year": "1996"
+  },
+  "ganbaroo": {
+    "description": "Ganbare Goemon - Ooedo Daikaiten (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "gangwaym": {
+    "description": "Gangway Monsters (Jpn)",
+    "publisher": "Sony",
+    "year": "1998"
+  },
+  "gatekeep": {
+    "description": "Gate Keepers (Jpn)",
+    "publisher": "Kadokawa Shoten",
+    "year": "1998"
+  },
+  "gearfigh": {
+    "description": "Gear Fighter Dendoh (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "gegegekt": {
+    "description": "Gegege no Kitarou - Nonoi no Nikuto Katachi Tachi (Jpn)",
+    "publisher": "Bandai",
+    "year": "1997"
+  },
+  "gegegeno": {
+    "description": "Gegege no Kitarou - Gyakushuu! Youkai Daikessen (Jpn)",
+    "publisher": "Konami",
+    "year": "2003"
+  },
+  "gekiohsh": {
+    "description": "Geki-Oh ShienRyu (Jpn)",
+    "publisher": "Warashi",
+    "year": "1999"
+  },
+  "gekisout": {
+    "description": "Gekisou Tomarunner (Jpn)",
+    "publisher": "Sony",
+    "year": "1999"
+  },
+  "gekitots": {
+    "description": "Gekitotsu Toma L'Arc - L'Arc-en-Ciel vs. Tomarunner (Jpn)",
+    "publisher": "Sony",
+    "year": "2000"
+  },
+  "geneitou": {
+    "description": "Genei Tougi - Shadow Struggle (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1996"
+  },
+  "gensomad": {
+    "description": "Gensomaden Saiyuki - Harukanaru Nishi He (Jpn)",
+    "publisher": "J-Wing",
+    "year": "2002"
+  },
+  "gensouno": {
+    "description": "Gensou no Altemis - Actress School Mystery Adventure (Jpn)",
+    "publisher": "Shoeisha",
+    "year": "2000"
+  },
+  "getbacke": {
+    "description": "Get Backers Dakkanya (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "gingaeiy": {
+    "description": "Ginga Eiyuu Densetsu (Jpn)",
+    "publisher": "Tokuma Shoten",
+    "year": "1998"
+  },
+  "gingaojo": {
+    "description": "Ginga o Jousama Densetsu Yuna - Final Edition (Jpn)",
+    "publisher": "Hudson",
+    "year": "1998"
+  },
+  "glintgli": {
+    "description": "Glint Glitters (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "globldom": {
+    "description": "Global Domination (USA, Prototype)",
+    "publisher": "Psygnosis",
+    "year": "1998?"
+  },
+  "goemonsh": {
+    "description": "Goemon - Shin Sedai Shuumei (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "goikenmu": {
+    "description": "Goiken Muyou II (Jpn)",
+    "publisher": "KSS",
+    "year": "1998"
+  },
+  "gokuuden": {
+    "description": "Gokuu Densetsu - Magic Beast Warriors (Jpn)",
+    "publisher": "Alyume System",
+    "year": "1996"
+  },
+  "golgo13k": {
+    "description": "Golgo 13 - 1 - Karairu no Yabou (Jpn)",
+    "publisher": "Daiki",
+    "year": "1998"
+  },
+  "googooso": {
+    "description": "Goo! Goo! Soundy (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "gpolicej": {
+    "description": "G-Police (Jpn)",
+    "publisher": "Psygnosis",
+    "year": "1998"
+  },
+  "granstre": {
+    "description": "Granstream Denki (Jpn, Demo)",
+    "publisher": "<unknown>",
+    "year": "1997"
+  },
+  "greatbat": {
+    "description": "The Great Battle VI (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1997"
+  },
+  "gritzthe": {
+    "description": "Gritz - The Primordial Adventure (Jpn)",
+    "publisher": "Sanyo",
+    "year": "1997"
+  },
+  "groovead": {
+    "description": "Groove Adventure Rave - Yuukyuu no Kizuna (Jpn)",
+    "publisher": "Konami",
+    "year": "2002"
+  },
+  "grooveji": {
+    "description": "Groove Jigoku V - Sweepstation Version (Jpn)",
+    "publisher": "Sony",
+    "year": "1998"
+  },
+  "groovemh": {
+    "description": "Groove Adventure Rave - Mikan no Hiseki (Jpn)",
+    "publisher": "Konami",
+    "year": "2002"
+  },
+  "growlans": {
+    "description": "Growlanser (Jpn)",
+    "publisher": "Atlus",
+    "year": "1999"
+  },
+  "guguthro": {
+    "description": "Googootrops (Jpn)",
+    "publisher": "Enix",
+    "year": "1999"
+  },
+  "guiltyge": {
+    "description": "Guilty Gear (Jpn)",
+    "publisher": "Arc System Works",
+    "year": "1998"
+  },
+  "guitarfr": {
+    "description": "Guitar Freaks Append 2nd Mix (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "gunbareg": {
+    "description": "Gunbare! Game Tengoku - The Game Paradise 2 (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1998"
+  },
+  "gunbirdj": {
+    "description": "Gunbird (Jpn)",
+    "publisher": "Atlus",
+    "year": "1995"
+  },
+  "gunghobr": {
+    "description": "Gung-Ho Brigade (Jpn)",
+    "publisher": "Tomy",
+    "year": "2000"
+  },
+  "gunparad": {
+    "description": "Gunparade March (Jpn)",
+    "publisher": "Sony",
+    "year": "2000"
+  },
+  "haishin2": {
+    "description": "Hai-Shin-2 (Jpn)",
+    "publisher": "Aques",
+    "year": "1998"
+  },
+  "hakaiohk": {
+    "description": "Hakaioh - King of Crusher (Jpn)",
+    "publisher": "FAB Communication",
+    "year": "1998"
+  },
+  "hanabifa": {
+    "description": "Hanabi Fantast (Jpn)",
+    "publisher": "Magical Company",
+    "year": "1998"
+  },
+  "happyhot": {
+    "description": "Happy Hotel (Jpn)",
+    "publisher": "Tohoku Shinsha",
+    "year": "1997"
+  },
+  "happysal": {
+    "description": "Happy Salvage (Jpn, Disc 1 Only)",
+    "publisher": "Media Works",
+    "year": "2000"
+  },
+  "hardboil": {
+    "description": "Hard Boiled (Jpn)",
+    "publisher": "Siege",
+    "year": "1998"
+  },
+  "harmfulp": {
+    "description": "Harmful Park (Jpn)",
+    "publisher": "Sky Think Systems",
+    "year": "1997"
+  },
+  "harukaby": {
+    "description": "Harukanaru Toki no Naka de - Banjou Yuugi (Jpn, Premium Box)",
+    "publisher": "KOEI",
+    "year": "2003"
+  },
+  "harukana": {
+    "description": "Harukanaru Toki no Naka de (Jpn)",
+    "publisher": "KOEI",
+    "year": "2000"
+  },
+  "hashiriy": {
+    "description": "Hashiriya - Ookamitachi no Densetsu (Jpn)",
+    "publisher": "Nichibutsu (Nihon Bussan)",
+    "year": "1997"
+  },
+  "hatsukoi": {
+    "description": "Hatsukoi Valentine / Hatsukoi Barentain (Jpn)",
+    "publisher": "Family Soft",
+    "year": "1997"
+  },
+  "hauntedj": {
+    "description": "Haunted Junction Seitokai Batch o Oe! (Jpn)",
+    "publisher": "Media Works",
+    "year": "1997"
+  },
+  "heavensg": {
+    "description": "Heaven's Gate (Jpn)",
+    "publisher": "Atlus",
+    "year": "1996"
+  },
+  "heiwadol": {
+    "description": "Heiwa Parlor! Pro Dolphin Ring Special (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "2000"
+  },
+  "heiwalup": {
+    "description": "Heiwa Parlor! Pro Lupin Sansei Special (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "2000"
+  },
+  "heiwaote": {
+    "description": "The Heiwa Otenki Studio (Jpn)",
+    "publisher": "Aqua Rouge",
+    "year": "2001"
+  },
+  "heiwapac": {
+    "description": "Heiwa Pachinko Graffiti Vol.1 (Jpn)",
+    "publisher": "Aqua Rouge",
+    "year": "1999"
+  },
+  "heiwatsu": {
+    "description": "Heiwa Parlor! Pro Tsunatori Monogatari Special (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "2002"
+  },
+  "hellokcc": {
+    "description": "Hello Kitty's Cube De Cute (Jpn)",
+    "publisher": "Culture Publishing",
+    "year": "1998"
+  },
+  "hellokwp": {
+    "description": "Hello Kitty - White Present (Jpn)",
+    "publisher": "Hudson",
+    "year": "1998"
+  },
+  "henryexp": {
+    "description": "Henry Explorers (Jpn)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "hermieho": {
+    "description": "Hermie Hopperhead - Scrap Panic (Jpn, Playstation the Best)",
+    "publisher": "Sony",
+    "year": "1996"
+  },
+  "highscho": {
+    "description": "High School of Blitz (Jpn)",
+    "publisher": "MediaWorks",
+    "year": "1999"
+  },
+  "hikarino": {
+    "description": "Hikari No Shima - Seven Lithograhs in Shining Island (Jpn)",
+    "publisher": "Affect",
+    "year": "1999"
+  },
+  "hikaruic": {
+    "description": "Hikaru no Go - Insei Choujou Kessen (Jpn)",
+    "publisher": "Konami",
+    "year": "2002"
+  },
+  "hikaruno": {
+    "description": "Hikaru no Go - Heian Gensou Ibunroku (Jpn)",
+    "publisher": "Konami",
+    "year": "2002"
+  },
+  "himikode": {
+    "description": "Himiko-Den (Jpn)",
+    "publisher": "Hakuhodo",
+    "year": "1999"
+  },
+  "himitsus": {
+    "description": "Himitsu Sentai Metamor V Deluxe (Jpn, Disc 1 Only)",
+    "publisher": "Mycom",
+    "year": "1998"
+  },
+  "hisps2": {
+    "description": "Hissatsu Pachi-Slot Station 2 (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "1999"
+  },
+  "hisps4": {
+    "description": "Hissatsu Pachi-Slot Station 4 (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "2000"
+  },
+  "hisps5": {
+    "description": "Hissatsu Pachi-Slot Station 5 (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "2000"
+  },
+  "hispssp": {
+    "description": "Hissatsu Pachi-Slot Station SP (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "1999"
+  },
+  "hitbackj": {
+    "description": "Hit Back (Jpn)",
+    "publisher": "Tomy",
+    "year": "1999"
+  },
+  "hizanoue": {
+    "description": "Hiza no Ue no Partner - Kitty On Your Lap (Jpn)",
+    "publisher": "Culture Publishers / Kaneko",
+    "year": "1998"
+  },
+  "hokutono": {
+    "description": "Hokuto no Ken (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1996"
+  },
+  "hooockey": {
+    "description": "Hooockey!! (Jpn, SuperLite 1500 Series)",
+    "publisher": "Success",
+    "year": "2000"
+  },
+  "hoshigam": {
+    "description": "Hoshigami - Shizumiyuku Aoki Daichi (Jpn)",
+    "publisher": "MaxFive",
+    "year": "2002"
+  },
+  "hoshinoo": {
+    "description": "Hoshi no Oka Gakuen Monogatari - Gakuensai (Jpn)",
+    "publisher": "MediaWorks",
+    "year": "1998"
+  },
+  "houmahun": {
+    "description": "Houma Hunter Lime - Special Collection Vol.1 (Jpn)",
+    "publisher": "Asmik",
+    "year": "1994"
+  },
+  "hunterua": {
+    "description": "Hunter X Hunter - Ubawareta Aura Stone (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "hunterxh": {
+    "description": "Hunter X Hunter - Maboroshi no Greed Island (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "hyakujuu": {
+    "description": "Hyakujuu Sentai Gaoranger (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "hyouryuu": {
+    "description": "Hyouryuu Ki - The Reportage Beyond The Sea (Jpn)",
+    "publisher": "KSS",
+    "year": "1999"
+  },
+  "hypercra": {
+    "description": "Hyper Crazy Climber (Jpn)",
+    "publisher": "Nichibutsu",
+    "year": "1996"
+  },
+  "hyperral": {
+    "description": "Hyper-Rally (Jpn)",
+    "publisher": "Harvest One",
+    "year": "1996"
+  },
+  "hypersec": {
+    "description": "Hyper Securities 2 (Jpn)",
+    "publisher": "Victor Interactive Software",
+    "year": "1996"
+  },
+  "ichigeki": {
+    "description": "Ichigeki - Hagane no Hito (Jpn)",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "ideyousu": {
+    "description": "Ide Yousuke no Mahjong Kyoshitsu (Jpn)",
+    "publisher": "Athena",
+    "year": "1999"
+  },
+  "idoljan2": {
+    "description": "Idol Janshi Suchie-Pai II Limited (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1996"
+  },
+  "idoljans": {
+    "description": "Idol Janshi Suchie-Pai Limited (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1995"
+  },
+  "imagefig": {
+    "description": "Image Fight & X-Multiply (Jpn)",
+    "publisher": "Xing",
+    "year": "1998"
+  },
+  "inagawaj": {
+    "description": "Inagawa Junji - Kyoufu no Yashiki (Jpn)",
+    "publisher": "Visit",
+    "year": "1999"
+  },
+  "indy500j": {
+    "description": "Indy 500 (Jpn)",
+    "publisher": "Tomy",
+    "year": "1997"
+  },
+  "intcdff7": {
+    "description": "Final Fantasy VII Interactive Sampler CD",
+    "publisher": "SCEA",
+    "year": "1996"
+  },
+  "intcdtru": {
+    "description": "Toys R Us - Interactive CD Sampler Disc",
+    "publisher": "SCEA",
+    "year": "1998"
+  },
+  "intcdv10": {
+    "description": "Interactive CD Sampler Disc - Volume 10",
+    "publisher": "SCEA",
+    "year": "1999"
+  },
+  "intcdv11": {
+    "description": "Interactive CD Sampler Disc - Volume 11",
+    "publisher": "SCEA",
+    "year": "1999"
+  },
+  "intcdv1m": {
+    "description": "Interactive CD Sampler Disc - Volume 01 (M Rated)",
+    "publisher": "SCEA",
+    "year": "1995"
+  },
+  "intcdv2": {
+    "description": "Interactive CD Sampler Disc - Volume 02",
+    "publisher": "SCEA",
+    "year": "1996"
+  },
+  "intcdv30": {
+    "description": "Interactive CD Sampler Disc - Volume 03 (1.0)",
+    "publisher": "SCEA",
+    "year": "1996"
+  },
+  "intcdv31": {
+    "description": "Interactive CD Sampler Disc - Volume 03 (1.1)",
+    "publisher": "SCEA",
+    "year": "1996"
+  },
+  "intcdv32": {
+    "description": "Interactive CD Sampler Disc - Volume 03 (1.2)",
+    "publisher": "SCEA",
+    "year": "1996"
+  },
+  "intcdv4": {
+    "description": "Interactive CD Sampler Disc - Volume 04",
+    "publisher": "SCEA",
+    "year": "1997"
+  },
+  "intcdv5": {
+    "description": "Interactive CD Sampler Disc - Volume 05",
+    "publisher": "SCEA",
+    "year": "1997"
+  },
+  "intcdv6": {
+    "description": "Interactive CD Sampler Disc - Volume 06",
+    "publisher": "SCEA",
+    "year": "1998"
+  },
+  "intcdv7": {
+    "description": "Interactive CD Sampler Disc - Volume 07",
+    "publisher": "SCEA",
+    "year": "1998"
+  },
+  "intcdv8": {
+    "description": "Interactive CD Sampler Disc - Volume 08",
+    "publisher": "SCEA",
+    "year": "1998"
+  },
+  "intcdv9": {
+    "description": "Interactive CD Sampler Disc - Volume 09",
+    "publisher": "SCEA",
+    "year": "1998"
+  },
+  "inuyasha": {
+    "description": "Inuyasha RPG (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "inuyasso": {
+    "description": "InuYasha - Sengoku Otogi Kassen (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "iremarca": {
+    "description": "Irem Arcade Classics (Jpn)",
+    "publisher": "I'Max",
+    "year": "1996"
+  },
+  "itadakis": {
+    "description": "Itadaki Street - Gorgeous King (Jpn)",
+    "publisher": "Enix",
+    "year": "1998"
+  },
+  "jailbrea": {
+    "description": "JailBreaker (Jpn)",
+    "publisher": "NEC Interchannel",
+    "year": "1999"
+  },
+  "jalecoco": {
+    "description": "Jaleco Collection Vol.1 (Jpn)",
+    "publisher": "Pacific Century Cyber Work",
+    "year": "2003"
+  },
+  "jellyfis": {
+    "description": "Jellyfish - The Healing Friend (Jpn)",
+    "publisher": "Visit",
+    "year": "2000"
+  },
+  "jigsawwo": {
+    "description": "Jigsaw World (Jpn, Honkakuha de Series)",
+    "publisher": "Hect",
+    "year": "1999"
+  },
+  "jiroaka": {
+    "description": "Jiro Akagawa - Majotachi No Nemuri - Fukkatsu Matsuri (Jpn)",
+    "publisher": "Victor",
+    "year": "1999"
+  },
+  "jounetsu": {
+    "description": "Jounetsu Nekketsus - Nakimushi Coach no Nikki (Jpn)",
+    "publisher": "Asmik",
+    "year": "1997"
+  },
+  "junglepa": {
+    "description": "Jungle Park (Jpn)",
+    "publisher": "Digitalogue",
+    "year": "1998"
+  },
+  "juusouki": {
+    "description": "Juusou Kihei Valken 2 (Jpn)",
+    "publisher": "Masaya",
+    "year": "1999"
+  },
+  "kaerunoe": {
+    "description": "Kaeru no Ehon - Nakushita Kioku o Motomete (Jpn)",
+    "publisher": "Victor",
+    "year": "1999"
+  },
+  "kaikanph": {
+    "description": "Kaikan Phrase - Datenshi Kourin (Jpn)",
+    "publisher": "Enix",
+    "year": "2000"
+  },
+  "kain2p1": {
+    "description": "Legacy of Kain - Soul Reaver (USA, Prototype 19990628)",
+    "publisher": "Eidos",
+    "year": "1999"
+  },
+  "kain2p2": {
+    "description": "Legacy of Kain - Soul Reaver (USA, Prototype 19990512)",
+    "publisher": "Eidos",
+    "year": "1999"
+  },
+  "kainthev": {
+    "description": "Kain the Vampire (Jpn)",
+    "publisher": "BMG",
+    "year": "1997"
+  },
+  "kaisokut": {
+    "description": "Kaisoku Tenshi - The Rapid Angel (Jpn)",
+    "publisher": "Techno Soleil",
+    "year": "1998"
+  },
+  "kaitohra": {
+    "description": "Kaitohranma Miyabi (Jpn)",
+    "publisher": "Imageneer",
+    "year": "1999"
+  },
+  "kakugono": {
+    "description": "Kakugo no Susume (Jpn)",
+    "publisher": "Tomy",
+    "year": "1997"
+  },
+  "kamenrag": {
+    "description": "Kamen Rider Agito (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "kamenrid": {
+    "description": "Kamen Rider (Jpn)",
+    "publisher": "Bandai",
+    "year": "1998"
+  },
+  "kamenrku": {
+    "description": "Kamen Rider Kuuga (Jpn)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "kamenrry": {
+    "description": "Kamen Rider Ryuki (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "kanakoen": {
+    "description": "Kanako Enomoto - Junk Brain Diagnosis (Jpn)",
+    "publisher": "Oracion",
+    "year": "1999"
+  },
+  "katohifu": {
+    "description": "Kato Hifumi Ku-dan - Shogi Club (Jpn, Honkakuha de 1300 Yen)",
+    "publisher": "ASCII",
+    "year": "1999"
+  },
+  "kattobit": {
+    "description": "Kattobi Tune (Jpn)",
+    "publisher": "Genki",
+    "year": "1998"
+  },
+  "kazenono": {
+    "description": "Kaze no Notam  - Notam of Wind (Jpn)",
+    "publisher": "ArtDink",
+    "year": "1997"
+  },
+  "keibaeaf": {
+    "description": "Keiba Eito '98 Akifuyu (Jpn)",
+    "publisher": "Shangri-La",
+    "year": "1998"
+  },
+  "keibaeit": {
+    "description": "Keiba Eito '98 Haru Natsu (Jpn)",
+    "publisher": "Shangri-La",
+    "year": "1998"
+  },
+  "keibasai": {
+    "description": "Keiba Saishou no Housoku '95 (Jpn)",
+    "publisher": "Copya System",
+    "year": "1995"
+  },
+  "kenkiipp": {
+    "description": "Kenki Ippatsu! Crane Master ni Narou! (Jpn)",
+    "publisher": "FAB Communication",
+    "year": "2000"
+  },
+  "kerokero": {
+    "description": "Kero Kero King (Jpn)",
+    "publisher": "Media Factory",
+    "year": "2000"
+  },
+  "khamraij": {
+    "description": "Khamrai (Jpn)",
+    "publisher": "Namco",
+    "year": "2000"
+  },
+  "kidanpn": {
+    "description": "Kids Station - Soreike Anpanman 2 - Anpanman To Daibouken! (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "kiddigi": {
+    "description": "Kids Station - Digimon Park (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "kidkamen": {
+    "description": "Kids Station - Kamen Rider Heroes (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "kidmotto": {
+    "description": "Kids Station - Motto! Oja Majo Dorami - MAHO-dou Smile Party (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "kidoukei": {
+    "description": "Kidou Keisatsu Patlabor -  Mobile Police Patlabor - Game Edition (Jpn)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "kidousen": {
+    "description": "Kidou Senshi Z-Gundam (Jpn, Demo)",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "kidsmoon": {
+    "description": "Kids Station - Bishoujo Senshi Sailor Moon World - Chibi-Usa to Tanoshii Mainichi (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "killerba": {
+    "description": "Killer Bass (Jpn)",
+    "publisher": "Magical Company",
+    "year": "2000"
+  },
+  "kindaich": {
+    "description": "Kindaichi Shounen no Jikenbo 3 - Seiryuu Densetsu Satsujin Jiken (Jpn)",
+    "publisher": "Kodansha",
+    "year": "1999"
+  },
+  "kingofbo": {
+    "description": "King of Bowling 2 - Professional-Hen (Jpn)",
+    "publisher": "Coconuts Japan",
+    "year": "1998"
+  },
+  "kisyadeg": {
+    "description": "Kisya de Go! (Jpn)",
+    "publisher": "Taito",
+    "year": "2000"
+  },
+  "kitchenp": {
+    "description": "Kitchen Panic (Jpn)",
+    "publisher": "Panther Software",
+    "year": "1998"
+  },
+  "kmsx1": {
+    "description": "Konami Antiques - MSX Collection Vol.1 (Jpn)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "kmsx2": {
+    "description": "Konami Antiques - MSX Collection Vol.2 (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "knightba": {
+    "description": "Knight & Baby (Jpn)",
+    "publisher": "Tamsoft",
+    "year": "1998"
+  },
+  "kochirak": {
+    "description": "Kochira Katsushikaku Kameari Kouenzen (Jpn)",
+    "publisher": "Bandai",
+    "year": "1997"
+  },
+  "kof95": {
+    "description": "The King of Fighters '95 (Jpn)",
+    "publisher": "SNK",
+    "year": "1996"
+  },
+  "kof96": {
+    "description": "The King of Fighters '96 (Jpn)",
+    "publisher": "SNK",
+    "year": "1997"
+  },
+  "kof98": {
+    "description": "The King of Fighters '98 - Dream Match Never Ends (Jpn)",
+    "publisher": "SNK",
+    "year": "1999"
+  },
+  "kof99": {
+    "description": "The King of Fighters '99 (Jpn)",
+    "publisher": "SNK",
+    "year": "2000"
+  },
+  "kofkyo": {
+    "description": "The King of Fighters Kyo (Jpn)",
+    "publisher": "SNK",
+    "year": "1998"
+  },
+  "kohnisho": {
+    "description": "Kohni Shogun (Jpn)",
+    "publisher": "ASK",
+    "year": "2000"
+  },
+  "kojinkyo": {
+    "description": "Kojin Kyouju - La Lecon Particuliere (Jpn)",
+    "publisher": "MyCom",
+    "year": "1998"
+  },
+  "komotchi": {
+    "description": "Komotchi (Jpn)",
+    "publisher": "Victor",
+    "year": "2001"
+  },
+  "konami80": {
+    "description": "Konami 80's Arcade Gallery (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "korokoro": {
+    "description": "Korokoro Post Nin (Jpn)",
+    "publisher": "Media",
+    "year": "2002"
+  },
+  "kosodate": {
+    "description": "Kosodate Quiz Motto My Angel (Jpn)",
+    "publisher": "Namco",
+    "year": "1999"
+  },
+  "kotetsur": {
+    "description": "Kotetsu Reiki - Steel Dom (Jpn)",
+    "publisher": "TecnoSoft",
+    "year": "1996"
+  },
+  "koudelka": {
+    "description": "Koudelka (Jpn, Demo)",
+    "publisher": "SNK",
+    "year": "199?"
+  },
+  "koukrose": {
+    "description": "Koukroseatro - Yuukyuu no Hitomi (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "1999"
+  },
+  "kouryuuk": {
+    "description": "Kouryuuki (Jpn)",
+    "publisher": "KOEI",
+    "year": "1998"
+  },
+  "koyasaia": {
+    "description": "Koyasai - A Sherd of Youthful Memories (Jpn)",
+    "publisher": "Shoeisha",
+    "year": "1999"
+  },
+  "kunoichi": {
+    "description": "Kunoichi Torimonocho (Jpn)",
+    "publisher": "GMF",
+    "year": "1999"
+  },
+  "kuronjo": {
+    "description": "Ku-Ron Jo (Jpn)",
+    "publisher": "Media Rings",
+    "year": "2000"
+  },
+  "kuronoke": {
+    "description": "Kuro no Ken - Blade of the Darkness (Jpn)",
+    "publisher": "CD Bros.",
+    "year": "1997"
+  },
+  "kurumimi": {
+    "description": "Kurumi Miracle (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1997"
+  },
+  "kururinp": {
+    "description": "Kururin Pa! (Jpn)",
+    "publisher": "Sky Think System",
+    "year": "1995"
+  },
+  "kuubosen": {
+    "description": "Kuubo Senki (Jpn)",
+    "publisher": "Unbalance",
+    "year": "1999"
+  },
+  "kyorocha": {
+    "description": "Kyorochan no Purikura Daisakusen (Jpn)",
+    "publisher": "Tomy",
+    "year": "1999"
+  },
+  "kyuinjap": {
+    "description": "Kyuin (Jpn)",
+    "publisher": "Media",
+    "year": "1996"
+  },
+  "lagnaclg": {
+    "description": "Lagnacure Legend (Jpn)",
+    "publisher": "ArtDink",
+    "year": "2000"
+  },
+  "lagnacur": {
+    "description": "Lagnacure (Jpn)",
+    "publisher": "Sony",
+    "year": "1997"
+  },
+  "lakemast": {
+    "description": "Lake Masters Pro (Jpn)",
+    "publisher": "DaZZ",
+    "year": "1999"
+  },
+  "lalalapl": {
+    "description": "Lalala PlayStation Trial Disk 1998 Summer (Jpn, Demo)",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "langri45": {
+    "description": "Langrisser IV & V Final Edition (Jpn)",
+    "publisher": "Masaya (NCS)",
+    "year": "1999"
+  },
+  "langriss": {
+    "description": "Langrisser I & II (Jpn)",
+    "publisher": "Masaya (NCS)",
+    "year": "1997"
+  },
+  "leadingj": {
+    "description": "Leading Jockey Highbred (Jpn)",
+    "publisher": "Harvest One",
+    "year": "1996"
+  },
+  "legaiade": {
+    "description": "Legaia Densetsu (Jpn, Demo)",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "legendof": {
+    "description": "The Legend of Dragoon (Jpn)",
+    "publisher": "Sony",
+    "year": "1999"
+  },
+  "liberogr": {
+    "description": "Libero Grande 2 (Jpn)",
+    "publisher": "Namco",
+    "year": "2000"
+  },
+  "linda3cu": {
+    "description": "Linda 3 Cube Again (Jpn)",
+    "publisher": "Sony",
+    "year": "1997"
+  },
+  "lingrise": {
+    "description": "Ling Rise (Jpn)",
+    "publisher": "Epoch",
+    "year": "1999"
+  },
+  "littlepl": {
+    "description": "Little Princess +1 - Maru Oukoku no Ningyou Hime 2 (Jpn)",
+    "publisher": "Nippon Ichi Software",
+    "year": "2000"
+  },
+  "littlepr": {
+    "description": "Little Princess - Marl Oukoku no Ningyou Hime 2 (Jpn)",
+    "publisher": "Nippon Ichi Software",
+    "year": "1999"
+  },
+  "loderun2": {
+    "description": "Lode Runner 2 (Jpn, SuperLite 1500 Serie)",
+    "publisher": "Success",
+    "year": "2000"
+  },
+  "loderunx": {
+    "description": "Lode Runner Extra (Jpn)",
+    "publisher": "Patra",
+    "year": "1997"
+  },
+  "lonesold": {
+    "description": "Lone Soldier (Jpn)",
+    "publisher": "Virgin Interactive Entertainment",
+    "year": "1996"
+  },
+  "lordoffi": {
+    "description": "Lord of Fist (Jpn)",
+    "publisher": "Media Works",
+    "year": "1999"
+  },
+  "lovedest": {
+    "description": "Love & Destroy (Jpn)",
+    "publisher": "Sony",
+    "year": "1999"
+  },
+  "lovelove": {
+    "description": "Love Love Truck (Jpn)",
+    "publisher": "TYO",
+    "year": "1999"
+  },
+  "lsddream": {
+    "description": "LSD - Dream Emulator (Jpn, Limited Edition)",
+    "publisher": "Asmik Ace",
+    "year": "1998"
+  },
+  "luciferr": {
+    "description": "Lucifer Ring (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1998"
+  },
+  "lunar2et": {
+    "description": "Lunar 2 - Eternal Blue (Jpn)",
+    "publisher": "Kadokawa Shoten",
+    "year": "1999"
+  },
+  "lunarwin": {
+    "description": "Lunar Wing (Jpn)",
+    "publisher": "Shoeisha",
+    "year": "2001"
+  },
+  "lunatic3": {
+    "description": "Lunatic Dawn III (Jpn)",
+    "publisher": "ArtDink",
+    "year": "1998"
+  },
+  "lunaticd": {
+    "description": "Lunatic Dawn Odyssey (Jpn)",
+    "publisher": "ArtDink",
+    "year": "1999"
+  },
+  "lupsalad": {
+    "description": "Lup Salad - Lupupu Cube (Jpn)",
+    "publisher": "Datam Polystar",
+    "year": "1996"
+  },
+  "madden96": {
+    "description": "Madden NFL 96 (USA, Prototype)",
+    "publisher": "Electronic Arts",
+    "year": "1995"
+  },
+  "madpanic": {
+    "description": "Mad Panic Coaster (Jpn)",
+    "publisher": "Hakuhodo",
+    "year": "1997"
+  },
+  "madstalk": {
+    "description": "Mad Stalker - Full Metal Force (Jpn)",
+    "publisher": "Family Soft",
+    "year": "1997"
+  },
+  "maestrom": {
+    "description": "The Maestro Music (Japan, with Baton Stick)",
+    "publisher": "Global A",
+    "year": "2000"
+  },
+  "maesxmas": {
+    "description": "The Maestro Music - Merry Christmas - Append Disc (Jpn)",
+    "publisher": "Global A",
+    "year": "2000"
+  },
+  "magicald": {
+    "description": "Magical Drop F - Daibouken mo Rakujyanai! (Jpn)",
+    "publisher": "Data East",
+    "year": "1999"
+  },
+  "magicalm": {
+    "description": "Magical Medical (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "magicalt": {
+    "description": "Magical Tetris Challenge featuring Mickey Mouse (Jpn)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "mahjongy": {
+    "description": "Mahjong Yarouze! (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "mahoutsu": {
+    "description": "Mahoutsukai ni Naru Houhou (Jpn)",
+    "publisher": "TGL",
+    "year": "199?"
+  },
+  "majokkod": {
+    "description": "Majokko Daisakusen - Little Witching Mischiefs (Jpn)",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "makeruna": {
+    "description": "Makeruna! Makendo 2 (Jpn)",
+    "publisher": "Datam Polystar",
+    "year": "1995"
+  },
+  "marione2": {
+    "description": "Marionette Company 2 Chu! (Jpn)",
+    "publisher": "Micro Cabin",
+    "year": "2000"
+  },
+  "marionet": {
+    "description": "Marionette Company (Jpn)",
+    "publisher": "Micro Cabin",
+    "year": "1999"
+  },
+  "marljong": {
+    "description": "Marl Jong!! (Jpn, Limited Edition)",
+    "publisher": "Nippon Ichi Software",
+    "year": "2003"
+  },
+  "marvelvs": {
+    "description": "Marvel vs. Capcom - Clash of Super Heroes - EX Edition (Jpn)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "mastersf": {
+    "description": "The Master's Fighter (Jpn)",
+    "publisher": "Cinema Supply",
+    "year": "1997"
+  },
+  "masumonk": {
+    "description": "Masumon Kids - The Another World of The Master of Monsters (Jpn)",
+    "publisher": "Toshiba EMI",
+    "year": "1998"
+  },
+  "matsukat": {
+    "description": "Hiroki Matsukata Presents - World Fishing (Jpn, BPS The Choice)",
+    "publisher": "Bullet-Proof Software",
+    "year": "1999"
+  },
+  "matsumot": {
+    "description": "Matsumoto Reiji - Story of Galaxy Express 999 (Jpn)",
+    "publisher": "Banpresto",
+    "year": "2001"
+  },
+  "maxracer": {
+    "description": "MaxRacer (Jpn)",
+    "publisher": "PD",
+    "year": "1997"
+  },
+  "mazehero": {
+    "description": "Maze Heroes - Meikyuu Densetsu (Jpn)",
+    "publisher": "Media",
+    "year": "2002"
+  },
+  "medaropc": {
+    "description": "Medarot R - Parts Collection (Jpn)",
+    "publisher": "Imageneer",
+    "year": "2000"
+  },
+  "medarotr": {
+    "description": "Medarot R (Jpn)",
+    "publisher": "Imageneer",
+    "year": "1999"
+  },
+  "megatudo": {
+    "description": "Megatudo 2096 (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1996"
+  },
+  "meishare": {
+    "description": "Meisha Retsuden - Greatest 70's (Jpn)",
+    "publisher": "Epoch",
+    "year": "1997"
+  },
+  "meitante": {
+    "description": "Meitantei Conan - Saikou No Aibou (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "meitantt": {
+    "description": "Meitantei Conan - Trick Trick Vol.1 (Jpn)",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "meltylan": {
+    "description": "Melty Lancer - The 3rd Planet (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "menkyoot": {
+    "description": "Menkyo O Torou (Get The License) (Jpn)",
+    "publisher": "Twilight Express",
+    "year": "2000"
+  },
+  "meremano": {
+    "description": "Meremanoid (Jpn)",
+    "publisher": "Xing",
+    "year": "1999"
+  },
+  "mermaidn": {
+    "description": "Mermaid No Kisetsu - The Season of Mermaid (Jpn)",
+    "publisher": "Gamevillage",
+    "year": "2001"
+  },
+  "metalang": {
+    "description": "Metal Angel 3 (Jpn)",
+    "publisher": "Pack-in-Soft",
+    "year": "1997"
+  },
+  "metalfis": {
+    "description": "Metal Fist (Jpn)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "metaphli": {
+    "description": "Meta-Ph-List Gamma X 2097 (Jpn)",
+    "publisher": "ADM",
+    "year": "1997"
+  },
+  "mezasese": {
+    "description": "Mezase! Senkyuuou (Jpn)",
+    "publisher": "Nihon System",
+    "year": "1996"
+  },
+  "mgspilot": {
+    "description": "Metal Gear Solid (Pilot Disk)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "michibhk": {
+    "description": "Michinoku Hitou Koi monogatari - Bishoujo Hanafuda Kikou (Jpn)",
+    "publisher": "FOG",
+    "year": "1997"
+  },
+  "michinok": {
+    "description": "Michinoku Hitou Koi monogatari Kai (Jpn)",
+    "publisher": "FOG",
+    "year": "1999"
+  },
+  "minimoni": {
+    "description": "Mini Moni Shaker & Tambourine! Dapyon! (Jpn)",
+    "publisher": "Sega",
+    "year": "2002"
+  },
+  "ministep": {
+    "description": "Mini Moni - Step Pyon Pyon Pyon (Jpn)",
+    "publisher": "Konami",
+    "year": "2002"
+  },
+  "miniyonk": {
+    "description": "Mini-Yonku Bakusou Kyoudai Let's & Go!! - WGP Hyper Heat (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1997"
+  },
+  "minnaats": {
+    "description": "Minna Atsumore! Igo Kyoushitsu (Jpn)",
+    "publisher": "I.Magic",
+    "year": "2003"
+  },
+  "misakiag": {
+    "description": "Misaki-Aggressive! (Jpn)",
+    "publisher": "Shoeisha",
+    "year": "1998"
+  },
+  "mitouhou": {
+    "description": "Rock-Climbing - Mitouhou e no Chousen - Alps-Hen (Jpn)",
+    "publisher": "We Net",
+    "year": "1997"
+  },
+  "mizzurna": {
+    "description": "Mizzurna Falls (Jpn)",
+    "publisher": "Human",
+    "year": "1998"
+  },
+  "momotade": {
+    "description": "Momotarou Densetsu (Jpn)",
+    "publisher": "Hudson",
+    "year": "1998"
+  },
+  "momotaro": {
+    "description": "Momotarou Matsuri (Jpn)",
+    "publisher": "Hudson",
+    "year": "2001"
+  },
+  "moneyido": {
+    "description": "Money Idol Exchanger (Jpn)",
+    "publisher": "Athena",
+    "year": "1998"
+  },
+  "monsterc": {
+    "description": "Monster Collection - Kamen no Madoushi (Jpn)",
+    "publisher": "Kadokawa Shote",
+    "year": "1999"
+  },
+  "monsterf": {
+    "description": "Monster Farm - Battle Card Professional (Jpn)",
+    "publisher": "Tecmo",
+    "year": "2000"
+  },
+  "monsterp": {
+    "description": "Monster Paradise (Jpn)",
+    "publisher": "Make Software",
+    "year": "1997"
+  },
+  "morinoou": {
+    "description": "Mori no Oukoku - Kingdom of Forest (Jpn)",
+    "publisher": "Asmik Ace",
+    "year": "1999"
+  },
+  "mourimot": {
+    "description": "Mouri Motonari - Chikai no Sanshi (Jpn)",
+    "publisher": "Koei",
+    "year": "1998"
+  },
+  "mrdrille": {
+    "description": "Mr. Driller G (Jpn)",
+    "publisher": "Namco",
+    "year": "2001"
+  },
+  "msh": {
+    "description": "Marvel Super Heroes (Jpn)",
+    "publisher": "Capcom",
+    "year": "1997"
+  },
+  "mshsf": {
+    "description": "Marvel Super Heroes vs. Street Fighter - EX Edition (Jpn)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "musclera": {
+    "description": "Muscle Ranking - Kinniku Banzuke Vol.2 - Aratanaru Genkai e No Chousen! (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "myhomedr": {
+    "description": "My Home Dream 2 - Niwatsuki Ikkodate De, Ikou! (Jpn)",
+    "publisher": "Victor",
+    "year": "1999"
+  },
+  "mysticar": {
+    "description": "Mystic Ark - Maboroshi Gekijou (Jpn)",
+    "publisher": "Enix",
+    "year": "1999"
+  },
+  "mysticdr": {
+    "description": "The Mystic Dragoons (Jpn)",
+    "publisher": "Xing",
+    "year": "1999"
+  },
+  "nagelibr": {
+    "description": "Nage Libre - Rasen No Soukoku",
+    "publisher": "Varie",
+    "year": "1997"
+  },
+  "namjabun": {
+    "description": "Namjabu no Daibouken - My Favorite Namjatown (Jpn)",
+    "publisher": "Namco",
+    "year": "2000"
+  },
+  "nanatsun": {
+    "description": "Nanatsu no Hikan (Jpn)",
+    "publisher": "KOEI",
+    "year": "1996"
+  },
+  "naniwano": {
+    "description": "Naniwa no Akindo - Futte Nanbo no Saikoro Jinsei (Jpn)",
+    "publisher": "Sony",
+    "year": "1997"
+  },
+  "nankuro": {
+    "description": "Nankuro (Jpn, SuperLite 1500 Series)",
+    "publisher": "Success",
+    "year": "1999"
+  },
+  "natsuiro": {
+    "description": "Natsuiro Kenjutsu Komachi (Jpn, Limited Edition, Disc 1 Only)",
+    "publisher": "NEC",
+    "year": "2000"
+  },
+  "navitjap": {
+    "description": "Navit (Jpn)",
+    "publisher": "Artdink",
+    "year": "1998"
+  },
+  "nbapower": {
+    "description": "NBA Power Dunkers 4 (Jpn)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "nemuruma": {
+    "description": "Nemuru Mayu - Sleeping Cocoon (Jpn)",
+    "publisher": "Asmik Ace",
+    "year": "2000"
+  },
+  "neorude2": {
+    "description": "Neorude 2 (Jpn)",
+    "publisher": "TechnoSoft",
+    "year": "1997"
+  },
+  "neorudej": {
+    "description": "Neorude (Jpn)",
+    "publisher": "TechnoSoft",
+    "year": "1997"
+  },
+  "nextking": {
+    "description": "Next King - Koi no Sennen Oukoku (Jpn)",
+    "publisher": "Bandai",
+    "year": "1997"
+  },
+  "nexttedx": {
+    "description": "The Next Tetris - Deluxe DLX (Jpn)",
+    "publisher": "BPS",
+    "year": "1999"
+  },
+  "nexttetr": {
+    "description": "The Next Tetris (Jpn)",
+    "publisher": "Bullet Proof",
+    "year": "1999"
+  },
+  "nichibut": {
+    "description": "Nichibutsu Arcade Classics (Jpn)",
+    "publisher": "Nichibutsu",
+    "year": "1995"
+  },
+  "nightrai": {
+    "description": "Night Raid (Jpn)",
+    "publisher": "Takumi",
+    "year": "2002"
+  },
+  "nijiirod": {
+    "description": "Nijiiro Dodgeball - Otometachi no Seishun (Jpn)",
+    "publisher": "Atlus",
+    "year": "2002"
+  },
+  "ningyono": {
+    "description": "Ningyo no Rakuin (Jpn)",
+    "publisher": "NEC Interchannel",
+    "year": "2000"
+  },
+  "ninjajaj": {
+    "description": "Ninja Jaja Marukun - Onigiri Ninpoucho (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1997"
+  },
+  "ninkujap": {
+    "description": "Ninku (Jpn)",
+    "publisher": "Tomy",
+    "year": "1995"
+  },
+  "ninpusen": {
+    "description": "Ninpu Sentai Harikenger (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "nobunaga": {
+    "description": "Nobunaga no Yabou - Reppuuden (Jpn)",
+    "publisher": "KOEI",
+    "year": "1999"
+  },
+  "noel3mis": {
+    "description": "Noël 3 - Mission on the Line (Jpn)",
+    "publisher": "Pioneer",
+    "year": "1999"
+  },
+  "nottreas": {
+    "description": "Not Treasure Hunter (Jpn)",
+    "publisher": "Acti-Art",
+    "year": "1996"
+  },
+  "novastor": {
+    "description": "Novastorm (Jpn)",
+    "publisher": "Victor",
+    "year": "1995"
+  },
+  "nyanyang": {
+    "description": "Nya Nyan ga Nyan - Light Fantasy Gaiden (Jpn)",
+    "publisher": "Tonkin House",
+    "year": "1999"
+  },
+  "oasisroa": {
+    "description": "Oasis Road (Jpn)",
+    "publisher": "Idea Factory",
+    "year": "1999"
+  },
+  "odanobun": {
+    "description": "Oda Nobunaga Den (Jpn)",
+    "publisher": "KOEI",
+    "year": "1998"
+  },
+  "odoodood": {
+    "description": "Odo Odo Oddity (Jpn)",
+    "publisher": "IDC",
+    "year": "1997"
+  },
+  "ojamajod": {
+    "description": "Oja Majo Do-Re-Mi Dokkaan! Nijiiro Para-Dice (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "ojousama": {
+    "description": "Ojousama Express (Jpn)",
+    "publisher": "Media Works",
+    "year": "1998"
+  },
+  "olympiay": {
+    "description": "Olympia Yamasa - Virtua Pachi-Slot II - Jissen! Bishoujo Kouryaku Hou (Jpn)",
+    "publisher": "Map Japan",
+    "year": "1997"
+  },
+  "omiaicom": {
+    "description": "Omiaikomandoh Bakappuru Ni Tukkomi Wo (Jpn)",
+    "publisher": "Enix",
+    "year": "2000"
+  },
+  "omisedet": {
+    "description": "Omise de Tensyu (Jpn)",
+    "publisher": "TechnoSoft",
+    "year": "1999"
+  },
+  "onejapan": {
+    "description": "One (Jpn)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "onetwosm": {
+    "description": "One Two Smash - Tanoshii Tennis (Jpn)",
+    "publisher": "Hect",
+    "year": "2000"
+  },
+  "ongakut2": {
+    "description": "Ongaku Tsukuru - Kanade-Ru 2 (Jpn)",
+    "publisher": "ASCII",
+    "year": "1998"
+  },
+  "ongakut3": {
+    "description": "Ongaku Tsukuru 3 (Jpn)",
+    "publisher": "EnterBrain",
+    "year": "2001"
+  },
+  "optiontu": {
+    "description": "OPTION Tuning Car Battle Spec-R (Jpn)",
+    "publisher": "MTO",
+    "year": "2000"
+  },
+  "orenoryo": {
+    "description": "Ore No Ryouri (Jpn)",
+    "publisher": "Sony",
+    "year": "1999"
+  },
+  "oretomba": {
+    "description": "Ore! Tomba (Jpn)",
+    "publisher": "Whoopee Camp",
+    "year": "1997"
+  },
+  "oshigoto": {
+    "description": "Oshigotoshiki Jinsei Game - Mezase Shokugyou-oh (Jpn)",
+    "publisher": "Takara",
+    "year": "2000"
+  },
+  "oujisama": {
+    "description": "Ouji-Sama Lv1 (Jpn)",
+    "publisher": "KID",
+    "year": "2002"
+  },
+  "oukyuuno": {
+    "description": "Oukyuu no Hihou - Tenshon (Jpn)",
+    "publisher": "VAP",
+    "year": "1996"
+  },
+  "oumagato": {
+    "description": "Oumagatoki (Jpn)",
+    "publisher": "Victor",
+    "year": "2001"
+  },
+  "outliveb": {
+    "description": "Out Live - Be Eliminate Yesterday (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "1997"
+  },
+  "pacapac2": {
+    "description": "Pacapaca Passion 2 (Jpn)",
+    "publisher": "Produce!",
+    "year": "2000"
+  },
+  "pacapaca": {
+    "description": "Pacapaca Passion (Jpn)",
+    "publisher": "Produce!",
+    "year": "1999"
+  },
+  "pachipac": {
+    "description": "Pachi Pachi Saga (Jpn)",
+    "publisher": "TEN Institute",
+    "year": "1996"
+  },
+  "palmtown": {
+    "description": "Palm Town (Jpn)",
+    "publisher": "MyCom",
+    "year": "1999"
+  },
+  "panzerba": {
+    "description": "Panzer Bandit (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1997"
+  },
+  "panzerfr": {
+    "description": "Panzer Front bis. (Jpn)",
+    "publisher": "Enterbrain",
+    "year": "2001"
+  },
+  "paranoia": {
+    "description": "Paranoia Scape (Jpn)",
+    "publisher": "Mathilda",
+    "year": "1998"
+  },
+  "parlorpr": {
+    "description": "Parlor! Pro Jr. Collection (Jpn)",
+    "publisher": "Nihon Telenet",
+    "year": "2000"
+  },
+  "parowars": {
+    "description": "Paro Wars (Jpn)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "pbobl3dx": {
+    "description": "Puzzle Bobble 3 DX (Jpn)",
+    "publisher": "Taito",
+    "year": "1997"
+  },
+  "pbobl4": {
+    "description": "Puzzle Bobble 4 (Jpn)",
+    "publisher": "Taito",
+    "year": "1998"
+  },
+  "pdultram": {
+    "description": "PD Ultraman Invader (Jpn)",
+    "publisher": "Bandai",
+    "year": "1995"
+  },
+  "pepsiman": {
+    "description": "Pepsiman (Jpn)",
+    "publisher": "KID",
+    "year": "1999"
+  },
+  "perfectf": {
+    "description": "Perfect Fishing - Rock Fishing (Jpn)",
+    "publisher": "Seta",
+    "year": "2000"
+  },
+  "person2p": {
+    "description": "Persona 2 - Eternal Punishment (Prototype? Debug)",
+    "publisher": "Atlus",
+    "year": "2000"
+  },
+  "pikinecx": {
+    "description": "Pikinya! Excellent (Japan)",
+    "publisher": "ASCII",
+    "year": "1998"
+  },
+  "pinballf": {
+    "description": "Pinball Fantasies Deluxe (Jpn)",
+    "publisher": "VAP (NTV)",
+    "year": "1996"
+  },
+  "pitfall3": {
+    "description": "Pitfall 3D - Beyond the Jungle (Jpn)",
+    "publisher": "Victor",
+    "year": "1998"
+  },
+  "planetdo": {
+    "description": "Planet Dob (Jpn)",
+    "publisher": "Hudson",
+    "year": "1999"
+  },
+  "planetla": {
+    "description": "Planet Laika (Jpn)",
+    "publisher": "Enix",
+    "year": "1999"
+  },
+  "pocketdi": {
+    "description": "Pocket DigimonWorld (Jpn)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "pocketfi": {
+    "description": "Pocket Fighter (Jpn)",
+    "publisher": "Capcom",
+    "year": "1998"
+  },
+  "pocketmu": {
+    "description": "Pocket Muumuu (Jpn)",
+    "publisher": "Sony",
+    "year": "1999"
+  },
+  "pocketwb": {
+    "description": "Pocket DigimonWorld - Wind Battle Disc (Jpn)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "pocketwc": {
+    "description": "Pocket DigimonWorld Cool & Nature Battle Disc (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "poitters": {
+    "description": "Poitter's Point 2 - Sodom no Inbou (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "policena": {
+    "description": "Policenauts - Private Collection (Jpn)",
+    "publisher": "Konami",
+    "year": "1996"
+  },
+  "popnmusi": {
+    "description": "Pop'n Music - Disney Tunes (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "popnpopj": {
+    "description": "Pop'n Pop (Jpn)",
+    "publisher": "Taito",
+    "year": "1998"
+  },
+  "popntank": {
+    "description": "Pop'n Tanks! (Jpn)",
+    "publisher": "Enix",
+    "year": "1999"
+  },
+  "potestas": {
+    "description": "Potestas (Jpn)",
+    "publisher": "Nexus",
+    "year": "1996"
+  },
+  "powersg1": {
+    "description": "Power Stakes Grade 1 (Jpn)",
+    "publisher": "Aques",
+    "year": "1997"
+  },
+  "powersho": {
+    "description": "Power Shovel ni Norou!! (Jpn)",
+    "publisher": "Taito",
+    "year": "2000"
+  },
+  "powersta": {
+    "description": "Power Stakes (Jpn)",
+    "publisher": "Aques",
+    "year": "1997"
+  },
+  "princess": {
+    "description": "Princess Maker - Go! Go! Princess (Jpn)",
+    "publisher": "NineLives",
+    "year": "1999"
+  },
+  "prismcou": {
+    "description": "Prism Court (Jpn)",
+    "publisher": "FPS",
+    "year": "1998"
+  },
+  "prisoner": {
+    "description": "Prisoner (Jpn)",
+    "publisher": "Mainichi",
+    "year": "1999"
+  },
+  "prologic": {
+    "description": "Pro Logic Mahjong Hai-Shin (Jpn)",
+    "publisher": "Aques",
+    "year": "1996"
+  },
+  "promahjo": {
+    "description": "Pro Mahjong Kiwame Tengensenhen (Jpn)",
+    "publisher": "Athena",
+    "year": "1999"
+  },
+  "promahpl": {
+    "description": "Pro Mahjong Kiwame Plus (Jpn)",
+    "publisher": "Athena",
+    "year": "1996"
+  },
+  "prowrest": {
+    "description": "Pro Wrestling Sengokuden - Hyper Tag Match (Jpn)",
+    "publisher": "KSS",
+    "year": "1997"
+  },
+  "psao5": {
+    "description": "Pachi-Slot Aruze Oukoku 5 - Slotmachine Simulator (Jpn)",
+    "publisher": "Aruze",
+    "year": "2001"
+  },
+  "pst2": {
+    "description": "Pachi-Slot Teiou 2 - Kagetsu - 2 Pair - Beaver X (Jpn)",
+    "publisher": "Mecko",
+    "year": "1999"
+  },
+  "pst3": {
+    "description": "Pachi-Slot Teiou 3 - Sea Master - Epsilon R - Wai Wai Pulsa (Jpn)",
+    "publisher": "Media",
+    "year": "1999"
+  },
+  "pst6": {
+    "description": "Pachi-Slot Teiou 6 - Kung Fu Lady - BangBang - Prelude 2 (Jpn)",
+    "publisher": "Media",
+    "year": "2000"
+  },
+  "pst7": {
+    "description": "Pachi-Slot Teiou 7 (Jpn)",
+    "publisher": "Media",
+    "year": "2000"
+  },
+  "pstbk": {
+    "description": "Pachi-Slot Teiou - Battle Knight & Atlantis Doom (Jpn)",
+    "publisher": "Media",
+    "year": "2000"
+  },
+  "pstmda": {
+    "description": "Pachi-Slot Teiou Mini - Dr. A7 (Jpn)",
+    "publisher": "Media",
+    "year": "1999"
+  },
+  "pstmsm3": {
+    "description": "Pachi-Slot Teiou - Maker Suishou Manual 3 - I'm Angel White 2 & Blue 2 (Jpn)",
+    "publisher": "Media",
+    "year": "2001"
+  },
+  "pstmsm5": {
+    "description": "Pachi-Slot Teiou - Maker Suishou Manual 5 - Race Queen 2 - Tomcat (Jpn)",
+    "publisher": "Media",
+    "year": "2001"
+  },
+  "pstmsm6": {
+    "description": "Pachi-Slot Teiou Maker Suishou Manual 6 - Takarabune (Jpn)",
+    "publisher": "<unknown>",
+    "year": "2001"
+  },
+  "pstmsm7": {
+    "description": "Pachi-Slot Teiou - Maker Suishou Manual 7 - Trick Monster 2 (Jpn)",
+    "publisher": "Media",
+    "year": "2002"
+  },
+  "pststwis": {
+    "description": "Pachi-Slot Teiou - Twist - Shimauta 30 - Nankoku Monogatari (Jpn)",
+    "publisher": "Media",
+    "year": "2002"
+  },
+  "puchicar": {
+    "description": "Puchi Carat (Jpn)",
+    "publisher": "Taito",
+    "year": "1998"
+  },
+  "pukunpaj": {
+    "description": "Pukunpa Joshikousei No Houkago... (Jpn)",
+    "publisher": "Athena",
+    "year": "1996"
+  },
+  "puyopubx": {
+    "description": "Puyo Puyo Box (Jpn)",
+    "publisher": "Compile",
+    "year": "2000"
+  },
+  "puyopuy4": {
+    "description": "Puyo Puyo 4 - Car-Kun to Issho (Jpn)",
+    "publisher": "Compile",
+    "year": "1999"
+  },
+  "puzzlear": {
+    "description": "Puzzle Arena To Shin Den (Jpn)",
+    "publisher": "Takara",
+    "year": "1997"
+  },
+  "qix2000j": {
+    "description": "Qix 2000 (Jpn, Superlite 1500 Series)",
+    "publisher": "Success",
+    "year": "2000"
+  },
+  "quantumg": {
+    "description": "Quantum Gate I - Akumu no Joshou (Jpn)",
+    "publisher": "Gaga",
+    "year": "1997"
+  },
+  "quizchar": {
+    "description": "Quiz Charaokedon! Toei Tokusatsu Hero Part 2 (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1999"
+  },
+  "quizdara": {
+    "description": "Quiz Darake No Jinsei Game (Jpn)",
+    "publisher": "Takara",
+    "year": "1997"
+  },
+  "quizmill": {
+    "description": "Quiz$Millionaire (Jpn)",
+    "publisher": "Eidos",
+    "year": "2001"
+  },
+  "quovadis": {
+    "description": "Quo Vadis - Iberukatsu Seneki (Jpn)",
+    "publisher": "Glams",
+    "year": "1997"
+  },
+  "racedriv": {
+    "description": "Race Driving' A Go! Go! (Jpn)",
+    "publisher": "Time Warner",
+    "year": "1996"
+  },
+  "raidendx": {
+    "description": "Raiden DX (Jpn, v1.1)",
+    "publisher": "Seibu / Hamster",
+    "year": "199?"
+  },
+  "raidendxo": {
+    "description": "Raiden DX (Jpn, v1.0)",
+    "publisher": "Seibu",
+    "year": "199?"
+  },
+  "raidenpr": {
+    "description": "Raiden Project (USA)",
+    "publisher": "Seibu",
+    "year": "199?"
+  },
+  "raidenprj": {
+    "description": "Raiden Project (Jpn)",
+    "publisher": "Nihon System",
+    "year": "1995"
+  },
+  "rakugaki": {
+    "description": "Rakugaki Showtime (Jpn)",
+    "publisher": "Enix",
+    "year": "1999"
+  },
+  "rallydea": {
+    "description": "Rally de Africa (Jpn)",
+    "publisher": "Prism Arts",
+    "year": "1998"
+  },
+  "rallydee": {
+    "description": "Rally de Europe (Jpn)",
+    "publisher": "Prism Arts",
+    "year": "2000"
+  },
+  "ramichan": {
+    "description": "Rami-Chan No Ooeto Surogoku: Keio Yugekitai Gaiden (Jpn)",
+    "publisher": "Victor",
+    "year": "1998"
+  },
+  "ranma12b": {
+    "description": "Ranma 1/2 Battle Renaissance (Jpn)",
+    "publisher": "Shogakukan",
+    "year": "1996"
+  },
+  "raymanja": {
+    "description": "Rayman (Jpn)",
+    "publisher": "Ubisoft",
+    "year": "1995"
+  },
+  "raytrace": {
+    "description": "Ray Tracers (Jpn)",
+    "publisher": "Taito",
+    "year": "1997"
+  },
+  "rbffsdm": {
+    "description": "Real Bout Garou Densetsu Special - Dominated Mind (Jpn, Limited Edition)",
+    "publisher": "SNK",
+    "year": "1998"
+  },
+  "re2d": {
+    "description": "Resident Evil 2 Preview (Euro, CD Consoles No.38)",
+    "publisher": "Capcom",
+    "year": "1997"
+  },
+  "re3d": {
+    "description": "Resident Evil 3 (Euro, Demo)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "readymai": {
+    "description": "Ready Maid (Jpn)",
+    "publisher": "Princess",
+    "year": "2002"
+  },
+  "realrobo": {
+    "description": "Real Robots - Final Attack (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1998"
+  },
+  "reciproh": {
+    "description": "Recipro Heat 5000 (Jpn)",
+    "publisher": "Xing",
+    "year": "1997"
+  },
+  "retzork": {
+    "description": "Return to Zork (Jpn)",
+    "publisher": "Bandai",
+    "year": "1996"
+  },
+  "ridegear": {
+    "description": "Ridegear Guybrave II (Jpn)",
+    "publisher": "Axela",
+    "year": "1998"
+  },
+  "rikujoub": {
+    "description": "Rikujou Boueitai Maochan (Jpn, Deluxe Pack)",
+    "publisher": "Marvelous",
+    "year": "2003"
+  },
+  "riotstar": {
+    "description": "Riot Stars (Jpn)",
+    "publisher": "Hect",
+    "year": "1997"
+  },
+  "riseofro": {
+    "description": "Rise of Robots 2 - Resurrection (Jpn)",
+    "publisher": "Acclaim",
+    "year": "1996"
+  },
+  "risingza": {
+    "description": "Rising Zan - The Samurai Gunman (Jpn)",
+    "publisher": "UEP",
+    "year": "1999"
+  },
+  "robinllo": {
+    "description": "Robin Lloyd no Daibouken (Jpn)",
+    "publisher": "Gust",
+    "year": "2000"
+  },
+  "robotxro": {
+    "description": "Robot-X-Robot (Jpn)",
+    "publisher": "Nemesys",
+    "year": "1999"
+  },
+  "rockman8": {
+    "description": "Rockman 8 (Jpn, Prototype v1)",
+    "publisher": "Capcom",
+    "year": "1996"
+  },
+  "rockman8a": {
+    "description": "Rockman 8 (Jpn, Prototype 1)",
+    "publisher": "Capcom",
+    "year": "1996"
+  },
+  "rockman8b": {
+    "description": "Rockman 8 (Jpn, Prototype 2)",
+    "publisher": "Capcom",
+    "year": "1996"
+  },
+  "rockmndp": {
+    "description": "Rockman Dash (Capcom Friendly Club Demo)",
+    "publisher": "Capcom",
+    "year": "1997"
+  },
+  "rockmnx6": {
+    "description": "Rockman X6 (Jpn, Prototype 20010928)",
+    "publisher": "Capcom",
+    "year": "2001"
+  },
+  "roommate": {
+    "description": "Roommate - Inoue Ryoko (Jpn)",
+    "publisher": "Datam Polystar",
+    "year": "1999"
+  },
+  "rsbhdemo": {
+    "description": "Rescue Shot Bubibo & BioHazard - Gun Survivor (Jpn, Demo)",
+    "publisher": "SCEI",
+    "year": "200?"
+  },
+  "runningh": {
+    "description": "Running High (Jpn)",
+    "publisher": "REX",
+    "year": "1997"
+  },
+  "s15_101": {
+    "description": "Simple 1500 series vol.101 - The Sentou (Jpn)",
+    "publisher": "D3",
+    "year": "2003"
+  },
+  "s15_102": {
+    "description": "Simple 1500 Series Vol.102 - The Densha Untensha - Densha de Go! - Nagoya Tetsudou-hen (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15_103": {
+    "description": "Simple 1500 Series Vol.103 - The Ganso Densha Utenshi - Densha De Go! (Jpn)",
+    "publisher": "D3",
+    "year": "2003"
+  },
+  "s15_104": {
+    "description": "Simple 1500 Series Vol.104 - The Pink Panther - Pinkadelic Pursuit (Jpn)",
+    "publisher": "D3",
+    "year": "2003"
+  },
+  "s15_37": {
+    "description": "Simple 1500 Series Vol.37 - The Illustration Puzzle & Slide Puzzle (Jpn)",
+    "publisher": "D3",
+    "year": "2000"
+  },
+  "s15_51": {
+    "description": "Simple 1500 Series vol.51 - The Jigsaw Puzzle (Jpn)",
+    "publisher": "D3",
+    "year": "2000"
+  },
+  "s15_63": {
+    "description": "Simple 1500 Series vol.63 - The Gun Shooting 2 (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15_67": {
+    "description": "Simple 1500 Series vol.67 - The Soccer - Dynamite Soccer 1500 (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15_71": {
+    "description": "Simple 1500 Series vol.71 - The Renai Simulation 2 (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15_72": {
+    "description": "Simple 1500 Series vol.72 - The Beach Volley (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15_73": {
+    "description": "Simple 1500 Series vol.73 - The Invaders - Space Invaders 1500 (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15_76": {
+    "description": "Simple 1500 Series vol.76 - The Dodgeball (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15_83": {
+    "description": "Simple 1500 Series vol.83 - The Wakeboard - BursTrick Wake Boarding!! (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15_85": {
+    "description": "Simple 1500 Series vol.85 - The Sengoku Bushou - Tenka Touitsu no Yabou (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15_88": {
+    "description": "Simple 1500 Series vol.88 - The Gal Mahjong - Love Songs - Idol wa High Rate (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15_89": {
+    "description": "Simple 1500 Series vol.89 - The Power Shovel - Power Shovel ni Norou! (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15_90": {
+    "description": "Simple 1500 Series vol.90 - The Sensha (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15_93": {
+    "description": "Simple 1500 Series Vol.93 - The Puzzle Bobble 4 (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15_97": {
+    "description": "Simple 1500 Series vol.97 - The Squash (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15_99": {
+    "description": "Simple 1500 Series Vol.99 - The Kendo - Ken no Hanamichi (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15_h01": {
+    "description": "Simple 1500 Series - Hello Kitty vol.01 - Hello Kitty Bowling (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15_h02": {
+    "description": "Simple 1500 Series Hello Kitty Vol.02 - Hello Kitty Illust Puzzle (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15_h03": {
+    "description": "Simple 1500 Series Hello Kitty vol.03 - Hello Kitty Block Kuzushi (Jpn)",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "s15_h04": {
+    "description": "Simple 1500 Series Hello Kitty Vol.04 - Hello Kitty Trump (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15j_01": {
+    "description": "Simple 1500 Jitsuyou Series Vol.01 - Norikae Annai -2000 Edition- (Jpn)",
+    "publisher": "D3",
+    "year": "2000"
+  },
+  "s15j_03": {
+    "description": "Simple 1500 Jitsuyou Series Vol.03 - Seimei Handan (Jpn)",
+    "publisher": "D3",
+    "year": "2000"
+  },
+  "s15j_04": {
+    "description": "Simple 1500 Jitsuyou Series Vol.04 - Ryouri (Jpn)",
+    "publisher": "D3",
+    "year": "2000"
+  },
+  "s15j_05": {
+    "description": "Simple 1500 Jitsuyou Series Vol.05 - Kusuri no Jiten - Pill Book 2001 Edition (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15j_06": {
+    "description": "Simple 1500 Jitsuyou Series Vol.06 - Cocktail no Recipe (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15j_07": {
+    "description": "Simple 1500 Jitsuyou Series Vol.07 - Tanoshiku Manabu Unten Menkyo (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15j_08": {
+    "description": "Simple 1500 Jitsuyou Series Vol.08 - 1-Jikan de Wakaru Kabushiki Toushi (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15j_09": {
+    "description": "Simple 1500 Jitsuyou Series Vol.09 - Watashi Style no Aromatherapy (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15j_10": {
+    "description": "Simple 1500 Jitsuyou Series Vol.10 - Tarot Uranai (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15j_11": {
+    "description": "Simple 1500 Jitsuyou Series Vol.11 - Katei de Dekiru Tsubo Shiatsu (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15j_12": {
+    "description": "Simple 1500 Jitsuyou Series Vol.12 - Katei no Igaku (Jpn)",
+    "publisher": "D3",
+    "year": "2001"
+  },
+  "s15j_13": {
+    "description": "Simple 1500 Jitsuyou Series Vol.13 - Shinri Game - Soreike X Kokoroji (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15j_14": {
+    "description": "Simple 1500 Jitsuyou Series Vol.14 - Kurashi no Manner (Jpn)",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "s15j_15": {
+    "description": "Simple 1500 Jitsuyou Series Vol.15 - Inu no Kaikata - Sekai no Inu Catalog (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15j_16": {
+    "description": "Simple 1500 Jitsuyou Series Vol.16 - Neko no Kaikata - Sekai no Neko Catalo (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15j_17": {
+    "description": "Simple 1500 Jitsuyou Series Vol.17 - Planetarium (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "s15j_18": {
+    "description": "Simple 1500 Jitsuyou Series Vol.18 - Kanji Quiz - Kanji Keitei ni Challenge (Jpn)",
+    "publisher": "D3",
+    "year": "2002"
+  },
+  "sakkyoku": {
+    "description": "Sakkyoku Surundamon - Dance Remix (Jpn)",
+    "publisher": "Ving",
+    "year": "2000"
+  },
+  "sakumash": {
+    "description": "Sakuma-shiki Jinsei Game (Jpn)",
+    "publisher": "Takara",
+    "year": "1998"
+  },
+  "salaryma": {
+    "description": "Salary Man Champ - Tatakau Salary Man (Jpn)",
+    "publisher": "Success",
+    "year": "2001"
+  },
+  "salarysm": {
+    "description": "Salary Man Settai Mahjong (Jpn)",
+    "publisher": "Visit",
+    "year": "2001"
+  },
+  "salarytg": {
+    "description": "Salaryman Kintarou - The Game (Jpn)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "samsho3": {
+    "description": "Samurai Spirits - Zankurou Musouken (Jpn, PlayStation the Best)",
+    "publisher": "SNK",
+    "year": "1997"
+  },
+  "samuraid": {
+    "description": "Samurai Deeper Kyo (Jpn, Limited Edition)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "samurais": {
+    "description": "Samurai Spirits - Kenkaku Yubinan Pack (Jpn)",
+    "publisher": "SNK",
+    "year": "1998"
+  },
+  "sangokou": {
+    "description": "Sangokushi Koumeiden (Jpn)",
+    "publisher": "Koei",
+    "year": "1997"
+  },
+  "sangokrt": {
+    "description": "Sangokushi Returns (Jpn)",
+    "publisher": "Koei",
+    "year": "1997"
+  },
+  "sangoku2": {
+    "description": "Sangokushi II (Jpn)",
+    "publisher": "Koei",
+    "year": "1998"
+  },
+  "sangoku3": {
+    "description": "Sangokushi III (Jpn)",
+    "publisher": "Koei",
+    "year": "2001"
+  },
+  "sangoku5": {
+    "description": "Sangokushi V (Jpn)",
+    "publisher": "Koei",
+    "year": "1997"
+  },
+  "sangoku6": {
+    "description": "Sangokushi VI (Jpn)",
+    "publisher": "Koei",
+    "year": "1998"
+  },
+  "sangokus": {
+    "description": "Sangokushi Eiketsuden (Jpn)",
+    "publisher": "Koei",
+    "year": "1996"
+  },
+  "sanyopac": {
+    "description": "Sanyo Pachinko Paradise 2 - Umi Monogatari Special (Jpn)",
+    "publisher": "Irem",
+    "year": "1999"
+  },
+  "sarugety": {
+    "description": "Saru! Get You! (Jpn)",
+    "publisher": "Sony",
+    "year": "1999"
+  },
+  "satellit": {
+    "description": "Satelli TV (Jpn)",
+    "publisher": "Nippon Ichi",
+    "year": "1998"
+  },
+  "satomino": {
+    "description": "Satomi no Nazo (Jpn)",
+    "publisher": "Sound Technology Japan",
+    "year": "1996"
+  },
+  "sc2k_02": {
+    "description": "Simple Characters 2000 Series Vol.02 - Afro Ken - The Puzzle (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "sc2k_03": {
+    "description": "Simple Characters 2000 Series Vol.03 - Kamen Rider - The Bike Race (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "sc2k_04": {
+    "description": "Simple Characters 2000 Series Vol.04 - Jarinko Chie - The Hanafuda (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "sc2k_05": {
+    "description": "Simple Characters 2000 Series vol.05 - Highschool Kimengumi - The Table Hockey (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "sc2k_06": {
+    "description": "Simple Characters 2000 Series Vol.06 - Dokonjou Gaeru - The Mahjong (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "sc2k_07": {
+    "description": "Simple Characters 2000 Series vol.07 - Ikkyuu-san: The Quiz (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "sc2k_09": {
+    "description": "Simple Characters 2000 Series Vol.09 - Tsuri Kichi Sanpei - The Tsuri (Jpn)",
+    "publisher": "Bandai/D3",
+    "year": "2002"
+  },
+  "sc2k_10": {
+    "description": "Simple Characters 2000 Series Vol.10 - Sakigake!! Otojo Juku (Jpn)",
+    "publisher": "Bandai/D3",
+    "year": "2002"
+  },
+  "sc2k_12": {
+    "description": "Simple Characters 2000 Series Vol.12 - Kidou Butouden G Gundam - The Battle (Jpn)",
+    "publisher": "Bandai/D3",
+    "year": "2002"
+  },
+  "sc2k_13": {
+    "description": "Simple Characters 2000 Series vol.13 - Kidou Senki Gundam W - The Battle (Jpn)",
+    "publisher": "Bandai/D3",
+    "year": "2002"
+  },
+  "sc2k_14": {
+    "description": "Simple Characters 2000 Series Vol.14 - Nante Tantei Idol - The Jigsaw Puzzle (Jpn)",
+    "publisher": "Bandai/D3",
+    "year": "2002"
+  },
+  "sc2k_15": {
+    "description": "Simple Characters 2000 Series vol.15 - The Block Kuzushi (Jpn)",
+    "publisher": "Bandai/D3",
+    "year": "2002"
+  },
+  "sc2k_16": {
+    "description": "Simple Characters 2000 Series Vol.16 - Ganba no Bouken - The Puzzle Action (Jpn)",
+    "publisher": "Bandai/D3",
+    "year": "2003"
+  },
+  "schrodin": {
+    "description": "Schrödinger no Neko - Die Katze von Schrödinger (Jpn)",
+    "publisher": "Takara",
+    "year": "1997"
+  },
+  "sdggg0": {
+    "description": "SD Gundam G - Generation Zero (Jpn)",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "sdgggf": {
+    "description": "SD Gundam G Generation-F (Limited Edition)(Japan)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "sdgggfif": {
+    "description": "SD Gundam G - Generation-F.I.F (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "sdgkvm": {
+    "description": "SD Gundam Eiyuuden Daikessen - Knight vs. Musha (Jpn)",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "seabassf": {
+    "description": "Seabass Fishing 2 (Jpn)",
+    "publisher": "Victor",
+    "year": "1997"
+  },
+  "seikaino": {
+    "description": "Seikai no Monshou (Crest of the Stars) (Jpn)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "seikende": {
+    "description": "Seiken Densetsu - Legend of Mana (Jpn, Demo)",
+    "publisher": "Squaresoft",
+    "year": "1999"
+  },
+  "seireish": {
+    "description": "Seirishoukan - Princess of Darkness (Jpn)",
+    "publisher": "Shoeisha",
+    "year": "1998"
+  },
+  "sengokum": {
+    "description": "Sengoku Mugen (Jpn)",
+    "publisher": "Banpresto",
+    "year": "2001"
+  },
+  "senkaita": {
+    "description": "Senkai Taisen TV Animation Senkaiden Houshin Engi Yori (Jpn)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "senryaku": {
+    "description": "Senryaku Shidan - Tora! Tora! Tora! Rikusenhen (Jpn)",
+    "publisher": "DaZZ",
+    "year": "2000"
+  },
+  "sentimen": {
+    "description": "Sentimental Graffiti (Jpn)",
+    "publisher": "NEC",
+    "year": "2001"
+  },
+  "sentouko": {
+    "description": "Sentou Kokka Kai - Improved (Jpn)",
+    "publisher": "Sony",
+    "year": "1997"
+  },
+  "shachoue": {
+    "description": "Shachou Eiyuuden - The Eagle Shooting Heroes (Jpn)",
+    "publisher": "Sony",
+    "year": "2000"
+  },
+  "shibasu1": {
+    "description": "Shibas 1-2-3 Destiny! Unmei O Kaerusha! (Jpn)",
+    "publisher": "Jaleco",
+    "year": "2000"
+  },
+  "shinmaso": {
+    "description": "Shin Masoukishin - Panzer Warfare (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1999"
+  },
+  "shinmega": {
+    "description": "Shin Megami Tensei (Jpn)",
+    "publisher": "Atlus",
+    "year": "2001"
+  },
+  "shinriga": {
+    "description": "The Shinri Game (Jpn)",
+    "publisher": "Visit",
+    "year": "1996"
+  },
+  "shinsdse": {
+    "description": "Shin SD Sengokuden - Kidou Musha Taisen (Jpn, Limited Edition)",
+    "publisher": "Bandai",
+    "year": "1996"
+  },
+  "shinseid": {
+    "description": "Shinseiden Megaseed Fukkatsu-Hen (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1997"
+  },
+  "shinsets": {
+    "description": "Shinsetsu Samurai Spirits - Bushido Retsuden (Jpn)",
+    "publisher": "SNK",
+    "year": "1997"
+  },
+  "shinthem": {
+    "description": "Shin Theme Park (Jpn)",
+    "publisher": "Electronic Arts",
+    "year": "1997"
+  },
+  "shirits2": {
+    "description": "Shiritsu Justice Gakuen - Nekketsu Seishun Nikki 2 (Jpn)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "shiritsu": {
+    "description": "Shiritsu Justice Gakuen - Legion of Heroes (Jpn)",
+    "publisher": "Capcom",
+    "year": "1998"
+  },
+  "shoryusa": {
+    "description": "Shoryu Sangokuengi (Jpn)",
+    "publisher": "Imageneer",
+    "year": "1996"
+  },
+  "shuranom": {
+    "description": "Shura no Mon (Jpn)",
+    "publisher": "Kodansha",
+    "year": "1998"
+  },
+  "sidebysi": {
+    "description": "Side by Side Special 2000 (Jpn)",
+    "publisher": "Taito",
+    "year": "1999"
+  },
+  "sidepock": {
+    "description": "Side Pocket 3 - 3D Polygon Billiard Game (Jpn)",
+    "publisher": "Data East",
+    "year": "1998"
+  },
+  "sidewind": {
+    "description": "Sidewinder (Jpn)",
+    "publisher": "Asmik",
+    "year": "1996"
+  },
+  "silenthp": {
+    "description": "Silent Hill (USA, Prototype)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "silentmo": {
+    "description": "Silent Möbius - Genei no Datenshi (Jpn)",
+    "publisher": "Bandai",
+    "year": "1998"
+  },
+  "silhouet": {
+    "description": "Silhouette Mirage - Reprogrammed Hope (Jpn)",
+    "publisher": "ESP",
+    "year": "1998"
+  },
+  "silhstor": {
+    "description": "Silhouette Stories (Jpn)",
+    "publisher": "Kaneko",
+    "year": "1996"
+  },
+  "simulati": {
+    "description": "Simulation Zoo: Sekaiichi no Doubutsuen o Tsukurou (Jpn)",
+    "publisher": "SoftBank",
+    "year": "1996"
+  },
+  "sisterpr": {
+    "description": "Sister Princess - Pure Stories (Jpn)",
+    "publisher": "Media Works",
+    "year": "2001"
+  },
+  "slaphapp": {
+    "description": "Slap Happy Rhythm Busters (Jpn)",
+    "publisher": "ASK",
+    "year": "2000"
+  },
+  "snatcher": {
+    "description": "Snatcher (Jpn)",
+    "publisher": "Konami",
+    "year": "1996"
+  },
+  "snobowki": {
+    "description": "Snobow Kids Plus (Jpn)",
+    "publisher": "ASCII",
+    "year": "1999"
+  },
+  "sonataja": {
+    "description": "Sonata (Jpn)",
+    "publisher": "T&E",
+    "year": "1999"
+  },
+  "sotne3": {
+    "description": "Castlevania - Symphony of the Night (E3 Demo, 1997)",
+    "publisher": "Konami",
+    "year": "1997"
+  },
+  "sotsugyo": {
+    "description": "Sotsugyou Crossworld (Jpn)",
+    "publisher": "Hearty Robin",
+    "year": "1996"
+  },
+  "sougakut": {
+    "description": "Sougaku Toshi - Osaka (Jpn)",
+    "publisher": "King Records",
+    "year": "1999"
+  },
+  "soukyugu": {
+    "description": "Soukyu Gurentai - Oubushustugeki (Jpn)",
+    "publisher": "Data East",
+    "year": "1997"
+  },
+  "soundqub": {
+    "description": "S.Q. - Sound Qube (Jpn)",
+    "publisher": "<unknown>",
+    "year": "1998"
+  },
+  "spaceinv": {
+    "description": "Space Invaders X (Jpn)",
+    "publisher": "Taito",
+    "year": "2000"
+  },
+  "spectral": {
+    "description": "Spectral Blade (Jpn)",
+    "publisher": "Idea Factory",
+    "year": "1999"
+  },
+  "speedkin": {
+    "description": "Speed King (Jpn)",
+    "publisher": "Konami",
+    "year": "1996"
+  },
+  "speedpow": {
+    "description": "Speed Power Gunbike (Jpn)",
+    "publisher": "Sony",
+    "year": "1998"
+  },
+  "spiderma": {
+    "description": "Spider-Man (Jpn)",
+    "publisher": "Activision",
+    "year": "2001"
+  },
+  "spiritm": {
+    "description": "Spirit Master (USA, Prototype)",
+    "publisher": "Acclaim",
+    "year": "19??"
+  },
+  "squareso": {
+    "description": "Squaresoft Memory Card Data CD (Jpn)",
+    "publisher": "Squaresoft",
+    "year": "199?"
+  },
+  "stahlfed": {
+    "description": "Stahlfeder (Jpn)",
+    "publisher": "Santos",
+    "year": "1996"
+  },
+  "starcon": {
+    "description": "StarCon (Prototype)",
+    "publisher": "Accolade",
+    "year": "1998"
+  },
+  "startlin": {
+    "description": "Startling Odyssey 1 - Blue Evolution (Jpn)",
+    "publisher": "RayForce",
+    "year": "1999"
+  },
+  "streetfi": {
+    "description": "Street Fighter Collection (Jpn)",
+    "publisher": "Capcom",
+    "year": "1997"
+  },
+  "suchiepa": {
+    "description": "Suchie-Pai Adventure - Doki Doki Nightmare (Jpn, Disc 2 Only)",
+    "publisher": "Jaleco",
+    "year": "1998"
+  },
+  "suikoenb": {
+    "description": "Suiko Enbu - Outlaws of the Lost Dynasty (Jpn)",
+    "publisher": "Data East",
+    "year": "1996"
+  },
+  "sunsoft1": {
+    "description": "Memorial Star Series Sunsoft Vol. 1 - Ikki & Super Arabian (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "2001"
+  },
+  "sunsoft2": {
+    "description": "Memorial Star Series Sunsoft Vol. 2 - Route 16 - Turbo & Atlantis no Nazo (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "2001"
+  },
+  "sunsoft3": {
+    "description": "Sunsoft Classics Vol.3 - Memorial Series (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "2001"
+  },
+  "sunsoft4": {
+    "description": "Memorial Star Series Sunsoft Vol.4 - Chou wakusei senki metafight & Lipple island (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "2002"
+  },
+  "sunsoft5": {
+    "description": "Memorial Star Series Sunsoft Vol.5 - Raf World & Hebereke (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "2002"
+  },
+  "sunsoft6": {
+    "description": "Memorial Star Series Sunsoft Vol.6 - Battle Formula & Gimmick! (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "2002"
+  },
+  "superadv": {
+    "description": "Super Adventure RockMan (Jpn)",
+    "publisher": "Capcom",
+    "year": "1998"
+  },
+  "superfoo": {
+    "description": "Super Football Champ (Jpn)",
+    "publisher": "Taito",
+    "year": "1996"
+  },
+  "superliv": {
+    "description": "Super Live Stadium (Jpn)",
+    "publisher": "Aques",
+    "year": "1998"
+  },
+  "susumeka": {
+    "description": "Susume! Kaizoku - Be Pirates! (Jpn)",
+    "publisher": "ArtDink",
+    "year": "1998"
+  },
+  "tactical": {
+    "description": "Tactical Armor Custom Gasaraki (Jpn)",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "tacticso": {
+    "description": "Tactics Ogre - Let Us Cling Together (Jpn)",
+    "publisher": "Artdink",
+    "year": "1997"
+  },
+  "taihoshi": {
+    "description": "Taiho Shichauzo! - You're Under Arrest (Jpn)",
+    "publisher": "Pioneer",
+    "year": "2001"
+  },
+  "talesoff": {
+    "description": "Tales of Fandom Vol.1 (Jpn, Cless Version)",
+    "publisher": "Namco",
+    "year": "2002"
+  },
+  "tamamayu": {
+    "description": "Tamamayu Monogatari - Dennou Bijutsukan (Jpn, Demo)",
+    "publisher": "Genki",
+    "year": "199?"
+  },
+  "tanteiea": {
+    "description": "Tantei Jinguuji Saburo - Early Collection (Jpn)",
+    "publisher": "Data East",
+    "year": "1999"
+  },
+  "tanteimr": {
+    "description": "Tantei Jinguuji Saburo - Mikan No Rupo (Jpn, Popular Edition)",
+    "publisher": "Data East",
+    "year": "2000"
+  },
+  "tanteitk": {
+    "description": "Tantei Jinguji Saburo - Tomosibi Ga Kienumani (Jpn)",
+    "publisher": "Data East",
+    "year": "1999"
+  },
+  "tanteiyo": {
+    "description": "Tantei Jinguji Saburo - Yumeno Owarini (Jpn)",
+    "publisher": "Data East",
+    "year": "1998"
+  },
+  "tatsunok": {
+    "description": "Tatsunoko Fight (Jpn)",
+    "publisher": "Takara",
+    "year": "2000"
+  },
+  "tenantwa": {
+    "description": "Tenant Wars (Jpn)",
+    "publisher": "Kid",
+    "year": "1998"
+  },
+  "tenchimu": {
+    "description": "Tenchi Muyou! Toukou Muyou - No Need for School (Jpn)",
+    "publisher": "Xing",
+    "year": "1996"
+  },
+  "tenchiwo": {
+    "description": "Tenchi wo Kurau II - Sekiheki no Tatakai (Jpn)",
+    "publisher": "Capcom",
+    "year": "1996"
+  },
+  "tenmadej": {
+    "description": "Ten Made Jack / Tenma de Jack - Odoroki Manenoki Daitoubou (Jpn)",
+    "publisher": "Enix",
+    "year": "2000"
+  },
+  "tennisar": {
+    "description": "Tennis Arena (Jpn)",
+    "publisher": "Ubi Soft",
+    "year": "1998"
+  },
+  "tensenny": {
+    "description": "Tensen Nyannyan Gekigyouban (Jpn)",
+    "publisher": "Time Point",
+    "year": "1998"
+  },
+  "tenshino": {
+    "description": "Tenshi no Shippo (Jpn)",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "terracon": {
+    "description": "Terracon (Euro)",
+    "publisher": "Sony",
+    "year": "2000"
+  },
+  "tetrisxj": {
+    "description": "Tetris X (Jpn)",
+    "publisher": "Bullet Proof",
+    "year": "1996"
+  },
+  "tfxjapan": {
+    "description": "TFX - Tactical Fighter Experiment (Jpn)",
+    "publisher": "Imageneer / Ocean",
+    "year": "1996"
+  },
+  "thatsqtj": {
+    "description": "That's QT (Jpn)",
+    "publisher": "Koei",
+    "year": "2000"
+  },
+  "themehos": {
+    "description": "Theme Hospital (Jpn)",
+    "publisher": "Electronic Arts",
+    "year": "1998"
+  },
+  "thkill": {
+    "description": "Thrill Kill (USA, Prototype)",
+    "publisher": "Virgin Interactive",
+    "year": "1998"
+  },
+  "thkilla": {
+    "description": "Thrill Kill (USA, Prototype Earlier?)",
+    "publisher": "Virgin Interactive",
+    "year": "1998"
+  },
+  "thpsp": {
+    "description": "Tony Hawk's Pro Skater (USA, Prototype)",
+    "publisher": "Activision",
+    "year": "1999"
+  },
+  "thunderf": {
+    "description": "Thunder Force V - Perfect System (Jpn)",
+    "publisher": "TechnoSoft",
+    "year": "1998"
+  },
+  "timegaln": {
+    "description": "Time Gal & Ninja Hayate (Jpn)",
+    "publisher": "Taito",
+    "year": "1996"
+  },
+  "tinybull": {
+    "description": "Tiny Bullets (Jpn)",
+    "publisher": "Sony",
+    "year": "2000"
+  },
+  "tkarahaj": {
+    "description": "T Kara Hajimaru Monogatari (Jpn)",
+    "publisher": "Jaleco",
+    "year": "1998"
+  },
+  "tkpzldm": {
+    "description": "Tokimeki Memorial - Taisen Puzzle-Dama (Jpn)",
+    "publisher": "Konami",
+    "year": "1996"
+  },
+  "tm2ev1": {
+    "description": "Tokimeki Memorial 2 EVS Append Disc 1 (Kotoko-Miyuki-Kaedeko) (Jpn)",
+    "publisher": "Aspect",
+    "year": "2000"
+  },
+  "tm2ev2": {
+    "description": "Tokimeki Memorial 2 EVS Append Disc 2 (Homura-Akane-Kaori) (Jpn)",
+    "publisher": "Aspect",
+    "year": "2000"
+  },
+  "tm2ev3": {
+    "description": "Tokimeki Memorial 2 EVS Append Disc 3 (Miho-Mei-Sumire) (Jpn)",
+    "publisher": "Enterbrain",
+    "year": "2000"
+  },
+  "tm2s1": {
+    "description": "Tokimeki Memorial 2 Substories vol. 1 - Dancing Summer Vacation (Jpn)",
+    "publisher": "Konami",
+    "year": "2000"
+  },
+  "tm2s2": {
+    "description": "Tokimeki Memorial 2 Substories Vol.2 - Leaping School Festival (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "tm2s3": {
+    "description": "Tokimeki Memorial 2 SubStories Vol.3 - Memories Ringing On (Jpn)",
+    "publisher": "Konami",
+    "year": "2001"
+  },
+  "tmds1": {
+    "description": "Tokimeki Memorial Drama Series Vol.1 - Nijiiro No Seishun (Jpn, Konami the Best)",
+    "publisher": "Konami",
+    "year": "1999"
+  },
+  "toaplans": {
+    "description": "Toaplan Shooting Battle 1 (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1996"
+  },
+  "tocatour": {
+    "description": "Toca Touring Car Championship (Jpn)",
+    "publisher": "Upstar",
+    "year": "1998"
+  },
+  "toheartj": {
+    "description": "To Heart (Jpn)",
+    "publisher": "Aqua Plus",
+    "year": "1999"
+  },
+  "tokyomaj": {
+    "description": "Tokyo Majin Gakuen Gehouchou (Jpn)",
+    "publisher": "Asmik Ace",
+    "year": "2002"
+  },
+  "tomba": {
+    "description": "Tomba! The Wild Adventures (Jpn)",
+    "publisher": "Whoopee Camp",
+    "year": "1999"
+  },
+  "tomikato": {
+    "description": "Tomica Town o Tsukurou! (Jpn)",
+    "publisher": "Tomy",
+    "year": "1999"
+  },
+  "topoloja": {
+    "description": "ToPoLo (Jpn)",
+    "publisher": "Artdink",
+    "year": "1996"
+  },
+  "torc": {
+    "description": "Torc - Legend of the Ogre Crown (Prototype)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "toshcard": {
+    "description": "Toshinden Card Quest (Jpn)",
+    "publisher": "Takara",
+    "year": "1998"
+  },
+  "tougemax": {
+    "description": "Touge Max G (Jpn)",
+    "publisher": "Atlus",
+    "year": "2000"
+  },
+  "toukiden": {
+    "description": "Touki Denshou - Angel Eyes (Jpn)",
+    "publisher": "Tecmo",
+    "year": "1997"
+  },
+  "toyotane": {
+    "description": "Toyota Netz Racing (Jpn)",
+    "publisher": "Atlus",
+    "year": "1999"
+  },
+  "toysdrea": {
+    "description": "Toys Dream (Jpn)",
+    "publisher": "KSS",
+    "year": "1998"
+  },
+  "traid2p": {
+    "description": "Tomb Raider II (USA, Prototype)",
+    "publisher": "Core Design",
+    "year": "1997"
+  },
+  "traidd": {
+    "description": "Tomb Raider (E3 Demo, 19960520)",
+    "publisher": "SCEI",
+    "year": "1996"
+  },
+  "traidp": {
+    "description": "Tomb Raider (Prototype, 19960722)",
+    "publisher": "Core Design",
+    "year": "1996"
+  },
+  "tripuzzj": {
+    "description": "Tripuzz (Jpn)",
+    "publisher": "Santos",
+    "year": "1997"
+  },
+  "trumpshi": {
+    "description": "Trump Shiyouyo! (Jpn)",
+    "publisher": "Bottom Up",
+    "year": "1998"
+  },
+  "tsuntsu2": {
+    "description": "Tsun-tsun-gumi 2 - Moji Moji Bakkun (Jpn)",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "tsuntsu3": {
+    "description": "Tsun-tsun-gumi 3 - Kanji Vader (Jpn)",
+    "publisher": "Kodansha",
+    "year": "1998"
+  },
+  "tsuribak": {
+    "description": "Tsuri Baka Nisshi (Jpn)",
+    "publisher": "Shogakukan",
+    "year": "1996"
+  },
+  "tvanimat": {
+    "description": "TV Animation X - Unmei no Tatakai (Jpn)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "twinbeer": {
+    "description": "TwinBee-RPG (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "twinbeet": {
+    "description": "Twinbee Taisen Puzzle-Dama (Jpn)",
+    "publisher": "Konami",
+    "year": "1994"
+  },
+  "twingodd": {
+    "description": "Twin Goddesses (Jpn)",
+    "publisher": "PolyGram",
+    "year": "1994"
+  },
+  "twinssto": {
+    "description": "Twins Story - Kimi ni Tsutaetakute (Jpn)",
+    "publisher": "Panther",
+    "year": "1999"
+  },
+  "twotenka": {
+    "description": "Two-Tenkaku (Jpn)",
+    "publisher": "Sony",
+    "year": "1995"
+  },
+  "ucchanna": {
+    "description": "Ucchannanchan no Honoo no Challenger - Denryu Iraira-Bo Returns (Jpn)",
+    "publisher": "Saurus",
+    "year": "1998"
+  },
+  "ufoadayi": {
+    "description": "UFO - A Day in the Life (Jpn)",
+    "publisher": "ASCII",
+    "year": "1999"
+  },
+  "ugetsuki": {
+    "description": "Ugetsu Kitan (Jpn)",
+    "publisher": "Tonkin House",
+    "year": "1996"
+  },
+  "ukiukits": {
+    "description": "Ukiuki Tsuri Tengoku - Uogami Densetsu wo Oe (Jpn)",
+    "publisher": "Teichiku",
+    "year": "2000"
+  },
+  "ultimaun": {
+    "description": "Ultima Underworld - The Stygian Abyss (Jpn)",
+    "publisher": "Electronic Arts",
+    "year": "1997"
+  },
+  "ultraman": {
+    "description": "Ultraman Tiga & Ultraman Dyna Fighting Evolution - New Generations (Jpn)",
+    "publisher": "Bandai",
+    "year": "1998"
+  },
+  "ultramze": {
+    "description": "Ultraman Zearth (Jpn)",
+    "publisher": "Tohoku Shinsha",
+    "year": "1996"
+  },
+  "umiharak": {
+    "description": "Umihara Kawase Shun - Second Edition (Jpn, Maruan Series 1)",
+    "publisher": "Xing",
+    "year": "2000"
+  },
+  "uminonus": {
+    "description": "Umi No Nushi Tsuri Takarajimi NI Mukatte (Jpn)",
+    "publisher": "Pack-in-Soft",
+    "year": "1999"
+  },
+  "ungrawal": {
+    "description": "Ungra Walker (Jpn)",
+    "publisher": "Success",
+    "year": "2002"
+  },
+  "urawazam": {
+    "description": "Urawaza Mahjong - Korette Tenhoutte Yatsukai (Jpn)",
+    "publisher": "Spike",
+    "year": "2000"
+  },
+  "vampirky": {
+    "description": "Vampir Kyuuketsuki Densetsu (Jpn)",
+    "publisher": "Artdink",
+    "year": "1999"
+  },
+  "vehiclec": {
+    "description": "Vehicle Cavalier (Jpn)",
+    "publisher": "Vanguard Works",
+    "year": "1996"
+  },
+  "victorys": {
+    "description": "Victory Spike (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1996"
+  },
+  "victoryz": {
+    "description": "Victory Zone - Real Pachinko Simulator (Jpn)",
+    "publisher": "Sony",
+    "year": "1995"
+  },
+  "virtualh": {
+    "description": "Virtual Hiyru no Ken (Jpn)",
+    "publisher": "Culture Brain",
+    "year": "1997"
+  },
+  "virtualk": {
+    "description": "Virtual Kyotei '98 (Jpn)",
+    "publisher": "Nihon Bussan",
+    "year": "1998"
+  },
+  "virtualp": {
+    "description": "Virtual Pro Wrestling (Jpn)",
+    "publisher": "Asmik Ace",
+    "year": "1996"
+  },
+  "virtuoso": {
+    "description": "Virtuoso (Prototype, 19960514)",
+    "publisher": "Data East?",
+    "year": "1996"
+  },
+  "virus": {
+    "description": "Virus - The Battle Field (Jpn)",
+    "publisher": "PolyGram",
+    "year": "1999"
+  },
+  "visionof": {
+    "description": "The Vision of Escaflowne (Jpn, Limited Edition)",
+    "publisher": "Bandai",
+    "year": "1999"
+  },
+  "volfossj": {
+    "description": "Volfoss (Jpn)",
+    "publisher": "Namco",
+    "year": "2001"
+  },
+  "vtennis2": {
+    "description": "V-Tennis 2 (Jpn)",
+    "publisher": "Tonkin House",
+    "year": "1996"
+  },
+  "wagamama": {
+    "description": "Wagamama Fairy Mirumo de Pon! - Mirumo no Mahou Gakkou Monogatari (Jpn)",
+    "publisher": "Konami",
+    "year": "2003"
+  },
+  "wangantr": {
+    "description": "Wangan Trial (Jpn)",
+    "publisher": "Pack-in-Soft",
+    "year": "1998"
+  },
+  "warerami": {
+    "description": "Warera Mitsubayashi Tankentai!! (Jpn)",
+    "publisher": "Victor",
+    "year": "2000"
+  },
+  "watersum": {
+    "description": "Water Summer (Jpn, Limited Edition)",
+    "publisher": "Princess Soft",
+    "year": "2002"
+  },
+  "weddingp": {
+    "description": "Wedding Peach - Doki Doki Oiro-Naoshi Fashion Daisakusen (Jpn)",
+    "publisher": "KSS",
+    "year": "1996"
+  },
+  "welcomeh": {
+    "description": "Welcome House",
+    "publisher": "Gust",
+    "year": "1996"
+  },
+  "weltorve": {
+    "description": "Weltorv Estleia (Jpn)",
+    "publisher": "Hudson",
+    "year": "1999"
+  },
+  "whitedia": {
+    "description": "White Diamond (Jpn)",
+    "publisher": "Escot",
+    "year": "1999"
+  },
+  "wingover": {
+    "description": "Wing Over (Jpn)",
+    "publisher": "<unknown>",
+    "year": "1997"
+  },
+  "wizardsh": {
+    "description": "Wizard's Harmony R (Jpn)",
+    "publisher": "Arc System Works",
+    "year": "1998"
+  },
+  "wolffang": {
+    "description": "Wolf Fang (Jpn)",
+    "publisher": "Xing",
+    "year": "1996"
+  },
+  "wonder3a": {
+    "description": "Wonder 3 Arcade Gears (Jpn)",
+    "publisher": "Xing",
+    "year": "1998"
+  },
+  "wonderbc": {
+    "description": "Wonder B-Cruise - Dogiborn Daisakusen (Jpn)",
+    "publisher": "Sunsoft",
+    "year": "1999"
+  },
+  "wondertr": {
+    "description": "Wonder Tracker (Jpn)",
+    "publisher": "Sony",
+    "year": "1998"
+  },
+  "worldlea": {
+    "description": "World League Soccer - Challenge Nippon! (Jpn, Family Price 1500)",
+    "publisher": "Coconuts Japan",
+    "year": "2000"
+  },
+  "worldnev": {
+    "description": "World Neverland - Olerud Oukoku Monogatari (Jpn)",
+    "publisher": "RiverhillSoft",
+    "year": "1997"
+  },
+  "worldpro": {
+    "description": "World Pro Tennis '98 (Jpn)",
+    "publisher": "I.Magic",
+    "year": "1998"
+  },
+  "wwfsmack": {
+    "description": "WWF Smackdown! (USA, Prototype 20000106)",
+    "publisher": "THQ",
+    "year": "2000"
+  },
+  "wwfwrest": {
+    "description": "WWF Wrestlemania - The Arcade Game (Jpn)",
+    "publisher": "Acclaim",
+    "year": "1996"
+  },
+  "x2noreli": {
+    "description": "X2 - No Relief (Jpn)",
+    "publisher": "Capcom",
+    "year": "1997"
+  },
+  "xracingj": {
+    "description": "X-Racing (Jpn)",
+    "publisher": "Nichibutsu",
+    "year": "1998"
+  },
+  "yagamihi": {
+    "description": "Yagami Hiroki no Game-Taste - Munasawagi no Yokan (Jpn)",
+    "publisher": "Kodansha",
+    "year": "1999"
+  },
+  "yakiniku": {
+    "description": "Yakiniku Bugyou (Jpn)",
+    "publisher": "Media",
+    "year": "2001"
+  },
+  "yakitori": {
+    "description": "Yakitori Musume - Sugo Ude Hanjouki (Jpn)",
+    "publisher": "Media",
+    "year": "2002"
+  },
+  "yamagaau": {
+    "description": "Yamagata Digital Museum - Autumn (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1999"
+  },
+  "yamagasp": {
+    "description": "Yamagata Digital Museum - Spring (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1999"
+  },
+  "yamagasu": {
+    "description": "Yamagata Digital Museum - Summer (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1999"
+  },
+  "yamagawi": {
+    "description": "Yamagata Digital Museum - Winter (Jpn)",
+    "publisher": "Imagineer",
+    "year": "1999"
+  },
+  "yoshimot": {
+    "description": "Yoshimoto Muchicco Daikessen (Jpn)",
+    "publisher": "Sony",
+    "year": "1999"
+  },
+  "youkaiha": {
+    "description": "Youkai Hana Asobi (Jpn)",
+    "publisher": "Unbalance",
+    "year": "2001"
+  },
+  "yugiohmo": {
+    "description": "Yu-Gi-Oh! Monster Capsule Breed & Battle (Jpn)",
+    "publisher": "Konami",
+    "year": "1998"
+  },
+  "yukinkob": {
+    "description": "Yukinko Burning (Jpn)",
+    "publisher": "Princess Soft",
+    "year": "2002"
+  },
+  "yumeiroi": {
+    "description": "Yume-Iroiro (Jpn)",
+    "publisher": "Feathered",
+    "year": "1998"
+  },
+  "yumenots": {
+    "description": "Yume no Tsubasa (Jpn)",
+    "publisher": "KID",
+    "year": "2000"
+  },
+  "yuugenga": {
+    "description": "Yuugen Kaisha Chikyuu Boueitai - Guard of Earth Organization (Jpn)",
+    "publisher": "Media Rings",
+    "year": "1999"
+  },
+  "yuukyuun": {
+    "description": "Yuukyuu no Eden - The Eternal Eden (Jpn)",
+    "publisher": "ASCII",
+    "year": "1999"
+  },
+  "yuushaou": {
+    "description": "Yuusha-Ou GaoGaiGar - Blockaded Numbers (Japan)",
+    "publisher": "Takara",
+    "year": "1999"
+  },
+  "yuuyamid": {
+    "description": "Yuuyami Doori Tankentai (Jpn)",
+    "publisher": "Spike",
+    "year": "1999"
+  },
+  "zapsnowb": {
+    "description": "Zap! Snowboarding Trix '98 (Jpn)",
+    "publisher": "<unknown>",
+    "year": "1997"
+  },
+  "zeiramzo": {
+    "description": "Zeiramzone (Jpn)",
+    "publisher": "Banpresto",
+    "year": "1996"
+  },
+  "zeitgeis": {
+    "description": "Zeitgeist (Jpn)",
+    "publisher": "Taito",
+    "year": "1995"
+  },
+  "zennipok": {
+    "description": "Zen-Nippon Pro Wrestling - Ouja no Kon (Jpn)",
+    "publisher": "Human",
+    "year": "1999"
+  },
+  "zennippo": {
+    "description": "Zen-Nippon Joshi Pro Wrestling - Joou Densetsu Yume no Taikousen (Jpn)",
+    "publisher": "TEN",
+    "year": "1998"
+  },
+  "zero4cha": {
+    "description": "Zero4 Champ Doozy-J (Jpn)",
+    "publisher": "Media Rings",
+    "year": "1997"
+  },
+  "zigzagba": {
+    "description": "Zig Zag Ball (Jpn)",
+    "publisher": "Upstar",
+    "year": "1998"
+  },
+  "zipangut": {
+    "description": "Zipangujima: Unmei wa Saikoro ga Kimeru! (Jpn)",
+    "publisher": "Human",
+    "year": "1999"
+  },
+  "zoids2": {
+    "description": "Zoids 2 - Helic Republic VS Guylos Empire  (Jpn)",
+    "publisher": "Tomy",
+    "year": "2002"
+  },
+  "zoidsbat": {
+    "description": "Zoids - Battle Card Game - Seihou Tairiku Senki (Jpn)",
+    "publisher": "Tomy",
+    "year": "2001"
+  },
+  "zoidstei": {
+    "description": "Zoids - Zenebus VS Heric (Jpn)",
+    "publisher": "Tomy",
+    "year": "2000"
+  },
+  "zokuhats": {
+    "description": "Zoku Hatsukoi Monogatari - Shuugaku Ryokou (Jpn)",
+    "publisher": "Tokuma Shoten",
+    "year": "1998"
+  },
+  "zorkithe": {
+    "description": "Zork I - The Great Underground Empire (Jpn)",
+    "publisher": "Shoeisha",
+    "year": "1996"
+  },
+  "zuttoiss": {
+    "description": "Zutto Issho With Me Everytime... (Jpn, Major Wave Series)",
+    "publisher": "Hamster",
+    "year": "2000"
+  },
+  "zxedlege": {
+    "description": "ZXE-D - Legend of Plasmalite (Jpn)",
+    "publisher": "Bandai",
+    "year": "1996"
+  }
+}

@@ -1,0 +1,1547 @@
+{
+  "adiantsu": {
+    "description": "Adian no Tsue",
+    "publisher": "Sunsoft",
+    "year": "1986"
+  },
+  "adiantsup": {
+    "description": "Adian no Tsue (Prototype)",
+    "publisher": "Sunsoft",
+    "year": "1986"
+  },
+  "aisenshi": {
+    "description": "Ai Senshi Nicol",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "akitsuka": {
+    "description": "Aki to Tsukasa no Fushigi no Kabe",
+    "publisher": "SuperPIG?",
+    "year": "19??"
+  },
+  "akumajo": {
+    "description": "Akumajou Dracula (v1.2)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "akumajoa": {
+    "description": "Akumajou Dracula (v1.1)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "akumajob": {
+    "description": "Akumajou Dracula (v1.0)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "aliens": {
+    "description": "Aliens - Alien 2 (Prototype)",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "almana": {
+    "description": "Almana no Kiseki",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "annsmb": {
+    "description": "All Night Nippon Super Mario Brothers (Promotion Card)",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "appltown": {
+    "description": "Apple Town Monogatari - Little Computer People",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "aspic": {
+    "description": "Aspic - Majaou no Noroi",
+    "publisher": "Bothtec",
+    "year": "1988"
+  },
+  "backgamm": {
+    "description": "Backgammon",
+    "publisher": "Nintendo",
+    "year": "1990"
+  },
+  "baseball": {
+    "description": "Baseball",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "biomirac": {
+    "description": "Bio Miracle Bokutte Upa",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "bishocon": {
+    "description": "Bishoujo Control",
+    "publisher": "Wild?",
+    "year": "19??"
+  },
+  "bishohc1": {
+    "description": "Bishoujo Hanafuda Club Vol.1 - Oichokabu Hen",
+    "publisher": "SuperPIG?",
+    "year": "1989"
+  },
+  "bishohc2": {
+    "description": "Bishoujo Hanafuda Club Vol.2 - Koikoi Bakappana Hen",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bishomjc": {
+    "description": "Bishoujo Mahjong Club",
+    "publisher": "Mimi?",
+    "year": "19??"
+  },
+  "bishorgm": {
+    "description": "Bishoujo Kachinuki Renju - Gomoku Narabe",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bishosd": {
+    "description": "Bishoujo Sexy Derby",
+    "publisher": "SuperPIG?",
+    "year": "1988"
+  },
+  "bishosfa": {
+    "description": "Bishoujo SF Alien Battle",
+    "publisher": "Hacker International",
+    "year": "19??"
+  },
+  "bishosp": {
+    "description": "Bishoujo Sexy Puzzle",
+    "publisher": "SuperPIG?",
+    "year": "1989"
+  },
+  "bishoss": {
+    "description": "Bishoujo Sexy Slot",
+    "publisher": "SuperPIG?",
+    "year": "1988"
+  },
+  "bodyconq": {
+    "description": "Body Conquest I - Abakareshi Musume Tachi",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bombermn": {
+    "description": "Bomberman",
+    "publisher": "Hudson",
+    "year": "1990"
+  },
+  "breeder": {
+    "description": "Breeder",
+    "publisher": "Soft Pro",
+    "year": "1986"
+  },
+  "bshashms": {
+    "description": "Bishoujo Shashinkan - Moving School",
+    "publisher": "Phoenix?",
+    "year": "19??"
+  },
+  "bshashsc": {
+    "description": "Bishoujo Shashinkan - Studio Cut",
+    "publisher": "Phoenix?",
+    "year": "19??"
+  },
+  "btime": {
+    "description": "Burger Time",
+    "publisher": "Data East",
+    "year": "1988"
+  },
+  "btime1": {
+    "description": "Burger Time (Alt)",
+    "publisher": "Data East",
+    "year": "1988"
+  },
+  "bublbobl": {
+    "description": "Bubble Bobble",
+    "publisher": "Taito",
+    "year": "1987"
+  },
+  "bublbobl1": {
+    "description": "Bubble Bobble (Alt)",
+    "publisher": "Taito",
+    "year": "1987"
+  },
+  "casipink": {
+    "description": "Casino de Pink",
+    "publisher": "Wild?",
+    "year": "19??"
+  },
+  "citycon": {
+    "description": "City Connection",
+    "publisher": "Hangsing",
+    "year": "1989?"
+  },
+  "cleopatr": {
+    "description": "Cleopatra no Mahou",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "cluclu": {
+    "description": "Clu Clu Land",
+    "publisher": "Nintendo",
+    "year": "1992"
+  },
+  "cocona": {
+    "description": "Cocona World",
+    "publisher": "Sofel",
+    "year": "1987"
+  },
+  "comics1": {
+    "description": "Comic Sakka Series Touma Senki #1 - Mashoujo Gakuen Evil",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "comics2": {
+    "description": "Comic Sakka Series Touma Senki #2 - Mermaid no Gyakushuu",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "comics3": {
+    "description": "Comic Sakka Series Touma Senki #3 - Ryuujin Sensei Kikiippatsu",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "comics4": {
+    "description": "Comic Sakka Series Touma Senki #4 - Tenkuu Ryuumaou Fukkatsu",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "comics5": {
+    "description": "Comic Sakka Series Touma Senki #5 - Youjuu Rudo no Chousen",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dandy": {
+    "description": "Dandy - Zeuon no Fukkatsu",
+    "publisher": "Pony Canyon",
+    "year": "1988"
+  },
+  "datebj": {
+    "description": "Date de Blackjack",
+    "publisher": "Hacker International",
+    "year": "19??"
+  },
+  "deadzone": {
+    "description": "Dead Zone",
+    "publisher": "Sunsoft",
+    "year": "1986"
+  },
+  "deepdng": {
+    "description": "Deep Dungeon - Madou Senki",
+    "publisher": "Square",
+    "year": "1986"
+  },
+  "deepdng2": {
+    "description": "Deep Dungeon II - Yuushi no Monshou (v1.1)",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "deepdng2a": {
+    "description": "Deep Dungeon II - Yuushi no Monshou (v1.0)",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "digdug": {
+    "description": "Dig Dug",
+    "publisher": "Namcot",
+    "year": "1990"
+  },
+  "digdug2": {
+    "description": "Dig Dug II",
+    "publisher": "Namcot",
+    "year": "1990"
+  },
+  "dirtpair": {
+    "description": "Dirty Pair - Project Eden",
+    "publisher": "Bandai",
+    "year": "1987"
+  },
+  "diskctrl": {
+    "description": "Disk Control Program",
+    "publisher": "Sunsoft",
+    "year": "19??"
+  },
+  "diskhac2": {
+    "description": "Disk Hacker II - Copy Plus 3",
+    "publisher": "Hacker International",
+    "year": "19??"
+  },
+  "diskhack": {
+    "description": "Disk Hacker - Version 1.3",
+    "publisher": "Hacker International",
+    "year": "19??"
+  },
+  "diskhack1": {
+    "description": "Disk Hacker - Version 1.2",
+    "publisher": "Hacker International",
+    "year": "19??"
+  },
+  "diskhack2": {
+    "description": "Disk Hacker - Version 1.0",
+    "publisher": "Hacker International",
+    "year": "19??"
+  },
+  "diskhacks": {
+    "description": "Disk Hacker (Sunsoft)",
+    "publisher": "Sunsoft",
+    "year": "19??"
+  },
+  "diskkeep": {
+    "description": "Disk Keeper",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dkong": {
+    "description": "Donkey Kong (Disk Writer)",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "dkongjr": {
+    "description": "Donkey Kong Jr. (Disk Writer)",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "dogfspir": {
+    "description": "Big Challenge! Dogfight Spirit",
+    "publisher": "Jaleco",
+    "year": "1988"
+  },
+  "dokidoki": {
+    "description": "Yume Koujou Doki Doki Panic",
+    "publisher": "Fuji TV / Nintendo",
+    "year": "1987"
+  },
+  "doremiko": {
+    "description": "Doremikko",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "dracula2": {
+    "description": "Dracula II - Noroi no Fuuin",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "drchaos": {
+    "description": "Dr. Chaos - Jigoku no Tobira",
+    "publisher": "Pony Canyon",
+    "year": "1987"
+  },
+  "druid": {
+    "description": "Druid - Kyoufu no Tobira",
+    "publisher": "Jaleco",
+    "year": "1988"
+  },
+  "eggerln2": {
+    "description": "Eggerland - Souzou e no Tabidachi",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1988"
+  },
+  "eggerlnd": {
+    "description": "EggerLand",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1987"
+  },
+  "electric": {
+    "description": "Electrician",
+    "publisher": "Kemco",
+    "year": "1986"
+  },
+  "emichan": {
+    "description": "Emi-chan no Moero Yakyuuken!",
+    "publisher": "SuperPIG?",
+    "year": "19??"
+  },
+  "esperdrm": {
+    "description": "Esper Dream (v1.1)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "esperdrma": {
+    "description": "Esper Dream (v1.0)",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "excitbb": {
+    "description": "Exciting Baseball",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "excitbik": {
+    "description": "Vs. Excitebike",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "excitbil": {
+    "description": "Exciting Billiard",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "excitbsk": {
+    "description": "Exciting Basket",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "excitsoc": {
+    "description": "Exciting Soccer - Konami Cup",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "f1race": {
+    "description": "Famicom Grand Prix - F1 Race",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "f1race1": {
+    "description": "Famicom Grand Prix - F1 Race (Alt)",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "fairypin": {
+    "description": "Fairy Pinball - Yousei Tachi no Pinball",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "fairytal": {
+    "description": "Fairytale",
+    "publisher": "Soft Pro",
+    "year": "1989"
+  },
+  "falsion": {
+    "description": "Falsion",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "famcompo": {
+    "description": "Family Composer",
+    "publisher": "Tokyo Shoseki",
+    "year": "1987"
+  },
+  "famigp2": {
+    "description": "Famicom Grand Prix II - 3D Hot Rally",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "famimag1": {
+    "description": "Famimaga Disk Vol. 1 - Hong Kong",
+    "publisher": "Tokuma Shoten",
+    "year": "1990"
+  },
+  "famimag2": {
+    "description": "Famimaga Disk Vol. 2 - Panic Space",
+    "publisher": "Tokuma Shoten",
+    "year": "1990"
+  },
+  "famimag3": {
+    "description": "Famimaga Disk Vol. 3 - All 1",
+    "publisher": "Tokuma Shoten",
+    "year": "1991"
+  },
+  "famimag3a": {
+    "description": "Famimaga Disk Vol. 3 - All 1 (Alt)",
+    "publisher": "Tokuma Shoten",
+    "year": "1991"
+  },
+  "famimag4": {
+    "description": "Famimaga Disk Vol. 4 - Clox",
+    "publisher": "Tokuma Shoten",
+    "year": "1991"
+  },
+  "famimag5": {
+    "description": "Famimaga Disk Vol. 5 - Puyo Puyo",
+    "publisher": "Tokuma Shoten",
+    "year": "1991"
+  },
+  "famimag6": {
+    "description": "Famimaga Disk Vol. 6 - Janken Disk Shiro",
+    "publisher": "Tokuma Shoten",
+    "year": "1992"
+  },
+  "fcgolf": {
+    "description": "Family Computer Golf Japan Course",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "fcgolfsp": {
+    "description": "Family Computer Golf Special Course (Prize Card)",
+    "publisher": "Nintendo",
+    "year": "19??"
+  },
+  "fcgolfu": {
+    "description": "Family Computer Golf U.S. Course",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "fcgolfuj": {
+    "description": "Family Computer Golf Tournament - Japan Course (Prize Card)",
+    "publisher": "Nintendo",
+    "year": "19??"
+  },
+  "fctantc2": {
+    "description": "Famicom Tantei Club Part II - Ushiro ni Tatsu Shoujo",
+    "publisher": "Nintendo",
+    "year": "1989"
+  },
+  "fctantc2a": {
+    "description": "Famicom Tantei Club Part II - Ushiro ni Tatsu Shoujo (Alt)",
+    "publisher": "Nintendo",
+    "year": "1989"
+  },
+  "fctantcl": {
+    "description": "Famicom Tantei Club - Kieta Koukeisha",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "fctantcla": {
+    "description": "Famicom Tantei Club - Kieta Koukeisha (Alt)",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "finalcom": {
+    "description": "Final Commando - Akai Yousai",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "firebam": {
+    "description": "Fire Bam",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1988"
+  },
+  "firerock": {
+    "description": "Fire Rock",
+    "publisher": "Use",
+    "year": "1988"
+  },
+  "fmcdiskc": {
+    "description": "FMC Disk Card Checker Ver 1.3 (v1.2) (Developer Card)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "fruitmj1": {
+    "description": "Fruits Mahjong 1 Disk #1 - Dai H Taikai",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "fruitmj2": {
+    "description": "Fruits Mahjong 2 Disk #2 - Tokimeki Gals",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "fruitmj3": {
+    "description": "Fruits Mahjong 2 Disk #3 - Yonin to Dai H Taikai",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "fruitmj4": {
+    "description": "Fruits Mahjong 3 Disk #4 - Yonin no Tenshi Tachi",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "fruitmj5": {
+    "description": "Fruits Mahjong 3 Disk #5 - Tottemo H na Gogo",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "fruitmj6": {
+    "description": "Fruits Mahjong 4 Disk #6 - Bishoujo Connection",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "fruitmj7": {
+    "description": "Fruits Mahjong 4 Disk #7 - Daitan H na Hirusagari",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "fuunsha": {
+    "description": "Fuuun Shaolin Kyo",
+    "publisher": "Jaleco",
+    "year": "1987"
+  },
+  "fuunsham": {
+    "description": "Fuuun Shaolin Kyo - Ankoku no Maou",
+    "publisher": "Jaleco",
+    "year": "1988"
+  },
+  "galaga": {
+    "description": "Galaga",
+    "publisher": "Namco",
+    "year": "1990"
+  },
+  "galaxian": {
+    "description": "Galaxian",
+    "publisher": "Namcot",
+    "year": "1990"
+  },
+  "galaxyod": {
+    "description": "Ginga Denshou - Galaxy Odyssey",
+    "publisher": "Imagineer",
+    "year": "1986"
+  },
+  "galdung": {
+    "description": "Yakyuuken Part II - Gal's Dungeon",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "galdung2": {
+    "description": "Sexy Yakyuuken Adventure II - Gal's Dungeon Part II",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "galforce": {
+    "description": "Gall Force - Eternal Story",
+    "publisher": "HAL Kenkyuujo",
+    "year": "1986"
+  },
+  "gberet": {
+    "description": "Green Beret",
+    "publisher": "Konami",
+    "year": "1987"
+  },
+  "gogobowl": {
+    "description": "Big Challenge! Go! Go! Bowling",
+    "publisher": "Jaleco",
+    "year": "1989"
+  },
+  "gokuraku": {
+    "description": "Gokuraku Yuugi - Game Tengoku",
+    "publisher": "Sofel",
+    "year": "1987"
+  },
+  "golf": {
+    "description": "Golf (v1.1)",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "golfa": {
+    "description": "Golf (v1.0)",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "golfbc": {
+    "description": "The Golf - Bishoujo Classic",
+    "publisher": "Hacker International",
+    "year": "19??"
+  },
+  "goonies": {
+    "description": "The Goonies",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "gooniesa": {
+    "description": "The Goonies (Alt)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "gunfight": {
+    "description": "Big Challenge! Gun Fighter",
+    "publisher": "Jaleco",
+    "year": "1989"
+  },
+  "gunsmoke": {
+    "description": "Gun.Smoke",
+    "publisher": "Capcom",
+    "year": "1988"
+  },
+  "gunsmoke1": {
+    "description": "Gun.Smoke (Alt)",
+    "publisher": "Capcom",
+    "year": "1988"
+  },
+  "gyruss": {
+    "description": "Gyruss",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "halleywa": {
+    "description": "Halley Wars",
+    "publisher": "Taito",
+    "year": "1989"
+  },
+  "haokun": {
+    "description": "Hao-kun no Fushigi na Tabi",
+    "publisher": "Square",
+    "year": "1986"
+  },
+  "hayamabj": {
+    "description": "Hayama Reiko no Date de Blackjack",
+    "publisher": "Hacker International",
+    "year": "19??"
+  },
+  "herobabl": {
+    "description": "Matou no Houkai - The Hero of Babel",
+    "publisher": "Pony Canyon",
+    "year": "1988"
+  },
+  "herobabl1": {
+    "description": "Matou no Houkai - The Hero of Babel (Alt)",
+    "publisher": "Pony Canyon",
+    "year": "1988"
+  },
+  "hikaris": {
+    "description": "Hikari Shinwa - Palthena no Kagami (v1.1)",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "hikaris1": {
+    "description": "Hikari Shinwa - Palthena no Kagami (v1.1, Alt?)",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "hikaris2": {
+    "description": "Hikari Shinwa - Palthena no Kagami",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "holdup": {
+    "description": "Kobayashi Hitomi no Hold Up",
+    "publisher": "Hacker International",
+    "year": "19??"
+  },
+  "iceclimb": {
+    "description": "Ice Climber",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "iceclimb1": {
+    "description": "Ice Climber (Alt)",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "icehocky": {
+    "description": "Ice Hockey",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "idolhot": {
+    "description": "Idol Hotline - Nakayama Miho no Tokimeki High School",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "igokyuur": {
+    "description": "Igo - Kyuu Roban Taikyoku",
+    "publisher": "Bullet Proof Software",
+    "year": "1987"
+  },
+  "ishido": {
+    "description": "Ishido",
+    "publisher": "Hiro",
+    "year": "1990"
+  },
+  "jingoro": {
+    "description": "Jingorou",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jtmk": {
+    "description": "Jaaman Tanteidan Marine Kumi - Maruhi Jigoma Sousa File",
+    "publisher": "Bandai",
+    "year": "1988"
+  },
+  "judosens": {
+    "description": "Big Challenge! Juudou Senshuken",
+    "publisher": "Jaleco",
+    "year": "1988"
+  },
+  "kalin": {
+    "description": "Kalin no Tsurugi",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "kamenrid": {
+    "description": "Kamen Rider Black - Taiketsu Shadow Moon",
+    "publisher": "Bandai",
+    "year": "1988"
+  },
+  "karatech": {
+    "description": "Karate Champ",
+    "publisher": "Data East",
+    "year": "1988"
+  },
+  "kattobiw": {
+    "description": "Kattobi! Warabe Ko",
+    "publisher": "Pack-In Video",
+    "year": "1989"
+  },
+  "kickchal": {
+    "description": "Kick Challenger Air Foot - Yasai no Kuni no Ashi Senshi",
+    "publisher": "VAP",
+    "year": "1988"
+  },
+  "kickrun": {
+    "description": "Kick and Run",
+    "publisher": "Taito",
+    "year": "1988"
+  },
+  "kietapr": {
+    "description": "Kieta Princess",
+    "publisher": "Imagineer",
+    "year": "1986"
+  },
+  "kikikai": {
+    "description": "Kiki KaiKai - Dotou Hen",
+    "publisher": "Taito",
+    "year": "1987"
+  },
+  "kinetic2": {
+    "description": "Kinetic Connection II",
+    "publisher": "Irem",
+    "year": "1987"
+  },
+  "kineticc": {
+    "description": "The Monitor Puzzle Kineko - Kinetic Connection",
+    "publisher": "Irem",
+    "year": "1986"
+  },
+  "kinnikum": {
+    "description": "Kinnikuman - Kinniku Ookurai Soudatsusen",
+    "publisher": "Bandai",
+    "year": "1987"
+  },
+  "kmario": {
+    "description": "Kaettekita Mario Bros.",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "kmario1": {
+    "description": "Kaettekita Mario Bros. (Alt)",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "kmario2": {
+    "description": "Kaettekita Mario Bros. (Alt 2)",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "kmario3": {
+    "description": "Kaettekita Mario Bros. (Alt 3)",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "kmario4": {
+    "description": "Kaettekita Mario Bros. (Alt 4)",
+    "publisher": "Nintendo",
+    "year": "1988"
+  },
+  "knightlr": {
+    "description": "Knight Lore - Majou no Ookami Otoko",
+    "publisher": "Jaleco",
+    "year": "1986"
+  },
+  "knightmo": {
+    "description": "Knight Move",
+    "publisher": "Nintendo",
+    "year": "1990"
+  },
+  "kntennis": {
+    "description": "Konamic Tennis",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "konamice": {
+    "description": "Konamic Ice Hockey",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "koneko": {
+    "description": "Koneko Monogatari - The Adventures of Chatran",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "konekod": {
+    "description": "Koneko Monogatari - The Adventures of Chatran (Sample)",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "kosodate": {
+    "description": "Kosodate Gokko",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kudokik2": {
+    "description": "Kudokikata Oshiemasu II - Kind Gal's",
+    "publisher": "Wild",
+    "year": "1989"
+  },
+  "lipstic1": {
+    "description": "Lipstick #.1 - Lolita Hen",
+    "publisher": "Mimi?",
+    "year": "1988"
+  },
+  "lipstic2": {
+    "description": "Lipstick #.2 - Joshi Gakusei Hen",
+    "publisher": "Mimi?",
+    "year": "1988"
+  },
+  "lipstic3": {
+    "description": "Lipstick #.3 - OL Hen",
+    "publisher": "Mimi?",
+    "year": "1988"
+  },
+  "lipstic4": {
+    "description": "Lipstick #.4 - Hakui no Tenshi Hen",
+    "publisher": "Mimi?",
+    "year": "1988"
+  },
+  "lipstic5": {
+    "description": "Lipstick #.5 - Stewardess Hen",
+    "publisher": "Mimi?",
+    "year": "1988"
+  },
+  "lutter": {
+    "description": "Lutter",
+    "publisher": "Athena",
+    "year": "1989"
+  },
+  "magmapro": {
+    "description": "Magma Project - Hacker",
+    "publisher": "Tokuma Shoten",
+    "year": "1989"
+  },
+  "mahjong": {
+    "description": "Mahjong",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "mapedit": {
+    "description": "Sunsoft Map Editor",
+    "publisher": "Sunsoft",
+    "year": "19??"
+  },
+  "marchen": {
+    "description": "Märchen Veil I",
+    "publisher": "Sunsoft",
+    "year": "1987"
+  },
+  "matenroc": {
+    "description": "Omoikkiri Tanteidan Haado Gumi - Matenrou no Chousenjou",
+    "publisher": "Bandai",
+    "year": "1988"
+  },
+  "mbobble": {
+    "description": "Mario Bobble",
+    "publisher": "Sun?",
+    "year": "1989?"
+  },
+  "meikyujd": {
+    "description": "Meikyuu Jiin Dababa",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "metroid": {
+    "description": "Metroid (v1.2)",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "metroida": {
+    "description": "Metroid (v1.1)",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "mettomag": {
+    "description": "Jikai Shounen Metto Mag",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "mettomag1": {
+    "description": "Jikai Shounen Metto Mag (Alt)",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "michael": {
+    "description": "Michael English Daibouken (Sample)",
+    "publisher": "Scorpion Soft",
+    "year": "1987"
+  },
+  "mjgoraku": {
+    "description": "Mahjong Goraku - Bishoujo Meijinsen",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mjkazoku": {
+    "description": "Mahjong Kazoku",
+    "publisher": "Irem",
+    "year": "1987"
+  },
+  "moetwinb": {
+    "description": "Moero TwinBee - Cinnamon Hakase wo Sukue!",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "moneywar": {
+    "description": "Game no Tatsujin - Money Wars",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "montyrun": {
+    "description": "Monty on the Run - Monty no Doki Doki Dai Dassou",
+    "publisher": "Jaleco",
+    "year": "1987"
+  },
+  "moonball": {
+    "description": "Moon Ball Magic",
+    "publisher": "Square",
+    "year": "1988"
+  },
+  "mrgold": {
+    "description": "Tooyama no Kinsan Space Chou - Mr. Gold",
+    "publisher": "Toei Animation",
+    "year": "1988"
+  },
+  "namidass": {
+    "description": "Namida no Sokoban Special",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "nanjing": {
+    "description": "Nanjing no Adventure",
+    "publisher": "Sunsoft",
+    "year": "1988"
+  },
+  "nazokabe": {
+    "description": "Nazo no Kabe - Block Kuzushi",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "nazomura": {
+    "description": "Nazo no Murasamejou",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "nazoraa": {
+    "description": "Nazoraa Land Soukan Gou (Nazo Magazine Disk)",
+    "publisher": "Sunsoft",
+    "year": "1987"
+  },
+  "nazoraa2": {
+    "description": "Nazoraa Land Dai 2 Gou (Nazo Magazine Disk)",
+    "publisher": "Sunsoft",
+    "year": "1987"
+  },
+  "nazoraa3": {
+    "description": "Nazoraa Land Dai 3 Gou (Nazo Magazine Disk)",
+    "publisher": "Sunsoft",
+    "year": "1988"
+  },
+  "nazoraaq": {
+    "description": "Nazoraa Land Special!! - Quiz Ou wo Sagase! (Nazo Magazine Disk)",
+    "publisher": "Sunsoft",
+    "year": "1987"
+  },
+  "neunzehn": {
+    "description": "Neunzehn",
+    "publisher": "Soft Pro",
+    "year": "1988"
+  },
+  "olympq": {
+    "description": "Zatsugaku Olympic Quiz - Watanabe Wataru Hen",
+    "publisher": "Phoenix?",
+    "year": "19??"
+  },
+  "olympq2": {
+    "description": "Zatsugaku Olympic Quiz Part II",
+    "publisher": "Phoenix?",
+    "year": "19??"
+  },
+  "orudora": {
+    "description": "Chitei Tairiku Orudoora",
+    "publisher": "Sunsoft",
+    "year": "1987"
+  },
+  "othello": {
+    "description": "Family Computer Othello",
+    "publisher": "Kawada",
+    "year": "1986"
+  },
+  "otocky": {
+    "description": "Otocky",
+    "publisher": "ASCII",
+    "year": "19??"
+  },
+  "pachicom": {
+    "description": "Pachi Com",
+    "publisher": "Toshiba EMI",
+    "year": "1988"
+  },
+  "pachingp": {
+    "description": "Pachinko Grand Prix",
+    "publisher": "Data East",
+    "year": "1988"
+  },
+  "pacman": {
+    "description": "Pac-Man",
+    "publisher": "Namcot",
+    "year": "19??"
+  },
+  "patlabor": {
+    "description": "Patlabor Mobile Police - Dai 2 Shoutai Shutsudou Seyo!",
+    "publisher": "Bandai",
+    "year": "1989"
+  },
+  "patton": {
+    "description": "Baku Toushi Patton-Kun",
+    "publisher": "Soft Pro",
+    "year": "1988"
+  },
+  "pinball": {
+    "description": "Pinball",
+    "publisher": "Nintendo",
+    "year": "1989"
+  },
+  "profmjg": {
+    "description": "Professional Mahjong Gokuu",
+    "publisher": "ASCII",
+    "year": "1986"
+  },
+  "progolfr": {
+    "description": "Pro Golfer Saru - Kage no Tournament",
+    "publisher": "Bandai",
+    "year": "1987"
+  },
+  "prowres": {
+    "description": "ProWres - Famicom Wrestling Association",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "psychocl": {
+    "description": "Seiken Psychocalibur - Majuu no Mori Densetsu",
+    "publisher": "Imagineer",
+    "year": "1987"
+  },
+  "pulsar": {
+    "description": "Pulsar no Hikari - Space Wars Simulation",
+    "publisher": "Soft Pro",
+    "year": "1987"
+  },
+  "puttputt": {
+    "description": "Putt Putt Golf",
+    "publisher": "Pack-In Video",
+    "year": "1989"
+  },
+  "puzlboys": {
+    "description": "Puzzle Boys",
+    "publisher": "Atlus",
+    "year": "1990"
+  },
+  "quickhun": {
+    "description": "Quick Hunter",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "quickhunpd1": {
+    "description": "Quick Hunter - Parameter Disk Vol.1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "radicalb": {
+    "description": "Radical Bomber!! Jirai Kun",
+    "publisher": "Jaleco",
+    "year": "1988"
+  },
+  "raijin": {
+    "description": "Akara Senki Raijin",
+    "publisher": "Square",
+    "year": "1988"
+  },
+  "reflectw": {
+    "description": "Reflect World",
+    "publisher": "East Cube",
+    "year": "1987"
+  },
+  "relics": {
+    "description": "Relics - Ankoku Yousai",
+    "publisher": "Bothtec",
+    "year": "1987"
+  },
+  "replicrt": {
+    "description": "Replicart",
+    "publisher": "Taito",
+    "year": "1988"
+  },
+  "risayous": {
+    "description": "Risa no Yousei Densetsu",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "rogerrab": {
+    "description": "Roger Rabbit",
+    "publisher": "Kemco",
+    "year": "1989"
+  },
+  "rolpanic": {
+    "description": "Hikaru Genji - Roller Panic",
+    "publisher": "Pony Canyon",
+    "year": "1989"
+  },
+  "sailorf1": {
+    "description": "Sailor-fuku Bishoujo Zukan Vol. 1",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "sailorf2": {
+    "description": "Sailor-fuku Bishoujo Zukan Vol. 2",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "sailorf3": {
+    "description": "Sailor-fuku Bishoujo Zukan Vol. 3",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "sailorf4": {
+    "description": "Sailor-fuku Bishoujo Zukan Vol. 4",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "sailorf5": {
+    "description": "Sailor-fuku Bishoujo Zukan Vol. 5",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "sailorf6": {
+    "description": "Sailor-fuku Bishoujo Zukan Vol. 6",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "samurai": {
+    "description": "Samurai Sword",
+    "publisher": "Capcom",
+    "year": "1988"
+  },
+  "santa": {
+    "description": "Santa Claus no Takarabako",
+    "publisher": "Data East",
+    "year": "1987"
+  },
+  "sdgndgs": {
+    "description": "SD Gundam World - Gachapon Senshi - Scramble Wars",
+    "publisher": "Bandai",
+    "year": "1988"
+  },
+  "sdgndgs1": {
+    "description": "SD Gundam World - Gachapon Senshi - Scramble Wars (Alt)",
+    "publisher": "Bandai",
+    "year": "1988"
+  },
+  "sdgndgs2": {
+    "description": "SD Gundam World - Gachapon Senshi - Scramble Wars (Alt 2)",
+    "publisher": "Bandai",
+    "year": "1988"
+  },
+  "sdgndgsmap": {
+    "description": "SD Gundam World - Gachapon Senshi - Scramble Wars - Map Collection",
+    "publisher": "Bandai",
+    "year": "1989"
+  },
+  "sdgndgsmap1": {
+    "description": "SD Gundam World - Gachapon Senshi - Scramble Wars - Map Collection (Alt)",
+    "publisher": "Bandai",
+    "year": "1989"
+  },
+  "sectionz": {
+    "description": "Section Z",
+    "publisher": "Capcom",
+    "year": "1987"
+  },
+  "sexyinv": {
+    "description": "Sexy Invaders",
+    "publisher": "SuperPIG?",
+    "year": "1990"
+  },
+  "shangh2": {
+    "description": "Shanghai 2 (Prototype, Dragon Layout)",
+    "publisher": "Sunsoft",
+    "year": "19??"
+  },
+  "shangh2a": {
+    "description": "Shanghai 2 (Prototype, Scorpion Layout)",
+    "publisher": "Sunsoft",
+    "year": "19??"
+  },
+  "shanghai": {
+    "description": "Shanghai (Prototype)",
+    "publisher": "Sunsoft",
+    "year": "19??"
+  },
+  "shockten": {
+    "description": "Kobayashi Hitomi Shocking Tennis",
+    "publisher": "Hacker International",
+    "year": "19??"
+  },
+  "shogish2": {
+    "description": "Tanigawa Kouji no Shougi Shinan II - Meijin e no Michi",
+    "publisher": "Pony Canyon",
+    "year": "1987"
+  },
+  "shoniga": {
+    "description": "Famicom Mukashi Banashi - Shin Onigashima",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "shoniga1": {
+    "description": "Famicom Mukashi Banashi - Shin Onigashima (Alt)",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "shoniga2": {
+    "description": "Famicom Mukashi Banashi - Shin Onigashima (Alt 2)",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "silviana": {
+    "description": "Silviana - Ai Ippai no Boukensya",
+    "publisher": "Pack-In Video",
+    "year": "1988"
+  },
+  "slodern2": {
+    "description": "Super Lode Runner II (Disk Writer)",
+    "publisher": "Irem",
+    "year": "1987"
+  },
+  "sloderun": {
+    "description": "Super Lode Runner",
+    "publisher": "Irem",
+    "year": "1987"
+  },
+  "smashpin": {
+    "description": "Smash Ping Pong",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "smb": {
+    "description": "Super Mario Bros.",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "smb2": {
+    "description": "Super Mario Bros. 2",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "soccer": {
+    "description": "Soccer",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "solomon": {
+    "description": "Solomon no Kagi",
+    "publisher": "Tecmo",
+    "year": "1991"
+  },
+  "souseiki": {
+    "description": "Souseiki Fammy - ROM-QD for 256K+64K",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "suishoun": {
+    "description": "Suishou no Ryuu",
+    "publisher": "Square",
+    "year": "1986"
+  },
+  "superboy": {
+    "description": "Super Boy Allan",
+    "publisher": "Sunsoft",
+    "year": "1987"
+  },
+  "tamafrnd": {
+    "description": "Tama & Friends - 3 Choume Dai Bouken",
+    "publisher": "Bandai",
+    "year": "1989"
+  },
+  "tamafrnd1": {
+    "description": "Tama & Friends - 3 Choume Dai Bouken (Alt)",
+    "publisher": "Bandai",
+    "year": "1989"
+  },
+  "tarot": {
+    "description": "Tarot Uranai",
+    "publisher": "Scorpion Soft",
+    "year": "1988"
+  },
+  "teacher": {
+    "description": "I Am A Teacher - Teami no Kiso",
+    "publisher": "Royal Kougyou",
+    "year": "1986"
+  },
+  "teachsmb": {
+    "description": "I Am A Teacher - Super Mario no Sweater",
+    "publisher": "Royal Kougyou",
+    "year": "1986"
+  },
+  "tennis": {
+    "description": "Tennis",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "tenshita": {
+    "description": "Tenshi-tachi no Houkago",
+    "publisher": "Mimi?",
+    "year": "1989"
+  },
+  "tiledit": {
+    "description": "Sunsoft Tile Editor (Newer)",
+    "publisher": "Sunsoft",
+    "year": "19??"
+  },
+  "tiledito": {
+    "description": "Sunsoft Tile Editor (Older)",
+    "publisher": "Sunsoft",
+    "year": "19??"
+  },
+  "timetwst": {
+    "description": "Time Twist - Rekishi no Katasumi de",
+    "publisher": "Nintendo",
+    "year": "1991"
+  },
+  "titanic": {
+    "description": "Titanic Mystery - Ao no Senritsu",
+    "publisher": "Gakken",
+    "year": "1987"
+  },
+  "tjskiken": {
+    "description": "Tantei Jinguuji Saburou - Kikenna Futari",
+    "publisher": "Data East",
+    "year": "1988"
+  },
+  "tjsshinj": {
+    "description": "Tantei Jinguuji Saburou - Shinjuku Chuuou Kouen Satsujin Jiken",
+    "publisher": "Data East",
+    "year": "1987"
+  },
+  "tobidais": {
+    "description": "Tobidase Daisakusen",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "tobidais1": {
+    "description": "Tobidase Daisakusen (Alt)",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "tobidais2": {
+    "description": "Tobidase Daisakusen (Hacked?)",
+    "publisher": "Square",
+    "year": "1987"
+  },
+  "tonkachi": {
+    "description": "Tonkachi Editor",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "topzip": {
+    "description": "Topple Zip",
+    "publisher": "Bothtec",
+    "year": "1987"
+  },
+  "transfr2": {
+    "description": "Transformers II - The Headmasters",
+    "publisher": "Takara",
+    "year": "1987"
+  },
+  "twinbee": {
+    "description": "TwinBee (Disk Writer)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "ultraclb": {
+    "description": "Ultraman Club - Chikyuu Dakkan Sakusen (v1.1)",
+    "publisher": "Bandai",
+    "year": "1988"
+  },
+  "ultraclba": {
+    "description": "Ultraman Club - Chikyuu Dakkan Sakusen (v1.0)",
+    "publisher": "Bandai",
+    "year": "1988"
+  },
+  "ultraman": {
+    "description": "Ultraman - Kaijuu Teikoku no Gyakushuu",
+    "publisher": "Bandai",
+    "year": "1987"
+  },
+  "ultraman1": {
+    "description": "Ultraman - Kaijuu Teikoku no Gyakushuu (Alt)",
+    "publisher": "Bandai",
+    "year": "1987"
+  },
+  "ultramn2": {
+    "description": "Ultraman 2 - Shutsugeki Katoku Tai!!",
+    "publisher": "Bandai",
+    "year": "1987"
+  },
+  "volley": {
+    "description": "Volleyball",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "wakuaton": {
+    "description": "Wakusei Aton Gaiden (National Tax Agency Demo)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "wardner": {
+    "description": "Wardner no Mori",
+    "publisher": "Taito",
+    "year": "1988"
+  },
+  "wingames": {
+    "description": "Winter Games",
+    "publisher": "Pony Canyon",
+    "year": "1987"
+  },
+  "wrecking": {
+    "description": "Wrecking Crew",
+    "publisher": "Nintendo",
+    "year": "1989"
+  },
+  "xevious": {
+    "description": "Xevious",
+    "publisher": "Namcot",
+    "year": "1990"
+  },
+  "youkayas": {
+    "description": "Youkai Yashiki",
+    "publisher": "Irem",
+    "year": "1987"
+  },
+  "yuumaze": {
+    "description": "Yuu Maze",
+    "publisher": "Taito",
+    "year": "1988"
+  },
+  "yuyuki": {
+    "description": "Famicom Mukashi Banashi - Yuu Yuu Ki - kou Hen",
+    "publisher": "Nintendo",
+    "year": "1989"
+  },
+  "zanac": {
+    "description": "Zanac",
+    "publisher": "Pony Canyon",
+    "year": "1986"
+  },
+  "zelda": {
+    "description": "Zelda no Densetsu - The Hyrule Fantasy (v1.1)",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "zelda2": {
+    "description": "Link no Bouken - The Legend of Zelda 2 (v1.1)",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "zelda2a": {
+    "description": "Link no Bouken - The Legend of Zelda 2 (v1.0)",
+    "publisher": "Nintendo",
+    "year": "1987"
+  },
+  "zeldaa": {
+    "description": "Zelda no Densetsu - The Hyrule Fantasy (v1.0)",
+    "publisher": "Nintendo",
+    "year": "1986"
+  },
+  "zeldap": {
+    "description": "Zelda no Densetsu - The Hyrule Fantasy (Prototype)",
+    "publisher": "Nintendo",
+    "year": "1986"
+  }
+}

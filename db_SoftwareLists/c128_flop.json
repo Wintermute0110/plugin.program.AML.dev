@@ -1,0 +1,237 @@
+{
+  "10yrhvsc": {
+    "description": "High Voltage SID Collection 10 Years 1996-2006",
+    "publisher": "HVSC Crew",
+    "year": "2006"
+  },
+  "1570demo": {
+    "description": "Commodore 1570/1571 Test Demo",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1570demoa": {
+    "description": "Commodore 1570 Test/Demo Diskette with C128 DOS Shell",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1571demo": {
+    "description": "Commodore Model 1571 Test/Demo-Diskette",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1581demo": {
+    "description": "Commodore 1581 3.5\" Disk Drive Demo/Utilities",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1700demo": {
+    "description": "Commodore 1700/1750 RAM Expansion Test/Demo Disk (v1.0)",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "amfv": {
+    "description": "A Mind Forever Voyaging (R77)",
+    "publisher": "Infocom",
+    "year": "1985"
+  },
+  "basic128": {
+    "description": "BASIC-128 v1.03",
+    "publisher": "Abacus",
+    "year": "1985"
+  },
+  "bbr128": {
+    "description": "Big Blue Reader 128",
+    "publisher": "SOGWAP",
+    "year": "1991"
+  },
+  "buddy128": {
+    "description": "Buddy System 128 v10",
+    "publisher": "Chris Miller",
+    "year": "1992"
+  },
+  "bureaucr": {
+    "description": "Bureaucracy: A Paranoid Fantasy (R116)",
+    "publisher": "Infocom",
+    "year": "1987"
+  },
+  "bureaucra": {
+    "description": "Bureaucracy: A Paranoid Fantasy (R86)",
+    "publisher": "Infocom",
+    "year": "1987"
+  },
+  "byondzrk": {
+    "description": "Beyond Zork: The Coconut of Quendor (R47)",
+    "publisher": "Infocom",
+    "year": "1987"
+  },
+  "c128diag": {
+    "description": "Commodore 128 Diagnostic Menu",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "c128tutr": {
+    "description": "Commodore 128 Tutorial",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "cadpak": {
+    "description": "CADPAK-128",
+    "publisher": "Abacus",
+    "year": "1986"
+  },
+  "commterm": {
+    "description": "Comm Term 64/128",
+    "publisher": "Anchor Automation",
+    "year": "1986"
+  },
+  "cpm": {
+    "description": "CP/M Version 3.0",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "cpm1581": {
+    "description": "CP/M Version 3.0 (1581)",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "cpm86de": {
+    "description": "CP/M Version 3.0 (1 May 1986, Ger)",
+    "publisher": "Commodore",
+    "year": "1986"
+  },
+  "cpm87": {
+    "description": "CP/M Version 3.0 (28 May 1987)",
+    "publisher": "Commodore",
+    "year": "1987"
+  },
+  "cpm87a": {
+    "description": "CP/M Version 3.0 (28 May 1987, Alt)",
+    "publisher": "Commodore",
+    "year": "1987"
+  },
+  "cpma": {
+    "description": "CP/M Version 3.0 (Alt)",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "cpmb": {
+    "description": "CP/M Version 3.0 (Alt 2)",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "cpmc": {
+    "description": "CP/M Version 3.0 (Alt 3)",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "cpmfast3": {
+    "description": "CP/M 3 - BDOS 3.0 / FastBIOS 3.0",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmplus3": {
+    "description": "CP/M 3 Version 3.0",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "datamgr": {
+    "description": "Data Manager 128",
+    "publisher": "Timeworks",
+    "year": "1984"
+  },
+  "enhsidpl": {
+    "description": "Enhanced SidPlayer (128 Version)",
+    "publisher": "Compute!",
+    "year": "198?"
+  },
+  "fasthack": {
+    "description": "Fast Hack'em 128 v6.00",
+    "publisher": "Basement Boys",
+    "year": "1988"
+  },
+  "geos20": {
+    "description": "GEOS 128 v2.0",
+    "publisher": "Berkeley",
+    "year": "1988"
+  },
+  "greatwar": {
+    "description": "The Great War",
+    "publisher": "Free Spirit Software",
+    "year": "1987"
+  },
+  "jane": {
+    "description": "Jane",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "lastv8": {
+    "description": "The Last V-8",
+    "publisher": "Mastertronic",
+    "year": "1985"
+  },
+  "lunix128": {
+    "description": "LUnix Next Generation (v0.21)",
+    "publisher": "LNG-Project",
+    "year": "2004"
+  },
+  "lunix128reu": {
+    "description": "LUnix Next Generation (v0.21, REU)",
+    "publisher": "LNG-Project",
+    "year": "2004"
+  },
+  "mach128": {
+    "description": "MACH 128 Utility Disk",
+    "publisher": "Access",
+    "year": "1985"
+  },
+  "merlin": {
+    "description": "Merlin 128 Macro Assembler v1.10",
+    "publisher": "Roger Wagner Publishing",
+    "year": "1987"
+  },
+  "pbw128": {
+    "description": "Paperback Writer 128",
+    "publisher": "Digital Solutions",
+    "year": "1985"
+  },
+  "pbw128a": {
+    "description": "Paperback Writer 128 (Alt)",
+    "publisher": "Digital Solutions",
+    "year": "1985"
+  },
+  "petspeed": {
+    "description": "Petspeed 128 v2.2",
+    "publisher": "Systems Software",
+    "year": "1986"
+  },
+  "rockyhor": {
+    "description": "The Rocky Horror Show",
+    "publisher": "CRL",
+    "year": "1987"
+  },
+  "spascal": {
+    "description": "Super Pascal 128 v6.1",
+    "publisher": "Data Becker",
+    "year": "19??"
+  },
+  "superc": {
+    "description": "Super C 128 v3.02",
+    "publisher": "Data Becker",
+    "year": "1985"
+  },
+  "thaibxng": {
+    "description": "Thai Boxing",
+    "publisher": "Anco",
+    "year": "1986"
+  },
+  "tpw": {
+    "description": "Term Paper Writer",
+    "publisher": "Activision",
+    "year": "1986"
+  },
+  "ypfp128": {
+    "description": "Sylvia Porter's Personal Finance Series - Your Personal Financial Planner 128",
+    "publisher": "Timeworks",
+    "year": "1984"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "dos_dev": {
+    "description": "MSX-DOS + Developer Tools",
+    "publisher": "Microsoft - Patisonic",
+    "year": "1993"
+  },
+  "magplay": {
+    "description": "Magic Sound Tracker Player",
+    "publisher": "<unknown>",
+    "year": "1993"
+  },
+  "msxgames": {
+    "description": "MSX Games",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

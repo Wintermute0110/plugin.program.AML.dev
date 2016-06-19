@@ -1,0 +1,27 @@
+{
+  "basicb": {
+    "description": "Basic (Rev. B)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basicmod": {
+    "description": "Exidy Standard Modified Basic v1.01",
+    "publisher": "Software Source",
+    "year": "1980"
+  },
+  "basicpac": {
+    "description": "Exidy Standard Basic v1.0",
+    "publisher": "Exidy",
+    "year": "1978"
+  },
+  "devpac": {
+    "description": "Exidy Z80 Development Pac",
+    "publisher": "Exidy",
+    "year": "1979"
+  },
+  "wordpac": {
+    "description": "Exidy Word Processor Pac",
+    "publisher": "Exidy",
+    "year": "1978"
+  }
+}

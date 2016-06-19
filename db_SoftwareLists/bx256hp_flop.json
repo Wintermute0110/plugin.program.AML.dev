@@ -1,0 +1,42 @@
+{
+  "cbasic": {
+    "description": "CP/M-86 CBASIC",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cobol": {
+    "description": "CP/M-86 COBOL",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpm10": {
+    "description": "CP/M-86 v1.0",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "cpm11": {
+    "description": "CP/M-86 v1.1",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "cpm86": {
+    "description": "CP/M-86",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "dbase2": {
+    "description": "CP/M-86 dBASE II",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "msdos": {
+    "description": "MS-DOS v1.25",
+    "publisher": "Microsoft",
+    "year": "1982"
+  },
+  "pli": {
+    "description": "CP/M-86 PLI",
+    "publisher": "<unknown>",
+    "year": "198?"
+  }
+}

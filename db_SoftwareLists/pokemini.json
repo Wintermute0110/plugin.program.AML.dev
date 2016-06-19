@@ -1,0 +1,217 @@
+{
+  "lunchtme": {
+    "description": "Lunch Time (USA, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "pichubro": {
+    "description": "Pichu Bros. Mini (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "pichuhop": {
+    "description": "Pichu Bros. Mini - Hoppip's Jump Match (Jpn, Preview)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "pichunts": {
+    "description": "Pichu Bros. Mini - Netsukikyuu (Jpn, Preview)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "pichuskt": {
+    "description": "Pichu Bros. Mini - Skateboard (Jpn, Preview)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "pokeacrd": {
+    "description": "Pokémon Anime Card Daisakusen (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokerace": {
+    "description": "Pokémon Race Mini (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "pokeracep": {
+    "description": "Pokémon Race Mini (Jpn, Preview)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "pokesoda": {
+    "description": "Pokémon Sodateyasan Mini (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "pokezcrd": {
+    "description": "Pokémon Zany Cards (Aus, Euro, USA)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokezcrdf": {
+    "description": "Pokémon Zany Cards (Fra)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pokezcrdg": {
+    "description": "Pokémon Zany Cards (Ger)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pparty": {
+    "description": "Pokémon Party Mini (Euro)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppartyj": {
+    "description": "Pokémon Party Mini (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppartyu": {
+    "description": "Pokémon Party Mini (Aus, USA)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppinb": {
+    "description": "Pokémon Pinball Mini (Aus, Euro, USA)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppinbj": {
+    "description": "Pokémon Pinball Mini (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppinbjp": {
+    "description": "Pokémon Pinball Mini (Jpn, Preview)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppinbp": {
+    "description": "Pokémon Pinball Mini (USA, GameCube Preview)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pptbasej": {
+    "description": "Pokémon Party Mini - Baseline Judge (Euro, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pptbasejj": {
+    "description": "Pokémon Party Mini - Baseline Judge (Jpn, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pptbaseju": {
+    "description": "Pokémon Party Mini - Baseline Judge (USA, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pptdribl": {
+    "description": "Pokémon Party Mini - Chansey's Dribble (Euro, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pptdriblj": {
+    "description": "Pokémon Party Mini - Ricochet Dribble (Jpn, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pptdriblu": {
+    "description": "Pokémon Party Mini - Ricochet Dribble (USA, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pptrocks": {
+    "description": "Pokémon Party Mini - Pikachu's Rocket Start (Euro, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pptrocksu": {
+    "description": "Pokémon Party Mini - Rocket Start (USA, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "pptslowj": {
+    "description": "Pokémon Party Mini - Slowking's Judge (Euro, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppuzzlc": {
+    "description": "Pokémon Puzzle Collection (Aus, Euro, USA)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppuzzlc2": {
+    "description": "Pokémon Puzzle Collection Vol. 2 (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "ppuzzlcf": {
+    "description": "Pokémon Puzzle Collection (Fra)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppuzzlcfp": {
+    "description": "Pokémon Puzzle Collection (Fra, GameCube Preview)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppuzzlcg": {
+    "description": "Pokémon Puzzle Collection (Ger)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppuzzlcgp": {
+    "description": "Pokémon Puzzle Collection (Ger, GameCube Preview)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppuzzlcj": {
+    "description": "Pokémon Puzzle Collection (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppuzzlcj1": {
+    "description": "Pokémon Puzzle Collection (Jpn, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ppuzzlcp": {
+    "description": "Pokémon Puzzle Collection (USA, GameCube Preview)",
+    "publisher": "Nintendo",
+    "year": "2001"
+  },
+  "ptetris": {
+    "description": "Pokémon Tetris (Euro)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "ptetrisj": {
+    "description": "Pokémon Shock Tetris (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "snorlax": {
+    "description": "Snorlax's Lunch Time (Euro, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "snorlaxj": {
+    "description": "Snorlax's Lunch Time (Jpn, GameCube)",
+    "publisher": "Nintendo",
+    "year": "2003"
+  },
+  "togepi": {
+    "description": "Togepi no Daibouken (Jpn)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  },
+  "togepip": {
+    "description": "Togepi no Daibouken (Jpn, Preview)",
+    "publisher": "Nintendo",
+    "year": "2002"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "basic": {
+    "description": "Cartridge BASIC",
+    "publisher": "Microsoft",
+    "year": "1983"
+  },
+  "colorpnt": {
+    "description": "ColorPaint",
+    "publisher": "IBM",
+    "year": "1984"
+  },
+  "demonatk": {
+    "description": "Demon Attack",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "lotus123": {
+    "description": "Lotus 123jr",
+    "publisher": "Lotus Development",
+    "year": "1984"
+  },
+  "mineshft": {
+    "description": "Mine Shaft",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  },
+  "mouser": {
+    "description": "Mouser",
+    "publisher": "Gebelli",
+    "year": "1983"
+  },
+  "msurg": {
+    "description": "Microsurgeon",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "pc_id": {
+    "description": "PC ID",
+    "publisher": "Racore",
+    "year": "19??"
+  },
+  "pitfall2": {
+    "description": "Pitfall II",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "quiksilv": {
+    "description": "QuickSilver",
+    "publisher": "Synectics",
+    "year": "19??"
+  },
+  "riveraid": {
+    "description": "River Raid",
+    "publisher": "Activision",
+    "year": "1984"
+  },
+  "scubavnt": {
+    "description": "ScubaVenture",
+    "publisher": "Gebelli",
+    "year": "1983"
+  },
+  "xfire": {
+    "description": "CrossFire",
+    "publisher": "Sierra On-Line",
+    "year": "1983"
+  }
+}

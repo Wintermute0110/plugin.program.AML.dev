@@ -1,0 +1,57 @@
+{
+  "calc": {
+    "description": "Perfect Calc v1.00",
+    "publisher": "Perfect Software",
+    "year": "1982"
+  },
+  "cpm22": {
+    "description": "CP/M 2.2",
+    "publisher": "Digital Research",
+    "year": "19??"
+  },
+  "cpmboot": {
+    "description": "CP/M 2.2 Boot Disk (Ger)",
+    "publisher": "Digital Research",
+    "year": "19??"
+  },
+  "profit": {
+    "description": "Profit Plan",
+    "publisher": "Chang Laboratories",
+    "year": "1982"
+  },
+  "speller": {
+    "description": "Perfect Speller",
+    "publisher": "Perfect Software",
+    "year": "1982"
+  },
+  "teach": {
+    "description": "Select - Teach",
+    "publisher": "Select Information Systems",
+    "year": "1981"
+  },
+  "wordstar": {
+    "description": "WordStar v3.3",
+    "publisher": "MicroPro",
+    "year": "1983"
+  },
+  "workproc": {
+    "description": "Select - Work Processor",
+    "publisher": "Select Information Systems",
+    "year": "1981"
+  },
+  "writer": {
+    "description": "Perfect Writer",
+    "publisher": "Perfect Software",
+    "year": "1982"
+  },
+  "writerdoc": {
+    "description": "Perfect Writer - Docs and Utilities",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "writerless": {
+    "description": "Perfect Writer - Lessons",
+    "publisher": "Perfect Software",
+    "year": "198?"
+  }
+}

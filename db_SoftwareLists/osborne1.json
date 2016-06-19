@@ -1,0 +1,112 @@
+{
+  "actcpm": {
+    "description": "60K CP/M vers 2.20 for Osborne",
+    "publisher": "Australian Computer & Telecommunications",
+    "year": "19??"
+  },
+  "amcall": {
+    "description": "AMCALL (v2.06)",
+    "publisher": "MicroCALL Services",
+    "year": "1982"
+  },
+  "amcalla": {
+    "description": "AMCALL (v2.06, Alt)",
+    "publisher": "MicroCALL Services",
+    "year": "1982"
+  },
+  "basic80": {
+    "description": "BASIC-80 (Rev. 5.21)",
+    "publisher": "Microsoft",
+    "year": "1981"
+  },
+  "blank": {
+    "description": "Osborne 1 blank disk",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cpm22": {
+    "description": "60k CP/M v2.2",
+    "publisher": "Digital Research",
+    "year": "1981"
+  },
+  "cpm22a": {
+    "description": "60k CP/M v2.2 (Alt)",
+    "publisher": "Digital Research",
+    "year": "1981"
+  },
+  "dbase2": {
+    "description": "dBase II (v2.3)",
+    "publisher": "<unknown>",
+    "year": "1982"
+  },
+  "dddist": {
+    "description": "Double Density Distribution (v1.4)",
+    "publisher": "Osmosis Computer",
+    "year": "1982"
+  },
+  "drivec": {
+    "description": "Drive C: (Rev. F)",
+    "publisher": "Drive C:",
+    "year": "1983"
+  },
+  "interrog": {
+    "description": "Interrogator",
+    "publisher": "Dysan",
+    "year": "1984"
+  },
+  "mdm740": {
+    "description": "MDM740 modem program",
+    "publisher": "<unknown>",
+    "year": "1984"
+  },
+  "microlnk": {
+    "description": "The Micro Link (v2.3)",
+    "publisher": "Wordcraft",
+    "year": "1981"
+  },
+  "mileston": {
+    "description": "Milestone (Rev 1.09)",
+    "publisher": "Organic Software",
+    "year": "1981"
+  },
+  "osmosis": {
+    "description": "Osmosis CP/M Disk Emulation System (v1.0)",
+    "publisher": "Osmosis Computer",
+    "year": "1983"
+  },
+  "rt60a": {
+    "description": "RT-60A Real Time Clock Software (v2.7)",
+    "publisher": "JG Communications",
+    "year": "19??"
+  },
+  "sysconf": {
+    "description": "Osborne-1 System Confidence Test (v2.04)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sysconfa": {
+    "description": "Osborne-1 System Confidence Test (v2.04, Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sysconfb": {
+    "description": "Osborne-1 System Confidence Test (v2.00)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "utils": {
+    "description": "Utilities",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "wordstar": {
+    "description": "Wordstar (rel. 2.26)",
+    "publisher": "Micropro International",
+    "year": "1981"
+  },
+  "xutils": {
+    "description": "Extended Utilities",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "cp80tpas": {
+    "description": "N/S Advantage CP/M 80 / Turbo Pascal v1.0",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cpmbasic": {
+    "description": "North Star CP/M + Mbasic",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "dbaseii": {
+    "description": "dBaseII",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "demodiag": {
+    "description": "Advantage Demonstration/Diagnostic Diskette 2.1.0 AQH",
+    "publisher": "North Star Computers",
+    "year": "1981"
+  },
+  "dosgbasi": {
+    "description": "North Star GBASIC NSDOS / Baud 300",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fml80": {
+    "description": "Fortran F80 / Assembler M80 / Linker L80",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gdos100": {
+    "description": "NorthStar Graphics Operating System 1.0.0",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gdos210": {
+    "description": "NorthStar Graphics Operating System 2.1.0",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nscs10": {
+    "description": "North Star Computer Society #10",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nscs37": {
+    "description": "North Star Computer Society #37",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nscs48": {
+    "description": "North Star Computer Society #48",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nscs58": {
+    "description": "North Star Computer Society #58",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nscs61": {
+    "description": "North Star Computer Society #61",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "smallc": {
+    "description": "Small C compiler",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "wordstar": {
+    "description": "WordStar",
+    "publisher": "<unknown>",
+    "year": "198?"
+  }
+}

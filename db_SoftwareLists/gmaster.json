@@ -1,0 +1,62 @@
+{
+  "bublboy": {
+    "description": "Bubble Boy",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "cg2020": {
+    "description": "Continental Galaxy 2020",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "dungeon": {
+    "description": "Dungeon Adventure",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "fallbloc": {
+    "description": "Falling Block!",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "fussball": {
+    "description": "3-on-3 Soccer (Fuss-ball)",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "gobang": {
+    "description": "Go Bang",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "hspace": {
+    "description": "Hyper Space",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "kungfu": {
+    "description": "Kung Fu Challenge",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "pinball": {
+    "description": "Pin Ball",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "scastle": {
+    "description": "Space Castle",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "tennism": {
+    "description": "Tennis Master",
+    "publisher": "Hartung",
+    "year": "1990"
+  },
+  "uchamp": {
+    "description": "Urban Champion",
+    "publisher": "Hartung",
+    "year": "1990"
+  }
+}

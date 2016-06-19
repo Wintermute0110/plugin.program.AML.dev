@@ -1,0 +1,207 @@
+{
+  "6502step": {
+    "description": "6502 Step (v1.0)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ajnc": {
+    "description": "Ajnc",
+    "publisher": "PEL Soft",
+    "year": "19??"
+  },
+  "avion": {
+    "description": "Avion",
+    "publisher": "Emil Herceg - Igor Kos",
+    "year": "1986"
+  },
+  "bdash": {
+    "description": "Boulder Dash",
+    "publisher": "Nenad Mihailovic - Mihajlo Dapjas",
+    "year": "19??"
+  },
+  "breakout": {
+    "description": "Breakout",
+    "publisher": "Stan Rimox Software",
+    "year": "19??"
+  },
+  "brojke": {
+    "description": "Brojke",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "crtanje": {
+    "description": "Crtanje",
+    "publisher": "Suzy Soft",
+    "year": "1987"
+  },
+  "crvic": {
+    "description": "Crvic",
+    "publisher": "PEL Soft",
+    "year": "1986"
+  },
+  "demograf": {
+    "description": "Demo Grafika",
+    "publisher": "KMI Borovo",
+    "year": "1985"
+  },
+  "eagle": {
+    "description": "Eagle",
+    "publisher": "KMI Borovo",
+    "year": "1986"
+  },
+  "figchess": {
+    "description": "Figure Chess",
+    "publisher": "KMI Borovo",
+    "year": "1986"
+  },
+  "jugador": {
+    "description": "Jugador",
+    "publisher": "Mario Vuletic",
+    "year": "19??"
+  },
+  "jumpjack": {
+    "description": "Jumping Jack",
+    "publisher": "KMI Borovo",
+    "year": "1986"
+  },
+  "karate": {
+    "description": "Internacional Karate",
+    "publisher": "KMI Borovo",
+    "year": "19??"
+  },
+  "kuki": {
+    "description": "Kuki",
+    "publisher": "KMI Borovo",
+    "year": "1986"
+  },
+  "kvadrat": {
+    "description": "Magicni Kvadrat",
+    "publisher": "Mario Ranogajec - Boris Korpar",
+    "year": "1985"
+  },
+  "labirinm": {
+    "description": "Labirint M",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "labirint": {
+    "description": "Labirint",
+    "publisher": "Bibi Soft",
+    "year": "1985"
+  },
+  "matchfis": {
+    "description": "Match Fishing",
+    "publisher": "KMI Borovo",
+    "year": "1986"
+  },
+  "memo": {
+    "description": "Memo",
+    "publisher": "PEL Soft",
+    "year": "19??"
+  },
+  "memoa": {
+    "description": "Memo (No Loading Screen)",
+    "publisher": "PEL Soft",
+    "year": "19??"
+  },
+  "microrac": {
+    "description": "Mikroracunalo Orao",
+    "publisher": "PEL Varazdin",
+    "year": "1988"
+  },
+  "mminer": {
+    "description": "Manic Miner",
+    "publisher": "Nenad Mihailovic",
+    "year": "19??"
+  },
+  "nevid": {
+    "description": "Nevidljivi",
+    "publisher": "Suzy Soft",
+    "year": "1987"
+  },
+  "obelix": {
+    "description": "Obelix",
+    "publisher": "KMI Borovo",
+    "year": "19??"
+  },
+  "othello": {
+    "description": "Othello",
+    "publisher": "Sasa Ivkovic",
+    "year": "1985"
+  },
+  "pacman": {
+    "description": "Pac-Man",
+    "publisher": "Sasa Ivkovic",
+    "year": "19??"
+  },
+  "pcelicam": {
+    "description": "Pcelica Maja",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "podsjet": {
+    "description": "Podsjetnik",
+    "publisher": "Suzy Soft",
+    "year": "1987"
+  },
+  "pomorska": {
+    "description": "Pomorska Bitka",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "porno": {
+    "description": "Porno",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "reversi": {
+    "description": "Reversi",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sintetiz": {
+    "description": "Sintetizator Zvuka",
+    "publisher": "Suzy Soft",
+    "year": "1987"
+  },
+  "sokoban": {
+    "description": "Sokoban",
+    "publisher": "J.P.",
+    "year": "19??"
+  },
+  "spaceinv": {
+    "description": "Space Invaders",
+    "publisher": "PEL Soft",
+    "year": "19??"
+  },
+  "stripajn": {
+    "description": "Strip Ajnc",
+    "publisher": "Z. Bistrovic",
+    "year": "1985"
+  },
+  "stripgam": {
+    "description": "Strip Game Ainc",
+    "publisher": "KMI Borovo",
+    "year": "19??"
+  },
+  "tornjev": {
+    "description": "Tornjevi",
+    "publisher": "Tom",
+    "year": "19??"
+  },
+  "ukletidv": {
+    "description": "Ukleti Dvorac",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "zid": {
+    "description": "Zid",
+    "publisher": "PEL Zabavni Programi",
+    "year": "1985"
+  },
+  "znakovi": {
+    "description": "Znakovi",
+    "publisher": "Suzy Soft",
+    "year": "1987"
+  }
+}

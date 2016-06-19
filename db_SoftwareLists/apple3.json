@@ -1,0 +1,102 @@
+{
+  "3ezp": {
+    "description": "/// E-Z Pieces",
+    "publisher": "Haba Systems",
+    "year": "1982"
+  },
+  "a2emul": {
+    "description": "Apple II Emulation",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1980"
+  },
+  "aplchomp": {
+    "description": "Apple Chomp",
+    "publisher": "Dan A. Kunesh",
+    "year": "1984"
+  },
+  "atomicdf": {
+    "description": "Atomic Defense",
+    "publisher": "Andy Hertzfeld",
+    "year": "1982"
+  },
+  "basic": {
+    "description": "Apple /// Business Basic (1.1)",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1981"
+  },
+  "cardmach": {
+    "description": "The Apple /// Card Machine",
+    "publisher": "On Three, Inc.",
+    "year": "1985"
+  },
+  "conftest": {
+    "description": "Apple /// Confidence Test Program",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1981"
+  },
+  "cpmboot": {
+    "description": "Boot CP/M (applicard in slot 1)",
+    "publisher": "PCPI",
+    "year": "1982"
+  },
+  "cpmcffa2": {
+    "description": "Boot CP/M (cffa2 in slot 1, applicard in slot 2)",
+    "publisher": "PCPI",
+    "year": "1982"
+  },
+  "diag": {
+    "description": "Apple /// Dealer Diagnostics (v2)",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1981"
+  },
+  "drawon3": {
+    "description": "Draw On ///",
+    "publisher": "On Three, Inc.",
+    "year": "1985"
+  },
+  "getorg": {
+    "description": "Getting Organized",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1981"
+  },
+  "magneto": {
+    "description": "Capt'n Magneto (PD release APPLE-3-WAP-GAM-03)",
+    "publisher": "Al Evans / WAP",
+    "year": "1995"
+  },
+  "newbegin": {
+    "description": "Apple ///: A New Beginning",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1982"
+  },
+  "pascal11": {
+    "description": "Apple Pascal (v1.1)",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1982"
+  },
+  "quikfile": {
+    "description": "QuickFile",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1982"
+  },
+  "sysdemo": {
+    "description": "System Demo",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1981"
+  },
+  "sysutil": {
+    "description": "System Utilities (v1.3)",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1983"
+  },
+  "sysutilo": {
+    "description": "System Utiltiies (v1.1)",
+    "publisher": "Apple Computer, Inc.",
+    "year": "1982"
+  },
+  "tictac": {
+    "description": "Tic-Tac-Toe",
+    "publisher": "John Lomartire",
+    "year": "1988"
+  }
+}

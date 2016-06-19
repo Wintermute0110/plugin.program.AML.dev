@@ -1,0 +1,17 @@
+{
+  "basic": {
+    "description": "Mikro-80 BASIC",
+    "publisher": "<unknown>",
+    "year": "1984"
+  },
+  "basica": {
+    "description": "Mikro-80 BASIC (Alt)",
+    "publisher": "<unknown>",
+    "year": "1984"
+  },
+  "proverki": {
+    "description": "Programma Proverki",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

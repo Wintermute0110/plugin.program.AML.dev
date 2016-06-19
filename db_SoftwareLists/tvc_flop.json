@@ -1,0 +1,4192 @@
+{
+  "21": {
+    "description": "21",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "3dim": {
+    "description": "Három dimenziós ábrázolás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "3dlabiri": {
+    "description": "3D Labirintus",
+    "publisher": "Buddha Softhouse",
+    "year": "198?"
+  },
+  "ab01": {
+    "description": "Ábrázolás - 01 Tartalomjegyzék",
+    "publisher": "László Papp",
+    "year": "198?"
+  },
+  "ab02": {
+    "description": "Ábrázolás 02 - Téglatest 6 Vetülete",
+    "publisher": "László Papp",
+    "year": "198?"
+  },
+  "ab03": {
+    "description": "Ábrázolás 03 - Hatoldalú hasáb ferde síkmetszése",
+    "publisher": "László Papp",
+    "year": "198?"
+  },
+  "ab04": {
+    "description": "Ábrázolás 04 - Gúla ferde síkmetszése",
+    "publisher": "László Papp",
+    "year": "198?"
+  },
+  "ab05": {
+    "description": "Ábrázolás 05 - Háromoldalú hasáb csonkítása",
+    "publisher": "László Papp",
+    "year": "198?"
+  },
+  "ab06": {
+    "description": "Ábrázolás 06 - Itt a pont, ott a pont, hol a pont?",
+    "publisher": "László Papp",
+    "year": "198?"
+  },
+  "ab07": {
+    "description": "Ábrázolás 07 - Hamis? Igaz?",
+    "publisher": "László Papp",
+    "year": "198?"
+  },
+  "ab08": {
+    "description": "Ábrázolás 08 - Kockázzunk!",
+    "publisher": "László Papp",
+    "year": "198?"
+  },
+  "ab09": {
+    "description": "Ábrázolás 09 - Téglatest véletlen vetületei",
+    "publisher": "László Papp",
+    "year": "198?"
+  },
+  "ab10": {
+    "description": "Ábrázolás 10 - Hatoldalú hasáb véletlen vetületei",
+    "publisher": "László Papp",
+    "year": "198?"
+  },
+  "adatkeze": {
+    "description": "Adatfile-kezelő program",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "adventur": {
+    "description": "The Adventure Game",
+    "publisher": "Tamás Juhász",
+    "year": "1987"
+  },
+  "aknaker": {
+    "description": "Aknakereső",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "aknamezo": {
+    "description": "Aknamező",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "aknamezoa": {
+    "description": "Aknamező (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "alfa": {
+    "description": "Alfa",
+    "publisher": "JÓZSIsoft",
+    "year": "198?"
+  },
+  "alien8": {
+    "description": "Alien 8",
+    "publisher": "'a' Studio",
+    "year": "1985"
+  },
+  "alien8a": {
+    "description": "Alien 8 (Alt)",
+    "publisher": "'a' Studio",
+    "year": "1985"
+  },
+  "alien8b": {
+    "description": "Alien 8 (Alt 2)",
+    "publisher": "'a' Studio",
+    "year": "1985"
+  },
+  "alien8c": {
+    "description": "Alien 8 (Alt 3)",
+    "publisher": "'a' Studio",
+    "year": "1985"
+  },
+  "amoba": {
+    "description": "Amőba",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "amobaa": {
+    "description": "Amőba (Alt)",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "angol": {
+    "description": "Angol",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "antiriad": {
+    "description": "Antiriad",
+    "publisher": "STV",
+    "year": "1986"
+  },
+  "arnhem": {
+    "description": "Arnhem",
+    "publisher": "STV",
+    "year": "1985"
+  },
+  "asmbot": {
+    "description": "Mnemonic IV Assembler-Monitor - Bottom",
+    "publisher": "László Bata",
+    "year": "1989"
+  },
+  "asmtop": {
+    "description": "Mnemonic IV Assembler-Monitor - Top",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "assembly": {
+    "description": "Assembly",
+    "publisher": "Atlas",
+    "year": "198?"
+  },
+  "astrobat": {
+    "description": "Astro Blaster (Atlas)",
+    "publisher": "Atlas",
+    "year": "198?"
+  },
+  "astrobl": {
+    "description": "Astro Blaster",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "astroblt": {
+    "description": "Astro Blaster (Trained)",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "astrocsa": {
+    "description": "Asztro csata",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "asuniked": {
+    "description": "A Sünikéd Éhes...",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "atkeles": {
+    "description": "Átkelés",
+    "publisher": "I. Juhász",
+    "year": "198?"
+  },
+  "atomero": {
+    "description": "Atomerőmű",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "atomix": {
+    "description": "Atomix",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "atomixp": {
+    "description": "Atomix Plusz",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "atomixpj": {
+    "description": "Atomix Plusz Javított",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "attores": {
+    "description": "Áttörés",
+    "publisher": "Bit & Guy",
+    "year": "198?"
+  },
+  "attoresa": {
+    "description": "Áttörés (Alt)",
+    "publisher": "Bit & Guy",
+    "year": "198?"
+  },
+  "attoresb": {
+    "description": "Áttörés (Alt 2)",
+    "publisher": "Bit & Guy",
+    "year": "198?"
+  },
+  "automani": {
+    "description": "Autó Mánia",
+    "publisher": "Széplaky Stúdió",
+    "year": "1990"
+  },
+  "autosped": {
+    "description": "Auto Speed",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "awari": {
+    "description": "Awari",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "awari1": {
+    "description": "Awari 1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "awari2": {
+    "description": "Awari II",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "awaria": {
+    "description": "Awari (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "azannya": {
+    "description": "Azannya!",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "azsaru": {
+    "description": "A Zsaru",
+    "publisher": "Cápasoft",
+    "year": "1990"
+  },
+  "bakterio": {
+    "description": "Bakteriográf",
+    "publisher": "Agilar",
+    "year": "198?"
+  },
+  "bananfal": {
+    "description": "Banánfaló",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "bananfala": {
+    "description": "Banánfaló (Alt)",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "bananfalb": {
+    "description": "Banánfaló (Alt 2)",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "banyasz": {
+    "description": "Bányász",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "banyasza": {
+    "description": "Bányász (Alt)",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "barbar": {
+    "description": "Barbár",
+    "publisher": "Cápasoft",
+    "year": "198?"
+  },
+  "barchoba": {
+    "description": "Barchoba",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "barkochb": {
+    "description": "Barkochba",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "barna": {
+    "description": "Barna",
+    "publisher": "K&K Soft",
+    "year": "199?"
+  },
+  "basicmon": {
+    "description": "TV Computer BASIC Monitor",
+    "publisher": "H-Software",
+    "year": "1987"
+  },
+  "batman": {
+    "description": "Batman",
+    "publisher": "C.S. Software",
+    "year": "198?"
+  },
+  "bazis": {
+    "description": "Bázis",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "bazisurh": {
+    "description": "Bázis - űrhajós",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bdash": {
+    "description": "Boulder Dash",
+    "publisher": "Zsolt Dobrovics",
+    "year": "1989"
+  },
+  "beka": {
+    "description": "Béka",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bekaa": {
+    "description": "Béka (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bekab": {
+    "description": "Béka (Alt 2)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bekajate": {
+    "description": "Béka-játék",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bekajatea": {
+    "description": "Béka-játék (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bekajateb": {
+    "description": "Béka-játék (Alt 2)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "beszelo": {
+    "description": "Beszélő program",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "betegban": {
+    "description": "BetegBank",
+    "publisher": "TVCM",
+    "year": "198?"
+  },
+  "bigbadjo": {
+    "description": "Big Bad John",
+    "publisher": "Zsolt Dobrovics",
+    "year": "1987"
+  },
+  "bioritmu": {
+    "description": "Bioritmus (v1)",
+    "publisher": "Unisoft GMK",
+    "year": "1986"
+  },
+  "bioritmua": {
+    "description": "Bioritmus (Alt)",
+    "publisher": "Unisoft GMK",
+    "year": "1986"
+  },
+  "biortape": {
+    "description": "Bioritmus (Cassette Version)",
+    "publisher": "Unisoft GMK",
+    "year": "1986"
+  },
+  "biv02": {
+    "description": "Biológia - Növényhatározás - Kétszikűek 1. - BIV02",
+    "publisher": "Panda Software",
+    "year": "1987"
+  },
+  "black": {
+    "description": "Black",
+    "publisher": "Laszlo Csanyi",
+    "year": "1989"
+  },
+  "blocking": {
+    "description": "Blocking",
+    "publisher": "Vz",
+    "year": "1991"
+  },
+  "bnh": {
+    "description": "A Bolygó Neve - Halál",
+    "publisher": "Berysoft",
+    "year": "1988"
+  },
+  "bob": {
+    "description": "Bob",
+    "publisher": "Mamut Soft",
+    "year": "198?"
+  },
+  "boba": {
+    "description": "Bob (Alt)",
+    "publisher": "Mamut Soft",
+    "year": "198?"
+  },
+  "bobkutya": {
+    "description": "Bob (kutya)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bogar": {
+    "description": "Bogár",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bombazd": {
+    "description": "Bombázd le Ceausecut",
+    "publisher": "Osmagyar Software",
+    "year": "198?"
+  },
+  "bombazo": {
+    "description": "Az Utolsó Bombázó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bomlas": {
+    "description": "Rádióaktív bomlás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "boszork1": {
+    "description": "Boszorkány 1",
+    "publisher": "Agilar",
+    "year": "198?"
+  },
+  "boszork2": {
+    "description": "Boszorkány 2",
+    "publisher": "Agilar",
+    "year": "198?"
+  },
+  "box": {
+    "description": "Box",
+    "publisher": "Szeki",
+    "year": "198?"
+  },
+  "box2": {
+    "description": "Box 2",
+    "publisher": "Szeki",
+    "year": "198?"
+  },
+  "break2": {
+    "description": "Break 2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "break3": {
+    "description": "Break 3",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "breakopn": {
+    "description": "Breakopen",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bulldozr": {
+    "description": "Bulldozer",
+    "publisher": "Compi & Urz",
+    "year": "198?"
+  },
+  "bulldozrj": {
+    "description": "Bulldozer (Joystick)",
+    "publisher": "Compi & Urz",
+    "year": "198?"
+  },
+  "buvar": {
+    "description": "Búvár",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "buvoskoc": {
+    "description": "Bűvös kocka",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "buvosneg": {
+    "description": "Bűvös négyzetek",
+    "publisher": "Octasoft",
+    "year": "1987"
+  },
+  "cammogo": {
+    "description": "Cammogó-derby",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "casio": {
+    "description": "Casio",
+    "publisher": "Péter Dörner",
+    "year": "198?"
+  },
+  "cellovo": {
+    "description": "Céllövő",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cellovol": {
+    "description": "Céllövölde",
+    "publisher": "Cápasoft",
+    "year": "198?"
+  },
+  "centaury": {
+    "description": "Centaury-1",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "centiped": {
+    "description": "Centipede",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "chip": {
+    "description": "Chip",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cicik": {
+    "description": "Lebegő Cicik",
+    "publisher": "G.V. Alfa Software",
+    "year": "198?"
+  },
+  "cikcakk": {
+    "description": "Cikcakk",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ciklon": {
+    "description": "Ciklon",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "circle": {
+    "description": "Circle",
+    "publisher": "Atlas",
+    "year": "198?"
+  },
+  "citadell": {
+    "description": "Citadella",
+    "publisher": "SVS Software",
+    "year": "1988"
+  },
+  "citycru": {
+    "description": "City Cruiser",
+    "publisher": "Banjoe",
+    "year": "1988"
+  },
+  "clement": {
+    "description": "Clementina a boszorkány",
+    "publisher": "Zoltán Nagy - Zsolt Magyar",
+    "year": "198?"
+  },
+  "cmdo_sil": {
+    "description": "Commando (SIL)",
+    "publisher": "Software in LUX",
+    "year": "1987"
+  },
+  "cobra": {
+    "description": "Cobra",
+    "publisher": "C.S. Software",
+    "year": "198?"
+  },
+  "cobyvada": {
+    "description": "Coby-Vadász",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cocademo": {
+    "description": "Coca Cola Demo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "codas64": {
+    "description": "Codas 64",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cogan": {
+    "description": "Cogan",
+    "publisher": "László Bagi - SonySoft",
+    "year": "198?"
+  },
+  "color16": {
+    "description": "Color-16 színes karakterkészítő",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "coloris": {
+    "description": "Coloris",
+    "publisher": "Béla Csatlós",
+    "year": "198?"
+  },
+  "colorisa": {
+    "description": "Coloris (Alt)",
+    "publisher": "Béla Csatlós",
+    "year": "198?"
+  },
+  "colormag": {
+    "description": "Colormagic - Színbűvölő",
+    "publisher": "<unknown>",
+    "year": "1987"
+  },
+  "coltris": {
+    "description": "Coltris",
+    "publisher": "Gati Software",
+    "year": "1993"
+  },
+  "commando": {
+    "description": "Commando",
+    "publisher": "Berysoft",
+    "year": "1989"
+  },
+  "commandoa": {
+    "description": "Commando (Alt)",
+    "publisher": "Berysoft",
+    "year": "1989"
+  },
+  "compwrld": {
+    "description": "ComputerWorld",
+    "publisher": "TVCM",
+    "year": "1991"
+  },
+  "cosinus": {
+    "description": "Cosinus",
+    "publisher": "HLV",
+    "year": "1985"
+  },
+  "cowboy": {
+    "description": "Cowboy",
+    "publisher": "<unknown>",
+    "year": "1987"
+  },
+  "cracked": {
+    "description": "Crack Ed",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "csapda": {
+    "description": "Csapda",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "csavarga": {
+    "description": "Csavargás a gombák birodalmában",
+    "publisher": "Green Soft",
+    "year": "1988"
+  },
+  "csavargaa": {
+    "description": "Csavargás a gombák birodalmában (Alt)",
+    "publisher": "Green Soft",
+    "year": "1988"
+  },
+  "csonak": {
+    "description": "Csónak a folyón",
+    "publisher": "K&K Soft",
+    "year": "198?"
+  },
+  "csovesek": {
+    "description": "Csövesek",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "csrobot": {
+    "description": "C.S. Robot",
+    "publisher": "C.S. Software",
+    "year": "198?"
+  },
+  "cyrus2": {
+    "description": "Cyrus 2",
+    "publisher": "Intelligent Chess Software",
+    "year": "1985"
+  },
+  "cyrus2en": {
+    "description": "Cyrus 2 (English)",
+    "publisher": "Intelligent Chess Software",
+    "year": "1985"
+  },
+  "cyrus2ena": {
+    "description": "Cyrus 2 (English, Alt)",
+    "publisher": "Intelligent Chess Software",
+    "year": "1985"
+  },
+  "dama": {
+    "description": "Dáma",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "dama1": {
+    "description": "Dáma (Different)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "damaa": {
+    "description": "Dáma (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "darkside": {
+    "description": "Dark Side",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "datakesz": {
+    "description": "Data sor készítő",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ddtleir": {
+    "description": "Mini DDT - Leiras",
+    "publisher": "Gaba Software",
+    "year": "198?"
+  },
+  "debugger": {
+    "description": "Debugger",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "deflekt": {
+    "description": "Deflektor",
+    "publisher": "STV",
+    "year": "1987"
+  },
+  "demo01": {
+    "description": "DG Kép 1",
+    "publisher": "GATO Bt.",
+    "year": "1991"
+  },
+  "demo02": {
+    "description": "DG Kép 2",
+    "publisher": "GATO Bt.",
+    "year": "1991"
+  },
+  "demo03": {
+    "description": "DG Kép 3",
+    "publisher": "GATO Bt.",
+    "year": "1993"
+  },
+  "demodisk": {
+    "description": "Demo Kazetta/Lemez 01-06",
+    "publisher": "Viktor Varga",
+    "year": "2007"
+  },
+  "demokaz1": {
+    "description": "Demo Kazetta 01 - Bevezetés",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "demokaz2": {
+    "description": "Demo Kazetta 02 - Tili-Toli",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "demokaz3": {
+    "description": "Demo Kazetta 03 - Rajzoló",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "demokaz4": {
+    "description": "Demo Kazetta 04 - Zene",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "demokaz5": {
+    "description": "Demo Kazetta 05 - Betűkészítő, Bombázó",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "demokaz5a": {
+    "description": "Demo Kazetta 05 - Betűkészítő, Bombázó (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "diffuzio": {
+    "description": "Diffúzió",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "digipok": {
+    "description": "Digipók",
+    "publisher": "Bit & Guy",
+    "year": "1987"
+  },
+  "digipoka": {
+    "description": "Digipók (Alt)",
+    "publisher": "Bit & Guy",
+    "year": "1987"
+  },
+  "dinosaur": {
+    "description": "Dinosaurus",
+    "publisher": "Buddha Softhouse",
+    "year": "198?"
+  },
+  "discmond": {
+    "description": "Disc Monitor v2.00 Demo",
+    "publisher": "GATO Bt.",
+    "year": "1990"
+  },
+  "dkong": {
+    "description": "Donkey Kong",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "dkonga": {
+    "description": "Donkey Kong (Alt)",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "dobgep": {
+    "description": "Dobgép",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "dobprg": {
+    "description": "Dobprogram",
+    "publisher": "Cápasoft",
+    "year": "1989"
+  },
+  "domino": {
+    "description": "Dominó",
+    "publisher": "Agilar",
+    "year": "198?"
+  },
+  "dominoa": {
+    "description": "Dominó (Alt)",
+    "publisher": "Agilar",
+    "year": "198?"
+  },
+  "donald": {
+    "description": "Donald és Dézi",
+    "publisher": "Cápasoft",
+    "year": "1989"
+  },
+  "drawer": {
+    "description": "Drawer",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "ediass": {
+    "description": "EdiAss",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "effekt1": {
+    "description": "Effekt 1 - Hangeffekt",
+    "publisher": "Szeki",
+    "year": "198?"
+  },
+  "effekt2": {
+    "description": "Effekt 2 - Raster Effektek",
+    "publisher": "Szeki",
+    "year": "198?"
+  },
+  "egybeir1": {
+    "description": "Egybeirjam? Különírjam? 1",
+    "publisher": "Novotrade",
+    "year": "1988"
+  },
+  "egybeir2": {
+    "description": "Egybeirjam? Különírjam? 2",
+    "publisher": "Novotrade",
+    "year": "1988"
+  },
+  "ejtoerny": {
+    "description": "Ejtőernyő",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "eleccube": {
+    "description": "Electronics Cube",
+    "publisher": "VGy",
+    "year": "1988"
+  },
+  "electman": {
+    "description": "Electric Man",
+    "publisher": "Béla Szalontai",
+    "year": "1987"
+  },
+  "eletjate": {
+    "description": "Életjáték",
+    "publisher": "Tekacs Bela",
+    "year": "198?"
+  },
+  "eletkoro": {
+    "description": "Életkorod",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "elite": {
+    "description": "Elite",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "elitea": {
+    "description": "Elite (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ellopo": {
+    "description": "Ellopó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "english1": {
+    "description": "English Test no.1",
+    "publisher": "VGy",
+    "year": "1986"
+  },
+  "english2": {
+    "description": "English Test no.2",
+    "publisher": "VGy",
+    "year": "1986"
+  },
+  "english3": {
+    "description": "English Test no.3",
+    "publisher": "VGy",
+    "year": "1986"
+  },
+  "english4": {
+    "description": "English Test no.4",
+    "publisher": "VGy",
+    "year": "1986"
+  },
+  "english5": {
+    "description": "English Test no.5",
+    "publisher": "VGy",
+    "year": "1986"
+  },
+  "erod": {
+    "description": "Erőd",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "etforth": {
+    "description": "ET-Forth 1.1",
+    "publisher": "Geza Kos",
+    "year": "1987"
+  },
+  "europa": {
+    "description": "Keresd a Térképen - Európa",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "europaa": {
+    "description": "Keresd a Térképen - Európa (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "expedici": {
+    "description": "Expedíció",
+    "publisher": "Berysoft",
+    "year": "1989"
+  },
+  "expedicia": {
+    "description": "Expedíció (Alt)",
+    "publisher": "Berysoft",
+    "year": "1989"
+  },
+  "faltjate": {
+    "description": "Faltörő játék",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "faltoro": {
+    "description": "TV-Computer Faltörő Játék",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "family1": {
+    "description": "Family 1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "family2": {
+    "description": "Family 2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "family2a": {
+    "description": "Family 2 (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "family2b": {
+    "description": "Family 2 (Alt 2)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "family4": {
+    "description": "Family 4 - Lesson 1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "family5": {
+    "description": "Family 5 - Test",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "farao": {
+    "description": "Fáraó",
+    "publisher": "Gigasoft",
+    "year": "1988"
+  },
+  "fcopy10": {
+    "description": "TVC File Copy 1.0",
+    "publisher": "Gyorgy Hudoba - Tibor Cseh",
+    "year": "1986"
+  },
+  "fcopyd2t": {
+    "description": "File Másolás - Floppy to Magnó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fcopyt2t": {
+    "description": "File Másoló - Szalag to Szalag",
+    "publisher": "László Tóth",
+    "year": "1990"
+  },
+  "fejtoro": {
+    "description": "15-ös fejtörő",
+    "publisher": "Nyitrai",
+    "year": "198?"
+  },
+  "feketeso": {
+    "description": "Fekete Sólyom",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "felderit": {
+    "description": "Felderítő",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "felirato": {
+    "description": "Feliratozó",
+    "publisher": "STV",
+    "year": "1987"
+  },
+  "felkaru": {
+    "description": "Félkarú rabló",
+    "publisher": "Gabor Balogh",
+    "year": "1986"
+  },
+  "festojat": {
+    "description": "Festő játék",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "fgabr": {
+    "description": "Függvényábrázolás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "filem": {
+    "description": "Fájlmásoló",
+    "publisher": "Csongrád - SCS",
+    "year": "198?"
+  },
+  "firebow": {
+    "description": "Firebow - The Planet of Death",
+    "publisher": "Zsolt Szigeti",
+    "year": "1991"
+  },
+  "firebowl": {
+    "description": "Firebow Leírás",
+    "publisher": "Krisztan Dunder",
+    "year": "1992"
+  },
+  "firebowt": {
+    "description": "Firebow - The Planet of Death (Trainer)",
+    "publisher": "Zsolt Szigeti",
+    "year": "1991"
+  },
+  "fiv03": {
+    "description": "Fizika - Soros RC kör - FIV03",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fiv92": {
+    "description": "Fizika - Mágneses mező - FIV92",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fizikaio": {
+    "description": "Fizikai összefüggések",
+    "publisher": "Novotrade - Octasoft",
+    "year": "1987"
+  },
+  "flight": {
+    "description": "Flight",
+    "publisher": "BirdSoft",
+    "year": "1987"
+  },
+  "flipper": {
+    "description": "Flipper",
+    "publisher": "Andromeda",
+    "year": "1987"
+  },
+  "flippera": {
+    "description": "Flipper (Alt)",
+    "publisher": "Andromeda",
+    "year": "1987"
+  },
+  "flipperb": {
+    "description": "Flipper (Alt 2)",
+    "publisher": "Andromeda",
+    "year": "1987"
+  },
+  "flopp": {
+    "description": "Flopp",
+    "publisher": "C.S. Software",
+    "year": "198?"
+  },
+  "flsgraph": {
+    "description": "FLS Graphics Editor",
+    "publisher": "Flighter Software",
+    "year": "1987"
+  },
+  "foci": {
+    "description": "Foci",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fogmosos": {
+    "description": "Fogmosós Játék",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "foldrajz": {
+    "description": "Környezetismeret Oktató és Témazáró",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "football": {
+    "description": "Football",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fordits": {
+    "description": "Fordíts",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "format": {
+    "description": "Format",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "forthlei": {
+    "description": "Forth Leírás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fov02": {
+    "description": "Földrajz - Magyarországi városok - FOV02",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fov03": {
+    "description": "Földrajz - Szovjetúnió városai - FOV03",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fov04": {
+    "description": "Földrajz - USA városai - FOV04",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "freddie": {
+    "description": "Freddie",
+    "publisher": "Black Star Software",
+    "year": "198?"
+  },
+  "fuel": {
+    "description": "Fuel",
+    "publisher": "Attila Barabas",
+    "year": "1988"
+  },
+  "fuggvabr": {
+    "description": "Függvény ábrázolás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "futakep": {
+    "description": "Fut A Kép - Keretlebontás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "futovad": {
+    "description": "Futóvad",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "galaxy": {
+    "description": "Galaxy",
+    "publisher": "Béla Csatlós",
+    "year": "1991"
+  },
+  "galaxya": {
+    "description": "Galaxy (Alt)",
+    "publisher": "Béla Csatlós",
+    "year": "1991"
+  },
+  "galaxyb": {
+    "description": "Galaxy (Alt 2)",
+    "publisher": "Béla Csatlós",
+    "year": "1991"
+  },
+  "gallaste": {
+    "description": "Gall Asterix",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "generato": {
+    "description": "Generátor",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "geo": {
+    "description": "Geo",
+    "publisher": "Videoton",
+    "year": "1987"
+  },
+  "geoa": {
+    "description": "Geo (Alt)",
+    "publisher": "Videoton",
+    "year": "1987"
+  },
+  "geob": {
+    "description": "Geo (Alt 2)",
+    "publisher": "Videoton",
+    "year": "1987"
+  },
+  "geomtran": {
+    "description": "Geometriai Transzformációk",
+    "publisher": "Novotrade - Octasoft",
+    "year": "1988"
+  },
+  "geomtrana": {
+    "description": "Geometriai Transzformációk (Alt)",
+    "publisher": "Novotrade - Octasoft",
+    "year": "1988"
+  },
+  "gepzene": {
+    "description": "Gépzene",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ghostbus": {
+    "description": "Ghostbusters",
+    "publisher": "Agilar",
+    "year": "1991"
+  },
+  "gianti": {
+    "description": "Giantigascutus",
+    "publisher": "Cápasoft",
+    "year": "198?"
+  },
+  "giliszta": {
+    "description": "Giliszta",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "goblinka": {
+    "description": "Goblin Kastélya",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "goldcopy": {
+    "description": "Goldcopy",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "golf": {
+    "description": "Golf",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "golyoviz": {
+    "description": "Golyó a Vízben",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gombak": {
+    "description": "Gombák",
+    "publisher": "Agilar",
+    "year": "1990"
+  },
+  "gombocfa": {
+    "description": "Gombócfaló",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gombocfaa": {
+    "description": "Gombócfaló (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gombtuko": {
+    "description": "Gömbtükör",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gravitac": {
+    "description": "Gravitáció",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "grdemo": {
+    "description": "Griff-Grafika Bemutató Program",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "griff": {
+    "description": "Griff",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "griff3d": {
+    "description": "Griff - 3 Dimenziós Griff Grafika",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gt2": {
+    "description": "Ghost Tower 2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gulpman": {
+    "description": "Gulpman (Trainer)",
+    "publisher": "Béla Csatlós",
+    "year": "1990"
+  },
+  "gunfight": {
+    "description": "Gunfight",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gusztleg": {
+    "description": "Gusztáv legyeket írt",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gusztspo": {
+    "description": "Gusztáv Sportol",
+    "publisher": "László Nagy",
+    "year": "198?"
+  },
+  "gyertya": {
+    "description": "Gyertya",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gyikkira": {
+    "description": "A Gyíkkirály",
+    "publisher": "Agilar",
+    "year": "1990"
+  },
+  "gyufajat": {
+    "description": "Gyufajáték",
+    "publisher": "Zsolt",
+    "year": "198?"
+  },
+  "hajo": {
+    "description": "Hajó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hajo1": {
+    "description": "Hajó (Different)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "halak": {
+    "description": "Halak",
+    "publisher": "K&K Soft",
+    "year": "1991"
+  },
+  "halalla": {
+    "description": "Halállabirintus",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hamm": {
+    "description": "Hamm",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hang": {
+    "description": "Hang",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hangd": {
+    "description": "Hang (Different)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hangdigi": {
+    "description": "Hangdigitalizáló",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hanggal": {
+    "description": "Hanggal",
+    "publisher": "Endre Győrffy",
+    "year": "1989"
+  },
+  "hangok": {
+    "description": "Hangok",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hangosbi": {
+    "description": "Hangos Billentyűzet",
+    "publisher": "Tombor Márton",
+    "year": "198?"
+  },
+  "hanoi": {
+    "description": "Hanoi Torony",
+    "publisher": "Gyorgy Vamos - Janos Horvath",
+    "year": "1983"
+  },
+  "hanoi_t": {
+    "description": "Hanoi Tornyai",
+    "publisher": "ZMKMF",
+    "year": "1986"
+  },
+  "hanoitr": {
+    "description": "Hanoi-Torony",
+    "publisher": "Zsolt",
+    "year": "1987"
+  },
+  "harcaflk": {
+    "description": "Harc a Föld Körül",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "harcaflka": {
+    "description": "Harc a Föld Körül (Alt)",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "haromtes": {
+    "description": "Háromtestprobléma",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hcopy": {
+    "description": "HCopy",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hds": {
+    "description": "Hiper Digital - System v3.5",
+    "publisher": "Béla Szalontai",
+    "year": "1989"
+  },
+  "head": {
+    "description": "Head",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "heartlnd": {
+    "description": "Heartland",
+    "publisher": "Zsolt Szigeti",
+    "year": "1990"
+  },
+  "helikopt": {
+    "description": "Helikopter",
+    "publisher": "SCS - Csongrád",
+    "year": "198?"
+  },
+  "helpbasi": {
+    "description": "HELP BASIC v1.0",
+    "publisher": "Albatross",
+    "year": "198?"
+  },
+  "helpleir": {
+    "description": "HELP BASIC v1.0 Leírás",
+    "publisher": "Albatross",
+    "year": "198?"
+  },
+  "hexa": {
+    "description": "Decimális - Hexadecimális átváltó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hlndisme": {
+    "description": "Heartland Ismertető",
+    "publisher": "Zsolt Szigeti",
+    "year": "1990"
+  },
+  "holdra": {
+    "description": "Holdra szállás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "homoru": {
+    "description": "Homorú Tükör Képalkotása",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hotelneu": {
+    "description": "Hotel Neutron",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hoterjed": {
+    "description": "Hőterjedés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hullam": {
+    "description": "Hullámcsomag",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hungaror": {
+    "description": "Hungaroring",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "ikplusz": {
+    "description": "Interkarate+",
+    "publisher": "Tom",
+    "year": "1989"
+  },
+  "ikplusza": {
+    "description": "Interkarate+ (Alt)",
+    "publisher": "Tom",
+    "year": "1989"
+  },
+  "inv182": {
+    "description": "Angol-Magyar Szótár és Kikérdező - INV182",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "inv183": {
+    "description": "Német-Magyar Szótár és Kikérdező - INV183",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "inv24": {
+    "description": "Űrcsata - INV24",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "invaders": {
+    "description": "Space Invaders",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "invazio": {
+    "description": "Invázió",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "iqteszt": {
+    "description": "IQ Teszt",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "jancsi": {
+    "description": "Jancsi a Várban",
+    "publisher": "STV",
+    "year": "1986"
+  },
+  "jatekok": {
+    "description": "Játékok",
+    "publisher": "Jozsef Petrovszky - Szabolcs Rota",
+    "year": "198?"
+  },
+  "jegyzet": {
+    "description": "Jegyzettömb",
+    "publisher": "Gyorgy Gerlai",
+    "year": "1987"
+  },
+  "jetpack": {
+    "description": "Jet Pack",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "joy": {
+    "description": "Joy",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "jumpjack": {
+    "description": "Jumping Jack",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "jupiter": {
+    "description": "Jupiter",
+    "publisher": "Péter Dörner",
+    "year": "198?"
+  },
+  "kalandfi": {
+    "description": "Kalandozások a Fizikában",
+    "publisher": "Octasoft",
+    "year": "1987"
+  },
+  "kalandoz": {
+    "description": "Kalandozz Velem!",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kalannen": {
+    "description": "Kalán néni puzzle",
+    "publisher": "Sume Software Service",
+    "year": "1989"
+  },
+  "kangaroo": {
+    "description": "Crazy Kangaroo",
+    "publisher": "Videoton",
+    "year": "1986"
+  },
+  "kangarooa": {
+    "description": "Crazy Kangaroo (Alt)",
+    "publisher": "Videoton",
+    "year": "1986"
+  },
+  "kangaroob": {
+    "description": "Crazy Kangaroo (Alt 2)",
+    "publisher": "Videoton",
+    "year": "1986"
+  },
+  "kangaroocr": {
+    "description": "Crazy Kangaroo (Cracked)",
+    "publisher": "Videoton",
+    "year": "1986"
+  },
+  "kangaroot": {
+    "description": "Crazy Kangaroo (Trainer)",
+    "publisher": "Videoton",
+    "year": "1986"
+  },
+  "kapkodo": {
+    "description": "Kapkodó",
+    "publisher": "Zsolt",
+    "year": "198?"
+  },
+  "karakter": {
+    "description": "Karakter készítő",
+    "publisher": "Octasoft",
+    "year": "1987"
+  },
+  "karate": {
+    "description": "Karate",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kardhala": {
+    "description": "Kardhalak és Kincsek",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kardhalf": {
+    "description": "Kardhalak és Kincsek (Different)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "keljfelj": {
+    "description": "Keljfeljancsi",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "kem": {
+    "description": "Kém",
+    "publisher": "SPT",
+    "year": "1988"
+  },
+  "kemia": {
+    "description": "Boszorkánykonyha - Kalandozások a Kémiában",
+    "publisher": "Novotrade",
+    "year": "1987"
+  },
+  "kepek": {
+    "description": "Képek",
+    "publisher": "VGy",
+    "year": "1987"
+  },
+  "keprub": {
+    "description": "Keprub",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kepujsag": {
+    "description": "Képújság",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "keresd": {
+    "description": "Keresd a gyűrűt",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "kigyo": {
+    "description": "Kígyó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kigyosja": {
+    "description": "Kigyós Játék",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kigyosjaa": {
+    "description": "Kigyós Játék (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kikzene": {
+    "description": "Kikstart - Zene",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "kimento": {
+    "description": "Kimentő",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kincsatl": {
+    "description": "Kincskereső (Atlas)",
+    "publisher": "Atlas",
+    "year": "1987"
+  },
+  "kincsker": {
+    "description": "Kincskereső",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kiscsava": {
+    "description": "Kis Csavargó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kisersil": {
+    "description": "Kísértetkastély 1",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "kisertet": {
+    "description": "Kísértetkastély",
+    "publisher": "Attila Canjavec",
+    "year": "1989"
+  },
+  "kiserteta": {
+    "description": "Kísértetkastély (Alt)",
+    "publisher": "Attila Canjavec",
+    "year": "1989"
+  },
+  "kisertetb": {
+    "description": "Kísértetkastély (Alt 2)",
+    "publisher": "Attila Canjavec",
+    "year": "1989"
+  },
+  "kismozdo": {
+    "description": "Kismozdony",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "kitoltes": {
+    "description": "Kitöltés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet11": {
+    "description": "Képes Német 1-1 - Szófelismerés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet12": {
+    "description": "Képes Német 1-2 - Szófelismerés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet13": {
+    "description": "Képes Német 1-3 - Szófelismerés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet14": {
+    "description": "Képes Német 1-4 - Szófelismerés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet15": {
+    "description": "Képes Német 1-5 - Szófelismerés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet21": {
+    "description": "Képes Német 2-1 - Szófelismerés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet22": {
+    "description": "Képes Német 2-2 - Szófelismerés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet23": {
+    "description": "Képes Német 2-3 - Szófelismerés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet24": {
+    "description": "Képes Német 2-4 - Szófelismerés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet25": {
+    "description": "Képes Német 2-5 - Szófelismerés",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet31": {
+    "description": "Képes Német 3-1 - Der, Die Das",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet32": {
+    "description": "Képes Német 3-2 - Der, Die Das",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet33": {
+    "description": "Képes Német 3-3 - Der, Die Das",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet34": {
+    "description": "Képes Német 3-4 - Der, Die Das",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet35": {
+    "description": "Képes Német 3-5 - Der, Die Das",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet41": {
+    "description": "Képes Német 4-1 - Ja Oder Nein",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet42": {
+    "description": "Képes Német 4-2 - Ja Oder Nein",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet43": {
+    "description": "Képes Német 4-3 - Ja Oder Nein",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet44": {
+    "description": "Képes Német 4-4 - Ja Oder Nein",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knemet45": {
+    "description": "Képes Német 4-5 - Ja Oder Nein",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "knightlr": {
+    "description": "Knight Lore",
+    "publisher": "'a' Studio",
+    "year": "1985"
+  },
+  "knightlra": {
+    "description": "Knight Lore (Alt)",
+    "publisher": "'a' Studio",
+    "year": "1985"
+  },
+  "knkdemo": {
+    "description": "K&K Soft Szinuszdemo",
+    "publisher": "K&K Soft",
+    "year": "198?"
+  },
+  "kobanya": {
+    "description": "Kőbánya",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kocka": {
+    "description": "Kocka",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kocka98": {
+    "description": "Kocka98",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kockapok": {
+    "description": "Kockapóker",
+    "publisher": "Unisoft GMK",
+    "year": "1986"
+  },
+  "kockapokj": {
+    "description": "Kockapóker (Joystick)",
+    "publisher": "Unisoft GMK",
+    "year": "1986"
+  },
+  "komparsz": {
+    "description": "Komparátor Számítás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kormoci": {
+    "description": "Körmöci Arany",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "korok": {
+    "description": "Körök",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "korong": {
+    "description": "Korongbiliárd",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "korvonal": {
+    "description": "Körvonal",
+    "publisher": "K&K Soft",
+    "year": "198?"
+  },
+  "krok": {
+    "description": "Krok",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kroka": {
+    "description": "Krok (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kugli": {
+    "description": "Kugli",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kukucs": {
+    "description": "Kukucs",
+    "publisher": "King ec Software",
+    "year": "1987"
+  },
+  "kulcs": {
+    "description": "Kulcs",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kulcsha2": {
+    "description": "Kulcsház 2",
+    "publisher": "K&K Soft",
+    "year": "198?"
+  },
+  "kulcshaz": {
+    "description": "Kulcsház",
+    "publisher": "K&K Soft",
+    "year": "198?"
+  },
+  "kulcsjat": {
+    "description": "Kulcs Játék",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kwfb": {
+    "description": "Keywords + F-BASIC 1.0",
+    "publisher": "Péter Bereczky",
+    "year": "1987"
+  },
+  "labdatvc": {
+    "description": "5 Labdajáték",
+    "publisher": "Novotrade",
+    "year": "1987"
+  },
+  "labikigy": {
+    "description": "Labirintus - Kígyós",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "labiri3d": {
+    "description": "Labirintus (3D)",
+    "publisher": "Zoltán Gugi",
+    "year": "198?"
+  },
+  "labirint": {
+    "description": "Labirintus",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "labizold": {
+    "description": "Labirintus (Zoltán Gugi)",
+    "publisher": "Zoltán Gugi",
+    "year": "198?"
+  },
+  "lablesli": {
+    "description": "Labirintus Leslie",
+    "publisher": "Zsolt Dobrovics",
+    "year": "1987"
+  },
+  "laddman": {
+    "description": "Ladderman",
+    "publisher": "Berysoft",
+    "year": "1989"
+  },
+  "laddmana": {
+    "description": "Ladderman (Alt)",
+    "publisher": "Berysoft",
+    "year": "1989"
+  },
+  "lagreno": {
+    "description": "La Grenoiulle",
+    "publisher": "Agilar - Cápasoft",
+    "year": "1991"
+  },
+  "lampacs": {
+    "description": "Bűvös lámpácskák",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lampak": {
+    "description": "Lámpák",
+    "publisher": "István Németh",
+    "year": "1986"
+  },
+  "lede": {
+    "description": "Le Dé",
+    "publisher": "Cápasoft",
+    "year": "198?"
+  },
+  "ledea": {
+    "description": "Le Dé (Alt)",
+    "publisher": "Cápasoft",
+    "year": "198?"
+  },
+  "legvedel": {
+    "description": "Légvédelem",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lennon": {
+    "description": "Lennon",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lepke": {
+    "description": "Mentsd Meg a Lepkéket!",
+    "publisher": "Janos Racz",
+    "year": "198?"
+  },
+  "letiltas": {
+    "description": "Letiltás",
+    "publisher": "Gaba Software",
+    "year": "1986"
+  },
+  "letra": {
+    "description": "Létra",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "letraa": {
+    "description": "Létra (Alt)",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "level3": {
+    "description": "Level Three",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "levelkes": {
+    "description": "Levélkészítő",
+    "publisher": "<unknown>",
+    "year": "1988"
+  },
+  "lezer": {
+    "description": "Lézer",
+    "publisher": "SYS",
+    "year": "1988"
+  },
+  "liba": {
+    "description": "Liba",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lift": {
+    "description": "Lift",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "liftes": {
+    "description": "Liftes Fiú",
+    "publisher": "K&K Soft",
+    "year": "198?"
+  },
+  "lina": {
+    "description": "Lina",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "locomot": {
+    "description": "Locomotion",
+    "publisher": "Mastertronic",
+    "year": "1985"
+  },
+  "logo": {
+    "description": "Logo - Teknocgrafika",
+    "publisher": "László Nagy",
+    "year": "1987"
+  },
+  "logosz": {
+    "description": "Logo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "logosza": {
+    "description": "Logo (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lotto": {
+    "description": "Lotto",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lotto1": {
+    "description": "Lotto (Different)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lottojat": {
+    "description": "Lotto - Jatekot Segito Program",
+    "publisher": "Centrumdata VGMK",
+    "year": "1986"
+  },
+  "lovagito": {
+    "description": "Lovagi Torna",
+    "publisher": "Berysoft",
+    "year": "1988"
+  },
+  "lovascsa": {
+    "description": "Lovascsata",
+    "publisher": "Steve Software",
+    "year": "198?"
+  },
+  "loversen": {
+    "description": "Lóverseny",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "loversena": {
+    "description": "Lóverseny (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lsrutin": {
+    "description": "Load-Save usr Rutinok",
+    "publisher": "Géza Garai",
+    "year": "1986"
+  },
+  "lsrutin2": {
+    "description": "Load-Save usr Rutinok v2",
+    "publisher": "Géza Garai",
+    "year": "1986"
+  },
+  "lsrutin3": {
+    "description": "Load-Save usr Rutinok v3",
+    "publisher": "Géza Garai",
+    "year": "1986"
+  },
+  "macskafo": {
+    "description": "Macskafogó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "magicbal": {
+    "description": "Magic Ball",
+    "publisher": "'a' Studio",
+    "year": "1989"
+  },
+  "magicbala": {
+    "description": "Magic Ball (Alt)",
+    "publisher": "'a' Studio",
+    "year": "1989"
+  },
+  "magyaror": {
+    "description": "Magyarország",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "magyasil": {
+    "description": "Magyarország (SIL)",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "malom": {
+    "description": "Malom (S.P. Studio)",
+    "publisher": "S.P. Studio",
+    "year": "1987"
+  },
+  "malom2": {
+    "description": "Malom",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mandelma": {
+    "description": "Mandelmagic v1.0",
+    "publisher": "Albatross - Flocky Chocs",
+    "year": "198?"
+  },
+  "mandfrak": {
+    "description": "Mandelbrot-Fraktál Generátor",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mariolab": {
+    "description": "Márió a Labirintusban",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "mariolaba": {
+    "description": "Márió a Labirintusban (Alt)",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "marokko": {
+    "description": "Marokkó",
+    "publisher": "'a' Studio",
+    "year": "198?"
+  },
+  "mars": {
+    "description": "Mars",
+    "publisher": "Gigasoft",
+    "year": "1988"
+  },
+  "marsa": {
+    "description": "Mars (Alt)",
+    "publisher": "Gigasoft",
+    "year": "1988"
+  },
+  "masolo1": {
+    "description": "Másoló 1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mastermi": {
+    "description": "Mastermind",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "matrix": {
+    "description": "Mátrix",
+    "publisher": "József Cseh",
+    "year": "1987"
+  },
+  "mav10": {
+    "description": "Számelméleti Programok - MAV 10",
+    "publisher": "Dr. Andras Varga",
+    "year": "198?"
+  },
+  "mav11": {
+    "description": "Egyenletek megoldása - MAV 11",
+    "publisher": "Dr. Andras Varga",
+    "year": "1983"
+  },
+  "mav12": {
+    "description": "Kombinatorikai Programok - MAV 12",
+    "publisher": "Dr. Andras Varga",
+    "year": "1983"
+  },
+  "mav13": {
+    "description": "Függvényábrázolás és transzformáció - MAV 13",
+    "publisher": "Dr. Andras Varga",
+    "year": "1983"
+  },
+  "mav23": {
+    "description": "Gyokkereso - MAV 23",
+    "publisher": "Dr. Andras Varga",
+    "year": "1983"
+  },
+  "mav24": {
+    "description": "Galton Deszka - MAV24",
+    "publisher": "Dr. András Varga",
+    "year": "1983"
+  },
+  "mav26": {
+    "description": "Prímszámok - MAV 26",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "maya": {
+    "description": "Maya",
+    "publisher": "Steve Software",
+    "year": "1986"
+  },
+  "mbas": {
+    "description": "Magyar BASIC v1.2",
+    "publisher": "Albatross",
+    "year": "198?"
+  },
+  "mbashasz": {
+    "description": "Magyar BASIC v1.2 - Hasznalati Utmutato",
+    "publisher": "Albatross",
+    "year": "198?"
+  },
+  "medence": {
+    "description": "Medence",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "memo": {
+    "description": "Memo",
+    "publisher": "<unknown>",
+    "year": "1986"
+  },
+  "memoa": {
+    "description": "Memo (Alt)",
+    "publisher": "<unknown>",
+    "year": "1986"
+  },
+  "memoria": {
+    "description": "Memória",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "memory": {
+    "description": "Memory",
+    "publisher": "VGy",
+    "year": "1986"
+  },
+  "mentohaj": {
+    "description": "Mentőhajó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mentsdme": {
+    "description": "Mentsd Meg Erdélyt",
+    "publisher": "Osmagyar Software",
+    "year": "198?"
+  },
+  "merorezg": {
+    "description": "Merőleges Rezgések",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "merryboy": {
+    "description": "Merryboy",
+    "publisher": "Cápasoft",
+    "year": "1991"
+  },
+  "meseadv": {
+    "description": "Mese-Adventure",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "met_pir": {
+    "description": "Meteor and Pirate",
+    "publisher": "Cápasoft",
+    "year": "1988"
+  },
+  "meteorit": {
+    "description": "Meteorit",
+    "publisher": "K&K Soft",
+    "year": "198?"
+  },
+  "mikropro": {
+    "description": "Z80 Mikroprocesszor",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "millikan": {
+    "description": "Millikan Kísérlete",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "minedout": {
+    "description": "Minedout",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "miniart": {
+    "description": "Mini Art",
+    "publisher": "Tibor Kerekes",
+    "year": "1986"
+  },
+  "miniddt": {
+    "description": "Mini DDT",
+    "publisher": "Gaba Software",
+    "year": "1986"
+  },
+  "minigolf": {
+    "description": "Minigolf",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "miniraj": {
+    "description": "Mini Rajzoló",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "minotaur": {
+    "description": "Minotaurusz",
+    "publisher": "Gigasoft",
+    "year": "198?"
+  },
+  "missgal": {
+    "description": "Mission Galaktic",
+    "publisher": "Hungarie Software",
+    "year": "1987"
+  },
+  "monge": {
+    "description": "Monge",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "monitor": {
+    "description": "Monitor v0.5",
+    "publisher": "Andras Soos",
+    "year": "1990"
+  },
+  "monszkop": {
+    "description": "Monoszkóp",
+    "publisher": "Viktor Varga",
+    "year": "2007"
+  },
+  "motorode": {
+    "description": "Motorodeó",
+    "publisher": "STV - Imre Ehreth",
+    "year": "198?"
+  },
+  "motorode2": {
+    "description": "Motorodeó 2",
+    "publisher": "STV - Imre Ehreth",
+    "year": "198?"
+  },
+  "mozdony": {
+    "description": "Mozdony",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mozdonya": {
+    "description": "Mozdony (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mozgoo": {
+    "description": "Mozgó O",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mozgooa": {
+    "description": "Mozgó O (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mps1000": {
+    "description": "MPS-1000 Beállítás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mralex": {
+    "description": "Mr. Alex",
+    "publisher": "Videoton",
+    "year": "1985"
+  },
+  "mralexa": {
+    "description": "Mr. Alex (Alt)",
+    "publisher": "Videoton",
+    "year": "1985"
+  },
+  "mralexb": {
+    "description": "Mr. Alex (Alt 2)",
+    "publisher": "Videoton",
+    "year": "1985"
+  },
+  "mralexp": {
+    "description": "Mr. Alex (64+)",
+    "publisher": "Videoton",
+    "year": "1985"
+  },
+  "msdeng1": {
+    "description": "Medium State Degree in English - Preparatory Test No. 1",
+    "publisher": "VGy",
+    "year": "1986"
+  },
+  "msdeng2": {
+    "description": "Medium State Degree in English - Preparatory Test No. 2",
+    "publisher": "VGy",
+    "year": "1986"
+  },
+  "msdeng3": {
+    "description": "Medium State Degree in English - Preparatory Test No. 3",
+    "publisher": "VGy",
+    "year": "1986"
+  },
+  "musicdig": {
+    "description": "Music-Digit",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "muu": {
+    "description": "Múú",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nagyfugg": {
+    "description": "Nagy Függvényábrázoló",
+    "publisher": "Novotrade",
+    "year": "1987"
+  },
+  "nasasim": {
+    "description": "NASA Simulator - Space Shuttle",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "naturaba": {
+    "description": "Back to the Nature",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nautilus": {
+    "description": "Nautilus",
+    "publisher": "'a' Studio",
+    "year": "198?"
+  },
+  "nebulus": {
+    "description": "Nebulus",
+    "publisher": "C.S. Software",
+    "year": "198?"
+  },
+  "nightsha": {
+    "description": "Night Shade",
+    "publisher": "'a' Studio",
+    "year": "1985"
+  },
+  "nim": {
+    "description": "Nim",
+    "publisher": "L.S.",
+    "year": "198?"
+  },
+  "ninja": {
+    "description": "Ninja",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "ninjaa": {
+    "description": "Ninja (Alt)",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "ninoo": {
+    "description": "Ninóó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "no": {
+    "description": "Nő",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "novocopy": {
+    "description": "Novotrade-Copy",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "novotape": {
+    "description": "Novotrade-Copy (Tape)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nyakter": {
+    "description": "Nyáktervező",
+    "publisher": "TVCM",
+    "year": "198?"
+  },
+  "nyelvtan": {
+    "description": "Nyelvtanító Program",
+    "publisher": "ZMKMF",
+    "year": "1986"
+  },
+  "nyilvan": {
+    "description": "Nyilvántartó Program",
+    "publisher": "Berysoft",
+    "year": "1989"
+  },
+  "nyulvada": {
+    "description": "Nyúlvadászat",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nyuszi1": {
+    "description": "Nyuszi Olvasni Tanít 1",
+    "publisher": "György Papp - László Ludányi - Mónika Fekete",
+    "year": "198?"
+  },
+  "nyuszi2": {
+    "description": "Nyuszi Olvasni Tanít 2",
+    "publisher": "György Papp - László Ludányi - Mónika Fekete",
+    "year": "198?"
+  },
+  "nyuszi3": {
+    "description": "Nyuszi Olvasni Tanít 3",
+    "publisher": "György Papp - László Ludányi - Mónika Fekete",
+    "year": "198?"
+  },
+  "nyuszi4": {
+    "description": "Nyuszi Olvasni Tanít 4",
+    "publisher": "György Papp - László Ludányi - Mónika Fekete",
+    "year": "198?"
+  },
+  "nyuszi5": {
+    "description": "Nyuszi Olvasni Tanít 5",
+    "publisher": "György Papp - László Ludányi - Mónika Fekete",
+    "year": "198?"
+  },
+  "nyuszi6": {
+    "description": "Nyuszi Olvasni Tanít 6",
+    "publisher": "György Papp - László Ludányi - Mónika Fekete",
+    "year": "198?"
+  },
+  "olajsejk": {
+    "description": "Olajsejk",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "olympski": {
+    "description": "Olympic Ski",
+    "publisher": "Béla Szalontai",
+    "year": "1985"
+  },
+  "optika": {
+    "description": "Optika",
+    "publisher": "Zoltán Rózsavölgyi",
+    "year": "1987"
+  },
+  "ordogmot": {
+    "description": "Ördögmotor",
+    "publisher": "STV",
+    "year": "1990"
+  },
+  "orgona": {
+    "description": "Orgona",
+    "publisher": "László Bata",
+    "year": "1986"
+  },
+  "orjarat": {
+    "description": "Őrjárat",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "ostrom": {
+    "description": "Ostrom",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "oszcilo": {
+    "description": "Digitális Tároló-Oszciloszkóp",
+    "publisher": "<unknown>",
+    "year": "1986"
+  },
+  "oszkar": {
+    "description": "Oszkár a Lovag",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "othel3d": {
+    "description": "Othello 3D",
+    "publisher": "Ludanyi Laszlo",
+    "year": "1988"
+  },
+  "othello": {
+    "description": "Othello",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "othelloa": {
+    "description": "Othello (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ottolova": {
+    "description": "Ottó a Lovag",
+    "publisher": "Laszlo Giricz",
+    "year": "198?"
+  },
+  "outhang": {
+    "description": "Out-Hang",
+    "publisher": "Szabolcs Rota",
+    "year": "198?"
+  },
+  "pacific": {
+    "description": "Pacific",
+    "publisher": "Zsolt Dobrovics",
+    "year": "1987"
+  },
+  "pacifica": {
+    "description": "Pacific (Alt)",
+    "publisher": "Zsolt Dobrovics",
+    "year": "1987"
+  },
+  "packman": {
+    "description": "Pack Man",
+    "publisher": "'a' Studio",
+    "year": "198?"
+  },
+  "packmana": {
+    "description": "Pack Man (Alt)",
+    "publisher": "'a' Studio",
+    "year": "198?"
+  },
+  "panik": {
+    "description": "Pánik",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "panikj": {
+    "description": "Pánik (Joystick)",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "panikste": {
+    "description": "Pánik (Steve Software)",
+    "publisher": "Steve Software",
+    "year": "1988"
+  },
+  "para3ter": {
+    "description": "Parabolikus Háromszög Területe",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "parbaj": {
+    "description": "Párbaj",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "parbaja": {
+    "description": "Párbaj (Alt)",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "parhrezg": {
+    "description": "Párhuzamos Rezgések",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "paszians": {
+    "description": "Pasziánsz",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "peepshow": {
+    "description": "Peep Show",
+    "publisher": "STV",
+    "year": "1984"
+  },
+  "pemzli": {
+    "description": "Pemzli",
+    "publisher": "King ec Software",
+    "year": "198?"
+  },
+  "pentolei": {
+    "description": "Pentomino Leírás",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "pentomin": {
+    "description": "Pentomino",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "perifer": {
+    "description": "Kazetta-Floppy Választó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "pifubrut": {
+    "description": "Pifu és Brutusz",
+    "publisher": "SonySoft",
+    "year": "1988"
+  },
+  "piki01": {
+    "description": "Piki 01",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki02": {
+    "description": "Piki 02",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki03": {
+    "description": "Piki 03",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki04": {
+    "description": "Piki 04",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki05": {
+    "description": "Piki 05 (Bad)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki06": {
+    "description": "Piki 06",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki07": {
+    "description": "Piki 07",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki08": {
+    "description": "Piki 08",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki09": {
+    "description": "Piki 09",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki10": {
+    "description": "Piki 10",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki11": {
+    "description": "Piki 11",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki16": {
+    "description": "Piki 16",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki17": {
+    "description": "Piki 17",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piki18": {
+    "description": "Piki 18",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piktor": {
+    "description": "Piktor",
+    "publisher": "B.B. Soft",
+    "year": "1987"
+  },
+  "piktora": {
+    "description": "Piktor (Alt)",
+    "publisher": "B.B. Soft",
+    "year": "1987"
+  },
+  "pilota": {
+    "description": "Pilóta",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "pinkpan2": {
+    "description": "Pink Panther II",
+    "publisher": "Cápasoft",
+    "year": "1989"
+  },
+  "pinkpant": {
+    "description": "Pink Panther",
+    "publisher": "Cápasoft",
+    "year": "1989"
+  },
+  "pipemani": {
+    "description": "Pipemánia",
+    "publisher": "Béla Csatlós",
+    "year": "1991"
+  },
+  "planpara": {
+    "description": "Plánparalell Lemez",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "poker": {
+    "description": "Póker",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "pokerbar": {
+    "description": "Póker (Barsony)",
+    "publisher": "Barsony",
+    "year": "1988"
+  },
+  "pokernyi": {
+    "description": "Póker (Nyitrai)",
+    "publisher": "Nyitrai",
+    "year": "1986"
+  },
+  "poklakom": {
+    "description": "Póklakoma",
+    "publisher": "Novotrade",
+    "year": "1987"
+  },
+  "poklakoma": {
+    "description": "Póklakoma (Alt)",
+    "publisher": "Novotrade",
+    "year": "1987"
+  },
+  "pokok": {
+    "description": "Pókok - Pókvadászat",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "pokol7": {
+    "description": "A Pokol 7 Kapuja",
+    "publisher": "Molmix",
+    "year": "198?"
+  },
+  "ponthalm": {
+    "description": "Ponthalmazok",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "poseidon": {
+    "description": "Poseidon Kincse",
+    "publisher": "Novotrade",
+    "year": "1989"
+  },
+  "pottompe": {
+    "description": "Pöttöm Peti",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "potty": {
+    "description": "Potty",
+    "publisher": "Nándor Sieben",
+    "year": "198?"
+  },
+  "prgrend": {
+    "description": "Program Rendező",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "prokat": {
+    "description": "Program Katalógus",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "questfor": {
+    "description": "Quest for Tires",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "raceace": {
+    "description": "Race Ace",
+    "publisher": "Zsolt Szigeti",
+    "year": "1990"
+  },
+  "raceacea": {
+    "description": "Race Ace (Alt)",
+    "publisher": "Zsolt Szigeti",
+    "year": "1990"
+  },
+  "radar": {
+    "description": "Radar",
+    "publisher": "Flighter Software",
+    "year": "1987"
+  },
+  "raiders": {
+    "description": "Raiders of the Lost Ark",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "rajz": {
+    "description": "Rajz",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "rajzolo": {
+    "description": "Rajzoló",
+    "publisher": "Atlas",
+    "year": "1987"
+  },
+  "raketa": {
+    "description": "Rakéta",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "rallye": {
+    "description": "Rallye",
+    "publisher": "Zsolt Dobrovics",
+    "year": "1987"
+  },
+  "ramazuri": {
+    "description": "Ramazuri",
+    "publisher": "Béla Csatlós",
+    "year": "1988"
+  },
+  "ramleir": {
+    "description": "RAM Címek Leírása",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "rastan": {
+    "description": "Rastan the Barbarian Fighter",
+    "publisher": "C.S. Software",
+    "year": "198?"
+  },
+  "raszter": {
+    "description": "TVC Raszterdemo",
+    "publisher": "Peter Rakos",
+    "year": "198?"
+  },
+  "rckor": {
+    "description": "RC Kör",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "reaktor": {
+    "description": "Reaktor",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "reflex": {
+    "description": "Reflex",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "relativ": {
+    "description": "Relatív Koordináta",
+    "publisher": "Laci's Soft Studio",
+    "year": "198?"
+  },
+  "repules": {
+    "description": "Repülés szimulátor BASIC-ül",
+    "publisher": "SPLTD",
+    "year": "1987"
+  },
+  "repulesa": {
+    "description": "Repülés szimulátor BASIC-ül (Alt)",
+    "publisher": "SPLTD",
+    "year": "1987"
+  },
+  "repulesb": {
+    "description": "Repülés szimulátor BASIC-ül (Alt 2)",
+    "publisher": "SPLTD",
+    "year": "1987"
+  },
+  "repulesc": {
+    "description": "Repülés szimulátor BASIC-ül (Alt 3)",
+    "publisher": "SPLTD",
+    "year": "1987"
+  },
+  "reversi": {
+    "description": "Reversi",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "rezgom": {
+    "description": "Rezgőmozgás",
+    "publisher": "HLV",
+    "year": "1985"
+  },
+  "riderboy": {
+    "description": "Riderboy",
+    "publisher": "<unknown>",
+    "year": "1991"
+  },
+  "robhood": {
+    "description": "Robin Hood - Íjászverseny",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "rohamm": {
+    "description": "Rohamm",
+    "publisher": "GATO Bt.",
+    "year": "1989"
+  },
+  "rohammt": {
+    "description": "Rohamm (Trainer)",
+    "publisher": "GATO Bt.",
+    "year": "1989"
+  },
+  "rokavads": {
+    "description": "Rókavadász",
+    "publisher": "Cápasoft",
+    "year": "1988"
+  },
+  "rombolo": {
+    "description": "Romboló",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "rombolop": {
+    "description": "Romboló (Police Sowtver)",
+    "publisher": "Police Sowtver",
+    "year": "198?"
+  },
+  "rombolov": {
+    "description": "Romboló (Sandor Vekony)",
+    "publisher": "Sandor Vekony",
+    "year": "1987"
+  },
+  "rondo": {
+    "description": "Rondo",
+    "publisher": "Ubisoft",
+    "year": "1988"
+  },
+  "rondoa": {
+    "description": "Rondo (Alt)",
+    "publisher": "Ubisoft",
+    "year": "1988"
+  },
+  "rowar": {
+    "description": "RoWar",
+    "publisher": "GATO Bt.",
+    "year": "1991"
+  },
+  "rtadatba": {
+    "description": "Rádiótechnika Adatbázis",
+    "publisher": "Atlas",
+    "year": "198?"
+  },
+  "rubikkoc": {
+    "description": "Rubik Kocka",
+    "publisher": "Varga Softver",
+    "year": "1988"
+  },
+  "rulett": {
+    "description": "Roulette De Luxe",
+    "publisher": "Ferenc Dobai",
+    "year": "1986"
+  },
+  "sajtvajo": {
+    "description": "Sajtvájó",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "sajtvajoa": {
+    "description": "Sajtvájó (Alt)",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "samantha": {
+    "description": "Samantha Fox's Strip",
+    "publisher": "Buddha Softhouse",
+    "year": "1988"
+  },
+  "samuraj": {
+    "description": "Samuraj",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "samuraja": {
+    "description": "Samuraj (Alt)",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "samus": {
+    "description": "Samus' Guest",
+    "publisher": "CSC Software - Skoda Software",
+    "year": "1987"
+  },
+  "sarkany": {
+    "description": "Sárkánybarlang",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "satiroza": {
+    "description": "Satírozás",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "satirozaa": {
+    "description": "Satírozás (Alt)",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "scroll": {
+    "description": "Scroll",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sex": {
+    "description": "A TVC 1. Szexoktató Programja",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sexshow": {
+    "description": "A TVC 2. Szexoktató Programja",
+    "publisher": "Buddha Softhouse",
+    "year": "1988"
+  },
+  "simul86": {
+    "description": "Simulator 86 - Flight Simulator",
+    "publisher": "S.P. Studio",
+    "year": "1986"
+  },
+  "sinus": {
+    "description": "Sinus",
+    "publisher": "HLV",
+    "year": "1985"
+  },
+  "sirartur": {
+    "description": "Sir Artur",
+    "publisher": "Béla Takács",
+    "year": "1989"
+  },
+  "siraso": {
+    "description": "Sírásó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sokoban": {
+    "description": "Soko-ban",
+    "publisher": "Ubul",
+    "year": "1990"
+  },
+  "sokobang": {
+    "description": "Soko-Ban Game",
+    "publisher": "Andras Soos",
+    "year": "1989"
+  },
+  "soliter": {
+    "description": "Soliter",
+    "publisher": "Unisoft GMK",
+    "year": "1986"
+  },
+  "spacesap": {
+    "description": "Space Sapper",
+    "publisher": "Novotrade",
+    "year": "1987"
+  },
+  "spacesapa": {
+    "description": "Space Sapper (Alt)",
+    "publisher": "Novotrade",
+    "year": "1987"
+  },
+  "spectrum": {
+    "description": "Spectrum",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "spherdem": {
+    "description": "Spherical Demo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "spherica": {
+    "description": "Spherical",
+    "publisher": "C.S. Software",
+    "year": "198?"
+  },
+  "sphericaa": {
+    "description": "Spherical (Alt)",
+    "publisher": "C.S. Software",
+    "year": "198?"
+  },
+  "sprinter": {
+    "description": "Sprinter",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "sprite": {
+    "description": "Sprite Készítő (Cracked by Csabi)",
+    "publisher": "Attila Canjavec",
+    "year": "198?"
+  },
+  "spritele": {
+    "description": "Sprite Készítő - Leírás",
+    "publisher": "Attila Canjavec",
+    "year": "198?"
+  },
+  "spritepr": {
+    "description": "Sprite-Programozó",
+    "publisher": "Mono-Sw",
+    "year": "198?"
+  },
+  "spyhunt": {
+    "description": "Spy Hunter",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "starship": {
+    "description": "Starship",
+    "publisher": "Zoltan Arvai",
+    "year": "1989"
+  },
+  "start": {
+    "description": "Start",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "startrek": {
+    "description": "Star Trek",
+    "publisher": "<unknown>",
+    "year": "1987"
+  },
+  "startreka": {
+    "description": "Star Trek (Alt, Newer?)",
+    "publisher": "<unknown>",
+    "year": "1987"
+  },
+  "starwars": {
+    "description": "Star Wars",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "stevens": {
+    "description": "Steven's Gambling",
+    "publisher": "BirdSoft",
+    "year": "1986"
+  },
+  "stonesca": {
+    "description": "Stone Scamp",
+    "publisher": "Zsolt Szíjártó",
+    "year": "1988"
+  },
+  "stonescaa": {
+    "description": "Stone Scamp (Örökélet)",
+    "publisher": "Zsolt Szíjártó",
+    "year": "1988"
+  },
+  "strategm": {
+    "description": "Strategem 2/C - Gazdasági Döntésjáték",
+    "publisher": "Bela Kertesz",
+    "year": "1987"
+  },
+  "stripfrg": {
+    "description": "Strip-Forgó (Piros)",
+    "publisher": "Ubisoft",
+    "year": "198?"
+  },
+  "stripfrga": {
+    "description": "Strip-Forgó (Zold)",
+    "publisher": "Ubisoft",
+    "year": "198?"
+  },
+  "su1": {
+    "description": "SU 1",
+    "publisher": "Octasoft",
+    "year": "198?"
+  },
+  "su2": {
+    "description": "SU 2",
+    "publisher": "Octasoft",
+    "year": "198?"
+  },
+  "su3": {
+    "description": "SU 3",
+    "publisher": "Octasoft",
+    "year": "198?"
+  },
+  "su4": {
+    "description": "SU 4",
+    "publisher": "Octasoft",
+    "year": "198?"
+  },
+  "su5": {
+    "description": "SU 5",
+    "publisher": "Octasoft",
+    "year": "198?"
+  },
+  "su6": {
+    "description": "SU 6",
+    "publisher": "Octasoft",
+    "year": "198?"
+  },
+  "submarin": {
+    "description": "Submarine",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "submarina": {
+    "description": "Submarine (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sulyesz": {
+    "description": "Süllyesztő",
+    "publisher": "Magyar-Holi Studió",
+    "year": "1986"
+  },
+  "surito": {
+    "description": "Sürítő",
+    "publisher": "Gigasoft",
+    "year": "198?"
+  },
+  "szakmai": {
+    "description": "Szakmai számítások",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "szamolas": {
+    "description": "Számolás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szamolog": {
+    "description": "Számológép",
+    "publisher": "István Rábai",
+    "year": "1986"
+  },
+  "szankove": {
+    "description": "Szánkóverseny",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szankovea": {
+    "description": "Szánkóverseny (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szellova": {
+    "description": "Széllovas",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szextesz": {
+    "description": "Szex-Teszt",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szinbox": {
+    "description": "Színbox",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szingorg": {
+    "description": "Színgörgetés Keretben",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szinresz": {
+    "description": "Színre színt",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "szinsav": {
+    "description": "Színsávok",
+    "publisher": "István Tóth",
+    "year": "198?"
+  },
+  "szinteti": {
+    "description": "Szintetizátor",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sziv10": {
+    "description": "Szivárvány 10",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sziv11": {
+    "description": "Szivárvány 11",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sziv12": {
+    "description": "Szivárvány 12",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sziv13": {
+    "description": "Szivárvány 13",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sziv14": {
+    "description": "Szivárvány 14",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sziv15": {
+    "description": "Szivárvány 15",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szocske": {
+    "description": "Szöcske",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szoliter": {
+    "description": "Szoliter (TVCM)",
+    "publisher": "TVCM",
+    "year": "1992"
+  },
+  "szolitny": {
+    "description": "Szoliter (Nyitrai)",
+    "publisher": "Nyitrai",
+    "year": "1986"
+  },
+  "szolitny03": {
+    "description": "Szoliter (Nyitrai, Newer)",
+    "publisher": "Nyitrai",
+    "year": "2003"
+  },
+  "szonda": {
+    "description": "Szonda",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "szopoker": {
+    "description": "Szó-Póker",
+    "publisher": "Jozsef Szoldatics - Jozsefne Szoldatics",
+    "year": "198?"
+  },
+  "szorny": {
+    "description": "Szörny",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "szornyek": {
+    "description": "Szörnyek az útvesztőben",
+    "publisher": "C.S. Software",
+    "year": "198?"
+  },
+  "szorzas": {
+    "description": "Szorzás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szorzasa": {
+    "description": "Szorzás (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "szoved": {
+    "description": "Kazettás Szövegszerkesztő TV-Computerre",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "szurosz": {
+    "description": "Szűrő Számítás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tabla": {
+    "description": "Bűvös Tábla",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "talalkoz": {
+    "description": "Találkozók",
+    "publisher": "Béla Csatlós",
+    "year": "198?"
+  },
+  "tamadas": {
+    "description": "Támadás",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tankcsat": {
+    "description": "Tankcsata",
+    "publisher": "László Nagy",
+    "year": "1988"
+  },
+  "tapecopy": {
+    "description": "File Másolás - Magnó to Floppy",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tapedos": {
+    "description": "File Másoló - VTDOS to Floppy",
+    "publisher": "<unknown>",
+    "year": "1990"
+  },
+  "tapsi": {
+    "description": "Tapsi és a Nagy Vadász",
+    "publisher": "L&M Software",
+    "year": "1988"
+  },
+  "tartalom": {
+    "description": "Tartalom",
+    "publisher": "<unknown>",
+    "year": "1992"
+  },
+  "teke": {
+    "description": "Teke",
+    "publisher": "L&M Software",
+    "year": "198?"
+  },
+  "telex1": {
+    "description": "Telex - 1500 szó magyarul 1",
+    "publisher": "Novotrade - Octasoft",
+    "year": "1988"
+  },
+  "telex1a": {
+    "description": "Telex - 1500 szó magyarul 1 (Alt)",
+    "publisher": "Novotrade - Octasoft",
+    "year": "1988"
+  },
+  "telex2": {
+    "description": "Telex - 1500 szó magyarul 2",
+    "publisher": "Novotrade - Octasoft",
+    "year": "1988"
+  },
+  "telex2a": {
+    "description": "Telex - 1500 szó magyarul 2 (Alt)",
+    "publisher": "Novotrade - Octasoft",
+    "year": "1988"
+  },
+  "tenbrick": {
+    "description": "Ten Brick",
+    "publisher": "Cápasoft",
+    "year": "198?"
+  },
+  "tenbricka": {
+    "description": "Ten Brick (Alt)",
+    "publisher": "Cápasoft",
+    "year": "198?"
+  },
+  "tetris": {
+    "description": "Tetris",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tievadas": {
+    "description": "TIE Vadász",
+    "publisher": "László Nagy",
+    "year": "1988"
+  },
+  "tiktakto": {
+    "description": "Tik-Tak-To",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tisztala": {
+    "description": "Tiszta Lappal",
+    "publisher": "King ec Software",
+    "year": "1987"
+  },
+  "toccs": {
+    "description": "Toccsanó Játék",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "toli": {
+    "description": "Toli v1.0",
+    "publisher": "GATO Bt.",
+    "year": "1993"
+  },
+  "tomjerry": {
+    "description": "Tom és Jerry",
+    "publisher": "Gigasoft",
+    "year": "198?"
+  },
+  "tomjerrya": {
+    "description": "Tom és Jerry (Alt)",
+    "publisher": "Gigasoft",
+    "year": "198?"
+  },
+  "tomjerryb": {
+    "description": "Tom és Jerry (Alt 2)",
+    "publisher": "Gigasoft",
+    "year": "198?"
+  },
+  "tomjerrycr": {
+    "description": "Tom és Jerry (Cracked)",
+    "publisher": "Gigasoft",
+    "year": "198?"
+  },
+  "torokind": {
+    "description": "Török Induló",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "torokinda": {
+    "description": "Török Induló (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "torpe": {
+    "description": "Törpe",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "torpedca": {
+    "description": "Torpedó (Attila Canjavec)",
+    "publisher": "Attila Canjavec",
+    "year": "1988"
+  },
+  "torpedo": {
+    "description": "Torpedó",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "torpedou": {
+    "description": "Torpedó (Unisoft)",
+    "publisher": "Unisoft GMK",
+    "year": "1986"
+  },
+  "torpedoua": {
+    "description": "Torpedó (Unisoft, Alt)",
+    "publisher": "Unisoft GMK",
+    "year": "1986"
+  },
+  "torpeism": {
+    "description": "Törpe Ismertető",
+    "publisher": "Béla Takács",
+    "year": "198?"
+  },
+  "toto": {
+    "description": "Toto - Jatekot Segito Program",
+    "publisher": "Centrumdata VGMK",
+    "year": "1986"
+  },
+  "tower": {
+    "description": "Tower",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "towera": {
+    "description": "Tower (Alt)",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "trafosz": {
+    "description": "Transzformátor Méretezés",
+    "publisher": "H&M",
+    "year": "198?"
+  },
+  "trailer": {
+    "description": "Trailer",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "transver": {
+    "description": "Transversion",
+    "publisher": "TVCM",
+    "year": "198?"
+  },
+  "transvert": {
+    "description": "Transversion (Trainer)",
+    "publisher": "TVCM",
+    "year": "198?"
+  },
+  "treasure": {
+    "description": "Treasure-Hunting",
+    "publisher": "Béla Szalontai",
+    "year": "1988"
+  },
+  "tunnel": {
+    "description": "Tunnel",
+    "publisher": "Ubisoft",
+    "year": "198?"
+  },
+  "turboesp": {
+    "description": "Turbo Esprit",
+    "publisher": "Zsolt Szigeti",
+    "year": "198?"
+  },
+  "turbojac": {
+    "description": "Turbo Jack",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "turborud": {
+    "description": "Turbó Rudi",
+    "publisher": "'a' Studio",
+    "year": "1987"
+  },
+  "turboruda": {
+    "description": "Turbó Rudi (Alt)",
+    "publisher": "'a' Studio",
+    "year": "1987"
+  },
+  "tvball": {
+    "description": "TV Ball",
+    "publisher": "'a' Studio",
+    "year": "1988"
+  },
+  "tvballa": {
+    "description": "TV Ball (Alt)",
+    "publisher": "'a' Studio",
+    "year": "1988"
+  },
+  "tvc-ass": {
+    "description": "TVC-Assembler v1.0",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tvc123": {
+    "description": "TVC123 - Táblázatkezelő",
+    "publisher": "Sandor Vekony",
+    "year": "1989"
+  },
+  "tvcass11": {
+    "description": "TVC-Assembler v1.1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tvcass14": {
+    "description": "TVC-Assembler v1.4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tvcass14a": {
+    "description": "TVC-Assembler v1.4 (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tvccopy": {
+    "description": "TV-Computer Copy",
+    "publisher": "Géza Garai",
+    "year": "1986"
+  },
+  "tvcdcopy": {
+    "description": "TVC Disk Copy 1.0",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tvcedi": {
+    "description": "TVC-EDI",
+    "publisher": "IHS GMK",
+    "year": "1987"
+  },
+  "tvceprom": {
+    "description": "TVC-EPROM Programming System",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tvclist2": {
+    "description": "TVC Program Lista 2",
+    "publisher": "Molmix",
+    "year": "198?"
+  },
+  "tvclista": {
+    "description": "TVC Programlista",
+    "publisher": "Erno Kiraly",
+    "year": "198?"
+  },
+  "tvpoker": {
+    "description": "TV-Póker (Blacksoft)",
+    "publisher": "Blacksoft",
+    "year": "1987"
+  },
+  "tvpokern": {
+    "description": "TV-Póker (Novotrade)",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "tvpokerna": {
+    "description": "TV-Póker (Novotrade, Alt)",
+    "publisher": "Novotrade",
+    "year": "198?"
+  },
+  "tvstack": {
+    "description": "TV Stack (Cracked by Nameless)",
+    "publisher": "'a' Studio",
+    "year": "1987"
+  },
+  "tvtenisz": {
+    "description": "TV-Tenisz",
+    "publisher": "Zsolt Dobrovics",
+    "year": "1987"
+  },
+  "ubulball": {
+    "description": "Ubul's Ball",
+    "publisher": "Ubisoft",
+    "year": "1988"
+  },
+  "ubulesap": {
+    "description": "Ubul és a Pince",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ufo": {
+    "description": "UFO",
+    "publisher": "STV",
+    "year": "1985"
+  },
+  "ufoka": {
+    "description": "Ufóka",
+    "publisher": "József Kovács",
+    "year": "198?"
+  },
+  "ujawari": {
+    "description": "Új Awari",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "unicopy": {
+    "description": "UniCopy",
+    "publisher": "Zsolt Szigyártó",
+    "year": "1987"
+  },
+  "unicum": {
+    "description": "Unicum",
+    "publisher": "Red-Green-Blue Software - Compi System",
+    "year": "1988"
+  },
+  "unicuma": {
+    "description": "Unicum (Alt)",
+    "publisher": "Red-Green-Blue Software - Compi System",
+    "year": "1988"
+  },
+  "unicumb": {
+    "description": "Unicum (Alt 2)",
+    "publisher": "Red-Green-Blue Software - Compi System",
+    "year": "1988"
+  },
+  "unifel": {
+    "description": "Univerzális Feleltető Program",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "unigraph": {
+    "description": "Unigraph v1.0",
+    "publisher": "Béla Csatlós",
+    "year": "198?"
+  },
+  "urhaszim": {
+    "description": "Űrhajó Szimulátor",
+    "publisher": "Vincze Szoftver",
+    "year": "198?"
+  },
+  "urjatek": {
+    "description": "Űrjáték",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ursiklo": {
+    "description": "Űrsikló",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "utsebido": {
+    "description": "Út-sebesség-idő Grafikon",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "vadasz": {
+    "description": "Vadász",
+    "publisher": "Csaba Kiss",
+    "year": "1987"
+  },
+  "vadnyuga": {
+    "description": "Vadnyugat",
+    "publisher": "Szabolcs Pőcze",
+    "year": "1987"
+  },
+  "varak": {
+    "description": "Várak",
+    "publisher": "Zoltan Halasz",
+    "year": "198?"
+  },
+  "varaka": {
+    "description": "Várak (Alt)",
+    "publisher": "Zoltan Halasz",
+    "year": "198?"
+  },
+  "varazsec": {
+    "description": "Varázsecset",
+    "publisher": "Novotrade",
+    "year": "1988"
+  },
+  "varazseca": {
+    "description": "Varázsecset (Alt)",
+    "publisher": "Novotrade",
+    "year": "1988"
+  },
+  "varazsecb": {
+    "description": "Varázsecset (Alt 2)",
+    "publisher": "Novotrade",
+    "year": "1988"
+  },
+  "varazsgo": {
+    "description": "Varázsgömb",
+    "publisher": "Berysoft",
+    "year": "198?"
+  },
+  "varos": {
+    "description": "Város",
+    "publisher": "Ferenc Dobai",
+    "year": "1986"
+  },
+  "vasarely": {
+    "description": "Vasarely",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "vaterlo": {
+    "description": "Vaterlo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "vektorgf": {
+    "description": "Perspektívikus Real-Time Vektor",
+    "publisher": "Peter Rakos",
+    "year": "198?"
+  },
+  "vezetes": {
+    "description": "Vezetés",
+    "publisher": "King ec Software",
+    "year": "1987"
+  },
+  "vidas64": {
+    "description": "VIDAS - TVC Assembler",
+    "publisher": "Tamas Bakos - Tibor Bereznai",
+    "year": "1986"
+  },
+  "videoton": {
+    "description": "Videoton",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "viditype": {
+    "description": "VidiType",
+    "publisher": "Géza Garai",
+    "year": "1986"
+  },
+  "vidzene": {
+    "description": "Videoton Zene",
+    "publisher": "JozsiSoft",
+    "year": "198?"
+  },
+  "vigyori": {
+    "description": "Vigyori",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "viliaban": {
+    "description": "Vili a Bányász",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "viliabanj": {
+    "description": "Vili A Banyasz (Joystick)",
+    "publisher": "STV",
+    "year": "1991"
+  },
+  "vipera": {
+    "description": "Vipera",
+    "publisher": "Atlas",
+    "year": "1987"
+  },
+  "viszhang": {
+    "description": "Visszhang",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "volleyba": {
+    "description": "Volleyball",
+    "publisher": "Berysoft",
+    "year": "1990"
+  },
+  "volleybaa": {
+    "description": "Volleyball (Alt)",
+    "publisher": "Berysoft",
+    "year": "1990"
+  },
+  "vtbridzs": {
+    "description": "VT Bridzs",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "vtbridzsa": {
+    "description": "VT Bridzs (Alt)",
+    "publisher": "Videoton",
+    "year": "198?"
+  },
+  "vtbridzsb": {
+    "description": "VT Bridzs (Alt 2)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "walltris": {
+    "description": "Walltris",
+    "publisher": "STV",
+    "year": "198?"
+  },
+  "war2100": {
+    "description": "War in 2100",
+    "publisher": "TVCM",
+    "year": "198?"
+  },
+  "war2200d": {
+    "description": "War in 2200 Demo",
+    "publisher": "TVCM",
+    "year": "198?"
+  },
+  "wimbledo": {
+    "description": "Wimbledon",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "wimbledoa": {
+    "description": "Wimbledon (Alt)",
+    "publisher": "Software in LUX",
+    "year": "198?"
+  },
+  "wst": {
+    "description": "World Soccer Trainer",
+    "publisher": "STV",
+    "year": "1994"
+  },
+  "xeno": {
+    "description": "Xeno",
+    "publisher": "STV",
+    "year": "1986"
+  },
+  "xstore": {
+    "description": "Hexadecimális töltőprogram",
+    "publisher": "<unknown>",
+    "year": "1987"
+  },
+  "yogi": {
+    "description": "Yogi",
+    "publisher": "Agilar",
+    "year": "198?"
+  },
+  "zenebona": {
+    "description": "Zenebona",
+    "publisher": "'a' Studio",
+    "year": "1986"
+  },
+  "zenegyar": {
+    "description": "Zenegyár v1.3",
+    "publisher": "Software in LUX",
+    "year": "1989"
+  },
+  "zenek": {
+    "description": "Zenék",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "zeneszer": {
+    "description": "Zeneszerző",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "zenezene": {
+    "description": "Zene-Zene-Zene",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "zenezenea": {
+    "description": "Zene-Zene-Zene (Alt Colors)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "zsidu3": {
+    "description": "Zsid U3",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "zsir": {
+    "description": "Zsír",
+    "publisher": "Berysoft",
+    "year": "198?"
+  }
+}

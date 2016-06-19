@@ -1,0 +1,752 @@
+{
+  "3dgolf": {
+    "description": "3D Golf Simulation",
+    "publisher": "T&E Soft",
+    "year": "1983"
+  },
+  "3dufo": {
+    "description": "3D UFO",
+    "publisher": "Compac",
+    "year": "1984"
+  },
+  "alde": {
+    "description": "Aldebaran",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1981"
+  },
+  "alien": {
+    "description": "The Alien",
+    "publisher": "富士音響マイコンセンターRAM (Fuji Onkyo RAM)",
+    "year": "1983"
+  },
+  "alienfld": {
+    "description": "Alien Field in 7",
+    "publisher": "CPU",
+    "year": "1983"
+  },
+  "amtruck": {
+    "description": "American Truck",
+    "publisher": "日本テレネット (Nihon Telenet)",
+    "year": "1985"
+  },
+  "anko": {
+    "description": "Rukteu Dark Castle - Dragon Angel's Miracle Voyage (Vol. 1)",
+    "publisher": "エニックス (Enix)",
+    "year": "1984"
+  },
+  "ankosei": {
+    "description": "Star Arthur Densetsu II - Ankoku Seiun",
+    "publisher": "T&E Soft",
+    "year": "1983"
+  },
+  "backgamm": {
+    "description": "Backgammon",
+    "publisher": "新企画社 (Shinkikakusha)",
+    "year": "1985"
+  },
+  "battlep": {
+    "description": "Battle Pod",
+    "publisher": "コムパック (Compaq)",
+    "year": "1984"
+  },
+  "bdash": {
+    "description": "Boulder Dash",
+    "publisher": "コンプティーク (Comptiq)",
+    "year": "1984"
+  },
+  "bjbonus": {
+    "description": "Black Jack & Bonus",
+    "publisher": "アスキー (ASCII)",
+    "year": "1981?"
+  },
+  "blckonyx": {
+    "description": "The Black Onyx",
+    "publisher": "B·P·S (Bullet-Proof Software)",
+    "year": "1985"
+  },
+  "bokosuka": {
+    "description": "Bokosuka Wars",
+    "publisher": "アスキー (ASCII)",
+    "year": "1985"
+  },
+  "bushman": {
+    "description": "Happy Bushman",
+    "publisher": "ポニカ (PonyCa)",
+    "year": "1983"
+  },
+  "capricrn": {
+    "description": "Minami no Shima no Capricorn",
+    "publisher": "九十九電機 (Tsukumo Denki)",
+    "year": "1983"
+  },
+  "castle": {
+    "description": "The Castle",
+    "publisher": "アスキー (ASCII)",
+    "year": "1985"
+  },
+  "chackn": {
+    "description": "Chack'n Pop",
+    "publisher": "ニデコム (Nidecom)",
+    "year": "1984"
+  },
+  "chackna": {
+    "description": "Chack'n Pop (Alt)",
+    "publisher": "ニデコム (Nidecom)",
+    "year": "1984"
+  },
+  "chima": {
+    "description": "Youkai Tantei Chima Chima",
+    "publisher": "ボーステック (Bothtec)",
+    "year": "1985"
+  },
+  "choplift": {
+    "description": "Choplifter",
+    "publisher": "ソフトプロ (Soft Pro)",
+    "year": "1984"
+  },
+  "cockpit": {
+    "description": "The Cockpit",
+    "publisher": "コムパック (Compaq)",
+    "year": "1984"
+  },
+  "coron": {
+    "description": "Coron",
+    "publisher": "アスキー (ASCII)",
+    "year": "1985"
+  },
+  "daidasso": {
+    "description": "Dai Dassou",
+    "publisher": "キャリーラボ (Carry Lab)",
+    "year": "1985"
+  },
+  "delphis": {
+    "description": "Delphis",
+    "publisher": "コムパック (Compaq)",
+    "year": "1984"
+  },
+  "demofm8": {
+    "description": "FM8 Demonstration",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dezeni": {
+    "description": "Dezeni Land",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1983"
+  },
+  "digdug": {
+    "description": "Dig Dug",
+    "publisher": "電波新聞社 (Dempa Shinbunsha)",
+    "year": "1984"
+  },
+  "doordmk2": {
+    "description": "Door Door mkII",
+    "publisher": "エニックス (Enix)",
+    "year": "1985"
+  },
+  "dslayer": {
+    "description": "Dragon Slayer",
+    "publisher": "日本ファルコム (Nihon Falcom)",
+    "year": "1984"
+  },
+  "earthbnd": {
+    "description": "Earthbound",
+    "publisher": "クリスタルソフト (Xtal Soft)",
+    "year": "1983"
+  },
+  "eggbomb": {
+    "description": "Egg Bomb",
+    "publisher": "コムパック (Compaq)",
+    "year": "1983"
+  },
+  "enterprs": {
+    "description": "Enterprise",
+    "publisher": "MIA",
+    "year": "1983"
+  },
+  "explorer": {
+    "description": "Explorer",
+    "publisher": "日本ソフト (Nihon Soft) / ハード (Hard)",
+    "year": "1983"
+  },
+  "f2gp": {
+    "description": "F2 Grand Prix",
+    "publisher": "キャリーラボ (Carry Lab)",
+    "year": "1985"
+  },
+  "fieldwar": {
+    "description": "Field Wars",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1983"
+  },
+  "firecrys": {
+    "description": "The Fire Crystal",
+    "publisher": "B·P·S (Bullet-Proof Software)",
+    "year": "1986?"
+  },
+  "flappy": {
+    "description": "Flappy",
+    "publisher": "デービーソフト (dB-Soft)",
+    "year": "1984"
+  },
+  "fm7demo": {
+    "description": "FM-7 Demo",
+    "publisher": "富士通 (Fujitsu)",
+    "year": "19??"
+  },
+  "fm8pl3": {
+    "description": "FM-8 Program Library No. 3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "fm8pl4": {
+    "description": "FM-8 Program Library No. 4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "fmdemo": {
+    "description": "FM Ongen Demo",
+    "publisher": "富士通 (Fujitsu)",
+    "year": "19??"
+  },
+  "frontlin": {
+    "description": "Front Line",
+    "publisher": "ニデコム (Nidecom)",
+    "year": "1983"
+  },
+  "fsim": {
+    "description": "Flight Simulator",
+    "publisher": "キャリーラボ (Carry Lab)",
+    "year": "1983"
+  },
+  "galaga": {
+    "description": "Galaga",
+    "publisher": "電波新聞社 (Dempa Shinbunsha)",
+    "year": "1985"
+  },
+  "galaxy": {
+    "description": "Galaxy Fly",
+    "publisher": "コムパック (Compaq)",
+    "year": "1983"
+  },
+  "gbank": {
+    "description": "Gutchan Bank",
+    "publisher": "日本ソフトバンク (Nihon SoftBank)",
+    "year": "1985"
+  },
+  "gbanka": {
+    "description": "Gutchan Bank (Alt)",
+    "publisher": "日本ソフトバンク (Nihon SoftBank)",
+    "year": "1985"
+  },
+  "gorg": {
+    "description": "Kyoshin Gorg",
+    "publisher": "アスキー (ASCII)",
+    "year": "1985"
+  },
+  "graph": {
+    "description": "Graph",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "gundam": {
+    "description": "Kidou Senshi Gundam - Jet Stream Attack",
+    "publisher": "バンダイ (Bandai)",
+    "year": "1984"
+  },
+  "gunman": {
+    "description": "Gunman",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1983"
+  },
+  "hanafuda": {
+    "description": "Hanafuda Kyo",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1984"
+  },
+  "hhouse": {
+    "description": "Haunted House",
+    "publisher": "コムパック (Compaq)",
+    "year": "1983"
+  },
+  "hisha": {
+    "description": "Hisha",
+    "publisher": "キャリーラボ (Carry Lab)",
+    "year": "1985"
+  },
+  "hydlide": {
+    "description": "Hydlide",
+    "publisher": "T&E Soft",
+    "year": "1985"
+  },
+  "hydlide2": {
+    "description": "Hydlide II - Shine of Darkness",
+    "publisher": "T&E Soft",
+    "year": "1986"
+  },
+  "hydlide2a": {
+    "description": "Hydlide II - Shine of Darkness (Alt)",
+    "publisher": "T&E Soft",
+    "year": "1986"
+  },
+  "hydlidea": {
+    "description": "Hydlide (Alt)",
+    "publisher": "T&E Soft",
+    "year": "1985"
+  },
+  "ixion": {
+    "description": "Ixion",
+    "publisher": "トライベース (Try-Base)",
+    "year": "1985"
+  },
+  "jelda2": {
+    "description": "Jelda 2",
+    "publisher": "キャリーラボ (Carry Lab)",
+    "year": "1984"
+  },
+  "kaguya": {
+    "description": "Ohi! Kaguya Hime - Kinuginu no Wakare",
+    "publisher": "ポニカ (PonyCa)",
+    "year": "1983"
+  },
+  "kaito": {
+    "description": "Karei Naru Kaitou",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1983"
+  },
+  "kamuiken": {
+    "description": "Kamui no Ken",
+    "publisher": "コンプティーク (Comptiq)",
+    "year": "1985"
+  },
+  "karuizaw": {
+    "description": "Karuizawa Yuukai Annai",
+    "publisher": "エニックス (Enix)",
+    "year": "1985"
+  },
+  "kiki": {
+    "description": "Mari-chan Kiki Ippatsu",
+    "publisher": "エニックス (Enix)",
+    "year": "1983"
+  },
+  "kokushi": {
+    "description": "Kokushi Musou",
+    "publisher": "ポニカ (Pony Canyon)",
+    "year": "1983"
+  },
+  "kscope": {
+    "description": "Kaleidoscope",
+    "publisher": "HOT・B",
+    "year": "1985"
+  },
+  "ldrun": {
+    "description": "Lode Runner",
+    "publisher": "ソフトプロ (Soft Pro)",
+    "year": "1984"
+  },
+  "littleg": {
+    "description": "Little Gang",
+    "publisher": "日本ソフト (Nihon Soft) / ハード (Hard)",
+    "year": "1983"
+  },
+  "lizard": {
+    "description": "Lizard",
+    "publisher": "マイクロキャビン (Micro Cabin)",
+    "year": "1985"
+  },
+  "llander": {
+    "description": "Lunar Lander",
+    "publisher": "アスキー (ASCII)",
+    "year": "1981?"
+  },
+  "lupin3": {
+    "description": "Lupin the 3",
+    "publisher": "CPU",
+    "year": "1983"
+  },
+  "magus": {
+    "description": "Magus",
+    "publisher": "ソフトプロ (Soft Pro)",
+    "year": "1985"
+  },
+  "mainroyl": {
+    "description": "Main Royal",
+    "publisher": "アスキー (ASCII)",
+    "year": "1984"
+  },
+  "mappy": {
+    "description": "Mappy",
+    "publisher": "電波新聞社 (Dempa Shinbunsha)",
+    "year": "1986"
+  },
+  "mariosp": {
+    "description": "Mario Bros. Special",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1984"
+  },
+  "mazinger": {
+    "description": "Mazinger Z",
+    "publisher": "バンダイ (Bandai)",
+    "year": "1984"
+  },
+  "meibo": {
+    "description": "Meibo",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mephius": {
+    "description": "Star Arthur Densetsu I - Wakusei Mephius",
+    "publisher": "T&E Soft",
+    "year": "1983"
+  },
+  "midway": {
+    "description": "Midway",
+    "publisher": "電波新聞社 (Dempa Shinbunsha)",
+    "year": "1983"
+  },
+  "molemole": {
+    "description": "Mole Mole",
+    "publisher": "クロスメディアソフト (Cross Media Soft)",
+    "year": "1985"
+  },
+  "mrbatfry": {
+    "description": "Mr. Butterfly",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1983"
+  },
+  "mu": {
+    "description": "Mu Tairiku no Nazo",
+    "publisher": "マジカルズゥ (MagicalZoo)",
+    "year": "1983"
+  },
+  "muscat": {
+    "description": "Muscat Arrange",
+    "publisher": "アスキー (ASCII)",
+    "year": "1984"
+  },
+  "mysteryh": {
+    "description": "Mystery House",
+    "publisher": "スタークラフト (Starcraft)",
+    "year": "1983"
+  },
+  "new7demo": {
+    "description": "FM-NEW7 Demo",
+    "publisher": "富士通 (Fujitsu)",
+    "year": "19??"
+  },
+  "nihon": {
+    "description": "Nihon Kaikaisen",
+    "publisher": "ソフトネット (Soft Net)",
+    "year": "1983"
+  },
+  "ninjakun": {
+    "description": "Ninja-kun",
+    "publisher": "日本デクスタ (Nihon Dexter)",
+    "year": "1986"
+  },
+  "ninjakuna": {
+    "description": "Ninja-kun (Alt)",
+    "publisher": "日本デクスタ (Nihon Dexter)",
+    "year": "1986"
+  },
+  "nobunaga": {
+    "description": "Nobunaga no Yabou",
+    "publisher": "光栄 (Koei)",
+    "year": "1983"
+  },
+  "ougon": {
+    "description": "Ougon no Haka",
+    "publisher": "マジカルズゥ (MagicalZoo)",
+    "year": "1983"
+  },
+  "oushou": {
+    "description": "Oushou",
+    "publisher": "キャリーラボ (Carry Lab)",
+    "year": "1983"
+  },
+  "pacman": {
+    "description": "Pac-Man",
+    "publisher": "電波新聞社 (Dempa Shinbunsha)",
+    "year": "1984"
+  },
+  "panic": {
+    "description": "Joshi Ryou Panic",
+    "publisher": "エニックス (Enix)",
+    "year": "1983"
+  },
+  "penguin": {
+    "description": "Penguin-kun",
+    "publisher": "日本ソフト (Nihon Soft) / ハード (Hard)",
+    "year": "1983"
+  },
+  "perseus": {
+    "description": "Corageous Perseus",
+    "publisher": "コスモスコンピュータ (Cosmos Computer)",
+    "year": "1984?"
+  },
+  "portpia": {
+    "description": "Portopia Renzoku Satsujin Jiken",
+    "publisher": "エニックス (Enix)",
+    "year": "1983"
+  },
+  "private": {
+    "description": "Joshidai-sei Private",
+    "publisher": "日本ファルコム (Nihon Falcom)",
+    "year": "1984"
+  },
+  "proyakyu": {
+    "description": "Pro Yakyu Super Simulation",
+    "publisher": "JDS",
+    "year": "1983"
+  },
+  "psychic": {
+    "description": "Psychic City",
+    "publisher": "HOT・B",
+    "year": "1984"
+  },
+  "punchbal": {
+    "description": "Punch Ball Mario Bros.",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1984"
+  },
+  "punchbala": {
+    "description": "Punch Ball Mario Bros. (Alt)",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1984"
+  },
+  "pushpul2": {
+    "description": "Push Pull II",
+    "publisher": "Compac",
+    "year": "1985"
+  },
+  "raizer": {
+    "description": "Chikyuu Senshi Raizer",
+    "publisher": "エニックス (Enix)",
+    "year": "1985"
+  },
+  "rallyx": {
+    "description": "Rally-X",
+    "publisher": "電波新聞社 (Dempa Shinbunsha)",
+    "year": "1984"
+  },
+  "rallyxa": {
+    "description": "Rally-X (Alt)",
+    "publisher": "電波新聞社 (Dempa Shinbunsha)",
+    "year": "1984"
+  },
+  "renju": {
+    "description": "Renju",
+    "publisher": "九十九電機 (Tsukumo Denki)",
+    "year": "1981"
+  },
+  "riglas": {
+    "description": "Riglas",
+    "publisher": "ランダムハウス (Random House)",
+    "year": "1986"
+  },
+  "ringnoue": {
+    "description": "Ring no Ue wa - Dai Sawagi",
+    "publisher": "日本ソフトバンク (Nihon SoftBank)",
+    "year": "1984"
+  },
+  "sanjutsu": {
+    "description": "Iwasanjutsunari",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1982"
+  },
+  "sbasebal": {
+    "description": "Super Baseball",
+    "publisher": "サワダデンキ (Sawada Denki)",
+    "year": "1983"
+  },
+  "serapis": {
+    "description": "Serapis no Shinden",
+    "publisher": "T.I.P.",
+    "year": "1984"
+  },
+  "sfighter": {
+    "description": "Space Fighter",
+    "publisher": "<unknown>",
+    "year": "1982"
+  },
+  "sokoban": {
+    "description": "Sokoban",
+    "publisher": "シンキングラビット (Thinking Rabbit)",
+    "year": "1982"
+  },
+  "sokoban2": {
+    "description": "Sokoban 2",
+    "publisher": "シンキングラビット (Thinking Rabbit)",
+    "year": "1984"
+  },
+  "sonic": {
+    "description": "Sonic Boom",
+    "publisher": "コムパック (Compaq)",
+    "year": "1985"
+  },
+  "sort": {
+    "description": "Sort Kenkyuu",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "southern": {
+    "description": "Southern Cross",
+    "publisher": "バンダイ (Bandai)",
+    "year": "1984"
+  },
+  "spacebee": {
+    "description": "Space Bee",
+    "publisher": "キャリーラボ (Carry Lab)",
+    "year": "1983"
+  },
+  "spc2030": {
+    "description": "Space 2030",
+    "publisher": "ブレーンコンピュータ (Brain Computer)",
+    "year": "1983"
+  },
+  "spcwarp": {
+    "description": "Space Warp",
+    "publisher": "スターパック (Star Pack)",
+    "year": "1984"
+  },
+  "sphinx": {
+    "description": "Sphinx",
+    "publisher": "ツクモ (Tsukumo)",
+    "year": "1984"
+  },
+  "startrek": {
+    "description": "Star Trek",
+    "publisher": "九十九電機 (Tsukumo Denki)",
+    "year": "1981"
+  },
+  "strhouse": {
+    "description": "Strange House",
+    "publisher": "スターパック (Star Pack)",
+    "year": "1984"
+  },
+  "sumwint": {
+    "description": "Summer Winter",
+    "publisher": "アスキー (ASCII)",
+    "year": "1981?"
+  },
+  "tankgame": {
+    "description": "Tank Game",
+    "publisher": "九十九電機 (Tsukumo Denki)",
+    "year": "1983?"
+  },
+  "tdown": {
+    "description": "Touch Down",
+    "publisher": "ウィンキーソフト (Winky Soft)",
+    "year": "1985"
+  },
+  "ter4001": {
+    "description": "Star Arthur Densetsu III - Terra 4001",
+    "publisher": "T&E Soft",
+    "year": "1984"
+  },
+  "tforce": {
+    "description": "Thunder Force",
+    "publisher": "テクノソフト (Tecno Soft)",
+    "year": "1984"
+  },
+  "tforcea": {
+    "description": "Thunder Force (Alt)",
+    "publisher": "テクノソフト (Tecno Soft)",
+    "year": "1984"
+  },
+  "tokyons": {
+    "description": "Tokyo Nampa Street",
+    "publisher": "エニックス (Enix)",
+    "year": "1985"
+  },
+  "tomathim": {
+    "description": "Salad no Kuni no Tomato Hime",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1984"
+  },
+  "triton": {
+    "description": "Triton",
+    "publisher": "ザインソフト (Sein Soft)",
+    "year": "1986"
+  },
+  "udice": {
+    "description": "Ultra Dice",
+    "publisher": "スターパック (Star Pack)",
+    "year": "1984"
+  },
+  "ultramah": {
+    "description": "Ultra Yonin Mahjong",
+    "publisher": "九十九電機 (Tsukumo Denki)",
+    "year": "1983"
+  },
+  "uootoy": {
+    "description": "Uootoy",
+    "publisher": "コムパック (Compaq)",
+    "year": "1984"
+  },
+  "vip": {
+    "description": "VIP - Simplified Language",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "volguard": {
+    "description": "Volguard",
+    "publisher": "デービーソフト (dB-Soft)",
+    "year": "1984"
+  },
+  "wedding": {
+    "description": "Wedding Race",
+    "publisher": "チャンピオンソフト (Champion Soft)",
+    "year": "1983"
+  },
+  "weird2": {
+    "description": "Weird 2",
+    "publisher": "ポリシー (Policy)",
+    "year": "1985"
+  },
+  "wife": {
+    "description": "Holland Tsuma wa Denki Unagi no Yume wo Miruka?",
+    "publisher": "光栄 (Koei)",
+    "year": "1985"
+  },
+  "wordpro": {
+    "description": "Word Processor",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "worldglf": {
+    "description": "World Golf",
+    "publisher": "エニックス (Enix)",
+    "year": "1985"
+  },
+  "yakyuken": {
+    "description": "Yakyu Ken",
+    "publisher": "九十九電機 (Tsukumo Denki)",
+    "year": "1982"
+  },
+  "yakyukyo": {
+    "description": "Yakyu Kyo",
+    "publisher": "ハドソン (Hudson Soft)",
+    "year": "1985"
+  },
+  "yama": {
+    "description": "Yamanotesen Adventure",
+    "publisher": "光栄 (Koei)",
+    "year": "1983"
+  },
+  "zaiko": {
+    "description": "Zaiko Kanri",
+    "publisher": "Kinki Computer Service",
+    "year": "1981"
+  },
+  "zero": {
+    "description": "Zerosen",
+    "publisher": "バンダイ (Bandai)",
+    "year": "1984"
+  },
+  "zgundam": {
+    "description": "Mobile Suit Z Gundam",
+    "publisher": "バンダイ (Bandai)",
+    "year": "1985"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "c128dg40": {
+    "description": "C128/40 Diagnostic (Rev 588121)",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "c128dg40a": {
+    "description": "C128/40 Diagnostic (Rev 789010)",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "c128diag": {
+    "description": "C-128 Diagnostic (v1.1)",
+    "publisher": "Commodore",
+    "year": "1987"
+  },
+  "c128diaga": {
+    "description": "C-128 Diagnostic (v1.4)",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "c128diagb": {
+    "description": "C128/C128D Diagnostic (Rev 785260)",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "c128diagdcr": {
+    "description": "C-128DCR Integral Diag 1.0",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "comal128": {
+    "description": "COMAL 80",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "mach128": {
+    "description": "MACH 128 (v.1A)",
+    "publisher": "Access Software",
+    "year": "1985"
+  },
+  "mach128_2a": {
+    "description": "MACH 128 (v.2A)",
+    "publisher": "Access Software",
+    "year": "1985"
+  },
+  "partn128": {
+    "description": "PARTNER 128",
+    "publisher": "Timeworks",
+    "year": "1985"
+  },
+  "vstar128": {
+    "description": "VizaStar 128: The Information Processor",
+    "publisher": "Viza",
+    "year": "1984"
+  }
+}

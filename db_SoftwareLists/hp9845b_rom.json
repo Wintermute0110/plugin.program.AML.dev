@@ -1,0 +1,107 @@
+{
+  "advprog": {
+    "description": "Advanced Programming",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "asmdev": {
+    "description": "Assembly Development & Execution",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "asmexec": {
+    "description": "Assembly Execution",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "bisync": {
+    "description": "RJE Bisync",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "colorgfx": {
+    "description": "Color Graphics",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "datacomm": {
+    "description": "BASIC Datacomm",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "enhgfx": {
+    "description": "Enhanced Graphics (Rev A)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "enhgfxb": {
+    "description": "Enhanced Graphics (Rev B)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "graphics": {
+    "description": "Graphics",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "image45": {
+    "description": "IMAGE/45 Database Manager (Rev B)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "image45c": {
+    "description": "IMAGE/45 Database Manager (Rev C)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "iolpu": {
+    "description": "I/O LPU (Rev A)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "iolpub": {
+    "description": "I/O LPU (Rev B)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "ioppu": {
+    "description": "I/O PPU (Rev B)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "ioppuc": {
+    "description": "I/O PPU (Rev C)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "mass": {
+    "description": "Mass Storage (Rev B)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "massc": {
+    "description": "Mass Storage (Rev C)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "massd": {
+    "description": "Mass Storage (Rev D)",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "resmgmt": {
+    "description": "Resource Management",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "strucprg": {
+    "description": "Structured Programming",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  },
+  "test": {
+    "description": "Test ROM",
+    "publisher": "Hewlett-Packard",
+    "year": "198?"
+  }
+}

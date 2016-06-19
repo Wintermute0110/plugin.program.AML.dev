@@ -1,0 +1,17 @@
+{
+  "3dstarfg": {
+    "description": "3D Star Fighter",
+    "publisher": "Code Masters",
+    "year": "198?"
+  },
+  "airwolf": {
+    "description": "Airwolf",
+    "publisher": "Elite",
+    "year": "198?"
+  },
+  "nodes": {
+    "description": "Nodes of Yesod",
+    "publisher": "Odin Computer Graphics",
+    "year": "1985"
+  }
+}

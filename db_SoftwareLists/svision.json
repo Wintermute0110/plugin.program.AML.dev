@@ -1,0 +1,342 @@
+{
+  "2in1": {
+    "description": "2 in 1 - Block Buster + Cross High (Euro, USA)",
+    "publisher": "Supervision",
+    "year": "199?"
+  },
+  "2in1a": {
+    "description": "2 in 1 - Hash Blocks + Eagle Plan (Euro, USA)",
+    "publisher": "GTC Inc",
+    "year": "1992"
+  },
+  "alien": {
+    "description": "Alien (Euro, USA)",
+    "publisher": "Supervision",
+    "year": "199?"
+  },
+  "balonfgt": {
+    "description": "Balloon Fight (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "blockbus": {
+    "description": "Block Buster (Euro, USA)",
+    "publisher": "Supervision",
+    "year": "199?"
+  },
+  "brainpow": {
+    "description": "Brain Power (Euro, USA)",
+    "publisher": "Supervision",
+    "year": "199?"
+  },
+  "bubbwrld": {
+    "description": "Bubble World",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "carrier": {
+    "description": "Carrier (Euro, USA)",
+    "publisher": "Travellmate",
+    "year": "199?"
+  },
+  "cavewond": {
+    "description": "Cave Wonders (Euro, USA)",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "challtnk": {
+    "description": "Challenger Tank (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "chimera": {
+    "description": "Chimera (Euro, USA)",
+    "publisher": "Supervision",
+    "year": "199?"
+  },
+  "chinesch": {
+    "description": "Chinese Checkers",
+    "publisher": "Sachen",
+    "year": "1992"
+  },
+  "classcas": {
+    "description": "Classic Casino",
+    "publisher": "Bon Treasure",
+    "year": "1993"
+  },
+  "climber": {
+    "description": "Climber",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "crystbal": {
+    "description": "Crystball (Euro, USA)",
+    "publisher": "Travellmate",
+    "year": "1991"
+  },
+  "danceblk": {
+    "description": "Dancing Block",
+    "publisher": "Thin Chen Enterprise",
+    "year": "1992"
+  },
+  "dhero": {
+    "description": "Delta Hero (Euro, USA)",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "dreamwld": {
+    "description": "Dream World",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "eaglplan": {
+    "description": "Eagle Plan (Euro, USA)",
+    "publisher": "GTC Inc.",
+    "year": "1992"
+  },
+  "earthdef": {
+    "description": "Earth Defender (Euro, USA)",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "fatcraft": {
+    "description": "Fatal Craft (Euro, USA)",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "fcombat": {
+    "description": "Final Combat (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "fcombata": {
+    "description": "Final Combat (Alt)",
+    "publisher": "Thin Chen Enterprise",
+    "year": "1992"
+  },
+  "galaxy": {
+    "description": "Galaxy Fighter (Euro, USA)",
+    "publisher": "Thin Chen Enterprise",
+    "year": "1992"
+  },
+  "galcrus": {
+    "description": "Galactic Crusader (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "gp": {
+    "description": "Grand Prix (Euro, USA)",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "happyp": {
+    "description": "Happy Pairs (Euro, USA)",
+    "publisher": "Sachen",
+    "year": "1992"
+  },
+  "happyrac": {
+    "description": "Happy Race",
+    "publisher": "Sachen",
+    "year": "1992"
+  },
+  "hashbloc": {
+    "description": "Hash Blocks (Euro, USA)",
+    "publisher": "GTC Inc",
+    "year": "1991"
+  },
+  "herohawk": {
+    "description": "Hero Hawk",
+    "publisher": "Thin Chen Enterprise",
+    "year": "1992"
+  },
+  "herokid": {
+    "description": "Hero Kid (Euro, USA)",
+    "publisher": "Hartung",
+    "year": "1992"
+  },
+  "honeybee": {
+    "description": "Honey Bee (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "jackyluc": {
+    "description": "Jacky Lucky (Euro, USA)",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "jagbombr": {
+    "description": "Jaguar Bomber (Euro, USA)",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "johnadv": {
+    "description": "John Adventure (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "jrnywest": {
+    "description": "Jouney to the West",
+    "publisher": "Watara?",
+    "year": "199?"
+  },
+  "juggler": {
+    "description": "Juggler (Euro, USA)",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "kabiisl": {
+    "description": "Kabi Island - Gold in Island (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "kitchenw": {
+    "description": "Kitchen War",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "kungfust": {
+    "description": "Kung-Fu Street",
+    "publisher": "Thin Chen Enterprise",
+    "year": "1993"
+  },
+  "linear": {
+    "description": "Linear Racing (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "maginx": {
+    "description": "Magincross (Euro, USA)",
+    "publisher": "Thin Chen Enterprise",
+    "year": "1992"
+  },
+  "mattablt": {
+    "description": "Matta Blatta (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "mjleitai": {
+    "description": "Mahjang Leitai",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "olympict": {
+    "description": "Olympic Trials (Euro, USA)",
+    "publisher": "Watara",
+    "year": "1992"
+  },
+  "p52sea": {
+    "description": "P-52 Sea Battle (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "pacboy": {
+    "description": "PacBoy & Mouse (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "pacificb": {
+    "description": "Pacific Battle",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "penguinh": {
+    "description": "Penguin Hideout (Euro, USA)",
+    "publisher": "Thin Chen Enterprise",
+    "year": "1992"
+  },
+  "policebu": {
+    "description": "Police Bust (Euro, USA)",
+    "publisher": "Bon Treasure",
+    "year": "199?"
+  },
+  "popoteam": {
+    "description": "Popo Team",
+    "publisher": "Sachen",
+    "year": "1992"
+  },
+  "pyramid": {
+    "description": "Pyramid (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "recycled": {
+    "description": "Recycle Design",
+    "publisher": "Hartung",
+    "year": "199?"
+  },
+  "sblock": {
+    "description": "Super Block (Euro, USA)",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "scaffold": {
+    "description": "Scaffolder",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "skong": {
+    "description": "Super Kong (Euro, USA)",
+    "publisher": "Thin Chen Enterprise",
+    "year": "1992"
+  },
+  "soccerch": {
+    "description": "Soccer Champion (Euro, USA)",
+    "publisher": "Hartung",
+    "year": "199?"
+  },
+  "sonnyxpr": {
+    "description": "Sonny X'press",
+    "publisher": "Watera",
+    "year": "199?"
+  },
+  "spang": {
+    "description": "Super Pang",
+    "publisher": "Sachen",
+    "year": "1992"
+  },
+  "spcfghtr": {
+    "description": "Space Fighter",
+    "publisher": "Bon Treasure",
+    "year": "1992"
+  },
+  "sssnake": {
+    "description": "SSSnake (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "tasac": {
+    "description": "Tasac 2010 (Euro, USA)",
+    "publisher": "Thin Chen Enterprise",
+    "year": "1992"
+  },
+  "tennis92": {
+    "description": "Tennis Pro '92 (Euro, USA)",
+    "publisher": "B.I.T.S.",
+    "year": "1992"
+  },
+  "thunter": {
+    "description": "Treasure Hunter (Euro, USA)",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "tshoot": {
+    "description": "Thunder Shooting",
+    "publisher": "Thin Chen Enterprise",
+    "year": "1992"
+  },
+  "tvlink": {
+    "description": "TV-Link",
+    "publisher": "Watara",
+    "year": "199?"
+  },
+  "untchble": {
+    "description": "Untouchable",
+    "publisher": "Bon Treasure",
+    "year": "199?"
+  },
+  "wittycat": {
+    "description": "Witty Cat",
+    "publisher": "Bon Treasure",
+    "year": "199?"
+  }
+}

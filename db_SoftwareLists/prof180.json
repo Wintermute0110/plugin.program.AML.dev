@@ -1,0 +1,12 @@
+{
+  "cpm22": {
+    "description": "CP/M 2.2",
+    "publisher": "CONITEC",
+    "year": "1985"
+  },
+  "cpm30": {
+    "description": "CP/M 3.0",
+    "publisher": "CONITEC",
+    "year": "1985"
+  }
+}

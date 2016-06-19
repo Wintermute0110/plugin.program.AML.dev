@@ -1,0 +1,637 @@
+{
+  "280zzap": {
+    "description": "280 Zzzap / Dodgem",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "adssm": {
+    "description": "ADS System Monitor (Prototype)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "amazmaze": {
+    "description": "Amazing Maze / Tic-Tac-Toe",
+    "publisher": "Bally",
+    "year": "1979"
+  },
+  "artiduel": {
+    "description": "Artillery Duel",
+    "publisher": "Astrocade",
+    "year": "1982"
+  },
+  "artiduelp1": {
+    "description": "Artillery Duel (Prototype 19820523)",
+    "publisher": "Astrocade",
+    "year": "1982"
+  },
+  "artiduelp2": {
+    "description": "Artillery Duel (Prototype Alt)",
+    "publisher": "Astrocade",
+    "year": "1982"
+  },
+  "artiduelp3": {
+    "description": "Artillery Duel (Prototype Alt 2)",
+    "publisher": "Astrocade",
+    "year": "1982"
+  },
+  "artjello": {
+    "description": "Artillery Duel / O-Jello",
+    "publisher": "Perkins Engineering and Mike White",
+    "year": "1986"
+  },
+  "astrobas": {
+    "description": "Bally BASIC (Astrovision)",
+    "publisher": "Astrovision",
+    "year": "1981"
+  },
+  "astrobat": {
+    "description": "Astro Battle",
+    "publisher": "Bally",
+    "year": "1979"
+  },
+  "balchecn": {
+    "description": "BallyCheck (for new BIOS)",
+    "publisher": "RGB Electronics",
+    "year": "1981"
+  },
+  "balcheco": {
+    "description": "BallyCheck (for old BIOS)",
+    "publisher": "RGB Electronics",
+    "year": "1981"
+  },
+  "ballypin": {
+    "description": "Bally Pin",
+    "publisher": "Bally",
+    "year": "1979"
+  },
+  "baseball": {
+    "description": "Tornado Baseball / Handball / Hockey / Tennis",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "bbasdemo": {
+    "description": "Bally BASIC Demo",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "bbasic": {
+    "description": "Bally BASIC",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "biorhy": {
+    "description": "BioRhythm",
+    "publisher": "Astrovision",
+    "year": "1981"
+  },
+  "blckjack": {
+    "description": "Black Jack / Acey Deucey / Poker",
+    "publisher": "Bally",
+    "year": "1979"
+  },
+  "blueutil": {
+    "description": "Blue RAM Utility",
+    "publisher": "Perkins Engineering and Ken Lill",
+    "year": "1986"
+  },
+  "bowling": {
+    "description": "Bowling (Prototype)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "brb10": {
+    "description": "Blue RAM BASIC 1.0",
+    "publisher": "Perkins Engineering",
+    "year": "1980"
+  },
+  "brb10p": {
+    "description": "Blue RAM BASIC 1.0 (Prototype)",
+    "publisher": "Perkins Engineering",
+    "year": "1980"
+  },
+  "brb11": {
+    "description": "Blue RAM BASIC 1.1",
+    "publisher": "Perkins Engineering",
+    "year": "1981"
+  },
+  "brckyard": {
+    "description": "Brickyard / Clowns",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "bstdroid": {
+    "description": "Blast Droids",
+    "publisher": "Esoterica",
+    "year": "1983"
+  },
+  "buylove": {
+    "description": "Can't Buy Me Love (Prototype)",
+    "publisher": "Richard Degler and George Moses",
+    "year": "1986"
+  },
+  "c4simon": {
+    "description": "Connect 4 / Simon",
+    "publisher": "Robert Leake, Harry Hanson, Brett Bilbrey, Joe Borrello, and Mike White",
+    "year": "1986"
+  },
+  "candyman": {
+    "description": "Candyman",
+    "publisher": "L&M Software and Mike White",
+    "year": "1986"
+  },
+  "cclimber": {
+    "description": "Crazy Climber",
+    "publisher": "Riff Raff Games",
+    "year": "2011"
+  },
+  "checkbac": {
+    "description": "BASIC Checkers / Backgammon",
+    "publisher": "John Collins, WaveMakers, and Mike White",
+    "year": "1988"
+  },
+  "checkers": {
+    "description": "Checkers (Prototype)",
+    "publisher": "Bally",
+    "year": "19??"
+  },
+  "chicken": {
+    "description": "Chicken",
+    "publisher": "The Bit Fiddlers and Mike White",
+    "year": "1986"
+  },
+  "claim": {
+    "description": "Claim Jumper",
+    "publisher": "L&M Software and Mike White",
+    "year": "1986"
+  },
+  "colbook": {
+    "description": "Coloring Book (Prototype)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "collwack": {
+    "description": "Collision Course / Wack-A-Mole",
+    "publisher": "WaveMakers and Mike White",
+    "year": "1986"
+  },
+  "colorbas": {
+    "description": "Bally Color BASIC (Prototype)",
+    "publisher": "Bally",
+    "year": "19??"
+  },
+  "conan": {
+    "description": "Conan The Barbarian!",
+    "publisher": "Astrocade and Dave Carson Software",
+    "year": "1985"
+  },
+  "conanp": {
+    "description": "Conan The Barbarian! (Prototype)",
+    "publisher": "Astrocade",
+    "year": "1982"
+  },
+  "cosmicrd": {
+    "description": "Cosmic Raiders",
+    "publisher": "Astrocade",
+    "year": "1983"
+  },
+  "cosmicrd35": {
+    "description": "Cosmic Raiders (Proto v3.5)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "cosmicrd36": {
+    "description": "Cosmic Raiders (Proto v3.6)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "cosmicrda": {
+    "description": "Cosmic Raiders (Proto, Alt)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "cosmicrdb": {
+    "description": "Cosmic Raiders (Proto, Alt 2)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "dealdemo": {
+    "description": "Dealer Demo",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "dogpatch": {
+    "description": "Dogpatch",
+    "publisher": "Bally",
+    "year": "1980"
+  },
+  "eightday": {
+    "description": "Eight Days A Week (Prototype)",
+    "publisher": "Richard Degler and George Moses",
+    "year": "1986"
+  },
+  "fawn": {
+    "description": "Fawn Dungeon (Prototype, first version)",
+    "publisher": "Barry McCleave",
+    "year": "1981"
+  },
+  "fawna": {
+    "description": "Fawn Dungeon (Prototype, second version)",
+    "publisher": "Barry McCleave",
+    "year": "1981"
+  },
+  "feelfine": {
+    "description": "I Feel Fine (Prototype)",
+    "publisher": "Richard Degler and George Moses",
+    "year": "1986"
+  },
+  "flymonk": {
+    "description": "Flying Ace / Monkey Jump / Gong The Kong",
+    "publisher": "WaveMakers and Mike White",
+    "year": "1986"
+  },
+  "football": {
+    "description": "Football",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "galactic": {
+    "description": "Galactic Invasion",
+    "publisher": "Astrovision",
+    "year": "1981"
+  },
+  "galaxian": {
+    "description": "Galaxian",
+    "publisher": "Astrovision",
+    "year": "1981"
+  },
+  "gateesc": {
+    "description": "The Gate Escape",
+    "publisher": "WaveMakers and Mike White",
+    "year": "1986"
+  },
+  "golddig": {
+    "description": "Golddigger, Goldrush (Prototype, 19840811))",
+    "publisher": "Dave Carson and Ken Lill",
+    "year": "1984"
+  },
+  "golddiga": {
+    "description": "Golddigger, Goldrush (Prototype Alt)",
+    "publisher": "Dave Carson and Ken Lill",
+    "year": "198?"
+  },
+  "golddigb": {
+    "description": "Golddigger, Goldrush (Prototype Alt 2)",
+    "publisher": "Dave Carson and Ken Lill",
+    "year": "198?"
+  },
+  "grandprx": {
+    "description": "Grand Prix",
+    "publisher": "Astrovision",
+    "year": "1981"
+  },
+  "hardday": {
+    "description": "A Hard Day's Night (Prototype)",
+    "publisher": "Richard Degler and George Moses",
+    "year": "1986"
+  },
+  "icbmatk": {
+    "description": "ICBM Attack",
+    "publisher": "Spectre Systems",
+    "year": "1982"
+  },
+  "icbmatkp": {
+    "description": "ICBM Attack (Prototype)",
+    "publisher": "Spectre Systems",
+    "year": "1982"
+  },
+  "jigqb2b": {
+    "description": "Great American Jigsaw / QB-2B",
+    "publisher": "Esoterica, WaveMakers, and Mike White",
+    "year": "1986"
+  },
+  "letitbe": {
+    "description": "Let It Be (Prototype)",
+    "publisher": "Richard Degler and George Moses",
+    "year": "1986"
+  },
+  "life": {
+    "description": "Life",
+    "publisher": "Richard Degler",
+    "year": "1985"
+  },
+  "lttrmtch": {
+    "description": "Letter Match / Spell 'n Score / Crosswords",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "matk": {
+    "description": "Missile Attack",
+    "publisher": "Spectre Systems and Mike White",
+    "year": "1985"
+  },
+  "mazeman": {
+    "description": "Mazeman",
+    "publisher": "Dave Carson Software",
+    "year": "1984"
+  },
+  "mazemanp": {
+    "description": "Mazeman (Prototype)",
+    "publisher": "Dave Carson Software",
+    "year": "1984"
+  },
+  "mlangman": {
+    "description": "Machine Language Manager",
+    "publisher": "The Bit Fiddlers",
+    "year": "1982"
+  },
+  "mscandy": {
+    "description": "Ms. Candyman",
+    "publisher": "L&M Software",
+    "year": "1983"
+  },
+  "muncher": {
+    "description": "Muncher",
+    "publisher": "Astrocade, Phillip Harris, and Alternative Engineering",
+    "year": "1983"
+  },
+  "musicmak": {
+    "description": "Music Maker",
+    "publisher": "Astrocade and Dave Carson Software",
+    "year": "1985"
+  },
+  "musicmakp": {
+    "description": "Music Maker (Prototype v3.7)",
+    "publisher": "Astrocade",
+    "year": "1982"
+  },
+  "musicmakp2": {
+    "description": "Music Maker (Prototype Alt)",
+    "publisher": "Astrocade",
+    "year": "1982"
+  },
+  "nodie": {
+    "description": "No-Die!",
+    "publisher": "Astrocade, Dave Carson, and Mike White",
+    "year": "1984"
+  },
+  "oldyaht": {
+    "description": "Old Bent Nose / Yahtzee",
+    "publisher": "Bob Wiseman and Mike White",
+    "year": "1987"
+  },
+  "outpost": {
+    "description": "Outpost 19",
+    "publisher": "WaveMakers and Mike White",
+    "year": "1986"
+  },
+  "pacman": {
+    "description": "Pac-Man (Prototype)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "pacmana": {
+    "description": "Pac-Man (Prototype Alt)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "pacmaze": {
+    "description": "Pacmaze (Prototype)",
+    "publisher": "Dave Carson Software",
+    "year": "198?"
+  },
+  "paperbck": {
+    "description": "Paperback Writer (Prototype)",
+    "publisher": "Richard Degler and George Moses",
+    "year": "1986"
+  },
+  "pirate": {
+    "description": "Pirate's Chase",
+    "publisher": "Astrocade",
+    "year": "1982"
+  },
+  "quadra": {
+    "description": "Quadra",
+    "publisher": "Mike White",
+    "year": "1990"
+  },
+  "rainbow2": {
+    "description": "Rainbow v2 (Prototype)",
+    "publisher": "Hanson",
+    "year": "19??"
+  },
+  "redbaron": {
+    "description": "Red Baron / Panzer Attack",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "roadtoad": {
+    "description": "Road Toad",
+    "publisher": "Esoterica and Mike White",
+    "year": "1986"
+  },
+  "seadevil": {
+    "description": "Sea Devil",
+    "publisher": "L&M Software",
+    "year": "1983"
+  },
+  "seawolf": {
+    "description": "Seawolf / Missile",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "sheloves": {
+    "description": "She Loves You (Prototype)",
+    "publisher": "Richard Degler and George Moses",
+    "year": "1986"
+  },
+  "simgolf": {
+    "description": "Simon / Putt-Putt Golf",
+    "publisher": "Brett Bilbrey, Joe Borrello, and Mike White",
+    "year": "1993"
+  },
+  "sloshed": {
+    "description": "Sloshed!",
+    "publisher": "New Image and Mike White",
+    "year": "1986"
+  },
+  "sneaky": {
+    "description": "Sneaky Snake",
+    "publisher": "New Image",
+    "year": "1983"
+  },
+  "soccer": {
+    "description": "Soccer",
+    "publisher": "<unknown>",
+    "year": "1985"
+  },
+  "soccera": {
+    "description": "Soccer (Prototype, Alt)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "soccera2": {
+    "description": "Soccer (Prototype, Alt 2)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "soccera3": {
+    "description": "Soccer (Prototype, Alt 3)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "soccera4": {
+    "description": "Soccer (Prototype, Alt 4)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "soccerp": {
+    "description": "Soccer (Prototype)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "solarcnq": {
+    "description": "Solar Conqueror",
+    "publisher": "Astrocade",
+    "year": "1983"
+  },
+  "solarcnqp": {
+    "description": "Solar Conqueror (Prototype)",
+    "publisher": "Astrocade",
+    "year": "1982"
+  },
+  "solarcnqp28": {
+    "description": "Solar Conqueror (Prototype v2.8)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "solarcnqp39": {
+    "description": "Solar Conqueror (Prototype v3.9)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "songs": {
+    "description": "Songs (Prototype)",
+    "publisher": "Bally",
+    "year": "19??"
+  },
+  "songsa": {
+    "description": "Songs (Prototype Alt)",
+    "publisher": "Bally",
+    "year": "19??"
+  },
+  "songsu": {
+    "description": "Songs (Prototype, Unfinished)",
+    "publisher": "Bally",
+    "year": "19??"
+  },
+  "spacefrt": {
+    "description": "Space Fortress",
+    "publisher": "Astrocade",
+    "year": "1981"
+  },
+  "spacefrtp": {
+    "description": "Space Fortress (Prototype)",
+    "publisher": "Astrocade",
+    "year": "1981"
+  },
+  "spaceinv": {
+    "description": "Space Invaders",
+    "publisher": "Bally",
+    "year": "1979"
+  },
+  "spaceinvp": {
+    "description": "Space Invaders (Prototype)",
+    "publisher": "Bally",
+    "year": "197?"
+  },
+  "spedmath": {
+    "description": "Speed Math / Bingo Math",
+    "publisher": "Bally",
+    "year": "1978"
+  },
+  "sslope": {
+    "description": "Super Slope",
+    "publisher": "Esoterica and Mike White",
+    "year": "1986"
+  },
+  "starbttl": {
+    "description": "Star Battle",
+    "publisher": "Bally",
+    "year": "1979"
+  },
+  "stweek": {
+    "description": "Stweek",
+    "publisher": "Bally",
+    "year": "19??"
+  },
+  "tests": {
+    "description": "Tests",
+    "publisher": "Bally",
+    "year": "19??"
+  },
+  "treasure": {
+    "description": "Treasure Cove",
+    "publisher": "Esoterica",
+    "year": "1983"
+  },
+  "treasurep": {
+    "description": "Treasure Cove (Prototype)",
+    "publisher": "Esoterica",
+    "year": "198?"
+  },
+  "vidstory": {
+    "description": "Video Story Book (Prototype)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "viperb": {
+    "description": "VIPERSoft BASIC",
+    "publisher": "Alternative Engineering",
+    "year": "1981"
+  },
+  "viperbp": {
+    "description": "VIPERSoft BASIC (Prototype)",
+    "publisher": "Alternative Engineering",
+    "year": "198?"
+  },
+  "war": {
+    "description": "War (Second Printing)",
+    "publisher": "Riff Raff Games",
+    "year": "2012"
+  },
+  "wizard": {
+    "description": "The Incredible Wizard",
+    "publisher": "Astrocade",
+    "year": "1982"
+  },
+  "wizardp": {
+    "description": "The Incredible Wizard (Prototype, Bad Dump)",
+    "publisher": "Astrocade",
+    "year": "198?"
+  },
+  "yahtgold": {
+    "description": "Yahtzee / Golddigger",
+    "publisher": "Bob Wiseman, Dave Carson, and Mike White",
+    "year": "1987"
+  },
+  "yesternv": {
+    "description": "Yesterday (Prototype, no vibrato)",
+    "publisher": "Richard Degler and George Moses",
+    "year": "1986"
+  },
+  "yesterv": {
+    "description": "Yesterday (Prototype, with vibrato)",
+    "publisher": "Richard Degler and George Moses",
+    "year": "1986"
+  },
+  "ziggyjx": {
+    "description": "Fun With Vectors - Ziggy (Prototype JX label)",
+    "publisher": "Richard Degler",
+    "year": "1985"
+  },
+  "ziggymo": {
+    "description": "Fun With Vectors - Ziggy (Prototype MO label)",
+    "publisher": "Richard Degler",
+    "year": "1985"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "aee": {
+    "description": "Advanced Electrical Engineering",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "ea": {
+    "description": "Editor/Assembler",
+    "publisher": "Texas Instruments (unreleased)",
+    "year": "1983"
+  },
+  "finance": {
+    "description": "Finance",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "games1": {
+    "description": "Games I",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "maths": {
+    "description": "Mathematics",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "memoproc": {
+    "description": "Memo Processor",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "pascal": {
+    "description": "Learn Pascal",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  },
+  "stats": {
+    "description": "Statistics",
+    "publisher": "Texas Instruments",
+    "year": "1983"
+  }
+}

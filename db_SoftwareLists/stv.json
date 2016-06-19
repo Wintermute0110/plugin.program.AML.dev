@@ -1,0 +1,297 @@
+{
+  "astrass": {
+    "description": "Astra SuperStars (J 980514 V1.002)",
+    "publisher": "Sunsoft",
+    "year": "1998"
+  },
+  "bakubaku": {
+    "description": "Baku Baku Animal (J 950407 V1.000)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "batmanfr": {
+    "description": "Batman Forever (JUE 960507 V1.000)",
+    "publisher": "Acclaim",
+    "year": "1996"
+  },
+  "colmns97": {
+    "description": "Columns '97 (JET 961209 V1.000)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "cotton2": {
+    "description": "Cotton 2 (JUET 970902 V1.000)",
+    "publisher": "Success",
+    "year": "1997"
+  },
+  "cottonbm": {
+    "description": "Cotton Boomerang (JUET 980709 V1.000)",
+    "publisher": "Success",
+    "year": "1998"
+  },
+  "critcrsh": {
+    "description": "Critter Crusher (EA 951204 V1.000)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "danchih": {
+    "description": "Danchi de Hanafuda (J 990607 V1.400)",
+    "publisher": "Altron (Tecmo license)",
+    "year": "1999"
+  },
+  "danchiq": {
+    "description": "Danchi de Quiz Okusan Yontaku Desuyo! (J 001128 V1.200)",
+    "publisher": "Altron",
+    "year": "2000"
+  },
+  "decathlt": {
+    "description": "Decathlete (JUET 960709 V1.001)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "decathlto": {
+    "description": "Decathlete (JUET 960424 V1.000)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "diehard": {
+    "description": "Die Hard Arcade (UET 960515 V1.000)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "dnmtdeka": {
+    "description": "Dynamite Deka (J 960515 V1.000)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "ejihon": {
+    "description": "Ejihon Tantei Jimusyo (J 950613 V1.000)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "elandore": {
+    "description": "Touryuu Densetsu Elan-Doree / Elan Doree - Legend of Dragoon (JUET 980922 V1.006)",
+    "publisher": "Sai-Mate",
+    "year": "1998"
+  },
+  "ffreveng": {
+    "description": "Final Fight Revenge (JUET 990714 V1.000)",
+    "publisher": "Capcom",
+    "year": "1999"
+  },
+  "fhboxers": {
+    "description": "Funky Head Boxers (JUETBKAL 951218 V1.000)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "findlove": {
+    "description": "Find Love (J 971212 V1.000)",
+    "publisher": "Daiki / FCF",
+    "year": "1997"
+  },
+  "finlarch": {
+    "description": "Final Arch (J 950714 V1.001)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "gaxeduel": {
+    "description": "Golden Axe - The Duel (JUETL 950117 V1.000)",
+    "publisher": "Sega",
+    "year": "1994"
+  },
+  "grdforce": {
+    "description": "Guardian Force (JUET 980318 V0.105)",
+    "publisher": "Success",
+    "year": "1998"
+  },
+  "groovef": {
+    "description": "Groove on Fight - Gouketsuji Ichizoku 3 (J 970416 V1.001)",
+    "publisher": "Atlus",
+    "year": "1998"
+  },
+  "hanagumi": {
+    "description": "Hanagumi Taisen Columns - Sakura Wars (J 971007 V1.010)",
+    "publisher": "Sega",
+    "year": "1997"
+  },
+  "introdon": {
+    "description": "Karaoke Quiz Intro Don Don! (J 960213 V1.000)",
+    "publisher": "Sunsoft / Success",
+    "year": "1996"
+  },
+  "kiwames": {
+    "description": "Pro Mahjong Kiwame S (J 951020 V1.208)",
+    "publisher": "Athena",
+    "year": "1995"
+  },
+  "magzun": {
+    "description": "Magical Zunou Power (J 961031 V1.000)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "maruchan": {
+    "description": "Maru-Chan de Goo! (J 971216 V1.000)",
+    "publisher": "Sega / Toyosuisan",
+    "year": "1997"
+  },
+  "mausuke": {
+    "description": "Mausuke no Ojama the World (J 960314 V1.000)",
+    "publisher": "Data East",
+    "year": "1996"
+  },
+  "micrombc": {
+    "description": "Microman Battle Charge (J 990326 V1.000)",
+    "publisher": "Sega",
+    "year": "1999"
+  },
+  "myfairld": {
+    "description": "Virtual Mahjong 2 - My Fair Lady (J 980608 V1.000)",
+    "publisher": "Micronet",
+    "year": "1998"
+  },
+  "nclubv3": {
+    "description": "Name Club Ver.3 (J 970723 V1.000)",
+    "publisher": "Sega",
+    "year": "1997"
+  },
+  "othellos": {
+    "description": "Othello Shiyouyo (J 980423 V1.002)",
+    "publisher": "Success",
+    "year": "1998"
+  },
+  "pblbeach": {
+    "description": "Pebble Beach - The Great Shot (JUE 950913 V0.990)",
+    "publisher": "T&E Soft",
+    "year": "1995"
+  },
+  "pclub2": {
+    "description": "Print Club 2 (U 970921 V1.000)",
+    "publisher": "Atlus",
+    "year": "1997"
+  },
+  "pclub2v3": {
+    "description": "Print Club 2 Vol. 3 (U 990310 V1.000)",
+    "publisher": "Atlus",
+    "year": "1999"
+  },
+  "pclubpok": {
+    "description": "Print Club Pokemon B (U 991126 V1.000)",
+    "publisher": "Atlus",
+    "year": "1999"
+  },
+  "prikura": {
+    "description": "Princess Clara Daisakusen (J 960910 V1.000)",
+    "publisher": "Atlus",
+    "year": "1996"
+  },
+  "puyosun": {
+    "description": "Puyo Puyo Sun (J 961115 V0.001)",
+    "publisher": "Compile",
+    "year": "1996"
+  },
+  "rsgun": {
+    "description": "Radiant Silvergun (JUET 980523 V1.000)",
+    "publisher": "Treasure",
+    "year": "1998"
+  },
+  "sandor": {
+    "description": "Puzzle & Action: Sando-R (J 951114 V1.000)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "sanjeon": {
+    "description": "DaeJeon! SanJeon SuJeon (AJTUE 990412 V1.000)",
+    "publisher": "Sega / Deniam",
+    "year": "1999"
+  },
+  "sasissu": {
+    "description": "Taisen Tanto-R Sashissu!! (J 980216 V1.000)",
+    "publisher": "Sega",
+    "year": "1998"
+  },
+  "seabass": {
+    "description": "Sea Bass Fishing (JUET 971110 V0.001)",
+    "publisher": "A wave inc. (Able license)",
+    "year": "1997"
+  },
+  "shanhigw": {
+    "description": "Shanghai - The Great Wall / Shanghai Triple Threat (JUE 950623 V1.005)",
+    "publisher": "Sunsoft / Activision",
+    "year": "1995"
+  },
+  "shienryu": {
+    "description": "Shienryu (JUET 961226 V1.000)",
+    "publisher": "Warashi",
+    "year": "1997"
+  },
+  "smleague": {
+    "description": "Super Major League (U 960108 V1.000)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "sokyugrt": {
+    "description": "Soukyugurentai / Terra Diver (JUET 960821 V1.000)",
+    "publisher": "Raizing / Eighting",
+    "year": "1996"
+  },
+  "sss": {
+    "description": "Steep Slope Sliders (JUET 981110 V1.000)",
+    "publisher": "Capcom / Cave / Victor",
+    "year": "1998"
+  },
+  "stress": {
+    "description": "Stress Busters (J 981020 V1.000)",
+    "publisher": "Sega",
+    "year": "1998"
+  },
+  "suikoenb": {
+    "description": "Suikoenbu / Outlaws of the Lost Dynasty (JUETL 950314 V2.001)",
+    "publisher": "Data East",
+    "year": "1995"
+  },
+  "techbowl": {
+    "description": "Technical Bowling (J 971212 V1.000)",
+    "publisher": "Sega",
+    "year": "1997"
+  },
+  "thunt": {
+    "description": "Puzzle & Action: Treasure Hunt (JUET 970901 V2.00E)",
+    "publisher": "Sega",
+    "year": "1997"
+  },
+  "thuntk": {
+    "description": "Puzzle & Action: BoMulEul Chajara (JUET 970125 V2.00K)",
+    "publisher": "Sega / Deniam",
+    "year": "1997"
+  },
+  "twcup98": {
+    "description": "Tecmo World Cup '98 (JUET 980410 V1.000)",
+    "publisher": "Tecmo",
+    "year": "1998"
+  },
+  "vfkids": {
+    "description": "Virtua Fighter Kids (JUET 960319 V0.000)",
+    "publisher": "Sega",
+    "year": "1996"
+  },
+  "vfremix": {
+    "description": "Virtua Fighter Remix (JUETBKAL 950428 V1.000)",
+    "publisher": "Sega",
+    "year": "1995"
+  },
+  "vmahjong": {
+    "description": "Virtual Mahjong (J 961214 V1.000)",
+    "publisher": "Micronet",
+    "year": "1997"
+  },
+  "winterht": {
+    "description": "Winter Heat (JUET 971012 V1.000)",
+    "publisher": "Sega",
+    "year": "1997"
+  },
+  "znpwfv": {
+    "description": "Zen Nippon Pro-Wrestling Featuring Virtua (J 971123 V1.000)",
+    "publisher": "Sega",
+    "year": "1997"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "cpm": {
+    "description": "CP/M v.1.42/3",
+    "publisher": "Exidy",
+    "year": "1979"
+  },
+  "remconv": {
+    "description": "REM Converted to Exidy Basic",
+    "publisher": "Pete Turnbull",
+    "year": "19??"
+  }
+}

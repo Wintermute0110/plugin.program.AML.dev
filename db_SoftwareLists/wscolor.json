@@ -1,0 +1,487 @@
+{
+  "alchemst": {
+    "description": "Alchemist Marie & Elie - Futari no Atelier",
+    "publisher": "E3Staff",
+    "year": "2001"
+  },
+  "anotherh": {
+    "description": "Another Heaven - Memory of those Days",
+    "publisher": "Omega Micott",
+    "year": "2000"
+  },
+  "arclad": {
+    "description": "Arc the Lad - Kishin Fukkatsu",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "battlesp": {
+    "description": "Battle Spirit - Digimon Frontier",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "bluewing": {
+    "description": "Blue Wing Blitz",
+    "publisher": "Square",
+    "year": "2001"
+  },
+  "crshgear": {
+    "description": "Gekitou! Crash Gear Turbo - Gear Champion League",
+    "publisher": "WiZ",
+    "year": "2002"
+  },
+  "darkeyes": {
+    "description": "Dark Eyes - Battle Gate",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "dball": {
+    "description": "Dragon Ball",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "dicing": {
+    "description": "Dicing Knight.",
+    "publisher": "Qute",
+    "year": "2004"
+  },
+  "digi2d1": {
+    "description": "Digimon Adventure 02 - D1 Tamers",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "digianca": {
+    "description": "Digimon - Anode Tamer & Cathode Tamer (Asia?)",
+    "publisher": "Bandai",
+    "year": "19??"
+  },
+  "digicard": {
+    "description": "Digital Monster Card Game - Ver. WonderSwan Color",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "digimdp": {
+    "description": "Digital Monster - D-Project",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "digitbs": {
+    "description": "Digimon Tamers - Battle Spirit Ver. 1.5",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "digitbs1": {
+    "description": "Digimon Tamers - Battle Spirit",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "digitbt": {
+    "description": "Digimon Tamers - Brave Tamer",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "digitmed": {
+    "description": "Digimon Tamers - Digimon Medley",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "dokodem3": {
+    "description": "Dokodemo Hamster 3 - Odekake Saffron",
+    "publisher": "BEC",
+    "year": "2000"
+  },
+  "doraemon": {
+    "description": "Pocket no Naka no Doraemon",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "ffant": {
+    "description": "Final Fantasy",
+    "publisher": "Square",
+    "year": "2000"
+  },
+  "ffant2": {
+    "description": "Final Fantasy II",
+    "publisher": "Square",
+    "year": "2001"
+  },
+  "ffant4": {
+    "description": "Final Fantasy IV",
+    "publisher": "Square",
+    "year": "2002"
+  },
+  "flapspec": {
+    "description": "Final Lap Special - GT & Formula Machine",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "flashkk": {
+    "description": "Flash Koibito-kun",
+    "publisher": "Kobunsha",
+    "year": "2000"
+  },
+  "frontmis": {
+    "description": "Front Mission",
+    "publisher": "Square",
+    "year": "2002"
+  },
+  "ggpetit": {
+    "description": "Guilty Gear Petit",
+    "publisher": "Sammy",
+    "year": "2001"
+  },
+  "ggpetit2": {
+    "description": "Guilty Gear Petit 2",
+    "publisher": "Sammy",
+    "year": "2001"
+  },
+  "gmsayuki": {
+    "description": "Gensou Maden Saiyuuki Retribution - Hi no Ataru Basho de",
+    "publisher": "Movic ~ Soeishinsha",
+    "year": "2001"
+  },
+  "goldnaxe": {
+    "description": "Golden Axe",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "gransta": {
+    "description": "Gransta Chronicle",
+    "publisher": "Megatron",
+    "year": "2002"
+  },
+  "gundseed": {
+    "description": "Kidou Senshi Gundam Seed",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "gundtoku": {
+    "description": "Kidou Senshi Gundam - Giren no Yabou - Tokubetsu Hen - Aoki Hoshi no Hasha",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "gundvol1": {
+    "description": "Kidou Senshi Gundam Vol. 1 - Side 7",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "gundvol2": {
+    "description": "Kidou Senshi Gundam Vol. 2 - Jaburo",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "gundvol3": {
+    "description": "Kidou Senshi Gundam Vol. 3 - A Baoa Qu",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "gunpeyex": {
+    "description": "GunPey EX",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "hanjuher": {
+    "description": "Hanjuku Hero - Ah, Sekai yo Hanjuku Nare...!!",
+    "publisher": "Square",
+    "year": "2002"
+  },
+  "hatachoc": {
+    "description": "Hataraku Chocobo",
+    "publisher": "Square",
+    "year": "2000"
+  },
+  "hxhgrisl": {
+    "description": "Hunter X Hunter - Greed Island",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "hxhmichi": {
+    "description": "Hunter X Hunter - Michibikareshi Mono",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "hxhsorez": {
+    "description": "Hunter X Hunter - Sorezore no Ketsui",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "inuyfema": {
+    "description": "Inuyasha - Fuuun Emaki",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "inuyksen": {
+    "description": "Inuyasha - Kagome no Sengoku Nikki",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "inuykyum": {
+    "description": "Inuyasha - Kagome no Yume Nikki",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "jsilver": {
+    "description": "Judgement Silversword - Rebirth Edition (Rev. 4321)",
+    "publisher": "Qute",
+    "year": "2004"
+  },
+  "jsilver1": {
+    "description": "Judgement Silversword - Rebirth Edition (Rev. SC21)",
+    "publisher": "Qute",
+    "year": "2004"
+  },
+  "kikuchou": {
+    "description": "Kinnikuman IIsei - Choujin Seisenshi",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "kikudrmt": {
+    "description": "Kinnikuman IIsei - Dream Tag Match",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "kurupara": {
+    "description": "Kurupara!",
+    "publisher": "Tom Create",
+    "year": "2001"
+  },
+  "lastaliv": {
+    "description": "Last Alive",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "mconanyk": {
+    "description": "Meitantei Conan - Yuugure no Koujo",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "memories": {
+    "description": "Memories Off - Festa",
+    "publisher": "Kid",
+    "year": "2001"
+  },
+  "mikeneko": {
+    "description": "Mikeneko Holmes - Ghost Panic",
+    "publisher": "Kobunsha",
+    "year": "2001"
+  },
+  "mrdrillr": {
+    "description": "Mr. Driller",
+    "publisher": "Namco",
+    "year": "2001"
+  },
+  "naruto": {
+    "description": "Naruto - Konoha Ninpouchou",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "onepbatl": {
+    "description": "From TV Animation One Piece - Grand Battle Swan Colosseum",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "onepchop": {
+    "description": "From TV Animation One Piece - Chopper no Daibouken",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "onepniji": {
+    "description": "From TV Animation One Piece - Niji no Shima Densetsu",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "oneptwar": {
+    "description": "From TV Animation One Piece - Treasure Wars",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "oneptwr2": {
+    "description": "From TV Animation One Piece - Treasure Wars 2 - Buggy Land e Youkoso",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "rakujong": {
+    "description": "Raku Jongg",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "rhymridr": {
+    "description": "Rhyme Rider Kerorican",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "riviera": {
+    "description": "Riviera - Yakusoku no Chi Riviera",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "rockmnex": {
+    "description": "Rockman EXE WS",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "rockmnxn": {
+    "description": "Rockman EXE - N1 Battle",
+    "publisher": "Capcom",
+    "year": "2003"
+  },
+  "romsaga": {
+    "description": "Romancing Sa-Ga",
+    "publisher": "Square",
+    "year": "2001"
+  },
+  "rundim": {
+    "description": "RUN=DIM - Return to Earth",
+    "publisher": "Digital Dream",
+    "year": "2002"
+  },
+  "saga": {
+    "description": "Makai Toushi Sa-Ga",
+    "publisher": "Square",
+    "year": "2002"
+  },
+  "sdgunde1": {
+    "description": "SD Gundam Eiyuu Den - Kishi Densetsu",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "sdgunde2": {
+    "description": "SD Gundam Eiyuu Den - Musha Densetsu",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "sdgundg1": {
+    "description": "SD Gundam G-Generation - Gather Beat 2",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "sdgundg2": {
+    "description": "SD Gundam G-Generation - Mono-Eye Gundams",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "sdgunduc": {
+    "description": "SD Gundam - Operation U.C.",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "senkaini": {
+    "description": "Senkaiden Ni - TV Animation Senkaiden Houshin Engi Yori",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "shamking": {
+    "description": "Shaman King - Asu e no Ishi (v1.1)",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "shamking1": {
+    "description": "Shaman King - Asu e no Ishi",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "sorobang": {
+    "description": "Sorobang",
+    "publisher": "Kaga Tech",
+    "year": "2000"
+  },
+  "srobotc3": {
+    "description": "Super Robot Taisen Compact 3 (v1.6)",
+    "publisher": "Banpresto",
+    "year": "2003"
+  },
+  "srobotc3a": {
+    "description": "Super Robot Taisen Compact 3 (v1.5)",
+    "publisher": "Banpresto",
+    "year": "2003"
+  },
+  "srobotwc": {
+    "description": "Super Robot Taisen Compact for WonderSwan Color",
+    "publisher": "Banpresto",
+    "year": "2001"
+  },
+  "sseiya": {
+    "description": "Saint Seiya - Ougon Densetsu Hen - Perfect Edition",
+    "publisher": "Bandai",
+    "year": "2003"
+  },
+  "starhear": {
+    "description": "Star Hearts - Hoshi to Daichi no Shisha",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "starheartai": {
+    "description": "Star Hearts - Hoshi to Daichi no Shisha - Taikenban",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "suprwars": {
+    "description": "Namco Super Wars",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "terrors2": {
+    "description": "Terrors 2",
+    "publisher": "Bandai",
+    "year": "2000"
+  },
+  "tetris": {
+    "description": "Tetris",
+    "publisher": "Vanguard",
+    "year": "2002"
+  },
+  "tonpuuso": {
+    "description": "Tonpuusou",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "ultraman": {
+    "description": "Ultraman - Hikari no Kuni no Shisha",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "wclassic": {
+    "description": "Wonder Classic",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "wildcard": {
+    "description": "Wild Card",
+    "publisher": "Square",
+    "year": "2001"
+  },
+  "withyou": {
+    "description": "With You - Mitsumete Itai",
+    "publisher": "Cocktail Soft / F&C Co.",
+    "year": "2001"
+  },
+  "wizardry": {
+    "description": "Wizardry Scenario 1 - Proving Grounds of the Mad Overlord",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "wwitch": {
+    "description": "WonderWitch (w/FreyaOS 1.2.0)",
+    "publisher": "Qute",
+    "year": "2000"
+  },
+  "wwitcha": {
+    "description": "WonderWitch (w/FreyaOS 1.1.5)",
+    "publisher": "Qute",
+    "year": "2000"
+  },
+  "xcard": {
+    "description": "X - Card of Fate",
+    "publisher": "Bandai",
+    "year": "2002"
+  },
+  "xilittle": {
+    "description": "XI[sai] Little",
+    "publisher": "Bandai",
+    "year": "2001"
+  },
+  "yamato": {
+    "description": "Uchuu Senkan Yamato",
+    "publisher": "Bandai",
+    "year": "2001"
+  }
+}

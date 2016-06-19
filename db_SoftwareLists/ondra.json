@@ -1,0 +1,52 @@
+{
+  "copyfile": {
+    "description": "COPYFILE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "editasm": {
+    "description": "EDITASM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "galaxian": {
+    "description": "GALAXIANS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jetpac": {
+    "description": "JETPAC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jetset": {
+    "description": "JETSETWILLY",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "karel": {
+    "description": "KAREL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mikos": {
+    "description": "MIKOS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pascal": {
+    "description": "PASCAL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "planetoi": {
+    "description": "PLANETOIDS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pssst": {
+    "description": "PSSST",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

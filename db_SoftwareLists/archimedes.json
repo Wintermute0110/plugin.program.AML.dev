@@ -1,0 +1,992 @@
+{
+  "2067bc": {
+    "description": "2067BC",
+    "publisher": "Oregan Software",
+    "year": "19??"
+  },
+  "3dtanks": {
+    "description": "3D Tanks",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "aggress": {
+    "description": "Aggressor",
+    "publisher": "Atomic Software",
+    "year": "1992"
+  },
+  "airsuprm": {
+    "description": "Air Supremacy",
+    "publisher": "Superior Software",
+    "year": "19??"
+  },
+  "alerion": {
+    "description": "Alerion",
+    "publisher": "Archimedes World",
+    "year": "1994"
+  },
+  "alieninv": {
+    "description": "Alien Invasion",
+    "publisher": "Archimedes World",
+    "year": "1994"
+  },
+  "alieninva": {
+    "description": "Alien Invasion (Alt)",
+    "publisher": "Archimedes World",
+    "year": "1994"
+  },
+  "aliped": {
+    "description": "Aliped",
+    "publisher": "Archimedes World",
+    "year": "1990"
+  },
+  "alipeda": {
+    "description": "Aliped (Alt)",
+    "publisher": "Archimedes World",
+    "year": "1990"
+  },
+  "allinbox": {
+    "description": "All-In Boxing",
+    "publisher": "Archimedes World",
+    "year": "1994"
+  },
+  "allinboxa": {
+    "description": "All-In Boxing (Alt)",
+    "publisher": "Archimedes World",
+    "year": "1994"
+  },
+  "amoria": {
+    "description": "Amoria",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "apocalyp": {
+    "description": "Apocalypse",
+    "publisher": "Fourth Dimension",
+    "year": "1990"
+  },
+  "apocalypa": {
+    "description": "Apocalypse (Alt)",
+    "publisher": "Fourth Dimension",
+    "year": "1990"
+  },
+  "arcomini": {
+    "description": "Arcomini (Bad Dump?)",
+    "publisher": "<homebrew>",
+    "year": "1990"
+  },
+  "arcomni": {
+    "description": "ArcOmnibus (v1.03)",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "arcomnia": {
+    "description": "ArcOmnibus (v1.03, Alt)",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "asylum": {
+    "description": "Asylum",
+    "publisher": "Digital Psychosis",
+    "year": "19??"
+  },
+  "bigbang": {
+    "description": "Big Bang",
+    "publisher": "Psycore",
+    "year": "19??"
+  },
+  "blackhrt": {
+    "description": "Castle Black Heart",
+    "publisher": "<homebrew>",
+    "year": "1991"
+  },
+  "blitz": {
+    "description": "Blitz",
+    "publisher": "Arxe Systems",
+    "year": "1991"
+  },
+  "blowpipe": {
+    "description": "Blow Pipe",
+    "publisher": "Eclipse",
+    "year": "19??"
+  },
+  "bloxed": {
+    "description": "Bloxed (Hacked?)",
+    "publisher": "<homebrew>",
+    "year": "1995"
+  },
+  "bobbie": {
+    "description": "Bobbie Blockhead vs The Dark Planet",
+    "publisher": "Atomic Software",
+    "year": "19??"
+  },
+  "break147": {
+    "description": "Break 147",
+    "publisher": "Fourth Dimension",
+    "year": "1991"
+  },
+  "bublfair": {
+    "description": "Bubble Fair",
+    "publisher": "Eterna",
+    "year": "1991"
+  },
+  "bughunt2": {
+    "description": "Bug Hunter in Space (v3.22, Hacked?)",
+    "publisher": "Minerva",
+    "year": "1990"
+  },
+  "bughunt2a": {
+    "description": "Bug Hunter in Space (Alt?)",
+    "publisher": "Minerva",
+    "year": "1990"
+  },
+  "bugmoon": {
+    "description": "Bug Hunter & Moon Dash (Hacked?)",
+    "publisher": "Minerva",
+    "year": "1990"
+  },
+  "cataclys": {
+    "description": "Cataclysm",
+    "publisher": "Fourth Dimension",
+    "year": "1991"
+  },
+  "cfodder": {
+    "description": "Cannon Fodder",
+    "publisher": "Krisalis",
+    "year": "1993"
+  },
+  "cheats1": {
+    "description": "Cheats 1",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "chess3d": {
+    "description": "Chess 3D (v1.33)",
+    "publisher": "Micro Power",
+    "year": "19??"
+  },
+  "chess3da": {
+    "description": "Chess 3D",
+    "publisher": "Micro Power",
+    "year": "19??"
+  },
+  "chess3db": {
+    "description": "Chess 3D (Alt)",
+    "publisher": "Micro Power",
+    "year": "19??"
+  },
+  "chokaway": {
+    "description": "Chocks Away",
+    "publisher": "Fourth Dimension",
+    "year": "1990"
+  },
+  "chokawaya": {
+    "description": "Chocks Away (Alt)",
+    "publisher": "Fourth Dimension",
+    "year": "1990"
+  },
+  "chokawayam": {
+    "description": "Chocks Away - Additional Missions",
+    "publisher": "Fourth Dimension",
+    "year": "1990"
+  },
+  "chuckrck": {
+    "description": "Chuck Rock",
+    "publisher": "Krisalis",
+    "year": "1991"
+  },
+  "coconizr": {
+    "description": "Coconizer (v1.3)",
+    "publisher": "Playfield",
+    "year": "1990"
+  },
+  "colourum": {
+    "description": "Colour Umoria (v5.4.0)",
+    "publisher": "<homebrew>",
+    "year": "1992"
+  },
+  "conquer": {
+    "description": "Conqueror",
+    "publisher": "Superior Software",
+    "year": "19??"
+  },
+  "conquera": {
+    "description": "Conqueror (Alt)",
+    "publisher": "Superior Software",
+    "year": "19??"
+  },
+  "corewars": {
+    "description": "Corewars",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "corrupt": {
+    "description": "Corruption (Bad Dump?)",
+    "publisher": "Magnetic Scrolls",
+    "year": "19??"
+  },
+  "creepie": {
+    "description": "Creepie Crawlie 1 & 2",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "crysmaze": {
+    "description": "The Crystal Maze (Demo, Bad Dump?)",
+    "publisher": "Sherston Software",
+    "year": "19??"
+  },
+  "crytond": {
+    "description": "Cryton Demo (Bad Dump?)",
+    "publisher": "<homebrew>",
+    "year": "1989"
+  },
+  "deeva": {
+    "description": "Deeva",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "deskhack": {
+    "description": "DesktopHacker (v1.01)",
+    "publisher": "<homebrew>",
+    "year": "1994"
+  },
+  "dinosaw": {
+    "description": "DinoSaw PD",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "ego": {
+    "description": "EGO - Repton 4",
+    "publisher": "ProAction",
+    "year": "1992"
+  },
+  "elite": {
+    "description": "Elite",
+    "publisher": "Hybrid Technology",
+    "year": "1991"
+  },
+  "elitea": {
+    "description": "Elite (Alt)",
+    "publisher": "Hybrid Technology",
+    "year": "1991"
+  },
+  "enigma": {
+    "description": "Enigma",
+    "publisher": "Archimedes World",
+    "year": "1993"
+  },
+  "enigmaa": {
+    "description": "Enigma (Alt)",
+    "publisher": "Archimedes World",
+    "year": "1993"
+  },
+  "enigmab": {
+    "description": "Enigma (Alt 2)",
+    "publisher": "Archimedes World",
+    "year": "1993"
+  },
+  "etype": {
+    "description": "E-Type",
+    "publisher": "Fourth Dimension",
+    "year": "1989"
+  },
+  "etypetrk": {
+    "description": "E-Type - Track Designer",
+    "publisher": "Fourth Dimension",
+    "year": "1989"
+  },
+  "fervour": {
+    "description": "Fervour (Bad Dump?)",
+    "publisher": "Clares Micro Supplies",
+    "year": "19??"
+  },
+  "firebal2": {
+    "description": "Fireball II",
+    "publisher": "CIS",
+    "year": "1990"
+  },
+  "firebal2e": {
+    "description": "Fireball II Extra",
+    "publisher": "CIS",
+    "year": "1990"
+  },
+  "fish": {
+    "description": "Fish",
+    "publisher": "Magnetic Scrolls",
+    "year": "19??"
+  },
+  "flashbd": {
+    "description": "Flashback (v1.0, Demo)",
+    "publisher": "U.S. Gold",
+    "year": "1992"
+  },
+  "fruitz": {
+    "description": "Fruitz",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "gorm": {
+    "description": "Gorm (v1.40)",
+    "publisher": "Archimedes World",
+    "year": "1994"
+  },
+  "guile": {
+    "description": "Guile",
+    "publisher": "Dream Software",
+    "year": "19??"
+  },
+  "gyrinus": {
+    "description": "Son of Gyrinus",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "gyrinus2": {
+    "description": "Gyrinus II - Son of Gyrinus",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "gyrinusa": {
+    "description": "Son of Gyrinus (Alt)",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "hacker": {
+    "description": "The Hacker (v3.05)",
+    "publisher": "<homebrew>",
+    "year": "1993"
+  },
+  "hackera": {
+    "description": "The Hacker (v3.05, Alt)",
+    "publisher": "<homebrew>",
+    "year": "1993"
+  },
+  "hackerb": {
+    "description": "The Hacker (v3.05, Alt 2)",
+    "publisher": "<homebrew>",
+    "year": "1993"
+  },
+  "hamsters": {
+    "description": "Hamsters (v1.10, Demo)",
+    "publisher": "Eclipse",
+    "year": "1994"
+  },
+  "hdformat": {
+    "description": "Hard Disc Formatter v2.19",
+    "publisher": "<unknown>",
+    "year": "1992"
+  },
+  "heroqst": {
+    "description": "Hero Quest (Hacked?)",
+    "publisher": "Krisalis",
+    "year": "1991"
+  },
+  "ibix": {
+    "description": "Ibix the Viking",
+    "publisher": "Minerva",
+    "year": "19??"
+  },
+  "impresjr": {
+    "description": "Impression Jr",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "interdc2": {
+    "description": "Interdictor 2",
+    "publisher": "Clares Micro Supplies",
+    "year": "1989"
+  },
+  "ironlord": {
+    "description": "Iron Lord",
+    "publisher": "Cygnus",
+    "year": "1990"
+  },
+  "ironlorda": {
+    "description": "Iron Lord (Alt)",
+    "publisher": "Ubi Soft",
+    "year": "1990"
+  },
+  "ixion": {
+    "description": "Ixion",
+    "publisher": "Eclipse",
+    "year": "1992"
+  },
+  "jetfight": {
+    "description": "Jet Fighter",
+    "publisher": "Minerva",
+    "year": "1988"
+  },
+  "jpond": {
+    "description": "James Pond",
+    "publisher": "Krisalis",
+    "year": "1990"
+  },
+  "jponda": {
+    "description": "James Pond (Alt)",
+    "publisher": "Krisalis",
+    "year": "1990"
+  },
+  "kaptkonf": {
+    "description": "Kaptain Konflict",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lander": {
+    "description": "Lander (Demo?)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "leedsutd": {
+    "description": "Leeds Utd - Champions!",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "lemmings": {
+    "description": "Lemmings",
+    "publisher": "Krisalis",
+    "year": "1991"
+  },
+  "lemmingsa": {
+    "description": "Lemmings (Alt)",
+    "publisher": "Krisalis",
+    "year": "1991"
+  },
+  "losttmpl": {
+    "description": "Legend of the Lost Temple",
+    "publisher": "Eterna",
+    "year": "19??"
+  },
+  "maddash2": {
+    "description": "MadDash 2",
+    "publisher": "<homebrew>",
+    "year": "2001"
+  },
+  "manchutd": {
+    "description": "Manchester United Europe",
+    "publisher": "Krisalis",
+    "year": "1991"
+  },
+  "mariarti": {
+    "description": "Mad Professor Mariarti",
+    "publisher": "Krisalis",
+    "year": "1990"
+  },
+  "mariartia": {
+    "description": "Mad Professor Mariarti (Alt)",
+    "publisher": "Krisalis",
+    "year": "1990"
+  },
+  "mariartib": {
+    "description": "Mad Professor Mariarti (Alt 2)",
+    "publisher": "Krisalis",
+    "year": "1990"
+  },
+  "marvello": {
+    "description": "My Marvellous Demo",
+    "publisher": "<homebrew>",
+    "year": "1991"
+  },
+  "mastbrek": {
+    "description": "Master Break",
+    "publisher": "Superior Software",
+    "year": "19??"
+  },
+  "mig29": {
+    "description": "Mig 29 Fulcrum",
+    "publisher": "Krisalis",
+    "year": "1991"
+  },
+  "moonquak": {
+    "description": "Moon Quake (Hacked?)",
+    "publisher": "Paul Taylor",
+    "year": "1992"
+  },
+  "morelemm": {
+    "description": "Oh, No! More Lemmings!",
+    "publisher": "Krisalis",
+    "year": "1992"
+  },
+  "morelemma": {
+    "description": "Oh, No! More Lemmings! (Alt)",
+    "publisher": "Krisalis",
+    "year": "1992"
+  },
+  "moria": {
+    "description": "Archimedes Moria",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "mprg01": {
+    "description": "Multi-Program 01",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg01a": {
+    "description": "Multi-Program 01 (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg02": {
+    "description": "Multi-Program 02",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg02a": {
+    "description": "Multi-Program 02 (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg03": {
+    "description": "Multi-Program 03",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg04": {
+    "description": "Multi-Program 04",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg05": {
+    "description": "Multi-Program 05",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg06": {
+    "description": "Multi-Program 06",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg07": {
+    "description": "Multi-Program 07",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg08": {
+    "description": "Multi-Program 08",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg09": {
+    "description": "Multi-Program 09",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg10": {
+    "description": "Multi-Program 10",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg11": {
+    "description": "Multi-Program 11",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg12": {
+    "description": "Multi-Program 12",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg13": {
+    "description": "Multi-Program 13",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg13a": {
+    "description": "Multi-Program 13 (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg14": {
+    "description": "Multi-Program 14",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg15": {
+    "description": "Multi-Program 15",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg16": {
+    "description": "Multi-Program 16",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg17": {
+    "description": "Multi-Program 17",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg18": {
+    "description": "Multi-Program 18",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg19": {
+    "description": "Multi-Program 19",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg20": {
+    "description": "Multi-Program 20",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg21": {
+    "description": "Multi-Program 21",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg22": {
+    "description": "Multi-Program 22",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg23": {
+    "description": "Multi-Program 23",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg24": {
+    "description": "Multi-Program 24",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg25": {
+    "description": "Multi-Program 25",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mprg26": {
+    "description": "Multi-Program 26",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mrdoo": {
+    "description": "Mr. Doo",
+    "publisher": "Archimedes World",
+    "year": "1994"
+  },
+  "mrdooa": {
+    "description": "Mr. Doo (Alt)",
+    "publisher": "Archimedes World",
+    "year": "1994"
+  },
+  "nebulus": {
+    "description": "Nebulus",
+    "publisher": "Krisalis",
+    "year": "1992"
+  },
+  "newlook": {
+    "description": "New Look",
+    "publisher": "Acorn?",
+    "year": "1993"
+  },
+  "oddball": {
+    "description": "Oddball",
+    "publisher": "Digital Psychosis",
+    "year": "1995"
+  },
+  "pacmania": {
+    "description": "Pac-Mania",
+    "publisher": "Domark",
+    "year": "1991"
+  },
+  "paradr2k": {
+    "description": "Paradroid 2000",
+    "publisher": "Coin-Age",
+    "year": "19??"
+  },
+  "paradr2ka": {
+    "description": "Paradroid 2000 (Alt)",
+    "publisher": "Coin-Age",
+    "year": "19??"
+  },
+  "pcfs": {
+    "description": "PCFS v1.0",
+    "publisher": "Chris-O",
+    "year": "1999"
+  },
+  "pdleming": {
+    "description": "PD Lemings",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "pendown": {
+    "description": "Pen Down (v1.72)",
+    "publisher": "<homebrew>",
+    "year": "1992"
+  },
+  "pipmania": {
+    "description": "Pipe Mania",
+    "publisher": "Empire",
+    "year": "1988"
+  },
+  "poizone": {
+    "description": "Poizone",
+    "publisher": "Eterna",
+    "year": "19??"
+  },
+  "populous": {
+    "description": "Populous",
+    "publisher": "Krisalis",
+    "year": "1989"
+  },
+  "puntpred": {
+    "description": "The Punters Predictor",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "repton3": {
+    "description": "Repton 3",
+    "publisher": "ProAction",
+    "year": "1988"
+  },
+  "revolver": {
+    "description": "Revolver",
+    "publisher": "Psycore",
+    "year": "19??"
+  },
+  "riscapps": {
+    "description": "Acorn Archimedes RISC OS Application Suite (v1.00)",
+    "publisher": "Acorn",
+    "year": "19??"
+  },
+  "riscappsa": {
+    "description": "Acorn Archimedes RISC OS Application Suite (v1.00, Alt)",
+    "publisher": "Acorn",
+    "year": "19??"
+  },
+  "riscdrm": {
+    "description": "RiscDream",
+    "publisher": "<homebrew>",
+    "year": "1991"
+  },
+  "simcity": {
+    "description": "Sim City",
+    "publisher": "Krisalis",
+    "year": "1993"
+  },
+  "simonsor": {
+    "description": "Simon the Sorcerer",
+    "publisher": "Gamesware",
+    "year": "1994"
+  },
+  "small": {
+    "description": "Small",
+    "publisher": "Virgo Software",
+    "year": "19??"
+  },
+  "specemu": {
+    "description": "Spectrum Emulator",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "speech": {
+    "description": "Speech! (v1.3)",
+    "publisher": "Superior Software",
+    "year": "1991"
+  },
+  "speedbl2": {
+    "description": "Speedball 2 - Brutal Deluxe",
+    "publisher": "Krisalis",
+    "year": "1992"
+  },
+  "speedbl2a": {
+    "description": "Speedball 2 - Brutal Deluxe (Alt)",
+    "publisher": "Krisalis",
+    "year": "1992"
+  },
+  "spheres": {
+    "description": "Spheres of Chaos",
+    "publisher": "Matt Black",
+    "year": "1992"
+  },
+  "spheresa": {
+    "description": "Spheres of Chaos (Alt)",
+    "publisher": "Matt Black",
+    "year": "1992"
+  },
+  "spheresb": {
+    "description": "Spheres of Chaos (Alt 2)",
+    "publisher": "Matt Black",
+    "year": "1992"
+  },
+  "spheresc": {
+    "description": "Spheres of Chaos (Alt 3)",
+    "publisher": "Matt Black",
+    "year": "1992"
+  },
+  "starch": {
+    "description": "Starch",
+    "publisher": "Archimedes World",
+    "year": "1990"
+  },
+  "starf3k": {
+    "description": "Star Fighter 3000",
+    "publisher": "Fednet",
+    "year": "1994"
+  },
+  "startwri": {
+    "description": "Startwrite (Bad Dump?)",
+    "publisher": "<homebrew>",
+    "year": "1992"
+  },
+  "stuntr2k": {
+    "description": "Stunt Racer 2000 (Disk 2 Only)",
+    "publisher": "Fourth Dimension",
+    "year": "19??"
+  },
+  "suprdsk1": {
+    "description": "Superior Disk 1",
+    "publisher": "Superior Software",
+    "year": "1993"
+  },
+  "suprdsk2": {
+    "description": "Superior Disk 2",
+    "publisher": "Superior Software",
+    "year": "1993"
+  },
+  "suprgolf": {
+    "description": "Superior Golf",
+    "publisher": "Superior Software",
+    "year": "1990"
+  },
+  "suprpool": {
+    "description": "Super Pool",
+    "publisher": "Fourth Dimension",
+    "year": "1991"
+  },
+  "suprpoola": {
+    "description": "Super Pool (Alt)",
+    "publisher": "Fourth Dimension",
+    "year": "1991"
+  },
+  "suprpoolb": {
+    "description": "Super Pool (Alt 2)",
+    "publisher": "Fourth Dimension",
+    "year": "1991"
+  },
+  "swiv": {
+    "description": "SWIV",
+    "publisher": "Krisalis",
+    "year": "1992"
+  },
+  "sysintd": {
+    "description": "System Interrupt Demos 1-5",
+    "publisher": "<homebrew>",
+    "year": "1989"
+  },
+  "talisman": {
+    "description": "Talisman",
+    "publisher": "Minerva",
+    "year": "1989"
+  },
+  "talismana": {
+    "description": "Talisman (Alt)",
+    "publisher": "Minerva",
+    "year": "1989"
+  },
+  "tcddemo": {
+    "description": "TCD Demo (Bad Dump?)",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "terramex": {
+    "description": "Terramex",
+    "publisher": "Krisalis",
+    "year": "1988"
+  },
+  "terramexa": {
+    "description": "Terramex (Alt)",
+    "publisher": "Krisalis",
+    "year": "1988"
+  },
+  "timezone": {
+    "description": "Time Zone",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "tools01a": {
+    "description": "Tools01",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tools02a": {
+    "description": "Tools02",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "topbanan": {
+    "description": "Top Banana",
+    "publisher": "Psycore",
+    "year": "19??"
+  },
+  "topbanana": {
+    "description": "Top Banana (Alt)",
+    "publisher": "Psycore",
+    "year": "19??"
+  },
+  "towbabel": {
+    "description": "Tower of Babel",
+    "publisher": "Cygnus",
+    "year": "1991"
+  },
+  "trivial": {
+    "description": "Trivial Pursuit",
+    "publisher": "Domark",
+    "year": "1989"
+  },
+  "twinwrld": {
+    "description": "Twin World",
+    "publisher": "Cygnus",
+    "year": "1991"
+  },
+  "twinwrlda": {
+    "description": "Twin World (Alt)",
+    "publisher": "Cygnus",
+    "year": "1991"
+  },
+  "virusscn": {
+    "description": "Virus Scanner Compilation",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "vzap": {
+    "description": "VZap",
+    "publisher": "Paul Vigay",
+    "year": "2000"
+  },
+  "warlocks": {
+    "description": "Warlocks (Demo, Bad Dump?)",
+    "publisher": "Davyn",
+    "year": "1993"
+  },
+  "whitema2": {
+    "description": "White Magic 2",
+    "publisher": "Fourth Dimension",
+    "year": "1989"
+  },
+  "whitemag": {
+    "description": "White Magic",
+    "publisher": "Fourth Dimension",
+    "year": "1989"
+  },
+  "wimpgame": {
+    "description": "The Wimp Game",
+    "publisher": "Fourth Dimension",
+    "year": "1990"
+  },
+  "wolf3d": {
+    "description": "Wolfenstein 3D (v1.00, Bad Dump?)",
+    "publisher": "Powerslave Software",
+    "year": "1994"
+  },
+  "worldbox": {
+    "description": "World Championship Boxing Manager (v3.0)",
+    "publisher": "Krisalis",
+    "year": "1991"
+  },
+  "zool": {
+    "description": "Zool",
+    "publisher": "Gremlin",
+    "year": "1993"
+  }
+}

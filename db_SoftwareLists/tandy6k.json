@@ -1,0 +1,12 @@
+{
+  "xenix30d": {
+    "description": "Tandy Xenix 3.0 Development System",
+    "publisher": "Tandy Radio Shack",
+    "year": "1985"
+  },
+  "xenix32": {
+    "description": "Tandy Xenix 3.2",
+    "publisher": "Tandy Radio Shack",
+    "year": "1987"
+  }
+}

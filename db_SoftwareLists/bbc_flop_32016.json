@@ -1,0 +1,12 @@
+{
+  "panos11": {
+    "description": "PanOS Version 1.10 System Disks",
+    "publisher": "Acorn Computers",
+    "year": "1985"
+  },
+  "panos14": {
+    "description": "PanOS Version 1.40 System Disks",
+    "publisher": "Acorn Computers",
+    "year": "1985"
+  }
+}

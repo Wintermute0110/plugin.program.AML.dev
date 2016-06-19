@@ -1,0 +1,32 @@
+{
+  "dgoban": {
+    "description": "Denshi Goban",
+    "publisher": "Koei",
+    "year": "1996"
+  },
+  "igmks1": {
+    "description": "Igo Meikyokushuu - Dai-1-kan",
+    "publisher": "Koei",
+    "year": "1996"
+  },
+  "taikyoku": {
+    "description": "Taikyoku-kun I",
+    "publisher": "Koei",
+    "year": "1996"
+  },
+  "tanostd1": {
+    "description": "Tanoshii Tsumego Dai-1-kan",
+    "publisher": "Koei",
+    "year": "1996"
+  },
+  "tanostd2": {
+    "description": "Tanoshii Tsumego Dai-2-kan",
+    "publisher": "Koei",
+    "year": "1996"
+  },
+  "tnt1": {
+    "description": "Tsuyoku Naru Tesuji - Dai-1-kan",
+    "publisher": "Koei",
+    "year": "1996"
+  }
+}

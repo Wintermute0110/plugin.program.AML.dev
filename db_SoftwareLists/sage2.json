@@ -1,0 +1,22 @@
+{
+  "cpm68k": {
+    "description": "CP/M 68K v1.1",
+    "publisher": "Stride Micro",
+    "year": "1983"
+  },
+  "psysiv13": {
+    "description": "p-System IV.13",
+    "publisher": "Sage Computer",
+    "year": "1983"
+  },
+  "psysiv21": {
+    "description": "p-System IV.21",
+    "publisher": "Stride Micro",
+    "year": "1983"
+  },
+  "sources": {
+    "description": "Sage Sources",
+    "publisher": "Sage Computer",
+    "year": "1984"
+  }
+}

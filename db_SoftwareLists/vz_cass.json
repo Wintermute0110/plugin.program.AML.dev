@@ -1,0 +1,77 @@
+{
+  "chess": {
+    "description": "Chess",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "circus": {
+    "description": "Circus",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "dawn": {
+    "description": "Dawn Patrol",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "defpen": {
+    "description": "Defense Penetrator",
+    "publisher": "Cosmic Software",
+    "year": "1982"
+  },
+  "galaxon": {
+    "description": "Galaxon",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "ghost": {
+    "description": "Ghost Hunter",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "hamsam": {
+    "description": "Hamburger Sam",
+    "publisher": "",
+    "year": "????"
+  },
+  "hoppy": {
+    "description": "Hoppy",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "invaders": {
+    "description": "Invaders",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "ladder": {
+    "description": "Ladder Challenge",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "missile": {
+    "description": "Missile",
+    "publisher": "",
+    "year": "????"
+  },
+  "panik": {
+    "description": "Panik",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "ppatrol": {
+    "description": "Planet Patrol",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "starblas": {
+    "description": "Star Blaster",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  },
+  "tennis": {
+    "description": "Tennis",
+    "publisher": "Dick Smith",
+    "year": "198?"
+  }
+}

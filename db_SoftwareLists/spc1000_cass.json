@@ -1,0 +1,517 @@
+{
+  "aldebrn1": {
+    "description": "Aldebaran Part 1",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "applethf": {
+    "description": "Apple Thief",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "applethfa": {
+    "description": "Apple Thief (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "applethfb": {
+    "description": "Apple Thief (Alt 2)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "astbelt": {
+    "description": "Asteroid Belt",
+    "publisher": "Static Soft",
+    "year": "1985"
+  },
+  "astbelta": {
+    "description": "Asteroid Belt (Alt)",
+    "publisher": "Static Soft",
+    "year": "1985"
+  },
+  "av": {
+    "description": "AV Armored Vehicle",
+    "publisher": "Sammi Computer",
+    "year": "1986"
+  },
+  "bazooka": {
+    "description": "Bazooka",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "bazookaa": {
+    "description": "Bazooka (Alt)",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "block": {
+    "description": "Block",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "blockgam": {
+    "description": "Block Game",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "blockgama": {
+    "description": "Block Game (Alt)",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "blockgamb": {
+    "description": "Block Game (Alt 2)",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "boat": {
+    "description": "Boat",
+    "publisher": "<homebrew>",
+    "year": "2006"
+  },
+  "boatexp": {
+    "description": "Boat Exploration",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "carrace": {
+    "description": "Car Race",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "casvoice": {
+    "description": "Cassette Voice",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cmporgan": {
+    "description": "Computer Organ",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "crshcirc": {
+    "description": "Crush Circles",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "daebeom": {
+    "description": "Dae Beom Lam",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "danggoo": {
+    "description": "Dang Goo",
+    "publisher": "Sammi Computer",
+    "year": "198?"
+  },
+  "dasmrlct": {
+    "description": "DASM & RLCT",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "demo": {
+    "description": "Demo",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "deungsan": {
+    "description": "Deungsan Peoleideu",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "dex": {
+    "description": "DEX",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "dexa": {
+    "description": "DEX (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "disasm": {
+    "description": "Disassembler",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "disnland": {
+    "description": "Disneyland",
+    "publisher": "Sammi Computer",
+    "year": "1985"
+  },
+  "disnlnd2": {
+    "description": "Disneyland II",
+    "publisher": "Sammi Computer",
+    "year": "1985"
+  },
+  "disnlnd3": {
+    "description": "Disneyland III",
+    "publisher": "Sammi Computer",
+    "year": "1985"
+  },
+  "dooli": {
+    "description": "Dooli",
+    "publisher": "Softvision",
+    "year": "1987"
+  },
+  "dslayer": {
+    "description": "DragonSlayer",
+    "publisher": "Sammi Computer",
+    "year": "198?"
+  },
+  "eggcatch": {
+    "description": "Egg Catch v1.1",
+    "publisher": "<homebrew>",
+    "year": "200?"
+  },
+  "etmaze": {
+    "description": "E.T. Maze Game",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fight201": {
+    "description": "Fighter 201",
+    "publisher": "Index",
+    "year": "1985"
+  },
+  "firia": {
+    "description": "Firia",
+    "publisher": "Static Soft",
+    "year": "1986"
+  },
+  "flyboat": {
+    "description": "Flyboat",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "galagwar": {
+    "description": "Galag Wars",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gfxedd": {
+    "description": "Graphic Editor D",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "goldcave": {
+    "description": "Gold Cavern",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "golf": {
+    "description": "Pro Golf",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "gongmo": {
+    "description": "Gongmo Jakpumjip 4-gweon",
+    "publisher": "Samsung Software",
+    "year": "1985"
+  },
+  "gongsapn": {
+    "description": "Gong Sa Pan",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "goonies": {
+    "description": "The Goonies",
+    "publisher": "Sammi Computer",
+    "year": "1986"
+  },
+  "gunfrght": {
+    "description": "Gun Fright",
+    "publisher": "Sammi Computer",
+    "year": "1986"
+  },
+  "hanbasic": {
+    "description": "Hangul BASIC",
+    "publisher": "<unknown>",
+    "year": "1984"
+  },
+  "hangeul": {
+    "description": "Hangeul",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hangeula": {
+    "description": "Hangeul (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hatbag": {
+    "description": "Mojagabang ~ Hat Bag",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "headon": {
+    "description": "Head-On",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hello": {
+    "description": "HELLO",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "icbm": {
+    "description": "ICBM Defence Project",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kangaroo": {
+    "description": "Kangaroo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "keenon": {
+    "description": "Jeontuham Keenon",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "kingval": {
+    "description": "King's Valley",
+    "publisher": "Sammi Computer",
+    "year": "1986"
+  },
+  "knightlr": {
+    "description": "Knight Lore",
+    "publisher": "Sammi Computer",
+    "year": "1986"
+  },
+  "led": {
+    "description": "LED Display Designer",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "leda": {
+    "description": "LED Display Designer (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lunrcity": {
+    "description": "Lunar City",
+    "publisher": "Samsung Software",
+    "year": "1986"
+  },
+  "lupan": {
+    "description": "Lupan",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "miniorgn": {
+    "description": "Mini Organ",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "miraclew": {
+    "description": "Miracle World",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "miro2": {
+    "description": "Miro ][",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "morse": {
+    "description": "Morse Signal",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "morsea": {
+    "description": "Morse Signal (Alt)",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "olion": {
+    "description": "Olion",
+    "publisher": "Softmen",
+    "year": "1984"
+  },
+  "othello": {
+    "description": "Othello",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "panzersp": {
+    "description": "Panzerspitze",
+    "publisher": "Static Soft",
+    "year": "1986"
+  },
+  "pengo": {
+    "description": "Pengo",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "rambo": {
+    "description": "Rambo",
+    "publisher": "Sammi Computer",
+    "year": "198?"
+  },
+  "ratter": {
+    "description": "Ratter",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "redball": {
+    "description": "Red Ball",
+    "publisher": "Index",
+    "year": "1985"
+  },
+  "relocate": {
+    "description": "Relocater",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "relocatea": {
+    "description": "Relocater 1.1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "relocateb": {
+    "description": "Relocater (Alt)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "scramble": {
+    "description": "Scramble",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "sigrape2": {
+    "description": "Sigrape2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "slodern2": {
+    "description": "Super Lode Runner II",
+    "publisher": "Static Soft",
+    "year": "1986"
+  },
+  "sloderun": {
+    "description": "Super Lode Runner I",
+    "publisher": "Static Soft",
+    "year": "1985"
+  },
+  "snackatk": {
+    "description": "Snack Attack (Hacked)",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "spacegng": {
+    "description": "Space Gang",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "spaceinv": {
+    "description": "Space Invaders (Hacked)",
+    "publisher": "Honeybug?",
+    "year": "198?"
+  },
+  "spaceinva": {
+    "description": "Space Invaders (Hacked, Alt)",
+    "publisher": "Honeybug?",
+    "year": "198?"
+  },
+  "spacemsn": {
+    "description": "Space Mission",
+    "publisher": "Samsung Software",
+    "year": "198?"
+  },
+  "spacprot": {
+    "description": "Space Protector",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "spypanic": {
+    "description": "Spy Panic",
+    "publisher": "Softmen",
+    "year": "1985"
+  },
+  "styxmon": {
+    "description": "Styx Monitor",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "subrout": {
+    "description": "Sub Routine",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sudoku": {
+    "description": "Sudoku",
+    "publisher": "<homebrew>",
+    "year": "2008"
+  },
+  "sxevious": {
+    "description": "Super Xevious",
+    "publisher": "Static Soft",
+    "year": "1986"
+  },
+  "tank2": {
+    "description": "Tank II",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "toilradv": {
+    "description": "Toiler Adventure",
+    "publisher": "Index",
+    "year": "1985"
+  },
+  "toiyar": {
+    "description": "Toiyar",
+    "publisher": "Sammi Computer",
+    "year": "198?"
+  },
+  "twinbee": {
+    "description": "TwinBee",
+    "publisher": "Static Soft",
+    "year": "1986"
+  },
+  "vaveque": {
+    "description": "Myeongtamjeong Vaveque",
+    "publisher": "Static Soft",
+    "year": "1986"
+  },
+  "vela": {
+    "description": "Vela",
+    "publisher": "Sammi Computer",
+    "year": "198?"
+  },
+  "wawa": {
+    "description": "WAWA",
+    "publisher": "Softvision",
+    "year": "198?"
+  },
+  "wizardry": {
+    "description": "Wizardry",
+    "publisher": "Sammi Computer",
+    "year": "1986"
+  },
+  "xevious2": {
+    "description": "Xevious Tiny II",
+    "publisher": "Sammi Computer",
+    "year": "1985"
+  },
+  "z80asm": {
+    "description": "Z80 Assembler v1.0",
+    "publisher": "Samsung Software",
+    "year": "1983"
+  },
+  "z80asma": {
+    "description": "Z80 Assembler v1.0 (Alt)",
+    "publisher": "Samsung Software",
+    "year": "1983"
+  },
+  "zanac": {
+    "description": "Zanac",
+    "publisher": "A.I.",
+    "year": "198?"
+  },
+  "zexas": {
+    "description": "Zexas",
+    "publisher": "Aloe?",
+    "year": "198?"
+  }
+}

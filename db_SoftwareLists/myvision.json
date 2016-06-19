@@ -1,0 +1,22 @@
+{
+  "gomoku": {
+    "description": "Gomoku Narabe Renju",
+    "publisher": "Nihonbussan",
+    "year": "1983"
+  },
+  "hanafuda": {
+    "description": "Hanafuda",
+    "publisher": "Logitec Corp.",
+    "year": "1983"
+  },
+  "mahjong": {
+    "description": "Mahjong Nichibutsu",
+    "publisher": "Nihonbussan",
+    "year": "1983"
+  },
+  "tsumesho": {
+    "description": "Tsumeshougi",
+    "publisher": "Logitec Corp.",
+    "year": "1983"
+  }
+}

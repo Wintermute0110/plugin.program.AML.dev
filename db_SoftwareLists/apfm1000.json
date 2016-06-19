@@ -1,0 +1,102 @@
+{
+  "backgamm": {
+    "description": "Backgammon",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "baseball": {
+    "description": "Baseball",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "basic": {
+    "description": "APF Basic",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "blckjack": {
+    "description": "Blackjack",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "bowling": {
+    "description": "Bowling / Micro Match",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "boxing": {
+    "description": "Boxing",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "brickdwn": {
+    "description": "Brickdown / Shooting Gallery",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "casino": {
+    "description": "Casino 1: Slots / Roulette / Keno",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "catena": {
+    "description": "Catena",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "catenaa": {
+    "description": "Catena (Alt)",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "chardump": {
+    "description": "Character Dump",
+    "publisher": "Adam Trionfo",
+    "year": "2010"
+  },
+  "columns": {
+    "description": "Columns / Targets / Bacteria / Autopista",
+    "publisher": "Enrique Collado",
+    "year": "1995"
+  },
+  "ebasic": {
+    "description": "Extended Basic",
+    "publisher": "R.L. Recker",
+    "year": "1983"
+  },
+  "hangman": {
+    "description": "Hangman / Tic Tac Toe / Doodle",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "mblock02": {
+    "description": "Move Block 2",
+    "publisher": "Adam Trionfo",
+    "year": "2010"
+  },
+  "movblock": {
+    "description": "Move Block",
+    "publisher": "Adam Trionfo",
+    "year": "2010"
+  },
+  "pinball": {
+    "description": "Pinball / Dungeon Hunt / Blockout",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "readpia": {
+    "description": "Read PIA",
+    "publisher": "Adam Trionfo",
+    "year": "2010"
+  },
+  "spacedst": {
+    "description": "Space Destroyers",
+    "publisher": "APF",
+    "year": "1979"
+  },
+  "ufo": {
+    "description": "Ufo / Sea Monsters / Break It Down / Rebuild / Shoot",
+    "publisher": "APF",
+    "year": "1979"
+  }
+}

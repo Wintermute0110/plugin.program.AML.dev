@@ -1,0 +1,22 @@
+{
+  "cpm22": {
+    "description": "CP/M 2.2",
+    "publisher": "Digital Research Inc.",
+    "year": "198?"
+  },
+  "cpm30": {
+    "description": "CP/M 3.0",
+    "publisher": "Digital Research Inc.",
+    "year": "198?"
+  },
+  "wmate3": {
+    "description": "CP/M 3.0 (alt 1)",
+    "publisher": "Digital Research Inc.",
+    "year": "198?"
+  },
+  "wmate4": {
+    "description": "CP/M 3.0 (alt 2)",
+    "publisher": "Digital Research Inc.",
+    "year": "198?"
+  }
+}

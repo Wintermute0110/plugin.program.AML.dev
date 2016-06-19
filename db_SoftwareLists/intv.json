@@ -1,0 +1,947 @@
+{
+  "4tris": {
+    "description": "4-Tris (Download Version)",
+    "publisher": "IntelligentVision",
+    "year": "2000"
+  },
+  "add": {
+    "description": "Advanced Dungeons & Dragons",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "addtom": {
+    "description": "Advanced Dungeons & Dragons - Tower of Mystery (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "addtot": {
+    "description": "Advanced Dungeons & Dragons - Treasure of Tarmin",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "adventur": {
+    "description": "Adventure (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "advtron": {
+    "description": "Adventures of TRON (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "airstrk": {
+    "description": "Air Strike (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "allstar": {
+    "description": "All Star Major League Baseball (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "armorbtl": {
+    "description": "Armor Battle",
+    "publisher": "Mattel Electronics",
+    "year": "1978"
+  },
+  "astrosms": {
+    "description": "AstroSmash",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "astrosmsc": {
+    "description": "AstroSmash Competition",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "astrosmsm": {
+    "description": "AstroSmash - Meteor (Hacked?)",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "atlantis": {
+    "description": "Atlantis",
+    "publisher": "Imagic",
+    "year": "1982"
+  },
+  "autorace": {
+    "description": "Auto Racing",
+    "publisher": "Mattel Electronics",
+    "year": "1979"
+  },
+  "b17bomb": {
+    "description": "B-17 Bomber",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "backgamm": {
+    "description": "ABPA Backgammon",
+    "publisher": "Mattel Electronics",
+    "year": "1978"
+  },
+  "baseball": {
+    "description": "Major League Baseball",
+    "publisher": "Mattel Electronics",
+    "year": "1978"
+  },
+  "basketbl": {
+    "description": "NBA Basketball",
+    "publisher": "Mattel Electronics",
+    "year": "1978"
+  },
+  "beamridr": {
+    "description": "Beamrider",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "beauty": {
+    "description": "Beauty & the Beast",
+    "publisher": "Imagic",
+    "year": "1982"
+  },
+  "blockrun": {
+    "description": "Blockade Runner",
+    "publisher": "Interphase",
+    "year": "1983"
+  },
+  "blowout": {
+    "description": "Party Line: Blow Out (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "blowouta": {
+    "description": "Party Line: Blow Out (Unreleased, Alt)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "bnj": {
+    "description": "Bump 'n' Jump",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "bombsqd": {
+    "description": "Bomb Squad",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "bowling": {
+    "description": "PBA Bowling",
+    "publisher": "Mattel Electronics",
+    "year": "1980"
+  },
+  "boxing": {
+    "description": "Boxing",
+    "publisher": "Mattel Electronics",
+    "year": "1980"
+  },
+  "brickout": {
+    "description": "Brickout! (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "btime": {
+    "description": "BurgerTime!",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "buzbombr": {
+    "description": "Buzz Bombers",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "carnival": {
+    "description": "Carnival",
+    "publisher": "Coleco",
+    "year": "1982"
+  },
+  "centiped": {
+    "description": "Centipede",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "checkers": {
+    "description": "Checkers",
+    "publisher": "Mattel Electronics",
+    "year": "1979"
+  },
+  "chess": {
+    "description": "USCF Chess",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "choplift": {
+    "description": "Choplifter! (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "commando": {
+    "description": "Commando",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "congo": {
+    "description": "Congo Bongo",
+    "publisher": "Sega",
+    "year": "1983"
+  },
+  "crazycln": {
+    "description": "Crazy Clones (Unfinished)",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "csspgolf": {
+    "description": "Chip Shot: Super Pro Golf",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "ctennis": {
+    "description": "Championship Tennis",
+    "publisher": "INTV",
+    "year": "1985"
+  },
+  "decathln": {
+    "description": "Super Pro Decathlon",
+    "publisher": "INTV",
+    "year": "1988"
+  },
+  "defender": {
+    "description": "Defender",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "demoblue": {
+    "description": "Demonstration Cartridge (blue)",
+    "publisher": "Mattel Electronics",
+    "year": "1978"
+  },
+  "demogrn": {
+    "description": "Demonstration Cartridge (green)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "demoint": {
+    "description": "International Demonstration Cartridge",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "demonatk": {
+    "description": "Demon Attack",
+    "publisher": "Imagic",
+    "year": "1982"
+  },
+  "demored": {
+    "description": "Demonstration Cartridge (red)",
+    "publisher": "Mattel Electronics",
+    "year": "1978"
+  },
+  "dfactor": {
+    "description": "The Dreadnaught Factor",
+    "publisher": "Activision",
+    "year": "1982"
+  },
+  "dfactorp": {
+    "description": "The Dreadnaught Factor (Prototype)",
+    "publisher": "Activision",
+    "year": "1982"
+  },
+  "digdug": {
+    "description": "Dig Dug",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "diner": {
+    "description": "Diner",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "dkong": {
+    "description": "Donkey Kong",
+    "publisher": "Coleco",
+    "year": "1982"
+  },
+  "dkongarc": {
+    "description": "Donkey Kong Arcade",
+    "publisher": "IntelligentVision",
+    "year": "200?"
+  },
+  "dkongjr": {
+    "description": "Donkey Kong Jr",
+    "publisher": "Coleco",
+    "year": "1983"
+  },
+  "dracula": {
+    "description": "Dracula",
+    "publisher": "Imagic",
+    "year": "1982"
+  },
+  "drgnfire": {
+    "description": "Dragonfire",
+    "publisher": "Imagic",
+    "year": "1982"
+  },
+  "ecs": {
+    "description": "Entertainment Computer System",
+    "publisher": "Mattel Electronics",
+    "year": "19??"
+  },
+  "esb": {
+    "description": "Star Wars: The Empire Strikes Back",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "fathom": {
+    "description": "Fathom",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "football": {
+    "description": "NFL Football",
+    "publisher": "Mattel Electronics",
+    "year": "1978"
+  },
+  "frogbog": {
+    "description": "Frog Bog",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "frogger": {
+    "description": "Frogger",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "gftgold": {
+    "description": "Go for the Gold! (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "golf": {
+    "description": "PGA Golf",
+    "publisher": "Mattel Electronics",
+    "year": "1979"
+  },
+  "gridshk": {
+    "description": "Grid Shock (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "hardhat": {
+    "description": "Party Line: Hard Hat (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "hheggs": {
+    "description": "Happy Holidays: Easter Eggcitement (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "hhsanta": {
+    "description": "Happy Holidays: Santa's Helper (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "hhtrick": {
+    "description": "Happy Holidays: Trick or Treat (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "hlights": {
+    "description": "Hypnotic Lights (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "hockey": {
+    "description": "NHL Hockey",
+    "publisher": "Mattel Electronics",
+    "year": "1979"
+  },
+  "horserac": {
+    "description": "Horse Racing",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "htrails": {
+    "description": "Happy Trails",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "hvrfor3d": {
+    "description": "Hover Force 3D (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1984"
+  },
+  "hvrforce": {
+    "description": "Hover Force",
+    "publisher": "INTV",
+    "year": "1986"
+  },
+  "icetrek": {
+    "description": "Ice Trek",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "illusion": {
+    "description": "Illusions (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "imitc": {
+    "description": "IMI Test Cartridge",
+    "publisher": "Mattel Electronics",
+    "year": "1978"
+  },
+  "istar": {
+    "description": "Istar",
+    "publisher": "IntelligentVision",
+    "year": "2010?"
+  },
+  "kingotm": {
+    "description": "King of the Mountain (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "kingotmf": {
+    "description": "King of the Mountain (Fixed?)",
+    "publisher": "IntelligentVision",
+    "year": "200?"
+  },
+  "koolaidm": {
+    "description": "Kool-Aid Man",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "ladybug": {
+    "description": "Lady Bug",
+    "publisher": "Coleco",
+    "year": "1983"
+  },
+  "landbttl": {
+    "description": "Land Battle (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "lfun1": {
+    "description": "Learning Fun I: Math Master Factor Fun",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "lfun2": {
+    "description": "Learning Fun II: Word Wizard Memory Fun",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "llight": {
+    "description": "League of Light (Prototype)",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "llight1": {
+    "description": "League of Light (Prototype, Alt)",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "llight2": {
+    "description": "League of Light (Prototype, Alt 2)",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "lnc": {
+    "description": "Lock 'n' Chase",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "lnc2": {
+    "description": "Lock 'n' Chase (later version)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "locomotn": {
+    "description": "Loco-Motion",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "magic": {
+    "description": "Magic Carousel (Prototype)",
+    "publisher": "INTV",
+    "year": "1983"
+  },
+  "masters": {
+    "description": "Masters of the Universe: The Power of He-Man",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "masters2": {
+    "description": "Masters of the Universe II (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "mathfun": {
+    "description": "Electric Company: Math Fun",
+    "publisher": "Mattel Electronics",
+    "year": "1978"
+  },
+  "mbuggies": {
+    "description": "Stadium Mud Buggies",
+    "publisher": "INTV",
+    "year": "1988"
+  },
+  "minehunt": {
+    "description": "Minehunter (Download Version)",
+    "publisher": "IntelligentVision",
+    "year": "2004"
+  },
+  "minehunta": {
+    "description": "Minehunter (Download Version, Alt?)",
+    "publisher": "IntelligentVision",
+    "year": "2004"
+  },
+  "minotaur": {
+    "description": "Minotaur (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "minotaur11": {
+    "description": "Minotaur (Prototype, v1.1)",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "minotaur2": {
+    "description": "Minotaur (Prototype, v2)",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "missionx": {
+    "description": "Mission X",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "mmskiing": {
+    "description": "Mountain Madness Super Pro Skiing",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "motox": {
+    "description": "Motocross",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "msurgeon": {
+    "description": "Microsurgeon",
+    "publisher": "Imagic",
+    "year": "1982"
+  },
+  "mte201": {
+    "description": "MTE-201 Test Cartridge",
+    "publisher": "Mattel Electronics",
+    "year": "1978"
+  },
+  "mtrap": {
+    "description": "Mouse Trap",
+    "publisher": "Coleco",
+    "year": "1982"
+  },
+  "mycastle": {
+    "description": "Mystic Castle (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "novablst": {
+    "description": "Nova Blast",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "nstalker": {
+    "description": "Night Stalker",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "pacman": {
+    "description": "Pac-Man (Atarisoft)",
+    "publisher": "Atarisoft",
+    "year": "1983"
+  },
+  "pacmana": {
+    "description": "Pac-Man (INTV)",
+    "publisher": "INTV",
+    "year": "1983"
+  },
+  "pinball": {
+    "description": "Pinball",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "pitfall": {
+    "description": "Pitfall!",
+    "publisher": "Activision",
+    "year": "1982"
+  },
+  "poker": {
+    "description": "Las Vegas Poker & Blackjack",
+    "publisher": "Mattel Electronics",
+    "year": "1979"
+  },
+  "polepos": {
+    "description": "Pole Position",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "pool": {
+    "description": "Deep Pockets: Super Pro Pool and Billiards (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1990"
+  },
+  "popeye": {
+    "description": "Popeye",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "qbert": {
+    "description": "Q*bert",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "quest": {
+    "description": "Quest",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rdealer": {
+    "description": "Royal Dealer",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "reversi": {
+    "description": "Reversi",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "riveraid": {
+    "description": "River Raid",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "riveraidp": {
+    "description": "River Raid (Prototype)",
+    "publisher": "Activision",
+    "year": "1983?"
+  },
+  "rockybw": {
+    "description": "Rocky & Bullwinckle (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "roulette": {
+    "description": "Las Vegas Roulette",
+    "publisher": "Mattel Electronics",
+    "year": "1979"
+  },
+  "rrubble": {
+    "description": "Robot Rubble (Prototype)",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "rrubble1": {
+    "description": "Robot Rubble (Prototype, v1)",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "rrubble2": {
+    "description": "Robot Rubble (Prototype, v2)",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "safecrkr": {
+    "description": "Safecracker",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "scarfing": {
+    "description": "Scarfinger (Unfinished)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "scobra": {
+    "description": "Super Cobra",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "seabattl": {
+    "description": "Sea Battle",
+    "publisher": "Mattel Electronics",
+    "year": "1980"
+  },
+  "sewersam": {
+    "description": "Sewer Sam",
+    "publisher": "Interphase",
+    "year": "1983"
+  },
+  "sgr": {
+    "description": "SameGame & Robots (Download Version)",
+    "publisher": "IntelligentVision",
+    "year": "2005"
+  },
+  "shark": {
+    "description": "Shark! Shark!",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "shrpshot": {
+    "description": "Sharp Shot",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "skiing": {
+    "description": "U.S. Ski Team Skiing",
+    "publisher": "Mattel Electronics",
+    "year": "1980"
+  },
+  "slamdunk": {
+    "description": "Slam Dunk Super Pro Basketball",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "slapshot": {
+    "description": "Slap Shot Super Pro Hockey",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "snafu": {
+    "description": "Snafu",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "soccer": {
+    "description": "NASL Soccer",
+    "publisher": "Mattel Electronics",
+    "year": "1979"
+  },
+  "soccer2": {
+    "description": "Soccer 2 (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "198?"
+  },
+  "spacearm": {
+    "description": "Space Armada",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "spacebtl": {
+    "description": "Space Battle",
+    "publisher": "Mattel Electronics",
+    "year": "1979"
+  },
+  "spacecad": {
+    "description": "Party Line: Space Cadet (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "spacecnt": {
+    "description": "Space Cunt",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "spacehwk": {
+    "description": "Space Hawk",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "spatrol": {
+    "description": "Space Patrol Teaser Edition",
+    "publisher": "IntelligentVision",
+    "year": "2007?"
+  },
+  "spftball": {
+    "description": "Super Pro Football",
+    "publisher": "INTV",
+    "year": "1986"
+  },
+  "spina": {
+    "description": "ZZZZZ! Spina the Bee",
+    "publisher": "IntelligentVision",
+    "year": "200?"
+  },
+  "sshuttle": {
+    "description": "Space Shuttle (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "ssoccer": {
+    "description": "Super Soccer (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "sspartan": {
+    "description": "Space Spartans",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "stampede": {
+    "description": "Stampede",
+    "publisher": "Activision",
+    "year": "1982"
+  },
+  "starstrk": {
+    "description": "Star Strike",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "stonix": {
+    "description": "Stonix (Download Version)",
+    "publisher": "IntelligentVision",
+    "year": "2005"
+  },
+  "subhunt": {
+    "description": "Sub Hunt",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "suprchef": {
+    "description": "Super Chef BT",
+    "publisher": "IntelligentVision",
+    "year": "2013?"
+  },
+  "swordsas": {
+    "description": "Swords & Serpents",
+    "publisher": "Imagic",
+    "year": "1982"
+  },
+  "takeover": {
+    "description": "Takeover (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "tennis": {
+    "description": "Tennis",
+    "publisher": "Mattel Electronics",
+    "year": "1980"
+  },
+  "thcastle": {
+    "description": "Thunder Castle",
+    "publisher": "INTV",
+    "year": "1986"
+  },
+  "thinice": {
+    "description": "Thin Ice",
+    "publisher": "INTV",
+    "year": "1986"
+  },
+  "thinicep": {
+    "description": "Thin Ice (Prototype)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "todd": {
+    "description": "Tag Along Todd (Unfinished)",
+    "publisher": "IntelligentVision",
+    "year": "200?"
+  },
+  "towerofd": {
+    "description": "Tower of Doom",
+    "publisher": "INTV",
+    "year": "1987"
+  },
+  "traction": {
+    "description": "Triple Action",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "trchalng": {
+    "description": "Triple Challenge",
+    "publisher": "INTV",
+    "year": "1986"
+  },
+  "trondd": {
+    "description": "TRON Deadly Discs",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "tronmat": {
+    "description": "TRON Maze-A-Tron",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "tronss": {
+    "description": "TRON Solar Sailer",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "tropical": {
+    "description": "Tropical Trouble",
+    "publisher": "Imagic",
+    "year": "1982"
+  },
+  "truckin": {
+    "description": "Truckin'",
+    "publisher": "Imagic",
+    "year": "1983"
+  },
+  "turbo": {
+    "description": "Turbo",
+    "publisher": "Coleco",
+    "year": "1983"
+  },
+  "tutankhm": {
+    "description": "Tutankham",
+    "publisher": "Parker Brothers",
+    "year": "1983"
+  },
+  "utopia": {
+    "description": "Utopia",
+    "publisher": "Mattel Electronics",
+    "year": "1981"
+  },
+  "vball": {
+    "description": "Spiker! Super Pro Volleyball",
+    "publisher": "INTV",
+    "year": "1988"
+  },
+  "vectron": {
+    "description": "Vectron",
+    "publisher": "Mattel Electronics",
+    "year": "1982"
+  },
+  "venture": {
+    "description": "Venture",
+    "publisher": "Coleco",
+    "year": "1982"
+  },
+  "voice": {
+    "description": "Intellivoice",
+    "publisher": "Mattel Electronics",
+    "year": "19??"
+  },
+  "wordfun": {
+    "description": "Electric Company: Word Fun",
+    "publisher": "Mattel Electronics",
+    "year": "1980"
+  },
+  "worldcup": {
+    "description": "World Cup Football",
+    "publisher": "INTV",
+    "year": "1985"
+  },
+  "wrestlng": {
+    "description": "Body Slam Super Pro Wrestling",
+    "publisher": "INTV",
+    "year": "1988"
+  },
+  "wwater": {
+    "description": "White Water!",
+    "publisher": "Imagic",
+    "year": "1982"
+  },
+  "wwhomper": {
+    "description": "Worm Whomper",
+    "publisher": "Activision",
+    "year": "1983"
+  },
+  "yogi": {
+    "description": "Yogi's Frustration (Unreleased)",
+    "publisher": "Mattel Electronics",
+    "year": "1983"
+  },
+  "zaxxon": {
+    "description": "Zaxxon",
+    "publisher": "Coleco",
+    "year": "1983"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "dogonlog": {
+    "description": "A Dog on a Log",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "mknight": {
+    "description": "The Millionth Knight",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "ontrack": {
+    "description": "On the Track",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "sealfly": {
+    "description": "The Seal That Could Fly",
+    "publisher": "Texas Instruments",
+    "year": "1981"
+  },
+  "seasight": {
+    "description": "Sea Sights",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  },
+  "whoszoo": {
+    "description": "Who's Who at the Zoo",
+    "publisher": "Texas Instruments",
+    "year": "1980"
+  }
+}

@@ -1,0 +1,397 @@
+{
+  "2010adv": {
+    "description": "2010 - The Text Adventure Game",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "adamani1": {
+    "description": "ADAMania #01",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "adamani2": {
+    "description": "ADAMania #02",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "adamani3": {
+    "description": "ADAMania #03",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "adamlnk2": {
+    "description": "ADAMLink II",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "adamsrib": {
+    "description": "ADAM's R.I.B. I",
+    "publisher": "Tapeware Technologies",
+    "year": "1984"
+  },
+  "adamtut": {
+    "description": "ADAM Tutor",
+    "publisher": "Villiard & Reynolds",
+    "year": "198?"
+  },
+  "addictus": {
+    "description": "Addictus",
+    "publisher": "Reedy Software",
+    "year": "1989"
+  },
+  "addictusa": {
+    "description": "Addictus (Alt)",
+    "publisher": "Reedy Software",
+    "year": "1989"
+  },
+  "addrbook": {
+    "description": "Address Book Filer with AutoDialer",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "autoaid": {
+    "description": "Auto-AID for SmartBASIC",
+    "publisher": "FutureVision",
+    "year": "1984"
+  },
+  "autobckp": {
+    "description": "AutoBackup",
+    "publisher": "Walters Software Co.",
+    "year": "198?"
+  },
+  "basicpgm": {
+    "description": "basicpgm",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bestbrod": {
+    "description": "The Best of Brøderbund",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "bestbroda": {
+    "description": "The Best of Brøderbund (Alt)",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "bestea": {
+    "description": "Best of Electronic Arts (Prototype)",
+    "publisher": "Coleco",
+    "year": "1985"
+  },
+  "blankddp": {
+    "description": "Blank Digital Data Pack",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "blankddpa": {
+    "description": "Blank Digital Data Pack (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "buckrog": {
+    "description": "Buck Rogers - Planet of Zoom",
+    "publisher": "Coleco",
+    "year": "1983"
+  },
+  "buckroga": {
+    "description": "Buck Rogers - Planet of Zoom (Alt)",
+    "publisher": "Coleco",
+    "year": "1983"
+  },
+  "cartcopy": {
+    "description": "Coleco Game Cartridge Copy",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "conlife": {
+    "description": "Conway's Game of Life",
+    "publisher": "<unknown>",
+    "year": "199?"
+  },
+  "copycart": {
+    "description": "CopyCart+ (v1.1)",
+    "publisher": "M.M.S.G.",
+    "year": "1985"
+  },
+  "copyutil": {
+    "description": "Copy Utilities (v2.0)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dkong": {
+    "description": "Donkey Kong",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "dkongjr": {
+    "description": "Donkey Kong Junior",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "dkongjrp13": {
+    "description": "Donkey Kong Junior (Prototype, Rev. 13, 5 Screen)",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "dkongjrp14": {
+    "description": "Donkey Kong Junior (Prototype, Rev. 14, 5 Screen)",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "dlair": {
+    "description": "Dragon's Lair",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "egp2": {
+    "description": "Electronic Game Pack II",
+    "publisher": "Ape Software",
+    "year": "1986"
+  },
+  "eosdisk": {
+    "description": "E.O.S. Disk Manager",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "evolutio": {
+    "description": "Evolution",
+    "publisher": "Sydney Development",
+    "year": "1987"
+  },
+  "expertyp": {
+    "description": "ExperType",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "famfeud": {
+    "description": "Family Feud",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "fffback": {
+    "description": "Flash Facts - Flashbacks",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "fffbacka": {
+    "description": "Flash Facts - Flashbacks (Alt)",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "fftrivia": {
+    "description": "Flash Facts - Trivia",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "ffvocab": {
+    "description": "Flash Facts - Vocabulator",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "fla_alg": {
+    "description": "Electronic Flashcard Maker - Algebra I",
+    "publisher": "Coleco?",
+    "year": "198?"
+  },
+  "fla_his1": {
+    "description": "Electronic Flashcard Maker - American History I",
+    "publisher": "Coleco?",
+    "year": "198?"
+  },
+  "fla_his2": {
+    "description": "Electronic Flashcard Maker - American History II",
+    "publisher": "Coleco?",
+    "year": "198?"
+  },
+  "ghaaug04": {
+    "description": "gHAAUG #04 - SmartBASIC - Game Arc #4",
+    "publisher": "gHAAUG",
+    "year": "19??"
+  },
+  "godosd": {
+    "description": "GoDOS (v1.2, Demo)",
+    "publisher": "Phoenix 2000",
+    "year": "1990"
+  },
+  "godosda": {
+    "description": "GoDOS (v1.2, Demo, Alt)",
+    "publisher": "Phoenix 2000",
+    "year": "1990"
+  },
+  "godosprg": {
+    "description": "GoDOS BASIC Programs #01",
+    "publisher": "Joe Quinn",
+    "year": "1990"
+  },
+  "hackguid": {
+    "description": "Hacker's Guide to ADAM",
+    "publisher": "Peter & Ben Hinkle",
+    "year": "1985"
+  },
+  "jeopardy": {
+    "description": "Jeopardy (Prototype)",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "labelwrk": {
+    "description": "The Label Works",
+    "publisher": "Walters Software",
+    "year": "198?"
+  },
+  "lgcatlog": {
+    "description": "L&G Enterprises Video Catalog",
+    "publisher": "L&G Enterprises",
+    "year": "19??"
+  },
+  "malcal93": {
+    "description": "M.A.L. Powerpaint Calendar '93",
+    "publisher": "Maine ADAM Library",
+    "year": "1993"
+  },
+  "malcal98": {
+    "description": "M.A.L. Powerpaint Calendar '98",
+    "publisher": "Maine ADAM Library",
+    "year": "1998"
+  },
+  "malhow1": {
+    "description": "M.A.L. How To Vol. I - Install a Phone Outlet",
+    "publisher": "Maine ADAM Library",
+    "year": "199?"
+  },
+  "malhow2": {
+    "description": "M.A.L. How To Vol. II - Build Your Own Computer Desk Hutch",
+    "publisher": "Maine ADAM Library",
+    "year": "199?"
+  },
+  "malhow5": {
+    "description": "M.A.L. How To Vol. V - How to Build an Acoustic Printer Stand",
+    "publisher": "Maine ADAM Library",
+    "year": "199?"
+  },
+  "multibkp": {
+    "description": "Multicart Backup",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "recipefi": {
+    "description": "Recipe Filer",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "scarry": {
+    "description": "Richard Scarry's Best Electronic Wordbook Ever",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "scarrya": {
+    "description": "Richard Scarry's Best Electronic Wordbook Ever (Alt)",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "smartbas": {
+    "description": "SmartBASIC (v1.0)",
+    "publisher": "Coleco",
+    "year": "1983"
+  },
+  "smartbasa": {
+    "description": "SmartBASIC (v1.0, Alt)",
+    "publisher": "Coleco",
+    "year": "1983"
+  },
+  "smartbon": {
+    "description": "SmartBASIC Bonanza",
+    "publisher": "Martin Consulting",
+    "year": "1985"
+  },
+  "smartfil": {
+    "description": "Smart Filer",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "smartlet": {
+    "description": "Smart Letters & Forms",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "smartlog": {
+    "description": "SmartLOGO",
+    "publisher": "Logo Computer Systems",
+    "year": "198?"
+  },
+  "smartspl": {
+    "description": "SmartSPELLER",
+    "publisher": "Strategic Software Inc.",
+    "year": "198?"
+  },
+  "smarttrx": {
+    "description": "SmartTrix I - Data Doctor",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "smarttyp": {
+    "description": "Smart Type (v1.1)",
+    "publisher": "Reedy Software",
+    "year": "1985"
+  },
+  "smartwri": {
+    "description": "SmartWRITER Elite",
+    "publisher": "Walters Software Co.",
+    "year": "199?"
+  },
+  "snowdrag": {
+    "description": "Temple of the Snow Dragon",
+    "publisher": "Digital Adventures",
+    "year": "1988"
+  },
+  "softadam": {
+    "description": "Coleco Presents - Software for ADAM!",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "stellar5": {
+    "description": "Stellar 5",
+    "publisher": "Hanania Enterprises",
+    "year": "1985"
+  },
+  "subroc": {
+    "description": "SubRoc (Prototype)",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "troltale": {
+    "description": "Troll's Tale (Prototype)",
+    "publisher": "Coleco",
+    "year": "198?"
+  },
+  "ukas_nz": {
+    "description": "U.K.A.S. - Mini Reviews N-Z",
+    "publisher": "U.K. ADAM Subscribers",
+    "year": "199?"
+  },
+  "undv2": {
+    "description": "NIAD SmartBasic Utils UNDV #2",
+    "publisher": "Lazer Microsystems",
+    "year": "1983"
+  },
+  "wackywrd": {
+    "description": "Wacky Word Games",
+    "publisher": "Coleco",
+    "year": "1984"
+  },
+  "wizpin": {
+    "description": "Wizard's Pinball Arcade",
+    "publisher": "Wizard's Lair Software",
+    "year": "1987"
+  },
+  "xbasutil": {
+    "description": "EBU - Extended BASIC Utilities v1.0",
+    "publisher": "Extended Software",
+    "year": "198?"
+  },
+  "zaxxon": {
+    "description": "Zaxxon",
+    "publisher": "Coleco",
+    "year": "1984"
+  }
+}

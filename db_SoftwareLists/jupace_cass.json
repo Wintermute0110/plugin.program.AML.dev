@@ -1,0 +1,637 @@
+{
+  "3dmaze": {
+    "description": "3D Maze",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "5compact": {
+    "description": "Five Compact Games",
+    "publisher": "Remsoft",
+    "year": "1983"
+  },
+  "acecase": {
+    "description": "Ace Case",
+    "publisher": "Personal Computer World",
+    "year": "1984"
+  },
+  "aceinvad": {
+    "description": "Ace Invaders (Hi-Tech Microsoft)",
+    "publisher": "Hi-Tech Microsoft",
+    "year": "1982"
+  },
+  "acemines": {
+    "description": "Ace Mines",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2004"
+  },
+  "acestar": {
+    "description": "Ace Star",
+    "publisher": "Jupiter Ace Archive Team",
+    "year": "2010"
+  },
+  "acevader": {
+    "description": "Acevaders",
+    "publisher": "Micro Marketing",
+    "year": "1983"
+  },
+  "acevocab": {
+    "description": "Ace Vocab Select",
+    "publisher": "Personal Computer World",
+    "year": "1983"
+  },
+  "adventa": {
+    "description": "Adventure A - Planet of Death",
+    "publisher": "Artic Computing",
+    "year": "1981"
+  },
+  "aliendef": {
+    "description": "Alien Defender",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "amazmaze": {
+    "description": "Amazing Maze",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "amce11": {
+    "description": "Ace Manual Code Examples - Chapter 11 (mice)",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce12": {
+    "description": "Ace Manual Code Examples - Chapter 12",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce13": {
+    "description": "Ace Manual Code Examples - Chapter 13",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce15": {
+    "description": "Ace Manual Code Examples - Chapter 15",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce16": {
+    "description": "Ace Manual Code Examples - Chapter 16",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce17": {
+    "description": "Ace Manual Code Examples - Chapter 17 (hex)",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce19": {
+    "description": "Ace Manual Code Examples - Chapter 19",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce20": {
+    "description": "Ace Manual Code Examples - Chapter 20",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce21": {
+    "description": "Ace Manual Code Examples - Chapter 21",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce23": {
+    "description": "Ace Manual Code Examples - Chapter 23 (2literal)",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce24": {
+    "description": "Ace Manual Code Examples - Chapter 24",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce25": {
+    "description": "Ace Manual Code Examples - Chapter 25",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce26": {
+    "description": "Ace Manual Code Examples - Chapter 26",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amce8": {
+    "description": "Ace Manual Code Examples - Chapter 8",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "amisound": {
+    "description": "AMI Sound Toolkit",
+    "publisher": "Jupiter Ace Archive Team",
+    "year": "2007"
+  },
+  "asmdasm": {
+    "description": "Assembler & Dis-assembler",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "astrian": {
+    "description": "Astrian Descent (Prototype)",
+    "publisher": "Brian Bates",
+    "year": "1983"
+  },
+  "aswarm": {
+    "description": "Alien Swarm",
+    "publisher": "Popular Computing Weekly",
+    "year": "1983"
+  },
+  "aticraid": {
+    "description": "Atic Raid",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "avoider": {
+    "description": "Ace Avoider",
+    "publisher": "Personal Computer World",
+    "year": "1984"
+  },
+  "blackisl": {
+    "description": "Black Island Adventure",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "bomber": {
+    "description": "Bomber",
+    "publisher": "Paul Robson",
+    "year": "1997"
+  },
+  "breakout": {
+    "description": "Breakout",
+    "publisher": "Popular Computing Weekly",
+    "year": "1983"
+  },
+  "calendar": {
+    "description": "Calendar",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "callisto": {
+    "description": "Callisto",
+    "publisher": "ACS Software",
+    "year": "1983"
+  },
+  "cavern": {
+    "description": "Cavern Attack",
+    "publisher": "Hi-Tech Microsoft",
+    "year": "1983"
+  },
+  "cenipede": {
+    "description": "Cenipede",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "chase": {
+    "description": "Chase",
+    "publisher": "Popular Computing Weekly",
+    "year": "1983"
+  },
+  "chess": {
+    "description": "Chess",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "cygnus": {
+    "description": "Cygnus",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "database": {
+    "description": "Database",
+    "publisher": "Boldfield Computing",
+    "year": "1985"
+  },
+  "demotape": {
+    "description": "Ace Demonstration Tape",
+    "publisher": "Jupiter Cantab",
+    "year": "1983"
+  },
+  "divn": {
+    "description": "DIVN",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "dodge": {
+    "description": "Dodge (Prototype)",
+    "publisher": "Brian Bates",
+    "year": "1983"
+  },
+  "dotman": {
+    "description": "Dot Man",
+    "publisher": "Micro Marketing",
+    "year": "1983"
+  },
+  "ducksht": {
+    "description": "Duckshoot",
+    "publisher": "Micro Marketing",
+    "year": "1983"
+  },
+  "factoria": {
+    "description": "Factorials",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2008"
+  },
+  "firebird": {
+    "description": "Firebird",
+    "publisher": "Voyager Software",
+    "year": "1983"
+  },
+  "fonted": {
+    "description": "FontEd (v2.0)",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "fonted1": {
+    "description": "FontEd (v1.0)",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "fpdict": {
+    "description": "Floating Point Dictionary",
+    "publisher": "Computing ToDay",
+    "year": "1983"
+  },
+  "frogger": {
+    "description": "Frogger (Boldfield Computing)",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "frogger1": {
+    "description": "Frogger (Plasma Software, Prototype)",
+    "publisher": "Plasma Software",
+    "year": "1984"
+  },
+  "fungle": {
+    "description": "Fungle Monster (Prototype)",
+    "publisher": "Voyager Software",
+    "year": "1983"
+  },
+  "gametap1": {
+    "description": "Games Tape One",
+    "publisher": "Voyager Software",
+    "year": "1983"
+  },
+  "gametap3": {
+    "description": "Games Tape Three",
+    "publisher": "Voyager Software",
+    "year": "1983"
+  },
+  "gfxexerc": {
+    "description": "Graphic Exercises",
+    "publisher": "Popular Computing Weekly",
+    "year": "1983"
+  },
+  "gobbgook": {
+    "description": "Gobbledegook",
+    "publisher": "Jupiter Cantab",
+    "year": "1983"
+  },
+  "grandprx": {
+    "description": "Grandprix (Prototype)",
+    "publisher": "Plasma Software",
+    "year": "1983"
+  },
+  "graphics": {
+    "description": "Ace Graphics (large)",
+    "publisher": "Personal Computer World",
+    "year": "1983"
+  },
+  "graphicsa": {
+    "description": "Ace Graphics (small)",
+    "publisher": "Personal Computer World",
+    "year": "1983"
+  },
+  "grexfrog": {
+    "description": "Green X Frog",
+    "publisher": "Hi-Tech Microsoft",
+    "year": "1982"
+  },
+  "guessing": {
+    "description": "Guessing Game",
+    "publisher": "Practical Computing",
+    "year": "1983"
+  },
+  "hanoi": {
+    "description": "Towers of Hanoi",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2006"
+  },
+  "hdrmon": {
+    "description": "HDRmon",
+    "publisher": "Edwin Blink",
+    "year": "2007"
+  },
+  "invader1": {
+    "description": "Ace Invaders (Forth Dimension)",
+    "publisher": "Forth Dimension",
+    "year": "1983"
+  },
+  "invaders": {
+    "description": "Invaders (Prototype)",
+    "publisher": "Plasma Software",
+    "year": "1984"
+  },
+  "jumpman": {
+    "description": "Jumpman",
+    "publisher": "Callisto Software",
+    "year": "1984"
+  },
+  "kkong": {
+    "description": "Krazy Kong (Prototype)",
+    "publisher": "Voyager Software",
+    "year": "198?"
+  },
+  "life": {
+    "description": "Life (Julian Skidmore)",
+    "publisher": "Julian Skidmore",
+    "year": "2006"
+  },
+  "lifev2": {
+    "description": "Life (Dutra de Lacerda, v2)",
+    "publisher": "Dutra de Lacerda",
+    "year": "1985"
+  },
+  "lifev3": {
+    "description": "Life (Dutra de Lacerda, v3)",
+    "publisher": "Dutra de Lacerda",
+    "year": "1985"
+  },
+  "lightrac": {
+    "description": "Light Racer (Prototype)",
+    "publisher": "Brian Bates",
+    "year": "1983"
+  },
+  "llander": {
+    "description": "Lunar Lander",
+    "publisher": "Popular Computing Weekly",
+    "year": "1983"
+  },
+  "loader": {
+    "description": "Loader",
+    "publisher": "Popular Computing Weekly",
+    "year": "1983"
+  },
+  "m_champs": {
+    "description": "Champs de Mines + Casse Briques (Fra)",
+    "publisher": "ERE",
+    "year": "1983"
+  },
+  "m_dessin": {
+    "description": "Dessin + Cargen (Fra)",
+    "publisher": "ERE",
+    "year": "1983"
+  },
+  "m_fish": {
+    "description": "Fish + Flutterer",
+    "publisher": "Jupiter Cantab",
+    "year": "1983"
+  },
+  "m_greedy": {
+    "description": "Greedy Gobbler + Blowing up the World",
+    "publisher": "Jupiter Cantab",
+    "year": "1983"
+  },
+  "m_missle": {
+    "description": "Missle Man + Space Fighter Pilot",
+    "publisher": "Jupiter Cantab",
+    "year": "1983"
+  },
+  "m_moo": {
+    "description": "Moo + Hangman",
+    "publisher": "Jupiter Cantab",
+    "year": "1983"
+  },
+  "m_overta": {
+    "description": "Overtaker + Brands Hatch",
+    "publisher": "Jupiter Cantab",
+    "year": "1983"
+  },
+  "m_puzzle": {
+    "description": "Puzzle + Bombs",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "m_snake": {
+    "description": "Snake + Superbat",
+    "publisher": "Waylandsoft",
+    "year": "1985"
+  },
+  "m_titan": {
+    "description": "Titan Defender + Dual Duel",
+    "publisher": "Stusoft",
+    "year": "1985"
+  },
+  "m_valkyr": {
+    "description": "Valkyr + Life (Prototype)",
+    "publisher": "Colinsoft",
+    "year": "1985"
+  },
+  "memstars": {
+    "description": "Memory Stars",
+    "publisher": "Hi-Tech Microsoft",
+    "year": "1982"
+  },
+  "meteor": {
+    "description": "Meteor",
+    "publisher": "Popular Computing Weekly",
+    "year": "1983"
+  },
+  "meteors": {
+    "description": "Meteors (Prototype)",
+    "publisher": "Plasma Software",
+    "year": "1984"
+  },
+  "metracer": {
+    "description": "Meteor Racer",
+    "publisher": "Forth Dimension",
+    "year": "1983"
+  },
+  "micromaz": {
+    "description": "Micro Maze",
+    "publisher": "Hi-Tech Microsoft",
+    "year": "1982"
+  },
+  "minefld": {
+    "description": "Minefield",
+    "publisher": "Micro Marketing",
+    "year": "1983"
+  },
+  "monitor": {
+    "description": "Monitor (Jupiter Cantab)",
+    "publisher": "Jupiter Cantab",
+    "year": "1983"
+  },
+  "monitora": {
+    "description": "Monitor (Popular Computing Weekly)",
+    "publisher": "Popular Computing Weekly",
+    "year": "1983"
+  },
+  "moonbugg": {
+    "description": "Moon Buggy (Prototype)",
+    "publisher": "Plasma Software",
+    "year": "1984"
+  },
+  "morsecod": {
+    "description": "Morse Code Tutor",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "multikey": {
+    "description": "Multi Key Press Demo",
+    "publisher": "Jupiter Ace Archive Team",
+    "year": "2009"
+  },
+  "music": {
+    "description": "Music",
+    "publisher": "Popular Computing Weekly",
+    "year": "1983"
+  },
+  "othello": {
+    "description": "Othello",
+    "publisher": "Jupiter Cantab",
+    "year": "1983"
+  },
+  "owler": {
+    "description": "Owler",
+    "publisher": "Callisto Software",
+    "year": "1984"
+  },
+  "quickdrp": {
+    "description": "Quick-Draw Practice (Prototype)",
+    "publisher": "Brian Bates",
+    "year": "1983"
+  },
+  "quickdrw": {
+    "description": "Quick-Draw (Prototype)",
+    "publisher": "Brian Bates",
+    "year": "1983"
+  },
+  "robohnch": {
+    "description": "Robohench (Prototype)",
+    "publisher": "Plasma Software",
+    "year": "1984"
+  },
+  "robohunt": {
+    "description": "Robohunt (Prototype)",
+    "publisher": "Plasma Software",
+    "year": "1984"
+  },
+  "sacemap": {
+    "description": "SokoACE Map Editor",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2006"
+  },
+  "sailhorn": {
+    "description": "Sallors' Hornpipe",
+    "publisher": "Popular Computing Weekly",
+    "year": "1982"
+  },
+  "sambombs": {
+    "description": "Sam and the Time Bombs (Prototype)",
+    "publisher": "Plasma Software",
+    "year": "1984"
+  },
+  "sbattle": {
+    "description": "Space Battle",
+    "publisher": "Hi-Tech Microsoft",
+    "year": "1982"
+  },
+  "scramblr": {
+    "description": "Scrambler",
+    "publisher": "Electronics & Computing",
+    "year": "1982"
+  },
+  "security": {
+    "description": "Security",
+    "publisher": "Popular Computing Weekly",
+    "year": "1982"
+  },
+  "sinewave": {
+    "description": "Sine Wave Generator",
+    "publisher": "Personal Computer World",
+    "year": "1984"
+  },
+  "sokoace": {
+    "description": "SokoACE",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2006"
+  },
+  "spreadsh": {
+    "description": "Spreadsheet",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "startrek": {
+    "description": "Star Trek",
+    "publisher": "Plasma Software",
+    "year": "1984"
+  },
+  "sudoku": {
+    "description": "Sudoku",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2007"
+  },
+  "tankbatl": {
+    "description": "Tank Battle (Prototype)",
+    "publisher": "Plasma Software",
+    "year": "1984"
+  },
+  "teach": {
+    "description": "Teach Yourself Forth on the Jupiter Ace",
+    "publisher": "Viscount",
+    "year": "1982"
+  },
+  "tetris": {
+    "description": "Tetris",
+    "publisher": "Jupiter Ace Archive Team",
+    "year": "2009"
+  },
+  "triplep": {
+    "description": "Triple Pack",
+    "publisher": "Boldfield Computing",
+    "year": "1984"
+  },
+  "turbo": {
+    "description": "Turbo (Prototype)",
+    "publisher": "Plasma Software",
+    "year": "1984"
+  },
+  "utils": {
+    "description": "Utilities",
+    "publisher": "Boldfield Computing",
+    "year": "1985"
+  },
+  "words": {
+    "description": "Words",
+    "publisher": "Popular Computing Weekly",
+    "year": "1983"
+  },
+  "wrd": {
+    "description": "WRD",
+    "publisher": "Ricardo Fernandes Lopes",
+    "year": "2006"
+  },
+  "zapem": {
+    "description": "Zapem",
+    "publisher": "Micro Marketing",
+    "year": "1983"
+  },
+  "zombies": {
+    "description": "Zombies & Potholes",
+    "publisher": "Jupiter Cantab",
+    "year": "1983"
+  },
+  "zxprint": {
+    "description": "ZX Printer Driver",
+    "publisher": "Remsoft",
+    "year": "1983"
+  }
+}

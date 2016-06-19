@@ -1,0 +1,1097 @@
+{
+  "10games": {
+    "description": "10 Games for MZ-700",
+    "publisher": "Sharp Corporation",
+    "year": "1983?"
+  },
+  "10gamesa": {
+    "description": "10 Games for MZ-700 (Alt)",
+    "publisher": "Sharp Corporation",
+    "year": "1983?"
+  },
+  "1z013b": {
+    "description": "BASIC Interpreter 1Z-013B V1.0A / Applications V1.0A",
+    "publisher": "Sharp Corporation",
+    "year": "1983"
+  },
+  "1z013b_a": {
+    "description": "BASIC Interpreter 1Z-013B V1.0A / Applications V1.0A (Alt)",
+    "publisher": "Sharp Corporation",
+    "year": "1983"
+  },
+  "1z013bswe": {
+    "description": "BASIC Interpreter 1Z-013B V1.0A (Swe)",
+    "publisher": "Sharp Corporation",
+    "year": "1983"
+  },
+  "3crdbrag": {
+    "description": "Three Card Brag",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "3dcarrac": {
+    "description": "3D Car Race",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "3dgraph": {
+    "description": "3-D Graphikpaket (Ger)",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "3dwayout": {
+    "description": "3-D Way Out",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "6502i": {
+    "description": "6502 Interpreter",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "aceracer": {
+    "description": "Ace Racer",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "advchess": {
+    "description": "Advanced Chess",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "airbus": {
+    "description": "Airbus A 310",
+    "publisher": "BBG Software",
+    "year": "1985"
+  },
+  "aliens": {
+    "description": "Aliens (Ned)",
+    "publisher": "G.J. Krijnen",
+    "year": "19??"
+  },
+  "amity": {
+    "description": "Amityville (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "antares": {
+    "description": "Antares (Ger)",
+    "publisher": "BBG Software",
+    "year": "1986"
+  },
+  "anthill": {
+    "description": "Anthill Raiders",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "apollowp": {
+    "description": "Apollo Word Processor V2.7",
+    "publisher": "Apollo Software",
+    "year": "1982"
+  },
+  "apollowp28": {
+    "description": "Apollo Word Processor V2.8 (Ned)",
+    "publisher": "MZ-GG",
+    "year": "1985"
+  },
+  "astbelt": {
+    "description": "Asteroid Belt",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "astrobla": {
+    "description": "Astro-Blaster",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "atkatank": {
+    "description": "Attack-A-Tank",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "backgamm": {
+    "description": "Backgammon",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "basezero": {
+    "description": "Base Zero",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basic700": {
+    "description": "Basic 700/4",
+    "publisher": "R. & L. Software",
+    "year": "19??"
+  },
+  "basicod2": {
+    "description": "S-BASIC/Vertaler BASICODE-2 (Ned)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bio700": {
+    "description": "Biorhythmus (Ger)",
+    "publisher": "Ursoft",
+    "year": "1983"
+  },
+  "biorythm": {
+    "description": "Super Biorhythm",
+    "publisher": "Solo Software",
+    "year": "1983"
+  },
+  "blastoff": {
+    "description": "Blast Off",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "bloktek": {
+    "description": "Bloktekeningen",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bombman": {
+    "description": "Bomber Man",
+    "publisher": "Hudson Soft",
+    "year": "1983"
+  },
+  "bouldash": {
+    "description": "Boulder Dash (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "breuken1": {
+    "description": "Breuken 1 (Ned)",
+    "publisher": "Roger Deneweth?",
+    "year": "1984?"
+  },
+  "calendri": {
+    "description": "Calendrier (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "cannball": {
+    "description": "Cannon Ball",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "catacomb": {
+    "description": "Catacombes (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1986"
+  },
+  "cataplus": {
+    "description": "Catacombes+ (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "ccacr": {
+    "description": "Caterpillar Crawl and Counter Reverse",
+    "publisher": "Knight's Computers",
+    "year": "19??"
+  },
+  "cent2": {
+    "description": "BASIC-Interpreter for Parallel Printer (Ger)",
+    "publisher": "Multisoft",
+    "year": "1983"
+  },
+  "cent2dsk": {
+    "description": "Centronics Interface Utility (Ger)",
+    "publisher": "Multisoft",
+    "year": "1984"
+  },
+  "clubgolf": {
+    "description": "Club Golf",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "cmaster": {
+    "description": "C-Master (Ger)",
+    "publisher": "Ursoft",
+    "year": "19??"
+  },
+  "codeword": {
+    "description": "Codewoord (Ned)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "competit": {
+    "description": "Competitie (Ned)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "complain": {
+    "description": "Commando Plain",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "compslot": {
+    "description": "Comput-A-Slot",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "comptek": {
+    "description": "Computertekenen (Ned)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "connect4": {
+    "description": "Connect Four",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "conveyor": {
+    "description": "Conveyor",
+    "publisher": "Solo Software",
+    "year": "1983"
+  },
+  "copy": {
+    "description": "Multicopy-BV (Ger)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cribbage": {
+    "description": "Cribbage",
+    "publisher": "Knight's Computers",
+    "year": "19??"
+  },
+  "croaker": {
+    "description": "Croaker",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "cyfax": {
+    "description": "Cyfax",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "dateiuni": {
+    "description": "Datei Universal (Ger)",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "dbfiler": {
+    "description": "Database Filer",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "dbp701": {
+    "description": "DBP701+ Datenbanksystem (Ger)",
+    "publisher": "Kersten & Partner",
+    "year": "1982"
+  },
+  "demasaso": {
+    "description": "Demasaso (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1985"
+  },
+  "descente": {
+    "description": "Descente aux Enfers (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "destruct": {
+    "description": "Destructeurs (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "dgorilla": {
+    "description": "Donkey Gorilla",
+    "publisher": "Tecno Soft",
+    "year": "19??"
+  },
+  "diaboliq": {
+    "description": "Le Cadre Diabolique",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "dominat": {
+    "description": "Domination",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "easidata": {
+    "description": "Easidata V1.3 (Ger)",
+    "publisher": "Solo Software",
+    "year": "1983"
+  },
+  "explatom": {
+    "description": "Exploding Atoms",
+    "publisher": "Knight's Computers",
+    "year": "19??"
+  },
+  "fantgrov": {
+    "description": "Fantastic Grove",
+    "publisher": "BBG Software",
+    "year": "1984"
+  },
+  "fightcom": {
+    "description": "Fighter Command",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "fire": {
+    "description": "Fire!!!",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "fishfred": {
+    "description": "Fisherman Fred",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "flugsim": {
+    "description": "Flugsimulator (Ger)",
+    "publisher": "HOBRA Soft",
+    "year": "1984"
+  },
+  "fulspeed": {
+    "description": "Full Speed",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "gcajj": {
+    "description": "Gate Crasher and Jungle Jinks",
+    "publisher": "Knight's Computers",
+    "year": "19??"
+  },
+  "gdp9ba": {
+    "description": "BASIC GDP9-BA",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "geboorte": {
+    "description": "Geboortedatum (Ned)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "globule": {
+    "description": "Globule (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "globwar3": {
+    "description": "Global War III",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "gobbler": {
+    "description": "Gobbler",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "greedyg": {
+    "description": "Greedy Gremlins",
+    "publisher": "Knight's Computers",
+    "year": "19??"
+  },
+  "grid": {
+    "description": "Grid",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "guerilla": {
+    "description": "Space Guerilla",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "guerre": {
+    "description": "Guerre Spatiale (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "hdcorgel": {
+    "description": "HDC Orgel",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "hspascal": {
+    "description": "Hisoft PASCAL 4T",
+    "publisher": "Hisoft",
+    "year": "1984"
+  },
+  "hunchy": {
+    "description": "Hunchy",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "impomiss": {
+    "description": "Impossible Mission (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1986"
+  },
+  "isola": {
+    "description": "Isola (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "jeuxint": {
+    "description": "Jeux Intergalactiques (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "jumprun": {
+    "description": "Jumping-Runner (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1986"
+  },
+  "kalender": {
+    "description": "Kalender",
+    "publisher": "Michael Gartner",
+    "year": "1984"
+  },
+  "kamertje": {
+    "description": "Kamertje Verhuren (Ned)",
+    "publisher": "NOS",
+    "year": "1987"
+  },
+  "kasboek": {
+    "description": "Kasboek (Ned)",
+    "publisher": "NOS",
+    "year": "1984"
+  },
+  "kbasic5": {
+    "description": "Interpreteur K-BASIC 5 (Fra)",
+    "publisher": "Bernard Kokanosky",
+    "year": "1984"
+  },
+  "kcastle": {
+    "description": "Knight's Castle",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kcufo": {
+    "description": "UFO (Knight's Computers)",
+    "publisher": "Knight's Computers",
+    "year": "19??"
+  },
+  "kentucky": {
+    "description": "Kentucky Derby",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "klavier": {
+    "description": "MZ-700 Klavier (Ger)",
+    "publisher": "MZ-Verlag",
+    "year": "19??"
+  },
+  "knightsf": {
+    "description": "Knight's MZ-700 Forth",
+    "publisher": "Knight's Computers",
+    "year": "19??"
+  },
+  "knightsfmod": {
+    "description": "Knight's MZ-700 Forth (Modified)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kp80c354": {
+    "description": "K&P 80-column Disk Basic V3.54 (Ger)",
+    "publisher": "Kersten & Partner",
+    "year": "19??"
+  },
+  "kp80c355": {
+    "description": "K&P 80-column Disk Basic V3.55 (Ger)",
+    "publisher": "Kersten & Partner",
+    "year": "19??"
+  },
+  "kpbasic": {
+    "description": "K&P BASIC V1.04",
+    "publisher": "Kersten & Partner",
+    "year": "1984"
+  },
+  "ksmines": {
+    "description": "King Solomon's Mines",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "kuma": {
+    "description": "Kuma Interpreter",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ladybug": {
+    "description": "Lady Bug",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "lemans": {
+    "description": "Le Mans",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lightpat": {
+    "description": "Lightning Patrol",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "lijnspel": {
+    "description": "Lijnenspel",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lissajou": {
+    "description": "Lissajou-Figur (Ger)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "logov30": {
+    "description": "Bienvenue sous LOGO V3.0 (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1987?"
+  },
+  "macpac": {
+    "description": "Mac Pac",
+    "publisher": "Ursoft",
+    "year": "1983"
+  },
+  "macpacg": {
+    "description": "Mac Pac (Ger)",
+    "publisher": "DEVIL-Soft",
+    "year": "1983"
+  },
+  "madmaze": {
+    "description": "Mad Maze",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "manza": {
+    "description": "Manza (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "matpendu": {
+    "description": "Matpendu (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1986"
+  },
+  "mazeesc": {
+    "description": "Maze Escape",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "messing": {
+    "description": "Messing (Ned)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "misalpha": {
+    "description": "Mission Alpha (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1986"
+  },
+  "misdelta": {
+    "description": "Mission Delta (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "missiona": {
+    "description": "Mission A",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "mlsp8002": {
+    "description": "ML SP-8002",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "moleatck": {
+    "description": "Mole Attack",
+    "publisher": "HAL Laboratory",
+    "year": "1982"
+  },
+  "momm": {
+    "description": "Mystery of Munroe Manor",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "monitor": {
+    "description": "Monitor (BASIC)",
+    "publisher": "R. Scharnagl?",
+    "year": "1984"
+  },
+  "monitor2": {
+    "description": "Monitor (Machine code)",
+    "publisher": "R. Scharnagl?",
+    "year": "1984"
+  },
+  "monitor6": {
+    "description": "Monitor 6",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "morpion": {
+    "description": "Morpion (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "morpius": {
+    "description": "Morpius (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "moty": {
+    "description": "Moty",
+    "publisher": "BBG Software",
+    "year": "1985"
+  },
+  "mstrmind": {
+    "description": "Mastermind",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "mucmac": {
+    "description": "Muc Mac",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "musiques": {
+    "description": "Musique Suisse",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mz2z009e": {
+    "description": "Disk BASIC Interpreter MZ-2Z009E V1.0A",
+    "publisher": "Bernd Krueger-Knauber?",
+    "year": "19??"
+  },
+  "mz2z009ed": {
+    "description": "Disk BASIC Interpreter MZ-2Z009E V1.0A (Disk?)",
+    "publisher": "Sharp Corporation",
+    "year": "1984"
+  },
+  "mz5z008": {
+    "description": "BASIC Interpreter MZ-5Z008 V1.0A",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mz5z008qd": {
+    "description": "BASIC Interpreter MZ-5Z008 V1.0A (Quick Disk?)",
+    "publisher": "Sharp Corporation",
+    "year": "1984"
+  },
+  "mz700tut": {
+    "description": "BASIC Sharp MZ-700 Tutorial",
+    "publisher": "Solo Software",
+    "year": "1984"
+  },
+  "mz7forth": {
+    "description": "MZ-700 Forth",
+    "publisher": "Sharpsoft",
+    "year": "1983"
+  },
+  "nakamoto": {
+    "description": "Nakamoto",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "nibbler": {
+    "description": "Nibbler",
+    "publisher": "BBG Software",
+    "year": "1984"
+  },
+  "nighpark": {
+    "description": "Nightmare Park",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "nighparkb": {
+    "description": "Nightmare Park (Bad Dump?)",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "niteflit": {
+    "description": "Nite Flite",
+    "publisher": "Solo Software",
+    "year": "1984"
+  },
+  "nombres": {
+    "description": "Apprentissage des Nombres (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "octopuss": {
+    "description": "Octopussy (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "panique": {
+    "description": "Panique (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "parashot": {
+    "description": "Para Shoot",
+    "publisher": "Solo Software",
+    "year": "1983"
+  },
+  "patalpha": {
+    "description": "Patrol Alpha",
+    "publisher": "BBG Software",
+    "year": "1983"
+  },
+  "pcgaid": {
+    "description": "PCGAID-700 V1.0 (Jpn)",
+    "publisher": "HAL Laboratory",
+    "year": "19??"
+  },
+  "pcgaide": {
+    "description": "PCGAID-700 V1.0 (Euro)",
+    "publisher": "HAL Laboratory",
+    "year": "19??"
+  },
+  "pcgbasic": {
+    "description": "PCG BASIC Interpreter (Ger)",
+    "publisher": "Ursoft",
+    "year": "19??"
+  },
+  "pendu": {
+    "description": "Le Pendu (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "plot": {
+    "description": "MZ700 Plot (Ger)",
+    "publisher": "RK-Datentechnik",
+    "year": "1985"
+  },
+  "poker": {
+    "description": "Poker",
+    "publisher": "Knight's Computers",
+    "year": "19??"
+  },
+  "printfig": {
+    "description": "Printerfiguren",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "puiss4": {
+    "description": "Puissance 4 (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1986"
+  },
+  "puzzle": {
+    "description": "Puzzle (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "qixi": {
+    "description": "Qixi",
+    "publisher": "BBG Software",
+    "year": "1984"
+  },
+  "raumuhle": {
+    "description": "Raummühle (Ger)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "realfort": {
+    "description": "RealFortran",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "rebond": {
+    "description": "Rebond (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1987"
+  },
+  "rescplan": {
+    "description": "Rescue Plane",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "reverse": {
+    "description": "Reverse",
+    "publisher": "Hudson Soft",
+    "year": "1982"
+  },
+  "rr1906": {
+    "description": "Rolls-Royce 1906 Silverghost (Ger?)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "safecrak": {
+    "description": "Safecracker",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "sbasicc": {
+    "description": "S-BASIC Compiler",
+    "publisher": "BBG Software",
+    "year": "1984"
+  },
+  "sbasiccdutch1": {
+    "description": "S-BASIC Compiler (Ned)",
+    "publisher": "Marius H. Velimaat",
+    "year": "1987"
+  },
+  "sbasiccdutch2": {
+    "description": "S-BASIC Compiler (Ned, Printer Version)",
+    "publisher": "Marius H. Velimaat",
+    "year": "1987"
+  },
+  "schac700": {
+    "description": "Schach 700 (Ger)",
+    "publisher": "Hobra Soft",
+    "year": "1984"
+  },
+  "shogun": {
+    "description": "Shogun",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "sinberg": {
+    "description": "Sin-Berg (Ger)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "skychaos": {
+    "description": "Sky Chaos",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "smonitor": {
+    "description": "Sub-Monitor 700",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sosz80": {
+    "description": "SOSZ80 Fortran V1.0",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "soudard": {
+    "description": "Soudard (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "sp4015": {
+    "description": "Interpreter PASCAL SP-4015",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sp4015c": {
+    "description": "Interpreter PASCAL SP-4015:C",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sp4015qd": {
+    "description": "Interpreter PASCAL SP-4015 (Quick disk hack)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "spacific": {
+    "description": "South Pacific",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "spadata": {
+    "description": "SPA Data (Ger)",
+    "publisher": "Solo Software",
+    "year": "1983"
+  },
+  "specdbug": {
+    "description": "Spectrum Debugger V1.1R (Cz)",
+    "publisher": "Proton Software",
+    "year": "1991"
+  },
+  "spoker": {
+    "description": "Strip Poker",
+    "publisher": "Jean François Campan",
+    "year": "1986"
+  },
+  "squash": {
+    "description": "Squash (Ger)",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "srasf": {
+    "description": "Suicide Run and Space Fighter",
+    "publisher": "Knight's Computers",
+    "year": "19??"
+  },
+  "ssufo": {
+    "description": "UFO (Solo Software)",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "starfght": {
+    "description": "Star Fighter",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "startrek": {
+    "description": "Star Trek",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "subshoot": {
+    "description": "Submarine Shooter",
+    "publisher": "Hudson Soft",
+    "year": "1983"
+  },
+  "superspy": {
+    "description": "Super Spy (Ned)",
+    "publisher": "Erik van Hattum",
+    "year": "19??"
+  },
+  "supinvdr": {
+    "description": "Superior Space Invader",
+    "publisher": "P. Dormand",
+    "year": "1983"
+  },
+  "suprbndt": {
+    "description": "Super Bandit",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "suprheli": {
+    "description": "Super Helicopter",
+    "publisher": "Nag Soft",
+    "year": "19??"
+  },
+  "suprtypn": {
+    "description": "Lichtkrantspel (Ned)",
+    "publisher": "Henk Barten",
+    "year": "19??"
+  },
+  "suprvrac": {
+    "description": "Super Vrac (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "sutam1f": {
+    "description": "SUTAM1F",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sutamc9": {
+    "description": "SUTAMC9",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sutapeba": {
+    "description": "BASIC SUTAPEBA",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sutapemo": {
+    "description": "SUTAPEMO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sysxpert": {
+    "description": "Systeme Expert (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1989"
+  },
+  "tapeworm": {
+    "description": "Tape Worm",
+    "publisher": "BBG Software",
+    "year": "1983"
+  },
+  "tbasic": {
+    "description": "T-BASIC+BM+PK(+) (Ned)",
+    "publisher": "MZ-GG",
+    "year": "19??"
+  },
+  "telefon": {
+    "description": "Telefontarieven (Ned)",
+    "publisher": "NOS",
+    "year": "1987?"
+  },
+  "tomahawk": {
+    "description": "Tomahawk (Ger)",
+    "publisher": "Hiroshi Masuko",
+    "year": "19??"
+  },
+  "tracker": {
+    "description": "Tracker",
+    "publisher": "Solo Software",
+    "year": "1982"
+  },
+  "trucker": {
+    "description": "Trucker",
+    "publisher": "Solo Software",
+    "year": "19??"
+  },
+  "typen": {
+    "description": "Typevaardigheid (Ned)",
+    "publisher": "Henk Barten",
+    "year": "19??"
+  },
+  "unigg": {
+    "description": "Uni GG BASIC",
+    "publisher": "MZ-GG",
+    "year": "19??"
+  },
+  "urania2": {
+    "description": "Urania II (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1984"
+  },
+  "urasz80": {
+    "description": "URAS-Z80 V1.1 (Ger)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "vol676": {
+    "description": "Vol 676 (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1986"
+  },
+  "vragend": {
+    "description": "Vragend Maken (Ned)",
+    "publisher": "NOS",
+    "year": "1984?"
+  },
+  "vviper": {
+    "description": "Vicious Viper",
+    "publisher": "Knight's Computers",
+    "year": "19??"
+  },
+  "wizcastl": {
+    "description": "Wizards Castle",
+    "publisher": "Knight's Computers",
+    "year": "1983"
+  },
+  "wndrhous": {
+    "description": "Wonder House (Jpn)",
+    "publisher": "Task Forts Kochi",
+    "year": "1983"
+  },
+  "wooky": {
+    "description": "Wooky",
+    "publisher": "BBG Software",
+    "year": "19??"
+  },
+  "xanagram": {
+    "description": "Xanagrams",
+    "publisher": "Dean Software",
+    "year": "1983"
+  },
+  "xbc": {
+    "description": "XBC F V1.02",
+    "publisher": "BBG Software",
+    "year": "1987"
+  },
+  "xbcmod": {
+    "description": "XBC F V1.02 (Modified)",
+    "publisher": "MiKrSoft",
+    "year": "1988"
+  },
+  "yams": {
+    "description": "Y.A.M.S. (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "19??"
+  },
+  "z80dis": {
+    "description": "Z80 Disassembleur V1.1 (Fra)",
+    "publisher": "Jean François Campan",
+    "year": "1989"
+  },
+  "zen": {
+    "description": "Zen",
+    "publisher": "Multisoft",
+    "year": "1983"
+  }
+}

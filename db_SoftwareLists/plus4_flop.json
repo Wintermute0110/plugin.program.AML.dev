@@ -1,0 +1,22 @@
+{
+  "1551demo": {
+    "description": "Commodore 1551 Test Demo",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "ace": {
+    "description": "ACE: Air Combat Emulator",
+    "publisher": "Cascade",
+    "year": "1985"
+  },
+  "typingpr": {
+    "description": "Typing Professor",
+    "publisher": "Commodore",
+    "year": "1984"
+  },
+  "zork2": {
+    "description": "Zork II: The Wizard of Frobozz (R48)",
+    "publisher": "Commodore",
+    "year": "1984"
+  }
+}

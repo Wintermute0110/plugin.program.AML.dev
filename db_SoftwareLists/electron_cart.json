@@ -1,0 +1,57 @@
+{
+  "ctodoom": {
+    "description": "Countdown to Doom",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "demo": {
+    "description": "Electron Demonstration Cartridge",
+    "publisher": "Acorn",
+    "year": "198?"
+  },
+  "hopper": {
+    "description": "Hopper",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "lisp": {
+    "description": "LISP",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "logo": {
+    "description": "Logo",
+    "publisher": "Acornsoft",
+    "year": "1985"
+  },
+  "pascal": {
+    "description": "ISO-Pascal",
+    "publisher": "Acornsoft",
+    "year": "1985"
+  },
+  "snapper": {
+    "description": "Snapper",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "sshipcom": {
+    "description": "Starship Command",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "treeknow": {
+    "description": "Tree of Knowledge",
+    "publisher": "Acornsoft",
+    "year": "1983"
+  },
+  "view": {
+    "description": "View",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "vwsheet": {
+    "description": "ViewSheet",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  }
+}

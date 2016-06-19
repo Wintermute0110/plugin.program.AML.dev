@@ -1,0 +1,582 @@
+{
+  "aljur": {
+    "description": "ALJUR .COD",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "antix": {
+    "description": "Antix",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "apple": {
+    "description": "Apple",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "arkano": {
+    "description": "Arkano",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "arkanoid": {
+    "description": "Arkanoid",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "asprekl": {
+    "description": "Asp_rekl",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ass": {
+    "description": "Ass",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ass2": {
+    "description": "Ass2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "astrdrom": {
+    "description": "Astrdrom",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "baby": {
+    "description": "Baby",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bally": {
+    "description": "Bally",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bapple": {
+    "description": "Bapple",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "barb": {
+    "description": "Barb",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "barbar": {
+    "description": "Barbar",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "barman": {
+    "description": "Barman",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "batiskaf": {
+    "description": "Batiskaf",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bigchess": {
+    "description": "Bigchess",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bil": {
+    "description": "Bil",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "billiard": {
+    "description": "BILLIARD",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "biowar": {
+    "description": "Biowar",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bkdemo": {
+    "description": "BKDEMO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bkpack": {
+    "description": "Bkpack",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "blcout": {
+    "description": "Blcout",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "blockout": {
+    "description": "BLOCKOUT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bolde2": {
+    "description": "Bolde2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bolder2": {
+    "description": "Bolder2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bolder3": {
+    "description": "Bolder3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bomb4": {
+    "description": "Bomb4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "breach": {
+    "description": "breach",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "break": {
+    "description": "Break",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "breaking": {
+    "description": "Breaking",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "brhouse": {
+    "description": "Brhouse",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bubbler": {
+    "description": "Bubbler",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bubler": {
+    "description": "Bubler",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cache": {
+    "description": "Cache",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cave": {
+    "description": "Cave",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cavedoc": {
+    "description": "Cave_doc",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "caveman": {
+    "description": "Cave_man",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "caveres": {
+    "description": "Cave_res",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chaser": {
+    "description": "Chaser",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "checkers": {
+    "description": "Checkers",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess07": {
+    "description": "Chess07",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess1": {
+    "description": "Chess1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess2": {
+    "description": "Chess2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess3": {
+    "description": "Chess3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chess4": {
+    "description": "Chess4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "circler": {
+    "description": "CIRCLER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "columns": {
+    "description": "Columns",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "columns2": {
+    "description": "Columns2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "comic": {
+    "description": "Comic",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cosmic": {
+    "description": "COSMIC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cosmicb": {
+    "description": "Cosmic_b",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "courier": {
+    "description": "Courier",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "covox": {
+    "description": "covox",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "crack": {
+    "description": "Crack",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dama": {
+    "description": "Dama",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "demsl": {
+    "description": "Demsl",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "demsl1": {
+    "description": "Demsl1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "demsl2": {
+    "description": "Demsl2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "demsl3": {
+    "description": "Demsl3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "desan": {
+    "description": "Desan",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "desandoc": {
+    "description": "Desandoc",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "desant": {
+    "description": "Desant",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "diamond": {
+    "description": "Diamond",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "digger": {
+    "description": "Digger",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "divers3": {
+    "description": "Divers3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dragon": {
+    "description": "DRAGON.BIN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "flier": {
+    "description": "FLIER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "font": {
+    "description": "FONT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "hobbit": {
+    "description": "HOBBIT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "hobbitovl": {
+    "description": "HOBBIT.OVL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "horror": {
+    "description": "Horror",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "horrors": {
+    "description": "Horror_s",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "house1": {
+    "description": "House1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "house2": {
+    "description": "House2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "indjon": {
+    "description": "Indjon",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jetman": {
+    "description": "Jetman",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "joebla": {
+    "description": "Joebla",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "john": {
+    "description": "John",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "johnny": {
+    "description": "Johnny",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jokey": {
+    "description": "Jokey",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jones": {
+    "description": "Jones",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jones1": {
+    "description": "Jones1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jones2": {
+    "description": "Jones2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jones3": {
+    "description": "Jones3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "jungle": {
+    "description": "Jungle",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "karado": {
+    "description": "Karado",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "karate": {
+    "description": "Karate",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "klad": {
+    "description": "Klad",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kurier": {
+    "description": "Kurier",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ladder": {
+    "description": "ladder",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ladderovl": {
+    "description": "ladder.ovl",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lrunner": {
+    "description": "LRUNNER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lrunnergms": {
+    "description": "LRUNNER.GMS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "othello": {
+    "description": "OTHELLO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "otl9": {
+    "description": "otl9",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "p10k": {
+    "description": "p10k",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pacman": {
+    "description": "PACMAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "perevoro": {
+    "description": "PEREVOROT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "popo": {
+    "description": "POPO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "race": {
+    "description": "RACE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "raceovl": {
+    "description": "RACE.OVL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rever1": {
+    "description": "Rever1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rever2": {
+    "description": "Rever2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rotate": {
+    "description": "ROTATE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rtype": {
+    "description": "RTYPE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rtype1": {
+    "description": "RTYPE1.LAB",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rtype2": {
+    "description": "RTYPE2.LAB",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sokoban": {
+    "description": "SOKOBAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "stalker": {
+    "description": "Stalker",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetr3": {
+    "description": "TETR3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetris": {
+    "description": "TETRIS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetro": {
+    "description": "Tetro",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "xonix1": {
+    "description": "XONIX1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "xonix5": {
+    "description": "XONIX5",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "zoom": {
+    "description": "ZOOM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

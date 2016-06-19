@@ -1,0 +1,162 @@
+{
+  "barb2": {
+    "description": "Barbarian II",
+    "publisher": "Palace Software",
+    "year": "1989"
+  },
+  "batman": {
+    "description": "Batman",
+    "publisher": "Ocean Software",
+    "year": "1989"
+  },
+  "brubber": {
+    "description": "Burnin' Rubber",
+    "publisher": "Ocean Software",
+    "year": "1990"
+  },
+  "coptr271": {
+    "description": "Copter 271",
+    "publisher": "Loriciel Software",
+    "year": "1991"
+  },
+  "crzycrs2": {
+    "description": "Crazy Cars II",
+    "publisher": "Titus Software",
+    "year": "1990"
+  },
+  "dicktr": {
+    "description": "Dick Tracy",
+    "publisher": "Titus Software",
+    "year": "1990"
+  },
+  "enforcer": {
+    "description": "The Enforcer",
+    "publisher": "Trojan",
+    "year": "1990"
+  },
+  "firefor2": {
+    "description": "Fire & Forget II",
+    "publisher": "Titus Software",
+    "year": "1990"
+  },
+  "klax": {
+    "description": "Klax",
+    "publisher": "Domark",
+    "year": "1990"
+  },
+  "mystical": {
+    "description": "Mystical",
+    "publisher": "Infogrames",
+    "year": "1990"
+  },
+  "navyseal": {
+    "description": "Navy Seals",
+    "publisher": "Ocean Software",
+    "year": "1990"
+  },
+  "noexit": {
+    "description": "No Exit",
+    "publisher": "CVS",
+    "year": "1990"
+  },
+  "othunder": {
+    "description": "Operation Thunderbolt",
+    "publisher": "Ocean Software",
+    "year": "1990"
+  },
+  "pang": {
+    "description": "Pang",
+    "publisher": "Ocean Software",
+    "year": "1990"
+  },
+  "panzakb": {
+    "description": "Panza Kick Boxing",
+    "publisher": "Loriciel Software",
+    "year": "1991"
+  },
+  "pinmagic": {
+    "description": "Pinball Magic",
+    "publisher": "Loriciel Software",
+    "year": "1991"
+  },
+  "plotting": {
+    "description": "Plotting",
+    "publisher": "Ocean Software",
+    "year": "1990"
+  },
+  "protennt": {
+    "description": "Pro Tennis Tour",
+    "publisher": "Ubisoft",
+    "year": "1989"
+  },
+  "robocop2": {
+    "description": "Robocop 2",
+    "publisher": "Ocean Software",
+    "year": "1990"
+  },
+  "skeetsh": {
+    "description": "Skeet Shoot",
+    "publisher": "Trojan",
+    "year": "1990"
+  },
+  "switchbl": {
+    "description": "Switchblade",
+    "publisher": "Gremlin Graphics",
+    "year": "1990"
+  },
+  "syses": {
+    "description": "Burnin' Rubber + Locomotive BASIC (Spa)",
+    "publisher": "Amstrad",
+    "year": "1990"
+  },
+  "sysespd": {
+    "description": "Locomotive BASIC + ParaDOS (Spa)",
+    "publisher": "<homebrew>",
+    "year": "1990"
+  },
+  "sysfr": {
+    "description": "Burnin' Rubber + Locomotive BASIC (Fra)",
+    "publisher": "Amstrad",
+    "year": "1990"
+  },
+  "sysfrpd": {
+    "description": "Locomotive BASIC + ParaDOS (Fra)",
+    "publisher": "<homebrew>",
+    "year": "1990"
+  },
+  "sysfrv3": {
+    "description": "BASIC Cartouche (Fra, with OS v3)",
+    "publisher": "Amstrad",
+    "year": "1990"
+  },
+  "sysuk": {
+    "description": "Burnin' Rubber + Locomotive BASIC",
+    "publisher": "Amstrad",
+    "year": "1990"
+  },
+  "sysukpd": {
+    "description": "Locomotive BASIC + ParaDOS",
+    "publisher": "<homebrew>",
+    "year": "1990"
+  },
+  "tennisc2": {
+    "description": "Tennis Cup II",
+    "publisher": "Loriciel Software",
+    "year": "1990"
+  },
+  "tintin": {
+    "description": "Tintin On The Moon",
+    "publisher": "Infogrames",
+    "year": "1990"
+  },
+  "wildstrt": {
+    "description": "Wild Streets",
+    "publisher": "Titus Software",
+    "year": "1990"
+  },
+  "worldspt": {
+    "description": "World of Sports",
+    "publisher": "EPYX",
+    "year": "1990"
+  }
+}

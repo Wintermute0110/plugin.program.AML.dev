@@ -1,0 +1,22 @@
+{
+  "defender": {
+    "description": "Defender",
+    "publisher": "Entex Industries",
+    "year": "1982"
+  },
+  "scobra": {
+    "description": "Super Cobra",
+    "publisher": "Entex Industries",
+    "year": "1982"
+  },
+  "spacefrc": {
+    "description": "Space Force",
+    "publisher": "Entex Industries",
+    "year": "1982"
+  },
+  "turtles": {
+    "description": "Turtles",
+    "publisher": "Entex Industries",
+    "year": "1982"
+  }
+}

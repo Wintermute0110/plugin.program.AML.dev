@@ -1,0 +1,112 @@
+{
+  "3dbombal": {
+    "description": "3D Bomb Alley",
+    "publisher": "Software Invasion",
+    "year": "1983"
+  },
+  "arsoccer": {
+    "description": "Arcade Soccer",
+    "publisher": "4th Dimension",
+    "year": "1989"
+  },
+  "cutekill": {
+    "description": "Cute To Kill: Beyond Infinity",
+    "publisher": "Mandarin",
+    "year": "1987"
+  },
+  "elite": {
+    "description": "Elite",
+    "publisher": "Acornsoft",
+    "year": "1984"
+  },
+  "elitexec": {
+    "description": "Elite (Executive Edition)",
+    "publisher": "Acornsoft",
+    "year": "1986"
+  },
+  "etype": {
+    "description": "E-Type",
+    "publisher": "4th Dimension",
+    "year": "1990"
+  },
+  "eyes": {
+    "description": "Eyes",
+    "publisher": "Ocean (Unreleased)",
+    "year": "1984"
+  },
+  "frogman": {
+    "description": "Frogman (Demo)",
+    "publisher": "Unreleased",
+    "year": "1993"
+  },
+  "gkiller": {
+    "description": "Giant Killer",
+    "publisher": "Topologika",
+    "year": "1987"
+  },
+  "holedoc1": {
+    "description": "Holed Out Extra Courses Vol.1",
+    "publisher": "4th Dimension",
+    "year": "1990"
+  },
+  "holedoc2": {
+    "description": "Holed Out Extra Courses Vol.2",
+    "publisher": "4th Dimension",
+    "year": "1990"
+  },
+  "holedout": {
+    "description": "Holed Out",
+    "publisher": "4th Dimension",
+    "year": "1989"
+  },
+  "huntshau": {
+    "description": "The Hunt: Search for Shauna",
+    "publisher": "Robico",
+    "year": "1987"
+  },
+  "inertia": {
+    "description": "Inertia",
+    "publisher": "4th Dimension",
+    "year": "1990"
+  },
+  "megapoca": {
+    "description": "Mega-Apocalypse",
+    "publisher": "Martech",
+    "year": "1988"
+  },
+  "nevryon": {
+    "description": "Nevryon",
+    "publisher": "4th Dimension",
+    "year": "1991"
+  },
+  "ssgames": {
+    "description": "Superior Software - Games on Disc",
+    "publisher": "Superior Software (Demo)",
+    "year": "1983"
+  },
+  "uim": {
+    "description": "U.I.M.",
+    "publisher": "4th Dimension",
+    "year": "1989"
+  },
+  "welcome": {
+    "description": "Welcome and Disc Utils",
+    "publisher": "Acorn",
+    "year": "1982"
+  },
+  "whimagi2": {
+    "description": "White Magic 2",
+    "publisher": "4th Dimension",
+    "year": "1989"
+  },
+  "whimagic": {
+    "description": "White Magic",
+    "publisher": "4th Dimension",
+    "year": "1989"
+  },
+  "wrldword": {
+    "description": "World Without Words",
+    "publisher": "4mation",
+    "year": "198?"
+  }
+}

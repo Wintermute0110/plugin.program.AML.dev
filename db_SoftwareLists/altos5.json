@@ -1,0 +1,17 @@
+{
+  "altdiag": {
+    "description": "Altos Diag. Exec. v3.0",
+    "publisher": "Digital Research",
+    "year": "198?"
+  },
+  "cpm220so": {
+    "description": "CP/M v2.20SO",
+    "publisher": "Digital Research",
+    "year": "198?"
+  },
+  "mpm210so": {
+    "description": "MP-M v2.10SO rev.B",
+    "publisher": "Digital Research",
+    "year": "1982"
+  }
+}

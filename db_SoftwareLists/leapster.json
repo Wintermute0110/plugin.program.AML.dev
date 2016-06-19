@@ -1,0 +1,182 @@
+{
+  "amuspark": {
+    "description": "My Amusement Park (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "backyard": {
+    "description": "The Backyardigans (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "batman": {
+    "description": "Batman - Strength in Numbers (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "batmang": {
+    "description": "Batman - Multipliziere, dividiere und regiere (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "cars": {
+    "description": "Cars (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "carsg": {
+    "description": "Cars (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "carssc": {
+    "description": "Cars - Supercharged (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "clifread": {
+    "description": "Clifford - The Big Red Dog - Reading (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "cosmicmt": {
+    "description": "Cosmic Math - Arcade-Style Learning! (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "cosmicmtg": {
+    "description": "Weltraum-Mathe - Lernen im Arcade-Stil! (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "demo": {
+    "description": "Demo - Herbst 2004 II (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "digdino": {
+    "description": "Digging for Dinosaurs (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "disprinz": {
+    "description": "Disney Prinzessinnen - Zauberhaftes Lernen (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "dora": {
+    "description": "Dora - Retter der Wildnis (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "findnemo": {
+    "description": "Findet Nemo (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "getpuzld": {
+    "description": "Get Puzzled! (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "grund1": {
+    "description": "Grundschule 1 (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "grund2": {
+    "description": "Grundschule 2 - Musik in Gefahr (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "hugenose": {
+    "description": "Reading with Phonics - Mole's Huge Nose (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "imagfrnd": {
+    "description": "Foster's Home for Imaginary Friends (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "ispy": {
+    "description": "I Spy - Treasure Hunt (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "jedimath": {
+    "description": "Star Wars - Jedi Math (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "lernleap": {
+    "description": "Lernen mit Leap (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "mrpencil": {
+    "description": "Mr. Pencil's Learn to Draw & Write (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "petpals": {
+    "description": "Pet Pals (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "princess": {
+    "description": "Disney Princess (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "ratat": {
+    "description": "Ratatouille (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "sonicx": {
+    "description": "SonicX (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "spidermn": {
+    "description": "Spider-Man - Schachmatt den Schildersaboteuren! (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "spongeb": {
+    "description": "Spongebob Squarepants - Saves the Day (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "spongebg": {
+    "description": "Spongebob Schwammkopf Hat Alles im Griff (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "spongez": {
+    "description": "Spongebob Schwammkopf - Zeitreise durch das Wurmloch (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "vorschul": {
+    "description": "Vorschule (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "wolverin": {
+    "description": "Wolverine and the X-Men (USA)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "worter": {
+    "description": "Wörterjäger - Lernen im Arcade-Stil! (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  },
+  "zahl": {
+    "description": "Zahlenjäger - Lernen im Arcade-Stil! (Ger)",
+    "publisher": "LeapFrog",
+    "year": "2003"
+  }
+}

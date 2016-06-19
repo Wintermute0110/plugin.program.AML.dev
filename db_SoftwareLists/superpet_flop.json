@@ -1,0 +1,117 @@
+{
+  "astro": {
+    "description": "Astro / Driver / SPMON",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "basicdis": {
+    "description": "Basic Disassembly Aids",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bcd62": {
+    "description": "BEDCALC 6.2 / DEVCALC 6.3",
+    "publisher": "<unknown>",
+    "year": "1985"
+  },
+  "bedcalc": {
+    "description": "BEDCALC 10 / BEDIT 10",
+    "publisher": "<unknown>",
+    "year": "1985"
+  },
+  "besrc": {
+    "description": "Bedit Source",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "edit": {
+    "description": "Edit",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "examples": {
+    "description": "Development Package Examples",
+    "publisher": "University of Waterloo",
+    "year": "1981"
+  },
+  "language": {
+    "description": "Waterloo Language (v1.0)",
+    "publisher": "University of Waterloo",
+    "year": "1981"
+  },
+  "language11": {
+    "description": "Waterloo Language (v1.1)",
+    "publisher": "University of Waterloo",
+    "year": "1981"
+  },
+  "language11c": {
+    "description": "Waterloo Language (v1.1, 6702 cracked)",
+    "publisher": "University of Waterloo",
+    "year": "1981"
+  },
+  "newterm": {
+    "description": "Dir / Directory / Newterm 2.4",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "os9": {
+    "description": "Super-OS/9",
+    "publisher": "Toronto PET Users Group",
+    "year": "1985"
+  },
+  "pascaldm": {
+    "description": "Pascal Demo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "piphelp": {
+    "description": "Waterloo microPIP / Help",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sforth51": {
+    "description": "SuperFORTH (v5.1)",
+    "publisher": "<unknown>",
+    "year": "1985"
+  },
+  "telecom": {
+    "description": "ISPUG Master Telecom Disk (v1.0)",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "termpkg": {
+    "description": "TERMPKG",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "vcfequiz": {
+    "description": "VCFE Quiz",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "wcs": {
+    "description": "SuperPET WCS",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "wcscobol": {
+    "description": "SuperPET WCS Cobol",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "wcstutor": {
+    "description": "SuperPET WCS Tutor",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "wldskdis": {
+    "description": "Waterloo Disk Disassemblies",
+    "publisher": "<unknown>",
+    "year": "1985"
+  },
+  "wlromdis": {
+    "description": "Waterloo ROM Disassemblies",
+    "publisher": "<unknown>",
+    "year": "1983"
+  }
+}

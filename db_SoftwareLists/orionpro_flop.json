@@ -1,0 +1,162 @@
+{
+  "bascom": {
+    "description": "BASCOM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basic": {
+    "description": "BASIC__P3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bios210": {
+    "description": "ROM_210_1__BIOS-210",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "corona": {
+    "description": "CORONA__P4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "corona10": {
+    "description": "CORONA10__P4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "corona22": {
+    "description": "CORONA22",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cpmutil": {
+    "description": "UTILS_CPM__DISK01P",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "disk01p": {
+    "description": "DISK01P",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "docbiosa": {
+    "description": "DOC_3__Bios_pro",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "docbiosp": {
+    "description": "DOC_BIOS_PRO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "docp20": {
+    "description": "DOC_2__P20",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ibmdisk": {
+    "description": "IBM-DISK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "m80": {
+    "description": "M80__P5",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "massn": {
+    "description": "MASSM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "multifnt": {
+    "description": "MultiFont20_MULTIFNT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pas1": {
+    "description": "PAS-1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "prodos1": {
+    "description": "PRODOS_101__P1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "prodos2": {
+    "description": "PRODOS_200__PRODOS20",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "prodos20": {
+    "description": "PRODOS20",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "prodosa": {
+    "description": "PRODOS_101_1__P1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "prodosb": {
+    "description": "PRODOS_200__P1-PRO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "prorom": {
+    "description": "PRO_ROM_100__PRO_V100",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "prosoft": {
+    "description": "PRO_Soft__P3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "protp30": {
+    "description": "PRO_TP30__P02",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "protp30d": {
+    "description": "PRO_TP30_Doc__P2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "softsoun": {
+    "description": "SOUND",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "src210": {
+    "description": "ROM_210_Src__LIST-5",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tbasic41": {
+    "description": "TBASIC410_TBAS-PRO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "textpic1": {
+    "description": "Text & Pics__31",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "textpic2": {
+    "description": "TextPics__Pro_2__28",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tpasc30": {
+    "description": "TPAscal30_1__P02",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tpascpro": {
+    "description": "TPAscalPro_TURBOPRO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

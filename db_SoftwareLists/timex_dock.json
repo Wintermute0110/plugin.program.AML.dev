@@ -1,0 +1,167 @@
+{
+  "android": {
+    "description": "Androids",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "backgamm": {
+    "description": "Backgammon",
+    "publisher": "Sinclair Research",
+    "year": "1983"
+  },
+  "budgeter": {
+    "description": "Budgeter",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "casino1": {
+    "description": "Casino1",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "chess": {
+    "description": "Chess",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "crazybug": {
+    "description": "Crazy Bugs",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "etoolkit": {
+    "description": "eToolkit (Toolkit EPROM)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "fsim": {
+    "description": "Flight Simulator",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "gyruss": {
+    "description": "Gyruss",
+    "publisher": "Parker Software",
+    "year": "1984"
+  },
+  "horace": {
+    "description": "Hungry Horace",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "horacesp": {
+    "description": "Horace & the Spiders",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "jedi": {
+    "description": "Return Of The Jedi - Death Star Battle",
+    "publisher": "Parker Software",
+    "year": "1984"
+  },
+  "jupitace": {
+    "description": "Jupiter ACE Emulator",
+    "publisher": "Paul Farrow",
+    "year": "1985"
+  },
+  "locomotn": {
+    "description": "Loco Motion",
+    "publisher": "Parker Software",
+    "year": "1984"
+  },
+  "montezum": {
+    "description": "Montezuma's Revenge",
+    "publisher": "Parker Software",
+    "year": "1984"
+  },
+  "mterm": {
+    "description": "MTERM - Smart Terminal Program",
+    "publisher": "Westridge Communications",
+    "year": "1983"
+  },
+  "penetrat": {
+    "description": "Penetrator",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "pinball": {
+    "description": "Pro Pinball",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "planet": {
+    "description": "Planetoids",
+    "publisher": "Sinclair Research",
+    "year": "1983"
+  },
+  "popeye": {
+    "description": "Popeye",
+    "publisher": "Parker Software",
+    "year": "1984"
+  },
+  "qbert": {
+    "description": "Q*Bert",
+    "publisher": "Parker Software",
+    "year": "1984"
+  },
+  "rwp32": {
+    "description": "rWP32",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "spacerai": {
+    "description": "Space Raiders",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "starwars": {
+    "description": "Star Wars - The Arcade Game",
+    "publisher": "Parker Software",
+    "year": "1984"
+  },
+  "statecap": {
+    "description": "States and Capitals",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "superhzd": {
+    "description": "Super Hot-Z Disassembler v2.51 (AROS)",
+    "publisher": "Ray Kingsley",
+    "year": "19??"
+  },
+  "swordfgt": {
+    "description": "Swordfight",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "tasword2": {
+    "description": "Tasword II",
+    "publisher": "Tasman Software",
+    "year": "1983"
+  },
+  "timeword": {
+    "description": "TimeWord",
+    "publisher": "TMX Portugal",
+    "year": "1986"
+  },
+  "unicorn": {
+    "description": "Shadow of the Unicorn",
+    "publisher": "Mikro-Gen",
+    "year": "1985"
+  },
+  "vucalc": {
+    "description": "VU-Calc",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "vufile": {
+    "description": "VU-File",
+    "publisher": "Timex Computer",
+    "year": "1983"
+  },
+  "zebraos": {
+    "description": "Zebra OS 64",
+    "publisher": "Zebra Systems",
+    "year": "1985"
+  }
+}

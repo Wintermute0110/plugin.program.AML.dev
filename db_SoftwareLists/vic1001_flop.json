@@ -1,0 +1,22 @@
+{
+  "simpcalc": {
+    "description": "SimpliCalc",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "vicfile": {
+    "description": "VicFile",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "vicfilea": {
+    "description": "VicFile (Alt)",
+    "publisher": "Commodore",
+    "year": "1981"
+  },
+  "vicwrite": {
+    "description": "VicWriter",
+    "publisher": "Commodore",
+    "year": "1981"
+  }
+}

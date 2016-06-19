@@ -1,0 +1,572 @@
+{
+  "altdos": {
+    "description": "AltDOS_1__AltDos",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "altdosa": {
+    "description": "AltDOS_2__C150696",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "archiv9": {
+    "description": "Archiv9",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "arifm80": {
+    "description": "ARIFM80",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "asmbas": {
+    "description": "ASM_BAS__P26-128",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "atlas504": {
+    "description": "ATLAS504_2__ATL",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "atlas520": {
+    "description": "ATLAS520__10",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "atlas530": {
+    "description": "ATLAS530__ATL530",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "atlas600": {
+    "description": "ATLAS600_1__10",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "atlas60a": {
+    "description": "ATLAS600",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "c": {
+    "description": "C_34",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "c1": {
+    "description": "C_2__P34-128",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "c2": {
+    "description": "C",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "chdrv": {
+    "description": "CHDRV_VI53",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "comay": {
+    "description": "COM-AY",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "coronal7": {
+    "description": "Corona_220__LIST-7",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cpm370": {
+    "description": "CPM370",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cpm37a": {
+    "description": "OSDOS_370_3__CPM370",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "disk1": {
+    "description": "DISK1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "disk11": {
+    "description": "DISK11",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "disk14": {
+    "description": "DISK14",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "disk2": {
+    "description": "DISK2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "disk4": {
+    "description": "DISK4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "disk7": {
+    "description": "DISK7",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "disk8": {
+    "description": "Disk_8",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "disk9": {
+    "description": "DISK9",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dtasm": {
+    "description": "DTASM__21",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "game1715": {
+    "description": "GAME1715",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "games": {
+    "description": "GAMES",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "games10": {
+    "description": "games10",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "games11": {
+    "description": "games11",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "games13": {
+    "description": "games13",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "golovin2": {
+    "description": "GOLOVIN2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "graf": {
+    "description": "GRAF__20",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "grafika": {
+    "description": "GRAFIKA-1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ibmdisk": {
+    "description": "IBM-DISK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "idertc": {
+    "description": "IDE-RTC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "inform": {
+    "description": "INFORM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "korov1": {
+    "description": "KOROV1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "laycad1": {
+    "description": "LAYCAD1__DISK4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "laycad2": {
+    "description": "LAYCAD2__DISK12",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "laycad3": {
+    "description": "LAYCAD3__09",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "list7": {
+    "description": "LIST-7",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mon410": {
+    "description": "MONITOR_410__M410",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "multifnt": {
+    "description": "multifnt",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "omsk2": {
+    "description": "OMSK2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ordos1": {
+    "description": "ORDOS_l_1__01",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ordos2": {
+    "description": "ORDOS_l_2__04",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ordos403": {
+    "description": "ORDOS403",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ordos403s": {
+    "description": "ORDOS_403_Src__25",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ordos403sa": {
+    "description": "ORDOS_403_Src__P25-128",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ordos40a": {
+    "description": "ORDOS_400_2__DISK10",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ordos40b": {
+    "description": "ORDOS_400_3__DISK6",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ordos610": {
+    "description": "ORDOS_610__ORDOS6",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "ordosut": {
+    "description": "ORDOS_240_Utils__01",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "osdos241": {
+    "description": "OSDOS241",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "osdos24a": {
+    "description": "OSDOS_241__02",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "osdos26a": {
+    "description": "OSDOS_261_1__OSDOS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "osdos26b": {
+    "description": "OSDOS_261_2__DISK8",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "osdos360": {
+    "description": "osdos360",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "osdos362": {
+    "description": "OSDOS362",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "osdos36a": {
+    "description": "OSDOS_360__30",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "osdos370": {
+    "description": "OSDOS_370_2__OSDOS370",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "osdos60k": {
+    "description": "OSDOS_OSDOS60k_320__RusEmulatotsRu01",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pascalm1": {
+    "description": "PAS_MT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pascalm2": {
+    "description": "PASCALMT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pascalmt": {
+    "description": "PASCALMT__33",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pmast2": {
+    "description": "PMAST002__35",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "profi1": {
+    "description": "PROFY",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "prog": {
+    "description": "programs",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "prog10": {
+    "description": "DIsk_10",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "prog3": {
+    "description": "Disk_03",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd1": {
+    "description": "disk_1",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd10": {
+    "description": "Disk10",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd11": {
+    "description": "Program Disk11",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd12": {
+    "description": "Disk12",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd13": {
+    "description": "Disk13",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd15": {
+    "description": "Disk15",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd16": {
+    "description": "DISK16",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd17": {
+    "description": "Disk17",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd18": {
+    "description": "Disk18",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd19": {
+    "description": "disk19",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd2": {
+    "description": "Disk_2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd24": {
+    "description": "Disk24",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd25": {
+    "description": "Disk25",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd26": {
+    "description": "Disk26",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd27": {
+    "description": "Disk27",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd3": {
+    "description": "Disk3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd31": {
+    "description": "Disk31",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd32": {
+    "description": "Disk32",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd33": {
+    "description": "Disk33",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd4": {
+    "description": "Program Disk4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd5": {
+    "description": "Disk5",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd6": {
+    "description": "Disk6",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd7": {
+    "description": "Program Disk7",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd8": {
+    "description": "Disk8",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "progd9": {
+    "description": "Program Disk9",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rebus": {
+    "description": "REBUS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sctable": {
+    "description": "TABLE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sexshop": {
+    "description": "SEXSHOP",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sexshopa": {
+    "description": "SEXSHOP (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sound": {
+    "description": "sound",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "supercl3": {
+    "description": "SuperCalc_3__32",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sured30": {
+    "description": "SURED_30__P15-128",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sured30s": {
+    "description": "SURED_30_src__LIST-4",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tasm": {
+    "description": "TASM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tasm400": {
+    "description": "TASM400__03",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tasm410": {
+    "description": "TASM410",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tasmas": {
+    "description": "TASM-AS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tbas128": {
+    "description": "TBAS-128",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tbasic41": {
+    "description": "TBASIC410__04",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tp128": {
+    "description": "TP128_1__TURBO128",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tp128a": {
+    "description": "TP128_2__P2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "turbo128": {
+    "description": "TPASCAL__TURBO128",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

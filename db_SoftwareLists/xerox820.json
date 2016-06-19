@@ -1,0 +1,52 @@
+{
+  "analyst": {
+    "description": "Analyst (v2.0a)",
+    "publisher": "Xerox",
+    "year": "1981"
+  },
+  "basic": {
+    "description": "BASIC 80",
+    "publisher": "Xerox",
+    "year": "1981"
+  },
+  "cpm": {
+    "description": "CP/M 3.0",
+    "publisher": "Xerox",
+    "year": "1981"
+  },
+  "diag": {
+    "description": "Diagnostic Exerciser",
+    "publisher": "Xerox",
+    "year": "1981"
+  },
+  "plus2": {
+    "description": "Plus2 (1986)",
+    "publisher": "Microcode",
+    "year": "1986"
+  },
+  "plus2a": {
+    "description": "Plus2 (1987)",
+    "publisher": "Microcode",
+    "year": "1987"
+  },
+  "programs": {
+    "description": "Programs Disc",
+    "publisher": "Xerox",
+    "year": "1981"
+  },
+  "suprcalc": {
+    "description": "SuperCalc",
+    "publisher": "Xerox",
+    "year": "1981"
+  },
+  "training": {
+    "description": "Training Disk",
+    "publisher": "Xerox",
+    "year": "1981"
+  },
+  "wordproc": {
+    "description": "Word Processing",
+    "publisher": "Xerox",
+    "year": "1981"
+  }
+}

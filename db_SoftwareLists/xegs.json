@@ -1,0 +1,222 @@
+{
+  "1on1": {
+    "description": "One-on-One",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "aceoface": {
+    "description": "Ace of Aces",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "airball": {
+    "description": "Airball",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "archon": {
+    "description": "Archon: The Light and the Dark",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "ballblaz": {
+    "description": "Ballblazer",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "barnblst": {
+    "description": "Barnyard Blaster",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "beefdrop": {
+    "description": "Beef Drop",
+    "publisher": "<homebrew>",
+    "year": "2005"
+  },
+  "bluemax": {
+    "description": "Blue Max",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "brucelee": {
+    "description": "Bruce Lee (Reproduction)",
+    "publisher": "Video 61 / Datasoft",
+    "year": "1984"
+  },
+  "bughunt": {
+    "description": "Bug Hunt",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "bzone": {
+    "description": "BattleZone",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "ccastles": {
+    "description": "Crystal Castles",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "ccrisis": {
+    "description": "Castle Crisis",
+    "publisher": "Atari Age",
+    "year": "2003"
+  },
+  "choplift": {
+    "description": "Choplifter!",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "commando": {
+    "description": "Commando (Prototype)",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "crimbstr": {
+    "description": "Crime Buster",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "crossbow": {
+    "description": "Crossbow",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "darkcham": {
+    "description": "Dark Chambers",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "deflektr": {
+    "description": "Deflektor (Prototype)",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "dsrtflcn": {
+    "description": "Desert Falcon",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "eaglnest": {
+    "description": "Into the Eagle's Nest",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "fightn": {
+    "description": "Fight Night",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "foodf": {
+    "description": "Food Fight",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "fractal": {
+    "description": "Rescue on Fractalus!",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "fsim2": {
+    "description": "Flight Simulator 2",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "fsim2d": {
+    "description": "Flight Simulator 2 (Demo Cartridge)",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "gato": {
+    "description": "GATO Submarine Simulation",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "hardball": {
+    "description": "Hardball!",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "karateka": {
+    "description": "Karateka",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "ldrun": {
+    "description": "Lode Runner",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "mario": {
+    "description": "Mario Bros.",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "mean18": {
+    "description": "Mean 18 (Prototype)",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "midimaze": {
+    "description": "MIDI Maze (Reproduction)",
+    "publisher": "Video 61 / Atari",
+    "year": "199?"
+  },
+  "midimazep": {
+    "description": "MIDI Maze (Prototype)",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "midmagic": {
+    "description": "David's Midnight Magic",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "necroman": {
+    "description": "Necromancer",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "sinistar": {
+    "description": "Sinistar (Reproduction)",
+    "publisher": "Video 61 / Atari",
+    "year": "199?"
+  },
+  "starrai2": {
+    "description": "Star Raiders II",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "sumgames": {
+    "description": "Summer Games",
+    "publisher": "Atari",
+    "year": "1987"
+  },
+  "tapper": {
+    "description": "Tapper (Reproduction)",
+    "publisher": "Video 61 / Bally Midway",
+    "year": "20??"
+  },
+  "thundfox": {
+    "description": "Thunderfox",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "towertop": {
+    "description": "Tower Toppler (Prototype)",
+    "publisher": "Atari",
+    "year": "1988"
+  },
+  "vanguard": {
+    "description": "Vanguard (5200 Conversion)",
+    "publisher": "Video 61 / Atari",
+    "year": "199?"
+  },
+  "xenophob": {
+    "description": "Xenophobe (Reproduction)",
+    "publisher": "Video 61 / Atari",
+    "year": "2010"
+  }
+}

@@ -1,0 +1,6792 @@
+{
+  "007agesp": {
+    "description": "007 - Agente Especial (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "007tld": {
+    "description": "007 - The Living Daylights (Euro, Trained +2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "10frame": {
+    "description": "10th Frame (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "10framea": {
+    "description": "10th Frame (Euro, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "10yard": {
+    "description": "10 Yard Fight (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "180": {
+    "description": "180 (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "1942": {
+    "description": "1942 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "2pistolt": {
+    "description": "Mayor Pistoletov + Pistoletov na Zavode (Rus)",
+    "publisher": "Crazysoft",
+    "year": "1988"
+  },
+  "2wbattak": {
+    "description": "Wallball + Attacked (UK)",
+    "publisher": "Tynesoft",
+    "year": "19??"
+  },
+  "3dgolf": {
+    "description": "3D Golf Simulation - High Speed Edition (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "3dko": {
+    "description": "3D Knockout! (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "3dwater": {
+    "description": "3D Water Driver (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "4x4offrd": {
+    "description": "4x4 Off-Road Racing (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "4x4offrda": {
+    "description": "4x4 Off-Road Racing (Euro, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "5ball": {
+    "description": "5 Ball (Jpn)",
+    "publisher": "Nyan",
+    "year": "198?"
+  },
+  "737sim": {
+    "description": "737 Flight Simulator (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "747fs": {
+    "description": "747 400b Flight Simulator (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "7cardstd": {
+    "description": "7 Card Stud (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "aackodp": {
+    "description": "Aacko Draw & Paint (Ned)",
+    "publisher": "Eaglesoft",
+    "year": "1985"
+  },
+  "aardrijk": {
+    "description": "Aardrijkskunde (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "abadcrim": {
+    "description": "La Abadia del Crimen (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "abadcrima": {
+    "description": "La Abadia del Crimen (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "abadcrimb": {
+    "description": "La Abadia del Crimen (Spa, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "abadcrimc": {
+    "description": "La Abadia del Crimen (Spa, Alt 3)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "abejasa": {
+    "description": "La Abeja Sabia (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ablast": {
+    "description": "Alpha Blaster (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ablaster": {
+    "description": "Astro Blaster (Euro)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "abracada": {
+    "description": "Abracadabra (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "aburner": {
+    "description": "Afterburner (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "aburnera": {
+    "description": "Afterburner (Euro, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "abusimbl": {
+    "description": "Abu Simbel Profanation (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "abusimbla": {
+    "description": "Abu Simbel Profanation (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "aceoface": {
+    "description": "Ace of Aces (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "actman": {
+    "description": "Actman (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "addictbl": {
+    "description": "Addictaball (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "adel": {
+    "description": "Adel (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "adonis": {
+    "description": "Adonis (Jpn)",
+    "publisher": "MSX Magazine",
+    "year": "1988"
+  },
+  "advenchu": {
+    "description": "Adven' Chuta! (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ae": {
+    "description": "A.E. (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "afrtrail": {
+    "description": "African Trail Simulator (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "afrtraila": {
+    "description": "African Trail Simulator (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "afteroid": {
+    "description": "Afteroids (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "afteroida": {
+    "description": "Afteroids (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "afterwar": {
+    "description": "After the War (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "afterwara": {
+    "description": "After the War (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "afterwarb": {
+    "description": "After the War (Spa, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "albatros": {
+    "description": "Albatross (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "alcazar": {
+    "description": "Alcazar - The Forgotten Fortress (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "alehop": {
+    "description": "Ale Hop! (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "alehopa": {
+    "description": "Ale Hop! (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "alfamat": {
+    "description": "Alfamat (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "alibaba": {
+    "description": "Alibaba and 40 Thieves",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "alien8": {
+    "description": "Alien 8 (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "aliens": {
+    "description": "Aliens (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "aliensj": {
+    "description": "Aliens - Alien 2 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "aliensja": {
+    "description": "Aliens - Alien 2 (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "aliensjb": {
+    "description": "Aliens - Alien 2 (Jpn, Alt 2)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "alpine": {
+    "description": "Alpine Ski (Euro)",
+    "publisher": "Methodic Solutions",
+    "year": "1987"
+  },
+  "amaurote": {
+    "description": "Amaurote (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "amazmem": {
+    "description": "The Most Amazing Memory Game (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "amc": {
+    "description": "Astro Marine Corps (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "amida": {
+    "description": "Amida (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "amomundo": {
+    "description": "Amo del Mundo (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "amomundoa": {
+    "description": "Amo del Mundo (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "amotopuf": {
+    "description": "Amoto's Puf (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "amtruck": {
+    "description": "American Truck (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "amznurse": {
+    "description": "Amazing Nurse B (Jpn)",
+    "publisher": "<doujin>",
+    "year": "2010"
+  },
+  "anaza": {
+    "description": "A-na-za - Kaleidoscope Special (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ang500cc": {
+    "description": "Angel Nieto Pole 500cc (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ang500cca": {
+    "description": "Angel Nieto Pole 500cc (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "angelo": {
+    "description": "Angelo (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "anglebal": {
+    "description": "Angleball (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "antares": {
+    "description": "Antares (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "antaresa": {
+    "description": "Antares (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "anty": {
+    "description": "Anty (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "apeman": {
+    "description": "The Apeman Strikes Again (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "apring2": {
+    "description": "Aprendiendo Ingles 2 - Bernard goes to Mars (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "aramo": {
+    "description": "Aramo (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "arctfox": {
+    "description": "ArcticFox (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "arkanoid": {
+    "description": "Arkanoid (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "arkos1": {
+    "description": "Arkos I (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "arkos123": {
+    "description": "Arkos I + II + III (Spa, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "arkos2": {
+    "description": "Arkos II (Spa, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "armymove": {
+    "description": "Army Moves (Spa, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "arocks": {
+    "description": "Astro Rocks (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "aroid": {
+    "description": "αRoid (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "arquimed": {
+    "description": "Arquimedes XXI (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "arquimeda": {
+    "description": "Arquimedes XXI (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "aspargp": {
+    "description": "Aspar GP Master (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "asquad": {
+    "description": "Alpha Squadron (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "astroplm": {
+    "description": "Astro Plumber (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "astrowul": {
+    "description": "The Astrowulards (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "astrowula": {
+    "description": "The Astrowulards (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "asyndrom": {
+    "description": "Alien Syndrome (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ateam": {
+    "description": "The A-Team (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ateama": {
+    "description": "The A-Team (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "athland": {
+    "description": "Athletic Land (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "athlball": {
+    "description": "Athletic Ball (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "attacked": {
+    "description": "Attacked (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "avenger": {
+    "description": "Avenger (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "avenorig": {
+    "description": "La Aventura Original (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "avenoriga": {
+    "description": "La Aventura Original (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "avenspac": {
+    "description": "La Aventura Espacial (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "avenspaca": {
+    "description": "La Aventura Espacial (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "averno": {
+    "description": "Averno (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "avernoa": {
+    "description": "Averno (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "avpaulis": {
+    "description": "Av. Paulista (Bra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "avpaulisa": {
+    "description": "Av. Paulista (Bra, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "avtak": {
+    "description": "A View to a Kill (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "awmonty": {
+    "description": "Auf Wiedersehen Monty (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "awmontya": {
+    "description": "Auf Wiedersehen Monty (Euro, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "backgamj": {
+    "description": "Backgammon (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "backgamm": {
+    "description": "Backgammon (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "backtof": {
+    "description": "Back to the Future (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "balance": {
+    "description": "Balance (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ballblaz": {
+    "description": "BallBlazer (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ballblaza": {
+    "description": "BallBlazer (Jpn, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ballyhoo": {
+    "description": "Ballyhoo (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "banana": {
+    "description": "Banana (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bankp": {
+    "description": "Bank Panic (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "barb": {
+    "description": "Barbarian (Euro, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "barnabas": {
+    "description": "Barnabasket (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "basketms": {
+    "description": "Fernando Martin Basket Master (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "basketmsa": {
+    "description": "Fernando Martin Basket Master (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "basketmx": {
+    "description": "Fernando Martin Basket Master - Executive Version (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "basketmxa": {
+    "description": "Fernando Martin Basket Master - Executive Version (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "batman": {
+    "description": "Batman",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "battlex": {
+    "description": "Battle Cross (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bblock": {
+    "description": "Bouncing Block (Spa)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bblocka": {
+    "description": "Bouncing Block (Spa, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bc2": {
+    "description": "Ruote e Cavenicoli (Ita)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bchopper": {
+    "description": "Battle Chopper (Euro)",
+    "publisher": "Methodic Solutions",
+    "year": "1985"
+  },
+  "bcquest": {
+    "description": "B.C.'s Quest for Tires (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bcquest2": {
+    "description": "B.C.'s Quest for Tires II - Grog's Revenge (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bdash": {
+    "description": "Boulder Dash (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bdash2": {
+    "description": "Boulder Dash II - Rockford's Riot (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "beachead": {
+    "description": "Beach-Head (Euro)",
+    "publisher": "Eaglesoft",
+    "year": "1985"
+  },
+  "beamridr": {
+    "description": "Beamrider (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "beardsif": {
+    "description": "Peter Beardsley's International Football (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "becky": {
+    "description": "Becky (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "beeflowr": {
+    "description": "Bee & Flower",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bernard": {
+    "description": "Bernard in the City (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bestwarr": {
+    "description": "Bestial Warrior (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bestwarra": {
+    "description": "Bestial Warrior (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bjacks": {
+    "description": "BlackJack (Spa)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bjacksa": {
+    "description": "BlackJack (Spa, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "blackbrd": {
+    "description": "Blackbeard (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "blackbrda": {
+    "description": "Blackbeard (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "blagger": {
+    "description": "Blagger (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "blkonyx": {
+    "description": "The Black Onyx (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "blockrun": {
+    "description": "Blockade Runner (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bloody": {
+    "description": "Bloody (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bloodya": {
+    "description": "Bloody (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "blowup": {
+    "description": "Blow-Up (Euro)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "blowupa": {
+    "description": "Blow-Up (Euro, Alt)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "blstroid": {
+    "description": "Blasteroids (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bmxreken": {
+    "description": "BMX Rekencross (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bmxsim": {
+    "description": "BMX Simulator (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bmxsima": {
+    "description": "BMX Simulator (Euro, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "boardell": {
+    "description": "Boardello (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "boggy84": {
+    "description": "Boggy '84 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "boing2": {
+    "description": "Boing Boing (Spa)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bokosuka": {
+    "description": "Bokosuka Wars (Jpn, Hacked)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bomber3d": {
+    "description": "Bomber Man 3D (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1984"
+  },
+  "bombersp": {
+    "description": "Bomber Man Special (Jpn)",
+    "publisher": "Hudson Soft",
+    "year": "1986"
+  },
+  "bombjack": {
+    "description": "Bomb Jack (Bra)",
+    "publisher": "<homebrew>",
+    "year": "2004"
+  },
+  "boogaboo": {
+    "description": "Booga-Boo (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "boogabooa": {
+    "description": "Booga-Boo (Euro, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "boogie": {
+    "description": "Boogie Woogi Jungle (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "boom": {
+    "description": "Boom! (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "boomrang": {
+    "description": "Boomerang (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "booty": {
+    "description": "Booty (Euro)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "bop": {
+    "description": "Bop! (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bosco": {
+    "description": "Star Destroyer Bosconian (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bounce": {
+    "description": "Bounce (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bounder": {
+    "description": "Bounder (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "breaker": {
+    "description": "Breaker Breaker (Euro)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "breakin": {
+    "description": "Break In (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "brickbrk": {
+    "description": "Brick Breaker (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bridge": {
+    "description": "Bridge (Fra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "brijacks": {
+    "description": "Brian Jacks Superstar Challenge (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "brisca": {
+    "description": "Brisca (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "briscaa": {
+    "description": "Brisca (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "brucelee": {
+    "description": "Bruce Lee (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bswriter": {
+    "description": "Bank Street Writer (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "btanuki": {
+    "description": "Batten Tanuki no Daibouken (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "btsos": {
+    "description": "Bousou Tokkyuu SOS - Stop the Express (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bubbler": {
+    "description": "Bubbler (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "buckrog": {
+    "description": "Buck Rogers - Planet of Zoom (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "buggyrng": {
+    "description": "Buggy Ranger (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "buggyrnga": {
+    "description": "Buggy Ranger (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bullmigt": {
+    "description": "Bull to Mighty Kiki Ippatsu (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "bumpygts": {
+    "description": "Bumpy (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "buran": {
+    "description": "Buran (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "burgkill": {
+    "description": "Burgerkill (Euro)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "burgkilla": {
+    "description": "Burgerkill (Euro, Alt)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "bustblck": {
+    "description": "Buster Block (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "butampan": {
+    "description": "Butam Pants (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "buzzoff": {
+    "description": "Buzz Off! (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "bytebust": {
+    "description": "Bytebusters (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cabbagep": {
+    "description": "Cabbage Patch Kids (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "calgames": {
+    "description": "California Games (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "calgamesa": {
+    "description": "California Games (Euro, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "camelot": {
+    "description": "Camelot Warriors (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "candoon": {
+    "description": "Candoo Ninja (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cannonbl": {
+    "description": "Cannon Ball (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cannonfg": {
+    "description": "Cannon Fighter (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "canworms": {
+    "description": "Can of Worms (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "captchef": {
+    "description": "Captain Chef (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "casanova": {
+    "description": "Casanova (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "casanovaa": {
+    "description": "Casanova (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "castgod": {
+    "description": "El Castillo de Godless (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "castle": {
+    "description": "The Castle (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "castlecm": {
+    "description": "Castle Combat (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "castlex": {
+    "description": "Castle Excellent (Jpn, Trained by Damian Roman)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "catchgrl": {
+    "description": "Catch That Girl",
+    "publisher": "WB-Soft",
+    "year": "198?"
+  },
+  "cavdeath": {
+    "description": "Cavern of Death (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cbilliar": {
+    "description": "Computer Billiards (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cbridge": {
+    "description": "Contract Bridge (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ccosmo": {
+    "description": "Captain Cosmo (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cetus": {
+    "description": "Cetus (Euro)",
+    "publisher": "Tynesoft",
+    "year": "1986"
+  },
+  "cf3300": {
+    "description": "National CF-3300",
+    "publisher": "National",
+    "year": "1985"
+  },
+  "chackn": {
+    "description": "Chack'n Pop (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "champ": {
+    "description": "Champ (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "champbox": {
+    "description": "Champion Boxing (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "champion": {
+    "description": "Champions (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "champken": {
+    "description": "Champion Kendou (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "champpwr": {
+    "description": "Champion Pro Wrestling (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "champscr": {
+    "description": "Champion Soccer (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "chasehq": {
+    "description": "Chase H.Q. (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "checkmat": {
+    "description": "Checkmate! - First Moves in Chess (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cheese": {
+    "description": "Cheese (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "chessgam": {
+    "description": "The Chess Game (Euro)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "chessgama": {
+    "description": "The Chess Game (Euro, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "chessply": {
+    "description": "Chess Player (Euro)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "chicago": {
+    "description": "Chicago 30's (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "chicagoa": {
+    "description": "Chicago 30's (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "chicagob": {
+    "description": "Chicago 30's (Spa, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "chicken": {
+    "description": "Chicken Chase (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "chiller1": {
+    "description": "Chiller (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "choplift": {
+    "description": "Choplifter (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "chopper": {
+    "description": "Chopper (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "choroq": {
+    "description": "Choro Q (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "choylee": {
+    "description": "Choy-Lee-Fut Kung-Fu Warrior (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "chu_scir": {
+    "description": "El Cuerpo Humano - Sistema Circulatorio (Spa, Cracked)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "chu_sdig": {
+    "description": "El Cuerpo Humano - Sistema Digestivo (Spa, Cracked)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "chu_srep": {
+    "description": "El Cuerpo Humano - Sistema Reproductor (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "chubbygr": {
+    "description": "Chubby Gristle (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "chuckie": {
+    "description": "Chuckie Egg (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cid": {
+    "description": "El Cid (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cida": {
+    "description": "El Cid (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ciencnt5": {
+    "description": "Ciencias de la Naturaleza - 5 E.G.B. (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ciencnt7": {
+    "description": "Ciencias de la Naturaleza - 7 E.G.B. (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ciencnt8": {
+    "description": "Ciencias de la Naturaleza - 8 E.G.B. (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "circusc": {
+    "description": "Circus Charlie (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "citycon": {
+    "description": "City Connection (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "clapton2": {
+    "description": "Battleship Clapton II (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "classadv": {
+    "description": "Classic Adventure (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cloderun": {
+    "description": "Championship Lode Runner (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cluedo": {
+    "description": "Cluedo (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cm2000": {
+    "description": "The Chessmaster 2000 (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cmpchess": {
+    "description": "Computer Chess (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cmpothel": {
+    "description": "Computer Othello (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cmpscrab": {
+    "description": "Computer Scrabble (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "coastrac": {
+    "description": "Coaster Race (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cobraarc": {
+    "description": "Cobra's Arc (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cobraarca": {
+    "description": "Cobra's Arc (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "coco": {
+    "description": "Coco Castle (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "coconuts": {
+    "description": "Coconuts (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "colball": {
+    "description": "Color Ball (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "coliseum": {
+    "description": "Coliseum (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "coliseuma": {
+    "description": "Coliseum (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "colony": {
+    "description": "Colony",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "colonya": {
+    "description": "Colony (Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "colos4ch": {
+    "description": "Colossus 4 Chess (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "colossm3": {
+    "description": "Colosseum III - Deluxe Pack (Jpn)",
+    "publisher": "<doujin>",
+    "year": "2002"
+  },
+  "colt36": {
+    "description": "Colt 36 (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "columbia": {
+    "description": "Columbia (Spa)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "comando4": {
+    "description": "Comando Quatro (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "comecoco": {
+    "description": "Comecocos (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cometail": {
+    "description": "Comet Tail (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "comicbak": {
+    "description": "Comic Bakery (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "comomolo": {
+    "description": "Johny Comomolo in 3-2-1 Fire (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "comtrace": {
+    "description": "Comando Tracer (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "comtracea": {
+    "description": "Comando Tracer (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "condori": {
+    "description": "Con-Dori (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "confused": {
+    "description": "Confused? (Euro)",
+    "publisher": "Eaglesoft",
+    "year": "1986"
+  },
+  "congobon": {
+    "description": "Congo Bongo (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "corsario": {
+    "description": "Corsarios (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "corsarioa": {
+    "description": "Corsarios (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cosanost": {
+    "description": "Cosa Nostra (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cosanosta": {
+    "description": "Cosa Nostra (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cosmestb": {
+    "description": "Cosme Estible (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cosmestba": {
+    "description": "Cosme Estible (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cosmoexp": {
+    "description": "Cosmo-Explorer (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cosmos": {
+    "description": "Cosmos (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cosmotrv": {
+    "description": "Cosmo Traveler (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cpachi": {
+    "description": "Computer Pachinko (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "craze": {
+    "description": "Craze (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "crazea": {
+    "description": "Craze (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "crazybul": {
+    "description": "Crazy Bullet (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "crazycar": {
+    "description": "Crazy Cars (UK)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "crazytrn": {
+    "description": "Crazy Train (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "crazytrna": {
+    "description": "Crazy Train (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cribbage": {
+    "description": "Cribbage (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "crossblm": {
+    "description": "Cross Blaim (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "crossblma": {
+    "description": "Cross Blaim (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "crusader": {
+    "description": "Crusader (Euro)",
+    "publisher": "Eaglesoft",
+    "year": "1985"
+  },
+  "csheriff": {
+    "description": "Cosmic Sheriff (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cso": {
+    "description": "C_So! (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "cubik": {
+    "description": "Cubik - Cubo de Rubik (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cubit": {
+    "description": "Cubit (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cubita": {
+    "description": "Cubit (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "currojim": {
+    "description": "Curro Jimenez (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "currojima": {
+    "description": "Curro Jimenez (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cursobas": {
+    "description": "Curso de BASIC (Spa)",
+    "publisher": "Sony Spain",
+    "year": "1985"
+  },
+  "cursoing": {
+    "description": "Curso de Ingles (Spa)",
+    "publisher": "Plus Data",
+    "year": "1984"
+  },
+  "cyberbig": {
+    "description": "Cyberbig (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cyberbiga": {
+    "description": "Cyberbig (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cyberun": {
+    "description": "Cyberun (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "cyrus2ch": {
+    "description": "Cyrus II Chess (Euro)",
+    "publisher": "Alligata Software",
+    "year": "1986"
+  },
+  "cyujigam": {
+    "description": "Cyuji Games (Jpn)",
+    "publisher": "<doujin>",
+    "year": "1997"
+  },
+  "daiva4": {
+    "description": "Daiva Story 4 - Asura's Bloodfeud (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "daiva4a": {
+    "description": "Daiva Story 4 - Asura's Bloodfeud (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "daiva4b": {
+    "description": "Daiva Story 4 - Asura's Bloodfeud (Jpn, Alt 2)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "damas": {
+    "description": "Damas (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dambustr": {
+    "description": "The Dam Busters (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dangerx4": {
+    "description": "Danger X4 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "darts": {
+    "description": "Darts (UK, Orpheus)",
+    "publisher": "Orpheus",
+    "year": "1984"
+  },
+  "dartsbr": {
+    "description": "Darts (UK, Blue Ribbon)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "david2": {
+    "description": "David II (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dawnpatr": {
+    "description": "Dawn Patrol (Euro)",
+    "publisher": "Eaglesoft",
+    "year": "1986"
+  },
+  "dcrystal": {
+    "description": "The Demon Crystal (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dcrystala": {
+    "description": "The Demon Crystal (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dday": {
+    "description": "D-Day (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ddragon": {
+    "description": "Double Dragon (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "deathws3": {
+    "description": "Death Wish 3 (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "decathln": {
+    "description": "Decathlon (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "defcom1": {
+    "description": "Defcom 1 (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "defcom1a": {
+    "description": "Defcom 1 (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "deltabas": {
+    "description": "Delta BASIC (Ned)",
+    "publisher": "Filosoft",
+    "year": "1987"
+  },
+  "demonia": {
+    "description": "Demonia (Fra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "demoniaa": {
+    "description": "Demonia (Fra, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "descamer": {
+    "description": "El Descubrimiento de America (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "designer": {
+    "description": "The Designer's Pencil (US)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "desolatr": {
+    "description": "Desolator (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "desprado": {
+    "description": "Desperado (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "despradoa": {
+    "description": "Desperado (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "despradob": {
+    "description": "Desperado (Spa, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "destroyr": {
+    "description": "Destroyer (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "destroyra": {
+    "description": "Destroyer (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "deusex": {
+    "description": "Deus Ex Machina (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "devilcst": {
+    "description": "The Devil's Castle (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "devilhnt": {
+    "description": "Devil Hunter (Jpn)",
+    "publisher": "MSX Magazine",
+    "year": "1990"
+  },
+  "diamine2": {
+    "description": "Diamond Mine II (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "diamine2a": {
+    "description": "Diamond Mine II (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "diamond": {
+    "description": "Diamond Luis I (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "digdug": {
+    "description": "Dig Dug (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dipdip": {
+    "description": "Dip Dip (Spa)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "discover": {
+    "description": "Discovery (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "discwarr": {
+    "description": "Disc Warrior (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dizzybal": {
+    "description": "Dizzy Ball (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dizzydic": {
+    "description": "Dizzy Dice (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dkong": {
+    "description": "Donkey Kong (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dngmster": {
+    "description": "Dungeon Master (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dninja": {
+    "description": "Dragon Ninja (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "docgalax": {
+    "description": "Docteur Galaxie (Fra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dogfight": {
+    "description": "Dog Fighter (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dogfighta": {
+    "description": "Dog Fighter (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dokidoki": {
+    "description": "Doki Doki Penguin Land (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "domino": {
+    "description": "Domino (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dominoa": {
+    "description": "Domino (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "donpan": {
+    "description": "DonPan (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "doomo": {
+    "description": "DOOMO (Jpn)",
+    "publisher": "<doujin>",
+    "year": "2012"
+  },
+  "doordoor": {
+    "description": "DoorDoor (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dorodon": {
+    "description": "Dorodon (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dota": {
+    "description": "Bouken Roman - Dota (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dquest": {
+    "description": "Dragon Quest (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dquest2": {
+    "description": "Dragon Quest II (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dquest2a": {
+    "description": "Dragon Quest II (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "drarchie": {
+    "description": "Dr. Archie (Euro)",
+    "publisher": "Eurosoft",
+    "year": "1989"
+  },
+  "draughts": {
+    "description": "Draughts (UK)",
+    "publisher": "Orpheus",
+    "year": "1985"
+  },
+  "drgnatck": {
+    "description": "Dragon Attack (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "driltank": {
+    "description": "Driller Tanks (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "driltanka": {
+    "description": "Driller Tanks (Jpn)[a]",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "drjackle": {
+    "description": "Dr. Jackle and Mr. Wide (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "drome": {
+    "description": "Drome (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "druaga": {
+    "description": "The Tower of Druaga (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dslayer": {
+    "description": "Dragon Slayer (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dungmys2": {
+    "description": "Dungeon Mystery II (Ned, Cracked)",
+    "publisher": "<coverdisk>",
+    "year": "1987"
+  },
+  "dungmys2a": {
+    "description": "Dungeon Mystery II (Ned, Cracked, Alt)",
+    "publisher": "<coverdisk>",
+    "year": "1987"
+  },
+  "dunkshot": {
+    "description": "Dunk Shot (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "dustin": {
+    "description": "Dustin (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dustina": {
+    "description": "Dustin (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "dynadan": {
+    "description": "Dynamite Dan (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "eagle": {
+    "description": "Eagle (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "eaglefgt": {
+    "description": "Eagle Fighter (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "eatit": {
+    "description": "Eat It (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ebutrag": {
+    "description": "Emilio Butragueno Futbol (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ebutrag2": {
+    "description": "Emilio Butragueno Futbol II (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "eddiekid": {
+    "description": "Eddie Kidd Jump Challenge (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "eddiekida": {
+    "description": "Eddie Kidd Jump Challenge (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "eddy2": {
+    "description": "Eddy II (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "eggerlnd": {
+    "description": "Eggerland Mystery (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "eggy": {
+    "description": "Eggy (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "eikosan": {
+    "description": "Eikosan (Jpn)",
+    "publisher": "<doujin>",
+    "year": "2013"
+  },
+  "elbingo": {
+    "description": "El Bingo (Spa)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "elevator": {
+    "description": "Elevator Action (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "elidon": {
+    "description": "Elidon (UK)",
+    "publisher": "Orpheus",
+    "year": "1985"
+  },
+  "elite": {
+    "description": "Elite (UK)",
+    "publisher": "Firebird Software",
+    "year": "1987"
+  },
+  "elitea": {
+    "description": "Elite (UK, Alt)",
+    "publisher": "Firebird Software",
+    "year": "1987"
+  },
+  "emerisle": {
+    "description": "Emerald Isle (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "empcity": {
+    "description": "Magnum Kiki Ippatsu - Empire City 1931 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "empcitya": {
+    "description": "Magnum Kiki Ippatsu - Empire City 1931 (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "enchant": {
+    "description": "Enchanted (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ericflo": {
+    "description": "Eric and the Floaters (Euro)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "esanchez": {
+    "description": "Emilio Sanchez Vicario Grand Slam (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "espsagrd": {
+    "description": "La Espada Sagrada (Spa, Cracked)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "espsagrda": {
+    "description": "La Espada Sagrada (Spa, Cracked, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "espsagrdb": {
+    "description": "La Espada Sagrada (Spa, Cracked, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "eurogame": {
+    "description": "European Games (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "exainnov": {
+    "description": "E.I. - Exa Innova (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "exchangr": {
+    "description": "Exchanger (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "exerion": {
+    "description": "Exerion (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "exerion2": {
+    "description": "Exerion II - Zorni (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "exoidez": {
+    "description": "Exoide-Z (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "extermin": {
+    "description": "Exterminator (Euro)",
+    "publisher": "Eaglesoft",
+    "year": "1987"
+  },
+  "eye": {
+    "description": "Eye (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "eyea": {
+    "description": "Eye (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "f15se": {
+    "description": "F-15 Strike Eagle (Jpn?)",
+    "publisher": "Microprose",
+    "year": "1987"
+  },
+  "f16ff": {
+    "description": "F16 Fighting Falcon (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "f1sim": {
+    "description": "Formula 1 Simulator (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "f1spirit": {
+    "description": "F-1 Spirit - The Way to Formula 1 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fairy": {
+    "description": "Fairy (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fankpunk": {
+    "description": "Fanky Punky (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fantzone": {
+    "description": "Fantasy Zone (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fantzonea": {
+    "description": "Fantasy Zone (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fbmanger": {
+    "description": "Football Manager (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fbmangwc": {
+    "description": "Football Manager - World Cup Edition (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fdeck2": {
+    "description": "Flight Deck II (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fernand4": {
+    "description": "Fernando Martin Basket Master - Executive (Spa)[Martos]",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "feud": {
+    "description": "Feud (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "feyvida8": {
+    "description": "Fe y Vida - 8 E.G.B. (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ffruit": {
+    "description": "Forbidden Fruit (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fhardman": {
+    "description": "Freddy Hardest in South Manhattan (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fightrid": {
+    "description": "Fighting Rider (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "finalwar": {
+    "description": "Final War (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "finalwara": {
+    "description": "Final War (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "findkeep": {
+    "description": "Finders Keepers (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fireresc": {
+    "description": "Fire Rescue (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "firestar": {
+    "description": "Fire Star (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "firewarr": {
+    "description": "Fire Warrior (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fjustice": {
+    "description": "Final Justice (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fknight": {
+    "description": "Future Knight (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fknighta": {
+    "description": "Future Knight (UK)[a]",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "flappy": {
+    "description": "Flappy (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "flappy85": {
+    "description": "Flappy - Limited 85 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "flappy85a": {
+    "description": "Flappy Limited 85 (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "flashgor": {
+    "description": "Flash Gordon",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "flicky": {
+    "description": "Flicky (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "flightdk": {
+    "description": "Flight Deck (Ned)",
+    "publisher": "Aackosoft",
+    "year": "1984"
+  },
+  "flint": {
+    "description": "The Flintstones (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "flipper": {
+    "description": "Flipper Slipper (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "flopchop": {
+    "description": "Flop Chop (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "flstory": {
+    "description": "The Fairyland Story (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "flstorya": {
+    "description": "The Fairyland Story (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "flyboat": {
+    "description": "Fly-Boat (Fra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "footvoll": {
+    "description": "Foot Volley (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "forajido": {
+    "description": "Forajidos (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "formatz": {
+    "description": "Formation Z (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "foty": {
+    "description": "Footballer of the Year (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fpanic": {
+    "description": "Fruit Panic (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fpath737": {
+    "description": "Flight Path 737 (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fredhard": {
+    "description": "Freddy Hardest (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fredharda": {
+    "description": "Freddy Hardest (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "frog": {
+    "description": "Frog (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "frogger": {
+    "description": "Frogger (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "frontlin": {
+    "description": "Front Line (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fruitmac": {
+    "description": "Fruit Machine (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fruitsrc": {
+    "description": "Fruit Search (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fruityfr": {
+    "description": "Fruity Frank (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fsengokk": {
+    "description": "Fuuun Sengoku Kokorozashi (Jpn)",
+    "publisher": "<doujin>",
+    "year": "200?"
+  },
+  "fsim": {
+    "description": "Flight Simulator (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fsplash": {
+    "description": "Flash Splash (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "funmouse": {
+    "description": "Funky Mouse (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "funwords": {
+    "description": "Fun Words (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "funwordsa": {
+    "description": "Fun Words (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "futbol": {
+    "description": "Futbol (Spa)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fuzzball": {
+    "description": "Fuzzball (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fuzzballa": {
+    "description": "Fuzzball (Ned, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fuzzballb": {
+    "description": "Fuzzball (Ned, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "fzone": {
+    "description": "Final Zone (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "fzonea": {
+    "description": "Final Zone (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "galaga": {
+    "description": "Galaga (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "galamerc": {
+    "description": "Galactic Mercenaries (Fra)",
+    "publisher": "Infogrames",
+    "year": "1985"
+  },
+  "galamerca": {
+    "description": "Galactic Mercenaries (Fra, Alt)",
+    "publisher": "Infogrames",
+    "year": "1985"
+  },
+  "galamercb": {
+    "description": "Galactic Mercenaries (Fra, Alt 2)",
+    "publisher": "Infogrames",
+    "year": "1985"
+  },
+  "galaxia": {
+    "description": "Galaxia (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "galaxian": {
+    "description": "Galaxian (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "galforce": {
+    "description": "Gall Force - Defense of Chaos (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "galforcea": {
+    "description": "Gall Force - Defense of Chaos (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "galforceb": {
+    "description": "Gall Force - Defense of Chaos (Jpn, Alt 2)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "gameover": {
+    "description": "Game Over (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gameovera": {
+    "description": "Game Over (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gamesdes": {
+    "description": "Games Designer (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gameswin": {
+    "description": "The Games - Winter Edition (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gameswina": {
+    "description": "Games, The - Winter Edition (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gangman": {
+    "description": "Gangman (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gauntlet": {
+    "description": "Gauntlet (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gberet": {
+    "description": "Green Beret (Jpn)",
+    "publisher": "Konami",
+    "year": "1986"
+  },
+  "genghis": {
+    "description": "Genghis Khan (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "genghisa": {
+    "description": "Genghis Khan (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "genghisb": {
+    "description": "Genghis Khan (Spa, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gerente": {
+    "description": "El Gerente (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gfxartst": {
+    "description": "Graphic Artist (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ghostbs2": {
+    "description": "Ghostbusters II (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ghostbst": {
+    "description": "Ghostbusters (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "glass": {
+    "description": "Glass (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "glider": {
+    "description": "Glider (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "globibld": {
+    "description": "Globiblood (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gmaster": {
+    "description": "Game Master (Euro)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "gmaster2": {
+    "description": "Konami no Game Master II (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "godzilla": {
+    "description": "Godzilla (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "gomokuna": {
+    "description": "Gomoku Narabe (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "gonzalez": {
+    "description": "Gonzzalezz (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gonzaleza": {
+    "description": "Gonzzalezz (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "goody": {
+    "description": "Goody (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "goodya": {
+    "description": "Goody (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "goonies": {
+    "description": "The Goonies (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "gpworld": {
+    "description": "GP World (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "greycolg": {
+    "description": "GreyColleague (Jpn)",
+    "publisher": "<doujin>",
+    "year": "1991"
+  },
+  "gridtrap": {
+    "description": "Grid Trap (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "guardic": {
+    "description": "Guardic (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "gulkave": {
+    "description": "Gulkave (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "gundam": {
+    "description": "Mobile-Suit Gundam - Last Shooting (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "gunfrght": {
+    "description": "Gunfright (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "guttblst": {
+    "description": "Gutt Blaster (Euro)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "gyroadv": {
+    "description": "Gyro Adventure (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "gyrodine": {
+    "description": "Gyrodine (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "habilit": {
+    "description": "Habilit (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "habilita": {
+    "description": "Habilit (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hades": {
+    "description": "Yami no Ryuuou - Hades no Monshou (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hadess": {
+    "description": "Hades (Spa, Hacked)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hanakoi": {
+    "description": "MSX Hanafuda Koi Koi (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hanakoia": {
+    "description": "MSX Hanafuda Koi Koi (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hangon19": {
+    "description": "Hang-On (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "happyfrt": {
+    "description": "Happy Fret (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hardboil": {
+    "description": "Hard Boiled (Ned)",
+    "publisher": "Methodic Solutions",
+    "year": "1987"
+  },
+  "headover": {
+    "description": "Head Over Heels (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "headovera": {
+    "description": "Head Over Heels (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "heatseek": {
+    "description": "Heat Seeker - Missil (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "heavybox": {
+    "description": "Heavy Boxing (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "heist": {
+    "description": "The Heist (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "helitank": {
+    "description": "Heli Tank (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hercule": {
+    "description": "Hercule (Fra)",
+    "publisher": "Infogrames",
+    "year": "1984"
+  },
+  "hercules": {
+    "description": "Hercules - Slayer of the Damned (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "herencia": {
+    "description": "La Herencia (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "herenciaa": {
+    "description": "La Herencia (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "herether": {
+    "description": "Here & There with the Mr. Men (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hero": {
+    "description": "H.E.R.O. (Jpn?)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hhouse": {
+    "description": "Haunted House (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "highway": {
+    "description": "High Way Star (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "highwen": {
+    "description": "Highway Encounter (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hipertrn": {
+    "description": "Hiper Tronic (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hipertrna": {
+    "description": "Hiper Tronic (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hitsuji": {
+    "description": "Hitsuji-Ya (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hiyofght": {
+    "description": "Hiyoko Fighter (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hnchback": {
+    "description": "Hunchback (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hobbit": {
+    "description": "The Hobbit (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "holein1": {
+    "description": "Hole in One (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "holein1p": {
+    "description": "Hole in One Professional (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hollyhij": {
+    "description": "Hollywood Hijinx (UK?)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "homebbal": {
+    "description": "Home Baseball (Jpn)",
+    "publisher": "<doujin>",
+    "year": "2009"
+  },
+  "homewrtr": {
+    "description": "Home Writer (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hopper": {
+    "description": "Hopper (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hotshoe": {
+    "description": "Hot Shoe (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "howard": {
+    "description": "Howard the Duck (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "humphrey": {
+    "description": "Humphrey (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "humphrez": {
+    "description": "Humphrey (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "humphreza": {
+    "description": "Humphrey (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hundra": {
+    "description": "Hundra (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "huntkill": {
+    "description": "Hunter Killer (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "huntred": {
+    "description": "The Hunt for Red October (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "huntreda": {
+    "description": "The Hunt for Red October (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hustle": {
+    "description": "Hustle Chumy (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hustler": {
+    "description": "Video Hustler (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hustlrbb": {
+    "description": "Hustler (UK, Bubble Bus)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hydlide": {
+    "description": "Hydlide (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hydlide2": {
+    "description": "Hydlide II - Shine of Darkness (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hydlide2a": {
+    "description": "Hydlide II - Shine of Darkness (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hydlide3": {
+    "description": "Hydlide III - The Space Memories (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hype": {
+    "description": "Hype (Ned, Hacked)",
+    "publisher": "Methodic Solutions",
+    "year": "1987"
+  },
+  "hyperbal": {
+    "description": "Hyperball (Spa, Cracked)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hyperol1": {
+    "description": "Hyper Olympic 1 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hyperol2": {
+    "description": "Hyper Olympic 2 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hypersp2": {
+    "description": "Hyper Sports 2 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hypersp2a": {
+    "description": "Hyper Sports 2 (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hypersp3": {
+    "description": "Hyper Sports 3 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hyperspt": {
+    "description": "Hyper Sports 1 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "hypervip": {
+    "description": "Hyper Viper (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "hyprally": {
+    "description": "Hyper Rally (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ice": {
+    "description": "Ice (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "icebreak": {
+    "description": "Ice-Breaker (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "iceking": {
+    "description": "The Ice King (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "iceworld": {
+    "description": "Ice World (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ideatype": {
+    "description": "IdeaType - Instructor Mecanografico (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "iganinp2": {
+    "description": "Iga Ninpouchou - Mangetsujou no Tatakai (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "iganinpo": {
+    "description": "Iga Ninpouchou (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "igloo": {
+    "description": "Igloo (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ik": {
+    "description": "International Karate (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ika": {
+    "description": "International Karate (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "iligks": {
+    "description": "Iligks (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "illusion": {
+    "description": "Illusions (Fra)",
+    "publisher": "Nice Ideas",
+    "year": "1985"
+  },
+  "inca": {
+    "description": "Inca I (Ned)",
+    "publisher": "Eaglesoft",
+    "year": "1987"
+  },
+  "indianb": {
+    "description": "Indian no Bouken (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "indoorac": {
+    "description": "Indoor Race (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "indy": {
+    "description": "Indiana Jones and the Temple of Doom (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "indy500": {
+    "description": "Indy 500 (Ned)",
+    "publisher": "Methodic Solutions",
+    "year": "1986"
+  },
+  "infermin": {
+    "description": "Infernal Miner (Fra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "inhumano": {
+    "description": "Los Inhumanos (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "intrepid": {
+    "description": "Intrepido (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "invasion": {
+    "description": "Invasion (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "invierte": {
+    "description": "Invierte y Gana (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "isloracl": {
+    "description": "The Island of the Oracle (Spa?, v0.91)",
+    "publisher": "<homebrew>",
+    "year": "2012"
+  },
+  "italia90": {
+    "description": "World Cup Italia 90 (Spa, Hacked)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "j2cearth": {
+    "description": "Journey to the Centre of the Earth (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jabato": {
+    "description": "Jabato (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jabatoa": {
+    "description": "Jabato (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jabatob": {
+    "description": "Jabato (Spa, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jacknip": {
+    "description": "Jack the Nipper (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jagur": {
+    "description": "Jagur (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "jagura": {
+    "description": "Jagur (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "jaws": {
+    "description": "Jaws (Spa?, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jecompte": {
+    "description": "Je Compte (Fra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jetalfsb": {
+    "description": "Jetalfs Strikes Back (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jetbomb": {
+    "description": "Jet Bomber (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jetfight": {
+    "description": "Jet Fighter (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "jetsetw": {
+    "description": "Jet Set Willy (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jetsetw2": {
+    "description": "Jet Set Willy II (Euro, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jetsetwa": {
+    "description": "Jet Set Willy (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "joeblade": {
+    "description": "Joe Blade (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jonytdj": {
+    "description": "Jony y el Trono del Jaguar (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jpwinkle": {
+    "description": "J.P. Winkle (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "juegaps": {
+    "description": "Juega... Pero Seguro (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jump": {
+    "description": "Jump (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "jumpcstr": {
+    "description": "Jump Coaster (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "jumpjet": {
+    "description": "Jump Jet (Bra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jumpland": {
+    "description": "Jump Land",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "jumprabt": {
+    "description": "Jumping Rabbit (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "jungwarr": {
+    "description": "Jungle Warrior (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "jungwarra": {
+    "description": "Jungle Warrior (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "junofrst": {
+    "description": "Juno First (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "kaerusht": {
+    "description": "Kaeru Shooter (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "karuizaw": {
+    "description": "Karuizawa Yuukai Annai (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "karuizawa": {
+    "description": "Karuizawa Yuukai Annai (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "kerulen": {
+    "description": "Ke Rulen los Petas (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "keykaper": {
+    "description": "Keystone Kapers (UK)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "kickit": {
+    "description": "Kick It (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "killerst": {
+    "description": "Killer Station (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "killtomt": {
+    "description": "Attack of the Killer Tomatoes (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "killtomta": {
+    "description": "Attack of the Killer Tomatoes (Euro, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "kingball": {
+    "description": "King & Balloon (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "kingkngt": {
+    "description": "King's Knight (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "kingkngta": {
+    "description": "King's Knight (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "kingleon": {
+    "description": "King Leonard (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "kingsva2": {
+    "description": "King's Valley Plus (Jpn, Hacked)",
+    "publisher": "Konami",
+    "year": "1985"
+  },
+  "kingval": {
+    "description": "King's Valley (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "kingval2": {
+    "description": "Ouke no Tani - El Giza no Fuuin (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "kinnikum": {
+    "description": "Kinnikuman - Colosseum Deathmatch (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "klax1990": {
+    "description": "Klax (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "knighost": {
+    "description": "Knight Ghost (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "knightlr": {
+    "description": "Knight Lore (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "knightm2": {
+    "description": "Knightmare II - The Maze of Galious (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "knightm3": {
+    "description": "Knightmare III - Shalom (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "knightmr": {
+    "description": "Knightmare - Majou Densetsu (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "knightym": {
+    "description": "Knight Tyme (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "konagc1": {
+    "description": "Konami Game Collection Vol. 1 (Jpn)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "konagc2": {
+    "description": "Konami Game Collection Vol. 2 (Jpn)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "konagc3": {
+    "description": "Konami Game Collection Vol. 3 (Jpn)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "konagc4": {
+    "description": "Konami Game Collection Vol. 4 (Jpn)",
+    "publisher": "Konami",
+    "year": "1988"
+  },
+  "konbball": {
+    "description": "Konami's Baseball (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "konbill": {
+    "description": "Konami's Billiards (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "koneko": {
+    "description": "Koneko no Daibouken - Chibi-chan ga Iku (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "kongolf": {
+    "description": "Konami's Golf (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "konsoccr": {
+    "description": "Konami's Soccer (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "konsynth": {
+    "description": "ShinyoSizer - Konami's Synthesizer (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "kontenn": {
+    "description": "Konami's Tennis (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "krypton": {
+    "description": "Krypton (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "kubus": {
+    "description": "Kubus (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "kumalogo": {
+    "description": "Kuma Logo (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "kungfum": {
+    "description": "Kung Fu Master (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "laberint": {
+    "description": "Laberinto (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ladraden": {
+    "description": "Ladra no Densetsu (Jpn)",
+    "publisher": "MSX Magazine",
+    "year": "1988"
+  },
+  "ladradena": {
+    "description": "Ladra no Densetsu (Jpn, Alt)",
+    "publisher": "MSX Magazine",
+    "year": "1988"
+  },
+  "ladradenb": {
+    "description": "Ladra no Densetsu (Jpn, Alt 2)",
+    "publisher": "MSX Magazine",
+    "year": "1988"
+  },
+  "laptick2": {
+    "description": "Laptick 2 (Jpn)",
+    "publisher": "<cat2disk hack>",
+    "year": "19??"
+  },
+  "laserfig": {
+    "description": "Laserfight! (Jpn)",
+    "publisher": "MSX Magazine",
+    "year": "1989"
+  },
+  "lastmiss": {
+    "description": "The Last Mission (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lastmissa": {
+    "description": "The Last Mission (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lazerbyk": {
+    "description": "Lazer Bykes (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lazerbyka": {
+    "description": "Lazer Bykes (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lazyjon": {
+    "description": "Lazy Jones (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ldrun2": {
+    "description": "Lode Runner II (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "legend": {
+    "description": "Legend (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "legends": {
+    "description": "Legends (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "legkage": {
+    "description": "Kage no Densetsu - The Legend of Kage (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "lemans": {
+    "description": "Le Mans (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lemans2": {
+    "description": "Le Mans 2 (UK)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "lendagav": {
+    "description": "A Lenda da Gávea (Bra)",
+    "publisher": "Pro Kit",
+    "year": "1988"
+  },
+  "lesflics": {
+    "description": "Les Flics (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "leucocyt": {
+    "description": "Leucocyt (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lherita3": {
+    "description": "L'Heritage - Panique a Las Vegas (Fra)[needs MSX-DOS]",
+    "publisher": "Infogrames",
+    "year": "1987"
+  },
+  "liberatr": {
+    "description": "Liberator (Spa, Cracked)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "liberatra": {
+    "description": "Liberator (Spa, Cracked, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lic2kill": {
+    "description": "Licence to Kill (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lifefast": {
+    "description": "Life in the Fast Lane (Ned)",
+    "publisher": "Methodic Solutions",
+    "year": "1987"
+  },
+  "lifefasta": {
+    "description": "Life in the Fast Lane (Ned, Alt)",
+    "publisher": "Methodic Solutions",
+    "year": "1987"
+  },
+  "lightcor": {
+    "description": "The Light Corridor (Fra, Trained)",
+    "publisher": "Infogrames",
+    "year": "1990"
+  },
+  "livingst": {
+    "description": "Livingstone Supongo (Spa)",
+    "publisher": "Opera Soft",
+    "year": "1986"
+  },
+  "livingsta": {
+    "description": "Livingstone Supongo (Spa, Alt)",
+    "publisher": "Opera Soft",
+    "year": "1986"
+  },
+  "loderun": {
+    "description": "Lode Runner (Jpn)",
+    "publisher": "Sony",
+    "year": "1984"
+  },
+  "lonesome": {
+    "description": "Lonesome Tank (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "loteriap": {
+    "description": "Loteria Primitiva (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "loto": {
+    "description": "Loto (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lsafary": {
+    "description": "Lady Safary (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lsafarya": {
+    "description": "Lady Safary (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lucesglr": {
+    "description": "Les Tres Luces de Glaurung (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "lunarbal": {
+    "description": "Lunar Ball (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "macadam": {
+    "description": "Macadam Bumper (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "macattac": {
+    "description": "Mac Attack (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mach3": {
+    "description": "Mach 3 (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "macross": {
+    "description": "Choujikuu Yousai Macross (Jpn)",
+    "publisher": "Bothtec",
+    "year": "1985"
+  },
+  "madmix": {
+    "description": "Mad Mix Game (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "madmixa": {
+    "description": "Mad Mix Game (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "magicjbb": {
+    "description": "Magic Johnson's Basketball (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "magicpin": {
+    "description": "Magic Pinball (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "magovola": {
+    "description": "El Mago Volador (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "magtree": {
+    "description": "Magical Tree (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mambo": {
+    "description": "Mambo (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mamboa": {
+    "description": "Mambo (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mamono2d": {
+    "description": "Mamono Quest II (Jpn)",
+    "publisher": "<doujin>",
+    "year": "1989?"
+  },
+  "manchest": {
+    "description": "Manchester United (UK)[cr Damian Roman]",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mandragr": {
+    "description": "Mandragore (Fra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "manes": {
+    "description": "Manes (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "manicmin": {
+    "description": "Manic Miner (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mapgame": {
+    "description": "Map Game (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mapgamea": {
+    "description": "Map Game (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mappy": {
+    "description": "Mappy (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "marinbat": {
+    "description": "Marine Battle (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "martian": {
+    "description": "Martianoids (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mask2": {
+    "description": "Mask II (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mask2a": {
+    "description": "Mask II (UK)[a]",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mastches": {
+    "description": "Master Chess (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mastlamp": {
+    "description": "Master of the Lamps (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mastvoic": {
+    "description": "Master Voice (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "matchda2": {
+    "description": "Match Day II (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "matchda2a": {
+    "description": "Match Day II (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mathsinv": {
+    "description": "Maths Invaders (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "maxima": {
+    "description": "Maxima (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mazemstr": {
+    "description": "Maze Master (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "mazesunl": {
+    "description": "Mazes Unlimited (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "maziacs": {
+    "description": "Maziacs (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "meanlife": {
+    "description": "Meaning of Life (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mecom": {
+    "description": "Mecom (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "megaches": {
+    "description": "Mega Chess (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "megalsos": {
+    "description": "Megalopolis SOS (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "megamit": {
+    "description": "Digital Devil Monogatari - Megami Tensei (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "megamita": {
+    "description": "Digital Devil Monogatari - Megami Tensei (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "meganova": {
+    "description": "Meganova (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "meganovaa": {
+    "description": "Meganova (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "megaphx": {
+    "description": "Megaphoenix (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "megaphxa": {
+    "description": "Megaphoenix (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "meikyush": {
+    "description": "Meikyuu Shinwa (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "meikyusha": {
+    "description": "Meikyuu Shinwa (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "merlin": {
+    "description": "Merlin (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "metropol": {
+    "description": "Metropolis (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "metropola": {
+    "description": "Metropolis (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "meuratln": {
+    "description": "Meurtres sur l'Atlantique (Fra)",
+    "publisher": "Infogrames",
+    "year": "1986"
+  },
+  "mgunjoe": {
+    "description": "Machinegun Joe vs The Mafia (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "michel": {
+    "description": "Michel Futbol Master (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "michela": {
+    "description": "Michel Futbol Master (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "midbros": {
+    "description": "Midnight Brothers (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "midbuild": {
+    "description": "Midnight Building (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "midway": {
+    "description": "Battle for Midway (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "midwaya": {
+    "description": "Battle for Midway (Euro, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mikegunn": {
+    "description": "Mike Gunner (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mikegunna": {
+    "description": "Mike Gunner (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mikiesq": {
+    "description": "Miki Va a Esquiar (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "milcaras": {
+    "description": "Mil Caras (Spa)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "milkrace": {
+    "description": "Milk Race (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "minder": {
+    "description": "Minder (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "minigolf": {
+    "description": "Mini Golf (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "minirpg1": {
+    "description": "Mini RPG 1 (UK?)",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "minocoll": {
+    "description": "Mino Soft's Game Collection (Jpn)",
+    "publisher": "<doujin>",
+    "year": "199?"
+  },
+  "mirai": {
+    "description": "Mirai (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "miraia": {
+    "description": "Mirai. Future (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "misionre": {
+    "description": "Mision Rescate (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "misionrea": {
+    "description": "Mision Rescate (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "missile": {
+    "description": "Missile Command (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "mistnilo": {
+    "description": "El Misterio del Nilo (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mistniloa": {
+    "description": "El Misterio del Nilo (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mitsumgt": {
+    "description": "Mitsume Ga Tooru - The Three-Eyed One Comes Here (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mitsumgta": {
+    "description": "Mitsume Ga Tooru - The Three-Eyed One Comes Here (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mj05": {
+    "description": "MJ-05 (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mj05a": {
+    "description": "MJ-05 (Jpn, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mjdojo": {
+    "description": "Mahjong Dojo (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mkidwiz": {
+    "description": "Magical Kid Wiz (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mnstfair": {
+    "description": "Monster's Fair (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mnstfaira": {
+    "description": "Monster's Fair (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "moaihiho": {
+    "description": "Moai no Hihou (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mokarima": {
+    "description": "Mokari Makka? Bochibochi Denna! (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "molecule": {
+    "description": "Molecule Man (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "monkeyac": {
+    "description": "Monkey Academy (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "monopoly": {
+    "description": "Monopoly (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "moonridr": {
+    "description": "Moon Rider (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "moonswep": {
+    "description": "Moonsweeper (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "moonwalk": {
+    "description": "Moonwalker (UK, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mopirang": {
+    "description": "Mopiranger (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mortade2": {
+    "description": "Mortadelo y Filemon II - Safari Callejero (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mortade2a": {
+    "description": "Mortadelo y Filemon II - Safari Callejero (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mortadel": {
+    "description": "Mortadelo y Filemon (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mot": {
+    "description": "Mot (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "motormad": {
+    "description": "Motorbike Madness (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mountbik": {
+    "description": "Mountain Bike Racer (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mountbika": {
+    "description": "Mountain Bike Racer (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mouser": {
+    "description": "Mouser (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mpatrol": {
+    "description": "Moon Patrol (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mrchin": {
+    "description": "Mr. Chin (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mrdovsun": {
+    "description": "Mr. Do! vs Unicorns (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mrdowild": {
+    "description": "Mr. Do's Wild Ride (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "mrmen": {
+    "description": "First Steps with the Mr. Men (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mrwong": {
+    "description": "Mr. Wong's Loopy Laundry (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mrwonga": {
+    "description": "Mr. Wong's Loopy Laundry (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "msx21": {
+    "description": "MSX 21 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "msxart": {
+    "description": "MSX Artist (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "msxbball": {
+    "description": "MSX Baseball (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "msxdos": {
+    "description": "MSX-DOS (USA, v1.8)",
+    "publisher": "Microsoft",
+    "year": "1986"
+  },
+  "msxdosa": {
+    "description": "MSX-DOS (USA, v1.03)",
+    "publisher": "Microsoft",
+    "year": "1984"
+  },
+  "msxdosb": {
+    "description": "MSX-DOS (USA)",
+    "publisher": "Microsoft",
+    "year": "1983"
+  },
+  "msxdoshd": {
+    "description": "MSX-DOS Hulp (Ned)",
+    "publisher": "Philips",
+    "year": "1989"
+  },
+  "msxdoshda": {
+    "description": "MSX-DOS Hulp (Ned, Alt)",
+    "publisher": "Philips",
+    "year": "1989"
+  },
+  "msxdoshs": {
+    "description": "MSX-DOS Ayuda (Spa)",
+    "publisher": "Philips",
+    "year": "1989"
+  },
+  "msxdoshsa": {
+    "description": "MSX-DOS Ayuda (Spa, Alt)",
+    "publisher": "Philips",
+    "year": "1989"
+  },
+  "msxdostb": {
+    "description": "MSX-DOS Tools (Bra, v4.3)",
+    "publisher": "Nemesis Informatica",
+    "year": "1991"
+  },
+  "msxdostba": {
+    "description": "MSX-DOS Tools (Bra, v2.1)",
+    "publisher": "Nemesis Informatica",
+    "year": "1984"
+  },
+  "multipzl": {
+    "description": "Multipuzzle (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mundifut": {
+    "description": "Mundial de Futbol (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mundoper": {
+    "description": "El Mundo Perdido (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mundopera": {
+    "description": "El Mundo Perdido (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "munsters": {
+    "description": "The Munsters (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "munstersa": {
+    "description": "The Munsters (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "murdatlng": {
+    "description": "Murder on the Atlantic (Ger?)",
+    "publisher": "Infogrames",
+    "year": "1986"
+  },
+  "musicedi": {
+    "description": "Music Editor - MUE (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "musicg7": {
+    "description": "Music Studio G7 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "musicg7a": {
+    "description": "Music Studio G7 (Jpn, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "musjuego": {
+    "description": "Musica en Juego I - Solfeo (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mutanzon": {
+    "description": "Mutan Zone (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mutanzona": {
+    "description": "Mutan Zone (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "mutmonty": {
+    "description": "Mutant Monty (UK, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "nachtwac": {
+    "description": "De Nachtwacht (Ned)",
+    "publisher": "Radarsoft",
+    "year": "1986"
+  },
+  "nachtwaca": {
+    "description": "De Nachtwacht (Ned, Alt)",
+    "publisher": "Radarsoft",
+    "year": "1986"
+  },
+  "navymove": {
+    "description": "Navy Moves (Spa)",
+    "publisher": "Dinamic Software",
+    "year": "1988"
+  },
+  "navymoveh": {
+    "description": "Navy Moves (Spa, Hacked)",
+    "publisher": "Dinamic Software",
+    "year": "1988"
+  },
+  "nemesis3": {
+    "description": "Gopher no Yabou - Episode II (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "nflight": {
+    "description": "Night Flight (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "nightshd": {
+    "description": "Nightshade (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ninjajaj": {
+    "description": "Ninja Jajamaru-kun (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ninjakag": {
+    "description": "Ninjya Kage (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ninjakmb": {
+    "description": "Ninja-kun - Majou no Bouken (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ninjapri": {
+    "description": "Ninja Princess (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "nkoshien": {
+    "description": "Nessen Koushien (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "nofuss": {
+    "description": "No Fuss (Ned)",
+    "publisher": "<homebrew>",
+    "year": "1991"
+  },
+  "nofussa": {
+    "description": "No Fuss (Ned, Alt)",
+    "publisher": "<homebrew>",
+    "year": "1991"
+  },
+  "nonamed": {
+    "description": "Nonamed (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "nonameda": {
+    "description": "Nonamed (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "nought": {
+    "description": "Noughts & Crosses (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "noughta": {
+    "description": "Noughts & Crosses (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "nsheli": {
+    "description": "North Sea Helicopter (Ned)",
+    "publisher": "Aackosoft",
+    "year": "1987"
+  },
+  "nucbowls": {
+    "description": "Nuclear Bowls (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "nucbowlsa": {
+    "description": "Nuclear Bowls (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "numpaint": {
+    "description": "Number Painter (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "nutsmilk": {
+    "description": "Nuts & Milk (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "obliter": {
+    "description": "Obliterator (Spa, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "oceancnq": {
+    "description": "Ocean Conqueror (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "octagon": {
+    "description": "Octagon Squad (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "octagona": {
+    "description": "Octagon Squad (UK)[a]",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "odysseyk": {
+    "description": "Odyssey-K",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ohmummy": {
+    "description": "Oh Mummy!! (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ohno": {
+    "description": "Oh No! (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ohshit": {
+    "description": "Oh Shit! (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "oilswell": {
+    "description": "Oil's Well (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ole": {
+    "description": "Ole! (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "omacfarm": {
+    "description": "O'Mac Farmer (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "opwolf": {
+    "description": "Operation Wolf (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ormuz": {
+    "description": "Ormuz (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ormuza": {
+    "description": "Ormuz (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "orsonwel": {
+    "description": "Detective Orson Welles (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ougon": {
+    "description": "Ougon no Haka (Jpn)",
+    "publisher": "MagicalZoo",
+    "year": "1984"
+  },
+  "outroyd": {
+    "description": "Outroyd (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "outrun": {
+    "description": "Out Run (Ned)",
+    "publisher": "U.S. Gold",
+    "year": "1988"
+  },
+  "pacland": {
+    "description": "Pac-Land (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pacmania": {
+    "description": "Pac-Mania (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "paipanic": {
+    "description": "Pai Panic (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pairs": {
+    "description": "Pairs (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "palet": {
+    "description": "Palet (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "panelpan": {
+    "description": "Panel Panic (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "panicjun": {
+    "description": "Panic Junction (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "panique": {
+    "description": "Panique (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "panzerat": {
+    "description": "Panzer Attack (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "parodius": {
+    "description": "Parodius - Tako wa Chikyuu wo Sukuu (Jpn, Trained)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "passshot": {
+    "description": "Passing Shot (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pastepat": {
+    "description": "Pasteman Pat - Billboard (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pastfind": {
+    "description": "Pastfinder (US)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "patrxh63": {
+    "description": "Patrullera XH-63 (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "patrxh63a": {
+    "description": "Patrullera XH-63 (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "payload": {
+    "description": "Pay Load (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pdakar": {
+    "description": "Paris-Dakar (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pdakara": {
+    "description": "Paris-Dakar (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "peetan": {
+    "description": "Peetan (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "penguin": {
+    "description": "Penguin (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "penguina": {
+    "description": "Penguin (Ned, Alt)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "penguinw": {
+    "description": "Penguin-kun Wars (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pentagrm": {
+    "description": "Pentagram (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pepesalt": {
+    "description": "Pepe Saltarin (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "perseus": {
+    "description": "Courageous Perseus (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "petrovic": {
+    "description": "Drazen Petrovic Basket (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "petrovica": {
+    "description": "Drazen Petrovic Basket (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "phantis": {
+    "description": "Phantis (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "phantom2": {
+    "description": "Phantomas 2 (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "phantom2a": {
+    "description": "Phantomas 2 (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pharaoh": {
+    "description": "Pharaoh's Revenge (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "phstrip": {
+    "description": "Playhouse Strippoker (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "phstripa": {
+    "description": "Playhouse Strippoker (Ned, Alt)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "picopico": {
+    "description": "Pico Pico (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "picot": {
+    "description": "Come On! Picot (Euro)",
+    "publisher": "Eaglesoft",
+    "year": "1986"
+  },
+  "pictpuzl": {
+    "description": "Picture Puzzle (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pillbox": {
+    "description": "Pillbox (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pinblast": {
+    "description": "Pinball Blaster (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "pineappl": {
+    "description": "Pine Applin (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pingball": {
+    "description": "Pingball Maker (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pingpong": {
+    "description": "Konami's Ping-Pong (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pink": {
+    "description": "Pink Panther (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pinkychs": {
+    "description": "Pinky Chase (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pipi": {
+    "description": "Pipi (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pippols": {
+    "description": "Pippols (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pisozero": {
+    "description": "Piso Zero (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pistolt1": {
+    "description": "Mayor Pistoletov - Pervaya Seriya: \"Koshchey\" (Rus)",
+    "publisher": "Crazysoft",
+    "year": "1988"
+  },
+  "pistolt2": {
+    "description": "Pistoletov na Zavode - Vtoraya Seriya (Rus)",
+    "publisher": "Crazysoft",
+    "year": "1988"
+  },
+  "pitfall": {
+    "description": "Pitfall (UK)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pitfall2": {
+    "description": "Pitfall II - Lost Caverns (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "playball": {
+    "description": "Play Ball (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pltvasca": {
+    "description": "Pelota Vasca (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pltvascaa": {
+    "description": "Pelota Vasca (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pm1_afr": {
+    "description": "Paises del Mundo I - Africa (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pm1_asia": {
+    "description": "Paises del Mundo II - Asia (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pm1_eur": {
+    "description": "Paises del Mundo I - Europa (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pm2_amer": {
+    "description": "Paises del Mundo II - America (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "poderosc": {
+    "description": "El Poder Oscuro (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "poderosca": {
+    "description": "El Poder Oscuro (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "police": {
+    "description": "Police Academy (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "policea2": {
+    "description": "Police Academy II (Ned)",
+    "publisher": "Methodic Solutions",
+    "year": "1987"
+  },
+  "policest": {
+    "description": "The Police Story (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "polstar": {
+    "description": "Polar Star (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "poolchal": {
+    "description": "Maltese Joe's Pool Challenge (Euro)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pooyan": {
+    "description": "Pooyan (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "printxpr": {
+    "description": "Print-X-Press (UK)",
+    "publisher": "Anglosoft",
+    "year": "1986"
+  },
+  "prodetec": {
+    "description": "Profesion Detective (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "prodeteca": {
+    "description": "Profesion Detective (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "projecta": {
+    "description": "Jackie Chan in Project A (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "projectaa": {
+    "description": "Jackie Chan in Project A (Jpn, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "protectr": {
+    "description": "The Protector (Jpn)",
+    "publisher": "Pony Canyon",
+    "year": "1985"
+  },
+  "protenn": {
+    "description": "Profesional Tennis Simulator (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "psyched": {
+    "description": "Psychedelia (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "psycheda": {
+    "description": "Psychedelia (Ned, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "psychpig": {
+    "description": "Psycho Pig U.X.B. (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "puddles": {
+    "description": "Puddles - Exercices avec Formes (Fra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "punchjud": {
+    "description": "Punch & Judy (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "punchy": {
+    "description": "Punchy (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "pyramidw": {
+    "description": "Pyramid Warp (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "pyroman": {
+    "description": "Pyro-Man (Fra)",
+    "publisher": "Nice Ideas",
+    "year": "1985"
+  },
+  "qbert": {
+    "description": "Q*Bert (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "quasar": {
+    "description": "Quasar (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "quebert": {
+    "description": "Quebert (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "queengjp": {
+    "description": "Queen's Golf Joy Pack (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "queenglf": {
+    "description": "Queen's Golf (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "quijote": {
+    "description": "Don Quijote (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "quijotea": {
+    "description": "Don Quijote (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "racecity": {
+    "description": "Race City (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "raidbung": {
+    "description": "Raid on Bungeling Bay (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "railway": {
+    "description": "Railway (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "rallyx": {
+    "description": "Rally-X (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "rallyxa": {
+    "description": "Rally-X (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ram": {
+    "description": "R.A.M. (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rama": {
+    "description": "R.A.M. (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rambo": {
+    "description": "Rambo (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "rambo3": {
+    "description": "Rambo III (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rambo3a": {
+    "description": "Rambo III (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rampart": {
+    "description": "The Rampart (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rastscan": {
+    "description": "RasterScan (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "raththa": {
+    "description": "Rath-Tha (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "raththaa": {
+    "description": "Rath-Tha (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "redzone": {
+    "description": "Red Zone (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "reflex": {
+    "description": "Reflex (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "regate": {
+    "description": "Régate - La Coupe de L'America (Fra)",
+    "publisher": "Philips",
+    "year": "1986"
+  },
+  "regatea": {
+    "description": "Régate - La Coupe de L'America (Fra, Alt)",
+    "publisher": "Philips",
+    "year": "1986"
+  },
+  "renegad3": {
+    "description": "Renegade III - The Final Chapter (UK, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rescatl": {
+    "description": "Rescate Atlántida (Spa)",
+    "publisher": "Dinamic Software",
+    "year": "1989"
+  },
+  "rescatla": {
+    "description": "Rescate Atlantida (Spa, Alt)",
+    "publisher": "Dinamic Software",
+    "year": "1989"
+  },
+  "resurect": {
+    "description": "Resurection (Spa?)",
+    "publisher": "<homebrew>",
+    "year": "2013"
+  },
+  "rexhard": {
+    "description": "Rex Hard (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rexharda": {
+    "description": "Rex Hard (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "risedung": {
+    "description": "Rise Out from Dungeons (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "risedunga": {
+    "description": "Rise Out from Dungeons (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "riskhold": {
+    "description": "Risky Holding (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "riveraid": {
+    "description": "River Raid (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "roadfght": {
+    "description": "Road Fighter (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "roadwars": {
+    "description": "Road Wars (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "robocop": {
+    "description": "Robocop (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "robofrog": {
+    "description": "Robofrog (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "robotwar": {
+    "description": "Robot Wars (Ned)",
+    "publisher": "Eaglesoft",
+    "year": "1986"
+  },
+  "roboy": {
+    "description": "Roboy (Ned)",
+    "publisher": "Eaglesoft",
+    "year": "1987"
+  },
+  "rockbolt": {
+    "description": "Rock'n Bolt (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "rockroll": {
+    "description": "Rock 'n Roller (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rockrolla": {
+    "description": "Rock 'n Roller (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rocky": {
+    "description": "Rocky (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rockya": {
+    "description": "Rocky (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rogerrub": {
+    "description": "Roger Rubbish (UK)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "rollerbl": {
+    "description": "Roller Ball (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "roma": {
+    "description": "Roma - La Conquista del Imperio (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rotors": {
+    "description": "Rotors (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "rroger": {
+    "description": "Rocket Roger (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rrogera": {
+    "description": "Rocket Roger (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "rtype": {
+    "description": "R-Type (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "runner": {
+    "description": "Runner (Fra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "runnera": {
+    "description": "Runner (Fra, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sabotaje": {
+    "description": "Sabotaje (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sabrina": {
+    "description": "Sabrina (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sabrinaa": {
+    "description": "Sabrina (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "safarix": {
+    "description": "Safari X (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "safarixa": {
+    "description": "Safari X (Jpn, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sailordl": {
+    "description": "Sailor's Delight (Ned, Cracked)",
+    "publisher": "Eaglesoft",
+    "year": "1987"
+  },
+  "sajedrez": {
+    "description": "Sajedrez (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sajedreza": {
+    "description": "Sajedrez (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "salvage": {
+    "description": "Salvage (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "samantha": {
+    "description": "Samantha Fox Strip Poker (UK, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sar": {
+    "description": "Search and Rescue (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "sasa": {
+    "description": "Sasa (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "saurus": {
+    "description": "Saurusland (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sbillard": {
+    "description": "Super Billiards (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sbillarda": {
+    "description": "Super Billiards (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sbracer": {
+    "description": "Speedboat Racer (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sbringer": {
+    "description": "Stormbringer (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sbustera": {
+    "description": "Space Busters (Ned, Aackosoft)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sbusters": {
+    "description": "Space Busters (Ned, Eaglesoft)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sca": {
+    "description": "SCA - Score Attacker (Jpn)",
+    "publisher": "<doujin>",
+    "year": "2009"
+  },
+  "scarlet7": {
+    "description": "Scarlet 7 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "scentipd": {
+    "description": "Scentipede (Ned)",
+    "publisher": "Aackosoft",
+    "year": "1986"
+  },
+  "schess": {
+    "description": "Super Chess (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "scifi": {
+    "description": "Science Fiction (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "scion": {
+    "description": "Scion (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "scobra": {
+    "description": "Super Cobra (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "scopeon": {
+    "description": "Scope On - Fight in Space (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "scor3020": {
+    "description": "Score 3020 (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "scor3020a": {
+    "description": "Score 3020 (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "scramegg": {
+    "description": "Scramble Eggs (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sdadrian": {
+    "description": "The Secret Diary of Adrian Mole (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sdsnookr": {
+    "description": "Steve Davis Snooker (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "seabattl": {
+    "description": "Sea Battle (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "seahuntr": {
+    "description": "Sea Hunter (UK)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "seaking1": {
+    "description": "Sea King (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "seikacho": {
+    "description": "Seiken Achou (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sendasal": {
+    "description": "Senda Salvaje (Spa, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "senjyo": {
+    "description": "Senjyo (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sevilla": {
+    "description": "Capitan Sevilla (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sevillaa": {
+    "description": "Capitan Sevilla (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sewersam": {
+    "description": "Sewer Sam (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sewersama": {
+    "description": "Sewer Sam (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sharkh": {
+    "description": "Shark Hunter (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "shnax": {
+    "description": "Shnax (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "shockabs": {
+    "description": "Cosmic Shock Absorber (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "shopboy": {
+    "description": "Shop Boy (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "shoutmat": {
+    "description": "Shout Match (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "showjump": {
+    "description": "Harvey Smith's Showjumper (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "shup": {
+    "description": "Shup - Trebol (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sideral": {
+    "description": "El Motorista Sideral (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "siderala": {
+    "description": "El Motorista Sideral (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "silfi": {
+    "description": "Silfi (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "silgcoll": {
+    "description": "Silgon Hagen Game Collection (UK?)",
+    "publisher": "<homebrew>",
+    "year": "2000?"
+  },
+  "simten": {
+    "description": "Simulador Profesional de Tenis (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sinbad": {
+    "description": "Sinbad - Nanatsu no Bouken (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sirfred": {
+    "description": "Sir Fred (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sirfreda": {
+    "description": "Sir Fred (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "skdragon": {
+    "description": "Skate Dragon (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "skicomm": {
+    "description": "Ski Command (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "skooter": {
+    "description": "Skooter (Ned)",
+    "publisher": "Eaglesoft",
+    "year": "1987"
+  },
+  "skramble": {
+    "description": "Skramble (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "skulexil": {
+    "description": "Skull Exilon (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "skygaldo": {
+    "description": "Skygaldo (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "skyhawk": {
+    "description": "Skyhawk (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "skyjag": {
+    "description": "Sky Jaguar (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "skyvis": {
+    "description": "Sky Vision (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "slapshot": {
+    "description": "Slapshot (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "slapshota": {
+    "description": "Slapshot (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "slaydock": {
+    "description": "Super Laydock - Mission Striker (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "smackwac": {
+    "description": "Smack Wacker (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "smaily": {
+    "description": "Smaily (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "smailya": {
+    "description": "Smaily (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "smailyb": {
+    "description": "Smaily (Spa, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "smalljon": {
+    "description": "Small Jones (Ita)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "smashout": {
+    "description": "Smash Out (Jpn)",
+    "publisher": "Mitsubishi Electronics",
+    "year": "19??"
+  },
+  "snakeit": {
+    "description": "Snake It (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "snowman": {
+    "description": "The Snowman (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sofia": {
+    "description": "Sofia (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sofiaa": {
+    "description": "Sofia (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sokoban": {
+    "description": "Sokoban (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "soldlght": {
+    "description": "Soldier of Light (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "solnegro": {
+    "description": "Sol Negro (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "solnegroa": {
+    "description": "Sol Negro (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "solnegrob": {
+    "description": "Sol Negro (Spa, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sorcery": {
+    "description": "Sorcery (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "soulrobo": {
+    "description": "Soul of a Robot (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spacecmp": {
+    "description": "Space Camp (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "spaceinv": {
+    "description": "Space Invaders (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "spacersq": {
+    "description": "Space Rescue (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "spacesht": {
+    "description": "Space Shot (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spacetrb": {
+    "description": "Space Trouble (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "spacewlk": {
+    "description": "Space Walk (Euro?)",
+    "publisher": "Mastertronic",
+    "year": "1985"
+  },
+  "spacewlka": {
+    "description": "Space Walk (Euro?, Alt)",
+    "publisher": "Mastertronic Added Dimension",
+    "year": "1987"
+  },
+  "spacmaze": {
+    "description": "Space Maze Attack (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sparkie": {
+    "description": "Sparkie (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "spartanx": {
+    "description": "Jackie Chan in Spartan X (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "specops": {
+    "description": "Special Operations (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spedking": {
+    "description": "Speed King (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spelunkr": {
+    "description": "Spelunker (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "spider": {
+    "description": "The Spider (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spirits": {
+    "description": "Spirits (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spiritsa": {
+    "description": "Spirits (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spitfire": {
+    "description": "Spitfire '40 (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "splash": {
+    "description": "Splash (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spooklad": {
+    "description": "Spooks & Ladders (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spreadsh": {
+    "description": "Spread Sheet (UK?)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sprinter": {
+    "description": "De Sprinter (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sprintera": {
+    "description": "De Sprinter (Ned, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sprinterb": {
+    "description": "De Sprinter (Ned, Alt 2)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spystory": {
+    "description": "Spy Story (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "spyvssp2": {
+    "description": "Spy vs Spy II - The Island Caper (Ned)",
+    "publisher": "Aackosoft",
+    "year": "1987"
+  },
+  "squeek": {
+    "description": "Squeek - The Story of a Ninny (Ned, Cracked)",
+    "publisher": "<homebrew>",
+    "year": "1991"
+  },
+  "squishem": {
+    "description": "Squish'em (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "sshadow": {
+    "description": "Silent Shadow (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "sshadowa": {
+    "description": "Silent Shadow (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "staravng": {
+    "description": "Star Avenger (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "starblaz": {
+    "description": "Star Blazer (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "starbugg": {
+    "description": "Starbuggy (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "starbyte": {
+    "description": "Starbyte (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "stardust": {
+    "description": "Stardust (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "starfght": {
+    "description": "Star Fighter (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "starquak": {
+    "description": "Starquake (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "starrun": {
+    "description": "Star Runner (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "starseek": {
+    "description": "Star Seeker (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "starship": {
+    "description": "Starship Simulator (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "starsold": {
+    "description": "Star Soldier (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "startrek": {
+    "description": "Star Trek - Strategic Operations Simulator (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "starwars": {
+    "description": "Star Wars (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "stepup": {
+    "description": "Step Up (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "stonewis": {
+    "description": "Kenja no Ishi - The Stone of Wisdom (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "stonewisa": {
+    "description": "Kenja no Ishi - The Stone of Wisdom (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "stopball": {
+    "description": "Stop Ball (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "storm": {
+    "description": "Storm - Una's Lair (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "stranglp": {
+    "description": "Strange Loop (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "streaker": {
+    "description": "Streaker (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "strikefh": {
+    "description": "Strike Force Harrier (Euro?)",
+    "publisher": "Mirrorsoft",
+    "year": "1988"
+  },
+  "strpok2p": {
+    "description": "Strip Poker II+ (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "subshoot": {
+    "description": "Submarine Shooter (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "suparobo": {
+    "description": "Suparobo (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "supdrink": {
+    "description": "Super Drinker (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "supergc": {
+    "description": "Super Game Collection (Jpn)",
+    "publisher": "Sony",
+    "year": "1985"
+  },
+  "superglf": {
+    "description": "Super Golf (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "supersyn": {
+    "description": "Super Synth (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "suprbaby": {
+    "description": "Super Baby (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "suprdoor": {
+    "description": "Super Doors (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "suprmind": {
+    "description": "Supermind (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "supsnake": {
+    "description": "Super Snake (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "supsoccr": {
+    "description": "Super Soccer (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "suptenn": {
+    "description": "MSX Super Tennis (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "suptrip": {
+    "description": "Supertripper (Spa)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "supxfrce": {
+    "description": "Super Cross Force (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "survivor": {
+    "description": "Survivor (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "survivrs": {
+    "description": "Survivors (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "suthir": {
+    "description": "Mobile Planet Suthirus - Approach from the Westgate (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "svi738": {
+    "description": "Spectravideo SVI-738",
+    "publisher": "Spectravideo",
+    "year": "1985"
+  },
+  "sweetacr": {
+    "description": "Sweet Acorn (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "taipan": {
+    "description": "Tai-Pan (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "takameij": {
+    "description": "Takahashi Meijin no Boukenjima (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "takeru": {
+    "description": "Takeru Densetsu (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "tamako": {
+    "description": "Tamako (Jpn)",
+    "publisher": "<doujin>",
+    "year": "2012"
+  },
+  "tankbatt": {
+    "description": "Tank Battalion (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "tantan": {
+    "description": "Checkers in Tan Tan Tanuki (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "targetp": {
+    "description": "Target Plus (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "targetpa": {
+    "description": "Target Plus (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tarot": {
+    "description": "Tarot (Fra)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tawarakn": {
+    "description": "Tawara-kun (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "tbirds": {
+    "description": "Thunderbirds (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tblade": {
+    "description": "Thunder Blade (UK, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tbladea": {
+    "description": "Thunder Blade (UK, Trained, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "telebunn": {
+    "description": "Telebunnie (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "temptat": {
+    "description": "Temptations (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tenoble": {
+    "description": "Choukousou Kagura Tenoble (Jpn)",
+    "publisher": "<doujin>",
+    "year": "2013"
+  },
+  "tensaird": {
+    "description": "Tensai Rabbian Daifunsen (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "tension": {
+    "description": "Tension (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tensiona": {
+    "description": "Tension (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "terminus": {
+    "description": "Terminus - Prison Planet (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "terramex": {
+    "description": "Terramex (Euro?)",
+    "publisher": "Grandslam Entertainments",
+    "year": "1988"
+  },
+  "testdrv2": {
+    "description": "Test Drive II - The Duel (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tetrahor": {
+    "description": "Tetra Horror (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "tetris": {
+    "description": "Tetris (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "theseus": {
+    "description": "Theseus - Iligks I (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "thexder": {
+    "description": "Thexder (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "thingbb": {
+    "description": "Thing Bounces Back (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "thndrbal": {
+    "description": "Thunder Ball (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "thor": {
+    "description": "Thor (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "thora": {
+    "description": "Thor (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "thunderc": {
+    "description": "Thundercats (UK)[h MSX Files]",
+    "publisher": "Elite Systems",
+    "year": "1987"
+  },
+  "timeband": {
+    "description": "Time Bandits (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "timebomb": {
+    "description": "Time Bomb (Ned)",
+    "publisher": "Methodic Solutions",
+    "year": "1987"
+  },
+  "timecurb": {
+    "description": "Time Curb (Ned)",
+    "publisher": "Aackosoft",
+    "year": "1986"
+  },
+  "timemag1": {
+    "description": "Time and Magik I - Lords of Time (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "timemag2": {
+    "description": "Time and Magik II - Red Moon (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "timemag3": {
+    "description": "Time and Magik III - The Price of Magik (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "timeout": {
+    "description": "Time Out (Spa, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "timeouta": {
+    "description": "Time Out (Spa, Trained, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "timeplt": {
+    "description": "Time Pilot (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "timeridr": {
+    "description": "Time Rider (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "timetrax": {
+    "description": "Time Trax (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "titanic": {
+    "description": "Titanic (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "titanica": {
+    "description": "Titanic (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tmht": {
+    "description": "Teenage Mutant Hero Turtles (UK, Cracked)",
+    "publisher": "Image Works",
+    "year": "1990"
+  },
+  "tmhta": {
+    "description": "Teenage Mutant Hero Turtles (UK, Hacked)",
+    "publisher": "Image Works",
+    "year": "1990"
+  },
+  "toiacid": {
+    "description": "Toi Acid Game (Spa, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "toiacida": {
+    "description": "Toi Acid Game (Spa, Trained, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tomjerry": {
+    "description": "Tom & Jerry (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "toobin": {
+    "description": "Toobin' (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "topogned": {
+    "description": "Topografie Nederland (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "topogneda": {
+    "description": "Topografie Nederland (Ned, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "toprollr": {
+    "description": "Top Roller! (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "topzip": {
+    "description": "Topple Zip (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "trackfl2": {
+    "description": "Track & Field 2 (Euro)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "trackfld": {
+    "description": "Track & Field 1 (Euro)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "traffic": {
+    "description": "Traffic (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "trailblz": {
+    "description": "Trailblazer (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "trantor": {
+    "description": "Trantor - The Last Stormtrooper (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "trashman": {
+    "description": "Trashman (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "trashmana": {
+    "description": "Trashman (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "trialski": {
+    "description": "Trial Ski (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "trickboy": {
+    "description": "Trick Boy (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "trickboya": {
+    "description": "Trick Boy (Jpn, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "trigger": {
+    "description": "Trigger (Spa, Cracked)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tripcom": {
+    "description": "Triple Comando (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tripcoma": {
+    "description": "Triple Comando (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "triton": {
+    "description": "Triton (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "tritona": {
+    "description": "Tritorn (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "triversi": {
+    "description": "Triversi (UK)",
+    "publisher": "Orpheus",
+    "year": "1986"
+  },
+  "trivial": {
+    "description": "Trivial Pursuit (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "triviala": {
+    "description": "Trivial Pursuit (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "trueno": {
+    "description": "Capitan Trueno (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "truenoa": {
+    "description": "Capitan Trueno (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "trumpaid": {
+    "description": "Trump Aid (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ttracer": {
+    "description": "TT Racer (Ned)",
+    "publisher": "Methodic Solutions",
+    "year": "1987"
+  },
+  "tuareg": {
+    "description": "Tuareg (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tuarega": {
+    "description": "Tuareg (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "tuma7": {
+    "description": "Tuma 7 (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "turbo500": {
+    "description": "Turbo 5000 (Ned)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "turboat": {
+    "description": "Turboat (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "turbogrl": {
+    "description": "Turbo Girl (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "turbogrla": {
+    "description": "Turbo Girl (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "turmoil": {
+    "description": "Turmoil (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "twinbee": {
+    "description": "Twin Bee (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "twinflez": {
+    "description": "Twin Fleaz (UK)",
+    "publisher": "<homebrew>",
+    "year": "2000"
+  },
+  "uboot": {
+    "description": "U-Boot (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "uchimata": {
+    "description": "Uchi Mata (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ulises": {
+    "description": "Ulises (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ulisesa": {
+    "description": "Ulises (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ultchess": {
+    "description": "Ultra Chess (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "ultraman": {
+    "description": "Ultraman (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "undergnd": {
+    "description": "Underground (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "undergnda": {
+    "description": "Underground (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "vacuuman": {
+    "description": "Vacuumania (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "vacuumana": {
+    "description": "Vacuumania (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "valkyr": {
+    "description": "Valkyr (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "vampire": {
+    "description": "Vampire (Spa?)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "vampirea": {
+    "description": "Vampire (Spa?, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "venganza": {
+    "description": "La Venganza de Johny Comomolo (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "venusfir": {
+    "description": "Venus Fire (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "veracruz": {
+    "description": "Vera Cruz (UK?)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "vestron": {
+    "description": "Vestron (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "vestrona": {
+    "description": "Vestron (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "viajeesp": {
+    "description": "Viaje Espacial (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "vidpoker": {
+    "description": "Video Poker (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "visitor": {
+    "description": "Visitor - Bazar Catalunya (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "voidrun": {
+    "description": "Void Runner (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "voitures": {
+    "description": "Les Voitures dans Autoroute (Fra)",
+    "publisher": "Infogrames",
+    "year": "1985"
+  },
+  "volguard": {
+    "description": "Volguard (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "vortexrd": {
+    "description": "Vortex Raider (Ned)",
+    "publisher": "Eurosoft",
+    "year": "1988"
+  },
+  "vozemlyu": {
+    "description": "Vozvrashcheniye na Zemlyu (Rus)",
+    "publisher": "Crazysoft",
+    "year": "1988"
+  },
+  "vozemlyua": {
+    "description": "Vozvrashcheniye na Zemlyu (Rus, Alt)",
+    "publisher": "Crazysoft",
+    "year": "1988"
+  },
+  "vulgardr": {
+    "description": "Vulgardry (Jpn)",
+    "publisher": "<doujin>",
+    "year": "2012"
+  },
+  "vviper": {
+    "description": "Vicious Viper (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wall": {
+    "description": "The Wall (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "warchess": {
+    "description": "War Chess (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "warpwarp": {
+    "description": "Warp & Warp (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "warroid": {
+    "description": "Warroid (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "waytiger": {
+    "description": "The Way of the Tiger (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wbells": {
+    "description": "Wedding Bells",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "wecleman": {
+    "description": "WEC Le Mans (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wellsfar": {
+    "description": "Wells & Fargo (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wellsfara": {
+    "description": "Wells & Fargo (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "whodare2": {
+    "description": "Who Dares Wins 2 (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "whopper": {
+    "description": "Whopper Chase (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "whoppera": {
+    "description": "Whopper Chase (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wingames": {
+    "description": "Winter Games (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wintevnt": {
+    "description": "Winter Events (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "winthawk": {
+    "description": "Winterhawk (Ned)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "winthawka": {
+    "description": "Winterhawk (Ned, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wintol": {
+    "description": "Winter Olympics (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wizlair": {
+    "description": "Wizard's Lair (UK, Trained)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wldgames": {
+    "description": "World Games (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wldgamesa": {
+    "description": "World Games (UK, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wrangler": {
+    "description": "Wrangler (Spa)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "wranglera": {
+    "description": "Wrangler (Spa, Alt)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "wreck": {
+    "description": "The Wreck (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "xenon": {
+    "description": "Xenon (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "xetra": {
+    "description": "Xetra (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "xybots": {
+    "description": "Xybots (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "xyzolog": {
+    "description": "Xyzolog (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "yahtzee": {
+    "description": "Y'ahtzee (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "yeagraft": {
+    "description": "Chuck Yeager's Advanced Flight Trainer (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "yellowsb": {
+    "description": "Yellow Submarine (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "yiear": {
+    "description": "Yie Ar Kung-Fu (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "yiear2": {
+    "description": "Yie Ar Kung-Fu II - The Emperor Yie-Gah (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "yn": {
+    "description": "Yn (Jpn)",
+    "publisher": "<doujin>",
+    "year": "2013"
+  },
+  "youkaiya": {
+    "description": "Youkai Yashiki (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "ysherlck": {
+    "description": "Young Sherlock - Doyle no Isan (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "zaider": {
+    "description": "Zaider - Battle of Peguss (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "zanac": {
+    "description": "Zanac (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "zanac2": {
+    "description": "Zanac 2nd Version (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "zanac2a": {
+    "description": "Zanac 2nd Version (Jpn, Alt)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "zaxxon": {
+    "description": "Zaxxon (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "zaxxonj": {
+    "description": "Zaxxon (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "zeta2000": {
+    "description": "Zeta 2000 (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "zexas": {
+    "description": "Zexas (Jpn)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "zexasltd": {
+    "description": "Zexas Limited (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "zipper": {
+    "description": "Zipper (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "zond": {
+    "description": "Zond (Spa)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "zoom909": {
+    "description": "Zoom 909 (Jpn)",
+    "publisher": "<cart2disk hack>",
+    "year": "19??"
+  },
+  "zoot": {
+    "description": "Zoot (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "zorax": {
+    "description": "Zorax (Bra)",
+    "publisher": "Discovery Informática",
+    "year": "1990"
+  },
+  "zork": {
+    "description": "Zork I - The Great Underground Empire (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "zork2": {
+    "description": "Zork II - The Wizard of Frobozz (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  },
+  "zork3": {
+    "description": "Zork III - The Dungeon Master (UK)",
+    "publisher": "<tape2disk hack>",
+    "year": "19??"
+  }
+}

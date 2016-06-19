@@ -1,0 +1,12 @@
+{
+  "geckos": {
+    "description": "GeckOS/A65 (v2.0)",
+    "publisher": "André Fachat",
+    "year": "1999"
+  },
+  "los96": {
+    "description": "LOS-96",
+    "publisher": "Commodore",
+    "year": "1981"
+  }
+}

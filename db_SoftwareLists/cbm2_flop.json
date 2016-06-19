@@ -1,0 +1,697 @@
+{
+  "1001test": {
+    "description": "Commodore SFD-1001 Floppy Disk Drive Test/Demo Diskette",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1001test_ss": {
+    "description": "Commodore SFD-1001 Floppy Disk Drive Test/Demo Diskette (8050 Format)",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "2031demo": {
+    "description": "Commodore 2031 LP Floppy Diskette Drive Test/Demo Diskette",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "8250test": {
+    "description": "Commodore 8250LP Floppy Disk Drive Test/Demo Diskette",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "b700demo": {
+    "description": "B700 Demo (UK)",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "beeline": {
+    "description": "BeeLine (v2.0)",
+    "publisher": "J & K Lemkelde",
+    "year": "1986"
+  },
+  "burnin": {
+    "description": "Factory Burn In Diagnostics for B Series",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "calcresu": {
+    "description": "Calc Result",
+    "publisher": "Handic Software",
+    "year": "1983"
+  },
+  "cbug02": {
+    "description": "CBUG #2",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug03": {
+    "description": "CBUG #3",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug04": {
+    "description": "CBUG #4",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug05": {
+    "description": "CBUG #5",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug06": {
+    "description": "CBUG #6",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug07": {
+    "description": "CBUG #7",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug08": {
+    "description": "CBUG #8",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug09": {
+    "description": "CBUG #9",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug10": {
+    "description": "CBUG #10",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug11": {
+    "description": "CBUG #11",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug11a": {
+    "description": "CBUG #11a",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug12": {
+    "description": "CBUG #12",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug13": {
+    "description": "CBUG #13",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug14": {
+    "description": "CBUG #14",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug15": {
+    "description": "CBUG #15",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug17": {
+    "description": "CBUG #17",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug18": {
+    "description": "CBUG #18",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug19": {
+    "description": "CBUG #19",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug21": {
+    "description": "CBUG #21",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug22": {
+    "description": "CBUG #22",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug24": {
+    "description": "CBUG #24",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug25": {
+    "description": "CBUG #25",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug26": {
+    "description": "CBUG #26",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug27": {
+    "description": "CBUG #27",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug28": {
+    "description": "CBUG #28",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug29": {
+    "description": "CBUG #29",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug30": {
+    "description": "CBUG #30",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug31": {
+    "description": "CBUG #31",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug32": {
+    "description": "CBUG #32",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug33": {
+    "description": "CBUG #33",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug36": {
+    "description": "CBUG #36",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug37": {
+    "description": "CBUG #37",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug38": {
+    "description": "CBUG #38",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug39": {
+    "description": "CBUG #39",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug40": {
+    "description": "CBUG #40",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug41": {
+    "description": "CBUG #41",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug42": {
+    "description": "CBUG #42",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug43": {
+    "description": "CBUG #43",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug44": {
+    "description": "CBUG #44",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug44a": {
+    "description": "CBUG #44 (Alt)",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug46": {
+    "description": "CBUG #46",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug47": {
+    "description": "CBUG #47",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug47a": {
+    "description": "CBUG #47 (Alt)",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug48": {
+    "description": "CBUG #48",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug48a": {
+    "description": "CBUG #48 (Alt)",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug49": {
+    "description": "CBUG #49",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug50": {
+    "description": "CBUG #50",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug51i": {
+    "description": "CBUG #51.i",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug51p": {
+    "description": "CBUG #51.p",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug52": {
+    "description": "CBUG #52",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug53": {
+    "description": "CBUG #53",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug54": {
+    "description": "CBUG #54",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug55": {
+    "description": "CBUG #55",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug56": {
+    "description": "CBUG #56",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug57": {
+    "description": "CBUG #57",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug58": {
+    "description": "CBUG #58",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug59": {
+    "description": "CBUG #59",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug60": {
+    "description": "CBUG #60",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug60a": {
+    "description": "CBUG #60 (Alt)",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug61": {
+    "description": "CBUG #61",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug62": {
+    "description": "CBUG #62",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug63": {
+    "description": "CBUG #63",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug64": {
+    "description": "CBUG #64",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug65": {
+    "description": "CBUG #65",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug66": {
+    "description": "CBUG #66",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug67": {
+    "description": "CBUG #67",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug68": {
+    "description": "CBUG #68",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug69": {
+    "description": "CBUG #69",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug70": {
+    "description": "CBUG #70",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug71": {
+    "description": "CBUG #71",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug72": {
+    "description": "CBUG #72",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug73": {
+    "description": "CBUG #73",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug74": {
+    "description": "CBUG #74",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug75": {
+    "description": "CBUG #75",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug76": {
+    "description": "CBUG #76",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug77": {
+    "description": "CBUG #77",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug78": {
+    "description": "CBUG #78",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug79": {
+    "description": "CBUG #79",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug81": {
+    "description": "CBUG #81",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug83": {
+    "description": "CBUG #83",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug84": {
+    "description": "CBUG #84",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug85": {
+    "description": "CBUG #85",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug86": {
+    "description": "CBUG #86",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug87": {
+    "description": "CBUG #87",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug88": {
+    "description": "CBUG #88",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug89": {
+    "description": "CBUG #89",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug90": {
+    "description": "CBUG #90",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug91": {
+    "description": "CBUG #91",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug92": {
+    "description": "CBUG #92",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug93": {
+    "description": "CBUG #93",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug94": {
+    "description": "CBUG #94",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug95": {
+    "description": "CBUG #95",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug96": {
+    "description": "CBUG #96",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug97": {
+    "description": "CBUG #97",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbug98": {
+    "description": "CBUG #98",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugm20": {
+    "description": "CBUG #M20",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugm45": {
+    "description": "CBUG #M45",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugm54": {
+    "description": "CBUG #M54",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugm55": {
+    "description": "CBUG #M55",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugm80": {
+    "description": "CBUG #M80",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugm82": {
+    "description": "CBUG #M82",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr01": {
+    "description": "CBUG #PR1",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr02": {
+    "description": "CBUG #PR2",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr03": {
+    "description": "CBUG #PR3",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr04": {
+    "description": "CBUG #PR4",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr05": {
+    "description": "CBUG #PR5",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr06": {
+    "description": "CBUG #PR6p",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr08": {
+    "description": "CBUG #PR8",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr09": {
+    "description": "CBUG #PR9",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr10": {
+    "description": "CBUG #PR10",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr11": {
+    "description": "CBUG #PR11",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr12": {
+    "description": "CBUG #PR12",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr13": {
+    "description": "CBUG #PR13",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr14": {
+    "description": "CBUG #PR14",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr15": {
+    "description": "CBUG #PR15",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr16": {
+    "description": "CBUG #PR16",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr17": {
+    "description": "CBUG #PR17",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr18": {
+    "description": "CBUG #PR18",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr19": {
+    "description": "CBUG #PR19",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugpr20": {
+    "description": "CBUG #PR20",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cbugrr01": {
+    "description": "CBUG #RR1",
+    "publisher": "Chicago B128 Users Group",
+    "year": "1983"
+  },
+  "cpm6509": {
+    "description": "CP/M 6509",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "diags": {
+    "description": "B128/256 Diags",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "fastbus": {
+    "description": "B-128 Fast Bus",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "normcopy": {
+    "description": "Norm's Copier for the 8050",
+    "publisher": "Jesse Knight",
+    "year": "198?"
+  },
+  "proxa7k": {
+    "description": "Proxa 7000",
+    "publisher": "Ultra Electronic",
+    "year": "198?"
+  },
+  "sampler": {
+    "description": "CBM 700 Software Sampler",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "superbse": {
+    "description": "Superbase 700 (v2.06)",
+    "publisher": "Precision Software",
+    "year": "1983"
+  },
+  "supersc2": {
+    "description": "Superscript II (v1.0)",
+    "publisher": "Precision Software",
+    "year": "1982"
+  },
+  "termv2": {
+    "description": "Terminal Version 2.0 for B Series",
+    "publisher": "Commodore",
+    "year": "1983"
+  },
+  "wordresu": {
+    "description": "Word Result",
+    "publisher": "Handic Software",
+    "year": "198?"
+  }
+}

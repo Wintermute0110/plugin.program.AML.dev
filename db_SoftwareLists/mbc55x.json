@@ -1,0 +1,82 @@
+{
+  "basgames": {
+    "description": "Basic Games",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "calcstar": {
+    "description": "Calcstar",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cashman": {
+    "description": "Cashman",
+    "publisher": "Michtron",
+    "year": "1984"
+  },
+  "datastar": {
+    "description": "Datastar",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "demonsd": {
+    "description": "Demon Seed",
+    "publisher": "Michtron",
+    "year": "1984"
+  },
+  "easydraw": {
+    "description": "Easy Draw",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "larn": {
+    "description": "Larn",
+    "publisher": "Noah Morgan",
+    "year": "1986"
+  },
+  "msdos125": {
+    "description": "MS-DOS v1.25",
+    "publisher": "Sanyo / Microsoft",
+    "year": "198?"
+  },
+  "msdos211": {
+    "description": "MS-DOS v2.11",
+    "publisher": "Sanyo / Microsoft",
+    "year": "198?"
+  },
+  "msdos211a": {
+    "description": "MS-DOS v2.11 (Alt?)",
+    "publisher": "Sanyo / Microsoft",
+    "year": "198?"
+  },
+  "picasso": {
+    "description": "Picasso",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "rprtstar": {
+    "description": "Reportstar",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "softse05": {
+    "description": "Soft Sector Disk 05",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "spelstar": {
+    "description": "Mailmerge Spelstar",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "wordstar": {
+    "description": "Wordstar",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "zork": {
+    "description": "Zork Compilation",
+    "publisher": "<unknown>",
+    "year": "198?"
+  }
+}

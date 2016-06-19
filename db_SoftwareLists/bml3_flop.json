@@ -1,0 +1,17 @@
+{
+  "hidata": {
+    "description": "HI-Writer Data",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "hiwriter": {
+    "description": "HI-Writer 1.5",
+    "publisher": "Hisoft Pty. Ltd.",
+    "year": "19??"
+  },
+  "tetris": {
+    "description": "Tetris",
+    "publisher": "<homebrew>",
+    "year": "1991"
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "aceyduc": {
+    "description": "AceyDucey",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "adventur": {
+    "description": "Adventure",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "alicetel": {
+    "description": "Apple I Enhanced Checkers",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "apple30": {
+    "description": "Apple 30th",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "aslite": {
+    "description": "Applesoft Lite",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "asmchess": {
+    "description": "ASMmchess",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basic": {
+    "description": "Apple I Basic",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "basica": {
+    "description": "Apple I Basic (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "blckjack": {
+    "description": "Blackjack",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bowling": {
+    "description": "Bowling",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "buzzword": {
+    "description": "Buzzword",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "codebrkr": {
+    "description": "Codebreaker",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "columns": {
+    "description": "Columns",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "concentr": {
+    "description": "Concentration",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "craps": {
+    "description": "Craps",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "dealnod": {
+    "description": "Deal or No Deal",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "eliza": {
+    "description": "ELIZA",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "football": {
+    "description": "Football",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "hamurabi": {
+    "description": "Hamurabi",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "hangman": {
+    "description": "Hangman",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "hilo": {
+    "description": "HiLo",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "life": {
+    "description": "Life",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "llander": {
+    "description": "Lunar Lander",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "llandera": {
+    "description": "Lunar Lander (ASCII Graphics)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mastmind": {
+    "description": "Mastermind",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "matrix": {
+    "description": "Matrix",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "microchs": {
+    "description": "Microchess",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pasart": {
+    "description": "Pasart",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "slots": {
+    "description": "Slots",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "start2k3": {
+    "description": "Star Trek 2003",
+    "publisher": "<homebrew>",
+    "year": "19??"
+  },
+  "startrek": {
+    "description": "Star Trek",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "stopwtch": {
+    "description": "Stopwatch",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "trek2": {
+    "description": "TREK II",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "typtutor": {
+    "description": "TypingTutor",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "wordx": {
+    "description": "WordCross",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "wumpus": {
+    "description": "Wumpus",
+    "publisher": "<unknown>",
+    "year": "19??"
+  }
+}

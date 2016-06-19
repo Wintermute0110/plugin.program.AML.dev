@@ -1,0 +1,22 @@
+{
+  "hdtools": {
+    "description": "Ampro LittleBoard Hard Disk Tools",
+    "publisher": "Ampro",
+    "year": "1986"
+  },
+  "smrtlock": {
+    "description": "Ampro LittleBoard SMARTCLOCK Software",
+    "publisher": "Ampro",
+    "year": "1986"
+  },
+  "source": {
+    "description": "Ampro LittleBoard Source Code",
+    "publisher": "Ampro",
+    "year": "1986"
+  },
+  "system": {
+    "description": "Ampro Z-80 System Software (Rev G)",
+    "publisher": "Ampro",
+    "year": "1986"
+  }
+}

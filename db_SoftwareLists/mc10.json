@@ -1,0 +1,682 @@
+{
+  "argo": {
+    "description": "Argo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "assemble": {
+    "description": "Assemble",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "aster64": {
+    "description": "Aster64",
+    "publisher": "Rogelio Perea",
+    "year": "198?"
+  },
+  "aster64j": {
+    "description": "Aster64 (Joystick Hack by Charles Perosi)",
+    "publisher": "Rogelio Perea",
+    "year": "198?"
+  },
+  "autoklon": {
+    "description": "Auto Klondike",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "autorun": {
+    "description": "Autorun",
+    "publisher": "Graham Pollock",
+    "year": "198?"
+  },
+  "backup": {
+    "description": "Backup",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "bandit": {
+    "description": "Bandit!",
+    "publisher": "Jim Gerrie",
+    "year": "198?"
+  },
+  "basketba": {
+    "description": "Basketballer",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "blackjac": {
+    "description": "Black Jack",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "blockdrp": {
+    "description": "Block Drop",
+    "publisher": "Charles Perosi",
+    "year": "2004"
+  },
+  "blockdrpj": {
+    "description": "Block Drop (Joystick Hack)",
+    "publisher": "Charles Perosi",
+    "year": "2004"
+  },
+  "bombaway": {
+    "description": "Bombs Away",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "breakout": {
+    "description": "Micro Games - Breakout",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "breakoutj": {
+    "description": "Micro Games - Breakout (Joystick Hack by Charles Perosi)",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "bubsort": {
+    "description": "BubbleSort",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "cantlist": {
+    "description": "Sorry Cant List That",
+    "publisher": "Gary Furr",
+    "year": "1985"
+  },
+  "catch": {
+    "description": "Catch",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "checkers": {
+    "description": "Micro Checkers",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "checkersa": {
+    "description": "Micro Checkers (Alt)",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "checkfor": {
+    "description": "Check for Printer",
+    "publisher": "Gary Furr",
+    "year": "198?"
+  },
+  "clock": {
+    "description": "Clock",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "compac": {
+    "description": "Micro Color Compac",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "conlife": {
+    "description": "John Conway's Life",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "convert": {
+    "description": "Convert",
+    "publisher": "Larry Haines",
+    "year": "1985"
+  },
+  "cram": {
+    "description": "Cram",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "csavem": {
+    "description": "CSAVEM",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "decode": {
+    "description": "Decode",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "defend": {
+    "description": "Defend",
+    "publisher": "Charles Perosi",
+    "year": "2004"
+  },
+  "defendj": {
+    "description": "Defend (Joystick Hack)",
+    "publisher": "Charles Perosi",
+    "year": "2004"
+  },
+  "demonatt": {
+    "description": "Demon Attack",
+    "publisher": "Charles Perosi",
+    "year": "2004"
+  },
+  "demonattj": {
+    "description": "Demon Attack (Joystick Hack)",
+    "publisher": "Charles Perosi",
+    "year": "2004"
+  },
+  "dissasm": {
+    "description": "Dissassembler",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "dissasm2": {
+    "description": "Dissassembler 2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "dragcast": {
+    "description": "Dragon Castles",
+    "publisher": "Charles Perosi",
+    "year": "2004"
+  },
+  "eggcatch": {
+    "description": "Micro Games - Egg Catch",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "eggcatcha": {
+    "description": "Micro Games - Egg Catch (Alt)",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "eliza": {
+    "description": "Eliza",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "exbasic": {
+    "description": "Extended Basic",
+    "publisher": "Gary Furr",
+    "year": "1986"
+  },
+  "flywall": {
+    "description": "The Flying Walloons",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "freeway": {
+    "description": "MC-10 Freeway",
+    "publisher": "Charles Perosi",
+    "year": "2004"
+  },
+  "freewayj": {
+    "description": "MC-10 Freeway (Joystick Hack)",
+    "publisher": "Charles Perosi",
+    "year": "2004"
+  },
+  "frogger": {
+    "description": "Frogger",
+    "publisher": "Jason Krah",
+    "year": "198?"
+  },
+  "genacct": {
+    "description": "Generic Accounting Program",
+    "publisher": "Larry Allen",
+    "year": "198?"
+  },
+  "graphmod": {
+    "description": "Graphics Modes of MC-10",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "graphrou": {
+    "description": "Graphic Routine",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "groan": {
+    "description": "Groan",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hangman": {
+    "description": "Hangman",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "haunted": {
+    "description": "Haunted House",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hazemaze": {
+    "description": "Haze Maze",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "hiresdra": {
+    "description": "Hi-Res Drawing",
+    "publisher": "Graham Pollock",
+    "year": "1985"
+  },
+  "horserac": {
+    "description": "Micro Games - Horse Race",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "horseraca": {
+    "description": "Micro Games - Horse Race (Alt)",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "humbug": {
+    "description": "Humbug Assemble-Disassemble ($4400-$4EFF)",
+    "publisher": "P. Stark",
+    "year": "1983"
+  },
+  "humbuga": {
+    "description": "Humbug Assemble-Disassemble ($4500-$4FFF)",
+    "publisher": "P. Stark",
+    "year": "1983"
+  },
+  "humbugb": {
+    "description": "Humbug Assemble-Disassemble ($7500-$7FFF)",
+    "publisher": "P. Stark",
+    "year": "1983"
+  },
+  "idcsavem": {
+    "description": "Id.csavem",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "invaders": {
+    "description": "Invaders",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "iorecov": {
+    "description": "IO Recovery",
+    "publisher": "Graham Pollock",
+    "year": "1985"
+  },
+  "jet": {
+    "description": "Jet",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kaleido": {
+    "description": "Kaleido",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kaleidos": {
+    "description": "Kaleidoscope",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "keyboard": {
+    "description": "Keyboard Skills",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "kutenkam": {
+    "description": "Kutenkamen",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lastcoin": {
+    "description": "Last Coin",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "leapfrog": {
+    "description": "Leapfrog",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lifeed": {
+    "description": "LIFE-ED",
+    "publisher": "James Tamer",
+    "year": "198?"
+  },
+  "lifeedgl": {
+    "description": "LIFE-ED Data Tape - Glidergun",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lifeedos": {
+    "description": "LIFE-ED Data Tape - Oscillators",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "lifeedrp": {
+    "description": "LIFE-ED Data Tape - Rpentomino",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "linedemo": {
+    "description": "Linedemo",
+    "publisher": "James Diffendaffer",
+    "year": "2011"
+  },
+  "listline": {
+    "description": "List All Lines",
+    "publisher": "Gary Furr",
+    "year": "1986"
+  },
+  "lprintpi": {
+    "description": "LPrintPi",
+    "publisher": "Greg Dionne",
+    "year": "198?"
+  },
+  "lunland": {
+    "description": "Micro Games - Lunar Lander",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "lunlanda": {
+    "description": "Micro Games - Lunar Lander (Alt)",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "lwpin": {
+    "description": "Lost World Pinball",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "lwpina": {
+    "description": "Lost World Pinball (Alt)",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "mario": {
+    "description": "Mario",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "marks": {
+    "description": "Marks",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "masterm": {
+    "description": "Mastermind",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mastmind": {
+    "description": "The Game of Mastermind",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mcdos": {
+    "description": "MCDOS",
+    "publisher": "Graham Pollock",
+    "year": "1986"
+  },
+  "mcdosd1": {
+    "description": "MCDOS RAM Disk 1",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mcdosd2": {
+    "description": "MCDOS RAM Disk 2",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mcos": {
+    "description": "MCOS - 6803 Monitor",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "mctext": {
+    "description": "MC-Text",
+    "publisher": "Jim Gerrie",
+    "year": "2004"
+  },
+  "mcword": {
+    "description": "McWord",
+    "publisher": "Bob Schecter",
+    "year": "1986"
+  },
+  "memdisp": {
+    "description": "Memory Display",
+    "publisher": "James Tamer",
+    "year": "2004"
+  },
+  "micomain": {
+    "description": "Micomainia",
+    "publisher": "Darren Ottery",
+    "year": "198?"
+  },
+  "microbas": {
+    "description": "MicroColor Basic v1.3",
+    "publisher": "Microsoft",
+    "year": "1982"
+  },
+  "milo": {
+    "description": "Milo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "minefld": {
+    "description": "Minefield!",
+    "publisher": "Jim Gerrieb - Kenneth Reighard Jr.",
+    "year": "198?"
+  },
+  "minicalc": {
+    "description": "Math Design - MiniCalc",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "morsecod": {
+    "description": "Morse Code",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "nolist": {
+    "description": "No List",
+    "publisher": "Gary Furr",
+    "year": "1987"
+  },
+  "noncomp": {
+    "description": "Non-Comprehensive Test",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "numbers": {
+    "description": "Numbers",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "pacman": {
+    "description": "Pac-Man",
+    "publisher": "Greg Dionne",
+    "year": "2006"
+  },
+  "pagelist": {
+    "description": "Pagelist",
+    "publisher": "Graham Pollock",
+    "year": "1986"
+  },
+  "playback": {
+    "description": "Playback",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "poetry": {
+    "description": "Poetry",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "poker": {
+    "description": "Poker",
+    "publisher": "Jim Gerrie",
+    "year": "198?"
+  },
+  "pong": {
+    "description": "Micro Games - Pong",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "ponga": {
+    "description": "Micro Games - Pong (Alt)",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "pontoon": {
+    "description": "Pontoon",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "quicksrt": {
+    "description": "QuickSort",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "ratmaze": {
+    "description": "Rat Maze",
+    "publisher": "<unknown>",
+    "year": "1984"
+  },
+  "redalert": {
+    "description": "Red Alert",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "reverse": {
+    "description": "Reverse Video",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "rg2life": {
+    "description": "RG2LIFE",
+    "publisher": "Greg Dionne",
+    "year": "198?"
+  },
+  "roadrace": {
+    "description": "Road Race",
+    "publisher": "William Barden Jr.",
+    "year": "198?"
+  },
+  "roadracej": {
+    "description": "Road Race (Joystick Hack by Charles Perosi)",
+    "publisher": "William Barden Jr.",
+    "year": "198?"
+  },
+  "scrnfun": {
+    "description": "Screen Fun",
+    "publisher": "James",
+    "year": "198?"
+  },
+  "sentinel": {
+    "description": "Sentinel",
+    "publisher": "Charlie Gerrie",
+    "year": "198?"
+  },
+  "sg6bomb": {
+    "description": "SG6 Bomber",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "sg6demo": {
+    "description": "SG6 Demo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "shootgal": {
+    "description": "Shooting Gallery",
+    "publisher": "T. Furr",
+    "year": "198?"
+  },
+  "solitair": {
+    "description": "Solitaire",
+    "publisher": "Jim Gerrie",
+    "year": "198?"
+  },
+  "sounddem": {
+    "description": "Sound Demonstration",
+    "publisher": "Gary Furr",
+    "year": "1985"
+  },
+  "sparkle": {
+    "description": "Sparkle",
+    "publisher": "Phil Feldman - Tom Rugg",
+    "year": "1981"
+  },
+  "speech": {
+    "description": "Speech",
+    "publisher": "Gary Furr",
+    "year": "198?"
+  },
+  "speed": {
+    "description": "Speed",
+    "publisher": "Graham Pollock",
+    "year": "1986"
+  },
+  "spellit": {
+    "description": "Spell It",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "spirals": {
+    "description": "Math Design - Spirals",
+    "publisher": "Tandy",
+    "year": "1983"
+  },
+  "squares": {
+    "description": "Squares",
+    "publisher": "Phil Feldman - Tom Rugg",
+    "year": "1981"
+  },
+  "startrek": {
+    "description": "Star Trek",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "subsrch": {
+    "description": "Sub Search",
+    "publisher": "Jim Gerrie - Steve Ward",
+    "year": "198?"
+  },
+  "supcload": {
+    "description": "Super CLOAD",
+    "publisher": "Graham Pollock",
+    "year": "1985"
+  },
+  "tables": {
+    "description": "Tables",
+    "publisher": "Graham Pollock",
+    "year": "1985"
+  },
+  "tapeindx": {
+    "description": "Tape Index",
+    "publisher": "Graham Pollock",
+    "year": "1985"
+  },
+  "tetris": {
+    "description": "Tetris",
+    "publisher": "Greg Dionne",
+    "year": "198?"
+  },
+  "tetris4k": {
+    "description": "Tetris 4K",
+    "publisher": "Greg Dionne",
+    "year": "198?"
+  },
+  "textedit": {
+    "description": "Text Editor",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "tune": {
+    "description": "Tune",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "vmc10log": {
+    "description": "Virtual MC-10 Logo",
+    "publisher": "<unknown>",
+    "year": "198?"
+  },
+  "whereami": {
+    "description": "Where Am I",
+    "publisher": "Gary Furr",
+    "year": "198?"
+  }
+}

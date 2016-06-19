@@ -1,0 +1,52 @@
+{
+  "chuckie": {
+    "description": "Atomic Chuckie Egg (32K)",
+    "publisher": "Retro Software",
+    "year": "2012"
+  },
+  "gala": {
+    "description": "Galaforce (32K)",
+    "publisher": "Retro Software",
+    "year": "2012"
+  },
+  "hardhath": {
+    "description": "Hard Hat Harry (32K)",
+    "publisher": "Retro Software",
+    "year": "2011"
+  },
+  "hypervpr": {
+    "description": "Hyper Viper (12K)",
+    "publisher": "Retro Software",
+    "year": "2011"
+  },
+  "jetsetmn": {
+    "description": "Jet Set Miner (12K)",
+    "publisher": "Retro Software",
+    "year": "2009"
+  },
+  "joeblade": {
+    "description": "Atomic Joe Blade (32K)",
+    "publisher": "Retro Software",
+    "year": "2014"
+  },
+  "jsw": {
+    "description": "Jet Set Willy (32K)",
+    "publisher": "Retro Software",
+    "year": "2015"
+  },
+  "jsw2": {
+    "description": "Jet Set Willy 2 (32K)",
+    "publisher": "Retro Software",
+    "year": "2015"
+  },
+  "jungle": {
+    "description": "Jungle Journey (32K)",
+    "publisher": "Retro Software",
+    "year": "2012"
+  },
+  "repton": {
+    "description": "Repton (32K)",
+    "publisher": "Retro Software",
+    "year": "2013"
+  }
+}

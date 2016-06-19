@@ -1,0 +1,277 @@
+{
+  "6games": {
+    "description": "6GAMES",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "alambush": {
+    "description": "Alien Ambush",
+    "publisher": "Sedov E. A.",
+    "year": "1990"
+  },
+  "ball": {
+    "description": "The Ball Game",
+    "publisher": "Sandy Pat Corp.",
+    "year": "1990"
+  },
+  "barmen": {
+    "description": "Barmen (v1.5)",
+    "publisher": "ALG",
+    "year": "1988"
+  },
+  "basic": {
+    "description": "Mikrosha BASIC",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "bdash": {
+    "description": "Boulder Dash (v2)",
+    "publisher": "Clever Hands Software",
+    "year": "1989"
+  },
+  "bomber": {
+    "description": "Bomber Aircraft",
+    "publisher": "Jup Corp",
+    "year": "1990"
+  },
+  "chess": {
+    "description": "Chess",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "cirk": {
+    "description": "Cirk (v1.2)",
+    "publisher": "Popov S.N.",
+    "year": "1986"
+  },
+  "crossfir": {
+    "description": "Cross Fire (v004)",
+    "publisher": "Zyryanov A.V.",
+    "year": "1988"
+  },
+  "digger": {
+    "description": "DIGGER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "disasm": {
+    "description": "Disassembler Mikron",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "garden": {
+    "description": "GARDEN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "gonka": {
+    "description": "GONKA",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "hockey": {
+    "description": "HOCKEY",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "kindzadz": {
+    "description": "KINDZADZ",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "klad": {
+    "description": "KLAD",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lestnica": {
+    "description": "LESTNICA",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "life": {
+    "description": "LIFE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "lifea": {
+    "description": "LIFE (Alt)",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "liqsky": {
+    "description": "LIQSKY",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mach3": {
+    "description": "MACH3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mars": {
+    "description": "MARS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "maze": {
+    "description": "MAZE",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "mines": {
+    "description": "MINES",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "othello": {
+    "description": "OTHELLO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pacman": {
+    "description": "PACMAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "panika": {
+    "description": "PANIKA",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "pentis": {
+    "description": "PENTIS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "perelet": {
+    "description": "PERELET",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "reversi": {
+    "description": "REVERSI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "reversi2": {
+    "description": "REVERSI2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rikoshet": {
+    "description": "RIKOSHET",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "rocker": {
+    "description": "ROCKER",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "saboteur": {
+    "description": "SABOTEUR",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "shturmk": {
+    "description": "SHTURM_K",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "skachki": {
+    "description": "SKACHKI",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "snakes": {
+    "description": "SNAKES",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "sprint": {
+    "description": "SPRINT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "stakan": {
+    "description": "STAKAN",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "stakan2": {
+    "description": "STAKAN2",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "stakan3": {
+    "description": "STAKAN3",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "starrid": {
+    "description": "STARRID",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "starwars": {
+    "description": "STARWARS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tennis": {
+    "description": "TENNIS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tennisdk": {
+    "description": "TENNISDK",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "tetris": {
+    "description": "TETRIS",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "torpatt": {
+    "description": "TORPATT",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "udav": {
+    "description": "UDAV",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "volcano": {
+    "description": "VOLCANO",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "wayp": {
+    "description": "WAYP",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "xonix": {
+    "description": "XONIX",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "xonixzm": {
+    "description": "XONIXZM",
+    "publisher": "<unknown>",
+    "year": "19??"
+  },
+  "xonmicr": {
+    "description": "Xonix (Micron)",
+    "publisher": "Micron",
+    "year": "19??"
+  },
+  "zstanciy": {
+    "description": "Z-Stanciya",
+    "publisher": "SNP",
+    "year": "1987"
+  }
+}

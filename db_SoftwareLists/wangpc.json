@@ -1,0 +1,32 @@
+{
+  "boot": {
+    "description": "Boot disk",
+    "publisher": "Wang",
+    "year": "1985"
+  },
+  "diskutil": {
+    "description": "Wang Winchester Disk Utilities",
+    "publisher": "Wang",
+    "year": "198?"
+  },
+  "hdformat": {
+    "description": "Special Hard Disk Format Disk",
+    "publisher": "Wang",
+    "year": "198?"
+  },
+  "ibmemu": {
+    "description": "IBM Emulation program",
+    "publisher": "Wang",
+    "year": "198?"
+  },
+  "prninst": {
+    "description": "Printer Installation Disk",
+    "publisher": "Wang",
+    "year": "198?"
+  },
+  "sys": {
+    "description": "Wang PC System disks",
+    "publisher": "Wang",
+    "year": "198?"
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "airsea": {
+    "description": "Air/Sea Attack",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "astropin": {
+    "description": "Astro Pinball",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "astropina": {
+    "description": "Astro Pinball (Alt ROM config)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "astropinb": {
+    "description": "Astro Pinball (Bad?)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "autochas": {
+    "description": "Auto Chase",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "autochasa": {
+    "description": "Auto Chase (Alt ROM config)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "basic": {
+    "description": "Basic V.1 (1983, Release 2)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1983"
+  },
+  "basico1": {
+    "description": "Creativision Basic (1983, Release 1)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1983"
+  },
+  "basico2": {
+    "description": "Creativision Basic (1982, Release 2)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "basico3": {
+    "description": "Creativision Basic (1982, Release 1)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "chopper": {
+    "description": "Chopper Rescue",
+    "publisher": "Video Technology Ltd.",
+    "year": "1983"
+  },
+  "crazych": {
+    "description": "Crazy Chicky",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "crazypuc": {
+    "description": "Crazy Pucker ~ Crazy Moonie ~ Crazy Chewy",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "deepsea": {
+    "description": "Deep Sea Adventure (6k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "deepseaa": {
+    "description": "Deep Sea Adventure (8k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "hapmon": {
+    "description": "Hapmon",
+    "publisher": "Richard Hayter",
+    "year": "198?"
+  },
+  "locomot": {
+    "description": "Locomotive (10k cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1983"
+  },
+  "locomota": {
+    "description": "Locomotive (12k cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1983"
+  },
+  "mousepuz": {
+    "description": "Mouse Puzzle",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "mousepuza": {
+    "description": "Mouse Puzzle (Alt ROM config)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "musicmak": {
+    "description": "Music Maker",
+    "publisher": "Video Technology Ltd.",
+    "year": "1983"
+  },
+  "planetd": {
+    "description": "Planet Defender (6k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "planetd1": {
+    "description": "Planet Defender (8k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "planetd2": {
+    "description": "Planet Defender (8k Cart, Bad?)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "policej": {
+    "description": "Police Jump",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "policeja": {
+    "description": "Police Jump (Alt ROM config)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "policeje": {
+    "description": "Police Jump (Earlier)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "soccer": {
+    "description": "Soccer",
+    "publisher": "Video Technology Ltd.",
+    "year": "1983"
+  },
+  "sonicinv": {
+    "description": "Sonic Invader",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "stoneage": {
+    "description": "Stone Age",
+    "publisher": "Video Technology Ltd.",
+    "year": "1984"
+  },
+  "tankatk": {
+    "description": "Tank Attack (6k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "tankatka": {
+    "description": "Tank Attack (8k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "tennis": {
+    "description": "Tennis (Wimbledon, 6k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "tennisa": {
+    "description": "Tennis (Wimbledon, 8k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "tennisb": {
+    "description": "Tennis (Wimbledon, 8k Cart, Alt ROM config)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "tenniscs": {
+    "description": "Tennis (Coca Cola / Sprite, 8k cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1981"
+  },
+  "tennisd1": {
+    "description": "Tennis (Dick Smith, earlier, 6k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "tennisd2": {
+    "description": "Tennis (Dick Smith, later, 6k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  },
+  "tennisd2a": {
+    "description": "Tennis (Dick Smith, 8k Cart)",
+    "publisher": "Video Technology Ltd.",
+    "year": "1982"
+  }
+}

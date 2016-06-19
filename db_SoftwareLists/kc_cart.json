@@ -1,0 +1,27 @@
+{
+  "basic": {
+    "description": "BASIC (M006)",
+    "publisher": "VEB Mikroelektronik",
+    "year": "198?"
+  },
+  "develop": {
+    "description": "Development (M027)",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1989"
+  },
+  "forth": {
+    "description": "FORTH (M026)",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1989"
+  },
+  "texor": {
+    "description": "Texor (M012)",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1988"
+  },
+  "typestar": {
+    "description": "TypeStar (M033)",
+    "publisher": "VEB Mikroelektronik",
+    "year": "1990"
+  }
+}

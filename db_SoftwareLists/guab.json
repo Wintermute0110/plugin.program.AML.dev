@@ -1,0 +1,57 @@
+{
+  "crisscrs": {
+    "description": "Criss Cross (Sweden)",
+    "publisher": "JPM",
+    "year": "1986"
+  },
+  "guab21": {
+    "description": "Give us a Break (21st edition)",
+    "publisher": "JPM",
+    "year": "1986"
+  },
+  "guab3": {
+    "description": "Give us a Break (3rd edition)",
+    "publisher": "JPM",
+    "year": "1986"
+  },
+  "guab3a": {
+    "description": "Give us a Break (3rd edition alt?)",
+    "publisher": "JPM",
+    "year": "1986"
+  },
+  "guab4": {
+    "description": "Give us a Break (4th edition)",
+    "publisher": "JPM",
+    "year": "1986"
+  },
+  "guab43": {
+    "description": "Give us a Break (43rd edition)",
+    "publisher": "JPM",
+    "year": "1986"
+  },
+  "guab6": {
+    "description": "Give us a Break (6th edition)",
+    "publisher": "JPM",
+    "year": "1986"
+  },
+  "guab6a": {
+    "description": "Give us a Break (6th edition alt?)",
+    "publisher": "JPM",
+    "year": "1986"
+  },
+  "guab7": {
+    "description": "Give us a Break (7th edition)",
+    "publisher": "JPM",
+    "year": "1986"
+  },
+  "tenup": {
+    "description": "Ten Up (compendium 17)",
+    "publisher": "JPM",
+    "year": "1988"
+  },
+  "tenup3": {
+    "description": "Ten Up (compendium 3)",
+    "publisher": "JPM",
+    "year": "1988"
+  }
+}

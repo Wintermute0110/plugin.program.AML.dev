@@ -1,0 +1,12 @@
+{
+  "audiokit": {
+    "description": "Victor Audio Toolkit (v1.2)",
+    "publisher": "Victor Technologies",
+    "year": "1983"
+  },
+  "cpm86": {
+    "description": "CP/M 86 v1.1-2.4",
+    "publisher": "<unknown>",
+    "year": "1982"
+  }
+}

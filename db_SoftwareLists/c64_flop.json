@@ -1,0 +1,402 @@
+{
+  "1351demo": {
+    "description": "Commodore 1351 Mouse Utility Disk",
+    "publisher": "Commodore",
+    "year": "1986"
+  },
+  "1520tool": {
+    "description": "Tools for the Commodore 1520 Plotter",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1541demo": {
+    "description": "Commodore 1541 Floppy Disk Drive Test/Demo Disk",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1541demoa": {
+    "description": "Commodore VIC-1541 Test/Demo",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1541demob": {
+    "description": "Commodore 1541 Floppy Disk Drive Test/Demo Disk (Alt)",
+    "publisher": "Commodore",
+    "year": "1984"
+  },
+  "1541democ": {
+    "description": "Commodore 1541 Floppy Disk Drive Test/Demo Disk (Alt 2)",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "1541demod": {
+    "description": "Commodore Model 1541 Test/Demo-Diskette",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1660demo": {
+    "description": "Commodore Modem 300 Test/Demo Diskette",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1670demo": {
+    "description": "Commodore Modem 1200 Test/Demo Diskette",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "1764demo": {
+    "description": "Commodore 1764 RAM Expansion Utility Disk",
+    "publisher": "Commodore",
+    "year": "1987"
+  },
+  "2ndreal": {
+    "description": "Second Reality",
+    "publisher": "Smash Designs & The Obsessed Maniacs",
+    "year": "1997"
+  },
+  "arttu": {
+    "description": "Little Knight Arthur",
+    "publisher": "Pasi Hytönen",
+    "year": "1986"
+  },
+  "aztecchl": {
+    "description": "Aztec Challenge",
+    "publisher": "Cosmi",
+    "year": "1983"
+  },
+  "barbaria": {
+    "description": "Barbarian: The Ultimate Warrior",
+    "publisher": "Melbourne House",
+    "year": "1988"
+  },
+  "basickaa": {
+    "description": "BASIC-kääntäjä (Fin)",
+    "publisher": "Amersoft",
+    "year": "1984"
+  },
+  "basil": {
+    "description": "Basil: The Great Mouse Detective",
+    "publisher": "Gremlin Graphics",
+    "year": "1987"
+  },
+  "bbsb": {
+    "description": "Bounty Bob Strikes Back! (v1.2)",
+    "publisher": "Big Five",
+    "year": "1985"
+  },
+  "bionicco": {
+    "description": "Bionic Commando",
+    "publisher": "Capcom",
+    "year": "1988"
+  },
+  "bldrdash": {
+    "description": "Boulder Dash",
+    "publisher": "First Star",
+    "year": "1984"
+  },
+  "buddy64": {
+    "description": "Buddy System 64 v10",
+    "publisher": "Chris Miller",
+    "year": "1992"
+  },
+  "c64bonus": {
+    "description": "Commodore C-64 Disk Bonus Pack",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "c64demo": {
+    "description": "C-64 Demodiskette",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "cagedart": {
+    "description": "Caged Artist's FB and DX Editor/Librarian",
+    "publisher": "Dr T",
+    "year": "198?"
+  },
+  "cmk49": {
+    "description": "CMK 49 Computer Musical Keyboard",
+    "publisher": "Siel",
+    "year": "198?"
+  },
+  "commando": {
+    "description": "Commando",
+    "publisher": "Elite",
+    "year": "1985"
+  },
+  "contiki": {
+    "description": "Contiki Desktop OS 1.0",
+    "publisher": "Contiki Project",
+    "year": "2003"
+  },
+  "cpm": {
+    "description": "Commodore 64 CP/M Cartridge Boot Disk",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "cpma": {
+    "description": "Commodore 64 CP/M Cartridge Boot Disk (Alt)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "cpmb": {
+    "description": "Commodore 64 CP/M Cartridge Boot Disk (Alt 2)",
+    "publisher": "Commodore",
+    "year": "1982"
+  },
+  "dotc": {
+    "description": "Defender of the Crown",
+    "publisher": "Cinemaware",
+    "year": "1987"
+  },
+  "elktrgld": {
+    "description": "Elektra Glide",
+    "publisher": "Mastertronic",
+    "year": "1986"
+  },
+  "gameset": {
+    "description": "Game Set and Match",
+    "publisher": "Ocean",
+    "year": "1987"
+  },
+  "geckos": {
+    "description": "GeckOS/A65 (v2.0)",
+    "publisher": "André Fachat",
+    "year": "1999"
+  },
+  "getrdynu": {
+    "description": "Get Ready for Number with BJ Bear",
+    "publisher": "Commodore",
+    "year": "1984"
+  },
+  "goliath": {
+    "description": "Goliath-Prommer (Ger)",
+    "publisher": "Rex-Datentechnik",
+    "year": "19??"
+  },
+  "grnberet": {
+    "description": "Green Beret",
+    "publisher": "Ocean",
+    "year": "1986"
+  },
+  "impmiss": {
+    "description": "Impossible Mission",
+    "publisher": "Epyx",
+    "year": "1984"
+  },
+  "jacknpr": {
+    "description": "Jack the Nipper",
+    "publisher": "Gremlin Graphics",
+    "year": "1986"
+  },
+  "kats1": {
+    "description": "KÄTS-opetuslevy 1 (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1989"
+  },
+  "kats2": {
+    "description": "KÄTS-opetuslevy 2 (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1989"
+  },
+  "kertolas": {
+    "description": "Kertolasku (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1986"
+  },
+  "koalapnt": {
+    "description": "KoalaPainter (Light Pen)",
+    "publisher": "Koala Technologies",
+    "year": "1984"
+  },
+  "lrsharj": {
+    "description": "LRS-harjoitus (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1988"
+  },
+  "lunix": {
+    "description": "LUnix Next Generation (v0.21)",
+    "publisher": "LNG-Project",
+    "year": "2004"
+  },
+  "lunixreu": {
+    "description": "LUnix Next Generation (v0.21, REU)",
+    "publisher": "LNG-Project",
+    "year": "2004"
+  },
+  "lxp1edit": {
+    "description": "Lexicon LXP-1 Visual Editor/Librarian",
+    "publisher": "Leaping Lizards",
+    "year": "1988"
+  },
+  "metaldst": {
+    "description": "Metal Dust",
+    "publisher": "Protovision",
+    "year": "2012"
+  },
+  "miamivic": {
+    "description": "Miami Vice",
+    "publisher": "Ocean",
+    "year": "1986"
+  },
+  "midi8p": {
+    "description": "MIDI 8+",
+    "publisher": "Passport Designs",
+    "year": "1984"
+  },
+  "midiutil": {
+    "description": "Midi Utilities 02",
+    "publisher": "The Music Software Exchange",
+    "year": "198?"
+  },
+  "mule": {
+    "description": "M.U.L.E.",
+    "publisher": "Electronic Arts",
+    "year": "1983"
+  },
+  "music64": {
+    "description": "Music 64",
+    "publisher": "Novel International",
+    "year": "198?"
+  },
+  "mvdemo": {
+    "description": "Magic Voice Demo Disk",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "opinkirj": {
+    "description": "Opin kirjoittamaan (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1985"
+  },
+  "opinluk1": {
+    "description": "Opin lukemaan 1 (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1985"
+  },
+  "opinluk2": {
+    "description": "Opin lukemaan 2 (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1985"
+  },
+  "patobmtx": {
+    "description": "Oberheim Matrix 6/6R Patches",
+    "publisher": "Oberheim",
+    "year": "198?"
+  },
+  "psenglsh": {
+    "description": "PS-English (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1986"
+  },
+  "psmemory": {
+    "description": "PS-Memory (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1989"
+  },
+  "puventti": {
+    "description": "Puhuva venttipeli (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1986"
+  },
+  "rambo2": {
+    "description": "Rambo: First Blood Part II",
+    "publisher": "Ocean",
+    "year": "1985"
+  },
+  "rambo2n": {
+    "description": "Rambo: First Blood Part II (NTSC)",
+    "publisher": "Thunder Mountain",
+    "year": "1985"
+  },
+  "rambo3": {
+    "description": "Rambo III",
+    "publisher": "Ocean",
+    "year": "1988"
+  },
+  "rambo3n": {
+    "description": "Rambo III (NTSC)",
+    "publisher": "Taito",
+    "year": "1989"
+  },
+  "sfxse": {
+    "description": "SFX Sound Expander Test/Demo Disk",
+    "publisher": "Commodore",
+    "year": "1985"
+  },
+  "sfxsea": {
+    "description": "SFX Sound Expander (MIDI)",
+    "publisher": "Music Sales",
+    "year": "1987"
+  },
+  "spoker": {
+    "description": "Strip Poker",
+    "publisher": "Artworx",
+    "year": "1984"
+  },
+  "sprbas64": {
+    "description": "SuperBase 64 (Fin)",
+    "publisher": "Precision",
+    "year": "1983"
+  },
+  "sthassle": {
+    "description": "Street Hassle",
+    "publisher": "Melbourne House",
+    "year": "1987"
+  },
+  "superseq": {
+    "description": "Super Sequencer",
+    "publisher": "Sonus",
+    "year": "1984"
+  },
+  "swiftlnk": {
+    "description": "CMD SwiftLink",
+    "publisher": "CMD",
+    "year": "1990"
+  },
+  "sx64demo": {
+    "description": "Commodore SX-64 Test/Demo Disk",
+    "publisher": "Commodore",
+    "year": "198?"
+  },
+  "terramex": {
+    "description": "Terramex",
+    "publisher": "Grand Slam",
+    "year": "1988"
+  },
+  "toutrun": {
+    "description": "Turbo Out Run",
+    "publisher": "U.S. Gold",
+    "year": "1989"
+  },
+  "tsuit215": {
+    "description": "C64 Emulator Test Suite (v2.15)",
+    "publisher": "Wolfgang Lorenz",
+    "year": "1997"
+  },
+  "turbo232": {
+    "description": "CMD Turbo232",
+    "publisher": "CMD",
+    "year": "1997"
+  },
+  "vahennys": {
+    "description": "Vähennyslasku (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "1986"
+  },
+  "valmhrj1": {
+    "description": "Valmiusharjoituksia 1 (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "198?"
+  },
+  "vicetest": {
+    "description": "Versatile Commodore Emulator testprogs",
+    "publisher": "VICE Team",
+    "year": "2014"
+  },
+  "yhteenla": {
+    "description": "Yhteenlasku (Fin)",
+    "publisher": "Koulun erityispalvelu",
+    "year": "198?"
+  }
+}
