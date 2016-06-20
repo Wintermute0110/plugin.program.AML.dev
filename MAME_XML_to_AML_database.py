@@ -158,7 +158,11 @@ for event, elem in context:
         machine['driver_status'] = unicode(elem.attrib['status'])
 
     elif event == 'end' and elem.tag == 'machine':
+        # >> Check for errors in this machine
+        
+        # >> Delete XML element once it has been processed
         elem.clear()
+        # >> Add new machine
         machines[machine_name] = machine
 
     # --- Print something to prove we are doing stuff ---
@@ -166,7 +170,7 @@ for event, elem in context:
     if num_iteration % 50000 == 0:
       print('Processed {0:10d} events ({1:6d} machines so far) ...'.format(num_iteration, num_machines))
 
-    # --- Stop after some machines have been processed for debug ---
+    # --- Stop after NUM_MACHINES machines have been processed for debug ---
     if num_machines >= NUM_MACHINES: break
 print('Processed {0} MAME XML events'.format(num_iteration))
 print('Total number of machines {0}'.format(num_machines))
@@ -174,71 +178,75 @@ print('Total number of machines {0}'.format(num_machines))
 # -----------------------------------------------------------------------------
 # Transform data
 # -----------------------------------------------------------------------------
-# Create one sets with parents and one dictionary clone : parent. This will
-# accelerate computations a bit.
+# Create a couple of data struct for quickly know the parent of a clone game and
+# all clones of a parent.
+#
+# main_pclone_dic = { 'parent_name' : ['clone_name', 'clone_name', ...] , ...}
+# main_parent_dic = { 'clone_name' : 'parent_name', ... }
 print('Making PClone list...')
-parent_list = []
-clone_dic = {}
+main_pclone_dic = {}
+main_parent_dic = {}
 for machine_name in machines:
     machine = machines[machine_name]
-    # Exclude devices
+    # >> Exclude devices
     if machine['isdevice']: continue
 
+    # >> Machine is a parent. Add to main_pclone_dic if not already there.
+    # >> If already there a
     if machine['cloneof'] == u'':
-        parent_list.append(machine_name)
+        if machine_name not in main_pclone_dic:
+            main_pclone_dic[machine_name] = []
+
+    # >> Machine is a clone
     else:
-        clone_dic[machine_name] = machine['cloneof']
-parent_set = set(parent_list)
-    
+        parent_name = machine['cloneof']
+        # >> Add clone machine to main_parent_dic
+        main_parent_dic[machine_name] = parent_name
+
+        # >> If parent already in main_pclone_dic then add clone to parent list.
+        # >> If parent not there, then add parent first and then add clone.
+
+        if parent_name in main_pclone_dic:
+            main_pclone_dic[parent_name].append(machine_name)
+        else:
+            main_pclone_dic[parent_name] = []
+            main_pclone_dic[parent_name].append(machine_name)
+
 # --- Machine list ---
-# A) Machines with Coin Slot and Non Mechanical
-#
-# This implementation is inefficient and slow, but it works.
-#   1) Traverse list of machines.
-#   2) If machine is a parent find all clones
-#
-# pclone_dic = { 'parent_name' : ['clone_name', 'clone_name', ...] , ...}
+# Machines with Coin Slot and Non Mechanical
+# machines_pclone_dic = { 'parent_name' : ['clone_name', 'clone_name', ...] , ...}
 machines_pclone_dic = {}
 print('Making Machine index...')
-for parent_machine_name in parent_set:
-    machine = machines[parent_machine_name]
+for p_machine_name in main_pclone_dic:
+    machine = machines[p_machine_name]
     if machine['ismechanical']: continue
     if not machine['haveCoin']: continue
-    # Make list of clones
-    clone_list = []
-    for clone_name, parent_name in clone_dic.iteritems():
-        if parent_name == parent_machine_name:
-            clone_list.append(clone_name)
-    machines_pclone_dic[parent_machine_name] = clone_list
+
+    # Copy list of clones
+    machines_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
 
 # --- NoCoin list ---
 # A) Machines with No Coin Slot and Non Mechanical
 nocoin_pclone_dic = {}
 print('Making NoCoin index...')
-for parent_machine_name in parent_set:
-    machine = machines[parent_machine_name]
+for p_machine_name in main_pclone_dic:
+    machine = machines[p_machine_name]
     if machine['ismechanical']: continue
     if machine['haveCoin']: continue
-    # Make list of clones
-    clone_list = []
-    for clone_name, parent_name in clone_dic.iteritems():
-        if parent_name == parent_machine_name:
-            clone_list.append(clone_name)
-    nocoin_pclone_dic[parent_machine_name] = clone_list
+    
+    # Copy list of clones
+    nocoin_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
 
 # --- Mechanical machines ---
 # A) Mechanical Machines
 mechanical_pclone_dic = {}
 print('Making Mechanical index...')
-for parent_machine_name in parent_set:
-    machine = machines[parent_machine_name]
+for p_machine_name in main_pclone_dic:
+    machine = machines[p_machine_name]
     if not machine['ismechanical']: continue
-    # Make list of clones
-    clone_list = []
-    for clone_name, parent_name in clone_dic.iteritems():
-        if parent_name == parent_machine_name:
-            clone_list.append(clone_name)
-    mechanical_pclone_dic[parent_machine_name] = clone_list
+    
+    # Copy list of clones
+    mechanical_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
 
 # -----------------------------------------------------------------------------
 # Now write simplified JSON
