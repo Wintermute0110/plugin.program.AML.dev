@@ -124,9 +124,11 @@ class Main:
 
         elif 'command' in args:
             command = args['command'][0]
-            if command == 'launch':
+            if command == 'LAUNCH':
                 mame_args = args['mame_args'][0]
                 log_info('Launching mame with mame_args "{0}"'.format(mame_args))
+            elif command == 'VIEW_MACHINE':
+                self._command_view_machine(args['machine_name'][0])
             else:
                 log_error('Unknown command "{0}"'.format(command))
 
@@ -234,6 +236,8 @@ class Main:
 
         # --- Create context menu ---
         commands = []
+        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW_MACHINE', 'machine_name', machine_name)
+        commands.append(('View Machine data',  URL_view, ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
         listitem.addContextMenuItems(commands, replaceItems = True)
@@ -241,9 +245,10 @@ class Main:
         # --- Add row ---
         if is_parent_list:
             URL = self._misc_url_2_arg('list', list_name, 'parent', machine_name)
+            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         else:
-            URL = self._misc_url_1_arg('launch', machine_name)
-        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+            URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
+            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     #----------------------------------------------------------------------------------------------
     # 1) There should be a precompiled JSON index with Manufacturers.
@@ -331,6 +336,42 @@ class Main:
     # Render rows (ListItems) 
     #----------------------------------------------------------------------------------------------
 
+
+    # ---------------------------------------------------------------------------------------------
+    # Information display
+    # ---------------------------------------------------------------------------------------------
+    def _command_view_machine(self, machine_name):
+        # >> Read MAME machine information
+        MAME_info_dic = fs_load_JSON_file(Main_DB_filename)
+        machine = MAME_info_dic[machine_name]
+
+        # --- Make information string ---
+        info_text  = u'[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
+        info_text += u"[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
+        info_text += u"[COLOR skyblue]coins[/COLOR]: '{0}'\n".format(machine['coins'])
+        info_text += u"[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
+        info_text += u"[COLOR skyblue]haveCoin[/COLOR]: '{0}'\n".format(machine['haveCoin'])
+        info_text += u"[COLOR skyblue]isbios[/COLOR]: '{0}'\n".format(machine['isbios'])
+        info_text += u"[COLOR skyblue]isdevice[/COLOR]: '{0}'\n".format(machine['isdevice'])
+        info_text += u"[COLOR skyblue]ismechanical[/COLOR]: '{0}'\n".format(machine['ismechanical'])
+        info_text += u"[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
+        info_text += u"[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
+        info_text += u"[COLOR skyblue]runnable[/COLOR]: '{0}'\n".format(machine['runnable'])
+        info_text += u"[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
+        info_text += u"[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
+        info_text += u"[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
+
+        # --- Show information window ---
+        window_title = u'Machine Information'
+        try:
+            xbmc.executebuiltin('ActivateWindow(10147)')
+            window = xbmcgui.Window(10147)
+            xbmc.sleep(100)
+            window.getControl(1).setLabel(window_title)
+            window.getControl(5).setText(info_text)
+        except:
+            log_error('_command_view_machine() Exception rendering INFO window')
+
     # ---------------------------------------------------------------------------------------------
     # Misc functions
     # ---------------------------------------------------------------------------------------------
@@ -359,3 +400,6 @@ class Main:
 
     def _misc_url_3_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3):
         return u'{0}?{1}={2}&{3}={4}&{5}={6}'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3)
+
+    def _misc_url_2_arg_RunPlugin(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2):
+        return u'XBMC.RunPlugin({0}?{1}={2}&{3}={4})'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2)
