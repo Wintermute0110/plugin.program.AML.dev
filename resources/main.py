@@ -49,9 +49,8 @@ Main_DB_filename                = os.path.join(AML_ADDON_DIR, 'MAME_info.json').
 Machines_DB_filename            = os.path.join(AML_ADDON_DIR, 'idx_Machines.json').decode('utf-8')
 Machines_NoCoin_DB_filename     = os.path.join(AML_ADDON_DIR, 'idx_Machines_NoCoin.json').decode('utf-8')
 Machines_Mechanical_DB_filename = os.path.join(AML_ADDON_DIR, 'idx_Machines_Mechanical.json').decode('utf-8')
+Machines_Dead_DB_filename       = os.path.join(AML_ADDON_DIR, 'idx_Machines_Dead.json').decode('utf-8')
 SL_cat_filename                 = os.path.join(AML_ADDON_DIR, 'cat_SoftwareLists.json').decode('utf-8')
-
-# --- "Constants" ---
 
 class Main:
     # ---------------------------------------------------------------------------------------------
@@ -99,10 +98,12 @@ class Main:
                 if list_name == 'Machines':     self._render_machine_clone_list(list_name, parent_name)
                 elif list_name == 'NoCoin':     self._render_machine_clone_list(list_name, parent_name)
                 elif list_name == 'Mechanical': self._render_machine_clone_list(list_name, parent_name)
+                elif list_name == 'Dead':       self._render_machine_clone_list(list_name, parent_name)
             else:
                 if list_name == 'Machines':     self._render_machine_parent_list(list_name)
                 elif list_name == 'NoCoin':     self._render_machine_parent_list(list_name)
                 elif list_name == 'Mechanical': self._render_machine_parent_list(list_name)
+                elif list_name == 'Dead':       self._render_machine_parent_list(list_name)
 
         elif 'clist' in args:
             clist_name = args['clist'][0]
@@ -146,6 +147,7 @@ class Main:
         self._render_root_list_row('Machines (with coin slot)',  self._misc_url_1_arg('list', 'Machines'))
         self._render_root_list_row('Machines (no coin slot)',    self._misc_url_1_arg('list', 'NoCoin'))
         self._render_root_list_row('Machines (mechanical)',      self._misc_url_1_arg('list', 'Mechanical'))
+        self._render_root_list_row('Machines (dead)',            self._misc_url_1_arg('list', 'Dead'))
         self._render_root_list_row('Machines by Manufacturer',   self._misc_url_1_arg('clist', 'Manufacturer'))
         # self._render_root_list_row('Machines by Year',           self._misc_url_root('Year'))
         # self._render_root_list_row('Machines by Driver',         self._misc_url_root('Driver'))
@@ -182,6 +184,7 @@ class Main:
         if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(Machines_DB_filename)
         elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(Machines_NoCoin_DB_filename)
         elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(Machines_Mechanical_DB_filename)
+        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(Machines_Dead_DB_filename)
 
         # >> Render parent main list
         self._set_Kodi_content()
@@ -200,6 +203,7 @@ class Main:
         if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(Machines_DB_filename)
         elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(Machines_NoCoin_DB_filename)
         elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(Machines_Mechanical_DB_filename)
+        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(Machines_Dead_DB_filename)
 
         # >> Render parent first
         self._set_Kodi_content()
@@ -217,7 +221,7 @@ class Main:
     # URL is different: parent URL leads to clones, clone URL launchs machine.
     #
     def _render_machine_row(self, machine_name, machine, is_parent_list, list_name = u''):
-        # --- Mark devices ---
+        # --- Mark devices, BIOS and clones ---
         display_name = machine['description']
         if machine['isdevice']: display_name += ' [COLOR violet][Device][/COLOR]'
         if machine['isbios']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
@@ -348,16 +352,20 @@ class Main:
         # --- Make information string ---
         info_text  = u'[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
         info_text += u"[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
-        info_text += u"[COLOR skyblue]coins[/COLOR]: '{0}'\n".format(machine['coins'])
+        info_text += u"[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
+        info_text += u"[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
         info_text += u"[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
-        info_text += u"[COLOR skyblue]haveCoin[/COLOR]: '{0}'\n".format(machine['haveCoin'])
-        info_text += u"[COLOR skyblue]isbios[/COLOR]: '{0}'\n".format(machine['isbios'])
-        info_text += u"[COLOR skyblue]isdevice[/COLOR]: '{0}'\n".format(machine['isdevice'])
-        info_text += u"[COLOR skyblue]ismechanical[/COLOR]: '{0}'\n".format(machine['ismechanical'])
+        info_text += u"[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
+        info_text += u"[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
+        info_text += u"[COLOR skyblue]haveCoin[/COLOR]: {0}\n".format(machine['haveCoin'])
+        info_text += u"[COLOR skyblue]isbios[/COLOR]: {0}\n".format(machine['isbios'])
+        info_text += u"[COLOR skyblue]isdead[/COLOR]: {0}\n".format(machine['isdead'])
+        info_text += u"[COLOR skyblue]isdevice[/COLOR]: {0}\n".format(machine['isdevice'])
+        info_text += u"[COLOR skyblue]ismechanical[/COLOR]: {0}\n".format(machine['ismechanical'])
         info_text += u"[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
         info_text += u"[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
-        info_text += u"[COLOR skyblue]runnable[/COLOR]: '{0}'\n".format(machine['runnable'])
         info_text += u"[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
+        info_text += u"[COLOR skyblue]softwarelist_name[/COLOR]: {0}\n".format(machine['softwarelist_name'])
         info_text += u"[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
         info_text += u"[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
 
