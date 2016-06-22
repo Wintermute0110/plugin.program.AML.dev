@@ -28,15 +28,12 @@ import io
 # --- "Constants" -------------------------------------------------------------
 MAME_XML_filename               = 'MAME.xml'
 Main_DB_filename                = 'MAME_info.json'
-Machines_DB_filename            = 'idx_Machines.json'
-Machines_NoCoin_DB_filename     = 'idx_Machines_NoCoin.json'
-Machines_Mechanical_DB_filename = 'idx_Machines_Mechanical.json'
 NUM_MACHINES = 50000
 
 # -------------------------------------------------------------------------------------------------
 # Utility functions
 # -------------------------------------------------------------------------------------------------
-def fs_write_JSON(json_filename, json_data):
+def fs_write_JSON_file(json_filename, json_data):
     # >> Write JSON data
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
@@ -66,20 +63,23 @@ print('MAME version is "{0}"'.format(mame_version_str))
 #   machines = { 'machine_name' : machine, ...}
 #
 def fs_new_machine():
-    m = {'sourcefile'    : u'',
-         'isbios'        : False,
-         'isdevice'      : False,
-         'ismechanical'  : False,
-         'runnable'      : False,
-         'cloneof'       : u'',
-         'romof'         : u'',
-         'sampleof'      : u'',
-         'description'   : u'', 
-         'year'          : u'', 
-         'manufacturer'  : u'',
-         'haveCoin'      : False,
-         'coins'         : 0,
-         'driver_status' : u''
+    m = {'sourcefile'        : u'',
+         'isbios'            : False,
+         'isdevice'          : False,
+         'ismechanical'      : False,
+         'cloneof'           : u'',
+         'romof'             : u'',
+         'sampleof'          : u'',
+         'description'       : u'', 
+         'year'              : u'', 
+         'manufacturer'      : u'',
+         'display_tag'       : [],
+         'control_type'      : [],
+         'haveCoin'          : False,
+         'coins'             : 0,
+         'driver_status'     : u'',
+         'softwarelist_name' : [],
+         'isdead'            : False
     }
 
     return m
@@ -88,6 +88,7 @@ machines = {}
 machine_name = ''
 num_iteration = 0
 num_machines = 0
+num_dead = 0
 print('Reading MAME XML file ...')
 for event, elem in context:
     # --- Debug the elements we are iterating from the XML file ---
@@ -98,20 +99,23 @@ for event, elem in context:
     # <machine> tag start event includes <machine> attributes
     if event == 'start' and elem.tag == 'machine':
         machine = fs_new_machine()
-        
+        runnable = False
+        num_displays = 0
+
         # --- Process <machine> attributes ---
-        # #REQUIRED attribute
+        # name is #REQUIRED attribute
         if 'name' not in elem.attrib:
             print('"name" attribute not found in <machine> tag. Aborting.')
             sys.exit(10)
         else:
             machine_name = elem.attrib['name']
-        # #IMPLIED attribute
+        # sourcefile #IMPLIED attribute
         if 'sourcefile' not in elem.attrib:
             print('"sourcefile" attribute not found in <machine> tag. Aborting.')
             sys.exit(10)
         else:
             machine['sourcefile'] = elem.attrib['sourcefile']
+
         # Optional, default no
         if 'isbios' not in elem.attrib: machine['isbios'] = False
         else:                           machine['isbios'] = True if elem.attrib['isbios'] == u'yes' else False
@@ -120,18 +124,18 @@ for event, elem in context:
         if 'ismechanical' not in elem.attrib: machine['ismechanical'] = False
         else:                                 machine['ismechanical'] = True if elem.attrib['ismechanical'] == u'yes' else False
         # Optional, default yes
-        if 'runnable' not in elem.attrib: machine['runnable'] = True
-        else:                             machine['runnable'] = False if elem.attrib['runnable'] == u'no' else True
+        if 'runnable' not in elem.attrib: runnable = True
+        else:                             runnable = False if elem.attrib['runnable'] == u'no' else True
 
-        # #IMPLIED attribute
+        # cloneof is #IMPLIED attribute
         if 'cloneof' in elem.attrib:
             machine['cloneof'] = elem.attrib['cloneof']
 
-        # #IMPLIED attribute
+        # romof is #IMPLIED attribute
         if 'romof' in elem.attrib:
             machine['romof'] = elem.attrib['romof']
 
-        # #IMPLIED attribute
+        # sampleof is #IMPLIED attribute
         if 'sampleof' in elem.attrib:
             machine['sampleof'] = elem.attrib['sampleof']
 
@@ -146,6 +150,13 @@ for event, elem in context:
     elif event == 'start' and elem.tag == 'manufacturer':
         machine['manufacturer'] = unicode(elem.text)
 
+    # Some machines have more than one display tag (for example aquastge has 2).
+    # Other machines have no display tag (18w)
+    elif event == 'start' and elem.tag == 'display':
+        machine['display_tag'].append(elem.attrib['tag'])
+        num_displays += 1
+
+    # Some machines have no controls at all.
     elif event == 'start' and elem.tag == 'input':
         # coins is #IMPLIED attribute
         if 'coins' in elem.attrib:
@@ -153,13 +164,44 @@ for event, elem in context:
             if machine['coins'] > 0: machine['haveCoin'] = True
             else:                    machine['haveCoin'] = False
 
+        # >> Iterate children of <input> and search for <control> tags
+        for control_child in elem:
+            if control_child.tag == 'control':
+                machine['control_type'].append(control_child.attrib['type']) 
+
     elif event == 'start' and elem.tag == 'driver':
         # status is #REQUIRED attribute
         machine['driver_status'] = unicode(elem.attrib['status'])
 
+    elif event == 'start' and elem.tag == 'softwarelist':
+        # name is #REQUIRED attribute
+        machine['softwarelist_name'].append(elem.attrib['name'])
+
     elif event == 'end' and elem.tag == 'machine':
-        # >> Check for errors in this machine
-        
+        # >> Assumption 1: isdevice = True if and only if runnable = False
+        if machine['isdevice'] == runnable:
+            print("Machine {0}: machine['isdevice'] == runnable".format(machine_name))
+            sys.exit(10)
+
+        # >> Are there machines with more than 1 <display> tag. Answer: YES
+        # if num_displays > 1:
+        #     print("Machine {0}: num_displays = {1}".format(machine_name, num_displays))
+        #     sys.exit(10)
+
+        # >> All machines with 0 displays are mechanical? NO, 24cdjuke has no screen and is not mechanical. However
+        # >> 24cdjuke is a preliminary driver.
+        # if num_displays == 0 and not machine['ismechanical']:
+        #     print("Machine {0}: num_displays == 0 and not machine['ismechanical']".format(machine_name))
+        #     sys.exit(10)
+
+        # >> Mark dead machines. A machine is dead if,
+        # >> A) Status is preliminary
+        # >> B) Have no display OR Have no controls
+        # if machine['driver_status'] == 'preliminary' and not (machine['display_tag'] and machine['control_type']):
+        if machine['driver_status'] == 'preliminary' and not machine['display_tag'] and not machine['control_type']:
+            machine['isdead'] = True
+            num_dead += 1
+
         # >> Delete XML element once it has been processed
         elem.clear()
         # >> Add new machine
@@ -174,85 +216,10 @@ for event, elem in context:
     if num_machines >= NUM_MACHINES: break
 print('Processed {0} MAME XML events'.format(num_iteration))
 print('Total number of machines {0}'.format(num_machines))
-
-# -----------------------------------------------------------------------------
-# Transform data
-# -----------------------------------------------------------------------------
-# Create a couple of data struct for quickly know the parent of a clone game and
-# all clones of a parent.
-#
-# main_pclone_dic = { 'parent_name' : ['clone_name', 'clone_name', ...] , ...}
-# main_parent_dic = { 'clone_name' : 'parent_name', ... }
-print('Making PClone list...')
-main_pclone_dic = {}
-main_parent_dic = {}
-for machine_name in machines:
-    machine = machines[machine_name]
-    # >> Exclude devices
-    if machine['isdevice']: continue
-
-    # >> Machine is a parent. Add to main_pclone_dic if not already there.
-    # >> If already there a
-    if machine['cloneof'] == u'':
-        if machine_name not in main_pclone_dic:
-            main_pclone_dic[machine_name] = []
-
-    # >> Machine is a clone
-    else:
-        parent_name = machine['cloneof']
-        # >> Add clone machine to main_parent_dic
-        main_parent_dic[machine_name] = parent_name
-
-        # >> If parent already in main_pclone_dic then add clone to parent list.
-        # >> If parent not there, then add parent first and then add clone.
-
-        if parent_name in main_pclone_dic:
-            main_pclone_dic[parent_name].append(machine_name)
-        else:
-            main_pclone_dic[parent_name] = []
-            main_pclone_dic[parent_name].append(machine_name)
-
-# --- Machine list ---
-# Machines with Coin Slot and Non Mechanical
-# machines_pclone_dic = { 'parent_name' : ['clone_name', 'clone_name', ...] , ...}
-machines_pclone_dic = {}
-print('Making Machine index...')
-for p_machine_name in main_pclone_dic:
-    machine = machines[p_machine_name]
-    if machine['ismechanical']: continue
-    if not machine['haveCoin']: continue
-
-    # Copy list of clones
-    machines_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
-
-# --- NoCoin list ---
-# A) Machines with No Coin Slot and Non Mechanical
-nocoin_pclone_dic = {}
-print('Making NoCoin index...')
-for p_machine_name in main_pclone_dic:
-    machine = machines[p_machine_name]
-    if machine['ismechanical']: continue
-    if machine['haveCoin']: continue
-    
-    # Copy list of clones
-    nocoin_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
-
-# --- Mechanical machines ---
-# A) Mechanical Machines
-mechanical_pclone_dic = {}
-print('Making Mechanical index...')
-for p_machine_name in main_pclone_dic:
-    machine = machines[p_machine_name]
-    if not machine['ismechanical']: continue
-    
-    # Copy list of clones
-    mechanical_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+print('Dead machines            {0}'.format(num_dead))
 
 # -----------------------------------------------------------------------------
 # Now write simplified JSON
 # -----------------------------------------------------------------------------
-print('Writing AML databases...')
-fs_write_JSON(Main_DB_filename, machines)
-fs_write_JSON(Machines_DB_filename, machines_pclone_dic)
-fs_write_JSON(Machines_NoCoin_DB_filename, nocoin_pclone_dic)
-fs_write_JSON(Machines_Mechanical_DB_filename, mechanical_pclone_dic)
+print('Writing AML database...')
+fs_write_JSON_file(Main_DB_filename, machines)
