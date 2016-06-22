@@ -5,3 +5,6 @@
 # KDE Kate temp files
 *.kate-swp
 
+# Misc files
+MAME.xml
+
