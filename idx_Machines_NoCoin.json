@@ -1,19 +1,17 @@
 {
-  "100lions": [],
   "1292apvs": [
     "pp1392",
     "fforce2",
     "pp1292",
+    "lnsy1392",
     "mpu1000",
     "1392apvs",
     "hmg1392",
     "hmg1292",
     "f1392",
-    "lnsy1392",
     "mpu2000",
     "vc6000"
   ],
-  "2spicy": [],
   "32x": [
     "32xj",
     "32xe"
@@ -22,26 +20,12 @@
     "32x_mcdj",
     "32x_mcd"
   ],
-  "3b1": [],
   "3do": [
     "3do_pal"
   ],
-  "3do_m2": [],
   "3dobios": [],
-  "3wishrd": [],
   "4004clk": [],
   "4enlinea": [],
-  "4roses": [
-    "4rosesa"
-  ],
-  "50lionr": [],
-  "50lions": [
-    "50lionsa"
-  ],
-  "5acespkr": [],
-  "5draga": [],
-  "5dragons": [],
-  "5koipp": [],
   "68ksbc": [],
   "990189": [
     "990189v"
@@ -69,8 +53,8 @@
     "a400pal"
   ],
   "a4000": [
-    "a400030n",
     "a400030",
+    "a400030n",
     "a4000n"
   ],
   "a4000t": [
@@ -83,15 +67,11 @@
     "a500pn"
   ],
   "a5105": [],
-  "a5120": [
-    "a5130"
-  ],
   "a5200": [],
   "a600": [
     "a600n"
   ],
   "a6809": [],
-  "a7150": [],
   "a7800": [
     "a7800p"
   ],
@@ -108,7 +88,6 @@
     "a600xl"
   ],
   "aadvent": [],
-  "abacus": [],
   "abc1600": [],
   "abc80": [],
   "abc800c": [
@@ -116,329 +95,27 @@
   ],
   "abc802": [],
   "abc806": [],
-  "abclimax": [],
-  "abigchs": [],
   "ac1": [
     "ac1scch",
     "ac1_32"
   ],
   "academy": [],
-  "acheart": [],
-  "acheartf": [],
-  "aclown": [],
   "acrnsys1": [],
-  "ad5bpfpm": [
-    "ad5bpfpmb",
-    "ad5bpfpmc",
-    "ad5bpfpma",
-    "ad5bpfpmd"
-  ],
-  "ad5btc": [
-    "ad5btca",
-    "ad5btcb"
-  ],
-  "ad5cmons": [
-    "ad5cmonsa"
-  ],
-  "ad5copsr": [
-    "ad5copsrn",
-    "ad5copsro",
-    "ad5copsrl",
-    "ad5copsrm",
-    "ad5copsrk",
-    "ad5copsrf",
-    "ad5copsrg",
-    "ad5copsrd",
-    "ad5copsre",
-    "ad5copsrb",
-    "ad5copsrc",
-    "ad5copsra",
-    "ad5copsrx",
-    "ad5copsry",
-    "ad5copsrv",
-    "ad5copsrw",
-    "ad5copsrr",
-    "ad5copsrp",
-    "ad5copsrq"
-  ],
-  "ad5crcpt": [
-    "ad5crcpta"
-  ],
-  "ad5crsc": [
-    "ad5copsrj",
-    "ad5copsrh",
-    "ad5copsri",
-    "ad5copsrz",
-    "ad5copsrt",
-    "ad5copsru",
-    "ad5copsrs",
-    "ad5copsr6",
-    "ad5copsr7",
-    "ad5copsr4",
-    "ad5copsr5",
-    "ad5copsr2",
-    "ad5copsr3",
-    "ad5copsr0",
-    "ad5copsr1",
-    "ad5crscg",
-    "ad5crscf",
-    "ad5crsce",
-    "ad5crscd",
-    "ad5crscc",
-    "ad5crscb",
-    "ad5crsca",
-    "ad5crsch"
-  ],
-  "ad5dnd": [
-    "ad5dndc",
-    "ad5dnde",
-    "ad5dndd",
-    "ad5dndg",
-    "ad5dndf",
-    "ad5dndi",
-    "ad5dndh",
-    "ad5dndk",
-    "ad5dndl",
-    "ad5dndn",
-    "ad5dndq",
-    "ad5dndp",
-    "ad5dndr",
-    "ad5dndu",
-    "ad5dndv",
-    "ad5dnda",
-    "ad5dndb",
-    "ad5dndj",
-    "ad5dndm",
-    "ad5dndo"
-  ],
-  "ad5dndcl": [
-    "ad5dndcla",
-    "ad5dndclg",
-    "ad5dndclb",
-    "ad5dndclc",
-    "ad5dndcld",
-    "ad5dndcle",
-    "ad5dndclf"
-  ],
-  "ad5dnddd": [
-    "ad5dnddda"
-  ],
-  "ad5dndpg": [
-    "ad5dndpgb",
-    "ad5dndpgc",
-    "ad5dndpga"
-  ],
-  "ad5dndpl": [
-    "ad5dndplc",
-    "ad5dndplb",
-    "ad5dndpla"
-  ],
-  "ad5eyes": [
-    "ad5eyese",
-    "ad5eyesb",
-    "ad5eyesc",
-    "ad5eyesa",
-    "ad5eyesf",
-    "ad5eyesg",
-    "ad5eyesd"
-  ],
-  "ad5gldmn": [
-    "ad5gldmnc",
-    "ad5gldmnb",
-    "ad5gldmna",
-    "ad5gldmng",
-    "ad5gldmnf",
-    "ad5gldmne",
-    "ad5gldmnd",
-    "ad5gldmnk",
-    "ad5gldmnj",
-    "ad5gldmni",
-    "ad5gldmnh"
-  ],
-  "ad5gldwn": [
-    "ad5gldwna"
-  ],
-  "ad5hir": [
-    "ad5hircl",
-    "ad5hira",
-    "ad5hirb",
-    "ad5hirc",
-    "ad5hircla",
-    "ad5hirclb"
-  ],
-  "ad5jckmo": [
-    "ad5jckmoe",
-    "ad5jckmod",
-    "ad5jckmoa",
-    "ad5jckmoc",
-    "ad5jckmob"
-  ],
-  "ad5mcob": [
-    "ad5mcoba",
-    "ad5mcobc",
-    "ad5mcobb"
-  ],
-  "ad5monop": [
-    "ad5monoph",
-    "ad5monopi",
-    "ad5monopj",
-    "ad5monopk",
-    "ad5monopd",
-    "ad5monope",
-    "ad5monopf",
-    "ad5monopg",
-    "ad5monopa",
-    "ad5monopb",
-    "ad5monopc"
-  ],
-  "ad5mowow": [
-    "ad5mowowj",
-    "ad5mowowk",
-    "ad5mowowh",
-    "ad5mowowi",
-    "ad5mowowl",
-    "ad5mowowm",
-    "ad5mowowb",
-    "ad5mowowc",
-    "ad5mowowa",
-    "ad5mowowf",
-    "ad5mowowg",
-    "ad5mowowd",
-    "ad5mowowe"
-  ],
-  "ad5mr2r": [
-    "ad5mr2ra",
-    "ad5mr2rg",
-    "ad5mr2rf",
-    "ad5mr2re",
-    "ad5mr2rd",
-    "ad5mr2rc",
-    "ad5mr2rb",
-    "ad5mr2rh"
-  ],
-  "ad5mww": [
-    "ad5mwwa"
-  ],
-  "ad5pking": [
-    "ad5pkinga"
-  ],
-  "ad5pp": [
-    "ad5ppf",
-    "ad5ppg",
-    "ad5ppd",
-    "ad5ppe",
-    "ad5ppb",
-    "ad5ppc",
-    "ad5ppa",
-    "ad5ppj",
-    "ad5pph",
-    "ad5ppi"
-  ],
-  "ad5ppbtb": [
-    "ad5ppbtba",
-    "ad5ppbtbc",
-    "ad5ppbtbb"
-  ],
-  "ad5rapid": [
-    "ad5rapida"
-  ],
-  "ad5rcash": [
-    "ad5rcasha"
-  ],
-  "ad5rroul": [
-    "ad5rroula",
-    "ad5rroulc",
-    "ad5rroulb"
-  ],
-  "ad5rsclb": [
-    "ad5rsclbg",
-    "ad5rsclbf",
-    "ad5rsclbe",
-    "ad5rsclbd",
-    "ad5rsclbc",
-    "ad5rsclbb",
-    "ad5rsclba",
-    "ad5rsclbj",
-    "ad5rsclbi",
-    "ad5rsclbh"
-  ],
-  "ad5rsnw": [
-    "ad5rsnwa",
-    "ad5rsnwb",
-    "ad5rsnwc"
-  ],
-  "ad5rspin": [
-    "ad5rspinc",
-    "ad5rspinb"
-  ],
-  "ad5rsrm": [
-    "ad5rsrra",
-    "ad5rsrma",
-    "ad5rsrr"
-  ],
-  "ad5rwclb": [
-    "ad5rwclbc",
-    "ad5rwclbb",
-    "ad5rwclba",
-    "ad5rwclbe",
-    "ad5rwclbd"
-  ],
-  "ad5sslam": [
-    "ad5sslama",
-    "ad5sslamc",
-    "ad5sslamb",
-    "ad5sslame",
-    "ad5sslamd",
-    "ad5sslamf"
-  ],
-  "ad5tornc": [
-    "ad5torncc",
-    "ad5torncb",
-    "ad5tornca",
-    "ad5tornce",
-    "ad5torncd"
-  ],
-  "ad5vlv": [
-    "ad5vlvc",
-    "ad5vlvb",
-    "ad5vlvd",
-    "ad5vlvf",
-    "ad5vlve"
-  ],
-  "ad5vpa": [
-    "ad5vpab",
-    "ad5vpac",
-    "ad5vpaa"
-  ],
   "adam": [],
-  "adonis": [
-    "adonisa"
-  ],
-  "adonis6": [],
-  "adonise": [],
-  "adonishl": [],
-  "adults": [],
-  "adustcm": [],
   "advision": [],
   "aes": [],
-  "aftrhrs": [],
   "aim65": [],
-  "aim65_40": [],
   "airrace": [],
-  "airtrix": [],
   "al8800bt": [],
-  "alchemya": [],
   "alice32": [
     "alice90"
   ],
-  "alien": [],
   "alnattck": [],
   "alnchase": [],
   "alphatro": [],
   "alto2": [],
+  "altos486": [],
   "altos5": [],
-  "amazoni2": [],
-  "amazonia": [],
   "amaztron": [],
   "amico2k": [],
   "ampro": [],
@@ -449,30 +126,19 @@
     "roma32"
   ],
   "amu880": [],
-  "amusco": [],
   "amust": [],
-  "amzqnar": [],
-  "amzteml": [],
-  "ancienta": [
-    "ancientad",
-    "ancientab",
-    "ancientac",
-    "ancientaa"
-  ],
-  "antcleo": [],
-  "antiairc": [],
   "apc": [],
   "apexc": [],
   "apfm1000": [
     "apfimag"
   ],
-  "apocof": [],
   "apple1": [],
   "apple2": [
     "microeng",
     "ace100",
     "apple2p",
     "ivelultr",
+    "elppa",
     "space84",
     "agat9",
     "agat7",
@@ -483,8 +149,7 @@
     "am64",
     "prav8m",
     "prav82",
-    "uniap2pt",
-    "elppa"
+    "uniap2pt"
   ],
   "apple2c": [
     "apple2c4",
@@ -499,19 +164,19 @@
   "apple2e": [
     "apple2euk",
     "mprof3",
+    "apple2ee",
     "apple2eeuk",
     "apple2ep",
     "prav8c",
-    "apple2ee",
     "spectred"
   ],
   "apple2gs": [
     "apple2gsr3p",
-    "apple2gsr0",
     "apple2gsr1",
     "apple2gsr3lp",
     "apple2gsr0p",
-    "apple2gsr0p2"
+    "apple2gsr0p2",
+    "apple2gsr0"
   ],
   "apple3": [],
   "applix": [],
@@ -519,88 +184,43 @@
     "apricotxi"
   ],
   "aquarius": [],
-  "arbngts": [],
-  "arbnigar": [],
   "arcadia": [
     "leonardo",
     "tccosmos",
     "hmg2650",
     "tvg2000",
-    "telefevr",
     "bndarc",
     "ixl2000",
+    "telefevr",
     "hanihac",
     "tunixha",
-    "advsnha",
-    "lvision"
+    "lvision",
+    "advsnha"
   ],
   "arctthnd": [],
   "argo": [],
-  "arish": [],
-  "aristmk5": [],
-  "aristmk6": [],
-  "arwincm": [],
   "asma2k": [],
   "asmapro": [],
-  "asnprinc": [],
-  "asr10": [],
-  "asrx": [],
   "astro": [],
   "astrocde": [
-    "astrocdw",
-    "astrocdl"
+    "astrocdl",
+    "astrocdw"
   ],
   "astrocmd": [],
-  "atkgld": [],
-  "atlantca": [
-    "atlantcaa"
-  ],
   "atom": [
     "atombb",
     "atomeb"
   ],
-  "atronic": [
-    "atronica"
-  ],
   "attache": [],
-  "attckexd": [
-    "attckexd2"
-  ],
-  "atvtrack": [
-    "atvtracka"
-  ],
   "aussieby": [],
-  "avalnc13": [
-    "avalnc12"
-  ],
-  "avalns13": [
-    "avalns12"
-  ],
-  "avalon20": [],
-  "avalonc": [
-    "avalonce",
-    "avaloncf"
-  ],
-  "avalons": [
-    "avalonsc",
-    "avalonse",
-    "avalonsf"
-  ],
-  "avenger": [],
   "avigo": [
     "avigo_it",
     "avigo_de",
     "avigo_fr",
     "avigo_es"
   ],
-  "avtbingo": [],
-  "avtnfl": [],
-  "avtsym14": [
-    "avtsym25"
-  ],
   "ax150": [],
   "ax170": [],
-  "ax20": [],
   "ax350": [],
   "ax370": [],
   "b128hp": [
@@ -612,7 +232,6 @@
     "cbm720_de",
     "cbm730"
   ],
-  "b16": [],
   "b2m": [
     "b2mrom"
   ],
@@ -624,25 +243,12 @@
     "cbm620"
   ],
   "babbage": [],
-  "baboshka": [],
-  "badbog": [],
   "bambball": [],
-  "bananas": [
-    "bananasa"
-  ],
-  "banctec": [],
-  "bankrob": [
-    "bankroba"
-  ],
   "bankshot": [],
   "barbball": [],
   "basic52": [
     "basic31"
   ],
-  "bazooka": [
-    "bazookabr"
-  ],
-  "bballrmt": [],
   "bbcb": [
     "bbca",
     "torchf",
@@ -661,8 +267,8 @@
     "abc310"
   ],
   "bbcm": [
-    "bbcm512",
     "bbcmet",
+    "bbcm512",
     "bbcmaiv",
     "bbcmarm",
     "bbcmt"
@@ -680,74 +286,25 @@
     "bcs3d"
   ],
   "bdoramon": [],
-  "beachpt": [],
-  "bearnec": [],
-  "beavbuk": [],
   "bebox": [
     "bebox2"
   ],
-  "beebop": [
-    "beebopb",
-    "beebopc",
-    "beebopa",
-    "beebopd",
-    "beebope"
-  ],
   "beehive": [],
-  "beetlem": [
-    "beetlemb",
-    "beetlemc",
-    "beetlema",
-    "beetlemd"
-  ],
-  "beetleup": [],
   "besta88": [],
   "beta": [],
   "bfriskyt": [],
-  "bhead2k": [],
-  "bhead2k2": [],
-  "bhead2k3": [],
-  "bhead2ka": [],
-  "bigbenpj": [],
-  "bigblue": [],
   "bigboard": [
     "x820",
     "mk82",
     "bigbord2"
   ],
-  "bigheart": [],
-  "bigredjp": [],
-  "bingoc": [],
-  "bingoman": [
-    "bingomana"
-  ],
-  "bingor1": [],
-  "bingor2": [],
-  "bingor3": [],
-  "bingor4": [],
-  "bingor5": [],
-  "bingpty": [],
-  "biplane4": [],
-  "birredar": [],
   "bitgrpha": [],
   "bitgrphb": [],
   "bk0010": [
-    "bk001001",
+    "bk0011m",
     "bk0010fd",
-    "bk0011m"
+    "bk001001"
   ],
-  "blackbd": [
-    "blackbda",
-    "blackbdb"
-  ],
-  "blackpnt": [],
-  "bldyr3b": [],
-  "blkbrum": [],
-  "blkmust": [],
-  "bloto": [],
-  "blpearl": [],
-  "bluetigr": [],
-  "bmbgs": [],
   "bmboxing": [],
   "bmjr": [],
   "bml3": [
@@ -756,47 +313,20 @@
   ],
   "bmsafari": [],
   "bmsoccer": [],
-  "bntyhunt": [],
   "bob85": [],
-  "bobdolu1": [],
-  "bombaway": [],
-  "bonusch": [],
-  "bookra": [],
-  "bookthr": [],
-  "bootscot": [],
-  "bootsctn": [],
   "borisdpl": [],
-  "bowltry": [],
   "bpengo": [],
   "br8641": [],
-  "braveff": [],
-  "brazilar": [],
   "bruc100": [],
-  "bs9009cx": [],
   "bs94": [],
-  "bsplash": [],
-  "btippers": [],
-  "btltryst": [],
-  "bucanar": [],
-  "buckstop": [],
-  "buffalar": [],
-  "buffaloa": [],
+  "bship": [],
   "bultrman": [],
-  "bumblbug": [],
-  "bumbugs": [],
-  "bungeem": [
-    "bungeema"
-  ],
-  "bushrngr": [],
   "busicom": [],
-  "buster": [],
-  "butdeli": [],
   "bw12": [
     "bw14"
   ],
   "bw2": [],
   "bzaxxon": [],
-  "c10": [],
   "c128": [
     "c128cr",
     "c128dcrp",
@@ -813,20 +343,16 @@
   "c264": [
     "v364",
     "c232",
-    "c16_hu",
     "plus4p",
+    "c16_hu",
     "c116",
     "c16p",
     "plus4",
     "c16"
   ],
-  "c3_ppays": [],
-  "c3_rtime": [],
-  "c3_telly": [],
-  "c3_totp": [],
   "c64": [
-    "vip64",
     "c64cp",
+    "vip64",
     "dx64",
     "c64p",
     "c64g",
@@ -842,18 +368,12 @@
     "sx64",
     "pet64"
   ],
-  "c64dtv": [],
   "c65": [
     "c64dx"
   ],
   "c80": [],
   "c8002": [],
   "c900": [],
-  "cactusco": [],
-  "callwlar": [],
-  "calyking": [],
-  "canary2": [],
-  "canons80": [],
   "canonv20": [
     "canonv10",
     "canonv20e",
@@ -866,18 +386,7 @@
     "canonv30f"
   ],
   "canonv8": [],
-  "capcor": [],
-  "capunc": [],
   "cars2lap": [],
-  "cashcham": [],
-  "cashchm": [],
-  "cashcroa": [],
-  "cashcrop": [],
-  "cashtrn": [],
-  "casloopy": [],
-  "castaway": [
-    "castawaya"
-  ],
   "cat": [],
   "cbm8296": [
     "cbm8296ed",
@@ -900,7 +409,6 @@
   "cd32": [
     "cd32n"
   ],
-  "cdc721": [],
   "cdi490a": [],
   "cdi910": [],
   "cdimono1": [],
@@ -918,10 +426,6 @@
   "cf2700g": [],
   "cf3000": [],
   "cf3300": [],
-  "cfblue": [
-    "cfbluea"
-  ],
-  "cfgreen": [],
   "cfrogger": [],
   "cfx9850": [],
   "cgalaxn": [],
@@ -929,7 +433,6 @@
   "cgenie": [
     "cgenienz"
   ],
-  "cgunship": [],
   "cham24": [],
   "channelf": [
     "luxorves",
@@ -942,48 +445,16 @@
     "itttelma"
   ],
   "chaos": [],
-  "chaosbrk": [],
-  "chariotc": [
-    "chariotca"
-  ],
-  "chasehq2": [],
-  "chessc2": [],
   "chessmst": [],
   "chesstrv": [],
-  "chicken": [],
-  "chickena": [],
   "chihiro": [],
-  "chillicc": [],
-  "chkmatar": [],
-  "chkrun": [],
-  "choysun": [],
-  "cinhell": [],
-  "cjddzsp": [],
-  "cjdh2": [
-    "cjdh2c",
-    "cjdh2b",
-    "cjdh2a"
-  ],
-  "ckidzo": [],
   "clcd": [],
-  "cleanswp": [],
   "cm1800": [],
   "cm32l": [],
-  "cmagica": [],
-  "cmast99": [
-    "cmast99b"
-  ],
-  "cmkenosp": [
-    "cmkenospa"
-  ],
-  "cmmb162": [],
-  "cmrltv75": [],
   "cmspacmn": [],
-  "cmtonig": [],
   "cnfball": [],
   "cnfball2": [],
   "cnsector": [],
-  "cobrata": [],
   "coco": [
     "dragon200e",
     "cocoe",
@@ -1008,47 +479,6 @@
     "colecop",
     "onyx"
   ],
-  "colorama": [
-    "coloramas"
-  ],
-  "columbus": [
-    "columbuse",
-    "columbusf",
-    "columbusd",
-    "columbusc",
-    "columbusb",
-    "columbusa"
-  ],
-  "comebaby": [],
-  "comg094": [],
-  "comg107": [],
-  "comg123": [],
-  "comg125": [],
-  "comg127": [],
-  "comg134": [],
-  "comg145": [],
-  "comg157": [],
-  "comg159": [],
-  "comg164": [],
-  "comg168": [],
-  "comg172": [],
-  "comg176": [],
-  "comg181": [],
-  "comg183": [],
-  "comg185": [],
-  "comg186": [],
-  "comg187": [],
-  "comg204": [],
-  "comg208": [],
-  "comg227": [],
-  "comg230": [],
-  "comg236": [],
-  "comg246": [],
-  "comg272a": [],
-  "comg272b": [],
-  "comg5108": [],
-  "comg903d": [],
-  "comg905d": [],
   "comp4": [],
   "compclr2": [],
   "compis": [
@@ -1063,9 +493,6 @@
   "copycat": [
     "copycatm2"
   ],
-  "coralr2v": [],
-  "corrida": [],
-  "cortex": [],
   "cosmicos": [],
   "cp1": [],
   "cpacman": [
@@ -1080,8 +507,8 @@
     "cpc6128",
     "cpc6128s",
     "cpc6128f",
-    "cpc664",
     "al520ex",
+    "cpc664",
     "kccomp"
   ],
   "cpc464p": [],
@@ -1097,43 +524,30 @@
     "ivg09"
   ],
   "cqback": [],
-  "craft": [],
-  "crashnsc": [],
-  "crospuzl": [],
-  "crspru": [],
   "crtaxihr": [],
   "crvision": [
     "fnvision",
-    "vz2000",
     "rameses",
+    "vz2000",
     "wizzard",
     "crvisio2",
     "crvisioj"
   ],
-  "cryspri": [],
-  "crystals": [],
-  "crzyddz": [],
   "csc": [
     "cscsp",
     "cscfr",
     "cscg"
   ],
-  "csd": [],
-  "csdce": [],
-  "cshcat": [],
-  "csret": [],
   "ct486": [],
   "ctstein": [],
   "cubo": [],
-  "cuckoo": [],
-  "cuckooa": [],
   "cvicny": [],
   "cx5f": [
     "cx5f1"
   ],
   "cx5m128": [
-    "cx5m",
-    "cx5m2"
+    "cx5m2",
+    "cx5m"
   ],
   "cx7m128": [
     "cx7m"
@@ -1147,7 +561,6 @@
     "dina",
     "prsarcde"
   ],
-  "d110": [],
   "d6800": [],
   "d6809": [],
   "dai": [],
@@ -1156,79 +569,36 @@
   ],
   "dataman": [],
   "dauphin": [],
-  "davedrag": [],
-  "dblagus": [],
   "dcdev": [],
   "dcjp": [
     "dceu",
     "dc"
   ],
-  "dct11em": [],
-  "ddpdojh": [],
-  "deathrac": [],
-  "deathsm2": [],
   "dectalk": [],
-  "deepfrz": [],
-  "deltqn": [],
   "dg680": [],
   "dgnbeta": [],
-  "di4ever": [],
   "diablo68": [],
   "digel804": [
     "ep804"
   ],
   "dim68k": [],
-  "dinoaris": [],
-  "ditrio": [],
-  "dlair2": [
-    "dlair2_300",
-    "dlair2_316e",
-    "dlair2_319e",
-    "dlair2_319s",
-    "dlair2_200",
-    "dlair2_317e",
-    "dlair2_318",
-    "dlair2_315",
-    "dlair2_314",
-    "dlair2_312",
-    "dlair2_315s",
-    "dlair2_211"
-  ],
-  "dltbel": [],
   "dm7000": [
     "dm500",
     "dm5620"
   ],
-  "dmddove": [],
-  "dmdtouch": [],
-  "dmneye2": [],
-  "dmneyeus": [],
-  "dmodrbcc": [],
-  "dms5000": [],
   "dms86": [],
   "dmv": [],
   "dn3500": [
     "dn3500_19i",
-    "dn3000",
     "dsp3000",
+    "dn3000",
     "dsp5500",
     "dn3000_19i",
     "dn5500",
     "dn5500_19i",
     "dsp3500"
   ],
-  "dncsprt": [],
-  "dolphinp": [],
-  "dolphntr": [
-    "dolphtra"
-  ],
-  "dolphtre": [],
-  "dolptra": [],
-  "doubdolp": [],
   "downhill": [],
-  "dpatrol": [
-    "dpatrola"
-  ],
   "dpc200": [
     "dpc180",
     "dpc100",
@@ -1236,34 +606,14 @@
     "tadpc200"
   ],
   "dpc200e": [],
-  "dps1": [],
-  "dragchrn": [],
   "dragnfly": [],
-  "dragsphr": [],
-  "drawpka": [],
-  "drfz6us": [],
-  "drgnlrd": [],
-  "drgnmgic": [],
-  "drmmake": [],
-  "drmred": [],
   "ds348": [],
   "dsb46": [],
-  "dslayrr": [
-    "dslayrra"
-  ],
-  "dstblom": [],
   "dual68": [],
-  "dualgame": [],
-  "dvk_kcgd": [],
   "dvk_ksm": [
     "dvk_ksm01"
   ],
-  "dyjack": [],
   "eacc": [],
-  "eaglrock": [],
-  "eaglst1": [],
-  "eaglst2": [],
-  "eastland": [],
   "ebaskb2": [],
   "ebball": [],
   "ebball2": [],
@@ -1273,10 +623,8 @@
   ],
   "edracula": [],
   "efball": [],
-  "efcashex": [],
   "efootb4": [],
   "egalaxn2": [],
-  "eggsrich": [],
   "ehx20": [
     "ehx20e"
   ],
@@ -1287,23 +635,13 @@
   "einvader": [
     "einvaderc"
   ],
-  "ejollyx5": [],
-  "ejollyx9": [],
-  "eldora": [],
   "elecdet": [],
   "electron": [],
   "elekscmp": [],
   "elektor": [],
   "elf2": [],
-  "elvis": [],
   "elwro800": [],
-  "enchfore": [],
-  "enchfrst": [],
   "enchlamp": [],
-  "encspela": [],
-  "enmirage": [],
-  "ent6r": [],
-  "eott": [],
   "ep64": [
     "ep128",
     "phc64"
@@ -1321,25 +659,8 @@
   "et3400": [],
   "eti660": [],
   "eturtles": [],
-  "euro2k2": [
-    "euro2k2s",
-    "euro2k2a"
-  ],
-  "eurodsr": [],
-  "eurogame": [
-    "eurogamea"
-  ],
-  "europass": [],
-  "evilngt": [
-    "evilngte",
-    "hellngt"
-  ],
   "evmbug": [],
   "excali64": [],
-  "excitbj": [],
-  "exl100": [
-    "exeltel"
-  ],
   "exp85": [],
   "expert13": [
     "expert11",
@@ -1352,29 +673,13 @@
   "expertdp": [],
   "expertdx": [],
   "expertpl": [],
-  "exsafar": [],
-  "extrmth": [],
-  "extrmti": [],
-  "eztouch": [],
   "f1": [
     "f2",
     "f1e",
     "f10"
   ],
-  "fairyl2": [
-    "fairyl2b",
-    "fairyl2a",
-    "fairyl2bl"
-  ],
   "falcon30": [
     "falcon40"
-  ],
-  "fanucs15": [],
-  "fanucspg": [
-    "fanucspgm"
-  ],
-  "fateulc": [
-    "fateulcb"
   ],
   "fb01": [],
   "fc100": [],
@@ -1385,22 +690,9 @@
   ],
   "feagv2": [],
   "feagv7": [],
-  "fearless": [],
   "fexcel": [],
   "fexcelv": [],
-  "fghtjam": [],
-  "filthyr": [],
-  "firedan": [],
-  "firstcl": [],
   "fk1": [],
-  "flamolus": [
-    "flamolusa"
-  ],
-  "flamoly": [],
-  "flamoly2": [],
-  "flower": [
-    "flowerj"
-  ],
   "fm11": [],
   "fm16beta": [],
   "fm7": [
@@ -1417,27 +709,16 @@
     "fmtownsux",
     "fmtownsmx",
     "fmtownssj",
-    "fmtownsa",
     "fmtownsftv",
+    "fmtownsa",
     "fmtownshr"
   ],
   "fmx": [],
-  "followst": [],
-  "fortath": [],
-  "fortela": [],
-  "foxred": [
-    "jefffox"
-  ],
   "fp": [],
   "fp1100": [],
   "fp200": [],
-  "fp6000": [],
   "fpc500": [],
   "fpc900": [],
-  "frogwld": [],
-  "fruitpar": [],
-  "fruitstb": [],
-  "fruitstr": [],
   "fs1300": [],
   "fs4000": [
     "fs4000a"
@@ -1467,29 +748,9 @@
   "fspc800": [],
   "fstm1": [],
   "ft68m": [],
-  "fun4": [
-    "fun4a"
-  ],
   "funjacks": [],
-  "funkball": [],
-  "funnyfm": [
-    "funnyfma",
-    "funnyfmb"
-  ],
   "funrlgl": [],
   "fxmcr165": [],
-  "fzeroax": [
-    "fzeroaxc"
-  ],
-  "g4u2": [],
-  "g4u3": [
-    "g4u3a"
-  ],
-  "g4u4": [],
-  "g4u5": [],
-  "g4u6": [],
-  "g4u7": [],
-  "gal3": [],
   "galaxy": [
     "galaxyp"
   ],
@@ -1498,7 +759,6 @@
   ],
   "galeb": [],
   "gamate": [],
-  "gambjack": [],
   "gameboy": [
     "gbpocket",
     "supergb2",
@@ -1514,187 +774,23 @@
   "gamekin3": [],
   "gameking": [],
   "gamepock": [],
-  "gametree": [],
   "gammagic": [
     "99bottles"
   ],
-  "gamt1": [
-    "gamt1lotc",
-    "gamt1b",
-    "gamt1a",
-    "gamt1ent"
-  ],
-  "gamt10": [
-    "gamt10gmult",
-    "gamt10c",
-    "gamt10b",
-    "gamt10a",
-    "gamt10g",
-    "gamt10f",
-    "gamt10e",
-    "gamt10d",
-    "gamt10k",
-    "gamt10j",
-    "gamt10i",
-    "gamt10h",
-    "gamt10o",
-    "gamt10n",
-    "gamt10m",
-    "gamt10l",
-    "gamt10ent",
-    "gamt10bag",
-    "gamt10lotm",
-    "gamt10lotc"
-  ],
-  "gamt11": [
-    "gamt11bmult",
-    "gamt11a",
-    "gamt11b",
-    "gamt11c"
-  ],
-  "gamt12": [
-    "gamt12a",
-    "gamt12b"
-  ],
-  "gamt16": [
-    "gamt16lotc",
-    "gamt16j",
-    "gamt16e",
-    "gamt16fmult",
-    "gamt16i",
-    "gamt16h",
-    "gamt16k",
-    "gamt16a",
-    "gamt16c",
-    "gamt16b",
-    "gamt16d",
-    "gamt16g",
-    "gamt16f"
-  ],
-  "gamt17": [
-    "gamt17b",
-    "gamt17a"
-  ],
-  "gamt18": [
-    "gamt18bmult",
-    "gamt18c",
-    "gamt18b",
-    "gamt18a",
-    "gamt18d",
-    "gamt18lotc",
-    "gamt18ent"
-  ],
-  "gamt19": [
-    "gamt19ent",
-    "gamt19lotc",
-    "gamt19a",
-    "gamt19mult"
-  ],
-  "gamt20": [
-    "gamt20ent",
-    "gamt20lotm",
-    "gamt20lotc",
-    "gamt20a",
-    "gamt20b"
-  ],
-  "gamt21": [
-    "gamt21a",
-    "gamt21amult"
-  ],
-  "gamt22": [
-    "gamt22b",
-    "gamt22a",
-    "gamt22amult"
-  ],
-  "gamt23": [
-    "gamt23a",
-    "gamt23b"
-  ],
-  "gamt29": [
-    "gamt29a"
-  ],
-  "gamt30": [],
-  "gamt31": [
-    "gamt31mult"
-  ],
-  "gamt4": [
-    "gamt4c",
-    "gamt4i",
-    "gamt4hbag",
-    "gamt4f",
-    "gamt4a",
-    "gamt4lotm",
-    "gamt4lotc",
-    "gamt4ent",
-    "gamt4fbag",
-    "gamt4e",
-    "gamt4d",
-    "gamt4g",
-    "gamt4b",
-    "gamt4h",
-    "gamt4j",
-    "gamt4lotca",
-    "gamt4hmult",
-    "gamt4ibag",
-    "gamt4dbag"
-  ],
-  "gamt5": [],
-  "gamt6": [
-    "gamt6ent",
-    "gamt6f",
-    "gamt6e",
-    "gamt6d",
-    "gamt6c",
-    "gamt6b",
-    "gamt6a",
-    "gamt6lotc"
-  ],
-  "gamt7": [
-    "gamt7a",
-    "gamt7b",
-    "gamt7c",
-    "gamt7d",
-    "gamt7e",
-    "gamt7f",
-    "gamt7g",
-    "gamt7h"
-  ],
-  "gamt8": [
-    "gamt8lotc",
-    "gamt8a",
-    "gamt8c",
-    "gamt8b",
-    "gamt8d"
-  ],
-  "gamt9": [
-    "gamt9lotc",
-    "gamt9a"
-  ],
-  "gangrose": [],
   "gba": [],
   "gbcolor": [],
-  "gbmoney": [],
   "gbs5505x": [],
   "gckong": [],
   "gdigdug": [],
-  "gdvsgd": [],
-  "gdvsgdnx": [],
-  "geishaar": [],
-  "geishanz": [],
-  "gekpurya": [
-    "gekpuryb"
-  ],
   "genesis": [
     "megadriv",
     "megadrij",
     "genesis_tmss"
   ],
   "geneve": [],
-  "genmagi": [],
   "gfc1080": [],
   "gfc1080a": [],
   "ghalien": [],
-  "ghostsev": [],
   "ghostsqu": [
     "ghostsqo"
   ],
@@ -1710,14 +806,6 @@
   "gjrstar3": [],
   "gjungler": [],
   "gkidabc": [],
-  "gkigt4": [
-    "gkigt5p",
-    "gkigt43",
-    "gkigtez",
-    "gkigt43n",
-    "gkigt4ms"
-  ],
-  "gkkey": [],
   "gl2000": [
     "gl2000p",
     "gl2000c"
@@ -1730,59 +818,28 @@
   "gl6000sl": [],
   "gl6600cx": [],
   "gl7007sl": [],
-  "gl8008cx": [],
   "glasgow": [
     "dallas"
   ],
   "glcolor": [
     "glscolor"
   ],
-  "gldgong": [],
-  "gldgong2": [],
-  "gldincas": [],
-  "gldnflc": [],
   "glmcolor": [],
   "glmmc": [],
   "gln": [],
   "glpn": [],
   "gmaster": [],
   "gmtt": [],
-  "gnomatw": [],
   "gnwmndon": [],
-  "goapear": [],
-  "gogreen": [],
-  "goketsuj": [],
-  "goldarjp": [],
-  "goldcity": [],
-  "goldglen": [],
-  "goldinc": [],
-  "goldphm": [],
-  "goldprmd": [],
-  "goldpym": [],
-  "goldpyra": [],
-  "goldra": [],
-  "goldsam": [],
-  "gonefsh2": [],
   "goupilg1": [],
-  "gp2x": [],
   "gp32": [],
   "gpoker": [],
-  "grancan": [],
-  "grandprx": [],
-  "grfd2301": [],
-  "grizzly": [],
   "gsfc200": [],
   "gsfc80u": [],
   "gts1": [],
   "gts1s": [],
   "gundamos": [],
-  "gundzaft": [],
-  "gunman": [],
-  "gvrxpsup": [],
-  "gvrxpsys": [],
-  "gwinggen": [],
   "gwnf": [],
-  "gwnn": [],
   "gx4000": [],
   "gypmagic": [],
   "h19": [],
@@ -1793,8 +850,6 @@
   "h8": [],
   "h89": [],
   "harriet": [],
-  "haunthig": [],
-  "hawaii": [],
   "hb101p": [],
   "hb10p": [
     "hb10"
@@ -1843,26 +898,15 @@
     "hc5",
     "hc6"
   ],
-  "heartgar": [],
-  "heartveg": [],
-  "heatof11": [],
   "hec2hrp": [
-    "victor",
     "hec2hr",
+    "victor",
+    "hec2mdhrx",
     "hec2mx40",
     "hec2hrx",
-    "hec2mx80",
-    "hec2mdhrx"
+    "hec2mx80"
   ],
-  "hideseek": [],
-  "highnoar": [],
-  "hikaru": [],
-  "hitpoker": [],
   "hk68v10": [],
-  "hlntry": [],
-  "hlsunmon": [],
-  "hockyrmt": [],
-  "holdrma": [],
   "homelab2": [
     "homelab3",
     "braiplus",
@@ -1870,7 +914,6 @@
     "brailab4"
   ],
   "homez80": [],
-  "homura": [],
   "hotbi13p": [
     "hotbit11",
     "hotbi13b",
@@ -1878,19 +921,6 @@
   ],
   "hotbit20": [],
   "hotd3": [],
-  "hotd4": [],
-  "hotdex": [],
-  "hotgmkmp": [],
-  "hotslots": [],
-  "hotstuff": [],
-  "hottop": [
-    "hottopa"
-  ],
-  "houhear": [],
-  "hp16500b": [],
-  "hp1650b": [],
-  "hp1651b": [],
-  "hp165ka0": [],
   "hp38g": [],
   "hp39g": [],
   "hp48gx": [
@@ -1903,26 +933,10 @@
   "hp49g": [],
   "hp49gp": [],
   "hp64k": [],
-  "hp9816": [],
-  "hp9835a": [
-    "hp9835b"
-  ],
-  "hp9845a": [
-    "hp9845s"
-  ],
   "hp9845b": [
     "hp9845c",
     "hp9845t"
   ],
-  "hp9k310": [],
-  "hp9k320": [],
-  "hp9k330": [
-    "hp9k370",
-    "hp9k340"
-  ],
-  "hp9k380": [],
-  "hp9k382": [],
-  "hp_ipc": [],
   "hprot1": [
     "hprotr8a",
     "hprot2r6"
@@ -1931,13 +945,7 @@
   "hr16": [
     "hr16b"
   ],
-  "hrttrhb": [],
-  "hs": [],
-  "hshavoc": [],
-  "hspot2": [],
-  "hspot3": [],
   "ht68k": [],
-  "hummerxt": [],
   "hunter2": [],
   "hx10": [
     "hx10d",
@@ -1966,11 +974,10 @@
   ],
   "hxhdci2k": [],
   "hydrthnd": [],
-  "hyperv2": [],
-  "hyperv2a": [],
   "i7000": [],
   "ibm5150": [
     "sicpc1605",
+    "pk88",
     "pc7000",
     "zdsupers",
     "asst128",
@@ -1978,16 +985,14 @@
     "pc200",
     "pcherc",
     "bw230",
+    "t1000sx",
     "t1000rl",
     "mk88",
-    "pk88",
     "poisk1",
     "poisk2",
     "eagle1600",
     "iskr1030m",
-    "ibm5160",
     "ppc640",
-    "ncrpc4i",
     "ibm5140",
     "iskr3104",
     "ssam88s",
@@ -2001,18 +1006,18 @@
     "ec1842",
     "t1000tx",
     "t1000tl2",
+    "mc1702",
     "iskr1031",
     "pc20",
     "pc",
-    "ppc512",
-    "t1000sx",
+    "ibm5160",
     "m240",
     "olivm15",
     "mbc16",
-    "mc1702",
     "xtvga",
     "ibmpcjx",
     "ibmpcjr",
+    "ncrpc4i",
     "ibm5550",
     "t1000hx",
     "europc",
@@ -2024,7 +1029,8 @@
     "pcega",
     "dgone",
     "sx16",
-    "compc1"
+    "compc1",
+    "ppc512"
   ],
   "ibm5170": [
     "apxenls3",
@@ -2032,7 +1038,6 @@
     "xb42639",
     "i8530286",
     "apvxft",
-    "at486",
     "ficpio2",
     "ficvt503",
     "apxenp2",
@@ -2040,6 +1045,7 @@
     "pc2386",
     "i8530h31",
     "ibmps1es",
+    "ibm5162",
     "at386",
     "at",
     "xb42639a",
@@ -2048,23 +1054,23 @@
     "neat",
     "ct386sx",
     "ftsserv",
+    "i8555081",
     "apxeni",
     "aprpand",
     "qi900",
-    "ibm5162",
     "at586",
     "i8580071",
-    "i8555081",
     "atvga",
+    "k286i",
     "aplsbon",
     "qi600",
     "i8550021",
+    "aplannb",
+    "at486",
     "apxena1",
     "c386sx16",
     "aprfte",
-    "aplannb",
     "i8580111",
-    "k286i",
     "cmdpc30",
     "xb42664",
     "xb42663",
@@ -2075,39 +1081,12 @@
     "aplscar",
     "at586x3"
   ],
-  "ibm6580": [],
-  "icatel": [],
-  "iccash": [],
-  "ichiban": [],
   "ie15": [],
-  "if800": [],
-  "igsm312": [],
-  "igtsc": [],
   "imds": [],
   "imds2": [],
   "imsai": [],
-  "incachf": [],
   "incanp": [],
-  "incanz": [],
-  "incsun": [],
-  "indce": [],
-  "inddrma": [],
-  "indgcm": [],
   "indiana": [],
-  "indiandr": [],
-  "indianmm": [],
-  "indigo3k": [],
-  "indigo4k": [],
-  "indll": [],
-  "indprncs": [],
-  "indsc": [],
-  "indsrp": [],
-  "indy4": [],
-  "indy800": [],
-  "initiad4": [
-    "initiad4c"
-  ],
-  "instantm": [],
   "instruct": [],
   "interact": [
     "hector1"
@@ -2124,7 +1103,6 @@
     "ekusera",
     "dynavisn"
   ],
-  "intrscti": [],
   "intv": [
     "intvkbd",
     "intvecs",
@@ -2133,7 +1111,6 @@
     "intv2"
   ],
   "invspace": [],
-  "inwinner": [],
   "ip224613": [],
   "ip225015": [],
   "ip244415": [],
@@ -2154,25 +1131,15 @@
   "isbc86": [],
   "itt3030": [],
   "itunlim": [],
-  "ivorytsk": [],
   "jade": [],
   "jaguar": [
     "jaguarcd"
   ],
-  "jailbrar": [],
   "jestmagi": [],
-  "jetfight": [
-    "jetfighta"
-  ],
-  "jewelunc": [],
   "jkrmast": [
     "pkrmast",
     "pkrmasta"
   ],
-  "jnero": [],
-  "jokrwild": [],
-  "jonos": [],
-  "jptparty": [],
   "jr100": [
     "jr100u"
   ],
@@ -2185,14 +1152,11 @@
     "jtces40"
   ],
   "juicebox": [],
-  "jumpjkpt": [],
-  "jungleyo": [],
   "junior": [],
   "jupace": [],
   "jupiter2": [],
   "jupiter3": [],
   "jvchc7gb": [],
-  "k1003": [],
   "k28": [],
   "k28m2": [],
   "k8915": [],
@@ -2215,41 +1179,20 @@
     "kc85_5"
   ],
   "kcontra": [],
-  "kgalah": [],
   "kgradius": [],
   "kim1": [],
   "kingman": [],
-  "kingnep": [],
-  "kingnile": [
-    "kingnilea"
-  ],
-  "kingtut": [],
-  "kinniku": [],
-  "kinniku2": [],
   "kloneran": [],
-  "klxyj": [],
   "kmc5000": [],
-  "koalamnt": [],
-  "koalmnt": [],
-  "kof98um": [],
-  "koftball": [],
-  "kohinoor": [],
-  "konin": [],
   "kontiki": [
     "tiki100"
   ],
   "konzero": [],
-  "kookabk": [],
   "korvet": [
     "bk8t",
     "neiva",
     "kontur"
   ],
-  "kov2nl": [
-    "kov2nloa",
-    "kov2nlo"
-  ],
-  "kov3": [],
   "kramermc": [],
   "krvnjvtv": [
     "oc2000"
@@ -2257,11 +1200,8 @@
   "kt76": [],
   "ktmnt": [],
   "ktopgun": [],
-  "l9nibble": [],
   "la120": [],
   "lantutor": [],
-  "laperla": [],
-  "laperlag": [],
   "las3000": [],
   "laser110": [],
   "laser200": [
@@ -2272,7 +1212,6 @@
   "laser210": [
     "vz200"
   ],
-  "laser2k1": [],
   "laser310": [
     "vz300",
     "laser310h"
@@ -2285,37 +1224,20 @@
     "laseractj"
   ],
   "laststar": [],
-  "lbvbiosu": [],
   "lc80": [
-    "sc80",
-    "lc80_2"
+    "lc80_2",
+    "sc80"
   ],
   "lcmate2": [],
-  "ldrink": [
-    "ldrinka"
-  ],
-  "leapster": [
-    "leapstertv"
-  ],
-  "lemrol": [],
-  "leprgld": [
-    "leprglds"
-  ],
-  "letsgoju": [],
   "lexipcm": [],
   "lft1510": [
     "lft1230"
   ],
-  "lgfish": [],
-  "lggp40": [],
-  "lhzb3": [],
-  "lhzb4": [],
   "lightfgt": [],
   "lilprof": [
     "lilprof78"
   ],
   "lindbios": [],
-  "lineking": [],
   "lisa": [],
   "lisa2": [
     "macxl",
@@ -2324,26 +1246,11 @@
   "llc1": [
     "llc2"
   ],
-  "llcharm": [
-    "llcharma"
-  ],
-  "locoloot": [],
-  "loconz": [],
-  "lol": [],
   "lola8a": [],
-  "lonwolf": [],
-  "lordleo": [],
   "lostreas": [],
-  "lougcm": [],
-  "lovestrk": [],
-  "lovewin": [],
   "ltcasinn": [],
-  "luck88": [],
   "luckfoun": [],
-  "luckshel": [],
-  "luckylad": [],
   "luckyrlt": [],
-  "luigball": [],
   "lviv": [],
   "lynx": [],
   "lynx48k": [
@@ -2357,8 +1264,6 @@
     "m5p_brno",
     "m5p"
   ],
-  "m6805evs": [],
-  "m79152pc": [],
   "mac128k": [
     "mac512k"
   ],
@@ -2404,42 +1309,24 @@
   "macprtb": [],
   "macse": [],
   "macsefd": [],
-  "magicard": [
-    "magicarde",
-    "magicarda",
-    "magicardb",
-    "magicardj"
-  ],
-  "magicle": [],
-  "magicmsk": [
-    "magicmska"
-  ],
-  "magictg": [
-    "magictga"
-  ],
   "manager": [],
   "maniac": [],
-  "manohman": [],
-  "margmgc": [],
-  "marinedt": [],
-  "marmagic": [],
   "marywu": [],
-  "maski": [],
   "mathmagi": [],
-  "maxidbl": [],
-  "mbc200": [],
+  "mathmarv": [],
   "mbc55x": [],
   "mbee": [
     "mbee56",
     "mbee256",
     "mbee128p",
-    "mbeeppc",
     "mbeepc",
-    "mbeeic",
+    "mbeepp",
     "mbeepc85s",
     "mbeepc85b",
     "mbee128",
+    "mbeeppc",
     "mbeepc85",
+    "mbeeic",
     "mbeett"
   ],
   "mbh2": [],
@@ -2458,51 +1345,20 @@
     "cb308"
   ],
   "mccpm": [],
-  "mchilli": [],
-  "mclass": [],
-  "mcom4_02": [],
   "mcompgin": [],
   "md2": [
     "md3"
   ],
   "md6802": [],
   "mdndclab": [],
-  "mdrink": [],
-  "mead4in1": [],
-  "megadble": [],
-  "megadblj": [],
-  "megadpkr": [
-    "megadpkrb"
-  ],
   "megaduck": [],
   "megaiv": [],
-  "megakat": [],
-  "megaline": [],
   "megapc": [
     "megapcpla",
     "megapcpl"
   ],
   "mekd2": [],
   "merlin": [],
-  "merryjn": [],
-  "mes": [],
-  "metamaq2": [],
-  "metestrm": [],
-  "mg_alad": [],
-  "mg_bb": [],
-  "mg_ewg": [],
-  "mg_gbr": [],
-  "mg_jv": [],
-  "mg_kf": [],
-  "mg_lug": [],
-  "mg_pbw": [],
-  "mg_risk": [],
-  "mg_scl": [],
-  "mgarden": [],
-  "mgctouc": [],
-  "mgforst": [],
-  "mgfx": [],
-  "mgmerm": [],
   "mice": [],
   "micral": [],
   "microkit": [],
@@ -2513,13 +1369,7 @@
     "kristall2",
     "radio99"
   ],
-  "milkin": [],
-  "millsun": [],
-  "minemine": [],
   "mini2440": [],
-  "minicom": [],
-  "mirderby": [],
-  "missilex": [],
   "misterx": [],
   "mits680b": [],
   "mj2": [
@@ -2531,12 +1381,6 @@
   ],
   "mj3evo": [],
   "mk14": [],
-  "mk85": [],
-  "mk90": [],
-  "mkartag2": [
-    "mkartag2a"
-  ],
-  "mkartagp": [],
   "mkit09": [
     "mkit09a"
   ],
@@ -2566,9 +1410,6 @@
   "mmerlin": [],
   "mmonty": [],
   "mmt8": [],
-  "mnumber": [],
-  "mnumitg": [],
-  "mnytree": [],
   "mo5": [
     "mo5e"
   ],
@@ -2579,18 +1420,9 @@
   "mod8": [],
   "modellot": [],
   "mohicans": [],
-  "molecula": [],
-  "monacogp": [
-    "monacogpa"
-  ],
-  "moneybnk": [],
-  "monmous": [],
   "monshow": [],
   "monteciv": [],
   "monty": [],
-  "moonwalt": [],
-  "moutmon": [],
-  "moviecrd": [],
   "mp68a": [],
   "mpc10": [],
   "mpc100": [],
@@ -2606,61 +1438,35 @@
     "mpf1b",
     "mpf1p"
   ],
-  "mps1000": [],
-  "mps1230": [],
   "mpt05": [],
   "mpz80": [],
-  "mr61": [],
   "mrchalgr": [],
-  "mrrack": [],
-  "mrwoo": [],
-  "ms0515": [],
-  "ms72c": [],
   "ms9540": [],
   "msbc1": [],
-  "mskitty": [],
   "mstation": [],
   "msthawk": [],
   "mt32": [],
-  "mt735": [],
-  "mtburn": [],
-  "mtreenz": [],
   "mtx512": [
     "mtx500",
     "rs128"
   ],
-  "mu100": [
-    "mu100r"
-  ],
-  "multi16": [],
   "multi8": [],
-  "mushmagi": [],
   "mvbfree": [],
+  "mvme147": [],
+  "mvme350": [],
   "mwcbaseb": [],
-  "mwskins": [
-    "mwskinsa",
-    "mwskinso"
-  ],
   "mx10": [
     "mx101",
     "mx15"
   ],
   "mx2178": [],
   "mx64": [],
-  "myb3k": [],
   "mycom": [],
-  "mystarr": [],
-  "mysteycm": [],
-  "mysteyec": [],
-  "mystgrd": [],
-  "mystmerm": [],
   "myvision": [],
   "mz1500": [],
   "mz2500": [
     "mz2520"
   ],
-  "mz3500": [],
-  "mz6500": [],
   "mz700": [
     "mz700j"
   ],
@@ -2691,8 +1497,6 @@
     "neocdzj",
     "neocd"
   ],
-  "neptunp2": [],
-  "nerdwild": [],
   "nes": [
     "m82",
     "famicom",
@@ -2703,7 +1507,6 @@
     "nespal",
     "fds"
   ],
-  "netchu02": [],
   "newbrain": [
     "newbraina",
     "newbrainmd"
@@ -2718,7 +1521,6 @@
     "nextctc",
     "nextct"
   ],
-  "nfsug": [],
   "ngen": [
     "386i",
     "ngenb38"
@@ -2736,9 +1538,9 @@
   ],
   "nms8255": [
     "nms8250",
-    "nms8250j",
     "nms8255f",
-    "nms8250f"
+    "nms8250f",
+    "nms8250j"
   ],
   "nms8260": [],
   "nms8280": [
@@ -2757,16 +1559,10 @@
   "noki8250": [],
   "noki8850": [],
   "noki8890": [],
-  "notetakr": [],
   "nshrz": [
     "vector1"
   ],
-  "nsmpoker": [],
-  "ntcash": [],
-  "numcrash": [],
-  "nupogodi": [],
   "ob68k1a": [],
-  "octopus": [],
   "odeontw2": [],
   "odyssey2": [
     "videopac",
@@ -2779,22 +1575,18 @@
     "okean240t",
     "okean240a"
   ],
-  "oligam": [],
   "ollie": [],
   "olypeopl": [],
   "ondrat": [
     "ondrav"
   ],
-  "opsesam": [],
   "orao": [
     "orao103"
   ],
   "orbatak": [],
-  "orbeaut": [],
   "orbituvi": [
     "vdmaster"
   ],
-  "orchidms": [],
   "ordisava": [],
   "oric1": [
     "prav8dd",
@@ -2803,36 +1595,22 @@
     "orica"
   ],
   "orion128": [
+    "orionpro",
     "orionidm",
     "orionide",
     "orionms",
     "orionz80",
-    "orionzms",
-    "orionpro"
-  ],
-  "orleg2": [
-    "orleg2oa",
-    "orleg2o"
+    "orionzms"
   ],
   "ormatu": [
-    "intervsn",
-    "sheenhvc"
+    "sheenhvc",
+    "intervsn"
   ],
-  "os214": [],
   "osbexec": [],
   "osborne1": [],
-  "oscarar": [],
-  "otchart": [],
-  "outbackj": [
-    "outbackja"
-  ],
-  "outlaw": [],
   "outr2": [],
-  "outr2sdx": [],
   "outr2st": [],
-  "owlcap": [],
   "oz750": [],
-  "p112": [],
   "p2000t": [
     "p2000m"
   ],
@@ -2845,15 +1623,9 @@
   "packmon": [],
   "pairmtch": [],
   "palmz22": [],
-  "pandpays": [],
   "pangofun": [],
-  "pantmag": [],
   "paranoia": [],
   "parentj": [],
-  "pariligh": [],
-  "parilius": [],
-  "partygrs": [],
-  "paso1600": [],
   "pasogo": [],
   "pasopia": [],
   "pasopia7": [
@@ -2865,7 +1637,6 @@
     "ai1000"
   ],
   "pbqbert": [],
-  "pc100": [],
   "pc1000": [],
   "pc1245": [],
   "pc1250": [
@@ -2893,8 +1664,8 @@
   ],
   "pc1640": [
     "pc1640hd30",
-    "pc1640dd",
-    "pc1640hd20"
+    "pc1640hd20",
+    "pc1640dd"
   ],
   "pc2000": [],
   "pc4": [],
@@ -2914,7 +1685,6 @@
   "pc8401a": [],
   "pc8500": [],
   "pc8801": [
-    "pc8801ma",
     "pc8801mk2fr",
     "pc8801fa",
     "pc8801mk2sr",
@@ -2922,6 +1692,7 @@
     "pc8801mk2mr",
     "pc8801mk2",
     "pc8801mh",
+    "pc8801ma",
     "pc8801mc"
   ],
   "pc88va": [
@@ -2936,34 +1707,26 @@
     "pc9801vm"
   ],
   "pc9821": [
-    "pc9821as",
     "pc486mu",
     "pc9821ce2",
     "pc9821ap2",
     "pc9821ne",
+    "pc9821as",
     "pc9821v20",
     "pc9821xs",
     "pc9821v13"
   ],
-  "pcbydem": [],
   "pcd": [
     "pcx"
   ],
   "pce": [
-    "sgx",
-    "tg16"
+    "tg16",
+    "sgx"
   ],
   "pce220": [],
-  "pcfav": [],
-  "pcfava": [],
-  "pcfx": [
-    "pcfxga"
-  ],
+  "pcg815": [],
   "pcg850v": [],
   "pcm": [],
-  "pcmostw": [],
-  "pcnewz": [],
-  "pcockmag": [],
   "pcw16": [],
   "pcw8256": [
     "pcw8512",
@@ -2971,31 +1734,19 @@
     "pcw9512",
     "pcw10"
   ],
-  "pda600": [],
   "pdp1": [],
   "pdp11ub": [
     "pdp11qb",
     "sms1000",
     "pdp11ub2"
   ],
-  "peaflut": [],
   "pecom32": [
     "pecom64"
   ],
   "pegasus": [
     "pegasusm"
   ],
-  "pelipete": [],
-  "pelpetu2": [],
-  "pelpetus": [],
   "pencil2": [],
-  "pengpay": [],
-  "pengpays": [],
-  "pennyar": [],
-  "penpay20": [],
-  "penpaya": [],
-  "penpayus": [],
-  "perfect": [],
   "perfect1": [],
   "pes": [],
   "pet2001": [
@@ -3003,8 +1754,8 @@
   ],
   "pet2001b": [
     "cbm3032b",
-    "pet2001b16",
-    "pet2001b32"
+    "pet2001b32",
+    "pet2001b16"
   ],
   "pet2001n": [
     "pet2001n32",
@@ -3033,10 +1784,7 @@
     "mmf9000",
     "superpet"
   ],
-  "petshopa": [],
   "pf2012": [],
-  "pharpor": [],
-  "pharrier": [],
   "phc2": [],
   "phc23": [],
   "phc25": [
@@ -3054,26 +1802,25 @@
   "photoply": [],
   "phpball": [],
   "phunsy": [],
-  "phxfant": [],
   "pico": [
-    "picoj",
-    "picou"
+    "picou",
+    "picoj"
   ],
   "pilot1k": [
     "palmv",
     "palmm130",
     "palmm515",
+    "palmvx",
     "palmiii",
     "visor",
     "spt1700",
-    "palmvx",
+    "spt1500",
     "palmm505",
+    "palmpro",
     "pilot5k",
     "palmm100",
-    "spt1500",
     "palmpers",
     "palmiiic",
-    "palmpro",
     "spt1740"
   ],
   "pimps": [],
@@ -3084,10 +1831,6 @@
   "pipbug": [
     "binbug"
   ],
-  "pippin": [],
-  "piratar": [],
-  "pirati": [],
-  "pitagjr": [],
   "plan80": [],
   "plldium": [
     "trakcvg",
@@ -3108,12 +1851,9 @@
     "c2717pmd"
   ],
   "pmi80": [],
-  "pockchal": [],
   "pockstat": [],
-  "podrace": [],
   "pofo": [],
   "pokemini": [],
-  "poker52": [],
   "polgar": [
     "milano"
   ],
@@ -3122,18 +1862,8 @@
     "poly8813"
   ],
   "poly880": [],
-  "polystar": [],
-  "pompeiar": [],
-  "pompus2": [],
-  "popper": [],
-  "popshot": [],
-  "potgoldu": [],
   "pp01": [],
-  "ppking": [],
-  "prdgp03": [],
   "prestige": [],
-  "prideaf": [],
-  "primevah": [],
   "primoa32": [
     "primob48",
     "primoa48",
@@ -3143,25 +1873,18 @@
     "primoc64"
   ],
   "pro80": [],
-  "prof180x": [
-    "prof181x"
-  ],
   "prof80": [],
-  "prophar": [],
   "prose2k": [
     "prose2ko"
   ],
   "proteus3": [],
-  "prpht600": [],
-  "prtygras": [],
-  "przfigha": [],
   "psion1": [],
   "psioncm": [
     "psionp200",
+    "psionp350",
     "psionlam",
     "psionla",
-    "psionxp",
-    "psionp350"
+    "psionxp"
   ],
   "psionlz": [
     "psionlz64",
@@ -3170,10 +1893,9 @@
   ],
   "psj": [
     "psa",
-    "pse",
-    "psu"
+    "psu",
+    "pse"
   ],
-  "psmash3": [],
   "pss61": [],
   "pss62": [],
   "pss63": [],
@@ -3185,9 +1907,7 @@
   "pv16": [],
   "pv2000": [],
   "pv7": [],
-  "pv9234": [],
   "pve500": [],
-  "pwsp1": [],
   "px4": [
     "px4p"
   ],
@@ -3195,8 +1915,6 @@
   "pyl601": [
     "pyl601a"
   ],
-  "pyson": [],
-  "qgundam": [],
   "ql": [
     "ql_se",
     "ql_es",
@@ -3204,29 +1922,17 @@
     "ql_dk",
     "ql_it",
     "ql_gr",
-    "ql_us",
-    "ql_fr"
+    "ql_fr",
+    "ql_us"
   ],
-  "qncsh": [],
-  "qnile": [],
-  "qnilecj": [],
-  "qnilese": [],
-  "qonilea": [],
-  "qonileb": [],
-  "qotn": [],
-  "qotna": [],
-  "qsheeba": [],
   "qtsbc": [],
-  "quake": [],
   "queen": [],
-  "queenotg": [],
   "qx10": [],
   "r9751": [],
   "radio86": [
     "unior",
     "m86rk",
     "partner",
-    "spektr01",
     "rk7007",
     "mikrosha",
     "impuls03",
@@ -3236,134 +1942,79 @@
     "radio4k",
     "kr03",
     "rk700716",
+    "spektr01",
     "apogee",
     "radiorom"
   ],
-  "raiden3": [],
-  "raiden4": [],
   "rainbow": [
     "rainbow100a",
     "rainbow190"
   ],
   "raisedvl": [],
-  "rambo": [],
-  "raprichs": [],
-  "rasce": [],
   "ravens": [
     "ravens2"
   ],
   "rc759": [],
   "rcirulet": [],
-  "rcorsair": [],
-  "rd100": [],
-  "rdtripus": [],
   "re800v1": [
     "re800ea"
   ],
   "re800v3": [],
   "re900": [],
-  "redbarar": [],
-  "reelemin": [],
-  "reelrock": [],
   "replica1": [],
-  "retrsam": [],
-  "retsam20": [],
-  "retsam5": [],
   "rex6000": [
     "ds2"
   ],
-  "rgum": [],
   "risc": [],
   "rm380z": [],
   "roadedge": [],
   "robie": [],
-  "rollext": [],
   "romanl": [],
-  "royalpk2": [],
-  "rpc600": [
-    "sarpc_j233",
-    "a7000p",
-    "rpc700",
-    "sarpc",
-    "a7000"
-  ],
-  "rpc86": [],
-  "rrvac": [
-    "rrvac1",
-    "rrvac2"
-  ],
-  "rt1715": [
-    "rt1715lc",
-    "rt1715w"
-  ],
-  "rubmgc": [],
-  "rugby": [],
-  "rumbrel": [],
-  "ruprup": [],
   "rvoicepc": [],
-  "rwarhl": [],
   "rwtrntcs": [
     "telngtcs"
   ],
   "rx78": [],
-  "s3670": [],
   "sacstate": [],
   "safemon": [],
   "sage2": [],
-  "saloon": [],
   "samcoupe": [],
-  "samspsen": [],
-  "sanfuze2": [],
-  "sanremmg": [],
-  "santam": [],
   "sapi1": [
-    "sapizps3b",
     "sapizps3a",
+    "sapizps3b",
     "sapizps2",
     "sapizps3"
   ],
   "saturn": [
-    "vsaturn",
     "saturneu",
     "saturnjp",
+    "vsaturn",
     "hisaturn"
   ],
   "savia84": [],
   "savquest": [],
-  "sawatte": [],
   "sb2m600b": [
+    "uk101",
     "c1pmf",
-    "c1p",
-    "uk101"
+    "c1p"
   ],
   "sbc6510": [],
-  "sbrain": [],
-  "sbucks3": [],
-  "sbuk5": [],
-  "sburners": [],
-  "sbxc": [],
   "sc1": [],
   "sc2": [],
   "sc3000": [
     "sc3000h",
     "sf7000"
   ],
-  "sc55": [],
-  "scatmg2": [],
   "scg06nt": [],
-  "scptour": [],
   "scv": [
     "scv_pal"
   ],
   "sd1": [
     "sd132"
   ],
-  "sddz": [],
   "sdk80": [],
   "sdk85": [],
   "sdk86": [],
-  "sdwx": [],
-  "sealdeal": [],
   "seattle": [],
   "segacd": [
     "megacda",
@@ -3375,18 +2026,16 @@
     "megacd2j",
     "aiwamcd"
   ],
-  "segapm": [],
-  "segartv": [],
   "selz80": [
     "dagz80"
   ],
   "sfcbox": [],
   "sfortea": [
+    "sforteba",
     "sexpertc",
-    "sexpertb",
     "sforteb",
-    "sfortec",
-    "sforteba"
+    "sexpertb",
+    "sfortec"
   ],
   "sfzch": [
     "sfzbch",
@@ -3398,31 +2047,13 @@
     "omv1000"
   ],
   "sgi_ip2": [],
-  "sgi_ip6": [],
-  "sgnascar": [],
-  "sh4robot": [],
-  "shamnmg": [],
-  "sharkjaw": [],
-  "sharmnm": [],
-  "shikiga3": [],
-  "shorthng": [],
   "showqn": [],
-  "shpinxii": [],
-  "shtzone": [],
-  "silgolar": [],
-  "silkrdus": [],
   "simon": [],
   "sitcom": [],
-  "skeetsht": [],
-  "skydncra": [],
   "slc1": [],
   "slicer": [],
-  "slqz3": [],
-  "sm1800": [],
-  "smashdrv": [],
   "smc777": [],
   "sms": [
-    "smskr",
     "smsj",
     "sms1",
     "sg1000m3",
@@ -3430,26 +2061,25 @@
     "smspal",
     "smssdisp",
     "sms1pal",
+    "smskr",
     "sms1krfm"
   ],
   "smssgame": [],
-  "smtmar": [],
   "snes": [
     "snespal"
   ],
   "snmath": [
-    "snmathp",
-    "snmatha"
+    "snmatha",
+    "snmathp"
   ],
-  "snotec": [],
   "snotecex": [],
   "snread": [],
   "snspell": [
     "snspelluka",
     "snspellp",
     "snspelljp",
-    "snspellua",
     "snspellit",
+    "snspellua",
     "snspellfr",
     "snspelluk",
     "snspellub"
@@ -3458,29 +2088,15 @@
     "snspellcuk",
     "snspellca"
   ],
-  "soccrrmt": [],
   "socrates": [
     "profweis",
     "socratfc"
   ],
   "softbox": [],
   "sol20": [],
-  "sonoth": [],
   "sorcerer": [
     "sorcererd",
     "sorcerer2"
-  ],
-  "soulclb2": [
-    "soulcl2w",
-    "soulcl2b",
-    "soulcl2a"
-  ],
-  "soulclb3": [
-    "soulclb3b",
-    "soulclb3a"
-  ],
-  "spacea91": [
-    "spacea91_13e"
   ],
   "spc1000": [],
   "spc1500": [],
@@ -3492,20 +2108,19 @@
     "sp3e8bit",
     "hc2000",
     "bestzx",
+    "specpls3",
     "sp3eata",
     "specpl3e",
     "quorum",
-    "profi",
+    "sp3ezcf",
     "specpls2",
-    "specpls3",
     "atm",
     "pentagon",
+    "profi",
     "pent1024",
     "atmtb2",
-    "sp3ezcf",
     "scorpio"
   ],
-  "specfrce": [],
   "special": [
     "erik",
     "specimx",
@@ -3516,18 +2131,15 @@
   ],
   "spectrum": [
     "byte",
-    "tk95",
     "hc90",
     "hc91",
-    "uk2086",
-    "zvezda",
-    "didakm92",
-    "spektrbk",
     "inves",
     "cobra80",
+    "tk95",
     "tk90x",
     "ts2068",
     "didakm93",
+    "didakm92",
     "didakm91",
     "orizon",
     "cobrasp",
@@ -3545,21 +2157,20 @@
     "tc2048",
     "compani1",
     "spec80k",
+    "zvezda",
+    "uk2086",
     "blitzs",
     "quorum48",
     "didaktk",
+    "spektrbk",
     "specide"
   ],
-  "speeddrv": [],
   "spellb": [
     "spellb79"
   ],
-  "spgcarn": [],
-  "spicaadv": [],
   "spiceup": [],
   "splasfgt": [],
   "splitsec": [],
-  "splmastr": [],
   "sq1": [
     "sqrack"
   ],
@@ -3569,8 +2180,6 @@
   "ssem": [],
   "ssfball": [],
   "ssimon": [],
-  "sspac2k1": [],
-  "sstar": [],
   "ssystem3": [],
   "st": [
     "st_fr",
@@ -3578,39 +2187,25 @@
     "st_nl",
     "megast_sg",
     "megast_se",
+    "megast_de",
     "st_se",
     "st_sg",
-    "megast_de",
     "st_es",
     "st_uk",
     "megast",
     "st_de",
     "megast_uk"
   ],
-  "st1700h": [],
-  "st1701": [],
-  "st1702": [],
-  "st1703": [],
-  "st1704": [],
-  "st1705": [],
-  "st1706": [],
-  "st1707": [],
-  "st1708": [],
-  "st1714": [],
-  "stardrf2": [],
-  "stardrft": [],
-  "stardrfu": [],
-  "starqst": [],
   "starwbc": [
     "starwbcp"
   ],
-  "statsymb": [],
   "ste": [
     "ste_it",
     "megaste_it",
     "ste_de",
     "megaste_de",
     "megaste_se",
+    "ste_fr",
     "megaste_fr",
     "ste_es",
     "megaste_uk",
@@ -3618,54 +2213,24 @@
     "megaste",
     "megaste_es",
     "ste_sg",
-    "ste_se",
-    "ste_fr"
+    "ste_se"
   ],
   "steaser": [],
-  "steeplec": [],
   "stopthie": [
     "stopthiep"
   ],
-  "stratos": [],
-  "strlink": [],
   "studio2": [
     "apollo80",
     "visicom",
+    "mtc9016",
     "shmc1200",
     "mpt02h",
     "cm1200",
-    "mpt02",
-    "mtc9016"
+    "mpt02"
   ],
-  "stuntcyc": [],
   "su2000": [],
-  "subhuntr": [],
-  "sukuinuf": [],
   "sultanw": [],
-  "sumospin": [],
   "sun1": [],
-  "sun2_120": [],
-  "sun2_50": [],
-  "sun3_110": [],
-  "sun3_150": [],
-  "sun3_260": [],
-  "sun3_460": [],
-  "sun3_50": [],
-  "sun3_60": [],
-  "sun3_80": [],
-  "sun3_e": [],
-  "sun4_300": [
-    "sun_s20",
-    "sun4_40",
-    "sun4_75",
-    "sun4_20",
-    "sun_s10",
-    "sun4_50",
-    "sun4_60"
-  ],
-  "sunmon2": [],
-  "sunqndol": [],
-  "supbuk2": [],
   "super6": [],
   "super80": [
     "super80r",
@@ -3675,10 +2240,7 @@
     "super80m"
   ],
   "supercon": [],
-  "supercrd": [],
-  "superdbz": [],
   "superslv": [],
-  "supjolly": [],
   "supracan": [],
   "sv8000": [],
   "svi318": [
@@ -3702,89 +2264,43 @@
     "svisions"
   ],
   "svmu": [],
-  "swh2ld": [],
-  "swheart2": [],
-  "swhr2us": [],
-  "swingin": [],
-  "swisspkr": [],
-  "swthrt2v": [],
   "swtpc": [],
   "swtpc09": [
-    "swtpc09i",
     "swtpc09u",
-    "swtpc09d3"
+    "swtpc09d3",
+    "swtpc09i"
   ],
   "swyft": [],
   "sym1": [],
-  "sys246": [],
-  "sys256": [],
-  "sys2900": [],
   "systec": [],
-  "tabpkr": [],
   "tactix": [],
-  "tahitim": [],
-  "taiko10": [],
-  "taiko7": [],
-  "taiko8": [],
-  "taiko9": [],
-  "taitons1": [],
-  "tajmah": [],
-  "take5": [],
   "tama": [],
   "tandy12": [],
   "tandy200": [],
   "tandy2k": [
     "tandy2khd"
   ],
-  "tank": [],
-  "tankii": [],
   "tb303": [],
   "tbreakup": [],
   "tc4": [],
   "tcaveman": [],
   "tccombat": [],
-  "tcfboxa": [],
-  "tcl": [],
-  "tdv2324": [],
-  "te0144": [],
   "tec1": [
     "tecjmon"
   ],
-  "tecnbras": [],
   "tek4051": [
     "tek4052a"
   ],
-  "tek4107a": [
-    "tek4109a"
-  ],
-  "tekken4": [
-    "tekken4b",
-    "tekken4c",
-    "tekken4a"
-  ],
-  "tekken51": [
-    "tekken51b"
-  ],
-  "tekken5d": [],
-  "tekxp330": [],
-  "terak": [],
   "test410": [
     "test420"
   ],
   "tetfight": [],
-  "tfupdate": [],
-  "thaiprar": [],
-  "thaiprin": [],
-  "thedrink": [],
-  "thgamblr": [],
-  "thndrhrt": [],
   "ti1000": [],
   "ti1250": [
     "ti125076"
   ],
   "ti1270": [],
   "ti30": [],
-  "ti630": [],
   "ti73": [],
   "ti74": [],
   "ti81": [
@@ -3795,7 +2311,6 @@
   "ti83p": [],
   "ti83pse": [],
   "ti84p": [],
-  "ti84pse": [],
   "ti85": [],
   "ti86": [],
   "ti89": [],
@@ -3814,27 +2329,15 @@
     "ti99_4e"
   ],
   "ti99_4a": [
+    "ti99_4qi",
     "ti99_4ev",
     "ti99_4ae"
   ],
   "ti99_4p": [],
-  "ti99_4qi": [
-    "ti99_4qe"
-  ],
   "ti99_8": [
     "ti99_8e"
   ],
   "tibusan": [],
-  "tigresar": [],
-  "tikitalk": [],
-  "tiktoru": [],
-  "tim011": [],
-  "tim100": [],
-  "timecrs3": [
-    "timecrs3e"
-  ],
-  "timecrs4": [],
-  "timwolfu": [],
   "tiprog": [],
   "tisr16": [],
   "tisr16ii": [],
@@ -3853,13 +2356,12 @@
   "tmc600s2": [],
   "tmpacman": [],
   "tmscramb": [],
-  "tmspoker": [],
   "tmtennis": [],
   "tmtron": [],
   "tntell": [
+    "tntellfr",
     "tntelluk",
-    "tntellp",
-    "tntellfr"
+    "tntellp"
   ],
   "to7": [
     "t9000"
@@ -3872,33 +2374,14 @@
   ],
   "to9": [],
   "to9p": [],
-  "tokyocop": [],
   "tomcat": [
     "tomcatsw"
   ],
   "tonto": [],
-  "topbana": [],
-  "topshtar": [],
-  "torgods": [],
-  "torpdice": [],
-  "totlvice": [
-    "totlvicu",
-    "totlvicj",
-    "totlvica"
-  ],
   "tpc310": [],
   "tpp311": [],
   "tps312": [],
-  "tr606": [],
-  "trbwtchs": [],
-  "tretrva": [],
   "tricep": [],
-  "triforce": [],
-  "triptrea": [],
-  "trivia": [],
-  "trjhrs": [],
-  "trkinus": [],
-  "trpdlght": [],
   "trs80": [
     "trs80l2",
     "ht108064",
@@ -3919,54 +2402,37 @@
   "trsm100": [
     "tandy102"
   ],
-  "trstar2k": [],
   "ts802": [
     "ts802h"
   ],
   "ts803h": [],
   "ts816": [],
-  "tsarevna": [
-    "tsarevnaa"
-  ],
   "tt030": [
     "tt030_pl",
     "tt030_de",
     "tt030_uk",
     "tt030_fr"
   ],
-  "ttblock": [],
-  "turtrea": [],
   "tutor": [
-    "pyuuta",
-    "pyuutajr"
+    "pyuutajr",
+    "pyuuta"
   ],
-  "tv21": [],
-  "tv21_3": [],
-  "tv950": [],
   "tvc64": [
     "tvc64p",
     "tvc64pru"
   ],
-  "tvcapcom": [],
   "tvgame": [],
-  "tvpoker": [],
   "tx0_64kw": [
     "tx0_8kw"
   ],
   "ufombs": [],
-  "uknc": [],
   "ultarctc": [
     "ultarctcup"
   ],
   "unichamp": [],
-  "unicornd": [],
-  "unistar": [],
-  "unkh8gam": [],
-  "usagiol": [],
   "ut88mini": [
     "ut88"
   ],
-  "uts20": [],
   "uzebox": [],
   "v1050": [],
   "v200": [],
@@ -3974,15 +2440,15 @@
   "van16": [
     "gen32_41",
     "lond020",
-    "lyon32",
+    "gen32",
     "lyon16",
+    "alm16",
     "berlinp",
     "van32",
     "lond030",
     "alm32",
-    "gen32",
     "bpl32",
-    "alm16"
+    "lyon32"
   ],
   "vax785": [],
   "vboy": [],
@@ -3990,9 +2456,9 @@
     "bridgec3"
   ],
   "vc4000": [
-    "cx3000tc",
+    "tvc4000",
     "spc4000",
-    "tvc4000"
+    "cx3000tc"
   ],
   "vcc": [
     "uvcsp",
@@ -4007,18 +2473,15 @@
   "vcs80": [],
   "vector06": [
     "pk6128c",
-    "vec1200",
-    "krista2"
+    "krista2",
+    "vec1200"
   ],
   "vector4": [],
   "vectrex": [],
-  "venetian": [],
-  "venicus": [],
   "vesta": [
     "hobby",
     "pk8002"
   ],
-  "vf5": [],
   "vfx": [],
   "vfxsd": [],
   "vg5k": [],
@@ -4039,8 +2502,8 @@
   "vg8240": [],
   "vic10": [],
   "vic1001": [
-    "vic20p",
     "vic20",
+    "vic20p",
     "vic20_se"
   ],
   "victhc95": [
@@ -4053,24 +2516,15 @@
     "walle",
     "batmantv"
   ],
-  "vikingt": [],
   "vinvader": [],
   "vip": [
     "vp111"
   ],
   "vixen": [],
   "vk100": [],
-  "vnight": [],
   "vocaid": [],
-  "vollyrmt": [],
   "votrpss": [],
   "votrtnt": [],
-  "vs2002ex": [],
-  "vs2002j": [],
-  "vs4": [],
-  "vs42006": [],
-  "vs42k6ex": [],
-  "vs4j": [],
   "vsc": [
     "vscg",
     "vscfr",
@@ -4087,95 +2541,41 @@
     "vt101",
     "vt131"
   ],
-  "vt220": [],
   "vt240": [],
-  "vt320": [],
-  "vt520": [],
-  "vta2000": [],
-  "vtennis3": [],
   "wales210": [
     "drwrt450",
+    "drwrt200",
     "dator3k",
     "drwrt400",
     "es210_es",
-    "drwrt100",
-    "drwrt200"
+    "drwrt100"
   ],
-  "wanganmd": [],
-  "wanganmr": [],
   "wangmid": [],
   "wangmid2": [
     "wangmid2j"
   ],
   "wangpc": [],
-  "wdun": [],
-  "werewild": [],
-  "wgorilla": [],
-  "whalecsh": [],
-  "wheregld": [],
   "whiterus": [],
-  "whlcshus": [
-    "whlcshusa"
-  ],
-  "whtwtr": [],
   "wicat": [],
-  "wikwin2": [],
-  "wildbill": [],
   "wildfire": [],
-  "wildpkr": [],
-  "wildways": [],
-  "winbid": [],
-  "wingolus": [],
   "winner82": [
     "winner81b",
     "winner81"
   ],
-  "wipeormt": [],
-  "witgold": [
-    "witgoldd"
-  ],
-  "wizard": [],
   "wizatron": [],
-  "wldafus": [],
-  "wldamz1": [],
-  "wldamz3": [],
-  "wldcatsa": [],
-  "wldcoug": [],
-  "wldcougr": [],
-  "wldgoos": [],
-  "wldpan2": [],
-  "wldpntus": [],
-  "wldstal2": [],
-  "wldstrek": [],
-  "wldthg": [],
   "wmbullet": [
     "wmbulletf"
   ],
-  "wms": [
-    "wmsa",
-    "wmsb"
-  ],
-  "wmsboom": [],
-  "wmstopb": [],
   "wofch": [],
-  "wontmuch": [],
   "wswan": [
     "wscolor"
   ],
-  "wswe": [],
-  "wswe2k3": [],
-  "wtepee": [],
-  "wtiger": [],
-  "wwaratah": [],
-  "wwaysar": [],
-  "wwaysll": [],
   "x07": [],
   "x1": [
     "x1twin",
     "x1turbo",
     "x1turbo40"
   ],
-  "x5jokers": [],
   "x68000": [
     "x68030",
     "x68kxvi",
@@ -4199,23 +2599,21 @@
   ],
   "y805256": [
     "y805128",
-    "y805128r2e",
-    "y805128r2"
+    "y805128r2",
+    "y805128r2e"
   ],
   "yc64": [],
   "yis303": [],
   "yis503": [
+    "y503iir",
     "y503iir2",
     "yis503ii",
-    "y503iir",
     "yis503m",
     "yis503f"
   ],
   "yis604": [
     "yis60464"
   ],
-  "yukongld": [],
-  "yuyuhaku": [],
   "z100": [],
   "z1013": [
     "z1013k69",
@@ -4234,12 +2632,12 @@
     "z88dk",
     "z88de",
     "z88tr",
+    "z88fi",
     "z88it",
-    "z88ch",
     "z88es",
+    "z88ch",
     "z88no",
-    "z88fr",
-    "z88fi"
+    "z88fr"
   ],
   "z9001": [
     "kc85_111",
@@ -4251,33 +2649,19 @@
   "zackman": [],
   "zapcomp": [],
   "zexall": [],
-  "zgundm": [],
-  "zgundmdx": [],
-  "zhongguo": [],
   "zodiac": [],
-  "zoidiexp": [],
-  "zoidsinf": [],
   "zorba": [],
-  "zorrojp": [],
-  "zorrous": [],
   "zrt80": [],
   "zsbc3": [],
-  "zsl5500": [],
-  "zsl5600": [],
-  "zslc1000": [],
-  "zslc3000": [],
-  "zslc750": [],
-  "zslc760": [],
   "zx80": [],
   "zx81": [
     "ts1000",
-    "ts1500",
     "pow3000",
     "pc8300",
     "lambda",
     "zx97",
     "ringo470",
-    "tk85"
-  ],
-  "zzblock": []
+    "tk85",
+    "ts1500"
+  ]
 }
