@@ -194,11 +194,8 @@ for event, elem in context:
         #     print("Machine {0}: num_displays == 0 and not machine['ismechanical']".format(machine_name))
         #     sys.exit(10)
 
-        # >> Mark dead machines. A machine is dead if,
-        # >> A) Status is preliminary
-        # >> B) Have no display OR Have no controls
-        # if machine['driver_status'] == 'preliminary' and not (machine['display_tag'] and machine['control_type']):
-        if machine['driver_status'] == 'preliminary' and not machine['display_tag'] and not machine['control_type']:
+        # >> Mark dead machines. A machine is dead if Status is preliminary AND have no controls
+        if machine['driver_status'] == 'preliminary' and not machine['control_type']:
             machine['isdead'] = True
             num_dead += 1
 
