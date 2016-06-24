@@ -144,16 +144,22 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     def _render_root_list(self):
         # >> Code Machines/Manufacturer/SF first. Rest are variations of those three.
-        self._render_root_list_row('Machines (with coin slot)',  self._misc_url_1_arg('list', 'Machines'))
-        self._render_root_list_row('Machines (no coin slot)',    self._misc_url_1_arg('list', 'NoCoin'))
-        self._render_root_list_row('Machines (mechanical)',      self._misc_url_1_arg('list', 'Mechanical'))
-        self._render_root_list_row('Machines (dead)',            self._misc_url_1_arg('list', 'Dead'))
-        self._render_root_list_row('Machines by Manufacturer',   self._misc_url_1_arg('clist', 'Manufacturer'))
-        # self._render_root_list_row('Machines by Year',           self._misc_url_root('Year'))
-        # self._render_root_list_row('Machines by Driver',         self._misc_url_root('Driver'))
-        # self._render_root_list_row('Machines by Control',        self._misc_url_root('Controls'))
-        # self._render_root_list_row('Machines by Orientation',    self._misc_url_root('Orientation'))
-        self._render_root_list_row('Software Lists',             self._misc_url_1_arg('clist', 'SL'))
+        self._render_root_list_row('Machines (with coin slot)',      self._misc_url_1_arg('list',  'Machines'))
+        self._render_root_list_row('Machines (no coin slot)',        self._misc_url_1_arg('list',  'NoCoin'))
+        self._render_root_list_row('Machines (mechanical)',          self._misc_url_1_arg('list',  'Mechanical'))
+        self._render_root_list_row('Machines (dead)',                self._misc_url_1_arg('list',  'Dead'))
+        self._render_root_list_row('Machines with CHDs',             self._misc_url_1_arg('list',  'CHD'))
+        self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('clist', 'Catver'))
+        self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('clist', 'Catlist'))
+        self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('clist', 'Genre'))
+        self._render_root_list_row('Machines by Manufacturer',       self._misc_url_1_arg('clist', 'Manufacturer'))
+        self._render_root_list_row('Machines by Year',               self._misc_url_1_arg('clist', 'Year'))
+        self._render_root_list_row('Machines by Driver',             self._misc_url_1_arg('clist', 'Driver'))
+        self._render_root_list_row('Machines by Control Type',       self._misc_url_1_arg('clist', 'Controls'))
+        self._render_root_list_row('Machines by Orientation',        self._misc_url_1_arg('clist', 'Orientation'))
+        self._render_root_list_row('Machines by Display',            self._misc_url_1_arg('clist', 'Display'))
+        self._render_root_list_row('Software Lists',                 self._misc_url_1_arg('clist', 'SL'))
+        self._render_root_list_row('Machines by Software List',      self._misc_url_1_arg('clist', 'BySL'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_root_list_row(self, root_name, root_URL):
