@@ -357,13 +357,16 @@ class Main:
 
         # --- Make information string ---
         info_text  = u'[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
+        info_text += u"[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
+        info_text += u"[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])        
         info_text += u"[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
         info_text += u"[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
         info_text += u"[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
         info_text += u"[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
         info_text += u"[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
         info_text += u"[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
-        info_text += u"[COLOR skyblue]haveCoin[/COLOR]: {0}\n".format(machine['haveCoin'])
+        info_text += u"[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
+        info_text += u"[COLOR skyblue]hasCoin[/COLOR]: {0}\n".format(machine['hasCoin'])
         info_text += u"[COLOR skyblue]isbios[/COLOR]: {0}\n".format(machine['isbios'])
         info_text += u"[COLOR skyblue]isdead[/COLOR]: {0}\n".format(machine['isdead'])
         info_text += u"[COLOR skyblue]isdevice[/COLOR]: {0}\n".format(machine['isdevice'])
@@ -371,7 +374,7 @@ class Main:
         info_text += u"[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
         info_text += u"[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
         info_text += u"[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
-        info_text += u"[COLOR skyblue]softwarelist_name[/COLOR]: {0}\n".format(machine['softwarelist_name'])
+        info_text += u"[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(machine['softwarelists'])
         info_text += u"[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
         info_text += u"[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
 

@@ -15,7 +15,9 @@
 # GNU General Public License for more details.
 
 # --- INSTRUCTIONS -------------------------------------------------------------
-#
+# Download Catver.ini from ProgrettoSnaps: 
+# [Web]   http://www.progettosnaps.net/catver/
+# [File]  http://www.progettosnaps.net/catver/packs/pS_CatVer.zip
 # ------------------------------------------------------------------------------
 
 # --- Python standard library ---
@@ -26,9 +28,12 @@ import json
 import io
 
 # --- "Constants" -------------------------------------------------------------
-MAME_XML_filename               = 'MAME.xml'
-Main_DB_filename                = 'MAME_info.json'
-NUM_MACHINES = 50000
+MAME_XML_filename    = 'MAME.xml'
+Catver_ini_filename  = 'catver.ini'
+Catlist_ini_filename = 'catlist.ini'
+Genre_ini_filename   = 'genre.ini'
+Main_DB_filename     = 'MAME_info.json'
+NUM_MACHINES         = 50000
 
 # -------------------------------------------------------------------------------------------------
 # Utility functions
@@ -44,6 +49,107 @@ def fs_write_JSON_file(json_filename, json_data):
     except IOError:
         # gui_kodi_notify('Advanced Emulator Launcher - Error', 'Cannot write {0} file (IOError)'.format(roms_json_file))
         pass
+
+# -----------------------------------------------------------------------------
+# Load catver.ini
+# -----------------------------------------------------------------------------
+print('Parsing ' + Catver_ini_filename)
+categories_dic = {}
+categories_set = set()
+__debug_do_list_categories = False
+read_status = 0
+try:
+    # read_status FSM values
+    # 0 -> Looking for '[Category]' tag
+    # 1 -> Reading categories
+    # 2 -> Categories finished. STOP
+    f = open(Catver_ini_filename, 'rt')
+    for cat_line in f:
+        stripped_line = cat_line.strip()
+        if __debug_do_list_categories: print('Line "' + stripped_line + '"')
+        if read_status == 0:
+            if stripped_line == '[Category]':
+                if __debug_do_list_categories: print('Found [Category]')
+                read_status = 1
+        elif read_status == 1:
+            line_list = stripped_line.split("=")
+            if len(line_list) == 1:
+                read_status = 2
+                continue
+            else:
+                if __debug_do_list_categories: print(line_list)
+                machine_name = line_list[0]
+                category = line_list[1]
+                if machine_name not in categories_dic:
+                    categories_dic[machine_name] = category
+                categories_set.add(category)
+        elif read_status == 2:
+            print('Reached end of categories parsing.')
+            break
+        else:
+            print('Unknown read_status FSM value. Aborting.')
+            sys.exit(10)
+    f.close()
+except:
+    pass
+print('Catver Number of machines   {0:6d}'.format(len(categories_dic)))
+print('Catver Number of categories {0:6d}'.format(len(categories_set)))
+
+# -----------------------------------------------------------------------------
+# Load catlist.ini
+# -----------------------------------------------------------------------------
+print('Parsing ' + Catlist_ini_filename)
+catlist_dic = {}
+catlist_set = set()
+try:
+    f = open(Catlist_ini_filename, 'rt')
+    for file_line in f:
+        stripped_line = file_line.strip()
+        # Skip comments: lines starting with ';;'
+        if re.search(r'^;;', stripped_line): continue
+        # Skip blanks
+        if stripped_line == '': continue
+        # New category
+        searchObj = re.search(r'^\[(.*)\]', stripped_line)
+        if searchObj:
+            current_category = searchObj.group(1)
+            catlist_set.add(current_category)
+        else:
+            machine_name = stripped_line
+            catlist_dic[machine_name] = current_category
+    f.close()
+except:
+    pass
+print('Catlist Number of machines   {0:6d}'.format(len(catlist_dic)))
+print('Catlist Number of categories {0:6d}'.format(len(catlist_set)))
+
+# -----------------------------------------------------------------------------
+# Load genre.ini
+# -----------------------------------------------------------------------------
+print('Parsing ' + Genre_ini_filename)
+genre_dic = {}
+genre_set = set()
+try:
+    f = open(Genre_ini_filename, 'rt')
+    for file_line in f:
+        stripped_line = file_line.strip()
+        # Skip comments: lines starting with ';;'
+        if re.search(r'^;;', stripped_line): continue
+        # Skip blanks
+        if stripped_line == '': continue
+        # New category
+        searchObj = re.search(r'^\[(.*)\]', stripped_line)
+        if searchObj:
+            current_category = searchObj.group(1)
+            genre_set.add(current_category)
+        else:
+            machine_name = stripped_line
+            genre_dic[machine_name] = current_category
+    f.close()
+except:
+    pass
+print('Genre Number of machines   {0:6d}'.format(len(genre_dic)))
+print('Genre Number of categories {0:6d}'.format(len(genre_set)))
 
 # -----------------------------------------------------------------------------
 # Incremental Parsing approach B (from [1])
@@ -63,32 +169,39 @@ print('MAME version is "{0}"'.format(mame_version_str))
 #   machines = { 'machine_name' : machine, ...}
 #
 def fs_new_machine():
-    m = {'sourcefile'        : u'',
-         'isbios'            : False,
-         'isdevice'          : False,
-         'ismechanical'      : False,
-         'cloneof'           : u'',
-         'romof'             : u'',
-         'sampleof'          : u'',
-         'description'       : u'', 
-         'year'              : u'', 
-         'manufacturer'      : u'',
-         'display_tag'       : [],
-         'control_type'      : [],
-         'haveCoin'          : False,
-         'coins'             : 0,
-         'driver_status'     : u'',
-         'softwarelist_name' : [],
-         'isdead'            : False
+    m = {'sourcefile'    : u'',
+         'isbios'        : False,
+         'isdevice'      : False,
+         'ismechanical'  : False,
+         'cloneof'       : u'',
+         'romof'         : u'',
+         'sampleof'      : u'',
+         'description'   : u'', 
+         'year'          : u'', 
+         'manufacturer'  : u'',
+         'catver'        : u'',
+         'catlist'       : u'',
+         'genre'         : u'',
+         'orientation'   : u'Unknown', # Vertical, Horizontal, Unknown
+         'display_tag'   : [],
+         'control_type'  : [],
+         'hasCoin'       : False,
+         'coins'         : 0,
+         'driver_status' : u'',
+         'softwarelists' : [],
+         'isdead'        : False,
+         'hasROM'        : False,
+         'hasCHD'        : False
     }
 
     return m
 
-machines = {}
-machine_name = ''
+# --- Process MAME XML ---
+machines      = {}
+machine_name  = ''
 num_iteration = 0
-num_machines = 0
-num_dead = 0
+num_machines  = 0
+num_dead      = 0
 print('Reading MAME XML file ...')
 for event, elem in context:
     # --- Debug the elements we are iterating from the XML file ---
@@ -109,6 +222,7 @@ for event, elem in context:
             sys.exit(10)
         else:
             machine_name = elem.attrib['name']
+
         # sourcefile #IMPLIED attribute
         if 'sourcefile' not in elem.attrib:
             print('"sourcefile" attribute not found in <machine> tag. Aborting.')
@@ -139,6 +253,15 @@ for event, elem in context:
         if 'sampleof' in elem.attrib:
             machine['sampleof'] = elem.attrib['sampleof']
 
+        # >> Add catver/catlist/genre
+        if machine_name in categories_dic: machine['catver'] = categories_dic[machine_name]
+        else:                              machine['catver'] = '[ Not set ]'
+        if machine_name in catlist_dic: machine['catlist'] = catlist_dic[machine_name]
+        else:                           machine['catlist'] = '[ Not set ]'
+        if machine_name in genre_dic: machine['genre'] = genre_dic[machine_name]
+        else:                         machine['genre'] = '[ Not set ]'
+
+        # >> Increment number of machines
         num_machines += 1
 
     elif event == 'start' and elem.tag == 'description':
@@ -161,8 +284,7 @@ for event, elem in context:
         # coins is #IMPLIED attribute
         if 'coins' in elem.attrib:
             machine['coins'] = int(elem.attrib['coins'])
-            if machine['coins'] > 0: machine['haveCoin'] = True
-            else:                    machine['haveCoin'] = False
+            machine['hasCoin'] = True if machine['coins'] > 0 else False
 
         # >> Iterate children of <input> and search for <control> tags
         for control_child in elem:
@@ -175,7 +297,7 @@ for event, elem in context:
 
     elif event == 'start' and elem.tag == 'softwarelist':
         # name is #REQUIRED attribute
-        machine['softwarelist_name'].append(elem.attrib['name'])
+        machine['softwarelists'].append(elem.attrib['name'])
 
     elif event == 'end' and elem.tag == 'machine':
         # >> Assumption 1: isdevice = True if and only if runnable = False
