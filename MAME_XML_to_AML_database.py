@@ -169,29 +169,30 @@ print('MAME version is "{0}"'.format(mame_version_str))
 #   machines = { 'machine_name' : machine, ...}
 #
 def fs_new_machine():
-    m = {'sourcefile'    : u'',
-         'isBIOS'        : False,
-         'isDevice'      : False,
-         'isMechanical'  : False,
-         'cloneof'       : u'',
-         'romof'         : u'',
-         'sampleof'      : u'',
-         'description'   : u'', 
-         'year'          : u'', 
-         'manufacturer'  : u'',
-         'catver'        : u'',
-         'catlist'       : u'',
-         'genre'         : u'',
-         'orientation'   : u'Unknown', # Vertical, Horizontal, Unknown
-         'display_tag'   : [],
-         'control_type'  : [],
-         'hasCoin'       : False,
-         'coins'         : 0,
-         'driver_status' : u'',
-         'softwarelists' : [],
-         'isDead'        : False,
-         'hasROM'        : False,
-         'hasCHD'        : False
+    m = {'sourcefile'     : u'',
+         'isBIOS'         : False,
+         'isDevice'       : False,
+         'isMechanical'   : False,
+         'cloneof'        : u'',
+         'romof'          : u'',
+         'sampleof'       : u'',
+         'description'    : u'', 
+         'year'           : u'', 
+         'manufacturer'   : u'',
+         'catver'         : u'',
+         'catlist'        : u'',
+         'genre'          : u'',
+         'display_tag'    : [],
+         'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
+         'display_rotate' : [], # (0|90|180|270) #REQUIRED>
+         'control_type'   : [],
+         'hasCoin'        : False,
+         'coins'          : 0,
+         'driver_status'  : u'',
+         'softwarelists'  : [],
+         'isDead'         : False,
+         'hasROM'         : False,
+         'hasCHD'         : False
     }
 
     return m
@@ -232,7 +233,17 @@ for event, elem in context:
             print('"sourcefile" attribute not found in <machine> tag. Aborting.')
             sys.exit(10)
         else:
-            machine['sourcefile'] = elem.attrib['sourcefile']
+            # >> Remove trailing '.cpp' from driver name
+            raw_driver_name = elem.attrib['sourcefile']
+            
+            # >> In MAME 0.174 some driver end with .cpp and others with .hxx
+            # if raw_driver_name[-4:] == '.cpp':
+            #     driver_name = raw_driver_name[0:-4]
+            # else:
+            #     print('Unrecognised driver name "{0}"'.format(raw_driver_name))
+
+            # >> Assign driver name
+            machine['sourcefile'] = raw_driver_name
 
         # Optional, default no
         if 'isbios' not in elem.attrib: machine['isBIOS'] = False
@@ -293,6 +304,8 @@ for event, elem in context:
     # Other machines have no display tag (18w)
     elif event == 'start' and elem.tag == 'display':
         machine['display_tag'].append(elem.attrib['tag'])
+        machine['display_type'].append(elem.attrib['type'])
+        machine['display_rotate'].append(elem.attrib['rotate'])
         num_displays += 1
 
     # Some machines have no controls at all.

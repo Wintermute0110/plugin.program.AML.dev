@@ -27,25 +27,26 @@ import io
 import os
 
 # --- "Constants" -------------------------------------------------------------
-MAIN_DB_FILE_PATH              = 'MAME_info.json'
-MAIN_PCLONE_DIC_FILE_PATH      = 'MAME_PClone_dic.json'
+MAIN_DB_FILE_PATH                = 'MAME_info.json'
+MAIN_PCLONE_DIC_FILE_PATH        = 'MAME_PClone_dic.json'
 
-MACHINES_IDX_FILE_PATH         = 'idx_Machines.json'
-MACHINES_IDX_NOCOIN_FILE_PATH  = 'idx_Machines_NoCoin.json'
-MACHINES_IDX_MECHA_FILE_PATH   = 'idx_Machines_Mechanical.json'
-MACHINES_IDX_DEAD_FILE_PATH    = 'idx_Machines_Dead.json'
-MACHINES_IDX_CHD_FILE_PATH     = 'idx_Machines_CHD.json'
+MACHINES_IDX_FILE_PATH           = 'idx_Machines.json'
+MACHINES_IDX_NOCOIN_FILE_PATH    = 'idx_Machines_NoCoin.json'
+MACHINES_IDX_MECHA_FILE_PATH     = 'idx_Machines_Mechanical.json'
+MACHINES_IDX_DEAD_FILE_PATH      = 'idx_Machines_Dead.json'
+MACHINES_IDX_CHD_FILE_PATH       = 'idx_Machines_CHD.json'
 
-CATALOG_CATVER_FILE_PATH       = 'catalog_catver.json'
-CATALOG_CATLIST_FILE_PATH      = 'catalog_catlist.json'
-CATALOG_GENRE_FILE_PATH        = 'catalog_genre.json'
-CATALOG_MANUFACTURER_FILE_PATH = 'catalog_manufacturer.json'
-CATALOG_YEAR_FILE_PATH         = 'catalog_year.json'
-CATALOG_DRIVER_FILE_PATH       = 'catalog_driver.json'
-CATALOG_CONTROL_FILE_PATH      = 'catalog_control.json'
-CATALOG_ORIENTATION_FILE_PATH  = 'catalog_orientation.json'
-CATALOG_DISPLAY_FILE_PATH      = 'catalog_display.json'
-CATALOG_SL_FILE_PATH           = 'catalog_SL.json'
+CATALOG_CATVER_FILE_PATH         = 'catalog_catver.json'
+CATALOG_CATLIST_FILE_PATH        = 'catalog_catlist.json'
+CATALOG_GENRE_FILE_PATH          = 'catalog_genre.json'
+CATALOG_MANUFACTURER_FILE_PATH   = 'catalog_manufacturer.json'
+CATALOG_YEAR_FILE_PATH           = 'catalog_year.json'
+CATALOG_DRIVER_FILE_PATH         = 'catalog_driver.json'
+CATALOG_CONTROL_FILE_PATH        = 'catalog_control.json'
+CATALOG_DISPLAY_TAG_FILE_PATH    = 'catalog_display_tag.json'
+CATALOG_DISPLAY_TYPE_FILE_PATH   = 'catalog_display_type.json'
+CATALOG_DISPLAY_ROTATE_FILE_PATH = 'catalog_display_rotate.json'
+CATALOG_SL_FILE_PATH             = 'catalog_SL.json'
 
 # -------------------------------------------------------------------------------------------------
 # Utility functions
@@ -249,30 +250,56 @@ control_catalog = {}
 for p_machine_name in main_pclone_dic:
     machine = machines[p_machine_name]
     catalog_key = " / ".join(machine['control_type'])
+    
+    # >> Change category name for machines with no controls
+    if catalog_key == '': catalog_key = '[ No controls ]'
+
     if catalog_key in control_catalog:
         control_catalog[catalog_key].append(p_machine_name)
     else:
         control_catalog[catalog_key] = [p_machine_name]
 
-# --- Orientation catalog ---
-# orientation_catalog = {}
-# for p_machine_name in main_pclone_dic:
-#     machine = machines[p_machine_name]
-#     catalog_key = " / ".join(machine['control_type'])
-#     if catalog_key in orientation_catalog:
-#         orientation_catalog[catalog_key].append(p_machine_name)
-#     else:
-#         orientation_catalog[catalog_key] = [p_machine_name]
-
-# --- Display catalog ---
-display_catalog = {}
+# --- Display tag catalog ---
+display_tag_catalog = {}
 for p_machine_name in main_pclone_dic:
     machine = machines[p_machine_name]
     catalog_key = " / ".join(machine['display_tag'])
-    if catalog_key in display_catalog:
-        display_catalog[catalog_key].append(p_machine_name)
+
+    # >> Change category name for machines with no display
+    if catalog_key == '': catalog_key = '[ No display ]'
+
+    if catalog_key in display_tag_catalog:
+        display_tag_catalog[catalog_key].append(p_machine_name)
     else:
-        display_catalog[catalog_key] = [p_machine_name]
+        display_tag_catalog[catalog_key] = [p_machine_name]
+
+# --- Display type catalog ---
+display_type_catalog = {}
+for p_machine_name in main_pclone_dic:
+    machine = machines[p_machine_name]
+    catalog_key = " / ".join(machine['display_type'])
+
+    # >> Change category name for machines with no display
+    if catalog_key == '': catalog_key = '[ No display ]'
+
+    if catalog_key in display_type_catalog:
+        display_type_catalog[catalog_key].append(p_machine_name)
+    else:
+        display_type_catalog[catalog_key] = [p_machine_name]
+
+# --- Display rotate catalog ---
+display_rotate_catalog = {}
+for p_machine_name in main_pclone_dic:
+    machine = machines[p_machine_name]
+    catalog_key = " / ".join(machine['display_rotate'])
+
+    # >> Change category name for machines with no display
+    if catalog_key == '': catalog_key = '[ No display ]'
+
+    if catalog_key in display_rotate_catalog:
+        display_rotate_catalog[catalog_key].append(p_machine_name)
+    else:
+        display_rotate_catalog[catalog_key] = [p_machine_name]
 
 # --- Software List catalog ---
 SL_catalog = {}
@@ -307,6 +334,7 @@ fs_write_JSON_file(CATALOG_MANUFACTURER_FILE_PATH, manufacturer_catalog)
 fs_write_JSON_file(CATALOG_YEAR_FILE_PATH, year_catalog)
 fs_write_JSON_file(CATALOG_DRIVER_FILE_PATH, driver_catalog)
 fs_write_JSON_file(CATALOG_CONTROL_FILE_PATH, control_catalog)
-# fs_write_JSON_file(CATALOG_ORIENTATION_FILE_PATH, orientation_catalog)
-fs_write_JSON_file(CATALOG_DISPLAY_FILE_PATH, display_catalog)
+fs_write_JSON_file(CATALOG_DISPLAY_TAG_FILE_PATH, display_tag_catalog)
+fs_write_JSON_file(CATALOG_DISPLAY_TYPE_FILE_PATH, display_type_catalog)
+fs_write_JSON_file(CATALOG_DISPLAY_ROTATE_FILE_PATH, display_rotate_catalog)
 fs_write_JSON_file(CATALOG_SL_FILE_PATH, SL_catalog)

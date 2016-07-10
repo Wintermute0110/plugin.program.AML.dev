@@ -45,27 +45,28 @@ ICON_IMG_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'icon.png').decode('utf-8')
 FANART_IMG_FILE_PATH  = os.path.join(AML_ADDON_DIR, 'fanart.jpg').decode('utf-8')
 
 # --- Plugin database indices ---
-MAIN_DB_FILE_PATH              = os.path.join(AML_ADDON_DIR, 'MAME_info.json').decode('utf-8')
-MAIN_PCLONE_DIC_FILE_PATH      = os.path.join(AML_ADDON_DIR, 'MAME_PClone_dic.json').decode('utf-8')
+MAIN_DB_FILE_PATH                = os.path.join(AML_ADDON_DIR, 'MAME_info.json').decode('utf-8')
+MAIN_PCLONE_DIC_FILE_PATH        = os.path.join(AML_ADDON_DIR, 'MAME_PClone_dic.json').decode('utf-8')
 
-MACHINES_IDX_FILE_PATH         = os.path.join(AML_ADDON_DIR, 'idx_Machines.json').decode('utf-8')
-MACHINES_IDX_NOCOIN_FILE_PATH  = os.path.join(AML_ADDON_DIR, 'idx_Machines_NoCoin.json').decode('utf-8')
-MACHINES_IDX_MECHA_FILE_PATH   = os.path.join(AML_ADDON_DIR, 'idx_Machines_Mechanical.json').decode('utf-8')
-MACHINES_IDX_DEAD_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'idx_Machines_Dead.json').decode('utf-8')
-MACHINES_IDX_CHD_FILE_PATH     = os.path.join(AML_ADDON_DIR, 'idx_Machines_CHD.json').decode('utf-8')
+MACHINES_IDX_FILE_PATH           = os.path.join(AML_ADDON_DIR, 'idx_Machines.json').decode('utf-8')
+MACHINES_IDX_NOCOIN_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'idx_Machines_NoCoin.json').decode('utf-8')
+MACHINES_IDX_MECHA_FILE_PATH     = os.path.join(AML_ADDON_DIR, 'idx_Machines_Mechanical.json').decode('utf-8')
+MACHINES_IDX_DEAD_FILE_PATH      = os.path.join(AML_ADDON_DIR, 'idx_Machines_Dead.json').decode('utf-8')
+MACHINES_IDX_CHD_FILE_PATH       = os.path.join(AML_ADDON_DIR, 'idx_Machines_CHD.json').decode('utf-8')
 
-CATALOG_CATVER_FILE_PATH       = os.path.join(AML_ADDON_DIR, 'catalog_catver.json').decode('utf-8')
-CATALOG_CATLIST_FILE_PATH      = os.path.join(AML_ADDON_DIR, 'catalog_catlist.json').decode('utf-8')
-CATALOG_GENRE_FILE_PATH        = os.path.join(AML_ADDON_DIR, 'catalog_genre.json').decode('utf-8')
-CATALOG_MANUFACTURER_FILE_PATH = os.path.join(AML_ADDON_DIR, 'catalog_manufacturer.json').decode('utf-8')
-CATALOG_YEAR_FILE_PATH         = os.path.join(AML_ADDON_DIR, 'catalog_year.json').decode('utf-8')
-CATALOG_DRIVER_FILE_PATH       = os.path.join(AML_ADDON_DIR, 'catalog_driver.json').decode('utf-8')
-CATALOG_CONTROL_FILE_PATH      = os.path.join(AML_ADDON_DIR, 'catalog_control.json').decode('utf-8')
-CATALOG_ORIENTATION_FILE_PATH  = os.path.join(AML_ADDON_DIR, 'catalog_orientation.json').decode('utf-8')
-CATALOG_DISPLAY_FILE_PATH      = os.path.join(AML_ADDON_DIR, 'catalog_display.json').decode('utf-8')
-CATALOG_SL_FILE_PATH           = os.path.join(AML_ADDON_DIR, 'catalog_SL.json').decode('utf-8')
+CATALOG_CATVER_FILE_PATH         = os.path.join(AML_ADDON_DIR, 'catalog_catver.json').decode('utf-8')
+CATALOG_CATLIST_FILE_PATH        = os.path.join(AML_ADDON_DIR, 'catalog_catlist.json').decode('utf-8')
+CATALOG_GENRE_FILE_PATH          = os.path.join(AML_ADDON_DIR, 'catalog_genre.json').decode('utf-8')
+CATALOG_MANUFACTURER_FILE_PATH   = os.path.join(AML_ADDON_DIR, 'catalog_manufacturer.json').decode('utf-8')
+CATALOG_YEAR_FILE_PATH           = os.path.join(AML_ADDON_DIR, 'catalog_year.json').decode('utf-8')
+CATALOG_DRIVER_FILE_PATH         = os.path.join(AML_ADDON_DIR, 'catalog_driver.json').decode('utf-8')
+CATALOG_CONTROL_FILE_PATH        = os.path.join(AML_ADDON_DIR, 'catalog_control.json').decode('utf-8')
+CATALOG_DISPLAY_TAG_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'catalog_display_tag.json').decode('utf-8')
+CATALOG_DISPLAY_TYPE_FILE_PATH   = os.path.join(AML_ADDON_DIR, 'catalog_display_type.json').decode('utf-8')
+CATALOG_DISPLAY_ROTATE_FILE_PATH = os.path.join(AML_ADDON_DIR, 'catalog_display_rotate.json').decode('utf-8')
+CATALOG_SL_FILE_PATH             = os.path.join(AML_ADDON_DIR, 'catalog_SL.json').decode('utf-8')
 
-SL_cat_filename                = os.path.join(AML_ADDON_DIR, 'cat_SoftwareLists.json').decode('utf-8')
+SL_cat_filename                  = os.path.join(AML_ADDON_DIR, 'cat_SoftwareLists.json').decode('utf-8')
 
 class Main:
     # ---------------------------------------------------------------------------------------------
@@ -160,15 +161,20 @@ class Main:
                     if 'parent' in args: self._render_indexed_clone_list(clist_name, args['control'][0], args['parent'][0])
                     else:                self._render_indexed_parent_list(clist_name, args['control'][0])
                 else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Orientation':
-                if 'orientation' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['orientation'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['orientation'][0])
+            elif clist_name == 'Display_Tag':
+                if 'tag' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['tag'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['tag'][0])
                 else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Display':
-                if 'display' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['display'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['display'][0])
+            elif clist_name == 'Display_Type':
+                if 'type' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['type'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['type'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'Display_Rotate':
+                if 'rotate' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['rotate'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['rotate'][0])
                 else:                    self._render_indexed_list(clist_name)
             elif clist_name == 'BySL':
                 if 'SL' in args:
@@ -216,8 +222,9 @@ class Main:
         self._render_root_list_row('Machines by Year',               self._misc_url_1_arg('clist', 'Year'))
         self._render_root_list_row('Machines by Driver',             self._misc_url_1_arg('clist', 'Driver'))
         self._render_root_list_row('Machines by Control Type',       self._misc_url_1_arg('clist', 'Controls'))
-        self._render_root_list_row('Machines by Orientation',        self._misc_url_1_arg('clist', 'Orientation'))
-        self._render_root_list_row('Machines by Display',            self._misc_url_1_arg('clist', 'Display'))
+        self._render_root_list_row('Machines by Display Tag',        self._misc_url_1_arg('clist', 'Display_Tag'))
+        self._render_root_list_row('Machines by Display Type',       self._misc_url_1_arg('clist', 'Display_Type'))
+        self._render_root_list_row('Machines by Display Rotation',   self._misc_url_1_arg('clist', 'Display_Rotate'))
         self._render_root_list_row('Machines by Software List',      self._misc_url_1_arg('clist', 'BySL'))
         self._render_root_list_row('Software Lists',                 self._misc_url_1_arg('clist', 'SL'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
@@ -347,13 +354,16 @@ class Main:
             catalog_dic = fs_load_JSON_file(CATALOG_DRIVER_FILE_PATH)
         elif clist_name == 'Controls':
             catalog_name = 'control'
-            catalog_dic = fs_load_JSON_file(CATALOG_CONTROL_FILE_PATH)
-        elif clist_name == 'Orientation':
-            catalog_name = 'orientation'
-            catalog_dic = fs_load_JSON_file(CATALOG_ORIENTATION_FILE_PATH)
-        elif clist_name == 'Display':
-            catalog_name = 'display'
-            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(CATALOG_CONTROL_FILE_PATH)            
+        elif clist_name == 'Display_Tag':
+            catalog_name = 'tag'
+            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_TAG_FILE_PATH)
+        elif clist_name == 'Display_Type':
+            catalog_name = 'type'
+            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_TYPE_FILE_PATH)
+        elif clist_name == 'Display_Rotate':
+            catalog_name = 'rotate'
+            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_ROTATE_FILE_PATH)            
         elif clist_name == 'BySL':
             catalog_name = 'SL'
             catalog_dic = fs_load_JSON_file(CATALOG_SL_FILE_PATH)
@@ -392,13 +402,16 @@ class Main:
             catalog_dic = fs_load_JSON_file(CATALOG_DRIVER_FILE_PATH)
         elif clist_name == 'Controls':
             catalog_name = 'control'
-            catalog_dic = fs_load_JSON_file(CATALOG_CONTROL_FILE_PATH)
-        elif clist_name == 'Orientation':
-            catalog_name = 'orientation'
-            catalog_dic = fs_load_JSON_file(CATALOG_ORIENTATION_FILE_PATH)
-        elif clist_name == 'Display':
-            catalog_name = 'display'
-            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(CATALOG_CONTROL_FILE_PATH)            
+        elif clist_name == 'Display_Tag':
+            catalog_name = 'tag'
+            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_TAG_FILE_PATH)
+        elif clist_name == 'Display_Type':
+            catalog_name = 'type'
+            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_TYPE_FILE_PATH)
+        elif clist_name == 'Display_Rotate':
+            catalog_name = 'rotate'
+            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_ROTATE_FILE_PATH)            
         elif clist_name == 'BySL':
             catalog_name = 'SL'
             catalog_dic = fs_load_JSON_file(CATALOG_SL_FILE_PATH)
@@ -421,26 +434,17 @@ class Main:
         main_pclone_dic = fs_load_JSON_file(MAIN_PCLONE_DIC_FILE_PATH)
 
         # >> Get catalog name
-        if clist_name == 'Catver':
-            catalog_name = 'category'
-        elif clist_name == 'Catlist':
-            catalog_name = 'category'
-        elif clist_name == 'Genre':
-            catalog_name = 'category'
-        elif clist_name == 'Manufacturer':
-            catalog_name = 'manufacturer'
-        elif clist_name == 'Year':
-            catalog_name = 'year'
-        elif clist_name == 'Driver':
-            catalog_name = 'driver'
-        elif clist_name == 'Controls':
-            catalog_name = 'control'
-        elif clist_name == 'Orientation':
-            catalog_name = 'orientation'
-        elif clist_name == 'Display':
-            catalog_name = 'display'
-        elif clist_name == 'BySL':
-            catalog_name = 'SL'
+        if   clist_name == 'Catver':         catalog_name = 'category'
+        elif clist_name == 'Catlist':        catalog_name = 'category'
+        elif clist_name == 'Genre':          catalog_name = 'category'
+        elif clist_name == 'Manufacturer':   catalog_name = 'manufacturer'
+        elif clist_name == 'Year':           catalog_name = 'year'
+        elif clist_name == 'Driver':         catalog_name = 'driver'
+        elif clist_name == 'Controls':       catalog_name = 'control'
+        elif clist_name == 'Display_Tag':    catalog_name = 'tag'
+        elif clist_name == 'Display_Type':   catalog_name = 'type'
+        elif clist_name == 'Display_Rotate': catalog_name = 'rotate'
+        elif clist_name == 'BySL':           catalog_name = 'SL'
 
         # >> Render parent first
         self._set_Kodi_content()
@@ -602,7 +606,9 @@ class Main:
         info_text += u"[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
         info_text += u"[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
         info_text += u"[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
+        info_text += u"[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(machine['display_rotate'])
         info_text += u"[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
+        info_text += u"[COLOR skyblue]display_type[/COLOR]: {0}\n".format(machine['display_type'])
         info_text += u"[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
         info_text += u"[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
         info_text += u"[COLOR skyblue]hasCHD[/COLOR]: {0}\n".format(machine['hasCHD'])
@@ -613,7 +619,6 @@ class Main:
         info_text += u"[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
         info_text += u"[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(machine['isMechanical'])
         info_text += u"[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
-        info_text += u"[COLOR violet]orientation[/COLOR]: '{0}'\n".format(machine['orientation'])
         info_text += u"[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
         info_text += u"[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
         info_text += u"[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(machine['softwarelists'])
