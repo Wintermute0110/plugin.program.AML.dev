@@ -45,12 +45,27 @@ ICON_IMG_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'icon.png').decode('utf-8')
 FANART_IMG_FILE_PATH  = os.path.join(AML_ADDON_DIR, 'fanart.jpg').decode('utf-8')
 
 # --- Plugin database indices ---
-Main_DB_filename                = os.path.join(AML_ADDON_DIR, 'MAME_info.json').decode('utf-8')
-Machines_DB_filename            = os.path.join(AML_ADDON_DIR, 'idx_Machines.json').decode('utf-8')
-Machines_NoCoin_DB_filename     = os.path.join(AML_ADDON_DIR, 'idx_Machines_NoCoin.json').decode('utf-8')
-Machines_Mechanical_DB_filename = os.path.join(AML_ADDON_DIR, 'idx_Machines_Mechanical.json').decode('utf-8')
-Machines_Dead_DB_filename       = os.path.join(AML_ADDON_DIR, 'idx_Machines_Dead.json').decode('utf-8')
-SL_cat_filename                 = os.path.join(AML_ADDON_DIR, 'cat_SoftwareLists.json').decode('utf-8')
+MAIN_DB_FILE_PATH              = os.path.join(AML_ADDON_DIR, 'MAME_info.json').decode('utf-8')
+MAIN_PCLONE_DIC_FILE_PATH      = os.path.join(AML_ADDON_DIR, 'MAME_PClone_dic.json').decode('utf-8')
+
+MACHINES_IDX_FILE_PATH         = os.path.join(AML_ADDON_DIR, 'idx_Machines.json').decode('utf-8')
+MACHINES_IDX_NOCOIN_FILE_PATH  = os.path.join(AML_ADDON_DIR, 'idx_Machines_NoCoin.json').decode('utf-8')
+MACHINES_IDX_MECHA_FILE_PATH   = os.path.join(AML_ADDON_DIR, 'idx_Machines_Mechanical.json').decode('utf-8')
+MACHINES_IDX_DEAD_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'idx_Machines_Dead.json').decode('utf-8')
+MACHINES_IDX_CHD_FILE_PATH     = os.path.join(AML_ADDON_DIR, 'idx_Machines_CHD.json').decode('utf-8')
+
+CATALOG_CATVER_FILE_PATH       = os.path.join(AML_ADDON_DIR, 'catalog_catver.json').decode('utf-8')
+CATALOG_CATLIST_FILE_PATH      = os.path.join(AML_ADDON_DIR, 'catalog_catlist.json').decode('utf-8')
+CATALOG_GENRE_FILE_PATH        = os.path.join(AML_ADDON_DIR, 'catalog_genre.json').decode('utf-8')
+CATALOG_MANUFACTURER_FILE_PATH = os.path.join(AML_ADDON_DIR, 'catalog_manufacturer.json').decode('utf-8')
+CATALOG_YEAR_FILE_PATH         = os.path.join(AML_ADDON_DIR, 'catalog_year.json').decode('utf-8')
+CATALOG_DRIVER_FILE_PATH       = os.path.join(AML_ADDON_DIR, 'catalog_driver.json').decode('utf-8')
+CATALOG_CONTROL_FILE_PATH      = os.path.join(AML_ADDON_DIR, 'catalog_control.json').decode('utf-8')
+CATALOG_ORIENTATION_FILE_PATH  = os.path.join(AML_ADDON_DIR, 'catalog_orientation.json').decode('utf-8')
+CATALOG_DISPLAY_FILE_PATH      = os.path.join(AML_ADDON_DIR, 'catalog_display.json').decode('utf-8')
+CATALOG_SL_FILE_PATH           = os.path.join(AML_ADDON_DIR, 'catalog_SL.json').decode('utf-8')
+
+SL_cat_filename                = os.path.join(AML_ADDON_DIR, 'cat_SoftwareLists.json').decode('utf-8')
 
 class Main:
     # ---------------------------------------------------------------------------------------------
@@ -99,23 +114,68 @@ class Main:
                 elif list_name == 'NoCoin':     self._render_machine_clone_list(list_name, parent_name)
                 elif list_name == 'Mechanical': self._render_machine_clone_list(list_name, parent_name)
                 elif list_name == 'Dead':       self._render_machine_clone_list(list_name, parent_name)
+                elif list_name == 'CHD':        self._render_machine_clone_list(list_name, parent_name)
             else:
                 if list_name == 'Machines':     self._render_machine_parent_list(list_name)
                 elif list_name == 'NoCoin':     self._render_machine_parent_list(list_name)
                 elif list_name == 'Mechanical': self._render_machine_parent_list(list_name)
                 elif list_name == 'Dead':       self._render_machine_parent_list(list_name)
+                elif list_name == 'CHD':        self._render_machine_parent_list(list_name)                
 
         elif 'clist' in args:
             clist_name = args['clist'][0]
-            if clist_name == 'Manufacturer':
-                kodi_dialog_OK('Advanced MAME Launcher', 'Not implemented yet. Sorry.')
-                return
-                if 'manufacturer' in args:
-                    manufacturer_name = args['manufacturer'][0]
-                    if 'parent' in args: self._render_machine_indexed_clone_list(clist_name, manufacturer_name, args['parent'][0])
-                    else:                self._render_machine_indexed_parent_list(clist_name, manufacturer_name)
-                else:                    self._render_machine_indexed_list(clist_name)
 
+            if clist_name == 'Catver':
+                if 'category' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['category'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['category'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'Catlist':
+                if 'category' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['category'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['category'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'Genre':
+                if 'category' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['category'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['category'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'Manufacturer':
+                if 'manufacturer' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['manufacturer'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['manufacturer'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'Year':
+                if 'year' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['year'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['year'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'Driver':
+                if 'driver' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['driver'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['driver'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'Controls':
+                if 'control' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['control'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['control'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'Orientation':
+                if 'orientation' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['orientation'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['orientation'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'Display':
+                if 'display' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['display'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['display'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'BySL':
+                if 'SL' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['SL'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['SL'][0])
+                else:                    self._render_indexed_list(clist_name)
+            # --- Software Lists are a special case ---
             elif clist_name == 'SL':
                 if 'SL' in args:
                     SL_name = args['SL'][0]
@@ -140,7 +200,7 @@ class Main:
         log_debug('Advanced MAME Launcher exit')
 
     # ---------------------------------------------------------------------------------------------
-    # Menu rendering
+    # Root menu rendering
     # ---------------------------------------------------------------------------------------------
     def _render_root_list(self):
         # >> Code Machines/Manufacturer/SF first. Rest are variations of those three.
@@ -148,7 +208,7 @@ class Main:
         self._render_root_list_row('Machines (no coin slot)',        self._misc_url_1_arg('list',  'NoCoin'))
         self._render_root_list_row('Machines (mechanical)',          self._misc_url_1_arg('list',  'Mechanical'))
         self._render_root_list_row('Machines (dead)',                self._misc_url_1_arg('list',  'Dead'))
-        self._render_root_list_row('Machines with CHDs',             self._misc_url_1_arg('list',  'CHD'))
+        self._render_root_list_row('Machines (with CHDs)',           self._misc_url_1_arg('list',  'CHD'))
         self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('clist', 'Catver'))
         self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('clist', 'Catlist'))
         self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('clist', 'Genre'))
@@ -158,8 +218,8 @@ class Main:
         self._render_root_list_row('Machines by Control Type',       self._misc_url_1_arg('clist', 'Controls'))
         self._render_root_list_row('Machines by Orientation',        self._misc_url_1_arg('clist', 'Orientation'))
         self._render_root_list_row('Machines by Display',            self._misc_url_1_arg('clist', 'Display'))
-        self._render_root_list_row('Software Lists',                 self._misc_url_1_arg('clist', 'SL'))
         self._render_root_list_row('Machines by Software List',      self._misc_url_1_arg('clist', 'BySL'))
+        self._render_root_list_row('Software Lists',                 self._misc_url_1_arg('clist', 'SL'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_root_list_row(self, root_name, root_URL):
@@ -186,11 +246,12 @@ class Main:
     #----------------------------------------------------------------------------------------------
     def _render_machine_parent_list(self, list_name):
         # >> Load main MAME info DB and PClone index
-        MAME_info_dic = fs_load_JSON_file(Main_DB_filename)
-        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(Machines_DB_filename)
-        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(Machines_NoCoin_DB_filename)
-        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(Machines_Mechanical_DB_filename)
-        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(Machines_Dead_DB_filename)
+        MAME_info_dic = fs_load_JSON_file(MAIN_DB_FILE_PATH)
+        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_FILE_PATH)
+        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_NOCOIN_FILE_PATH)
+        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_MECHA_FILE_PATH)
+        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_DEAD_FILE_PATH)
+        elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_CHD_FILE_PATH)
 
         # >> Render parent main list
         self._set_Kodi_content()
@@ -205,11 +266,12 @@ class Main:
     #
     def _render_machine_clone_list(self, list_name, parent_name):
         # >> Load main MAME info DB and PClone index
-        MAME_info_dic = fs_load_JSON_file(Main_DB_filename)
-        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(Machines_DB_filename)
-        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(Machines_NoCoin_DB_filename)
-        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(Machines_Mechanical_DB_filename)
-        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(Machines_Dead_DB_filename)
+        MAME_info_dic = fs_load_JSON_file(MAIN_DB_FILE_PATH)
+        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_FILE_PATH)
+        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_NOCOIN_FILE_PATH)
+        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_MECHA_FILE_PATH)
+        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_DEAD_FILE_PATH)
+        elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_CHD_FILE_PATH)
 
         # >> Render parent first
         self._set_Kodi_content()
@@ -229,12 +291,12 @@ class Main:
     def _render_machine_row(self, machine_name, machine, is_parent_list, list_name = u''):
         # --- Mark devices, BIOS and clones ---
         display_name = machine['description']
-        if machine['isdevice']: display_name += ' [COLOR violet][Device][/COLOR]'
-        if machine['isbios']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-        if machine['cloneof']:  display_name += ' [COLOR orange][Clone][/COLOR]'
+        if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+        if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+        if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
         # Do not mark machines working OK
-        if   machine['driver_status'] == u'imperfect':   display_name += ' [COLOR yellow][Imperfect][/COLOR]'
-        elif machine['driver_status'] == u'preliminary': display_name += ' [COLOR red][Preliminary][/COLOR]'
+        if   machine['driver_status'] == u'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+        elif machine['driver_status'] == u'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
@@ -261,15 +323,197 @@ class Main:
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     #----------------------------------------------------------------------------------------------
-    # 1) There should be a precompiled JSON index with Manufacturers.
-    # 2) Each manufacturer has a list of parents by that manufacturer.
-    # 3) 
+    # Cataloged lists
     #----------------------------------------------------------------------------------------------
-    def _render_manufacturer_list(self):
-        pass
+    def _render_indexed_list(self, clist_name):
+        # >> Load catalog index
+        if clist_name == 'Catver':
+            catalog_name = 'category'
+            catalog_dic = fs_load_JSON_file(CATALOG_CATVER_FILE_PATH)
+        elif clist_name == 'Catlist':
+            catalog_name = 'category'
+            catalog_dic = fs_load_JSON_file(CATALOG_CATLIST_FILE_PATH)
+        elif clist_name == 'Genre':
+            catalog_name = 'category'
+            catalog_dic = fs_load_JSON_file(CATALOG_GENRE_FILE_PATH)
+        elif clist_name == 'Manufacturer':
+            catalog_name = 'manufacturer'
+            catalog_dic = fs_load_JSON_file(CATALOG_MANUFACTURER_FILE_PATH)
+        elif clist_name == 'Year':
+            catalog_name = 'year'
+            catalog_dic = fs_load_JSON_file(CATALOG_YEAR_FILE_PATH)
+        elif clist_name == 'Driver':
+            catalog_name = 'driver'
+            catalog_dic = fs_load_JSON_file(CATALOG_DRIVER_FILE_PATH)
+        elif clist_name == 'Controls':
+            catalog_name = 'control'
+            catalog_dic = fs_load_JSON_file(CATALOG_CONTROL_FILE_PATH)
+        elif clist_name == 'Orientation':
+            catalog_name = 'orientation'
+            catalog_dic = fs_load_JSON_file(CATALOG_ORIENTATION_FILE_PATH)
+        elif clist_name == 'Display':
+            catalog_name = 'display'
+            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_FILE_PATH)
+        elif clist_name == 'BySL':
+            catalog_name = 'SL'
+            catalog_dic = fs_load_JSON_file(CATALOG_SL_FILE_PATH)
+
+        # >> Render categories in catalog index
+        self._set_Kodi_content()
+        for catalog_key in catalog_dic:
+            self._render_indexed_list_row(clist_name, catalog_name, catalog_key)
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    #
+    # Renders a Parent list knowing the index (category)
+    #
+    def _render_indexed_parent_list(self, clist_name, catalog_item_name):
+        # >> Load main MAME info DB
+        MAME_info_dic = fs_load_JSON_file(MAIN_DB_FILE_PATH)
+
+        # >> Load catalog index
+        if clist_name == 'Catver':
+            catalog_name = 'category'
+            catalog_dic = fs_load_JSON_file(CATALOG_CATVER_FILE_PATH)
+        elif clist_name == 'Catlist':
+            catalog_name = 'category'
+            catalog_dic = fs_load_JSON_file(CATALOG_CATLIST_FILE_PATH)
+        elif clist_name == 'Genre':
+            catalog_name = 'category'
+            catalog_dic = fs_load_JSON_file(CATALOG_GENRE_FILE_PATH)
+        elif clist_name == 'Manufacturer':
+            catalog_name = 'manufacturer'
+            catalog_dic = fs_load_JSON_file(CATALOG_MANUFACTURER_FILE_PATH)
+        elif clist_name == 'Year':
+            catalog_name = 'year'
+            catalog_dic = fs_load_JSON_file(CATALOG_YEAR_FILE_PATH)
+        elif clist_name == 'Driver':
+            catalog_name = 'driver'
+            catalog_dic = fs_load_JSON_file(CATALOG_DRIVER_FILE_PATH)
+        elif clist_name == 'Controls':
+            catalog_name = 'control'
+            catalog_dic = fs_load_JSON_file(CATALOG_CONTROL_FILE_PATH)
+        elif clist_name == 'Orientation':
+            catalog_name = 'orientation'
+            catalog_dic = fs_load_JSON_file(CATALOG_ORIENTATION_FILE_PATH)
+        elif clist_name == 'Display':
+            catalog_name = 'display'
+            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_FILE_PATH)
+        elif clist_name == 'BySL':
+            catalog_name = 'SL'
+            catalog_dic = fs_load_JSON_file(CATALOG_SL_FILE_PATH)
+
+        # >> Get parents for this category
+        Machines_PClone_dic = catalog_dic[catalog_item_name]
+
+        # >> Render parent main list
+        self._set_Kodi_content()
+        for parent_name in Machines_PClone_dic:
+            machine = MAME_info_dic[parent_name]
+            self._render_indexed_machine_row(parent_name, machine, True, clist_name, catalog_name, catalog_item_name)
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_indexed_clone_list(self, clist_name, catalog_item_name, parent_name):
+        # >> Load main MAME info DB
+        MAME_info_dic = fs_load_JSON_file(MAIN_DB_FILE_PATH)
+
+        # >> Load main PClone dictionary
+        main_pclone_dic = fs_load_JSON_file(MAIN_PCLONE_DIC_FILE_PATH)
+
+        # >> Get catalog name
+        if clist_name == 'Catver':
+            catalog_name = 'category'
+        elif clist_name == 'Catlist':
+            catalog_name = 'category'
+        elif clist_name == 'Genre':
+            catalog_name = 'category'
+        elif clist_name == 'Manufacturer':
+            catalog_name = 'manufacturer'
+        elif clist_name == 'Year':
+            catalog_name = 'year'
+        elif clist_name == 'Driver':
+            catalog_name = 'driver'
+        elif clist_name == 'Controls':
+            catalog_name = 'control'
+        elif clist_name == 'Orientation':
+            catalog_name = 'orientation'
+        elif clist_name == 'Display':
+            catalog_name = 'display'
+        elif clist_name == 'BySL':
+            catalog_name = 'SL'
+
+        # >> Render parent first
+        self._set_Kodi_content()
+        machine = MAME_info_dic[parent_name]
+        self._render_indexed_machine_row(parent_name, machine, False, clist_name, catalog_name, catalog_item_name)
+
+        # >> Render clones belonging to parent in this category
+        for p_name in main_pclone_dic[parent_name]:
+            machine = MAME_info_dic[p_name]
+            self._render_indexed_machine_row(p_name, machine, False, clist_name, catalog_name, catalog_item_name)
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    #
+    #
+    #
+    def _render_indexed_list_row(self, clist_name, catalog_name, catalog_key):
+        # --- Create listitem row ---
+        icon = 'DefaultFolder.png'
+        listitem = xbmcgui.ListItem(catalog_key, iconImage = icon)
+        ICON_OVERLAY = 6
+        # listitem.setProperty('fanart_image', category_dic['fanart'])
+        listitem.setInfo('video', {'Title'   : catalog_key,        
+                                   'Overlay' : ICON_OVERLAY } )
+
+        # --- Create context menu ---
+        commands = []
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        listitem.addContextMenuItems(commands, replaceItems = True)
+
+        # --- Add row ---
+        URL = self._misc_url_2_arg('clist', clist_name, catalog_name, catalog_key)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+
+    #
+    #
+    #
+    def _render_indexed_machine_row(self, machine_name, machine, is_parent_list, clist_name, catalog_name, catalog_item_name):
+        # --- Mark devices, BIOS and clones ---
+        display_name = machine['description']
+        if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+        if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+        if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+        # Do not mark machines working OK
+        if   machine['driver_status'] == u'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+        elif machine['driver_status'] == u'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+
+        # --- Create listitem row ---
+        icon = 'DefaultFolder.png'
+        listitem = xbmcgui.ListItem(display_name, iconImage = icon)
+        ICON_OVERLAY = 6
+        # listitem.setProperty('fanart_image', category_dic['fanart'])
+        listitem.setInfo('video', {'Title'   : display_name,        
+                                   'Overlay' : ICON_OVERLAY } )
+
+        # --- Create context menu ---
+        commands = []
+        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW_MACHINE', 'machine_name', machine_name)
+        commands.append(('View Machine data',  URL_view, ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        listitem.addContextMenuItems(commands, replaceItems = True)
+
+        # --- Add row ---
+        if is_parent_list:
+            URL = self._misc_url_3_arg('clist', clist_name, catalog_name, catalog_item_name, 'parent', machine_name)
+            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+        else:
+            URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
+            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     #----------------------------------------------------------------------------------------------
-    #
+    # Software Lists
     #----------------------------------------------------------------------------------------------
     def _render_SL_machine_list(self):
         # >> Load Software List catalog
@@ -342,17 +586,12 @@ class Main:
         URL = self._misc_url_3_arg('clist', 'SL', 'SL', SL_name, 'ROM', rom_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    #----------------------------------------------------------------------------------------------
-    # Render rows (ListItems) 
-    #----------------------------------------------------------------------------------------------
-
-
     # ---------------------------------------------------------------------------------------------
     # Information display
     # ---------------------------------------------------------------------------------------------
     def _command_view_machine(self, machine_name):
         # >> Read MAME machine information
-        MAME_info_dic = fs_load_JSON_file(Main_DB_filename)
+        MAME_info_dic = fs_load_JSON_file(MAIN_DB_FILE_PATH)
         machine = MAME_info_dic[machine_name]
 
         # --- Make information string ---
@@ -366,12 +605,15 @@ class Main:
         info_text += u"[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
         info_text += u"[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
         info_text += u"[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
+        info_text += u"[COLOR skyblue]hasCHD[/COLOR]: {0}\n".format(machine['hasCHD'])
         info_text += u"[COLOR skyblue]hasCoin[/COLOR]: {0}\n".format(machine['hasCoin'])
-        info_text += u"[COLOR skyblue]isbios[/COLOR]: {0}\n".format(machine['isbios'])
-        info_text += u"[COLOR skyblue]isdead[/COLOR]: {0}\n".format(machine['isdead'])
-        info_text += u"[COLOR skyblue]isdevice[/COLOR]: {0}\n".format(machine['isdevice'])
-        info_text += u"[COLOR skyblue]ismechanical[/COLOR]: {0}\n".format(machine['ismechanical'])
+        info_text += u"[COLOR skyblue]hasROM[/COLOR]: {0}\n".format(machine['hasROM'])
+        info_text += u"[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
+        info_text += u"[COLOR skyblue]isDead[/COLOR]: {0}\n".format(machine['isDead'])
+        info_text += u"[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
+        info_text += u"[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(machine['isMechanical'])
         info_text += u"[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
+        info_text += u"[COLOR violet]orientation[/COLOR]: '{0}'\n".format(machine['orientation'])
         info_text += u"[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
         info_text += u"[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
         info_text += u"[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(machine['softwarelists'])

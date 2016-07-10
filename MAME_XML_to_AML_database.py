@@ -170,9 +170,9 @@ print('MAME version is "{0}"'.format(mame_version_str))
 #
 def fs_new_machine():
     m = {'sourcefile'    : u'',
-         'isbios'        : False,
-         'isdevice'      : False,
-         'ismechanical'  : False,
+         'isBIOS'        : False,
+         'isDevice'      : False,
+         'isMechanical'  : False,
          'cloneof'       : u'',
          'romof'         : u'',
          'sampleof'      : u'',
@@ -189,12 +189,16 @@ def fs_new_machine():
          'coins'         : 0,
          'driver_status' : u'',
          'softwarelists' : [],
-         'isdead'        : False,
+         'isDead'        : False,
          'hasROM'        : False,
          'hasCHD'        : False
     }
 
     return m
+
+# --- Count number of machines in MAME.xml ---
+# >> Nice for progress dialogs
+
 
 # --- Process MAME XML ---
 machines      = {}
@@ -231,12 +235,12 @@ for event, elem in context:
             machine['sourcefile'] = elem.attrib['sourcefile']
 
         # Optional, default no
-        if 'isbios' not in elem.attrib: machine['isbios'] = False
-        else:                           machine['isbios'] = True if elem.attrib['isbios'] == u'yes' else False
-        if 'isdevice' not in elem.attrib: machine['isdevice'] = False
-        else:                             machine['isdevice'] = True if elem.attrib['isdevice'] == u'yes' else False
-        if 'ismechanical' not in elem.attrib: machine['ismechanical'] = False
-        else:                                 machine['ismechanical'] = True if elem.attrib['ismechanical'] == u'yes' else False
+        if 'isbios' not in elem.attrib: machine['isBIOS'] = False
+        else:                           machine['isBIOS'] = True if elem.attrib['isbios'] == u'yes' else False
+        if 'isdevice' not in elem.attrib: machine['isDevice'] = False
+        else:                             machine['isDevice'] = True if elem.attrib['isdevice'] == u'yes' else False
+        if 'ismechanical' not in elem.attrib: machine['isMechanical'] = False
+        else:                                 machine['isMechanical'] = True if elem.attrib['ismechanical'] == u'yes' else False
         # Optional, default yes
         if 'runnable' not in elem.attrib: runnable = True
         else:                             runnable = False if elem.attrib['runnable'] == u'no' else True
@@ -301,8 +305,8 @@ for event, elem in context:
 
     elif event == 'end' and elem.tag == 'machine':
         # >> Assumption 1: isdevice = True if and only if runnable = False
-        if machine['isdevice'] == runnable:
-            print("Machine {0}: machine['isdevice'] == runnable".format(machine_name))
+        if machine['isDevice'] == runnable:
+            print("Machine {0}: machine['isDevice'] == runnable".format(machine_name))
             sys.exit(10)
 
         # >> Are there machines with more than 1 <display> tag. Answer: YES
@@ -318,7 +322,7 @@ for event, elem in context:
 
         # >> Mark dead machines. A machine is dead if Status is preliminary AND have no controls
         if machine['driver_status'] == 'preliminary' and not machine['control_type']:
-            machine['isdead'] = True
+            machine['isDead'] = True
             num_dead += 1
 
         # >> Delete XML element once it has been processed
