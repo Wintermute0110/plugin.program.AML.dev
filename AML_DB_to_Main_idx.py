@@ -297,7 +297,7 @@ fs_write_JSON_file(MACHINES_IDX_FILE_PATH, machines_pclone_dic)
 fs_write_JSON_file(MACHINES_IDX_NOCOIN_FILE_PATH, nocoin_pclone_dic)
 fs_write_JSON_file(MACHINES_IDX_MECHA_FILE_PATH, mechanical_pclone_dic)
 fs_write_JSON_file(MACHINES_IDX_DEAD_FILE_PATH, dead_pclone_dic)
-fs_write_JSON_file(MACHINES_IDX_CHD_FILE_PATH, dead_pclone_dic)
+fs_write_JSON_file(MACHINES_IDX_CHD_FILE_PATH, CHD_pclone_dic)
 
 print('Writing AML cataloged databases...')
 fs_write_JSON_file(CATALOG_CATVER_FILE_PATH, catver_catalog)
