@@ -28,7 +28,5 @@ import resources.main
 # loading time is faster compared to PY files.
 # See http://www.network-theory.co.uk/docs/pytut/CompiledPythonfiles.html
 #
-if __name__ == "__main__":
-    plugin = resources.main.Main()
-
-    plugin.run_plugin()
+plugin = resources.main.Main()
+plugin.run_plugin()

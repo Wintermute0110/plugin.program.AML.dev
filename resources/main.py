@@ -14,7 +14,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-# --- Main imports ---
+# --- Python standard library ---
+from __future__ import unicode_literals
 import os
 import urlparse
 
@@ -26,13 +27,14 @@ from utils_kodi import *
 from disk_IO import *
 
 # --- Addon object (used to access settings) ---
-addon_obj      = xbmcaddon.Addon()
-__addon_id__   = addon_obj.getAddonInfo('id')
-__addon_name__ = addon_obj.getAddonInfo('name')
-__version__    = addon_obj.getAddonInfo('version')
-__author__     = addon_obj.getAddonInfo('author')
-__profile__    = addon_obj.getAddonInfo('profile')
-__type__       = addon_obj.getAddonInfo('type')
+__addon_obj__     = xbmcaddon.Addon()
+__addon_id__      = __addon_obj__.getAddonInfo('id').decode('utf-8')
+__addon_name__    = __addon_obj__.getAddonInfo('name').decode('utf-8')
+__addon_version__ = __addon_obj__.getAddonInfo('version').decode('utf-8')
+__addon_author__  = __addon_obj__.getAddonInfo('author').decode('utf-8')
+__addon_profile__ = __addon_obj__.getAddonInfo('profile').decode('utf-8')
+__addon_type__    = __addon_obj__.getAddonInfo('type').decode('utf-8')
+
 
 # --- Addon paths and constant definition ---
 # _FILE_PATH is a filename | _DIR is a directory (with trailing /)
@@ -69,6 +71,9 @@ CATALOG_SL_FILE_PATH             = os.path.join(AML_ADDON_DIR, 'catalog_SL.json'
 SL_cat_filename                  = os.path.join(AML_ADDON_DIR, 'cat_SoftwareLists.json').decode('utf-8')
 
 class Main:
+    # --- Object variables ---
+    settings = {}
+
     # ---------------------------------------------------------------------------------------------
     # This is the plugin entry point.
     # ---------------------------------------------------------------------------------------------
@@ -79,15 +84,14 @@ class Main:
         set_log_level(LOG_DEBUG)
 
         # --- Fill in settings dictionary using addon_obj.getSetting() ---
-        # self._get_settings()
+        self._get_settings()
         # set_log_level(self.settings['log_level'])
 
         # --- Some debug stuff for development ---
         log_debug('---------- Called AML Main::run_plugin() ----------')
-        log_debug(sys.version.replace('\n', ''))
-        log_debug('__addon_id__   {0}'.format(__addon_id__))
-        log_debug('__version__    {0}'.format(__version__))
-        log_debug('__profile__    {0}'.format(__profile__))
+        log_debug('sys.platform   {0}'.format(sys.platform))
+        log_debug('Python version ' + sys.version.replace('\n', ''))
+        log_debug('__addon_version__ {0}'.format(__addon_version__))
         for i in range(len(sys.argv)):
             log_debug('sys.argv[{0}] = "{1}"'.format(i, sys.argv[i]))
 
@@ -96,8 +100,13 @@ class Main:
         # --- Process URL ---
         self.base_url     = sys.argv[0]
         self.addon_handle = int(sys.argv[1])
-        args = urlparse.parse_qs(sys.argv[2][1:])
+        args              = urlparse.parse_qs(sys.argv[2][1:])
         log_debug('args = {0}'.format(args))
+        # Interestingly, if plugin is called as type executable then args is empty.
+        # However, if plugin is called as type video then Kodi adds the following
+        # even for the first call: 'content_type': ['video']
+        self.content_type = args['content_type'] if 'content_type' in args else None
+        log_debug('content_type = {0}'.format(self.content_type))
 
         # --- URL routing -------------------------------------------------------------------------
         # ~~~ Routing step 1 ~~~
@@ -204,6 +213,27 @@ class Main:
             
         # --- So Long, and Thanks for All the Fish ---
         log_debug('Advanced MAME Launcher exit')
+
+    #
+    # Get Addon Settings
+    #
+    def _get_settings(self):
+        # --- Paths ---
+        self.settings['mame_prog']    = __addon_obj__.getSetting('mame_prog').decode('utf-8')
+        self.settings['SL_hash_path'] = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
+        self.settings['rom_path']     = __addon_obj__.getSetting('rom_path').decode('utf-8')
+        self.settings['chd_path']     = __addon_obj__.getSetting('chd_path').decode('utf-8')
+        self.settings['SL_rom_path']  = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
+        self.settings['assets_path']  = __addon_obj__.getSetting('assets_path').decode('utf-8')
+
+        # --- Advanced ---
+        self.settings['log_level']    = int(__addon_obj__.getSetting('log_level'))
+
+        # --- Dump settings for DEBUG ---
+        # log_debug('Settings dump BEGIN')
+        # for key in sorted(self.settings):
+        #     log_debug('{0} --> {1:10s} {2}'.format(key.rjust(21), str(self.settings[key]), type(self.settings[key])))
+        # log_debug('Settings dump END')
 
     # ---------------------------------------------------------------------------------------------
     # Root menu rendering
