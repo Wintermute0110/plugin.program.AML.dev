@@ -203,6 +203,8 @@ class Main:
             if command == 'LAUNCH':
                 mame_args = args['mame_args'][0]
                 log_info('Launching mame with mame_args "{0}"'.format(mame_args))
+            elif command == 'SETUP_PLUGIN':
+                self._command_setup_plugin()
             elif command == 'VIEW_MACHINE':
                 self._command_view_machine(args['machine_name'][0])
             else:
@@ -270,6 +272,7 @@ class Main:
 
         # --- Create context menu ---
         commands = []
+        commands.append(('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN'), ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
         listitem.addContextMenuItems(commands, replaceItems = True)
@@ -667,25 +670,25 @@ class Main:
             log_error('_command_view_machine() Exception rendering INFO window')
 
     # ---------------------------------------------------------------------------------------------
+    # Setup plugin databases
+    # ---------------------------------------------------------------------------------------------
+    def _command_setup_plugin(self):
+        kodi_dialog_OK('Setting up plugin')
+
+    # ---------------------------------------------------------------------------------------------
     # Misc functions
     # ---------------------------------------------------------------------------------------------
-    def _set_Kodi_content(self):
-        # --- Set content type and sorting methods ---
-        # NOTE This code should be move to _gui_* functions which generate
-        #      list. Do not place it here because not all commands of the module
-        #      need it!
-        # Experiment to try to increase the number of views the addon supports. I do not know why
-        # programs does not support all views movies do.
-        # xbmcplugin.setContent(handle=self.addon_handle, content = 'movies')
+    def _set_Kodi_all_sorting_methods(self):
+        if self.addon_handle < 0: return
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_LABEL)
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_STUDIO)
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_GENRE)
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_UNSORTED)
 
-        # Adds a sorting method for the media list.
-        if self.addon_handle > 0:
-            xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_LABEL)
-            xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_VIDEO_YEAR)
-            xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_STUDIO)
-            xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_GENRE)
-            xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_UNSORTED)
-
+    # ---------------------------------------------------------------------------------------------
+    # Misc URL building functions
+    # ---------------------------------------------------------------------------------------------
     def _misc_url_1_arg(self, arg_name, arg_value):
         return u'{0}?{1}={2}'.format(self.base_url, arg_name, arg_value)
 
@@ -693,7 +696,11 @@ class Main:
         return u'{0}?{1}={2}&{3}={4}'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2)
 
     def _misc_url_3_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3):
-        return u'{0}?{1}={2}&{3}={4}&{5}={6}'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3)
+        return u'{0}?{1}={2}&{3}={4}&{5}={6}'.format(self.base_url, arg_name_1, arg_value_1, 
+                                                                    arg_name_2, arg_value_2, arg_name_3, arg_value_3)
+
+    def _misc_url_1_arg_RunPlugin(self, arg_name_1, arg_value_1):
+        return u'XBMC.RunPlugin({0}?{1}={2})'.format(self.base_url, arg_name_1, arg_value_1)
 
     def _misc_url_2_arg_RunPlugin(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2):
         return u'XBMC.RunPlugin({0}?{1}={2}&{3}={4})'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2)

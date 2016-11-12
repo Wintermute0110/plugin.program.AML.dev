@@ -82,38 +82,39 @@ def log_error(str_text):
 # Kodi notifications and dialogs
 # -----------------------------------------------------------------------------
 #
-# Displays a modal dialog with an OK button.
-# Dialog can have up to 3 rows of text.
+# Displays a modal dialog with an OK button. Dialog can have up to 3 rows of text, however first
+# row is multiline.
+# Call examples:
+#  1) ret = kodi_dialog_OK('Launch ROM?')
+#  2) ret = kodi_dialog_OK('Launch ROM?', title = 'AML - Launcher')
 #
-def kodi_dialog_OK(title, row1, row2='', row3=''):
+def kodi_dialog_OK(row1, row2='', row3='', title = 'Advanced MAME Launcher'):
     dialog = xbmcgui.Dialog()
     dialog.ok(title, row1, row2, row3)
 
-def kodi_dialog_yesno(title, row1, row2='', row3=''):
+#
+# Returns True is YES was pressed, returns False if NO was pressed or dialog canceled.
+def kodi_dialog_yesno(row1, row2='', row3='', title = 'Advanced MAME Launcher'):
     dialog = xbmcgui.Dialog()
     ret = dialog.yesno(title, row1, row2, row3)
 
     return ret
 
 #
-# Displays a small box in the low right corner
+# Displays a small box in the bottom right corner
 #
-def kodi_notify(title, text, time = 5000):
-    # --- Old way ---
-    # xbmc.executebuiltin("XBMC.Notification(%s,%s,%s,%s)" % (title, text, time, ICON_IMG_FILE_PATH))
-
-    # --- New way ---
+def kodi_notify(text, title = 'Advanced MAME Launcher', time = 5000):
     dialog = xbmcgui.Dialog()
     dialog.notification(title, text, xbmcgui.NOTIFICATION_INFO, time)
 
-def kodi_notify_warn(title, text, time = 10000):
+def kodi_notify_warn(text, title = 'Advanced MAME Launcher warning', time = 7000):
     dialog = xbmcgui.Dialog()
     dialog.notification(title, text, xbmcgui.NOTIFICATION_WARNING, time)
 
 #
-# Do not use this much because it is the same icon as when Python fails, and that may confuse the user.
+# Do not use this function much because it is the same icon as when Python fails, and that may confuse the user.
 #
-def kodi_notify_error(title, text, time = 10000):
+def kodi_notify_error(text, title = 'Advanced MAME Launcher error', time = 7000):
     dialog = xbmcgui.Dialog()
     dialog.notification(title, text, xbmcgui.NOTIFICATION_ERROR, time)
 
