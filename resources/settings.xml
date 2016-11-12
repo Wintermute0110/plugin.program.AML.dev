@@ -1,11 +1,11 @@
 <settings>
 <category label="Paths">
-    <setting label="MAME executable"         type="file"   id="mame_prog"/>
-    <setting label="Software List hash path" type="folder" id="SL_hash_path" source="auto" option=""/>
-    <setting label="ROM path"                type="folder" id="rom_path" source="auto" option=""/>
-    <setting label="CHD path"                type="folder" id="chd_path" source="auto" option=""/>
-    <setting label="Software List ROM path"  type="folder" id="SL_rom_path" source="auto" option=""/>
-    <setting label="MAME assets path"        type="folder" id="assets_path" source="auto" option=""/>
+    <setting label="MAME executable"          type="file"   id="mame_prog"/>
+    <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="auto" option=""/>
+    <setting label="ROM path"                 type="folder" id="rom_path" source="auto" option=""/>
+    <setting label="CHD path"                 type="folder" id="chd_path" source="auto" option=""/>
+    <setting label="Software Lists ROM path"  type="folder" id="SL_rom_path" source="auto" option=""/>
+    <setting label="MAME assets path"         type="folder" id="assets_path" source="auto" option=""/>
 </category>
 <category label="Advanced">
     <setting label="Log level" type="enum" id="log_level" default="2" values="ERROR|WARNING|INFO|VERBOSE|DEBUG" />
