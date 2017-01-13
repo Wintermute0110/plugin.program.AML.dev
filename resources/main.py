@@ -94,14 +94,14 @@ class Main:
         # set_log_level(self.settings['log_level'])
 
         # --- Some debug stuff for development ---
-        log_debug('---------- Called AML Main::run_plugin() ----------')
+        log_debug('---------- Called AML Main::run_plugin() constructor ----------')
         log_debug('sys.platform   {0}'.format(sys.platform))
         log_debug('Python version ' + sys.version.replace('\n', ''))
         log_debug('__addon_version__ {0}'.format(__addon_version__))
-        for i in range(len(sys.argv)):
-            log_debug('sys.argv[{0}] = "{1}"'.format(i, sys.argv[i]))
+        for i in range(len(sys.argv)): log_debug('sys.argv[{0}] = "{1}"'.format(i, sys.argv[i]))
 
         # --- Addon data paths creation ---
+        if not PLUGIN_DATA_DIR.exists(): PLUGIN_DATA_DIR.makedirs()
 
         # --- Process URL ---
         self.base_url     = sys.argv[0]
@@ -115,10 +115,10 @@ class Main:
         log_debug('content_type = {0}'.format(self.content_type))
 
         # --- URL routing -------------------------------------------------------------------------
-        # ~~~ Routing step 1 ~~~
         args_size = len(args)
         if args_size == 0:
             self._render_root_list()
+            log_debug('Advanced MAME Launcher exit (addon root)')
             return
 
         # ~~~ Routing step 2 ~~~
@@ -252,7 +252,8 @@ class Main:
         self._render_root_list_row('Machines (no coin slot)',        self._misc_url_1_arg('list',  'NoCoin'))
         self._render_root_list_row('Machines (mechanical)',          self._misc_url_1_arg('list',  'Mechanical'))
         self._render_root_list_row('Machines (dead)',                self._misc_url_1_arg('list',  'Dead'))
-        self._render_root_list_row('Machines (with CHDs)',           self._misc_url_1_arg('list',  'CHD'))
+        self._render_root_list_row('Machines [with CHDs]',           self._misc_url_1_arg('list',  'CHD'))
+        self._render_root_list_row('Machines [with samples]',        self._misc_url_1_arg('list',  'Samples'))
         self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('clist', 'Catver'))
         self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('clist', 'Catlist'))
         self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('clist', 'Genre'))
