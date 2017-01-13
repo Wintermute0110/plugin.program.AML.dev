@@ -22,6 +22,7 @@ import xml.etree.ElementTree as ET
 import json
 import io
 import codecs, time
+import subprocess
 
 # --- AEL packages ---
 try:
@@ -94,14 +95,16 @@ def fs_write_JSON_file(json_filename, json_data):
 # Returns filesize -> (int) file size of output MAME.xml
 #
 def fs_extract_MAME_XML(PATHS, mame_prog_FN):
-    (mame_dir, mame_exec) = os.path.split(mame_prog)
-    log_debug('fs_extract_MAME_XML() mame exe "{0}"'.format(mame_exec))
+    (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
+    log_info('fs_extract_MAME_XML() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
+    log_debug('fs_extract_MAME_XML() mame_dir     "{0}"'.format(mame_dir))
+    log_debug('fs_extract_MAME_XML() mame_exec    "{0}"'.format(mame_exec))
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher',
                    'Extracting MAME XML database. Progress bar is not accurate.')
     with open(PATHS.MAME_XML_PATH.getPath(), 'wb') as out, open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as err:
-        p = subprocess.Popen([mame_exec, '-listxml'], stdout=out, stderr=err, cwd=mame_dir)
+        p = subprocess.Popen([mame_prog_FN.getPath(), '-listxml'], stdout=out, stderr=err, cwd=mame_dir)
         count = 0
         while p.poll() is None:
             pDialog.update(count * 100 / 100)
@@ -110,7 +113,7 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
     pDialog.close()
 
     # --- Check if everything OK ---
-    statinfo = os.stat(PATHS.MAME_XML_PATH)
+    statinfo = os.stat(PATHS.MAME_XML_PATH.getPath())
     filesize = statinfo.st_size
 
     return filesize

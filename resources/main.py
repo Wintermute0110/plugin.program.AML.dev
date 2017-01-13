@@ -707,7 +707,7 @@ class Main:
             mame_prog_FN = FileName(self.settings['mame_prog'])
 
             # --- Extract MAME XML ---
-            filesize = fs_extract_MAME_XML(MAME_XML_PATH, mame_prog_FN)
+            filesize = fs_extract_MAME_XML(PATHS, mame_prog_FN)
             kodi_dialog_OK('Extracted MAME XML database. Size is {0} MB.'.format(filesize / (1000000)))
 
         # --- Build main MAME database and PClone list ---
