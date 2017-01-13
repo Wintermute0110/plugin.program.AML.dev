@@ -51,30 +51,36 @@ ICON_IMG_PATH   = AML_ADDON_DIR.join('icon.png')
 FANART_IMG_PATH = AML_ADDON_DIR.join('fanart.jpg')
 
 # --- Plugin database indices ---
-MAME_XML_FILE_PATH               = PLUGIN_DATA_DIR.join('MAME.xml')
-MAME_STDERR_FILE_PATH            = PLUGIN_DATA_DIR.join('MAME_stderr.log')
-MAIN_DB_FILE_PATH                = PLUGIN_DATA_DIR.join('MAME_db.json')
-MAIN_PCLONE_DIC_FILE_PATH        = PLUGIN_DATA_DIR.join('MAME_PClone_dic.json')
+class AML_Paths:
+    def __init__(self):
+        # >> MAME XML, main database and main PClone list
+        self.MAME_XML_PATH               = PLUGIN_DATA_DIR.join('MAME.xml')
+        self.MAME_STDERR_PATH            = PLUGIN_DATA_DIR.join('MAME_stderr.log')
+        self.MAIN_DB_PATH                = PLUGIN_DATA_DIR.join('MAME_db.json')
+        self.MAIN_PCLONE_DIC_PATH        = PLUGIN_DATA_DIR.join('MAME_PClone_dic.json')
 
-MACHINES_IDX_FILE_PATH           = PLUGIN_DATA_DIR.join('idx_Machines.json')
-MACHINES_IDX_NOCOIN_FILE_PATH    = PLUGIN_DATA_DIR.join('idx_Machines_NoCoin.json')
-MACHINES_IDX_MECHA_FILE_PATH     = PLUGIN_DATA_DIR.join('idx_Machines_Mechanical.json')
-MACHINES_IDX_DEAD_FILE_PATH      = PLUGIN_DATA_DIR.join('idx_Machines_Dead.json')
-MACHINES_IDX_CHD_FILE_PATH       = PLUGIN_DATA_DIR.join('idx_Machines_CHD.json')
+        # >> Indices
+        self.MACHINES_IDX_PATH           = PLUGIN_DATA_DIR.join('idx_Machines.json')
+        self.MACHINES_IDX_NOCOIN_PATH    = PLUGIN_DATA_DIR.join('idx_Machines_NoCoin.json')
+        self.MACHINES_IDX_MECHA_PATH     = PLUGIN_DATA_DIR.join('idx_Machines_Mechanical.json')
+        self.MACHINES_IDX_DEAD_PATH      = PLUGIN_DATA_DIR.join('idx_Machines_Dead.json')
+        self.MACHINES_IDX_CHD_PATH       = PLUGIN_DATA_DIR.join('idx_Machines_CHD.json')
 
-CATALOG_CATVER_FILE_PATH         = PLUGIN_DATA_DIR.join('catalog_catver.json')
-CATALOG_CATLIST_FILE_PATH        = PLUGIN_DATA_DIR.join('catalog_catlist.json')
-CATALOG_GENRE_FILE_PATH          = PLUGIN_DATA_DIR.join('catalog_genre.json')
-CATALOG_MANUFACTURER_FILE_PATH   = PLUGIN_DATA_DIR.join('catalog_manufacturer.json')
-CATALOG_YEAR_FILE_PATH           = PLUGIN_DATA_DIR.join('catalog_year.json')
-CATALOG_DRIVER_FILE_PATH         = PLUGIN_DATA_DIR.join('catalog_driver.json')
-CATALOG_CONTROL_FILE_PATH        = PLUGIN_DATA_DIR.join('catalog_control.json')
-CATALOG_DISPLAY_TAG_FILE_PATH    = PLUGIN_DATA_DIR.join('catalog_display_tag.json')
-CATALOG_DISPLAY_TYPE_FILE_PATH   = PLUGIN_DATA_DIR.join('catalog_display_type.json')
-CATALOG_DISPLAY_ROTATE_FILE_PATH = PLUGIN_DATA_DIR.join('catalog_display_rotate.json')
-CATALOG_SL_FILE_PATH             = PLUGIN_DATA_DIR.join('catalog_SL.json')
+        # >> Catalogs
+        self.CATALOG_CATVER_PATH         = PLUGIN_DATA_DIR.join('catalog_catver.json')
+        self.CATALOG_CATLIST_PATH        = PLUGIN_DATA_DIR.join('catalog_catlist.json')
+        self.CATALOG_GENRE_PATH          = PLUGIN_DATA_DIR.join('catalog_genre.json')
+        self.CATALOG_MANUFACTURER_PATH   = PLUGIN_DATA_DIR.join('catalog_manufacturer.json')
+        self.CATALOG_YEAR_PATH           = PLUGIN_DATA_DIR.join('catalog_year.json')
+        self.CATALOG_DRIVER_PATH         = PLUGIN_DATA_DIR.join('catalog_driver.json')
+        self.CATALOG_CONTROL_PATH        = PLUGIN_DATA_DIR.join('catalog_control.json')
+        self.CATALOG_DISPLAY_TAG_PATH    = PLUGIN_DATA_DIR.join('catalog_display_tag.json')
+        self.CATALOG_DISPLAY_TYPE_PATH   = PLUGIN_DATA_DIR.join('catalog_display_type.json')
+        self.CATALOG_DISPLAY_ROTATE_PATH = PLUGIN_DATA_DIR.join('catalog_display_rotate.json')
+        self.CATALOG_SL_PATH             = PLUGIN_DATA_DIR.join('catalog_SL.json')
 
-SL_cat_filename                  = PLUGIN_DATA_DIR.join('cat_SoftwareLists.json')
+        self.SL_CAT_PATH                 = PLUGIN_DATA_DIR.join('catalog_SoftwareLists.json')
+PATHS = AML_Paths()
 
 class Main:
     # --- Object variables ---
@@ -253,7 +259,9 @@ class Main:
         self._render_root_list_row('Machines (mechanical)',          self._misc_url_1_arg('list',  'Mechanical'))
         self._render_root_list_row('Machines (dead)',                self._misc_url_1_arg('list',  'Dead'))
         self._render_root_list_row('Machines [with CHDs]',           self._misc_url_1_arg('list',  'CHD'))
-        self._render_root_list_row('Machines [with samples]',        self._misc_url_1_arg('list',  'Samples'))
+        self._render_root_list_row('Machines [with Samples]',        self._misc_url_1_arg('list',  'Samples'))
+        self._render_root_list_row('Machines [BIOS]',                self._misc_url_1_arg('list',  'BIOS'))
+        self._render_root_list_row('Machines [Devices]',             self._misc_url_1_arg('list',  'Devices'))
         self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('clist', 'Catver'))
         self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('clist', 'Catlist'))
         self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('clist', 'Genre'))
@@ -682,9 +690,11 @@ class Main:
     def _command_setup_plugin(self):
         dialog = xbmcgui.Dialog()
         menu_item = dialog.select('Setup plugin',
-                                 ['Extract MAME.xml...', 
-                                  'Rebuild database...', 
-                                  'Scan ROMs...'])
+                                 ['Extract MAME.xml...',
+                                  'Build main MAME database...',
+                                  'Build AML indices/catalogs...', 
+                                  'Scan ROMs/CHDs/Samples...',
+                                  'Scan assets/artwork...'])
         if menu_item < 0: return
 
         # --- Extract MAME.xml ---
@@ -702,21 +712,40 @@ class Main:
             filesize = fs_extract_MAME_XML(MAME_XML_PATH, mame_prog_FN)
             kodi_dialog_OK('Extracted MAME XML database. Size is {0} MB.'.format(filesize / (1000000)))
 
+        # --- Generates main MAME database and PClone list ---
         elif menu_item == 1:
             # --- Error checks ---
             # >> Check that MAME_XML_PATH exists
         
             # --- Count number of machines. Useful for progress dialogs ---
-            log_debug('_command_setup_plugin() Counting number of machines...')
+            log_info('_command_setup_plugin() Counting number of machines...')
             num_machines = fs_count_MAME_Machines(MAME_XML_PATH)
             log_info('_command_setup_plugin() Found {0} machines...'.format(num_machines))
             kodi_dialog_OK('{0} machines.'.format(num_machines))
 
-            # --- Parse MAME XML and generate main database MAME.json ---
-            
+            # --- Parse MAME XML and generate main database and PClone list ---
+            log_info('_command_setup_plugin() Generating MAME main database and PClone list...')
+            fs_build_MAME_main_database(num_machines)
+            kodi_notify('Main MAME database built')
 
+        # --- Generates indices and catalogs ---
         elif menu_item == 2:
+            # --- Error checks ---
+            # >> Check that MAME_XML_PATH exists
+
+            # --- Generate indices ---
+            fs_build_MAME_indices(num_machines)
+            
+            # --- Generate catalogs ---
+            fs_build_MAME_catalogs(num_machines)
+
+        # --- Scans ROMs/CHDs/Samples and updates ROM status ---
+        elif menu_item == 3:
             kodi_dialog_OK('Not coded: Scan ROMs')
+
+        # --- Scans assets/artwork ---
+        elif menu_item == 3:
+            kodi_dialog_OK('Not coded: Scan assets')
 
     # ---------------------------------------------------------------------------------------------
     # Misc functions

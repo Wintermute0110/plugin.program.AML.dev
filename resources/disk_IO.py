@@ -68,6 +68,8 @@ def filesize = fs_extract_MAME_XML(MAME_XML_PATH, mame_prog_FN):
 
     return filesize
 
+# -------------------------------------------------------------------------------------------------
+#
 def fs_count_MAME_Machines(MAME_XML_PATH):
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
@@ -82,3 +84,15 @@ def fs_count_MAME_Machines(MAME_XML_PATH):
     pDialog.close()
 
     return num_machines
+
+# -------------------------------------------------------------------------------------------------
+#
+def fs_build_MAME_main_database(num_machines):
+
+# -------------------------------------------------------------------------------------------------
+#
+def fs_build_MAME_indices(num_machines):
+
+# -------------------------------------------------------------------------------------------------
+#
+def fs_build_MAME_catalogs(num_machines):
