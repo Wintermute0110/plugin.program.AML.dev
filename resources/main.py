@@ -24,6 +24,7 @@ import subprocess
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 
 # --- Modules/packages in this plugin ---
+from utils import *
 from utils_kodi import *
 from disk_IO import *
 
@@ -38,43 +39,42 @@ __addon_type__    = __addon_obj__.getAddonInfo('type').decode('utf-8')
 
 
 # --- Addon paths and constant definition ---
-# _FILE_PATH is a filename | _DIR is a directory (with trailing /)
-PLUGIN_DATA_DIR       = xbmc.translatePath(os.path.join('special://profile/addon_data', __addon_id__)).decode('utf-8')
-BASE_DIR              = xbmc.translatePath(os.path.join('special://', 'profile')).decode('utf-8')
-HOME_DIR              = xbmc.translatePath(os.path.join('special://', 'home')).decode('utf-8')
-ADDONS_DIR            = xbmc.translatePath(os.path.join(HOME_DIR, 'addons')).decode('utf-8')
-AML_ADDON_DIR         = xbmc.translatePath(os.path.join(ADDONS_DIR, __addon_id__)).decode('utf-8')
-ICON_IMG_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'icon.png').decode('utf-8')
-FANART_IMG_FILE_PATH  = os.path.join(AML_ADDON_DIR, 'fanart.jpg').decode('utf-8')
+# _PATH is a filename | _DIR is a directory
+ADDONS_DATA_DIR = FileName('special://profile/addon_data')
+PLUGIN_DATA_DIR = ADDONS_DATA_DIR.join(__addon_id__)
+BASE_DIR        = FileName('special://profile')
+HOME_DIR        = FileName('special://home')
+KODI_FAV_PATH   = FileName('special://profile/favourites.xml')
+ADDONS_DIR      = HOME_DIR.join('addons')
+AML_ADDON_DIR   = ADDONS_DIR.join(__addon_id__)
+ICON_IMG_PATH   = AML_ADDON_DIR.join('icon.png')
+FANART_IMG_PATH = AML_ADDON_DIR.join('fanart.jpg')
 
 # --- Plugin database indices ---
-MAME_XML_FILE_PATH               = os.path.join(PLUGIN_DATA_DIR, 'MAME.xml').decode('utf-8')
-MAME_STDERR_FILE_PATH            = os.path.join(PLUGIN_DATA_DIR, 'MAME_stderr.log').decode('utf-8')
+MAME_XML_FILE_PATH               = PLUGIN_DATA_DIR.join('MAME.xml')
+MAME_STDERR_FILE_PATH            = PLUGIN_DATA_DIR.join('MAME_stderr.log')
+MAIN_DB_FILE_PATH                = PLUGIN_DATA_DIR.join('MAME_db.json')
+MAIN_PCLONE_DIC_FILE_PATH        = PLUGIN_DATA_DIR.join('MAME_PClone_dic.json')
 
+MACHINES_IDX_FILE_PATH           = PLUGIN_DATA_DIR.join('idx_Machines.json')
+MACHINES_IDX_NOCOIN_FILE_PATH    = PLUGIN_DATA_DIR.join('idx_Machines_NoCoin.json')
+MACHINES_IDX_MECHA_FILE_PATH     = PLUGIN_DATA_DIR.join('idx_Machines_Mechanical.json')
+MACHINES_IDX_DEAD_FILE_PATH      = PLUGIN_DATA_DIR.join('idx_Machines_Dead.json')
+MACHINES_IDX_CHD_FILE_PATH       = PLUGIN_DATA_DIR.join('idx_Machines_CHD.json')
 
+CATALOG_CATVER_FILE_PATH         = PLUGIN_DATA_DIR.join('catalog_catver.json')
+CATALOG_CATLIST_FILE_PATH        = PLUGIN_DATA_DIR.join('catalog_catlist.json')
+CATALOG_GENRE_FILE_PATH          = PLUGIN_DATA_DIR.join('catalog_genre.json')
+CATALOG_MANUFACTURER_FILE_PATH   = PLUGIN_DATA_DIR.join('catalog_manufacturer.json')
+CATALOG_YEAR_FILE_PATH           = PLUGIN_DATA_DIR.join('catalog_year.json')
+CATALOG_DRIVER_FILE_PATH         = PLUGIN_DATA_DIR.join('catalog_driver.json')
+CATALOG_CONTROL_FILE_PATH        = PLUGIN_DATA_DIR.join('catalog_control.json')
+CATALOG_DISPLAY_TAG_FILE_PATH    = PLUGIN_DATA_DIR.join('catalog_display_tag.json')
+CATALOG_DISPLAY_TYPE_FILE_PATH   = PLUGIN_DATA_DIR.join('catalog_display_type.json')
+CATALOG_DISPLAY_ROTATE_FILE_PATH = PLUGIN_DATA_DIR.join('catalog_display_rotate.json')
+CATALOG_SL_FILE_PATH             = PLUGIN_DATA_DIR.join('catalog_SL.json')
 
-MAIN_DB_FILE_PATH                = os.path.join(AML_ADDON_DIR, 'MAME_info.json').decode('utf-8')
-MAIN_PCLONE_DIC_FILE_PATH        = os.path.join(AML_ADDON_DIR, 'MAME_PClone_dic.json').decode('utf-8')
-
-MACHINES_IDX_FILE_PATH           = os.path.join(AML_ADDON_DIR, 'idx_Machines.json').decode('utf-8')
-MACHINES_IDX_NOCOIN_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'idx_Machines_NoCoin.json').decode('utf-8')
-MACHINES_IDX_MECHA_FILE_PATH     = os.path.join(AML_ADDON_DIR, 'idx_Machines_Mechanical.json').decode('utf-8')
-MACHINES_IDX_DEAD_FILE_PATH      = os.path.join(AML_ADDON_DIR, 'idx_Machines_Dead.json').decode('utf-8')
-MACHINES_IDX_CHD_FILE_PATH       = os.path.join(AML_ADDON_DIR, 'idx_Machines_CHD.json').decode('utf-8')
-
-CATALOG_CATVER_FILE_PATH         = os.path.join(AML_ADDON_DIR, 'catalog_catver.json').decode('utf-8')
-CATALOG_CATLIST_FILE_PATH        = os.path.join(AML_ADDON_DIR, 'catalog_catlist.json').decode('utf-8')
-CATALOG_GENRE_FILE_PATH          = os.path.join(AML_ADDON_DIR, 'catalog_genre.json').decode('utf-8')
-CATALOG_MANUFACTURER_FILE_PATH   = os.path.join(AML_ADDON_DIR, 'catalog_manufacturer.json').decode('utf-8')
-CATALOG_YEAR_FILE_PATH           = os.path.join(AML_ADDON_DIR, 'catalog_year.json').decode('utf-8')
-CATALOG_DRIVER_FILE_PATH         = os.path.join(AML_ADDON_DIR, 'catalog_driver.json').decode('utf-8')
-CATALOG_CONTROL_FILE_PATH        = os.path.join(AML_ADDON_DIR, 'catalog_control.json').decode('utf-8')
-CATALOG_DISPLAY_TAG_FILE_PATH    = os.path.join(AML_ADDON_DIR, 'catalog_display_tag.json').decode('utf-8')
-CATALOG_DISPLAY_TYPE_FILE_PATH   = os.path.join(AML_ADDON_DIR, 'catalog_display_type.json').decode('utf-8')
-CATALOG_DISPLAY_ROTATE_FILE_PATH = os.path.join(AML_ADDON_DIR, 'catalog_display_rotate.json').decode('utf-8')
-CATALOG_SL_FILE_PATH             = os.path.join(AML_ADDON_DIR, 'catalog_SL.json').decode('utf-8')
-
-SL_cat_filename                  = os.path.join(AML_ADDON_DIR, 'cat_SoftwareLists.json').decode('utf-8')
+SL_cat_filename                  = PLUGIN_DATA_DIR.join('cat_SoftwareLists.json')
 
 class Main:
     # --- Object variables ---
