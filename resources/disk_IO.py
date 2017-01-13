@@ -495,30 +495,24 @@ def fs_build_MAME_main_database(PATHS):
     # -----------------------------------------------------------------------------
     # Now write simplified JSON
     # -----------------------------------------------------------------------------
+    kodi_busydialog_ON()
     log_info('Writing main MAME database...')
-    kodi_busydialog_ON()
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
-    kodi_busydialog_OFF()
-
     log_info('Writing main PClone list...')
-    kodi_busydialog_ON()
     fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
-    kodi_busydialog_OFF()
-
     log_info('Writing control dictionary...')
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    kodi_busydialog_OFF()
 
 # -------------------------------------------------------------------------------------------------
+# Simple machine lists
 #
-def fs_build_MAME_indices(num_machines):
-    # -----------------------------------------------------------------------------
-    # Simple machine lists
-    # -----------------------------------------------------------------------------
-    # --- Machine list ---
+def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
+    # --- Main machine list ---
     # Machines with Coin Slot and Non Mechanical and not Dead
     # machines_pclone_dic = { 'parent_name' : ['clone_name', 'clone_name', ...] , ...}
     machines_pclone_dic = {}
-    print('Making Machine index...')
+    log_info('Making Main-machine index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if machine['isMechanical']: continue
@@ -531,7 +525,7 @@ def fs_build_MAME_indices(num_machines):
     # --- NoCoin list ---
     # A) Machines with No Coin Slot and Non Mechanical and not Dead
     nocoin_pclone_dic = {}
-    print('Making NoCoin index...')
+    log_info('Making NoCoin index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if machine['isMechanical']: continue
@@ -544,7 +538,7 @@ def fs_build_MAME_indices(num_machines):
     # --- Mechanical machines ---
     # A) Mechanical Machines and not Dead
     mechanical_pclone_dic = {}
-    print('Making Mechanical index...')
+    log_info('Making Mechanical index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['isMechanical']: continue
@@ -555,7 +549,7 @@ def fs_build_MAME_indices(num_machines):
 
     # --- Dead machines ---
     dead_pclone_dic = {}
-    print('Making Dead Mechines index...')
+    log_info('Making Dead Mechines index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['isDead']: continue
@@ -565,7 +559,7 @@ def fs_build_MAME_indices(num_machines):
 
     # --- CHD machines ---
     CHD_pclone_dic = {}
-    print('Making CHD Mechines index...')
+    log_info('Making CHD Mechines index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['hasCHD']: continue
@@ -573,20 +567,20 @@ def fs_build_MAME_indices(num_machines):
         # Copy list of clones
         CHD_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
 
-    fs_write_JSON_file(MACHINES_IDX_FILE_PATH, machines_pclone_dic)
-    fs_write_JSON_file(MACHINES_IDX_NOCOIN_FILE_PATH, nocoin_pclone_dic)
-    fs_write_JSON_file(MACHINES_IDX_MECHA_FILE_PATH, mechanical_pclone_dic)
-    fs_write_JSON_file(MACHINES_IDX_DEAD_FILE_PATH, dead_pclone_dic)
-    fs_write_JSON_file(MACHINES_IDX_CHD_FILE_PATH, CHD_pclone_dic)
+    # --- Write JSON indices ---
+    kodi_busydialog_ON()
+    fs_write_JSON_file(PATHS.MACHINES_IDX_PATH.getPath(), machines_pclone_dic)
+    fs_write_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath(), nocoin_pclone_dic)
+    fs_write_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath(), mechanical_pclone_dic)
+    fs_write_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath(), dead_pclone_dic)
+    fs_write_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath(), CHD_pclone_dic)
+    kodi_busydialog_OFF()
 
 # -------------------------------------------------------------------------------------------------
+# Cataloged machine list
+# Catalog dictionary: { 'catalog_name' : [parent_name, parent_name, ...], ... }
 #
-def fs_build_MAME_catalogs(num_machines):
-    # -----------------------------------------------------------------------------
-    # Cataloged machine list
-    # -----------------------------------------------------------------------------
-    # >> Catalog dictionary: { 'catalog_name' : [parent_name, parent_name, ...], ... }
-
+def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     # --- Catver catalog ---
     catver_catalog = {}
     for p_machine_name in main_pclone_dic:
@@ -716,17 +710,20 @@ def fs_build_MAME_catalogs(num_machines):
             else:
                 SL_catalog[catalog_key] = [p_machine_name]
 
-    fs_write_JSON_file(CATALOG_CATVER_FILE_PATH, catver_catalog)
-    fs_write_JSON_file(CATALOG_CATLIST_FILE_PATH, catlist_catalog)
-    fs_write_JSON_file(CATALOG_GENRE_FILE_PATH, genre_catalog)
-    fs_write_JSON_file(CATALOG_MANUFACTURER_FILE_PATH, manufacturer_catalog)
-    fs_write_JSON_file(CATALOG_YEAR_FILE_PATH, year_catalog)
-    fs_write_JSON_file(CATALOG_DRIVER_FILE_PATH, driver_catalog)
-    fs_write_JSON_file(CATALOG_CONTROL_FILE_PATH, control_catalog)
-    fs_write_JSON_file(CATALOG_DISPLAY_TAG_FILE_PATH, display_tag_catalog)
-    fs_write_JSON_file(CATALOG_DISPLAY_TYPE_FILE_PATH, display_type_catalog)
-    fs_write_JSON_file(CATALOG_DISPLAY_ROTATE_FILE_PATH, display_rotate_catalog)
-    fs_write_JSON_file(CATALOG_SL_FILE_PATH, SL_catalog)
+    # --- Write JSON indices ---
+    kodi_busydialog_ON()
+    fs_write_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath(), catver_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath(), catlist_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath(), genre_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath(), manufacturer_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath(), year_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath(), driver_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath(), control_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath(), display_tag_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath(), display_type_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath(), display_rotate_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_SL_PATH.getPath(), SL_catalog)
+    kodi_busydialog_OFF()
 
 # -------------------------------------------------------------------------------------------------
 #

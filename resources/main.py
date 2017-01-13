@@ -724,20 +724,29 @@ class Main:
         # --- Build MAME indices/catalogs ---
         elif menu_item == 2:
             # --- Error checks ---
-            # >> Check that MAME_XML_PATH exists
+            # >> Check that main MAME database exists
 
-            # --- Read main database ---
-            
-            
+            # --- Read main database and control dic ---
+            kodi_busydialog_ON()
+            machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            kodi_busydialog_OFF()
+
             # --- Generate indices ---
-            fs_build_MAME_indices(num_machines)
+            fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic)
             
             # --- Generate catalogs ---
-            fs_build_MAME_catalogs(num_machines)
+            fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic)
+
+            # --- Write update control dictionary ---
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            kodi_notify('Indices and catalogs built')
 
         # --- Build Software Lists index ---
         elif menu_item == 3:
-            fs_build_SoftwareLists_index(num_machines)
+            kodi_dialog_OK('Not coded: Software Lists index')
+            # fs_build_SoftwareLists_index(num_machines)
 
         # --- Scans ROMs/CHDs/Samples and updates ROM status ---
         elif menu_item == 4:
