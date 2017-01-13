@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-# Advanced Emulator Launcher miscellaneous functions
+# Advanced MAME Launcher miscellaneous functions
 #
 
-# Copyright (c) 2016 Wintermute0110 <wintermute0110@gmail.com>
-# Portions (c) 2010-2015 Angelscry and others
+# Copyright (c) 2016-2017 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +29,7 @@ except:
     from utils_kodi_standalone import *
 
 # --- AEL modules ---
-# >> utils.py and utils_kodi.py must not depend on any other AEL module to avoid circular dependencies.
+# >> utils.py and utils_kodi.py must not depend on any other AEL/AML module to avoid circular dependencies.
 
 # -------------------------------------------------------------------------------------------------
 # Strings and text
