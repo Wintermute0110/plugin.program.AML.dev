@@ -689,47 +689,26 @@ class Main:
 
         # --- Extract MAME.xml ---
         if menu_item == 0:
-            mame_prog = self.settings['mame_prog']
-            if not mame_prog:
+            if not self.settings['mame_prog']:
                 kodi_dialog_OK('MAME executable is not set.')
                 return
-            
+            mame_prog_FN = FileName(self.settings['mame_prog'])
+
+            # --- Extract MAME XML ---            
             pDialog = xbmcgui.DialogProgress()
             pDialog_canceled = False
             pDialog.create('Advanced MAME Launcher',
                            'Extracting MAME XML database. Progress bar is not accurate.')
-
-            # --- Extract MAME XML ---
-            (mame_dir, mame_exec) = os.path.split(mame_prog)
-            log_debug('_command_setup_plugin() mame_exec = {0}'.format(mame_exec))
-            with open(MAME_XML_FILE_PATH, 'wb') as out, open(MAME_STDERR_FILE_PATH, 'wb') as err:
-                p = subprocess.Popen([mame_exec, '-listxml'], stdout=out,stderr=err,cwd=mame_dir)
-                count = 0
-                while p.poll() is None:
-                    pDialog.update(count * 100 / 100)
-                    time.sleep(1)
-                    count = count + 1
-            pDialog.close()
-
-            # --- Check if everything OK ---
-            statinfo = os.stat(MAME_XML_FILE_PATH)
-            filesize = statinfo.st_size
-            kodi_dialog_OK('Extraced MAME XML database. Size is {0} MBytes.'.format(filesize / (1000000)))
+            filesize = fs_extract_MAME_XML(MAME_XML_PATH, mame_prog_FN)
+            kodi_dialog_OK('Extracted MAME XML database. Size is {0} MB.'.format(filesize / (1000000)))
 
         elif menu_item == 1:
+            # --- Error checks ---
+            # >> Check that MAME_XML_PATH exists
+        
             # --- Count number of machines. Useful for progress dialogs ---
             log_debug('_command_setup_plugin() Counting number of machines...')
-            pDialog = xbmcgui.DialogProgress()
-            pDialog_canceled = False
-            pDialog.create('Advanced MAME Launcher',
-                           'Counting number of MAME machines...')
-            pDialog.update(0)
-            num_machines = 0
-            with open(MAME_XML_FILE_PATH, 'rt') as f:
-                for line in f:
-                    if line.decode('utf-8').find('<machine name=') > 0: num_machines = num_machines + 1
-            pDialog.update(1)
-            pDialog.close()
+            num_machines = fs_count_MAME_Machines(MAME_XML_PATH)
             log_info('_command_setup_plugin() Found {0} machines...'.format(num_machines))
             kodi_dialog_OK('{0} machines.'.format(num_machines))
 
@@ -754,17 +733,17 @@ class Main:
     # Misc URL building functions
     # ---------------------------------------------------------------------------------------------
     def _misc_url_1_arg(self, arg_name, arg_value):
-        return u'{0}?{1}={2}'.format(self.base_url, arg_name, arg_value)
+        return '{0}?{1}={2}'.format(self.base_url, arg_name, arg_value)
 
     def _misc_url_2_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2):
-        return u'{0}?{1}={2}&{3}={4}'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2)
+        return '{0}?{1}={2}&{3}={4}'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2)
 
     def _misc_url_3_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3):
-        return u'{0}?{1}={2}&{3}={4}&{5}={6}'.format(self.base_url, arg_name_1, arg_value_1, 
-                                                                    arg_name_2, arg_value_2, arg_name_3, arg_value_3)
+        return '{0}?{1}={2}&{3}={4}&{5}={6}'.format(self.base_url, arg_name_1, arg_value_1, 
+                                                    arg_name_2, arg_value_2, arg_name_3, arg_value_3)
 
     def _misc_url_1_arg_RunPlugin(self, arg_name_1, arg_value_1):
-        return u'XBMC.RunPlugin({0}?{1}={2})'.format(self.base_url, arg_name_1, arg_value_1)
+        return 'XBMC.RunPlugin({0}?{1}={2})'.format(self.base_url, arg_name_1, arg_value_1)
 
     def _misc_url_2_arg_RunPlugin(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2):
-        return u'XBMC.RunPlugin({0}?{1}={2}&{3}={4})'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2)
+        return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4})'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2)

@@ -44,3 +44,41 @@ def fs_load_JSON_file(json_filename):
         data_dic = json.load(file)
 
     return data_dic
+
+# -------------------------------------------------------------------------------------------------
+# MAME_XML_PATH -> (FileName object) path of MAME XML output file.
+# mame_prog_FN  -> (FileName object) path to MAME executable.
+# Returns filesize -> (int) file size of output MAME.xml
+#
+def filesize = fs_extract_MAME_XML(MAME_XML_PATH, mame_prog_FN):
+    (mame_dir, mame_exec) = os.path.split(mame_prog)
+    log_debug('_command_setup_plugin() mame_exec = {0}'.format(mame_exec))
+    with open(MAME_XML_PATH, 'wb') as out, open(MAME_STDERR_FILE_PATH, 'wb') as err:
+        p = subprocess.Popen([mame_exec, '-listxml'], stdout=out,stderr=err,cwd=mame_dir)
+        count = 0
+        while p.poll() is None:
+            pDialog.update(count * 100 / 100)
+            time.sleep(1)
+            count = count + 1
+    pDialog.close()
+
+    # --- Check if everything OK ---
+    statinfo = os.stat(MAME_XML_PATH)
+    filesize = statinfo.st_size
+
+    return filesize
+
+def fs_count_MAME_Machines(MAME_XML_PATH):
+    pDialog = xbmcgui.DialogProgress()
+    pDialog_canceled = False
+    pDialog.create('Advanced MAME Launcher',
+                   'Counting number of MAME machines...')
+    pDialog.update(0)
+    num_machines = 0
+    with open(MAME_XML_PATH, 'rt') as f:
+        for line in f:
+            if line.decode('utf-8').find('<machine name=') > 0: num_machines = num_machines + 1
+    pDialog.update(100)
+    pDialog.close()
+
+    return num_machines
