@@ -79,7 +79,8 @@ class AML_Paths:
         self.CATALOG_DISPLAY_ROTATE_PATH = PLUGIN_DATA_DIR.join('catalog_display_rotate.json')
         self.CATALOG_SL_PATH             = PLUGIN_DATA_DIR.join('catalog_SL.json')
 
-        self.SL_CAT_PATH                 = PLUGIN_DATA_DIR.join('catalog_SoftwareLists.json')
+        # >> Software Lists
+        self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.join('SoftwareLists_index.json')
 PATHS = AML_Paths()
 
 class Main:
@@ -692,7 +693,8 @@ class Main:
         menu_item = dialog.select('Setup plugin',
                                  ['Extract MAME.xml...',
                                   'Build main MAME database...',
-                                  'Build AML indices/catalogs...', 
+                                  'Build MAME indices/catalogs...',
+                                  'Build Software Lists index...', 
                                   'Scan ROMs/CHDs/Samples...',
                                   'Scan assets/artwork...'])
         if menu_item < 0: return
@@ -704,15 +706,11 @@ class Main:
                 return
             mame_prog_FN = FileName(self.settings['mame_prog'])
 
-            # --- Extract MAME XML ---            
-            pDialog = xbmcgui.DialogProgress()
-            pDialog_canceled = False
-            pDialog.create('Advanced MAME Launcher',
-                           'Extracting MAME XML database. Progress bar is not accurate.')
+            # --- Extract MAME XML ---
             filesize = fs_extract_MAME_XML(MAME_XML_PATH, mame_prog_FN)
             kodi_dialog_OK('Extracted MAME XML database. Size is {0} MB.'.format(filesize / (1000000)))
 
-        # --- Generates main MAME database and PClone list ---
+        # --- Build main MAME database and PClone list ---
         elif menu_item == 1:
             # --- Error checks ---
             # >> Check that MAME_XML_PATH exists
@@ -728,23 +726,30 @@ class Main:
             fs_build_MAME_main_database(num_machines)
             kodi_notify('Main MAME database built')
 
-        # --- Generates indices and catalogs ---
+        # --- Build MAME indices/catalogs ---
         elif menu_item == 2:
             # --- Error checks ---
             # >> Check that MAME_XML_PATH exists
 
+            # --- Read main database ---
+            
+            
             # --- Generate indices ---
             fs_build_MAME_indices(num_machines)
             
             # --- Generate catalogs ---
             fs_build_MAME_catalogs(num_machines)
 
-        # --- Scans ROMs/CHDs/Samples and updates ROM status ---
+        # --- Build Software Lists index ---
         elif menu_item == 3:
+            fs_build_SoftwareLists_index(num_machines)
+
+        # --- Scans ROMs/CHDs/Samples and updates ROM status ---
+        elif menu_item == 4:
             kodi_dialog_OK('Not coded: Scan ROMs')
 
         # --- Scans assets/artwork ---
-        elif menu_item == 3:
+        elif menu_item == 5:
             kodi_dialog_OK('Not coded: Scan assets')
 
     # ---------------------------------------------------------------------------------------------
