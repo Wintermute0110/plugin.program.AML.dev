@@ -682,3 +682,4 @@ def fs_build_MAME_catalogs(num_machines):
 # -------------------------------------------------------------------------------------------------
 #
 def fs_build_SoftwareLists_index(num_machines):
+    pass

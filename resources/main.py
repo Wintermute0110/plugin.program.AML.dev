@@ -41,46 +41,46 @@ __addon_type__    = __addon_obj__.getAddonInfo('type').decode('utf-8')
 # --- Addon paths and constant definition ---
 # _PATH is a filename | _DIR is a directory
 ADDONS_DATA_DIR = FileName('special://profile/addon_data')
-PLUGIN_DATA_DIR = ADDONS_DATA_DIR.join(__addon_id__)
+PLUGIN_DATA_DIR = ADDONS_DATA_DIR.pjoin(__addon_id__)
 BASE_DIR        = FileName('special://profile')
 HOME_DIR        = FileName('special://home')
 KODI_FAV_PATH   = FileName('special://profile/favourites.xml')
-ADDONS_DIR      = HOME_DIR.join('addons')
-AML_ADDON_DIR   = ADDONS_DIR.join(__addon_id__)
-ICON_IMG_PATH   = AML_ADDON_DIR.join('icon.png')
-FANART_IMG_PATH = AML_ADDON_DIR.join('fanart.jpg')
+ADDONS_DIR      = HOME_DIR.pjoin('addons')
+AML_ADDON_DIR   = ADDONS_DIR.pjoin(__addon_id__)
+ICON_IMG_PATH   = AML_ADDON_DIR.pjoin('icon.png')
+FANART_IMG_PATH = AML_ADDON_DIR.pjoin('fanart.jpg')
 
 # --- Plugin database indices ---
 class AML_Paths:
     def __init__(self):
         # >> MAME XML, main database and main PClone list
-        self.MAME_XML_PATH               = PLUGIN_DATA_DIR.join('MAME.xml')
-        self.MAME_STDERR_PATH            = PLUGIN_DATA_DIR.join('MAME_stderr.log')
-        self.MAIN_DB_PATH                = PLUGIN_DATA_DIR.join('MAME_db.json')
-        self.MAIN_PCLONE_DIC_PATH        = PLUGIN_DATA_DIR.join('MAME_PClone_dic.json')
+        self.MAME_XML_PATH               = PLUGIN_DATA_DIR.pjoin('MAME.xml')
+        self.MAME_STDERR_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stderr.log')
+        self.MAIN_DB_PATH                = PLUGIN_DATA_DIR.pjoin('MAME_db.json')
+        self.MAIN_PCLONE_DIC_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_PClone_dic.json')
 
         # >> Indices
-        self.MACHINES_IDX_PATH           = PLUGIN_DATA_DIR.join('idx_Machines.json')
-        self.MACHINES_IDX_NOCOIN_PATH    = PLUGIN_DATA_DIR.join('idx_Machines_NoCoin.json')
-        self.MACHINES_IDX_MECHA_PATH     = PLUGIN_DATA_DIR.join('idx_Machines_Mechanical.json')
-        self.MACHINES_IDX_DEAD_PATH      = PLUGIN_DATA_DIR.join('idx_Machines_Dead.json')
-        self.MACHINES_IDX_CHD_PATH       = PLUGIN_DATA_DIR.join('idx_Machines_CHD.json')
+        self.MACHINES_IDX_PATH           = PLUGIN_DATA_DIR.pjoin('idx_Machines.json')
+        self.MACHINES_IDX_NOCOIN_PATH    = PLUGIN_DATA_DIR.pjoin('idx_Machines_NoCoin.json')
+        self.MACHINES_IDX_MECHA_PATH     = PLUGIN_DATA_DIR.pjoin('idx_Machines_Mechanical.json')
+        self.MACHINES_IDX_DEAD_PATH      = PLUGIN_DATA_DIR.pjoin('idx_Machines_Dead.json')
+        self.MACHINES_IDX_CHD_PATH       = PLUGIN_DATA_DIR.pjoin('idx_Machines_CHD.json')
 
         # >> Catalogs
-        self.CATALOG_CATVER_PATH         = PLUGIN_DATA_DIR.join('catalog_catver.json')
-        self.CATALOG_CATLIST_PATH        = PLUGIN_DATA_DIR.join('catalog_catlist.json')
-        self.CATALOG_GENRE_PATH          = PLUGIN_DATA_DIR.join('catalog_genre.json')
-        self.CATALOG_MANUFACTURER_PATH   = PLUGIN_DATA_DIR.join('catalog_manufacturer.json')
-        self.CATALOG_YEAR_PATH           = PLUGIN_DATA_DIR.join('catalog_year.json')
-        self.CATALOG_DRIVER_PATH         = PLUGIN_DATA_DIR.join('catalog_driver.json')
-        self.CATALOG_CONTROL_PATH        = PLUGIN_DATA_DIR.join('catalog_control.json')
-        self.CATALOG_DISPLAY_TAG_PATH    = PLUGIN_DATA_DIR.join('catalog_display_tag.json')
-        self.CATALOG_DISPLAY_TYPE_PATH   = PLUGIN_DATA_DIR.join('catalog_display_type.json')
-        self.CATALOG_DISPLAY_ROTATE_PATH = PLUGIN_DATA_DIR.join('catalog_display_rotate.json')
-        self.CATALOG_SL_PATH             = PLUGIN_DATA_DIR.join('catalog_SL.json')
+        self.CATALOG_CATVER_PATH         = PLUGIN_DATA_DIR.pjoin('catalog_catver.json')
+        self.CATALOG_CATLIST_PATH        = PLUGIN_DATA_DIR.pjoin('catalog_catlist.json')
+        self.CATALOG_GENRE_PATH          = PLUGIN_DATA_DIR.pjoin('catalog_genre.json')
+        self.CATALOG_MANUFACTURER_PATH   = PLUGIN_DATA_DIR.pjoin('catalog_manufacturer.json')
+        self.CATALOG_YEAR_PATH           = PLUGIN_DATA_DIR.pjoin('catalog_year.json')
+        self.CATALOG_DRIVER_PATH         = PLUGIN_DATA_DIR.pjoin('catalog_driver.json')
+        self.CATALOG_CONTROL_PATH        = PLUGIN_DATA_DIR.pjoin('catalog_control.json')
+        self.CATALOG_DISPLAY_TAG_PATH    = PLUGIN_DATA_DIR.pjoin('catalog_display_tag.json')
+        self.CATALOG_DISPLAY_TYPE_PATH   = PLUGIN_DATA_DIR.pjoin('catalog_display_type.json')
+        self.CATALOG_DISPLAY_ROTATE_PATH = PLUGIN_DATA_DIR.pjoin('catalog_display_rotate.json')
+        self.CATALOG_SL_PATH             = PLUGIN_DATA_DIR.pjoin('catalog_SL.json')
 
         # >> Software Lists
-        self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.join('SoftwareLists_index.json')
+        self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
 PATHS = AML_Paths()
 
 class Main:
