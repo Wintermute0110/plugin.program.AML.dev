@@ -303,15 +303,15 @@ class Main:
     #----------------------------------------------------------------------------------------------
     def _render_machine_parent_list(self, list_name):
         # >> Load main MAME info DB and PClone index
-        MAME_info_dic = fs_load_JSON_file(MAIN_DB_FILE_PATH)
-        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_FILE_PATH)
-        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_NOCOIN_FILE_PATH)
-        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_MECHA_FILE_PATH)
-        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_DEAD_FILE_PATH)
-        elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_CHD_FILE_PATH)
+        MAME_info_dic = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_PATH.getPath())
+        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath())
+        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
+        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
+        elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
 
         # >> Render parent main list
-        self._set_Kodi_content()
+        self._set_Kodi_all_sorting_methods()
         for parent_name in Machines_PClone_dic:
             machine = MAME_info_dic[parent_name]
             self._render_machine_row(parent_name, machine, True, list_name)
@@ -323,15 +323,15 @@ class Main:
     #
     def _render_machine_clone_list(self, list_name, parent_name):
         # >> Load main MAME info DB and PClone index
-        MAME_info_dic = fs_load_JSON_file(MAIN_DB_FILE_PATH)
-        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_FILE_PATH)
-        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_NOCOIN_FILE_PATH)
-        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_MECHA_FILE_PATH)
-        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_DEAD_FILE_PATH)
-        elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(MACHINES_IDX_CHD_FILE_PATH)
+        MAME_info_dic = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_PATH.getPath())
+        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath())
+        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
+        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
+        elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
 
         # >> Render parent first
-        self._set_Kodi_content()
+        self._set_Kodi_all_sorting_methods()
         machine = MAME_info_dic[parent_name]
         self._render_machine_row(parent_name, machine, False)
         # >> Render clones
@@ -386,40 +386,40 @@ class Main:
         # >> Load catalog index
         if clist_name == 'Catver':
             catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(CATALOG_CATVER_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath())
         elif clist_name == 'Catlist':
             catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(CATALOG_CATLIST_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath())
         elif clist_name == 'Genre':
             catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(CATALOG_GENRE_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath())
         elif clist_name == 'Manufacturer':
             catalog_name = 'manufacturer'
-            catalog_dic = fs_load_JSON_file(CATALOG_MANUFACTURER_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath())
         elif clist_name == 'Year':
             catalog_name = 'year'
-            catalog_dic = fs_load_JSON_file(CATALOG_YEAR_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath())
         elif clist_name == 'Driver':
             catalog_name = 'driver'
-            catalog_dic = fs_load_JSON_file(CATALOG_DRIVER_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath())
         elif clist_name == 'Controls':
             catalog_name = 'control'
-            catalog_dic = fs_load_JSON_file(CATALOG_CONTROL_FILE_PATH)            
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath())
         elif clist_name == 'Display_Tag':
             catalog_name = 'tag'
-            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_TAG_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath())
         elif clist_name == 'Display_Type':
             catalog_name = 'type'
-            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_TYPE_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath())
         elif clist_name == 'Display_Rotate':
             catalog_name = 'rotate'
-            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_ROTATE_FILE_PATH)            
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath())
         elif clist_name == 'BySL':
             catalog_name = 'SL'
-            catalog_dic = fs_load_JSON_file(CATALOG_SL_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PATH.getPath())
 
         # >> Render categories in catalog index
-        self._set_Kodi_content()
+        self._set_Kodi_all_sorting_methods()
         for catalog_key in catalog_dic:
             self._render_indexed_list_row(clist_name, catalog_name, catalog_key)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
@@ -429,48 +429,48 @@ class Main:
     #
     def _render_indexed_parent_list(self, clist_name, catalog_item_name):
         # >> Load main MAME info DB
-        MAME_info_dic = fs_load_JSON_file(MAIN_DB_FILE_PATH)
+        MAME_info_dic   = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
 
         # >> Load catalog index
         if clist_name == 'Catver':
             catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(CATALOG_CATVER_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath())
         elif clist_name == 'Catlist':
             catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(CATALOG_CATLIST_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath())
         elif clist_name == 'Genre':
             catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(CATALOG_GENRE_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath())
         elif clist_name == 'Manufacturer':
             catalog_name = 'manufacturer'
-            catalog_dic = fs_load_JSON_file(CATALOG_MANUFACTURER_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath())
         elif clist_name == 'Year':
             catalog_name = 'year'
-            catalog_dic = fs_load_JSON_file(CATALOG_YEAR_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath())
         elif clist_name == 'Driver':
             catalog_name = 'driver'
-            catalog_dic = fs_load_JSON_file(CATALOG_DRIVER_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath())
         elif clist_name == 'Controls':
             catalog_name = 'control'
-            catalog_dic = fs_load_JSON_file(CATALOG_CONTROL_FILE_PATH)            
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath())
         elif clist_name == 'Display_Tag':
             catalog_name = 'tag'
-            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_TAG_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath())
         elif clist_name == 'Display_Type':
             catalog_name = 'type'
-            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_TYPE_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath())
         elif clist_name == 'Display_Rotate':
             catalog_name = 'rotate'
-            catalog_dic = fs_load_JSON_file(CATALOG_DISPLAY_ROTATE_FILE_PATH)            
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath())
         elif clist_name == 'BySL':
             catalog_name = 'SL'
-            catalog_dic = fs_load_JSON_file(CATALOG_SL_FILE_PATH)
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PATH.getPath())
 
         # >> Get parents for this category
         Machines_PClone_dic = catalog_dic[catalog_item_name]
 
         # >> Render parent main list
-        self._set_Kodi_content()
+        self._set_Kodi_all_sorting_methods()
         for parent_name in Machines_PClone_dic:
             machine = MAME_info_dic[parent_name]
             self._render_indexed_machine_row(parent_name, machine, True, clist_name, catalog_name, catalog_item_name)
@@ -478,10 +478,8 @@ class Main:
 
     def _render_indexed_clone_list(self, clist_name, catalog_item_name, parent_name):
         # >> Load main MAME info DB
-        MAME_info_dic = fs_load_JSON_file(MAIN_DB_FILE_PATH)
-
-        # >> Load main PClone dictionary
-        main_pclone_dic = fs_load_JSON_file(MAIN_PCLONE_DIC_FILE_PATH)
+        MAME_info_dic   = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
 
         # >> Get catalog name
         if   clist_name == 'Catver':         catalog_name = 'category'
@@ -497,7 +495,7 @@ class Main:
         elif clist_name == 'BySL':           catalog_name = 'SL'
 
         # >> Render parent first
-        self._set_Kodi_content()
+        self._set_Kodi_all_sorting_methods()
         machine = MAME_info_dic[parent_name]
         self._render_indexed_machine_row(parent_name, machine, False, clist_name, catalog_name, catalog_item_name)
 
@@ -571,9 +569,9 @@ class Main:
     #----------------------------------------------------------------------------------------------
     def _render_SL_machine_list(self):
         # >> Load Software List catalog
-        SL_catalog_dic = fs_load_JSON_file(SL_cat_filename)
+        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
 
-        self._set_Kodi_content()
+        self._set_Kodi_all_sorting_methods()
         for SL_name in SL_catalog_dic:
             SL = SL_catalog_dic[SL_name]
             self._render_SL_machine_row(SL_name, SL)
@@ -589,7 +587,7 @@ class Main:
         log_info(u'_render_SL_machine_ROM_list() ROMs JSON "{0}"'.format(SL_DB_filename))
         SL_roms = fs_load_JSON_file(SL_DB_filename)
 
-        self._set_Kodi_content()
+        self._set_Kodi_all_sorting_methods()
         for rom_name in SL_roms:
             ROM = SL_roms[rom_name]
             self._render_SL_ROM_row(SL_name, rom_name, ROM)
@@ -645,35 +643,35 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     def _command_view_machine(self, machine_name):
         # >> Read MAME machine information
-        MAME_info_dic = fs_load_JSON_file(MAIN_DB_FILE_PATH)
+        MAME_info_dic = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         machine = MAME_info_dic[machine_name]
 
         # --- Make information string ---
-        info_text  = u'[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
-        info_text += u"[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
-        info_text += u"[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])        
-        info_text += u"[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
-        info_text += u"[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
-        info_text += u"[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
-        info_text += u"[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
-        info_text += u"[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(machine['display_rotate'])
-        info_text += u"[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
-        info_text += u"[COLOR skyblue]display_type[/COLOR]: {0}\n".format(machine['display_type'])
-        info_text += u"[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
-        info_text += u"[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
-        info_text += u"[COLOR skyblue]hasCHD[/COLOR]: {0}\n".format(machine['hasCHD'])
-        info_text += u"[COLOR skyblue]hasCoin[/COLOR]: {0}\n".format(machine['hasCoin'])
-        info_text += u"[COLOR skyblue]hasROM[/COLOR]: {0}\n".format(machine['hasROM'])
-        info_text += u"[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
-        info_text += u"[COLOR skyblue]isDead[/COLOR]: {0}\n".format(machine['isDead'])
-        info_text += u"[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
-        info_text += u"[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(machine['isMechanical'])
-        info_text += u"[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
-        info_text += u"[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
-        info_text += u"[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
-        info_text += u"[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(machine['softwarelists'])
-        info_text += u"[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
-        info_text += u"[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
+        info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
+        info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
+        info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])        
+        info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
+        info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
+        info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
+        info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
+        info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(machine['display_rotate'])
+        info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
+        info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(machine['display_type'])
+        info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
+        info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
+        info_text += "[COLOR skyblue]hasCHD[/COLOR]: {0}\n".format(machine['hasCHD'])
+        info_text += "[COLOR skyblue]hasCoin[/COLOR]: {0}\n".format(machine['hasCoin'])
+        info_text += "[COLOR skyblue]hasROM[/COLOR]: {0}\n".format(machine['hasROM'])
+        info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
+        info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(machine['isDead'])
+        info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
+        info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(machine['isMechanical'])
+        info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
+        info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
+        info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
+        info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(machine['softwarelists'])
+        info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
+        info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
 
         # --- Show information window ---
         window_title = u'Machine Information'
