@@ -1,3 +1,15 @@
 [B]Advanced Emulator Launcher | version 0.9.0 | xx January 2017[/B]
 
-WIP      asdfg
+FEATURE  Extract MAME.xml from MAME executable. Tested only on Linux.
+
+WIP      Generate main MAME machine database, indices and catalogs from MAME.xml.
+
+WIP      Scan ROMs and tell the user about Have/Missing ROMs.
+
+WIP      Launch MAME non-Software List (arcade) machines.
+
+WIP      Scan CHDs...
+
+WIP      Scan Samples...
+
+WIP      Scan Software Lists...
