@@ -58,6 +58,7 @@ class AML_Paths:
         self.MAME_STDERR_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stderr.log')
         self.MAIN_DB_PATH                = PLUGIN_DATA_DIR.pjoin('MAME_db.json')
         self.MAIN_PCLONE_DIC_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_PClone_dic.json')
+        self.MAIN_CONTROL_PATH           = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
 
         # >> Indices
         self.MACHINES_IDX_PATH           = PLUGIN_DATA_DIR.pjoin('idx_Machines.json')
@@ -715,15 +716,9 @@ class Main:
             # --- Error checks ---
             # >> Check that MAME_XML_PATH exists
         
-            # --- Count number of machines. Useful for progress dialogs ---
-            log_info('_command_setup_plugin() Counting number of machines...')
-            num_machines = fs_count_MAME_Machines(MAME_XML_PATH)
-            log_info('_command_setup_plugin() Found {0} machines...'.format(num_machines))
-            kodi_dialog_OK('{0} machines.'.format(num_machines))
-
             # --- Parse MAME XML and generate main database and PClone list ---
             log_info('_command_setup_plugin() Generating MAME main database and PClone list...')
-            fs_build_MAME_main_database(num_machines)
+            fs_build_MAME_main_database(PATHS)
             kodi_notify('Main MAME database built')
 
         # --- Build MAME indices/catalogs ---

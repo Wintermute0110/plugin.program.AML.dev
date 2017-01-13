@@ -62,6 +62,16 @@ def fs_new_machine():
 
     return m
 
+# -------------------------------------------------------------------------------------------------
+# Exceptions raised by this module
+# -------------------------------------------------------------------------------------------------
+class DiskError(Exception):
+    """Base class for exceptions in this module."""
+    pass
+
+class CriticalError(DiskError):
+    def __init__(self, msg):
+        self.msg = msg
 
 # -------------------------------------------------------------------------------------------------
 # JSON write/load
@@ -69,21 +79,19 @@ def fs_new_machine():
 def fs_load_JSON_file(json_filename):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
-    if not os.path.isfile(json_filename):
-        return data_dic
-
-    # --- Parse using json module ---
-    log_verb('fs_load_ROMs_JSON() Loading JSON file {0}'.format(json_filename))
+    if not os.path.isfile(json_filename): return data_dic
+    log_verb('fs_load_ROMs_JSON() "{0}"'.format(json_filename))
     with open(json_filename) as file:    
         data_dic = json.load(file)
 
     return data_dic
 
 def fs_write_JSON_file(json_filename, json_data):
-    # >> Write JSON data
+    log_verb('fs_write_JSON_file() "{0}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
-          file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 2, separators = (',', ': '))))
+          file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, 
+                                        indent = 2, separators = (',', ': '))))
     except OSError:
         gui_kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(roms_json_file))
     except IOError:
@@ -120,14 +128,14 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
 
 # -------------------------------------------------------------------------------------------------
 #
-def fs_count_MAME_Machines(MAME_XML_PATH):
+def fs_count_MAME_Machines(PATHS):
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher',
                    'Counting number of MAME machines...')
     pDialog.update(0)
     num_machines = 0
-    with open(MAME_XML_PATH, 'rt') as f:
+    with open(PATHS.MAME_XML_PATH.getPath(), 'rt') as f:
         for line in f:
             if line.decode('utf-8').find('<machine name=') > 0: num_machines = num_machines + 1
     pDialog.update(100)
@@ -235,26 +243,38 @@ def fs_load_Catlist_ini(Genre_ini_filename):
 
 # -------------------------------------------------------------------------------------------------
 #
-MAME_XML_filename    = 'MAME.xml'
-Catver_ini_filename  = 'catver.ini'
-Catlist_ini_filename = 'catlist.ini'
-Genre_ini_filename   = 'genre.ini'
-Main_DB_filename     = 'MAME_info.json'
-NUM_MACHINES         = 50000
+STOP_AFTER_MACHINES = 100000
+def fs_build_MAME_main_database(PATHS):
+    # --- Count number of machines. Useful for progress dialogs ---
+    log_info('fs_build_MAME_main_database() Counting number of machines...')
+    total_machines = fs_count_MAME_Machines(PATHS)
+    log_info('fs_build_MAME_main_database() Found {0} machines.'.format(total_machines))
+    # kodi_dialog_OK('Found {0} machines in MAME.xml.'.format(total_machines))
 
-def fs_build_MAME_main_database(num_machines):
-    # -----------------------------------------------------------------------------
+    # --- Load Catver.ini to include cateogory information ---
+    categories_dic = {}
+    catlist_dic = {}
+    genre_dic = {}
+
+    # --- Progress dialog ---
+    pDialog = xbmcgui.DialogProgress()
+    pDialog_canceled = False
+    pDialog.create('Advanced MAME Launcher',
+                   'Building main MAME database...')
+
+    # ---------------------------------------------------------------------------------------------
     # Incremental Parsing approach B (from [1])
-    # -----------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
     # Do not load whole MAME XML into memory! Use an iterative parser to
     # grab only the information we want and discard the rest.
     # See http://effbot.org/zone/element-iterparse.htm [1]
     #
-    context = ET.iterparse(MAME_XML_filename, events=("start", "end"))
+    log_info('fs_build_MAME_main_database() Loading "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
+    context = ET.iterparse(PATHS.MAME_XML_PATH.getPath(), events=("start", "end"))
     context = iter(context)
     event, root = context.next()
-    mame_version_str = 'MAME ' + root.attrib['build']
-    print('MAME version is "{0}"'.format(mame_version_str))
+    mame_version_raw = root.attrib['build']
+    log_info('fs_build_MAME_main_database() MAME version is "{0}"'.format(mame_version_raw))
 
     # --- Process MAME XML ---
     machines      = {}
@@ -262,7 +282,7 @@ def fs_build_MAME_main_database(num_machines):
     num_iteration = 0
     num_machines  = 0
     num_dead      = 0
-    print('Reading MAME XML file ...')
+    log_info('fs_build_MAME_main_database() Parsing MAME XML file ...')
     for event, elem in context:
         # --- Debug the elements we are iterating from the XML file ---
         # print('Event     {0:6s} | Elem.tag    "{1}"'.format(event, elem.tag))
@@ -278,15 +298,15 @@ def fs_build_MAME_main_database(num_machines):
             # --- Process <machine> attributes ---
             # name is #REQUIRED attribute
             if 'name' not in elem.attrib:
-                print('"name" attribute not found in <machine> tag. Aborting.')
-                sys.exit(10)
+                log_error('name attribute not found in <machine> tag.')
+                raise CriticalError('name attribute not found in <machine> tag')
             else:
                 machine_name = elem.attrib['name']
 
             # sourcefile #IMPLIED attribute
             if 'sourcefile' not in elem.attrib:
-                print('"sourcefile" attribute not found in <machine> tag. Aborting.')
-                sys.exit(10)
+                log_error('sourcefile attribute not found in <machine> tag.')
+                raise CriticalError('sourcefile attribute not found in <machine> tag.')
             else:
                 # >> Remove trailing '.cpp' from driver name
                 raw_driver_name = elem.attrib['sourcefile']
@@ -324,12 +344,12 @@ def fs_build_MAME_main_database(num_machines):
                 machine['sampleof'] = elem.attrib['sampleof']
 
             # >> Add catver/catlist/genre
-            if machine_name in categories_dic: machine['catver'] = categories_dic[machine_name]
-            else:                              machine['catver'] = '[ Not set ]'
-            if machine_name in catlist_dic: machine['catlist'] = catlist_dic[machine_name]
-            else:                           machine['catlist'] = '[ Not set ]'
-            if machine_name in genre_dic: machine['genre'] = genre_dic[machine_name]
-            else:                         machine['genre'] = '[ Not set ]'
+            if machine_name in categories_dic: machine['catver']  = categories_dic[machine_name]
+            else:                              machine['catver']  = '[ Not set ]'
+            if machine_name in catlist_dic:    machine['catlist'] = catlist_dic[machine_name]
+            else:                              machine['catlist'] = '[ Not set ]'
+            if machine_name in genre_dic:      machine['genre']   = genre_dic[machine_name]
+            else:                              machine['genre']   = '[ Not set ]'
 
             # >> Increment number of machines
             num_machines += 1
@@ -412,14 +432,21 @@ def fs_build_MAME_main_database(num_machines):
 
         # --- Print something to prove we are doing stuff ---
         num_iteration += 1
-        if num_iteration % 50000 == 0:
-          print('Processed {0:10d} events ({1:6d} machines so far) ...'.format(num_iteration, num_machines))
+        if num_iteration % 1000 == 0:
+            update_number = (float(num_machines) / float(total_machines)) * 100 
+            pDialog.update(int(update_number))
+            # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(num_iteration, num_machines))
+            # log_debug('num_machines   = {0}'.format(num_machines))
+            # log_debug('total_machines = {0}'.format(total_machines))
+            # log_debug('Update number  = {0}'.format(update_number))
 
-        # --- Stop after NUM_MACHINES machines have been processed for debug ---
-        if num_machines >= NUM_MACHINES: break
-    print('Processed {0} MAME XML events'.format(num_iteration))
-    print('Total number of machines {0}'.format(num_machines))
-    print('Dead machines            {0}'.format(num_dead))
+        # --- Stop after STOP_AFTER_MACHINES machines have been processed for debug ---
+        if num_machines >= STOP_AFTER_MACHINES: break
+    pDialog.update(100)
+    pDialog.close()        
+    log_info('Processed {0} MAME XML events'.format(num_iteration))
+    log_info('Total number of machines {0}'.format(num_machines))
+    log_info('Dead machines            {0}'.format(num_dead))
 
     # -----------------------------------------------------------------------------
     # Main parent-clone list
@@ -429,7 +456,7 @@ def fs_build_MAME_main_database(num_machines):
     #
     # main_pclone_dic = { 'parent_name' : ['clone_name', 'clone_name', ...] , ...}
     # main_parent_dic = { 'clone_name' : 'parent_name', ... }
-    print('Making PClone list...')
+    log_info('Making PClone list...')
     main_pclone_dic = {}
     main_parent_dic = {}
     for machine_name in machines:
@@ -457,10 +484,29 @@ def fs_build_MAME_main_database(num_machines):
                 main_pclone_dic[parent_name].append(machine_name)
 
     # -----------------------------------------------------------------------------
+    # MAME control dictionary
+    # -----------------------------------------------------------------------------
+    control_dic = {
+        'mame_version'   : mame_version_raw,
+        'total_machines' : total_machines,
+        'num_machines'   : num_machines,
+    }
+                
+    # -----------------------------------------------------------------------------
     # Now write simplified JSON
     # -----------------------------------------------------------------------------
-    print('Writing AML database...')
-    fs_write_JSON_file(Main_DB_filename, machines)
+    log_info('Writing main MAME database...')
+    kodi_busydialog_ON()
+    fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+    kodi_busydialog_OFF()
+
+    log_info('Writing main PClone list...')
+    kodi_busydialog_ON()
+    fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
+    kodi_busydialog_OFF()
+
+    log_info('Writing control dictionary...')
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
 #
