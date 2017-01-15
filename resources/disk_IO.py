@@ -37,10 +37,10 @@ except:
 # Advanced MAME Launcher data model
 # -------------------------------------------------------------------------------------------------
 # Status flags meaning:
-#   -  Machine doesn't have ROM / Not applicable
-#   ?  Machine has ROM and ROMs have not been scanned
-#   r  Machine has ROM and ROM doesn't exist
-#   R  Machine has ROM and ROM exists
+#   -  Machine doesn't have ROM | Machine doesn't have Software Lists
+#   ?  Machine has ROM/CHD/Samples and ROM/CHD/Samples have not been scanned
+#   r  Machine has ROM/CHD/Samples and ROM/CHD/Samples doesn't exist
+#   R  Machine has ROM/CHD/Samples and ROM/CHD/Samples exists | Machine has Software Lists
 #
 def fs_new_machine():
     m = {'sourcefile'     : '',
@@ -63,10 +63,10 @@ def fs_new_machine():
          'hasCoin'        : False,
          'coins'          : 0,
          'driver_status'  : '',
+         'CHDs'           : [],
          'softwarelists'  : [],
          'isDead'         : False,
          'hasROM'         : False,
-         'hasCHD'         : False,
          'status_ROM'     : '-',
          'status_CHD'     : '-',
          'status_SAM'     : '-',
@@ -304,7 +304,7 @@ def fs_build_MAME_main_database(PATHS):
 
         # <machine> tag start event includes <machine> attributes
         if event == 'start' and elem.tag == 'machine':
-            machine = fs_new_machine()
+            machine  = fs_new_machine()
             runnable = False
             num_displays = 0
 
@@ -386,7 +386,9 @@ def fs_build_MAME_main_database(PATHS):
         # CHD is considered valid if SHA1 hash exists. Keep in mind that there can be multiple
         # disks per machine, some valid, some invalid: just one valid CHD is OK.
         elif event == 'start' and elem.tag == 'disk':
-            if 'sha1' in elem.attrib: machine['hasCHD'] = True
+            if 'sha1' in elem.attrib:
+                # <!ATTLIST disk name CDATA #REQUIRED>
+                machine['CHDs'].append(elem.attrib['name'])
 
         # Some machines have more than one display tag (for example aquastge has 2).
         # Other machines have no display tag (18w)
@@ -416,6 +418,7 @@ def fs_build_MAME_main_database(PATHS):
             # name is #REQUIRED attribute
             machine['softwarelists'].append(elem.attrib['name'])
 
+        # --- <machine> tag closing. Add new machine to database ---
         elif event == 'end' and elem.tag == 'machine':
             # >> Assumption 1: isdevice = True if and only if runnable = False
             if machine['isDevice'] == runnable:
@@ -440,6 +443,17 @@ def fs_build_MAME_main_database(PATHS):
 
             # >> Delete XML element once it has been processed
             elem.clear()
+
+            # >> Fill machine status
+            if machine['hasROM']:        machine['status_ROM'] = '?'
+            else:                        machine['status_ROM'] = '-'
+            if machine['CHDs']:          machine['status_CHD'] = '?'
+            else:                        machine['status_CHD'] = '-'
+            if machine['sampleof']:      machine['status_SAM'] = '?'
+            else:                        machine['status_SAM'] = '-'
+            if machine['softwarelists']: machine['status_SL']  = 'L'
+            else:                        machine['status_SL']  = '-'
+
             # >> Add new machine
             machines[machine_name] = machine
 
