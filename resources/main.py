@@ -686,11 +686,14 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     def _command_view_machine(self, machine_name):
         # >> Read MAME machine information
-        MAME_info_dic = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        machine = MAME_info_dic[machine_name]
+        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        machine = MAME_db_dic[machine_name]
+        assets  = MAME_assets_dic[machine_name]
 
         # --- Make information string ---
         info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
+        info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])
         info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
         info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])        
         info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
@@ -702,7 +705,6 @@ class Main:
         info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(machine['display_type'])
         info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
         info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
-        info_text += "[COLOR skyblue]hasCHD[/COLOR]: {0}\n".format(machine['hasCHD'])
         info_text += "[COLOR skyblue]hasCoin[/COLOR]: {0}\n".format(machine['hasCoin'])
         info_text += "[COLOR skyblue]hasROM[/COLOR]: {0}\n".format(machine['hasROM'])
         info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
@@ -719,6 +721,16 @@ class Main:
         info_text += "[COLOR violet]status_SAM[/COLOR]: '{0}'\n".format(machine['status_SAM'])
         info_text += "[COLOR violet]status_SL[/COLOR]: '{0}'\n".format(machine['status_SL'])
         info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
+
+        info_text += '\n[COLOR orange]Asset/artwork information[/COLOR]\n'
+        info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
+        info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
+        info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
+        info_text += "[COLOR violet]marquee[/COLOR]: '{0}'\n".format(assets['marquee'])
+        info_text += "[COLOR violet]PCB[/COLOR]: '{0}'\n".format(assets['PCB'])
+        info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
+        info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
+        info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
 
         # --- Show information window ---
         window_title = u'Machine Information'
