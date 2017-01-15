@@ -21,4 +21,4 @@ FEATURE  Scan assets and build assets database.
 
 FEATURE  Display MAME machine metadata/artwork.
 
-WIP      Build Software List catalog.
+FEATURE  Build Software List catalog.

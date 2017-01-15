@@ -5,7 +5,7 @@
        provider-name="Wintermute0110">
   <requires>
     <!-- 2.24.0  Jarvis 16.x / 2.25.0  Krypton 17.x -->
-    <import addon="xbmc.python" version="2.25.0" />
+    <import addon="xbmc.python" version="2.24.0" />
   </requires>
   <extension point="xbmc.python.pluginsource" library="addon.py">
     <provides>executable</provides>
