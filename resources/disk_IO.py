@@ -29,6 +29,7 @@ import re
 import xml.etree.ElementTree as ET
 
 # --- AEL packages ---
+from utils import *
 try:
     from utils_kodi import *
 except:
@@ -803,26 +804,27 @@ def fs_load_SL_XML(xml_filename):
     roms = {}
     num_roms = 0
     display_name = ''
+    default_return = ({}, 0, '')
 
     # --- If file does not exist return empty dictionary ---
     if not os.path.isfile(xml_filename):
         return (roms, num_roms, display_name)
 
     # --- Parse using cElementTree ---
-    print(u'fs_load_SL_XML() Loading XML file "{0}"'.format(xml_filename))
+    log_debug('fs_load_SL_XML() Loading XML file "{0}"'.format(xml_filename))
     # If XML has errors (invalid characters, etc.) this will rais exception 'err'
     try:
         xml_tree = ET.parse(xml_filename)
     except:
-        return {}
+        return default_return
     xml_root = xml_tree.getroot()
     display_name = xml_root.attrib['description']
     for root_element in xml_root:
-        if __debug_xml_parser: print(u'Root child {0}'.format(root_element.tag))
+        if __debug_xml_parser: print('Root child {0}'.format(root_element.tag))
 
         if root_element.tag == 'software':
             num_roms += 1
-            rom = fs_new_SL_ROM()
+            rom = fs_new_SL_index_entry()
             rom_name = root_element.attrib['name']
             for rom_child in root_element:
                 # By default read strings
@@ -841,24 +843,38 @@ def fs_load_SL_XML(xml_filename):
 # SL_catalog = { 'name' : {'display_name': u'', 'rom_count' : int, 'rom_DB_noext' : u'' }, ...}
 #
 def fs_build_SoftwareLists_index(PATHS, settings):
-    SL_dir          = '/cygdrive/e/Temp/Mame 0173b/hash/'
-    SL_cat_filename = 'cat_SoftwareLists.json'
-    SL_database_dir = './db_SoftwareLists/'
+    SL_dir_FN = FileName(settings['SL_hash_path'])
+    log_debug('fs_build_SoftwareLists_index() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
 
     # --- Scan all XML files in Software Lists directory ---
+    pDialog = xbmcgui.DialogProgress()
+    pDialog_canceled = False
+    pDialog.create('Advanced MAME Launcher',
+                   'Building Sofware Lists indices/catalogs...')
     SL_catalog = {}
-    for file in os.listdir(SL_dir):
-        if file.endswith('.xml'):
-            # >> Open software list XML and parse it. Then, save data fields we want in JSON.
-            F = misc_split_path(file)
-            SL_path = os.path.join(SL_dir, file)
-            (roms, num_roms, display_name) = fs_load_SL_XML(SL_path)
-            output_filename = os.path.join(SL_database_dir, F.base_noext + '.json')
-            fs_write_JSON(output_filename, roms)
+    SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
+    total_files = len(SL_file_list)
+    processed_files = 0
+    for file in SL_file_list:
+        log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
+        FN = FileName(file)
+        pDialog.update(100 * processed_files / total_files,
+                       'Building Sofware Lists indices/catalogs',
+                       'File {0} ...'.format(FN.getBase()))
 
-            # >> Add software list to catalog
-            SL = {'display_name': display_name, 'rom_count' : num_roms, 'rom_DB_noext' : F.base_noext }
-            SL_catalog[F.base_noext] = SL
+        # >> Open software list XML and parse it. Then, save data fields we want in JSON.
+        SL_path_FN = FileName(file)
+        (roms, num_roms, display_name) = fs_load_SL_XML(SL_path_FN.getPath())
+        output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json')
+        fs_write_JSON_file(output_FN.getPath(), roms)
+
+        # >> Add software list to catalog
+        SL = {'display_name': display_name, 'rom_count' : num_roms, 'rom_DB_noext' : FN.getBase_noext()}
+        SL_catalog[FN.getBase_noext()] = SL
+        
+        # >> Update progress
+        processed_files = processed_files + 1
+    pDialog.close()
 
     # --- Save Software List catalog ---
-    fs_write_JSON(PATHS.SL_INDEX_PATH.getPath(), SL_catalog)
+    fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog)

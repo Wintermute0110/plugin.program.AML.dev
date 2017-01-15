@@ -85,6 +85,7 @@ class AML_Paths:
         self.CATALOG_SL_PATH             = PLUGIN_DATA_DIR.pjoin('catalog_SL.json')
 
         # >> Software Lists
+        self.SL_DB_DIR                   = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')        
         self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
 PATHS = AML_Paths()
 
@@ -114,6 +115,7 @@ class Main:
 
         # --- Addon data paths creation ---
         if not PLUGIN_DATA_DIR.exists(): PLUGIN_DATA_DIR.makedirs()
+        if not PATHS.SL_DB_DIR.exists(): PATHS.SL_DB_DIR.makedirs()
 
         # --- Process URL ---
         self.base_url     = sys.argv[0]
@@ -802,7 +804,7 @@ class Main:
                                  ['Extract MAME.xml...',
                                   'Build main MAME database...',
                                   'Build MAME indices/catalogs...',
-                                  'Build Software Lists index...', 
+                                  'Build Software Lists indices/catalogs...', 
                                   'Scan ROMs/CHDs/Samples...',
                                   'Scan assets/artwork...'])
         if menu_item < 0: return
@@ -850,10 +852,16 @@ class Main:
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_notify('Indices and catalogs built')
 
-        # --- Build Software Lists index ---
+        # --- Build Software Lists indices/catalogs ---
         elif menu_item == 3:
-            kodi_dialog_OK('Not coded: Software Lists index')
-            # fs_build_SoftwareLists_index(num_machines)
+            # --- Error checks ---
+            if not self.settings['SL_hash_path']:
+                kodi_dialog_OK('Software Lists hash path not set.')
+                return
+
+            # --- Build Software List indices ---
+            fs_build_SoftwareLists_index(PATHS, self.settings)
+            kodi_notify('Software Lists indices and catalogs built')
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
         elif menu_item == 4:
