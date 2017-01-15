@@ -43,37 +43,54 @@ except:
 #   R  Machine has ROM/CHD/Samples and ROM/CHD/Samples exists | Machine has Software Lists
 #
 def fs_new_machine():
-    m = {'sourcefile'     : '',
-         'isBIOS'         : False,
-         'isDevice'       : False,
-         'isMechanical'   : False,
-         'cloneof'        : '',
-         'romof'          : '',
-         'sampleof'       : '',
-         'description'    : '', 
-         'year'           : '', 
-         'manufacturer'   : '',
-         'catver'         : '',
-         'catlist'        : '',
-         'genre'          : '',
-         'display_tag'    : [],
-         'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
-         'display_rotate' : [], # (0|90|180|270) #REQUIRED>
-         'control_type'   : [],
-         'hasCoin'        : False,
-         'coins'          : 0,
-         'driver_status'  : '',
-         'CHDs'           : [],
-         'softwarelists'  : [],
-         'isDead'         : False,
-         'hasROM'         : False,
-         'status_ROM'     : '-',
-         'status_CHD'     : '-',
-         'status_SAM'     : '-',
-         'status_SL'      : '-',
+    m = {
+        'sourcefile'     : '',
+        'isBIOS'         : False,
+        'isDevice'       : False,
+        'isMechanical'   : False,
+        'cloneof'        : '',
+        'romof'          : '',
+        'sampleof'       : '',
+        'description'    : '', 
+        'year'           : '', 
+        'manufacturer'   : '',
+        'catver'         : '',
+        'catlist'        : '',
+        'genre'          : '',
+        'display_tag'    : [],
+        'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
+        'display_rotate' : [], # (0|90|180|270) #REQUIRED>
+        'control_type'   : [],
+        'hasCoin'        : False,
+        'coins'          : 0,
+        'driver_status'  : '',
+        'CHDs'           : [],
+        'softwarelists'  : [],
+        'isDead'         : False,
+        'hasROM'         : False,
+        'status_ROM'     : '-',
+        'status_CHD'     : '-',
+        'status_SAM'     : '-',
+        'status_SL'      : '-',
     }
 
     return m
+
+ASSET_KEY_LIST  = ['cabinet',  'cpanel',  'flyer',  'marquee',  'PCB',  'snap',  'title',  'clearlogo']
+ASSET_PATH_LIST = ['cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles', 'clearlogos']
+def fs_new_asset():
+    a = {
+        'cabinet'   : '',
+        'cpanel'    : '',
+        'flyer'     : '',
+        'marquee'   : '',
+        'PCB'       : '',
+        'snap'      : '',
+        'title'     : '',
+        'clearlogo' : ''
+    }
+
+    return a
 
 # -------------------------------------------------------------------------------------------------
 # Exceptions raised by this module

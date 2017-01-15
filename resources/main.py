@@ -807,8 +807,7 @@ class Main:
             # >> Iterate machines, check if ROMs exits. Update status field
             pDialog = xbmcgui.DialogProgress()
             pDialog_canceled = False
-            pDialog.create('Advanced MAME Launcher',
-                           'Scanning MAME ROMs...')
+            pDialog.create('Advanced MAME Launcher', 'Scanning MAME ROMs...')
             total_machines = len(machines)
             processed_machines = 0
             for key, machine in machines.iteritems():
@@ -851,7 +850,7 @@ class Main:
 
                 # >> Progress dialog
                 processed_machines = processed_machines + 1
-                pDialog.update(100 * processed_machines / total_machines)                    
+                pDialog.update(100 * processed_machines / total_machines)
             pDialog.close()
 
             # >> Save database
@@ -862,7 +861,51 @@ class Main:
 
         # --- Scans assets/artwork ---
         elif menu_item == 5:
-            kodi_dialog_OK('Not coded: Scan assets')
+            log_info('_command_setup_plugin() Scanning ROMs/CHDs/Samples ...')
+            
+            # >> Get assets directory. Abort if not configured/found.
+            if not self.settings['assets_path']:
+                kodi_dialog_OK('Asset directory not configured. Aborting.')
+                return
+            Asset_path_FN = FileName(self.settings['assets_path'])
+            if not Asset_path_FN.isdir():
+                kodi_dialog_OK('Asset directory does not exist. Aborting.')
+                return
+
+            # >> Load machine database
+            kodi_busydialog_ON()
+            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            kodi_busydialog_OFF()
+
+            # >> Iterate machines, check if assets/artwork exist.
+            pDialog = xbmcgui.DialogProgress()
+            pDialog_canceled = False
+            pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork...')
+            total_machines = len(machines)
+            processed_machines = 0
+            assets_dic = {}
+            for key, machine in machines.iteritems():
+                machine = machines[key]
+
+                # >> Scan assets
+                machine_assets = fs_new_asset()
+                for idx, asset_key in enumerate(ASSET_KEY_LIST):
+                    full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_PATH_LIST[idx])
+                    asset_FN = full_asset_dir_FN.pjoin(key + '.png')
+                    if asset_FN.exists(): machine_assets[asset_key] = asset_FN.getOriginalPath()
+                    else:                 machine_assets[asset_key] = ''
+                assets_dic[key] = machine_assets
+
+                # >> Progress dialog
+                processed_machines = processed_machines + 1
+                pDialog.update(100 * processed_machines / total_machines)
+            pDialog.close()
+
+            # >> Save asset database
+            kodi_busydialog_ON()
+            fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
+            kodi_busydialog_OFF()
+            kodi_notify('Scanning of assets/artwork finished')
 
     def _run_machine(self, machine_name):
         log_info('_run_machine() Launching MAME machine "{0}"'.format(machine_name))
