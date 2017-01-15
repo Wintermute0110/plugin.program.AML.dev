@@ -825,7 +825,7 @@ class Main:
         
             # --- Parse MAME XML and generate main database and PClone list ---
             log_info('_command_setup_plugin() Generating MAME main database and PClone list...')
-            fs_build_MAME_main_database(PATHS)
+            fs_build_MAME_main_database(PATHS, self.settings)
             kodi_notify('Main MAME database built')
 
         # --- Build MAME indices/catalogs ---

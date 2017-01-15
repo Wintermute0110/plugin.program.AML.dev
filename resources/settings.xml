@@ -10,9 +10,9 @@
     <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="auto" option="" />
     <setting label="CHDs path"                type="folder" id="chd_path" source="auto" option="" />
     <setting label="Samples path"             type="folder" id="samples_path" source="auto" option="" />
-    <setting label="Catver.ini path"          type="folder" id="catver_path" source="auto" option="" />
-    <setting label="Catlist.ini path"         type="folder" id="catlist_path" source="auto" option="" />
-    <setting label="Genre.ini path"           type="folder" id="genre_path" source="auto" option="" />
+    <setting label="Catver.ini path"          type="file" id="catver_path" />
+    <setting label="Catlist.ini path"         type="file" id="catlist_path" />
+    <setting label="Genre.ini path"           type="file" id="genre_path" />
 </category>
 <category label="Display">
     <setting label="Display available ROMs only" type="bool" default="false" id="display_available_only" />

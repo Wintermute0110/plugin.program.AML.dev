@@ -19,6 +19,7 @@ import json
 import io
 import codecs, time
 import subprocess
+import re
 
 # --- XML stuff ---
 # ~~~ cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
@@ -177,104 +178,100 @@ def fs_count_MAME_Machines(PATHS):
 # Load Catver.ini/Catlist.ini/Genre.ini
 # -------------------------------------------------------------------------------------------------
 def fs_load_Catver_ini(Catver_ini_filename):
-    print('Parsing ' + Catver_ini_filename)
+    log_info('fs_load_Catver_ini() Parsing "{0}"'.format(Catver_ini_filename))
     categories_dic = {}
     categories_set = set()
     __debug_do_list_categories = False
     read_status = 0
-    try:
-        # read_status FSM values
-        # 0 -> Looking for '[Category]' tag
-        # 1 -> Reading categories
-        # 2 -> Categories finished. STOP
-        f = open(Catver_ini_filename, 'rt')
-        for cat_line in f:
-            stripped_line = cat_line.strip()
-            if __debug_do_list_categories: print('Line "' + stripped_line + '"')
-            if read_status == 0:
-                if stripped_line == '[Category]':
-                    if __debug_do_list_categories: print('Found [Category]')
-                    read_status = 1
-            elif read_status == 1:
-                line_list = stripped_line.split("=")
-                if len(line_list) == 1:
-                    read_status = 2
-                    continue
-                else:
-                    if __debug_do_list_categories: print(line_list)
-                    machine_name = line_list[0]
-                    category = line_list[1]
-                    if machine_name not in categories_dic:
-                        categories_dic[machine_name] = category
-                    categories_set.add(category)
-            elif read_status == 2:
-                print('Reached end of categories parsing.')
-                break
+    # read_status FSM values
+    # 0 -> Looking for '[Category]' tag
+    # 1 -> Reading categories
+    # 2 -> Categories finished. STOP
+    f = open(Catver_ini_filename, 'rt')
+    for cat_line in f:
+        stripped_line = cat_line.strip()
+        if __debug_do_list_categories: print('Line "' + stripped_line + '"')
+        if read_status == 0:
+            if stripped_line == '[Category]':
+                if __debug_do_list_categories: print('Found [Category]')
+                read_status = 1
+        elif read_status == 1:
+            line_list = stripped_line.split("=")
+            if len(line_list) == 1:
+                read_status = 2
+                continue
             else:
-                print('Unknown read_status FSM value. Aborting.')
-                sys.exit(10)
-        f.close()
-    except:
-        pass
-    print('Catver Number of machines   {0:6d}'.format(len(categories_dic)))
-    print('Catver Number of categories {0:6d}'.format(len(categories_set)))
+                if __debug_do_list_categories: print(line_list)
+                machine_name = line_list[0]
+                category = line_list[1]
+                if machine_name not in categories_dic:
+                    categories_dic[machine_name] = category
+                categories_set.add(category)
+        elif read_status == 2:
+            log_info('fs_load_Catver_ini() Reached end of categories parsing.')
+            break
+        else:
+            raise CriticalError('Unknown read_status FSM value')
+    f.close()
+    log_info('fs_load_Catver_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
+    log_info('fs_load_Catver_ini() Number of categories {0:6d}'.format(len(categories_set)))
+
+    return categories_dic
 
 def fs_load_Catlist_ini(Catlist_ini_filename):
-    print('Parsing ' + Catlist_ini_filename)
+    log_info('fs_load_Catlist_ini() Parsing "{0}"'.format(Catlist_ini_filename))
     catlist_dic = {}
     catlist_set = set()
-    try:
-        f = open(Catlist_ini_filename, 'rt')
-        for file_line in f:
-            stripped_line = file_line.strip()
-            # Skip comments: lines starting with ';;'
-            if re.search(r'^;;', stripped_line): continue
-            # Skip blanks
-            if stripped_line == '': continue
-            # New category
-            searchObj = re.search(r'^\[(.*)\]', stripped_line)
-            if searchObj:
-                current_category = searchObj.group(1)
-                catlist_set.add(current_category)
-            else:
-                machine_name = stripped_line
-                catlist_dic[machine_name] = current_category
-        f.close()
-    except:
-        pass
-    print('Catlist Number of machines   {0:6d}'.format(len(catlist_dic)))
-    print('Catlist Number of categories {0:6d}'.format(len(catlist_set)))
+    f = open(Catlist_ini_filename, 'rt')
+    for file_line in f:
+        stripped_line = file_line.strip()
+        # Skip comments: lines starting with ';;'
+        if re.search(r'^;;', stripped_line): continue
+        # Skip blanks
+        if stripped_line == '': continue
+        # New category
+        searchObj = re.search(r'^\[(.*)\]', stripped_line)
+        if searchObj:
+            current_category = searchObj.group(1)
+            catlist_set.add(current_category)
+        else:
+            machine_name = stripped_line
+            catlist_dic[machine_name] = current_category
+    f.close()
+    log_info('fs_load_Catlist_ini() Number of machines   {0:6d}'.format(len(catlist_dic)))
+    log_info('fs_load_Catlist_ini() Number of categories {0:6d}'.format(len(catlist_set)))
+    
+    return catlist_dic
 
-def fs_load_Catlist_ini(Genre_ini_filename):
-    print('Parsing ' + Genre_ini_filename)
+def fs_load_Genre_ini(Genre_ini_filename):
+    log_info('fs_load_Genre_ini() Parsing "{0}"'.format(Genre_ini_filename))
     genre_dic = {}
     genre_set = set()
-    try:
-        f = open(Genre_ini_filename, 'rt')
-        for file_line in f:
-            stripped_line = file_line.strip()
-            # Skip comments: lines starting with ';;'
-            if re.search(r'^;;', stripped_line): continue
-            # Skip blanks
-            if stripped_line == '': continue
-            # New category
-            searchObj = re.search(r'^\[(.*)\]', stripped_line)
-            if searchObj:
-                current_category = searchObj.group(1)
-                genre_set.add(current_category)
-            else:
-                machine_name = stripped_line
-                genre_dic[machine_name] = current_category
-        f.close()
-    except:
-        pass
-    print('Genre Number of machines   {0:6d}'.format(len(genre_dic)))
-    print('Genre Number of categories {0:6d}'.format(len(genre_set)))
+    f = open(Genre_ini_filename, 'rt')
+    for file_line in f:
+        stripped_line = file_line.strip()
+        # Skip comments: lines starting with ';;'
+        if re.search(r'^;;', stripped_line): continue
+        # Skip blanks
+        if stripped_line == '': continue
+        # New category
+        searchObj = re.search(r'^\[(.*)\]', stripped_line)
+        if searchObj:
+            current_category = searchObj.group(1)
+            genre_set.add(current_category)
+        else:
+            machine_name = stripped_line
+            genre_dic[machine_name] = current_category
+    f.close()
+    log_info('fs_load_Genre_ini() Number of machines   {0:6d}'.format(len(genre_dic)))
+    log_info('fs_load_Genre_ini() Number of categories {0:6d}'.format(len(genre_set)))
+
+    return genre_dic
 
 # -------------------------------------------------------------------------------------------------
 #
 STOP_AFTER_MACHINES = 100000
-def fs_build_MAME_main_database(PATHS):
+def fs_build_MAME_main_database(PATHS, settings):
     # --- Count number of machines. Useful for progress dialogs ---
     log_info('fs_build_MAME_main_database() Counting number of machines...')
     total_machines = fs_count_MAME_Machines(PATHS)
@@ -282,9 +279,9 @@ def fs_build_MAME_main_database(PATHS):
     # kodi_dialog_OK('Found {0} machines in MAME.xml.'.format(total_machines))
 
     # --- Load Catver.ini to include cateogory information ---
-    categories_dic = {}
-    catlist_dic = {}
-    genre_dic = {}
+    categories_dic = fs_load_Catver_ini(settings['catver_path'])
+    catlist_dic    = fs_load_Catlist_ini(settings['catlist_path'])
+    genre_dic      = fs_load_Genre_ini(settings['genre_path'])
 
     # --- Progress dialog ---
     pDialog = xbmcgui.DialogProgress()
@@ -528,6 +525,12 @@ def fs_build_MAME_main_database(PATHS):
                 main_pclone_dic[parent_name].append(machine_name)
 
     # -----------------------------------------------------------------------------
+    # Make empty asset list
+    # -----------------------------------------------------------------------------
+    assets_dic = {}
+    for key in machines: assets_dic[key] = fs_new_asset()
+
+    # -----------------------------------------------------------------------------
     # MAME control dictionary
     # -----------------------------------------------------------------------------
     control_dic = {
@@ -540,12 +543,10 @@ def fs_build_MAME_main_database(PATHS):
     # Now write simplified JSON
     # -----------------------------------------------------------------------------
     kodi_busydialog_ON()
-    log_info('Writing main MAME database...')
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
-    log_info('Writing main PClone list...')
     fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
-    log_info('Writing control dictionary...')
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     kodi_busydialog_OFF()
 
 # -------------------------------------------------------------------------------------------------
