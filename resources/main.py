@@ -674,13 +674,13 @@ class Main:
 
     def _render_SL_machine_ROM_list(self, SL_name):
         # >> Load Software List catalog
-        SL_catalog_dic = fs_load_JSON_file(SL_cat_filename)
+        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
 
         # >> Load Software List ROMs
-        file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + u'.json'
-        SL_DB_filename = os.path.join(AML_ADDON_DIR, u'db_SoftwareLists', file_name).decode('utf-8')
-        log_info(u'_render_SL_machine_ROM_list() ROMs JSON "{0}"'.format(SL_DB_filename))
-        SL_roms = fs_load_JSON_file(SL_DB_filename)
+        file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+        log_info('_render_SL_machine_ROM_list() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
         self._set_Kodi_all_sorting_methods()
         for rom_name in SL_roms:
