@@ -37,7 +37,6 @@ __addon_author__  = __addon_obj__.getAddonInfo('author').decode('utf-8')
 __addon_profile__ = __addon_obj__.getAddonInfo('profile').decode('utf-8')
 __addon_type__    = __addon_obj__.getAddonInfo('type').decode('utf-8')
 
-
 # --- Addon paths and constant definition ---
 # _PATH is a filename | _DIR is a directory
 ADDONS_DATA_DIR = FileName('special://profile/addon_data')
@@ -346,12 +345,19 @@ class Main:
     # URL is different: parent URL leads to clones, clone URL launchs machine.
     #
     def _render_machine_row(self, machine_name, machine, is_parent_list, list_name = u''):
-        # --- Mark devices, BIOS and clones ---
         display_name = machine['description']
+        
+        # --- Mark Status ---
+        status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+                                       machine['status_SAM'], machine['status_SL'])
+        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+
+        # --- Mark Devices, BIOS and clones ---
         if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
         if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
         if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-        # Do not mark machines working OK
+        
+        # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
         if   machine['driver_status'] == u'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
         elif machine['driver_status'] == u'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
@@ -748,7 +754,58 @@ class Main:
 
         # --- Scans ROMs/CHDs/Samples and updates ROM status ---
         elif menu_item == 4:
-            kodi_dialog_OK('Not coded: Scan ROMs')
+            log_info('_command_setup_plugin() Scanning ROMs...')
+            
+            # >> Get paths and check they exist
+            if not self.settings['rom_path']:
+                kodi_dialog_OK('ROM directory not configured. Aborting.')
+                return
+            ROM_path_FN = FileName(self.settings['rom_path'])
+            if not ROM_path_FN.isdir():
+                kodi_dialog_OK('ROM directory does not exist. Aborting.')
+                return
+
+            # >> Load machine database
+            kodi_busydialog_ON()
+            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            kodi_busydialog_OFF()
+
+            # >> Iterate machines, check if ROMs exits. Update status field
+            pDialog = xbmcgui.DialogProgress()
+            pDialog_canceled = False
+            pDialog.create('Advanced MAME Launcher',
+                           'Scanning MAME ROMs...')
+            total_machines = len(machines)
+            processed_machines = 0
+            for key, machine in machines.iteritems():
+                machine = machines[key]
+                # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
+
+                # >> Scan ROMs
+                if machine['hasROM']:
+                    # >> Machine has ROM. Get ROM filename and check if file exist
+                    ROM_FN = ROM_path_FN.pjoin(key + '.zip')
+                    if ROM_FN.exists(): machine['status_ROM'] = 'R'
+                    else:               machine['status_ROM'] = 'r'
+                else:
+                    machine['status_ROM'] = '-'
+                    
+                # >> Scan CHDs
+                
+                
+                # >> Scan Samples
+                
+                
+                # >> Progress dialog
+                processed_machines = processed_machines + 1
+                pDialog.update(100 * processed_machines / total_machines)                    
+            pDialog.close()
+
+            # >> Save database
+            kodi_busydialog_ON()
+            fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+            kodi_busydialog_OFF()
+            kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
         # --- Scans assets/artwork ---
         elif menu_item == 5:

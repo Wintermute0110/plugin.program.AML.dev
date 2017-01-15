@@ -13,16 +13,19 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+# --- Python standard library ---
+from __future__ import unicode_literals
+import json
+import io
+import codecs, time
+import subprocess
+
 # --- XML stuff ---
 # ~~~ cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
 # import xml.etree.cElementTree as ET
 
 # ~~~ Using ElementTree seems to solve the problem
 import xml.etree.ElementTree as ET
-import json
-import io
-import codecs, time
-import subprocess
 
 # --- AEL packages ---
 try:
@@ -33,31 +36,41 @@ except:
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher data model
 # -------------------------------------------------------------------------------------------------
+# Status flags meaning:
+#   -  Machine doesn't have ROM / Not applicable
+#   ?  Machine has ROM and ROMs have not been scanned
+#   r  Machine has ROM and ROM doesn't exist
+#   R  Machine has ROM and ROM exists
+#
 def fs_new_machine():
-    m = {'sourcefile'     : u'',
+    m = {'sourcefile'     : '',
          'isBIOS'         : False,
          'isDevice'       : False,
          'isMechanical'   : False,
-         'cloneof'        : u'',
-         'romof'          : u'',
-         'sampleof'       : u'',
-         'description'    : u'', 
-         'year'           : u'', 
-         'manufacturer'   : u'',
-         'catver'         : u'',
-         'catlist'        : u'',
-         'genre'          : u'',
+         'cloneof'        : '',
+         'romof'          : '',
+         'sampleof'       : '',
+         'description'    : '', 
+         'year'           : '', 
+         'manufacturer'   : '',
+         'catver'         : '',
+         'catlist'        : '',
+         'genre'          : '',
          'display_tag'    : [],
          'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
          'display_rotate' : [], # (0|90|180|270) #REQUIRED>
          'control_type'   : [],
          'hasCoin'        : False,
          'coins'          : 0,
-         'driver_status'  : u'',
+         'driver_status'  : '',
          'softwarelists'  : [],
          'isDead'         : False,
          'hasROM'         : False,
-         'hasCHD'         : False
+         'hasCHD'         : False,
+         'status_ROM'     : '-',
+         'status_CHD'     : '-',
+         'status_SAM'     : '-',
+         'status_SL'      : '-',
     }
 
     return m

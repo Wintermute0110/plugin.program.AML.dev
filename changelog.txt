@@ -2,11 +2,13 @@
 
 FEATURE  Extract MAME.xml from MAME executable. Tested only on Linux.
 
-WIP      Generate main MAME machine database, indices and catalogs from MAME.xml.
+FEATURE  Generate main MAME machine database, indices and catalogs from MAME.xml.
 
-WIP      Scan ROMs and tell the user about Have/Missing ROMs.
+FEATURE  Scan ROMs and tell the user about Have/Missing ROMs.
 
 WIP      Launch MAME non-Software List (arcade) machines.
+
+WIP      Build Software List catalog.
 
 WIP      Scan CHDs...
 
