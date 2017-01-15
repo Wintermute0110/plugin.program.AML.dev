@@ -842,11 +842,34 @@ class Main:
         log_info('_run_machine() mame_dir     "{0}"'.format(mame_dir))
         log_info('_run_machine() mame_exec    "{0}"'.format(mame_exec))
         log_info('_run_machine() machine_name "{0}"'.format(machine_name))
+
+        # >> Prevent a console window to be shown in Windows. Not working yet!
+        if sys.platform == 'win32':
+            log_info('_run_machine() Platform is win32. Creating _info structure')
+            _info = subprocess.STARTUPINFO()
+            _info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+            # See https://msdn.microsoft.com/en-us/library/ms633548(v=vs.85).aspx
+            # See https://docs.python.org/2/library/subprocess.html#subprocess.STARTUPINFO
+            # >> SW_HIDE = 0
+            # >> Does not work: MAME console window is not shown, graphical window not shonw either,
+            # >> process run in background.
+            # _info.wShowWindow = subprocess.SW_HIDE
+            # >> SW_SHOWMINIMIZED = 2
+            # >> Both MAME console and graphical window minimized.
+            # _info.wShowWindow = 2
+            # >> SW_SHOWNORMAL = 1
+            # >> MAME console window is shown, MAME graphical window on top, Kodi on bottom.
+            _info.wShowWindow = 1
+        else:
+            log_info('_run_machine() _info is None')
+            _info = None
+
+        # >> Launch MAME
         log_info('_run_machine() Calling subprocess.Popen()...')
         with open(PATHS.MAME_STDOUT_PATH.getPath(), 'wb') as _stdout, \
              open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as _stderr:
             p = subprocess.Popen([mame_prog_FN.getPath(), '-window', machine_name], 
-                                 stdout = _stdout, stderr = _stderr, cwd = mame_dir)
+                                 stdout = _stdout, stderr = _stderr, cwd = mame_dir, startupinfo = _info)
         p.wait()
         log_info('_run_machine() Exiting function')
 
