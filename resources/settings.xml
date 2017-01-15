@@ -1,11 +1,21 @@
 <settings>
 <category label="Paths">
-    <setting label="MAME executable"          type="file"   id="mame_prog"/>
-    <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="auto" option=""/>
-    <setting label="ROM path"                 type="folder" id="rom_path" source="auto" option=""/>
-    <setting label="CHD path"                 type="folder" id="chd_path" source="auto" option=""/>
-    <setting label="Software Lists ROM path"  type="folder" id="SL_rom_path" source="auto" option=""/>
-    <setting label="MAME assets path"         type="folder" id="assets_path" source="auto" option=""/>
+    <setting id="separator" type="lsep" label="Mandatory paths" />
+    <setting label="MAME executable" type="file"   id="mame_prog" />
+    <setting label="ROMs path"       type="folder" id="rom_path" source="auto" option="" />
+    
+    <setting id="separator" type="lsep" label="Optional paths" />
+    <setting label="MAME assets path"         type="folder" id="assets_path" source="auto" option="" />
+    <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="auto" option="" />
+    <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="auto" option="" />
+    <setting label="CHDs path"                type="folder" id="chd_path" source="auto" option="" />
+    <setting label="Samples path"             type="folder" id="samples_path" source="auto" option="" />
+    <setting label="Catver.ini path"          type="folder" id="catver_path" source="auto" option="" />
+    <setting label="Catlist.ini path"         type="folder" id="catlist_path" source="auto" option="" />
+    <setting label="Genre.ini path"           type="folder" id="genre_path" source="auto" option="" />
+</category>
+<category label="Display">
+    <setting label="Display available ROMs only" type="bool" default="false" id="display_available_only" />
 </category>
 <category label="Advanced">
     <setting label="Log level" type="enum" id="log_level" default="2" values="ERROR|WARNING|INFO|VERBOSE|DEBUG" />

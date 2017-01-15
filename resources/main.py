@@ -56,9 +56,10 @@ class AML_Paths:
         self.MAME_XML_PATH               = PLUGIN_DATA_DIR.pjoin('MAME.xml')
         self.MAME_STDOUT_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stdout.log')
         self.MAME_STDERR_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stderr.log')
-        self.MAIN_DB_PATH                = PLUGIN_DATA_DIR.pjoin('MAME_db.json')
+        self.MAIN_DB_PATH                = PLUGIN_DATA_DIR.pjoin('MAME_main_db.json')
         self.MAIN_PCLONE_DIC_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_PClone_dic.json')
         self.MAIN_CONTROL_PATH           = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
+        self.MAIN_ASSETS_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_assets_db.json')
 
         # >> Indices
         self.MACHINES_IDX_PATH           = PLUGIN_DATA_DIR.pjoin('idx_Machines.json')
@@ -237,11 +238,18 @@ class Main:
     def _get_settings(self):
         # --- Paths ---
         self.settings['mame_prog']    = __addon_obj__.getSetting('mame_prog').decode('utf-8')
-        self.settings['SL_hash_path'] = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
         self.settings['rom_path']     = __addon_obj__.getSetting('rom_path').decode('utf-8')
-        self.settings['chd_path']     = __addon_obj__.getSetting('chd_path').decode('utf-8')
+
+        self.settings['assets_path']  = __addon_obj__.getSetting('assets_path').decode('utf-8')        
+        self.settings['SL_hash_path'] = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
         self.settings['SL_rom_path']  = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
-        self.settings['assets_path']  = __addon_obj__.getSetting('assets_path').decode('utf-8')
+        self.settings['chd_path']     = __addon_obj__.getSetting('chd_path').decode('utf-8')
+        self.settings['samples_path'] = __addon_obj__.getSetting('samples_path').decode('utf-8')
+        self.settings['catver_path']  = __addon_obj__.getSetting('catver_path').decode('utf-8')
+        self.settings['catlist_path'] = __addon_obj__.getSetting('catlist_path').decode('utf-8')
+        self.settings['genre_path']   = __addon_obj__.getSetting('genre_path').decode('utf-8')
+
+        # --- Display ---
 
         # --- Advanced ---
         self.settings['log_level']    = int(__addon_obj__.getSetting('log_level'))
@@ -758,9 +766,9 @@ class Main:
             kodi_dialog_OK('Not coded: Software Lists index')
             # fs_build_SoftwareLists_index(num_machines)
 
-        # --- Scans ROMs/CHDs/Samples and updates ROM status ---
+        # --- Scan ROMs/CHDs/Samples and updates ROM status ---
         elif menu_item == 4:
-            log_info('_command_setup_plugin() Scanning ROMs...')
+            log_info('_command_setup_plugin() Scanning ROMs/CHDs/Samples ...')
             
             # >> Get paths and check they exist
             if not self.settings['rom_path']:
@@ -770,6 +778,26 @@ class Main:
             if not ROM_path_FN.isdir():
                 kodi_dialog_OK('ROM directory does not exist. Aborting.')
                 return
+
+            scan_CHDs = False
+            if self.settings['chd_path']:
+                CHD_path_FN = FileName(self.settings['chd_path'])
+                if not CHD_path_FN.isdir():
+                    kodi_dialog_OK('CHD directory does not exist. CHD scanning disabled.')
+                else:
+                    scan_CHDs = True
+            else:
+                kodi_dialog_OK('CHD directory not configured. CHD scanning disabled.')
+
+            scan_Samples = False
+            if self.settings['samples_path']:
+                Samples_path_FN = FileName(self.settings['samples_path'])
+                if not Samples_path_FN.isdir():
+                    kodi_dialog_OK('Samples directory does not exist. Samples scanning disabled.')
+                else:
+                    scan_Samples = True
+            else:
+                kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
 
             # >> Load machine database
             kodi_busydialog_ON()
@@ -797,11 +825,30 @@ class Main:
                     machine['status_ROM'] = '-'
                     
                 # >> Scan CHDs
-                
-                
+                if machine['CHDs']:
+                    if scan_CHDs:
+                        hasCHD_list = [False] * len(machine['CHDs'])
+                        for idx, CHD_name in enumerate(machine['CHDs']):
+                            CHD_FN = CHD_path_FN.pjoin(CHD_name + '.chd')
+                            if CHD_FN.exists(): hasCHD_list[idx] = True
+                        if all(hasCHD_list): machine['status_CHD'] = 'C'
+                        else:                machine['status_CHD'] = 'c'
+                    else:
+                        machine['status_CHD'] = 'c'
+                else:
+                    machine['status_CHD'] = '-'
+
                 # >> Scan Samples
-                
-                
+                if machine['sampleof']:
+                    if scan_CHDs:
+                        Sample_FN = Samples_path_FN.pjoin(key + '.zip')
+                        if Sample_FN.exists(): machine['status_SAM'] = 'S'
+                        else:                  machine['status_SAM'] = 's'
+                    else:
+                        machine['status_SAM'] = 's'
+                else:
+                    machine['status_SAM'] = '-'
+
                 # >> Progress dialog
                 processed_machines = processed_machines + 1
                 pDialog.update(100 * processed_machines / total_machines)                    
