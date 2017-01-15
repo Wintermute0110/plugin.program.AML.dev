@@ -1,4 +1,11 @@
-[B]Advanced Emulator Launcher | version 0.9.0 | xx January 2017[/B]
+[B]Advanced Emulator Launcher | version 0.9.1 | xx February 2017[/B]
+
+WIP      Scan Software Lists.
+
+WIP      Launch machines with software lists.
+
+
+[B]Advanced Emulator Launcher | version 0.9.0 | 15 January 2017[/B]
 
 FEATURE  Extract MAME.xml from MAME executable. Tested only on Linux.
 
@@ -6,12 +13,10 @@ FEATURE  Generate main MAME machine database, indices and catalogs from MAME.xml
 
 FEATURE  Scan ROMs and tell the user about Have/Missing ROMs.
 
-WIP      Launch MAME non-Software List (arcade) machines.
+FEATURE  Launch MAME non-Software List (arcade) machines.
+
+WIP      Scan CHDs and samples.
+
+WIP      Scan assets and build assets database.
 
 WIP      Build Software List catalog.
-
-WIP      Scan CHDs...
-
-WIP      Scan Samples...
-
-WIP      Scan Software Lists...
