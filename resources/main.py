@@ -54,6 +54,7 @@ class AML_Paths:
     def __init__(self):
         # >> MAME XML, main database and main PClone list
         self.MAME_XML_PATH               = PLUGIN_DATA_DIR.pjoin('MAME.xml')
+        self.MAME_STDOUT_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stdout.log')
         self.MAME_STDERR_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stderr.log')
         self.MAIN_DB_PATH                = PLUGIN_DATA_DIR.pjoin('MAME_db.json')
         self.MAIN_PCLONE_DIC_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_PClone_dic.json')
@@ -214,8 +215,9 @@ class Main:
         elif 'command' in args:
             command = args['command'][0]
             if command == 'LAUNCH':
-                mame_args = args['mame_args'][0]
-                log_info('Launching mame with mame_args "{0}"'.format(mame_args))
+                machine_name = args['machine_name'][0]
+                log_info('Launching MAME machine "{0}"'.format(machine_name))
+                self._run_machine(machine_name)
             elif command == 'SETUP_PLUGIN':
                 self._command_setup_plugin()
             elif command == 'VIEW_MACHINE':
@@ -814,6 +816,39 @@ class Main:
         # --- Scans assets/artwork ---
         elif menu_item == 5:
             kodi_dialog_OK('Not coded: Scan assets')
+
+    def _run_machine(self, machine_name):
+        log_info('_run_machine() Launching MAME machine "{0}"'.format(machine_name))
+
+        # >> Get paths
+        mame_prog_FN = FileName(self.settings['mame_prog'])
+
+        # >> Check if ROM exist
+        if not self.settings['rom_path']:
+            kodi_dialog_OK('ROM directory not configured.')
+            return
+        ROM_path_FN = FileName(self.settings['rom_path'])
+        if not ROM_path_FN.isdir():
+            kodi_dialog_OK('ROM directory does not exist.')
+            return
+        ROM_FN = ROM_path_FN.pjoin(machine_name + '.zip')
+        if not ROM_FN.exists():
+            kodi_dialog_OK('ROM "{0}" not found.'.format(ROM_FN.getBase()))
+            return
+
+        # >> Launch machine using subprocess module
+        (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
+        log_info('_run_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
+        log_info('_run_machine() mame_dir     "{0}"'.format(mame_dir))
+        log_info('_run_machine() mame_exec    "{0}"'.format(mame_exec))
+        log_info('_run_machine() machine_name "{0}"'.format(machine_name))
+        log_info('_run_machine() Calling subprocess.Popen()...')
+        with open(PATHS.MAME_STDOUT_PATH.getPath(), 'wb') as _stdout, \
+             open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as _stderr:
+            p = subprocess.Popen([mame_prog_FN.getPath(), '-window', machine_name], 
+                                 stdout = _stdout, stderr = _stderr, cwd = mame_dir)
+        p.wait()
+        log_info('_run_machine() Exiting function')
 
     # ---------------------------------------------------------------------------------------------
     # Misc functions
