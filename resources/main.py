@@ -387,10 +387,10 @@ class Main:
         if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
         if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
         if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-        
+
         # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
-        if   machine['driver_status'] == u'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-        elif machine['driver_status'] == u'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+        if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+        elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
         # --- Assets/artwork ---
         thumb_path      = machine_assets['title']
@@ -488,7 +488,8 @@ class Main:
     #
     def _render_indexed_parent_list(self, clist_name, catalog_item_name):
         # >> Load main MAME info DB
-        MAME_info_dic   = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
 
         # >> Load catalog index
         if clist_name == 'Catver':
@@ -531,13 +532,15 @@ class Main:
         # >> Render parent main list
         self._set_Kodi_all_sorting_methods()
         for parent_name in Machines_PClone_dic:
-            machine = MAME_info_dic[parent_name]
-            self._render_indexed_machine_row(parent_name, machine, True, clist_name, catalog_name, catalog_item_name)
+            machine = MAME_db_dic[parent_name]
+            assets  = MAME_assets_dic[parent_name]
+            self._render_indexed_machine_row(parent_name, machine, assets, True, clist_name, catalog_name, catalog_item_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_indexed_clone_list(self, clist_name, catalog_item_name, parent_name):
         # >> Load main MAME info DB
-        MAME_info_dic   = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
 
         # >> Get catalog name
@@ -555,13 +558,15 @@ class Main:
 
         # >> Render parent first
         self._set_Kodi_all_sorting_methods()
-        machine = MAME_info_dic[parent_name]
-        self._render_indexed_machine_row(parent_name, machine, False, clist_name, catalog_name, catalog_item_name)
+        machine = MAME_db_dic[parent_name]
+        assets  = MAME_assets_dic[parent_name]
+        self._render_indexed_machine_row(parent_name, machine, assets, False, clist_name, catalog_name, catalog_item_name)
 
         # >> Render clones belonging to parent in this category
         for p_name in main_pclone_dic[parent_name]:
-            machine = MAME_info_dic[p_name]
-            self._render_indexed_machine_row(p_name, machine, False, clist_name, catalog_name, catalog_item_name)
+            machine = MAME_db_dic[p_name]
+            assets  = MAME_assets_dic[p_name]
+            self._render_indexed_machine_row(p_name, machine, assets, False, clist_name, catalog_name, catalog_item_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #
@@ -589,23 +594,52 @@ class Main:
     #
     #
     #
-    def _render_indexed_machine_row(self, machine_name, machine, is_parent_list, clist_name, catalog_name, catalog_item_name):
-        # --- Mark devices, BIOS and clones ---
+    def _render_indexed_machine_row(self, machine_name, machine, machine_assets, is_parent_list, clist_name, catalog_name, catalog_item_name):
         display_name = machine['description']
+        
+        # --- Mark Status ---
+        status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+                                       machine['status_SAM'], machine['status_SL'])
+        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+
+        # --- Mark Devices, BIOS and clones ---
         if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
         if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
         if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-        # Do not mark machines working OK
-        if   machine['driver_status'] == u'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-        elif machine['driver_status'] == u'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+
+        # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
+        if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+        elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+
+        # --- Assets/artwork ---
+        thumb_path      = machine_assets['title']
+        thumb_fanart    = machine_assets['snap']
+        thumb_banner    = machine_assets['marquee']
+        thumb_clearlogo = machine_assets['clearlogo']
+        thumb_poster    = machine_assets['flyer']
 
         # --- Create listitem row ---
-        icon = 'DefaultFolder.png'
-        listitem = xbmcgui.ListItem(display_name, iconImage = icon)
-        ICON_OVERLAY = 6
-        # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title'   : display_name,        
-                                   'Overlay' : ICON_OVERLAY } )
+        default_icon = 'DefaultFolder.png'
+        ICON_OVERLAY = 6        
+        listitem = xbmcgui.ListItem(display_name)
+
+        # --- Metadata ---
+        # >> Make all the infotables compatible with Advanced Emulator Launcher
+        listitem.setInfo('video', {'title'   : display_name,            'year'    : machine['year'],
+                                   'genre'   : '',                      'plot'    : '',
+                                   'studio'  : machine['manufacturer'], 'rating'  : '',
+                                   'trailer' : '',                      'overlay' : ICON_OVERLAY })
+        listitem.setProperty('platform', 'MAME')
+
+        # --- Assets ---        
+        # >> AEL custom artwork fields
+        listitem.setArt({'title'     : machine_assets['title'],   'snap'    : machine_assets['snap'],
+                         'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'], 
+                         'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
+
+        # >> Kodi official artwork fields
+        listitem.setArt({'icon'   : thumb_path,   'fanart'    : thumb_fanart,
+                         'banner' : thumb_banner, 'clearlogo' : thumb_clearlogo, 'poster' : thumb_poster })
 
         # --- Create context menu ---
         commands = []
