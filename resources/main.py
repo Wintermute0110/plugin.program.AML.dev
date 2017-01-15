@@ -334,7 +334,8 @@ class Main:
     #
     def _render_machine_clone_list(self, list_name, parent_name):
         # >> Load main MAME info DB and PClone index
-        MAME_info_dic = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_PATH.getPath())
         elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath())
         elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
@@ -343,12 +344,14 @@ class Main:
 
         # >> Render parent first
         self._set_Kodi_all_sorting_methods()
-        machine = MAME_info_dic[parent_name]
-        self._render_machine_row(parent_name, machine, False)
+        machine = MAME_db_dic[parent_name]
+        assets  = MAME_assets_dic[parent_name]
+        self._render_machine_row(parent_name, machine, assets, False)
         # >> Render clones
         for clone_name in Machines_PClone_dic[parent_name]:
-            machine = MAME_info_dic[clone_name]
-            self._render_machine_row(clone_name, machine, False)
+            machine = MAME_db_dic[clone_name]
+            assets  = MAME_assets_dic[clone_name]
+            self._render_machine_row(clone_name, machine, assets, False)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #

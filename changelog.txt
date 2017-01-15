@@ -15,8 +15,10 @@ FEATURE  Scan ROMs and tell the user about Have/Missing ROMs.
 
 FEATURE  Launch MAME non-Software List (arcade) machines.
 
-WIP      Scan CHDs and samples.
+FEATURE  Scan CHDs and samples.
 
-WIP      Scan assets and build assets database.
+FEATURE  Scan assets and build assets database.
+
+FEATURE  Display MAME machine metadata/artwork.
 
 WIP      Build Software List catalog.
