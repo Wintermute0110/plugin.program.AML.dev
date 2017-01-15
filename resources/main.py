@@ -67,6 +67,9 @@ class AML_Paths:
         self.MACHINES_IDX_MECHA_PATH     = PLUGIN_DATA_DIR.pjoin('idx_Machines_Mechanical.json')
         self.MACHINES_IDX_DEAD_PATH      = PLUGIN_DATA_DIR.pjoin('idx_Machines_Dead.json')
         self.MACHINES_IDX_CHD_PATH       = PLUGIN_DATA_DIR.pjoin('idx_Machines_CHD.json')
+        self.MACHINES_IDX_SAMPLES_PATH   = PLUGIN_DATA_DIR.pjoin('idx_Machines_Samples.json')
+        self.MACHINES_IDX_BIOS_PATH      = PLUGIN_DATA_DIR.pjoin('idx_Machines_BIOS.json')
+        self.MACHINES_IDX_DEVICES_PATH   = PLUGIN_DATA_DIR.pjoin('idx_Machines_Devices.json')
 
         # >> Catalogs
         self.CATALOG_CATVER_PATH         = PLUGIN_DATA_DIR.pjoin('catalog_catver.json')
@@ -140,12 +143,18 @@ class Main:
                 elif list_name == 'Mechanical': self._render_machine_clone_list(list_name, parent_name)
                 elif list_name == 'Dead':       self._render_machine_clone_list(list_name, parent_name)
                 elif list_name == 'CHD':        self._render_machine_clone_list(list_name, parent_name)
+                elif list_name == 'Samples':    self._render_machine_clone_list(list_name, parent_name)
+                elif list_name == 'BIOS':       self._render_machine_clone_list(list_name, parent_name)
+                elif list_name == 'Devices':    self._render_machine_clone_list(list_name, parent_name)
             else:
                 if list_name == 'Machines':     self._render_machine_parent_list(list_name)
                 elif list_name == 'NoCoin':     self._render_machine_parent_list(list_name)
                 elif list_name == 'Mechanical': self._render_machine_parent_list(list_name)
                 elif list_name == 'Dead':       self._render_machine_parent_list(list_name)
-                elif list_name == 'CHD':        self._render_machine_parent_list(list_name)                
+                elif list_name == 'CHD':        self._render_machine_parent_list(list_name)
+                elif list_name == 'Samples':    self._render_machine_parent_list(list_name)
+                elif list_name == 'BIOS':       self._render_machine_parent_list(list_name)
+                elif list_name == 'Devices':    self._render_machine_parent_list(list_name)
 
         elif 'clist' in args:
             clist_name = args['clist'][0]
@@ -263,6 +272,7 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     # Root menu rendering
     # ---------------------------------------------------------------------------------------------
+    # NOTE Devices are excluded from main PClone list.
     def _render_root_list(self):
         # >> Code Machines/Manufacturer/SF first. Rest are variations of those three.
         self._render_root_list_row('Machines (with coin slot)',      self._misc_url_1_arg('list',  'Machines'))
@@ -272,7 +282,7 @@ class Main:
         self._render_root_list_row('Machines [with CHDs]',           self._misc_url_1_arg('list',  'CHD'))
         self._render_root_list_row('Machines [with Samples]',        self._misc_url_1_arg('list',  'Samples'))
         self._render_root_list_row('Machines [BIOS]',                self._misc_url_1_arg('list',  'BIOS'))
-        self._render_root_list_row('Machines [Devices]',             self._misc_url_1_arg('list',  'Devices'))
+        # self._render_root_list_row('Machines [Devices]',             self._misc_url_1_arg('list',  'Devices'))
         self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('clist', 'Catver'))
         self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('clist', 'Catlist'))
         self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('clist', 'Genre'))
@@ -290,11 +300,11 @@ class Main:
     def _render_root_list_row(self, root_name, root_URL):
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
-        listitem = xbmcgui.ListItem(root_name, iconImage = icon)
         ICON_OVERLAY = 6
+        listitem = xbmcgui.ListItem(root_name, iconImage = icon)
+
         # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title'   : root_name,        
-                                   'Overlay' : ICON_OVERLAY } )
+        listitem.setInfo('video', {'Title'   : root_name, 'Overlay' : ICON_OVERLAY } )
 
         # --- Create context menu ---
         commands = []
@@ -319,6 +329,9 @@ class Main:
         elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
         elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
         elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
+        elif list_name == 'Samples':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath())
+        elif list_name == 'BIOS':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath())
+        elif list_name == 'Devices':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath())
 
         # >> Render parent main list
         self._set_Kodi_all_sorting_methods()
@@ -341,6 +354,9 @@ class Main:
         elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
         elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
         elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
+        elif list_name == 'Samples':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath())
+        elif list_name == 'BIOS':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath())
+        elif list_name == 'Devices':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath())
 
         # >> Render parent first
         self._set_Kodi_all_sorting_methods()

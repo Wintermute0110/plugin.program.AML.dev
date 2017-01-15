@@ -352,14 +352,14 @@ def fs_build_MAME_main_database(PATHS):
 
             # Optional, default no
             if 'isbios' not in elem.attrib: machine['isBIOS'] = False
-            else:                           machine['isBIOS'] = True if elem.attrib['isbios'] == u'yes' else False
+            else:                           machine['isBIOS'] = True if elem.attrib['isbios'] == 'yes' else False
             if 'isdevice' not in elem.attrib: machine['isDevice'] = False
-            else:                             machine['isDevice'] = True if elem.attrib['isdevice'] == u'yes' else False
+            else:                             machine['isDevice'] = True if elem.attrib['isdevice'] == 'yes' else False
             if 'ismechanical' not in elem.attrib: machine['isMechanical'] = False
-            else:                                 machine['isMechanical'] = True if elem.attrib['ismechanical'] == u'yes' else False
+            else:                                 machine['isMechanical'] = True if elem.attrib['ismechanical'] == 'yes' else False
             # Optional, default yes
             if 'runnable' not in elem.attrib: runnable = True
-            else:                             runnable = False if elem.attrib['runnable'] == u'no' else True
+            else:                             runnable = False if elem.attrib['runnable'] == 'no' else True
 
             # cloneof is #IMPLIED attribute
             if 'cloneof' in elem.attrib:
@@ -509,7 +509,7 @@ def fs_build_MAME_main_database(PATHS):
         if machine['isDevice']: continue
 
         # >> Machine is a parent. Add to main_pclone_dic if not already there.
-        if machine['cloneof'] == u'':
+        if machine['cloneof'] == '':
             if machine_name not in main_pclone_dic:
                 main_pclone_dic[machine_name] = []
 
@@ -562,8 +562,6 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
         if machine['isMechanical']: continue
         if not machine['hasCoin']: continue
         if machine['isDead']: continue
-
-        # Copy list of clones
         machines_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
 
     # --- NoCoin list ---
@@ -575,8 +573,6 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
         if machine['isMechanical']: continue
         if machine['hasCoin']: continue
         if machine['isDead']: continue
-
-        # Copy list of clones
         nocoin_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
 
     # --- Mechanical machines ---
@@ -587,8 +583,6 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
         machine = machines[p_machine_name]
         if not machine['isMechanical']: continue
         if machine['isDead']: continue
-
-        # Copy list of clones
         mechanical_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
 
     # --- Dead machines ---
@@ -597,8 +591,6 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['isDead']: continue
-        
-        # Copy list of clones
         dead_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
 
     # --- CHD machines ---
@@ -606,10 +598,32 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
     log_info('Making CHD Mechines index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
-        if not machine['hasCHD']: continue
-        
-        # Copy list of clones
+        if not machine['CHDs']: continue
         CHD_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+
+    # --- Machines with samples ---
+    Samples_pclone_dic = {}
+    log_info('Making Samples Mechines index...')
+    for p_machine_name in main_pclone_dic:
+        machine = machines[p_machine_name]
+        if not machine['sampleof']: continue
+        Samples_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+
+    # --- BIOS ---
+    BIOS_pclone_dic = {}
+    log_info('Making BIOS Mechines index...')
+    for p_machine_name in main_pclone_dic:
+        machine = machines[p_machine_name]
+        if not machine['isBIOS']: continue
+        BIOS_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+
+    # --- Devices ---
+    Devices_pclone_dic = {}
+    log_info('Making Devices Mechines index...')
+    for p_machine_name in main_pclone_dic:
+        machine = machines[p_machine_name]
+        if not machine['isDevice']: continue
+        Devices_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
 
     # --- Write JSON indices ---
     kodi_busydialog_ON()
@@ -618,6 +632,9 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
     fs_write_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath(), mechanical_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath(), dead_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath(), CHD_pclone_dic)
+    fs_write_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath(), Samples_pclone_dic)
+    fs_write_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath(), BIOS_pclone_dic)
+    fs_write_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath(), Devices_pclone_dic)
     kodi_busydialog_OFF()
 
 # -------------------------------------------------------------------------------------------------
