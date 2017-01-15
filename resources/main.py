@@ -677,6 +677,10 @@ class Main:
         info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
         info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(machine['softwarelists'])
         info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
+        info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(machine['status_CHD'])
+        info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(machine['status_ROM'])
+        info_text += "[COLOR violet]status_SAM[/COLOR]: '{0}'\n".format(machine['status_SAM'])
+        info_text += "[COLOR violet]status_SL[/COLOR]: '{0}'\n".format(machine['status_SL'])
         info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
 
         # --- Show information window ---
