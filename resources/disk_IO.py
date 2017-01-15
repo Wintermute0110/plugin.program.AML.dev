@@ -93,6 +93,15 @@ def fs_new_asset():
 
     return a
 
+def fs_new_SL_index_entry():
+    R = {
+        'description'   : '',
+        'year'          : '',
+        'publisher'     : ''
+    }
+
+    return R
+
 # -------------------------------------------------------------------------------------------------
 # Exceptions raised by this module
 # -------------------------------------------------------------------------------------------------
@@ -789,5 +798,67 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
 
 # -------------------------------------------------------------------------------------------------
 #
-def fs_build_SoftwareLists_index(num_machines):
-    pass
+def fs_load_SL_XML(xml_filename):
+    __debug_xml_parser = False
+    roms = {}
+    num_roms = 0
+    display_name = ''
+
+    # --- If file does not exist return empty dictionary ---
+    if not os.path.isfile(xml_filename):
+        return (roms, num_roms, display_name)
+
+    # --- Parse using cElementTree ---
+    print(u'fs_load_SL_XML() Loading XML file "{0}"'.format(xml_filename))
+    # If XML has errors (invalid characters, etc.) this will rais exception 'err'
+    try:
+        xml_tree = ET.parse(xml_filename)
+    except:
+        return {}
+    xml_root = xml_tree.getroot()
+    display_name = xml_root.attrib['description']
+    for root_element in xml_root:
+        if __debug_xml_parser: print(u'Root child {0}'.format(root_element.tag))
+
+        if root_element.tag == 'software':
+            num_roms += 1
+            rom = fs_new_SL_ROM()
+            rom_name = root_element.attrib['name']
+            for rom_child in root_element:
+                # By default read strings
+                xml_text = rom_child.text if rom_child.text is not None else ''
+                xml_tag  = rom_child.tag
+                if __debug_xml_parser: print(u'{0} --> {1}'.format(xml_tag, xml_text))
+                
+                # Only pick tags we want
+                if xml_tag == 'description' or xml_tag == 'year' or xml_tag == 'publisher':
+                    rom[xml_tag] = xml_text
+            roms[rom_name] = rom
+
+    return (roms, num_roms, display_name)
+
+# -------------------------------------------------------------------------------------------------
+# SL_catalog = { 'name' : {'display_name': u'', 'rom_count' : int, 'rom_DB_noext' : u'' }, ...}
+#
+def fs_build_SoftwareLists_index(PATHS, settings):
+    SL_dir          = '/cygdrive/e/Temp/Mame 0173b/hash/'
+    SL_cat_filename = 'cat_SoftwareLists.json'
+    SL_database_dir = './db_SoftwareLists/'
+
+    # --- Scan all XML files in Software Lists directory ---
+    SL_catalog = {}
+    for file in os.listdir(SL_dir):
+        if file.endswith('.xml'):
+            # >> Open software list XML and parse it. Then, save data fields we want in JSON.
+            F = misc_split_path(file)
+            SL_path = os.path.join(SL_dir, file)
+            (roms, num_roms, display_name) = fs_load_SL_XML(SL_path)
+            output_filename = os.path.join(SL_database_dir, F.base_noext + '.json')
+            fs_write_JSON(output_filename, roms)
+
+            # >> Add software list to catalog
+            SL = {'display_name': display_name, 'rom_count' : num_roms, 'rom_DB_noext' : F.base_noext }
+            SL_catalog[F.base_noext] = SL
+
+    # --- Save Software List catalog ---
+    fs_write_JSON(PATHS.SL_INDEX_PATH.getPath(), SL_catalog)
