@@ -1,58 +1,51 @@
 # Advanced MAME Launcher metadata and artwork data model #
 
+AML metadata/assets model is as much compatible with [Advanced Emulator Launcher] as much as possible.
+
+[Advanced Emulator Launcher]: http://github.com/Wintermute0110/plugin.program.advanced.emulator.launcher/
+
+
 ## MAME machine metadata labels ##
 
- Metadata name | AEL name | setInfo label | Type                 |
----------------|----------|---------------|----------------------|
- Title         | m_name   | Title         | string               |
- Year          |
- Genre         |
- Studio        |
- Plot          |
- Driver        |
- Status        |
- Control       |
- Players       |
- Coins         |
- Orientation   |
+ Metadata name | AML name  | setInfo label | Type                 |
+---------------|-----------|---------------|----------------------|
+ Title         |           | title         | string               |
+ Year          |           | year          | string               |
+ Genre         |           | genre         | string               |
+ Manufacturer  |           | studio        | string               |
+ Rating        |           | rating        | string range 0 to 10 |
+               |           | overlay       | int range 0 to 8     |
 
- 
 ## MAME machine asset labels ##
 
- Asset name | AEL name  | setArt label | setInfo label |
-------------|-----------|--------------|---------------|
-            |           | icon         |               |
- Title      |
- Snap       |
- Preview    |
- Boss       |
- End        |
- GameOver   |
- HowTo      |
- Logo       |
- Scores     |
- Select     |
- Versus     |
- Cabinet    |
- CPanel     |
- Flyer      |
- Icon       |
- Marquee    |
- PCB        |
- Manual     |
- Trailer    |
+ Asset name | setArt label | setInfo label |
+------------|--------------|---------------|
+ Title      | title/icon   |               |
+ Snap       | snap/fanart  |               |
+ Marquee    | banner       |               |
+ Clearlogo  | clearlogo    |               |
+ Cabinet    | boxfront     |               |
+ CPanel     | boxback      |               |
+ PCB        | cartridge    |               |
+ Flyer      | poster       |               |
+ Trailer    |              | trailer       |
 
 
 ### MAME metadata availability ###
 
- Metada source | Title | Year | Genre | Studio | Plot | Driver | Status | Control | Players | Coins | Orientation | 
----------------|-------|------|-------|--------|------|--------|--------|---------|---------|-------|-------------|
- MAME XML      |
- Catver.ini    |
- NPlayers.ini  |
- History.dat   |
-
- * This metadata list for AML is still provisional.
+ Metadata name | Metadata source      |
+---------------|----------------------|
+ Title         | MAME XML description |
+ Year          | MAME XML             |
+ Genre         | Catver.ini           |
+ Studio        | MAME XML             |
+ Plot          |                      |
+ Driver        | MAME XML             |
+ Status        | MAME XML             |
+ Controls      |                      |
+ Players       |                      |
+ Coins         |                      |
+ Orientation   |                      |
 
 
 ### Software Lists Metadata availability ###
@@ -68,11 +61,17 @@ Software Lists |  YES  |  YES | YES   |  YES   | YES  |   YES    |
 
 ## MAME machine asset availability ##
 
- Artwork site     | Title | Snap  | Preview | Boss | End | GameOver | HowTo | Logo | Scores | Select | Versus | Cabinet | CPanel | Flyer  | Icon | Marquee | PCB | Manual | Trailer |
-------------------|-------|-------|---------|------|-----|----------|-------|------|--------|--------|--------|---------|--------|--------|------|---------|-----|--------|---------|
-[Pleasuredome]    |  YES  | YES   | YES     | YES  | YES |    YES   |  YES  | YES  |  YES   |  YES   |  YES   |  YES    |  YES   |  YES   | YES  |   YES   | YES |  YES   |  YES    |
-[ProgrrettoSNAPS] |  YES  | YES   | YES     | YES  | YES |    YES   |  YES  | YES  |  YES   |  YES   |  YES   |  YES    |  YES   |  YES   | YES  |   YES   | YES |  YES   |  YES    |
- 
+ Artwork site     | Title | Snap  | Preview | Boss | End | GameOver | HowTo | Logo | Scores | Select |
+------------------|-------|-------|---------|------|-----|----------|-------|------|--------|--------|
+[Pleasuredome]    |  YES  | YES   | YES     | YES  | YES |    YES   |  YES  | YES  |  YES   |  YES   |
+[ProgrrettoSNAPS] |  YES  | YES   | YES     | YES  | YES |    YES   |  YES  | YES  |  YES   |  YES   |
+
+
+ Artwork site     | Versus | Cabinet | CPanel | Flyer  | Icon | Marquee | PCB | Manual | Trailer |
+------------------|--------|---------|--------|--------|------|---------|-----|--------|---------|
+[Pleasuredome]    |  YES   |  YES    |  YES   |  YES   | YES  |   YES   | YES |  YES   |  YES    |
+[ProgrrettoSNAPS] |  YES   |  YES    |  YES   |  YES   | YES  |   YES   | YES |  YES   |  YES    |
+
 
 ## Software Lists asset availability ##
 
