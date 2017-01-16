@@ -187,8 +187,8 @@ def fs_count_MAME_Machines(PATHS):
 # -------------------------------------------------------------------------------------------------
 # Load Catver.ini/Catlist.ini/Genre.ini
 # -------------------------------------------------------------------------------------------------
-def fs_load_Catver_ini(Catver_ini_filename):
-    log_info('fs_load_Catver_ini() Parsing "{0}"'.format(Catver_ini_filename))
+def fs_load_Catver_ini(filename):
+    log_info('fs_load_Catver_ini() Parsing "{0}"'.format(filename))
     categories_dic = {}
     categories_set = set()
     __debug_do_list_categories = False
@@ -197,7 +197,11 @@ def fs_load_Catver_ini(Catver_ini_filename):
     # 0 -> Looking for '[Category]' tag
     # 1 -> Reading categories
     # 2 -> Categories finished. STOP
-    f = open(Catver_ini_filename, 'rt')
+    try:
+        f = open(filename, 'rt')
+    except IOError:
+        log_info('fs_load_Catver_ini() IOError opening "{0}"'.format(filename))
+        return {}
     for cat_line in f:
         stripped_line = cat_line.strip()
         if __debug_do_list_categories: print('Line "' + stripped_line + '"')
@@ -228,11 +232,15 @@ def fs_load_Catver_ini(Catver_ini_filename):
 
     return categories_dic
 
-def fs_load_Catlist_ini(Catlist_ini_filename):
-    log_info('fs_load_Catlist_ini() Parsing "{0}"'.format(Catlist_ini_filename))
+def fs_load_Catlist_ini(filename):
+    log_info('fs_load_Catlist_ini() Parsing "{0}"'.format(filename))
     catlist_dic = {}
     catlist_set = set()
-    f = open(Catlist_ini_filename, 'rt')
+    try:
+        f = open(filename, 'rt')
+    except IOError:
+        log_info('fs_load_Catlist_ini() IOError opening "{0}"'.format(filename))
+        return {}
     for file_line in f:
         stripped_line = file_line.strip()
         # Skip comments: lines starting with ';;'
@@ -253,11 +261,15 @@ def fs_load_Catlist_ini(Catlist_ini_filename):
     
     return catlist_dic
 
-def fs_load_Genre_ini(Genre_ini_filename):
-    log_info('fs_load_Genre_ini() Parsing "{0}"'.format(Genre_ini_filename))
+def fs_load_Genre_ini(filename):
+    log_info('fs_load_Genre_ini() Parsing "{0}"'.format(filename))
     genre_dic = {}
     genre_set = set()
-    f = open(Genre_ini_filename, 'rt')
+    try:
+        f = open(filename, 'rt')
+    except IOError:
+        log_info('fs_load_Genre_ini() IOError opening "{0}"'.format(filename))
+        return {}
     for file_line in f:
         stripped_line = file_line.strip()
         # Skip comments: lines starting with ';;'
