@@ -2,7 +2,7 @@
 
 A machine has the boolean option or not.
 
- * Parent / Clone (integrated on menu)
+ * Parent / Clone (integrated on filter menu)
 
  * Working / NonWorking (display tag)
 
@@ -16,15 +16,12 @@ A machine has the boolean option or not.
 
  * Sample / NoSamples (own menu `Machines with Samples`)
 
+ * Devices / Nodevices (filtered out when making main database)
 
-## Cataloged machine options ##
 
- * Vertical / Horizontal (own menu `Machines by Display Rotation`)
- 
- 
 ## Input data and directories ##
 
-Required data files,
+Required data files:
 
  * `~/DATA_DIR/MAME.xml`
  * `~/SofwareLists/hash/*.xml`
@@ -32,7 +29,7 @@ Required data files,
  * `~/DATA_DIR/Catlist.ini`
  * `~/DATA_DIR/Genre.ini`
 
-ROM directories,
+ROM directories:
 
  * `~/MAME/ROMs` 
 
@@ -40,7 +37,7 @@ ROM directories,
 
  * `~/MAME/SLs`
 
-Assets directories,
+Assets directories:
 
  Directory       | Explanation
 -----------------|---------------------------------
@@ -54,9 +51,25 @@ Assets directories,
  * Machine has Software List
  
 
-## Launching MESS ROMs ##
+## Launching MAME machines with media types (former MESS) ##
 
 http://www.mess.org/mess/howto
+
+### Known media types in MAME ###
+
+ Name      | Short name | Machine example  |
+-----------|------------|------------------|
+cartridge  | cart       | 32x, sms, smspal |
+cassete    | cass       |                  |
+floppydisk | flop       |                  |
+quickload  | quick      |                  |
+snapshot   | dump       |                  |
+harddisk   | hard       |                  |
+cdrom      | cdrm       |                  |
+printer    | prin       |                  |
+
+Machines may have more than one media type. In this case, a number is appended at the end. For
+example, a machine with 2 cartriged slots has `cartridge1` and `cartridge2`.
 
 ### Cartridges ###
 
@@ -75,8 +88,8 @@ Most consoles have only one cartridge slot, for example `32x`.
 Device name and its brief version can be used at command line to launch a specific program/game.
 
 ```
-mess a2600 -cartridge foo1.32x
-mess a2600 -cart foo1.32x
+mame 32x -cartridge foo1.32x
+mame 32x -cart foo1.32x
 ```
 
 A machine may have more than one cartridge slot, for example `abc110`.
@@ -97,10 +110,10 @@ A machine may have more than one cartridge slot, for example `abc110`.
 ...
 ```
 
-Launching example,
+Launching command example.
 
 ```
-mess abc110 -cart1 foo1.bin -cart2 foo2.bin
+mame abc110 -cart1 foo1.bin -cart2 foo2.bin
 ```
 
 
@@ -108,6 +121,23 @@ mess abc110 -cart1 foo1.bin -cart2 foo2.bin
 
 http://www.mess.org/mess/howto#software_lists
 
+http://www.mess.org/mess/swlist_format
+
+Example of machines with SL: `32x`.
+
+```
+<machine name="32x" sourcefile="megadriv.cpp">
+...
+    <device type="cartridge" tag="cartslot" mandatory="1" interface="_32x_cart">
+		<instance name="cartridge" briefname="cart"/>
+		<extension name="32x"/>
+		<extension name="bin"/>
+	</device>
+	<slot name="cartslot">
+	</slot>
+	<softwarelist name="32x" status="original" filter="NTSC-U" />
+</machine>
+```
 
 
 ## Plugin URL schema ##
