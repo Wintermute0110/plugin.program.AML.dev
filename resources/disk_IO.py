@@ -724,7 +724,7 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
 
 # -------------------------------------------------------------------------------------------------
 # Cataloged machine list
-# Catalog dictionary: { 'catalog_name' : [parent_name, parent_name, ...], ... }
+# Catalog dictionary: { 'catalog_name' : { 'num_machines' : <int>, 'machines' : [parent_name, parent_name, ...]}, ... }
 #
 def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     # --- Catver catalog ---
@@ -734,9 +734,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         catalog_key = machine['catver']
         # >> Add to catalog
         if catalog_key in catver_catalog:
-            catver_catalog[catalog_key].append(p_machine_name)
+            catver_catalog[catalog_key]['machines'].append(p_machine_name)
+            catver_catalog[catalog_key]['num_machines'] = len(catver_catalog[catalog_key]['machines'])
         else:
-            catver_catalog[catalog_key] = [p_machine_name]
+            catver_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Catlist catalog ---
     catlist_catalog = {}
@@ -744,9 +745,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         machine = machines[p_machine_name]
         catalog_key = machine['catlist']
         if catalog_key in catlist_catalog:
-            catlist_catalog[catalog_key].append(p_machine_name)
+            catlist_catalog[catalog_key]['machines'].append(p_machine_name)
+            catlist_catalog[catalog_key]['num_machines'] = len(catlist_catalog[catalog_key]['machines'])
         else:
-            catlist_catalog[catalog_key] = [p_machine_name]
+            catlist_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Genre catalog ---
     genre_catalog = {}
@@ -754,9 +756,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         machine = machines[p_machine_name]
         catalog_key = machine['genre']
         if catalog_key in genre_catalog:
-            genre_catalog[catalog_key].append(p_machine_name)
+            genre_catalog[catalog_key]['machines'].append(p_machine_name)
+            genre_catalog[catalog_key]['num_machines'] = len(genre_catalog[catalog_key]['machines'])
         else:
-            genre_catalog[catalog_key] = [p_machine_name]
+            genre_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Nplayers catalog ---
     nplayers_catalog = {}
@@ -764,9 +767,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         machine = machines[p_machine_name]
         catalog_key = machine['nplayers']
         if catalog_key in nplayers_catalog:
-            nplayers_catalog[catalog_key].append(p_machine_name)
+            nplayers_catalog[catalog_key]['machines'].append(p_machine_name)
+            nplayers_catalog[catalog_key]['num_machines'] = len(nplayers_catalog[catalog_key]['machines'])
         else:
-            nplayers_catalog[catalog_key] = [p_machine_name]
+            nplayers_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Manufacturer catalog ---
     manufacturer_catalog = {}
@@ -774,9 +778,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         machine = machines[p_machine_name]
         catalog_key = machine['manufacturer']
         if catalog_key in manufacturer_catalog:
-            manufacturer_catalog[catalog_key].append(p_machine_name)
+            manufacturer_catalog[catalog_key]['machines'].append(p_machine_name)
+            manufacturer_catalog[catalog_key]['num_machines'] = len(manufacturer_catalog[catalog_key]['machines'])
         else:
-            manufacturer_catalog[catalog_key] = [p_machine_name]
+            manufacturer_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Year catalog ---
     year_catalog = {}
@@ -784,9 +789,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         machine = machines[p_machine_name]
         catalog_key = machine['year']
         if catalog_key in year_catalog:
-            year_catalog[catalog_key].append(p_machine_name)
+            year_catalog[catalog_key]['machines'].append(p_machine_name)
+            year_catalog[catalog_key]['num_machines'] = len(year_catalog[catalog_key]['machines'])
         else:
-            year_catalog[catalog_key] = [p_machine_name]
+            year_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Driver catalog ---
     driver_catalog = {}
@@ -794,9 +800,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         machine = machines[p_machine_name]
         catalog_key = machine['sourcefile']
         if catalog_key in driver_catalog:
-            driver_catalog[catalog_key].append(p_machine_name)
+            driver_catalog[catalog_key]['machines'].append(p_machine_name)
+            driver_catalog[catalog_key]['num_machines'] = len(driver_catalog[catalog_key]['machines'])
         else:
-            driver_catalog[catalog_key] = [p_machine_name]
+            driver_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Control catalog ---
     control_catalog = {}
@@ -808,9 +815,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         if catalog_key == '': catalog_key = '[ No controls ]'
 
         if catalog_key in control_catalog:
-            control_catalog[catalog_key].append(p_machine_name)
+            control_catalog[catalog_key]['machines'].append(p_machine_name)
+            control_catalog[catalog_key]['num_machines'] = len(control_catalog[catalog_key]['machines'])
         else:
-            control_catalog[catalog_key] = [p_machine_name]
+            control_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Display tag catalog ---
     display_tag_catalog = {}
@@ -822,9 +830,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         if catalog_key == '': catalog_key = '[ No display ]'
 
         if catalog_key in display_tag_catalog:
-            display_tag_catalog[catalog_key].append(p_machine_name)
+            display_tag_catalog[catalog_key]['machines'].append(p_machine_name)
+            display_tag_catalog[catalog_key]['num_machines'] = len(display_tag_catalog[catalog_key]['machines'])
         else:
-            display_tag_catalog[catalog_key] = [p_machine_name]
+            display_tag_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Display type catalog ---
     display_type_catalog = {}
@@ -836,9 +845,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         if catalog_key == '': catalog_key = '[ No display ]'
 
         if catalog_key in display_type_catalog:
-            display_type_catalog[catalog_key].append(p_machine_name)
+            display_type_catalog[catalog_key]['machines'].append(p_machine_name)
+            display_type_catalog[catalog_key]['num_machines'] = len(display_type_catalog[catalog_key]['machines'])
         else:
-            display_type_catalog[catalog_key] = [p_machine_name]
+            display_type_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Display rotate catalog ---
     display_rotate_catalog = {}
@@ -850,9 +860,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         if catalog_key == '': catalog_key = '[ No display ]'
 
         if catalog_key in display_rotate_catalog:
-            display_rotate_catalog[catalog_key].append(p_machine_name)
+            display_rotate_catalog[catalog_key]['machines'].append(p_machine_name)
+            display_rotate_catalog[catalog_key]['num_machines'] = len(display_rotate_catalog[catalog_key]['machines'])
         else:
-            display_rotate_catalog[catalog_key] = [p_machine_name]
+            display_rotate_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Software List catalog ---
     SL_catalog = {}
@@ -862,9 +873,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         for sl_name in machine['softwarelists']:
             catalog_key = sl_name
             if catalog_key in SL_catalog:
-                SL_catalog[catalog_key].append(p_machine_name)
+                SL_catalog[catalog_key]['machines'].append(p_machine_name)
+                SL_catalog[catalog_key]['num_machines'] = len(SL_catalog[catalog_key]['machines'])
             else:
-                SL_catalog[catalog_key] = [p_machine_name]
+                SL_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Write JSON indices ---
     kodi_busydialog_ON()

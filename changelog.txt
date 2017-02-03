@@ -1,5 +1,13 @@
 [B]Advanced Emulator Launcher | version 0.9.1 | xx February 2017[/B]
 
+FEATURE  AML only works on Krypton now. Updated addon.xml with new fields.
+
+FEATURE  Add support for nplayers.ini.
+
+FIX      Count machines in "Extract MAME.xml" step and not in "Build MAME database" step.
+
+FEATURE  Display number of machines on every generalised category.
+
 WIP      Scan Software Lists.
 
 WIP      Launch machines with software lists.

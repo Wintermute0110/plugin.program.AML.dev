@@ -492,8 +492,8 @@ class Main:
 
         # >> Render categories in catalog index
         self._set_Kodi_all_sorting_methods()
-        for catalog_key in catalog_dic:
-            self._render_indexed_list_row(clist_name, catalog_name, catalog_key)
+        for catalog_key, catalog_value in catalog_dic.iteritems():
+            self._render_indexed_list_row(clist_name, catalog_name, catalog_key, catalog_value['num_machines'])
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #
@@ -543,7 +543,7 @@ class Main:
             catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PATH.getPath())
 
         # >> Get parents for this category
-        Machines_PClone_dic = catalog_dic[catalog_item_name]
+        Machines_PClone_dic = catalog_dic[catalog_item_name]['machines']
 
         # >> Render parent main list
         self._set_Kodi_all_sorting_methods()
@@ -588,14 +588,15 @@ class Main:
     #
     #
     #
-    def _render_indexed_list_row(self, clist_name, catalog_name, catalog_key):
+    def _render_indexed_list_row(self, clist_name, catalog_name, catalog_key, num_machines):
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
-        listitem = xbmcgui.ListItem(catalog_key, iconImage = icon)
         ICON_OVERLAY = 6
+        title_str = '{0} [COLOR orange]({1} machines)[/COLOR]'.format(catalog_key, num_machines)
+
+        listitem = xbmcgui.ListItem(title_str, iconImage = icon)
         # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title'   : catalog_key,        
-                                   'Overlay' : ICON_OVERLAY } )
+        listitem.setInfo('video', {'Title'   : title_str, 'Overlay' : ICON_OVERLAY } )
 
         # --- Create context menu ---
         commands = []
