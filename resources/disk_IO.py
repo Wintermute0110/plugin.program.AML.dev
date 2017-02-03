@@ -165,6 +165,22 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
     statinfo = os.stat(PATHS.MAME_XML_PATH.getPath())
     filesize = statinfo.st_size
 
+    # --- Count number of machines. Useful for progress dialogs ---
+    log_info('fs_extract_MAME_XML() Counting number of machines...')
+    total_machines = fs_count_MAME_Machines(PATHS)
+    log_info('fs_extract_MAME_XML() Found {0} machines.'.format(total_machines))
+    # kodi_dialog_OK('Found {0} machines in MAME.xml.'.format(total_machines))
+
+    # -----------------------------------------------------------------------------
+    # Create MAME control dictionary
+    # -----------------------------------------------------------------------------
+    control_dic = {
+        'mame_version'   : 'Unknown. MAME database not built',
+        'total_machines' : total_machines,
+        'num_machines'   : 0,
+    }
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    
     return filesize
 
 # -------------------------------------------------------------------------------------------------
@@ -293,13 +309,7 @@ def fs_load_Genre_ini(filename):
 # -------------------------------------------------------------------------------------------------
 #
 STOP_AFTER_MACHINES = 100000
-def fs_build_MAME_main_database(PATHS, settings):
-    # --- Count number of machines. Useful for progress dialogs ---
-    log_info('fs_build_MAME_main_database() Counting number of machines...')
-    total_machines = fs_count_MAME_Machines(PATHS)
-    log_info('fs_build_MAME_main_database() Found {0} machines.'.format(total_machines))
-    # kodi_dialog_OK('Found {0} machines in MAME.xml.'.format(total_machines))
-
+def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # --- Load Catver.ini to include cateogory information ---
     categories_dic = fs_load_Catver_ini(settings['catver_path'])
     catlist_dic    = fs_load_Catlist_ini(settings['catlist_path'])
@@ -326,11 +336,12 @@ def fs_build_MAME_main_database(PATHS, settings):
     log_info('fs_build_MAME_main_database() MAME version is "{0}"'.format(mame_version_raw))
 
     # --- Process MAME XML ---
-    machines      = {}
-    machine_name  = ''
-    num_iteration = 0
-    num_machines  = 0
-    num_dead      = 0
+    total_machines = control_dic['total_machines']
+    machines       = {}
+    machine_name   = ''
+    num_iteration  = 0
+    num_machines   = 0
+    num_dead       = 0
     log_info('fs_build_MAME_main_database() Parsing MAME XML file ...')
     for event, elem in context:
         # --- Debug the elements we are iterating from the XML file ---
@@ -553,14 +564,11 @@ def fs_build_MAME_main_database(PATHS, settings):
     for key in machines: assets_dic[key] = fs_new_asset()
 
     # -----------------------------------------------------------------------------
-    # MAME control dictionary
+    # Update MAME control dictionary
     # -----------------------------------------------------------------------------
-    control_dic = {
-        'mame_version'   : mame_version_raw,
-        'total_machines' : total_machines,
-        'num_machines'   : num_machines,
-    }
-                
+    control_dic['mame_version'] = mame_version_raw
+    control_dic['num_machines'] = num_machines
+
     # -----------------------------------------------------------------------------
     # Now write simplified JSON
     # -----------------------------------------------------------------------------

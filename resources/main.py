@@ -802,7 +802,7 @@ class Main:
         dialog = xbmcgui.Dialog()
         menu_item = dialog.select('Setup plugin',
                                  ['Extract MAME.xml...',
-                                  'Build main MAME database...',
+                                  'Build MAME database...',
                                   'Build MAME indices/catalogs...',
                                   'Build Software Lists indices/catalogs...', 
                                   'Scan ROMs/CHDs/Samples...',
@@ -826,8 +826,9 @@ class Main:
             # >> Check that MAME_XML_PATH exists
         
             # --- Parse MAME XML and generate main database and PClone list ---
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             log_info('_command_setup_plugin() Generating MAME main database and PClone list...')
-            fs_build_MAME_main_database(PATHS, self.settings)
+            fs_build_MAME_main_database(PATHS, self.settings, control_dic)
             kodi_notify('Main MAME database built')
 
         # --- Build MAME indices/catalogs ---
@@ -848,7 +849,7 @@ class Main:
             # --- Generate catalogs ---
             fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic)
 
-            # --- Write update control dictionary ---
+            # --- Write and update control dictionary ---
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_notify('Indices and catalogs built')
 
