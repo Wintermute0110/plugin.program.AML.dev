@@ -1091,18 +1091,41 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     # Misc URL building functions
     # ---------------------------------------------------------------------------------------------
+    #
+    # Used in xbmcplugin.addDirectoryItem()
+    #
     def _misc_url_1_arg(self, arg_name, arg_value):
-        return '{0}?{1}={2}'.format(self.base_url, arg_name, arg_value)
+        arg_value_escaped = arg_value.replace('&', '%26')
+
+        return '{0}?{1}={2}'.format(self.base_url, arg_name, arg_value_escaped)
 
     def _misc_url_2_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2):
-        return '{0}?{1}={2}&{3}={4}'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2)
+        # >> Escape '&' in URLs
+        arg_value_1_escaped = arg_value_1.replace('&', '%26')
+        arg_value_2_escaped = arg_value_2.replace('&', '%26')
+
+        return '{0}?{1}={2}&{3}={4}'.format(self.base_url, 
+                                            arg_name_1, arg_value_1_escaped,
+                                            arg_name_2, arg_value_2_escaped)
 
     def _misc_url_3_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3):
-        return '{0}?{1}={2}&{3}={4}&{5}={6}'.format(self.base_url, arg_name_1, arg_value_1, 
-                                                    arg_name_2, arg_value_2, arg_name_3, arg_value_3)
+        arg_value_1_escaped = arg_value_1.replace('&', '%26')
+        arg_value_2_escaped = arg_value_2.replace('&', '%26')
+        arg_value_3_escaped = arg_value_3.replace('&', '%26')
 
+        return '{0}?{1}={2}&{3}={4}&{5}={6}'.format(self.base_url,
+                                                    arg_name_1, arg_value_1_escaped,
+                                                    arg_name_2, arg_value_2_escaped,
+                                                    arg_name_3, arg_value_3_escaped)
+
+    #
+    # Used in context menus
+    #
     def _misc_url_1_arg_RunPlugin(self, arg_name_1, arg_value_1):
-        return 'XBMC.RunPlugin({0}?{1}={2})'.format(self.base_url, arg_name_1, arg_value_1)
+        return 'XBMC.RunPlugin({0}?{1}={2})'.format(self.base_url, 
+                                                    arg_name_1, arg_value_1)
 
     def _misc_url_2_arg_RunPlugin(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2):
-        return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4})'.format(self.base_url, arg_name_1, arg_value_1, arg_name_2, arg_value_2)
+        return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4})'.format(self.base_url,
+                                                            arg_name_1, arg_value_1,
+                                                            arg_name_2, arg_value_2)
