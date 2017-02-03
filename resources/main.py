@@ -75,6 +75,7 @@ class AML_Paths:
         self.CATALOG_CATVER_PATH         = PLUGIN_DATA_DIR.pjoin('catalog_catver.json')
         self.CATALOG_CATLIST_PATH        = PLUGIN_DATA_DIR.pjoin('catalog_catlist.json')
         self.CATALOG_GENRE_PATH          = PLUGIN_DATA_DIR.pjoin('catalog_genre.json')
+        self.CATALOG_NPLAYERS_PATH       = PLUGIN_DATA_DIR.pjoin('catalog_nplayers.json')
         self.CATALOG_MANUFACTURER_PATH   = PLUGIN_DATA_DIR.pjoin('catalog_manufacturer.json')
         self.CATALOG_YEAR_PATH           = PLUGIN_DATA_DIR.pjoin('catalog_year.json')
         self.CATALOG_DRIVER_PATH         = PLUGIN_DATA_DIR.pjoin('catalog_driver.json')
@@ -172,6 +173,11 @@ class Main:
                     else:                self._render_indexed_parent_list(clist_name, args['category'][0])
                 else:                    self._render_indexed_list(clist_name)
             elif clist_name == 'Genre':
+                if 'category' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['category'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['category'][0])
+                else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'NPlayers':
                 if 'category' in args:
                     if 'parent' in args: self._render_indexed_clone_list(clist_name, args['category'][0], args['parent'][0])
                     else:                self._render_indexed_parent_list(clist_name, args['category'][0])
@@ -289,6 +295,7 @@ class Main:
         self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('clist', 'Catver'))
         self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('clist', 'Catlist'))
         self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('clist', 'Genre'))
+        self._render_root_list_row('Machines by Number of players',  self._misc_url_1_arg('clist', 'NPlayers'))
         self._render_root_list_row('Machines by Manufacturer',       self._misc_url_1_arg('clist', 'Manufacturer'))
         self._render_root_list_row('Machines by Year',               self._misc_url_1_arg('clist', 'Year'))
         self._render_root_list_row('Machines by Driver',             self._misc_url_1_arg('clist', 'Driver'))
@@ -455,6 +462,9 @@ class Main:
         elif clist_name == 'Genre':
             catalog_name = 'category'
             catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath())
+        elif clist_name == 'NPlayers':
+            catalog_name = 'category'
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath())
         elif clist_name == 'Manufacturer':
             catalog_name = 'manufacturer'
             catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath())
@@ -504,6 +514,9 @@ class Main:
         elif clist_name == 'Genre':
             catalog_name = 'category'
             catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath())
+        elif clist_name == 'NPlayers':
+            catalog_name = 'category'
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath())
         elif clist_name == 'Manufacturer':
             catalog_name = 'manufacturer'
             catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath())
@@ -765,6 +778,7 @@ class Main:
         info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
         info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(machine['isMechanical'])
         info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
+        info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
         info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
         info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
         info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(machine['softwarelists'])

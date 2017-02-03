@@ -59,6 +59,7 @@ def fs_new_machine():
         'catver'         : '',
         'catlist'        : '',
         'genre'          : '',
+        'nplayers'       : '',
         'display_tag'    : [],
         'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
         'display_rotate' : [], # (0|90|180|270) #REQUIRED>
@@ -452,12 +453,14 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
                 machine['sampleof'] = elem.attrib['sampleof']
 
             # >> Add catver/catlist/genre
-            if machine_name in categories_dic: machine['catver']  = categories_dic[machine_name]
-            else:                              machine['catver']  = '[ Not set ]'
-            if machine_name in catlist_dic:    machine['catlist'] = catlist_dic[machine_name]
-            else:                              machine['catlist'] = '[ Not set ]'
-            if machine_name in genre_dic:      machine['genre']   = genre_dic[machine_name]
-            else:                              machine['genre']   = '[ Not set ]'
+            if machine_name in categories_dic: machine['catver']   = categories_dic[machine_name]
+            else:                              machine['catver']   = '[ Not set ]'
+            if machine_name in catlist_dic:    machine['catlist']  = catlist_dic[machine_name]
+            else:                              machine['catlist']  = '[ Not set ]'
+            if machine_name in genre_dic:      machine['genre']    = genre_dic[machine_name]
+            else:                              machine['genre']    = '[ Not set ]'
+            if machine_name in nplayers_dic:   machine['nplayers'] = nplayers_dic[machine_name]
+            else:                              machine['nplayers'] = '[ Not set ]'
 
             # >> Increment number of machines
             num_machines += 1
@@ -513,6 +516,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             # name is #REQUIRED attribute
             machine['softwarelists'].append(elem.attrib['name'])
 
+        # >> Device tag for machines that support loading external files
+        
+            
         # --- <machine> tag closing. Add new machine to database ---
         elif event == 'end' and elem.tag == 'machine':
             # >> Assumption 1: isdevice = True if and only if runnable = False
@@ -752,6 +758,16 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         else:
             genre_catalog[catalog_key] = [p_machine_name]
 
+    # --- Nplayers catalog ---
+    nplayers_catalog = {}
+    for p_machine_name in main_pclone_dic:
+        machine = machines[p_machine_name]
+        catalog_key = machine['nplayers']
+        if catalog_key in nplayers_catalog:
+            nplayers_catalog[catalog_key].append(p_machine_name)
+        else:
+            nplayers_catalog[catalog_key] = [p_machine_name]
+
     # --- Manufacturer catalog ---
     manufacturer_catalog = {}
     for p_machine_name in main_pclone_dic:
@@ -855,6 +871,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     fs_write_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath(), catver_catalog)
     fs_write_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath(), catlist_catalog)
     fs_write_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath(), genre_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath(), nplayers_catalog)
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath(), manufacturer_catalog)
     fs_write_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath(), year_catalog)
     fs_write_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath(), driver_catalog)
