@@ -75,6 +75,7 @@ def fs_new_machine():
         'status_CHD'     : '-',
         'status_SAM'     : '-',
         'status_SL'      : '-',
+        'device_list'    : []   # List of <instance name="cartridge1">. Ignore briefname
     }
 
     return m
@@ -506,7 +507,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             # >> Iterate children of <input> and search for <control> tags
             for control_child in elem:
                 if control_child.tag == 'control':
-                    machine['control_type'].append(control_child.attrib['type']) 
+                    machine['control_type'].append(control_child.attrib['type'])
 
         elif event == 'start' and elem.tag == 'driver':
             # status is #REQUIRED attribute
@@ -517,8 +518,26 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             machine['softwarelists'].append(elem.attrib['name'])
 
         # >> Device tag for machines that support loading external files
-        
+        elif event == 'start' and elem.tag == 'device':
+            # >> type attribute
+            # machine['device_list'].append(elem.attrib['type'])
+
+            # >> Iterate children of <device> and search for <instance> tags
+            instance_tag_found = False
+            for device_child in elem:
+                if device_child.tag == 'instance':
+                    # <instance name="cartridge1" briefname="cart1"/>
+                    machine['device_list'].append(device_child.attrib['name'])
+                    instance_tag_found = True
             
+            # >> NOTE Some machines have no instance inside <device>, for example 2020bb
+            # >>      I don't know how to launch those machines
+            if not instance_tag_found:
+                log_warning('<instance> tag not found inside <device> tag (machine {0})'.format(machine_name))
+                # raise CriticalError('<instance> tag not found inside <device>')
+                device_str = '{0} (no_instance)'.format(elem.attrib['type'])
+                machine['device_list'].append(device_str)
+
         # --- <machine> tag closing. Add new machine to database ---
         elif event == 'end' and elem.tag == 'machine':
             # >> Assumption 1: isdevice = True if and only if runnable = False
@@ -865,6 +884,21 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
         else:
             display_rotate_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
+    # --- <device> catalog ---
+    device_list_catalog = {}
+    for p_machine_name in main_pclone_dic:
+        machine = machines[p_machine_name]
+        catalog_key = " / ".join(machine['device_list'])
+
+        # >> Change category name for machines with no devices
+        if catalog_key == '': catalog_key = '[ No devices ]'
+
+        if catalog_key in device_list_catalog:
+            device_list_catalog[catalog_key]['machines'].append(p_machine_name)
+            device_list_catalog[catalog_key]['num_machines'] = len(device_list_catalog[catalog_key]['machines'])
+        else:
+            device_list_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+
     # --- Software List catalog ---
     SL_catalog = {}
     for p_machine_name in main_pclone_dic:
@@ -891,6 +925,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath(), display_tag_catalog)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath(), display_type_catalog)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath(), display_rotate_catalog)
+    fs_write_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath(), device_list_catalog)
     fs_write_JSON_file(PATHS.CATALOG_SL_PATH.getPath(), SL_catalog)
     kodi_busydialog_OFF()
 

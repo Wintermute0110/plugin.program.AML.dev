@@ -83,6 +83,7 @@ class AML_Paths:
         self.CATALOG_DISPLAY_TAG_PATH    = PLUGIN_DATA_DIR.pjoin('catalog_display_tag.json')
         self.CATALOG_DISPLAY_TYPE_PATH   = PLUGIN_DATA_DIR.pjoin('catalog_display_type.json')
         self.CATALOG_DISPLAY_ROTATE_PATH = PLUGIN_DATA_DIR.pjoin('catalog_display_rotate.json')
+        self.CATALOG_DEVICE_LIST_PATH    = PLUGIN_DATA_DIR.pjoin('catalog_device_list.json')
         self.CATALOG_SL_PATH             = PLUGIN_DATA_DIR.pjoin('catalog_SL.json')
 
         # >> Software Lists
@@ -217,6 +218,11 @@ class Main:
                     if 'parent' in args: self._render_indexed_clone_list(clist_name, args['rotate'][0], args['parent'][0])
                     else:                self._render_indexed_parent_list(clist_name, args['rotate'][0])
                 else:                    self._render_indexed_list(clist_name)
+            elif clist_name == 'Devices':
+                if 'device' in args:
+                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['device'][0], args['parent'][0])
+                    else:                self._render_indexed_parent_list(clist_name, args['device'][0])
+                else:                    self._render_indexed_list(clist_name)
             elif clist_name == 'BySL':
                 if 'SL' in args:
                     if 'parent' in args: self._render_indexed_clone_list(clist_name, args['SL'][0], args['parent'][0])
@@ -303,6 +309,7 @@ class Main:
         self._render_root_list_row('Machines by Display Tag',        self._misc_url_1_arg('clist', 'Display_Tag'))
         self._render_root_list_row('Machines by Display Type',       self._misc_url_1_arg('clist', 'Display_Type'))
         self._render_root_list_row('Machines by Display Rotation',   self._misc_url_1_arg('clist', 'Display_Rotate'))
+        self._render_root_list_row('Machines by Devices',            self._misc_url_1_arg('clist', 'Devices'))
         self._render_root_list_row('Machines by Software List',      self._misc_url_1_arg('clist', 'BySL'))
         self._render_root_list_row('Software Lists',                 self._misc_url_1_arg('clist', 'SL'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
@@ -486,6 +493,9 @@ class Main:
         elif clist_name == 'Display_Rotate':
             catalog_name = 'rotate'
             catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath())
+        elif clist_name == 'Devices':
+            catalog_name = 'device'
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath())
         elif clist_name == 'BySL':
             catalog_name = 'SL'
             catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PATH.getPath())
@@ -538,6 +548,9 @@ class Main:
         elif clist_name == 'Display_Rotate':
             catalog_name = 'rotate'
             catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath())
+        elif clist_name == 'Devices':
+            catalog_name = 'device'
+            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath())
         elif clist_name == 'BySL':
             catalog_name = 'SL'
             catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PATH.getPath())
@@ -563,6 +576,7 @@ class Main:
         if   clist_name == 'Catver':         catalog_name = 'category'
         elif clist_name == 'Catlist':        catalog_name = 'category'
         elif clist_name == 'Genre':          catalog_name = 'category'
+        elif clist_name == 'NPlayers':       catalog_name = 'category'
         elif clist_name == 'Manufacturer':   catalog_name = 'manufacturer'
         elif clist_name == 'Year':           catalog_name = 'year'
         elif clist_name == 'Driver':         catalog_name = 'driver'
@@ -570,6 +584,7 @@ class Main:
         elif clist_name == 'Display_Tag':    catalog_name = 'tag'
         elif clist_name == 'Display_Type':   catalog_name = 'type'
         elif clist_name == 'Display_Rotate': catalog_name = 'rotate'
+        elif clist_name == 'Devices':        catalog_name = 'device'
         elif clist_name == 'BySL':           catalog_name = 'SL'
 
         # >> Render parent first
@@ -767,6 +782,7 @@ class Main:
         info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
         info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
         info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
+        info_text += "[COLOR skyblue]device_list[/COLOR]: {0}\n".format(machine['device_list'])
         info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(machine['display_rotate'])
         info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
         info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(machine['display_type'])
@@ -1072,7 +1088,11 @@ class Main:
         log_info('_run_machine() Calling subprocess.Popen()...')
         with open(PATHS.MAME_STDOUT_PATH.getPath(), 'wb') as _stdout, \
              open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as _stderr:
-            p = subprocess.Popen([mame_prog_FN.getPath(), '-window', machine_name], 
+            # >> Launch in window mode for debugging
+            # p = subprocess.Popen([mame_prog_FN.getPath(), '-window', machine_name], 
+            #                      stdout = _stdout, stderr = _stderr, cwd = mame_dir, startupinfo = _info)
+            # >> Normal launch
+            p = subprocess.Popen([mame_prog_FN.getPath(), machine_name], 
                                  stdout = _stdout, stderr = _stderr, cwd = mame_dir, startupinfo = _info)
         p.wait()
         log_info('_run_machine() Exiting function')

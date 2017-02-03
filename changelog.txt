@@ -1,13 +1,4 @@
-[B]Advanced Emulator Launcher | version 0.9.1 | xx February 2017[/B]
-
-FEATURE  AML only works on Krypton now. Updated addon.xml with new fields.
-
-FEATURE  Add support for nplayers.ini.
-
-FEATURE  Count machines in "Extract MAME.xml" step and not in "Build MAME database" step.
-
-FEATURE  Print the number of clones each machine has. In general, print the number of items
-         on a submenu.
+[B]Advanced Emulator Launcher | version 0.9.2 | xx March 2017[/B]
 
 WIP      Scan Software Lists.
 
@@ -25,12 +16,27 @@ WIP      Allow user to choose default assets as AEL does.
 WIP      Switch in settings to diplay Working machines only.
          See http://forum.kodi.tv/showthread.php?tid=304186&pid=2506150#pid2506150
 
+
+[B]Advanced Emulator Launcher | version 0.9.1 | xx February 2017[/B]
+
+FEATURE  AML only works on Krypton now. Updated addon.xml with new fields.
+
+FEATURE  Add support for nplayers.ini.
+
+FEATURE  Count machines in "Extract MAME.xml" step and not in "Build MAME database" step.
+
+FEATURE  Print the number of clones each machine has. In general, print the number of items
+         on a submenu.
+
+FEATURE  Add catalog by Devices. This will help launching software list machines.
+
 FIX      "I get an error whenever trying to open any "Ball & Paddle" category. I'm pretty sure this 
          is due to the ampersand, because all the other categories I've tried work. This issue doesn't 
          affect ROMs with an ampersand in their name, like Cloak & Dagger."
          See http://forum.kodi.tv/showthread.php?tid=304186&pid=2506150#pid2506150
 
          Problem was that the '&' in the Kodi URL was not escaped.
+
 
 [B]Advanced Emulator Launcher | version 0.9.0 | 15 January 2017[/B]
 
