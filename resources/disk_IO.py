@@ -307,13 +307,61 @@ def fs_load_Genre_ini(filename):
     return genre_dic
 
 # -------------------------------------------------------------------------------------------------
-#
+# Load nplayers.ini. Structure similar to catver.ini
+# -------------------------------------------------------------------------------------------------
+def fs_load_nplayers_ini(filename):
+    log_info('fs_load_nplayers_ini() Parsing "{0}"'.format(filename))
+    categories_dic = {}
+    categories_set = set()
+    __debug_do_list_categories = False
+    read_status = 0
+    # read_status FSM values
+    # 0 -> Looking for '[NPlayers]' tag
+    # 1 -> Reading categories
+    # 2 -> Categories finished. STOP
+    try:
+        f = open(filename, 'rt')
+    except IOError:
+        log_info('fs_load_nplayers_ini() IOError opening "{0}"'.format(filename))
+        return {}
+    for cat_line in f:
+        stripped_line = cat_line.strip()
+        if __debug_do_list_categories: print('Line "' + stripped_line + '"')
+        if read_status == 0:
+            if stripped_line == '[NPlayers]':
+                if __debug_do_list_categories: print('Found [NPlayers]')
+                read_status = 1
+        elif read_status == 1:
+            line_list = stripped_line.split("=")
+            if len(line_list) == 1:
+                read_status = 2
+                continue
+            else:
+                if __debug_do_list_categories: print(line_list)
+                machine_name = line_list[0]
+                category = line_list[1]
+                if machine_name not in categories_dic:
+                    categories_dic[machine_name] = category
+                categories_set.add(category)
+        elif read_status == 2:
+            log_info('fs_load_nplayers_ini() Reached end of nplayers parsing.')
+            break
+        else:
+            raise CriticalError('Unknown read_status FSM value')
+    f.close()
+    log_info('fs_load_nplayers_ini() Number of machines           {0:6d}'.format(len(categories_dic)))
+    log_info('fs_load_nplayers_ini() Number of nplayer categories {0:6d}'.format(len(categories_set)))
+
+    return categories_dic
+
+# -------------------------------------------------------------------------------------------------
 STOP_AFTER_MACHINES = 100000
 def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # --- Load Catver.ini to include cateogory information ---
     categories_dic = fs_load_Catver_ini(settings['catver_path'])
     catlist_dic    = fs_load_Catlist_ini(settings['catlist_path'])
     genre_dic      = fs_load_Genre_ini(settings['genre_path'])
+    nplayers_dic   = fs_load_nplayers_ini(settings['nplayers_path'])
 
     # --- Progress dialog ---
     pDialog = xbmcgui.DialogProgress()

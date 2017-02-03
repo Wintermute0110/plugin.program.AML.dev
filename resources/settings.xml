@@ -13,6 +13,7 @@
     <setting label="Catver.ini path"          type="file" id="catver_path" />
     <setting label="Catlist.ini path"         type="file" id="catlist_path" />
     <setting label="Genre.ini path"           type="file" id="genre_path" />
+    <setting label="nplayers.ini path"        type="file" id="nplayers_path" />
 </category>
 <category label="Display">
     <setting label="Display available ROMs only" type="bool" default="false" id="display_available_only" />
