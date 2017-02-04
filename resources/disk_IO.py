@@ -901,7 +901,9 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         # >> Order alphabetically the list
-        sorted_device_list = sorted(machine['device_list'])
+        pretty_device_list = fs_improve_device_list(machine['device_list'])
+        sorted_device_list = sorted(pretty_device_list)
+        sorted_device_list = fs_compress_item_list(sorted_device_list)
         catalog_key = " / ".join(sorted_device_list)
         # >> Change category name for machines with no devices
         if catalog_key == '': catalog_key = '[ No devices ]'
@@ -951,6 +953,15 @@ def fs_improve_control_type_list(control_type_list):
         capital_str = control_str.title()
         if capital_str == 'Only_Buttons': capital_str = 'Only Buttons'
         out_list.append(capital_str)
+
+    return out_list
+
+#
+# A) Capitalise every list item
+#
+def fs_improve_device_list(control_type_list):
+    out_list = []
+    for control_str in control_type_list: out_list.append(control_str.title())
 
     return out_list
 
