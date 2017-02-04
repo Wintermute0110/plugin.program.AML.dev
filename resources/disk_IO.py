@@ -75,7 +75,8 @@ def fs_new_machine():
         'status_CHD'     : '-',
         'status_SAM'     : '-',
         'status_SL'      : '-',
-        'device_list'    : []   # List of <instance name="cartridge1">. Ignore briefname
+        'device_list'    : [],  # List of <instance name="cartridge1">. Ignore briefname
+        'device_props'   : []   # {'name' : '', 'briefname' : '', 'extensions' : ['', '', ...]}
     }
 
     return m
@@ -519,24 +520,31 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
         # >> Device tag for machines that support loading external files
         elif event == 'start' and elem.tag == 'device':
-            # >> type attribute
-            # machine['device_list'].append(elem.attrib['type'])
+            device_type      = elem.attrib['type']
+            device_name      = ''
+            device_briefname = ''
+            extension_list   = []
 
             # >> Iterate children of <device> and search for <instance> tags
             instance_tag_found = False
             for device_child in elem:
                 if device_child.tag == 'instance':
-                    # <instance name="cartridge1" briefname="cart1"/>
-                    machine['device_list'].append(device_child.attrib['name'])
+                    device_name      = device_child.attrib['name']
+                    device_briefname = device_child.attrib['briefname']
                     instance_tag_found = True
+                elif device_child.tag == 'extension':
+                    extension_list.append(device_child.attrib['name'])
             
             # >> NOTE Some machines have no instance inside <device>, for example 2020bb
             # >>      I don't know how to launch those machines
             if not instance_tag_found:
                 log_warning('<instance> tag not found inside <device> tag (machine {0})'.format(machine_name))
-                # raise CriticalError('<instance> tag not found inside <device>')
-                device_str = '{0} (no_instance)'.format(elem.attrib['type'])
-                machine['device_list'].append(device_str)
+                device_type = '{0} (NI)'.format(device_type)
+
+            # >> Add device to database
+            props_dic = {'name' : device_name, 'briefname' : device_briefname, 'extensions' : extension_list}
+            machine['device_list'].append(device_type)
+            machine['device_props'].append(props_dic)
 
         # --- <machine> tag closing. Add new machine to database ---
         elif event == 'end' and elem.tag == 'machine':
