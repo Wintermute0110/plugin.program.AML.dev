@@ -312,7 +312,7 @@ class Main:
         self._render_root_list_row('Machines by Display Tag',        self._misc_url_1_arg('clist', 'Display_Tag'))
         self._render_root_list_row('Machines by Display Type',       self._misc_url_1_arg('clist', 'Display_Type'))
         self._render_root_list_row('Machines by Display Rotation',   self._misc_url_1_arg('clist', 'Display_Rotate'))
-        self._render_root_list_row('Machines by Devices',            self._misc_url_1_arg('clist', 'Devices'))
+        self._render_root_list_row('Machines by Device',             self._misc_url_1_arg('clist', 'Devices'))
         self._render_root_list_row('Machines by Software List',      self._misc_url_1_arg('clist', 'BySL'))
         self._render_root_list_row('Software Lists',                 self._misc_url_1_arg('clist', 'SL'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)

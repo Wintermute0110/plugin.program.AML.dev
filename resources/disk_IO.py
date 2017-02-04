@@ -837,7 +837,9 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         # >> Order alphabetically the list
-        sorted_control_type_list = sorted(machine['control_type'])
+        pretty_control_type_list = fs_improve_control_type_list(machine['control_type'])
+        sorted_control_type_list = sorted(pretty_control_type_list)
+        sorted_control_type_list = fs_compress_item_list(sorted_control_type_list)
         catalog_key = " / ".join(sorted_control_type_list)
         # >> Change category name for machines with no controls
         if catalog_key == '': catalog_key = '[ No controls ]'
@@ -930,6 +932,53 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath(), device_list_catalog)
     fs_write_JSON_file(PATHS.CATALOG_SL_PATH.getPath(), SL_catalog)
     kodi_busydialog_OFF()
+
+#
+# A) Capitalise every list item
+# B) Substitute Only_buttons -> Only buttons
+#
+def fs_improve_control_type_list(control_type_list):
+    out_list = []
+    for control_str in control_type_list:
+        capital_str = control_str.title()
+        if capital_str == 'Only_Buttons': capital_str = 'Only Buttons'
+        out_list.append(capital_str)
+
+    return out_list
+
+# 
+# See tools/test_compress_item_list.py for reference
+# Input/Output examples: 
+# 1) ['dial']                 ->  ['dial']
+# 2) ['dial', 'dial']         ->  ['2 x dial']
+# 3) ['dial', 'dial', 'joy']  ->  ['2 x dial', 'joy']
+# 4) ['joy', 'dial', 'dial']  ->  ['joy', '2 x dial']
+#
+def fs_compress_item_list(item_list):
+    reduced_list = []
+    num_items = len(item_list)
+    if num_items == 0 or num_items == 1: return item_list
+    previous_item = item_list[0]
+    item_count = 1
+    for i in range(1, num_items):
+        current_item = item_list[i]
+        # print('{0} | item_count {1} | previous_item "{2:>8}" | current_item "{3:>8}"'.format(i, item_count, previous_item, current_item))
+        if current_item == previous_item:
+            item_count += 1
+        else:
+            if item_count == 1: reduced_list.append('{0}'.format(previous_item))
+            else:               reduced_list.append('{0} {1}'.format(item_count, previous_item))
+            item_count = 1
+            previous_item = current_item
+        # >> Last elemnt of the list
+        if i == num_items - 1:
+            if current_item == previous_item:
+                if item_count == 1: reduced_list.append('{0}'.format(current_item))
+                else:               reduced_list.append('{0} {1}'.format(item_count, current_item))
+            else:
+               reduced_list.append('{0}'.format(current_item))
+
+    return reduced_list
 
 # -------------------------------------------------------------------------------------------------
 #

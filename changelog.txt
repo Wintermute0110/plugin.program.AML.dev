@@ -4,8 +4,8 @@ WIP      Scan Software Lists.
 
 WIP      Launch machines with software lists.
 
-WIP      On filter `Machines by Software List`, substitute raw Software List name by the proper SL 
-         name.
+WIP      On filter `Machines by Software List`, substitute raw Software List name by the proper 
+         SL name.
          
 WIP      Allow user to choose default assets as AEL does.
 
@@ -29,6 +29,8 @@ FEATURE  In a parent list, if there is not clones, then add the ability to launc
 
 FEATURE  Switch in settings to diplay Working machines only.
          See http://forum.kodi.tv/showthread.php?tid=304186&pid=2506150#pid2506150
+
+FEATURE  Improved categories in "Machines by Control Type catalog".
 
 FIX      "I get an error whenever trying to open any "Ball & Paddle" category. I'm pretty sure this 
          is due to the ampersand, because all the other categories I've tried work. This issue doesn't 
