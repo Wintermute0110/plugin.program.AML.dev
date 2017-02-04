@@ -7,10 +7,6 @@ WIP      Launch machines with software lists.
 WIP      On filter `Machines by Software List`, substitute raw Software List name by the proper SL 
          name.
          
-WIP      In a parent list, if there is not clones, then add the ability to launch games from the
-         parent list.
-         See http://forums.bannister.org/ubbthreads.php?ubb=showflat&Number=108507#Post108507
-
 WIP      Allow user to choose default assets as AEL does.
 
 WIP      Switch in settings to diplay Working machines only.
@@ -29,6 +25,10 @@ FEATURE  Print the number of clones each machine has. In general, print the numb
          on a submenu.
 
 FEATURE  Add catalog by Devices. This will help launching software list machines.
+
+FEATURE  In a parent list, if there is not clones, then add the ability to launch games from the
+         parent list. Only coded for indexed machines and not for cataloged machines.
+         See http://forums.bannister.org/ubbthreads.php?ubb=showflat&Number=108507#Post108507
 
 FIX      "I get an error whenever trying to open any "Ball & Paddle" category. I'm pretty sure this 
          is due to the ampersand, because all the other categories I've tried work. This issue doesn't 

@@ -336,37 +336,46 @@ class Main:
     #----------------------------------------------------------------------------------------------
     # Indexed machines
     #----------------------------------------------------------------------------------------------
+    #
+    # Render a list of parent machines that have been indexed.
+    # A) If a machine has no clones it may be launched from this list.
+    # B) If a machine has clones then print the number of clones.
+    #
     def _render_machine_parent_list(self, list_name):
         # >> Load main MAME info DB and PClone index
         MAME_db_dic         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic     = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        Machines_PClone_dic = self._load_indexed_pclone_dic(list_name)
+        Machines_index_dic  = self._load_indexed_pclone_dic(list_name)
 
         # >> Render parent main list
         self._set_Kodi_all_sorting_methods()
-        for parent_name in Machines_PClone_dic:
+        for parent_name, idx_dic in Machines_index_dic.iteritems():
+            num_clones = idx_dic['num_clones']
+            clone_list = idx_dic['machines']
             machine = MAME_db_dic[parent_name]
             assets  = MAME_assets_dic[parent_name]
-            self._render_machine_row(parent_name, machine, assets, True, list_name)
+            self._render_machine_row(parent_name, machine, assets, True, list_name, num_clones)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #
-    # Also render parent together with clones
+    # Render a Parent/Clone list of machines.
     # If user clicks in this list then ROM is launched.
     #
     def _render_machine_clone_list(self, list_name, parent_name):
         # >> Load main MAME info DB and PClone index
-        MAME_db_dic         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        MAME_assets_dic     = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        Machines_PClone_dic = self._load_indexed_pclone_dic(list_name)
+        MAME_db_dic        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic    = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        Machines_index_dic = self._load_indexed_pclone_dic(list_name)
 
         # >> Render parent first
         self._set_Kodi_all_sorting_methods()
+        num_clones = Machines_index_dic[parent_name]['num_clones']
+        clone_list = Machines_index_dic[parent_name]['machines']
         machine = MAME_db_dic[parent_name]
         assets  = MAME_assets_dic[parent_name]
         self._render_machine_row(parent_name, machine, assets, False)
         # >> Render clones
-        for clone_name in Machines_PClone_dic[parent_name]:
+        for clone_name in clone_list:
             machine = MAME_db_dic[clone_name]
             assets  = MAME_assets_dic[clone_name]
             self._render_machine_row(clone_name, machine, assets, False)
@@ -377,22 +386,43 @@ class Main:
     # Information and artwork/assets are the same for all machines.
     # URL is different: parent URL leads to clones, clone URL launchs machine.
     #
-    def _render_machine_row(self, machine_name, machine, machine_assets, is_parent_list, list_name = ''):
+    def _render_machine_row(self, machine_name, machine, machine_assets, flag_parent_list, list_name = '', num_clones = 0):
         display_name = machine['description']
-        
-        # --- Mark Status ---
-        status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
-                                       machine['status_SAM'], machine['status_SL'])
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
-        # --- Mark Devices, BIOS and clones ---
-        if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-        if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-        if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+        # --- Render a Parent only list ---
+        if flag_parent_list:
+            # >> Machine has clones
+            if num_clones > 0:
+                display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
+            # >> Machine has no clones
+            else:
+                # --- Mark Status ---
+                status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+                                               machine['status_SAM'], machine['status_SL'])
+                display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
-        # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
-        if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-        elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+                # --- Mark Devices, BIOS and clones ---
+                if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+                if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+                if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+
+                # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
+                if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+                elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+        else:
+                # --- Mark Status ---
+                status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+                                               machine['status_SAM'], machine['status_SL'])
+                display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+
+                # --- Mark Devices, BIOS and clones ---
+                if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+                if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+                if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+
+                # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
+                if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+                elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
         # --- Assets/artwork ---
         thumb_path      = machine_assets['title']
@@ -433,24 +463,30 @@ class Main:
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        if is_parent_list:
-            URL = self._misc_url_2_arg('list', list_name, 'parent', machine_name)
-            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+        if flag_parent_list:
+            # >> If machine has no clones then machine can be launched
+            if num_clones > 0:
+                URL = self._misc_url_2_arg('list', list_name, 'parent', machine_name)
+                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+            # >> If not PClone list can be browsed in
+            else:
+                URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
+                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
         else:
             URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     def _load_indexed_pclone_dic(self, list_name):
-        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_PATH.getPath())
-        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath())
-        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
-        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
-        elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
-        elif list_name == 'Samples':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath())
-        elif list_name == 'BIOS':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath())
-        elif list_name == 'Devices':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath())
+        if   list_name == 'Machines':   Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_PATH.getPath())
+        elif list_name == 'NoCoin':     Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath())
+        elif list_name == 'Mechanical': Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
+        elif list_name == 'Dead':       Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
+        elif list_name == 'CHD':        Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
+        elif list_name == 'Samples':    Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath())
+        elif list_name == 'BIOS':       Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath())
+        elif list_name == 'Devices':    Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath())
 
-        return Machines_PClone_dic
+        return Machines_index_dic
 
     #----------------------------------------------------------------------------------------------
     # Cataloged machines

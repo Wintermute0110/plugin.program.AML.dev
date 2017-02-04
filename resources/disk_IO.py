@@ -666,7 +666,8 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
         if machine['isMechanical']: continue
         if not machine['hasCoin']: continue
         if machine['isDead']: continue
-        machines_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+        num_clones = len(main_pclone_dic[p_machine_name])
+        machines_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
 
     # --- NoCoin list ---
     # A) Machines with No Coin Slot and Non Mechanical and not Dead
@@ -677,7 +678,8 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
         if machine['isMechanical']: continue
         if machine['hasCoin']: continue
         if machine['isDead']: continue
-        nocoin_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+        num_clones = len(main_pclone_dic[p_machine_name])
+        nocoin_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
 
     # --- Mechanical machines ---
     # A) Mechanical Machines and not Dead
@@ -687,7 +689,8 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
         machine = machines[p_machine_name]
         if not machine['isMechanical']: continue
         if machine['isDead']: continue
-        mechanical_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+        num_clones = len(main_pclone_dic[p_machine_name])
+        mechanical_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
 
     # --- Dead machines ---
     dead_pclone_dic = {}
@@ -695,7 +698,8 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['isDead']: continue
-        dead_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+        num_clones = len(main_pclone_dic[p_machine_name])
+        dead_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
 
     # --- CHD machines ---
     CHD_pclone_dic = {}
@@ -703,7 +707,8 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['CHDs']: continue
-        CHD_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+        num_clones = len(main_pclone_dic[p_machine_name])
+        CHD_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
 
     # --- Machines with samples ---
     Samples_pclone_dic = {}
@@ -711,7 +716,8 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['sampleof']: continue
-        Samples_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+        num_clones = len(main_pclone_dic[p_machine_name])
+        Samples_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
 
     # --- BIOS ---
     BIOS_pclone_dic = {}
@@ -719,7 +725,8 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['isBIOS']: continue
-        BIOS_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+        num_clones = len(main_pclone_dic[p_machine_name])
+        BIOS_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
 
     # --- Devices ---
     Devices_pclone_dic = {}
@@ -727,7 +734,8 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['isDevice']: continue
-        Devices_pclone_dic[p_machine_name] = main_pclone_dic[p_machine_name]
+        num_clones = len(main_pclone_dic[p_machine_name])
+        Devices_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
 
     # --- Write JSON indices ---
     kodi_busydialog_ON()
