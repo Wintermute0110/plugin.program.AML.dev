@@ -836,11 +836,11 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     control_catalog = {}
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
-        catalog_key = " / ".join(machine['control_type'])
-        
+        # >> Order alphabetically the list
+        sorted_control_type_list = sorted(machine['control_type'])
+        catalog_key = " / ".join(sorted_control_type_list)
         # >> Change category name for machines with no controls
         if catalog_key == '': catalog_key = '[ No controls ]'
-
         if catalog_key in control_catalog:
             control_catalog[catalog_key]['machines'].append(p_machine_name)
             control_catalog[catalog_key]['num_machines'] = len(control_catalog[catalog_key]['machines'])
@@ -852,10 +852,8 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         catalog_key = " / ".join(machine['display_tag'])
-
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
-
         if catalog_key in display_tag_catalog:
             display_tag_catalog[catalog_key]['machines'].append(p_machine_name)
             display_tag_catalog[catalog_key]['num_machines'] = len(display_tag_catalog[catalog_key]['machines'])
@@ -867,10 +865,8 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         catalog_key = " / ".join(machine['display_type'])
-
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
-
         if catalog_key in display_type_catalog:
             display_type_catalog[catalog_key]['machines'].append(p_machine_name)
             display_type_catalog[catalog_key]['num_machines'] = len(display_type_catalog[catalog_key]['machines'])
@@ -882,10 +878,8 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         catalog_key = " / ".join(machine['display_rotate'])
-
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
-
         if catalog_key in display_rotate_catalog:
             display_rotate_catalog[catalog_key]['machines'].append(p_machine_name)
             display_rotate_catalog[catalog_key]['num_machines'] = len(display_rotate_catalog[catalog_key]['machines'])
@@ -896,11 +890,11 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
     device_list_catalog = {}
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
-        catalog_key = " / ".join(machine['device_list'])
-
+        # >> Order alphabetically the list
+        sorted_device_list = sorted(machine['device_list'])
+        catalog_key = " / ".join(sorted_device_list)
         # >> Change category name for machines with no devices
         if catalog_key == '': catalog_key = '[ No devices ]'
-
         if catalog_key in device_list_catalog:
             device_list_catalog[catalog_key]['machines'].append(p_machine_name)
             device_list_catalog[catalog_key]['num_machines'] = len(device_list_catalog[catalog_key]['machines'])
