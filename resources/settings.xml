@@ -16,7 +16,9 @@
     <setting label="nplayers.ini path"        type="file" id="nplayers_path" />
 </category>
 <category label="Display">
-    <setting label="Display available ROMs only" type="bool" default="false" id="display_available_only" />
+    <setting label="Hide non-working machines" type="bool" default="false" id="display_hide_nonworking" />
+    <setting label="Hide imperfect machines" type="bool" default="false" id="display_hide_imperfect" />    
+    <setting label="Display machines with available ROMs only" type="bool" default="false" id="display_available_only" />
 </category>
 <category label="Advanced">
     <setting label="Log level" type="enum" id="log_level" default="2" values="ERROR|WARNING|INFO|VERBOSE|DEBUG" />

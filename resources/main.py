@@ -260,23 +260,26 @@ class Main:
     #
     def _get_settings(self):
         # --- Paths ---
-        self.settings['mame_prog']     = __addon_obj__.getSetting('mame_prog').decode('utf-8')
-        self.settings['rom_path']      = __addon_obj__.getSetting('rom_path').decode('utf-8')
+        self.settings['mame_prog']               = __addon_obj__.getSetting('mame_prog').decode('utf-8')
+        self.settings['rom_path']                = __addon_obj__.getSetting('rom_path').decode('utf-8')
 
-        self.settings['assets_path']   = __addon_obj__.getSetting('assets_path').decode('utf-8')        
-        self.settings['SL_hash_path']  = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
-        self.settings['SL_rom_path']   = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
-        self.settings['chd_path']      = __addon_obj__.getSetting('chd_path').decode('utf-8')
-        self.settings['samples_path']  = __addon_obj__.getSetting('samples_path').decode('utf-8')
-        self.settings['catver_path']   = __addon_obj__.getSetting('catver_path').decode('utf-8')
-        self.settings['catlist_path']  = __addon_obj__.getSetting('catlist_path').decode('utf-8')
-        self.settings['genre_path']    = __addon_obj__.getSetting('genre_path').decode('utf-8')
-        self.settings['nplayers_path'] = __addon_obj__.getSetting('nplayers_path').decode('utf-8')
+        self.settings['assets_path']             = __addon_obj__.getSetting('assets_path').decode('utf-8')        
+        self.settings['SL_hash_path']            = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
+        self.settings['SL_rom_path']             = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
+        self.settings['chd_path']                = __addon_obj__.getSetting('chd_path').decode('utf-8')
+        self.settings['samples_path']            = __addon_obj__.getSetting('samples_path').decode('utf-8')
+        self.settings['catver_path']             = __addon_obj__.getSetting('catver_path').decode('utf-8')
+        self.settings['catlist_path']            = __addon_obj__.getSetting('catlist_path').decode('utf-8')
+        self.settings['genre_path']              = __addon_obj__.getSetting('genre_path').decode('utf-8')
+        self.settings['nplayers_path']           = __addon_obj__.getSetting('nplayers_path').decode('utf-8')
 
         # --- Display ---
+        self.settings['display_hide_nonworking'] = True if __addon_obj__.getSetting('display_hide_nonworking') == 'true' else False
+        self.settings['display_hide_imperfect']  = True if __addon_obj__.getSetting('display_hide_imperfect') == 'true' else False
+        self.settings['display_available_only']  = True if __addon_obj__.getSetting('display_available_only') == 'true' else False
 
         # --- Advanced ---
-        self.settings['log_level']    = int(__addon_obj__.getSetting('log_level'))
+        self.settings['log_level']               = int(__addon_obj__.getSetting('log_level'))
 
         # --- Dump settings for DEBUG ---
         # log_debug('Settings dump BEGIN')
@@ -342,6 +345,9 @@ class Main:
     # B) If a machine has clones then print the number of clones.
     #
     def _render_machine_parent_list(self, list_name):
+        display_hide_nonworking = self.settings['display_hide_nonworking']
+        display_hide_imperfect  = self.settings['display_hide_imperfect']
+
         # >> Load main MAME info DB and PClone index
         MAME_db_dic         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic     = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
@@ -354,6 +360,9 @@ class Main:
             clone_list = idx_dic['machines']
             machine = MAME_db_dic[parent_name]
             assets  = MAME_assets_dic[parent_name]
+            # >> Skip non-working/imperfect machines (Python 'and' and 'or' are short-circuit)
+            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
             self._render_machine_row(parent_name, machine, assets, True, list_name, num_clones)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
@@ -362,6 +371,9 @@ class Main:
     # If user clicks in this list then ROM is launched.
     #
     def _render_machine_clone_list(self, list_name, parent_name):
+        display_hide_nonworking = self.settings['display_hide_nonworking']
+        display_hide_imperfect  = self.settings['display_hide_imperfect']
+
         # >> Load main MAME info DB and PClone index
         MAME_db_dic        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic    = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
@@ -378,6 +390,8 @@ class Main:
         for clone_name in clone_list:
             machine = MAME_db_dic[clone_name]
             assets  = MAME_assets_dic[clone_name]
+            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
             self._render_machine_row(clone_name, machine, assets, False)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
@@ -506,6 +520,9 @@ class Main:
     # Renders a Parent list knowing the index (category)
     #
     def _render_indexed_parent_list(self, clist_name, catalog_item_name):
+        display_hide_nonworking = self.settings['display_hide_nonworking']
+        display_hide_imperfect  = self.settings['display_hide_imperfect']
+
         # >> Load main MAME info DB
         MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
@@ -522,10 +539,15 @@ class Main:
         for parent_name in Machines_PClone_dic:
             machine = MAME_db_dic[parent_name]
             assets  = MAME_assets_dic[parent_name]
+            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
             self._render_indexed_machine_row(parent_name, machine, assets, True, clist_name, catalog_name, catalog_item_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_indexed_clone_list(self, clist_name, catalog_item_name, parent_name):
+        display_hide_nonworking = self.settings['display_hide_nonworking']
+        display_hide_imperfect  = self.settings['display_hide_imperfect']
+
         # >> Load main MAME info DB
         MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
@@ -544,6 +566,8 @@ class Main:
         for p_name in main_pclone_dic[parent_name]:
             machine = MAME_db_dic[p_name]
             assets  = MAME_assets_dic[p_name]
+            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
             self._render_indexed_machine_row(p_name, machine, assets, False, clist_name, catalog_name, catalog_item_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
