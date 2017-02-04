@@ -334,21 +334,13 @@ class Main:
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = root_URL, listitem = listitem, isFolder = True)
 
     #----------------------------------------------------------------------------------------------
-    # Main machine list with coin slot and not mechanical
-    # 1) Open machine index
+    # Indexed machines
     #----------------------------------------------------------------------------------------------
     def _render_machine_parent_list(self, list_name):
         # >> Load main MAME info DB and PClone index
-        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_PATH.getPath())
-        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath())
-        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
-        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
-        elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
-        elif list_name == 'Samples':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath())
-        elif list_name == 'BIOS':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath())
-        elif list_name == 'Devices':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath())
+        MAME_db_dic         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic     = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        Machines_PClone_dic = self._load_indexed_pclone_dic(list_name)
 
         # >> Render parent main list
         self._set_Kodi_all_sorting_methods()
@@ -364,16 +356,9 @@ class Main:
     #
     def _render_machine_clone_list(self, list_name, parent_name):
         # >> Load main MAME info DB and PClone index
-        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_PATH.getPath())
-        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath())
-        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
-        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
-        elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
-        elif list_name == 'Samples':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath())
-        elif list_name == 'BIOS':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath())
-        elif list_name == 'Devices':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath())
+        MAME_db_dic         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic     = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        Machines_PClone_dic = self._load_indexed_pclone_dic(list_name)
 
         # >> Render parent first
         self._set_Kodi_all_sorting_methods()
@@ -455,8 +440,20 @@ class Main:
             URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
+    def _load_indexed_pclone_dic(self, list_name):
+        if   list_name == 'Machines':   Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_PATH.getPath())
+        elif list_name == 'NoCoin':     Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath())
+        elif list_name == 'Mechanical': Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
+        elif list_name == 'Dead':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
+        elif list_name == 'CHD':        Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
+        elif list_name == 'Samples':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath())
+        elif list_name == 'BIOS':       Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath())
+        elif list_name == 'Devices':    Machines_PClone_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath())
+
+        return Machines_PClone_dic
+
     #----------------------------------------------------------------------------------------------
-    # Cataloged lists
+    # Cataloged machines
     #----------------------------------------------------------------------------------------------
     def _render_indexed_list(self, clist_name):
         # >> Load catalog index
