@@ -517,7 +517,7 @@ class Main:
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #
-    # Renders a Parent list knowing the index (category)
+    # Renders a Parent list knowing the generalised category (cataloged filter)
     #
     def _render_indexed_parent_list(self, clist_name, catalog_item_name):
         display_hide_nonworking = self.settings['display_hide_nonworking']
@@ -541,7 +541,8 @@ class Main:
             assets  = MAME_assets_dic[parent_name]
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            self._render_indexed_machine_row(parent_name, machine, assets, True, clist_name, catalog_name, catalog_item_name)
+            self._render_indexed_machine_row(parent_name, machine, assets, True, 
+                                             clist_name, catalog_name, catalog_item_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_indexed_clone_list(self, clist_name, catalog_item_name, parent_name):
@@ -591,7 +592,8 @@ class Main:
         URL = self._misc_url_2_arg('clist', clist_name, catalog_name, catalog_key)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_indexed_machine_row(self, machine_name, machine, machine_assets, is_parent_list, clist_name, catalog_name, catalog_item_name):
+    def _render_indexed_machine_row(self, machine_name, machine, machine_assets, is_parent_list, 
+                                    clist_name, catalog_name, catalog_item_name):
         display_name = machine['description']
         
         # --- Mark Status ---
@@ -608,6 +610,9 @@ class Main:
         if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
         elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
+        # >> Numer of clones
+        # display_name += ' [COLOR orange]({0} clones)[/COLOR]'.format(num_clones)
+        
         # --- Assets/artwork ---
         thumb_path      = machine_assets['title']
         thumb_fanart    = machine_assets['snap']
