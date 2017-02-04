@@ -457,45 +457,8 @@ class Main:
     #----------------------------------------------------------------------------------------------
     def _render_indexed_list(self, clist_name):
         # >> Load catalog index
-        if clist_name == 'Catver':
-            catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath())
-        elif clist_name == 'Catlist':
-            catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath())
-        elif clist_name == 'Genre':
-            catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath())
-        elif clist_name == 'NPlayers':
-            catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath())
-        elif clist_name == 'Manufacturer':
-            catalog_name = 'manufacturer'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath())
-        elif clist_name == 'Year':
-            catalog_name = 'year'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath())
-        elif clist_name == 'Driver':
-            catalog_name = 'driver'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath())
-        elif clist_name == 'Controls':
-            catalog_name = 'control'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath())
-        elif clist_name == 'Display_Tag':
-            catalog_name = 'tag'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath())
-        elif clist_name == 'Display_Type':
-            catalog_name = 'type'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath())
-        elif clist_name == 'Display_Rotate':
-            catalog_name = 'rotate'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath())
-        elif clist_name == 'Devices':
-            catalog_name = 'device'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath())
-        elif clist_name == 'BySL':
-            catalog_name = 'SL'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PATH.getPath())
+        catalog_name = self._get_catalog_name(clist_name)
+        catalog_dic = self._get_cataloged_dic(clist_name)
 
         # >> Render categories in catalog index
         self._set_Kodi_all_sorting_methods()
@@ -512,45 +475,8 @@ class Main:
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
 
         # >> Load catalog index
-        if clist_name == 'Catver':
-            catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath())
-        elif clist_name == 'Catlist':
-            catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath())
-        elif clist_name == 'Genre':
-            catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath())
-        elif clist_name == 'NPlayers':
-            catalog_name = 'category'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath())
-        elif clist_name == 'Manufacturer':
-            catalog_name = 'manufacturer'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath())
-        elif clist_name == 'Year':
-            catalog_name = 'year'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath())
-        elif clist_name == 'Driver':
-            catalog_name = 'driver'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath())
-        elif clist_name == 'Controls':
-            catalog_name = 'control'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath())
-        elif clist_name == 'Display_Tag':
-            catalog_name = 'tag'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath())
-        elif clist_name == 'Display_Type':
-            catalog_name = 'type'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath())
-        elif clist_name == 'Display_Rotate':
-            catalog_name = 'rotate'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath())
-        elif clist_name == 'Devices':
-            catalog_name = 'device'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath())
-        elif clist_name == 'BySL':
-            catalog_name = 'SL'
-            catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PATH.getPath())
+        catalog_name = self._get_catalog_name(clist_name)
+        catalog_dic = self._get_cataloged_dic(clist_name)
 
         # >> Get parents for this category
         Machines_PClone_dic = catalog_dic[catalog_item_name]['machines']
@@ -570,19 +496,7 @@ class Main:
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
 
         # >> Get catalog name
-        if   clist_name == 'Catver':         catalog_name = 'category'
-        elif clist_name == 'Catlist':        catalog_name = 'category'
-        elif clist_name == 'Genre':          catalog_name = 'category'
-        elif clist_name == 'NPlayers':       catalog_name = 'category'
-        elif clist_name == 'Manufacturer':   catalog_name = 'manufacturer'
-        elif clist_name == 'Year':           catalog_name = 'year'
-        elif clist_name == 'Driver':         catalog_name = 'driver'
-        elif clist_name == 'Controls':       catalog_name = 'control'
-        elif clist_name == 'Display_Tag':    catalog_name = 'tag'
-        elif clist_name == 'Display_Type':   catalog_name = 'type'
-        elif clist_name == 'Display_Rotate': catalog_name = 'rotate'
-        elif clist_name == 'Devices':        catalog_name = 'device'
-        elif clist_name == 'BySL':           catalog_name = 'SL'
+        catalog_name = self._get_catalog_name(clist_name)
 
         # >> Render parent first
         self._set_Kodi_all_sorting_methods()
@@ -597,9 +511,6 @@ class Main:
             self._render_indexed_machine_row(p_name, machine, assets, False, clist_name, catalog_name, catalog_item_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    #
-    #
-    #
     def _render_indexed_list_row(self, clist_name, catalog_name, catalog_key, num_machines):
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
@@ -620,9 +531,6 @@ class Main:
         URL = self._misc_url_2_arg('clist', clist_name, catalog_name, catalog_key)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    #
-    #
-    #
     def _render_indexed_machine_row(self, machine_name, machine, machine_assets, is_parent_list, clist_name, catalog_name, catalog_item_name):
         display_name = machine['description']
         
@@ -685,6 +593,40 @@ class Main:
         else:
             URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+
+    def _get_catalog_name(self, clist_name):
+        if   clist_name == 'Catver':         catalog_name = 'category'
+        elif clist_name == 'Catlist':        catalog_name = 'category'
+        elif clist_name == 'Genre':          catalog_name = 'category'
+        elif clist_name == 'NPlayers':       catalog_name = 'category'
+        elif clist_name == 'Manufacturer':   catalog_name = 'manufacturer'
+        elif clist_name == 'Year':           catalog_name = 'year'
+        elif clist_name == 'Driver':         catalog_name = 'driver'
+        elif clist_name == 'Controls':       catalog_name = 'control'
+        elif clist_name == 'Display_Tag':    catalog_name = 'tag'
+        elif clist_name == 'Display_Type':   catalog_name = 'type'
+        elif clist_name == 'Display_Rotate': catalog_name = 'rotate'
+        elif clist_name == 'Devices':        catalog_name = 'device'
+        elif clist_name == 'BySL':           catalog_name = 'SL'
+
+        return catalog_name
+
+    def _get_cataloged_dic(self, clist_name):
+        if   clist_name == 'Catver':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath())
+        elif clist_name == 'Catlist':        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath())
+        elif clist_name == 'Genre':          catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath())
+        elif clist_name == 'NPlayers':       catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath())
+        elif clist_name == 'Manufacturer':   catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath())
+        elif clist_name == 'Year':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath())
+        elif clist_name == 'Driver':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath())
+        elif clist_name == 'Controls':       catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath())
+        elif clist_name == 'Display_Tag':    catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath())
+        elif clist_name == 'Display_Type':   catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath())
+        elif clist_name == 'Display_Rotate': catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath())
+        elif clist_name == 'Devices':        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath())
+        elif clist_name == 'BySL':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PATH.getPath())
+
+        return catalog_dic
 
     #----------------------------------------------------------------------------------------------
     # Software Lists
