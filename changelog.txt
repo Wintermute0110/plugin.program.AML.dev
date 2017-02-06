@@ -9,6 +9,12 @@ WIP      On filter `Machines by Software List`, substitute raw Software List nam
          
 WIP      Allow user to choose default assets as AEL does.
 
+WIP      MAME and Software Lists Favourites.
+
+WIP      Display MAMEINFO.DAT in Machine context menu.
+
+WIP      Display HISTORY.DAT in Machine context menu.
+
 
 [B]Advanced Emulator Launcher | version 0.9.1 | 04 February 2017[/B]
 
