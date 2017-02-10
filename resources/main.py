@@ -412,19 +412,19 @@ class Main:
                 if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
                 elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
         else:
-                # --- Mark Status ---
-                status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
-                                               machine['status_SAM'], machine['status_SL'])
-                display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+            # --- Mark Status ---
+            status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+                                           machine['status_SAM'], machine['status_SL'])
+            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
-                # --- Mark Devices, BIOS and clones ---
-                if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-                if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-                if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+            # --- Mark Devices, BIOS and clones ---
+            if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+            if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+            if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
 
-                # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
-                if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-                elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+            # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
+            if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+            elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
         # --- Assets/artwork ---
         thumb_path      = machine_assets['title']
@@ -517,23 +517,25 @@ class Main:
         # >> Load main MAME info DB
         MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
 
         # >> Load catalog index
         catalog_name = self._get_catalog_name(clist_name)
         catalog_dic = self._get_cataloged_dic(clist_name)
 
         # >> Get parents for this category
-        Machines_PClone_dic = catalog_dic[catalog_item_name]['machines']
+        parent_machines_list = catalog_dic[catalog_item_name]['machines']
 
         # >> Render parent main list
         self._set_Kodi_all_sorting_methods()
-        for parent_name in Machines_PClone_dic:
+        for parent_name in parent_machines_list:
+            num_clones = len(main_pclone_dic[parent_name])
             machine = MAME_db_dic[parent_name]
             assets  = MAME_assets_dic[parent_name]
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
             self._render_indexed_machine_row(parent_name, machine, assets, True, 
-                                             clist_name, catalog_name, catalog_item_name)
+                                             clist_name, catalog_name, catalog_item_name, num_clones)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_indexed_clone_list(self, clist_name, catalog_item_name, parent_name):
@@ -584,27 +586,45 @@ class Main:
         URL = self._misc_url_2_arg('clist', clist_name, catalog_name, catalog_key)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_indexed_machine_row(self, machine_name, machine, machine_assets, is_parent_list, 
-                                    clist_name, catalog_name, catalog_item_name):
+    def _render_indexed_machine_row(self, machine_name, machine, machine_assets, flag_parent_list, 
+                                    clist_name, catalog_name, catalog_item_name, num_clones = 0):
         display_name = machine['description']
         
-        # --- Mark Status ---
-        status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
-                                       machine['status_SAM'], machine['status_SL'])
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+        # --- Render a Parent only list ---
+        if flag_parent_list:
+            # >> Machine has clones
+            if num_clones > 0:
+                display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
+            # >> Machine has no clones
+            else:
+                # --- Mark Status ---
+                status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+                                               machine['status_SAM'], machine['status_SL'])
+                display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
-        # --- Mark Devices, BIOS and clones ---
-        if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-        if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-        if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+                # --- Mark Devices, BIOS and clones ---
+                if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+                if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+                if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
 
-        # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
-        if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-        elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+                # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
+                if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+                elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+        else:
+            # --- Mark Status ---
+            status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+                                           machine['status_SAM'], machine['status_SL'])
+            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
-        # >> Numer of clones
-        # display_name += ' [COLOR orange]({0} clones)[/COLOR]'.format(num_clones)
-        
+            # --- Mark Devices, BIOS and clones ---
+            if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+            if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+            if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+
+            # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
+            if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+            elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+
         # --- Assets/artwork ---
         thumb_path      = machine_assets['title']
         thumb_fanart    = machine_assets['snap']
@@ -644,9 +664,15 @@ class Main:
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        if is_parent_list:
-            URL = self._misc_url_3_arg('clist', clist_name, catalog_name, catalog_item_name, 'parent', machine_name)
-            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+        if flag_parent_list:
+            # >> If machine has no clones then machine can be launched
+            if num_clones > 0:
+                URL = self._misc_url_3_arg('clist', clist_name, catalog_name, catalog_item_name, 'parent', machine_name)
+                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+            # >> If not PClone list can be browsed in
+            else:
+                URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
+                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
         else:
             URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
