@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Advanced Emulator Launcher filesystem I/O functions
+# Advanced MAME Launcher filesystem I/O functions
 #
 
 # Copyright (c) 2016-2017 Wintermute0110 <wintermute0110@gmail.com>
@@ -840,10 +840,28 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic):
             year_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
 
     # --- Driver catalog ---
+    # >> Substitute notable drivers with a proper name
+    driver_name_dic = {
+        'cps1.cpp'     : 'Capcom Play System 1',
+        'cps2.cpp'     : 'Capcom Play System 2',
+        'cps3.cpp'     : 'Capcom Play System 3',
+        'galaxian.cpp' : 'Namco Galaxian-derived hardware',
+        'model2.cpp'   : 'Sega Model 2',
+        'namcops2.cpp' : 'Namco System 246 / System 256 (Sony PS2 based)',
+        'naomi.cpp'    : 'Sega Naomi / Naomi 2',
+        'neodriv.hpp'  : 'SNK NeoGeo',
+        'seta.cpp'     : 'Seta Hardware',
+        'segas16b.cpp' : 'Sega System 16B',
+        'system1.cpp'  : 'System1 / System 2',
+        'taito_f3.cpp' : 'Taito F3 System',
+        'taito_f2.cpp' : 'Taito F2 System',
+        'zn.cpp'       : 'Sony ZN1/ZN2 (Arcade PSX)',
+    }
     driver_catalog = {}
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         catalog_key = machine['sourcefile']
+        if catalog_key in driver_name_dic: catalog_key = driver_name_dic[catalog_key]        
         if catalog_key in driver_catalog:
             driver_catalog[catalog_key]['machines'].append(p_machine_name)
             driver_catalog[catalog_key]['num_machines'] = len(driver_catalog[catalog_key]['machines'])
