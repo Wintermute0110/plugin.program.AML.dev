@@ -6,6 +6,8 @@ FEATURE  New Main Filter "Machines with no ROMs".
 
 FEATURE  Launch parents with no clones from the parents list in Catalogued filters.
 
+FEATURE  Use a fancy name for well-known MAME drivers.
+
 FIX      Use SORT_METHOD_LABEL_IGNORE_FOLDERS insead of SORT_METHOD_LABEL. This avoids folders
          to be rendered first when sorting listitems alpahbetically.
 
