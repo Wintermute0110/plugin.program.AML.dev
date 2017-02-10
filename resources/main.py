@@ -506,12 +506,13 @@ class Main:
     # Cataloged machines
     #----------------------------------------------------------------------------------------------
     def _render_indexed_list(self, clist_name):
+        log_error('_render_indexed_list() Starting ...')
         # >> Load catalog index
         catalog_name = self._get_catalog_name(clist_name)
         catalog_dic = self._get_cataloged_dic(clist_name)
 
         # >> Render categories in catalog index
-        self._set_Kodi_all_sorting_methods()
+        self._set_Kodi_all_sorting_methods_and_size()
         for catalog_key, catalog_value in catalog_dic.iteritems():
             self._render_indexed_list_row(clist_name, catalog_name, catalog_key, catalog_value['num_machines'])
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
@@ -520,6 +521,7 @@ class Main:
     # Renders a Parent list knowing the generalised category (cataloged filter)
     #
     def _render_indexed_parent_list(self, clist_name, catalog_item_name):
+        log_error('_render_indexed_parent_list() Starting ...')
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
@@ -546,6 +548,7 @@ class Main:
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_indexed_clone_list(self, clist_name, catalog_item_name, parent_name):
+        log_error('_render_indexed_clone_list() Starting ...')
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
@@ -580,7 +583,7 @@ class Main:
 
         listitem = xbmcgui.ListItem(title_str, iconImage = icon)
         # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title'   : title_str, 'Overlay' : ICON_OVERLAY } )
+        listitem.setInfo('video', {'Title'   : title_str, 'Overlay' : ICON_OVERLAY, 'size' : num_machines})
 
         # --- Create context menu ---
         commands = []
@@ -630,7 +633,7 @@ class Main:
         listitem.setInfo('video', {'title'   : display_name,            'year'    : machine['year'],
                                    'genre'   : '',                      'plot'    : '',
                                    'studio'  : machine['manufacturer'], 'rating'  : '',
-                                   'trailer' : '',                      'overlay' : ICON_OVERLAY })
+                                   'trailer' : '',                      'overlay' : ICON_OVERLAY})
         listitem.setProperty('platform', 'MAME')
 
         # --- Assets ---        
@@ -1110,6 +1113,15 @@ class Main:
         xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_VIDEO_YEAR)
         xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_STUDIO)
         xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_GENRE)
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_UNSORTED)
+
+    def _set_Kodi_all_sorting_methods_and_size(self):
+        if self.addon_handle < 0: return
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_LABEL)
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_VIDEO_YEAR)
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_STUDIO)
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_GENRE)
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_SIZE)
         xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_UNSORTED)
 
     # ---------------------------------------------------------------------------------------------
