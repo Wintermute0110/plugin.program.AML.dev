@@ -66,6 +66,7 @@ class AML_Paths:
         self.MACHINES_IDX_NOCOIN_PATH    = PLUGIN_DATA_DIR.pjoin('idx_Machines_NoCoin.json')
         self.MACHINES_IDX_MECHA_PATH     = PLUGIN_DATA_DIR.pjoin('idx_Machines_Mechanical.json')
         self.MACHINES_IDX_DEAD_PATH      = PLUGIN_DATA_DIR.pjoin('idx_Machines_Dead.json')
+        self.MACHINES_IDX_NOROMS_PATH    = PLUGIN_DATA_DIR.pjoin('idx_Machines_NoROM.json')
         self.MACHINES_IDX_CHD_PATH       = PLUGIN_DATA_DIR.pjoin('idx_Machines_CHD.json')
         self.MACHINES_IDX_SAMPLES_PATH   = PLUGIN_DATA_DIR.pjoin('idx_Machines_Samples.json')
         self.MACHINES_IDX_BIOS_PATH      = PLUGIN_DATA_DIR.pjoin('idx_Machines_BIOS.json')
@@ -142,23 +143,9 @@ class Main:
             list_name = args['list'][0]
             if 'parent' in args:
                 parent_name = args['parent'][0]
-                if list_name == 'Machines':     self._render_machine_clone_list(list_name, parent_name)
-                elif list_name == 'NoCoin':     self._render_machine_clone_list(list_name, parent_name)
-                elif list_name == 'Mechanical': self._render_machine_clone_list(list_name, parent_name)
-                elif list_name == 'Dead':       self._render_machine_clone_list(list_name, parent_name)
-                elif list_name == 'CHD':        self._render_machine_clone_list(list_name, parent_name)
-                elif list_name == 'Samples':    self._render_machine_clone_list(list_name, parent_name)
-                elif list_name == 'BIOS':       self._render_machine_clone_list(list_name, parent_name)
-                elif list_name == 'Devices':    self._render_machine_clone_list(list_name, parent_name)
+                self._render_machine_clone_list(list_name, parent_name)
             else:
-                if list_name == 'Machines':     self._render_machine_parent_list(list_name)
-                elif list_name == 'NoCoin':     self._render_machine_parent_list(list_name)
-                elif list_name == 'Mechanical': self._render_machine_parent_list(list_name)
-                elif list_name == 'Dead':       self._render_machine_parent_list(list_name)
-                elif list_name == 'CHD':        self._render_machine_parent_list(list_name)
-                elif list_name == 'Samples':    self._render_machine_parent_list(list_name)
-                elif list_name == 'BIOS':       self._render_machine_parent_list(list_name)
-                elif list_name == 'Devices':    self._render_machine_parent_list(list_name)
+                self._render_machine_parent_list(list_name)
 
         elif 'clist' in args:
             clist_name = args['clist'][0]
@@ -297,6 +284,7 @@ class Main:
         self._render_root_list_row('Machines (no coin slot)',        self._misc_url_1_arg('list',  'NoCoin'))
         self._render_root_list_row('Machines (mechanical)',          self._misc_url_1_arg('list',  'Mechanical'))
         self._render_root_list_row('Machines (dead)',                self._misc_url_1_arg('list',  'Dead'))
+        self._render_root_list_row('Machines [with no ROMs]',        self._misc_url_1_arg('list',  'NoROM'))
         self._render_root_list_row('Machines [with CHDs]',           self._misc_url_1_arg('list',  'CHD'))
         self._render_root_list_row('Machines [with Samples]',        self._misc_url_1_arg('list',  'Samples'))
         self._render_root_list_row('Machines [BIOS]',                self._misc_url_1_arg('list',  'BIOS'))
@@ -495,6 +483,7 @@ class Main:
         elif list_name == 'NoCoin':     Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath())
         elif list_name == 'Mechanical': Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
         elif list_name == 'Dead':       Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
+        elif list_name == 'NoROM':      Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOROMS_PATH.getPath())
         elif list_name == 'CHD':        Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
         elif list_name == 'Samples':    Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath())
         elif list_name == 'BIOS':       Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath())

@@ -2,6 +2,8 @@
 
 FEATURE  Ability to sort cataloged filters by number of machines.
 
+FEATURE  New Main Filter "Machines with no ROMs".
+
 FIX      Use SORT_METHOD_LABEL_IGNORE_FOLDERS insead of SORT_METHOD_LABEL. This avoids folders
          to be rendered first when sorting listitems alpahbetically.
 

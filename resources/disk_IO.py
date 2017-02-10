@@ -702,16 +702,25 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
 
     # --- Dead machines ---
     dead_pclone_dic = {}
-    log_info('Making Dead Mechines index...')
+    log_info('Making Dead Machines index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['isDead']: continue
         num_clones = len(main_pclone_dic[p_machine_name])
         dead_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
 
+    # --- No ROMs machines ---
+    NoROM_pclone_dic = {}
+    log_info('Making No ROMs Machines index...')
+    for p_machine_name in main_pclone_dic:
+        machine = machines[p_machine_name]
+        if machine['hasROM']: continue
+        num_clones = len(main_pclone_dic[p_machine_name])
+        NoROM_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
+
     # --- CHD machines ---
     CHD_pclone_dic = {}
-    log_info('Making CHD Mechines index...')
+    log_info('Making CHD Machines index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['CHDs']: continue
@@ -720,7 +729,7 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
 
     # --- Machines with samples ---
     Samples_pclone_dic = {}
-    log_info('Making Samples Mechines index...')
+    log_info('Making Samples Machines index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['sampleof']: continue
@@ -729,7 +738,7 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
 
     # --- BIOS ---
     BIOS_pclone_dic = {}
-    log_info('Making BIOS Mechines index...')
+    log_info('Making BIOS Machines index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['isBIOS']: continue
@@ -738,7 +747,7 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
 
     # --- Devices ---
     Devices_pclone_dic = {}
-    log_info('Making Devices Mechines index...')
+    log_info('Making Devices Machines index...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         if not machine['isDevice']: continue
@@ -750,8 +759,9 @@ def fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic):
     fs_write_JSON_file(PATHS.MACHINES_IDX_PATH.getPath(), machines_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath(), nocoin_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath(), mechanical_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath(), dead_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath(), CHD_pclone_dic)
+    fs_write_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath(), dead_pclone_dic)    
+    fs_write_JSON_file(PATHS.MACHINES_IDX_NOROMS_PATH.getPath(), NoROM_pclone_dic)
+    fs_write_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath(), CHD_pclone_dic)    
     fs_write_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath(), Samples_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath(), BIOS_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath(), Devices_pclone_dic)
