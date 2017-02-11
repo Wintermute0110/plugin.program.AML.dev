@@ -1174,16 +1174,15 @@ def fs_load_SL_XML(xml_filename):
 # -------------------------------------------------------------------------------------------------
 # SL_catalog = { 'name' : {'display_name': u'', 'rom_count' : int, 'rom_DB_noext' : u'' }, ...}
 #
-def fs_build_SoftwareLists_index(PATHS, settings):
+def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
     SL_dir_FN = FileName(settings['SL_hash_path'])
     log_debug('fs_build_SoftwareLists_index() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
 
     # --- Scan all XML files in Software Lists directory ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher',
-                   'Building Sofware Lists indices/catalogs...')
-    SL_catalog = {}
+    pDialog.create('Advanced MAME Launcher', 'Building Sofware Lists indices/catalogs...')
+    SL_catalog_dic = {}
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
     total_files = len(SL_file_list)
     processed_files = 0
@@ -1202,11 +1201,29 @@ def fs_build_SoftwareLists_index(PATHS, settings):
 
         # >> Add software list to catalog
         SL = {'display_name': display_name, 'rom_count' : num_roms, 'rom_DB_noext' : FN.getBase_noext()}
-        SL_catalog[FN.getBase_noext()] = SL
+        SL_catalog_dic[FN.getBase_noext()] = SL
         
         # >> Update progress
         processed_files = processed_files + 1
     pDialog.close()
 
     # --- Save Software List catalog ---
-    fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog)
+    fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
+
+    # --- Rebuild Machine by Software List catalog with knowledge of the SL proper name ---
+    log_info('Making Software List catalog ...')
+    pDialog.update(0, 'Rebuilding Software List catalog ...')
+    SL_catalog = {}
+    for p_machine_name in main_pclone_dic:
+        machine = machines[p_machine_name]
+        # >> A machine may have more than 1 software lists
+        for sl_name in machine['softwarelists']:
+            if sl_name in SL_catalog_dic: sl_name = SL_catalog_dic[sl_name]['display_name']
+            catalog_key = sl_name
+            if catalog_key in SL_catalog:
+                SL_catalog[catalog_key]['machines'].append(p_machine_name)
+                SL_catalog[catalog_key]['num_machines'] = len(SL_catalog[catalog_key]['machines'])
+            else:
+                SL_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+    pDialog.update(100)
+    fs_write_JSON_file(PATHS.CATALOG_SL_PATH.getPath(), SL_catalog)

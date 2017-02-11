@@ -894,11 +894,10 @@ class Main:
             kodi_busydialog_ON()
             machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
             main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             kodi_busydialog_OFF()
 
             # --- Generate indices ---
-            fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic, control_dic)
+            fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic)
             
             # --- Write and update control dictionary ---
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
@@ -911,8 +910,14 @@ class Main:
                 kodi_dialog_OK('Software Lists hash path not set.')
                 return
 
+            # --- Read main database and control dic ---
+            kodi_busydialog_ON()
+            machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            kodi_busydialog_OFF()
+
             # --- Build Software List indices ---
-            fs_build_SoftwareLists_index(PATHS, self.settings)
+            fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic)
             kodi_notify('Software Lists indices and catalogs built')
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---

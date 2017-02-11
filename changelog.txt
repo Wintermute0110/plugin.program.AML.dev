@@ -11,13 +11,13 @@ FEATURE  Use a fancy name for well-known MAME drivers.
 FIX      Use SORT_METHOD_LABEL_IGNORE_FOLDERS insead of SORT_METHOD_LABEL. This avoids folders
          to be rendered first when sorting listitems alpahbetically.
 
+FEATURE  On filter `Machines by Software List`, substitute raw Software List name by the proper 
+         SL name.
+
 WIP      Scan Software Lists.
 
 WIP      Launch machines with software lists.
-
-WIP      On filter `Machines by Software List`, substitute raw Software List name by the proper 
-         SL name.
-         
+        
 WIP      Allow user to choose default assets as AEL does.
 
 WIP      MAME and Software Lists Favourites.
