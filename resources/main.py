@@ -237,14 +237,17 @@ class Main:
                 self._run_SL_machine(SL_name, ROM_name)
             elif command == 'SETUP_PLUGIN':
                 self._command_setup_plugin()
-            elif command == 'VIEW_MACHINE':
-                self._command_view_machine(args['machine_name'][0])
+            elif command == 'VIEW':
+                mname  = args['mname'][0]  if 'mname' in args else ''
+                SLname = args['SLname'][0] if 'SLname' in args else ''
+                SLROM  = args['SLROM'][0]  if 'SLROM' in args else ''
+                self._command_view(mname, SLname, SLROM)
             else:
                 log_error('Unknown command "{0}"'.format(command))
 
         else:
             log_error('Error in URL routing')
-            
+
         # --- So Long, and Thanks for All the Fish ---
         log_debug('Advanced MAME Launcher exit')
 
@@ -322,6 +325,7 @@ class Main:
 
         # --- Create context menu ---
         commands = []
+        commands.append(('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW'), ))
         commands.append(('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN'), ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
@@ -464,10 +468,10 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW_MACHINE', 'machine_name', machine_name)
-        commands.append(('View Machine data',  URL_view, ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'mname', machine_name)
+        commands.append(('View', URL_view ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
@@ -584,8 +588,10 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        URL_view = self._misc_url_1_arg_RunPlugin('command', 'VIEW')
+        commands.append(('View', URL_view ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
@@ -663,10 +669,10 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW_MACHINE', 'machine_name', machine_name)
-        commands.append(('View Machine data',  URL_view, ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'mname', machine_name)
+        commands.append(('View',  URL_view ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
@@ -757,13 +763,14 @@ class Main:
         listitem = xbmcgui.ListItem(display_name, iconImage = icon)
         ICON_OVERLAY = 6
         # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title'   : display_name,        
-                                   'Overlay' : ICON_OVERLAY } )
+        listitem.setInfo('video', {'Title'   : display_name, 'Overlay' : ICON_OVERLAY } )
 
         # --- Create context menu ---
         commands = []
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        URL_view = self._misc_url_1_arg_RunPlugin('command', 'VIEW')
+        commands.append(('View', URL_view ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
@@ -786,8 +793,10 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SLname', SL_name, 'SLROM', rom_name)
+        commands.append(('View', URL_view ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
@@ -797,66 +806,192 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     # Information display
     # ---------------------------------------------------------------------------------------------
-    def _command_view_machine(self, machine_name):
-        # >> Read MAME machine information
-        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        machine = MAME_db_dic[machine_name]
-        assets  = MAME_assets_dic[machine_name]
+    def _command_view(self, mname, SLname, SLROM):
+        MENU_SIMPLE    = 100
+        MENU_MAME_DATA = 200
+        MENU_SL_DATA   = 300
+        menu_kind = 0
+        size_stdout = 0
+        if PATHS.MAME_STDOUT_PATH.exists():
+            stat_stdout = PATHS.MAME_STDOUT_PATH.stat()
+            size_stdout = stat_stdout.st_size
+        size_stderr = 0
+        if PATHS.MAME_STDERR_PATH.exists():
+            stat_stderr = PATHS.MAME_STDERR_PATH.stat()
+            size_stderr = stat_stderr.st_size
+        dialog = xbmcgui.Dialog()
+        if not mname and not SLname:
+            menu_kind = MENU_SIMPLE
+            type = dialog.select('View ...',
+                                 ['MAME last execution stdout ({0} bytes)'.format(size_stdout),
+                                  'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
+        elif mname:
+            menu_kind = MENU_MAME_DATA
+            type = dialog.select('View ...',
+                                 ['View MAME machine data',
+                                  'MAME last execution stdout ({0} bytes)'.format(size_stdout),
+                                  'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
+        elif SLname:
+            menu_kind = MENU_SL_DATA
+            type = dialog.select('View ...',
+                                 ['View Software List machine data',
+                                  'MAME last execution stdout ({0} bytes)'.format(size_stdout),
+                                  'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
+        else:
+            kodi_dialog_OK('_command_view() runtime error. Report this bug')
+            return
+        if type < 0: return
 
-        # --- Make information string ---
-        info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
-        info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])
-        info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
-        info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])        
-        info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
-        info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
-        info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
-        info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
-        info_text += "[COLOR skyblue]device_list[/COLOR]: {0}\n".format(machine['device_list'])
-        info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(machine['display_rotate'])
-        info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
-        info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(machine['display_type'])
-        info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
-        info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
-        info_text += "[COLOR skyblue]hasCoin[/COLOR]: {0}\n".format(machine['hasCoin'])
-        info_text += "[COLOR skyblue]hasROM[/COLOR]: {0}\n".format(machine['hasROM'])
-        info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
-        info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(machine['isDead'])
-        info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
-        info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(machine['isMechanical'])
-        info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
-        info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
-        info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
-        info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
-        info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(machine['softwarelists'])
-        info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
-        info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(machine['status_CHD'])
-        info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(machine['status_ROM'])
-        info_text += "[COLOR violet]status_SAM[/COLOR]: '{0}'\n".format(machine['status_SAM'])
-        info_text += "[COLOR violet]status_SL[/COLOR]: '{0}'\n".format(machine['status_SL'])
-        info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
+        # --- View MAME Machine ---
+        if menu_kind == MENU_MAME_DATA:
+            type_nb = 0
+            if type == 0:
+                # >> Read MAME machine information
+                kodi_busydialog_ON()
+                MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                machine = MAME_db_dic[mname]
+                assets  = MAME_assets_dic[mname]
+                kodi_busydialog_OFF()
 
-        info_text += '\n[COLOR orange]Asset/artwork information[/COLOR]\n'
-        info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
-        info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
-        info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
-        info_text += "[COLOR violet]marquee[/COLOR]: '{0}'\n".format(assets['marquee'])
-        info_text += "[COLOR violet]PCB[/COLOR]: '{0}'\n".format(assets['PCB'])
-        info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
-        info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
-        info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
+                # --- Make information string ---
+                info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(mname)
+                info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])
+                info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
+                info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])        
+                info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
+                info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
+                info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
+                info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
+                info_text += "[COLOR skyblue]device_list[/COLOR]: {0}\n".format(machine['device_list'])
+                info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(machine['display_rotate'])
+                info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
+                info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(machine['display_type'])
+                info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
+                info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
+                info_text += "[COLOR skyblue]hasCoin[/COLOR]: {0}\n".format(machine['hasCoin'])
+                info_text += "[COLOR skyblue]hasROM[/COLOR]: {0}\n".format(machine['hasROM'])
+                info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
+                info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(machine['isDead'])
+                info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
+                info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(machine['isMechanical'])
+                info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
+                info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
+                info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
+                info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
+                info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(machine['softwarelists'])
+                info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
+                info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(machine['status_CHD'])
+                info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(machine['status_ROM'])
+                info_text += "[COLOR violet]status_SAM[/COLOR]: '{0}'\n".format(machine['status_SAM'])
+                info_text += "[COLOR violet]status_SL[/COLOR]: '{0}'\n".format(machine['status_SL'])
+                info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
 
-        # --- Show information window ---
-        window_title = u'Machine Information'
-        try:
-            xbmc.executebuiltin('ActivateWindow(10147)')
-            window = xbmcgui.Window(10147)
-            xbmc.sleep(100)
-            window.getControl(1).setLabel(window_title)
-            window.getControl(5).setText(info_text)
-        except:
-            log_error('_command_view_machine() Exception rendering INFO window')
+                info_text += '\n[COLOR orange]Asset/artwork information[/COLOR]\n'
+                info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
+                info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
+                info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
+                info_text += "[COLOR violet]marquee[/COLOR]: '{0}'\n".format(assets['marquee'])
+                info_text += "[COLOR violet]PCB[/COLOR]: '{0}'\n".format(assets['PCB'])
+                info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
+                info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
+                info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
+
+                # --- Show information window ---
+                window_title = 'Machine Information'
+                try:
+                    xbmc.executebuiltin('ActivateWindow(10147)')
+                    window = xbmcgui.Window(10147)
+                    xbmc.sleep(100)
+                    window.getControl(1).setLabel(window_title)
+                    window.getControl(5).setText(info_text)
+                except:
+                    log_error('_command_view_machine() Exception rendering INFO window')
+
+        # --- View Software List Machine ---
+        elif menu_kind == MENU_SL_DATA:
+            type_nb = 0
+            if type == type_nb:
+                # >> Read Software List information
+                SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SLname + '.json')
+                kodi_busydialog_ON()
+                SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+                SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+                roms = fs_load_JSON_file(SL_DB_FN.getPath())
+                kodi_busydialog_OFF()
+
+                # >> SL + ROM data
+                SL_dic = SL_catalog_dic[SLname]
+                SL_machine_list = SL_machines_dic[SLname]
+                rom = roms[SLROM]
+
+                # >> Build information string
+                info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(SLROM)
+                info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
+                info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
+                info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
+                info_text += "[COLOR violet]status[/COLOR]: '{0}'\n".format(rom['status'])
+                info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
+
+                info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SLname)
+                info_text += "[COLOR violet]display_name[/COLOR]: '{0}'\n".format(SL_dic['display_name'])
+                info_text += "[COLOR violet]rom_DB_noext[/COLOR]: '{0}'\n".format(SL_dic['rom_DB_noext'])
+                info_text += "[COLOR violet]rom_count[/COLOR]: '{0}'\n".format(SL_dic['rom_count'])
+
+                info_text += '\n[COLOR orange]Runnable by[/COLOR]\n'
+                for machine_dic in SL_machine_list:
+                    info_text += "[COLOR violet]machine[/COLOR]: '{0}'   ({1})\n".format(machine_dic['description'], machine_dic['machine'])
+
+                # --- Show information window ---
+                window_title = 'Software List ROM Information'
+                try:
+                    xbmc.executebuiltin('ActivateWindow(10147)')
+                    window = xbmcgui.Window(10147)
+                    xbmc.sleep(100)
+                    window.getControl(1).setLabel(window_title)
+                    window.getControl(5).setText(info_text)
+                except:
+                    log_error('_command_view_machine() Exception rendering INFO window')
+        else:
+            type_nb = -1
+
+        # --- View MAME stdout ---
+        type_nb += 1
+        if type == type_nb:
+            # --- Read stdout and put into a string ---
+            info_text = ''
+            with open(PATHS.MAME_STDOUT_PATH.getPath(), "r") as myfile:
+                info_text = myfile.read()
+
+            # --- Show information window ---
+            window_title = 'MAME last execution stdout'
+            try:
+                xbmc.executebuiltin('ActivateWindow(10147)')
+                window = xbmcgui.Window(10147)
+                xbmc.sleep(100)
+                window.getControl(1).setLabel(window_title)
+                window.getControl(5).setText(info_text)
+            except:
+                log_error('_command_view_machine() Exception rendering INFO window')
+
+        # --- View MAME stderr ---
+        type_nb += 1
+        if type == type_nb:
+            # --- Read stdout and put into a string ---
+            info_text = ''
+            with open(PATHS.MAME_STDERR_PATH.getPath(), "r") as myfile:
+                info_text = myfile.read()
+
+            # --- Show information window ---
+            window_title = 'MAME last execution stderr'
+            try:
+                xbmc.executebuiltin('ActivateWindow(10147)')
+                window = xbmcgui.Window(10147)
+                xbmc.sleep(100)
+                window.getControl(1).setLabel(window_title)
+                window.getControl(5).setText(info_text)
+            except:
+                log_error('_command_view_machine() Exception rendering INFO window')
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases
@@ -1329,3 +1464,18 @@ class Main:
         return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4})'.format(self.base_url,
                                                             arg_name_1, arg_value_1,
                                                             arg_name_2, arg_value_2)
+
+    def _misc_url_3_arg_RunPlugin(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2, 
+                                  arg_name_3, arg_value_3):
+        return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4}&{5}={6})'.format(self.base_url,
+                                                                    arg_name_1, arg_value_1,
+                                                                    arg_name_2, arg_value_2,
+                                                                    arg_name_3, arg_value_3)
+
+    def _misc_url_4_arg_RunPlugin(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2, 
+                                  arg_name_3, arg_value_3, arg_name_4, arg_value_4):
+        return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4}&{5}={6}&{7}={8})'.format(self.base_url,
+                                                                            arg_name_1, arg_value_1,
+                                                                            arg_name_2, arg_value_2,
+                                                                            arg_name_3, arg_value_3, 
+                                                                            arg_name_4, arg_value_4)
