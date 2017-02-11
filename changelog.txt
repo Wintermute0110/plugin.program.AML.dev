@@ -1,3 +1,12 @@
+[B]Advanced Emulator Launcher | version 0.9.3 | xx March 2017[/B]
+
+WIP      MAME and Software Lists Favourites.
+
+WIP      Display MAMEINFO.DAT in Machine context menu.
+
+WIP      Display HISTORY.DAT in Machine context menu.
+
+
 [B]Advanced Emulator Launcher | version 0.9.2 | xx March 2017[/B]
 
 FEATURE  Ability to sort cataloged filters by number of machines.
@@ -8,11 +17,10 @@ FEATURE  Launch parents with no clones from the parents list in Catalogued filte
 
 FEATURE  Use a fancy name for well-known MAME drivers.
 
-FIX      Use SORT_METHOD_LABEL_IGNORE_FOLDERS insead of SORT_METHOD_LABEL. This avoids folders
-         to be rendered first when sorting listitems alpahbetically.
-
 FEATURE  On filter `Machines by Software List`, substitute raw Software List name by the proper 
          SL name.
+
+WIP      Display MAME stdout/stderr.
 
 WIP      Scan Software Lists.
 
@@ -20,11 +28,8 @@ WIP      Launch machines with software lists.
         
 WIP      Allow user to choose default assets as AEL does.
 
-WIP      MAME and Software Lists Favourites.
-
-WIP      Display MAMEINFO.DAT in Machine context menu.
-
-WIP      Display HISTORY.DAT in Machine context menu.
+FIX      Use SORT_METHOD_LABEL_IGNORE_FOLDERS insead of SORT_METHOD_LABEL. This avoids folders
+         to be rendered first when sorting listitems alpahbetically.
 
 
 [B]Advanced Emulator Launcher | version 0.9.1 | 04 February 2017[/B]

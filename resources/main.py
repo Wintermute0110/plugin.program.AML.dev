@@ -395,7 +395,7 @@ class Main:
         if flag_parent_list:
             # >> Machine has clones
             if num_clones > 0:
-                display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
+                display_name += '  [COLOR orange]({0} clones)[/COLOR]'.format(num_clones)
             # >> Machine has no clones
             else:
                 # --- Mark Status ---
@@ -742,9 +742,9 @@ class Main:
 
     def _render_SL_machine_row(self, SL_name, SL):
         if SL['rom_count'] == 1:
-            display_name = u'{0} ({1} ROM)'.format(SL['display_name'], SL['rom_count'])
+            display_name = '{0}  [COLOR orange]({1} ROM)[/COLOR]'.format(SL['display_name'], SL['rom_count'])
         else:
-            display_name = u'{0} ({1} ROMs)'.format(SL['display_name'], SL['rom_count'])
+            display_name = '{0}  [COLOR orange]({1} ROMs)[/COLOR]'.format(SL['display_name'], SL['rom_count'])
 
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
@@ -767,13 +767,16 @@ class Main:
     def _render_SL_ROM_row(self, SL_name, rom_name, ROM):
         display_name = ROM['description']
 
+        # --- Mark Status and Clones ---
+        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(ROM['status'])
+        if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
         listitem = xbmcgui.ListItem(display_name, iconImage = icon)
         ICON_OVERLAY = 6
         # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title'   : display_name,        
-                                   'Overlay' : ICON_OVERLAY } )
+        listitem.setInfo('video', {'Title' : display_name, 'Overlay' : ICON_OVERLAY })
 
         # --- Create context menu ---
         commands = []

@@ -97,11 +97,17 @@ def fs_new_asset():
 
     return a
 
+# Status flags meaning:
+#   ?  SL ROM not scanned
+#   r  Missing ROM
+#   R  Have ROM
 def fs_new_SL_index_entry():
     R = {
-        'description'   : '',
-        'year'          : '',
-        'publisher'     : ''
+        'description' : '',
+        'year'        : '',
+        'publisher'   : '',
+        'cloneof'     : '',
+        'status'      : '?'
     }
 
     return R
@@ -1158,11 +1164,12 @@ def fs_load_SL_XML(xml_filename):
             num_roms += 1
             rom = fs_new_SL_index_entry()
             rom_name = root_element.attrib['name']
+            if 'cloneof' in root_element.attrib: rom['cloneof'] = root_element.attrib['cloneof']
             for rom_child in root_element:
                 # By default read strings
                 xml_text = rom_child.text if rom_child.text is not None else ''
                 xml_tag  = rom_child.tag
-                if __debug_xml_parser: print(u'{0} --> {1}'.format(xml_tag, xml_text))
+                if __debug_xml_parser: print('{0} --> {1}'.format(xml_tag, xml_text))
                 
                 # Only pick tags we want
                 if xml_tag == 'description' or xml_tag == 'year' or xml_tag == 'publisher':
@@ -1200,7 +1207,9 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
         fs_write_JSON_file(output_FN.getPath(), roms)
 
         # >> Add software list to catalog
-        SL = {'display_name': display_name, 'rom_count' : num_roms, 'rom_DB_noext' : FN.getBase_noext()}
+        SL = {'display_name': display_name,
+              'rom_count' : num_roms,
+              'rom_DB_noext' : FN.getBase_noext()}
         SL_catalog_dic[FN.getBase_noext()] = SL
         
         # >> Update progress
