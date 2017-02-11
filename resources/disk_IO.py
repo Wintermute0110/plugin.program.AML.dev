@@ -1228,7 +1228,8 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
             if not machine_dic['softwarelists']: continue
             for machine_SL_name in machine_dic['softwarelists']:
                 if machine_SL_name == SL_name:
-                    SL_machine_dic = {'machine' : machine_name, 
+                    SL_machine_dic = {'machine'      : machine_name,
+                                      'description'  : machine_dic['description'],
                                       'device_props' : machine_dic['device_props']}
                     SL_machine_list.append(SL_machine_dic)
         SL_machines_dic[SL_name] = SL_machine_list
