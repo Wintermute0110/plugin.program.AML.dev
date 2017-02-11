@@ -53,8 +53,8 @@ def fs_new_machine():
         'cloneof'        : '',
         'romof'          : '',
         'sampleof'       : '',
-        'description'    : '', 
-        'year'           : '', 
+        'description'    : '',
+        'year'           : '',
         'manufacturer'   : '',
         'catver'         : '',
         'catlist'        : '',
@@ -131,7 +131,7 @@ def fs_load_JSON_file(json_filename):
     data_dic = {}
     if not os.path.isfile(json_filename): return data_dic
     log_verb('fs_load_ROMs_JSON() "{0}"'.format(json_filename))
-    with open(json_filename) as file:    
+    with open(json_filename) as file:
         data_dic = json.load(file)
 
     return data_dic
@@ -140,7 +140,7 @@ def fs_write_JSON_file(json_filename, json_data):
     log_verb('fs_write_JSON_file() "{0}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
-          file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, 
+          file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
                                         indent = 2, separators = (',', ': '))))
     except OSError:
         gui_kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(roms_json_file))
@@ -154,7 +154,7 @@ def fs_write_JSON_file(json_filename, json_data):
 #
 def fs_extract_MAME_XML(PATHS, mame_prog_FN):
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
-    log_info('fs_extract_MAME_XML() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
+    log_info('fs_extract_MAME_XML() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
     log_debug('fs_extract_MAME_XML() mame_dir     "{0}"'.format(mame_dir))
     log_debug('fs_extract_MAME_XML() mame_exec    "{0}"'.format(mame_exec))
     pDialog = xbmcgui.DialogProgress()
@@ -189,7 +189,7 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
         'num_machines'   : 0,
     }
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-    
+
     return filesize
 
 # -------------------------------------------------------------------------------------------------
@@ -282,7 +282,7 @@ def fs_load_Catlist_ini(filename):
     f.close()
     log_info('fs_load_Catlist_ini() Number of machines   {0:6d}'.format(len(catlist_dic)))
     log_info('fs_load_Catlist_ini() Number of categories {0:6d}'.format(len(catlist_set)))
-    
+
     return catlist_dic
 
 def fs_load_Genre_ini(filename):
@@ -426,7 +426,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             else:
                 # >> Remove trailing '.cpp' from driver name
                 raw_driver_name = elem.attrib['sourcefile']
-                
+
                 # >> In MAME 0.174 some driver end with .cpp and others with .hxx
                 # if raw_driver_name[-4:] == '.cpp':
                 #     driver_name = raw_driver_name[0:-4]
@@ -539,7 +539,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
                     instance_tag_found = True
                 elif device_child.tag == 'extension':
                     extension_list.append(device_child.attrib['name'])
-            
+
             # >> NOTE Some machines have no instance inside <device>, for example 2020bb
             # >>      I don't know how to launch those machines
             if not instance_tag_found:
@@ -603,7 +603,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         # --- Stop after STOP_AFTER_MACHINES machines have been processed for debug ---
         if num_machines >= STOP_AFTER_MACHINES: break
     pDialog.update(100)
-    pDialog.close()        
+    pDialog.close()
     log_info('Processed {0} MAME XML events'.format(num_iteration))
     log_info('Total number of machines {0}'.format(num_machines))
     log_info('Dead machines            {0}'.format(num_dead))
@@ -666,7 +666,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     kodi_busydialog_OFF()
 
 
-def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic, control_dic):
+def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic):
     # >> Progress dialog
     NUM_FILTERS = 22
     pDialog_line1 = 'Building indices and catalogs ...'
@@ -925,7 +925,7 @@ def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic, control
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
         catalog_key = machine['sourcefile']
-        if catalog_key in driver_name_dic: catalog_key = driver_name_dic[catalog_key]        
+        if catalog_key in driver_name_dic: catalog_key = driver_name_dic[catalog_key]
         if catalog_key in driver_catalog:
             driver_catalog[catalog_key]['machines'].append(p_machine_name)
             driver_catalog[catalog_key]['num_machines'] = len(driver_catalog[catalog_key]['machines'])
@@ -1056,9 +1056,9 @@ def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic, control
     fs_write_JSON_file(PATHS.MACHINES_IDX_PATH.getPath(), machines_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath(), nocoin_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath(), mechanical_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath(), dead_pclone_dic)    
+    fs_write_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath(), dead_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_NOROMS_PATH.getPath(), NoROM_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath(), CHD_pclone_dic)    
+    fs_write_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath(), CHD_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath(), Samples_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath(), BIOS_pclone_dic)
     fs_write_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath(), Devices_pclone_dic)
@@ -1101,9 +1101,9 @@ def fs_improve_device_list(control_type_list):
 
     return out_list
 
-# 
+#
 # See tools/test_compress_item_list.py for reference
-# Input/Output examples: 
+# Input/Output examples:
 # 1) ['dial']                 ->  ['dial']
 # 2) ['dial', 'dial']         ->  ['2 x dial']
 # 3) ['dial', 'dial', 'joy']  ->  ['2 x dial', 'joy']
@@ -1170,7 +1170,7 @@ def fs_load_SL_XML(xml_filename):
                 xml_text = rom_child.text if rom_child.text is not None else ''
                 xml_tag  = rom_child.tag
                 if __debug_xml_parser: print('{0} --> {1}'.format(xml_tag, xml_text))
-                
+
                 # Only pick tags we want
                 if xml_tag == 'description' or xml_tag == 'year' or xml_tag == 'publisher':
                     rom[xml_tag] = xml_text
@@ -1209,7 +1209,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
               'rom_count' : num_roms,
               'rom_DB_noext' : FN.getBase_noext()}
         SL_catalog_dic[FN.getBase_noext()] = SL
-        
+
         # >> Update progress
         processed_files += 1
         pDialog.update(100 * processed_files / total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))

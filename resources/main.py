@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # Advanced MAME Launcher main script file
 #
@@ -88,7 +88,7 @@ class AML_Paths:
         self.CATALOG_SL_PATH             = PLUGIN_DATA_DIR.pjoin('catalog_SL.json')
 
         # >> Software Lists
-        self.SL_DB_DIR                   = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')        
+        self.SL_DB_DIR                   = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')
         self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
         self.SL_MACHINES_PATH            = PLUGIN_DATA_DIR.pjoin('SoftwareLists_machines.json')
 PATHS = AML_Paths()
@@ -259,7 +259,7 @@ class Main:
         self.settings['mame_prog']               = __addon_obj__.getSetting('mame_prog').decode('utf-8')
         self.settings['rom_path']                = __addon_obj__.getSetting('rom_path').decode('utf-8')
 
-        self.settings['assets_path']             = __addon_obj__.getSetting('assets_path').decode('utf-8')        
+        self.settings['assets_path']             = __addon_obj__.getSetting('assets_path').decode('utf-8')
         self.settings['SL_hash_path']            = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
         self.settings['SL_rom_path']             = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
         self.settings['chd_path']                = __addon_obj__.getSetting('chd_path').decode('utf-8')
@@ -409,7 +409,7 @@ class Main:
             # >> Machine has no clones
             else:
                 # --- Mark Status ---
-                status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+                status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'],
                                                machine['status_SAM'], machine['status_SL'])
                 display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
@@ -423,7 +423,7 @@ class Main:
                 elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
         else:
             # --- Mark Status ---
-            status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+            status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'],
                                            machine['status_SAM'], machine['status_SL'])
             display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
@@ -445,7 +445,7 @@ class Main:
 
         # --- Create listitem row ---
         default_icon = 'DefaultFolder.png'
-        ICON_OVERLAY = 6        
+        ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(display_name)
 
         # --- Metadata ---
@@ -456,7 +456,7 @@ class Main:
                                    'trailer' : '',                      'overlay' : ICON_OVERLAY })
         listitem.setProperty('platform', 'MAME')
 
-        # --- Assets ---        
+        # --- Assets ---
         # >> AEL custom artwork fields
         listitem.setArt({'title'     : machine_assets['title'],   'snap'    : machine_assets['snap'],
                          'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'], 
@@ -598,10 +598,10 @@ class Main:
         URL = self._misc_url_2_arg('clist', clist_name, catalog_name, catalog_key)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_indexed_machine_row(self, machine_name, machine, machine_assets, flag_parent_list, 
+    def _render_indexed_machine_row(self, machine_name, machine, machine_assets, flag_parent_list,
                                     clist_name, catalog_name, catalog_item_name, num_clones = 0):
         display_name = machine['description']
-        
+
         # --- Render a Parent only list ---
         if flag_parent_list:
             # >> Machine has clones
@@ -610,7 +610,7 @@ class Main:
             # >> Machine has no clones
             else:
                 # --- Mark Status ---
-                status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+                status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'],
                                                machine['status_SAM'], machine['status_SL'])
                 display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
@@ -624,7 +624,7 @@ class Main:
                 elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
         else:
             # --- Mark Status ---
-            status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'], 
+            status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'],
                                            machine['status_SAM'], machine['status_SL'])
             display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
@@ -646,7 +646,7 @@ class Main:
 
         # --- Create listitem row ---
         default_icon = 'DefaultFolder.png'
-        ICON_OVERLAY = 6        
+        ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(display_name)
 
         # --- Metadata ---
@@ -657,10 +657,10 @@ class Main:
                                    'trailer' : '',                      'overlay' : ICON_OVERLAY})
         listitem.setProperty('platform', 'MAME')
 
-        # --- Assets ---        
+        # --- Assets ---
         # >> AEL custom artwork fields
         listitem.setArt({'title'     : machine_assets['title'],   'snap'    : machine_assets['snap'],
-                         'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'], 
+                         'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'],
                          'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
 
         # >> Kodi official artwork fields
@@ -858,7 +858,7 @@ class Main:
                 info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(mname)
                 info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])
                 info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
-                info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])        
+                info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
                 info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
                 info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
@@ -1002,7 +1002,7 @@ class Main:
                                  ['Extract MAME.xml ...',
                                   'Build MAME database ...',
                                   'Build MAME indices and catalogs ...',
-                                  'Build Software Lists indices and catalogs ...', 
+                                  'Build Software Lists indices and catalogs ...',
                                   'Scan MAME ROMs/CHDs/Samples ...',
                                   'Scan MAME assets/artwork ...',
                                   'Scan Software Lists ROMs ...',
@@ -1024,7 +1024,7 @@ class Main:
         elif menu_item == 1:
             # --- Error checks ---
             # >> Check that MAME_XML_PATH exists
-        
+
             # --- Parse MAME XML and generate main database and PClone list ---
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             log_info('_command_setup_plugin() Generating MAME main database and PClone list...')
@@ -1044,9 +1044,6 @@ class Main:
 
             # --- Generate indices ---
             fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic)
-            
-            # --- Write and update control dictionary ---
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_notify('Indices and catalogs built')
 
         # --- Build Software Lists indices/catalogs ---
@@ -1069,7 +1066,7 @@ class Main:
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
         elif menu_item == 4:
             log_info('_command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
-            
+
             # >> Get paths and check they exist
             if not self.settings['rom_path']:
                 kodi_dialog_OK('ROM directory not configured. Aborting.')
