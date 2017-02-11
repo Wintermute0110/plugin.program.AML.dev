@@ -229,6 +229,11 @@ class Main:
                 machine_name = args['machine_name'][0]
                 log_info('Launching MAME machine "{0}"'.format(machine_name))
                 self._run_machine(machine_name)
+            elif command == 'LAUNCH_SL':
+                SL_name = args['SL'][0]
+                ROM_name = args['ROM'][0]
+                log_info('Launching SL machine "{0}" (ROM "{1}")'.format(SL_name, ROM_name))
+                self._run_SL_machine(SL_name, ROM_name)
             elif command == 'SETUP_PLUGIN':
                 self._command_setup_plugin()
             elif command == 'VIEW_MACHINE':
@@ -785,7 +790,7 @@ class Main:
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        URL = self._misc_url_3_arg('clist', 'SL', 'SL', SL_name, 'ROM', rom_name)
+        URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
     # ---------------------------------------------------------------------------------------------
@@ -1126,6 +1131,10 @@ class Main:
             log_info('_command_setup_plugin() Scanning ROMs/CHDs/Samples ...')
             kodi_dialog_OK('Not coded yet. Sorry.')
 
+    #
+    # Launch MAME machine.
+    # Example: $ mame dino
+    #
     def _run_machine(self, machine_name):
         log_info('_run_machine() Launching MAME machine "{0}"'.format(machine_name))
 
@@ -1185,6 +1194,31 @@ class Main:
                                  stdout = _stdout, stderr = _stderr, cwd = mame_dir, startupinfo = _info)
         p.wait()
         log_info('_run_machine() Exiting function')
+
+    #
+    # Launch SL machine.
+    # Example: $ mame smspal -cart sonic
+    # Requirements:
+    # A) machine_name
+    # B) media_name
+    #
+    def _run_SL_machine(self, SL_name, ROM_name):
+        log_info('_run_SL_machine() Launching SL machine ...')
+
+        # >> Get paths
+        mame_prog_FN = FileName(self.settings['mame_prog'])
+
+        # >> Get a list of machines that can launch this SL ROM. User chooses.
+        machine_name = ''
+
+        # >> Launch machine using subprocess module
+        (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
+        log_info('_run_SL_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
+        log_info('_run_SL_machine() mame_dir     "{0}"'.format(mame_dir))
+        log_info('_run_SL_machine() mame_exec    "{0}"'.format(mame_exec))
+        log_info('_run_SL_machine() machine_name "{0}"'.format(machine_name))
+        log_info('_run_SL_machine() SL_name      "{0}"'.format(SL_name))
+        log_info('_run_SL_machine() ROM_name     "{0}"'.format(ROM_name))
 
     # ---------------------------------------------------------------------------------------------
     # Misc functions
