@@ -763,7 +763,7 @@ class Main:
         listitem = xbmcgui.ListItem(display_name, iconImage = icon)
         ICON_OVERLAY = 6
         # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title'   : display_name, 'Overlay' : ICON_OVERLAY } )
+        listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
 
         # --- Create context menu ---
         commands = []
@@ -789,7 +789,8 @@ class Main:
         listitem = xbmcgui.ListItem(display_name, iconImage = icon)
         ICON_OVERLAY = 6
         # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title' : display_name, 'Overlay' : ICON_OVERLAY })
+        listitem.setInfo('video', {'title'   : display_name,     'year'    : ROM['year'],
+                                   'studio'  : ROM['publisher'], 'overlay' : ICON_OVERLAY })
 
         # --- Create context menu ---
         commands = []
@@ -801,7 +802,7 @@ class Main:
 
         # --- Add row ---
         URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
-        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     # ---------------------------------------------------------------------------------------------
     # Information display
