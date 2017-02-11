@@ -1079,9 +1079,9 @@ class Main:
             kodi_dialog_OK('ROM directory does not exist.')
             return
         ROM_FN = ROM_path_FN.pjoin(machine_name + '.zip')
-        if not ROM_FN.exists():
-            kodi_dialog_OK('ROM "{0}" not found.'.format(ROM_FN.getBase()))
-            return
+        # if not ROM_FN.exists():
+        #     kodi_dialog_OK('ROM "{0}" not found.'.format(ROM_FN.getBase()))
+        #     return
 
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())

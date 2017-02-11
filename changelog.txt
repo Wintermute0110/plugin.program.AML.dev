@@ -2,9 +2,16 @@
 
 WIP      MAME and Software Lists Favourites.
 
+WIP      Allow user to choose default assets as AEL does.
+
 WIP      Display MAMEINFO.DAT in Machine context menu.
 
 WIP      Display HISTORY.DAT in Machine context menu.
+
+WIP      At launching, do not check ROMs for machines which doesn't have ROMs.
+         Requires loading machines database, which will slow down launching process a lot!
+         A hashed database of machines is necessary to speed up plugin.
+         Now, disable ROM checking.
 
 
 [B]Advanced Emulator Launcher | version 0.9.2 | xx March 2017[/B]
@@ -26,8 +33,6 @@ WIP      Scan Software Lists.
 
 WIP      Launch machines with software lists.
         
-WIP      Allow user to choose default assets as AEL does.
-
 FIX      Use SORT_METHOD_LABEL_IGNORE_FOLDERS insead of SORT_METHOD_LABEL. This avoids folders
          to be rendered first when sorting listitems alpahbetically.
 
