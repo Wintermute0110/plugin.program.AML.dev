@@ -858,12 +858,14 @@ class Main:
     def _command_setup_plugin(self):
         dialog = xbmcgui.Dialog()
         menu_item = dialog.select('Setup plugin',
-                                 ['Extract MAME.xml...',
-                                  'Build MAME database...',
-                                  'Build MAME indices/catalogs...',
-                                  'Build Software Lists indices/catalogs...', 
-                                  'Scan ROMs/CHDs/Samples...',
-                                  'Scan assets/artwork...'])
+                                 ['Extract MAME.xml ...',
+                                  'Build MAME database ...',
+                                  'Build MAME indices and catalogs ...',
+                                  'Build Software Lists indices and catalogs ...', 
+                                  'Scan MAME ROMs/CHDs/Samples ...',
+                                  'Scan MAME assets/artwork ...',
+                                  'Scan Software Lists ROMs ...',
+                                  'Scan Software Lists assets/artwork ...' ])
         if menu_item < 0: return
 
         # --- Extract MAME.xml ---
@@ -925,7 +927,7 @@ class Main:
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
         elif menu_item == 4:
-            log_info('_command_setup_plugin() Scanning ROMs/CHDs/Samples ...')
+            log_info('_command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
             
             # >> Get paths and check they exist
             if not self.settings['rom_path']:
@@ -1018,8 +1020,8 @@ class Main:
 
         # --- Scans assets/artwork ---
         elif menu_item == 5:
-            log_info('_command_setup_plugin() Scanning ROMs/CHDs/Samples ...')
-            
+            log_info('_command_setup_plugin() Scanning MAME assets/artwork ...')
+
             # >> Get assets directory. Abort if not configured/found.
             if not self.settings['assets_path']:
                 kodi_dialog_OK('Asset directory not configured. Aborting.')
@@ -1063,6 +1065,66 @@ class Main:
             fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
             kodi_busydialog_OFF()
             kodi_notify('Scanning of assets/artwork finished')
+
+        # --- Scan SL ROMs ---
+        elif menu_item == 6:
+            log_info('_command_setup_plugin() Scanning SL ROMs ...')
+
+            # >> Abort if SL hash path not configured.
+            if not self.settings['SL_hash_path']:
+                kodi_dialog_OK('Software Lists hash path not set. Scanning aborted.')
+                return
+            SL_hash_dir_FN = PATHS.SL_DB_DIR
+            log_info('_command_setup_plugin() SL hash dir OP {0}'.format(SL_hash_dir_FN.getOriginalPath()))
+            log_info('_command_setup_plugin() SL hash dir  P {0}'.format(SL_hash_dir_FN.getPath()))
+
+            # >> Abort if SL ROM dir not configured.
+            if not self.settings['SL_rom_path']:
+                kodi_dialog_OK('Software Lists ROM path not set. Scanning aborted.')
+                return
+            SL_ROM_dir_FN = FileName(self.settings['SL_rom_path'])
+            log_info('_command_setup_plugin() SL ROM dir OP {0}'.format(SL_ROM_dir_FN.getOriginalPath()))
+            log_info('_command_setup_plugin() SL ROM dir  P {0}'.format(SL_ROM_dir_FN.getPath()))
+
+            # >> Load SL catalog
+            SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())            
+            
+            # >> Traverse Software List, check if ROM exists, update and save database
+            pDialog = xbmcgui.DialogProgress()
+            pdialog_line1 = 'Scanning Sofware Lists ROMs ...'
+            pDialog.create('Advanced MAME Launcher', pdialog_line1)
+            pDialog.update(0)
+            total_files = len(SL_catalog_dic)
+            processed_files = 0
+            for SL_name in SL_catalog_dic:
+                log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
+                SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
+                
+                # >> Open database
+                # log_debug('File "{0}"'.format(SL_DB_FN.getPath()))
+                roms = fs_load_JSON_file(SL_DB_FN.getPath())
+
+                # >> Scan for ROMs
+                for rom_key, rom in roms.iteritems():
+                    this_SL_ROM_dir_FN = SL_ROM_dir_FN.pjoin(SL_name)
+                    SL_ROM_FN = this_SL_ROM_dir_FN.pjoin(rom_key + '.zip')
+                    # log_debug('Scanning "{0}"'.format(SL_ROM_FN.getPath()))
+                    if SL_ROM_FN.exists(): rom['status'] = 'R'
+                    else:                  rom['status'] = 'r'
+
+                # >> Update database
+                fs_write_JSON_file(SL_DB_FN.getPath(), roms)
+                
+                # >> Update progress
+                processed_files += 1
+                update_number = 100 * processed_files / total_files
+                pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+            pDialog.close()
+
+        # --- Scan SL assets/artwork ---
+        elif menu_item == 7:
+            log_info('_command_setup_plugin() Scanning ROMs/CHDs/Samples ...')
+            kodi_dialog_OK('Not coded yet. Sorry.')
 
     def _run_machine(self, machine_name):
         log_info('_run_machine() Launching MAME machine "{0}"'.format(machine_name))

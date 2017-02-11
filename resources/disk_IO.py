@@ -1188,7 +1188,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
     # --- Scan all XML files in Software Lists directory ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Building Sofware Lists indices/catalogs...')
+    pDialog.create('Advanced MAME Launcher', 'Building Sofware Lists indices/catalogs ...')
     SL_catalog_dic = {}
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
     total_files = len(SL_file_list)
@@ -1214,7 +1214,6 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
         
         # >> Update progress
         processed_files = processed_files + 1
-    pDialog.close()
 
     # --- Save Software List catalog ---
     fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
@@ -1236,3 +1235,4 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
                 SL_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
     pDialog.update(100)
     fs_write_JSON_file(PATHS.CATALOG_SL_PATH.getPath(), SL_catalog)
+    pDialog.close()

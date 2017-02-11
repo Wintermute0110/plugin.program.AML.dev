@@ -29,7 +29,7 @@ FEATURE  On filter `Machines by Software List`, substitute raw Software List nam
 
 WIP      Display MAME stdout/stderr.
 
-WIP      Scan Software Lists.
+FEATURE  Scan Software Lists.
 
 WIP      Launch machines with software lists.
         
