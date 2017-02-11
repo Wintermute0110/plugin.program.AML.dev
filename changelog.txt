@@ -31,7 +31,7 @@ WIP      Display MAME stdout/stderr.
 
 FEATURE  Scan Software Lists.
 
-WIP      Launch machines with software lists.
+FEATURE  Launch machines with software lists.
         
 FIX      Use SORT_METHOD_LABEL_IGNORE_FOLDERS insead of SORT_METHOD_LABEL. This avoids folders
          to be rendered first when sorting listitems alpahbetically.
