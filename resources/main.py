@@ -898,11 +898,8 @@ class Main:
             kodi_busydialog_OFF()
 
             # --- Generate indices ---
-            fs_build_MAME_indices(PATHS, machines, main_pclone_dic, control_dic)
+            fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic, control_dic)
             
-            # --- Generate catalogs ---
-            fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic, control_dic)
-
             # --- Write and update control dictionary ---
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_notify('Indices and catalogs built')
