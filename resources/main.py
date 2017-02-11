@@ -90,6 +90,7 @@ class AML_Paths:
         # >> Software Lists
         self.SL_DB_DIR                   = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')        
         self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
+        self.SL_MACHINES_PATH            = PLUGIN_DATA_DIR.pjoin('SoftwareLists_machines.json')
 PATHS = AML_Paths()
 
 class Main:

@@ -1185,20 +1185,18 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
     SL_dir_FN = FileName(settings['SL_hash_path'])
     log_debug('fs_build_SoftwareLists_index() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
 
-    # --- Scan all XML files in Software Lists directory ---
+    # --- Scan all XML files in Software Lists directory and save DB ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Building Sofware Lists indices/catalogs ...')
-    SL_catalog_dic = {}
+    pdialog_line1 = 'Building Sofware Lists indices/catalogs ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
     total_files = len(SL_file_list)
     processed_files = 0
+    SL_catalog_dic = {}
     for file in SL_file_list:
         log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
         FN = FileName(file)
-        pDialog.update(100 * processed_files / total_files,
-                       'Building Sofware Lists indices/catalogs',
-                       'File {0} ...'.format(FN.getBase()))
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
         SL_path_FN = FileName(file)
@@ -1213,10 +1211,32 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
         SL_catalog_dic[FN.getBase_noext()] = SL
         
         # >> Update progress
-        processed_files = processed_files + 1
-
-    # --- Save Software List catalog ---
+        processed_files += 1
+        pDialog.update(100 * processed_files / total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
     fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
+
+    # --- Make a list of machines that can launch each SL ---
+    log_info('Making Software List machine list ...')
+    pdialog_line1 = 'Rebuilding Software List machine list ...'
+    pDialog.update(0, pdialog_line1)
+    total_SL = len(SL_catalog_dic)
+    processed_SL = 0
+    SL_machines_dic = {}
+    for SL_name in SL_catalog_dic:
+        SL_machine_list = []
+        for machine_name, machine_dic in machines.iteritems():
+            if not machine_dic['softwarelists']: continue
+            for machine_SL_name in machine_dic['softwarelists']:
+                if machine_SL_name == SL_name:
+                    SL_machine_dic = {'machine' : machine_name, 
+                                      'device_props' : machine_dic['device_props']}
+                    SL_machine_list.append(SL_machine_dic)
+        SL_machines_dic[SL_name] = SL_machine_list
+
+        # >> Update progress
+        processed_SL += 1
+        pDialog.update(100 * processed_SL / total_SL, pdialog_line1, 'SL {0} ...'.format(SL_name))
+    fs_write_JSON_file(PATHS.SL_MACHINES_PATH.getPath(), SL_machines_dic)
 
     # --- Rebuild Machine by Software List catalog with knowledge of the SL proper name ---
     log_info('Making Software List catalog ...')
