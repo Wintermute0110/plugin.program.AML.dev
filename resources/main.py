@@ -1210,7 +1210,28 @@ class Main:
         mame_prog_FN = FileName(self.settings['mame_prog'])
 
         # >> Get a list of machines that can launch this SL ROM. User chooses.
-        machine_name = ''
+        SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+        SL_machine_list = SL_machines_dic[SL_name]
+        SL_machine_names_list = []
+        SL_machine_device_props_list = []
+        for machine_name in SL_machine_list: 
+            SL_machine_names_list.append(machine_name['machine'])
+            SL_machine_device_props_list.append(machine_name['device_props'])
+        dialog = xbmcgui.Dialog()
+        m_index = dialog.select('Select machine', SL_machine_names_list)
+        if m_index < 0: return
+        machine_name = SL_machine_names_list[m_index]
+        
+        # >> Select media if more than one device instance
+        if len(SL_machine_device_props_list[m_index]) > 1:
+            device_names_list = []
+            for device in SL_machine_device_props_list[m_index]: device_names_list.append(device['name'])
+            dialog = xbmcgui.Dialog()
+            d_index = dialog.select('Select device', device_names_list)
+            if d_index < 0: return
+            media_name = SL_machine_device_props_list[m_index][d_index]['name']
+        else:
+            media_name = SL_machine_device_props_list[m_index][0]['name']
 
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
@@ -1218,6 +1239,7 @@ class Main:
         log_info('_run_SL_machine() mame_dir     "{0}"'.format(mame_dir))
         log_info('_run_SL_machine() mame_exec    "{0}"'.format(mame_exec))
         log_info('_run_SL_machine() machine_name "{0}"'.format(machine_name))
+        log_info('_run_SL_machine() media_name   "{0}"'.format(media_name))
         log_info('_run_SL_machine() SL_name      "{0}"'.format(SL_name))
         log_info('_run_SL_machine() ROM_name     "{0}"'.format(ROM_name))
 
