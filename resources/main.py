@@ -1213,14 +1213,17 @@ class Main:
         SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
         SL_machine_list = SL_machines_dic[SL_name]
         SL_machine_names_list = []
+        SL_machine_desc_list = []
         SL_machine_device_props_list = []
         for machine_name in SL_machine_list: 
-            SL_machine_names_list.append(machine_name['description'])
+            SL_machine_names_list.append(machine_name['machine'])
+            SL_machine_desc_list.append(machine_name['description'])
             SL_machine_device_props_list.append(machine_name['device_props'])
         dialog = xbmcgui.Dialog()
-        m_index = dialog.select('Select machine', SL_machine_names_list)
+        m_index = dialog.select('Select machine', SL_machine_desc_list)
         if m_index < 0: return
         machine_name = SL_machine_names_list[m_index]
+        machine_desc = SL_machine_desc_list[m_index]
 
         # >> Select media if more than one device instance
         if len(SL_machine_device_props_list[m_index]) > 1:
@@ -1239,9 +1242,30 @@ class Main:
         log_info('_run_SL_machine() mame_dir     "{0}"'.format(mame_dir))
         log_info('_run_SL_machine() mame_exec    "{0}"'.format(mame_exec))
         log_info('_run_SL_machine() machine_name "{0}"'.format(machine_name))
+        log_info('_run_SL_machine() machine_desc "{0}"'.format(machine_desc))
         log_info('_run_SL_machine() media_name   "{0}"'.format(media_name))
         log_info('_run_SL_machine() SL_name      "{0}"'.format(SL_name))
         log_info('_run_SL_machine() ROM_name     "{0}"'.format(ROM_name))
+
+        # >> Prevent a console window to be shown in Windows. Not working yet!
+        if sys.platform == 'win32':
+            log_info('_run_SL_machine() Platform is win32. Creating _info structure')
+            _info = subprocess.STARTUPINFO()
+            _info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+            _info.wShowWindow = 1
+        else:
+            log_info('_run_SL_machine() _info is None')
+            _info = None
+
+        # >> Launch MAME
+        arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
+        log_info('arg_list = {0}'.format(arg_list))
+        log_info('_run_SL_machine() Calling subprocess.Popen()...')
+        with open(PATHS.MAME_STDOUT_PATH.getPath(), 'wb') as _stdout, \
+             open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as _stderr:
+            p = subprocess.Popen(arg_list, stdout = _stdout, stderr = _stderr, cwd = mame_dir, startupinfo = _info)
+        p.wait()
+        log_info('_run_SL_machine() Exiting function')
 
     # ---------------------------------------------------------------------------------------------
     # Misc functions
