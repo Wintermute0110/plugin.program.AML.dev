@@ -824,18 +824,21 @@ class Main:
         if not mname and not SLname:
             menu_kind = MENU_SIMPLE
             type = dialog.select('View ...',
-                                 ['MAME last execution stdout ({0} bytes)'.format(size_stdout),
+                                 ['View database information',
+                                  'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
         elif mname:
             menu_kind = MENU_MAME_DATA
             type = dialog.select('View ...',
                                  ['View MAME machine data',
+                                  'View database information',
                                   'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
         elif SLname:
             menu_kind = MENU_SL_DATA
             type = dialog.select('View ...',
                                  ['View Software List machine data',
+                                  'View database information',
                                   'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
         else:
@@ -955,6 +958,50 @@ class Main:
                     log_error('_command_view_machine() Exception rendering INFO window')
         else:
             type_nb = -1
+
+        # --- View database information and statistics ---
+        type_nb += 1
+        if type == type_nb:
+            # --- Load control dic ---
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            
+            # --- Main stuff ---
+            info_text  = '[COLOR orange]Main information[/COLOR]\n'
+            info_text += "AEL version: {0}\n".format(__addon_version__)
+            info_text += "MAME version: {0}\n".format(control_dic['mame_version'])
+            info_text += "Catver.ini version: {0}\n".format('Not coded yet')
+            info_text += "Catlist.ini version: {0}\n".format('Not coded yet')
+            info_text += "Genre.ini version: {0}\n".format('Not coded yet')
+            info_text += "nplayers.ini version: {0}\n".format('Not coded yet')
+
+            info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
+            info_text += "Machines: {0}\n".format(control_dic['total_machines'])
+            info_text += "Parents: {0}\n".format('Not coded yet')
+            info_text += "Clones: {0}\n".format('Not coded yet')
+            info_text += "Devices: {0}\n".format('Not coded yet')
+            info_text += "BIOS: {0}\n".format('Not coded yet')
+            info_text += "CHDs: {0}\n".format('Not coded yet')
+            info_text += "Samples: {0}\n".format('Not coded yet')
+            info_text += "ROMless: {0}\n".format('Not coded yet')
+            
+            info_text += '\n[COLOR orange]Software Lists ROM count[/COLOR]\n'
+            info_text += "Number of SLs: {0}\n".format('Not coded yet')
+            info_text += "Total ROMs in all SLs: {0}\n".format('Not coded yet')
+
+            info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
+            info_text += "You have xxx ROMs out of yyy (Missing zzz)\n"
+            info_text += "You have xxx SL ROMs out of yyy (Missing zzz)\n"
+
+            # --- Show information window ---
+            window_title = 'Database information and statistics'
+            try:
+                xbmc.executebuiltin('ActivateWindow(10147)')
+                window = xbmcgui.Window(10147)
+                xbmc.sleep(100)
+                window.getControl(1).setLabel(window_title)
+                window.getControl(5).setText(info_text)
+            except:
+                log_error('_command_view_machine() Exception rendering INFO window')
 
         # --- View MAME stdout ---
         type_nb += 1

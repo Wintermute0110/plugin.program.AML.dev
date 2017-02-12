@@ -1,5 +1,7 @@
 [B]Advanced Emulator Launcher | version 0.9.3 | xx March 2017[/B]
 
+PARTIAL  Show database statistics.
+
 WIP      MAME and Software Lists Favourites.
 
 WIP      Allow user to choose default assets as AEL does.
