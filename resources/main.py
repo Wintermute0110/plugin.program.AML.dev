@@ -1330,11 +1330,15 @@ class Main:
         log_info('_run_machine() Exiting function')
 
     #
-    # Launch SL machine.
-    # Example: $ mame smspal -cart sonic
+    # Launch SL machine. See http://docs.mamedev.org/usingmame/usingmame.html
+    # Syntax: $ mame <system> <software>
+    # Example: $ mame smspal sonic
     # Requirements:
-    # A) machine_name
-    # B) media_name
+    #   A) machine_name
+    #   B) media_name
+    #
+    # Software list <part> tag has an interface attribute that tells how to virtually plug the
+    # cartridge/cassete/disk/etc. There is not need to media type in MAME commandline.
     #
     def _run_SL_machine(self, SL_name, ROM_name):
         log_info('_run_SL_machine() Launching SL machine ...')
@@ -1359,15 +1363,16 @@ class Main:
         machine_desc = SL_machine_desc_list[m_index]
 
         # >> Select media if more than one device instance
-        if len(SL_machine_device_props_list[m_index]) > 1:
-            device_names_list = []
-            for device in SL_machine_device_props_list[m_index]: device_names_list.append(device['name'])
-            dialog = xbmcgui.Dialog()
-            d_index = dialog.select('Select device', device_names_list)
-            if d_index < 0: return
-            media_name = SL_machine_device_props_list[m_index][d_index]['name']
-        else:
-            media_name = SL_machine_device_props_list[m_index][0]['name']
+        # >> Not necessary. MAME knows what media to plug the SL ROM into.
+        # if len(SL_machine_device_props_list[m_index]) > 1:
+        #     device_names_list = []
+        #     for device in SL_machine_device_props_list[m_index]: device_names_list.append(device['name'])
+        #     dialog = xbmcgui.Dialog()
+        #     d_index = dialog.select('Select device', device_names_list)
+        #     if d_index < 0: return
+        #     media_name = SL_machine_device_props_list[m_index][d_index]['name']
+        # else:
+        #     media_name = SL_machine_device_props_list[m_index][0]['name']
 
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
@@ -1376,7 +1381,7 @@ class Main:
         log_info('_run_SL_machine() mame_exec    "{0}"'.format(mame_exec))
         log_info('_run_SL_machine() machine_name "{0}"'.format(machine_name))
         log_info('_run_SL_machine() machine_desc "{0}"'.format(machine_desc))
-        log_info('_run_SL_machine() media_name   "{0}"'.format(media_name))
+        # log_info('_run_SL_machine() media_name   "{0}"'.format(media_name))
         log_info('_run_SL_machine() SL_name      "{0}"'.format(SL_name))
         log_info('_run_SL_machine() ROM_name     "{0}"'.format(ROM_name))
 
@@ -1391,7 +1396,8 @@ class Main:
             _info = None
 
         # >> Launch MAME
-        arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
+        # arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
+        arg_list = [mame_prog_FN.getPath(), machine_name, ROM_name]
         log_info('arg_list = {0}'.format(arg_list))
         log_info('_run_SL_machine() Calling subprocess.Popen()...')
         with open(PATHS.MAME_STDOUT_PATH.getPath(), 'wb') as _stdout, \
