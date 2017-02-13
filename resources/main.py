@@ -402,29 +402,15 @@ class Main:
         display_name = machine['description']
 
         # --- Render a Parent only list ---
-        if flag_parent_list:
+        if flag_parent_list and num_clones > 0:
             # >> Machine has clones
-            if num_clones > 0:
-                display_name += '  [COLOR orange]({0} clones)[/COLOR]'.format(num_clones)
-            # >> Machine has no clones
-            else:
-                # --- Mark Status ---
-                status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'],
-                                               machine['status_SAM'], machine['status_SL'])
-                display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
-
-                # --- Mark Devices, BIOS and clones ---
-                if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-                if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-                if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-
-                # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
-                if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-                elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+            display_name += '  [COLOR orange]({0} clones)[/COLOR]'.format(num_clones)
         else:
+            # >> Machine has no clones
             # --- Mark Status ---
-            status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'],
-                                           machine['status_SAM'], machine['status_SL'])
+            status = '{0}{1}{2}{3}{4}'.format(machine['status_ROM'], machine['status_CHD'],
+                                              machine['status_SAM'], machine['status_SL'],
+                                              machine['status_Device'])
             display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
             # --- Mark Devices, BIOS and clones ---
@@ -603,29 +589,15 @@ class Main:
         display_name = machine['description']
 
         # --- Render a Parent only list ---
-        if flag_parent_list:
+        if flag_parent_list and num_clones > 0:
             # >> Machine has clones
-            if num_clones > 0:
-                display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
-            # >> Machine has no clones
-            else:
-                # --- Mark Status ---
-                status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'],
-                                               machine['status_SAM'], machine['status_SL'])
-                display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
-
-                # --- Mark Devices, BIOS and clones ---
-                if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-                if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-                if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-
-                # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
-                if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-                elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+            display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
         else:
+            # >> Machine has no clones
             # --- Mark Status ---
-            status = '{0}{1}{2}{3}'.format(machine['status_ROM'], machine['status_CHD'],
-                                           machine['status_SAM'], machine['status_SL'])
+            status = '{0}{1}{2}{3}{4}'.format(machine['status_ROM'], machine['status_CHD'],
+                                              machine['status_SAM'], machine['status_SL'],
+                                              machine['status_Device'])
             display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
 
             # --- Mark Devices, BIOS and clones ---

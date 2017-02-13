@@ -43,6 +43,10 @@ except:
 #   ?  Machine has ROM/CHD/Samples and ROM/CHD/Samples have not been scanned
 #   r  Machine has ROM/CHD/Samples and ROM/CHD/Samples doesn't exist
 #   R  Machine has ROM/CHD/Samples and ROM/CHD/Samples exists | Machine has Software Lists
+# Status device flag:
+#   -  Machine has no devices
+#   d  Machine has device/s but are not mandatory (can be booted without the device).
+#   D  Machine has device/s and must be plugged in order to boot.
 #
 def fs_new_machine():
     m = {
@@ -75,8 +79,9 @@ def fs_new_machine():
         'status_CHD'     : '-',
         'status_SAM'     : '-',
         'status_SL'      : '-',
+        'status_Device'  : '-',
         'device_list'    : [],  # List of <instance name="cartridge1">. Ignore briefname
-        'device_props'   : []   # {'name' : '', 'briefname' : '', 'extensions' : ['', '', ...]}
+        'device_tags'    : []
     }
 
     return m
@@ -525,20 +530,25 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
         # >> Device tag for machines that support loading external files
         elif event == 'start' and elem.tag == 'device':
-            device_type      = elem.attrib['type']
-            device_name      = ''
-            device_briefname = ''
-            extension_list   = []
+            device_type      = elem.attrib['type'] # Mandatory attribute
+            device_tag       = elem.attrib['tag']       if 'tag'       in elem.attrib else ''
+            device_mandatory = elem.attrib['mandatory'] if 'mandatory' in elem.attrib else ''
+            device_interface = elem.attrib['interface'] if 'interface' in elem.attrib else ''
+            # >> Transform device_mandatory into bool
+            if device_mandatory and device_mandatory == '1': device_mandatory = True
+            else:                                            device_mandatory = False
 
             # >> Iterate children of <device> and search for <instance> tags
             instance_tag_found = False
+            i_name = i_briefname = ''
+            exts_list   = []
             for device_child in elem:
                 if device_child.tag == 'instance':
-                    device_name      = device_child.attrib['name']
-                    device_briefname = device_child.attrib['briefname']
+                    i_name      = device_child.attrib['name']
+                    i_briefname = device_child.attrib['briefname']
                     instance_tag_found = True
                 elif device_child.tag == 'extension':
-                    extension_list.append(device_child.attrib['name'])
+                    exts_list.append(device_child.attrib['name'])
 
             # >> NOTE Some machines have no instance inside <device>, for example 2020bb
             # >>      I don't know how to launch those machines
@@ -547,9 +557,14 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
                 device_type = '{0} (NI)'.format(device_type)
 
             # >> Add device to database
-            props_dic = {'name' : device_name, 'briefname' : device_briefname, 'extensions' : extension_list}
+            device_tags_dic = {'d_tag'       : device_tag,
+                               'd_mandatory' : device_mandatory,
+                               'd_interface' : device_interface,
+                               'i_name'      : i_name,
+                               'i_briefname' : i_briefname, 
+                               'exts'        : exts_list }
             machine['device_list'].append(device_type)
-            machine['device_props'].append(props_dic)
+            machine['device_tags'].append(device_tags_dic)
 
         # --- <machine> tag closing. Add new machine to database ---
         elif event == 'end' and elem.tag == 'machine':
@@ -586,6 +601,21 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             else:                        machine['status_SAM'] = '-'
             if machine['softwarelists']: machine['status_SL']  = 'L'
             else:                        machine['status_SL']  = '-'
+            if machine['device_list']:
+                num_dev_mandatory = 0
+                for i in range(len(machine['device_list'])):
+                    device = machine['device_list'][i]
+                    tags   = machine['device_tags'][i]
+                    if tags['d_mandatory']: 
+                        machine['status_Device']  = 'D'
+                        num_dev_mandatory += 1
+                    else: 
+                        machine['status_Device']  = 'd'
+                if num_dev_mandatory > 2:
+                    message = 'Machine {0} has {1} mandatory devices'.format(machine_name, num_dev_mandatory)
+                    raise CriticalError(message)
+            else:
+                machine['status_Device']  = '-'
 
             # >> Add new machine
             machines[machine_name] = machine
