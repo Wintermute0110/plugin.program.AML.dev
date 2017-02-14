@@ -140,7 +140,7 @@ class Main:
             return
 
         # ~~~ Routing step 2 ~~~
-        if 'list' in args:
+        if 'list' in args and not 'command' in args:
             list_name = args['list'][0]
             if 'parent' in args:
                 parent_name = args['parent'][0]
@@ -148,7 +148,7 @@ class Main:
             else:
                 self._render_machine_parent_list(list_name)
 
-        elif 'clist' in args:
+        elif 'clist' in args and not 'command' in args:
             clist_name = args['clist'][0]
 
             if clist_name == 'Catver':
@@ -242,6 +242,19 @@ class Main:
                 SLname = args['SLname'][0] if 'SLname' in args else ''
                 SLROM  = args['SLROM'][0]  if 'SLROM' in args else ''
                 self._command_view(mname, SLname, SLROM)
+            elif command == 'DISPLAY_SETTINGS':
+                clist   = args['clist'][0]   if 'clist' in args else ''
+                catalog = args['catalog'][0] if 'catalog' in args else ''
+                mname   = args['mname'][0]   if 'mname' in args else ''
+                self._command_display_settings(clist, catalog, mname)
+            elif command == 'ADD_MAME_FAV':
+                self._command_add_mame_fav(args['Machine'][0])
+            elif command == 'ADD_SL_FAV':
+                self._command_add_sl_fav(args['SL'][0], args['ROM'][0])
+            elif command == 'SHOW_MAME_FAVS':
+                self._command_show_mame_fav()
+            elif command == 'SHOW_SL_FAVS':
+                self._command_show_sl_fav()
             else:
                 log_error('Unknown command "{0}"'.format(command))
 
@@ -289,29 +302,31 @@ class Main:
     # NOTE Devices are excluded from main PClone list.
     def _render_root_list(self):
         # >> Code Machines/Manufacturer/SF first. Rest are variations of those three.
-        self._render_root_list_row('Machines (with coin slot)',      self._misc_url_1_arg('list',  'Machines'))
-        self._render_root_list_row('Machines (no coin slot)',        self._misc_url_1_arg('list',  'NoCoin'))
-        self._render_root_list_row('Machines (mechanical)',          self._misc_url_1_arg('list',  'Mechanical'))
-        self._render_root_list_row('Machines (dead)',                self._misc_url_1_arg('list',  'Dead'))
-        self._render_root_list_row('Machines [with no ROMs]',        self._misc_url_1_arg('list',  'NoROM'))
-        self._render_root_list_row('Machines [with CHDs]',           self._misc_url_1_arg('list',  'CHD'))
-        self._render_root_list_row('Machines [with Samples]',        self._misc_url_1_arg('list',  'Samples'))
-        self._render_root_list_row('Machines [BIOS]',                self._misc_url_1_arg('list',  'BIOS'))
-        # self._render_root_list_row('Machines [Devices]',             self._misc_url_1_arg('list',  'Devices'))
-        self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('clist', 'Catver'))
-        self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('clist', 'Catlist'))
-        self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('clist', 'Genre'))
-        self._render_root_list_row('Machines by Number of players',  self._misc_url_1_arg('clist', 'NPlayers'))
-        self._render_root_list_row('Machines by Manufacturer',       self._misc_url_1_arg('clist', 'Manufacturer'))
-        self._render_root_list_row('Machines by Year',               self._misc_url_1_arg('clist', 'Year'))
-        self._render_root_list_row('Machines by Driver',             self._misc_url_1_arg('clist', 'Driver'))
-        self._render_root_list_row('Machines by Control Type',       self._misc_url_1_arg('clist', 'Controls'))
-        self._render_root_list_row('Machines by Display Tag',        self._misc_url_1_arg('clist', 'Display_Tag'))
-        self._render_root_list_row('Machines by Display Type',       self._misc_url_1_arg('clist', 'Display_Type'))
-        self._render_root_list_row('Machines by Display Rotation',   self._misc_url_1_arg('clist', 'Display_Rotate'))
-        self._render_root_list_row('Machines by Device',             self._misc_url_1_arg('clist', 'Devices'))
-        self._render_root_list_row('Machines by Software List',      self._misc_url_1_arg('clist', 'BySL'))
-        self._render_root_list_row('Software Lists',                 self._misc_url_1_arg('clist', 'SL'))
+        self._render_root_list_row('Machines (with coin slot)',       self._misc_url_1_arg('list',  'Machines'))
+        self._render_root_list_row('Machines (no coin slot)',         self._misc_url_1_arg('list',  'NoCoin'))
+        self._render_root_list_row('Machines (mechanical)',           self._misc_url_1_arg('list',  'Mechanical'))
+        self._render_root_list_row('Machines (dead)',                 self._misc_url_1_arg('list',  'Dead'))
+        self._render_root_list_row('Machines [with no ROMs]',         self._misc_url_1_arg('list',  'NoROM'))
+        self._render_root_list_row('Machines [with CHDs]',            self._misc_url_1_arg('list',  'CHD'))
+        self._render_root_list_row('Machines [with Samples]',         self._misc_url_1_arg('list',  'Samples'))
+        self._render_root_list_row('Machines [BIOS]',                 self._misc_url_1_arg('list',  'BIOS'))
+        # self._render_root_list_row('Machines [Devices]',              self._misc_url_1_arg('list',  'Devices'))
+        self._render_root_list_row('Machines by Category (Catver)',   self._misc_url_1_arg('clist', 'Catver'))
+        self._render_root_list_row('Machines by Category (Catlist)',  self._misc_url_1_arg('clist', 'Catlist'))
+        self._render_root_list_row('Machines by Category (Genre)',    self._misc_url_1_arg('clist', 'Genre'))
+        self._render_root_list_row('Machines by Number of players',   self._misc_url_1_arg('clist', 'NPlayers'))
+        self._render_root_list_row('Machines by Manufacturer',        self._misc_url_1_arg('clist', 'Manufacturer'))
+        self._render_root_list_row('Machines by Year',                self._misc_url_1_arg('clist', 'Year'))
+        self._render_root_list_row('Machines by Driver',              self._misc_url_1_arg('clist', 'Driver'))
+        self._render_root_list_row('Machines by Control Type',        self._misc_url_1_arg('clist', 'Controls'))
+        self._render_root_list_row('Machines by Display Tag',         self._misc_url_1_arg('clist', 'Display_Tag'))
+        self._render_root_list_row('Machines by Display Type',        self._misc_url_1_arg('clist', 'Display_Type'))
+        self._render_root_list_row('Machines by Display Rotation',    self._misc_url_1_arg('clist', 'Display_Rotate'))
+        self._render_root_list_row('Machines by Device',              self._misc_url_1_arg('clist', 'Devices'))
+        self._render_root_list_row('Machines by Software List',       self._misc_url_1_arg('clist', 'BySL'))
+        self._render_root_list_row('Software Lists',                  self._misc_url_1_arg('clist', 'SL'))
+        self._render_root_list_row('<Favourite MAME machines>',       self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
+        self._render_root_list_row('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_root_list_row(self, root_name, root_URL):
@@ -455,7 +470,11 @@ class Main:
         # --- Create context menu ---
         commands = []
         URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'mname', machine_name)
+        URL_display = self._misc_url_3_arg_RunPlugin('command', 'DISPLAY_SETTINGS', 'clist', list_name, 'mname', machine_name)
+        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'Machine', machine_name)
         commands.append(('View', URL_view ))
+        commands.append(('Display settings', URL_display ))
+        commands.append(('Add machine to MAME Favourites', URL_fav ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
@@ -641,8 +660,12 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'mname', machine_name)
+        URL_view    = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'mname', machine_name)
+        URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS', 'clist', clist_name, 'catalog', catalog_name, 'mname', machine_name)
+        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'Machine', machine_name)
         commands.append(('View',  URL_view ))
+        commands.append(('Display settings', URL_display ))
+        commands.append(('Add machine to MAME Favourites', URL_fav ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
@@ -767,7 +790,9 @@ class Main:
         # --- Create context menu ---
         commands = []
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SLname', SL_name, 'SLROM', rom_name)
+        URL_fav = self._misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
         commands.append(('View', URL_view ))
+        commands.append(('Add ROM to SL Favourites', URL_fav ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
@@ -1017,6 +1042,34 @@ class Main:
                 window.getControl(5).setText(info_text)
             except:
                 log_error('_command_view_machine() Exception rendering INFO window')
+
+    def _command_display_settings(self, clist, catalog, mname):
+        log_debug('_command_display_settings() clist   "{0}"'.format(clist))
+        log_debug('_command_display_settings() catalog "{0}"'.format(catalog))
+        log_debug('_command_display_settings() mname   "{0}"'.format(mname))
+
+        dialog = xbmcgui.Dialog()
+        menu_item = dialog.select('Display settings',
+                                 ['Display mode',
+                                  'Default Icon',   'Default Fanart',
+                                  'Default Banner', 'Default Poster',
+                                  'Default Clearlogo'])
+        if menu_item < 0: return
+
+    def _command_add_mame_fav(self, Machine_name):
+        log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(Machine_name))
+
+    def _command_add_sl_fav(self, SL_name, ROM_name):
+        log_debug('_command_add_sl_fav() SL_name  "{0}"'.format(SL_name))
+        log_debug('_command_add_sl_fav() ROM_name "{0}"'.format(ROM_name))
+
+    def _command_show_mame_fav(self):
+        log_debug('_command_show_mame_fav() Starting ...')
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _command_show_sl_fav(self):
+        log_debug('_command_show_sl_fav() Starting ...')
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases
