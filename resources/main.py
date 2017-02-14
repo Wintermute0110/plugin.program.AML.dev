@@ -947,9 +947,7 @@ class Main:
             info_text += "nplayers.ini version: {0}\n".format(control_dic['nplayers_version'])
 
             info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
-            info_text += "Machines: {0}\n".format(control_dic['processed_machines'])
-            info_text += "Parents: {0}\n".format(control_dic['parent_machines'])
-            info_text += "Clones: {0}\n".format(control_dic['clone_machines'])
+            info_text += "Machines: {0} (Parents {1} / Clones {2})\n".format(control_dic['processed_machines'], control_dic['parent_machines'], control_dic['clone_machines'])
             info_text += "Devices: {0}\n".format(control_dic['devices_machines'])
             info_text += "BIOS: {0}\n".format(control_dic['BIOS_machines'])
             info_text += "Coin: {0}\n".format(control_dic['coin_machines'])
@@ -966,9 +964,9 @@ class Main:
             info_text += "Total ROMs in all SLs: {0}\n".format(control_dic['num_SL_ROMs'])
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
-            info_text += "You have xxx ROMs out of yyy (Missing zzz)\n"
-            info_text += "You have xxx CHDs out of yyy (Missing zzz)\n"
-            info_text += "You have xxx Samples out of yyy (Missing zzz)\n"
+            info_text += "You have {0} ROMs out of {1} (Missing {2})\n".format(control_dic['ROMs_have'], control_dic['ROMs_total'], control_dic['ROMs_missing'])
+            info_text += "You have {0} CHDs out of {1} (Missing {2})\n".format(control_dic['CHDs_have'], control_dic['CHDs_total'], control_dic['CHDs_missing'])
+            info_text += "You have {0} Samples out of {1} (Missing {2})\n".format(control_dic['Samples_have'], control_dic['Samples_total'], control_dic['Samples_missing'])
             info_text += "You have xxx SL ROMs out of yyy (Missing zzz)\n"
 
             # --- Show information window ---
@@ -1124,9 +1122,10 @@ class Main:
             else:
                 kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
 
-            # >> Load machine database
+            # >> Load machine database and control_dic
             kodi_busydialog_ON()
-            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            machines    = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             kodi_busydialog_OFF()
 
             # >> Iterate machines, check if ROMs exits. Update status field
@@ -1135,41 +1134,61 @@ class Main:
             pDialog.create('Advanced MAME Launcher', 'Scanning MAME ROMs...')
             total_machines = len(machines)
             processed_machines = 0
+            ROMs_have    = ROMs_missing    = ROMs_total    = 0
+            CHDs_have    = CHDs_missing    = CHDs_total    = 0
+            Samples_have = Samples_missing = Samples_total = 0
             for key, machine in machines.iteritems():
                 machine = machines[key]
                 # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
 
                 # >> Scan ROMs
                 if machine['hasROM']:
+                    ROMs_total += 1
                     # >> Machine has ROM. Get ROM filename and check if file exist
                     ROM_FN = ROM_path_FN.pjoin(key + '.zip')
-                    if ROM_FN.exists(): machine['status_ROM'] = 'R'
-                    else:               machine['status_ROM'] = 'r'
+                    if ROM_FN.exists():
+                        machine['status_ROM'] = 'R'
+                        ROMs_have += 1
+                    else:
+                        machine['status_ROM'] = 'r'
+                        ROMs_missing += 1
                 else:
                     machine['status_ROM'] = '-'
                     
                 # >> Scan CHDs
                 if machine['CHDs']:
+                    CHDs_total += 1
                     if scan_CHDs:
                         hasCHD_list = [False] * len(machine['CHDs'])
                         for idx, CHD_name in enumerate(machine['CHDs']):
                             CHD_FN = CHD_path_FN.pjoin(CHD_name + '.chd')
                             if CHD_FN.exists(): hasCHD_list[idx] = True
-                        if all(hasCHD_list): machine['status_CHD'] = 'C'
-                        else:                machine['status_CHD'] = 'c'
+                        if all(hasCHD_list):
+                            machine['status_CHD'] = 'C'
+                            CHDs_have += 1
+                        else:
+                            machine['status_CHD'] = 'c'
+                            CHDs_missing += 1
                     else:
                         machine['status_CHD'] = 'c'
+                        CHDs_missing += 1
                 else:
                     machine['status_CHD'] = '-'
 
                 # >> Scan Samples
                 if machine['sampleof']:
-                    if scan_CHDs:
+                    Samples_total += 1
+                    if scan_Samples:
                         Sample_FN = Samples_path_FN.pjoin(key + '.zip')
-                        if Sample_FN.exists(): machine['status_SAM'] = 'S'
-                        else:                  machine['status_SAM'] = 's'
+                        if Sample_FN.exists():
+                            machine['status_SAM'] = 'S'
+                            Samples_have += 1
+                        else:
+                            machine['status_SAM'] = 's'
+                            Samples_missing += 1
                     else:
                         machine['status_SAM'] = 's'
+                        Samples_missing += 1
                 else:
                     machine['status_SAM'] = '-'
 
@@ -1178,9 +1197,21 @@ class Main:
                 pDialog.update(100 * processed_machines / total_machines)
             pDialog.close()
 
+            # >> Update statistics
+            control_dic['ROMs_have']       = ROMs_have
+            control_dic['ROMs_missing']    = ROMs_missing
+            control_dic['ROMs_total']      = ROMs_total
+            control_dic['CHDs_have']       = CHDs_have
+            control_dic['CHDs_missing']    = CHDs_missing
+            control_dic['CHDs_total']      = CHDs_total
+            control_dic['Samples_have']    = Samples_have
+            control_dic['Samples_missing'] = Samples_missing
+            control_dic['Samples_total']   = Samples_total
+
             # >> Save database
             kodi_busydialog_ON()
             fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_busydialog_OFF()
             kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 

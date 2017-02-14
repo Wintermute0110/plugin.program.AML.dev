@@ -1358,5 +1358,4 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     # --- SL statistics and save control_dic ---
     control_dic['num_SL_files'] = processed_files
     control_dic['num_SL_ROMs']  = num_SL_ROMs
-
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
