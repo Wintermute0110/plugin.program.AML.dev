@@ -1275,7 +1275,9 @@ def fs_load_SL_XML(xml_filename):
 # -------------------------------------------------------------------------------------------------
 # SL_catalog = { 'name' : {'display_name': u'', 'rom_count' : int, 'rom_DB_noext' : u'' }, ...}
 #
-def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
+# Saves SL_INDEX_PATH, SL_MACHINES_PATH, CATALOG_SL_PATH, MAIN_CONTROL_PATH, SL JSON files.
+#
+def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, control_dic):
     SL_dir_FN = FileName(settings['SL_hash_path'])
     log_debug('fs_build_SoftwareLists_index() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
 
@@ -1287,6 +1289,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
     total_files = len(SL_file_list)
     processed_files = 0
+    num_SL_ROMs = 0
     SL_catalog_dic = {}
     for file in SL_file_list:
         log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
@@ -1297,11 +1300,10 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
         (roms, num_roms, display_name) = fs_load_SL_XML(SL_path_FN.getPath())
         output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json')
         fs_write_JSON_file(output_FN.getPath(), roms)
+        num_SL_ROMs += len(roms)
 
         # >> Add software list to catalog
-        SL = {'display_name': display_name,
-              'rom_count' : num_roms,
-              'rom_DB_noext' : FN.getBase_noext()}
+        SL = {'display_name': display_name, 'rom_count' : num_roms, 'rom_DB_noext' : FN.getBase_noext()}
         SL_catalog_dic[FN.getBase_noext()] = SL
 
         # >> Update progress
@@ -1316,6 +1318,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
     total_SL = len(SL_catalog_dic)
     processed_SL = 0
     SL_machines_dic = {}
+    # Revise this algortihm! I think is not working well...
     for SL_name in SL_catalog_dic:
         SL_machine_list = []
         for machine_name, machine_dic in machines.iteritems():
@@ -1351,3 +1354,9 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic):
     pDialog.update(100)
     fs_write_JSON_file(PATHS.CATALOG_SL_PATH.getPath(), SL_catalog)
     pDialog.close()
+
+    # --- SL statistics and save control_dic ---
+    control_dic['num_SL_files'] = processed_files
+    control_dic['num_SL_ROMs']  = num_SL_ROMs
+
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)

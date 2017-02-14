@@ -962,8 +962,8 @@ class Main:
             info_text += "Samples: {0}\n".format(control_dic['samples_machines'])
 
             info_text += '\n[COLOR orange]Software Lists ROM count[/COLOR]\n'
-            info_text += "Number of SLs: {0}\n".format('Not coded yet')
-            info_text += "Total ROMs in all SLs: {0}\n".format('Not coded yet')
+            info_text += "Number of SL files: {0}\n".format(control_dic['num_SL_files'])
+            info_text += "Total ROMs in all SLs: {0}\n".format(control_dic['num_SL_ROMs'])
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
             info_text += "You have xxx ROMs out of yyy (Missing zzz)\n"
@@ -1084,10 +1084,11 @@ class Main:
             kodi_busydialog_ON()
             machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
             main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             kodi_busydialog_OFF()
 
             # --- Build Software List indices ---
-            fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic)
+            fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic, control_dic)
             kodi_notify('Software Lists indices and catalogs built')
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
