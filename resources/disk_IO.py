@@ -190,8 +190,7 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
     # -----------------------------------------------------------------------------
     control_dic = {
         'mame_version'   : 'Unknown. MAME database not built',
-        'total_machines' : total_machines,
-        'num_machines'   : 0,
+        'total_machines' : total_machines
     }
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
@@ -218,6 +217,7 @@ def fs_count_MAME_Machines(PATHS):
 # -------------------------------------------------------------------------------------------------
 def fs_load_Catver_ini(filename):
     log_info('fs_load_Catver_ini() Parsing "{0}"'.format(filename))
+    catver_version = 'Not found'
     categories_dic = {}
     categories_set = set()
     __debug_do_list_categories = False
@@ -235,6 +235,9 @@ def fs_load_Catver_ini(filename):
         stripped_line = cat_line.strip()
         if __debug_do_list_categories: print('Line "' + stripped_line + '"')
         if read_status == 0:
+            # >> Look for Catver version
+            m = re.search(r'CatVer ([0-9\.]+) / ', stripped_line)
+            if m: catver_version = m.group(1)
             if stripped_line == '[Category]':
                 if __debug_do_list_categories: print('Found [Category]')
                 read_status = 1
@@ -256,13 +259,15 @@ def fs_load_Catver_ini(filename):
         else:
             raise CriticalError('Unknown read_status FSM value')
     f.close()
+    log_info('fs_load_Catver_ini() Version "{0}"'.format(catver_version))
     log_info('fs_load_Catver_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
     log_info('fs_load_Catver_ini() Number of categories {0:6d}'.format(len(categories_set)))
 
-    return categories_dic
+    return (categories_dic, catver_version)
 
 def fs_load_Catlist_ini(filename):
     log_info('fs_load_Catlist_ini() Parsing "{0}"'.format(filename))
+    catlist_version = 'Not found'
     catlist_dic = {}
     catlist_set = set()
     try:
@@ -273,7 +278,11 @@ def fs_load_Catlist_ini(filename):
     for file_line in f:
         stripped_line = file_line.strip()
         # Skip comments: lines starting with ';;'
-        if re.search(r'^;;', stripped_line): continue
+        # Look for version in comments
+        if re.search(r'^;;', stripped_line):
+            m = re.search(r'Catlist.ini ([0-9\.]+) / ', stripped_line)
+            if m: catlist_version = m.group(1)
+            continue
         # Skip blanks
         if stripped_line == '': continue
         # New category
@@ -285,13 +294,15 @@ def fs_load_Catlist_ini(filename):
             machine_name = stripped_line
             catlist_dic[machine_name] = current_category
     f.close()
+    log_info('fs_load_Catlist_ini() Version "{0}"'.format(catlist_version))
     log_info('fs_load_Catlist_ini() Number of machines   {0:6d}'.format(len(catlist_dic)))
     log_info('fs_load_Catlist_ini() Number of categories {0:6d}'.format(len(catlist_set)))
 
-    return catlist_dic
+    return (catlist_dic, catlist_version)
 
 def fs_load_Genre_ini(filename):
     log_info('fs_load_Genre_ini() Parsing "{0}"'.format(filename))
+    genre_version = 'Not found'
     genre_dic = {}
     genre_set = set()
     try:
@@ -302,7 +313,10 @@ def fs_load_Genre_ini(filename):
     for file_line in f:
         stripped_line = file_line.strip()
         # Skip comments: lines starting with ';;'
-        if re.search(r'^;;', stripped_line): continue
+        if re.search(r'^;;', stripped_line):
+            m = re.search(r'Genre.ini ([0-9\.]+) / ', stripped_line)
+            if m: genre_version = m.group(1)
+            continue
         # Skip blanks
         if stripped_line == '': continue
         # New category
@@ -313,17 +327,19 @@ def fs_load_Genre_ini(filename):
         else:
             machine_name = stripped_line
             genre_dic[machine_name] = current_category
-    f.close()
+    f.close
+    log_info('fs_load_Genre_ini() Version "{0}"'.format(genre_version))
     log_info('fs_load_Genre_ini() Number of machines   {0:6d}'.format(len(genre_dic)))
     log_info('fs_load_Genre_ini() Number of categories {0:6d}'.format(len(genre_set)))
 
-    return genre_dic
+    return (genre_dic, genre_version)
 
 # -------------------------------------------------------------------------------------------------
 # Load nplayers.ini. Structure similar to catver.ini
 # -------------------------------------------------------------------------------------------------
 def fs_load_nplayers_ini(filename):
     log_info('fs_load_nplayers_ini() Parsing "{0}"'.format(filename))
+    nplayers_version = 'Not found'
     categories_dic = {}
     categories_set = set()
     __debug_do_list_categories = False
@@ -341,6 +357,8 @@ def fs_load_nplayers_ini(filename):
         stripped_line = cat_line.strip()
         if __debug_do_list_categories: print('Line "' + stripped_line + '"')
         if read_status == 0:
+            m = re.search(r'NPlayers ([0-9\.]+) / ', stripped_line)
+            if m: nplayers_version = m.group(1)
             if stripped_line == '[NPlayers]':
                 if __debug_do_list_categories: print('Found [NPlayers]')
                 read_status = 1
@@ -362,25 +380,27 @@ def fs_load_nplayers_ini(filename):
         else:
             raise CriticalError('Unknown read_status FSM value')
     f.close()
+    log_info('fs_load_nplayers_ini() Version "{0}"'.format(nplayers_version))
     log_info('fs_load_nplayers_ini() Number of machines           {0:6d}'.format(len(categories_dic)))
     log_info('fs_load_nplayers_ini() Number of nplayer categories {0:6d}'.format(len(categories_set)))
 
-    return categories_dic
+    return (categories_dic, nplayers_version)
 
 # -------------------------------------------------------------------------------------------------
+# Saves MAIN_DB_PATH, MAIN_PCLONE_DIC_PATH, MAIN_CONTROL_PATH, MAIN_ASSETS_DB_PATH
+#
 STOP_AFTER_MACHINES = 100000
 def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # --- Load Catver.ini to include cateogory information ---
-    categories_dic = fs_load_Catver_ini(settings['catver_path'])
-    catlist_dic    = fs_load_Catlist_ini(settings['catlist_path'])
-    genre_dic      = fs_load_Genre_ini(settings['genre_path'])
-    nplayers_dic   = fs_load_nplayers_ini(settings['nplayers_path'])
+    (categories_dic, catver_version)   = fs_load_Catver_ini(settings['catver_path'])
+    (catlist_dic,    catlist_version)  = fs_load_Catlist_ini(settings['catlist_path'])
+    (genre_dic,      genre_version)    = fs_load_Genre_ini(settings['genre_path'])
+    (nplayers_dic,   nplayers_version) = fs_load_nplayers_ini(settings['nplayers_path'])
 
     # --- Progress dialog ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher',
-                   'Building main MAME database...')
+    pDialog.create('Advanced MAME Launcher', 'Building main MAME database...')
 
     # ---------------------------------------------------------------------------------------------
     # Incremental Parsing approach B (from [1])
@@ -401,8 +421,21 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     machines       = {}
     machine_name   = ''
     num_iteration  = 0
-    num_machines   = 0
-    num_dead       = 0
+
+    processed_machines  = 0
+    parent_machines     = 0
+    clone_machines      = 0
+    devices_machines    = 0
+    BIOS_machines       = 0
+    coin_machines       = 0
+    nocoin_machines     = 0
+    mechanical_machines = 0
+    dead_machines       = 0
+    ROM_machines        = 0
+    ROMless_machines    = 0
+    CHD_machines        = 0
+    samples_machines    = 0
+
     log_info('fs_build_MAME_main_database() Parsing MAME XML file ...')
     for event, elem in context:
         # --- Debug the elements we are iterating from the XML file ---
@@ -442,15 +475,15 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
                 machine['sourcefile'] = raw_driver_name
 
             # Optional, default no
-            if 'isbios' not in elem.attrib: machine['isBIOS'] = False
-            else:                           machine['isBIOS'] = True if elem.attrib['isbios'] == 'yes' else False
-            if 'isdevice' not in elem.attrib: machine['isDevice'] = False
-            else:                             machine['isDevice'] = True if elem.attrib['isdevice'] == 'yes' else False
+            if 'isbios' not in elem.attrib:       machine['isBIOS'] = False
+            else:                                 machine['isBIOS'] = True if elem.attrib['isbios'] == 'yes' else False
+            if 'isdevice' not in elem.attrib:     machine['isDevice'] = False
+            else:                                 machine['isDevice'] = True if elem.attrib['isdevice'] == 'yes' else False
             if 'ismechanical' not in elem.attrib: machine['isMechanical'] = False
             else:                                 machine['isMechanical'] = True if elem.attrib['ismechanical'] == 'yes' else False
             # Optional, default yes
-            if 'runnable' not in elem.attrib: runnable = True
-            else:                             runnable = False if elem.attrib['runnable'] == 'no' else True
+            if 'runnable' not in elem.attrib:     runnable = True
+            else:                                 runnable = False if elem.attrib['runnable'] == 'no' else True
 
             # cloneof is #IMPLIED attribute
             if 'cloneof' in elem.attrib:
@@ -475,7 +508,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             else:                              machine['nplayers'] = '[ Not set ]'
 
             # >> Increment number of machines
-            num_machines += 1
+            processed_machines += 1
 
         elif event == 'start' and elem.tag == 'description':
             machine['description'] = unicode(elem.text)
@@ -587,7 +620,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             # >> Mark dead machines. A machine is dead if Status is preliminary AND have no controls
             if machine['driver_status'] == 'preliminary' and not machine['control_type']:
                 machine['isDead'] = True
-                num_dead += 1
 
             # >> Delete XML element once it has been processed
             elem.clear()
@@ -617,26 +649,42 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             else:
                 machine['status_Device']  = '-'
 
+            # >> Compute statistics
+            if machine['cloneof']:      parent_machines += 1
+            else:                       clone_machines += 1
+            if machine['isDevice']:     devices_machines += 1
+            if machine['isBIOS']:       BIOS_machines += 1
+            if machine['hasCoin']:      coin_machines += 1
+            else:                       nocoin_machines += 1
+            if machine['isMechanical']: mechanical_machines += 1            
+            if machine['isDead']:       dead_machines += 1
+            if machine['hasROM']:       ROM_machines += 1
+            else:                       ROMless_machines += 1
+            if machine['CHDs']:         CHD_machines += 1
+            if machine['sampleof']:     samples_machines += 1
+
             # >> Add new machine
             machines[machine_name] = machine
 
         # --- Print something to prove we are doing stuff ---
         num_iteration += 1
         if num_iteration % 1000 == 0:
-            update_number = (float(num_machines) / float(total_machines)) * 100
+            update_number = (float(processed_machines) / float(total_machines)) * 100
             pDialog.update(int(update_number))
-            # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(num_iteration, num_machines))
-            # log_debug('num_machines   = {0}'.format(num_machines))
+            # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(num_iteration, processed_machines))
+            # log_debug('processed_machines   = {0}'.format(processed_machines))
             # log_debug('total_machines = {0}'.format(total_machines))
             # log_debug('Update number  = {0}'.format(update_number))
 
         # --- Stop after STOP_AFTER_MACHINES machines have been processed for debug ---
-        if num_machines >= STOP_AFTER_MACHINES: break
+        if processed_machines >= STOP_AFTER_MACHINES: break
     pDialog.update(100)
     pDialog.close()
     log_info('Processed {0} MAME XML events'.format(num_iteration))
-    log_info('Total number of machines {0}'.format(num_machines))
-    log_info('Dead machines            {0}'.format(num_dead))
+    log_info('Processed machines {0}'.format(processed_machines))
+    log_info('Parents            {0}'.format(parent_machines))
+    log_info('Clones             {0}'.format(clone_machines))
+    log_info('Dead machines      {0}'.format(dead_machines))
 
     # -----------------------------------------------------------------------------
     # Main parent-clone list
@@ -682,8 +730,25 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
-    control_dic['mame_version'] = mame_version_raw
-    control_dic['num_machines'] = num_machines
+    control_dic['mame_version']        = mame_version_raw
+    control_dic['catver_version']      = catver_version
+    control_dic['catlist_version']     = catlist_version
+    control_dic['genre_version']       = genre_version
+    control_dic['nplayers_version']    = nplayers_version
+    # >> Statistics
+    control_dic['processed_machines']  = processed_machines
+    control_dic['parent_machines']     = parent_machines
+    control_dic['clone_machines']      = clone_machines
+    control_dic['devices_machines']    = devices_machines
+    control_dic['BIOS_machines']       = BIOS_machines    
+    control_dic['coin_machines']       = coin_machines
+    control_dic['nocoin_machines']     = nocoin_machines
+    control_dic['mechanical_machines'] = mechanical_machines
+    control_dic['dead_machines']       = dead_machines
+    control_dic['ROM_machines']        = ROM_machines    
+    control_dic['ROMless_machines']    = ROMless_machines
+    control_dic['CHD_machines']        = CHD_machines
+    control_dic['samples_machines']    = samples_machines
 
     # -----------------------------------------------------------------------------
     # Now write simplified JSON
@@ -694,7 +759,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     kodi_busydialog_OFF()
-
 
 def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic):
     # >> Progress dialog

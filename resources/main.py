@@ -939,29 +939,36 @@ class Main:
             
             # --- Main stuff ---
             info_text  = '[COLOR orange]Main information[/COLOR]\n'
-            info_text += "AEL version: {0}\n".format(__addon_version__)
+            info_text += "AML version: {0}\n".format(__addon_version__)
             info_text += "MAME version: {0}\n".format(control_dic['mame_version'])
-            info_text += "Catver.ini version: {0}\n".format('Not coded yet')
-            info_text += "Catlist.ini version: {0}\n".format('Not coded yet')
-            info_text += "Genre.ini version: {0}\n".format('Not coded yet')
-            info_text += "nplayers.ini version: {0}\n".format('Not coded yet')
+            info_text += "Catver.ini version: {0}\n".format(control_dic['catver_version'])
+            info_text += "Catlist.ini version: {0}\n".format(control_dic['catlist_version'])
+            info_text += "Genre.ini version: {0}\n".format(control_dic['genre_version'])
+            info_text += "nplayers.ini version: {0}\n".format(control_dic['nplayers_version'])
 
             info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
-            info_text += "Machines: {0}\n".format(control_dic['total_machines'])
-            info_text += "Parents: {0}\n".format('Not coded yet')
-            info_text += "Clones: {0}\n".format('Not coded yet')
-            info_text += "Devices: {0}\n".format('Not coded yet')
-            info_text += "BIOS: {0}\n".format('Not coded yet')
-            info_text += "CHDs: {0}\n".format('Not coded yet')
-            info_text += "Samples: {0}\n".format('Not coded yet')
-            info_text += "ROMless: {0}\n".format('Not coded yet')
-            
+            info_text += "Machines: {0}\n".format(control_dic['processed_machines'])
+            info_text += "Parents: {0}\n".format(control_dic['parent_machines'])
+            info_text += "Clones: {0}\n".format(control_dic['clone_machines'])
+            info_text += "Devices: {0}\n".format(control_dic['devices_machines'])
+            info_text += "BIOS: {0}\n".format(control_dic['BIOS_machines'])
+            info_text += "Coin: {0}\n".format(control_dic['coin_machines'])
+            info_text += "Nocoin: {0}\n".format(control_dic['nocoin_machines'])
+            info_text += "Mechanical: {0}\n".format(control_dic['mechanical_machines'])
+            info_text += "Dead: {0}\n".format(control_dic['dead_machines'])
+            info_text += "ROMs: {0}\n".format(control_dic['ROM_machines'])
+            info_text += "ROMless: {0}\n".format(control_dic['ROMless_machines'])
+            info_text += "CHDs: {0}\n".format(control_dic['CHD_machines'])
+            info_text += "Samples: {0}\n".format(control_dic['samples_machines'])
+
             info_text += '\n[COLOR orange]Software Lists ROM count[/COLOR]\n'
             info_text += "Number of SLs: {0}\n".format('Not coded yet')
             info_text += "Total ROMs in all SLs: {0}\n".format('Not coded yet')
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
             info_text += "You have xxx ROMs out of yyy (Missing zzz)\n"
+            info_text += "You have xxx CHDs out of yyy (Missing zzz)\n"
+            info_text += "You have xxx Samples out of yyy (Missing zzz)\n"
             info_text += "You have xxx SL ROMs out of yyy (Missing zzz)\n"
 
             # --- Show information window ---
