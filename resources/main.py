@@ -1370,11 +1370,11 @@ class Main:
         SL_machine_list = SL_machines_dic[SL_name]
         SL_machine_names_list = []
         SL_machine_desc_list = []
-        SL_machine_device_props_list = []
-        for machine_name in SL_machine_list: 
-            SL_machine_names_list.append(machine_name['machine'])
-            SL_machine_desc_list.append(machine_name['description'])
-            SL_machine_device_props_list.append(machine_name['device_props'])
+        # SL_machine_device_props_list = []
+        for SL_machine in SL_machine_list: 
+            SL_machine_names_list.append(SL_machine['machine'])
+            SL_machine_desc_list.append(SL_machine['description'])
+            # SL_machine_device_props_list.append(SL_machine['device_props'])
         dialog = xbmcgui.Dialog()
         m_index = dialog.select('Select machine', SL_machine_desc_list)
         if m_index < 0: return
