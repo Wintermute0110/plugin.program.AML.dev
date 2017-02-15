@@ -370,11 +370,14 @@ class Main:
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
         # >> Load main MAME info DB and PClone index
+        loading_ticks_start = time.time()
         MAME_db_dic         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic     = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         Machines_index_dic  = self._load_indexed_pclone_dic(list_name)
+        loading_ticks_end = time.time()
 
         # >> Render parent main list
+        rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
         for parent_name, idx_dic in Machines_index_dic.iteritems():
             num_clones = idx_dic['num_clones']
@@ -386,6 +389,11 @@ class Main:
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
             self._render_machine_row(parent_name, machine, assets, True, list_name, num_clones)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+        rendering_ticks_end = time.time()
+
+        # --- DEBUG Data loading/rendering statistics ---
+        log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
+        log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
     #
     # Render a Parent/Clone list of machines.
@@ -396,11 +404,14 @@ class Main:
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
         # >> Load main MAME info DB and PClone index
+        loading_ticks_start = time.time()
         MAME_db_dic        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic    = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         Machines_index_dic = self._load_indexed_pclone_dic(list_name)
+        loading_ticks_end = time.time()
 
         # >> Render parent first
+        rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
         num_clones = Machines_index_dic[parent_name]['num_clones']
         clone_list = Machines_index_dic[parent_name]['machines']
@@ -415,6 +426,11 @@ class Main:
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
             self._render_machine_row(clone_name, machine, assets, False)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+        rendering_ticks_end = time.time()
+
+        # --- DEBUG Data loading/rendering statistics ---
+        log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
+        log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
     #
     # Render parent or clone machines.
