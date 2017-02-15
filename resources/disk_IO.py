@@ -81,7 +81,9 @@ def fs_new_machine():
         'status_SL'      : '-',
         'status_Device'  : '-',
         'device_list'    : [],  # List of <instance name="cartridge1">. Ignore briefname
-        'device_tags'    : []
+        'device_tags'    : [],
+        'bios_name'      : [],  # List of <biosset name="" >
+        'bios_desc'      : [],  # List of <biosset description="" >
     }
 
     return m
@@ -518,6 +520,12 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
         elif event == 'start' and elem.tag == 'manufacturer':
             machine['manufacturer'] = unicode(elem.text)
+
+        # >> Check in machine has BIOS
+        # <biosset> name and description attributes are mandatory
+        elif event == 'start' and elem.tag == 'biosset':
+            machine['bios_name'].append(unicode(elem.attrib['name']))
+            machine['bios_desc'].append(unicode(elem.attrib['description']))
 
         # >> Check in machine has ROMs
         # ROM is considered to be valid if sha1 has exists. Keep in mind that a machine may have
