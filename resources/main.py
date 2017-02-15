@@ -1007,7 +1007,8 @@ class Main:
             info_text += "nplayers.ini version: {0}\n".format(control_dic['nplayers_version'])
 
             info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
-            info_text += "Machines: {0} ({1} Parents / {2} Clones)\n".format(control_dic['processed_machines'], control_dic['parent_machines'], control_dic['clone_machines'])
+            info_text += "Machines: {0} ({1} Parents / {2} Clones)\n".format(control_dic['processed_machines'], 
+                                                                             control_dic['parent_machines'], control_dic['clone_machines'])
             info_text += "Devices: {0}\n".format(control_dic['devices_machines'])
             info_text += "BIOS: {0}\n".format(control_dic['BIOS_machines'])
             info_text += "Coin: {0}\n".format(control_dic['coin_machines'])
@@ -1024,11 +1025,16 @@ class Main:
             info_text += "Total CHDs in all SLs: {0}\n".format(control_dic['num_SL_CHDs'])
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
-            info_text += "You have {0} ROMs out of {1} ({2} missing)\n".format(control_dic['ROMs_have'], control_dic['ROMs_total'], control_dic['ROMs_missing'])
-            info_text += "You have {0} CHDs out of {1} ({2} missing)\n".format(control_dic['CHDs_have'], control_dic['CHDs_total'], control_dic['CHDs_missing'])
-            info_text += "You have {0} Samples out of {1} ({2} missing)\n".format(control_dic['Samples_have'], control_dic['Samples_total'], control_dic['Samples_missing'])
-            info_text += "You have {0} SL ROMs out of {1} ({2} missing)\n".format(control_dic['SL_ROMs_have'], control_dic['SL_ROMs_total'], control_dic['SL_ROMs_missing'])
-            info_text += "You have {0} SL CHDs out of {1} ({2} missing)\n".format(control_dic['SL_CHDs_have'], control_dic['SL_CHDs_total'], control_dic['SL_CHDs_missing'])
+            info_text += "You have {0} ROMs out of {1} ({2} missing)\n".format(control_dic['ROMs_have'], 
+                                                                               control_dic['ROMs_total'], control_dic['ROMs_missing'])
+            info_text += "You have {0} CHDs out of {1} ({2} missing)\n".format(control_dic['CHDs_have'], 
+                                                                               control_dic['CHDs_total'], control_dic['CHDs_missing'])
+            info_text += "You have {0} Samples out of {1} ({2} missing)\n".format(control_dic['Samples_have'], 
+                                                                                  control_dic['Samples_total'], control_dic['Samples_missing'])
+            info_text += "You have {0} SL ROMs out of {1} ({2} missing)\n".format(control_dic['SL_ROMs_have'], 
+                                                                                  control_dic['SL_ROMs_total'], control_dic['SL_ROMs_missing'])
+            info_text += "You have {0} SL CHDs out of {1} ({2} missing)\n".format(control_dic['SL_CHDs_have'], 
+                                                                                  control_dic['SL_CHDs_total'], control_dic['SL_CHDs_missing'])
 
             # --- Show information window ---
             window_title = 'Database information and statistics'
@@ -1222,8 +1228,9 @@ class Main:
             mame_prog_FN = FileName(self.settings['mame_prog'])
 
             # --- Extract MAME XML ---
-            filesize = fs_extract_MAME_XML(PATHS, mame_prog_FN)
-            kodi_dialog_OK('Extracted MAME XML database. Size is {0} MB.'.format(filesize / (1000000)))
+            (filesize, total_machines) = fs_extract_MAME_XML(PATHS, mame_prog_FN)
+            kodi_dialog_OK('Extracted MAME XML database. '
+                           'Size is {0} MB and there are {1} machines.'.format(filesize / 1000000, total_machines))
 
         # --- Build main MAME database and PClone list ---
         elif menu_item == 1:

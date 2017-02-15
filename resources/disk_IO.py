@@ -108,7 +108,7 @@ def fs_new_asset():
 #   ?  SL ROM not scanned
 #   r  Missing ROM
 #   R  Have ROM
-def fs_new_SL_index_entry():
+def fs_new_SL_ROM():
     R = {
         'description'    : '',
         'year'           : '',
@@ -120,6 +120,55 @@ def fs_new_SL_index_entry():
     }
 
     return R
+
+def fs_new_control_dic():
+    C = {
+        # >> Filed in when extracting MAME XML
+        'total_machines' : 0,
+        # >> Files in when building main MAME database
+        'mame_version'   : 'Unknown. MAME database not built',
+        'catver_version'   : 'Unknown. MAME database not built',
+        'catlist_version'  : 'Unknown. MAME database not built',
+        'genre_version'    : 'Unknown. MAME database not built',
+        'nplayers_version' : 'Unknown. MAME database not built',
+        'processed_machines' : 0,
+        'parent_machines'    : 0,
+        'clone_machines'     : 0,
+        'devices_machines'   : 0,
+        'BIOS_machines' : 0,
+        'coin_machines'    : 0,
+        'nocoin_machines' : 0,
+        'mechanical_machines'    : 0,
+        'dead_machines' : 0,
+        'ROM_machines'    : 0,
+        'ROMless_machines' : 0,
+        'CHD_machines'    : 0,
+        'samples_machines' : 0,
+        # >> Filed in when building SL index
+        'num_SL_files' : 0,
+        'num_SL_ROMs' : 0,
+        'num_SL_CHDs' : 0,
+        # >> Filed in by the MAME ROM/CHD/Samples scanner
+        'ROMs_have'       : 0,
+        'ROMs_total'      : 0,
+        'ROMs_missing'    : 0,
+        'CHDs_have'       : 0,
+        'CHDs_total'      : 0,
+        'CHDs_missing'    : 0,
+        'Samples_have'    : 0,
+        'Samples_total'   : 0,
+        'Samples_missing' : 0,
+
+        # >> Filed in by the SL ROM scanner
+        'SL_ROMs_have'    : 0,
+        'SL_ROMs_total'   : 0,
+        'SL_ROMs_missing' : 0,
+        'SL_CHDs_have'    : 0,
+        'SL_CHDs_total'   : 0,
+        'SL_CHDs_missing' : 0,
+    }
+    
+    return C
 
 # -------------------------------------------------------------------------------------------------
 # Exceptions raised by this module
@@ -192,13 +241,11 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
     # -----------------------------------------------------------------------------
     # Create MAME control dictionary
     # -----------------------------------------------------------------------------
-    control_dic = {
-        'mame_version'   : 'Unknown. MAME database not built',
-        'total_machines' : total_machines
-    }
+    control_dic = fs_new_control_dic()
+    control_dic['total_machines'] = total_machines
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-    return filesize
+    return (filesize, total_machines)
 
 # -------------------------------------------------------------------------------------------------
 #
