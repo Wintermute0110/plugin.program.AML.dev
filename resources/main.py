@@ -231,32 +231,36 @@ class Main:
         elif 'command' in args:
             command = args['command'][0]
             if command == 'LAUNCH':
-                machine_name = args['machine_name'][0]
+                machine_name = args['machine'][0]
                 log_info('Launching MAME machine "{0}"'.format(machine_name))
                 self._run_machine(machine_name)
             elif command == 'LAUNCH_SL':
-                SL_name = args['SL'][0]
+                SL_name  = args['SL'][0]
                 ROM_name = args['ROM'][0]
                 log_info('Launching SL machine "{0}" (ROM "{1}")'.format(SL_name, ROM_name))
                 self._run_SL_machine(SL_name, ROM_name)
             elif command == 'SETUP_PLUGIN':
                 self._command_setup_plugin()
             elif command == 'VIEW':
-                mname  = args['mname'][0]  if 'mname' in args else ''
-                SLname = args['SLname'][0] if 'SLname' in args else ''
-                SLROM  = args['SLROM'][0]  if 'SLROM' in args else ''
-                self._command_view(mname, SLname, SLROM)
+                machine = args['machine'][0]  if 'machine' in args else ''
+                SLname  = args['SLname'][0] if 'SLname' in args else ''
+                SLROM   = args['SLROM'][0]  if 'SLROM' in args else ''
+                self._command_view(machine, SLname, SLROM)
             elif command == 'DISPLAY_SETTINGS':
                 clist   = args['clist'][0]   if 'clist' in args else ''
                 catalog = args['catalog'][0] if 'catalog' in args else ''
-                mname   = args['mname'][0]   if 'mname' in args else ''
-                self._command_display_settings(clist, catalog, mname)
+                machine = args['machine'][0]   if 'machine' in args else ''
+                self._command_display_settings(clist, catalog, machine)
             elif command == 'ADD_MAME_FAV':
-                self._command_add_mame_fav(args['Machine'][0])
-            elif command == 'ADD_SL_FAV':
-                self._command_add_sl_fav(args['SL'][0], args['ROM'][0])
+                self._command_add_mame_fav(args['machine'][0])
+            elif command == 'DELETE_MAME_FAV':
+                self._command_delete_mame_fav(args['machine'][0])
             elif command == 'SHOW_MAME_FAVS':
                 self._command_show_mame_fav()
+            elif command == 'ADD_SL_FAV':
+                self._command_add_sl_fav(args['SL'][0], args['ROM'][0])
+            elif command == 'DELETE_MAME_FAV':
+                self._command_delete_sl_fav(args['SL'][0], args['ROM'][0])
             elif command == 'SHOW_SL_FAVS':
                 self._command_show_sl_fav()
             else:
@@ -1072,33 +1076,107 @@ class Main:
                                   'Default Clearlogo'])
         if menu_item < 0: return
 
-    def _command_add_mame_fav(self, Machine_name):
-        log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(Machine_name))
+    def _command_add_mame_fav(self, machine_name):
+        log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(machine_name))
 
         # >> Get Machine database entry
         kodi_busydialog_ON()
         MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         kodi_busydialog_OFF()
-        machine = MAME_db_dic[Machine_name]
-        assets  = MAME_assets_dic[Machine_name]
+        machine = MAME_db_dic[machine_name]
+        assets  = MAME_assets_dic[machine_name]
         
         # >> Open Favourite Machines dictionary
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
         machine['assets'] = assets
-        fav_machines[Machine_name] = machine
+        fav_machines[machine_name] = machine
 
         # >> Save Favourites
         fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
-        kodi_notify('Machine {0} added to MAME Favourites'.format(Machine_name))
+        kodi_notify('Machine {0} added to MAME Favourites'.format(machine_name))
+
+    def _command_delete_mame_fav(self, machine_name):
+        kodi_dialog_OK('Not coded yet. Sorry')
+
+    def _command_show_mame_fav(self):
+        log_debug('_command_show_mame_fav() Starting ...')
+        
+        # >> Open Favourite Machines dictionary
+        fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+
+        # >> Render Favourites
+        for m_name in fav_machines:
+            machine = fav_machines[m_name]
+            assets  = machine['assets']
+            self._render_fav_machine_row(m_name, machine, assets)
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_fav_machine_row(self, m_name, machine, machine_assets):
+        display_name = machine['description']
+
+        # --- Mark Status ---
+        status = '{0}{1}{2}{3}{4}'.format(machine['status_ROM'], machine['status_CHD'],
+                                          machine['status_SAM'], machine['status_SL'],
+                                          machine['status_Device'])
+        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+
+        # --- Mark Devices, BIOS and clones ---
+        if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+        if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+        if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+
+        # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
+        if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+        elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+
+        # --- Assets/artwork ---
+        thumb_path      = machine_assets['title']
+        thumb_fanart    = machine_assets['snap']
+        thumb_banner    = machine_assets['marquee']
+        thumb_clearlogo = machine_assets['clearlogo']
+        thumb_poster    = machine_assets['flyer']
+
+        # --- Create listitem row ---
+        default_icon = 'DefaultFolder.png'
+        ICON_OVERLAY = 6
+        listitem = xbmcgui.ListItem(display_name)
+
+        # --- Metadata ---
+        # >> Make all the infotables compatible with Advanced Emulator Launcher
+        listitem.setInfo('video', {'title'   : display_name,            'year'    : machine['year'],
+                                   'genre'   : '',                      'plot'    : '',
+                                   'studio'  : machine['manufacturer'], 'rating'  : '',
+                                   'trailer' : '',                      'overlay' : ICON_OVERLAY})
+        listitem.setProperty('platform', 'MAME')
+
+        # --- Assets ---
+        # >> AEL custom artwork fields
+        listitem.setArt({'title'     : machine_assets['title'],   'snap'    : machine_assets['snap'],
+                         'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'],
+                         'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
+
+        # >> Kodi official artwork fields
+        listitem.setArt({'icon'   : thumb_path,   'fanart'    : thumb_fanart,
+                         'banner' : thumb_banner, 'clearlogo' : thumb_clearlogo, 'poster' : thumb_poster })
+
+        # --- Create context menu ---
+        commands = []
+        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', m_name)
+        URL_display = self._misc_url_2_arg_RunPlugin('command', 'DELETE_MAME_FAV', 'machine', m_name)
+        commands.append(('View',  URL_view ))
+        commands.append(('Delete machine from Favourites', URL_display ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+        listitem.addContextMenuItems(commands, replaceItems = True)
+
+        # --- Add row ---
+        URL = self._misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', 'MAME_FAV')
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     def _command_add_sl_fav(self, SL_name, ROM_name):
         log_debug('_command_add_sl_fav() SL_name  "{0}"'.format(SL_name))
         log_debug('_command_add_sl_fav() ROM_name "{0}"'.format(ROM_name))
-
-    def _command_show_mame_fav(self):
-        log_debug('_command_show_mame_fav() Starting ...')
-        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _command_show_sl_fav(self):
         log_debug('_command_show_sl_fav() Starting ...')
