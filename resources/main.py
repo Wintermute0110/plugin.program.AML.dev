@@ -91,6 +91,10 @@ class AML_Paths:
         self.SL_DB_DIR                   = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')
         self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
         self.SL_MACHINES_PATH            = PLUGIN_DATA_DIR.pjoin('SoftwareLists_machines.json')
+        
+        # >> Favourites
+        self.FAV_MACHINES_PATH           = PLUGIN_DATA_DIR.pjoin('Favourite_Machines.json')
+        self.FAV_SL_ROMS_PATH            = PLUGIN_DATA_DIR.pjoin('Favourite_SL_ROMs.json')
 PATHS = AML_Paths()
 
 class Main:
@@ -855,13 +859,15 @@ class Main:
                 kodi_busydialog_ON()
                 MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
                 MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                kodi_busydialog_OFF()
                 machine = MAME_db_dic[mname]
                 assets  = MAME_assets_dic[mname]
-                kodi_busydialog_OFF()
 
                 # --- Make information string ---
                 info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(mname)
-                info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])
+                info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])                
+                info_text += "[COLOR skyblue]bios_desc[/COLOR]: {0}\n".format(machine['bios_desc'])
+                info_text += "[COLOR skyblue]bios_name[/COLOR]: {0}\n".format(machine['bios_name'])
                 info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
                 info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
@@ -869,6 +875,7 @@ class Main:
                 info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
                 info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
                 info_text += "[COLOR skyblue]device_list[/COLOR]: {0}\n".format(machine['device_list'])
+                # info_text += "[COLOR skyblue]device_tags[/COLOR]: {0}\n".format(machine['device_tags'])
                 info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(machine['display_rotate'])
                 info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
                 info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(machine['display_type'])
@@ -1067,6 +1074,23 @@ class Main:
 
     def _command_add_mame_fav(self, Machine_name):
         log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(Machine_name))
+
+        # >> Get Machine database entry
+        kodi_busydialog_ON()
+        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        kodi_busydialog_OFF()
+        machine = MAME_db_dic[Machine_name]
+        assets  = MAME_assets_dic[Machine_name]
+        
+        # >> Open Favourite Machines dictionary
+        fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+        machine['assets'] = assets
+        fav_machines[Machine_name] = machine
+
+        # >> Save Favourites
+        fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+        kodi_notify('Machine {0} added to MAME Favourites'.format(Machine_name))
 
     def _command_add_sl_fav(self, SL_name, ROM_name):
         log_debug('_command_add_sl_fav() SL_name  "{0}"'.format(SL_name))
@@ -1426,6 +1450,8 @@ class Main:
         #     kodi_dialog_OK('ROM "{0}" not found.'.format(ROM_FN.getBase()))
         #     return
 
+        # >> Choose BIOS (only available for Favourite Machines)
+        
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
         log_info('_run_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
