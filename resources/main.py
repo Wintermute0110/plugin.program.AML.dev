@@ -243,14 +243,14 @@ class Main:
             elif command == 'SETUP_PLUGIN':
                 self._command_setup_plugin()
             elif command == 'VIEW':
-                machine = args['machine'][0]  if 'machine' in args else ''
-                SLname  = args['SLname'][0] if 'SLname' in args else ''
-                SLROM   = args['SLROM'][0]  if 'SLROM' in args else ''
-                self._command_view(machine, SLname, SLROM)
+                machine = args['machine'][0] if 'machine' in args else ''
+                SL      = args['SL'][0]      if 'SL' in args else ''
+                ROM     = args['ROM'][0]     if 'ROM' in args else ''
+                self._command_view(machine, SL, ROM)
             elif command == 'DISPLAY_SETTINGS':
                 clist   = args['clist'][0]   if 'clist' in args else ''
                 catalog = args['catalog'][0] if 'catalog' in args else ''
-                machine = args['machine'][0]   if 'machine' in args else ''
+                machine = args['machine'][0] if 'machine' in args else ''
                 self._command_display_settings(clist, catalog, machine)
             elif command == 'ADD_MAME_FAV':
                 self._command_add_mame_fav(args['machine'][0])
@@ -260,7 +260,7 @@ class Main:
                 self._command_show_mame_fav()
             elif command == 'ADD_SL_FAV':
                 self._command_add_sl_fav(args['SL'][0], args['ROM'][0])
-            elif command == 'DELETE_MAME_FAV':
+            elif command == 'DELETE_SL_FAV':
                 self._command_delete_sl_fav(args['SL'][0], args['ROM'][0])
             elif command == 'SHOW_SL_FAVS':
                 self._command_show_sl_fav()
@@ -819,7 +819,7 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SLname', SL_name, 'SLROM', rom_name)
+        URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
         commands.append(('View', URL_view ))
         commands.append(('Add ROM to SL Favourites', URL_fav ))
@@ -1125,7 +1125,7 @@ class Main:
 
     def _command_show_mame_fav(self):
         log_debug('_command_show_mame_fav() Starting ...')
-        
+
         # >> Open Favourite Machines dictionary
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
 
@@ -1215,18 +1215,59 @@ class Main:
         fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
         log_debug('_command_add_sl_fav() SL_fav_key "{0}"'.format(SL_fav_key))
+        ROM['ROM_name'] = ROM_name
+        ROM['SL_name']  = SL_name
         fav_SL_roms[SL_fav_key] = ROM
 
         # >> Save Favourites
         fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
         kodi_notify('ROM {0} added to SL Favourite ROMs'.format(ROM_name))
 
-    def _command_delete_sl_fav(self, machine_name):
+    def _command_delete_sl_fav(self, SL_name, ROM_name):
         kodi_dialog_OK('_command_delete_sl_fav() not coded yet. Sorry')
 
     def _command_show_sl_fav(self):
         log_debug('_command_show_sl_fav() Starting ...')
+
+        # >> Open Favourite Machines dictionary
+        fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
+
+        # >> Render Favourites
+        for SL_fav_key in fav_SL_roms:
+            SL_fav_ROM = fav_SL_roms[SL_fav_key]
+            self._render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_sl_fav_machine_row(self, SL_fav_key, ROM):
+        SL_name  = ROM['SL_name']
+        ROM_name = ROM['ROM_name']
+        display_name = ROM['description']
+
+        # --- Mark Status and Clones ---
+        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(ROM['status'])
+        if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+
+        # --- Create listitem row ---
+        icon = 'DefaultFolder.png'
+        listitem = xbmcgui.ListItem(display_name, iconImage = icon)
+        ICON_OVERLAY = 6
+        # listitem.setProperty('fanart_image', category_dic['fanart'])
+        listitem.setInfo('video', {'title'   : display_name,     'year'    : ROM['year'],
+                                   'studio'  : ROM['publisher'], 'overlay' : ICON_OVERLAY })
+
+        # --- Create context menu ---
+        commands = []
+        URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name)
+        URL_fav = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
+        commands.append(('View', URL_view ))
+        commands.append(('Delete ROM from SL Favourites', URL_fav ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+        listitem.addContextMenuItems(commands, replaceItems = True)
+
+        # --- Add row ---
+        URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', ROM_name)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases
