@@ -748,10 +748,14 @@ class Main:
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_SL_machine_row(self, SL_name, SL):
-        if SL['rom_count'] == 1:
-            display_name = '{0}  [COLOR orange]({1} ROM)[/COLOR]'.format(SL['display_name'], SL['rom_count'])
+        if SL['chd_count'] == 0:
+            if SL['rom_count'] == 1: display_name = '{0}  [COLOR orange]({1} ROM)[/COLOR]'.format(SL['display_name'], SL['rom_count'])
+            else:                    display_name = '{0}  [COLOR orange]({1} ROMs)[/COLOR]'.format(SL['display_name'], SL['rom_count'])
+        elif SL['rom_count'] == 0:
+            if SL['chd_count'] == 1: display_name = '{0}  [COLOR orange]({1} CHD)[/COLOR]'.format(SL['display_name'], SL['chd_count'])
+            else:                    display_name = '{0}  [COLOR orange]({1} CHDs)[/COLOR]'.format(SL['display_name'], SL['chd_count'])
         else:
-            display_name = '{0}  [COLOR orange]({1} ROMs)[/COLOR]'.format(SL['display_name'], SL['rom_count'])
+            display_name = '{0}  [COLOR orange]({1} ROMs and {2} CHDs)[/COLOR]'.format(SL['display_name'], SL['rom_count'], SL['chd_count'])
 
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
