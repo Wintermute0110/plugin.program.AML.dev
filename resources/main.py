@@ -1121,7 +1121,7 @@ class Main:
         kodi_notify('Machine {0} added to MAME Favourites'.format(machine_name))
 
     def _command_delete_mame_fav(self, machine_name):
-        kodi_dialog_OK('Not coded yet. Sorry')
+        kodi_dialog_OK('_command_delete_mame_fav() not coded yet. Sorry')
 
     def _command_show_mame_fav(self):
         log_debug('_command_show_mame_fav() Starting ...')
@@ -1201,6 +1201,28 @@ class Main:
     def _command_add_sl_fav(self, SL_name, ROM_name):
         log_debug('_command_add_sl_fav() SL_name  "{0}"'.format(SL_name))
         log_debug('_command_add_sl_fav() ROM_name "{0}"'.format(ROM_name))
+
+        # >> Get Machine database entry
+        kodi_busydialog_ON()
+        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+        file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
+        kodi_busydialog_OFF()
+        ROM = SL_roms[ROM_name]
+        
+        # >> Open Favourite Machines dictionary
+        fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
+        SL_fav_key = SL_name + '-' + ROM_name
+        log_debug('_command_add_sl_fav() SL_fav_key "{0}"'.format(SL_fav_key))
+        fav_SL_roms[SL_fav_key] = ROM
+
+        # >> Save Favourites
+        fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+        kodi_notify('ROM {0} added to SL Favourite ROMs'.format(ROM_name))
+
+    def _command_delete_sl_fav(self, machine_name):
+        kodi_dialog_OK('_command_delete_sl_fav() not coded yet. Sorry')
 
     def _command_show_sl_fav(self):
         log_debug('_command_show_sl_fav() Starting ...')

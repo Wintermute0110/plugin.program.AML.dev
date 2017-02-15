@@ -1363,7 +1363,7 @@ def fs_load_SL_XML(xml_filename):
 
         if root_element.tag == 'software':
             num_parts = 0
-            rom = fs_new_SL_index_entry()
+            rom = fs_new_SL_ROM()
             rom_name = root_element.attrib['name']
             if 'cloneof' in root_element.attrib: rom['cloneof'] = root_element.attrib['cloneof']
             for rom_child in root_element:
