@@ -929,15 +929,19 @@ class Main:
                 # >> Build information string
                 info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(SLROM)
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
-                info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
+                info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])                
+                info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
+                info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
                 info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
                 info_text += "[COLOR violet]status[/COLOR]: '{0}'\n".format(rom['status'])
                 info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
 
                 info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SLname)
                 info_text += "[COLOR violet]display_name[/COLOR]: '{0}'\n".format(SL_dic['display_name'])
+                info_text += "[COLOR skyblue]part_type[/COLOR]: {0}\n".format(SL_dic['part_type'])
                 info_text += "[COLOR violet]rom_DB_noext[/COLOR]: '{0}'\n".format(SL_dic['rom_DB_noext'])
                 info_text += "[COLOR violet]rom_count[/COLOR]: '{0}'\n".format(SL_dic['rom_count'])
+                info_text += "[COLOR violet]chd_count[/COLOR]: '{0}'\n".format(SL_dic['chd_count'])
 
                 info_text += '\n[COLOR orange]Runnable by[/COLOR]\n'
                 for machine_dic in SL_machine_list:
@@ -972,21 +976,21 @@ class Main:
             info_text += "nplayers.ini version: {0}\n".format(control_dic['nplayers_version'])
 
             info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
-            info_text += "Machines: {0} (Parents {1} / Clones {2})\n".format(control_dic['processed_machines'], control_dic['parent_machines'], control_dic['clone_machines'])
+            info_text += "Machines: {0} ({1} Parents / {2} Clones)\n".format(control_dic['processed_machines'], control_dic['parent_machines'], control_dic['clone_machines'])
             info_text += "Devices: {0}\n".format(control_dic['devices_machines'])
             info_text += "BIOS: {0}\n".format(control_dic['BIOS_machines'])
             info_text += "Coin: {0}\n".format(control_dic['coin_machines'])
             info_text += "Nocoin: {0}\n".format(control_dic['nocoin_machines'])
             info_text += "Mechanical: {0}\n".format(control_dic['mechanical_machines'])
             info_text += "Dead: {0}\n".format(control_dic['dead_machines'])
-            info_text += "ROMs: {0}\n".format(control_dic['ROM_machines'])
-            info_text += "ROMless: {0}\n".format(control_dic['ROMless_machines'])
+            info_text += "ROMs: {0} ({1} ROMless)\n".format(control_dic['ROM_machines'], control_dic['ROMless_machines'])
             info_text += "CHDs: {0}\n".format(control_dic['CHD_machines'])
             info_text += "Samples: {0}\n".format(control_dic['samples_machines'])
 
             info_text += '\n[COLOR orange]Software Lists ROM count[/COLOR]\n'
             info_text += "Number of SL files: {0}\n".format(control_dic['num_SL_files'])
             info_text += "Total ROMs in all SLs: {0}\n".format(control_dic['num_SL_ROMs'])
+            info_text += "Total CHDs in all SLs: {0}\n".format(control_dic['num_SL_CHDs'])
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
             info_text += "You have {0} ROMs out of {1} (Missing {2})\n".format(control_dic['ROMs_have'], control_dic['ROMs_total'], control_dic['ROMs_missing'])
