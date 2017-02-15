@@ -99,7 +99,7 @@ def fs_new_asset():
         'PCB'       : '',
         'snap'      : '',
         'title'     : '',
-        'clearlogo' : ''
+        'clearlogo' : '',
     }
 
     return a
@@ -110,11 +110,13 @@ def fs_new_asset():
 #   R  Have ROM
 def fs_new_SL_index_entry():
     R = {
-        'description' : '',
-        'year'        : '',
-        'publisher'   : '',
-        'cloneof'     : '',
-        'status'      : '?'
+        'description'    : '',
+        'year'           : '',
+        'publisher'      : '',
+        'cloneof'        : '',
+        'part_name'      : [],
+        'part_interface' : [],
+        'status'         : '?',
     }
 
     return R
@@ -1239,16 +1241,64 @@ def fs_compress_item_list(item_list):
 
 # -------------------------------------------------------------------------------------------------
 #
+class SLData:
+    def __init__(self):
+        self.roms = {}
+        self.display_name = ''
+        self.num_roms = 0
+        self.num_CHDs = 0
+        self.part_name_set = set()
+
+# >> Compile and cache regular expressions. Should be much faster.
+# >> See https://docs.python.org/2/library/re.html#re.compile        
+prog_cart    = re.compile('^cart[0-9]*')
+prog_cass    = re.compile('^cass[0-9]*')
+prog_flop    = re.compile('^flop[0-9]*')
+prog_tape    = re.compile('^tape[0-9]*')
+prog_rom     = re.compile('^rom[0-9]*')
+prog_card    = re.compile('^card[0-9]*')
+prog_memc    = re.compile('^memc[0-9]*')
+prog_msxdos  = re.compile('^msxdos[0-9]*')
+prog_socket  = re.compile('^socket[0-9]*')
+prog_quik    = re.compile('^quik[0-9]*')
+prog_lpu_rom = re.compile('^lpu_rom[0-9]*')
+prog_cdrom   = re.compile('^cdrom[0-9]*')
+prog_hdd     = re.compile('^hdd[0-9]*')
+prog_disc    = re.compile('^disc[0-9]*')
+prog_disk    = re.compile('^disk[0-9]*')
+
+def fs_get_clean_part_name(raw_part_name):
+    ret_str = ''
+
+    # OPTIMIZATION Put the most used part names first!
+    # OPTIMIZATION Decompose raw_part_name into tokens and don't use RE at all!
+    if   prog_cart.search(raw_part_name):    ret_str = 'cart'
+    elif prog_cass.search(raw_part_name):    ret_str = 'cass'
+    elif prog_flop.search(raw_part_name):    ret_str = 'flop'
+    elif prog_tape.search(raw_part_name):    ret_str = 'tape'
+    elif prog_rom.search(raw_part_name):     ret_str = 'rom'
+    elif prog_card.search(raw_part_name):    ret_str = 'card'
+    elif prog_memc.search(raw_part_name):    ret_str = 'memc'
+    elif prog_msxdos.search(raw_part_name):  ret_str = 'msxdos'
+    elif prog_socket.search(raw_part_name):  ret_str = 'socket'
+    elif prog_quik.search(raw_part_name):    ret_str = 'quik'
+    elif prog_lpu_rom.search(raw_part_name): ret_str = 'lpu_rom'
+    elif prog_cdrom.search(raw_part_name):   ret_str = 'cdrom' # CHD
+    elif prog_hdd.search(raw_part_name):     ret_str = 'hdd'   # CHD
+    elif prog_disc.search(raw_part_name):    ret_str = 'disc'  # CHD
+    elif prog_disk.search(raw_part_name):    ret_str = 'disk'  # CHD
+    else:
+        log_error('fs_get_part_name() raw_part_name = "{0}"'.format(raw_part_name))
+        raise CriticalError('fs_get_part_name() pattern not found')
+
+    return ret_str
+
 def fs_load_SL_XML(xml_filename):
     __debug_xml_parser = False
-    roms = {}
-    num_roms = 0
-    display_name = ''
-    default_return = ({}, 0, '')
+    ret_obj = SLData()
 
     # --- If file does not exist return empty dictionary ---
-    if not os.path.isfile(xml_filename):
-        return (roms, num_roms, display_name)
+    if not os.path.isfile(xml_filename): return ret_obj
 
     # --- Parse using cElementTree ---
     log_debug('fs_load_SL_XML() Loading XML file "{0}"'.format(xml_filename))
@@ -1256,29 +1306,52 @@ def fs_load_SL_XML(xml_filename):
     try:
         xml_tree = ET.parse(xml_filename)
     except:
-        return default_return
+        return ret_obj
     xml_root = xml_tree.getroot()
-    display_name = xml_root.attrib['description']
+    ret_obj.display_name = xml_root.attrib['description']
     for root_element in xml_root:
         if __debug_xml_parser: print('Root child {0}'.format(root_element.tag))
 
         if root_element.tag == 'software':
-            num_roms += 1
+            num_parts = 0
             rom = fs_new_SL_index_entry()
             rom_name = root_element.attrib['name']
             if 'cloneof' in root_element.attrib: rom['cloneof'] = root_element.attrib['cloneof']
             for rom_child in root_element:
-                # By default read strings
+                # >> By default read strings
                 xml_text = rom_child.text if rom_child.text is not None else ''
                 xml_tag  = rom_child.tag
                 if __debug_xml_parser: print('{0} --> {1}'.format(xml_tag, xml_text))
 
-                # Only pick tags we want
+                # --- Only pick tags we want ---
                 if xml_tag == 'description' or xml_tag == 'year' or xml_tag == 'publisher':
                     rom[xml_tag] = xml_text
-            roms[rom_name] = rom
+                # List a800.xml, ROM diamond3: it has one cart and 3 floppies!
+                elif xml_tag == 'part':
+                    rom['part_name'].append(rom_child.attrib['name'])
+                    rom['part_interface'].append(rom_child.attrib['interface'])
+            # if len(ret_obj.part_name_set) > 1:
+            #     log_error('rom_name = {0}'.format(rom_name))
+            #     log_error('part_name_set = {0}'.format(ret_obj.part_name_set))
+            #     raise CriticalError('len(ret_obj.part_name_set) > 1')
+           
+            # >> If ROM has CHDs parts, count them as a CHD
+            # >> amiga_workbench.xml contains floppies and 1 cdrom!
+            found_CHD = False
+            for name in rom['part_name']:
+                # Get unique set of cleaned part names in the SL
+                part_type = fs_get_clean_part_name(rom_child.attrib['name'])
+                ret_obj.part_name_set.add(part_type)
+                if part_type == 'cdrom' or part_type == 'hdd' or part_type == 'disc' or part_type == 'disk':
+                    found_CHD = True
 
-    return (roms, num_roms, display_name)
+            if found_CHD: ret_obj.num_CHDs += 1
+            else:         ret_obj.num_roms += 1
+
+            # >> Add ROM to database
+            ret_obj.roms[rom_name] = rom
+
+    return ret_obj
 
 # -------------------------------------------------------------------------------------------------
 # SL_catalog = { 'name' : {'display_name': u'', 'rom_count' : int, 'rom_DB_noext' : u'' }, ...}
@@ -1298,6 +1371,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     total_files = len(SL_file_list)
     processed_files = 0
     num_SL_ROMs = 0
+    num_SL_CHDs = 0
     SL_catalog_dic = {}
     for file in SL_file_list:
         log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
@@ -1305,13 +1379,20 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
         SL_path_FN = FileName(file)
-        (roms, num_roms, display_name) = fs_load_SL_XML(SL_path_FN.getPath())
+        SL_obj = fs_load_SL_XML(SL_path_FN.getPath())
         output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json')
-        fs_write_JSON_file(output_FN.getPath(), roms)
-        num_SL_ROMs += len(roms)
-
+        fs_write_JSON_file(output_FN.getPath(), SL_obj.roms)
+        
         # >> Add software list to catalog
-        SL = {'display_name': display_name, 'rom_count' : num_roms, 'rom_DB_noext' : FN.getBase_noext()}
+        num_SL_ROMs += SL_obj.num_roms
+        num_SL_CHDs += SL_obj.num_CHDs
+        SL = {'display_name' : SL_obj.display_name, 
+              'rom_count'    : SL_obj.num_roms,
+              'chd_count'    : SL_obj.num_CHDs,
+              # Cleaned part names (cart1 -> cart, flop1 -> flop)
+              'part_type'    : list(SL_obj.part_name_set),
+              'rom_DB_noext' : FN.getBase_noext()
+        }
         SL_catalog_dic[FN.getBase_noext()] = SL
 
         # >> Update progress
@@ -1366,4 +1447,5 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     # --- SL statistics and save control_dic ---
     control_dic['num_SL_files'] = processed_files
     control_dic['num_SL_ROMs']  = num_SL_ROMs
+    control_dic['num_SL_CHDs']  = num_SL_CHDs
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
