@@ -997,10 +997,11 @@ class Main:
             info_text += "Total CHDs in all SLs: {0}\n".format(control_dic['num_SL_CHDs'])
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
-            info_text += "You have {0} ROMs out of {1} (Missing {2})\n".format(control_dic['ROMs_have'], control_dic['ROMs_total'], control_dic['ROMs_missing'])
-            info_text += "You have {0} CHDs out of {1} (Missing {2})\n".format(control_dic['CHDs_have'], control_dic['CHDs_total'], control_dic['CHDs_missing'])
-            info_text += "You have {0} Samples out of {1} (Missing {2})\n".format(control_dic['Samples_have'], control_dic['Samples_total'], control_dic['Samples_missing'])
-            info_text += "You have {0} SL ROMs out of {1} (Missing {2})\n".format(control_dic['SL_ROMs_have'], control_dic['SL_ROMs_total'], control_dic['SL_ROMs_missing'])
+            info_text += "You have {0} ROMs out of {1} ({2} missing)\n".format(control_dic['ROMs_have'], control_dic['ROMs_total'], control_dic['ROMs_missing'])
+            info_text += "You have {0} CHDs out of {1} ({2} missing)\n".format(control_dic['CHDs_have'], control_dic['CHDs_total'], control_dic['CHDs_missing'])
+            info_text += "You have {0} Samples out of {1} ({2} missing)\n".format(control_dic['Samples_have'], control_dic['Samples_total'], control_dic['Samples_missing'])
+            info_text += "You have {0} SL ROMs out of {1} ({2} missing)\n".format(control_dic['SL_ROMs_have'], control_dic['SL_ROMs_total'], control_dic['SL_ROMs_missing'])
+            info_text += "You have {0} SL CHDs out of {1} ({2} missing)\n".format(control_dic['SL_CHDs_have'], control_dic['SL_CHDs_total'], control_dic['SL_CHDs_missing'])
 
             # --- Show information window ---
             window_title = 'Database information and statistics'
@@ -1356,6 +1357,7 @@ class Main:
             total_files = len(SL_catalog_dic)
             processed_files = 0
             SL_ROMs_have = SL_ROMs_missing = SL_ROMs_total = 0
+            SL_CHDs_have = SL_CHDs_missing = SL_CHDs_total = 0
             for SL_name in SL_catalog_dic:
                 log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
                 SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
@@ -1390,6 +1392,9 @@ class Main:
             control_dic['SL_ROMs_have']    = SL_ROMs_have
             control_dic['SL_ROMs_missing'] = SL_ROMs_missing
             control_dic['SL_ROMs_total']   = SL_ROMs_total
+            control_dic['SL_CHDs_have']    = SL_CHDs_have
+            control_dic['SL_CHDs_missing'] = SL_CHDs_missing
+            control_dic['SL_CHDs_total']   = SL_CHDs_total
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_notify('Scanning of SL ROMs finished')
 
