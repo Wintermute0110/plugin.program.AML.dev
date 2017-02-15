@@ -231,9 +231,10 @@ class Main:
         elif 'command' in args:
             command = args['command'][0]
             if command == 'LAUNCH':
-                machine_name = args['machine'][0]
-                log_info('Launching MAME machine "{0}"'.format(machine_name))
-                self._run_machine(machine_name)
+                machine  = args['machine'][0]
+                location = args['location'][0] if 'location' in args else ''
+                log_info('Launching MAME machine "{0}"'.format(machine, location))
+                self._run_machine(machine, location)
             elif command == 'LAUNCH_SL':
                 SL_name  = args['SL'][0]
                 ROM_name = args['ROM'][0]
@@ -1536,8 +1537,15 @@ class Main:
     # Launch MAME machine.
     # Example: $ mame dino
     #
-    def _run_machine(self, machine_name):
-        log_info('_run_machine() Launching MAME machine "{0}"'.format(machine_name))
+    def _run_machine(self, machine_name, location):
+        log_info('_run_machine() Launching MAME machine  "{0}"'.format(machine_name))
+        log_info('_run_machine() Launching MAME location "{0}"'.format(location))
+
+        # >> If launching from Favourites read ROM from Fav database
+        if location and location == 'MAME_FAV':
+            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+            machine = fav_machines[machine_name]
+            assets  = machine['assets']
 
         # >> Get paths
         mame_prog_FN = FileName(self.settings['mame_prog'])
@@ -1556,13 +1564,21 @@ class Main:
         #     return
 
         # >> Choose BIOS (only available for Favourite Machines)
-        
+        if location and location == 'MAME_FAV' and len(machine['bios_name']) > 1:
+            dialog = xbmcgui.Dialog()
+            m_index = dialog.select('Select BIOS', machine['bios_desc'])
+            if m_index < 0: return
+            BIOS_name = machine['bios_name'][m_index]
+        else:
+            BIOS_name = ''
+
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
         log_info('_run_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
         log_info('_run_machine() mame_dir     "{0}"'.format(mame_dir))
         log_info('_run_machine() mame_exec    "{0}"'.format(mame_exec))
         log_info('_run_machine() machine_name "{0}"'.format(machine_name))
+        log_info('_run_machine() BIOS_name    "{0}"'.format(BIOS_name))
 
         # >> Prevent a console window to be shown in Windows. Not working yet!
         if sys.platform == 'win32':
@@ -1586,15 +1602,14 @@ class Main:
             _info = None
 
         # >> Launch MAME
+        # arg_list = [mame_prog_FN.getPath(), '-window', machine_name]
+        if BIOS_name: arg_list = [mame_prog_FN.getPath(), machine_name, '-bios', BIOS_name]
+        else:         arg_list = [mame_prog_FN.getPath(), machine_name]
+        log_info('arg_list = {0}'.format(arg_list))
         log_info('_run_machine() Calling subprocess.Popen()...')
         with open(PATHS.MAME_STDOUT_PATH.getPath(), 'wb') as _stdout, \
              open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as _stderr:
-            # >> Launch in window mode for debugging
-            # p = subprocess.Popen([mame_prog_FN.getPath(), '-window', machine_name], 
-            #                      stdout = _stdout, stderr = _stderr, cwd = mame_dir, startupinfo = _info)
-            # >> Normal launch
-            p = subprocess.Popen([mame_prog_FN.getPath(), machine_name], 
-                                 stdout = _stdout, stderr = _stderr, cwd = mame_dir, startupinfo = _info)
+            p = subprocess.Popen(arg_list, stdout = _stdout, stderr = _stderr, cwd = mame_dir, startupinfo = _info)
         p.wait()
         log_info('_run_machine() Exiting function')
 
