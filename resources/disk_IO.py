@@ -1007,7 +1007,7 @@ def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic):
         'model2.cpp'   : 'Sega Model 2',
         'namcops2.cpp' : 'Namco System 246 / System 256 (Sony PS2 based)',
         'naomi.cpp'    : 'Sega Naomi / Naomi 2',
-        'neodriv.hpp'  : 'SNK NeoGeo',
+        'neodriv.hxx'  : 'SNK NeoGeo',
         'seta.cpp'     : 'Seta Hardware',
         'segas16b.cpp' : 'Sega System 16B',
         'system1.cpp'  : 'System1 / System 2',
