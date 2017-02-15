@@ -287,7 +287,9 @@ def fs_load_Catver_ini(filename):
         if __debug_do_list_categories: print('Line "' + stripped_line + '"')
         if read_status == 0:
             # >> Look for Catver version
-            m = re.search(r'CatVer ([0-9\.]+) / ', stripped_line)
+            m = re.search(r'^;; CatVer ([0-9\.]+) / ', stripped_line)
+            if m: catver_version = m.group(1)
+            m = re.search(r'^;; CATVER.ini ([0-9\.]+) / ', stripped_line)
             if m: catver_version = m.group(1)
             if stripped_line == '[Category]':
                 if __debug_do_list_categories: print('Found [Category]')

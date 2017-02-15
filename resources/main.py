@@ -493,9 +493,9 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'mname', machine_name)
-        URL_display = self._misc_url_3_arg_RunPlugin('command', 'DISPLAY_SETTINGS', 'clist', list_name, 'mname', machine_name)
-        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'Machine', machine_name)
+        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
+        URL_display = self._misc_url_3_arg_RunPlugin('command', 'DISPLAY_SETTINGS', 'clist', list_name, 'machine', machine_name)
+        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
         commands.append(('View', URL_view ))
         commands.append(('Display settings', URL_display ))
         commands.append(('Add machine to MAME Favourites', URL_fav ))
@@ -511,10 +511,10 @@ class Main:
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
             # >> If not PClone list can be browsed in
             else:
-                URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
+                URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
         else:
-            URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
+            URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     def _load_indexed_pclone_dic(self, list_name):
@@ -684,9 +684,10 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_view    = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'mname', machine_name)
-        URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS', 'clist', clist_name, 'catalog', catalog_name, 'mname', machine_name)
-        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'Machine', machine_name)
+        URL_view    = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
+        URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS', 
+                                                     'clist', clist_name, 'catalog', catalog_name, 'machine', machine_name)
+        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
         commands.append(('View',  URL_view ))
         commands.append(('Display settings', URL_display ))
         commands.append(('Add machine to MAME Favourites', URL_fav ))
@@ -702,10 +703,10 @@ class Main:
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
             # >> If not PClone list can be browsed in
             else:
-                URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
+                URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
         else:
-            URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine_name', machine_name)
+            URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     def _get_catalog_name(self, clist_name):
@@ -1348,7 +1349,9 @@ class Main:
                     if scan_CHDs:
                         hasCHD_list = [False] * len(machine['CHDs'])
                         for idx, CHD_name in enumerate(machine['CHDs']):
-                            CHD_FN = CHD_path_FN.pjoin(CHD_name + '.chd')
+                            CHD_this_path_FN = CHD_path_FN.pjoin(key)
+                            CHD_FN = CHD_this_path_FN.pjoin(CHD_name + '.chd')
+                            # log_debug('Testing CHD OP "{0}"'.format(CHD_FN.getOriginalPath()))
                             if CHD_FN.exists(): hasCHD_list[idx] = True
                         if all(hasCHD_list):
                             machine['status_CHD'] = 'C'
@@ -1367,6 +1370,7 @@ class Main:
                     Samples_total += 1
                     if scan_Samples:
                         Sample_FN = Samples_path_FN.pjoin(key + '.zip')
+                        # log_debug('Testing Sample OP "{0}"'.format(Sample_FN.getOriginalPath()))
                         if Sample_FN.exists():
                             machine['status_SAM'] = 'S'
                             Samples_have += 1
