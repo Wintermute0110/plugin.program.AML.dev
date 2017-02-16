@@ -1073,7 +1073,21 @@ class Main:
         # --- View MAME ROM scanner report ---
         type_nb += 1
         if type == type_nb:
-            kodi_dialog_OK('MAME ROM scanner report not coded yet. Sorry.')
+            # --- Read stdout and put into a string ---
+            info_text = ''
+            with open(PATHS.REPORT_MAME_SCAN_PATH.getPath(), "r") as myfile:
+                info_text = myfile.read()
+
+            # --- Show information window ---
+            window_title = 'ROM scanner report'
+            try:
+                xbmc.executebuiltin('ActivateWindow(10147)')
+                window = xbmcgui.Window(10147)
+                xbmc.sleep(100)
+                window.getControl(1).setLabel(window_title)
+                window.getControl(5).setText(info_text)
+            except:
+                log_error('_command_view_machine() Exception rendering INFO window')
 
         # --- View Software Lists scanner report ---
         type_nb += 1
