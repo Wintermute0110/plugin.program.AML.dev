@@ -252,12 +252,18 @@ class Main:
                 catalog = args['catalog'][0] if 'catalog' in args else ''
                 machine = args['machine'][0] if 'machine' in args else ''
                 self._command_display_settings(clist, catalog, machine)
+
+            # >> MAME Favourites
             elif command == 'ADD_MAME_FAV':
                 self._command_add_mame_fav(args['machine'][0])
             elif command == 'DELETE_MAME_FAV':
                 self._command_delete_mame_fav(args['machine'][0])
             elif command == 'SHOW_MAME_FAVS':
                 self._command_show_mame_fav()
+            elif command == 'MANAGE_MAME_FAV':
+                self._command_manage_mame_fav(args['machine'][0])
+
+            # >> SL Favourites
             elif command == 'ADD_SL_FAV':
                 self._command_add_sl_fav(args['SL'][0], args['ROM'][0])
             elif command == 'DELETE_SL_FAV':
@@ -1107,10 +1113,11 @@ class Main:
         kodi_busydialog_ON()
         MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
         kodi_busydialog_OFF()
         machine = MAME_db_dic[machine_name]
         assets  = MAME_assets_dic[machine_name]
-        
+
         # >> Open Favourite Machines dictionary
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
         
@@ -1120,8 +1127,9 @@ class Main:
                                     'already in MAME Favourites. Overwrite?')
             if ret < 1: return
 
-        # >> Add machine.
+        # >> Add machine. Add database version to Favourite.
         machine['assets'] = assets
+        machine['mame_version'] = control_dic['mame_version']
         fav_machines[machine_name] = machine
         log_info('_command_add_mame_fav() Added machine "{0}"'.format(machine_name))
 
@@ -1167,7 +1175,7 @@ class Main:
             self._render_fav_machine_row(m_name, machine, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_fav_machine_row(self, m_name, machine, machine_assets):
+    def _render_fav_machine_row(self, machine_name, machine, machine_assets):
         display_name = machine['description']
 
         # --- Mark Status ---
@@ -1217,17 +1225,43 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', m_name)
-        URL_display = self._misc_url_2_arg_RunPlugin('command', 'DELETE_MAME_FAV', 'machine', m_name)
+        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
+        URL_view = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
+        URL_display = self._misc_url_2_arg_RunPlugin('command', 'DELETE_MAME_FAV', 'machine', machine_name)
         commands.append(('View',  URL_view ))
+        commands.append(('Manage Favourite machines',  URL_manage ))
         commands.append(('Delete machine from Favourites', URL_display ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        URL = self._misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', 'MAME_FAV')
+        URL = self._misc_url_3_arg('command', 'LAUNCH', 'machine', machine_name, 'location', 'MAME_FAV')
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+
+    def _command_manage_mame_fav(self, machine_name):
+        dialog = xbmcgui.Dialog()
+        idx = dialog.select('Manage MAME Favourites', 
+                           ['Scan ROMs/CHDs/Samples',
+                            'Scan assets/artwork',
+                            'Check Favourites'])
+        if idx < 0: return
+
+        # --- Scan ROMs/CHDs/Samples ---
+        if idx == 0:
+            kodi_dialog_OK('Scan ROMs/CHDs/Samples not coded yet. Sorry.')
+
+        # --- Scan assets/artwork ---
+        elif idx == 1:
+            kodi_dialog_OK('Scan Scan assets/artwork not coded yet. Sorry.')
+
+        # --- Check Favourites ---
+        # >> Check if Favourites can be found in current MAME main database. It may happen that
+        # >> a machine can be renamed although I think this is very unlikely.
+        # >> MAME Favs can not be relinked. If the machine is not found in current database it must
+        # >> be deleted by the user and a new Favourite created.
+        elif idx == 2:
+            kodi_dialog_OK('Check Favourites not coded yet. Sorry.')
 
     def _command_add_sl_fav(self, SL_name, ROM_name):
         log_debug('_command_add_sl_fav() SL_name  "{0}"'.format(SL_name))
@@ -1235,13 +1269,14 @@ class Main:
 
         # >> Get Machine database entry
         kodi_busydialog_ON()
+        control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
         SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
         kodi_busydialog_OFF()
         ROM = SL_roms[ROM_name]
-        
+
         # >> Open Favourite Machines dictionary
         fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
@@ -1256,6 +1291,7 @@ class Main:
         # >> Add machine.
         ROM['ROM_name'] = ROM_name
         ROM['SL_name']  = SL_name
+        ROM['mame_version'] = control_dic['mame_version']
         fav_SL_roms[SL_fav_key] = ROM
         log_info('_command_add_sl_fav() Added machine "{0}" ("{1}")'.format(ROM_name, SL_name))
 
