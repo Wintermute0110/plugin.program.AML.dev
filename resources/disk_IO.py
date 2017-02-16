@@ -1498,3 +1498,150 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     control_dic['num_SL_ROMs']  = num_SL_ROMs
     control_dic['num_SL_CHDs']  = num_SL_CHDs
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+# -------------------------------------------------------------------------------------------------
+# Saves MAIN_DB_PATH, MAIN_CONTROL_PATH.
+#
+def fs_scan_MAME_ROMs(PATHS, machines, control_dic, scan_CHDs, scan_Samples):
+    # >> Iterate machines, check if ROMs exits. Update status field
+    pDialog = xbmcgui.DialogProgress()
+    pDialog_canceled = False
+    pDialog.create('Advanced MAME Launcher', 'Scanning MAME ROMs...')
+    total_machines = len(machines)
+    processed_machines = 0
+    ROMs_have    = ROMs_missing    = ROMs_total    = 0
+    CHDs_have    = CHDs_missing    = CHDs_total    = 0
+    Samples_have = Samples_missing = Samples_total = 0
+    for key, machine in machines.iteritems():
+        machine = machines[key]
+        # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
+
+        # >> Scan ROMs
+        if machine['hasROM']:
+            ROMs_total += 1
+            # >> Machine has ROM. Get ROM filename and check if file exist
+            ROM_FN = ROM_path_FN.pjoin(key + '.zip')
+            if ROM_FN.exists():
+                machine['status_ROM'] = 'R'
+                ROMs_have += 1
+            else:
+                machine['status_ROM'] = 'r'
+                ROMs_missing += 1
+        else:
+            machine['status_ROM'] = '-'
+            
+        # >> Scan CHDs
+        if machine['CHDs']:
+            CHDs_total += 1
+            if scan_CHDs:
+                hasCHD_list = [False] * len(machine['CHDs'])
+                for idx, CHD_name in enumerate(machine['CHDs']):
+                    CHD_this_path_FN = CHD_path_FN.pjoin(key)
+                    CHD_FN = CHD_this_path_FN.pjoin(CHD_name + '.chd')
+                    # log_debug('Testing CHD OP "{0}"'.format(CHD_FN.getOriginalPath()))
+                    if CHD_FN.exists(): hasCHD_list[idx] = True
+                if all(hasCHD_list):
+                    machine['status_CHD'] = 'C'
+                    CHDs_have += 1
+                else:
+                    machine['status_CHD'] = 'c'
+                    CHDs_missing += 1
+            else:
+                machine['status_CHD'] = 'c'
+                CHDs_missing += 1
+        else:
+            machine['status_CHD'] = '-'
+
+        # >> Scan Samples
+        if machine['sampleof']:
+            Samples_total += 1
+            if scan_Samples:
+                Sample_FN = Samples_path_FN.pjoin(key + '.zip')
+                # log_debug('Testing Sample OP "{0}"'.format(Sample_FN.getOriginalPath()))
+                if Sample_FN.exists():
+                    machine['status_SAM'] = 'S'
+                    Samples_have += 1
+                else:
+                    machine['status_SAM'] = 's'
+                    Samples_missing += 1
+            else:
+                machine['status_SAM'] = 's'
+                Samples_missing += 1
+        else:
+            machine['status_SAM'] = '-'
+
+        # >> Progress dialog
+        processed_machines = processed_machines + 1
+        pDialog.update(100 * processed_machines / total_machines)
+    pDialog.close()
+
+    # >> Update statistics
+    control_dic['ROMs_have']       = ROMs_have
+    control_dic['ROMs_missing']    = ROMs_missing
+    control_dic['ROMs_total']      = ROMs_total
+    control_dic['CHDs_have']       = CHDs_have
+    control_dic['CHDs_missing']    = CHDs_missing
+    control_dic['CHDs_total']      = CHDs_total
+    control_dic['Samples_have']    = Samples_have
+    control_dic['Samples_missing'] = Samples_missing
+    control_dic['Samples_total']   = Samples_total
+
+    # >> Save database
+    kodi_busydialog_ON()
+    fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    kodi_busydialog_OFF()
+
+# -------------------------------------------------------------------------------------------------
+# Saves SL JSON databases, MAIN_CONTROL_PATH.
+#
+def fs_scan_SL_ROMs(PATHS, machines, control_dic, scan_CHDs, scan_Samples):
+    # >> Traverse Software List, check if ROM exists, update and save database
+    pDialog = xbmcgui.DialogProgress()
+    pdialog_line1 = 'Scanning Sofware Lists ROMs ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    pDialog.update(0)
+    total_files = len(SL_catalog_dic)
+    processed_files = 0
+    SL_ROMs_have = SL_ROMs_missing = SL_ROMs_total = 0
+    SL_CHDs_have = SL_CHDs_missing = SL_CHDs_total = 0
+    for SL_name in SL_catalog_dic:
+        log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
+        SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
+
+        # >> Open database
+        # log_debug('File "{0}"'.format(SL_DB_FN.getPath()))
+        roms = fs_load_JSON_file(SL_DB_FN.getPath())
+
+        # >> Scan for ROMs
+        for rom_key, rom in roms.iteritems():
+            SL_ROMs_total += 1
+            this_SL_ROM_dir_FN = SL_ROM_dir_FN.pjoin(SL_name)
+            SL_ROM_FN = this_SL_ROM_dir_FN.pjoin(rom_key + '.zip')
+            # log_debug('Scanning "{0}"'.format(SL_ROM_FN.getPath()))
+            if SL_ROM_FN.exists():
+                rom['status'] = 'R'
+                SL_ROMs_have += 1
+            else:
+                rom['status'] = 'r'
+                SL_ROMs_missing += 1
+
+        # >> Update database
+        fs_write_JSON_file(SL_DB_FN.getPath(), roms)
+        
+        # >> Update progress
+        processed_files += 1
+        update_number = 100 * processed_files / total_files
+        pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+    pDialog.close()
+
+    # >> Update statistics
+    control_dic['SL_ROMs_have']    = SL_ROMs_have
+    control_dic['SL_ROMs_missing'] = SL_ROMs_missing
+    control_dic['SL_ROMs_total']   = SL_ROMs_total
+    control_dic['SL_CHDs_have']    = SL_CHDs_have
+    control_dic['SL_CHDs_missing'] = SL_CHDs_missing
+    control_dic['SL_CHDs_total']   = SL_CHDs_total
+
+    # >> Save databases
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
