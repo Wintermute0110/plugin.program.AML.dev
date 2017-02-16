@@ -95,6 +95,10 @@ class AML_Paths:
         # >> Favourites
         self.FAV_MACHINES_PATH           = PLUGIN_DATA_DIR.pjoin('Favourite_Machines.json')
         self.FAV_SL_ROMS_PATH            = PLUGIN_DATA_DIR.pjoin('Favourite_SL_ROMs.json')
+        
+        # >> Reports
+        self.REPORT_MAME_SCAN_PATH       = PLUGIN_DATA_DIR.pjoin('Report_ROM_scanner.txt')
+        self.REPORT_SL_SCAN_PATH         = PLUGIN_DATA_DIR.pjoin('Report_SL_scanner.txt')
 PATHS = AML_Paths()
 
 class Main:
@@ -1401,7 +1405,7 @@ class Main:
         dialog = xbmcgui.Dialog()
         menu_item = dialog.select('Setup plugin',
                                  ['Extract MAME.xml ...',
-                                  'Build everything ...',
+                                  'Build all databases ...',
                                   'Build MAME database ...',
                                   'Build MAME indices and catalogs ...',
                                   'Build Software Lists indices and catalogs ...',
@@ -1438,6 +1442,7 @@ class Main:
             kodi_busydialog_OFF()
             fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic)
             fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic, control_dic)
+            kodi_notify('All databases built')
 
         # --- Build main MAME database and PClone list ---
         elif menu_item == 2:
@@ -1508,6 +1513,7 @@ class Main:
                     scan_CHDs = True
             else:
                 kodi_dialog_OK('CHD directory not configured. CHD scanning disabled.')
+                CHD_path_FN = FileName('')
 
             scan_Samples = False
             if self.settings['samples_path']:
@@ -1518,6 +1524,7 @@ class Main:
                     scan_Samples = True
             else:
                 kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
+                Samples_path_FN = FileName('')
 
             # >> Load machine database and control_dic
             kodi_busydialog_ON()
@@ -1526,7 +1533,7 @@ class Main:
             kodi_busydialog_OFF()
 
             # --- Scan ROMs/CHDs/samples ---
-            fs_scan_MAME_ROMs(PATHS, machines, control_dic, scan_CHDs, scan_Samples)
+            fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN, control_dic, scan_CHDs, scan_Samples)
             kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
         # --- Scans assets/artwork ---
