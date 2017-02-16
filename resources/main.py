@@ -1530,7 +1530,10 @@ class Main:
                 pDialog.update(100 * processed_machines / total_machines)
             pDialog.close()
 
-            # >> Save asset database
+            # >> Asset statistics
+            
+            
+            # >> Save asset database and control_dic
             kodi_busydialog_ON()
             fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
             kodi_busydialog_OFF()
@@ -1565,12 +1568,48 @@ class Main:
             kodi_notify('Scanning of SL ROMs finished')
 
         # --- Scan SL assets/artwork ---
+        # >> Database format: ADDON_DATA_DIR/db_SoftwareLists/32x_assets.json
+        # >> { 'ROM_name' : {'asset1' : 'path', 'asset2' : 'path', ... }, ... }
         elif menu_item == 7:
             log_info('_command_setup_plugin() Scanning SL assets/artwork ...')
-            kodi_dialog_OK('Not coded yet. Sorry.')
+            kodi_notify('Not ready yet. Needs testing.')
+
+            # >> Traverse Software List, check if ROM exists, update and save database
+            pDialog = xbmcgui.DialogProgress()
+            pdialog_line1 = 'Scanning Sofware Lists ROMs ...'
+            pDialog.create('Advanced MAME Launcher', pdialog_line1)
+            pDialog.update(0)
+            total_files = len(SL_catalog_dic)
+            processed_files = 0
+            for SL_name in SL_catalog_dic:
+                log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
+                SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
+
+                # >> Open database
+                # log_debug('File "{0}"'.format(SL_DB_FN.getPath()))
+                roms = fs_load_JSON_file(SL_DB_FN.getPath())
+
+                # >> Scan for assets
+                for rom_key, rom in roms.iteritems():
+                    pass
+
+                # >> Update database
+                fs_write_JSON_file(SL_DB_FN.getPath(), roms)
+                
+                # >> Update progress
+                processed_files += 1
+                update_number = 100 * processed_files / total_files
+                pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+            pDialog.close()
+
+            # >> Asset statistics
+            
+
+            # >> Save control_dic (with updated statistics)
+            
 
     #
-    # Launch MAME machine.
+    # Launch MAME machine. Syntax: $ mame <machine_name> [options]
     # Example: $ mame dino
     #
     def _run_machine(self, machine_name, location):
@@ -1651,7 +1690,7 @@ class Main:
 
     #
     # Launch SL machine. See http://docs.mamedev.org/usingmame/usingmame.html
-    # Syntax: $ mame <system> <software>
+    # Syntax: $ mame <system> <software> [options]
     # Example: $ mame smspal sonic
     # Requirements:
     #   A) machine_name
