@@ -1160,6 +1160,7 @@ class Main:
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
 
         # >> Render Favourites
+        self._set_Kodi_all_sorting_methods()
         for m_name in fav_machines:
             machine = fav_machines[m_name]
             assets  = machine['assets']
@@ -1291,7 +1292,7 @@ class Main:
         # >> Save Favourites
         fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
         kodi_notify('ROM {0} added to SL Favourite ROMs'.format(ROM_name))
-        
+
     def _command_show_sl_fav(self):
         log_debug('_command_show_sl_fav() Starting ...')
 
@@ -1299,6 +1300,7 @@ class Main:
         fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
 
         # >> Render Favourites
+        self._set_Kodi_all_sorting_methods()
         for SL_fav_key in fav_SL_roms:
             SL_fav_ROM = fav_SL_roms[SL_fav_key]
             self._render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM)
