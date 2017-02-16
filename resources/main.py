@@ -858,6 +858,8 @@ class Main:
             menu_kind = MENU_SIMPLE
             type = dialog.select('View ...',
                                  ['View database information',
+                                  'View MAME ROM scanner report',
+                                  'View Software Lists scanner report',
                                   'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
         elif mname:
@@ -865,6 +867,8 @@ class Main:
             type = dialog.select('View ...',
                                  ['View MAME machine data',
                                   'View database information',
+                                  'View MAME ROM scanner report',
+                                  'View Software Lists scanner report',
                                   'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
         elif SLname:
@@ -872,6 +876,8 @@ class Main:
             type = dialog.select('View ...',
                                  ['View Software List machine data',
                                   'View database information',
+                                  'View MAME ROM scanner report',
+                                  'View Software Lists scanner report',
                                   'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
         else:
@@ -1034,15 +1040,20 @@ class Main:
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
             info_text += "You have {0} ROMs out of {1} ({2} missing)\n".format(control_dic['ROMs_have'], 
-                                                                               control_dic['ROMs_total'], control_dic['ROMs_missing'])
+                                                                               control_dic['ROMs_total'], 
+                                                                               control_dic['ROMs_missing'])
             info_text += "You have {0} CHDs out of {1} ({2} missing)\n".format(control_dic['CHDs_have'], 
-                                                                               control_dic['CHDs_total'], control_dic['CHDs_missing'])
+                                                                               control_dic['CHDs_total'], 
+                                                                               control_dic['CHDs_missing'])
             info_text += "You have {0} Samples out of {1} ({2} missing)\n".format(control_dic['Samples_have'], 
-                                                                                  control_dic['Samples_total'], control_dic['Samples_missing'])
+                                                                                  control_dic['Samples_total'], 
+                                                                                  control_dic['Samples_missing'])
             info_text += "You have {0} SL ROMs out of {1} ({2} missing)\n".format(control_dic['SL_ROMs_have'], 
-                                                                                  control_dic['SL_ROMs_total'], control_dic['SL_ROMs_missing'])
+                                                                                  control_dic['SL_ROMs_total'], 
+                                                                                  control_dic['SL_ROMs_missing'])
             info_text += "You have {0} SL CHDs out of {1} ({2} missing)\n".format(control_dic['SL_CHDs_have'], 
-                                                                                  control_dic['SL_CHDs_total'], control_dic['SL_CHDs_missing'])
+                                                                                  control_dic['SL_CHDs_total'], 
+                                                                                  control_dic['SL_CHDs_missing'])
 
             # --- Show information window ---
             window_title = 'Database information and statistics'
@@ -1054,6 +1065,16 @@ class Main:
                 window.getControl(5).setText(info_text)
             except:
                 log_error('_command_view_machine() Exception rendering INFO window')
+
+        # --- View MAME ROM scanner report ---
+        type_nb += 1
+        if type == type_nb:
+            kodi_dialog_OK('MAME ROM scanner report not coded yet. Sorry.')
+
+        # --- View Software Lists scanner report ---
+        type_nb += 1
+        if type == type_nb:
+            kodi_dialog_OK('SL ROM scanner report not coded yet. Sorry.')
 
         # --- View MAME stdout ---
         type_nb += 1
@@ -1123,7 +1144,7 @@ class Main:
         
         # >> If machine already in Favourites ask user if overwrite.
         if machine_name in fav_machines:
-            ret = kodi_dialog_yesno('Machine {0} ({1}) '.format(machine['description'], machine_name)
+            ret = kodi_dialog_yesno('Machine {0} ({1}) '.format(machine['description'], machine_name) +
                                     'already in MAME Favourites. Overwrite?')
             if ret < 1: return
 
@@ -1226,7 +1247,7 @@ class Main:
         # --- Create context menu ---
         commands = []
         URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
-        URL_view = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
+        URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
         URL_display = self._misc_url_2_arg_RunPlugin('command', 'DELETE_MAME_FAV', 'machine', machine_name)
         commands.append(('View',  URL_view ))
         commands.append(('Manage Favourite machines',  URL_manage ))
@@ -1284,7 +1305,7 @@ class Main:
         
         # >> If machine already in Favourites ask user if overwrite.
         if SL_fav_key in fav_SL_roms:
-            ret = kodi_dialog_yesno('Machine {0} ({1}) '.format(ROM_name, SL_name)
+            ret = kodi_dialog_yesno('Machine {0} ({1}) '.format(ROM_name, SL_name) +
                                     'already in SL Favourites. Overwrite?')
             if ret < 1: return
 
