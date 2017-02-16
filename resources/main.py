@@ -1179,17 +1179,11 @@ class Main:
     def _command_delete_mame_fav(self, machine_name):
         log_debug('_command_delete_mame_fav() Machine_name "{0}"'.format(machine_name))
 
-        # >> Get Machine database entry
-        kodi_busydialog_ON()
-        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        kodi_busydialog_OFF()
-        
         # >> Open Favourite Machines dictionary
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
         
         # >> Ask user for confirmation.
-        ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(machine['description'], machine_name))
+        ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(fav_machines[machine_name]['description'], machine_name))
         if ret < 1: return
         
         # >> Delete machine
@@ -1198,7 +1192,8 @@ class Main:
 
         # >> Save Favourites
         fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
-        kodi_notify('Machine {0} added to MAME Favourites'.format(machine_name))
+        kodi_refresh_container()
+        kodi_notify('Machine {0} deleted from MAME Favourites'.format(machine_name))
 
     def _command_show_mame_fav(self):
         log_debug('_command_show_mame_fav() Starting ...')
@@ -1366,7 +1361,8 @@ class Main:
 
         # >> Save Favourites
         fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
-        kodi_notify('ROM {0} added to SL Favourite ROMs'.format(ROM_name))
+        kodi_refresh_container()
+        kodi_notify('ROM {0} deleted from SL Favourites'.format(ROM_name))
 
     def _command_show_sl_fav(self):
         log_debug('_command_show_sl_fav() Starting ...')
