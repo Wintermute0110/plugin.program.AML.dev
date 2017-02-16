@@ -1401,6 +1401,7 @@ class Main:
         dialog = xbmcgui.Dialog()
         menu_item = dialog.select('Setup plugin',
                                  ['Extract MAME.xml ...',
+                                  'Build everything ...',
                                   'Build MAME database ...',
                                   'Build MAME indices and catalogs ...',
                                   'Build Software Lists indices and catalogs ...',
@@ -1422,10 +1423,29 @@ class Main:
             kodi_dialog_OK('Extracted MAME XML database. '
                            'Size is {0} MB and there are {1} machines.'.format(filesize / 1000000, total_machines))
 
-        # --- Build main MAME database and PClone list ---
+        # --- Build/scan everything ---
         elif menu_item == 1:
+            if not PATHS.MAME_XML_PATH.exists():
+                kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
+                return
+
+            # --- Build all databases ---
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            fs_build_MAME_main_database(PATHS, self.settings, control_dic)
+            kodi_busydialog_ON()
+            machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            kodi_busydialog_OFF()
+            fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic)
+            fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic, control_dic)
+
+        # --- Build main MAME database and PClone list ---
+        elif menu_item == 2:
             # --- Error checks ---
             # >> Check that MAME_XML_PATH exists
+            if not PATHS.MAME_XML_PATH.exists():
+                kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
+                return
 
             # --- Parse MAME XML and generate main database and PClone list ---
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
@@ -1434,7 +1454,7 @@ class Main:
             kodi_notify('Main MAME database built')
 
         # --- Build MAME indices/catalogs ---
-        elif menu_item == 2:
+        elif menu_item == 3:
             # --- Error checks ---
             # >> Check that main MAME database exists
 
@@ -1449,7 +1469,7 @@ class Main:
             kodi_notify('Indices and catalogs built')
 
         # --- Build Software Lists indices/catalogs ---
-        elif menu_item == 3:
+        elif menu_item == 4:
             # --- Error checks ---
             if not self.settings['SL_hash_path']:
                 kodi_dialog_OK('Software Lists hash path not set.')
@@ -1467,7 +1487,7 @@ class Main:
             kodi_notify('Software Lists indices and catalogs built')
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
-        elif menu_item == 4:
+        elif menu_item == 5:
             log_info('_command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
 
             # >> Get paths and check they exist
@@ -1510,7 +1530,7 @@ class Main:
             kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
         # --- Scans assets/artwork ---
-        elif menu_item == 5:
+        elif menu_item == 6:
             log_info('_command_setup_plugin() Scanning MAME assets/artwork ...')
 
             # >> Get assets directory. Abort if not configured/found.
@@ -1561,7 +1581,7 @@ class Main:
             kodi_notify('Scanning of assets/artwork finished')
 
         # --- Scan SL ROMs ---
-        elif menu_item == 6:
+        elif menu_item == 7:
             log_info('_command_setup_plugin() Scanning SL ROMs ...')
 
             # >> Abort if SL hash path not configured.
@@ -1591,7 +1611,7 @@ class Main:
         # --- Scan SL assets/artwork ---
         # >> Database format: ADDON_DATA_DIR/db_SoftwareLists/32x_assets.json
         # >> { 'ROM_name' : {'asset1' : 'path', 'asset2' : 'path', ... }, ... }
-        elif menu_item == 7:
+        elif menu_item == 8:
             log_info('_command_setup_plugin() Scanning SL assets/artwork ...')
             kodi_notify('Not ready yet. Needs testing.')
 
