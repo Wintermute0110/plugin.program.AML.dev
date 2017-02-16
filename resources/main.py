@@ -1113,15 +1113,41 @@ class Main:
         
         # >> Open Favourite Machines dictionary
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+        
+        # >> If machine already in Favourites ask user if overwrite.
+        if machine_name in fav_machines:
+            ret = kodi_dialog_yesno('Machine {0} ({1}) '.format(machine['description'], machine_name)
+                                    'already in MAME Favourites. Overwrite?')
+            if ret < 1: return
+
+        # >> Add machine.
         machine['assets'] = assets
         fav_machines[machine_name] = machine
+        log_info('_command_add_mame_fav() Added machine "{0}"'.format(machine_name))
 
         # >> Save Favourites
         fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
         kodi_notify('Machine {0} added to MAME Favourites'.format(machine_name))
 
     def _command_delete_mame_fav(self, machine_name):
-        kodi_dialog_OK('_command_delete_mame_fav() not coded yet. Sorry')
+        log_debug('_command_delete_mame_fav() Machine_name "{0}"'.format(machine_name))
+
+        # >> Get Machine database entry
+        kodi_busydialog_ON()
+        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        kodi_busydialog_OFF()
+        
+        # >> Open Favourite Machines dictionary
+        fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+        
+        # >> Delete machine
+        del fav_machines[machine_name]
+        log_info('_command_delete_mame_fav() Deleted machine "{0}"'.format(machine_name))
+
+        # >> Save Favourites
+        fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+        kodi_notify('Machine {0} added to MAME Favourites'.format(machine_name))
 
     def _command_show_mame_fav(self):
         log_debug('_command_show_mame_fav() Starting ...')
