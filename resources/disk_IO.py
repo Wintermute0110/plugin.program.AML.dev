@@ -1503,18 +1503,17 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
 # Saves MAIN_DB_PATH, MAIN_CONTROL_PATH.
 #
 def fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN, control_dic, scan_CHDs, scan_Samples):
-    # >> Open report file
-    log_info('Opening report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_PATH.getPath()))
-    file = open(PATHS.REPORT_MAME_SCAN_PATH.getPath(), 'w')
-
     # >> Scan ROMs
+    log_info('Opening ROMs report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath()))
+    file = open(PATHS.REPORT_MAME_SCAN_PATH.getPath(), 'w')
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME ROMs...')
     total_machines = len(machines)
     processed_machines = 0
     ROMs_have = ROMs_missing = ROMs_total = 0
-    for key, machine in machines.iteritems():
+    for key in sorted(machines):
+        machine = machines[key]
         # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
         if machine['hasROM']:
             ROMs_total += 1
@@ -1534,10 +1533,14 @@ def fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN
         processed_machines = processed_machines + 1
         pDialog.update(100 * processed_machines / total_machines)
     pDialog.close()
+    file.close()
 
     # >> Scan CHDs
+    log_info('Opening CHDs report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath()))
+    file = open(PATHS.REPORT_MAME_SCAN_PATH.getPath(), 'w')
     CHDs_have = CHDs_missing = CHDs_total    = 0
-    for key, machine in machines.iteritems():
+    for key in sorted(machines):
+        machine = machines[key]
         if machine['CHDs']:
             CHDs_total += 1
             if scan_CHDs:
@@ -1561,10 +1564,14 @@ def fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN
                 CHDs_missing += 1
         else:
             machine['status_CHD'] = '-'
+    file.close()
 
     # >> Scan Samples
+    log_info('Opening Samples report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath()))
+    file = open(PATHS.REPORT_MAME_SCAN_PATH.getPath(), 'w')
     Samples_have = Samples_missing = Samples_total = 0
-    for key, machine in machines.iteritems():
+    for key in sorted(machines):
+        machine = machines[key]
         if machine['sampleof']:
             Samples_total += 1
             if scan_Samples:
@@ -1582,9 +1589,7 @@ def fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN
                 Samples_missing += 1
         else:
             machine['status_SAM'] = '-'
-
-    # >> Open report file
-    file.close()
+    file.close()    
 
     # >> Update statistics
     control_dic['ROMs_have']       = ROMs_have

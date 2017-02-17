@@ -97,7 +97,9 @@ class AML_Paths:
         self.FAV_SL_ROMS_PATH            = PLUGIN_DATA_DIR.pjoin('Favourite_SL_ROMs.json')
         
         # >> Reports
-        self.REPORT_MAME_SCAN_PATH       = PLUGIN_DATA_DIR.pjoin('Report_ROM_scanner.txt')
+        self.REPORT_MAME_SCAN_ROMS_PATH  = PLUGIN_DATA_DIR.pjoin('Report_ROM_scanner.txt')
+        self.REPORT_MAME_SCAN_CHDS_PATH  = PLUGIN_DATA_DIR.pjoin('Report_CHD_scanner.txt')
+        self.REPORT_MAME_SCAN_SAMP_PATH  = PLUGIN_DATA_DIR.pjoin('Report_Samples_scanner.txt')
         self.REPORT_SL_SCAN_PATH         = PLUGIN_DATA_DIR.pjoin('Report_SL_scanner.txt')
 PATHS = AML_Paths()
 
@@ -863,6 +865,8 @@ class Main:
             type = dialog.select('View ...',
                                  ['View database information',
                                   'View MAME ROM scanner report',
+                                  'View MAME CHD scanner report',
+                                  'View MAME Samples scanner report',
                                   'View Software Lists scanner report',
                                   'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
@@ -872,6 +876,8 @@ class Main:
                                  ['View MAME machine data',
                                   'View database information',
                                   'View MAME ROM scanner report',
+                                  'View MAME CHD scanner report',
+                                  'View MAME Samples scanner report',
                                   'View Software Lists scanner report',
                                   'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
@@ -881,6 +887,8 @@ class Main:
                                  ['View Software List machine data',
                                   'View database information',
                                   'View MAME ROM scanner report',
+                                  'View MAME CHD scanner report',
+                                  'View MAME Samples scanner report',
                                   'View Software Lists scanner report',
                                   'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
@@ -1076,6 +1084,44 @@ class Main:
             # --- Read stdout and put into a string ---
             info_text = ''
             with open(PATHS.REPORT_MAME_SCAN_PATH.getPath(), "r") as myfile:
+                info_text = myfile.read()
+
+            # --- Show information window ---
+            window_title = 'ROM scanner report'
+            try:
+                xbmc.executebuiltin('ActivateWindow(10147)')
+                window = xbmcgui.Window(10147)
+                xbmc.sleep(100)
+                window.getControl(1).setLabel(window_title)
+                window.getControl(5).setText(info_text)
+            except:
+                log_error('_command_view_machine() Exception rendering INFO window')
+
+        # --- View MAME CHD scanner report ---
+        type_nb += 1
+        if type == type_nb:
+            # --- Read stdout and put into a string ---
+            info_text = ''
+            with open(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath(), "r") as myfile:
+                info_text = myfile.read()
+
+            # --- Show information window ---
+            window_title = 'ROM scanner report'
+            try:
+                xbmc.executebuiltin('ActivateWindow(10147)')
+                window = xbmcgui.Window(10147)
+                xbmc.sleep(100)
+                window.getControl(1).setLabel(window_title)
+                window.getControl(5).setText(info_text)
+            except:
+                log_error('_command_view_machine() Exception rendering INFO window')
+
+        # --- View MAME Samples scanner report ---
+        type_nb += 1
+        if type == type_nb:
+            # --- Read stdout and put into a string ---
+            info_text = ''
+            with open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), "r") as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
