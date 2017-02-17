@@ -1510,7 +1510,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
 def fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN, control_dic, scan_CHDs, scan_Samples):
     # >> Scan ROMs
     log_info('Opening ROMs report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath()))
-    file = open(PATHS.REPORT_MAME_SCAN_PATH.getPath(), 'w')
+    file = open(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath(), 'w')
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME ROMs...')
@@ -1542,7 +1542,7 @@ def fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN
 
     # >> Scan CHDs
     log_info('Opening CHDs report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath()))
-    file = open(PATHS.REPORT_MAME_SCAN_PATH.getPath(), 'w')
+    file = open(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath(), 'w')
     CHDs_have = CHDs_missing = CHDs_total    = 0
     for key in sorted(machines):
         machine = machines[key]
@@ -1573,7 +1573,7 @@ def fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN
 
     # >> Scan Samples
     log_info('Opening Samples report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath()))
-    file = open(PATHS.REPORT_MAME_SCAN_PATH.getPath(), 'w')
+    file = open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), 'w')
     Samples_have = Samples_missing = Samples_total = 0
     for key in sorted(machines):
         machine = machines[key]
