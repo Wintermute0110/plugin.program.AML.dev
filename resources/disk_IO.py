@@ -581,16 +581,21 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         # >> Check in machine has ROMs
         # ROM is considered to be valid if sha1 has exists. Keep in mind that a machine may have
         # many ROMs, some valid, some invalid: just 1 valid ROM is enough.
+        # NOTE A ROM is unique to that machine if the <rom> tag does not have the 'merge' attribute.
+        #      For example, snes and snespal both have <rom> tags that point to exactly the same
+        #      BIOS. However, in a split set only snes.zip ROM set exists.
+        #      snes    -> <rom name="spc700.rom" size="64" crc="44bb3a40" ... >
+        #      snespal -> <rom name="spc700.rom" merge="spc700.rom" size="64" crc="44bb3a40" ... >
+        # In AML, hasROM actually means "machine has it own ROMs not found somewhere else".
         elif event == 'start' and elem.tag == 'rom':
-            if 'sha1' in elem.attrib: machine['hasROM'] = True
+            if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['hasROM'] = True
 
         # >> Check in machine has CHDs
-        # CHD is considered valid if SHA1 hash exists. Keep in mind that there can be multiple
+        # CHD is considered valid if SHA1 hash exists only. Keep in mind that there can be multiple
         # disks per machine, some valid, some invalid: just one valid CHD is OK.
         elif event == 'start' and elem.tag == 'disk':
-            if 'sha1' in elem.attrib:
-                # <!ATTLIST disk name CDATA #REQUIRED>
-                machine['CHDs'].append(elem.attrib['name'])
+            # <!ATTLIST disk name CDATA #REQUIRED>
+            if 'sha1' in elem.attrib: machine['CHDs'].append(elem.attrib['name'])
 
         # Some machines have more than one display tag (for example aquastge has 2).
         # Other machines have no display tag (18w)
