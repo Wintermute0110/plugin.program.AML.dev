@@ -1083,7 +1083,7 @@ class Main:
         if type == type_nb:
             # --- Read stdout and put into a string ---
             info_text = ''
-            with open(PATHS.REPORT_MAME_SCAN_PATH.getPath(), "r") as myfile:
+            with open(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath(), "r") as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
