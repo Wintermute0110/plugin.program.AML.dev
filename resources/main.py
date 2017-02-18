@@ -475,19 +475,16 @@ class Main:
             elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
         # --- Assets/artwork ---
-        thumb_path      = machine_assets['title']
-        thumb_fanart    = machine_assets['snap']
-        thumb_banner    = machine_assets['marquee']
-        thumb_clearlogo = machine_assets['clearlogo']
-        thumb_poster    = machine_assets['flyer']
+        icon_path      = machine_assets['title'] if machine_assets['title'] else 'DefaultProgram.png'
+        fanart_path    = machine_assets['snap']
+        banner_path    = machine_assets['marquee']
+        clearlogo_path = machine_assets['clearlogo']
+        poster_path    = machine_assets['flyer']
 
         # --- Create listitem row ---
-        default_icon = 'DefaultFolder.png'
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(display_name)
-
-        # --- Metadata ---
-        # >> Make all the infotables compatible with Advanced Emulator Launcher
+        # >> Make all the infolabels compatible with Advanced Emulator Launcher
         listitem.setInfo('video', {'title'   : display_name,            'year'    : machine['year'],
                                    'genre'   : '',                      'plot'    : '',
                                    'studio'  : machine['manufacturer'], 'rating'  : '',
@@ -501,8 +498,8 @@ class Main:
                          'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
 
         # >> Kodi official artwork fields
-        listitem.setArt({'icon'   : thumb_path,   'fanart'    : thumb_fanart,
-                         'banner' : thumb_banner, 'clearlogo' : thumb_clearlogo, 'poster' : thumb_poster })
+        listitem.setArt({'icon'   : icon_path,   'fanart'    : fanart_path,
+                         'banner' : banner_path, 'clearlogo' : clearlogo_path, 'poster' : poster_path })
 
         # --- Create context menu ---
         commands = []
@@ -666,19 +663,16 @@ class Main:
             elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
         # --- Assets/artwork ---
-        thumb_path      = machine_assets['title']
-        thumb_fanart    = machine_assets['snap']
-        thumb_banner    = machine_assets['marquee']
-        thumb_clearlogo = machine_assets['clearlogo']
-        thumb_poster    = machine_assets['flyer']
+        icon_path      = machine_assets['title'] if machine_assets['title'] else 'DefaultProgram.png'
+        fanart_path    = machine_assets['snap']
+        banner_path    = machine_assets['marquee']
+        clearlogo_path = machine_assets['clearlogo']
+        poster_path    = machine_assets['flyer']
 
         # --- Create listitem row ---
-        default_icon = 'DefaultFolder.png'
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(display_name)
-
-        # --- Metadata ---
-        # >> Make all the infotables compatible with Advanced Emulator Launcher
+        # >> Make all the infolabels compatible with Advanced Emulator Launcher
         listitem.setInfo('video', {'title'   : display_name,            'year'    : machine['year'],
                                    'genre'   : '',                      'plot'    : '',
                                    'studio'  : machine['manufacturer'], 'rating'  : '',
@@ -692,8 +686,8 @@ class Main:
                          'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
 
         # >> Kodi official artwork fields
-        listitem.setArt({'icon'   : thumb_path,   'fanart'    : thumb_fanart,
-                         'banner' : thumb_banner, 'clearlogo' : thumb_clearlogo, 'poster' : thumb_poster })
+        listitem.setArt({'icon'   : icon_path,   'fanart'    : fanart_path,
+                         'banner' : banner_path, 'clearlogo' : clearlogo_path, 'poster' : poster_path })
 
         # --- Create context menu ---
         commands = []
@@ -834,8 +828,10 @@ class Main:
         # --- Create listitem row ---
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(display_name)
+        # >> Make all the infolabels compatible with Advanced Emulator Launcher
         listitem.setInfo('video', {'title'   : display_name,     'year'    : ROM['year'],
                                    'studio'  : ROM['publisher'], 'overlay' : ICON_OVERLAY })
+        listitem.setProperty('platform', 'MAME')
 
         # --- Assets ---
         # >> AEL custom artwork fields
