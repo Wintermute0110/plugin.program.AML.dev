@@ -1693,3 +1693,80 @@ def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_d
 
     # >> Save databases
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+def fs_scan_MAME_assets(machines):
+    # >> Iterate machines, check if assets/artwork exist.
+    pDialog = xbmcgui.DialogProgress()
+    pDialog_canceled = False
+    pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork...')
+    total_machines = len(machines)
+    processed_machines = 0
+    assets_dic = {}
+    for key in sorted(machines):
+        machine = machines[key]
+
+        # >> Scan assets
+        machine_assets = fs_new_MAME_asset()
+        for idx, asset_key in enumerate(ASSET_MAME_KEY_LIST):
+            full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_MAME_PATH_LIST[idx])
+            asset_FN = full_asset_dir_FN.pjoin(key + '.png')
+            if asset_FN.exists(): machine_assets[asset_key] = asset_FN.getOriginalPath()
+            else:                 machine_assets[asset_key] = ''
+        assets_dic[key] = machine_assets
+
+        # >> Progress dialog
+        processed_machines = processed_machines + 1
+        pDialog.update(100 * processed_machines / total_machines)
+    pDialog.close()
+
+    # >> Asset statistics
+    
+    # >> Save asset database and control_dic
+    kodi_busydialog_ON()
+    fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
+    kodi_busydialog_OFF()
+
+def fs_scan_SL_assets(SL_catalog_dic):
+    # >> Traverse Software List, check if ROM exists, update and save database
+    pDialog = xbmcgui.DialogProgress()
+    pdialog_line1 = 'Scanning Sofware Lists ROMs ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    pDialog.update(0)
+    total_files = len(SL_catalog_dic)
+    processed_files = 0
+    for SL_name in sorted(SL_catalog_dic):
+        # >> Open database
+        file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+        log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
+        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
+
+        # >> Scan for assets
+        assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        log_info('Assets JSON "{0}"'.format(SL_asset_DB_FN.getPath()))
+        SL_assets_dic = {}
+        for rom_key in sorted(SL_roms):
+            rom = SL_roms[rom_key]
+            SL_assets = fs_new_SL_asset()
+            for idx, asset_key in enumerate(ASSET_SL_KEY_LIST):
+                full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_SL_PATH_LIST[idx]).pjoin(SL_name)
+                asset_FN = full_asset_dir_FN.pjoin(rom_key + '.png')
+                # log_info('Testing P "{0}"'.format(asset_FN.getPath()))
+                if asset_FN.exists(): SL_assets[asset_key] = asset_FN.getOriginalPath()
+                else:                 SL_assets[asset_key] = ''
+            SL_assets_dic[rom_key] = SL_assets
+
+        # >> Save SL ROMs and asset DB
+        # fs_write_JSON_file(SL_DB_FN.getPath(), SL_assets_dic)
+        fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
+
+        # >> Update progress
+        processed_files += 1
+        update_number = 100 * processed_files / total_files
+        pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+    pDialog.close()
+
+    # >> Asset statistics
+    
+    # >> Save control_dic (with updated statistics)

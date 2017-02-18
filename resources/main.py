@@ -1484,6 +1484,7 @@ class Main:
         menu_item = dialog.select('Setup plugin',
                                  ['Extract MAME.xml ...',
                                   'Build all databases ...',
+                                  'Scan everything ...',
                                   'Build MAME database ...',
                                   'Build MAME indices and catalogs ...',
                                   'Build Software Lists indices and catalogs ...',
@@ -1505,7 +1506,7 @@ class Main:
             kodi_dialog_OK('Extracted MAME XML database. '
                            'Size is {0} MB and there are {1} machines.'.format(filesize / 1000000, total_machines))
 
-        # --- Build/scan everything ---
+        # --- Build everything ---
         elif menu_item == 1:
             if not PATHS.MAME_XML_PATH.exists():
                 kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
@@ -1522,57 +1523,11 @@ class Main:
             fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic, control_dic)
             kodi_notify('All databases built')
 
-        # --- Build main MAME database and PClone list ---
+        # --- Scan everything ---
         elif menu_item == 2:
-            # --- Error checks ---
-            # >> Check that MAME_XML_PATH exists
-            if not PATHS.MAME_XML_PATH.exists():
-                kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
-                return
+            log_info('_command_setup_plugin() Scanning everything ...')
 
-            # --- Parse MAME XML and generate main database and PClone list ---
-            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            log_info('_command_setup_plugin() Generating MAME main database and PClone list...')
-            fs_build_MAME_main_database(PATHS, self.settings, control_dic)
-            kodi_notify('Main MAME database built')
-
-        # --- Build MAME indices/catalogs ---
-        elif menu_item == 3:
-            # --- Error checks ---
-            # >> Check that main MAME database exists
-
-            # --- Read main database and control dic ---
-            kodi_busydialog_ON()
-            machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            kodi_busydialog_OFF()
-
-            # --- Generate indices ---
-            fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic)
-            kodi_notify('Indices and catalogs built')
-
-        # --- Build Software Lists indices/catalogs ---
-        elif menu_item == 4:
-            # --- Error checks ---
-            if not self.settings['SL_hash_path']:
-                kodi_dialog_OK('Software Lists hash path not set.')
-                return
-
-            # --- Read main database and control dic ---
-            kodi_busydialog_ON()
-            machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            kodi_busydialog_OFF()
-
-            # --- Build Software List indices ---
-            fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic, control_dic)
-            kodi_notify('Software Lists indices and catalogs built')
-
-        # --- Scan ROMs/CHDs/Samples and updates ROM status ---
-        elif menu_item == 5:
-            log_info('_command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
-
+            # --- MAME Machines -------------------------------------------------------------------
             # >> Get paths and check they exist
             if not self.settings['rom_path']:
                 kodi_dialog_OK('ROM directory not configured. Aborting.')
@@ -1609,13 +1564,149 @@ class Main:
             machines    = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             kodi_busydialog_OFF()
+            fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN, control_dic, scan_CHDs, scan_Samples)
 
-            # --- Scan ROMs/CHDs/samples ---
+            # >> Get assets directory. Abort if not configured/found.
+            do_MAME_asset_scan = True
+            if not self.settings['assets_path']:
+                kodi_dialog_OK('Asset directory not configured. Aborting.')
+                do_MAME_asset_scan = False
+            Asset_path_FN = FileName(self.settings['assets_path'])
+            if not Asset_path_FN.isdir():
+                kodi_dialog_OK('Asset directory does not exist. Aborting.')
+                do_MAME_asset_scan = False
+
+            if do_MAME_asset_scan:
+                fs_scan_MAME_assets(machines)
+
+            # --- Software Lists ------------------------------------------------------------------
+            # >> Abort if SL hash path not configured.
+            do_SL_ROM_scan = True
+            if not self.settings['SL_hash_path']:
+                kodi_dialog_OK('Software Lists hash path not set. Scanning aborted.')
+                do_SL_ROM_scan = False
+            SL_hash_dir_FN = PATHS.SL_DB_DIR
+            log_info('_command_setup_plugin() SL hash dir OP {0}'.format(SL_hash_dir_FN.getOriginalPath()))
+            log_info('_command_setup_plugin() SL hash dir  P {0}'.format(SL_hash_dir_FN.getPath()))
+
+            # >> Abort if SL ROM dir not configured.
+            if not self.settings['SL_rom_path']:
+                kodi_dialog_OK('Software Lists ROM path not set. Scanning aborted.')
+                do_SL_ROM_scan = False
+            SL_ROM_dir_FN = FileName(self.settings['SL_rom_path'])
+            log_info('_command_setup_plugin() SL ROM dir OP {0}'.format(SL_ROM_dir_FN.getOriginalPath()))
+            log_info('_command_setup_plugin() SL ROM dir  P {0}'.format(SL_ROM_dir_FN.getPath()))
+
+            # >> Load SL catalog
+            SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())            
+            control_dic    = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            if do_SL_ROM_scan:
+                fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_dir_FN)
+
+            # >> Get assets directory. Abort if not configured/found.
+            do_SL_asset_scan = True
+            if not self.settings['assets_path']:
+                kodi_dialog_OK('Asset directory not configured. Aborting.')
+                do_SL_asset_scan = False
+            Asset_path_FN = FileName(self.settings['assets_path'])
+            if not Asset_path_FN.isdir():
+                kodi_dialog_OK('Asset directory does not exist. Aborting.')
+                do_SL_asset_scan = False
+
+            if do_SL_asset_scan:
+                fs_scan_SL_assets(SL_catalog_dic)
+
+            # --- All operations finished ---
+            kodi_notify('All ROM/asset scanning finished')
+
+        # --- Build main MAME database and PClone list ---
+        elif menu_item == 3:
+            # --- Error checks ---
+            # >> Check that MAME_XML_PATH exists
+            if not PATHS.MAME_XML_PATH.exists():
+                kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
+                return
+
+            # --- Parse MAME XML and generate main database and PClone list ---
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            log_info('_command_setup_plugin() Generating MAME main database and PClone list...')
+            fs_build_MAME_main_database(PATHS, self.settings, control_dic)
+            kodi_notify('Main MAME database built')
+
+        # --- Build MAME indices/catalogs ---
+        elif menu_item == 4:
+            # --- Error checks ---
+            # >> Check that main MAME database exists
+
+            # --- Read main database and control dic ---
+            kodi_busydialog_ON()
+            machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            kodi_busydialog_OFF()
+            fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic)
+            kodi_notify('Indices and catalogs built')
+
+        # --- Build Software Lists indices/catalogs ---
+        elif menu_item == 5:
+            # --- Error checks ---
+            if not self.settings['SL_hash_path']:
+                kodi_dialog_OK('Software Lists hash path not set.')
+                return
+
+            # --- Read main database and control dic ---
+            kodi_busydialog_ON()
+            machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            kodi_busydialog_OFF()
+            fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic, control_dic)
+            kodi_notify('Software Lists indices and catalogs built')
+
+        # --- Scan ROMs/CHDs/Samples and updates ROM status ---
+        elif menu_item == 6:
+            log_info('_command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
+
+            # >> Get paths and check they exist
+            if not self.settings['rom_path']:
+                kodi_dialog_OK('ROM directory not configured. Aborting.')
+                return
+            ROM_path_FN = FileName(self.settings['rom_path'])
+            if not ROM_path_FN.isdir():
+                kodi_dialog_OK('ROM directory does not exist. Aborting.')
+                return
+
+            scan_CHDs = False
+            if self.settings['chd_path']:
+                CHD_path_FN = FileName(self.settings['chd_path'])
+                if not CHD_path_FN.isdir():
+                    kodi_dialog_OK('CHD directory does not exist. CHD scanning disabled.')
+                else:
+                    scan_CHDs = True
+            else:
+                kodi_dialog_OK('CHD directory not configured. CHD scanning disabled.')
+                CHD_path_FN = FileName('')
+
+            scan_Samples = False
+            if self.settings['samples_path']:
+                Samples_path_FN = FileName(self.settings['samples_path'])
+                if not Samples_path_FN.isdir():
+                    kodi_dialog_OK('Samples directory does not exist. Samples scanning disabled.')
+                else:
+                    scan_Samples = True
+            else:
+                kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
+                Samples_path_FN = FileName('')
+
+            # >> Load machine database and control_dic and scan
+            kodi_busydialog_ON()
+            machines    = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            kodi_busydialog_OFF()
             fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN, control_dic, scan_CHDs, scan_Samples)
             kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
         # --- Scans assets/artwork ---
-        elif menu_item == 6:
+        elif menu_item == 7:
             log_info('_command_setup_plugin() Scanning MAME assets/artwork ...')
 
             # >> Get assets directory. Abort if not configured/found.
@@ -1627,46 +1718,15 @@ class Main:
                 kodi_dialog_OK('Asset directory does not exist. Aborting.')
                 return
 
-            # >> Load machine database
+            # >> Load machine database and scan
             kodi_busydialog_ON()
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
             kodi_busydialog_OFF()
-
-            # >> Iterate machines, check if assets/artwork exist.
-            pDialog = xbmcgui.DialogProgress()
-            pDialog_canceled = False
-            pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork...')
-            total_machines = len(machines)
-            processed_machines = 0
-            assets_dic = {}
-            for key, machine in machines.iteritems():
-                machine = machines[key]
-
-                # >> Scan assets
-                machine_assets = fs_new_MAME_asset()
-                for idx, asset_key in enumerate(ASSET_MAME_KEY_LIST):
-                    full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_MAME_PATH_LIST[idx])
-                    asset_FN = full_asset_dir_FN.pjoin(key + '.png')
-                    if asset_FN.exists(): machine_assets[asset_key] = asset_FN.getOriginalPath()
-                    else:                 machine_assets[asset_key] = ''
-                assets_dic[key] = machine_assets
-
-                # >> Progress dialog
-                processed_machines = processed_machines + 1
-                pDialog.update(100 * processed_machines / total_machines)
-            pDialog.close()
-
-            # >> Asset statistics
-            
-            
-            # >> Save asset database and control_dic
-            kodi_busydialog_ON()
-            fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-            kodi_busydialog_OFF()
+            fs_scan_MAME_assets(machines)
             kodi_notify('Scanning of assets/artwork finished')
 
         # --- Scan SL ROMs ---
-        elif menu_item == 7:
+        elif menu_item == 8:
             log_info('_command_setup_plugin() Scanning SL ROMs ...')
 
             # >> Abort if SL hash path not configured.
@@ -1685,18 +1745,16 @@ class Main:
             log_info('_command_setup_plugin() SL ROM dir OP {0}'.format(SL_ROM_dir_FN.getOriginalPath()))
             log_info('_command_setup_plugin() SL ROM dir  P {0}'.format(SL_ROM_dir_FN.getPath()))
 
-            # >> Load SL catalog
+            # >> Load SL and scan
             SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())            
             control_dic    = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-
-            # --- Scan SL ROMs/CHDs ---
             fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_dir_FN)
             kodi_notify('Scanning of SL ROMs finished')
 
         # --- Scan SL assets/artwork ---
         # >> Database format: ADDON_DATA_DIR/db_SoftwareLists/32x_assets.json
         # >> { 'ROM_name' : {'asset1' : 'path', 'asset2' : 'path', ... }, ... }
-        elif menu_item == 8:
+        elif menu_item == 9:
             log_info('_command_setup_plugin() Scanning SL assets/artwork ...')
 
             # >> Get assets directory. Abort if not configured/found.
@@ -1708,56 +1766,12 @@ class Main:
                 kodi_dialog_OK('Asset directory does not exist. Aborting.')
                 return
 
-            # >> Load SL database
+            # >> Load SL database and scan
             kodi_busydialog_ON()
             SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
             kodi_busydialog_OFF()
-
-            # >> Traverse Software List, check if ROM exists, update and save database
-            pDialog = xbmcgui.DialogProgress()
-            pdialog_line1 = 'Scanning Sofware Lists ROMs ...'
-            pDialog.create('Advanced MAME Launcher', pdialog_line1)
-            pDialog.update(0)
-            total_files = len(SL_catalog_dic)
-            processed_files = 0
-            for SL_name in sorted(SL_catalog_dic):
-                # >> Open database
-                file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
-                SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-                log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
-                SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
-
-                # >> Scan for assets
-                assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
-                SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
-                log_info('Assets JSON "{0}"'.format(SL_asset_DB_FN.getPath()))
-                SL_assets_dic = {}
-                for rom_key in sorted(SL_roms):
-                    rom = SL_roms[rom_key]
-                    SL_assets = fs_new_SL_asset()
-                    for idx, asset_key in enumerate(ASSET_SL_KEY_LIST):
-                        full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_SL_PATH_LIST[idx]).pjoin(SL_name)
-                        asset_FN = full_asset_dir_FN.pjoin(rom_key + '.png')
-                        # log_info('Testing P "{0}"'.format(asset_FN.getPath()))
-                        if asset_FN.exists(): SL_assets[asset_key] = asset_FN.getOriginalPath()
-                        else:                 SL_assets[asset_key] = ''
-                    SL_assets_dic[rom_key] = SL_assets
-
-                # >> Save SL ROMs and asset DB
-                # fs_write_JSON_file(SL_DB_FN.getPath(), SL_assets_dic)
-                fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
-
-                # >> Update progress
-                processed_files += 1
-                update_number = 100 * processed_files / total_files
-                pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
-            pDialog.close()
-
-            # >> Asset statistics
-            
-
-            # >> Save control_dic (with updated statistics)
-            
+            fs_scan_SL_assets(SL_catalog_dic)
+            kodi_notify('Scanning of SL assets finished')
 
     #
     # Launch MAME machine. Syntax: $ mame <machine_name> [options]
