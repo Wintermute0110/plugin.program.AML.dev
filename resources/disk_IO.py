@@ -39,10 +39,12 @@ except:
 # Advanced MAME Launcher data model
 # -------------------------------------------------------------------------------------------------
 # Status flags meaning:
-#   -  Machine doesn't have ROM | Machine doesn't have Software Lists
-#   ?  Machine has ROM/CHD/Samples and ROM/CHD/Samples have not been scanned
-#   r  Machine has ROM/CHD/Samples and ROM/CHD/Samples doesn't exist
-#   R  Machine has ROM/CHD/Samples and ROM/CHD/Samples exists | Machine has Software Lists
+#   -  Machine doesn't have ROMs | Machine doesn't have Software Lists
+#   ?  Machine has own ROMs and ROMs not been scanned
+#   r  Machine has own ROMs and ROMs doesn't exist
+#   R  Machine has own ROMs and ROMs exists | Machine has Software Lists
+#   *  Machine has merged ROMs
+#
 # Status device flag:
 #   -  Machine has no devices
 #   d  Machine has device/s but are not mandatory (can be booted without the device).
@@ -74,7 +76,8 @@ def fs_new_machine():
         'CHDs'           : [],
         'softwarelists'  : [],
         'isDead'         : False,
-        'hasROM'         : False,
+        'hasOwnROMs'     : False,
+        'hasMergedROMs'  : False,
         'status_ROM'     : '-',
         'status_CHD'     : '-',
         'status_SAM'     : '-',
@@ -88,9 +91,9 @@ def fs_new_machine():
 
     return m
 
-ASSET_KEY_LIST  = ['cabinet',  'cpanel',  'flyer',  'marquee',  'PCB',  'snap',  'title',  'clearlogo']
-ASSET_PATH_LIST = ['cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles', 'clearlogos']
-def fs_new_asset():
+ASSET_MAME_KEY_LIST  = ['cabinet',  'cpanel',  'flyer',  'marquee',  'PCB',  'snap',  'title',  'clearlogo']
+ASSET_MAME_PATH_LIST = ['cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles', 'clearlogos']
+def fs_new_MAME_asset():
     a = {
         'cabinet'   : '',
         'cpanel'    : '',
@@ -121,33 +124,45 @@ def fs_new_SL_ROM():
 
     return R
 
+ASSET_SL_KEY_LIST  = ['title',     'snap',     'boxfront']
+ASSET_SL_PATH_LIST = ['titles_SL', 'snaps_SL', 'covers_SL']
+def fs_new_SL_asset():
+    a = {
+        'title'    : '',
+        'snap'     : '',
+        'boxfront' : '',
+    }
+
+    return a
+
 def fs_new_control_dic():
     C = {
         # >> Filed in when extracting MAME XML
         'total_machines' : 0,
         # >> Files in when building main MAME database
-        'mame_version'   : 'Unknown. MAME database not built',
-        'catver_version'   : 'Unknown. MAME database not built',
-        'catlist_version'  : 'Unknown. MAME database not built',
-        'genre_version'    : 'Unknown. MAME database not built',
-        'nplayers_version' : 'Unknown. MAME database not built',
-        'processed_machines' : 0,
-        'parent_machines'    : 0,
-        'clone_machines'     : 0,
-        'devices_machines'   : 0,
-        'BIOS_machines' : 0,
-        'coin_machines'    : 0,
-        'nocoin_machines' : 0,
-        'mechanical_machines'    : 0,
-        'dead_machines' : 0,
-        'ROM_machines'    : 0,
-        'ROMless_machines' : 0,
-        'CHD_machines'    : 0,
-        'samples_machines' : 0,
+        'mame_version'        : 'Unknown. MAME database not built',
+        'catver_version'      : 'Unknown. MAME database not built',
+        'catlist_version'     : 'Unknown. MAME database not built',
+        'genre_version'       : 'Unknown. MAME database not built',
+        'nplayers_version'    : 'Unknown. MAME database not built',
+        'processed_machines'  : 0,
+        'parent_machines'     : 0,
+        'clone_machines'      : 0,
+        'devices_machines'    : 0,
+        'BIOS_machines'       : 0,
+        'coin_machines'       : 0,
+        'nocoin_machines'     : 0,
+        'mechanical_machines' : 0,
+        'dead_machines'       : 0,
+        'Own_ROM_machines'    : 0,
+        'Merged_ROM_machines' : 0,
+        'No_ROM_machines'     : 0,
+        'CHD_machines'        : 0,
+        'samples_machines'    : 0,
         # >> Filed in when building SL index
         'num_SL_files' : 0,
-        'num_SL_ROMs' : 0,
-        'num_SL_CHDs' : 0,
+        'num_SL_ROMs'  : 0,
+        'num_SL_CHDs'  : 0,
         # >> Filed in by the MAME ROM/CHD/Samples scanner
         'ROMs_have'       : 0,
         'ROMs_total'      : 0,
@@ -484,8 +499,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     nocoin_machines     = 0
     mechanical_machines = 0
     dead_machines       = 0
-    ROM_machines        = 0
-    ROMless_machines    = 0
+    Own_ROM_machines    = 0
+    Merged_ROM_machines = 0
+    No_ROM_machines     = 0
     CHD_machines        = 0
     samples_machines    = 0
 
@@ -588,7 +604,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         #      snespal -> <rom name="spc700.rom" merge="spc700.rom" size="64" crc="44bb3a40" ... >
         # In AML, hasROM actually means "machine has it own ROMs not found somewhere else".
         elif event == 'start' and elem.tag == 'rom':
-            if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['hasROM'] = True
+            if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['hasMergedROMs'] = True
+            if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['hasOwnROMs']    = True
 
         # >> Check in machine has CHDs
         # CHD is considered valid if SHA1 hash exists only. Keep in mind that there can be multiple
@@ -650,16 +667,14 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             # >> NOTE Some machines have no instance inside <device>, for example 2020bb
             # >>      I don't know how to launch those machines
             if not instance_tag_found:
-                log_warning('<instance> tag not found inside <device> tag (machine {0})'.format(machine_name))
+                # log_warning('<instance> tag not found inside <device> tag (machine {0})'.format(machine_name))
                 device_type = '{0} (NI)'.format(device_type)
 
             # >> Add device to database
-            device_tags_dic = {'d_tag'       : device_tag,
-                               'd_mandatory' : device_mandatory,
-                               'd_interface' : device_interface,
-                               'i_name'      : i_name,
-                               'i_briefname' : i_briefname, 
-                               'exts'        : exts_list }
+            # Extensions not needed now: 'exts' : exts_list
+            device_tags_dic = {'d_tag'       : device_tag,       'd_mandatory' : device_mandatory,
+                               'd_interface' : device_interface, 'i_name'      : i_name,
+                               'i_briefname' : i_briefname }
             machine['device_list'].append(device_type)
             machine['device_tags'].append(device_tags_dic)
 
@@ -689,8 +704,12 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             elem.clear()
 
             # >> Fill machine status
-            if machine['hasROM']:        machine['status_ROM'] = '?'
-            else:                        machine['status_ROM'] = '-'
+            # r/R flag takes precedence over * flag
+            if machine['hasOwnROMs']: machine['status_ROM'] = '?'
+            else:
+                if machine['hasMergedROMs']: machine['status_ROM'] = '*'
+                else:                        machine['status_ROM'] = '-'
+
             if machine['CHDs']:          machine['status_CHD'] = '?'
             else:                        machine['status_CHD'] = '-'
             if machine['sampleof']:      machine['status_SAM'] = '?'
@@ -714,18 +733,20 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
                 machine['status_Device']  = '-'
 
             # >> Compute statistics
-            if machine['cloneof']:      parent_machines += 1
-            else:                       clone_machines += 1
-            if machine['isDevice']:     devices_machines += 1
-            if machine['isBIOS']:       BIOS_machines += 1
-            if machine['hasCoin']:      coin_machines += 1
-            else:                       nocoin_machines += 1
-            if machine['isMechanical']: mechanical_machines += 1            
-            if machine['isDead']:       dead_machines += 1
-            if machine['hasROM']:       ROM_machines += 1
-            else:                       ROMless_machines += 1
-            if machine['CHDs']:         CHD_machines += 1
-            if machine['sampleof']:     samples_machines += 1
+            if machine['cloneof']:           parent_machines += 1
+            else:                            clone_machines += 1
+            if machine['isDevice']:          devices_machines += 1
+            if machine['isBIOS']:            BIOS_machines += 1
+            if machine['hasCoin']:           coin_machines += 1
+            else:                            nocoin_machines += 1
+            if machine['isMechanical']:      mechanical_machines += 1            
+            if machine['isDead']:            dead_machines += 1
+            if machine['hasOwnROMs']:        Own_ROM_machines += 1
+            else:
+                if machine['hasMergedROMs']: Merged_ROM_machines += 1
+                else:                        No_ROM_machines += 1
+            if machine['CHDs']:              CHD_machines += 1
+            if machine['sampleof']:          samples_machines += 1
 
             # >> Add new machine
             machines[machine_name] = machine
@@ -789,7 +810,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Make empty asset list
     # -----------------------------------------------------------------------------
     assets_dic = {}
-    for key in machines: assets_dic[key] = fs_new_asset()
+    for key in machines: assets_dic[key] = fs_new_MAME_asset()
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
@@ -809,8 +830,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['nocoin_machines']     = nocoin_machines
     control_dic['mechanical_machines'] = mechanical_machines
     control_dic['dead_machines']       = dead_machines
-    control_dic['ROM_machines']        = ROM_machines    
-    control_dic['ROMless_machines']    = ROMless_machines
+    control_dic['Own_ROM_machines']    = Own_ROM_machines    
+    control_dic['Merged_ROM_machines'] = Merged_ROM_machines
+    control_dic['No_ROM_machines']     = No_ROM_machines
     control_dic['CHD_machines']        = CHD_machines
     control_dic['samples_machines']    = samples_machines
 
@@ -901,7 +923,7 @@ def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic):
     pDialog.update(update_number, pDialog_line1, 'Making No-ROMs Machines index ...')
     for p_machine_name in main_pclone_dic:
         machine = machines[p_machine_name]
-        if machine['hasROM']: continue
+        if machine['hasOwnROMs'] or machine['hasMergedROMs']: continue
         num_clones = len(main_pclone_dic[p_machine_name])
         NoROM_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
     processed_filters += 1
