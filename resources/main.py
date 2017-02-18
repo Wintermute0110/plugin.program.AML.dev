@@ -1033,15 +1033,18 @@ class Main:
             info_text += "nplayers.ini version: {0}\n".format(control_dic['nplayers_version'])
 
             info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
-            info_text += "Machines: {0} ({1} Parents / {2} Clones)\n".format(control_dic['processed_machines'], 
-                                                                             control_dic['parent_machines'], control_dic['clone_machines'])
+            t = "Machines: {0} ({1} Parents / {2} Clones)\n"
+            info_text += t.format(control_dic['processed_machines'], control_dic['parent_machines'],
+                                  control_dic['clone_machines'])
             info_text += "Devices: {0}\n".format(control_dic['devices_machines'])
             info_text += "BIOS: {0}\n".format(control_dic['BIOS_machines'])
             info_text += "Coin: {0}\n".format(control_dic['coin_machines'])
             info_text += "Nocoin: {0}\n".format(control_dic['nocoin_machines'])
             info_text += "Mechanical: {0}\n".format(control_dic['mechanical_machines'])
             info_text += "Dead: {0}\n".format(control_dic['dead_machines'])
-            info_text += "ROMs: {0} ({1} ROMless)\n".format(control_dic['ROM_machines'], control_dic['ROMless_machines'])
+            t = "ROMs: {0} ({1} Merged ROMs / {2} ROMless)\n"
+            info_text += t.format(control_dic['Own_ROM_machines'], control_dic['Merged_ROM_machines'], 
+                                  control_dic['No_ROM_machines'])
             info_text += "CHDs: {0}\n".format(control_dic['CHD_machines'])
             info_text += "Samples: {0}\n".format(control_dic['samples_machines'])
 
@@ -1051,21 +1054,16 @@ class Main:
             info_text += "Total CHDs in all SLs: {0}\n".format(control_dic['num_SL_CHDs'])
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
-            info_text += "You have {0} ROMs out of {1} ({2} missing)\n".format(control_dic['ROMs_have'], 
-                                                                               control_dic['ROMs_total'], 
-                                                                               control_dic['ROMs_missing'])
-            info_text += "You have {0} CHDs out of {1} ({2} missing)\n".format(control_dic['CHDs_have'], 
-                                                                               control_dic['CHDs_total'], 
-                                                                               control_dic['CHDs_missing'])
-            info_text += "You have {0} Samples out of {1} ({2} missing)\n".format(control_dic['Samples_have'], 
-                                                                                  control_dic['Samples_total'], 
-                                                                                  control_dic['Samples_missing'])
-            info_text += "You have {0} SL ROMs out of {1} ({2} missing)\n".format(control_dic['SL_ROMs_have'], 
-                                                                                  control_dic['SL_ROMs_total'], 
-                                                                                  control_dic['SL_ROMs_missing'])
-            info_text += "You have {0} SL CHDs out of {1} ({2} missing)\n".format(control_dic['SL_CHDs_have'], 
-                                                                                  control_dic['SL_CHDs_total'], 
-                                                                                  control_dic['SL_CHDs_missing'])
+            t = "You have {0} ROMs out of {1} ({2} missing)\n"
+            info_text += t.format(control_dic['ROMs_have'], control_dic['ROMs_total'], control_dic['ROMs_missing'])
+            t = "You have {0} CHDs out of {1} ({2} missing)\n"
+            info_text += t.format(control_dic['CHDs_have'], control_dic['CHDs_total'], control_dic['CHDs_missing'])
+            t = "You have {0} Samples out of {1} ({2} missing)\n"
+            info_text += t.format(control_dic['Samples_have'], control_dic['Samples_total'], control_dic['Samples_missing'])
+            t = "You have {0} SL ROMs out of {1} ({2} missing)\n"
+            info_text += t.format(control_dic['SL_ROMs_have'], control_dic['SL_ROMs_total'], control_dic['SL_ROMs_missing'])
+            t = "You have {0} SL CHDs out of {1} ({2} missing)\n"
+            info_text += t.format(control_dic['SL_CHDs_have'], control_dic['SL_CHDs_total'], control_dic['SL_CHDs_missing'])
 
             # --- Show information window ---
             window_title = 'Database information and statistics'
