@@ -1619,9 +1619,9 @@ class Main:
                 machine = machines[key]
 
                 # >> Scan assets
-                machine_assets = fs_new_asset()
-                for idx, asset_key in enumerate(ASSET_KEY_LIST):
-                    full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_PATH_LIST[idx])
+                machine_assets = fs_new_MAME_asset()
+                for idx, asset_key in enumerate(ASSET_MAME_KEY_LIST):
+                    full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_MAME_PATH_LIST[idx])
                     asset_FN = full_asset_dir_FN.pjoin(key + '.png')
                     if asset_FN.exists(): machine_assets[asset_key] = asset_FN.getOriginalPath()
                     else:                 machine_assets[asset_key] = ''
@@ -1674,7 +1674,20 @@ class Main:
         # >> { 'ROM_name' : {'asset1' : 'path', 'asset2' : 'path', ... }, ... }
         elif menu_item == 8:
             log_info('_command_setup_plugin() Scanning SL assets/artwork ...')
-            kodi_notify('Not ready yet. Needs testing.')
+
+            # >> Get assets directory. Abort if not configured/found.
+            if not self.settings['assets_path']:
+                kodi_dialog_OK('Asset directory not configured. Aborting.')
+                return
+            Asset_path_FN = FileName(self.settings['assets_path'])
+            if not Asset_path_FN.isdir():
+                kodi_dialog_OK('Asset directory does not exist. Aborting.')
+                return
+
+            # >> Load SL database
+            kodi_busydialog_ON()
+            SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+            kodi_busydialog_OFF()
 
             # >> Traverse Software List, check if ROM exists, update and save database
             pDialog = xbmcgui.DialogProgress()
@@ -1683,21 +1696,33 @@ class Main:
             pDialog.update(0)
             total_files = len(SL_catalog_dic)
             processed_files = 0
-            for SL_name in SL_catalog_dic:
-                log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
-                SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
-
+            for SL_name in sorted(SL_catalog_dic):
                 # >> Open database
-                # log_debug('File "{0}"'.format(SL_DB_FN.getPath()))
-                roms = fs_load_JSON_file(SL_DB_FN.getPath())
+                file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+                SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+                log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
+                SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
                 # >> Scan for assets
-                for rom_key, rom in roms.iteritems():
-                    pass
+                assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+                SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+                log_info('Assets JSON "{0}"'.format(SL_asset_DB_FN.getPath()))
+                SL_assets_dic = {}
+                for rom_key in sorted(SL_roms):
+                    rom = SL_roms[rom_key]
+                    SL_assets = fs_new_SL_asset()
+                    for idx, asset_key in enumerate(ASSET_SL_KEY_LIST):
+                        full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_SL_PATH_LIST[idx]).pjoin(SL_name)
+                        asset_FN = full_asset_dir_FN.pjoin(rom_key + '.png')
+                        # log_info('Testing P "{0}"'.format(asset_FN.getPath()))
+                        if asset_FN.exists(): SL_assets[asset_key] = asset_FN.getOriginalPath()
+                        else:                 SL_assets[asset_key] = ''
+                    SL_assets_dic[rom_key] = SL_assets
 
-                # >> Update database
-                fs_write_JSON_file(SL_DB_FN.getPath(), roms)
-                
+                # >> Save SL ROMs and asset DB
+                # fs_write_JSON_file(SL_DB_FN.getPath(), SL_assets_dic)
+                fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
+
                 # >> Update progress
                 processed_files += 1
                 update_number = 100 * processed_files / total_files
