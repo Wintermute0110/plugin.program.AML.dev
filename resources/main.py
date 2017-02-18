@@ -1230,6 +1230,7 @@ class Main:
                                   'Default Banner', 'Default Poster',
                                   'Default Clearlogo'])
         if menu_item < 0: return
+        kodi_dialog_OK('Not coded yet. Sorry')
 
     def _command_add_mame_fav(self, machine_name):
         log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(machine_name))
