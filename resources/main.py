@@ -1370,19 +1370,95 @@ class Main:
 
         # --- Scan ROMs/CHDs/Samples ---
         if idx == 0:
-            kodi_dialog_OK('Scan ROMs/CHDs/Samples not coded yet. Sorry.')
+            # >> Check paths
+            if not self.settings['rom_path']:
+                kodi_dialog_OK('ROM directory not configured. Aborting.')
+                return
+            ROM_path_FN = FileName(self.settings['rom_path'])
+            if not ROM_path_FN.isdir():
+                kodi_dialog_OK('ROM directory does not exist. Aborting.')
+                return
+
+            scan_CHDs = False
+            if self.settings['chd_path']:
+                CHD_path_FN = FileName(self.settings['chd_path'])
+                if not CHD_path_FN.isdir():
+                    kodi_dialog_OK('CHD directory does not exist. CHD scanning disabled.')
+                else:
+                    scan_CHDs = True
+            else:
+                kodi_dialog_OK('CHD directory not configured. CHD scanning disabled.')
+                CHD_path_FN = FileName('')
+
+            scan_Samples = False
+            if self.settings['samples_path']:
+                Samples_path_FN = FileName(self.settings['samples_path'])
+                if not Samples_path_FN.isdir():
+                    kodi_dialog_OK('Samples directory does not exist. Samples scanning disabled.')
+                else:
+                    scan_Samples = True
+            else:
+                kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
+                Samples_path_FN = FileName('')
+
+            # >> Load database
+            # >> Create a fake control_dic for the FAV MAME ROMs
+            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+            control_dic = fs_new_control_dic()
+            fs_scan_MAME_ROMs(PATHS, fav_machines, control_dic, ROM_path_FN, CHD_path_FN, Samples_path_FN, scan_CHDs, scan_Samples)
+
+            # >> Save updated database
+            fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+            kodi_refresh_container()
+            kodi_notify('Scanning of MAME Favourites finished')
 
         # --- Scan assets/artwork ---
         elif idx == 1:
-            kodi_dialog_OK('Scan Scan assets/artwork not coded yet. Sorry.')
+            # >> Get assets directory. Abort if not configured/found.
+            if not self.settings['assets_path']:
+                kodi_dialog_OK('Asset directory not configured. Aborting.')
+                return
+            Asset_path_FN = FileName(self.settings['assets_path'])
+            if not Asset_path_FN.isdir():
+                kodi_dialog_OK('Asset directory does not exist. Aborting.')
+                return
+
+            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+            pDialog = xbmcgui.DialogProgress()
+            pDialog_canceled = False
+            pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork...')
+            total_machines = len(fav_machines)
+            processed_machines = 0
+            assets_dic = {}
+            for key in sorted(fav_machines):
+                machine = fav_machines[key]
+                for idx, asset_key in enumerate(ASSET_MAME_KEY_LIST):
+                    asset_FN = Asset_path_FN.pjoin(ASSET_MAME_PATH_LIST[idx]).pjoin(key + '.png')
+                    if asset_FN.exists(): machine[asset_key] = asset_FN.getOriginalPath()
+                    else:                 machine[asset_key] = ''
+                processed_machines = processed_machines + 1
+                pDialog.update(100 * processed_machines / total_machines)
+            pDialog.close()
+            fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+            kodi_notify('Scanning of MAME Favourite Assets finished')
 
         # --- Check Favourites ---
         # >> Check if Favourites can be found in current MAME main database. It may happen that
-        # >> a machine can be renamed although I think this is very unlikely.
+        # >> a machine is renamed between MAME version although I think this is very unlikely.
         # >> MAME Favs can not be relinked. If the machine is not found in current database it must
         # >> be deleted by the user and a new Favourite created.
         elif idx == 2:
-            kodi_dialog_OK('Check Favourites not coded yet. Sorry.')
+            # >> Now just report if a machine is not found in main DB.
+            kodi_busydialog_ON()
+            machines     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+            kodi_busydialog_OFF()
+            for fav_key in sorted(fav_machines):
+                log_debug('Checking Favourite "{0}"'.format(fav_key))
+                if fav_key not in machines:
+                    t = 'Favourite machine "{0}" not found in database'
+                    kodi_dialog_OK(t.format(fav_key))
+            kodi_notify('MAME Favourite checked')
 
     def _command_add_sl_fav(self, SL_name, ROM_name):
         log_debug('_command_add_sl_fav() SL_name  "{0}"'.format(SL_name))
@@ -1597,6 +1673,11 @@ class Main:
 
             if do_MAME_asset_scan: fs_scan_MAME_assets(PATHS, machines, Asset_path_FN)
 
+            kodi_busydialog_ON()
+            fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            kodi_busydialog_OFF()
+
             # --- Software Lists ------------------------------------------------------------------
             # >> Abort if SL hash path not configured.
             do_SL_ROM_scan = True
@@ -1719,6 +1800,10 @@ class Main:
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             kodi_busydialog_OFF()
             fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN, control_dic, scan_CHDs, scan_Samples)
+            kodi_busydialog_ON()
+            fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            kodi_busydialog_OFF()
             kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
         # --- Scans MAME assets/artwork ---

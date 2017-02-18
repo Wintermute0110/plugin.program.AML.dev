@@ -1527,9 +1527,9 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
-# Saves MAIN_DB_PATH, MAIN_CONTROL_PATH.
+# Does not save any file. machines and control_dic modified by assigment
 #
-def fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN, control_dic, scan_CHDs, scan_Samples):
+def fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Samples_path_FN, scan_CHDs, scan_Samples):
     # >> Scan ROMs
     log_info('Opening ROMs report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath()))
     file = open(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath(), 'w')
@@ -1628,12 +1628,6 @@ def fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN
     control_dic['Samples_have']    = Samples_have
     control_dic['Samples_missing'] = Samples_missing
     control_dic['Samples_total']   = Samples_total
-
-    # >> Save database
-    kodi_busydialog_ON()
-    fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-    kodi_busydialog_OFF()
 
 # -------------------------------------------------------------------------------------------------
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
