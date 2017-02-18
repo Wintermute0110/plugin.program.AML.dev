@@ -1576,8 +1576,7 @@ class Main:
                 kodi_dialog_OK('Asset directory does not exist. Aborting.')
                 do_MAME_asset_scan = False
 
-            if do_MAME_asset_scan:
-                fs_scan_MAME_assets(machines)
+            if do_MAME_asset_scan: fs_scan_MAME_assets(PATHS, machines, Asset_path_FN)
 
             # --- Software Lists ------------------------------------------------------------------
             # >> Abort if SL hash path not configured.
@@ -1600,8 +1599,7 @@ class Main:
             # >> Load SL catalog
             SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())            
             control_dic    = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            if do_SL_ROM_scan:
-                fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_dir_FN)
+            if do_SL_ROM_scan: fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_dir_FN)
 
             # >> Get assets directory. Abort if not configured/found.
             do_SL_asset_scan = True
@@ -1613,8 +1611,7 @@ class Main:
                 kodi_dialog_OK('Asset directory does not exist. Aborting.')
                 do_SL_asset_scan = False
 
-            if do_SL_asset_scan:
-                fs_scan_SL_assets(SL_catalog_dic)
+            if do_SL_asset_scan: fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN)
 
             # --- All operations finished ---
             kodi_notify('All ROM/asset scanning finished')
@@ -1705,7 +1702,7 @@ class Main:
             fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN, control_dic, scan_CHDs, scan_Samples)
             kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
-        # --- Scans assets/artwork ---
+        # --- Scans MAME assets/artwork ---
         elif menu_item == 7:
             log_info('_command_setup_plugin() Scanning MAME assets/artwork ...')
 
@@ -1722,7 +1719,7 @@ class Main:
             kodi_busydialog_ON()
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
             kodi_busydialog_OFF()
-            fs_scan_MAME_assets(machines)
+            fs_scan_MAME_assets(PATHS, machines, Asset_path_FN)
             kodi_notify('Scanning of assets/artwork finished')
 
         # --- Scan SL ROMs ---
@@ -1770,7 +1767,7 @@ class Main:
             kodi_busydialog_ON()
             SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
             kodi_busydialog_OFF()
-            fs_scan_SL_assets(SL_catalog_dic)
+            fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN)
             kodi_notify('Scanning of SL assets finished')
 
     #

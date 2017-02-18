@@ -1694,7 +1694,7 @@ def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_d
     # >> Save databases
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-def fs_scan_MAME_assets(machines):
+def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
     # >> Iterate machines, check if assets/artwork exist.
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
@@ -1726,7 +1726,7 @@ def fs_scan_MAME_assets(machines):
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     kodi_busydialog_OFF()
 
-def fs_scan_SL_assets(SL_catalog_dic):
+def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
     # >> Traverse Software List, check if ROM exists, update and save database
     pDialog = xbmcgui.DialogProgress()
     pdialog_line1 = 'Scanning Sofware Lists ROMs ...'
@@ -1738,13 +1738,13 @@ def fs_scan_SL_assets(SL_catalog_dic):
         # >> Open database
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
+        # log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
         # >> Scan for assets
         assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
-        log_info('Assets JSON "{0}"'.format(SL_asset_DB_FN.getPath()))
+        # log_info('Assets JSON "{0}"'.format(SL_asset_DB_FN.getPath()))
         SL_assets_dic = {}
         for rom_key in sorted(SL_roms):
             rom = SL_roms[rom_key]
