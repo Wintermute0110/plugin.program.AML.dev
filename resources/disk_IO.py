@@ -1542,7 +1542,7 @@ def fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN
     for key in sorted(machines):
         machine = machines[key]
         # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
-        if machine['hasROM']:
+        if machine['hasOwnROMs']:
             ROMs_total += 1
             # >> Machine has ROM. Get ROM filename and check if file exist
             ROM_FN = ROM_path_FN.pjoin(key + '.zip')
