@@ -779,10 +779,15 @@ class Main:
         log_info('_render_SL_machine_ROM_list() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
+        assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
+
         self._set_Kodi_all_sorting_methods()
         for rom_name in SL_roms:
-            ROM = SL_roms[rom_name]
-            self._render_SL_ROM_row(SL_name, rom_name, ROM)
+            ROM    = SL_roms[rom_name]
+            assets = SL_asset_dic[rom_name]
+            self._render_SL_ROM_row(SL_name, rom_name, ROM, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_SL_machine_row(self, SL_name, SL):
@@ -814,20 +819,30 @@ class Main:
         URL = self._misc_url_2_arg('clist', 'SL', 'SL', SL_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_SL_ROM_row(self, SL_name, rom_name, ROM):
+    def _render_SL_ROM_row(self, SL_name, rom_name, ROM, assets):
         display_name = ROM['description']
 
         # --- Mark Status and Clones ---
         display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(ROM['status'])
-        if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+        if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
+
+        # --- Assets/artwork ---
+        icon_path   = assets['title'] if assets['title'] else 'DefaultProgram.png'
+        fanart_path = assets['snap']
+        poster_path = assets['boxfront']
 
         # --- Create listitem row ---
-        icon = 'DefaultFolder.png'
-        listitem = xbmcgui.ListItem(display_name, iconImage = icon)
         ICON_OVERLAY = 6
-        # listitem.setProperty('fanart_image', category_dic['fanart'])
+        listitem = xbmcgui.ListItem(display_name)
         listitem.setInfo('video', {'title'   : display_name,     'year'    : ROM['year'],
                                    'studio'  : ROM['publisher'], 'overlay' : ICON_OVERLAY })
+
+        # --- Assets ---
+        # >> AEL custom artwork fields
+        listitem.setArt({'title' : assets['title'], 'snap' : assets['snap'], 'boxfront' : assets['boxfront']})
+
+        # >> Kodi official artwork fields
+        listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
 
         # --- Create context menu ---
         commands = []
