@@ -1091,6 +1091,10 @@ class Main:
         # --- View MAME ROM scanner report ---
         type_nb += 1
         if type == type_nb:
+            if not PATHS.REPORT_MAME_SCAN_ROMS_PATH.exists():
+                kodi_dialog_OK('MAME ROM scanner report not found. Please scan MAME ROMs and try again.')
+                return
+
             # --- Read stdout and put into a string ---
             info_text = ''
             with open(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath(), "r") as myfile:
@@ -1110,6 +1114,10 @@ class Main:
         # --- View MAME CHD scanner report ---
         type_nb += 1
         if type == type_nb:
+            if not PATHS.REPORT_MAME_SCAN_CHDS_PATH.exists():
+                kodi_dialog_OK('MAME CHD scanner report not found. Please scan MAME ROMs and try again.')
+                return
+
             # --- Read stdout and put into a string ---
             info_text = ''
             with open(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath(), "r") as myfile:
@@ -1129,6 +1137,10 @@ class Main:
         # --- View MAME Samples scanner report ---
         type_nb += 1
         if type == type_nb:
+            if not PATHS.REPORT_MAME_SCAN_SAMP_PATH.exists():
+                kodi_dialog_OK('MAME Samples scanner report not found. Please scan MAME ROMs and try again.')
+                return
+
             # --- Read stdout and put into a string ---
             info_text = ''
             with open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), "r") as myfile:
