@@ -49,6 +49,10 @@ AML_ADDON_DIR   = ADDONS_DIR.pjoin(__addon_id__)
 ICON_IMG_PATH   = AML_ADDON_DIR.pjoin('icon.png')
 FANART_IMG_PATH = AML_ADDON_DIR.pjoin('fanart.jpg')
 
+LOCATION_STANDARD  = 'STANDARD'
+LOCATION_MAME_FAVS = 'MAME_FAVS'
+LOCATION_SL_FAVS   = 'MAME_FAVS'
+
 # --- Plugin database indices ---
 class AML_Paths:
     def __init__(self):
@@ -249,10 +253,11 @@ class Main:
             elif command == 'SETUP_PLUGIN':
                 self._command_setup_plugin()
             elif command == 'VIEW':
-                machine = args['machine'][0] if 'machine' in args else ''
-                SL      = args['SL'][0]      if 'SL' in args else ''
-                ROM     = args['ROM'][0]     if 'ROM' in args else ''
-                self._command_view(machine, SL, ROM)
+                machine  = args['machine'][0]  if 'machine'  in args else ''
+                SL       = args['SL'][0]       if 'SL'       in args else ''
+                ROM      = args['ROM'][0]      if 'ROM'      in args else ''
+                location = args['location'][0] if 'location' in args else LOCATION_STANDARD
+                self._command_view(machine, SL, ROM, location)
             elif command == 'DISPLAY_SETTINGS':
                 clist   = args['clist'][0]   if 'clist' in args else ''
                 catalog = args['catalog'][0] if 'catalog' in args else ''
@@ -857,7 +862,11 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     # Information display
     # ---------------------------------------------------------------------------------------------
-    def _command_view(self, mname, SLname, SLROM):
+    def _command_view(self, machine_name, SL_name, SL_ROM, location):
+        log_debug('_command_view() machine_name "{0}"'.format(machine_name))
+        log_debug('_command_view() SL_name      "{0}"'.format(SL_name))
+        log_debug('_command_view() SL_ROM       "{0}"'.format(SL_ROM))
+        log_debug('_command_view() location     "{0}"'.format(location))
         MENU_SIMPLE    = 100
         MENU_MAME_DATA = 200
         MENU_SL_DATA   = 300
@@ -871,7 +880,7 @@ class Main:
             stat_stderr = PATHS.MAME_STDERR_PATH.stat()
             size_stderr = stat_stderr.st_size
         dialog = xbmcgui.Dialog()
-        if not mname and not SLname:
+        if not machine_name and not SL_name:
             menu_kind = MENU_SIMPLE
             type = dialog.select('View ...',
                                  ['View database information',
@@ -881,7 +890,7 @@ class Main:
                                   'View Software Lists scanner report',
                                   'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
-        elif mname:
+        elif machine_name:
             menu_kind = MENU_MAME_DATA
             type = dialog.select('View ...',
                                  ['View MAME machine data',
@@ -892,7 +901,7 @@ class Main:
                                   'View Software Lists scanner report',
                                   'MAME last execution stdout ({0} bytes)'.format(size_stdout),
                                   'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
-        elif SLname:
+        elif SL_name:
             menu_kind = MENU_SL_DATA
             type = dialog.select('View ...',
                                  ['View Software List machine data',
@@ -912,16 +921,23 @@ class Main:
         if menu_kind == MENU_MAME_DATA:
             type_nb = 0
             if type == 0:
-                # >> Read MAME machine information
-                kodi_busydialog_ON()
-                MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-                MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-                kodi_busydialog_OFF()
-                machine = MAME_db_dic[mname]
-                assets  = MAME_assets_dic[mname]
+                if location == LOCATION_STANDARD:
+                    # >> Read MAME machine information
+                    kodi_busydialog_ON()
+                    MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                    MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                    kodi_busydialog_OFF()
+                    machine = MAME_db_dic[machine_name]
+                    assets  = MAME_assets_dic[machine_name]
+                    window_title = 'MAME Machine Information'
+                elif location == LOCATION_MAME_FAVS:
+                    machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+                    machine = machines[machine_name]
+                    assets = machine['assets']
+                    window_title = 'Favourite MAME Machine Information'
 
                 # --- Make information string ---
-                info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(mname)
+                info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
                 info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])                
                 info_text += "[COLOR skyblue]bios_desc[/COLOR]: {0}\n".format(machine['bios_desc'])
                 info_text += "[COLOR skyblue]bios_name[/COLOR]: {0}\n".format(machine['bios_name'])
@@ -945,6 +961,8 @@ class Main:
                 info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(machine['isDead'])
                 info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
                 info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(machine['isMechanical'])
+                if location == LOCATION_MAME_FAVS:
+                    info_text += "[COLOR slateblue]mame_version[/COLOR]: {0}\n".format(machine['mame_version'])
                 info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
                 info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
                 info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
@@ -968,7 +986,6 @@ class Main:
                 info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
 
                 # --- Show information window ---
-                window_title = 'Machine Information'
                 try:
                     xbmc.executebuiltin('ActivateWindow(10147)')
                     window = xbmcgui.Window(10147)
@@ -982,42 +999,60 @@ class Main:
         elif menu_kind == MENU_SL_DATA:
             type_nb = 0
             if type == type_nb:
-                # >> Read Software List information
-                SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SLname + '.json')
-                kodi_busydialog_ON()
-                SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-                SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
-                roms = fs_load_JSON_file(SL_DB_FN.getPath())
-                kodi_busydialog_OFF()
+                if location == LOCATION_STANDARD:
+                    SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
+                    kodi_busydialog_ON()
+                    SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+                    SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+                    kodi_busydialog_OFF()
+                    SL_dic = SL_catalog_dic[SL_name]
+                    SL_machine_list = SL_machines_dic[SL_name]
+                    roms = fs_load_JSON_file(SL_DB_FN.getPath())
+                    rom = roms[SL_ROM]
+                    window_title = 'Software List ROM Information'
 
-                # >> SL + ROM data
-                SL_dic = SL_catalog_dic[SLname]
-                SL_machine_list = SL_machines_dic[SLname]
-                rom = roms[SLROM]
+                    # >> Build information string
+                    info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(SL_ROM)
+                    info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
+                    info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
+                    info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
+                    info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
+                    info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
+                    info_text += "[COLOR violet]status[/COLOR]: '{0}'\n".format(rom['status'])
+                    info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
 
-                # >> Build information string
-                info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(SLROM)
-                info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
-                info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])                
-                info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
-                info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
-                info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
-                info_text += "[COLOR violet]status[/COLOR]: '{0}'\n".format(rom['status'])
-                info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
+                    info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SL_name)
+                    info_text += "[COLOR violet]display_name[/COLOR]: '{0}'\n".format(SL_dic['display_name'])
+                    info_text += "[COLOR skyblue]part_type[/COLOR]: {0}\n".format(SL_dic['part_type'])
+                    info_text += "[COLOR violet]rom_DB_noext[/COLOR]: '{0}'\n".format(SL_dic['rom_DB_noext'])
+                    info_text += "[COLOR violet]rom_count[/COLOR]: '{0}'\n".format(SL_dic['rom_count'])
+                    info_text += "[COLOR violet]chd_count[/COLOR]: '{0}'\n".format(SL_dic['chd_count'])
 
-                info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SLname)
-                info_text += "[COLOR violet]display_name[/COLOR]: '{0}'\n".format(SL_dic['display_name'])
-                info_text += "[COLOR skyblue]part_type[/COLOR]: {0}\n".format(SL_dic['part_type'])
-                info_text += "[COLOR violet]rom_DB_noext[/COLOR]: '{0}'\n".format(SL_dic['rom_DB_noext'])
-                info_text += "[COLOR violet]rom_count[/COLOR]: '{0}'\n".format(SL_dic['rom_count'])
-                info_text += "[COLOR violet]chd_count[/COLOR]: '{0}'\n".format(SL_dic['chd_count'])
+                    info_text += '\n[COLOR orange]Runnable by[/COLOR]\n'
+                    for machine_dic in SL_machine_list:
+                        t = "[COLOR violet]machine[/COLOR]: '{0}' [COLOR slateblue]({1})[/COLOR]\n"
+                        info_text += t.format(machine_dic['description'], machine_dic['machine'])
 
-                info_text += '\n[COLOR orange]Runnable by[/COLOR]\n'
-                for machine_dic in SL_machine_list:
-                    info_text += "[COLOR violet]machine[/COLOR]: '{0}'   ({1})\n".format(machine_dic['description'], machine_dic['machine'])
+                elif location == LOCATION_SL_FAVS:
+                    fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
+                    fav_key = SL_name + '-' + SL_ROM
+                    rom = fav_SL_roms[fav_key]
+                    window_title = 'Favourite Software List ROM Information'
+
+                    # >> Build information string
+                    info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(fav_key)
+                    info_text += "[COLOR violet]ROM_name[/COLOR]: '{0}'\n".format(rom['ROM_name'])
+                    info_text += "[COLOR violet]SL_name[/COLOR]: '{0}'\n".format(rom['SL_name'])
+                    info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
+                    info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
+                    info_text += "[COLOR violet]mame_version[/COLOR]: '{0}'\n".format(rom['mame_version'])
+                    info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
+                    info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
+                    info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
+                    info_text += "[COLOR violet]status[/COLOR]: '{0}'\n".format(rom['status'])
+                    info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
 
                 # --- Show information window ---
-                window_title = 'Software List ROM Information'
                 try:
                     xbmc.executebuiltin('ActivateWindow(10147)')
                     window = xbmcgui.Window(10147)
@@ -1346,7 +1381,7 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
+        URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', machine_name, 'location', LOCATION_MAME_FAVS)
         URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
         URL_display = self._misc_url_2_arg_RunPlugin('command', 'DELETE_MAME_FAV', 'machine', machine_name)
         commands.append(('View',  URL_view ))
@@ -1414,6 +1449,8 @@ class Main:
 
         # --- Scan assets/artwork ---
         elif idx == 1:
+            kodi_dialog_OK('Check this code. I think is wrong. Data must be in machine["assets"]')
+
             # >> Get assets directory. Abort if not configured/found.
             if not self.settings['assets_path']:
                 kodi_dialog_OK('Asset directory not configured. Aborting.')
@@ -1559,7 +1596,7 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name)
+        URL_view = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         commands.append(('View', URL_view ))
         commands.append(('Delete ROM from SL Favourites', URL_fav ))
