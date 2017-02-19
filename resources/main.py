@@ -1623,6 +1623,8 @@ class Main:
             log_info('_command_setup_plugin() Scanning everything ...')
 
             # --- MAME Machines -------------------------------------------------------------------
+            # NOTE Here only check for abort conditions. Optinal conditions must be check
+            #      inside the function.
             # >> Get paths and check they exist
             if not self.settings['rom_path']:
                 kodi_dialog_OK('ROM directory not configured. Aborting.')
@@ -1659,7 +1661,7 @@ class Main:
             machines    = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             kodi_busydialog_OFF()
-            fs_scan_MAME_ROMs(PATHS, machines, ROM_path_FN, CHD_path_FN, Samples_path_FN, control_dic, scan_CHDs, scan_Samples)
+            fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Samples_path_FN, scan_CHDs, scan_Samples)
 
             # >> Get assets directory. Abort if not configured/found.
             do_MAME_asset_scan = True
