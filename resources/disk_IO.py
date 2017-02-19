@@ -1554,7 +1554,8 @@ def fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Sa
                 ROMs_missing += 1
                 file.write('Missing ROM {0}\n'.format(ROM_FN.getPath()))
         else:
-            machine['status_ROM'] = '-'
+            if machine['hasMergedROMs']: machine['status_ROM'] = '*'
+            else:                        machine['status_ROM'] = '-'
 
         # >> Progress dialog
         processed_machines = processed_machines + 1
