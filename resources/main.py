@@ -938,7 +938,7 @@ class Main:
 
                 # --- Make information string ---
                 info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
-                info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])                
+                info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])
                 info_text += "[COLOR skyblue]bios_desc[/COLOR]: {0}\n".format(machine['bios_desc'])
                 info_text += "[COLOR skyblue]bios_name[/COLOR]: {0}\n".format(machine['bios_name'])
                 info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
@@ -1013,8 +1013,10 @@ class Main:
 
                     # >> Build information string
                     info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(SL_ROM)
+                    info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(rom['CHDs'])
                     info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
                     info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
+                    info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(rom['num_roms'])
                     info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
                     info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
                     info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
@@ -1022,11 +1024,10 @@ class Main:
                     info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
 
                     info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SL_name)
+                    info_text += "[COLOR skyblue]chd_count[/COLOR]: {0}\n".format(SL_dic['chd_count'])
                     info_text += "[COLOR violet]display_name[/COLOR]: '{0}'\n".format(SL_dic['display_name'])
-                    info_text += "[COLOR skyblue]part_type[/COLOR]: {0}\n".format(SL_dic['part_type'])
                     info_text += "[COLOR violet]rom_DB_noext[/COLOR]: '{0}'\n".format(SL_dic['rom_DB_noext'])
                     info_text += "[COLOR violet]rom_count[/COLOR]: '{0}'\n".format(SL_dic['rom_count'])
-                    info_text += "[COLOR violet]chd_count[/COLOR]: '{0}'\n".format(SL_dic['chd_count'])
 
                     info_text += '\n[COLOR orange]Runnable by[/COLOR]\n'
                     for machine_dic in SL_machine_list:
