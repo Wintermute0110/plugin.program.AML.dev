@@ -104,7 +104,8 @@ class AML_Paths:
         self.REPORT_MAME_SCAN_ROMS_PATH  = PLUGIN_DATA_DIR.pjoin('Report_ROM_scanner.txt')
         self.REPORT_MAME_SCAN_CHDS_PATH  = PLUGIN_DATA_DIR.pjoin('Report_CHD_scanner.txt')
         self.REPORT_MAME_SCAN_SAMP_PATH  = PLUGIN_DATA_DIR.pjoin('Report_Samples_scanner.txt')
-        self.REPORT_SL_SCAN_PATH         = PLUGIN_DATA_DIR.pjoin('Report_SL_scanner.txt')
+        self.REPORT_SL_SCAN_ROMS_PATH    = PLUGIN_DATA_DIR.pjoin('Report_SL_ROM_scanner.txt')
+        self.REPORT_SL_SCAN_CHDS_PATH    = PLUGIN_DATA_DIR.pjoin('Report_SL_CHD_scanner.txt')
 PATHS = AML_Paths()
 
 class Main:
@@ -1625,7 +1626,7 @@ class Main:
                                   'Build Software Lists indices and catalogs ...',
                                   'Scan MAME ROMs/CHDs/Samples ...',
                                   'Scan MAME assets/artwork ...',
-                                  'Scan Software Lists ROMs ...',
+                                  'Scan Software Lists ROMs/CHDs ...',
                                   'Scan Software Lists assets/artwork ...' ])
         if menu_item < 0: return
 

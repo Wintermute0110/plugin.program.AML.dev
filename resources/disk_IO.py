@@ -1709,9 +1709,9 @@ def fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Sa
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
 #
 def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_dir_FN):
-    # >> Traverse Software List, check if ROM exists, update and save database
-    log_info('Opening SL ROMs report file "{0}"'.format(PATHS.REPORT_SL_SCAN_PATH.getPath()))
-    file = open(PATHS.REPORT_SL_SCAN_PATH.getPath(), 'w')
+    # >> SL ROMs: Traverse Software List, check if ROM exists, update and save database
+    log_info('Opening SL ROMs report file "{0}"'.format(PATHS.REPORT_SL_SCAN_ROMS_PATH.getPath()))
+    file = open(PATHS.REPORT_SL_SCAN_ROMS_PATH.getPath(), 'w')
     pDialog = xbmcgui.DialogProgress()
     pdialog_line1 = 'Scanning Sofware Lists ROMs ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
@@ -1719,34 +1719,63 @@ def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_d
     total_files = len(SL_catalog_dic)
     processed_files = 0
     SL_ROMs_have = SL_ROMs_missing = SL_ROMs_total = 0
-    SL_CHDs_have = SL_CHDs_missing = SL_CHDs_total = 0
     for SL_name in sorted(SL_catalog_dic):
-        # log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
         SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
-
-        # >> Open database
         # log_debug('File "{0}"'.format(SL_DB_FN.getPath()))
         roms = fs_load_JSON_file(SL_DB_FN.getPath())
-
-        # >> Scan for ROMs
         for rom_key in sorted(roms):
             rom = roms[rom_key]
-            SL_ROMs_total += 1
-            this_SL_ROM_dir_FN = SL_ROM_dir_FN.pjoin(SL_name)
-            SL_ROM_FN = this_SL_ROM_dir_FN.pjoin(rom_key + '.zip')
-            # log_debug('Scanning "{0}"'.format(SL_ROM_FN.getPath()))
-            if SL_ROM_FN.exists():
-                rom['status'] = 'R'
-                SL_ROMs_have += 1
+            if rom['num_roms']:
+                SL_ROMs_total += 1
+                SL_ROM_FN = SL_ROM_dir_FN.pjoin(SL_name).pjoin(rom_key + '.zip')
+                # log_debug('Scanning "{0}"'.format(SL_ROM_FN.getPath()))
+                if SL_ROM_FN.exists():
+                    rom['status_ROM'] = 'R'
+                    SL_ROMs_have += 1
+                else:
+                    rom['status_ROM'] = 'r'
+                    SL_ROMs_missing += 1
+                    file.write('Missing SL ROM {0}\n'.format(SL_ROM_FN.getPath()))
             else:
-                rom['status'] = 'r'
-                SL_ROMs_missing += 1
-                file.write('Missing ROM {0}\n'.format(SL_ROM_FN.getPath()))
-
-        # >> Update database
+                rom['status_ROM'] = '-'
         fs_write_JSON_file(SL_DB_FN.getPath(), roms)
-        
-        # >> Update progress
+        processed_files += 1
+        update_number = 100 * processed_files / total_files
+        pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+    pDialog.close()
+    file.close()
+
+    # >> SL CHDs: Traverse Software List, check if ROM exists, update and save database
+    log_info('Opening SL CHDs report file "{0}"'.format(PATHS.REPORT_SL_SCAN_CHDS_PATH.getPath()))
+    file = open(PATHS.REPORT_SL_SCAN_CHDS_PATH.getPath(), 'w')
+    pDialog = xbmcgui.DialogProgress()
+    pdialog_line1 = 'Scanning Sofware Lists CHDs ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    pDialog.update(0)
+    total_files = len(SL_catalog_dic)
+    processed_files = 0
+    SL_CHDs_have = SL_CHDs_missing = SL_CHDs_total = 0
+    for SL_name in sorted(SL_catalog_dic):
+        SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
+        # log_debug('File "{0}"'.format(SL_DB_FN.getPath()))
+        roms = fs_load_JSON_file(SL_DB_FN.getPath())
+        for rom_key in sorted(roms):
+            rom = roms[rom_key]
+            if rom['CHDs']:
+                for CHD_name in rom['CHDs']:
+                    SL_CHDs_total += 1
+                    SL_CHD_FN = SL_ROM_dir_FN.pjoin(SL_name).pjoin(rom_key).pjoin(CHD_name + '.chd')
+                    # log_debug('Scanning "{0}"'.format(SL_CHD_FN.getPath()))
+                    if SL_CHD_FN.exists():
+                        rom['status_CHD'] = 'C'
+                        SL_CHDs_have += 1
+                    else:
+                        rom['status_CHD'] = 'c'
+                        SL_CHDs_missing += 1
+                        file.write('Missing SL CHD {0}\n'.format(SL_CHD_FN.getPath()))
+            else:
+                rom['status_CHD'] = '-'
+        fs_write_JSON_file(SL_DB_FN.getPath(), roms)
         processed_files += 1
         update_number = 100 * processed_files / total_files
         pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
