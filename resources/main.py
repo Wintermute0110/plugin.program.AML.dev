@@ -60,6 +60,7 @@ class AML_Paths:
         self.MAME_XML_PATH               = PLUGIN_DATA_DIR.pjoin('MAME.xml')
         self.MAME_STDOUT_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stdout.log')
         self.MAME_STDERR_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stderr.log')
+        self.MAME_OUTPUT_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_output.log')
         self.MAIN_DB_PATH                = PLUGIN_DATA_DIR.pjoin('MAME_main_db.json')
         self.MAIN_PCLONE_DIC_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_PClone_dic.json')
         self.MAIN_CONTROL_PATH           = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
@@ -874,14 +875,10 @@ class Main:
         MENU_MAME_DATA = 200
         MENU_SL_DATA   = 300
         menu_kind = 0
-        size_stdout = 0
-        if PATHS.MAME_STDOUT_PATH.exists():
-            stat_stdout = PATHS.MAME_STDOUT_PATH.stat()
-            size_stdout = stat_stdout.st_size
-        size_stderr = 0
-        if PATHS.MAME_STDERR_PATH.exists():
-            stat_stderr = PATHS.MAME_STDERR_PATH.stat()
-            size_stderr = stat_stderr.st_size
+        size_output = 0
+        if PATHS.MAME_OUTPUT_PATH.exists():
+            stat_output = PATHS.MAME_OUTPUT_PATH.stat()
+            size_output = stat_output.st_size
         dialog = xbmcgui.Dialog()
         if not machine_name and not SL_name:
             menu_kind = MENU_SIMPLE
@@ -891,8 +888,7 @@ class Main:
                                   'View MAME CHD scanner report',
                                   'View MAME Samples scanner report',
                                   'View Software Lists scanner report',
-                                  'MAME last execution stdout ({0} bytes)'.format(size_stdout),
-                                  'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
+                                  'MAME last execution output ({0} bytes)'.format(size_output)])
         elif machine_name:
             menu_kind = MENU_MAME_DATA
             type = dialog.select('View ...',
@@ -902,8 +898,7 @@ class Main:
                                   'View MAME CHD scanner report',
                                   'View MAME Samples scanner report',
                                   'View Software Lists scanner report',
-                                  'MAME last execution stdout ({0} bytes)'.format(size_stdout),
-                                  'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
+                                  'MAME last execution output ({0} bytes)'.format(size_output)])
         elif SL_name:
             menu_kind = MENU_SL_DATA
             type = dialog.select('View ...',
@@ -913,8 +908,7 @@ class Main:
                                   'View MAME CHD scanner report',
                                   'View MAME Samples scanner report',
                                   'View Software Lists scanner report',
-                                  'MAME last execution stdout ({0} bytes)'.format(size_stdout),
-                                  'MAME last execution stderr ({0} bytes)'.format(size_stderr)])
+                                  'MAME last execution output ({0} bytes)'.format(size_output)])
         else:
             kodi_dialog_OK('_command_view() runtime error. Report this bug')
             return
@@ -1220,35 +1214,20 @@ class Main:
             except:
                 log_error('_command_view_machine() Exception rendering INFO window')
 
-        # --- View MAME stdout ---
+        # --- View MAME stdout/stderr ---
         type_nb += 1
         if type == type_nb:
+            if not PATHS.MAME_OUTPUT_PATH.exists():
+                kodi_dialog_OK('MAME output file not found. Execute MAME and try again.')
+                return
+
             # --- Read stdout and put into a string ---
             info_text = ''
-            with open(PATHS.MAME_STDOUT_PATH.getPath(), "r") as myfile:
+            with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'r') as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
-            window_title = 'MAME last execution stdout'
-            try:
-                xbmc.executebuiltin('ActivateWindow(10147)')
-                window = xbmcgui.Window(10147)
-                xbmc.sleep(100)
-                window.getControl(1).setLabel(window_title)
-                window.getControl(5).setText(info_text)
-            except:
-                log_error('_command_view_machine() Exception rendering INFO window')
-
-        # --- View MAME stderr ---
-        type_nb += 1
-        if type == type_nb:
-            # --- Read stdout and put into a string ---
-            info_text = ''
-            with open(PATHS.MAME_STDERR_PATH.getPath(), "r") as myfile:
-                info_text = myfile.read()
-
-            # --- Show information window ---
-            window_title = 'MAME last execution stderr'
+            window_title = 'MAME last execution output'
             try:
                 xbmc.executebuiltin('ActivateWindow(10147)')
                 window = xbmcgui.Window(10147)
@@ -1992,9 +1971,8 @@ class Main:
         else:         arg_list = [mame_prog_FN.getPath(), machine_name]
         log_info('arg_list = {0}'.format(arg_list))
         log_info('_run_machine() Calling subprocess.Popen()...')
-        with open(PATHS.MAME_STDOUT_PATH.getPath(), 'wb') as _stdout, \
-             open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as _stderr:
-            p = subprocess.Popen(arg_list, stdout = _stdout, stderr = _stderr, cwd = mame_dir, startupinfo = _info)
+        with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
+            p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info, stdout = f, stderr = subprocess.STDOUT)
         p.wait()
         log_info('_run_machine() Exiting function')
 
@@ -2069,9 +2047,8 @@ class Main:
         arg_list = [mame_prog_FN.getPath(), machine_name, ROM_name]
         log_info('arg_list = {0}'.format(arg_list))
         log_info('_run_SL_machine() Calling subprocess.Popen()...')
-        with open(PATHS.MAME_STDOUT_PATH.getPath(), 'wb') as _stdout, \
-             open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as _stderr:
-            p = subprocess.Popen(arg_list, stdout = _stdout, stderr = _stderr, cwd = mame_dir, startupinfo = _info)
+        with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
+            p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info, stdout = f, stderr = subprocess.STDOUT)
         p.wait()
         log_info('_run_SL_machine() Exiting function')
 
