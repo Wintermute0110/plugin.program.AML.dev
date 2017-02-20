@@ -887,7 +887,8 @@ class Main:
                                   'View MAME ROM scanner report',
                                   'View MAME CHD scanner report',
                                   'View MAME Samples scanner report',
-                                  'View Software Lists scanner report',
+                                  'View Software Lists ROM scanner report',
+                                  'View Software Lists CHD scanner report',
                                   'MAME last execution output ({0} bytes)'.format(size_output)])
         elif machine_name:
             menu_kind = MENU_MAME_DATA
@@ -897,7 +898,8 @@ class Main:
                                   'View MAME ROM scanner report',
                                   'View MAME CHD scanner report',
                                   'View MAME Samples scanner report',
-                                  'View Software Lists scanner report',
+                                  'View Software Lists ROM scanner report',
+                                  'View Software Lists CHD scanner report',
                                   'MAME last execution output ({0} bytes)'.format(size_output)])
         elif SL_name:
             menu_kind = MENU_SL_DATA
@@ -907,7 +909,8 @@ class Main:
                                   'View MAME ROM scanner report',
                                   'View MAME CHD scanner report',
                                   'View MAME Samples scanner report',
-                                  'View Software Lists scanner report',
+                                  'View Software Lists ROM scanner report',
+                                  'View Software Lists CHD scanner report',
                                   'MAME last execution output ({0} bytes)'.format(size_output)])
         else:
             kodi_dialog_OK('_command_view() runtime error. Report this bug')
@@ -1158,7 +1161,7 @@ class Main:
                 info_text = myfile.read()
 
             # --- Show information window ---
-            window_title = 'ROM scanner report'
+            window_title = 'MAME CHD scanner report'
             try:
                 xbmc.executebuiltin('ActivateWindow(10147)')
                 window = xbmcgui.Window(10147)
@@ -1177,11 +1180,11 @@ class Main:
 
             # --- Read stdout and put into a string ---
             info_text = ''
-            with open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), "r") as myfile:
+            with open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), 'r') as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
-            window_title = 'ROM scanner report'
+            window_title = 'MAME samples scanner report'
             try:
                 xbmc.executebuiltin('ActivateWindow(10147)')
                 window = xbmcgui.Window(10147)
@@ -1191,20 +1194,43 @@ class Main:
             except:
                 log_error('_command_view_machine() Exception rendering INFO window')
 
-        # --- View Software Lists scanner report ---
+        # --- View Software Lists ROM scanner report ---
         type_nb += 1
         if type == type_nb:
-            if not PATHS.REPORT_SL_SCAN_PATH.exists():
-                kodi_dialog_OK('MAME Samples scanner report not found. Please scan MAME ROMs and try again.')
+            if not PATHS.REPORT_SL_SCAN_ROMS_PATH.exists():
+                kodi_dialog_OK('SL ROM scanner report not found. Please scan MAME ROMs and try again.')
                 return
 
             # --- Read stdout and put into a string ---
             info_text = ''
-            with open(PATHS.REPORT_SL_SCAN_PATH.getPath(), "r") as myfile:
+            with open(PATHS.REPORT_SL_SCAN_ROMS_PATH.getPath(), 'r') as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
-            window_title = 'ROM scanner report'
+            window_title = 'SL ROM scanner report'
+            try:
+                xbmc.executebuiltin('ActivateWindow(10147)')
+                window = xbmcgui.Window(10147)
+                xbmc.sleep(100)
+                window.getControl(1).setLabel(window_title)
+                window.getControl(5).setText(info_text)
+            except:
+                log_error('_command_view_machine() Exception rendering INFO window')
+
+        # --- View Software Lists CHD scanner report ---
+        type_nb += 1
+        if type == type_nb:
+            if not PATHS.REPORT_SL_SCAN_CHDS_PATH.exists():
+                kodi_dialog_OK('SL CHD scanner report not found. Please scan MAME ROMs and try again.')
+                return
+
+            # --- Read stdout and put into a string ---
+            info_text = ''
+            with open(PATHS.REPORT_SL_SCAN_CHDS_PATH.getPath(), 'r') as myfile:
+                info_text = myfile.read()
+
+            # --- Show information window ---
+            window_title = 'SL CHD scanner report'
             try:
                 xbmc.executebuiltin('ActivateWindow(10147)')
                 window = xbmcgui.Window(10147)
