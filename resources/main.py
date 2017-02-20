@@ -296,18 +296,19 @@ class Main:
     #
     def _get_settings(self):
         # --- Paths ---
-        self.settings['mame_prog']               = __addon_obj__.getSetting('mame_prog').decode('utf-8')
-        self.settings['rom_path']                = __addon_obj__.getSetting('rom_path').decode('utf-8')
+        self.settings['mame_prog']     = __addon_obj__.getSetting('mame_prog').decode('utf-8')
+        self.settings['rom_path']      = __addon_obj__.getSetting('rom_path').decode('utf-8')
 
-        self.settings['assets_path']             = __addon_obj__.getSetting('assets_path').decode('utf-8')
-        self.settings['SL_hash_path']            = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
-        self.settings['SL_rom_path']             = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
-        self.settings['chd_path']                = __addon_obj__.getSetting('chd_path').decode('utf-8')
-        self.settings['samples_path']            = __addon_obj__.getSetting('samples_path').decode('utf-8')
-        self.settings['catver_path']             = __addon_obj__.getSetting('catver_path').decode('utf-8')
-        self.settings['catlist_path']            = __addon_obj__.getSetting('catlist_path').decode('utf-8')
-        self.settings['genre_path']              = __addon_obj__.getSetting('genre_path').decode('utf-8')
-        self.settings['nplayers_path']           = __addon_obj__.getSetting('nplayers_path').decode('utf-8')
+        self.settings['assets_path']   = __addon_obj__.getSetting('assets_path').decode('utf-8')
+        self.settings['chd_path']      = __addon_obj__.getSetting('chd_path').decode('utf-8')        
+        self.settings['SL_hash_path']  = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
+        self.settings['SL_rom_path']   = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
+        self.settings['SL_chd_path']   = __addon_obj__.getSetting('SL_chd_path').decode('utf-8')
+        self.settings['samples_path']  = __addon_obj__.getSetting('samples_path').decode('utf-8')
+        self.settings['catver_path']   = __addon_obj__.getSetting('catver_path').decode('utf-8')
+        self.settings['catlist_path']  = __addon_obj__.getSetting('catlist_path').decode('utf-8')
+        self.settings['genre_path']    = __addon_obj__.getSetting('genre_path').decode('utf-8')
+        self.settings['nplayers_path'] = __addon_obj__.getSetting('nplayers_path').decode('utf-8')
 
         # --- Display ---
         self.settings['display_hide_nonworking'] = True if __addon_obj__.getSetting('display_hide_nonworking') == 'true' else False
@@ -1871,7 +1872,7 @@ class Main:
 
         # --- Scan SL ROMs ---
         elif menu_item == 8:
-            log_info('_command_setup_plugin() Scanning SL ROMs ...')
+            log_info('_command_setup_plugin() Scanning SL ROMs/CHDs ...')
 
             # >> Abort if SL hash path not configured.
             if not self.settings['SL_hash_path']:

@@ -2,18 +2,19 @@
 <category label="Paths">
     <setting id="separator" type="lsep" label="Mandatory paths" />
     <setting label="MAME executable" type="file"   id="mame_prog" />
-    <setting label="ROMs path"       type="folder" id="rom_path" source="auto" option="" />
+    <setting label="MAME ROMs path"  type="folder" id="rom_path" source="auto" option="" />
     
     <setting id="separator" type="lsep" label="Optional paths" />
     <setting label="MAME assets path"         type="folder" id="assets_path" source="auto" option="" />
+    <setting label="MAME CHDs path"           type="folder" id="chd_path" source="auto" option="" />
     <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="auto" option="" />
     <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="auto" option="" />
-    <setting label="CHDs path"                type="folder" id="chd_path" source="auto" option="" />
+    <setting label="Software Lists CHDs path" type="folder" id="SL_chd_path" source="auto" option="" />
     <setting label="Samples path"             type="folder" id="samples_path" source="auto" option="" />
-    <setting label="Catver.ini path"          type="file" id="catver_path" />
-    <setting label="Catlist.ini path"         type="file" id="catlist_path" />
-    <setting label="Genre.ini path"           type="file" id="genre_path" />
-    <setting label="nplayers.ini path"        type="file" id="nplayers_path" />
+    <setting label="Catver.ini path"          type="file"   id="catver_path" />
+    <setting label="Catlist.ini path"         type="file"   id="catlist_path" />
+    <setting label="Genre.ini path"           type="file"   id="genre_path" />
+    <setting label="nplayers.ini path"        type="file"   id="nplayers_path" />
 </category>
 <category label="Display">
     <setting label="Hide non-working machines" type="bool" default="false" id="display_hide_nonworking" />
