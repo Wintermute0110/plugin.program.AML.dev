@@ -283,6 +283,8 @@ class Main:
                 self._command_delete_sl_fav(args['SL'][0], args['ROM'][0])
             elif command == 'SHOW_SL_FAVS':
                 self._command_show_sl_fav()
+            elif command == 'MANAGE_SL_FAV':
+                self._command_manage_sl_fav(args['SL'][0], args['ROM'][0])
             else:
                 log_error('Unknown command "{0}"'.format(command))
 
@@ -1413,7 +1415,7 @@ class Main:
         idx = dialog.select('Manage MAME Favourites', 
                            ['Scan ROMs/CHDs/Samples',
                             'Scan assets/artwork',
-                            'Check Favourites'])
+                            'Check MAME Favourites'])
         if idx < 0: return
 
         # --- Scan ROMs/CHDs/Samples ---
@@ -1611,8 +1613,10 @@ class Main:
         # --- Create context menu ---
         commands = []
         URL_view = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
+        URL_manage = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         commands.append(('View', URL_view ))
+        commands.append(('Manage SL Favourite machines',  URL_manage ))
         commands.append(('Delete ROM from SL Favourites', URL_fav ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
@@ -1621,6 +1625,28 @@ class Main:
         # --- Add row ---
         URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', ROM_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+
+    def _command_manage_sl_fav(self, SL_name, ROM_name):
+        dialog = xbmcgui.Dialog()
+        idx = dialog.select('Manage Software Lists Favourites', 
+                           ['Scan ROMs/CHDs',
+                            'Scan assets/artwork',
+                            'Check SL Favourites'])
+        if idx < 0: return
+
+        # --- Scan ROMs/CHDs ---
+        # Reuse SL scanner for Favourites
+        if idx == 0:
+            kodi_dialog_OK('SL scanner not coded yet. Sorry.')
+
+        # --- Scan assets/artwork ---
+        # Reuse SL scanner for Favourites
+        elif idx == 1:
+            kodi_dialog_OK('SL asset scanner not coded yet. Sorry.')
+
+        # --- Check SL Favourties ---
+        elif idx == 2:
+            kodi_dialog_OK('Check not coded yet. Sorry.')
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases
