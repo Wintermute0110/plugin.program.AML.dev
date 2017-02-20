@@ -113,15 +113,16 @@ def fs_new_MAME_asset():
 #   R  Have ROM
 def fs_new_SL_ROM():
     R = {
-        'description'       : '',
-        'year'              : '',
-        'publisher'         : '',
-        'cloneof'           : '',
-        'part_name'         : [],
-        'part_interface'    : [],
-        'num_roms'          : 0,
-        'CHDs'              : [],
-        'status'            : '?',
+        'description'    : '',
+        'year'           : '',
+        'publisher'      : '',
+        'cloneof'        : '',
+        'part_name'      : [],
+        'part_interface' : [],
+        'num_roms'       : 0,
+        'CHDs'           : [],
+        'status_ROM'     : '-',
+        'status_CHD'     : '-',
     }
 
     return R
@@ -1490,7 +1491,12 @@ def fs_load_SL_XML(xml_filename):
             # >> If ROM has more than 1 ROM increase number of total ROMs (ZIP files).
             # >> If ROM has CHDs count the CHDs.
             rom['num_roms'] = num_roms
-            
+
+            if rom['num_roms']: rom['status_ROM'] = '?'
+            else:               rom['status_ROM'] = '-'
+            if rom['CHDs']:     rom['status_CHD'] = '?'
+            else:               rom['status_CHD'] = '-'
+
             # >> Statistics
             if rom['CHDs']:     ret_obj.num_CHDs += len(rom['CHDs'])
             if rom['num_roms']: ret_obj.num_roms += 1

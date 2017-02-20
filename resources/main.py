@@ -822,7 +822,8 @@ class Main:
         display_name = ROM['description']
 
         # --- Mark Status and Clones ---
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(ROM['status'])
+        status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
         if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
 
         # --- Assets/artwork ---
@@ -1020,7 +1021,8 @@ class Main:
                     info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
                     info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
                     info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
-                    info_text += "[COLOR violet]status[/COLOR]: '{0}'\n".format(rom['status'])
+                    info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
+                    info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
                     info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
 
                     info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SL_name)
