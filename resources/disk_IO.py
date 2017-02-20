@@ -113,13 +113,15 @@ def fs_new_MAME_asset():
 #   R  Have ROM
 def fs_new_SL_ROM():
     R = {
-        'description'    : '',
-        'year'           : '',
-        'publisher'      : '',
-        'cloneof'        : '',
-        'part_name'      : [],
-        'part_interface' : [],
-        'status'         : '?',
+        'description'       : '',
+        'year'              : '',
+        'publisher'         : '',
+        'cloneof'           : '',
+        'part_name'         : [],
+        'part_interface'    : [],
+        'num_roms'          : 0,
+        'CHDs'              : [],
+        'status'            : '?',
     }
 
     return R
@@ -1323,51 +1325,6 @@ class SLData:
         self.display_name = ''
         self.num_roms = 0
         self.num_CHDs = 0
-        self.part_name_set = set()
-
-# >> Compile and cache regular expressions. Should be much faster.
-# >> See https://docs.python.org/2/library/re.html#re.compile        
-prog_cart    = re.compile('^cart[0-9]*')
-prog_cass    = re.compile('^cass[0-9]*')
-prog_flop    = re.compile('^flop[0-9]*')
-prog_tape    = re.compile('^tape[0-9]*')
-prog_rom     = re.compile('^rom[0-9]*')
-prog_card    = re.compile('^card[0-9]*')
-prog_memc    = re.compile('^memc[0-9]*')
-prog_msxdos  = re.compile('^msxdos[0-9]*')
-prog_socket  = re.compile('^socket[0-9]*')
-prog_quik    = re.compile('^quik[0-9]*')
-prog_lpu_rom = re.compile('^lpu_rom[0-9]*')
-prog_cdrom   = re.compile('^cdrom[0-9]*')
-prog_hdd     = re.compile('^hdd[0-9]*')
-prog_disc    = re.compile('^disc[0-9]*')
-prog_disk    = re.compile('^disk[0-9]*')
-
-def fs_get_clean_part_name(raw_part_name):
-    ret_str = ''
-
-    # OPTIMIZATION Put the most used part names first!
-    # OPTIMIZATION Decompose raw_part_name into tokens and don't use RE at all!
-    if   prog_cart.search(raw_part_name):    ret_str = 'cart'
-    elif prog_cass.search(raw_part_name):    ret_str = 'cass'
-    elif prog_flop.search(raw_part_name):    ret_str = 'flop'
-    elif prog_tape.search(raw_part_name):    ret_str = 'tape'
-    elif prog_rom.search(raw_part_name):     ret_str = 'rom'
-    elif prog_card.search(raw_part_name):    ret_str = 'card'
-    elif prog_memc.search(raw_part_name):    ret_str = 'memc'
-    elif prog_msxdos.search(raw_part_name):  ret_str = 'msxdos'
-    elif prog_socket.search(raw_part_name):  ret_str = 'socket'
-    elif prog_quik.search(raw_part_name):    ret_str = 'quik'
-    elif prog_lpu_rom.search(raw_part_name): ret_str = 'lpu_rom'
-    elif prog_cdrom.search(raw_part_name):   ret_str = 'cdrom' # CHD
-    elif prog_hdd.search(raw_part_name):     ret_str = 'hdd'   # CHD
-    elif prog_disc.search(raw_part_name):    ret_str = 'disc'  # CHD
-    elif prog_disk.search(raw_part_name):    ret_str = 'disk'  # CHD
-    else:
-        log_error('fs_get_part_name() raw_part_name = "{0}"'.format(raw_part_name))
-        raise CriticalError('fs_get_part_name() pattern not found')
-
-    return ret_str
 
 def fs_load_SL_XML(xml_filename):
     __debug_xml_parser = False
@@ -1389,10 +1346,14 @@ def fs_load_SL_XML(xml_filename):
         if __debug_xml_parser: print('Root child {0}'.format(root_element.tag))
 
         if root_element.tag == 'software':
-            num_parts = 0
             rom = fs_new_SL_ROM()
+            num_roms = 0
             rom_name = root_element.attrib['name']
             if 'cloneof' in root_element.attrib: rom['cloneof'] = root_element.attrib['cloneof']
+            if 'romof' in root_element.attrib:
+                log_error('{0} -> "romof" in root_element.attrib'.format(rom_name))
+                raise CriticalError('DEBUG')
+
             for rom_child in root_element:
                 # >> By default read strings
                 xml_text = rom_child.text if rom_child.text is not None else ''
@@ -1402,27 +1363,137 @@ def fs_load_SL_XML(xml_filename):
                 # --- Only pick tags we want ---
                 if xml_tag == 'description' or xml_tag == 'year' or xml_tag == 'publisher':
                     rom[xml_tag] = xml_text
-                # List a800.xml, ROM diamond3: it has one cart and 3 floppies!
                 elif xml_tag == 'part':
+                    # Example 1: 32x.xml-chaotix
+                    # Stored as: SL_ROMS/32x/chaotix.zip
+                    # <part name="cart" interface="_32x_cart">
+                    #   <dataarea name="rom" size="3145728">
+                    #     <rom name="knuckles' chaotix (europe).bin" size="3145728" crc="41d63572" sha1="5c1...922" offset="000000" />
+                    #   </dataarea>
+                    # </part>
+                    #
+                    # Example 2: 32x.xml-doom
+                    # Stored as: SL_ROMS/32x/doom.zip
+                    # <part name="cart" interface="_32x_cart">
+                    #   <feature name="pcb" value="171-6885A" />
+                    #   <dataarea name="rom" size="3145728">
+                    #     <rom name="mpr-17351-f.ic1" size="2097152" crc="e0ef6ebc" sha1="302...79d" offset="000000" />
+                    #     <rom name="mpr-17352-f.ic2" size="1048576" crc="c7079709" sha1="0f2...33b" offset="0x200000" />
+                    #   </dataarea>
+                    # </part>
+                    #
+                    # Example 3: a800.xml-diamond3
+                    # Stored as: SL_ROMS/a800/diamond3.zip (all ROMs from all parts)
+                    # <part name="cart" interface="a8bit_cart">
+                    #   <feature name="slot" value="a800_diamond" />
+                    #   <dataarea name="rom" size="65536">
+                    #     <rom name="diamond gos v3.0.rom" size="65536" crc="0ead07f8" sha1="e92...730" offset="0" />
+                    #   </dataarea>
+                    # </part>
+                    # <part name="flop1" interface="floppy_5_25">
+                    #   <dataarea name="flop" size="92176">
+                    #     <rom name="diamond paint.atr" size="92176" crc="d2994282" sha1="be8...287" offset="0" />
+                    #   </dataarea>
+                    # </part>
+                    # <part name="flop2" interface="floppy_5_25">
+                    #   <dataarea name="flop" size="92176">
+                    #     <rom name="diamond write.atr" size="92176" crc="e1e5b235" sha1="c3c...db5" offset="0" />
+                    #   </dataarea>
+                    # </part>
+                    # <part name="flop3" interface="floppy_5_25">
+                    #   <dataarea name="flop" size="92176">
+                    #     <rom name="diamond utilities.atr" size="92176" crc="bb48082d" sha1="eb7...4e4" offset="0" />
+                    #   </dataarea>
+                    # </part>
+                    #
+                    # Example 4: a2600.xml-harmbios
+                    # Stored as: SL_ROMS/a2600/harmbios.zip (all ROMs from all dataareas)
+                    # <part name="cart" interface="a2600_cart">
+                    #   <feature name="slot" value="a26_harmony" />
+                    #   <dataarea name="rom" size="0x8000">
+                    #     <rom name="bios_updater_NTSC.cu" size="0x8000" crc="03153eb2" sha1="cd9...009" offset="0" />
+                    #   </dataarea>
+                    #   <dataarea name="bios" size="0x21400">
+                    #     <rom name="hbios_106_NTSC_official_beta.bin" size="0x21400" crc="1e1d237b" sha1="8fd...1da" offset="0" />
+                    #     <rom name="hbios_106_NTSC_beta_2.bin"        size="0x21400" crc="807b86bd" sha1="633...e9d" offset="0" />
+                    #     <rom name="eeloader_104e_PAL60.bin" size="0x36f8" crc="58845532" sha1="255...71c" offset="0" />
+                    #   </dataarea>
+                    # </part>
+                    #
+                    # Example 5: psx.xml-traid
+                    # Stored as: SL_CHDS/psx/traid/tomb raider (usa) (v1.6).chd
+                    # <part name="cdrom" interface="psx_cdrom">
+                    #   <diskarea name="cdrom">
+                    #     <disk name="tomb raider (usa) (v1.6)" sha1="697...3ac"/>
+                    #   </diskarea>
+                    # </part>
+                    #
+                    # Example 6: psx.xml-traida cloneof=traid
+                    # <part name="cdrom" interface="psx_cdrom">
+                    #   <diskarea name="cdrom">
+                    #     <disk name="tomb raider (usa) (v1.5)" sha1="d48...0a9"/>
+                    #   </diskarea>
+                    # </part>
+                    #
+                    # Example 7: pico.xml-sanouk5
+                    # Stored as: SL_ROMS/pico/sanouk5.zip (mpr-18458-t.ic1 ROM)
+                    # Stored as: SL_CHDS/pico/sanouk5/imgpico-001.chd
+                    # <part name="cart" interface="pico_cart">
+                    #   <dataarea name="rom" size="524288">
+                    #     <rom name="mpr-18458-t.ic1" size="524288" crc="6340c18a" sha1="101...58a" offset="000000" loadflag="load16_word_swap" />
+                    #   </dataarea>
+                    #   <diskarea name="cdrom">
+                    #     <disk name="imgpico-001" sha1="c93...10d" />
+                    #   </diskarea>
+                    # </part>
                     rom['part_name'].append(rom_child.attrib['name'])
                     rom['part_interface'].append(rom_child.attrib['interface'])
-            # if len(ret_obj.part_name_set) > 1:
-            #     log_error('rom_name = {0}'.format(rom_name))
-            #     log_error('part_name_set = {0}'.format(ret_obj.part_name_set))
-            #     raise CriticalError('len(ret_obj.part_name_set) > 1')
-           
-            # >> If ROM has CHDs parts, count them as a CHD
-            # >> amiga_workbench.xml contains floppies and 1 cdrom!
-            found_CHD = False
-            for name in rom['part_name']:
-                # Get unique set of cleaned part names in the SL
-                part_type = fs_get_clean_part_name(rom_child.attrib['name'])
-                ret_obj.part_name_set.add(part_type)
-                if part_type == 'cdrom' or part_type == 'hdd' or part_type == 'disc' or part_type == 'disk':
-                    found_CHD = True
 
-            if found_CHD: ret_obj.num_CHDs += 1
-            else:         ret_obj.num_roms += 1
+                    # --- Count number of <dataarea> and <diskarea> tags inside this <part tag> ---
+                    num_dataarea = num_diskarea = 0
+                    dataarea_num_roms = []
+                    for part_child in rom_child:
+                        if part_child.tag == 'dataarea':
+                            # >> Dataarea is valid ONLY if it contains valid ROMs
+                            dataarea_num_roms = 0
+                            for dataarea_child in part_child:
+                                if dataarea_child.tag == 'rom' and 'sha1' in dataarea_child.attrib:
+                                    dataarea_num_roms += 1
+                                    num_roms += 1
+                            if dataarea_num_roms > 0: num_dataarea += 1
+                        elif part_child.tag == 'diskarea':
+                            # >> Dataarea is valid ONLY if it contains valid ROMs
+                            diskarea_num_disks = 0
+                            for dataarea_child in part_child:
+                                if dataarea_child.tag == 'disk' and 'sha1' in dataarea_child.attrib:
+                                    diskarea_num_disks += 1
+                                    rom['CHDs'].append(dataarea_child.attrib['name'])
+                            if diskarea_num_disks > 0: num_diskarea += 1
+                        elif part_child.tag == 'feature':
+                            pass
+                        elif part_child.tag == 'dipswitch':
+                            pass
+                        else:
+                            log_error('{0} -> Inside <part>, unrecognised tag <{0}>'.format(rom_name, part_child.tag))
+                            raise CriticalError('DEBUG')
+                    # if num_dataarea > 1:
+                    #     log_error('{0} -> num_dataarea = {1}'.format(rom_name, num_dataarea))
+                    #     raise CriticalError('DEBUG')
+                    # if num_diskarea > 1:
+                    #     log_error('{0} -> num_diskarea = {1}'.format(rom_name, num_diskarea))
+                    #     raise CriticalError('DEBUG')
+                    # if num_dataarea and num_diskarea:
+                    #     log_error('{0} -> num_dataarea = {1}'.format(rom_name, num_dataarea))
+                    #     log_error('{0} -> num_diskarea = {1}'.format(rom_name, num_diskarea))
+                    #     raise CriticalError('DEBUG')
+
+            # >> If ROM has more than 1 ROM increase number of total ROMs (ZIP files).
+            # >> If ROM has CHDs count the CHDs.
+            rom['num_roms'] = num_roms
+            
+            # >> Statistics
+            if rom['CHDs']:     ret_obj.num_CHDs += len(rom['CHDs'])
+            if rom['num_roms']: ret_obj.num_roms += 1
 
             # >> Add ROM to database
             ret_obj.roms[rom_name] = rom
@@ -1465,8 +1536,6 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
         SL = {'display_name' : SL_obj.display_name, 
               'rom_count'    : SL_obj.num_roms,
               'chd_count'    : SL_obj.num_CHDs,
-              # Cleaned part names (cart1 -> cart, flop1 -> flop)
-              'part_type'    : list(SL_obj.part_name_set),
               'rom_DB_noext' : FN.getBase_noext()
         }
         SL_catalog_dic[FN.getBase_noext()] = SL
