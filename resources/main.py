@@ -1031,7 +1031,7 @@ class Main:
                     info_text += "[COLOR violet]rom_count[/COLOR]: '{0}'\n".format(SL_dic['rom_count'])
 
                     info_text += '\n[COLOR orange]Runnable by[/COLOR]\n'
-                    for machine_dic in SL_machine_list:
+                    for machine_dic in sorted(SL_machine_list):
                         t = "[COLOR violet]machine[/COLOR]: '{0}' [COLOR slateblue]({1})[/COLOR]\n"
                         info_text += t.format(machine_dic['description'], machine_dic['machine'])
 
@@ -1043,15 +1043,18 @@ class Main:
 
                     # >> Build information string
                     info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(fav_key)
+                    info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(rom['CHDs'])
                     info_text += "[COLOR violet]ROM_name[/COLOR]: '{0}'\n".format(rom['ROM_name'])
                     info_text += "[COLOR violet]SL_name[/COLOR]: '{0}'\n".format(rom['SL_name'])
                     info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
                     info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
                     info_text += "[COLOR violet]mame_version[/COLOR]: '{0}'\n".format(rom['mame_version'])
+                    info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(rom['num_roms'])
                     info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
                     info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
                     info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
-                    info_text += "[COLOR violet]status[/COLOR]: '{0}'\n".format(rom['status'])
+                    info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
+                    info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
                     info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
 
                 # --- Show information window ---
@@ -1593,7 +1596,8 @@ class Main:
         display_name = ROM['description']
 
         # --- Mark Status and Clones ---
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(ROM['status'])
+        status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
         if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
 
         # --- Create listitem row ---
