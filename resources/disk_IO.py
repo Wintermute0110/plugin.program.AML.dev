@@ -622,8 +622,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         # disks per machine, some valid, some invalid: just one valid CHD is OK.
         elif event == 'start' and elem.tag == 'disk':
             # <!ATTLIST disk name CDATA #REQUIRED>
-            if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['CHDs'].append(elem.attrib['name'])
-            if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['CHDs_merged'].append(elem.attrib['name'])
+            if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['CHDs_merged'].append(elem.attrib['name'])
+            if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['CHDs'].append(elem.attrib['name'])
 
         # Some machines have more than one display tag (for example aquastge has 2).
         # Other machines have no display tag (18w)
@@ -1651,7 +1651,7 @@ def fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Sa
     for key in sorted(machines):
         machine = machines[key]
         # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
-        if machine['hasOwnROMs']:
+        if machine['hasROMs']:
             ROMs_total += 1
             # >> Machine has ROM. Get ROM filename and check if file exist
             ROM_FN = ROM_path_FN.pjoin(key + '.zip')
@@ -1663,8 +1663,8 @@ def fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Sa
                 ROMs_missing += 1
                 file.write('Missing ROM {0}\n'.format(ROM_FN.getPath()))
         else:
-            if machine['hasMergedROMs']: machine['status_ROM'] = '*'
-            else:                        machine['status_ROM'] = '-'
+            if machine['hasROMs_merged']: machine['status_ROM'] = '*'
+            else:                         machine['status_ROM'] = '-'
 
         # >> Progress dialog
         processed_machines = processed_machines + 1
@@ -1675,32 +1675,30 @@ def fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Sa
     # >> Scan CHDs
     log_info('Opening CHDs report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath()))
     file = open(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath(), 'w')
-    CHDs_have = CHDs_missing = CHDs_total    = 0
+    CHDs_have = CHDs_missing = CHDs_total = 0
     for key in sorted(machines):
         machine = machines[key]
         if machine['CHDs']:
-            CHDs_total += 1
+            CHDs_total += len(machine['CHDs'])
             if scan_CHDs:
-                hasCHD_list = [False] * len(machine['CHDs'])
+                hasOwnCHD_list = [False] * len(machine['CHDs'])
                 for idx, CHD_name in enumerate(machine['CHDs']):
-                    CHD_this_path_FN = CHD_path_FN.pjoin(key)
-                    CHD_FN = CHD_this_path_FN.pjoin(CHD_name + '.chd')
+                    CHD_FN = CHD_path_FN.pjoin(key).pjoin(CHD_name + '.chd')
                     # log_debug('Testing CHD OP "{0}"'.format(CHD_FN.getOriginalPath()))
                     if CHD_FN.exists():
-                        hasCHD_list[idx] = True
+                        hasOwnCHD_list[idx] = True
+                        CHDs_have += 1
                     else:
                         file.write('Missing CHD {0}\n'.format(CHD_FN.getPath()))
-                if all(hasCHD_list):
-                    machine['status_CHD'] = 'C'
-                    CHDs_have += 1
-                else:
-                    machine['status_CHD'] = 'c'
-                    CHDs_missing += 1
+                        CHDs_missing += 1
+                if all(hasOwnCHD_list): machine['status_CHD'] = 'C'
+                else:                   machine['status_CHD'] = 'c'
             else:
                 machine['status_CHD'] = 'c'
-                CHDs_missing += 1
+                CHDs_missing += len(machine['CHDs'])
         else:
-            machine['status_CHD'] = '-'
+            if machine['CHDs_merged']: machine['status_CHD'] = '*'
+            else:                      machine['status_CHD'] = '-'
     file.close()
 
     # >> Scan Samples
