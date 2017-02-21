@@ -30,6 +30,8 @@ FEATURE  Scan SL assets/artwork.
 
 FEATURE  Manage MAME Favourites.
 
+WIP      Manage SL Favourites.
+
 
 [B]Advanced Emulator Launcher | version 0.9.2 | 12 February 2017[/B]
 

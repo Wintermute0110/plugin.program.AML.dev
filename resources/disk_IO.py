@@ -188,6 +188,10 @@ def fs_new_control_dic():
     
     return C
 
+# --- Constants ---
+VIEW_MODE_NORMAL = 'Normal'
+VIEW_MODE_PCLONE = 'PClone'
+
 # -------------------------------------------------------------------------------------------------
 # Exceptions raised by this module
 # -------------------------------------------------------------------------------------------------
@@ -1522,12 +1526,10 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
     total_files = len(SL_file_list)
-    processed_files = 0
-    num_SL_ROMs = 0
-    num_SL_CHDs = 0
+    processed_files = num_SL_ROMs = num_SL_CHDs = 0
     SL_catalog_dic = {}
     for file in SL_file_list:
-        log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
+        # log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
         FN = FileName(file)
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
@@ -1550,6 +1552,15 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
         processed_files += 1
         pDialog.update(100 * processed_files / total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
     fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
+
+    # --- Make SL properties DB --
+    # >> Allows customisation of every SL list window
+    SL_properties_dic = {}
+    for sl_name in SL_catalog_dic:
+        # 'view_mode' : VIEW_MODE_NORMAL or VIEW_MODE_PCLONE
+        prop_dic = {'view_mode' : VIEW_MODE_NORMAL}
+        SL_properties_dic[sl_name] = prop_dic
+    fs_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
 
     # --- Make a list of machines that can launch each SL ---
     log_info('Making Software List machine list ...')

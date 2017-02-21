@@ -96,11 +96,12 @@ class AML_Paths:
         self.SL_DB_DIR                   = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')
         self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
         self.SL_MACHINES_PATH            = PLUGIN_DATA_DIR.pjoin('SoftwareLists_machines.json')
-        
+        self.SL_MACHINES_PROP_PATH       = PLUGIN_DATA_DIR.pjoin('SoftwareLists_properties.json')
+
         # >> Favourites
         self.FAV_MACHINES_PATH           = PLUGIN_DATA_DIR.pjoin('Favourite_Machines.json')
         self.FAV_SL_ROMS_PATH            = PLUGIN_DATA_DIR.pjoin('Favourite_SL_ROMs.json')
-        
+
         # >> Reports
         self.REPORT_MAME_SCAN_ROMS_PATH  = PLUGIN_DATA_DIR.pjoin('Report_ROM_scanner.txt')
         self.REPORT_MAME_SCAN_CHDS_PATH  = PLUGIN_DATA_DIR.pjoin('Report_CHD_scanner.txt')
