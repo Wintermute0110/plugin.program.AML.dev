@@ -795,9 +795,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         if machine['isDevice']: continue
 
         # >> Machine is a parent. Add to main_pclone_dic if not already there.
-        if machine['cloneof'] == '':
-            if machine_name not in main_pclone_dic:
-                main_pclone_dic[machine_name] = []
+        if machine['cloneof'] == '' and machine_name not in main_pclone_dic:
+            main_pclone_dic[machine_name] = []
 
         # >> Machine is a clone
         else:
@@ -1553,7 +1552,24 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
         pDialog.update(100 * processed_files / total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
     fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
 
-    # --- Make SL properties DB --
+    # --- Make SL Parent/Clone DB ---
+    SL_PClone_dic = {}
+    for sl_name in SL_catalog_dic:
+        pclone_dic = {}
+        SL_database_FN = PATHS.SL_DB_DIR.pjoin(sl_name + '.json')
+        ROMs = fs_load_JSON_file(SL_database_FN.getPath())
+        for rom_name in ROMs:
+            ROM = ROMs[rom_name]
+            if ROM['cloneof'] == '' and rom_name not in pclone_dic:
+                pclone_dic[rom_name] = []
+            else:
+                parent_name = machine['cloneof']
+                if parent_name in pclone_dic: pclone_dic[parent_name].append(rom_name)
+                else:                         pclone_dic[parent_name] = list(rom_name)
+        SL_PClone_dic[sl_name] = pclone_dic
+    fs_write_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath(), SL_PClone_dic)
+
+    # --- Make SL properties DB ---
     # >> Allows customisation of every SL list window
     SL_properties_dic = {}
     for sl_name in SL_catalog_dic:
