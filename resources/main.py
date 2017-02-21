@@ -946,6 +946,7 @@ class Main:
                 # --- Make information string ---
                 info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
                 info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])
+                info_text += "[COLOR skyblue]CHDs_merged[/COLOR]: {0}\n".format(machine['CHDs_merged'])
                 info_text += "[COLOR skyblue]bios_desc[/COLOR]: {0}\n".format(machine['bios_desc'])
                 info_text += "[COLOR skyblue]bios_name[/COLOR]: {0}\n".format(machine['bios_name'])
                 info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
@@ -962,8 +963,8 @@ class Main:
                 info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
                 info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
                 info_text += "[COLOR skyblue]hasCoin[/COLOR]: {0}\n".format(machine['hasCoin'])                
-                info_text += "[COLOR skyblue]hasMergedROMs[/COLOR]: {0}\n".format(machine['hasMergedROMs'])
-                info_text += "[COLOR skyblue]hasOwnROMs[/COLOR]: {0}\n".format(machine['hasOwnROMs'])                
+                info_text += "[COLOR skyblue]hasROMs[/COLOR]: {0}\n".format(machine['hasROMs'])
+                info_text += "[COLOR skyblue]hasROMs_merged[/COLOR]: {0}\n".format(machine['hasROMs_merged'])                
                 info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
                 info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(machine['isDead'])
                 info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
@@ -1104,7 +1105,8 @@ class Main:
             t = "ROMs: {0} ({1} Merged ROMs / {2} ROMless)\n"
             info_text += t.format(control_dic['Own_ROM_machines'], control_dic['Merged_ROM_machines'], 
                                   control_dic['No_ROM_machines'])
-            info_text += "CHDs: {0}\n".format(control_dic['CHD_machines'])
+            t = "CHDs: {0} ({1} Merged CHDs)\n"
+            info_text += t.format(control_dic['Own_CHD_machines'], control_dic['Merged_CHD_machines'])
             info_text += "Samples: {0}\n".format(control_dic['samples_machines'])
 
             info_text += '\n[COLOR orange]Software Lists ROM count[/COLOR]\n'

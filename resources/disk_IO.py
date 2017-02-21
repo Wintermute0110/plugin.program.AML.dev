@@ -74,10 +74,11 @@ def fs_new_machine():
         'coins'          : 0,
         'driver_status'  : '',
         'CHDs'           : [],
+        'CHDs_merged'    : [],
         'softwarelists'  : [],
         'isDead'         : False,
-        'hasOwnROMs'     : False,
-        'hasMergedROMs'  : False,
+        'hasROMs'        : False,
+        'hasROMs_merged' : False,
         'status_ROM'     : '-',
         'status_CHD'     : '-',
         'status_SAM'     : '-',
@@ -160,7 +161,8 @@ def fs_new_control_dic():
         'Own_ROM_machines'    : 0,
         'Merged_ROM_machines' : 0,
         'No_ROM_machines'     : 0,
-        'CHD_machines'        : 0,
+        'Own_CHD_machines'    : 0,
+        'Merged_CHD_machines' : 0,
         'samples_machines'    : 0,
         # >> Filed in when building SL index
         'num_SL_files' : 0,
@@ -509,7 +511,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     Own_ROM_machines    = 0
     Merged_ROM_machines = 0
     No_ROM_machines     = 0
-    CHD_machines        = 0
+    Own_CHD_machines    = 0
+    Merged_CHD_machines = 0
     samples_machines    = 0
 
     log_info('fs_build_MAME_main_database() Parsing MAME XML file ...')
@@ -611,15 +614,16 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         #      snespal -> <rom name="spc700.rom" merge="spc700.rom" size="64" crc="44bb3a40" ... >
         # In AML, hasROM actually means "machine has it own ROMs not found somewhere else".
         elif event == 'start' and elem.tag == 'rom':
-            if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['hasMergedROMs'] = True
-            if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['hasOwnROMs']    = True
+            if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['hasROMs_merged'] = True
+            if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['hasROMs']        = True
 
         # >> Check in machine has CHDs
         # CHD is considered valid if SHA1 hash exists only. Keep in mind that there can be multiple
         # disks per machine, some valid, some invalid: just one valid CHD is OK.
         elif event == 'start' and elem.tag == 'disk':
             # <!ATTLIST disk name CDATA #REQUIRED>
-            if 'sha1' in elem.attrib: machine['CHDs'].append(elem.attrib['name'])
+            if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['CHDs'].append(elem.attrib['name'])
+            if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['CHDs_merged'].append(elem.attrib['name'])
 
         # Some machines have more than one display tag (for example aquastge has 2).
         # Other machines have no display tag (18w)
@@ -712,13 +716,14 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
             # >> Fill machine status
             # r/R flag takes precedence over * flag
-            if machine['hasOwnROMs']: machine['status_ROM'] = '?'
+            if machine['hasROMs']: machine['status_ROM'] = '?'
             else:
-                if machine['hasMergedROMs']: machine['status_ROM'] = '*'
-                else:                        machine['status_ROM'] = '-'
-
-            if machine['CHDs']:          machine['status_CHD'] = '?'
-            else:                        machine['status_CHD'] = '-'
+                if machine['hasROMs_merged']: machine['status_ROM'] = '*'
+                else:                         machine['status_ROM'] = '-'
+            if machine['CHDs']: machine['status_CHD'] = '?'
+            else:
+                if machine['CHDs_merged']: machine['status_CHD'] = '*'
+                else:                      machine['status_CHD'] = '-'
             if machine['sampleof']:      machine['status_SAM'] = '?'
             else:                        machine['status_SAM'] = '-'
             if machine['softwarelists']: machine['status_SL']  = 'L'
@@ -740,20 +745,21 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
                 machine['status_Device']  = '-'
 
             # >> Compute statistics
-            if machine['cloneof']:           parent_machines += 1
-            else:                            clone_machines += 1
-            if machine['isDevice']:          devices_machines += 1
-            if machine['isBIOS']:            BIOS_machines += 1
-            if machine['hasCoin']:           coin_machines += 1
-            else:                            nocoin_machines += 1
-            if machine['isMechanical']:      mechanical_machines += 1            
-            if machine['isDead']:            dead_machines += 1
-            if machine['hasOwnROMs']:        Own_ROM_machines += 1
+            if machine['cloneof']:            parent_machines += 1
+            else:                             clone_machines += 1
+            if machine['isDevice']:           devices_machines += 1
+            if machine['isBIOS']:             BIOS_machines += 1
+            if machine['hasCoin']:            coin_machines += 1
+            else:                             nocoin_machines += 1
+            if machine['isMechanical']:       mechanical_machines += 1            
+            if machine['isDead']:             dead_machines += 1
+            if machine['hasROMs']:            Own_ROM_machines += 1
             else:
-                if machine['hasMergedROMs']: Merged_ROM_machines += 1
-                else:                        No_ROM_machines += 1
-            if machine['CHDs']:              CHD_machines += 1
-            if machine['sampleof']:          samples_machines += 1
+                if machine['hasROMs_merged']: Merged_ROM_machines += 1
+                else:                         No_ROM_machines += 1
+            if machine['CHDs']:               Own_CHD_machines += 1
+            elif machine['CHDs_merged']:      Merged_CHD_machines += 1
+            if machine['sampleof']:           samples_machines += 1
 
             # >> Add new machine
             machines[machine_name] = machine
@@ -839,7 +845,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['Own_ROM_machines']    = Own_ROM_machines    
     control_dic['Merged_ROM_machines'] = Merged_ROM_machines
     control_dic['No_ROM_machines']     = No_ROM_machines
-    control_dic['CHD_machines']        = CHD_machines
+    control_dic['Own_CHD_machines']    = Own_CHD_machines    
+    control_dic['Merged_CHD_machines'] = Merged_CHD_machines
     control_dic['samples_machines']    = samples_machines
 
     # -----------------------------------------------------------------------------
