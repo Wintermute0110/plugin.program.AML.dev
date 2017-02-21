@@ -21,35 +21,18 @@ A machine has the boolean option or not.
 
 ## Input data and directories ##
 
-Required data files:
-
- * `~/DATA_DIR/MAME.xml`
- * `~/SofwareLists/hash/*.xml`
- * `~/DATA_DIR/Catver.ini`
- * `~/DATA_DIR/Catlist.ini`
- * `~/DATA_DIR/Genre.ini`
-
-ROM directories:
-
- * `~/MAME/ROMs` 
-
- * `~/MAME/CHDs`
-
- * `~/MAME/SLs`
-
-Assets directories:
-
- Directory       | Explanation
------------------|---------------------------------
-`~/MAME/EXTRAs/` |
-
-
-## Kinds of MAME machines ##
-
- * Machine has ROMs and/or CHDs
- 
- * Machine has Software List
- 
+ Directory                  | Explanation
+----------------------------|---------------------------------
+`~/AML-ROMs/`               | MAME ROMs
+`~/AML-CHDs/`               | MAME CHDs
+`~/AML-SL-ROMs/`            | SL ROMs
+`~/AML-SL-CHDs/`            | SL CHDs
+`~/AML-assets/`             | All assets
+`~/AML-assets/samples/`     |
+`~/AML-assets/Catver.ini`   |
+`~/AML-assets/Catlist.ini`  |
+`~/AML-assets/Genre.ini`    |
+`~/AML-assets/nplayers.ini` |
 
 ## Launching MAME machines with media types (former MESS) ##
 
@@ -142,23 +125,182 @@ Example of machines with SL: `32x`.
 
 ## Plugin URL schema ##
 
-       Root menu              | 1st sub          | 2nd     | 3rd    | URL                                                           |
-------------------------------|------------------|---------|--------|---------------------------------------------------------------|
-Machines (with coin slot)     | Parents          | Clones  |        | ?list=Machines        &parent=ROM_name                        |
-Machines (no coin slot)       | Parents          | Clones  |        | ?list=NoCoin          &parent=ROM_name                        |
-Machines (mechanical)         | Parents          | Clones  |        | ?list=Mechanical      &parent=ROM_name                        |
-Machines (dead)               | Parents          | Clones  |        | ?list=Dead            &parent=ROM_name                        |
-Machines with CHDs            | Parents          | Clones  |        | ?list=CHD             &parent=ROM_name                        |
-Machines with Samples         | Parents          | Clones  |        | ?list=Samples         &parent=ROM_name                        |
-Machines by Category (Catver) | Category         | Parents | Clones | ?clist=Catver         &category=Cat_name     &parent=ROM_name |
-Machines by Category (Catlist)| Category         | Parents | Clones | ?clist=Catlist        &category=Cat_name     &parent=ROM_name |
-Machines by Category (Genre)  | Category         | Parents | Clones | ?clist=Genre          &category=Cat_name     &parent=ROM_name |
-Machines by Manufacturer      | Manufacturer     | Parents | Clones | ?clist=Manufacturer   &manufacturer=Man_name &parent=ROM_name |
-Machines by Year              | Year             | Parents | Clones | ?clist=Year           &year=Year_name        &parent=ROM_name |
-Machines by Driver            | Driver           | Parents | Clones | ?clist=Driver         &driver=Driver_name    &parent=ROM_name |
-Machines by Control Type      | Controls         | Parents | Clones | ?clist=Controls       &control=Control_name  &parent=ROM_name |
-Machines by Display Tag       | Display Tag      | Parents | Clones | ?clist=Display_Tag    &tag=Display_tag       &parent=ROM_name |
-Machines by Display Type      | Display Type     | Parents | Clones | ?clist=Display_Type   &type=Display_type     &parent=ROM_name |
-Machines by Display Rotation  | Display Rotation | Parents | Clones | ?clist=Display_Rotate &rotate=Display_rotate &parent=ROM_name |
-Machines by Software List     | SoftList         | Parents | Clones | ?clist=BySL           &SL=SL_name            &parent=ROM_name |
-Software Lists                | SoftList         | Parents | Clones | ?clist=SL             &SL=SL_name                             |
+ Root menu                    | 1st sub          | 2nd     | 3rd    | URL                                                               |
+------------------------------|------------------|---------|--------|-------------------------------------------------------------------|
+Machines (with coin slot)     | Parents          | Clones  |        | ?catalog=None           &category=Machines       &parent=ROM_name |
+Machines (no coin slot)       | Parents          | Clones  |        | ?catalog=None           &category=NoCoin         &parent=ROM_name |
+Machines (mechanical)         | Parents          | Clones  |        | ?catalog=None           &category=Mechanical     &parent=ROM_name |
+Machines (dead)               | Parents          | Clones  |        | ?catalog=None           &category=Dead           &parent=ROM_name |
+Machines with CHDs            | Parents          | Clones  |        | ?catalog=None           &category=CHD            &parent=ROM_name |
+Machines with Samples         | Parents          | Clones  |        | ?catalog=None           &category=Samples        &parent=ROM_name |
+Machines by Category (Catver) | Category         | Parents | Clones | ?catalog=Catver         &category=Cat_name       &parent=ROM_name |
+Machines by Category (Catlist)| Category         | Parents | Clones | ?catalog=Catlist        &category=Cat_name       &parent=ROM_name |
+Machines by Category (Genre)  | Category         | Parents | Clones | ?catalog=Genre          &category=Cat_name       &parent=ROM_name |
+Machines by Manufacturer      | Manufacturer     | Parents | Clones | ?catalog=Manufacturer   &category=Man_name       &parent=ROM_name |
+Machines by Year              | Year             | Parents | Clones | ?catalog=Year           &category=Year_name      &parent=ROM_name |
+Machines by Driver            | Driver           | Parents | Clones | ?catalog=Driver         &category=Driver_name    &parent=ROM_name |
+Machines by Control Type      | Controls         | Parents | Clones | ?catalog=Controls       &category=Control_name   &parent=ROM_name |
+Machines by Display Tag       | Display Tag      | Parents | Clones | ?catalog=Display_Tag    &category=Display_tag    &parent=ROM_name |
+Machines by Display Type      | Display Type     | Parents | Clones | ?catalog=Display_Type   &category=Display_type   &parent=ROM_name |
+Machines by Display Rotation  | Display Rotation | Parents | Clones | ?catalog=Display_Rotate &category=Display_rotate &parent=ROM_name |
+Machines by Software List     | SoftList         | Parents | Clones | ?catalog=BySL           &category=SL_name        &parent=ROM_name |
+Software Lists                | SoftList         | Parents | Clones | ?catalog=SL             &SL=SL_name                               |
+
+## Old Index file format ##
+
+Parent/Clone list with number of clones.
+
+```
+{
+  "1942": {
+    "machines": [
+      "1942abl",
+      "1942a",
+      "1942b",
+      "1942h",
+      "1942p",
+      "1942w"
+    ],
+    "num_clones": 6
+  },
+"1943": {
+    "machines": [
+      "1943bj",
+      "1943ja",
+      "1943b",
+      "1943j",
+      "1943u",
+      "1943ua"
+    ],
+    "num_clones": 6
+  }
+}
+```
+
+## Old Catalog file format ##
+
+Parent only list.
+Clones are calculated on the fly: `for m_name in main_pclone_dic[parent_name]:`
+
+``` Catalog_driver.json
+{
+  "1942.cpp": {
+    "machines": [
+      "1942"
+    ],
+    "num_machines": 1
+  },
+  "1943.cpp": {
+    "machines": [
+      "1943kai",
+      "1943mii",
+      "1943"
+    ],
+    "num_machines": 3
+  }
+}
+```
+
+## New unified catalog format ###
+
+Supports Normal and PClone display modes.
+Supports hashed database to store machine information.
+Supports current big database to acces all the information.
+
+NOTE Iterating a list is faster than iterating a dictionary 
+See http://stackoverflow.com/questions/12543837/python-iterating-over-list-vs-over-dict-items-efficiency
+
+## Implementation steps ##
+
+1) Unify current index and catalog into just a catalog.
+2) Implement Normal and PClone display modes using big database.
+3) Implement `Machines hashed DB` for quick access to individual machine information on the View
+   context menu.
+5) Implement Normal and PClone display modes using a hashed database for maximum performance.
+
+### Catalog_driver_parents.json ###
+
+  1) Has a list of parents for every category and number of clones.
+  2) Clone list are obtained from the main PClone dictionary on the fly when rendering a 
+     Clones list.
+  3) Used to render list in PClone display mode.
+  4) Hashed database entry for each category that includes all parents data -> `Parents hashed DB`.
+  5) To reduce number of files the `PClone hashed DB` can also be used at a performance cost
+     (bigger DB, higher loading times).
+  6) All clones data in -> `Machines hashed DB`.
+  
+``` Catalog_driver_parents.json
+{
+  "1942.cpp": {
+    "parents": [
+      "1942":  6, # parent_name : number_of_clones
+      "1946":  2
+    ],
+    "num_parents": 2
+  },
+...
+}
+```
+
+### Catalog_driver_all.json ###
+
+  1) For each category has a list of all parents and clones.
+  2) Used ro render list in Normal mode.
+  3) Hashed database entry for each category that includes all parents and clones 
+     data -> `PClone hashed DB`.
+
+``` Catalog_driver_all.json
+{
+  "1942.cpp": {
+    "machines": [
+      "1942"      # Parent
+      "1942abl",  # Clone
+      "1942a",    # Clone
+      "1942b",
+      "1942h",
+      "1942p",
+      "1942w",
+      "1932"      # Parent
+    ],
+    "num_machines": 6
+  },
+...
+}
+```
+
+## Hashed machine database ###
+
+### Parents hashed DB ###
+
+ 1) Make database name by merging catalog and category -> db_name = 'catalog' + '-' + 'category'
+ 2) Make MD5 hash of db_name. JSON filename is MD5.json
+ 3) Put all parent machine data belonging to catalog-category in JSON filename.
+
+### PClone hashed DB ###
+
+ 1) Same as Parent hashed DB
+ 2) In every JSON file put all parent plus clone machine data belonging to catalog-category.
+
+### Machines hashed DB ###
+
+Database generation
+
+ 1) Traverse list of parents.
+ 2) Get hash for parent name: 1942 --> 519c84155964659375821f7ca576f095
+ 3) Get first two caracters of hash to compute DB filename --> 51.json
+ 4) In 51.json filename include parent data and all clones data.
+
+To acess parent machine data:
+ 
+ 1) Follow same steps as in database generation.
+ 
+To acess single clone machine data:
+
+ 1) Get parent name of clone machine.
+ 2) Follow same steps as in database generation.
+
+To acess all clones machine data:
+
+ 1) Get parent name of clone machine.
+ 2) Follow same steps as in database generation. All clones are guaranteed to be in same
+    database file as the parent.
