@@ -286,6 +286,9 @@ class Main:
                 self._command_show_sl_fav()
             elif command == 'MANAGE_SL_FAV':
                 self._command_manage_sl_fav(args['SL'][0], args['ROM'][0])
+            elif command == 'DISPLAY_SETTINGS_SL':
+                self._command_display_settings_SL(args['SL'][0])
+
             else:
                 log_error('Unknown command "{0}"'.format(command))
 
@@ -705,7 +708,7 @@ class Main:
         URL_view    = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
         URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS', 
                                                      'clist', clist_name, 'catalog', catalog_name, 'machine', machine_name)
-        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
+        URL_fav     = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
         commands.append(('View',  URL_view ))
         commands.append(('Display settings', URL_display ))
         commands.append(('Add machine to MAME Favourites', URL_fav ))
@@ -1613,10 +1616,12 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_view = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
-        URL_manage = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
-        URL_fav = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
+        URL_view    = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
+        URL_display = self._misc_url_2_arg_RunPlugin('command', 'DISPLAY_SETTINGS_SL', 'SL', SL_name)
+        URL_manage  = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
+        URL_fav     = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         commands.append(('View', URL_view ))
+        commands.append(('Display settings', URL_display ))
         commands.append(('Manage SL Favourite machines',  URL_manage ))
         commands.append(('Delete ROM from SL Favourites', URL_fav ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
@@ -1648,6 +1653,45 @@ class Main:
         # --- Check SL Favourties ---
         elif idx == 2:
             kodi_dialog_OK('Check not coded yet. Sorry.')
+            
+    def _command_display_settings_SL(self, SL_name):
+        log_debug('_command_display_settings_SL() SL_name "{0}"'.format(SL_name))
+
+        # --- Load properties DB ---
+        SL_properties_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath())
+        prop_dic = SL_properties_dic[SL_name]
+
+        # --- Show menu ---
+        view_mode_str = 'Normal' if prop_dic['view_mode'] == VIEW_MODE_NORMAL else 'PClone'
+        dialog = xbmcgui.Dialog()
+        menu_item = dialog.select('Display mode: {0}'.format(view_mode_str),
+                                 ['Display mode', 'Default Icon', 'Default Fanart', 
+                                  'Default Banner', 'Default Poster', 'Default Clearlogo'])
+        if menu_item < 0: return
+
+        # --- Change display mode ---
+        if menu_item == 0:
+            if prop_dic['view_mode'] == VIEW_MODE_NORMAL:
+                item_list = ['Normal mode [Current]', 'PClone mode']
+            else:
+                item_list = ['Normal mode', 'PClone mode [Current]']
+            # >> Use new Krypton feature to preselect current item on select dialog
+            type_temp = dialog.select('Manage Items List', item_list)
+            if type_temp < 0: return
+            # SL_properties_dic is automatically updated because prop_dic references there.
+            if type_temp == 0:
+                prop_dic['view_mode'] = VIEW_MODE_NORMAL
+                kodi_notify('SL display mode set to Normal')
+            elif type_temp == 1:
+                prop_dic['view_mode'] = VIEW_MODE_PCLONE
+                kodi_notify('SL display mode set to PClone')
+
+        # --- Change default icon ---
+        elif menu_item == 1:
+            kodi_dialog_OK('Not coded yet. Sorry')
+
+        # --- Save display settings ---
+        fs_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases
