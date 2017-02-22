@@ -532,6 +532,48 @@ class Main:
             URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
+    def _command_display_settings(self, catalog_name, category_name):
+        # >> Load ListItem properties
+        log_debug('_command_display_settings() catalog_name  "{0}"'.format(catalog_name))
+        log_debug('_command_display_settings() category_name "{0}"'.format(category_name))
+        prop_key = '{0} - {1}'.format(catalog_name, category_name)
+        log_debug('_command_display_settings() Loading props with key "{0}"'.format(prop_key))
+        mame_properties_dic = fs_load_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath())
+        prop_dic = mame_properties_dic[prop_key]
+        if prop_dic['vm'] == VIEW_MODE_NORMAL: dmode_str = 'Parents only'
+        else:                                  dmode_str = 'Parents and clones'
+
+        # --- Select menu ---
+        dialog = xbmcgui.Dialog()
+        menu_item = dialog.select('Display settings',
+                                 ['Display mode (currently {0})'.format(dmode_str),
+                                  'Default Icon',   'Default Fanart',
+                                  'Default Banner', 'Default Poster',
+                                  'Default Clearlogo'])
+        if menu_item < 0: return
+        
+        # --- Display settings ---
+        if menu_item == 0:
+            # >> Krypton feature: preselect the current item.
+            # >> NOTE Preselect must be called with named parameter, otherwise it does not work well.
+            # See http://forum.kodi.tv/showthread.php?tid=250936&pid=2327011#pid2327011
+            if prop_dic['vm'] == VIEW_MODE_NORMAL: p_idx = 0
+            else:                                  p_idx = 1
+            log_debug('_command_display_settings() p_idx = "{0}"'.format(p_idx))
+            idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
+            log_debug('_command_display_settings() idx = "{0}"'.format(idx))
+            if idx < 0: return
+            if idx == 0:   prop_dic['vm'] = VIEW_MODE_NORMAL
+            elif idx == 1: prop_dic['vm'] = VIEW_MODE_ALL
+
+        # --- Change default icon ---
+        elif menu_item == 1:
+            kodi_dialog_OK('Not coded yet. Sorry')
+
+        # >> Changes made. Refreash container
+        fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
+        kodi_refresh_container()
+
     #----------------------------------------------------------------------------------------------
     # Software Lists
     #----------------------------------------------------------------------------------------------
@@ -695,6 +737,42 @@ class Main:
         else:
             URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+
+    def _command_display_settings_SL(self, SL_name):
+        log_debug('_command_display_settings_SL() SL_name "{0}"'.format(SL_name))
+
+        # --- Load properties DB ---
+        SL_properties_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath())
+        prop_dic = SL_properties_dic[SL_name]
+
+        # --- Show menu ---
+        if prop_dic['vm'] == VIEW_MODE_NORMAL: dmode_str = 'Parents only'
+        else:                                  dmode_str = 'Parents and clones'
+        dialog = xbmcgui.Dialog()
+        menu_item = dialog.select('Display settings',
+                                 ['Display mode (currently {0})'.format(dmode_str),
+                                  'Default Icon', 'Default Fanart', 
+                                  'Default Banner', 'Default Poster', 'Default Clearlogo'])
+        if menu_item < 0: return
+
+        # --- Change display mode ---
+        if menu_item == 0:
+            if prop_dic['vm'] == VIEW_MODE_NORMAL: p_idx = 0
+            else:                                  p_idx = 1
+            log_debug('_command_display_settings() p_idx = "{0}"'.format(p_idx))
+            idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
+            log_debug('_command_display_settings() idx = "{0}"'.format(idx))
+            if idx < 0: return
+            if idx == 0:   prop_dic['vm'] = VIEW_MODE_NORMAL
+            elif idx == 1: prop_dic['vm'] = VIEW_MODE_ALL
+
+        # --- Change default icon ---
+        elif menu_item == 1:
+            kodi_dialog_OK('Not coded yet. Sorry')
+
+        # --- Save display settings ---
+        fs_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
+        kodi_refresh_container()
 
     # ---------------------------------------------------------------------------------------------
     # Information display
@@ -1101,48 +1179,6 @@ class Main:
             except:
                 log_error('_command_view_machine() Exception rendering INFO window')
 
-    def _command_display_settings(self, catalog_name, category_name):
-        # >> Load ListItem properties
-        log_debug('_command_display_settings() catalog_name  "{0}"'.format(catalog_name))
-        log_debug('_command_display_settings() category_name "{0}"'.format(category_name))
-        prop_key = '{0} - {1}'.format(catalog_name, category_name)
-        log_debug('_command_display_settings() Loading props with key "{0}"'.format(prop_key))
-        mame_properties_dic = fs_load_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath())
-        prop_dic = mame_properties_dic[prop_key]
-        if prop_dic['vm'] == VIEW_MODE_NORMAL: dmode_str = 'Parents only'
-        else:                                  dmode_str = 'Parents and clones'
-
-        # --- Select menu ---
-        dialog = xbmcgui.Dialog()
-        menu_item = dialog.select('Display settings',
-                                 ['Display mode (currently {0})'.format(dmode_str),
-                                  'Default Icon',   'Default Fanart',
-                                  'Default Banner', 'Default Poster',
-                                  'Default Clearlogo'])
-        if menu_item < 0: return
-        
-        # --- Display settings ---
-        if menu_item == 0:
-            # >> Krypton feature: preselect the current item.
-            # >> NOTE Preselect must be called with named parameter, otherwise it does not work well.
-            # See http://forum.kodi.tv/showthread.php?tid=250936&pid=2327011#pid2327011
-            if prop_dic['vm'] == VIEW_MODE_NORMAL: p_idx = 0
-            else:                                  p_idx = 1
-            log_debug('_command_display_settings() p_idx = "{0}"'.format(p_idx))
-            idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
-            log_debug('_command_display_settings() idx = "{0}"'.format(idx))
-            if idx < 0: return
-            if idx == 0:   prop_dic['vm'] = VIEW_MODE_NORMAL
-            elif idx == 1: prop_dic['vm'] = VIEW_MODE_ALL
-
-        # --- Change default icon ---
-        elif menu_item == 1:
-            kodi_dialog_OK('Not coded yet. Sorry')
-
-        # >> Changes made. Refreash container
-        fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
-        kodi_refresh_container()
-
     def _command_add_mame_fav(self, machine_name):
         log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(machine_name))
 
@@ -1474,11 +1510,9 @@ class Main:
         # --- Create context menu ---
         commands = []
         URL_view    = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
-        URL_display = self._misc_url_2_arg_RunPlugin('command', 'DISPLAY_SETTINGS_SL', 'SL', SL_name)
         URL_manage  = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         URL_fav     = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         commands.append(('View', URL_view ))
-        commands.append(('Display settings', URL_display ))
         commands.append(('Manage SL Favourite machines',  URL_manage ))
         commands.append(('Delete ROM from SL Favourites', URL_fav ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
@@ -1510,42 +1544,6 @@ class Main:
         # --- Check SL Favourties ---
         elif idx == 2:
             kodi_dialog_OK('Check not coded yet. Sorry.')
-            
-    def _command_display_settings_SL(self, SL_name):
-        log_debug('_command_display_settings_SL() SL_name "{0}"'.format(SL_name))
-
-        # --- Load properties DB ---
-        SL_properties_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath())
-        prop_dic = SL_properties_dic[SL_name]
-
-        # --- Show menu ---
-        if prop_dic['vm'] == VIEW_MODE_NORMAL: dmode_str = 'Parents only'
-        else:                                  dmode_str = 'Parents and clones'
-        dialog = xbmcgui.Dialog()
-        menu_item = dialog.select('Display settings',
-                                 ['Display mode (currently {0})'.format(dmode_str),
-                                  'Default Icon', 'Default Fanart', 
-                                  'Default Banner', 'Default Poster', 'Default Clearlogo'])
-        if menu_item < 0: return
-
-        # --- Change display mode ---
-        if menu_item == 0:
-            if prop_dic['vm'] == VIEW_MODE_NORMAL: p_idx = 0
-            else:                                  p_idx = 1
-            log_debug('_command_display_settings() p_idx = "{0}"'.format(p_idx))
-            idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
-            log_debug('_command_display_settings() idx = "{0}"'.format(idx))
-            if idx < 0: return
-            if idx == 0:   prop_dic['vm'] = VIEW_MODE_NORMAL
-            elif idx == 1: prop_dic['vm'] = VIEW_MODE_ALL
-
-        # --- Change default icon ---
-        elif menu_item == 1:
-            kodi_dialog_OK('Not coded yet. Sorry')
-
-        # --- Save display settings ---
-        fs_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
-        kodi_refresh_container()
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases
