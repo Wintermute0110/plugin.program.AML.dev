@@ -1050,11 +1050,13 @@ class Main:
         log_debug('_command_display_settings() Loading props with key "{0}"'.format(prop_key))
         mame_properties_dic = fs_load_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath())
         prop_dic = mame_properties_dic[prop_key]
+        if prop_dic['vm'] == VIEW_MODE_NORMAL: dmode_str = 'Parents only'
+        else:                                  dmode_str = 'Parents and clones'
 
         # --- Select menu ---
         dialog = xbmcgui.Dialog()
         menu_item = dialog.select('Display settings',
-                                 ['Display mode',
+                                 ['Display mode (currently {0})'.format(dmode_str),
                                   'Default Icon',   'Default Fanart',
                                   'Default Banner', 'Default Poster',
                                   'Default Clearlogo'])

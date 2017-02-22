@@ -18,6 +18,11 @@ WIP      Manage SL Favourites.
 
 [B]Advanced Emulator Launcher | version 0.9.3 | xx March 2017[/B]
 
+FEATURE  Unified catalog system and new machine rendering method.
+         Requires wiping of ADDON_DATA_DIR to avoid problems.
+
+FEATURE  Properties can be configured for every individual list in AML.
+
 FEATURE  New Status Device flag. Marks wheter a device is mandatory or not.
 
 FEATURE  Show database statistics.
