@@ -62,14 +62,14 @@ class AML_Paths:
         self.MAME_STDERR_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stderr.log')
         self.MAME_OUTPUT_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_output.log')
         self.MAIN_DB_PATH                = PLUGIN_DATA_DIR.pjoin('MAME_main_db.json')
-        self.MAIN_PCLONE_DIC_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_PClone_dic.json')
+        self.MAIN_PCLONE_DIC_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
         self.MAIN_CONTROL_PATH           = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
         self.MAIN_ASSETS_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_assets_db.json')
+        self.MAIN_PROPERTIES_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
 
         # >> Catalogs
         self.CATALOG_NONE_PARENT_PATH    = PLUGIN_DATA_DIR.pjoin('catalog_none_parents.json')
         self.CATALOG_NONE_ALL_PATH       = PLUGIN_DATA_DIR.pjoin('catalog_none_all.json')
-
         self.CATALOG_CATVER_PARENT_PATH  = PLUGIN_DATA_DIR.pjoin('catalog_catver_parents.json')
         self.CATALOG_CATVER_ALL_PATH     = PLUGIN_DATA_DIR.pjoin('catalog_catver_all.json')
 
@@ -90,7 +90,7 @@ class AML_Paths:
         self.SL_DB_DIR                   = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')
         self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
         self.SL_MACHINES_PATH            = PLUGIN_DATA_DIR.pjoin('SoftwareLists_machines.json')
-        self.SL_PCLONE_DIC_PATH          = PLUGIN_DATA_DIR.pjoin('SoftwareLists_PClone_dic.json')
+        self.SL_PCLONE_DIC_PATH          = PLUGIN_DATA_DIR.pjoin('SoftwareLists_pclone_dic.json')
         self.SL_MACHINES_PROP_PATH       = PLUGIN_DATA_DIR.pjoin('SoftwareLists_properties.json')
 
         # >> Favourites
@@ -155,8 +155,8 @@ class Main:
             catalog_name = args['catalog'][0]
             # --- Software list is a special case ---
             if catalog_name == 'SL':
-                SL_name     = args['SL'][0] if 'SL' in args['SL'] else ''
-                parent_name = args['parent'][0] if 'parent' in args['parent'] else ''
+                SL_name     = args['SL'][0] if 'SL' in args else ''
+                parent_name = args['parent'][0] if 'parent' in args else ''
                 if category_name and parent_name:
                     self._render_SL_list_clone_list(SL_name, parent_name)
                 elif category_name and not parent_name:
@@ -164,8 +164,8 @@ class Main:
                 else:
                     self._render_SL_list()
             else:
-                category_name = args['category'][0] if 'category' in args['category'] else ''
-                parent_name   = args['parent'][0] if 'parent' in args['parent'] else ''
+                category_name = args['category'][0] if 'category' in args else ''
+                parent_name   = args['parent'][0] if 'parent' in args else ''
                 if category_name and parent_name:
                     self._render_catalog_clone_list(catalog_name, category_name, parent_name)
                 elif category_name and not parent_name:
@@ -319,10 +319,7 @@ class Main:
     #----------------------------------------------------------------------------------------------
     # Cataloged machines
     #----------------------------------------------------------------------------------------------
-    
-    
-    
-    def _render_catalog_list(catalog_name):
+    def _render_catalog_list(self, catalog_name):
         log_error('_render_catalog_list() Starting ...')
         # >> Load catalog index
         catalog_name = self._get_catalog_name(clist_name)
@@ -335,38 +332,58 @@ class Main:
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #
-    # Renders a Parent list knowing the generalised category (cataloged filter)
+    # Renders a Parent list knowing the catalog name and the category.
+    # Display mode: a) parents only b) all machines
     #
-    def _render_catalog_parent_list(catalog_name, category_name):
-        log_error('_render_catalog_parent_list() Starting ...')
+    def _render_catalog_parent_list(self, catalog_name, category_name):
+        log_debug('_render_catalog_parent_list() catalog_name  = {0}'.format(catalog_name))
+        log_debug('_render_catalog_parent_list() category_name = {0}'.format(category_name))
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
+        # >> Load ListItem properties
+        prop_key = '{0} - {1}'.format(catalog_name, category_name)
+        log_debug('_render_catalog_parent_list() Loading props with key "{0}"'.format(prop_key))
+        mame_properties_dic = fs_load_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath())
+        prop_dic = mame_properties_dic[prop_key]
+
         # >> Load main MAME info DB
         loading_ticks_start = time.time()
-        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-        loading_ticks_end = time.time()
-        rendering_ticks_start = time.time()
-
+        MAME_db_dic         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic     = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        main_pclone_dic     = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         # >> Load catalog index
-        catalog_name = self._get_catalog_name(clist_name)
-        catalog_dic = self._get_cataloged_dic(clist_name)
-
-        # >> Get parents for this category
-        parent_machines_list = catalog_dic[catalog_item_name]['machines']
+        if prop_dic['vm'] == VIEW_MODE_NORMAL:
+            catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+        elif prop_dic['vm'] == VIEW_MODE_PCLONE:
+            catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
+        else:
+            kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
+            return
+        loading_ticks_end = time.time()
 
         # >> Render parent main list
         self._set_Kodi_all_sorting_methods()
-        for parent_name in parent_machines_list:
-            num_clones = len(main_pclone_dic[parent_name])
-            machine = MAME_db_dic[parent_name]
-            assets  = MAME_assets_dic[parent_name]
-            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            self._render_indexed_machine_row(parent_name, machine, assets, True, 
-                                             clist_name, catalog_name, catalog_item_name, num_clones)
+        rendering_ticks_start = time.time()
+        if prop_dic['vm'] == VIEW_MODE_NORMAL:
+            # >> Normal mode render parents only
+            machine_list = catalog_dic[category_name]['parents']
+            for machine_name in machine_list:
+                machine = MAME_db_dic[machine_name]
+                if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+                if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
+                assets  = MAME_assets_dic[machine_name]
+                num_clones = len(main_pclone_dic[machine_name])
+                self._render_catalog_machine_row(machine_name, machine, assets, True, catalog_name, category_name, num_clones)
+        else:
+            # >> Render all machines
+            machine_list = catalog_dic[category_name]['machines']
+            for machine_name in machine_list:
+                machine = MAME_db_dic[machine_name]
+                if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+                if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
+                assets  = MAME_assets_dic[machine_name]
+                self._render_catalog_machine_row(machine_name, machine, assets, False, catalog_name, category_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
@@ -374,7 +391,7 @@ class Main:
         log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
         log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
-    def _render_catalog_clone_list(catalog_name, category_name, parent_name):
+    def _render_catalog_clone_list(self, catalog_name, category_name, parent_name):
         log_error('_render_catalog_clone_list() Starting ...')
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
@@ -425,7 +442,7 @@ class Main:
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
     def _render_catalog_machine_row(self, machine_name, machine, machine_assets, flag_parent_list,
-                                    clist_name, catalog_name, catalog_item_name, num_clones = 0):
+                                    catalog_name, category_name, num_clones = 0):
         display_name = machine['description']
 
         # --- Render a Parent only list ---
@@ -480,7 +497,7 @@ class Main:
         commands = []
         URL_view    = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
         URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS', 
-                                                     'clist', clist_name, 'catalog', catalog_name, 'machine', machine_name)
+                                                     'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
         URL_fav     = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
         commands.append(('View',  URL_view ))
         commands.append(('Display settings', URL_display ))
@@ -490,52 +507,12 @@ class Main:
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        if flag_parent_list:
-            # >> If machine has no clones then machine can be launched
-            if num_clones > 0:
-                URL = self._misc_url_3_arg('clist', clist_name, catalog_name, catalog_item_name, 'parent', machine_name)
-                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
-            # >> If not PClone list can be browsed in
-            else:
-                URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
-                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+        if flag_parent_list and num_clones > 0:
+            URL = self._misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
+            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         else:
             URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
-
-    def _get_catalog_name(self, clist_name):
-        if   clist_name == 'Catver':         catalog_name = 'category'
-        elif clist_name == 'Catlist':        catalog_name = 'category'
-        elif clist_name == 'Genre':          catalog_name = 'category'
-        elif clist_name == 'NPlayers':       catalog_name = 'category'
-        elif clist_name == 'Manufacturer':   catalog_name = 'manufacturer'
-        elif clist_name == 'Year':           catalog_name = 'year'
-        elif clist_name == 'Driver':         catalog_name = 'driver'
-        elif clist_name == 'Controls':       catalog_name = 'control'
-        elif clist_name == 'Display_Tag':    catalog_name = 'tag'
-        elif clist_name == 'Display_Type':   catalog_name = 'type'
-        elif clist_name == 'Display_Rotate': catalog_name = 'rotate'
-        elif clist_name == 'Devices':        catalog_name = 'device'
-        elif clist_name == 'BySL':           catalog_name = 'SL'
-
-        return catalog_name
-
-    def _get_cataloged_dic(self, clist_name):
-        if   clist_name == 'Catver':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath())
-        elif clist_name == 'Catlist':        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath())
-        elif clist_name == 'Genre':          catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath())
-        elif clist_name == 'NPlayers':       catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath())
-        elif clist_name == 'Manufacturer':   catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath())
-        elif clist_name == 'Year':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath())
-        elif clist_name == 'Driver':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath())
-        elif clist_name == 'Controls':       catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath())
-        elif clist_name == 'Display_Tag':    catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath())
-        elif clist_name == 'Display_Type':   catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath())
-        elif clist_name == 'Display_Rotate': catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath())
-        elif clist_name == 'Devices':        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath())
-        elif clist_name == 'BySL':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PATH.getPath())
-
-        return catalog_dic
 
     #----------------------------------------------------------------------------------------------
     # Software Lists

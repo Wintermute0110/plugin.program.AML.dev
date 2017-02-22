@@ -192,7 +192,33 @@ def fs_new_control_dic():
 
 # --- Constants ---
 VIEW_MODE_NORMAL = 'Normal'
-VIEW_MODE_PCLONE = 'PClone'
+VIEW_MODE_ALL    = 'All'
+
+# >> Used to build the properties list. 
+#    1) Must match names in main.py @_render_root_list()
+#    2) Must match names in disk_IO.py @fs_build_MAME_catalogs()
+CATALOG_NAME_LIST  = ['None', 'Catver', 'Catlist', 'Genre', 'NPlayers', 'Manufacturer', 
+                      'Year', 'Driver', 'Controls', 
+                      'Display_Tag', 'Display_Type', 'Display_Rotate',
+                      'Devices', 'BySL']
+
+def fs_get_cataloged_dic_parents(PATHS, catalog_name):
+    if   catalog_name == 'None':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NONE_PARENT_PATH.getPath())
+    elif catalog_name == 'Catver':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath())
+    elif catalog_name == 'Catlist':        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath())
+    elif catalog_name == 'Genre':          catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath())
+    elif catalog_name == 'NPlayers':       catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath())
+    elif catalog_name == 'Manufacturer':   catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath())
+    elif catalog_name == 'Year':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath())
+    elif catalog_name == 'Driver':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath())
+    elif catalog_name == 'Controls':       catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath())
+    elif catalog_name == 'Display_Tag':    catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath())
+    elif catalog_name == 'Display_Type':   catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath())
+    elif catalog_name == 'Display_Rotate': catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath())
+    elif catalog_name == 'Devices':        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath())
+    elif catalog_name == 'BySL':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PATH.getPath())
+
+    return catalog_dic
 
 # -------------------------------------------------------------------------------------------------
 # Exceptions raised by this module
@@ -859,7 +885,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
 def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     # >> Progress dialog
-    NUM_CATALOGS = 14
+    NUM_CATALOGS = len(CATALOG_NAME_LIST)
     pDialog_line1 = 'Building catalogs ...'
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', pDialog_line1)
@@ -885,8 +911,8 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
         # >> Add parent and clones to all list
         all_list.append(parent_name)
         for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    none_catalog_parents['Coin'] = {'parents'  : parent_list, 'num_parents'  : len(parent_list)}
-    none_catalog_all['Coin']     = {'machines' : all_list,    'num_machines' : len(all_list)}
+    none_catalog_parents['Machines'] = {'parents'  : parent_list, 'num_parents'  : len(parent_list)}
+    none_catalog_all['Machines']     = {'machines' : all_list,    'num_machines' : len(all_list)}
 
     # --- NoCoin list ---
     # A) Machines with No Coin Slot and Non Mechanical and not Dead
@@ -997,7 +1023,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     none_catalog_parents['Devices'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
     none_catalog_all['Devices']     = {'machines' : all_list,    'num_machines' : len(all_list)}
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # >> Save None catalog JSON file
     fs_write_JSON_file(PATHS.CATALOG_NONE_PARENT_PATH.getPath(), none_catalog_parents)
@@ -1026,7 +1052,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     fs_write_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath(), catver_catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CATVER_ALL_PATH.getPath(), catver_catalog_all)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Catlist catalog ---
     log_info('Making Catlist catalog ...')
@@ -1042,7 +1068,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             catlist_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath(), catlist_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Genre catalog ---
     log_info('Making Genre catalog ...')
@@ -1058,7 +1084,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             genre_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath(), genre_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Nplayers catalog ---
     log_info('Making Nplayers catalog ...')
@@ -1074,7 +1100,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             nplayers_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath(), nplayers_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Manufacturer catalog ---
     log_info('Making Manufacturer catalog ...')
@@ -1090,7 +1116,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             manufacturer_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath(), manufacturer_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Year catalog ---
     log_info('Making Year catalog ...')
@@ -1106,7 +1132,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             year_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath(), year_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Driver catalog ---
     log_info('Making Driver catalog ...')
@@ -1140,7 +1166,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             driver_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath(), driver_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Control catalog ---
     log_info('Making Control catalog ...')
@@ -1162,7 +1188,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             control_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath(), control_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Display tag catalog ---
     log_info('Making Display tag catalog ...')
@@ -1180,7 +1206,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             display_tag_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath(), display_tag_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Display type catalog ---
     log_info('Making Display type catalog ...')
@@ -1198,7 +1224,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             display_type_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath(), display_type_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Display rotate catalog ---
     log_info('Making Display rotate catalog ...')
@@ -1216,7 +1242,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             display_rotate_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath(), display_rotate_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- <device> catalog ---
     log_info('Making <device> catalog ...')
@@ -1238,7 +1264,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
             device_list_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath(), device_list_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Software List catalog ---
     log_info('Making Software List catalog ...')
@@ -1256,7 +1282,22 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
                 SL_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_SL_PATH.getPath(), SL_catalog)
     processed_filters += 1
-    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+    pDialog.update(update_number)
+    pDialog.close()
+
+    # --- Create properties database with default values ---
+    # >> Now overwrites all properties when the catalog is rebuilt.
+    #    New versions must kept user set properties!
+    mame_properties_dic = {}
+    for catalog_name in CATALOG_NAME_LIST:
+        # >> Get categories for this catalog name
+        catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+        for category_name in sorted(catalog_dic):
+            prop_key = '{0} - {1}'.format(catalog_name, category_name)
+            mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_NORMAL}
+    fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
+    log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
 
 #
 # A) Capitalise every list item
