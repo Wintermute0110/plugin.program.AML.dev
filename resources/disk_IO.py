@@ -790,26 +790,21 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Create a couple of data struct for quickly know the parent of a clone game and
     # all clones of a parent.
     #
-    # main_pclone_dic = { 'parent_name' : ['clone_name', 'clone_name', ...] , ...}
-    # main_parent_dic = { 'clone_name' : 'parent_name', ... }
+    # main_pclone_dic          = { 'parent_name' : ['clone_name', 'clone_name', ... ] , ... }
+    # main_clone_to_parent_dic = { 'clone_name' : 'parent_name', ... }
     log_info('Making PClone list...')
     main_pclone_dic = {}
-    main_parent_dic = {}
+    main_clone_to_parent_dic = {}
     for machine_name in machines:
         machine = machines[machine_name]
         # >> Exclude devices
         if machine['isDevice']: continue
 
-        # >> Machine is a parent. Add to main_pclone_dic if not already there.
-        if machine['cloneof'] == '' and machine_name not in main_pclone_dic:
-            main_pclone_dic[machine_name] = []
-
         # >> Machine is a clone
-        else:
+        if machine['cloneof']:
+            # >> Add clone machine to main_clone_to_parent_dic
             parent_name = machine['cloneof']
-            # >> Add clone machine to main_parent_dic
-            main_parent_dic[machine_name] = parent_name
-
+            main_clone_to_parent_dic[machine_name] = parent_name
             # >> If parent already in main_pclone_dic then add clone to parent list.
             # >> If parent not there, then add parent first and then add clone.
             if parent_name in main_pclone_dic:
@@ -817,6 +812,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             else:
                 main_pclone_dic[parent_name] = []
                 main_pclone_dic[parent_name].append(machine_name)
+        # >> Machine is a parent. Add to main_pclone_dic if not already there.
+        else:
+            if machine_name not in main_pclone_dic: main_pclone_dic[machine_name] = []
 
     # -----------------------------------------------------------------------------
     # Make empty asset list
@@ -872,8 +870,10 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     # --- Main machine list ---
     # Machines with Coin Slot and Non Mechanical and not Dead
     none_catalog_parents = {}
+    none_catalog_all = {}
     log_info('Making None catalog - Coin index ...')
     parent_list = []
+    all_list = []
     pDialog.update(update_number, pDialog_line1, 'Making None Catalog ...')
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
@@ -882,89 +882,126 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
         if machine['isDead']: continue
         # >> Add parent to parent list
         parent_list.append(parent_name)
-    none_catalog_parents['Coin'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
+        # >> Add parent and clones to all list
+        all_list.append(parent_name)
+        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
+    none_catalog_parents['Coin'] = {'parents'  : parent_list, 'num_parents'  : len(parent_list)}
+    none_catalog_all['Coin']     = {'machines' : all_list,    'num_machines' : len(all_list)}
 
     # --- NoCoin list ---
     # A) Machines with No Coin Slot and Non Mechanical and not Dead
     log_info('Making NoCoin index ...')
     parent_list = []
+    all_list = []
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         if machine['isMechanical']: continue
         if machine['hasCoin']: continue
         if machine['isDead']: continue
         parent_list.append(parent_name)
+        all_list.append(parent_name)
+        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
     none_catalog_parents['NoCoin'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
+    none_catalog_all['NoCoin']     = {'machines' : all_list,    'num_machines' : len(all_list)}
 
     # --- Mechanical machines ---
     # A) Mechanical Machines and not Dead
     log_info('Making Mechanical index ...')
     parent_list = []
+    all_list = []
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         if not machine['isMechanical']: continue
         if machine['isDead']: continue
         parent_list.append(parent_name)
+        all_list.append(parent_name)
+        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
     none_catalog_parents['Mechanical'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
-
+    none_catalog_all['Mechanical']     = {'machines' : all_list,    'num_machines' : len(all_list)}
+    
     # --- Dead machines ---
     log_info('Making Dead Machines index ...')
     parent_list = []
+    all_list = []
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         if not machine['isDead']: continue
         parent_list.append(parent_name)
+        all_list.append(parent_name)
+        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
     none_catalog_parents['Dead'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
-
+    none_catalog_all['Dead']     = {'machines' : all_list,    'num_machines' : len(all_list)}
+    
     # --- No ROMs machines ---
     log_info('Making No-ROMs Machines index ...')
     parent_list = []
+    all_list = []
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
-        if machine['hasOwnROMs'] or machine['hasMergedROMs']: continue
-        NoROM_pclone_dic[parent_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[parent_name]}
+        if machine['hasROMs'] or machine['hasROMs_merged']: continue
+        parent_list.append(parent_name)
+        all_list.append(parent_name)
+        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
     none_catalog_parents['NoROMs'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
-
+    none_catalog_all['NoROMs']     = {'machines' : all_list,    'num_machines' : len(all_list)}
+    
     # --- CHD machines ---
     log_info('Making CHD Machines index ...')
     parent_list = []
+    all_list = []
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
-        if not machine['CHDs']: continue
+        if not machine['CHDs'] and not machine['CHDs_merged']: continue
         parent_list.append(parent_name)
+        all_list.append(parent_name)
+        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
     none_catalog_parents['CHDs'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
-
+    none_catalog_all['CHDs']     = {'machines' : all_list,    'num_machines' : len(all_list)}
+    
     # --- Machines with samples ---
     log_info('Making Samples Machines index ...')
     parent_list = []
+    all_list = []
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         if not machine['sampleof']: continue
         parent_list.append(parent_name)
+        all_list.append(parent_name)
+        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
     none_catalog_parents['Samples'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
-
+    none_catalog_all['Samples']     = {'machines' : all_list,    'num_machines' : len(all_list)}
+    
     # --- BIOS ---
     log_info('Making BIOS Machines index ...')
     parent_list = []
+    all_list = []
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         if not machine['isBIOS']: continue
         parent_list.append(parent_name)
+        all_list.append(parent_name)
+        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
     none_catalog_parents['BIOS'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
-
+    none_catalog_all['BIOS']     = {'machines' : all_list,    'num_machines' : len(all_list)}
+    
     # --- Devices ---
     log_info('Making Devices Machines index ...')
     parent_list = []
+    all_list = []
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         if not machine['isDevice']: continue
         parent_list.append(parent_name)
+        all_list.append(parent_name)
+        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
     none_catalog_parents['Devices'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
+    none_catalog_all['Devices']     = {'machines' : all_list,    'num_machines' : len(all_list)}
     processed_filters += 1
     pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # >> Save None catalog JSON file
-    fs_write_JSON_file(PATHS.CATALOG_NONE_PATH.getPath(), none_catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_NONE_PARENT_PATH.getPath(), none_catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_NONE_ALL_PATH.getPath(), none_catalog_all)
 
     # Cataloged machine lists ---------------------------------------------------------------------
     # --- Catver catalog ---
