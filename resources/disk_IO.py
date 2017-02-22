@@ -1712,6 +1712,18 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     pDialog.update(100)
     pDialog.close()
 
+    # --- Create properties database with default values ---
+    # >> One of the catalogs has change and so the property names.
+    mame_properties_dic = {}
+    for catalog_name in CATALOG_NAME_LIST:
+        # >> Get categories for this catalog name
+        catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+        for category_name in sorted(catalog_dic):
+            prop_key = '{0} - {1}'.format(catalog_name, category_name)
+            mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_NORMAL}
+    fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
+    log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
+
     # --- SL statistics and save control_dic ---
     control_dic['num_SL_files'] = processed_files
     control_dic['num_SL_ROMs']  = num_SL_ROMs
