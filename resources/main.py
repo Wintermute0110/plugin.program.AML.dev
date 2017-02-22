@@ -51,7 +51,7 @@ FANART_IMG_PATH = AML_ADDON_DIR.pjoin('fanart.jpg')
 
 LOCATION_STANDARD  = 'STANDARD'
 LOCATION_MAME_FAVS = 'MAME_FAVS'
-LOCATION_SL_FAVS   = 'MAME_FAVS'
+LOCATION_SL_FAVS   = 'SL_FAVS'
 
 # --- Plugin database indices ---
 class AML_Paths:
@@ -196,8 +196,9 @@ class Main:
             elif command == 'LAUNCH_SL':
                 SL_name  = args['SL'][0]
                 ROM_name = args['ROM'][0]
+                location = args['location'][0] if 'location' in args else LOCATION_STANDARD
                 log_info('Launching SL machine "{0}" (ROM "{1}")'.format(SL_name, ROM_name))
-                self._run_SL_machine(SL_name, ROM_name)
+                self._run_SL_machine(SL_name, ROM_name, location)
             elif command == 'SETUP_PLUGIN':
                 self._command_setup_plugin()
             elif command == 'VIEW':
@@ -1522,7 +1523,7 @@ class Main:
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', ROM_name)
+        URL = self._misc_url_4_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     def _command_manage_sl_fav(self, SL_name, ROM_name):
@@ -1569,7 +1570,7 @@ class Main:
             if pre_idx < 0: pre_idx = 0
             dialog = xbmcgui.Dialog()
             m_index = dialog.select('Select machine', SL_machine_desc_list, preselect = pre_idx)
-            if m_index < 0: return
+            if m_index < 0 or m_index == pre_idx: return
             machine_name = SL_machine_names_list[m_index]
             machine_desc = SL_machine_desc_list[m_index]
 
@@ -1973,27 +1974,38 @@ class Main:
     # Software list <part> tag has an interface attribute that tells how to virtually plug the
     # cartridge/cassete/disk/etc. There is not need to media type in MAME commandline.
     #
-    def _run_SL_machine(self, SL_name, ROM_name):
-        log_info('_run_SL_machine() Launching SL machine ...')
+    def _run_SL_machine(self, SL_name, ROM_name, location):
+        log_info('_run_SL_machine() Launching SL machine (location = {0}) ...'.format(location))
+        log_info('_run_SL_machine() SL_name  "{0}"'.format(SL_name))
+        log_info('_run_SL_machine() ROM_name "{0}"'.format(ROM_name))
 
         # >> Get paths
         mame_prog_FN = FileName(self.settings['mame_prog'])
 
-        # >> Get a list of machines that can launch this SL ROM. User chooses.
-        SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
-        SL_machine_list = SL_machines_dic[SL_name]
-        SL_machine_names_list = []
-        SL_machine_desc_list = []
-        # SL_machine_device_props_list = []
-        for SL_machine in SL_machine_list: 
-            SL_machine_names_list.append(SL_machine['machine'])
-            SL_machine_desc_list.append(SL_machine['description'])
-            # SL_machine_device_props_list.append(SL_machine['device_props'])
-        dialog = xbmcgui.Dialog()
-        m_index = dialog.select('Select machine', SL_machine_desc_list)
-        if m_index < 0: return
-        machine_name = SL_machine_names_list[m_index]
-        machine_desc = SL_machine_desc_list[m_index]
+        machine_name = machine_desc = ''        
+        if location == LOCATION_SL_FAVS:
+            fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
+            SL_fav_key = SL_name + '-' + ROM_name
+            machine_name = fav_SL_roms[SL_fav_key]['launch_machine']
+            machine_desc = '[ Not available ]'
+            log_info('_run_SL_machine() Using favourite SL machine "{0}"'.format(machine_name))
+
+        if not machine_name:
+            # >> Get a list of machines that can launch this SL ROM. User chooses.
+            SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+            SL_machine_list = SL_machines_dic[SL_name]
+            SL_machine_names_list = []
+            SL_machine_desc_list = []
+            # SL_machine_device_props_list = []
+            for SL_machine in SL_machine_list: 
+                SL_machine_names_list.append(SL_machine['machine'])
+                SL_machine_desc_list.append(SL_machine['description'])
+                # SL_machine_device_props_list.append(SL_machine['device_props'])
+            dialog = xbmcgui.Dialog()
+            m_index = dialog.select('Select machine', SL_machine_desc_list)
+            if m_index < 0: return
+            machine_name = SL_machine_names_list[m_index]
+            machine_desc = SL_machine_desc_list[m_index]
 
         # >> Select media if more than one device instance
         # >> Not necessary. MAME knows what media to plug the SL ROM into.
@@ -2015,8 +2027,6 @@ class Main:
         log_info('_run_SL_machine() machine_name "{0}"'.format(machine_name))
         log_info('_run_SL_machine() machine_desc "{0}"'.format(machine_desc))
         # log_info('_run_SL_machine() media_name   "{0}"'.format(media_name))
-        log_info('_run_SL_machine() SL_name      "{0}"'.format(SL_name))
-        log_info('_run_SL_machine() ROM_name     "{0}"'.format(ROM_name))
 
         # >> Prevent a console window to be shown in Windows. Not working yet!
         if sys.platform == 'win32':
@@ -2079,7 +2089,8 @@ class Main:
                                             arg_name_1, arg_value_1_escaped,
                                             arg_name_2, arg_value_2_escaped)
 
-    def _misc_url_3_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3):
+    def _misc_url_3_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2, 
+                              arg_name_3, arg_value_3):
         arg_value_1_escaped = arg_value_1.replace('&', '%26')
         arg_value_2_escaped = arg_value_2.replace('&', '%26')
         arg_value_3_escaped = arg_value_3.replace('&', '%26')
@@ -2088,6 +2099,19 @@ class Main:
                                                     arg_name_1, arg_value_1_escaped,
                                                     arg_name_2, arg_value_2_escaped,
                                                     arg_name_3, arg_value_3_escaped)
+
+    def _misc_url_4_arg(self, arg_name_1, arg_value_1, arg_name_2, arg_value_2, 
+                              arg_name_3, arg_value_3, arg_name_4, arg_value_4):
+        arg_value_1_escaped = arg_value_1.replace('&', '%26')
+        arg_value_2_escaped = arg_value_2.replace('&', '%26')
+        arg_value_3_escaped = arg_value_3.replace('&', '%26')
+        arg_value_4_escaped = arg_value_4.replace('&', '%26')
+
+        return '{0}?{1}={2}&{3}={4}&{5}={6}&{7}={8}'.format(self.base_url,
+                                                            arg_name_1, arg_value_1_escaped,
+                                                            arg_name_2, arg_value_2_escaped,
+                                                            arg_name_3, arg_value_3_escaped,
+                                                            arg_name_4, arg_value_4_escaped)
 
     #
     # Used in context menus
