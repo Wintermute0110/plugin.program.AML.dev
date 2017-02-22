@@ -1941,7 +1941,7 @@ def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
         assets_dic[key] = machine_assets
 
         # >> Progress dialog
-        processed_machines = processed_machines + 1
+        processed_machines += 1
         pDialog.update(100 * processed_machines / total_machines)
     pDialog.close()
 
