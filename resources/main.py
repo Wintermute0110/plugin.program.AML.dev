@@ -595,8 +595,8 @@ class Main:
         prop_dic = SL_properties_dic[SL_name]
 
         # >> Load Software List ROMs
-        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
         SL_PClone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
+        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         log_info('_render_SL_list_parent_list() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
@@ -960,6 +960,7 @@ class Main:
                     info_text += "[COLOR violet]SL_name[/COLOR]: '{0}'\n".format(rom['SL_name'])
                     info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
                     info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
+                    info_text += "[COLOR violet]launch_machine[/COLOR]: '{0}'\n".format(rom['launch_machine'])
                     info_text += "[COLOR violet]mame_version[/COLOR]: '{0}'\n".format(rom['mame_version'])
                     info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(rom['num_roms'])
                     info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
@@ -1438,6 +1439,7 @@ class Main:
         ROM['ROM_name'] = ROM_name
         ROM['SL_name']  = SL_name
         ROM['mame_version'] = control_dic['mame_version']
+        ROM['launch_machine'] = ''
         fav_SL_roms[SL_fav_key] = ROM
         log_info('_command_add_sl_fav() Added machine "{0}" ("{1}")'.format(ROM_name, SL_name))
 
@@ -1528,7 +1530,8 @@ class Main:
         idx = dialog.select('Manage Software Lists Favourites', 
                            ['Scan ROMs/CHDs',
                             'Scan assets/artwork',
-                            'Check SL Favourites'])
+                            'Check SL Favourites',
+                            'Choose machine for SL ROM'])
         if idx < 0: return
 
         # --- Scan ROMs/CHDs ---
@@ -1544,6 +1547,36 @@ class Main:
         # --- Check SL Favourties ---
         elif idx == 2:
             kodi_dialog_OK('Check not coded yet. Sorry.')
+
+        # --- Choose machine for SL ROM ---
+        elif idx == 3:
+            # >> Load Favs
+            fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
+            SL_fav_key = SL_name + '-' + ROM_name
+
+            # >> Get a list of machines that can launch this SL ROM. User chooses.
+            SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+            SL_machine_list = SL_machines_dic[SL_name]
+            SL_machine_names_list = []
+            SL_machine_desc_list = []
+            SL_machine_names_list.append('')
+            SL_machine_desc_list.append('[ Not set ]')
+            for SL_machine in SL_machine_list: 
+                SL_machine_names_list.append(SL_machine['machine'])
+                SL_machine_desc_list.append(SL_machine['description'])
+            # >> Krypton feature: preselect current machine
+            pre_idx = SL_machine_names_list.index(fav_SL_roms[SL_fav_key]['launch_machine'])
+            if pre_idx < 0: pre_idx = 0
+            dialog = xbmcgui.Dialog()
+            m_index = dialog.select('Select machine', SL_machine_desc_list, preselect = pre_idx)
+            if m_index < 0: return
+            machine_name = SL_machine_names_list[m_index]
+            machine_desc = SL_machine_desc_list[m_index]
+
+            # >> Edit and save
+            fav_SL_roms[SL_fav_key]['launch_machine'] = machine_name
+            fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+            kodi_notify('Machine set to {0} ({1})'.format(machine_name, machine_desc))
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases
