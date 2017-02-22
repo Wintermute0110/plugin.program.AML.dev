@@ -168,11 +168,11 @@ class Main:
             catalog_name = args['catalog'][0]
             # --- Software list is a special case ---
             if catalog_name == 'SL':
-                SL_name     = args['SL'][0] if 'SL' in args else ''
+                SL_name     = args['category'][0] if 'category' in args else ''
                 parent_name = args['parent'][0] if 'parent' in args else ''
-                if category_name and parent_name:
+                if SL_name and parent_name:
                     self._render_SL_list_clone_list(SL_name, parent_name)
-                elif category_name and not parent_name:
+                elif SL_name and not parent_name:
                     self._render_SL_list_parent_list(SL_name)
                 else:
                     self._render_SL_list()
@@ -206,7 +206,7 @@ class Main:
                 ROM      = args['ROM'][0]      if 'ROM'      in args else ''
                 location = args['location'][0] if 'location' in args else LOCATION_STANDARD
                 self._command_view(machine, SL, ROM, location)
-            elif command == 'DISPLAY_SETTINGS':
+            elif command == 'DISPLAY_SETTINGS_MAME':
                 catalog_name = args['catalog'][0]
                 category_name = args['category'][0] if 'category' in args else ''
                 self._command_display_settings(catalog_name, category_name)
@@ -231,7 +231,7 @@ class Main:
             elif command == 'MANAGE_SL_FAV':
                 self._command_manage_sl_fav(args['SL'][0], args['ROM'][0])
             elif command == 'DISPLAY_SETTINGS_SL':
-                self._command_display_settings_SL(args['SL'][0])
+                self._command_display_settings_SL(args['category'][0])
 
             else:
                 log_error('Unknown command "{0}"'.format(command))
@@ -514,7 +514,7 @@ class Main:
         # --- Create context menu ---
         commands = []
         URL_view    = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
-        URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS', 
+        URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_MAME', 
                                                      'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
         URL_fav     = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
         commands.append(('View',  URL_view ))
@@ -535,7 +535,7 @@ class Main:
     #----------------------------------------------------------------------------------------------
     # Software Lists
     #----------------------------------------------------------------------------------------------
-    def _render_SL_machine_list(self):
+    def _render_SL_list(self):
         # >> Load Software List catalog
         SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
 
@@ -545,14 +545,19 @@ class Main:
             self._render_SL_machine_row(SL_name, SL)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_SL_machine_ROM_list(self, SL_name):
-        # >> Load Software List catalog
-        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+    def _render_SL_list_parent_list(self, SL_name):
+        log_info('_render_SL_list_parent_list() SL_name "{0}"'.format(SL_name))
+
+        # >> Load ListItem properties
+        SL_properties_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath()) 
+        prop_dic = SL_properties_dic[SL_name]
 
         # >> Load Software List ROMs
+        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+        SL_PClone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        log_info('_render_SL_machine_ROM_list() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        log_info('_render_SL_list_parent_list() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
         assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -560,10 +565,54 @@ class Main:
         SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
 
         self._set_Kodi_all_sorting_methods()
-        for rom_name in SL_roms:
-            ROM    = SL_roms[rom_name]
-            assets = SL_asset_dic[rom_name]
-            self._render_SL_ROM_row(SL_name, rom_name, ROM, assets)
+        if prop_dic['vm'] == VIEW_MODE_NORMAL:
+            log_info('_render_SL_list_parent_list() Rendering normal launcher')
+            # >> Get list of parents
+            parent_list = []
+            for parent_name in sorted(SL_PClone_dic[SL_name]): parent_list.append(parent_name)
+            for parent_name in parent_list:
+                ROM        = SL_roms[parent_name]
+                assets     = SL_asset_dic[parent_name]
+                num_clones = len(SL_PClone_dic[SL_name][parent_name])
+                self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, num_clones)
+        elif prop_dic['vm'] == VIEW_MODE_ALL:
+            log_info('_render_SL_list_parent_list() Rendering all launcher')
+            for rom_name in SL_roms:
+                ROM    = SL_roms[rom_name]
+                assets = SL_asset_dic[rom_name]
+                self._render_SL_ROM_row(SL_name, rom_name, ROM, assets, False)
+        else:
+            kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
+            return
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_SL_list_clone_list(self, SL_name, parent_name):
+        log_info('_render_SL_list_clone_list() SL_name     "{0}"'.format(SL_name))
+        log_info('_render_SL_list_clone_list() parent_name "{0}"'.format(parent_name))
+
+        # >> Load Software List ROMs
+        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+        SL_PClone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
+        file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+        log_info('_render_SL_list_parent_list() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
+
+        assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
+
+        # >> Render parent first
+        self._set_Kodi_all_sorting_methods()
+        ROM = SL_roms[parent_name]
+        assets  = SL_asset_dic[parent_name]
+        self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, False)
+
+        # >> Render clones belonging to parent in this category
+        for clone_name in sorted(SL_PClone_dic[SL_name][parent_name]):
+            ROM = SL_roms[clone_name]
+            assets  = SL_asset_dic[clone_name]
+            self._render_SL_ROM_row(SL_name, clone_name, ROM, assets, False)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_SL_machine_row(self, SL_name, SL):
@@ -592,16 +641,19 @@ class Main:
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        URL = self._misc_url_2_arg('clist', 'SL', 'SL', SL_name)
+        URL = self._misc_url_2_arg('catalog', 'SL', 'category', SL_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_SL_ROM_row(self, SL_name, rom_name, ROM, assets):
+    def _render_SL_ROM_row(self, SL_name, rom_name, ROM, assets, flag_parent_list, num_clones = 0):
         display_name = ROM['description']
-
-        # --- Mark Status and Clones ---
-        status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
-        if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
+        
+        if flag_parent_list and num_clones > 0:
+            display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
+        else:
+            # --- Mark flags and status ---
+            status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+            if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
 
         # --- Assets/artwork ---
         icon_path   = assets['title'] if assets['title'] else 'DefaultProgram.png'
@@ -626,16 +678,23 @@ class Main:
         # --- Create context menu ---
         commands = []
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
+        URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_SL', 
+                                                     'catalog', 'SL', 'category', SL_name, 'machine', rom_name)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
         commands.append(('View', URL_view ))
+        commands.append(('Display settings', URL_display ))
         commands.append(('Add ROM to SL Favourites', URL_fav ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
-        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+        if flag_parent_list and num_clones > 0:
+            URL = self._misc_url_3_arg('catalog', 'SL', 'category', SL_name, 'parent', rom_name)
+            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+        else:
+            URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
+            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     # ---------------------------------------------------------------------------------------------
     # Information display
@@ -1073,10 +1132,12 @@ class Main:
             idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
             log_debug('_command_display_settings() idx = "{0}"'.format(idx))
             if idx < 0: return
-            if idx == 0:
-                prop_dic['vm'] = VIEW_MODE_NORMAL
-            elif idx == 1:
-                prop_dic['vm'] = VIEW_MODE_ALL
+            if idx == 0:   prop_dic['vm'] = VIEW_MODE_NORMAL
+            elif idx == 1: prop_dic['vm'] = VIEW_MODE_ALL
+
+        # --- Change default icon ---
+        elif menu_item == 1:
+            kodi_dialog_OK('Not coded yet. Sorry')
 
         # >> Changes made. Refreash container
         fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
@@ -1458,29 +1519,25 @@ class Main:
         prop_dic = SL_properties_dic[SL_name]
 
         # --- Show menu ---
-        view_mode_str = 'Normal' if prop_dic['view_mode'] == VIEW_MODE_NORMAL else 'PClone'
+        if prop_dic['vm'] == VIEW_MODE_NORMAL: dmode_str = 'Parents only'
+        else:                                  dmode_str = 'Parents and clones'
         dialog = xbmcgui.Dialog()
-        menu_item = dialog.select('Display mode: {0}'.format(view_mode_str),
-                                 ['Display mode', 'Default Icon', 'Default Fanart', 
+        menu_item = dialog.select('Display settings',
+                                 ['Display mode (currently {0})'.format(dmode_str),
+                                  'Default Icon', 'Default Fanart', 
                                   'Default Banner', 'Default Poster', 'Default Clearlogo'])
         if menu_item < 0: return
 
         # --- Change display mode ---
         if menu_item == 0:
-            if prop_dic['view_mode'] == VIEW_MODE_NORMAL:
-                item_list = ['Normal mode [Current]', 'PClone mode']
-            else:
-                item_list = ['Normal mode', 'PClone mode [Current]']
-            # >> Use new Krypton feature to preselect current item on select dialog
-            type_temp = dialog.select('Manage Items List', item_list)
-            if type_temp < 0: return
-            # SL_properties_dic is automatically updated because prop_dic references there.
-            if type_temp == 0:
-                prop_dic['view_mode'] = VIEW_MODE_NORMAL
-                kodi_notify('SL display mode set to Normal')
-            elif type_temp == 1:
-                prop_dic['view_mode'] = VIEW_MODE_PCLONE
-                kodi_notify('SL display mode set to PClone')
+            if prop_dic['vm'] == VIEW_MODE_NORMAL: p_idx = 0
+            else:                                  p_idx = 1
+            log_debug('_command_display_settings() p_idx = "{0}"'.format(p_idx))
+            idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
+            log_debug('_command_display_settings() idx = "{0}"'.format(idx))
+            if idx < 0: return
+            if idx == 0:   prop_dic['vm'] = VIEW_MODE_NORMAL
+            elif idx == 1: prop_dic['vm'] = VIEW_MODE_ALL
 
         # --- Change default icon ---
         elif menu_item == 1:
@@ -1488,6 +1545,7 @@ class Main:
 
         # --- Save display settings ---
         fs_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
+        kodi_refresh_container()
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases
@@ -1500,7 +1558,7 @@ class Main:
                                   'Scan everything ...',
                                   'Build MAME database ...',
                                   'Build MAME catalogs ...',
-                                  'Build Software Lists indices and catalogs ...',
+                                  'Build Software Lists catalogs ...',
                                   'Scan MAME ROMs/CHDs/Samples ...',
                                   'Scan MAME assets/artwork ...',
                                   'Scan Software Lists ROMs/CHDs ...',

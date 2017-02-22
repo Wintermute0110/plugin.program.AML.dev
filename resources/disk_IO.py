@@ -844,20 +844,17 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         # >> Exclude devices
         if machine['isDevice']: continue
 
-        # >> Machine is a clone
         if machine['cloneof']:
-            # >> Add clone machine to main_clone_to_parent_dic
+            # >> Machine is a clone
             parent_name = machine['cloneof']
-            main_clone_to_parent_dic[machine_name] = parent_name
             # >> If parent already in main_pclone_dic then add clone to parent list.
             # >> If parent not there, then add parent first and then add clone.
-            if parent_name in main_pclone_dic:
-                main_pclone_dic[parent_name].append(machine_name)
-            else:
-                main_pclone_dic[parent_name] = []
-                main_pclone_dic[parent_name].append(machine_name)
-        # >> Machine is a parent. Add to main_pclone_dic if not already there.
+            if parent_name not in main_pclone_dic: main_pclone_dic[parent_name] = []
+            main_pclone_dic[parent_name].append(machine_name)
+            # >> Add clone machine to main_clone_to_parent_dic
+            main_clone_to_parent_dic[machine_name] = parent_name            
         else:
+            # >> Machine is a parent. Add to main_pclone_dic if not already there.
             if machine_name not in main_pclone_dic: main_pclone_dic[machine_name] = []
 
     # -----------------------------------------------------------------------------
@@ -1645,12 +1642,12 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
         ROMs = fs_load_JSON_file(SL_database_FN.getPath())
         for rom_name in ROMs:
             ROM = ROMs[rom_name]
-            if ROM['cloneof'] == '' and rom_name not in pclone_dic:
-                pclone_dic[rom_name] = []
+            if ROM['cloneof']:
+                parent_name = ROM['cloneof']
+                if parent_name not in pclone_dic: pclone_dic[parent_name] = []
+                pclone_dic[parent_name].append(rom_name)
             else:
-                parent_name = machine['cloneof']
-                if parent_name in pclone_dic: pclone_dic[parent_name].append(rom_name)
-                else:                         pclone_dic[parent_name] = list(rom_name)
+                if rom_name not in pclone_dic: pclone_dic[rom_name] = []
         SL_PClone_dic[sl_name] = pclone_dic
     fs_write_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath(), SL_PClone_dic)
 
@@ -1658,8 +1655,8 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     # >> Allows customisation of every SL list window
     SL_properties_dic = {}
     for sl_name in SL_catalog_dic:
-        # 'view_mode' : VIEW_MODE_NORMAL or VIEW_MODE_PCLONE
-        prop_dic = {'view_mode' : VIEW_MODE_NORMAL}
+        # 'vm' : VIEW_MODE_NORMAL or VIEW_MODE_ALL
+        prop_dic = {'vm' : VIEW_MODE_NORMAL}
         SL_properties_dic[sl_name] = prop_dic
     fs_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
 
@@ -1691,20 +1688,28 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     # --- Rebuild Machine by Software List catalog with knowledge of the SL proper name ---
     log_info('Making Software List catalog ...')
     pDialog.update(0, 'Rebuilding Software List catalog ...')
-    SL_catalog = {}
+    catalog_parents = {}
+    catalog_all = {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         # >> A machine may have more than 1 software lists
         for sl_name in machine['softwarelists']:
             if sl_name in SL_catalog_dic: sl_name = SL_catalog_dic[sl_name]['display_name']
             catalog_key = sl_name
-            if catalog_key in SL_catalog:
-                SL_catalog[catalog_key]['machines'].append(parent_name)
-                SL_catalog[catalog_key]['num_machines'] = len(SL_catalog[catalog_key]['machines'])
+            if catalog_key in catalog_parents:
+                catalog_parents[catalog_key]['parents'].append(parent_name)
+                catalog_parents[catalog_key]['num_parents'] = len(catalog_parents[catalog_key]['parents'])
+                catalog_all[catalog_key]['machines'].append(parent_name)
+                for clone in main_pclone_dic[parent_name]: catalog_all[catalog_key]['machines'].append(clone)
+                catalog_all[catalog_key]['num_machines'] = len(catalog_all[catalog_key]['machines'])
             else:
-                SL_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [parent_name]}
+                catalog_parents[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+                all_list = [parent_name]
+                for clone in main_pclone_dic[parent_name]: all_list.append(clone)
+                catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
+    fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
     pDialog.update(100)
-    fs_write_JSON_file(PATHS.CATALOG_SL_PATH.getPath(), SL_catalog)
     pDialog.close()
 
     # --- SL statistics and save control_dic ---
