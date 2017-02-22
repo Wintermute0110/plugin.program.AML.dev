@@ -144,7 +144,7 @@ Machines by Display Tag       | Display Tag      | Parents | Clones | ?catalog=D
 Machines by Display Type      | Display Type     | Parents | Clones | ?catalog=Display_Type   &category=Display_type   &parent=ROM_name |
 Machines by Display Rotation  | Display Rotation | Parents | Clones | ?catalog=Display_Rotate &category=Display_rotate &parent=ROM_name |
 Machines by Software List     | SoftList         | Parents | Clones | ?catalog=BySL           &category=SL_name        &parent=ROM_name |
-Software Lists                | SoftList         | Parents | Clones | ?catalog=SL             &SL=SL_name                               |
+Software Lists                | SoftList         | Parents | Clones | ?catalog=SL             &SL=SL_name              &parent=ROM_name |
 
 ## Old Index file format ##
 

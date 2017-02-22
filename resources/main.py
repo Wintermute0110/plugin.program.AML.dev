@@ -151,90 +151,27 @@ class Main:
             log_debug('Advanced MAME Launcher exit (addon root)')
             return
 
-        # ~~~ Routing step 2 ~~~
-        if 'list' in args and not 'command' in args:
-            list_name = args['list'][0]
-            if 'parent' in args:
-                parent_name = args['parent'][0]
-                self._render_machine_clone_list(list_name, parent_name)
-            else:
-                self._render_machine_parent_list(list_name)
-
-        elif 'clist' in args and not 'command' in args:
-            clist_name = args['clist'][0]
-
-            if clist_name == 'Catver':
-                if 'category' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['category'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['category'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Catlist':
-                if 'category' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['category'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['category'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Genre':
-                if 'category' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['category'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['category'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'NPlayers':
-                if 'category' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['category'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['category'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Manufacturer':
-                if 'manufacturer' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['manufacturer'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['manufacturer'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Year':
-                if 'year' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['year'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['year'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Driver':
-                if 'driver' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['driver'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['driver'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Controls':
-                if 'control' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['control'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['control'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Display_Tag':
-                if 'tag' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['tag'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['tag'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Display_Type':
-                if 'type' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['type'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['type'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Display_Rotate':
-                if 'rotate' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['rotate'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['rotate'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'Devices':
-                if 'device' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['device'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['device'][0])
-                else:                    self._render_indexed_list(clist_name)
-            elif clist_name == 'BySL':
-                if 'SL' in args:
-                    if 'parent' in args: self._render_indexed_clone_list(clist_name, args['SL'][0], args['parent'][0])
-                    else:                self._render_indexed_parent_list(clist_name, args['SL'][0])
-                else:                    self._render_indexed_list(clist_name)
-            # --- Software Lists are a special case ---
-            elif clist_name == 'SL':
-                if 'SL' in args:
-                    SL_name = args['SL'][0]
-                    self._render_SL_machine_ROM_list(SL_name)
+        if 'catalog' in args and not 'command' in args:
+            catalog_name = args['catalog'][0]
+            # --- Software list is a special case ---
+            if catalog_name == 'SL':
+                SL_name     = args['SL'][0] if 'SL' in args['SL'] else ''
+                parent_name = args['parent'][0] if 'parent' in args['parent'] else ''
+                if category_name and parent_name:
+                    self._render_SL_list_clone_list(SL_name, parent_name)
+                elif category_name and not parent_name:
+                    self._render_SL_list_parent_list(SL_name)
                 else:
-                    self._render_SL_machine_list()
+                    self._render_SL_list()
+            else:
+                category_name = args['category'][0] if 'category' in args['category'] else ''
+                parent_name   = args['parent'][0] if 'parent' in args['parent'] else ''
+                if category_name and parent_name:
+                    self._render_catalog_clone_list(catalog_name, category_name, parent_name)
+                elif category_name and not parent_name:
+                    self._render_catalog_parent_list(catalog_name, category_name)
+                else:
+                    self._render_catalog_list(catalog_name)
 
         elif 'command' in args:
             command = args['command'][0]
@@ -332,29 +269,29 @@ class Main:
     # NOTE Devices are excluded from main PClone list.
     def _render_root_list(self):
         # >> Code Machines/Manufacturer/SF first. Rest are variations of those three.
-        self._render_root_list_row('Machines (with coin slot)',       self._misc_url_1_arg('list',  'Machines'))
-        self._render_root_list_row('Machines (no coin slot)',         self._misc_url_1_arg('list',  'NoCoin'))
-        self._render_root_list_row('Machines (mechanical)',           self._misc_url_1_arg('list',  'Mechanical'))
-        self._render_root_list_row('Machines (dead)',                 self._misc_url_1_arg('list',  'Dead'))
-        self._render_root_list_row('Machines [with no ROMs]',         self._misc_url_1_arg('list',  'NoROM'))
-        self._render_root_list_row('Machines [with CHDs]',            self._misc_url_1_arg('list',  'CHD'))
-        self._render_root_list_row('Machines [with Samples]',         self._misc_url_1_arg('list',  'Samples'))
-        self._render_root_list_row('Machines [BIOS]',                 self._misc_url_1_arg('list',  'BIOS'))
-        # self._render_root_list_row('Machines [Devices]',              self._misc_url_1_arg('list',  'Devices'))
-        self._render_root_list_row('Machines by Category (Catver)',   self._misc_url_1_arg('clist', 'Catver'))
-        self._render_root_list_row('Machines by Category (Catlist)',  self._misc_url_1_arg('clist', 'Catlist'))
-        self._render_root_list_row('Machines by Category (Genre)',    self._misc_url_1_arg('clist', 'Genre'))
-        self._render_root_list_row('Machines by Number of players',   self._misc_url_1_arg('clist', 'NPlayers'))
-        self._render_root_list_row('Machines by Manufacturer',        self._misc_url_1_arg('clist', 'Manufacturer'))
-        self._render_root_list_row('Machines by Year',                self._misc_url_1_arg('clist', 'Year'))
-        self._render_root_list_row('Machines by Driver',              self._misc_url_1_arg('clist', 'Driver'))
-        self._render_root_list_row('Machines by Control Type',        self._misc_url_1_arg('clist', 'Controls'))
-        self._render_root_list_row('Machines by Display Tag',         self._misc_url_1_arg('clist', 'Display_Tag'))
-        self._render_root_list_row('Machines by Display Type',        self._misc_url_1_arg('clist', 'Display_Type'))
-        self._render_root_list_row('Machines by Display Rotation',    self._misc_url_1_arg('clist', 'Display_Rotate'))
-        self._render_root_list_row('Machines by Device',              self._misc_url_1_arg('clist', 'Devices'))
-        self._render_root_list_row('Machines by Software List',       self._misc_url_1_arg('clist', 'BySL'))
-        self._render_root_list_row('Software Lists',                  self._misc_url_1_arg('clist', 'SL'))
+        self._render_root_list_row('Machines (with coin slot)',       self._misc_url_2_arg('catalog', 'None', 'category', 'Machines'))
+        self._render_root_list_row('Machines (no coin slot)',         self._misc_url_2_arg('catalog', 'None', 'category', 'NoCoin'))
+        self._render_root_list_row('Machines (mechanical)',           self._misc_url_2_arg('catalog', 'None', 'category', 'Mechanical'))
+        self._render_root_list_row('Machines (dead)',                 self._misc_url_2_arg('catalog', 'None', 'category', 'Dead'))
+        self._render_root_list_row('Machines [with no ROMs]',         self._misc_url_2_arg('catalog', 'None', 'category', 'NoROM'))
+        self._render_root_list_row('Machines [with CHDs]',            self._misc_url_2_arg('catalog', 'None', 'category', 'CHD'))
+        self._render_root_list_row('Machines [with Samples]',         self._misc_url_2_arg('catalog', 'None', 'category', 'Samples'))
+        self._render_root_list_row('Machines [BIOS]',                 self._misc_url_2_arg('catalog', 'None', 'category', 'BIOS'))
+        # self._render_root_list_row('Machines [Devices]',              self._misc_url_2_arg('catalog', 'None', 'category', 'Devices'))
+        self._render_root_list_row('Machines by Category (Catver)',   self._misc_url_1_arg('catalog', 'Catver'))
+        self._render_root_list_row('Machines by Category (Catlist)',  self._misc_url_1_arg('catalog', 'Catlist'))
+        self._render_root_list_row('Machines by Category (Genre)',    self._misc_url_1_arg('catalog', 'Genre'))
+        self._render_root_list_row('Machines by Number of players',   self._misc_url_1_arg('catalog', 'NPlayers'))
+        self._render_root_list_row('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
+        self._render_root_list_row('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
+        self._render_root_list_row('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
+        self._render_root_list_row('Machines by Control Type',        self._misc_url_1_arg('catalog', 'Controls'))
+        self._render_root_list_row('Machines by Display Tag',         self._misc_url_1_arg('catalog', 'Display_Tag'))
+        self._render_root_list_row('Machines by Display Type',        self._misc_url_1_arg('catalog', 'Display_Type'))
+        self._render_root_list_row('Machines by Display Rotation',    self._misc_url_1_arg('catalog', 'Display_Rotate'))
+        self._render_root_list_row('Machines by Device',              self._misc_url_1_arg('catalog', 'Devices'))
+        self._render_root_list_row('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
+        self._render_root_list_row('Software Lists',                  self._misc_url_1_arg('catalog', 'SL'))
         self._render_root_list_row('<Favourite MAME machines>',       self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
         self._render_root_list_row('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
@@ -366,7 +303,7 @@ class Main:
         listitem = xbmcgui.ListItem(root_name, iconImage = icon)
 
         # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'Title'   : root_name, 'Overlay' : ICON_OVERLAY } )
+        listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY } )
 
         # --- Create context menu ---
         commands = []
@@ -380,180 +317,13 @@ class Main:
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = root_URL, listitem = listitem, isFolder = True)
 
     #----------------------------------------------------------------------------------------------
-    # Indexed machines
-    #----------------------------------------------------------------------------------------------
-    #
-    # Render a list of parent machines that have been indexed.
-    # A) If a machine has no clones it may be launched from this list.
-    # B) If a machine has clones then print the number of clones.
-    #
-    def _render_machine_parent_list(self, list_name):
-        display_hide_nonworking = self.settings['display_hide_nonworking']
-        display_hide_imperfect  = self.settings['display_hide_imperfect']
-
-        # >> Load main MAME info DB and PClone index
-        loading_ticks_start = time.time()
-        MAME_db_dic         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        MAME_assets_dic     = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        Machines_index_dic  = self._load_indexed_pclone_dic(list_name)
-        loading_ticks_end = time.time()
-
-        # >> Render parent main list
-        rendering_ticks_start = time.time()
-        self._set_Kodi_all_sorting_methods()
-        for parent_name, idx_dic in Machines_index_dic.iteritems():
-            num_clones = idx_dic['num_clones']
-            clone_list = idx_dic['machines']
-            machine = MAME_db_dic[parent_name]
-            assets  = MAME_assets_dic[parent_name]
-            # >> Skip non-working/imperfect machines (Python 'and' and 'or' are short-circuit)
-            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            self._render_machine_row(parent_name, machine, assets, True, list_name, num_clones)
-        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
-        rendering_ticks_end = time.time()
-
-        # --- DEBUG Data loading/rendering statistics ---
-        log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
-        log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
-
-    #
-    # Render a Parent/Clone list of machines.
-    # If user clicks in this list then ROM is launched.
-    #
-    def _render_machine_clone_list(self, list_name, parent_name):
-        display_hide_nonworking = self.settings['display_hide_nonworking']
-        display_hide_imperfect  = self.settings['display_hide_imperfect']
-
-        # >> Load main MAME info DB and PClone index
-        loading_ticks_start = time.time()
-        MAME_db_dic        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        MAME_assets_dic    = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        Machines_index_dic = self._load_indexed_pclone_dic(list_name)
-        loading_ticks_end = time.time()
-
-        # >> Render parent first
-        rendering_ticks_start = time.time()
-        self._set_Kodi_all_sorting_methods()
-        num_clones = Machines_index_dic[parent_name]['num_clones']
-        clone_list = Machines_index_dic[parent_name]['machines']
-        machine = MAME_db_dic[parent_name]
-        assets  = MAME_assets_dic[parent_name]
-        self._render_machine_row(parent_name, machine, assets, False)
-        # >> Render clones
-        for clone_name in clone_list:
-            machine = MAME_db_dic[clone_name]
-            assets  = MAME_assets_dic[clone_name]
-            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            self._render_machine_row(clone_name, machine, assets, False)
-        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
-        rendering_ticks_end = time.time()
-
-        # --- DEBUG Data loading/rendering statistics ---
-        log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
-        log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
-
-    #
-    # Render parent or clone machines.
-    # Information and artwork/assets are the same for all machines.
-    # URL is different: parent URL leads to clones, clone URL launchs machine.
-    #
-    def _render_machine_row(self, machine_name, machine, machine_assets, flag_parent_list, list_name = '', num_clones = 0):
-        display_name = machine['description']
-
-        # --- Render a Parent only list ---
-        if flag_parent_list and num_clones > 0:
-            # >> Machine has clones
-            display_name += '  [COLOR orange]({0} clones)[/COLOR]'.format(num_clones)
-        else:
-            # >> Machine has no clones
-            # --- Mark Status ---
-            status = '{0}{1}{2}{3}{4}'.format(machine['status_ROM'], machine['status_CHD'],
-                                              machine['status_SAM'], machine['status_SL'],
-                                              machine['status_Device'])
-            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
-
-            # --- Mark Devices, BIOS and clones ---
-            if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-            if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-            if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-
-            # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
-            if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-            elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
-
-        # --- Assets/artwork ---
-        icon_path      = machine_assets['title'] if machine_assets['title'] else 'DefaultProgram.png'
-        fanart_path    = machine_assets['snap']
-        banner_path    = machine_assets['marquee']
-        clearlogo_path = machine_assets['clearlogo']
-        poster_path    = machine_assets['flyer']
-
-        # --- Create listitem row ---
-        ICON_OVERLAY = 6
-        listitem = xbmcgui.ListItem(display_name)
-        # >> Make all the infolabels compatible with Advanced Emulator Launcher
-        listitem.setInfo('video', {'title'   : display_name,            'year'    : machine['year'],
-                                   'genre'   : '',                      'plot'    : '',
-                                   'studio'  : machine['manufacturer'], 'rating'  : '',
-                                   'trailer' : '',                      'overlay' : ICON_OVERLAY })
-        listitem.setProperty('platform', 'MAME')
-
-        # --- Assets ---
-        # >> AEL custom artwork fields
-        listitem.setArt({'title'     : machine_assets['title'],   'snap'    : machine_assets['snap'],
-                         'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'], 
-                         'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
-
-        # >> Kodi official artwork fields
-        listitem.setArt({'icon'   : icon_path,   'fanart'    : fanart_path,
-                         'banner' : banner_path, 'clearlogo' : clearlogo_path, 'poster' : poster_path })
-
-        # --- Create context menu ---
-        commands = []
-        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
-        URL_display = self._misc_url_3_arg_RunPlugin('command', 'DISPLAY_SETTINGS', 'clist', list_name, 'machine', machine_name)
-        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
-        commands.append(('View', URL_view ))
-        commands.append(('Display settings', URL_display ))
-        commands.append(('Add machine to MAME Favourites', URL_fav ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
-        listitem.addContextMenuItems(commands, replaceItems = True)
-
-        # --- Add row ---
-        if flag_parent_list:
-            # >> If machine has no clones then machine can be launched
-            if num_clones > 0:
-                URL = self._misc_url_2_arg('list', list_name, 'parent', machine_name)
-                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
-            # >> If not PClone list can be browsed in
-            else:
-                URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
-                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
-        else:
-            URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
-            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
-
-    def _load_indexed_pclone_dic(self, list_name):
-        if   list_name == 'Machines':   Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_PATH.getPath())
-        elif list_name == 'NoCoin':     Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath())
-        elif list_name == 'Mechanical': Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath())
-        elif list_name == 'Dead':       Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath())
-        elif list_name == 'NoROM':      Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_NOROMS_PATH.getPath())
-        elif list_name == 'CHD':        Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath())
-        elif list_name == 'Samples':    Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath())
-        elif list_name == 'BIOS':       Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath())
-        elif list_name == 'Devices':    Machines_index_dic = fs_load_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath())
-
-        return Machines_index_dic
-
-    #----------------------------------------------------------------------------------------------
     # Cataloged machines
     #----------------------------------------------------------------------------------------------
-    def _render_indexed_list(self, clist_name):
-        log_error('_render_indexed_list() Starting ...')
+    
+    
+    
+    def _render_catalog_list(catalog_name):
+        log_error('_render_catalog_list() Starting ...')
         # >> Load catalog index
         catalog_name = self._get_catalog_name(clist_name)
         catalog_dic = self._get_cataloged_dic(clist_name)
@@ -567,15 +337,18 @@ class Main:
     #
     # Renders a Parent list knowing the generalised category (cataloged filter)
     #
-    def _render_indexed_parent_list(self, clist_name, catalog_item_name):
-        log_error('_render_indexed_parent_list() Starting ...')
+    def _render_catalog_parent_list(catalog_name, category_name):
+        log_error('_render_catalog_parent_list() Starting ...')
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
         # >> Load main MAME info DB
+        loading_ticks_start = time.time()
         MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+        loading_ticks_end = time.time()
+        rendering_ticks_start = time.time()
 
         # >> Load catalog index
         catalog_name = self._get_catalog_name(clist_name)
@@ -595,9 +368,14 @@ class Main:
             self._render_indexed_machine_row(parent_name, machine, assets, True, 
                                              clist_name, catalog_name, catalog_item_name, num_clones)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+        rendering_ticks_end = time.time()
 
-    def _render_indexed_clone_list(self, clist_name, catalog_item_name, parent_name):
-        log_error('_render_indexed_clone_list() Starting ...')
+        # --- DEBUG Data loading/rendering statistics ---
+        log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
+        log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
+
+    def _render_catalog_clone_list(catalog_name, category_name, parent_name):
+        log_error('_render_catalog_clone_list() Starting ...')
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
@@ -624,7 +402,7 @@ class Main:
             self._render_indexed_machine_row(p_name, machine, assets, False, clist_name, catalog_name, catalog_item_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_indexed_list_row(self, clist_name, catalog_name, catalog_key, num_machines):
+    def _render_catalog_list_row(self, clist_name, catalog_name, catalog_key, num_machines):
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
         ICON_OVERLAY = 6
@@ -646,7 +424,7 @@ class Main:
         URL = self._misc_url_2_arg('clist', clist_name, catalog_name, catalog_key)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_indexed_machine_row(self, machine_name, machine, machine_assets, flag_parent_list,
+    def _render_catalog_machine_row(self, machine_name, machine, machine_assets, flag_parent_list,
                                     clist_name, catalog_name, catalog_item_name, num_clones = 0):
         display_name = machine['description']
 
