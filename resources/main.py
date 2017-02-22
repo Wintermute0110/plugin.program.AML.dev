@@ -67,17 +67,18 @@ class AML_Paths:
         self.MAIN_ASSETS_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_assets_db.json')
 
         # >> Indices
-        self.MACHINES_IDX_PATH           = PLUGIN_DATA_DIR.pjoin('idx_Machines.json')
-        self.MACHINES_IDX_NOCOIN_PATH    = PLUGIN_DATA_DIR.pjoin('idx_Machines_NoCoin.json')
-        self.MACHINES_IDX_MECHA_PATH     = PLUGIN_DATA_DIR.pjoin('idx_Machines_Mechanical.json')
-        self.MACHINES_IDX_DEAD_PATH      = PLUGIN_DATA_DIR.pjoin('idx_Machines_Dead.json')
-        self.MACHINES_IDX_NOROMS_PATH    = PLUGIN_DATA_DIR.pjoin('idx_Machines_NoROM.json')
-        self.MACHINES_IDX_CHD_PATH       = PLUGIN_DATA_DIR.pjoin('idx_Machines_CHD.json')
-        self.MACHINES_IDX_SAMPLES_PATH   = PLUGIN_DATA_DIR.pjoin('idx_Machines_Samples.json')
-        self.MACHINES_IDX_BIOS_PATH      = PLUGIN_DATA_DIR.pjoin('idx_Machines_BIOS.json')
-        self.MACHINES_IDX_DEVICES_PATH   = PLUGIN_DATA_DIR.pjoin('idx_Machines_Devices.json')
+        # self.MACHINES_IDX_PATH           = PLUGIN_DATA_DIR.pjoin('idx_Machines.json')
+        # self.MACHINES_IDX_NOCOIN_PATH    = PLUGIN_DATA_DIR.pjoin('idx_Machines_NoCoin.json')
+        # self.MACHINES_IDX_MECHA_PATH     = PLUGIN_DATA_DIR.pjoin('idx_Machines_Mechanical.json')
+        # self.MACHINES_IDX_DEAD_PATH      = PLUGIN_DATA_DIR.pjoin('idx_Machines_Dead.json')
+        # self.MACHINES_IDX_NOROMS_PATH    = PLUGIN_DATA_DIR.pjoin('idx_Machines_NoROM.json')
+        # self.MACHINES_IDX_CHD_PATH       = PLUGIN_DATA_DIR.pjoin('idx_Machines_CHD.json')
+        # self.MACHINES_IDX_SAMPLES_PATH   = PLUGIN_DATA_DIR.pjoin('idx_Machines_Samples.json')
+        # self.MACHINES_IDX_BIOS_PATH      = PLUGIN_DATA_DIR.pjoin('idx_Machines_BIOS.json')
+        # self.MACHINES_IDX_DEVICES_PATH   = PLUGIN_DATA_DIR.pjoin('idx_Machines_Devices.json')
 
         # >> Catalogs
+        self.CATALOG_NONE_PATH           = PLUGIN_DATA_DIR.pjoin('catalog_none.json')
         self.CATALOG_CATVER_PATH         = PLUGIN_DATA_DIR.pjoin('catalog_catver.json')
         self.CATALOG_CATLIST_PATH        = PLUGIN_DATA_DIR.pjoin('catalog_catlist.json')
         self.CATALOG_GENRE_PATH          = PLUGIN_DATA_DIR.pjoin('catalog_genre.json')
@@ -1706,7 +1707,7 @@ class Main:
                                   'Build all databases ...',
                                   'Scan everything ...',
                                   'Build MAME database ...',
-                                  'Build MAME indices and catalogs ...',
+                                  'Build MAME catalogs ...',
                                   'Build Software Lists indices and catalogs ...',
                                   'Scan MAME ROMs/CHDs/Samples ...',
                                   'Scan MAME assets/artwork ...',
@@ -1857,7 +1858,7 @@ class Main:
             fs_build_MAME_main_database(PATHS, self.settings, control_dic)
             kodi_notify('Main MAME database built')
 
-        # --- Build MAME indices/catalogs ---
+        # --- Build MAME catalogs ---
         elif menu_item == 4:
             # --- Error checks ---
             # >> Check that main MAME database exists
@@ -1867,7 +1868,7 @@ class Main:
             machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
             main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
             kodi_busydialog_OFF()
-            fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic)
+            fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic)
             kodi_notify('Indices and catalogs built')
 
         # --- Build Software Lists indices/catalogs ---

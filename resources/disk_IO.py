@@ -859,240 +859,208 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     kodi_busydialog_OFF()
 
-def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic):
+def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     # >> Progress dialog
-    NUM_FILTERS = 22
-    pDialog_line1 = 'Building indices and catalogs ...'
+    NUM_CATALOGS = 14
+    pDialog_line1 = 'Building catalogs ...'
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', pDialog_line1)
     processed_filters = 0
     update_number = 0
 
-    # Simple machine lists ------------------------------------------------------------------------
+    # None catalog --------------------------------------------------------------------------------
     # --- Main machine list ---
     # Machines with Coin Slot and Non Mechanical and not Dead
-    # machines_pclone_dic = { 'parent_name' : ['clone_name', 'clone_name', ...] , ...}
-    machines_pclone_dic = {}
-    log_info('Making Main-machine index ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Main-machine index ...')
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    none_catalog_parents = {}
+    log_info('Making None catalog - Coin index ...')
+    parent_list = []
+    pDialog.update(update_number, pDialog_line1, 'Making None Catalog ...')
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         if machine['isMechanical']: continue
         if not machine['hasCoin']: continue
         if machine['isDead']: continue
-        num_clones = len(main_pclone_dic[p_machine_name])
-        machines_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+        # >> Add parent to parent list
+        parent_list.append(parent_name)
+    none_catalog_parents['Coin'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
 
     # --- NoCoin list ---
     # A) Machines with No Coin Slot and Non Mechanical and not Dead
-    nocoin_pclone_dic = {}
     log_info('Making NoCoin index ...')
-    pDialog.update(update_number, pDialog_line1, 'Making NoCoin index ...')
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    parent_list = []
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         if machine['isMechanical']: continue
         if machine['hasCoin']: continue
         if machine['isDead']: continue
-        num_clones = len(main_pclone_dic[p_machine_name])
-        nocoin_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+        parent_list.append(parent_name)
+    none_catalog_parents['NoCoin'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
 
     # --- Mechanical machines ---
     # A) Mechanical Machines and not Dead
-    mechanical_pclone_dic = {}
     log_info('Making Mechanical index ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Mechanical index ...')
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    parent_list = []
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         if not machine['isMechanical']: continue
         if machine['isDead']: continue
-        num_clones = len(main_pclone_dic[p_machine_name])
-        mechanical_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+        parent_list.append(parent_name)
+    none_catalog_parents['Mechanical'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
 
     # --- Dead machines ---
-    dead_pclone_dic = {}
     log_info('Making Dead Machines index ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Dead Machines index ...')
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    parent_list = []
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         if not machine['isDead']: continue
-        num_clones = len(main_pclone_dic[p_machine_name])
-        dead_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+        parent_list.append(parent_name)
+    none_catalog_parents['Dead'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
 
     # --- No ROMs machines ---
-    NoROM_pclone_dic = {}
     log_info('Making No-ROMs Machines index ...')
-    pDialog.update(update_number, pDialog_line1, 'Making No-ROMs Machines index ...')
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    parent_list = []
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         if machine['hasOwnROMs'] or machine['hasMergedROMs']: continue
-        num_clones = len(main_pclone_dic[p_machine_name])
-        NoROM_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+        NoROM_pclone_dic[parent_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[parent_name]}
+    none_catalog_parents['NoROMs'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
 
     # --- CHD machines ---
-    CHD_pclone_dic = {}
     log_info('Making CHD Machines index ...')
-    pDialog.update(update_number, pDialog_line1, 'Making CHD Machines index ...')
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    parent_list = []
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         if not machine['CHDs']: continue
-        num_clones = len(main_pclone_dic[p_machine_name])
-        CHD_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+        parent_list.append(parent_name)
+    none_catalog_parents['CHDs'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
 
     # --- Machines with samples ---
-    Samples_pclone_dic = {}
     log_info('Making Samples Machines index ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Samples Machines index ...')
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    parent_list = []
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         if not machine['sampleof']: continue
-        num_clones = len(main_pclone_dic[p_machine_name])
-        Samples_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+        parent_list.append(parent_name)
+    none_catalog_parents['Samples'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
 
     # --- BIOS ---
-    BIOS_pclone_dic = {}
     log_info('Making BIOS Machines index ...')
-    pDialog.update(update_number, pDialog_line1, 'Making BIOS Machines index ...')
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    parent_list = []
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         if not machine['isBIOS']: continue
-        num_clones = len(main_pclone_dic[p_machine_name])
-        BIOS_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+        parent_list.append(parent_name)
+    none_catalog_parents['BIOS'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
 
     # --- Devices ---
     log_info('Making Devices Machines index ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Devices Machines index ...')
-    Devices_pclone_dic = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    parent_list = []
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         if not machine['isDevice']: continue
-        num_clones = len(main_pclone_dic[p_machine_name])
-        Devices_pclone_dic[p_machine_name] = {'num_clones' : num_clones, 'machines' : main_pclone_dic[p_machine_name]}
+        parent_list.append(parent_name)
+    none_catalog_parents['Devices'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
+
+    # >> Save None catalog JSON file
+    fs_write_JSON_file(PATHS.CATALOG_NONE_PATH.getPath(), none_catalog_parents)
 
     # Cataloged machine lists ---------------------------------------------------------------------
-    # Catalog dictionary: { 'catalog_name' : { 'num_machines' : <int>, 'machines' : [parent_name, parent_name, ...]}, ... }
     # --- Catver catalog ---
     log_info('Making Catver catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Catver catalog ...')
     catver_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
-        catalog_key = machine['catver']
-        # >> Add to catalog
+    for parent_name in main_pclone_dic:
+        catalog_key = machines[parent_name]['catver']
         if catalog_key in catver_catalog:
-            catver_catalog[catalog_key]['machines'].append(p_machine_name)
-            catver_catalog[catalog_key]['num_machines'] = len(catver_catalog[catalog_key]['machines'])
+            catver_catalog[catalog_key]['parents'].append(parent_name)
+            catver_catalog[catalog_key]['num_parents'] = len(catver_catalog[catalog_key]['parents'])
         else:
-            catver_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            catver_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath(), catver_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Catlist catalog ---
     log_info('Making Catlist catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Catlist catalog ...')
     catlist_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         catalog_key = machine['catlist']
         if catalog_key in catlist_catalog:
-            catlist_catalog[catalog_key]['machines'].append(p_machine_name)
-            catlist_catalog[catalog_key]['num_machines'] = len(catlist_catalog[catalog_key]['machines'])
+            catlist_catalog[catalog_key]['parents'].append(parent_name)
+            catlist_catalog[catalog_key]['num_parents'] = len(catlist_catalog[catalog_key]['parents'])
         else:
-            catlist_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            catlist_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath(), catlist_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Genre catalog ---
     log_info('Making Genre catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Genre catalog ...')
     genre_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         catalog_key = machine['genre']
         if catalog_key in genre_catalog:
-            genre_catalog[catalog_key]['machines'].append(p_machine_name)
-            genre_catalog[catalog_key]['num_machines'] = len(genre_catalog[catalog_key]['machines'])
+            genre_catalog[catalog_key]['parents'].append(parent_name)
+            genre_catalog[catalog_key]['num_parents'] = len(genre_catalog[catalog_key]['parents'])
         else:
-            genre_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            genre_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath(), genre_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Nplayers catalog ---
     log_info('Making Nplayers catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Nplayers catalog ...')
     nplayers_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         catalog_key = machine['nplayers']
         if catalog_key in nplayers_catalog:
-            nplayers_catalog[catalog_key]['machines'].append(p_machine_name)
-            nplayers_catalog[catalog_key]['num_machines'] = len(nplayers_catalog[catalog_key]['machines'])
+            nplayers_catalog[catalog_key]['parents'].append(parent_name)
+            nplayers_catalog[catalog_key]['num_parents'] = len(nplayers_catalog[catalog_key]['parents'])
         else:
-            nplayers_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            nplayers_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath(), nplayers_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Manufacturer catalog ---
     log_info('Making Manufacturer catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Manufacturer catalog ...')
     manufacturer_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         catalog_key = machine['manufacturer']
         if catalog_key in manufacturer_catalog:
-            manufacturer_catalog[catalog_key]['machines'].append(p_machine_name)
-            manufacturer_catalog[catalog_key]['num_machines'] = len(manufacturer_catalog[catalog_key]['machines'])
+            manufacturer_catalog[catalog_key]['parents'].append(parent_name)
+            manufacturer_catalog[catalog_key]['num_parents'] = len(manufacturer_catalog[catalog_key]['parents'])
         else:
-            manufacturer_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            manufacturer_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath(), manufacturer_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Year catalog ---
     log_info('Making Year catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Year catalog ...')
     year_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         catalog_key = machine['year']
         if catalog_key in year_catalog:
-            year_catalog[catalog_key]['machines'].append(p_machine_name)
-            year_catalog[catalog_key]['num_machines'] = len(year_catalog[catalog_key]['machines'])
+            year_catalog[catalog_key]['parents'].append(parent_name)
+            year_catalog[catalog_key]['num_parents'] = len(year_catalog[catalog_key]['parents'])
         else:
-            year_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            year_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath(), year_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Driver catalog ---
     log_info('Making Driver catalog ...')
@@ -1115,25 +1083,25 @@ def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic):
         'zn.cpp'       : 'Sony ZN1/ZN2 (Arcade PSX)',
     }
     driver_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         catalog_key = machine['sourcefile']
         if catalog_key in driver_name_dic: catalog_key = driver_name_dic[catalog_key]
         if catalog_key in driver_catalog:
-            driver_catalog[catalog_key]['machines'].append(p_machine_name)
-            driver_catalog[catalog_key]['num_machines'] = len(driver_catalog[catalog_key]['machines'])
+            driver_catalog[catalog_key]['parents'].append(parent_name)
+            driver_catalog[catalog_key]['num_parents'] = len(driver_catalog[catalog_key]['parents'])
         else:
-            driver_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            driver_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath(), driver_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Control catalog ---
     log_info('Making Control catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Control catalog ...')
     control_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         # >> Order alphabetically the list
         pretty_control_type_list = fs_improve_control_type_list(machine['control_type'])
         sorted_control_type_list = sorted(pretty_control_type_list)
@@ -1142,74 +1110,74 @@ def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic):
         # >> Change category name for machines with no controls
         if catalog_key == '': catalog_key = '[ No controls ]'
         if catalog_key in control_catalog:
-            control_catalog[catalog_key]['machines'].append(p_machine_name)
-            control_catalog[catalog_key]['num_machines'] = len(control_catalog[catalog_key]['machines'])
+            control_catalog[catalog_key]['parents'].append(parent_name)
+            control_catalog[catalog_key]['num_parents'] = len(control_catalog[catalog_key]['parents'])
         else:
-            control_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            control_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath(), control_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Display tag catalog ---
     log_info('Making Display tag catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Display tag catalog ...')
     display_tag_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         catalog_key = " / ".join(machine['display_tag'])
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
         if catalog_key in display_tag_catalog:
-            display_tag_catalog[catalog_key]['machines'].append(p_machine_name)
-            display_tag_catalog[catalog_key]['num_machines'] = len(display_tag_catalog[catalog_key]['machines'])
+            display_tag_catalog[catalog_key]['parents'].append(parent_name)
+            display_tag_catalog[catalog_key]['num_parents'] = len(display_tag_catalog[catalog_key]['parents'])
         else:
-            display_tag_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            display_tag_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath(), display_tag_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Display type catalog ---
     log_info('Making Display type catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Display type catalog ...')
     display_type_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         catalog_key = " / ".join(machine['display_type'])
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
         if catalog_key in display_type_catalog:
-            display_type_catalog[catalog_key]['machines'].append(p_machine_name)
-            display_type_catalog[catalog_key]['num_machines'] = len(display_type_catalog[catalog_key]['machines'])
+            display_type_catalog[catalog_key]['parents'].append(parent_name)
+            display_type_catalog[catalog_key]['num_parents'] = len(display_type_catalog[catalog_key]['parents'])
         else:
-            display_type_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            display_type_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath(), display_type_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Display rotate catalog ---
     log_info('Making Display rotate catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Display rotate catalog ...')
     display_rotate_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         catalog_key = " / ".join(machine['display_rotate'])
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
         if catalog_key in display_rotate_catalog:
-            display_rotate_catalog[catalog_key]['machines'].append(p_machine_name)
-            display_rotate_catalog[catalog_key]['num_machines'] = len(display_rotate_catalog[catalog_key]['machines'])
+            display_rotate_catalog[catalog_key]['parents'].append(parent_name)
+            display_rotate_catalog[catalog_key]['num_parents'] = len(display_rotate_catalog[catalog_key]['parents'])
         else:
-            display_rotate_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            display_rotate_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath(), display_rotate_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- <device> catalog ---
     log_info('Making <device> catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making <device> catalog ...')
     device_list_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         # >> Order alphabetically the list
         pretty_device_list = fs_improve_device_list(machine['device_list'])
         sorted_device_list = sorted(pretty_device_list)
@@ -1218,59 +1186,31 @@ def fs_build_MAME_indices_and_catalogs(PATHS, machines, main_pclone_dic):
         # >> Change category name for machines with no devices
         if catalog_key == '': catalog_key = '[ No devices ]'
         if catalog_key in device_list_catalog:
-            device_list_catalog[catalog_key]['machines'].append(p_machine_name)
-            device_list_catalog[catalog_key]['num_machines'] = len(device_list_catalog[catalog_key]['machines'])
+            device_list_catalog[catalog_key]['parents'].append(parent_name)
+            device_list_catalog[catalog_key]['num_parents'] = len(device_list_catalog[catalog_key]['parents'])
         else:
-            device_list_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+            device_list_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+    fs_write_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath(), device_list_catalog)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
     # --- Software List catalog ---
     log_info('Making Software List catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Software List catalog ...')
     SL_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         # >> A machine may have more than 1 software lists
         for sl_name in machine['softwarelists']:
             catalog_key = sl_name
             if catalog_key in SL_catalog:
-                SL_catalog[catalog_key]['machines'].append(p_machine_name)
-                SL_catalog[catalog_key]['num_machines'] = len(SL_catalog[catalog_key]['machines'])
+                SL_catalog[catalog_key]['parents'].append(parent_name)
+                SL_catalog[catalog_key]['num_parents'] = len(SL_catalog[catalog_key]['parents'])
             else:
-                SL_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
-
-    # --- Write JSON indices ---
-    kodi_busydialog_ON()
-    fs_write_JSON_file(PATHS.MACHINES_IDX_PATH.getPath(), machines_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_NOCOIN_PATH.getPath(), nocoin_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_MECHA_PATH.getPath(), mechanical_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_DEAD_PATH.getPath(), dead_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_NOROMS_PATH.getPath(), NoROM_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_CHD_PATH.getPath(), CHD_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_SAMPLES_PATH.getPath(), Samples_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_BIOS_PATH.getPath(), BIOS_pclone_dic)
-    fs_write_JSON_file(PATHS.MACHINES_IDX_DEVICES_PATH.getPath(), Devices_pclone_dic)
-
-    # --- Write JSON catalogs ---
-    fs_write_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath(), catver_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_CATLIST_PATH.getPath(), catlist_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_GENRE_PATH.getPath(), genre_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PATH.getPath(), nplayers_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PATH.getPath(), manufacturer_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_YEAR_PATH.getPath(), year_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_DRIVER_PATH.getPath(), driver_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_CONTROL_PATH.getPath(), control_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PATH.getPath(), display_tag_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PATH.getPath(), display_type_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PATH.getPath(), display_rotate_catalog)
-    fs_write_JSON_file(PATHS.CATALOG_DEVICE_LIST_PATH.getPath(), device_list_catalog)
+                SL_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
     fs_write_JSON_file(PATHS.CATALOG_SL_PATH.getPath(), SL_catalog)
-    kodi_busydialog_OFF()
+    processed_filters += 1
+    pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
 #
 # A) Capitalise every list item
@@ -1614,17 +1554,17 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     log_info('Making Software List catalog ...')
     pDialog.update(0, 'Rebuilding Software List catalog ...')
     SL_catalog = {}
-    for p_machine_name in main_pclone_dic:
-        machine = machines[p_machine_name]
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
         # >> A machine may have more than 1 software lists
         for sl_name in machine['softwarelists']:
             if sl_name in SL_catalog_dic: sl_name = SL_catalog_dic[sl_name]['display_name']
             catalog_key = sl_name
             if catalog_key in SL_catalog:
-                SL_catalog[catalog_key]['machines'].append(p_machine_name)
+                SL_catalog[catalog_key]['machines'].append(parent_name)
                 SL_catalog[catalog_key]['num_machines'] = len(SL_catalog[catalog_key]['machines'])
             else:
-                SL_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [p_machine_name]}
+                SL_catalog[catalog_key] = {'num_machines' : 1, 'machines' : [parent_name]}
     pDialog.update(100)
     fs_write_JSON_file(PATHS.CATALOG_SL_PATH.getPath(), SL_catalog)
     pDialog.close()

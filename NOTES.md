@@ -229,7 +229,7 @@ See http://stackoverflow.com/questions/12543837/python-iterating-over-list-vs-ov
      (bigger DB, higher loading times).
   6) All clones data in -> `Machines hashed DB`.
   
-``` Catalog_driver_parents.json
+``` CatalogName_driver_parents.json
 {
   "1942.cpp": {
     "parents": [
@@ -249,7 +249,7 @@ See http://stackoverflow.com/questions/12543837/python-iterating-over-list-vs-ov
   3) Hashed database entry for each category that includes all parents and clones 
      data -> `PClone hashed DB`.
 
-``` Catalog_driver_all.json
+``` CatalogName_driver_all.json
 {
   "1942.cpp": {
     "machines": [
