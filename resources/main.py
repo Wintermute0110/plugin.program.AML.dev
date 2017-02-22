@@ -70,7 +70,9 @@ class AML_Paths:
         self.CATALOG_NONE_PARENT_PATH    = PLUGIN_DATA_DIR.pjoin('catalog_none_parents.json')
         self.CATALOG_NONE_ALL_PATH       = PLUGIN_DATA_DIR.pjoin('catalog_none_all.json')
 
-        self.CATALOG_CATVER_PATH         = PLUGIN_DATA_DIR.pjoin('catalog_catver.json')
+        self.CATALOG_CATVER_PARENT_PATH  = PLUGIN_DATA_DIR.pjoin('catalog_catver_parents.json')
+        self.CATALOG_CATVER_ALL_PATH     = PLUGIN_DATA_DIR.pjoin('catalog_catver_all.json')
+
         self.CATALOG_CATLIST_PATH        = PLUGIN_DATA_DIR.pjoin('catalog_catlist.json')
         self.CATALOG_GENRE_PATH          = PLUGIN_DATA_DIR.pjoin('catalog_genre.json')
         self.CATALOG_NPLAYERS_PATH       = PLUGIN_DATA_DIR.pjoin('catalog_nplayers.json')

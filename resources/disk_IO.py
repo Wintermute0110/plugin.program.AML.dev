@@ -1007,15 +1007,24 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     # --- Catver catalog ---
     log_info('Making Catver catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Catver catalog ...')
-    catver_catalog = {}
+    catver_catalog_parents = {}
+    catver_catalog_all = {}
     for parent_name in main_pclone_dic:
         catalog_key = machines[parent_name]['catver']
-        if catalog_key in catver_catalog:
-            catver_catalog[catalog_key]['parents'].append(parent_name)
-            catver_catalog[catalog_key]['num_parents'] = len(catver_catalog[catalog_key]['parents'])
+        if catalog_key in catver_catalog_parents:
+            catver_catalog_parents[catalog_key]['parents'].append(parent_name)
+            catver_catalog_parents[catalog_key]['num_parents'] = len(catver_catalog_parents[catalog_key]['parents'])
+
+            catver_catalog_all[catalog_key]['machines'].append(parent_name)
+            for clone in main_pclone_dic[parent_name]: catver_catalog_all[catalog_key]['machines'].append(clone)
+            catver_catalog_all[catalog_key]['num_machines'] = len(catver_catalog_all[catalog_key]['machines'])
         else:
-            catver_catalog[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
-    fs_write_JSON_file(PATHS.CATALOG_CATVER_PATH.getPath(), catver_catalog)
+            catver_catalog_parents[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+            all_list = [parent_name]
+            for clone in main_pclone_dic[parent_name]: all_list.append(clone)
+            catver_catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
+    fs_write_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath(), catver_catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_CATVER_ALL_PATH.getPath(), catver_catalog_all)
     processed_filters += 1
     pDialog.update(int((float(processed_filters) / float(NUM_CATALOGS)) * 100))
 
