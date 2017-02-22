@@ -68,23 +68,35 @@ class AML_Paths:
         self.MAIN_PROPERTIES_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
 
         # >> Catalogs
-        self.CATALOG_NONE_PARENT_PATH    = PLUGIN_DATA_DIR.pjoin('catalog_none_parents.json')
-        self.CATALOG_NONE_ALL_PATH       = PLUGIN_DATA_DIR.pjoin('catalog_none_all.json')
-        self.CATALOG_CATVER_PARENT_PATH  = PLUGIN_DATA_DIR.pjoin('catalog_catver_parents.json')
-        self.CATALOG_CATVER_ALL_PATH     = PLUGIN_DATA_DIR.pjoin('catalog_catver_all.json')
-
-        self.CATALOG_CATLIST_PATH        = PLUGIN_DATA_DIR.pjoin('catalog_catlist.json')
-        self.CATALOG_GENRE_PATH          = PLUGIN_DATA_DIR.pjoin('catalog_genre.json')
-        self.CATALOG_NPLAYERS_PATH       = PLUGIN_DATA_DIR.pjoin('catalog_nplayers.json')
-        self.CATALOG_MANUFACTURER_PATH   = PLUGIN_DATA_DIR.pjoin('catalog_manufacturer.json')
-        self.CATALOG_YEAR_PATH           = PLUGIN_DATA_DIR.pjoin('catalog_year.json')
-        self.CATALOG_DRIVER_PATH         = PLUGIN_DATA_DIR.pjoin('catalog_driver.json')
-        self.CATALOG_CONTROL_PATH        = PLUGIN_DATA_DIR.pjoin('catalog_control.json')
-        self.CATALOG_DISPLAY_TAG_PATH    = PLUGIN_DATA_DIR.pjoin('catalog_display_tag.json')
-        self.CATALOG_DISPLAY_TYPE_PATH   = PLUGIN_DATA_DIR.pjoin('catalog_display_type.json')
-        self.CATALOG_DISPLAY_ROTATE_PATH = PLUGIN_DATA_DIR.pjoin('catalog_display_rotate.json')
-        self.CATALOG_DEVICE_LIST_PATH    = PLUGIN_DATA_DIR.pjoin('catalog_device_list.json')
-        self.CATALOG_SL_PATH             = PLUGIN_DATA_DIR.pjoin('catalog_SL.json')
+        self.CATALOG_DIR                        = PLUGIN_DATA_DIR.pjoin('catalogs')
+        self.CATALOG_NONE_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_none_parents.json')
+        self.CATALOG_NONE_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_none_all.json')
+        self.CATALOG_CATVER_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_catver_parents.json')
+        self.CATALOG_CATVER_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_catver_all.json')
+        self.CATALOG_CATLIST_PARENT_PATH        = self.CATALOG_DIR.pjoin('catalog_catlist_parents.json')
+        self.CATALOG_CATLIST_ALL_PATH           = self.CATALOG_DIR.pjoin('catalog_catlist_all.json')
+        self.CATALOG_GENRE_PARENT_PATH          = self.CATALOG_DIR.pjoin('catalog_genre_parents.json')
+        self.CATALOG_GENRE_ALL_PATH             = self.CATALOG_DIR.pjoin('catalog_genre_all.json')
+        self.CATALOG_NPLAYERS_PARENT_PATH       = self.CATALOG_DIR.pjoin('catalog_nplayers_parents.json')
+        self.CATALOG_NPLAYERS_ALL_PATH          = self.CATALOG_DIR.pjoin('catalog_nplayers_all.json')
+        self.CATALOG_MANUFACTURER_PARENT_PATH   = self.CATALOG_DIR.pjoin('catalog_manufacturer_parents.json')
+        self.CATALOG_MANUFACTURER_ALL_PATH      = self.CATALOG_DIR.pjoin('catalog_manufacturer_all.json')
+        self.CATALOG_YEAR_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_year_parents.json')
+        self.CATALOG_YEAR_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_year_all.json')
+        self.CATALOG_DRIVER_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_driver_parents.json')
+        self.CATALOG_DRIVER_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_driver_all.json')
+        self.CATALOG_CONTROL_PARENT_PATH        = self.CATALOG_DIR.pjoin('catalog_control_parents.json')
+        self.CATALOG_CONTROL_ALL_PATH           = self.CATALOG_DIR.pjoin('catalog_control_all.json')
+        self.CATALOG_DISPLAY_TAG_PARENT_PATH    = self.CATALOG_DIR.pjoin('catalog_display_tag_parents.json')
+        self.CATALOG_DISPLAY_TAG_ALL_PATH       = self.CATALOG_DIR.pjoin('catalog_display_tag_all.json')
+        self.CATALOG_DISPLAY_TYPE_PARENT_PATH   = self.CATALOG_DIR.pjoin('catalog_display_type_parents.json')
+        self.CATALOG_DISPLAY_TYPE_ALL_PATH      = self.CATALOG_DIR.pjoin('catalog_display_type_all.json')
+        self.CATALOG_DISPLAY_ROTATE_PARENT_PATH = self.CATALOG_DIR.pjoin('catalog_display_rotate_parents.json')
+        self.CATALOG_DISPLAY_ROTATE_ALL_PATH    = self.CATALOG_DIR.pjoin('catalog_display_rotate_all.json')
+        self.CATALOG_DEVICE_LIST_PARENT_PATH    = self.CATALOG_DIR.pjoin('catalog_device_list_parents.json')
+        self.CATALOG_DEVICE_LIST_ALL_PATH       = self.CATALOG_DIR.pjoin('catalog_device_list_all.json')
+        self.CATALOG_SL_PARENT_PATH             = self.CATALOG_DIR.pjoin('catalog_SL_parents.json')
+        self.CATALOG_SL_ALL_PATH                = self.CATALOG_DIR.pjoin('catalog_SL_all.json')
 
         # >> Software Lists
         self.SL_DB_DIR                   = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')
@@ -130,8 +142,9 @@ class Main:
         for i in range(len(sys.argv)): log_debug('sys.argv[{0}] = "{1}"'.format(i, sys.argv[i]))
 
         # --- Addon data paths creation ---
-        if not PLUGIN_DATA_DIR.exists(): PLUGIN_DATA_DIR.makedirs()
-        if not PATHS.SL_DB_DIR.exists(): PATHS.SL_DB_DIR.makedirs()
+        if not PLUGIN_DATA_DIR.exists():   PLUGIN_DATA_DIR.makedirs()
+        if not PATHS.SL_DB_DIR.exists():   PATHS.SL_DB_DIR.makedirs()
+        if not PATHS.CATALOG_DIR.exists(): PATHS.CATALOG_DIR.makedirs()
 
         # --- Process URL ---
         self.base_url     = sys.argv[0]
@@ -194,10 +207,9 @@ class Main:
                 location = args['location'][0] if 'location' in args else LOCATION_STANDARD
                 self._command_view(machine, SL, ROM, location)
             elif command == 'DISPLAY_SETTINGS':
-                clist   = args['clist'][0]   if 'clist' in args else ''
-                catalog = args['catalog'][0] if 'catalog' in args else ''
-                machine = args['machine'][0] if 'machine' in args else ''
-                self._command_display_settings(clist, catalog, machine)
+                catalog_name = args['catalog'][0]
+                category_name = args['category'][0] if 'category' in args else ''
+                self._command_display_settings(catalog_name, category_name)
 
             # >> MAME Favourites
             elif command == 'ADD_MAME_FAV':
@@ -321,15 +333,21 @@ class Main:
     #----------------------------------------------------------------------------------------------
     def _render_catalog_list(self, catalog_name):
         log_error('_render_catalog_list() Starting ...')
-        # >> Load catalog index
-        catalog_name = self._get_catalog_name(clist_name)
-        catalog_dic = self._get_cataloged_dic(clist_name)
 
         # >> Render categories in catalog index
         self._set_Kodi_all_sorting_methods_and_size()
-        for catalog_key, catalog_value in catalog_dic.iteritems():
-            self._render_indexed_list_row(clist_name, catalog_name, catalog_key, catalog_value['num_machines'])
+        loading_ticks_start = time.time()
+        catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+        loading_ticks_end = time.time()
+        rendering_ticks_start = time.time()
+        for catalog_key in sorted(catalog_dic):
+            self._render_catalog_list_row(catalog_name, catalog_key, catalog_dic[catalog_key]['num_parents'])
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+        rendering_ticks_end = time.time()
+
+        # --- DEBUG Data loading/rendering statistics ---
+        log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
+        log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
     #
     # Renders a Parent list knowing the catalog name and the category.
@@ -349,13 +367,13 @@ class Main:
 
         # >> Load main MAME info DB
         loading_ticks_start = time.time()
-        MAME_db_dic         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        MAME_assets_dic     = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        main_pclone_dic     = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         # >> Load catalog index
         if prop_dic['vm'] == VIEW_MODE_NORMAL:
             catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
-        elif prop_dic['vm'] == VIEW_MODE_PCLONE:
+        elif prop_dic['vm'] == VIEW_MODE_ALL:
             catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
         else:
             kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
@@ -363,8 +381,8 @@ class Main:
         loading_ticks_end = time.time()
 
         # >> Render parent main list
-        self._set_Kodi_all_sorting_methods()
         rendering_ticks_start = time.time()
+        self._set_Kodi_all_sorting_methods()
         if prop_dic['vm'] == VIEW_MODE_NORMAL:
             # >> Normal mode render parents only
             machine_list = catalog_dic[category_name]['parents']
@@ -419,7 +437,7 @@ class Main:
             self._render_indexed_machine_row(p_name, machine, assets, False, clist_name, catalog_name, catalog_item_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_catalog_list_row(self, clist_name, catalog_name, catalog_key, num_machines):
+    def _render_catalog_list_row(self, catalog_name, catalog_key, num_machines):
         # --- Create listitem row ---
         icon = 'DefaultFolder.png'
         ICON_OVERLAY = 6
@@ -438,7 +456,7 @@ class Main:
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        URL = self._misc_url_2_arg('clist', clist_name, catalog_name, catalog_key)
+        URL = self._misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
     def _render_catalog_machine_row(self, machine_name, machine, machine_assets, flag_parent_list,
@@ -1024,11 +1042,16 @@ class Main:
             except:
                 log_error('_command_view_machine() Exception rendering INFO window')
 
-    def _command_display_settings(self, clist, catalog, mname):
-        log_debug('_command_display_settings() clist   "{0}"'.format(clist))
-        log_debug('_command_display_settings() catalog "{0}"'.format(catalog))
-        log_debug('_command_display_settings() mname   "{0}"'.format(mname))
+    def _command_display_settings(self, catalog_name, category_name):
+        # >> Load ListItem properties
+        log_debug('_command_display_settings() catalog_name  "{0}"'.format(catalog_name))
+        log_debug('_command_display_settings() category_name "{0}"'.format(category_name))
+        prop_key = '{0} - {1}'.format(catalog_name, category_name)
+        log_debug('_command_display_settings() Loading props with key "{0}"'.format(prop_key))
+        mame_properties_dic = fs_load_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath())
+        prop_dic = mame_properties_dic[prop_key]
 
+        # --- Select menu ---
         dialog = xbmcgui.Dialog()
         menu_item = dialog.select('Display settings',
                                  ['Display mode',
@@ -1036,7 +1059,26 @@ class Main:
                                   'Default Banner', 'Default Poster',
                                   'Default Clearlogo'])
         if menu_item < 0: return
-        kodi_dialog_OK('Not coded yet. Sorry')
+        
+        # --- Display settings ---
+        if menu_item == 0:
+            # >> Krypton feature: preselect the current item.
+            # >> NOTE Preselect must be called with named parameter, otherwise it does not work well.
+            # See http://forum.kodi.tv/showthread.php?tid=250936&pid=2327011#pid2327011
+            if prop_dic['vm'] == VIEW_MODE_NORMAL: p_idx = 0
+            else:                                  p_idx = 1
+            log_debug('_command_display_settings() p_idx = "{0}"'.format(p_idx))
+            idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
+            log_debug('_command_display_settings() idx = "{0}"'.format(idx))
+            if idx < 0: return
+            if idx == 0:
+                prop_dic['vm'] = VIEW_MODE_NORMAL
+            elif idx == 1:
+                prop_dic['vm'] = VIEW_MODE_ALL
+
+        # >> Changes made. Refreash container
+        fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
+        kodi_refresh_container()
 
     def _command_add_mame_fav(self, machine_name):
         log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(machine_name))
