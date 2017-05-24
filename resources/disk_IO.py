@@ -145,6 +145,21 @@ def fs_new_disk_dic():
     return m
 
 #
+# ROMs database
+#
+def fs_new_rom_DB_dic():
+    m = {
+        'hasMergedROM'    : False,
+        'hasSplitROM'     : False,
+        'hasNonMergedROM' : False,
+        'merged_CDHs'     : [],
+        'split_CDHs'      : [],
+        'non_merged_CDHs' : []
+    }
+
+    return m
+
+#
 # Object used in MAME_assets_db.json
 #
 ASSET_MAME_KEY_LIST  = ['cabinet',  'cpanel',  'flyer',  'marquee',  'PCB',  'snap',  'title',  'clearlogo']
@@ -215,6 +230,13 @@ def fs_new_control_dic():
         'mechanical_machines' : 0,
         'dead_machines'       : 0,
         'samples_machines'    : 0,
+
+        'merged_ZIPs'     : 0,
+        'split_ZIPs'      : 0,
+        'non_merged_ZIPs' : 0,
+        'merged_CHDs'     : 0,
+        'split_CHDs'      : 0,
+        'non_merged_CHDs' : 0,
 
         # >> Filed in when building SL index
         'num_SL_files' : 0,
@@ -600,6 +622,7 @@ def fs_initial_flags(machine, m_render, m_rom):
 #   MAIN_ASSETS_DB_PATH  (empty JSON file)
 #   MAIN_PCLONE_DIC_PATH
 #   MAIN_CONTROL_PATH    (updated and saved JSON file)
+#   ROM_SETS_PATH
 #
 STOP_AFTER_MACHINES = 100000
 def fs_build_MAME_main_database(PATHS, settings, control_dic):
@@ -643,7 +666,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     nocoin_machines     = 0
     mechanical_machines = 0
     dead_machines       = 0
-    Merged_CHD_machines = 0
     samples_machines    = 0
 
     log_info('fs_build_MAME_main_database() Parsing MAME XML file ...')
@@ -937,11 +959,80 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             # >> Machine is a parent. Add to main_pclone_dic if not already there.
             if machine_name not in main_pclone_dic: main_pclone_dic[machine_name] = []
 
-    # -----------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
     # Make empty asset list
-    # -----------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
     assets_dic = {}
     for key in machines: assets_dic[key] = fs_new_MAME_asset()
+
+    # ---------------------------------------------------------------------------------------------
+    # Build ROM set database.
+    # This dabatase is used in the ROM/CHD scanner.
+    #
+    # BIOS   <machine />
+    # 
+    # Parent <machine />
+    #
+    # Clone  <machine />
+    #
+    # ---------------------------------------------------------------------------------------------
+    rom_sets = {}
+    num_ZIP_merged = num_ZIP_split = num_ZIP_non_merged = 0
+    num_CHD_merged = num_CHD_split = num_CHD_non_merged = 0
+    for key in machines:
+        rom_set = fs_new_rom_DB_dic()
+        m_rom = machines_roms[key]
+
+        # >> Useful conditionals
+        has_valid_ROMs = True if m_rom['roms'] else False
+        if has_valid_ROMs:
+            has_merged_ROMs = False
+            for rom_dic in m_rom['roms']:
+                if rom_dic['merge']:
+                    has_merged_ROMs = True
+                    break
+        else:
+            has_merged_ROMs = False
+        has_valid_CHDs = True if m_rom['disks'] else False
+
+        # >> In a Non-merged set the machine has a ROM ZIP file if there is a valid <rom> tag
+        rom_set['hasNonMergedROM'] = has_valid_ROMs
+
+        # >> In a Split set the machine has a ROM ZIP file if there is a valid <rom> tag
+        #    and 'merge' attribute is empty.
+        #    If there are no valid ROMs then no ROM ZIP file.
+        if has_valid_ROMs and not has_merged_ROMs:
+            rom_set['hasSplitROM'] = True
+        else:
+            rom_set['hasSplitROM'] = False
+
+        # >> In a Merged set the machine has a ROM ZIP file if it is a parent and the parent
+        #    has valid <rom> tags.
+        #    If a machine is a clone is does not have a ROM ZIP file.
+        if key in main_pclone_dic and has_valid_ROMs:
+            rom_set['hasMergedROM'] = True
+        else:
+            rom_set['hasMergedROM'] = False
+
+        # >> CHDs
+        if has_valid_CHDs:
+            for disk_dic in m_rom['disks']:
+                rom_set['non_merged_CDHs'].append(disk_dic['name'])
+                if disk_dic['merge']:
+                    rom_set['merged_CDHs'].append(disk_dic['name'])
+                else:
+                    rom_set['split_CDHs'].append(disk_dic['name'])
+
+        rom_sets[key] = rom_set
+
+        # --- Statistics ---
+        if rom_set['hasMergedROM']:    num_ZIP_merged += 1
+        if rom_set['hasSplitROM']:     num_ZIP_split += 1
+        if rom_set['hasNonMergedROM']: num_ZIP_non_merged += 1
+
+        if rom_set['merged_CDHs']:     num_CHD_merged += len(rom_set['merged_CDHs'])
+        if rom_set['split_CDHs']:      num_CHD_split += len(rom_set['split_CDHs'])
+        if rom_set['non_merged_CDHs']: num_CHD_non_merged += len(rom_set['non_merged_CDHs'])
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
@@ -963,6 +1054,13 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['dead_machines']       = dead_machines
     control_dic['samples_machines']    = samples_machines
 
+    control_dic['merged_ZIPs']     = num_ZIP_merged
+    control_dic['split_ZIPs']      = num_ZIP_split
+    control_dic['non_merged_ZIPs'] = num_ZIP_non_merged
+    control_dic['merged_CHDs']     = num_CHD_merged
+    control_dic['split_CHDs']      = num_CHD_split
+    control_dic['non_merged_CHDs'] = num_CHD_non_merged
+
     # -----------------------------------------------------------------------------
     # Now write simplified JSON
     # -----------------------------------------------------------------------------
@@ -973,6 +1071,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    fs_write_JSON_file(PATHS.ROM_SETS_PATH.getPath(), rom_sets)
     kodi_busydialog_OFF()
 
 def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic):
@@ -1898,15 +1997,15 @@ def fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Sa
     file.close()    
 
     # >> Update statistics
-    control_dic['ROMs_have']       = ROMs_have
-    control_dic['ROMs_missing']    = ROMs_missing
-    control_dic['ROMs_total']      = ROMs_total
-    control_dic['CHDs_have']       = CHDs_have
-    control_dic['CHDs_missing']    = CHDs_missing
-    control_dic['CHDs_total']      = CHDs_total
-    control_dic['Samples_have']    = Samples_have
-    control_dic['Samples_missing'] = Samples_missing
-    control_dic['Samples_total']   = Samples_total
+    # control_dic['ROMs_have']       = ROMs_have
+    # control_dic['ROMs_missing']    = ROMs_missing
+    # control_dic['ROMs_total']      = ROMs_total
+    # control_dic['CHDs_have']       = CHDs_have
+    # control_dic['CHDs_missing']    = CHDs_missing
+    # control_dic['CHDs_total']      = CHDs_total
+    # control_dic['Samples_have']    = Samples_have
+    # control_dic['Samples_missing'] = Samples_missing
+    # control_dic['Samples_total']   = Samples_total
 
 # -------------------------------------------------------------------------------------------------
 # Saves SL JSON databases, MAIN_CONTROL_PATH.

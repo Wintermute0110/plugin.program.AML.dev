@@ -68,6 +68,7 @@ class AML_Paths:
         self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
         self.MAIN_CONTROL_PATH    = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
         self.MAIN_PROPERTIES_PATH = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
+        self.ROM_SETS_PATH        = PLUGIN_DATA_DIR.pjoin('ROM_sets.json')
 
         # >> Catalogs
         self.CATALOG_DIR                        = PLUGIN_DATA_DIR.pjoin('catalogs')
@@ -1014,12 +1015,14 @@ class Main:
             info_text += "Nocoin: {0}\n".format(control_dic['nocoin_machines'])
             info_text += "Mechanical: {0}\n".format(control_dic['mechanical_machines'])
             info_text += "Dead: {0}\n".format(control_dic['dead_machines'])
-            t = "ROMs: {0} ({1} Merged ROMs / {2} ROMless)\n"
-            info_text += t.format(control_dic['Own_ROM_machines'], control_dic['Merged_ROM_machines'], 
-                                  control_dic['No_ROM_machines'])
-            t = "CHDs: {0} ({1} Merged CHDs)\n"
-            info_text += t.format(control_dic['Own_CHD_machines'], control_dic['Merged_CHD_machines'])
-            info_text += "Samples: {0}\n".format(control_dic['samples_machines'])
+
+            info_text += '\n[COLOR orange]ROM ZIP/CHD file count[/COLOR]\n'
+            info_text += "Merged set has {0} ZIP files\n".format(control_dic['merged_ZIPs'])
+            info_text += "Split set has {0} ZIP files\n".format(control_dic['split_ZIPs'])
+            info_text += "Non-merged set has {0} ZIP files\n".format(control_dic['non_merged_ZIPs'])
+            info_text += "Merged set has {0} CHD files\n".format(control_dic['merged_CHDs'])
+            info_text += "Split set has {0} CHD files\n".format(control_dic['split_CHDs'])
+            info_text += "Non-merged set has {0} CHD files\n".format(control_dic['non_merged_CHDs'])
 
             info_text += '\n[COLOR orange]Software Lists ROM count[/COLOR]\n'
             info_text += "Number of SL files: {0}\n".format(control_dic['num_SL_files'])
@@ -1618,11 +1621,21 @@ class Main:
             # --- Build all databases ---
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             fs_build_MAME_main_database(PATHS, self.settings, control_dic)
-            kodi_busydialog_ON()
-            machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+
+            # >> Load databases
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
+            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            pDialog.update(25)
+            machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            pDialog.update(50)
+            machine_roms = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+            pDialog.update(75)
             main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            kodi_busydialog_OFF()
-            fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic)
+            pDialog.update(100)
+            pDialog.close()
+
+            fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic)
             fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic, control_dic)
             kodi_notify('All databases built')
 
