@@ -285,15 +285,38 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     # NOTE Devices are excluded from main PClone list.
     def _render_root_list(self):
-        # >> Code Machines/Manufacturer/SF first. Rest are variations of those three.
-        self._render_root_list_row('Machines (with coin slot)',       self._misc_url_2_arg('catalog', 'None', 'category', 'Machines'))
-        self._render_root_list_row('Machines (no coin slot)',         self._misc_url_2_arg('catalog', 'None', 'category', 'NoCoin'))
-        self._render_root_list_row('Machines (mechanical)',           self._misc_url_2_arg('catalog', 'None', 'category', 'Mechanical'))
-        self._render_root_list_row('Machines (dead)',                 self._misc_url_2_arg('catalog', 'None', 'category', 'Dead'))
-        self._render_root_list_row('Machines [with no ROMs]',         self._misc_url_2_arg('catalog', 'None', 'category', 'NoROM'))
-        self._render_root_list_row('Machines [with CHDs]',            self._misc_url_2_arg('catalog', 'None', 'category', 'CHD'))
-        self._render_root_list_row('Machines [with Samples]',         self._misc_url_2_arg('catalog', 'None', 'category', 'Samples'))
-        self._render_root_list_row('Machines [BIOS]',                 self._misc_url_2_arg('catalog', 'None', 'category', 'BIOS'))
+        # >> Count number of ROMs in binary filters
+        c_dic = fs_get_cataloged_dic_parents(PATHS, 'None')
+        if c_dic:
+            # >> Main and binary filters
+            machines_str = 'Machines with coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Machines']['num_parents'])
+            nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
+            mecha_str    = 'Mechanical machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
+            dead_str     = 'Dead machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Dead']['num_parents'])
+            norom_str    = 'Machines [with no ROMs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoROM']['num_parents'])
+            chd_str      = 'Machines [with CHDs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['CHD']['num_parents'])
+            samples_str  = 'Machines [with Samples] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Samples']['num_parents'])
+            bios_str     = 'Machines [BIOS] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
+        else:
+            machines_str = 'Machines with coin slot'
+            nocoin_str   = 'Machines with no coin slot'
+            mecha_str    = 'Mechanical machines'
+            dead_str     = 'Dead machines'
+            norom_str    = 'Machines [with no ROMs]'
+            chd_str      = 'Machines [with CHDs]'
+            samples_str  = 'Machines [with Samples]'
+            bios_str     = 'Machines [BIOS]'
+
+        # >> Binary filters
+        self._render_root_list_row(machines_str, self._misc_url_2_arg('catalog', 'None', 'category', 'Machines'))
+        self._render_root_list_row(nocoin_str,   self._misc_url_2_arg('catalog', 'None', 'category', 'NoCoin'))
+        self._render_root_list_row(mecha_str,    self._misc_url_2_arg('catalog', 'None', 'category', 'Mechanical'))
+        self._render_root_list_row(dead_str,     self._misc_url_2_arg('catalog', 'None', 'category', 'Dead'))
+        self._render_root_list_row(norom_str,    self._misc_url_2_arg('catalog', 'None', 'category', 'NoROM'))
+        self._render_root_list_row(chd_str,      self._misc_url_2_arg('catalog', 'None', 'category', 'CHD'))
+        self._render_root_list_row(samples_str,  self._misc_url_2_arg('catalog', 'None', 'category', 'Samples'))
+        self._render_root_list_row(bios_str,     self._misc_url_2_arg('catalog', 'None', 'category', 'BIOS'))
+
         # self._render_root_list_row('Machines [Devices]',              self._misc_url_2_arg('catalog', 'None', 'category', 'Devices'))
         self._render_root_list_row('Machines by Category (Catver)',   self._misc_url_1_arg('catalog', 'Catver'))
         self._render_root_list_row('Machines by Category (Catlist)',  self._misc_url_1_arg('catalog', 'Catlist'))
