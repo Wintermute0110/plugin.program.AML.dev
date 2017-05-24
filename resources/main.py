@@ -266,10 +266,15 @@ class Main:
         self.settings['genre_path']    = __addon_obj__.getSetting('genre_path').decode('utf-8')
         self.settings['nplayers_path'] = __addon_obj__.getSetting('nplayers_path').decode('utf-8')
 
+        # --- ROM sets ---
+        self.settings['mame_rom_set'] = int(__addon_obj__.getSetting('mame_rom_set'))
+        self.settings['mame_chd_set'] = int(__addon_obj__.getSetting('mame_chd_set'))
+
         # --- Display ---
         self.settings['display_hide_nonworking'] = True if __addon_obj__.getSetting('display_hide_nonworking') == 'true' else False
         self.settings['display_hide_imperfect']  = True if __addon_obj__.getSetting('display_hide_imperfect') == 'true' else False
-        self.settings['display_available_only']  = True if __addon_obj__.getSetting('display_available_only') == 'true' else False
+        self.settings['display_rom_available']   = True if __addon_obj__.getSetting('display_rom_available') == 'true' else False
+        self.settings['display_chd_available']   = True if __addon_obj__.getSetting('display_chd_available') == 'true' else False
 
         # --- Advanced ---
         self.settings['log_level']               = int(__addon_obj__.getSetting('log_level'))
@@ -864,7 +869,7 @@ class Main:
                 if location == LOCATION_STANDARD:
                     # >> Read MAME machine information
                     kodi_busydialog_ON()
-                    MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                    MAME_db_dic     = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
                     MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
                     kodi_busydialog_OFF()
                     machine = MAME_db_dic[machine_name]
@@ -877,43 +882,16 @@ class Main:
                     window_title = 'Favourite MAME Machine Information'
 
                 # --- Make information string ---
-                info_text  = '[COLOR orange]Machine {0}[/COLOR]\n'.format(machine_name)
-                info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(machine['CHDs'])
-                info_text += "[COLOR skyblue]CHDs_merged[/COLOR]: {0}\n".format(machine['CHDs_merged'])
-                info_text += "[COLOR skyblue]bios_desc[/COLOR]: {0}\n".format(machine['bios_desc'])
-                info_text += "[COLOR skyblue]bios_name[/COLOR]: {0}\n".format(machine['bios_name'])
-                info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
-                info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])
+                info_text  = '[COLOR orange]Machine {0} / Render information[/COLOR]\n'.format(machine_name)
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
-                info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
-                info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(machine['control_type'])
                 info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
-                info_text += "[COLOR skyblue]device_list[/COLOR]: {0}\n".format(machine['device_list'])
-                # info_text += "[COLOR skyblue]device_tags[/COLOR]: {0}\n".format(machine['device_tags'])
-                info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(machine['display_rotate'])
-                info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(machine['display_tag'])
-                info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(machine['display_type'])
                 info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
-                info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
-                info_text += "[COLOR skyblue]hasCoin[/COLOR]: {0}\n".format(machine['hasCoin'])                
-                info_text += "[COLOR skyblue]hasROMs[/COLOR]: {0}\n".format(machine['hasROMs'])
-                info_text += "[COLOR skyblue]hasROMs_merged[/COLOR]: {0}\n".format(machine['hasROMs_merged'])                
+                info_text += "[COLOR violet]flags[/COLOR]: '{0}'\n".format(machine['flags'])
                 info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
-                info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(machine['isDead'])
                 info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
-                info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(machine['isMechanical'])
                 if location == LOCATION_MAME_FAVS:
                     info_text += "[COLOR slateblue]mame_version[/COLOR]: {0}\n".format(machine['mame_version'])
                 info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
-                info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
-                info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
-                info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
-                info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(machine['softwarelists'])
-                info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
-                info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(machine['status_CHD'])
-                info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(machine['status_ROM'])
-                info_text += "[COLOR violet]status_SAM[/COLOR]: '{0}'\n".format(machine['status_SAM'])
-                info_text += "[COLOR violet]status_SL[/COLOR]: '{0}'\n".format(machine['status_SL'])
                 info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
 
                 info_text += '\n[COLOR orange]Asset/artwork information[/COLOR]\n'

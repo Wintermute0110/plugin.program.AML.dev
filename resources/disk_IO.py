@@ -198,6 +198,7 @@ def fs_new_control_dic():
     C = {
         # >> Filed in when extracting MAME XML
         'total_machines' : 0,
+
         # >> Files in when building main MAME database
         'mame_version'        : 'Unknown. MAME database not built',
         'catver_version'      : 'Unknown. MAME database not built',
@@ -213,16 +214,13 @@ def fs_new_control_dic():
         'nocoin_machines'     : 0,
         'mechanical_machines' : 0,
         'dead_machines'       : 0,
-        'Own_ROM_machines'    : 0,
-        'Merged_ROM_machines' : 0,
-        'No_ROM_machines'     : 0,
-        'Own_CHD_machines'    : 0,
-        'Merged_CHD_machines' : 0,
         'samples_machines'    : 0,
+
         # >> Filed in when building SL index
         'num_SL_files' : 0,
         'num_SL_ROMs'  : 0,
         'num_SL_CHDs'  : 0,
+
         # >> Filed in by the MAME ROM/CHD/Samples scanner
         'ROMs_have'       : 0,
         'ROMs_total'      : 0,
