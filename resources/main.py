@@ -57,15 +57,17 @@ LOCATION_SL_FAVS   = 'SL_FAVS'
 class AML_Paths:
     def __init__(self):
         # >> MAME XML, main database and main PClone list
-        self.MAME_XML_PATH               = PLUGIN_DATA_DIR.pjoin('MAME.xml')
-        self.MAME_STDOUT_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stdout.log')
-        self.MAME_STDERR_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_stderr.log')
-        self.MAME_OUTPUT_PATH            = PLUGIN_DATA_DIR.pjoin('MAME_output.log')
-        self.MAIN_DB_PATH                = PLUGIN_DATA_DIR.pjoin('MAME_main_db.json')
-        self.MAIN_PCLONE_DIC_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
-        self.MAIN_CONTROL_PATH           = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
-        self.MAIN_ASSETS_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_assets_db.json')
-        self.MAIN_PROPERTIES_PATH        = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
+        self.MAME_XML_PATH        = PLUGIN_DATA_DIR.pjoin('MAME.xml')
+        self.MAME_STDOUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_stdout.log')
+        self.MAME_STDERR_PATH     = PLUGIN_DATA_DIR.pjoin('log_stderr.log')
+        self.MAME_OUTPUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_output.log')
+        self.MAIN_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_main_db.json')
+        self.RENDER_DB_PATH       = PLUGIN_DATA_DIR.pjoin('MAME_render_db.json')
+        self.ROMS_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_roms_db.json')
+        self.MAIN_ASSETS_DB_PATH  = PLUGIN_DATA_DIR.pjoin('MAME_assets_db.json')
+        self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
+        self.MAIN_CONTROL_PATH    = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
+        self.MAIN_PROPERTIES_PATH = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
 
         # >> Catalogs
         self.CATALOG_DIR                        = PLUGIN_DATA_DIR.pjoin('catalogs')
@@ -110,11 +112,12 @@ class AML_Paths:
         self.FAV_SL_ROMS_PATH            = PLUGIN_DATA_DIR.pjoin('Favourite_SL_ROMs.json')
 
         # >> Reports
-        self.REPORT_MAME_SCAN_ROMS_PATH  = PLUGIN_DATA_DIR.pjoin('Report_ROM_scanner.txt')
-        self.REPORT_MAME_SCAN_CHDS_PATH  = PLUGIN_DATA_DIR.pjoin('Report_CHD_scanner.txt')
-        self.REPORT_MAME_SCAN_SAMP_PATH  = PLUGIN_DATA_DIR.pjoin('Report_Samples_scanner.txt')
-        self.REPORT_SL_SCAN_ROMS_PATH    = PLUGIN_DATA_DIR.pjoin('Report_SL_ROM_scanner.txt')
-        self.REPORT_SL_SCAN_CHDS_PATH    = PLUGIN_DATA_DIR.pjoin('Report_SL_CHD_scanner.txt')
+        self.REPORTS_DIR                 = PLUGIN_DATA_DIR.pjoin('reports')
+        self.REPORT_MAME_SCAN_ROMS_PATH  = self.REPORTS_DIR.pjoin('Report_ROM_scanner.txt')
+        self.REPORT_MAME_SCAN_CHDS_PATH  = self.REPORTS_DIR.pjoin('Report_CHD_scanner.txt')
+        self.REPORT_MAME_SCAN_SAMP_PATH  = self.REPORTS_DIR.pjoin('Report_Samples_scanner.txt')
+        self.REPORT_SL_SCAN_ROMS_PATH    = self.REPORTS_DIR.pjoin('Report_SL_ROM_scanner.txt')
+        self.REPORT_SL_SCAN_CHDS_PATH    = self.REPORTS_DIR.pjoin('Report_SL_CHD_scanner.txt')
 PATHS = AML_Paths()
 
 class Main:
@@ -145,6 +148,7 @@ class Main:
         if not PLUGIN_DATA_DIR.exists():   PLUGIN_DATA_DIR.makedirs()
         if not PATHS.SL_DB_DIR.exists():   PATHS.SL_DB_DIR.makedirs()
         if not PATHS.CATALOG_DIR.exists(): PATHS.CATALOG_DIR.makedirs()
+        if not PATHS.REPORTS_DIR.exists(): PATHS.REPORTS_DIR.makedirs()
 
         # --- Process URL ---
         self.base_url     = sys.argv[0]
@@ -368,7 +372,7 @@ class Main:
 
         # >> Load main MAME info DB
         loading_ticks_start = time.time()
-        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        MAME_db_dic     = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         # >> Load catalog index
@@ -379,9 +383,9 @@ class Main:
         else:
             kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
             return
-        loading_ticks_end = time.time()
 
         # >> Render parent main list
+        loading_ticks_end = time.time()
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
         if prop_dic['vm'] == VIEW_MODE_NORMAL:
@@ -416,18 +420,18 @@ class Main:
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
         # >> Load main MAME info DB
-        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+        loading_ticks_start = time.time()
+        MAME_db_dic     = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
 
-        # >> Get catalog name
-        catalog_name = self._get_catalog_name(clist_name)
-
         # >> Render parent first
+        loading_ticks_end = time.time()
+        rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
         machine = MAME_db_dic[parent_name]
         assets  = MAME_assets_dic[parent_name]
-        self._render_indexed_machine_row(parent_name, machine, assets, False, clist_name, catalog_name, catalog_item_name)
+        self._render_catalog_machine_row(parent_name, machine, assets, False, catalog_name, category_name)
 
         # >> Render clones belonging to parent in this category
         for p_name in main_pclone_dic[parent_name]:
@@ -435,8 +439,13 @@ class Main:
             assets  = MAME_assets_dic[p_name]
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            self._render_indexed_machine_row(p_name, machine, assets, False, clist_name, catalog_name, catalog_item_name)
+            self._render_catalog_machine_row(p_name, machine, assets, False, catalog_name, category_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+        rendering_ticks_end = time.time()
+
+        # --- DEBUG Data loading/rendering statistics ---
+        log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
+        log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
     def _render_catalog_list_row(self, catalog_name, catalog_key, num_machines):
         # --- Create listitem row ---
@@ -469,16 +478,12 @@ class Main:
             # >> Machine has clones
             display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
         else:
-            # >> Machine has no clones
-            # --- Mark Status ---
-            status = '{0}{1}{2}{3}{4}'.format(machine['status_ROM'], machine['status_CHD'],
-                                              machine['status_SAM'], machine['status_SL'],
-                                              machine['status_Device'])
-            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+            # >> Machine has no clones, show flags
+            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(machine['flags'])
 
             # --- Mark Devices, BIOS and clones ---
-            if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
             if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+            if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
             if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
 
             # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
@@ -1743,7 +1748,11 @@ class Main:
                 # --- Parse MAME XML and generate main database and PClone list ---
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 log_info('_command_setup_plugin() Generating MAME main database and PClone list...')
-                fs_build_MAME_main_database(PATHS, self.settings, control_dic)
+                try:
+                    fs_build_MAME_main_database(PATHS, self.settings, control_dic)
+                except GeneralError as e:
+                    log_error(e.msg)
+                    raise SystemExit
                 kodi_notify('Main MAME database built')
 
             # --- Build MAME catalogs ---
@@ -1754,9 +1763,11 @@ class Main:
                 # --- Read main database and control dic ---
                 kodi_busydialog_ON()
                 machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                machine_roms    = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
                 main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
                 kodi_busydialog_OFF()
-                fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic)
+                fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic)
                 kodi_notify('Indices and catalogs built')
 
             # --- Build Software Lists indices/catalogs ---
@@ -1768,7 +1779,7 @@ class Main:
 
                 # --- Read main database and control dic ---
                 kodi_busydialog_ON()
-                machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                machines        = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
                 main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
                 control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 kodi_busydialog_OFF()

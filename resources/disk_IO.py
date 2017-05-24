@@ -38,6 +38,36 @@ except:
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher data model
 # -------------------------------------------------------------------------------------------------
+def fs_new_machine_dic():
+    m = {
+        # >> <machine> attributes
+        'sourcefile'     : '',
+        'isMechanical'   : False,
+        'romof'          : '',
+        'sampleof'       : '',
+        # >> Other tags from MAME XML
+        'catver'         : '', # External catalog
+        'catlist'        : '', # External catalog
+        'genre'          : '', # External catalog
+        'nplayers'       : '', # External catalog
+        'display_tag'    : [],
+        'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
+        'display_rotate' : [], # (0|90|180|270) #REQUIRED>
+        'control_type'   : [],
+        'coins'          : 0,
+        'softwarelists'  : [],
+        'device_list'    : [], # List of <instance name="cartridge1">. Ignore briefname
+        'device_tags'    : [],
+        # >> Custom AML data
+        'isDead'         : False,
+    }
+
+    return m
+
+#
+# Object used in MAME_render_db.json
+#   flags -> ROM, CHD, Samples, SoftwareLists, Devices
+#
 # Status flags meaning:
 #   -  Machine doesn't have ROMs | Machine doesn't have Software Lists
 #   ?  Machine has own ROMs and ROMs not been scanned
@@ -50,48 +80,73 @@ except:
 #   d  Machine has device/s but are not mandatory (can be booted without the device).
 #   D  Machine has device/s and must be plugged in order to boot.
 #
-def fs_new_machine():
+def fs_new_machine_render_dic():
     m = {
-        'sourcefile'     : '',
+        # >> <machine> attributes
         'isBIOS'         : False,
         'isDevice'       : False,
-        'isMechanical'   : False,
         'cloneof'        : '',
-        'romof'          : '',
-        'sampleof'       : '',
+        # >> Other tags from MAME XML
         'description'    : '',
         'year'           : '',
         'manufacturer'   : '',
-        'catver'         : '',
-        'catlist'        : '',
-        'genre'          : '',
-        'nplayers'       : '',
-        'display_tag'    : [],
-        'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
-        'display_rotate' : [], # (0|90|180|270) #REQUIRED>
-        'control_type'   : [],
-        'hasCoin'        : False,
-        'coins'          : 0,
         'driver_status'  : '',
-        'CHDs'           : [],
-        'CHDs_merged'    : [],
-        'softwarelists'  : [],
-        'isDead'         : False,
-        'hasROMs'        : False,
-        'hasROMs_merged' : False,
-        'status_ROM'     : '-',
-        'status_CHD'     : '-',
-        'status_SAM'     : '-',
-        'status_SL'      : '-',
-        'status_Device'  : '-',
-        'device_list'    : [],  # List of <instance name="cartridge1">. Ignore briefname
-        'device_tags'    : [],
-        'bios_name'      : [],  # List of <biosset name="" >
-        'bios_desc'      : [],  # List of <biosset description="" >
+        # >> Custom AML data
+        'flags'          : '-----',
     }
 
     return m
 
+#
+# Object used in MAME_roms_db.json
+# machine_roms = {
+#     'machine_name' : {
+#         'bios'  : [ ... ],
+#         'roms'  : [ ... ],
+#         'disks' : [ ... ]
+#     }
+# }
+#
+def fs_new_rom_object():
+    r = {
+        'bios'  : [],
+        'roms'  : [],
+        'disks' : []
+    }
+
+    return r
+
+def fs_new_bios_dic():
+    m = {
+        'name'        : '',
+        'description' : ''
+    }
+
+    return m
+
+def fs_new_rom_dic():
+    m = {
+        'name'  : '',
+        'merge' : '',
+        'bios'  : '',
+        'size'  : 0,
+        'crc'  : '' # crc allows to know if ROM is valid or not
+    }
+
+    return m
+
+def fs_new_disk_dic():
+    m = {
+        'name'  : '',
+        'merge' : '',
+        'sha1'  : '' # sha1 allows to know if CHD is valid or not. CHDs don't have crc
+    }
+
+    return m
+
+#
+# Object used in MAME_assets_db.json
+#
 ASSET_MAME_KEY_LIST  = ['cabinet',  'cpanel',  'flyer',  'marquee',  'PCB',  'snap',  'title',  'clearlogo']
 ASSET_MAME_PATH_LIST = ['cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles', 'clearlogos']
 def fs_new_MAME_asset():
@@ -249,6 +304,10 @@ class CriticalError(DiskError):
     def __init__(self, msg):
         self.msg = msg
 
+class GeneralError(DiskError):
+    def __init__(self, msg):
+        self.msg = msg
+
 # -------------------------------------------------------------------------------------------------
 # JSON write/load
 # -------------------------------------------------------------------------------------------------
@@ -348,8 +407,8 @@ def fs_load_Catver_ini(filename):
     try:
         f = open(filename, 'rt')
     except IOError:
-        log_info('fs_load_Catver_ini() IOError opening "{0}"'.format(filename))
-        return {}
+        log_info('fs_load_Catver_ini() (IOError) opening "{0}"'.format(filename))
+        return (categories_dic, catver_version)
     for cat_line in f:
         stripped_line = cat_line.strip()
         if __debug_do_list_categories: print('Line "' + stripped_line + '"')
@@ -394,8 +453,8 @@ def fs_load_Catlist_ini(filename):
     try:
         f = open(filename, 'rt')
     except IOError:
-        log_info('fs_load_Catlist_ini() IOError opening "{0}"'.format(filename))
-        return {}
+        log_info('fs_load_Catlist_ini() (IOError) opening "{0}"'.format(filename))
+        return (catlist_dic, catlist_version)
     for file_line in f:
         stripped_line = file_line.strip()
         # Skip comments: lines starting with ';;'
@@ -429,8 +488,8 @@ def fs_load_Genre_ini(filename):
     try:
         f = open(filename, 'rt')
     except IOError:
-        log_info('fs_load_Genre_ini() IOError opening "{0}"'.format(filename))
-        return {}
+        log_info('fs_load_Genre_ini() (IOError) opening "{0}"'.format(filename))
+        return (genre_dic, genre_version)
     for file_line in f:
         stripped_line = file_line.strip()
         # Skip comments: lines starting with ';;'
@@ -472,8 +531,8 @@ def fs_load_nplayers_ini(filename):
     try:
         f = open(filename, 'rt')
     except IOError:
-        log_info('fs_load_nplayers_ini() IOError opening "{0}"'.format(filename))
-        return {}
+        log_info('fs_load_nplayers_ini() (IOError) opening "{0}"'.format(filename))
+        return (categories_dic, nplayers_version)
     for cat_line in f:
         stripped_line = cat_line.strip()
         if __debug_do_list_categories: print('Line "' + stripped_line + '"')
@@ -507,8 +566,42 @@ def fs_load_nplayers_ini(filename):
 
     return (categories_dic, nplayers_version)
 
+def fs_initial_flags(machine, m_render, m_rom):
+    flag_ROM = '?'
+    flag_CHD = '?'
+    if machine['sampleof']: flag_Samples = '?'
+    else:                   flag_Samples = '-'
+    if machine['softwarelists']: flag_SL  = 'L'
+    else:                        flag_SL  = '-'
+    if machine['device_list']:
+        num_dev_mandatory = 0
+        for i in range(len(machine['device_list'])):
+            device = machine['device_list'][i]
+            tags   = machine['device_tags'][i]
+            if tags['d_mandatory']: 
+                flag_Devices = 'D'
+                num_dev_mandatory += 1
+            else: 
+                flag_Devices  = 'd'
+        if num_dev_mandatory > 2:
+            message = 'Machine {0} has {1} mandatory devices'.format(machine_name, num_dev_mandatory)
+            raise CriticalError(message)
+    else:
+        flag_Devices  = '-'
+    flags_str = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
+
+    return flags_str
+
 # -------------------------------------------------------------------------------------------------
-# Saves MAIN_DB_PATH, MAIN_PCLONE_DIC_PATH, MAIN_CONTROL_PATH, MAIN_ASSETS_DB_PATH
+# Reads and processes MAME.xml
+#
+# Saves:
+#   MAIN_DB_PATH
+#   RENDER_DB_PATH
+#   ROMS_DB_PATH
+#   MAIN_ASSETS_DB_PATH  (empty JSON file)
+#   MAIN_PCLONE_DIC_PATH
+#   MAIN_CONTROL_PATH    (updated and saved JSON file)
 #
 STOP_AFTER_MACHINES = 100000
 def fs_build_MAME_main_database(PATHS, settings, control_dic):
@@ -539,9 +632,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
     # --- Process MAME XML ---
     total_machines = control_dic['total_machines']
-    machines       = {}
-    machine_name   = ''
-    num_iteration  = 0
+    machines = {}
+    machines_render = {}
+    machines_roms = {}
 
     processed_machines  = 0
     parent_machines     = 0
@@ -552,14 +645,11 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     nocoin_machines     = 0
     mechanical_machines = 0
     dead_machines       = 0
-    Own_ROM_machines    = 0
-    Merged_ROM_machines = 0
-    No_ROM_machines     = 0
-    Own_CHD_machines    = 0
     Merged_CHD_machines = 0
     samples_machines    = 0
 
     log_info('fs_build_MAME_main_database() Parsing MAME XML file ...')
+    num_iteration = 0
     for event, elem in context:
         # --- Debug the elements we are iterating from the XML file ---
         # print('Event     {0:6s} | Elem.tag    "{1}"'.format(event, elem.tag))
@@ -568,17 +658,19 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
         # <machine> tag start event includes <machine> attributes
         if event == 'start' and elem.tag == 'machine':
-            machine  = fs_new_machine()
+            machine  = fs_new_machine_dic()
+            m_render = fs_new_machine_render_dic()
+            m_rom    = fs_new_rom_object()
             runnable = False
             num_displays = 0
 
-            # --- Process <machine> attributes ---
+            # --- Process <machine> attributes ----------------------------------------------------
             # name is #REQUIRED attribute
             if 'name' not in elem.attrib:
                 log_error('name attribute not found in <machine> tag.')
                 raise CriticalError('name attribute not found in <machine> tag')
             else:
-                machine_name = elem.attrib['name']
+                m_name = elem.attrib['name']
 
             # sourcefile #IMPLIED attribute
             if 'sourcefile' not in elem.attrib:
@@ -598,10 +690,10 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
                 machine['sourcefile'] = raw_driver_name
 
             # Optional, default no
-            if 'isbios' not in elem.attrib:       machine['isBIOS'] = False
-            else:                                 machine['isBIOS'] = True if elem.attrib['isbios'] == 'yes' else False
-            if 'isdevice' not in elem.attrib:     machine['isDevice'] = False
-            else:                                 machine['isDevice'] = True if elem.attrib['isdevice'] == 'yes' else False
+            if 'isbios' not in elem.attrib:       m_render['isBIOS'] = False
+            else:                                 m_render['isBIOS'] = True if elem.attrib['isbios'] == 'yes' else False
+            if 'isdevice' not in elem.attrib:     m_render['isDevice'] = False
+            else:                                 m_render['isDevice'] = True if elem.attrib['isdevice'] == 'yes' else False
             if 'ismechanical' not in elem.attrib: machine['isMechanical'] = False
             else:                                 machine['isMechanical'] = True if elem.attrib['ismechanical'] == 'yes' else False
             # Optional, default yes
@@ -609,72 +701,93 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             else:                                 runnable = False if elem.attrib['runnable'] == 'no' else True
 
             # cloneof is #IMPLIED attribute
-            if 'cloneof' in elem.attrib:
-                machine['cloneof'] = elem.attrib['cloneof']
+            if 'cloneof' in elem.attrib: m_render['cloneof'] = elem.attrib['cloneof']
 
             # romof is #IMPLIED attribute
-            if 'romof' in elem.attrib:
-                machine['romof'] = elem.attrib['romof']
+            if 'romof' in elem.attrib: machine['romof'] = elem.attrib['romof']
 
             # sampleof is #IMPLIED attribute
-            if 'sampleof' in elem.attrib:
-                machine['sampleof'] = elem.attrib['sampleof']
+            if 'sampleof' in elem.attrib: machine['sampleof'] = elem.attrib['sampleof']
 
             # >> Add catver/catlist/genre
-            if machine_name in categories_dic: machine['catver']   = categories_dic[machine_name]
-            else:                              machine['catver']   = '[ Not set ]'
-            if machine_name in catlist_dic:    machine['catlist']  = catlist_dic[machine_name]
-            else:                              machine['catlist']  = '[ Not set ]'
-            if machine_name in genre_dic:      machine['genre']    = genre_dic[machine_name]
-            else:                              machine['genre']    = '[ Not set ]'
-            if machine_name in nplayers_dic:   machine['nplayers'] = nplayers_dic[machine_name]
-            else:                              machine['nplayers'] = '[ Not set ]'
+            if m_name in categories_dic: machine['catver']   = categories_dic[m_name]
+            else:                        machine['catver']   = '[ Not set ]'
+            if m_name in catlist_dic:    machine['catlist']  = catlist_dic[m_name]
+            else:                        machine['catlist']  = '[ Not set ]'
+            if m_name in genre_dic:      machine['genre']    = genre_dic[m_name]
+            else:                        machine['genre']    = '[ Not set ]'
+            if m_name in nplayers_dic:   machine['nplayers'] = nplayers_dic[m_name]
+            else:                        machine['nplayers'] = '[ Not set ]'
 
             # >> Increment number of machines
             processed_machines += 1
 
         elif event == 'start' and elem.tag == 'description':
-            machine['description'] = unicode(elem.text)
+            m_render['description'] = unicode(elem.text)
 
         elif event == 'start' and elem.tag == 'year':
-            machine['year'] = unicode(elem.text)
+            m_render['year'] = unicode(elem.text)
 
         elif event == 'start' and elem.tag == 'manufacturer':
-            machine['manufacturer'] = unicode(elem.text)
+            m_render['manufacturer'] = unicode(elem.text)
 
         # >> Check in machine has BIOS
         # <biosset> name and description attributes are mandatory
         elif event == 'start' and elem.tag == 'biosset':
-            machine['bios_name'].append(unicode(elem.attrib['name']))
-            machine['bios_desc'].append(unicode(elem.attrib['description']))
+            # --- Add BIOS to ROMS_DB_PATH ---
+            bios = fs_new_bios_dic()
+            bios['name'] = unicode(elem.attrib['name'])
+            bios['description'] = unicode(elem.attrib['description'])
+            m_rom['bios'].append(bios)
 
         # >> Check in machine has ROMs
-        # ROM is considered to be valid if sha1 has exists. Keep in mind that a machine may have
-        # many ROMs, some valid, some invalid: just 1 valid ROM is enough.
-        # NOTE A ROM is unique to that machine if the <rom> tag does not have the 'merge' attribute.
-        #      For example, snes and snespal both have <rom> tags that point to exactly the same
-        #      BIOS. However, in a split set only snes.zip ROM set exists.
-        #      snes    -> <rom name="spc700.rom" size="64" crc="44bb3a40" ... >
-        #      snespal -> <rom name="spc700.rom" merge="spc700.rom" size="64" crc="44bb3a40" ... >
-        # In AML, hasROM actually means "machine has it own ROMs not found somewhere else".
+        # A) ROM is considered to be valid if sha1 has exists. 
+        #    Are there ROMs with no sha1? There are, for example 
+        #    machine 1941j <rom name="yi22b.1a" size="279" status="nodump" region="bboardplds" />
+        #
+        # B) A ROM is unique to that machine if the <rom> tag does not have the 'merge' attribute.
+        #    For example, snes and snespal both have <rom> tags that point to exactly the same
+        #    BIOS. However, in a split set only snes.zip ROM set exists.
+        #    snes    -> <rom name="spc700.rom" size="64" crc="44bb3a40" ... >
+        #    snespal -> <rom name="spc700.rom" merge="spc700.rom" size="64" crc="44bb3a40" ... >
+        # C) In AML, hasROM actually means "machine has it own ROMs not found somewhere else".
+        #
         elif event == 'start' and elem.tag == 'rom':
-            if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['hasROMs_merged'] = True
-            if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['hasROMs']        = True
+            # --- Research ---
+            # if not 'sha1' in elem.attrib:
+            #     raise GeneralError('ROM with no sha1 (machine {0})'.format(machine_name))
+
+            # --- Add BIOS to ROMS_DB_PATH ---
+            rom = fs_new_rom_dic()
+            rom['name']  = unicode(elem.attrib['name'])
+            rom['merge'] = unicode(elem.attrib['merge']) if 'merge' in elem.attrib else ''
+            rom['bios']  = unicode(elem.attrib['bios']) if 'bios' in elem.attrib else ''
+            rom['size']  = int(elem.attrib['size']) if 'size' in elem.attrib else 0
+            rom['crc']   = unicode(elem.attrib['crc']) if 'crc' in elem.attrib else ''
+            m_rom['roms'].append(rom)
 
         # >> Check in machine has CHDs
         # CHD is considered valid if SHA1 hash exists only. Keep in mind that there can be multiple
         # disks per machine, some valid, some invalid: just one valid CHD is OK.
         elif event == 'start' and elem.tag == 'disk':
             # <!ATTLIST disk name CDATA #REQUIRED>
-            if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['CHDs_merged'].append(elem.attrib['name'])
-            if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['CHDs'].append(elem.attrib['name'])
+            # if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['CHDs_merged'].append(elem.attrib['name'])
+            # if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['CHDs'].append(elem.attrib['name'])
+
+            # --- Add BIOS to ROMS_DB_PATH ---
+            disk = fs_new_disk_dic()
+            disk['name']  = unicode(elem.attrib['name'])
+            disk['merge'] = unicode(elem.attrib['merge']) if 'merge' in elem.attrib else ''
+            disk['sha1']  = unicode(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
+            m_rom['disks'].append(disk)
 
         # Some machines have more than one display tag (for example aquastge has 2).
         # Other machines have no display tag (18w)
         elif event == 'start' and elem.tag == 'display':
+            rotate_str = elem.attrib['rotate'] if 'rotate' in elem.attrib else '0'
             machine['display_tag'].append(elem.attrib['tag'])
             machine['display_type'].append(elem.attrib['type'])
-            machine['display_rotate'].append(elem.attrib['rotate'])
+            machine['display_rotate'].append(rotate_str)
             num_displays += 1
 
         # Some machines have no controls at all.
@@ -682,7 +795,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             # coins is #IMPLIED attribute
             if 'coins' in elem.attrib:
                 machine['coins'] = int(elem.attrib['coins'])
-                machine['hasCoin'] = True if machine['coins'] > 0 else False
 
             # >> Iterate children of <input> and search for <control> tags
             for control_child in elem:
@@ -691,7 +803,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
         elif event == 'start' and elem.tag == 'driver':
             # status is #REQUIRED attribute
-            machine['driver_status'] = unicode(elem.attrib['status'])
+            m_render['driver_status'] = unicode(elem.attrib['status'])
 
         elif event == 'start' and elem.tag == 'softwarelist':
             # name is #REQUIRED attribute
@@ -736,7 +848,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         # --- <machine> tag closing. Add new machine to database ---
         elif event == 'end' and elem.tag == 'machine':
             # >> Assumption 1: isdevice = True if and only if runnable = False
-            if machine['isDevice'] == runnable:
+            if m_render['isDevice'] == runnable:
                 print("Machine {0}: machine['isDevice'] == runnable".format(machine_name))
                 sys.exit(10)
 
@@ -752,7 +864,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             #     sys.exit(10)
 
             # >> Mark dead machines. A machine is dead if Status is preliminary AND have no controls
-            if machine['driver_status'] == 'preliminary' and not machine['control_type']:
+            if m_render['driver_status'] == 'preliminary' and not machine['control_type']:
                 machine['isDead'] = True
 
             # >> Delete XML element once it has been processed
@@ -760,53 +872,23 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
             # >> Fill machine status
             # r/R flag takes precedence over * flag
-            if machine['hasROMs']: machine['status_ROM'] = '?'
-            else:
-                if machine['hasROMs_merged']: machine['status_ROM'] = '*'
-                else:                         machine['status_ROM'] = '-'
-            if machine['CHDs']: machine['status_CHD'] = '?'
-            else:
-                if machine['CHDs_merged']: machine['status_CHD'] = '*'
-                else:                      machine['status_CHD'] = '-'
-            if machine['sampleof']:      machine['status_SAM'] = '?'
-            else:                        machine['status_SAM'] = '-'
-            if machine['softwarelists']: machine['status_SL']  = 'L'
-            else:                        machine['status_SL']  = '-'
-            if machine['device_list']:
-                num_dev_mandatory = 0
-                for i in range(len(machine['device_list'])):
-                    device = machine['device_list'][i]
-                    tags   = machine['device_tags'][i]
-                    if tags['d_mandatory']: 
-                        machine['status_Device']  = 'D'
-                        num_dev_mandatory += 1
-                    else: 
-                        machine['status_Device']  = 'd'
-                if num_dev_mandatory > 2:
-                    message = 'Machine {0} has {1} mandatory devices'.format(machine_name, num_dev_mandatory)
-                    raise CriticalError(message)
-            else:
-                machine['status_Device']  = '-'
+            m_render['flags'] = fs_initial_flags(machine, m_render, m_rom)
 
             # >> Compute statistics
-            if machine['cloneof']:            parent_machines += 1
+            if m_render['cloneof']:            parent_machines += 1
             else:                             clone_machines += 1
-            if machine['isDevice']:           devices_machines += 1
-            if machine['isBIOS']:             BIOS_machines += 1
-            if machine['hasCoin']:            coin_machines += 1
+            if m_render['isDevice']:           devices_machines += 1
+            if m_render['isBIOS']:             BIOS_machines += 1
+            if machine['coins'] > 0:         coin_machines += 1
             else:                             nocoin_machines += 1
-            if machine['isMechanical']:       mechanical_machines += 1            
-            if machine['isDead']:             dead_machines += 1
-            if machine['hasROMs']:            Own_ROM_machines += 1
-            else:
-                if machine['hasROMs_merged']: Merged_ROM_machines += 1
-                else:                         No_ROM_machines += 1
-            if machine['CHDs']:               Own_CHD_machines += 1
-            elif machine['CHDs_merged']:      Merged_CHD_machines += 1
-            if machine['sampleof']:           samples_machines += 1
+            if machine['isMechanical']: mechanical_machines += 1            
+            if machine['isDead']:       dead_machines += 1
+            if machine['sampleof']:     samples_machines += 1
 
             # >> Add new machine
-            machines[machine_name] = machine
+            machines[m_name] = machine
+            machines_render[m_name] = m_render
+            machines_roms[m_name] = m_rom
 
         # --- Print something to prove we are doing stuff ---
         num_iteration += 1
@@ -839,8 +921,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     log_info('Making PClone list...')
     main_pclone_dic = {}
     main_clone_to_parent_dic = {}
-    for machine_name in machines:
-        machine = machines[machine_name]
+    for machine_name in machines_render:
+        machine = machines_render[machine_name]
         # >> Exclude devices
         if machine['isDevice']: continue
 
@@ -881,11 +963,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['nocoin_machines']     = nocoin_machines
     control_dic['mechanical_machines'] = mechanical_machines
     control_dic['dead_machines']       = dead_machines
-    control_dic['Own_ROM_machines']    = Own_ROM_machines    
-    control_dic['Merged_ROM_machines'] = Merged_ROM_machines
-    control_dic['No_ROM_machines']     = No_ROM_machines
-    control_dic['Own_CHD_machines']    = Own_CHD_machines    
-    control_dic['Merged_CHD_machines'] = Merged_CHD_machines
     control_dic['samples_machines']    = samples_machines
 
     # -----------------------------------------------------------------------------
@@ -893,12 +970,14 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # -----------------------------------------------------------------------------
     kodi_busydialog_ON()
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+    fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
+    fs_write_JSON_file(PATHS.ROMS_DB_PATH.getPath(), machines_roms)
+    fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-    fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     kodi_busydialog_OFF()
 
-def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
+def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic):
     # >> Progress dialog
     NUM_CATALOGS = len(CATALOG_NAME_LIST)
     pDialog_line1 = 'Building catalogs ...'
@@ -919,7 +998,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         if machine['isMechanical']: continue
-        if not machine['hasCoin']: continue
+        if machine['coins'] == 0: continue
         if machine['isDead']: continue
         # >> Add parent to parent list
         parent_list.append(parent_name)
@@ -937,7 +1016,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         if machine['isMechanical']: continue
-        if machine['hasCoin']: continue
+        if machine['coins'] > 0: continue
         if machine['isDead']: continue
         parent_list.append(parent_name)
         all_list.append(parent_name)
@@ -979,26 +1058,27 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     all_list = []
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
-        if machine['hasROMs'] or machine['hasROMs_merged']: continue
+        m_roms = machine_roms[parent_name]
+        if m_roms['roms']: continue
         parent_list.append(parent_name)
         all_list.append(parent_name)
         for clone in main_pclone_dic[parent_name]: all_list.append(clone)
     none_catalog_parents['NoROM'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
     none_catalog_all['NoROM']     = {'machines' : all_list,    'num_machines' : len(all_list)}
-    
+
     # --- CHD machines ---
     log_info('Making CHD Machines index ...')
     parent_list = []
     all_list = []
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
-        if not machine['CHDs'] and not machine['CHDs_merged']: continue
+        if not machine_roms[parent_name]['disks']: continue
         parent_list.append(parent_name)
         all_list.append(parent_name)
         for clone in main_pclone_dic[parent_name]: all_list.append(clone)
     none_catalog_parents['CHD'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
     none_catalog_all['CHD']     = {'machines' : all_list,    'num_machines' : len(all_list)}
-    
+
     # --- Machines with samples ---
     log_info('Making Samples Machines index ...')
     parent_list = []
@@ -1017,8 +1097,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     parent_list = []
     all_list = []
     for parent_name in main_pclone_dic:
-        machine = machines[parent_name]
-        if not machine['isBIOS']: continue
+        if not machines_render[parent_name]['isBIOS']: continue
         parent_list.append(parent_name)
         all_list.append(parent_name)
         for clone in main_pclone_dic[parent_name]: all_list.append(clone)
@@ -1030,8 +1109,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     parent_list = []
     all_list = []
     for parent_name in main_pclone_dic:
-        machine = machines[parent_name]
-        if not machine['isDevice']: continue
+        if not machines_render[parent_name]['isDevice']: continue
         parent_list.append(parent_name)
         all_list.append(parent_name)
         for clone in main_pclone_dic[parent_name]: all_list.append(clone)
@@ -1094,7 +1172,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     pDialog.update(update_number, pDialog_line1, 'Making Manufacturer catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'manufacturer')
+    fs_build_catalog(catalog_parents, catalog_all, machines_render, main_pclone_dic, 'manufacturer')
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
@@ -1105,7 +1183,7 @@ def fs_build_MAME_catalogs(PATHS, machines, main_pclone_dic):
     pDialog.update(update_number, pDialog_line1, 'Making Year catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'year')
+    fs_build_catalog(catalog_parents, catalog_all, machines_render, main_pclone_dic, 'year')
     fs_write_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
