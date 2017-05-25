@@ -324,7 +324,7 @@ class Main:
             samples_str  = 'Machines [with Samples]'
             bios_str     = 'Machines [BIOS]'
 
-        # >> Binary filters
+        # >> Binary filters (Virtual catalog 'None')
         self._render_root_list_row(machines_str, self._misc_url_2_arg('catalog', 'None', 'category', 'Machines'))
         self._render_root_list_row(nocoin_str,   self._misc_url_2_arg('catalog', 'None', 'category', 'NoCoin'))
         self._render_root_list_row(mecha_str,    self._misc_url_2_arg('catalog', 'None', 'category', 'Mechanical'))
@@ -333,12 +333,17 @@ class Main:
         self._render_root_list_row(chd_str,      self._misc_url_2_arg('catalog', 'None', 'category', 'CHD'))
         self._render_root_list_row(samples_str,  self._misc_url_2_arg('catalog', 'None', 'category', 'Samples'))
         self._render_root_list_row(bios_str,     self._misc_url_2_arg('catalog', 'None', 'category', 'BIOS'))
-
         # self._render_root_list_row('Machines [Devices]',              self._misc_url_2_arg('catalog', 'None', 'category', 'Devices'))
-        self._render_root_list_row('Machines by Category (Catver)',   self._misc_url_1_arg('catalog', 'Catver'))
-        self._render_root_list_row('Machines by Category (Catlist)',  self._misc_url_1_arg('catalog', 'Catlist'))
-        self._render_root_list_row('Machines by Category (Genre)',    self._misc_url_1_arg('catalog', 'Genre'))
-        self._render_root_list_row('Machines by Number of players',   self._misc_url_1_arg('catalog', 'NPlayers'))
+
+        # >> Cataloged filters
+        if self.settings['catver_path']:
+            self._render_root_list_row('Machines by Category (Catver)',   self._misc_url_1_arg('catalog', 'Catver'))
+        if self.settings['catlist_path']:
+            self._render_root_list_row('Machines by Category (Catlist)',  self._misc_url_1_arg('catalog', 'Catlist'))
+        if self.settings['genre_path']:
+            self._render_root_list_row('Machines by Category (Genre)',    self._misc_url_1_arg('catalog', 'Genre'))
+        if self.settings['nplayers_path']:
+            self._render_root_list_row('Machines by Number of players',   self._misc_url_1_arg('catalog', 'NPlayers'))
         self._render_root_list_row('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
         self._render_root_list_row('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
         self._render_root_list_row('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
@@ -348,7 +353,11 @@ class Main:
         self._render_root_list_row('Machines by Display Rotation',    self._misc_url_1_arg('catalog', 'Display_Rotate'))
         self._render_root_list_row('Machines by Device',              self._misc_url_1_arg('catalog', 'Devices'))
         self._render_root_list_row('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
+
+        # >> Software lists
         self._render_root_list_row('Software Lists',                  self._misc_url_1_arg('catalog', 'SL'))
+        
+        # >> Special launchers
         self._render_root_list_row('<Favourite MAME machines>',       self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
         self._render_root_list_row('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
