@@ -178,9 +178,9 @@ class Main:
                 SL_name     = args['category'][0] if 'category' in args else ''
                 parent_name = args['parent'][0] if 'parent' in args else ''
                 if SL_name and parent_name:
-                    self._render_SL_list_clone_list(SL_name, parent_name)
+                    self._render_SL_pclone_set(SL_name, parent_name)
                 elif SL_name and not parent_name:
-                    self._render_SL_list_parent_list(SL_name)
+                    self._render_SL_ROMs(SL_name)
                 else:
                     self._render_SL_list()
             else:
@@ -649,22 +649,22 @@ class Main:
             self._render_SL_list_row(SL_name, SL)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_SL_list_parent_list(self, SL_name):
-        log_info('_render_SL_list_parent_list() SL_name "{0}"'.format(SL_name))
+    def _render_SL_ROMs(self, SL_name):
+        log_info('_render_SL_ROMs() SL_name "{0}"'.format(SL_name))
 
         # >> Load ListItem properties (Not used at the moment)
         # SL_properties_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath()) 
         # prop_dic = SL_properties_dic[SL_name]
         # >> Global properties
         view_mode_property = self.settings['sl_view_mode']
-        log_debug('_render_catalog_parent_list() view_mode_property = {0}'.format(view_mode_property))
+        log_debug('_render_SL_ROMs() view_mode_property = {0}'.format(view_mode_property))
 
         # >> Load Software List ROMs
         SL_PClone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
         SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        log_info('_render_SL_list_parent_list() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        log_info('_render_SL_ROMs() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
         assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -672,8 +672,9 @@ class Main:
         SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
 
         self._set_Kodi_all_sorting_methods()
+        SL_proper_name = SL_catalog_dic[SL_name]['display_name']
         if view_mode_property == VIEW_MODE_PCLONE:
-            log_info('_render_SL_list_parent_list() Rendering Parent/Clone launcher')
+            log_info('_render_SL_ROMs() Rendering Parent/Clone launcher')
             # >> Get list of parents
             parent_list = []
             for parent_name in sorted(SL_PClone_dic[SL_name]): parent_list.append(parent_name)
@@ -681,28 +682,30 @@ class Main:
                 ROM        = SL_roms[parent_name]
                 assets     = SL_asset_dic[parent_name]
                 num_clones = len(SL_PClone_dic[SL_name][parent_name])
+                ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
                 self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, num_clones)
         elif view_mode_property == VIEW_MODE_FLAT:
-            log_info('_render_SL_list_parent_list() Rendering Flat launcher')
+            log_info('_render_SL_ROMs() Rendering Flat launcher')
             for rom_name in SL_roms:
                 ROM    = SL_roms[rom_name]
                 assets = SL_asset_dic[rom_name]
+                ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
                 self._render_SL_ROM_row(SL_name, rom_name, ROM, assets, False)
         else:
             kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
             return
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_SL_list_clone_list(self, SL_name, parent_name):
-        log_info('_render_SL_list_clone_list() SL_name     "{0}"'.format(SL_name))
-        log_info('_render_SL_list_clone_list() parent_name "{0}"'.format(parent_name))
+    def _render_SL_pclone_set(self, SL_name, parent_name):
+        log_info('_render_SL_pclone_set() SL_name     "{0}"'.format(SL_name))
+        log_info('_render_SL_pclone_set() parent_name "{0}"'.format(parent_name))
 
         # >> Load Software List ROMs
         SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
         SL_PClone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        log_info('_render_SL_list_parent_list() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        log_info('_render_SL_pclone_set() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
         assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -710,15 +713,19 @@ class Main:
         SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
 
         # >> Render parent first
+        SL_proper_name = SL_catalog_dic[SL_name]['display_name']
         self._set_Kodi_all_sorting_methods()
         ROM = SL_roms[parent_name]
         assets  = SL_asset_dic[parent_name]
+        ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
         self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, False)
 
         # >> Render clones belonging to parent in this category
         for clone_name in sorted(SL_PClone_dic[SL_name][parent_name]):
             ROM = SL_roms[clone_name]
-            assets  = SL_asset_dic[clone_name]
+            assets = SL_asset_dic[clone_name]
+            ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
+            log_debug(unicode(ROM))
             self._render_SL_ROM_row(SL_name, clone_name, ROM, assets, False)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
@@ -771,9 +778,10 @@ class Main:
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(display_name)
         # >> Make all the infolabels compatible with Advanced Emulator Launcher
-        listitem.setInfo('video', {'title'   : display_name,     'year'    : ROM['year'],
-                                   'studio'  : ROM['publisher'], 'overlay' : ICON_OVERLAY })
-        listitem.setProperty('platform', 'MAME')
+        listitem.setInfo('video', {'title' : display_name, 'year'    : ROM['year'],
+                                   'genre' : ROM['genre'], 'studio'  : ROM['publisher'],
+                                   'overlay' : ICON_OVERLAY })
+        listitem.setProperty('platform', 'MAME Software List')
 
         # --- Assets ---
         # >> AEL custom artwork fields
