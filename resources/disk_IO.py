@@ -282,8 +282,9 @@ def fs_new_control_dic():
     return C
 
 # --- Constants ---
-VIEW_MODE_NORMAL = 'Normal'
-VIEW_MODE_ALL    = 'All'
+# >> Make sure these strings are equal to the ones in settings.xml
+VIEW_MODE_FLAT   = 0 # 'Flat'
+VIEW_MODE_PCLONE = 1 # 'Parent/Clone'
 
 # >> Used to build the properties list. 
 #    1) Must match names in main.py @_render_root_list()

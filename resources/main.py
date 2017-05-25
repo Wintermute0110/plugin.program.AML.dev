@@ -404,11 +404,15 @@ class Main:
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
-        # >> Load ListItem properties
-        prop_key = '{0} - {1}'.format(catalog_name, category_name)
-        log_debug('_render_catalog_parent_list() Loading props with key "{0}"'.format(prop_key))
-        mame_properties_dic = fs_load_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath())
-        prop_dic = mame_properties_dic[prop_key]
+        # >> Load ListItem properties (Not used at the moment)
+        # prop_key = '{0} - {1}'.format(catalog_name, category_name)
+        # log_debug('_render_catalog_parent_list() Loading props with key "{0}"'.format(prop_key))
+        # mame_properties_dic = fs_load_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath())
+        # prop_dic = mame_properties_dic[prop_key]
+        # view_mode_property = prop_dic['vm']
+        # >> Global properties
+        view_mode_property = self.settings['mame_view_mode']
+        log_debug('_render_catalog_parent_list() view_mode_property = {0}'.format(view_mode_property))
 
         # >> Load main MAME info DB
         loading_ticks_start = time.time()
@@ -416,9 +420,9 @@ class Main:
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         # >> Load catalog index
-        if prop_dic['vm'] == VIEW_MODE_NORMAL:
+        if view_mode_property == VIEW_MODE_PCLONE:
             catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
-        elif prop_dic['vm'] == VIEW_MODE_ALL:
+        elif view_mode_property == VIEW_MODE_FLAT:
             catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
         else:
             kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
@@ -428,7 +432,7 @@ class Main:
         loading_ticks_end = time.time()
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
-        if prop_dic['vm'] == VIEW_MODE_NORMAL:
+        if view_mode_property == VIEW_MODE_PCLONE:
             # >> Normal mode render parents only
             machine_list = catalog_dic[category_name]['parents']
             for machine_name in machine_list:
@@ -639,9 +643,12 @@ class Main:
     def _render_SL_list_parent_list(self, SL_name):
         log_info('_render_SL_list_parent_list() SL_name "{0}"'.format(SL_name))
 
-        # >> Load ListItem properties
-        SL_properties_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath()) 
-        prop_dic = SL_properties_dic[SL_name]
+        # >> Load ListItem properties (Not used at the moment)
+        # SL_properties_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath()) 
+        # prop_dic = SL_properties_dic[SL_name]
+        # >> Global properties
+        view_mode_property = self.settings['sl_view_mode']
+        log_debug('_render_catalog_parent_list() view_mode_property = {0}'.format(view_mode_property))
 
         # >> Load Software List ROMs
         SL_PClone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
@@ -656,7 +663,7 @@ class Main:
         SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
 
         self._set_Kodi_all_sorting_methods()
-        if prop_dic['vm'] == VIEW_MODE_NORMAL:
+        if view_mode_property == VIEW_MODE_PCLONE:
             log_info('_render_SL_list_parent_list() Rendering normal launcher')
             # >> Get list of parents
             parent_list = []
@@ -666,7 +673,7 @@ class Main:
                 assets     = SL_asset_dic[parent_name]
                 num_clones = len(SL_PClone_dic[SL_name][parent_name])
                 self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, num_clones)
-        elif prop_dic['vm'] == VIEW_MODE_ALL:
+        elif view_mode_property == VIEW_MODE_FLAT:
             log_info('_render_SL_list_parent_list() Rendering all launcher')
             for rom_name in SL_roms:
                 ROM    = SL_roms[rom_name]
@@ -1023,27 +1030,27 @@ class Main:
             info_text += "nplayers.ini version: {0}\n".format(control_dic['nplayers_version'])
 
             info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
-            t = "Machines: {0} ({1} Parents / {2} Clones)\n"
+            t = "Machines {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['processed_machines'], control_dic['parent_machines'], 
                                   control_dic['clone_machines'])
-            info_text += "Samples: {0}\n".format(control_dic['samples_machines'])
+            info_text += "Samples {0:5d}\n".format(control_dic['samples_machines'])
 
-            t = "Devices: {0} ({1} Parents / {2} Clones)\n"
+            t = "Devices    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['devices_machines'],    control_dic['devices_machines_parents'], 
                                   control_dic['devices_machines_clones'])
-            t = "BIOS: {0} ({1} Parents / {2} Clones)\n"
+            t = "BIOS       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['BIOS_machines'],       control_dic['BIOS_machines_parents'], 
                                   control_dic['BIOS_machines_clones'])
-            t = "Coin: {0} ({1} Parents / {2} Clones)\n"
+            t = "Coin       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['coin_machines'],       control_dic['coin_machines_parents'], 
                                   control_dic['coin_machines_clones'])
-            t = "Nocoin: {0} ({1} Parents / {2} Clones)\n"
+            t = "Nocoin     {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['nocoin_machines'],     control_dic['nocoin_machines_parents'],
                                   control_dic['nocoin_machines_clones'])
-            t = "Mechanical: {0} ({1} Parents / {2} Clones)\n"
+            t = "Mechanical {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['mechanical_machines'], control_dic['mechanical_machines_parents'],
                                   control_dic['mechanical_machines_clones'])
-            t = "Dead: {0} ({1} Parents / {2} Clones)\n"
+            t = "Dead       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['dead_machines'],       control_dic['dead_machines_parents'], 
                                   control_dic['dead_machines_clones'])
 
