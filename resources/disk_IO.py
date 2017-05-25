@@ -1558,14 +1558,15 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     # --- Create properties database with default values ------------------------------------------
     # >> Now overwrites all properties when the catalog is rebuilt.
     #    New versions must kept user set properties!
-    mame_properties_dic = {}
-    for catalog_name in CATALOG_NAME_LIST:
-        catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
-        for category_name in sorted(catalog_dic):
-            prop_key = '{0} - {1}'.format(catalog_name, category_name)
-            mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_NORMAL}
-    fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
-    log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
+    # >> Disabled
+    # mame_properties_dic = {}
+    # for catalog_name in CATALOG_NAME_LIST:
+    #     catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+    #     for category_name in sorted(catalog_dic):
+    #         prop_key = '{0} - {1}'.format(catalog_name, category_name)
+    #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_PCLONE}
+    # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
+    # log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
 
 def fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, db_field):
     for parent_name in main_pclone_dic:
