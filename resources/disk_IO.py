@@ -74,7 +74,6 @@ def fs_new_machine_dic():
 #   ?  Machine has own ROMs and ROMs not been scanned
 #   r  Machine has own ROMs and ROMs doesn't exist
 #   R  Machine has own ROMs and ROMs exists | Machine has Software Lists
-#   *  Machine has merged ROMs
 #
 # Status device flag:
 #   -  Machine has no devices
@@ -283,8 +282,14 @@ def fs_new_control_dic():
 
 # --- Constants ---
 # >> Make sure these strings are equal to the ones in settings.xml
-VIEW_MODE_FLAT   = 0 # 'Flat'
-VIEW_MODE_PCLONE = 1 # 'Parent/Clone'
+VIEW_MODE_FLAT     = 0 # 'Flat'
+VIEW_MODE_PCLONE   = 1 # 'Parent/Clone'
+MAME_MERGED    = 0 # 'Merged'
+MAME_SPLIT     = 1 # 'Split'
+MAME_NONMERGED = 2 # 'Non-merged'
+SL_MERGED      = 0 # 'Merged'
+SL_SPLIT       = 1 # 'Split'
+SL_NONMERGED   = 2 # 'Non-merged'
 
 # >> Used to build the properties list. 
 #    1) Must match names in main.py @_render_root_list()
@@ -628,6 +633,49 @@ def fs_initial_flags(machine, m_render, m_rom):
     flags_str = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
     return flags_str
+
+#
+# Update m_render using Python pass by assignment.
+# Remember that strings are inmutable!
+#
+def fs_set_ROM_flag(m_render, new_ROM_flag):
+    old_flags_str = m_render['flags']
+    flag_ROM      = old_flags_str[0]
+    flag_CHD      = old_flags_str[1]
+    flag_Samples  = old_flags_str[2]
+    flag_SL       = old_flags_str[3]
+    flag_Devices  = old_flags_str[4]
+
+    flag_ROM = new_ROM_flag
+
+    flags_str = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
+    m_render['flags'] = flags_str
+
+def fs_set_CHD_flag(m_render, new_CHD_flag):
+    old_flags_str = m_render['flags']
+    flag_ROM      = old_flags_str[0]
+    flag_CHD      = old_flags_str[1]
+    flag_Samples  = old_flags_str[2]
+    flag_SL       = old_flags_str[3]
+    flag_Devices  = old_flags_str[4]
+
+    flag_CHD = new_CHD_flag
+
+    flags_str = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
+    m_render['flags'] = flags_str
+
+def fs_set_Sample_flag(m_render, new_Sample_flag):
+    old_flags_str = m_render['flags']
+    flag_ROM      = old_flags_str[0]
+    flag_CHD      = old_flags_str[1]
+    flag_Samples  = old_flags_str[2]
+    flag_SL       = old_flags_str[3]
+    flag_Devices  = old_flags_str[4]
+
+    flag_Samples = new_Sample_flag
+
+    flags_str = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
+    m_render['flags'] = flags_str
 
 # -------------------------------------------------------------------------------------------------
 # Reads and processes MAME.xml
@@ -1020,22 +1068,22 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         # >> Useful conditionals
         has_valid_ROMs = True if m_rom['roms'] else False
         if has_valid_ROMs:
-            has_merged_ROMs = False
+            one_or_more_non_merged_ROM = False
             for rom_dic in m_rom['roms']:
-                if rom_dic['merge']:
-                    has_merged_ROMs = True
+                if not rom_dic['merge']:
+                    one_or_more_non_merged_ROM = True
                     break
         else:
-            has_merged_ROMs = False
+            one_or_more_non_merged_ROM = False
         has_valid_CHDs = True if m_rom['disks'] else False
 
         # >> In a Non-merged set the machine has a ROM ZIP file if there is a valid <rom> tag
         rom_set['hasNonMergedROM'] = has_valid_ROMs
 
         # >> In a Split set the machine has a ROM ZIP file if there is a valid <rom> tag
-        #    and 'merge' attribute is empty.
+        #    and there is a non-empty 'merge' ROM.
         #    If there are no valid ROMs then no ROM ZIP file.
-        if has_valid_ROMs and not has_merged_ROMs:
+        if has_valid_ROMs and one_or_more_non_merged_ROM:
             rom_set['hasSplitROM'] = True
         else:
             rom_set['hasSplitROM'] = False
@@ -1052,10 +1100,13 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         if has_valid_CHDs:
             for disk_dic in m_rom['disks']:
                 rom_set['non_merged_CDHs'].append(disk_dic['name'])
-                if disk_dic['merge']:
+                if key in main_pclone_dic:
+                    # >> Parent machine
+                    rom_set['split_CDHs'].append(disk_dic['name'])
                     rom_set['merged_CDHs'].append(disk_dic['name'])
                 else:
-                    rom_set['split_CDHs'].append(disk_dic['name'])
+                    # >> Clone machine
+                    if not disk_dic['merge']: rom_set['split_CDHs'].append(disk_dic['name'])
 
         rom_sets[key] = rom_set
 
@@ -1913,35 +1964,42 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
-# Does not save any file. machines and control_dic modified by assigment
+# Does not save any file. machines_render and control_dic modified by assigment
 #
-def fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Samples_path_FN, scan_CHDs, scan_Samples):
+def fs_scan_MAME_ROMs(PATHS, machines, machines_render, rom_sets, control_dic, 
+                      ROM_path_FN, CHD_path_FN, Samples_path_FN, scan_CHDs, scan_Samples,
+                      mame_rom_set, mame_chd_set):
     # >> Scan ROMs
     log_info('Opening ROMs report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath()))
     file = open(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath(), 'w')
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME ROMs...')
-    total_machines = len(machines)
+    total_machines = len(machines_render)
     processed_machines = 0
     ROMs_have = ROMs_missing = ROMs_total = 0
-    for key in sorted(machines):
-        machine = machines[key]
+    for key in sorted(machines_render):
+        rom_set_dic = rom_sets[key]
+        # log_info(unicode(rom_set_dic))
         # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
-        if machine['hasROMs']:
+
+        if   mame_rom_set == MAME_MERGED:    machine_has_ROM_ZIP = rom_set_dic['hasMergedROM']
+        elif mame_rom_set == MAME_SPLIT:     machine_has_ROM_ZIP = rom_set_dic['hasSplitROM']
+        elif mame_rom_set == MAME_NONMERGED: machine_has_ROM_ZIP = rom_set_dic['hasNonMergedROM']
+        if machine_has_ROM_ZIP:
             ROMs_total += 1
             # >> Machine has ROM. Get ROM filename and check if file exist
             ROM_FN = ROM_path_FN.pjoin(key + '.zip')
             if ROM_FN.exists():
-                machine['status_ROM'] = 'R'
+                ROM_flag = 'R'
                 ROMs_have += 1
             else:
-                machine['status_ROM'] = 'r'
+                ROM_flag = 'r'
                 ROMs_missing += 1
                 file.write('Missing ROM {0}\n'.format(ROM_FN.getPath()))
         else:
-            if machine['hasROMs_merged']: machine['status_ROM'] = '*'
-            else:                         machine['status_ROM'] = '-'
+            ROM_flag = '-'
+        fs_set_ROM_flag(machines_render[key], ROM_flag)
 
         # >> Progress dialog
         processed_machines = processed_machines + 1
@@ -1953,29 +2011,34 @@ def fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Sa
     log_info('Opening CHDs report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath()))
     file = open(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath(), 'w')
     CHDs_have = CHDs_missing = CHDs_total = 0
-    for key in sorted(machines):
-        machine = machines[key]
-        if machine['CHDs']:
-            CHDs_total += len(machine['CHDs'])
+    for key in sorted(machines_render):
+        rom_set_dic = rom_sets[key]
+        # log_info(unicode(rom_set_dic))
+        # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
+
+        if   mame_rom_set == MAME_MERGED:    CHD_list = rom_set_dic['merged_CDHs']
+        elif mame_rom_set == MAME_SPLIT:     CHD_list = rom_set_dic['split_CDHs']
+        elif mame_rom_set == MAME_NONMERGED: CHD_list = rom_set_dic['non_merged_CDHs']
+        if CHD_list:
+            CHDs_total += len(CHD_list)
             if scan_CHDs:
-                hasOwnCHD_list = [False] * len(machine['CHDs'])
-                for idx, CHD_name in enumerate(machine['CHDs']):
+                has_CHD_list = [False] * len(CHD_list)
+                for idx, CHD_name in enumerate(CHD_list):
                     CHD_FN = CHD_path_FN.pjoin(key).pjoin(CHD_name + '.chd')
-                    # log_debug('Testing CHD OP "{0}"'.format(CHD_FN.getOriginalPath()))
                     if CHD_FN.exists():
-                        hasOwnCHD_list[idx] = True
+                        has_CHD_list[idx] = True
                         CHDs_have += 1
                     else:
                         file.write('Missing CHD {0}\n'.format(CHD_FN.getPath()))
                         CHDs_missing += 1
-                if all(hasOwnCHD_list): machine['status_CHD'] = 'C'
-                else:                   machine['status_CHD'] = 'c'
+                if all(has_CHD_list): CHD_flag = 'C'
+                else:                 CHD_flag = 'c'
             else:
-                machine['status_CHD'] = 'c'
+                CHD_flag = 'c'
                 CHDs_missing += len(machine['CHDs'])
         else:
-            if machine['CHDs_merged']: machine['status_CHD'] = '*'
-            else:                      machine['status_CHD'] = '-'
+            CHD_flag = '-'
+        fs_set_CHD_flag(machines_render[key], CHD_flag)
     file.close()
 
     # >> Scan Samples
@@ -1983,36 +2046,35 @@ def fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Sa
     file = open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), 'w')
     Samples_have = Samples_missing = Samples_total = 0
     for key in sorted(machines):
-        machine = machines[key]
-        if machine['sampleof']:
+        if machines[key]['sampleof']:
             Samples_total += 1
             if scan_Samples:
                 Sample_FN = Samples_path_FN.pjoin(key + '.zip')
-                # log_debug('Testing Sample OP "{0}"'.format(Sample_FN.getOriginalPath()))
                 if Sample_FN.exists():
-                    machine['status_SAM'] = 'S'
+                    Sample_flag = 'S'
                     Samples_have += 1
                 else:
-                    machine['status_SAM'] = 's'
+                    Sample_flag = 's'
                     Samples_missing += 1
                     file.write('Missing Sample {0}\n'.format(Sample_FN.getPath()))
             else:
-                machine['status_SAM'] = 's'
+                Sample_flag = 's'
                 Samples_missing += 1
         else:
-            machine['status_SAM'] = '-'
+            Sample_flag = '-'
+        fs_set_Sample_flag(machines_render[key], Sample_flag)
     file.close()    
 
     # >> Update statistics
-    # control_dic['ROMs_have']       = ROMs_have
-    # control_dic['ROMs_missing']    = ROMs_missing
-    # control_dic['ROMs_total']      = ROMs_total
-    # control_dic['CHDs_have']       = CHDs_have
-    # control_dic['CHDs_missing']    = CHDs_missing
-    # control_dic['CHDs_total']      = CHDs_total
-    # control_dic['Samples_have']    = Samples_have
-    # control_dic['Samples_missing'] = Samples_missing
-    # control_dic['Samples_total']   = Samples_total
+    control_dic['ROMs_have']       = ROMs_have
+    control_dic['ROMs_missing']    = ROMs_missing
+    control_dic['ROMs_total']      = ROMs_total
+    control_dic['CHDs_have']       = CHDs_have
+    control_dic['CHDs_missing']    = CHDs_missing
+    control_dic['CHDs_total']      = CHDs_total
+    control_dic['Samples_have']    = Samples_have
+    control_dic['Samples_missing'] = Samples_missing
+    control_dic['Samples_total']   = Samples_total
 
 # -------------------------------------------------------------------------------------------------
 # Saves SL JSON databases, MAIN_CONTROL_PATH.

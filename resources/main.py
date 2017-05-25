@@ -577,7 +577,7 @@ class Main:
                                                      'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
         URL_fav     = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
         commands.append(('View',  URL_view ))
-        commands.append(('Display settings', URL_display ))
+        # commands.append(('Display settings', URL_display ))
         commands.append(('Add machine to MAME Favourites', URL_fav ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
@@ -646,7 +646,7 @@ class Main:
         self._set_Kodi_all_sorting_methods()
         for SL_name in SL_catalog_dic:
             SL = SL_catalog_dic[SL_name]
-            self._render_SL_machine_row(SL_name, SL)
+            self._render_SL_list_row(SL_name, SL)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_SL_list_parent_list(self, SL_name):
@@ -673,7 +673,7 @@ class Main:
 
         self._set_Kodi_all_sorting_methods()
         if view_mode_property == VIEW_MODE_PCLONE:
-            log_info('_render_SL_list_parent_list() Rendering normal launcher')
+            log_info('_render_SL_list_parent_list() Rendering Parent/Clone launcher')
             # >> Get list of parents
             parent_list = []
             for parent_name in sorted(SL_PClone_dic[SL_name]): parent_list.append(parent_name)
@@ -683,7 +683,7 @@ class Main:
                 num_clones = len(SL_PClone_dic[SL_name][parent_name])
                 self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, num_clones)
         elif view_mode_property == VIEW_MODE_FLAT:
-            log_info('_render_SL_list_parent_list() Rendering all launcher')
+            log_info('_render_SL_list_parent_list() Rendering Flat launcher')
             for rom_name in SL_roms:
                 ROM    = SL_roms[rom_name]
                 assets = SL_asset_dic[rom_name]
@@ -722,7 +722,7 @@ class Main:
             self._render_SL_ROM_row(SL_name, clone_name, ROM, assets, False)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_SL_machine_row(self, SL_name, SL):
+    def _render_SL_list_row(self, SL_name, SL):
         if SL['chd_count'] == 0:
             if SL['rom_count'] == 1: display_name = '{0}  [COLOR orange]({1} ROM)[/COLOR]'.format(SL['display_name'], SL['rom_count'])
             else:                    display_name = '{0}  [COLOR orange]({1} ROMs)[/COLOR]'.format(SL['display_name'], SL['rom_count'])
@@ -789,7 +789,7 @@ class Main:
                                                      'catalog', 'SL', 'category', SL_name, 'machine', rom_name)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
         commands.append(('View', URL_view ))
-        commands.append(('Display settings', URL_display ))
+        # commands.append(('Display settings', URL_display ))
         commands.append(('Add ROM to SL Favourites', URL_fav ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
@@ -1726,10 +1726,15 @@ class Main:
 
             # >> Load machine database and control_dic
             kodi_busydialog_ON()
-            machines    = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            rom_sets        = fs_load_JSON_file(PATHS.ROM_SETS_PATH.getPath())
+            control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             kodi_busydialog_OFF()
-            fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Samples_path_FN, scan_CHDs, scan_Samples)
+            fs_scan_MAME_ROMs(PATHS, machines, machines_render, rom_sets, control_dic, 
+                              ROM_path_FN, CHD_path_FN, Samples_path_FN,
+                              scan_CHDs, scan_Samples,
+                              self.settings['mame_rom_set'], self.settings['mame_chd_set'])
 
             # >> Get assets directory. Abort if not configured/found.
             do_MAME_asset_scan = True
@@ -1741,10 +1746,10 @@ class Main:
                 kodi_dialog_OK('Asset directory does not exist. Aborting.')
                 do_MAME_asset_scan = False
 
-            if do_MAME_asset_scan: fs_scan_MAME_assets(PATHS, machines, Asset_path_FN)
+            if do_MAME_asset_scan: fs_scan_MAME_assets(PATHS, machines_render, Asset_path_FN)
 
             kodi_busydialog_ON()
-            fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+            fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_busydialog_OFF()
 
@@ -1885,12 +1890,17 @@ class Main:
 
                 # >> Load machine database and control_dic and scan
                 kodi_busydialog_ON()
-                machines    = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                rom_sets        = fs_load_JSON_file(PATHS.ROM_SETS_PATH.getPath())
+                control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 kodi_busydialog_OFF()
-                fs_scan_MAME_ROMs(PATHS, machines, control_dic, ROM_path_FN, CHD_path_FN, Samples_path_FN, scan_CHDs, scan_Samples)
+                fs_scan_MAME_ROMs(PATHS, machines, machines_render, rom_sets, control_dic, 
+                                  ROM_path_FN, CHD_path_FN, Samples_path_FN,
+                                  scan_CHDs, scan_Samples,
+                                  self.settings['mame_rom_set'], self.settings['mame_chd_set'])
                 kodi_busydialog_ON()
-                fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+                fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
                 kodi_busydialog_OFF()
                 kodi_notify('Scanning of ROMs, CHDs and Samples finished')
@@ -1910,9 +1920,9 @@ class Main:
 
                 # >> Load machine database and scan
                 kodi_busydialog_ON()
-                machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
                 kodi_busydialog_OFF()
-                fs_scan_MAME_assets(PATHS, machines, Asset_path_FN)
+                fs_scan_MAME_assets(PATHS, machines_render, Asset_path_FN)
                 kodi_notify('Scanning of assets/artwork finished')
 
             # --- Scan SL ROMs ---
