@@ -61,10 +61,10 @@ class AML_Paths:
         self.MAME_STDOUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_stdout.log')
         self.MAME_STDERR_PATH     = PLUGIN_DATA_DIR.pjoin('log_stderr.log')
         self.MAME_OUTPUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_output.log')
-        self.MAIN_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_main_db.json')
-        self.RENDER_DB_PATH       = PLUGIN_DATA_DIR.pjoin('MAME_render_db.json')
-        self.ROMS_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_roms_db.json')
-        self.MAIN_ASSETS_DB_PATH  = PLUGIN_DATA_DIR.pjoin('MAME_assets_db.json')
+        self.MAIN_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_DB_main.json')
+        self.RENDER_DB_PATH       = PLUGIN_DATA_DIR.pjoin('MAME_DB_render.json')
+        self.ROMS_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_DB_roms.json')
+        self.MAIN_ASSETS_DB_PATH  = PLUGIN_DATA_DIR.pjoin('MAME_assets.json')
         self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
         self.MAIN_CONTROL_PATH    = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
         self.ROM_SETS_PATH        = PLUGIN_DATA_DIR.pjoin('ROM_sets.json')
@@ -1683,7 +1683,7 @@ class Main:
             pDialog.close()
 
             fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic)
-            fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic, control_dic)
+            fs_build_SoftwareLists_index(PATHS, self.settings, machines, machines_render, main_pclone_dic, control_dic)
             kodi_notify('All databases built')
 
         # --- Scan everything ---
@@ -1840,11 +1840,12 @@ class Main:
 
                 # --- Read main database and control dic ---
                 kodi_busydialog_ON()
-                machines        = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
                 main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
                 control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 kodi_busydialog_OFF()
-                fs_build_SoftwareLists_index(PATHS, self.settings, machines, main_pclone_dic, control_dic)
+                fs_build_SoftwareLists_index(PATHS, self.settings, machines, machines_render, main_pclone_dic, control_dic)
                 kodi_notify('Software Lists indices and catalogs built')
 
             # --- Scan ROMs/CHDs/Samples and updates ROM status ---

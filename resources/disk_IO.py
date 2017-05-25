@@ -1372,7 +1372,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         catalog_key = machine['sourcefile']
-        if catalog_key in driver_name_dic: catalog_key = driver_name_dic[catalog_key]
+        if catalog_key in mame_driver_name_dic: catalog_key = mame_driver_name_dic[catalog_key]
         if catalog_key in catalog_parents:
             catalog_parents[catalog_key]['parents'].append(parent_name)
             catalog_parents[catalog_key]['num_parents'] = len(catalog_parents[catalog_key]['parents'])
@@ -1397,9 +1397,9 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         # >> Order alphabetically the list
-        pretty_control_type_list = fs_improve_control_type_list(machine['control_type'])
+        pretty_control_type_list = mame_improve_control_type_list(machine['control_type'])
         sorted_control_type_list = sorted(pretty_control_type_list)
-        sorted_control_type_list = fs_compress_item_list(sorted_control_type_list)
+        sorted_control_type_list = mame_compress_item_list(sorted_control_type_list)
         catalog_key = " / ".join(sorted_control_type_list)
         # >> Change category name for machines with no controls
         if catalog_key == '': catalog_key = '[ No controls ]'
@@ -1498,16 +1498,16 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- <device> catalog ---
-    log_info('Making <device> catalog ...')
+    log_info('Making <device> tag catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making <device> catalog ...')
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         # >> Order alphabetically the list
-        pretty_device_list = fs_improve_device_list(machine['device_list'])
+        pretty_device_list = mame_improve_device_list(machine['device_list'])
         sorted_device_list = sorted(pretty_device_list)
-        sorted_device_list = fs_compress_item_list(sorted_device_list)
+        sorted_device_list = mame_compress_item_list(sorted_device_list)
         catalog_key = " / ".join(sorted_device_list)
         # >> Change category name for machines with no devices
         if catalog_key == '': catalog_key = '[ No devices ]'
@@ -1775,7 +1775,7 @@ def fs_load_SL_XML(xml_filename):
 #
 # Saves SL_INDEX_PATH, SL_MACHINES_PATH, CATALOG_SL_PATH, MAIN_CONTROL_PATH, SL JSON files.
 #
-def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, control_dic):
+def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, main_pclone_dic, control_dic):
     SL_dir_FN = FileName(settings['SL_hash_path'])
     log_debug('fs_build_SoftwareLists_index() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
 
@@ -1830,15 +1830,6 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
         SL_PClone_dic[sl_name] = pclone_dic
     fs_write_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath(), SL_PClone_dic)
 
-    # --- Make SL properties DB ---
-    # >> Allows customisation of every SL list window
-    SL_properties_dic = {}
-    for sl_name in SL_catalog_dic:
-        # 'vm' : VIEW_MODE_NORMAL or VIEW_MODE_ALL
-        prop_dic = {'vm' : VIEW_MODE_NORMAL}
-        SL_properties_dic[sl_name] = prop_dic
-    fs_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
-
     # --- Make a list of machines that can launch each SL ---
     log_info('Making Software List machine list ...')
     pdialog_line1 = 'Rebuilding Software List machine list ...'
@@ -1846,16 +1837,17 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     total_SL = len(SL_catalog_dic)
     processed_SL = 0
     SL_machines_dic = {}
-    # Revise this algortihm! I think is not working well...
+    # Revise this algortihm! I think is not working well ... there are more software lists
+    # in the 'Software Lists' than in the 'Machines by Software List'
     for SL_name in SL_catalog_dic:
         SL_machine_list = []
-        for machine_name, machine_dic in machines.iteritems():
-            if not machine_dic['softwarelists']: continue
-            for machine_SL_name in machine_dic['softwarelists']:
+        for machine_name in machines:
+            # if not machines[machine_name]['softwarelists']: continue
+            for machine_SL_name in machines[machine_name]['softwarelists']:
                 if machine_SL_name == SL_name:
                     SL_machine_dic = {'machine'     : machine_name,
-                                      'description' : machine_dic['description'],
-                                      'device_tags' : machine_dic['device_tags']}
+                                      'description' : machines_render[machine_name]['description'],
+                                      'device_tags' : machines[machine_name]['device_tags']}
                     SL_machine_list.append(SL_machine_dic)
         SL_machines_dic[SL_name] = SL_machine_list
 
@@ -1870,9 +1862,8 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
-        machine = machines[parent_name]
         # >> A machine may have more than 1 software lists
-        for sl_name in machine['softwarelists']:
+        for sl_name in machines[parent_name]['softwarelists']:
             if sl_name in SL_catalog_dic: sl_name = SL_catalog_dic[sl_name]['display_name']
             catalog_key = sl_name
             if catalog_key in catalog_parents:
@@ -1892,16 +1883,27 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, main_pclone_dic, con
     pDialog.close()
 
     # --- Create properties database with default values ---
-    # >> One of the catalogs has change and so the property names.
-    mame_properties_dic = {}
-    for catalog_name in CATALOG_NAME_LIST:
-        # >> Get categories for this catalog name
-        catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
-        for category_name in sorted(catalog_dic):
-            prop_key = '{0} - {1}'.format(catalog_name, category_name)
-            mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_NORMAL}
-    fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
-    log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
+    # --- Make SL properties DB ---
+    # >> Allows customisation of every SL list window
+    # >> Not used at the moment -> Global properties
+    # SL_properties_dic = {}
+    # for sl_name in SL_catalog_dic:
+    #     # 'vm' : VIEW_MODE_NORMAL or VIEW_MODE_ALL
+    #     prop_dic = {'vm' : VIEW_MODE_NORMAL}
+    #     SL_properties_dic[sl_name] = prop_dic
+    # fs_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
+    # log_info('SL_properties_dic has {0} items'.format(len(SL_properties_dic)))
+
+    # >> One of the MAME catalogs has changed, and so the property names.
+    # >> Not used at the moment -> Global properties
+    # mame_properties_dic = {}
+    # for catalog_name in CATALOG_NAME_LIST:
+    #     catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+    #     for category_name in sorted(catalog_dic):
+    #         prop_key = '{0} - {1}'.format(catalog_name, category_name)
+    #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_NORMAL}
+    # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
+    # log_info('mame_properties_dic has {0} items'.format(len(mame_properties_dic)))
 
     # --- SL statistics and save control_dic ---
     control_dic['num_SL_files'] = processed_files
