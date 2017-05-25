@@ -272,6 +272,8 @@ class Main:
         self.settings['mame_chd_set'] = int(__addon_obj__.getSetting('mame_chd_set'))
 
         # --- Display ---
+        self.settings['mame_view_mode']          = int(__addon_obj__.getSetting('mame_view_mode'))
+        self.settings['sl_view_mode']            = int(__addon_obj__.getSetting('sl_view_mode'))
         self.settings['display_hide_nonworking'] = True if __addon_obj__.getSetting('display_hide_nonworking') == 'true' else False
         self.settings['display_hide_imperfect']  = True if __addon_obj__.getSetting('display_hide_imperfect') == 'true' else False
         self.settings['display_rom_available']   = True if __addon_obj__.getSetting('display_rom_available') == 'true' else False
