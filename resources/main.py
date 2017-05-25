@@ -67,8 +67,9 @@ class AML_Paths:
         self.MAIN_ASSETS_DB_PATH  = PLUGIN_DATA_DIR.pjoin('MAME_assets_db.json')
         self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
         self.MAIN_CONTROL_PATH    = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
-        self.MAIN_PROPERTIES_PATH = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
         self.ROM_SETS_PATH        = PLUGIN_DATA_DIR.pjoin('ROM_sets.json')
+        # >> Disabled. There are global properties
+        # self.MAIN_PROPERTIES_PATH = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
 
         # >> Catalogs
         self.CATALOG_DIR                        = PLUGIN_DATA_DIR.pjoin('catalogs')
@@ -106,7 +107,8 @@ class AML_Paths:
         self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
         self.SL_MACHINES_PATH            = PLUGIN_DATA_DIR.pjoin('SoftwareLists_machines.json')
         self.SL_PCLONE_DIC_PATH          = PLUGIN_DATA_DIR.pjoin('SoftwareLists_pclone_dic.json')
-        self.SL_MACHINES_PROP_PATH       = PLUGIN_DATA_DIR.pjoin('SoftwareLists_properties.json')
+        # >> Disabled. There are global properties
+        # self.SL_MACHINES_PROP_PATH       = PLUGIN_DATA_DIR.pjoin('SoftwareLists_properties.json')
 
         # >> Favourites
         self.FAV_MACHINES_PATH           = PLUGIN_DATA_DIR.pjoin('Favourite_Machines.json')
@@ -539,10 +541,10 @@ class Main:
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(display_name)
         # >> Make all the infolabels compatible with Advanced Emulator Launcher
-        listitem.setInfo('video', {'title'   : display_name,            'year'    : machine['year'],
-                                   'genre'   : '',                      'plot'    : '',
-                                   'studio'  : machine['manufacturer'], 'rating'  : '',
-                                   'trailer' : '',                      'overlay' : ICON_OVERLAY})
+        listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
+                                   'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
+                                   'plot'    : '',               'overlay' : ICON_OVERLAY})
+        listitem.setProperty('nplayers', machine['nplayers'])
         listitem.setProperty('platform', 'MAME')
 
         # --- Assets ---

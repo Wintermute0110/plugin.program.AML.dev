@@ -34,6 +34,7 @@ try:
     from utils_kodi import *
 except:
     from utils_kodi_standalone import *
+from mame import *
 
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher data model
@@ -92,6 +93,8 @@ def fs_new_machine_render_dic():
         'manufacturer'   : '',
         'driver_status'  : '',
         # >> Custom AML data
+        'genre'          : '', # Taken from Genre.ini, Catver.ini or Catlist.ini
+        'nplayers'       : '', # Taken from NPlayers.ini
         'flags'          : '-----',
     }
 
@@ -960,9 +963,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     log_info('Clones             {0}'.format(clone_machines))
     log_info('Dead machines      {0}'.format(dead_machines))
 
-    # -----------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
     # Main parent-clone list
-    # -----------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
     # Create a couple of data struct for quickly know the parent of a clone game and
     # all clones of a parent.
     #
@@ -1104,6 +1107,25 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['split_CHDs']      = num_CHD_split
     control_dic['non_merged_CHDs'] = num_CHD_non_merged
 
+    # ---------------------------------------------------------------------------------------------
+    # Improve info in RENDER_DB_PATH
+    # ---------------------------------------------------------------------------------------------
+    # >> Add genre infolabel
+    if genre_dic:
+        for machine_name in machines_render:
+            machines_render[machine_name]['genre'] = machines[machine_name]['genre']
+    elif categories_dic:
+        for machine_name in machines_render:
+            machines_render[machine_name]['genre'] = machines[machine_name]['catver']
+    elif catlist_dic:
+        for machine_name in machines_render:
+            machines_render[machine_name]['genre'] = machines[machine_name]['catlist']
+
+    # >> Add nplayers infolabel
+    if nplayers_dic:
+        for machine_name in machines_render:
+            machines_render[machine_name]['nplayers'] = machines[machine_name]['nplayers']
+
     # -----------------------------------------------------------------------------
     # Now write simplified JSON
     # -----------------------------------------------------------------------------
@@ -1117,6 +1139,18 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     fs_write_JSON_file(PATHS.ROM_SETS_PATH.getPath(), rom_sets)
     kodi_busydialog_OFF()
 
+#
+# A) Builds the following catalog files
+#    CATALOG_NONE_PARENT_PATH
+#    CATALOG_NONE_ALL_PATH
+#    CATALOG_CATVER_PARENT_PATH
+#    CATALOG_CATVER_ALL_PATH
+#    ...
+#
+# B) Build per-catalog, per-category properties database.
+#    At the moment is disabled -> There are global properties in addon settings.
+#    MAIN_PROPERTIES_PATH
+#
 def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic):
     # >> Progress dialog
     NUM_CATALOGS = len(CATALOG_NAME_LIST)
@@ -1332,23 +1366,6 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     # --- Driver catalog ---
     log_info('Making Driver catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Driver catalog ...')
-    # >> Substitute notable drivers with a proper name
-    driver_name_dic = {
-        'cps1.cpp'     : 'Capcom Play System 1',
-        'cps2.cpp'     : 'Capcom Play System 2',
-        'cps3.cpp'     : 'Capcom Play System 3',
-        'galaxian.cpp' : 'Namco Galaxian-derived hardware',
-        'model2.cpp'   : 'Sega Model 2',
-        'namcops2.cpp' : 'Namco System 246 / System 256 (Sony PS2 based)',
-        'naomi.cpp'    : 'Sega Naomi / Naomi 2',
-        'neodriv.hxx'  : 'SNK NeoGeo',
-        'seta.cpp'     : 'Seta Hardware',
-        'segas16b.cpp' : 'Sega System 16B',
-        'system1.cpp'  : 'System1 / System 2',
-        'taito_f3.cpp' : 'Taito F3 System',
-        'taito_f2.cpp' : 'Taito F2 System',
-        'zn.cpp'       : 'Sony ZN1/ZN2 (Arcade PSX)',
-    }
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
@@ -1537,12 +1554,11 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     pDialog.update(update_number)
     pDialog.close()
 
-    # --- Create properties database with default values ---
+    # --- Create properties database with default values ------------------------------------------
     # >> Now overwrites all properties when the catalog is rebuilt.
     #    New versions must kept user set properties!
     mame_properties_dic = {}
     for catalog_name in CATALOG_NAME_LIST:
-        # >> Get categories for this catalog name
         catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
         for category_name in sorted(catalog_dic):
             prop_key = '{0} - {1}'.format(catalog_name, category_name)
@@ -1564,62 +1580,6 @@ def fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, db
             all_list = [parent_name]
             for clone in main_pclone_dic[parent_name]: all_list.append(clone)
             catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
-
-#
-# A) Capitalise every list item
-# B) Substitute Only_buttons -> Only buttons
-#
-def fs_improve_control_type_list(control_type_list):
-    out_list = []
-    for control_str in control_type_list:
-        capital_str = control_str.title()
-        if capital_str == 'Only_Buttons': capital_str = 'Only Buttons'
-        out_list.append(capital_str)
-
-    return out_list
-
-#
-# A) Capitalise every list item
-#
-def fs_improve_device_list(control_type_list):
-    out_list = []
-    for control_str in control_type_list: out_list.append(control_str.title())
-
-    return out_list
-
-#
-# See tools/test_compress_item_list.py for reference
-# Input/Output examples:
-# 1) ['dial']                 ->  ['dial']
-# 2) ['dial', 'dial']         ->  ['2 x dial']
-# 3) ['dial', 'dial', 'joy']  ->  ['2 x dial', 'joy']
-# 4) ['joy', 'dial', 'dial']  ->  ['joy', '2 x dial']
-#
-def fs_compress_item_list(item_list):
-    reduced_list = []
-    num_items = len(item_list)
-    if num_items == 0 or num_items == 1: return item_list
-    previous_item = item_list[0]
-    item_count = 1
-    for i in range(1, num_items):
-        current_item = item_list[i]
-        # print('{0} | item_count {1} | previous_item "{2:>8}" | current_item "{3:>8}"'.format(i, item_count, previous_item, current_item))
-        if current_item == previous_item:
-            item_count += 1
-        else:
-            if item_count == 1: reduced_list.append('{0}'.format(previous_item))
-            else:               reduced_list.append('{0} {1}'.format(item_count, previous_item))
-            item_count = 1
-            previous_item = current_item
-        # >> Last elemnt of the list
-        if i == num_items - 1:
-            if current_item == previous_item:
-                if item_count == 1: reduced_list.append('{0}'.format(current_item))
-                else:               reduced_list.append('{0} {1}'.format(item_count, current_item))
-            else:
-               reduced_list.append('{0}'.format(current_item))
-
-    return reduced_list
 
 # -------------------------------------------------------------------------------------------------
 #
