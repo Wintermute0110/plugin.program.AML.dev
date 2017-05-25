@@ -223,13 +223,26 @@ def fs_new_control_dic():
         'processed_machines'  : 0,
         'parent_machines'     : 0,
         'clone_machines'      : 0,
-        'devices_machines'    : 0,
-        'BIOS_machines'       : 0,
-        'coin_machines'       : 0,
-        'nocoin_machines'     : 0,
-        'mechanical_machines' : 0,
-        'dead_machines'       : 0,
         'samples_machines'    : 0,
+
+        'device_machines'             : 0,
+        'device_machines_parents'     : 0,
+        'device_machines_clones'      : 0,
+        'BIOS_machines'               : 0,
+        'BIOS_machines_parents'       : 0,
+        'BIOS_machines_clones'        : 0,
+        'coin_machines'               : 0,
+        'coin_machines_parents'       : 0,
+        'coin_machines_clones'        : 0,
+        'nocoin_machines'             : 0,
+        'nocoin_machines_parents'     : 0,
+        'nocoin_machines_clones'      : 0,
+        'mechanical_machines'         : 0,
+        'mechanical_machines_parents' : 0,
+        'mechanical_machines_clones'  : 0,
+        'dead_machines'               : 0,
+        'dead_machines_parents'       : 0,
+        'dead_machines_clones'        : 0,
 
         'merged_ZIPs'     : 0,
         'split_ZIPs'      : 0,
@@ -657,16 +670,14 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     machines_render = {}
     machines_roms = {}
 
-    processed_machines  = 0
-    parent_machines     = 0
-    clone_machines      = 0
-    devices_machines    = 0
-    BIOS_machines       = 0
-    coin_machines       = 0
-    nocoin_machines     = 0
-    mechanical_machines = 0
-    dead_machines       = 0
+    processed_machines  = parent_machines = clone_machines = 0
     samples_machines    = 0
+    devices_machines    = devices_machines_parents    = devices_machines_clones = 0
+    BIOS_machines       = BIOS_machines_parents       = BIOS_machines_clones = 0
+    coin_machines       = coin_machines_parents       = coin_machines_clones = 0
+    nocoin_machines     = nocoin_machines_parents     = nocoin_machines_clones = 0
+    mechanical_machines = mechanical_machines_parents = mechanical_machines_clones = 0
+    dead_machines       = dead_machines_parents       = dead_machines_clones = 0
 
     log_info('fs_build_MAME_main_database() Parsing MAME XML file ...')
     num_iteration = 0
@@ -895,15 +906,34 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             m_render['flags'] = fs_initial_flags(machine, m_render, m_rom)
 
             # >> Compute statistics
-            if m_render['cloneof']:            parent_machines += 1
-            else:                             clone_machines += 1
-            if m_render['isDevice']:           devices_machines += 1
-            if m_render['isBIOS']:             BIOS_machines += 1
-            if machine['coins'] > 0:         coin_machines += 1
-            else:                             nocoin_machines += 1
-            if machine['isMechanical']: mechanical_machines += 1            
-            if machine['isDead']:       dead_machines += 1
-            if machine['sampleof']:     samples_machines += 1
+            if m_render['cloneof']: parent_machines += 1
+            else:                   clone_machines += 1
+            if m_render['isDevice']:
+                devices_machines += 1
+                if m_render['cloneof']: devices_machines_clones += 1
+                else:                   devices_machines_parents += 1
+            if m_render['isBIOS']:
+                BIOS_machines += 1
+                if m_render['cloneof']: BIOS_machines_clones += 1
+                else:                   BIOS_machines_parents += 1
+            if machine['coins'] > 0:
+                coin_machines += 1
+                if m_render['cloneof']: coin_machines_clones += 1
+                else:                   coin_machines_parents += 1
+            else:
+                nocoin_machines += 1
+                if m_render['cloneof']: nocoin_machines_clones += 1
+                else:                   nocoin_machines_parents += 1
+            if machine['isMechanical']:
+                mechanical_machines += 1
+                if m_render['cloneof']: mechanical_machines_clones += 1
+                else:                   mechanical_machines_parents += 1
+            if machine['isDead']:
+                dead_machines += 1
+                if m_render['cloneof']: dead_machines_clones += 1
+                else:                   dead_machines_parents += 1
+            if machine['sampleof']:
+                samples_machines += 1
 
             # >> Add new machine
             machines[m_name] = machine
@@ -1046,13 +1076,26 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['processed_machines']  = processed_machines
     control_dic['parent_machines']     = parent_machines
     control_dic['clone_machines']      = clone_machines
-    control_dic['devices_machines']    = devices_machines
-    control_dic['BIOS_machines']       = BIOS_machines    
-    control_dic['coin_machines']       = coin_machines
-    control_dic['nocoin_machines']     = nocoin_machines
-    control_dic['mechanical_machines'] = mechanical_machines
-    control_dic['dead_machines']       = dead_machines
     control_dic['samples_machines']    = samples_machines
+
+    control_dic['devices_machines']            = devices_machines
+    control_dic['devices_machines_parents']    = devices_machines_parents
+    control_dic['devices_machines_clones']     = devices_machines_clones
+    control_dic['BIOS_machines']               = BIOS_machines
+    control_dic['BIOS_machines_parents']       = BIOS_machines_parents
+    control_dic['BIOS_machines_clones']        = BIOS_machines_clones
+    control_dic['coin_machines']               = coin_machines
+    control_dic['coin_machines_parents']       = coin_machines_parents
+    control_dic['coin_machines_clones']        = coin_machines_clones
+    control_dic['nocoin_machines']             = nocoin_machines
+    control_dic['nocoin_machines_parents']     = nocoin_machines_parents
+    control_dic['nocoin_machines_clones']      = nocoin_machines_clones
+    control_dic['mechanical_machines']         = mechanical_machines
+    control_dic['mechanical_machines_parents'] = mechanical_machines_parents
+    control_dic['mechanical_machines_clones']  = mechanical_machines_clones
+    control_dic['dead_machines']               = dead_machines
+    control_dic['dead_machines_parents']       = dead_machines_parents
+    control_dic['dead_machines_clones']        = dead_machines_clones
 
     control_dic['merged_ZIPs']     = num_ZIP_merged
     control_dic['split_ZIPs']      = num_ZIP_split

@@ -1009,14 +1009,28 @@ class Main:
 
             info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
             t = "Machines: {0} ({1} Parents / {2} Clones)\n"
-            info_text += t.format(control_dic['processed_machines'], control_dic['parent_machines'],
+            info_text += t.format(control_dic['processed_machines'], control_dic['parent_machines'], 
                                   control_dic['clone_machines'])
-            info_text += "Devices: {0}\n".format(control_dic['devices_machines'])
-            info_text += "BIOS: {0}\n".format(control_dic['BIOS_machines'])
-            info_text += "Coin: {0}\n".format(control_dic['coin_machines'])
-            info_text += "Nocoin: {0}\n".format(control_dic['nocoin_machines'])
-            info_text += "Mechanical: {0}\n".format(control_dic['mechanical_machines'])
-            info_text += "Dead: {0}\n".format(control_dic['dead_machines'])
+            info_text += "Samples: {0}\n".format(control_dic['samples_machines'])
+
+            t = "Devices: {0} ({1} Parents / {2} Clones)\n"
+            info_text += t.format(control_dic['devices_machines'],    control_dic['devices_machines_parents'], 
+                                  control_dic['devices_machines_clones'])
+            t = "BIOS: {0} ({1} Parents / {2} Clones)\n"
+            info_text += t.format(control_dic['BIOS_machines'],       control_dic['BIOS_machines_parents'], 
+                                  control_dic['BIOS_machines_clones'])
+            t = "Coin: {0} ({1} Parents / {2} Clones)\n"
+            info_text += t.format(control_dic['coin_machines'],       control_dic['coin_machines_parents'], 
+                                  control_dic['coin_machines_clones'])
+            t = "Nocoin: {0} ({1} Parents / {2} Clones)\n"
+            info_text += t.format(control_dic['nocoin_machines'],     control_dic['nocoin_machines_parents'],
+                                  control_dic['nocoin_machines_clones'])
+            t = "Mechanical: {0} ({1} Parents / {2} Clones)\n"
+            info_text += t.format(control_dic['mechanical_machines'], control_dic['mechanical_machines_parents'],
+                                  control_dic['mechanical_machines_clones'])
+            t = "Dead: {0} ({1} Parents / {2} Clones)\n"
+            info_text += t.format(control_dic['dead_machines'],       control_dic['dead_machines_parents'], 
+                                  control_dic['dead_machines_clones'])
 
             info_text += '\n[COLOR orange]ROM ZIP/CHD file count[/COLOR]\n'
             info_text += "Merged set has {0} ZIP files\n".format(control_dic['merged_ZIPs'])
