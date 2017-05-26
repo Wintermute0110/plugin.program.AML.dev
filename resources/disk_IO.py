@@ -1834,7 +1834,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     # --- Scan all XML files in Software Lists directory and save DB ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pdialog_line1 = 'Building Sofware Lists indices/catalogs ...'
+    pdialog_line1 = 'Building Sofware Lists ROM databases and SL catalog ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
     total_files = len(SL_file_list)
@@ -1884,13 +1884,11 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
 
     # --- Make a list of machines that can launch each SL ---
     log_info('Making Software List machine list ...')
-    pdialog_line1 = 'Rebuilding Software List machine list ...'
+    pdialog_line1 = 'Building Software List machine list ...'
     pDialog.update(0, pdialog_line1)
     total_SL = len(SL_catalog_dic)
     processed_SL = 0
     SL_machines_dic = {}
-    # Revise this algortihm! I think is not working well ... there are more software lists
-    # in the 'Software Lists' than in the 'Machines by Software List'
     for SL_name in SL_catalog_dic:
         SL_machine_list = []
         for machine_name in machines:
@@ -1916,7 +1914,11 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     for parent_name in main_pclone_dic:
         # >> A machine may have more than 1 software lists
         for sl_name in machines[parent_name]['softwarelists']:
-            if sl_name in SL_catalog_dic: sl_name = SL_catalog_dic[sl_name]['display_name']
+            if sl_name in SL_catalog_dic:
+                sl_name = SL_catalog_dic[sl_name]['display_name']
+            else:
+                log_warning('sl_name = "{0}" not found in SL_catalog_dic'.format(sl_name))
+                log_warning('In other words, there is no {0}.xlm SL database'.format(sl_name))
             catalog_key = sl_name
             if catalog_key in catalog_parents:
                 catalog_parents[catalog_key]['parents'].append(parent_name)
@@ -1929,6 +1931,14 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
                 all_list = [parent_name]
                 for clone in main_pclone_dic[parent_name]: all_list.append(clone)
                 catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
+    # >> Include Software Lists with no machines in the catalog. In other words, there are
+    #    software lists that apparently cannot be launched by any machine.
+    for sl_name in SL_catalog_dic:
+        catalog_key = SL_catalog_dic[sl_name]['display_name']
+        if not catalog_key in catalog_parents:
+            catalog_parents[catalog_key] = {'parents' : list(), 'num_parents' : 0}
+            catalog_all[catalog_key] = {'machines' : list(), 'num_machines' : 0}
+
     fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
     pDialog.update(100)
