@@ -123,6 +123,16 @@ class AML_Paths:
         self.REPORT_SL_SCAN_CHDS_PATH    = self.REPORTS_DIR.pjoin('Report_SL_CHD_scanner.txt')
 PATHS = AML_Paths()
 
+# --- ROM flags used by skins to display status icons ---
+AEL_INFAV_BOOL_LABEL     = 'AEL_InFav'
+AEL_PCLONE_STAT_LABEL    = 'AEL_PClone_stat'
+
+AEL_INFAV_BOOL_VALUE_TRUE            = 'InFav_True'
+AEL_INFAV_BOOL_VALUE_FALSE           = 'InFav_False'
+AEL_PCLONE_STAT_VALUE_PARENT         = 'PClone_Parent'
+AEL_PCLONE_STAT_VALUE_CLONE          = 'PClone_Clone'
+AEL_PCLONE_STAT_VALUE_NONE           = 'PClone_None'
+
 class Main:
     # --- Object variables ---
     settings = {}
@@ -524,24 +534,38 @@ class Main:
 
     def _render_catalog_machine_row(self, machine_name, machine, machine_assets, flag_parent_list,
                                     catalog_name, category_name, num_clones = 0):
-        display_name = machine['description']
+        # --- Default values for flags ---
+        AEL_InFav_bool_value     = AEL_INFAV_BOOL_VALUE_FALSE
+        AEL_PClone_stat_value    = AEL_PCLONE_STAT_VALUE_NONE
 
         # --- Render a Parent only list ---
+        display_name = machine['description']
         if flag_parent_list and num_clones > 0:
-            # >> Machine has clones
+            # NOTE all machines here are parents
+            # --- Mark number of clones ---
             display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
-        else:
-            # >> Machine has no clones, show flags
-            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(machine['flags'])
 
-            # --- Mark Devices, BIOS and clones ---
+            # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
+            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(machine['flags'])
+            if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+            if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+            if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+            elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+
+            # --- Skin flags ---
+            AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
+        else:
+            # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
+            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(machine['flags'])            
             if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
             if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
             if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-
-            # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
             if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
             elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+
+            # --- Skin flags ---
+            if machine['cloneof']: AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE
+            else:                  AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
 
         # --- Assets/artwork ---
         icon_path      = machine_assets['title'] if machine_assets['title'] else 'DefaultProgram.png'
@@ -569,6 +593,10 @@ class Main:
         # >> Kodi official artwork fields
         listitem.setArt({'icon'   : icon_path,   'fanart'    : fanart_path,
                          'banner' : banner_path, 'clearlogo' : clearlogo_path, 'poster' : poster_path })
+
+        # --- ROM flags (Skins will use these flags to render icons) ---
+        listitem.setProperty(AEL_INFAV_BOOL_LABEL,     AEL_InFav_bool_value)
+        listitem.setProperty(AEL_PCLONE_STAT_LABEL,    AEL_PClone_stat_value)
 
         # --- Create context menu ---
         commands = []
