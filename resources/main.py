@@ -156,7 +156,7 @@ class Main:
 
         # --- Some debug stuff for development ---
         log_debug('---------- Called AML Main::run_plugin() constructor ----------')
-        log_debug('sys.platform   {0}'.format(sys.platform))
+        log_debug('sys.platform {0}'.format(sys.platform))
         log_debug('Python version ' + sys.version.replace('\n', ''))
         log_debug('__addon_version__ {0}'.format(__addon_version__))
         for i in range(len(sys.argv)): log_debug('sys.argv[{0}] = "{1}"'.format(i, sys.argv[i]))
