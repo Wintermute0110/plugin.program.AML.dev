@@ -102,6 +102,10 @@ class AML_Paths:
         self.CATALOG_SL_PARENT_PATH             = self.CATALOG_DIR.pjoin('catalog_SL_parents.json')
         self.CATALOG_SL_ALL_PATH                = self.CATALOG_DIR.pjoin('catalog_SL_all.json')
 
+        # >> Distributed hashed database
+        self.MAIN_DB_HASH_DIR                   = PLUGIN_DATA_DIR.pjoin('db_main_hash')
+        self.ROMS_DB_HASH_DIR                   = PLUGIN_DATA_DIR.pjoin('db_ROMs_hash')
+
         # >> Software Lists
         self.SL_DB_DIR                   = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')
         self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
@@ -158,10 +162,12 @@ class Main:
         for i in range(len(sys.argv)): log_debug('sys.argv[{0}] = "{1}"'.format(i, sys.argv[i]))
 
         # --- Addon data paths creation ---
-        if not PLUGIN_DATA_DIR.exists():   PLUGIN_DATA_DIR.makedirs()
-        if not PATHS.SL_DB_DIR.exists():   PATHS.SL_DB_DIR.makedirs()
-        if not PATHS.CATALOG_DIR.exists(): PATHS.CATALOG_DIR.makedirs()
-        if not PATHS.REPORTS_DIR.exists(): PATHS.REPORTS_DIR.makedirs()
+        if not PLUGIN_DATA_DIR.exists():        PLUGIN_DATA_DIR.makedirs()
+        if not PATHS.MAIN_DB_HASH_DIR.exists(): PATHS.MAIN_DB_HASH_DIR.makedirs()
+        if not PATHS.ROMS_DB_HASH_DIR.exists(): PATHS.ROMS_DB_HASH_DIR.makedirs()
+        if not PATHS.SL_DB_DIR.exists():        PATHS.SL_DB_DIR.makedirs()
+        if not PATHS.CATALOG_DIR.exists():      PATHS.CATALOG_DIR.makedirs()
+        if not PATHS.REPORTS_DIR.exists():      PATHS.REPORTS_DIR.makedirs()
 
         # --- Process URL ---
         self.base_url     = sys.argv[0]
@@ -938,12 +944,11 @@ class Main:
             if type == 0:
                 if location == LOCATION_STANDARD:
                     # >> Read MAME machine information
-                    kodi_busydialog_ON()
-                    MAME_db_dic     = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-                    MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-                    kodi_busydialog_OFF()
-                    machine = MAME_db_dic[machine_name]
-                    assets  = MAME_assets_dic[machine_name]
+                    # kodi_busydialog_ON()
+                    machine    = fs_get_machine_main_db_hash(PATHS, machine_name)
+                    assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                    # kodi_busydialog_OFF()
+                    assets  = assets_dic[machine_name]
                     window_title = 'MAME Machine Information'
                 elif location == LOCATION_MAME_FAVS:
                     machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
@@ -953,16 +958,34 @@ class Main:
 
                 # --- Make information string ---
                 info_text  = '[COLOR orange]Machine {0} / Render information[/COLOR]\n'.format(machine_name)
+                if location == LOCATION_MAME_FAVS:
+                    info_text += "[COLOR slateblue]mame_version[/COLOR]: {0}\n".format(machine['mame_version'])
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
                 info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
                 info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
                 info_text += "[COLOR violet]flags[/COLOR]: '{0}'\n".format(machine['flags'])
                 info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
                 info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
-                if location == LOCATION_MAME_FAVS:
-                    info_text += "[COLOR slateblue]mame_version[/COLOR]: {0}\n".format(machine['mame_version'])
                 info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
                 info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
+
+                info_text += '\n[COLOR orange]Complementary information[/COLOR]\n'.format(machine_name)
+                info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
+                info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])
+                info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
+                info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(unicode(machine['control_type']))
+                info_text += "[COLOR skyblue]device_list[/COLOR]: {0}\n".format(unicode(machine['device_list']))
+                info_text += "[COLOR skyblue]device_tags[/COLOR]: {0}\n".format(unicode(machine['device_tags']))                
+                info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(unicode(machine['display_rotate']))
+                info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(unicode(machine['display_tag']))
+                info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(unicode(machine['display_type']))
+                info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(unicode(machine['isDead']))
+                info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(unicode(machine['isMechanical']))
+                info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
+                info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
+                info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
+                info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(unicode(machine['softwarelists']))
+                info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
 
                 info_text += '\n[COLOR orange]Asset/artwork information[/COLOR]\n'
                 info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
@@ -975,14 +998,10 @@ class Main:
                 info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
 
                 # --- Show information window ---
-                try:
-                    xbmc.executebuiltin('ActivateWindow(10147)')
-                    window = xbmcgui.Window(10147)
-                    xbmc.sleep(100)
-                    window.getControl(1).setLabel(window_title)
-                    window.getControl(5).setText(info_text)
-                except:
-                    log_error('_command_view_machine() Exception rendering INFO window')
+                xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+                dialog = xbmcgui.Dialog()
+                dialog.textviewer(window_title, info_text)
+                xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View Software List Machine ---
         elif menu_kind == MENU_SL_DATA:

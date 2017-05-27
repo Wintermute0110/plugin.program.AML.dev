@@ -1119,6 +1119,55 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         if rom_set['split_CDHs']:      num_CHD_split += len(rom_set['split_CDHs'])
         if rom_set['non_merged_CDHs']: num_CHD_non_merged += len(rom_set['non_merged_CDHs'])
 
+    # ---------------------------------------------------------------------------------------------
+    # Improve info in RENDER_DB_PATH
+    # ---------------------------------------------------------------------------------------------
+    # >> Add genre infolabel
+    if genre_dic:
+        for machine_name in machines_render:
+            machines_render[machine_name]['genre'] = machines[machine_name]['genre']
+    elif categories_dic:
+        for machine_name in machines_render:
+            machines_render[machine_name]['genre'] = machines[machine_name]['catver']
+    elif catlist_dic:
+        for machine_name in machines_render:
+            machines_render[machine_name]['genre'] = machines[machine_name]['catlist']
+
+    # >> Add nplayers infolabel
+    if nplayers_dic:
+        for machine_name in machines_render:
+            machines_render[machine_name]['nplayers'] = machines[machine_name]['nplayers']
+
+    # ---------------------------------------------------------------------------------------------
+    # Build main distributed hashed database
+    # ---------------------------------------------------------------------------------------------
+    log_info('Creating main hashed database index ...')
+    # machine_name -> MD5 -> take first letter -> a.json, b.json, ...
+    # A) First create an index
+    #    db_main_hash_idx = { 'machine_name' : 'a', ... }
+    # B) Then traverse a list [0, 1, ..., f] and write the machines in that sub database section.
+    db_main_hash_idx = {}
+    for key in machines:
+        md5_str = hashlib.md5(key).hexdigest()
+        db_main_hash_idx[key] = md5_str[0]
+        # log_debug('Machine {0:12s} / hash {1} / db file {2}'.format(key, md5_str, md5_str[0]))
+
+    log_info('Creating main hashed database JSON files ...')
+    distributed_db_files = ['0', '1', '2', '3', '4', '5', '6', '7', 
+                            '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+    for db_prefix in distributed_db_files:
+        # --- Generate dictionary in this JSON file ---
+        hashed_db_dic = {}
+        for key in db_main_hash_idx:
+            if db_main_hash_idx[key] == db_prefix:
+                machine_dic = machines[key].copy()
+                # returns None since it mutates machine_dic
+                machine_dic.update(machines_render[key])
+                hashed_db_dic[key] = machine_dic
+        # --- Save JSON file
+        hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '.json')
+        fs_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic)
+
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
@@ -1159,28 +1208,10 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['split_CHDs']      = num_CHD_split
     control_dic['non_merged_CHDs'] = num_CHD_non_merged
 
-    # ---------------------------------------------------------------------------------------------
-    # Improve info in RENDER_DB_PATH
-    # ---------------------------------------------------------------------------------------------
-    # >> Add genre infolabel
-    if genre_dic:
-        for machine_name in machines_render:
-            machines_render[machine_name]['genre'] = machines[machine_name]['genre']
-    elif categories_dic:
-        for machine_name in machines_render:
-            machines_render[machine_name]['genre'] = machines[machine_name]['catver']
-    elif catlist_dic:
-        for machine_name in machines_render:
-            machines_render[machine_name]['genre'] = machines[machine_name]['catlist']
-
-    # >> Add nplayers infolabel
-    if nplayers_dic:
-        for machine_name in machines_render:
-            machines_render[machine_name]['nplayers'] = machines[machine_name]['nplayers']
-
     # -----------------------------------------------------------------------------
     # Now write simplified JSON
     # -----------------------------------------------------------------------------
+    log_info('Saving database JSON files ...')
     kodi_busydialog_ON()
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
     fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
@@ -1190,6 +1221,18 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
     fs_write_JSON_file(PATHS.ROM_SETS_PATH.getPath(), rom_sets)
     kodi_busydialog_OFF()
+
+#
+# Retrieves machine from distributed database.
+# This is very quick for retrieving individual machines, very slow for multiple machines.
+#
+def fs_get_machine_main_db_hash(PATHS, machine_name):
+    log_debug('fs_get_machine_main_db_hash() machine {0}'.format(machine_name))
+    md5_str = hashlib.md5(machine_name).hexdigest()
+    hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0] + '.json')
+    hashed_db_dic = fs_load_JSON_file(hash_DB_FN.getPath())
+
+    return hashed_db_dic[machine_name]
 
 #
 # A) Builds the following catalog files
