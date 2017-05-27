@@ -18,19 +18,40 @@
 # -------------------------------------------------------------------------------------------------
 # >> Substitute notable drivers with a proper name
 mame_driver_name_dic = {
+    # --- Capcom ---
     'cps1.cpp'     : 'Capcom Play System 1',
     'cps2.cpp'     : 'Capcom Play System 2',
     'cps3.cpp'     : 'Capcom Play System 3',
+
+    # --- Namco ---
     'galaxian.cpp' : 'Namco Galaxian-derived hardware',
-    'model2.cpp'   : 'Sega Model 2',
     'namcops2.cpp' : 'Namco System 246 / System 256 (Sony PS2 based)',
-    'naomi.cpp'    : 'Sega Naomi / Naomi 2',
-    'neodriv.hxx'  : 'SNK NeoGeo',
+    'neodriv.hxx'  : 'SNK NeoGeo MVS',
+    'neogeo.cpp'   : 'SNK NeoGeo',
     'seta.cpp'     : 'Seta Hardware',
-    'segas16b.cpp' : 'Sega System 16B',
-    'system1.cpp'  : 'System1 / System 2',
+
+    # --- SEGA ---
+    'chihiro.cpp'  : 'SEGA Chihiro (Xbox-based)',
+    'model2.cpp'   : 'SEGA Model 2',
+    'naomi.cpp'    : 'SEGA Naomi / Naomi 2 / Atomiswave',
+    'segac2.cpp'   : 'SEGA System C (System 14)',
+    'segae.cpp'    : 'SEGA System E',
+    'segaorun.cpp' : 'SEGA Out Run hardware',
+    'segas16a.cpp' : 'SEGA System 16A',
+    'segas16b.cpp' : 'SEGA System 16B',
+    'segas18.cpp'  : 'SEGA System 18',
+    'segas24.cpp'  : 'SEGA System 24',
+    'segas32.cpp'  : 'SEGA System 32',
+    'segasp.cpp'   : 'SEGA System SP (Spider)',
+    'segaxbd.cpp'  : 'SEGA X-board',
+    'system1.cpp'  : 'SEGA System1 / System 2',
+
+    # --- Taito ---
+    'taito_b.cpp'  : 'Taito B System',
+    'taito_l.cpp'  : 'Taito L System',
     'taito_f3.cpp' : 'Taito F3 System',
     'taito_f2.cpp' : 'Taito F2 System',
+
     'zn.cpp'       : 'Sony ZN1/ZN2 (Arcade PSX)',
 }
 
