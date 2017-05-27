@@ -1092,23 +1092,24 @@ class Main:
                     info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
                     info_text += "[COLOR violet]launch_machine[/COLOR]: '{0}'\n".format(rom['launch_machine'])
                     info_text += "[COLOR violet]mame_version[/COLOR]: '{0}'\n".format(rom['mame_version'])
-                    info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(rom['num_roms'])
-                    info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
-                    info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
+                    info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(unicode(rom['num_roms']))
+                    info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(unicode(rom['part_interface']))
+                    info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(unicode(rom['part_name']))
                     info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
                     info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
                     info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
                     info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
 
+                    info_text += '\n[COLOR orange]Software List assets[/COLOR]\n'
+                    info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(rom['assets']['title'])
+                    info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(rom['assets']['snap'])
+                    info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(rom['assets']['boxfront'])
+
                 # --- Show information window ---
-                try:
-                    xbmc.executebuiltin('ActivateWindow(10147)')
-                    window = xbmcgui.Window(10147)
-                    xbmc.sleep(100)
-                    window.getControl(1).setLabel(window_title)
-                    window.getControl(5).setText(info_text)
-                except:
-                    log_error('_command_view_machine() Exception rendering INFO window')
+                xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+                dialog = xbmcgui.Dialog()
+                dialog.textviewer(window_title, info_text)
+                xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
         else:
             type_nb = -1
 
@@ -1117,7 +1118,8 @@ class Main:
         if type == type_nb:
             # --- Load control dic ---
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            
+            window_title = 'Database information and statistics'
+
             # --- Main stuff ---
             info_text  = '[COLOR orange]Main information[/COLOR]\n'
             info_text += "AML version: {0}\n".format(__addon_version__)
@@ -1178,15 +1180,10 @@ class Main:
             info_text += t.format(control_dic['SL_CHDs_have'], control_dic['SL_CHDs_total'], control_dic['SL_CHDs_missing'])
 
             # --- Show information window ---
-            window_title = 'Database information and statistics'
-            try:
-                xbmc.executebuiltin('ActivateWindow(10147)')
-                window = xbmcgui.Window(10147)
-                xbmc.sleep(100)
-                window.getControl(1).setLabel(window_title)
-                window.getControl(5).setText(info_text)
-            except:
-                log_error('_command_view_machine() Exception rendering INFO window')
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View MAME ROM scanner report ---
         type_nb += 1
@@ -1196,20 +1193,16 @@ class Main:
                 return
 
             # --- Read stdout and put into a string ---
+            window_title = 'ROM scanner report'
             info_text = ''
             with open(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath(), "r") as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
-            window_title = 'ROM scanner report'
-            try:
-                xbmc.executebuiltin('ActivateWindow(10147)')
-                window = xbmcgui.Window(10147)
-                xbmc.sleep(100)
-                window.getControl(1).setLabel(window_title)
-                window.getControl(5).setText(info_text)
-            except:
-                log_error('_command_view_machine() Exception rendering INFO window')
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View MAME CHD scanner report ---
         type_nb += 1
@@ -1219,20 +1212,16 @@ class Main:
                 return
 
             # --- Read stdout and put into a string ---
+            window_title = 'MAME CHD scanner report'
             info_text = ''
             with open(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath(), "r") as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
-            window_title = 'MAME CHD scanner report'
-            try:
-                xbmc.executebuiltin('ActivateWindow(10147)')
-                window = xbmcgui.Window(10147)
-                xbmc.sleep(100)
-                window.getControl(1).setLabel(window_title)
-                window.getControl(5).setText(info_text)
-            except:
-                log_error('_command_view_machine() Exception rendering INFO window')
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View MAME Samples scanner report ---
         type_nb += 1
@@ -1242,20 +1231,16 @@ class Main:
                 return
 
             # --- Read stdout and put into a string ---
+            window_title = 'MAME samples scanner report'
             info_text = ''
             with open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), 'r') as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
-            window_title = 'MAME samples scanner report'
-            try:
-                xbmc.executebuiltin('ActivateWindow(10147)')
-                window = xbmcgui.Window(10147)
-                xbmc.sleep(100)
-                window.getControl(1).setLabel(window_title)
-                window.getControl(5).setText(info_text)
-            except:
-                log_error('_command_view_machine() Exception rendering INFO window')
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View Software Lists ROM scanner report ---
         type_nb += 1
@@ -1265,20 +1250,16 @@ class Main:
                 return
 
             # --- Read stdout and put into a string ---
+            window_title = 'SL ROM scanner report'
             info_text = ''
             with open(PATHS.REPORT_SL_SCAN_ROMS_PATH.getPath(), 'r') as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
-            window_title = 'SL ROM scanner report'
-            try:
-                xbmc.executebuiltin('ActivateWindow(10147)')
-                window = xbmcgui.Window(10147)
-                xbmc.sleep(100)
-                window.getControl(1).setLabel(window_title)
-                window.getControl(5).setText(info_text)
-            except:
-                log_error('_command_view_machine() Exception rendering INFO window')
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View Software Lists CHD scanner report ---
         type_nb += 1
@@ -1288,20 +1269,16 @@ class Main:
                 return
 
             # --- Read stdout and put into a string ---
+            window_title = 'SL CHD scanner report'
             info_text = ''
             with open(PATHS.REPORT_SL_SCAN_CHDS_PATH.getPath(), 'r') as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
-            window_title = 'SL CHD scanner report'
-            try:
-                xbmc.executebuiltin('ActivateWindow(10147)')
-                window = xbmcgui.Window(10147)
-                xbmc.sleep(100)
-                window.getControl(1).setLabel(window_title)
-                window.getControl(5).setText(info_text)
-            except:
-                log_error('_command_view_machine() Exception rendering INFO window')
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View MAME stdout/stderr ---
         type_nb += 1
@@ -1311,20 +1288,16 @@ class Main:
                 return
 
             # --- Read stdout and put into a string ---
+            window_title = 'MAME last execution output'
             info_text = ''
             with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'r') as myfile:
                 info_text = myfile.read()
 
             # --- Show information window ---
-            window_title = 'MAME last execution output'
-            try:
-                xbmc.executebuiltin('ActivateWindow(10147)')
-                window = xbmcgui.Window(10147)
-                xbmc.sleep(100)
-                window.getControl(1).setLabel(window_title)
-                window.getControl(5).setText(info_text)
-            except:
-                log_error('_command_view_machine() Exception rendering INFO window')
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
     def _command_context_add_mame_fav(self, machine_name):
         log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(machine_name))
