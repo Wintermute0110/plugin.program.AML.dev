@@ -319,9 +319,18 @@ class Main:
     # NOTE Devices are excluded from main PClone list.
     def _render_root_list(self):
         # >> Count number of ROMs in binary filters
-        c_dic = fs_get_cataloged_dic_parents(PATHS, 'None')
-        if c_dic:
-            # >> Main and binary filters
+        if self.settings['mame_view_mode'] == VIEW_MODE_FLAT:
+            c_dic = fs_get_cataloged_dic_all(PATHS, 'None')
+            machines_str = 'Machines with coin slot [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Machines']['num_machines'])
+            nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoCoin']['num_machines'])
+            mecha_str    = 'Mechanical machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Mechanical']['num_machines'])
+            dead_str     = 'Dead machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Dead']['num_machines'])
+            norom_str    = 'Machines [with no ROMs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoROM']['num_machines'])
+            chd_str      = 'Machines [with CHDs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['CHD']['num_machines'])
+            samples_str  = 'Machines [with Samples] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Samples']['num_machines'])
+            bios_str     = 'Machines [BIOS] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['BIOS']['num_machines'])
+        elif self.settings['mame_view_mode'] == VIEW_MODE_PCLONE:
+            c_dic = fs_get_cataloged_dic_parents(PATHS, 'None')
             machines_str = 'Machines with coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Machines']['num_parents'])
             nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
             mecha_str    = 'Mechanical machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
@@ -330,7 +339,7 @@ class Main:
             chd_str      = 'Machines [with CHDs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['CHD']['num_parents'])
             samples_str  = 'Machines [with Samples] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Samples']['num_parents'])
             bios_str     = 'Machines [BIOS] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
-        else:
+        if not c_dic:
             machines_str = 'Machines with coin slot'
             nocoin_str   = 'Machines with no coin slot'
             mecha_str    = 'Mechanical machines'
@@ -380,12 +389,9 @@ class Main:
 
     def _render_root_list_row(self, root_name, root_URL):
         # --- Create listitem row ---
-        icon = 'DefaultFolder.png'
         ICON_OVERLAY = 6
-        listitem = xbmcgui.ListItem(root_name, iconImage = icon)
-
-        # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY } )
+        listitem = xbmcgui.ListItem(root_name)
+        listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY})
 
         # --- Create context menu ---
         commands = []
@@ -407,7 +413,10 @@ class Main:
         # >> Render categories in catalog index
         self._set_Kodi_all_sorting_methods_and_size()
         loading_ticks_start = time.time()
-        catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+        if self.settings['mame_view_mode'] == VIEW_MODE_FLAT:
+            catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
+        elif self.settings['mame_view_mode'] == VIEW_MODE_PCLONE:
+            catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
         loading_ticks_end = time.time()
         if not catalog_dic:
             kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
@@ -416,7 +425,15 @@ class Main:
 
         rendering_ticks_start = time.time()
         for catalog_key in sorted(catalog_dic):
-            self._render_catalog_list_row(catalog_name, catalog_key, catalog_dic[catalog_key]['num_parents'])
+            if self.settings['mame_view_mode'] == VIEW_MODE_FLAT:
+                num_machines = catalog_dic[catalog_key]['num_machines']
+                if num_machines == 1: machine_str = 'machine'
+                else:                 machine_str = 'machines'
+            elif self.settings['mame_view_mode'] == VIEW_MODE_PCLONE:
+                num_machines = catalog_dic[catalog_key]['num_parents']
+                if num_machines == 1: machine_str = 'parent'
+                else:                 machine_str = 'parents'
+            self._render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_str)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
@@ -535,14 +552,11 @@ class Main:
         log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
         log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
-    def _render_catalog_list_row(self, catalog_name, catalog_key, num_machines):
+    def _render_catalog_list_row(self, catalog_name, catalog_key, num_machines, machine_str):
         # --- Create listitem row ---
-        icon = 'DefaultFolder.png'
         ICON_OVERLAY = 6
-        title_str = '{0} [COLOR orange]({1} machines)[/COLOR]'.format(catalog_key, num_machines)
-
-        listitem = xbmcgui.ListItem(title_str, iconImage = icon)
-        # listitem.setProperty('fanart_image', category_dic['fanart'])
+        title_str = '{0} [COLOR orange]({1} {2})[/COLOR]'.format(catalog_key, num_machines, machine_str)
+        listitem = xbmcgui.ListItem(title_str)
         listitem.setInfo('video', {'Title'   : title_str, 'Overlay' : ICON_OVERLAY, 'size' : num_machines})
 
         # --- Create context menu ---

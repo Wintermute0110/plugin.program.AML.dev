@@ -1,4 +1,4 @@
-[B]Advanced Emulator Launcher | version 0.9.4 | xx March 2017[/B]
+[B]Advanced Emulator Launcher | version 0.9.4 | xx August 2017[/B]
 
 WIP      Display MAMEINFO.DAT in Machine context menu.
 
@@ -14,7 +14,12 @@ WIP      Allow user to choose default assets as AEL does in addon seetings.
 WIP      Manage SL Favourites.
 
 
-[B]Advanced Emulator Launcher | version 0.9.3 | 27 May 2017[/B]
+[B]Advanced Emulator Launcher | version 0.9.3-beta1 | XX June 2017[/B]
+
+ONLY BUG FIXES PLANNED FOR THIS RELEASE.
+
+
+[B]Advanced Emulator Launcher | version 0.9.3-beta1 | 27 May 2017[/B]
 
 FEATURE  Plugin speed has been increased a lot owing to a brand new database design.
 
