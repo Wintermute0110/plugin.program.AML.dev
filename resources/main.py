@@ -1690,6 +1690,9 @@ class Main:
     def _command_show_sl_fav(self):
         log_debug('_command_show_sl_fav() Starting ...')
 
+        # >> Load Software List ROMs
+        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+
         # >> Open Favourite Machines dictionary
         fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
         if not fav_SL_roms:
@@ -1701,10 +1704,14 @@ class Main:
         self._set_Kodi_all_sorting_methods()
         for SL_fav_key in fav_SL_roms:
             SL_fav_ROM = fav_SL_roms[SL_fav_key]
-            self._render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM)
+            assets = SL_fav_ROM['assets']
+            # >> Add the SL name as 'genre'
+            SL_name = SL_fav_ROM['SL_name']
+            SL_fav_ROM['genre'] = SL_catalog_dic[SL_name]['display_name']
+            self._render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_sl_fav_machine_row(self, SL_fav_key, ROM):
+    def _render_sl_fav_machine_row(self, SL_fav_key, ROM, assets):
         SL_name  = ROM['SL_name']
         ROM_name = ROM['ROM_name']
         display_name = ROM['description']
@@ -1714,13 +1721,26 @@ class Main:
         display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
         if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
 
+        # --- Assets/artwork ---
+        icon_path   = assets['title'] if assets['title'] else 'DefaultProgram.png'
+        fanart_path = assets['snap']
+        poster_path = assets['boxfront']
+
         # --- Create listitem row ---
-        icon = 'DefaultFolder.png'
-        listitem = xbmcgui.ListItem(display_name, iconImage = icon)
         ICON_OVERLAY = 6
-        # listitem.setProperty('fanart_image', category_dic['fanart'])
-        listitem.setInfo('video', {'title'   : display_name,     'year'    : ROM['year'],
-                                   'studio'  : ROM['publisher'], 'overlay' : ICON_OVERLAY })
+        listitem = xbmcgui.ListItem(display_name)
+        # >> Make all the infolabels compatible with Advanced Emulator Launcher
+        listitem.setInfo('video', {'title' : display_name, 'year'    : ROM['year'],
+                                   'genre' : ROM['genre'], 'studio'  : ROM['publisher'],
+                                   'overlay' : ICON_OVERLAY })
+        listitem.setProperty('platform', 'MAME Software List')
+
+        # --- Assets ---
+        # >> AEL custom artwork fields
+        listitem.setArt({'title' : assets['title'], 'snap' : assets['snap'], 'boxfront' : assets['boxfront']})
+
+        # >> Kodi official artwork fields
+        listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
 
         # --- Create context menu ---
         commands = []
