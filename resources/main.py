@@ -737,7 +737,7 @@ class Main:
             for parent_name in sorted(SL_PClone_dic[SL_name]): parent_list.append(parent_name)
             for parent_name in parent_list:
                 ROM        = SL_roms[parent_name]
-                assets     = SL_asset_dic[parent_name]
+                assets     = SL_asset_dic[parent_name] if parent_name in SL_asset_dic else fs_new_SL_asset()
                 num_clones = len(SL_PClone_dic[SL_name][parent_name])
                 ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
                 self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, num_clones)
@@ -745,7 +745,7 @@ class Main:
             log_info('_render_SL_ROMs() Rendering Flat launcher')
             for rom_name in SL_roms:
                 ROM    = SL_roms[rom_name]
-                assets = SL_asset_dic[rom_name]
+                assets = SL_asset_dic[rom_name] if rom_name in SL_asset_dic else fs_new_SL_asset()
                 ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
                 self._render_SL_ROM_row(SL_name, rom_name, ROM, assets, False)
         else:
@@ -773,14 +773,14 @@ class Main:
         SL_proper_name = SL_catalog_dic[SL_name]['display_name']
         self._set_Kodi_all_sorting_methods()
         ROM = SL_roms[parent_name]
-        assets  = SL_asset_dic[parent_name]
+        assets = SL_asset_dic[parent_name] if parent_name in SL_asset_dic else fs_new_SL_asset()
         ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
         self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, False)
 
         # >> Render clones belonging to parent in this category
         for clone_name in sorted(SL_PClone_dic[SL_name][parent_name]):
             ROM = SL_roms[clone_name]
-            assets = SL_asset_dic[clone_name]
+            assets = SL_asset_dic[clone_name] if clone_name in SL_asset_dic else fs_new_SL_asset()
             ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
             log_debug(unicode(ROM))
             self._render_SL_ROM_row(SL_name, clone_name, ROM, assets, False)
@@ -820,6 +820,8 @@ class Main:
         
         if flag_parent_list and num_clones > 0:
             display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
+            status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
         else:
             # --- Mark flags and status ---
             status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
@@ -1035,11 +1037,15 @@ class Main:
                     kodi_busydialog_ON()
                     SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
                     SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+                    assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+                    SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+                    SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
                     kodi_busydialog_OFF()
                     SL_dic = SL_catalog_dic[SL_name]
                     SL_machine_list = SL_machines_dic[SL_name]
                     roms = fs_load_JSON_file(SL_DB_FN.getPath())
                     rom = roms[SL_ROM]
+                    assets = SL_asset_dic[SL_ROM] if SL_ROM in SL_asset_dic else fs_new_SL_asset()
                     window_title = 'Software List ROM Information'
 
                     # >> Build information string
@@ -1054,6 +1060,11 @@ class Main:
                     info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
                     info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
                     info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
+
+                    info_text += '\n[COLOR orange]Software List assets[/COLOR]\n'
+                    info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
+                    info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
+                    info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(assets['boxfront'])
 
                     info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SL_name)
                     info_text += "[COLOR skyblue]chd_count[/COLOR]: {0}\n".format(SL_dic['chd_count'])
@@ -1560,8 +1571,13 @@ class Main:
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
+        # >> Load assets
+        assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        SL_assets_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
         kodi_busydialog_OFF()
         ROM = SL_roms[ROM_name]
+        assets = SL_assets_dic[ROM_name] if ROM_name in SL_assets_dic else fs_new_SL_asset()
 
         # >> Open Favourite Machines dictionary
         fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
@@ -1574,11 +1590,12 @@ class Main:
                                     'already in SL Favourites. Overwrite?')
             if ret < 1: return
 
-        # >> Add machine.
-        ROM['ROM_name'] = ROM_name
-        ROM['SL_name']  = SL_name
-        ROM['mame_version'] = control_dic['mame_version']
+        # >> Add machine to SL Favourites
+        ROM['ROM_name']       = ROM_name
+        ROM['SL_name']        = SL_name
+        ROM['mame_version']   = control_dic['mame_version']
         ROM['launch_machine'] = ''
+        ROM['assets']         = assets
         fav_SL_roms[SL_fav_key] = ROM
         log_info('_command_add_sl_fav() Added machine "{0}" ("{1}")'.format(ROM_name, SL_name))
 
