@@ -409,6 +409,11 @@ class Main:
         loading_ticks_start = time.time()
         catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
         loading_ticks_end = time.time()
+        if not catalog_dic:
+            kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+
         rendering_ticks_start = time.time()
         for catalog_key in sorted(catalog_dic):
             self._render_catalog_list_row(catalog_name, catalog_key, catalog_dic[catalog_key]['num_parents'])
@@ -439,18 +444,28 @@ class Main:
         view_mode_property = self.settings['mame_view_mode']
         log_debug('_render_catalog_parent_list() view_mode_property = {0}'.format(view_mode_property))
 
-        # >> Load main MAME info DB
+        # >> Check id main DB exists
+        if not PATHS.RENDER_DB_PATH.exists():
+            kodi_dialog_OK('MAME database not found. Check out "Setup plugin" context menu.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+
+        # >> Load main MAME info DB and catalog
         loading_ticks_start = time.time()
         MAME_db_dic     = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-        # >> Load catalog index
         if view_mode_property == VIEW_MODE_PCLONE:
             catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
         elif view_mode_property == VIEW_MODE_FLAT:
             catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
         else:
             kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
+            return
+        # >> Check if catalog is empty
+        if not catalog_dic:
+            kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
             return
 
         # >> Render parent main list
@@ -483,6 +498,10 @@ class Main:
         log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
         log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
+    #
+    # No need to check for DB existance here. If this function is called is because parents and
+    # hence all ROMs databases exist.
+    #
     def _render_catalog_clone_list(self, catalog_name, category_name, parent_name):
         log_error('_render_catalog_clone_list() Starting ...')
         display_hide_nonworking = self.settings['display_hide_nonworking']
@@ -676,6 +695,10 @@ class Main:
     def _render_SL_list(self):
         # >> Load Software List catalog
         SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+        if not SL_catalog_dic:
+            kodi_dialog_OK('Software Lists database not found. Check out "Setup plugin" context menu.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
 
         self._set_Kodi_all_sorting_methods()
         for SL_name in SL_catalog_dic:
@@ -1449,6 +1472,10 @@ class Main:
 
         # >> Open Favourite Machines dictionary
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+        if not fav_machines:
+            kodi_dialog_OK('No Favourite MAME machines. Add some machines to MAME Favourites first.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
 
         # >> Render Favourites
         self._set_Kodi_all_sorting_methods()
@@ -1648,6 +1675,10 @@ class Main:
 
         # >> Open Favourite Machines dictionary
         fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
+        if not fav_SL_roms:
+            kodi_dialog_OK('No Favourite Software Lists ROMs. Add some ROMs to SL Favourites first.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
 
         # >> Render Favourites
         self._set_Kodi_all_sorting_methods()
