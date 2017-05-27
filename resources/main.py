@@ -631,7 +631,7 @@ class Main:
         URL_fav     = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
         commands.append(('View',  URL_view ))
         # commands.append(('Display settings', URL_display ))
-        commands.append(('Add machine to MAME Favourites', URL_fav ))
+        commands.append(('Add to MAME Favourites', URL_fav ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
@@ -967,10 +967,10 @@ class Main:
             if type == 0:
                 if location == LOCATION_STANDARD:
                     # >> Read MAME machine information
-                    # kodi_busydialog_ON()
+                    kodi_busydialog_ON()
                     machine    = fs_get_machine_main_db_hash(PATHS, machine_name)
                     assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-                    # kodi_busydialog_OFF()
+                    kodi_busydialog_OFF()
                     assets  = assets_dic[machine_name]
                     window_title = 'MAME Machine Information'
                 elif location == LOCATION_MAME_FAVS:
@@ -1320,12 +1320,11 @@ class Main:
 
         # >> Get Machine database entry
         kodi_busydialog_ON()
-        MAME_db_dic     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        machine    = fs_get_machine_main_db_hash(PATHS, machine_name)
+        assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
         kodi_busydialog_OFF()
-        machine = MAME_db_dic[machine_name]
-        assets  = MAME_assets_dic[machine_name]
+        assets  = assets_dic[machine_name]
 
         # >> Open Favourite Machines dictionary
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
@@ -1486,41 +1485,39 @@ class Main:
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_fav_machine_row(self, machine_name, machine, machine_assets):
+        # --- Default values for flags ---
+        AEL_PClone_stat_value    = AEL_PCLONE_STAT_VALUE_NONE
+
+        # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
         display_name = machine['description']
-
-        # --- Mark Status ---
-        status = '{0}{1}{2}{3}{4}'.format(machine['status_ROM'], machine['status_CHD'],
-                                          machine['status_SAM'], machine['status_SL'],
-                                          machine['status_Device'])
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
-
-        # --- Mark Devices, BIOS and clones ---
-        if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(machine['flags'])            
         if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+        if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
         if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-
-        # --- Mark driver status: Good (no mark), Imperfect, Preliminar ---
         if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
         elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
+        # --- Skin flags ---
+        if machine['cloneof']: AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE
+        else:                  AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
+
         # --- Assets/artwork ---
-        thumb_path      = machine_assets['title']
+        icon_path       = machine_assets['title'] if machine_assets['title'] else 'DefaultProgram.png'
         thumb_fanart    = machine_assets['snap']
         thumb_banner    = machine_assets['marquee']
         thumb_clearlogo = machine_assets['clearlogo']
         thumb_poster    = machine_assets['flyer']
 
         # --- Create listitem row ---
-        default_icon = 'DefaultFolder.png'
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(display_name)
 
         # --- Metadata ---
         # >> Make all the infotables compatible with Advanced Emulator Launcher
-        listitem.setInfo('video', {'title'   : display_name,            'year'    : machine['year'],
-                                   'genre'   : '',                      'plot'    : '',
-                                   'studio'  : machine['manufacturer'], 'rating'  : '',
-                                   'trailer' : '',                      'overlay' : ICON_OVERLAY})
+        listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
+                                   'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
+                                   'plot'    : '',               'overlay' : ICON_OVERLAY})
+        listitem.setProperty('nplayers', machine['nplayers'])
         listitem.setProperty('platform', 'MAME')
 
         # --- Assets ---
@@ -1530,8 +1527,11 @@ class Main:
                          'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
 
         # >> Kodi official artwork fields
-        listitem.setArt({'icon'   : thumb_path,   'fanart'    : thumb_fanart,
+        listitem.setArt({'icon'   : icon_path,    'fanart'    : thumb_fanart,
                          'banner' : thumb_banner, 'clearlogo' : thumb_clearlogo, 'poster' : thumb_poster })
+
+        # --- ROM flags (Skins will use these flags to render icons) ---
+        listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
 
         # --- Create context menu ---
         commands = []
@@ -1540,7 +1540,7 @@ class Main:
         URL_display = self._misc_url_2_arg_RunPlugin('command', 'DELETE_MAME_FAV', 'machine', machine_name)
         commands.append(('View',  URL_view ))
         commands.append(('Manage Favourite machines',  URL_manage ))
-        commands.append(('Delete machine from Favourites', URL_display ))
+        commands.append(('Delete from Favourites', URL_display ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
