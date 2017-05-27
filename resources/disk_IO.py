@@ -1146,15 +1146,21 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # A) First create an index
     #    db_main_hash_idx = { 'machine_name' : 'a', ... }
     # B) Then traverse a list [0, 1, ..., f] and write the machines in that sub database section.
+    pDialog.create('Advanced MAME Launcher', 'Creating main hashed database index ...')
     db_main_hash_idx = {}
     for key in machines:
         md5_str = hashlib.md5(key).hexdigest()
         db_main_hash_idx[key] = md5_str[0]
         # log_debug('Machine {0:12s} / hash {1} / db file {2}'.format(key, md5_str, md5_str[0]))
+    pDialog.update(100)
+    pDialog.close()
 
     log_info('Creating main hashed database JSON files ...')
     distributed_db_files = ['0', '1', '2', '3', '4', '5', '6', '7', 
                             '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+    pDialog.create('Advanced MAME Launcher', 'Creating main hashed database JSON files ...')
+    num_items = len(distributed_db_files)
+    item_count = 0
     for db_prefix in distributed_db_files:
         # --- Generate dictionary in this JSON file ---
         hashed_db_dic = {}
@@ -1164,9 +1170,12 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
                 # returns None since it mutates machine_dic
                 machine_dic.update(machines_render[key])
                 hashed_db_dic[key] = machine_dic
-        # --- Save JSON file
+        # --- Save JSON file ---
         hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '.json')
         fs_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic)
+        item_count += 1
+        pDialog.update(int((item_count*100) / num_items))
+    pDialog.close()
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
