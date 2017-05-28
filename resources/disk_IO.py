@@ -46,11 +46,7 @@ def fs_new_machine_dic():
         'isMechanical'   : False,
         'romof'          : '',
         'sampleof'       : '',
-        # >> Other tags from MAME XML
-        'catver'         : '', # External catalog
-        'catlist'        : '', # External catalog
-        'genre'          : '', # External catalog
-        'nplayers'       : '', # External catalog
+        # >> Other <machine> tags from MAME XML
         'display_tag'    : [],
         'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
         'display_rotate' : [], # (0|90|180|270) #REQUIRED>
@@ -60,7 +56,11 @@ def fs_new_machine_dic():
         'device_list'    : [], # List of <instance name="cartridge1">. Ignore briefname
         'device_tags'    : [],
         # >> Custom AML data
-        'isDead'         : False,
+        'catver'         : '', # External catalog
+        'catlist'        : '', # External catalog
+        'genre'          : '', # External catalog
+        'nplayers'       : '', # External catalog
+        'isDead'         : False
     }
 
     return m
@@ -86,7 +86,7 @@ def fs_new_machine_render_dic():
         'isBIOS'         : False,
         'isDevice'       : False,
         'cloneof'        : '',
-        # >> Other tags from MAME XML
+        # >> Other <machine> tags from MAME XML
         'description'    : '',
         'year'           : '',
         'manufacturer'   : '',

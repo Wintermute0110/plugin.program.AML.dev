@@ -999,19 +999,21 @@ class Main:
                     window_title = 'Favourite MAME Machine Information'
 
                 # --- Make information string ---
-                info_text  = '[COLOR orange]Machine {0} / Render information[/COLOR]\n'.format(machine_name)
+                info_text  = '[COLOR orange]Machine {0} / Render data[/COLOR]\n'.format(machine_name)
                 if location == LOCATION_MAME_FAVS:
                     info_text += "[COLOR slateblue]mame_version[/COLOR]: {0}\n".format(machine['mame_version'])
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
                 info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
                 info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
                 info_text += "[COLOR violet]flags[/COLOR]: '{0}'\n".format(machine['flags'])
+                info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
                 info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
                 info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
                 info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
+                info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
                 info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
 
-                info_text += '\n[COLOR orange]Complementary information[/COLOR]\n'.format(machine_name)
+                info_text += '\n[COLOR orange]Machine data[/COLOR]\n'.format(machine_name)
                 info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
                 info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])
                 info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
@@ -1021,6 +1023,7 @@ class Main:
                 info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(unicode(machine['display_rotate']))
                 info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(unicode(machine['display_tag']))
                 info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(unicode(machine['display_type']))
+                info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
                 info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(unicode(machine['isDead']))
                 info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(unicode(machine['isMechanical']))
                 info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
@@ -1029,7 +1032,7 @@ class Main:
                 info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(unicode(machine['softwarelists']))
                 info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
 
-                info_text += '\n[COLOR orange]Asset/artwork information[/COLOR]\n'
+                info_text += '\n[COLOR orange]Asset/artwork data[/COLOR]\n'
                 info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
                 info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
                 info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
