@@ -503,7 +503,13 @@ def fs_load_Catlist_ini(filename):
         # Look for version in comments
         if re.search(r'^;;', stripped_line):
             m = re.search(r'Catlist.ini ([0-9\.]+) / ', stripped_line)
-            if m: catlist_version = m.group(1)
+            if m:
+                catlist_version = m.group(1)
+                continue
+            m = re.search(r'CATLIST.ini ([0-9\.]+) / ', stripped_line)
+            if m:
+                catlist_version = m.group(1)
+                continue
             continue
         # Skip blanks
         if stripped_line == '': continue
@@ -537,7 +543,13 @@ def fs_load_Genre_ini(filename):
         # Skip comments: lines starting with ';;'
         if re.search(r'^;;', stripped_line):
             m = re.search(r'Genre.ini ([0-9\.]+) / ', stripped_line)
-            if m: genre_version = m.group(1)
+            if m:
+                genre_version = m.group(1)
+                continue
+            m = re.search(r'GENRE.ini ([0-9\.]+) / ', stripped_line)
+            if m:
+                genre_version = m.group(1)
+                continue
             continue
         # Skip blanks
         if stripped_line == '': continue
@@ -721,15 +733,28 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     machines = {}
     machines_render = {}
     machines_roms = {}
-
-    processed_machines  = parent_machines = clone_machines = 0
-    samples_machines    = 0
-    devices_machines    = devices_machines_parents    = devices_machines_clones = 0
-    BIOS_machines       = BIOS_machines_parents       = BIOS_machines_clones = 0
-    coin_machines       = coin_machines_parents       = coin_machines_clones = 0
-    nocoin_machines     = nocoin_machines_parents     = nocoin_machines_clones = 0
-    mechanical_machines = mechanical_machines_parents = mechanical_machines_clones = 0
-    dead_machines       = dead_machines_parents       = dead_machines_clones = 0
+    processed_machines          = 0
+    parent_machines             = 0
+    clone_machines              = 0
+    samples_machines            = 0
+    devices_machines            = 0
+    devices_machines_parents    = 0
+    devices_machines_clones     = 0
+    BIOS_machines               = 0
+    BIOS_machines_parents       = 0
+    BIOS_machines_clones        = 0
+    coin_machines               = 0
+    coin_machines_parents       = 0
+    coin_machines_clones        = 0
+    nocoin_machines             = 0
+    nocoin_machines_parents     = 0
+    nocoin_machines_clones      = 0
+    mechanical_machines         = 0
+    mechanical_machines_parents = 0
+    mechanical_machines_clones  = 0
+    dead_machines               = 0
+    dead_machines_parents       = 0
+    dead_machines_clones        = 0
 
     log_info('fs_build_MAME_main_database() Parsing MAME XML file ...')
     num_iteration = 0
@@ -957,9 +982,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             # r/R flag takes precedence over * flag
             m_render['flags'] = fs_initial_flags(machine, m_render, m_rom)
 
-            # >> Compute statistics
-            if m_render['cloneof']: parent_machines += 1
-            else:                   clone_machines += 1
+            # --- Compute statistics ---
+            if m_render['cloneof']: clone_machines += 1
+            else:                   parent_machines += 1
             if m_render['isDevice']:
                 devices_machines += 1
                 if m_render['cloneof']: devices_machines_clones += 1
