@@ -148,11 +148,11 @@ class Main:
         # --- Initialise log system ---
         # >> Force DEBUG log level for development.
         # >> Place it before setting loading so settings can be dumped during debugging.
-        set_log_level(LOG_DEBUG)
+        # set_log_level(LOG_DEBUG)
 
         # --- Fill in settings dictionary using addon_obj.getSetting() ---
         self._get_settings()
-        # set_log_level(self.settings['log_level'])
+        set_log_level(self.settings['log_level'])
 
         # --- Some debug stuff for development ---
         log_debug('---------- Called AML Main::run_plugin() constructor ----------')
