@@ -2194,7 +2194,8 @@ class Main:
         # >> Get paths
         mame_prog_FN = FileName(self.settings['mame_prog'])
 
-        machine_name = machine_desc = ''        
+        machine_name = ''
+        machine_desc = ''
         if location == LOCATION_SL_FAVS:
             fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
             SL_fav_key = SL_name + '-' + ROM_name
@@ -2206,20 +2207,21 @@ class Main:
             # >> Get a list of machines that can launch this SL ROM. User chooses.
             SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
             SL_machine_list = SL_machines_dic[SL_name]
-            SL_machine_names_list = []
-            SL_machine_desc_list = []
-            # SL_machine_device_props_list = []
+            SL_machine_names_list      = []
+            SL_machine_desc_list       = []
+            SL_machine_interfaces_list = []
             for SL_machine in SL_machine_list: 
                 SL_machine_names_list.append(SL_machine['machine'])
                 SL_machine_desc_list.append(SL_machine['description'])
-                # SL_machine_device_props_list.append(SL_machine['device_props'])
+                SL_machine_interfaces_list.append(SL_machine['device_tags'])
             dialog = xbmcgui.Dialog()
             m_index = dialog.select('Select machine', SL_machine_desc_list)
             if m_index < 0: return
-            machine_name = SL_machine_names_list[m_index]
-            machine_desc = SL_machine_desc_list[m_index]
+            machine_name       = SL_machine_names_list[m_index]
+            machine_desc       = SL_machine_desc_list[m_index]
+            machine_interfaces = SL_machine_interfaces_list[m_index]
 
-        # >> Select media if more than one device instance
+        # --- Select media if more than one device instance ---
         # >> Not necessary. MAME knows what media to plug the SL ROM into.
         # if len(SL_machine_device_props_list[m_index]) > 1:
         #     device_names_list = []
@@ -2231,6 +2233,24 @@ class Main:
         # else:
         #     media_name = SL_machine_device_props_list[m_index][0]['name']
 
+        # >> Error
+        if len(machine_interfaces) == 0:
+            kodi_dialog_OK('Machine has not inferfaces! Aborting launch')
+            return
+        # >> If the machine has one interface use it. Launch as:
+        #    $ mame machine_name -interface_name SL_ROM_name
+        elif len(machine_interfaces) == 1:
+            media_name = machine_interfaces[0]['i_name']
+        # >> If more than one interface then warn user and launch as:
+        #    $ mame machine_name -interface_name SL_ROM_name
+        #
+        #    Future work: if the SL ROM has only one interface then match that with the machine
+        #    interface.
+        else:
+            log_info(unicode(machine_interfaces))
+            kodi_dialog_OK('Machine has two or more interfaces. Using simple launching command.')
+            media_name = ''
+
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
         log_info('_run_SL_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
@@ -2238,7 +2258,7 @@ class Main:
         log_info('_run_SL_machine() mame_exec    "{0}"'.format(mame_exec))
         log_info('_run_SL_machine() machine_name "{0}"'.format(machine_name))
         log_info('_run_SL_machine() machine_desc "{0}"'.format(machine_desc))
-        # log_info('_run_SL_machine() media_name   "{0}"'.format(media_name))
+        log_info('_run_SL_machine() media_name   "{0}"'.format(media_name))
 
         # >> Prevent a console window to be shown in Windows. Not working yet!
         if sys.platform == 'win32':
@@ -2250,9 +2270,9 @@ class Main:
             log_info('_run_SL_machine() _info is None')
             _info = None
 
-        # >> Launch MAME
-        # arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
-        arg_list = [mame_prog_FN.getPath(), machine_name, ROM_name]
+        # --- Launch MAME ---
+        arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
+        # arg_list = [mame_prog_FN.getPath(), machine_name, ROM_name]
         log_info('arg_list = {0}'.format(arg_list))
         log_info('_run_SL_machine() Calling subprocess.Popen()...')
         with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
