@@ -1133,6 +1133,11 @@ class Main:
         # --- View database information and statistics ---
         type_nb += 1
         if type == type_nb:
+            # --- Warn user if error ---
+            if not PATHS.MAIN_CONTROL_PATH.exists():
+                kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+                return
+
             # --- Load control dic ---
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             window_title = 'Database information and statistics'
