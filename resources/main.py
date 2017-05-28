@@ -2125,13 +2125,15 @@ class Main:
         #     return
 
         # >> Choose BIOS (only available for Favourite Machines)
-        if location and location == 'MAME_FAV' and len(machine['bios_name']) > 1:
-            dialog = xbmcgui.Dialog()
-            m_index = dialog.select('Select BIOS', machine['bios_desc'])
-            if m_index < 0: return
-            BIOS_name = machine['bios_name'][m_index]
-        else:
-            BIOS_name = ''
+        # Not implemented at the moment
+        # if location and location == 'MAME_FAV' and len(machine['bios_name']) > 1:
+        #     dialog = xbmcgui.Dialog()
+        #     m_index = dialog.select('Select BIOS', machine['bios_desc'])
+        #     if m_index < 0: return
+        #     BIOS_name = machine['bios_name'][m_index]
+        # else:
+        #     BIOS_name = ''
+        BIOS_name = ''
 
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
