@@ -321,24 +321,8 @@ class Main:
         # >> Count number of ROMs in binary filters
         if self.settings['mame_view_mode'] == VIEW_MODE_FLAT:
             c_dic = fs_get_cataloged_dic_all(PATHS, 'None')
-            machines_str = 'Machines with coin slot [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Machines']['num_machines'])
-            nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoCoin']['num_machines'])
-            mecha_str    = 'Mechanical machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Mechanical']['num_machines'])
-            dead_str     = 'Dead machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Dead']['num_machines'])
-            norom_str    = 'Machines [with no ROMs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoROM']['num_machines'])
-            chd_str      = 'Machines [with CHDs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['CHD']['num_machines'])
-            samples_str  = 'Machines [with Samples] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Samples']['num_machines'])
-            bios_str     = 'Machines [BIOS] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['BIOS']['num_machines'])
         elif self.settings['mame_view_mode'] == VIEW_MODE_PCLONE:
             c_dic = fs_get_cataloged_dic_parents(PATHS, 'None')
-            machines_str = 'Machines with coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Machines']['num_parents'])
-            nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
-            mecha_str    = 'Mechanical machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
-            dead_str     = 'Dead machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Dead']['num_parents'])
-            norom_str    = 'Machines [with no ROMs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoROM']['num_parents'])
-            chd_str      = 'Machines [with CHDs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['CHD']['num_parents'])
-            samples_str  = 'Machines [with Samples] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Samples']['num_parents'])
-            bios_str     = 'Machines [BIOS] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
         if not c_dic:
             machines_str = 'Machines with coin slot'
             nocoin_str   = 'Machines with no coin slot'
@@ -348,7 +332,26 @@ class Main:
             chd_str      = 'Machines [with CHDs]'
             samples_str  = 'Machines [with Samples]'
             bios_str     = 'Machines [BIOS]'
-
+        else:
+            if self.settings['mame_view_mode'] == VIEW_MODE_FLAT:
+                machines_str = 'Machines with coin slot [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Machines']['num_machines'])
+                nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoCoin']['num_machines'])
+                mecha_str    = 'Mechanical machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Mechanical']['num_machines'])
+                dead_str     = 'Dead machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Dead']['num_machines'])
+                norom_str    = 'Machines [with no ROMs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoROM']['num_machines'])
+                chd_str      = 'Machines [with CHDs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['CHD']['num_machines'])
+                samples_str  = 'Machines [with Samples] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Samples']['num_machines'])
+                bios_str     = 'Machines [BIOS] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['BIOS']['num_machines'])
+            elif self.settings['mame_view_mode'] == VIEW_MODE_PCLONE:
+                machines_str = 'Machines with coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Machines']['num_parents'])
+                nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
+                mecha_str    = 'Mechanical machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
+                dead_str     = 'Dead machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Dead']['num_parents'])
+                norom_str    = 'Machines [with no ROMs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoROM']['num_parents'])
+                chd_str      = 'Machines [with CHDs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['CHD']['num_parents'])
+                samples_str  = 'Machines [with Samples] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Samples']['num_parents'])
+                bios_str     = 'Machines [BIOS] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
+                        
         # >> Binary filters (Virtual catalog 'None')
         self._render_root_list_row(machines_str, self._misc_url_2_arg('catalog', 'None', 'category', 'Machines'))
         self._render_root_list_row(nocoin_str,   self._misc_url_2_arg('catalog', 'None', 'category', 'NoCoin'))
