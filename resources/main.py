@@ -1177,28 +1177,28 @@ class Main:
                                   control_dic['dead_machines_clones'])
 
             info_text += '\n[COLOR orange]ROM ZIP/CHD file count[/COLOR]\n'
-            info_text += "Merged set has {0} ZIP files\n".format(control_dic['merged_ZIPs'])
-            info_text += "Split set has {0} ZIP files\n".format(control_dic['split_ZIPs'])
-            info_text += "Non-merged set has {0} ZIP files\n".format(control_dic['non_merged_ZIPs'])
-            info_text += "Merged set has {0} CHD files\n".format(control_dic['merged_CHDs'])
-            info_text += "Split set has {0} CHD files\n".format(control_dic['split_CHDs'])
-            info_text += "Non-merged set has {0} CHD files\n".format(control_dic['non_merged_CHDs'])
+            info_text += "Merged     set has {0:5d} ZIP files\n".format(control_dic['merged_ZIPs'])
+            info_text += "Split      set has {0:5d} ZIP files\n".format(control_dic['split_ZIPs'])
+            info_text += "Non-merged set has {0:5d} ZIP files\n".format(control_dic['non_merged_ZIPs'])
+            info_text += "Merged     set has {0:5d} CHD files\n".format(control_dic['merged_CHDs'])
+            info_text += "Split      set has {0:5d} CHD files\n".format(control_dic['split_CHDs'])
+            info_text += "Non-merged set has {0:5d} CHD files\n".format(control_dic['non_merged_CHDs'])
 
             info_text += '\n[COLOR orange]Software Lists ROM count[/COLOR]\n'
-            info_text += "Number of SL files: {0}\n".format(control_dic['num_SL_files'])
-            info_text += "Total ROMs in all SLs: {0}\n".format(control_dic['num_SL_ROMs'])
-            info_text += "Total CHDs in all SLs: {0}\n".format(control_dic['num_SL_CHDs'])
+            info_text += "Number of SL files    {0:5d}\n".format(control_dic['num_SL_files'])
+            info_text += "Total ROMs in all SLs {0:5d}\n".format(control_dic['num_SL_ROMs'])
+            info_text += "Total CHDs in all SLs {0:5d}\n".format(control_dic['num_SL_CHDs'])
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
-            t = "You have {0} ROMs out of {1} ({2} missing)\n"
+            t = "You have {0:5d} ROMs    out of {1:5d} ({2:5d} missing)\n"
             info_text += t.format(control_dic['ROMs_have'], control_dic['ROMs_total'], control_dic['ROMs_missing'])
-            t = "You have {0} CHDs out of {1} ({2} missing)\n"
+            t = "You have {0:5d} CHDs    out of {1:5d} ({2:5d} missing)\n"
             info_text += t.format(control_dic['CHDs_have'], control_dic['CHDs_total'], control_dic['CHDs_missing'])
-            t = "You have {0} Samples out of {1} ({2} missing)\n"
+            t = "You have {0:5d} Samples out of {1:5d} ({2:5d} missing)\n"
             info_text += t.format(control_dic['Samples_have'], control_dic['Samples_total'], control_dic['Samples_missing'])
-            t = "You have {0} SL ROMs out of {1} ({2} missing)\n"
+            t = "You have {0:5d} SL ROMs out of {1:5d} ({2:5d} missing)\n"
             info_text += t.format(control_dic['SL_ROMs_have'], control_dic['SL_ROMs_total'], control_dic['SL_ROMs_missing'])
-            t = "You have {0} SL CHDs out of {1} ({2} missing)\n"
+            t = "You have {0:5d} SL CHDs out of {1:5d} ({2:5d} missing)\n"
             info_text += t.format(control_dic['SL_CHDs_have'], control_dic['SL_CHDs_total'], control_dic['SL_CHDs_missing'])
 
             # --- Show information window ---
