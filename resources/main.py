@@ -2273,7 +2273,7 @@ class Main:
             else:
                 log_error('_run_SL_machine() Machine "{0}" not found'.format(machine_name))
                 log_error('_run_SL_machine() Aborting launch')
-                kodi_dialog_OK('Machine "{0}" not found. Aborting launch.'.format(machine_name)')
+                kodi_dialog_OK('Machine "{0}" not found. Aborting launch.'.format(machine_name))
                 return
 
         # --- Get SL ROM list of <part> tags ---
