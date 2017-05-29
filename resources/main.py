@@ -211,7 +211,17 @@ class Main:
 
         elif 'command' in args:
             command = args['command'][0]
-            if command == 'LAUNCH':
+
+            # >> Auxiliar command from parent machine context menu
+            if command == 'EXEC_SHOW_CLONES':
+                catalog_name  = args['catalog'][0] if 'catalog' in args else ''
+                category_name = args['category'][0] if 'category' in args else ''
+                machine_name  = args['parent'][0] if 'parent' in args else ''
+                url = self._misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
+                log_debug('run_plugin() Container.Update URL {0}'.format(url))
+                xbmc.executebuiltin('Container.Update({0})'.format(url))
+
+            elif command == 'LAUNCH':
                 machine  = args['machine'][0]
                 location = args['location'][0] if 'location' in args else ''
                 log_info('Launching MAME machine "{0}"'.format(machine, location))
@@ -318,10 +328,14 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     # NOTE Devices are excluded from main PClone list.
     def _render_root_list(self):
+        mame_view_mode = self.settings['mame_view_mode']
+
         # >> Count number of ROMs in binary filters
-        if self.settings['mame_view_mode'] == VIEW_MODE_FLAT:
+        if mame_view_mode == VIEW_MODE_FLAT:
             c_dic = fs_get_cataloged_dic_all(PATHS, 'None')
-        elif self.settings['mame_view_mode'] == VIEW_MODE_PCLONE:
+        elif mame_view_mode == VIEW_MODE_PCLONE:
+            c_dic = fs_get_cataloged_dic_parents(PATHS, 'None')
+        elif mame_view_mode == VIEW_MODE_PARENTS_ONLY:
             c_dic = fs_get_cataloged_dic_parents(PATHS, 'None')
         if not c_dic:
             machines_str = 'Machines with coin slot'
@@ -333,7 +347,7 @@ class Main:
             samples_str  = 'Machines [with Samples]'
             bios_str     = 'Machines [BIOS]'
         else:
-            if self.settings['mame_view_mode'] == VIEW_MODE_FLAT:
+            if mame_view_mode == VIEW_MODE_FLAT:
                 machines_str = 'Machines with coin slot [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Machines']['num_machines'])
                 nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoCoin']['num_machines'])
                 mecha_str    = 'Mechanical machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Mechanical']['num_machines'])
@@ -342,7 +356,7 @@ class Main:
                 chd_str      = 'Machines [with CHDs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['CHD']['num_machines'])
                 samples_str  = 'Machines [with Samples] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Samples']['num_machines'])
                 bios_str     = 'Machines [BIOS] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['BIOS']['num_machines'])
-            elif self.settings['mame_view_mode'] == VIEW_MODE_PCLONE:
+            elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
                 machines_str = 'Machines with coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Machines']['num_parents'])
                 nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
                 mecha_str    = 'Mechanical machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
@@ -351,7 +365,7 @@ class Main:
                 chd_str      = 'Machines [with CHDs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['CHD']['num_parents'])
                 samples_str  = 'Machines [with Samples] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Samples']['num_parents'])
                 bios_str     = 'Machines [BIOS] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
-                        
+
         # >> Binary filters (Virtual catalog 'None')
         self._render_root_list_row(machines_str, self._misc_url_2_arg('catalog', 'None', 'category', 'Machines'))
         self._render_root_list_row(nocoin_str,   self._misc_url_2_arg('catalog', 'None', 'category', 'NoCoin'))
@@ -648,14 +662,15 @@ class Main:
 
         # --- Create context menu ---
         commands = []
-        URL_show_clones = self._misc_url_3_arg_RunPlugin('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
-        URL_view    = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
-        URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_MAME', 
-                                                     'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
-        URL_fav     = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
+        URL_view        = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
+        URL_show_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_CLONES', 
+                                                         'catalog', catalog_name, 'category', category_name, 'parent', machine_name)
+        # URL_display     = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_MAME',
+        #                                                  'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
+        URL_fav         = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
+        commands.append(('View',  URL_view))
         if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
             commands.append(('Show clones',  URL_show_clones))
-        commands.append(('View',  URL_view))
         # commands.append(('Display settings', URL_display))
         commands.append(('Add to MAME Favourites', URL_fav))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
