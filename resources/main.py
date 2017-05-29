@@ -429,24 +429,27 @@ class Main:
 
         # >> Render categories in catalog index
         self._set_Kodi_all_sorting_methods_and_size()
+        mame_view_mode = self.settings['mame_view_mode']
         loading_ticks_start = time.time()
-        if self.settings['mame_view_mode'] == VIEW_MODE_FLAT:
+        if mame_view_mode == VIEW_MODE_FLAT:
             catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
-        elif self.settings['mame_view_mode'] == VIEW_MODE_PCLONE:
+        elif mame_view_mode == VIEW_MODE_PCLONE:
             catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
-        loading_ticks_end = time.time()
+        elif mame_view_mode == VIEW_MODE_PARENTS_ONLY:
+            catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
         if not catalog_dic:
             kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
             xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
             return
 
+        loading_ticks_end = time.time()
         rendering_ticks_start = time.time()
         for catalog_key in sorted(catalog_dic):
-            if self.settings['mame_view_mode'] == VIEW_MODE_FLAT:
+            if mame_view_mode == VIEW_MODE_FLAT:
                 num_machines = catalog_dic[catalog_key]['num_machines']
                 if num_machines == 1: machine_str = 'machine'
                 else:                 machine_str = 'machines'
-            elif self.settings['mame_view_mode'] == VIEW_MODE_PCLONE:
+            elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
                 num_machines = catalog_dic[catalog_key]['num_parents']
                 if num_machines == 1: machine_str = 'parent'
                 else:                 machine_str = 'parents'
