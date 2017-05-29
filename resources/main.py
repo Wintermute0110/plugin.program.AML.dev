@@ -475,7 +475,7 @@ class Main:
         MAME_db_dic     = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-        if view_mode_property == VIEW_MODE_PCLONE:
+        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
             catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
         elif view_mode_property == VIEW_MODE_FLAT:
             catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
@@ -492,8 +492,8 @@ class Main:
         loading_ticks_end = time.time()
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
-        if view_mode_property == VIEW_MODE_PCLONE:
-            # >> Normal mode render parents only
+        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+            # >> Parent/Clone mode render parents only
             machine_list = catalog_dic[category_name]['parents']
             for machine_name in machine_list:
                 machine = MAME_db_dic[machine_name]
@@ -501,16 +501,18 @@ class Main:
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
                 assets  = MAME_assets_dic[machine_name]
                 num_clones = len(main_pclone_dic[machine_name])
-                self._render_catalog_machine_row(machine_name, machine, assets, True, catalog_name, category_name, num_clones)
+                self._render_catalog_machine_row(machine_name, machine, assets, True, view_mode_property,
+                                                 catalog_name, category_name, num_clones)
         else:
-            # >> Render all machines
+            # >> Flat mode renders all machines
             machine_list = catalog_dic[category_name]['machines']
             for machine_name in machine_list:
                 machine = MAME_db_dic[machine_name]
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
                 assets  = MAME_assets_dic[machine_name]
-                self._render_catalog_machine_row(machine_name, machine, assets, False, catalog_name, category_name)
+                self._render_catalog_machine_row(machine_name, machine, assets, False, view_mode_property,
+                                                 catalog_name, category_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
@@ -532,6 +534,8 @@ class Main:
         MAME_db_dic     = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
         MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+        view_mode_property = self.settings['mame_view_mode']
+        log_debug('_render_catalog_clone_list() view_mode_property = {0}'.format(view_mode_property))
 
         # >> Render parent first
         loading_ticks_end = time.time()
@@ -539,7 +543,8 @@ class Main:
         self._set_Kodi_all_sorting_methods()
         machine = MAME_db_dic[parent_name]
         assets  = MAME_assets_dic[parent_name]
-        self._render_catalog_machine_row(parent_name, machine, assets, False, catalog_name, category_name)
+        self._render_catalog_machine_row(parent_name, machine, assets, False, view_mode_property, 
+                                         catalog_name, category_name)
 
         # >> Render clones belonging to parent in this category
         for p_name in main_pclone_dic[parent_name]:
@@ -547,7 +552,8 @@ class Main:
             assets  = MAME_assets_dic[p_name]
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            self._render_catalog_machine_row(p_name, machine, assets, False, catalog_name, category_name)
+            self._render_catalog_machine_row(p_name, machine, assets, False, view_mode_property,
+                                             catalog_name, category_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
@@ -574,7 +580,7 @@ class Main:
         URL = self._misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_catalog_machine_row(self, machine_name, machine, machine_assets, flag_parent_list,
+    def _render_catalog_machine_row(self, machine_name, machine, machine_assets, flag_parent_list, view_mode_property,
                                     catalog_name, category_name, num_clones = 0):
         # --- Default values for flags ---
         AEL_InFav_bool_value     = AEL_INFAV_BOOL_VALUE_FALSE
@@ -637,24 +643,27 @@ class Main:
                          'banner' : banner_path, 'clearlogo' : clearlogo_path, 'poster' : poster_path })
 
         # --- ROM flags (Skins will use these flags to render icons) ---
-        listitem.setProperty(AEL_INFAV_BOOL_LABEL,     AEL_InFav_bool_value)
-        listitem.setProperty(AEL_PCLONE_STAT_LABEL,    AEL_PClone_stat_value)
+        listitem.setProperty(AEL_INFAV_BOOL_LABEL,  AEL_InFav_bool_value)
+        listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
 
         # --- Create context menu ---
         commands = []
+        URL_show_clones = self._misc_url_3_arg_RunPlugin('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
         URL_view    = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
         URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_MAME', 
                                                      'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
         URL_fav     = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
-        commands.append(('View',  URL_view ))
-        # commands.append(('Display settings', URL_display ))
-        commands.append(('Add to MAME Favourites', URL_fav ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+        if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
+            commands.append(('Show clones',  URL_show_clones))
+        commands.append(('View',  URL_view))
+        # commands.append(('Display settings', URL_display))
+        commands.append(('Add to MAME Favourites', URL_fav))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        if flag_parent_list and num_clones > 0:
+        if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PCLONE:
             URL = self._misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         else:

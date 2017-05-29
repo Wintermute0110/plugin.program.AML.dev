@@ -282,8 +282,9 @@ def fs_new_control_dic():
 
 # --- Constants ---
 # >> Make sure these strings are equal to the ones in settings.xml
-VIEW_MODE_FLAT     = 0 # 'Flat'
-VIEW_MODE_PCLONE   = 1 # 'Parent/Clone'
+VIEW_MODE_FLAT         = 0 # 'Flat'
+VIEW_MODE_PCLONE       = 1 # 'Parent/Clone'
+VIEW_MODE_PARENTS_ONLY = 2 # 'Parents only'
 MAME_MERGED    = 0 # 'Merged'
 MAME_SPLIT     = 1 # 'Split'
 MAME_NONMERGED = 2 # 'Non-merged'
