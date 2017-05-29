@@ -738,7 +738,7 @@ class Main:
         SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        log_info('_render_SL_ROMs() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        log_info('_render_SL_ROMs() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
         assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -2176,37 +2176,65 @@ class Main:
         log_info('_run_machine() Exiting function')
 
     #
-    # Launch SL machine. See http://docs.mamedev.org/usingmame/usingmame.html
-    # Syntax: $ mame <system> <software> [options]
-    # Example: $ mame smspal sonic
-    # Requirements:
-    #   A) machine_name
-    #   B) media_name
-    #
+    # Launch a SL machine. See http://docs.mamedev.org/usingmame/usingmame.html
+    # Complex syntax: $ mame <system> <media> <software> [options]
+    # Easy syntax: $ mame <system> <software> [options]
+    # Valid example: $ mame smspal -cart sonic
+    # 
     # Software list <part> tag has an interface attribute that tells how to virtually plug the
-    # cartridge/cassete/disk/etc. There is not need to media type in MAME commandline.
+    # cartridge/cassete/disk/etc.
+    #
+    # Launching cases:
+    #   A) Machine has only one device (defined by a <device> tag) with a valid <instance> and
+    #      SL ROM has only one part (defined by a <part> tag).
+    #      Valid examples:$ mame smspal -cart sonic
+    #      Launch as: $ mame machine_name -part_attib_name SL_ROM_name
+    #
+    #   B) Machine has only one device with a valid <instance> and SL ROM has multiple parts.
+    #      In this case, user should choose which part to plug.
+    #      Currently not implemented and launch using easy syntax.
+    #      Valid examples: 
+    #      Launch as: $ mame machine_name -part_attib_name SL_ROM_name
+    #
+    #   C) Machine has two or more devices with a valid <instance> and SL ROM has only one part.
+    #      Traverse the machine devices until there is a match of the <part> interface attribute 
+    #      with the <machine> interface attribute. After the match is found, check also that
+    #      SL ROM <part> name attribute matches with machine <device> <intance> briefname attribute.
+    #      Valid examples:
+    #        MSX2 cartridge vampkill (in msx2_cart.xml) with MSX machine.
+    #        vampkill is also in msx_flop SL.xml. MSX2 machines always have two or more interfaces.
+    #        $ mame hbf700p -cart vampkill
+    #      Launch as: $ mame machine_name -part_attrib_name SL_ROM_name
+    #
+    #   D) Machine has two or more devices with a valid <instance> and SL ROM has two or more parts.
+    #      In this case it is not clear how to launch the machine.
+    #      Not implemented and launch using easy syntax.
+    #
+    # Most common cases are A) and C).
     #
     def _run_SL_machine(self, SL_name, ROM_name, location):
         log_info('_run_SL_machine() Launching SL machine (location = {0}) ...'.format(location))
         log_info('_run_SL_machine() SL_name  "{0}"'.format(SL_name))
         log_info('_run_SL_machine() ROM_name "{0}"'.format(ROM_name))
 
-        # >> Get paths
+        # --- Get paths ---
         mame_prog_FN = FileName(self.settings['mame_prog'])
 
-        machine_name = ''
-        machine_desc = ''
+        # --- Get a list of machine <devices> and SL ROM <parts>
         if location == LOCATION_SL_FAVS:
+            log_info('_run_SL_machine() SL ROM is in Favourites')
             fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
             SL_fav_key = SL_name + '-' + ROM_name
             machine_name = fav_SL_roms[SL_fav_key]['launch_machine']
             machine_desc = '[ Not available ]'
-            log_info('_run_SL_machine() Using favourite SL machine "{0}"'.format(machine_name))
+            log_info('_run_SL_machine() launch_machine = "{0}"'.format(machine_name))
 
+        # >> Load SL machines
+        SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+        SL_machine_list = SL_machines_dic[SL_name]
         if not machine_name:
-            # >> Get a list of machines that can launch this SL ROM. User chooses.
-            SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
-            SL_machine_list = SL_machines_dic[SL_name]
+            # >> Get a list of machines that can launch this SL ROM. User chooses in a select dialog
+            log_info('_run_SL_machine() Selecting SL run machine ...')
             SL_machine_names_list      = []
             SL_machine_desc_list       = []
             SL_machine_interfaces_list = []
@@ -2220,35 +2248,86 @@ class Main:
             machine_name       = SL_machine_names_list[m_index]
             machine_desc       = SL_machine_desc_list[m_index]
             machine_interfaces = SL_machine_interfaces_list[m_index]
+        else:
+            # >> User selected a machine to launch this SL. Find the machine in the list
+            log_info('_run_SL_machine() Finding SL run machine ...')
+            machine_found = False
+            for SL_machine in SL_machine_list:
+                if SL_machine['machine'] == machine_name:
+                    selected_SL_machine = SL_machine
+                    machine_found = True
+                    break
+            if machine_found:
+                log_info('_run_SL_machine() Found machine "{0}"'.format(machine_name))
+                machine_desc       = SL_machine['description']
+                machine_interfaces = SL_machine['device_tags']
+            else:
+                log_error('_run_SL_machine() Machine "{0}" not found'.format(machine_name))
+                log_error('_run_SL_machine() Aborting launch')
+                kodi_dialog_OK('Machine "{0}" not found. Aborting launch.'.format(machine_name)')
+                return
 
-        # --- Select media if more than one device instance ---
-        # >> Not necessary. MAME knows what media to plug the SL ROM into.
-        # if len(SL_machine_device_props_list[m_index]) > 1:
-        #     device_names_list = []
-        #     for device in SL_machine_device_props_list[m_index]: device_names_list.append(device['name'])
-        #     dialog = xbmcgui.Dialog()
-        #     d_index = dialog.select('Select device', device_names_list)
-        #     if d_index < 0: return
-        #     media_name = SL_machine_device_props_list[m_index][d_index]['name']
-        # else:
-        #     media_name = SL_machine_device_props_list[m_index][0]['name']
+        # --- Get SL ROM list of <part> tags ---
+        if location == LOCATION_SL_FAVS:
+            part_interface_list = fav_SL_roms[SL_fav_key]['part_interface']
+            part_name_list      = fav_SL_roms[SL_fav_key]['part_name']
+        else:
+            # >> Open SL ROM database and get information
+            SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+            file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+            SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+            log_info('_run_SL_machine() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+            SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
+            SL_rom = SL_roms[ROM_name]
+            part_interface_list = SL_rom['part_interface']
+            part_name_list      = SL_rom['part_name']
+
+        # --- Select media depending on SL launching case ---
+        num_machine_interfaces = len(machine_interfaces)
+        num_SL_ROM_interfaces = len(part_interface_list)
+        log_info('_run_SL_machine() Machine "{0}" has {1} interfaces'.format(machine_name, num_machine_interfaces))
+        log_info('_run_SL_machine() SL ROM "{0}" has {1} parts'.format(ROM_name, num_SL_ROM_interfaces))
 
         # >> Error
-        if len(machine_interfaces) == 0:
-            kodi_dialog_OK('Machine has not inferfaces! Aborting launch')
+        if num_machine_interfaces == 0:
+            kodi_dialog_OK('Machine has no inferfaces! Aborting launch')
             return
-        # >> If the machine has one interface use it. Launch as:
-        #    $ mame machine_name -interface_name SL_ROM_name
-        elif len(machine_interfaces) == 1:
+        elif num_SL_ROM_interfaces == 0:
+            kodi_dialog_OK('SL ROM has no parts! Aborting launch')
+            return
+
+        # >> Case A
+        elif num_machine_interfaces == 1 and num_SL_ROM_interfaces == 1:
+            log_info('_run_SL_machine() Launch case A)')
             media_name = machine_interfaces[0]['i_name']
-        # >> If more than one interface then warn user and launch as:
-        #    $ mame machine_name -interface_name SL_ROM_name
-        #
-        #    Future work: if the SL ROM has only one interface then match that with the machine
-        #    interface.
+
+        # >> Case B
+        elif num_machine_interfaces == 1 and num_SL_ROM_interfaces > 1:
+            log_info('_run_SL_machine() Launch case B)')
+            media_name = ''
+
+        # >> Case C
+        elif num_machine_interfaces > 1 and num_SL_ROM_interfaces == 1:
+            log_info('_run_SL_machine() Launch case C)')
+            m_interface_found = False
+            for m_interface in machine_interfaces:
+                if m_interface['d_interface'] == part_interface_list[0]:
+                    media_name = m_interface['i_briefname']
+                    m_interface_found = True
+                    break
+            if not m_interface_found:
+                kodi_dialog_OK('SL launch case C), not machine interface found! Aborting launch.')
+                return
+
+        # >> Case D
+        elif num_machine_interfaces > 1 and num_SL_ROM_interfaces > 1:
+            log_info('_run_SL_machine() Launch case D)')
+            media_name = ''
+
         else:
             log_info(unicode(machine_interfaces))
-            kodi_dialog_OK('Machine has two or more interfaces. Using simple launching command.')
+            log_warning('_run_SL_machine() Logical error in SL launch case.')
+            kodi_dialog_OK('Logical error in SL launch case. This is a bug, please report it.')
             media_name = ''
 
         # >> Launch machine using subprocess module
