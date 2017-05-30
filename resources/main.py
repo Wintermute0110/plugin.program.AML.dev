@@ -377,7 +377,7 @@ class Main:
                 chd_str      = 'Machines [with CHDs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['CHD']['num_machines'])
                 samples_str  = 'Machines [with Samples] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Samples']['num_machines'])
                 bios_str     = 'Machines [BIOS] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['BIOS']['num_machines'])
-            elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
+            elif mame_view_mode == VIEW_MODE_PCLONE:
                 machines_str = 'Machines with coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Machines']['num_parents'])
                 nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
                 mecha_str    = 'Mechanical machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
@@ -386,6 +386,15 @@ class Main:
                 chd_str      = 'Machines [with CHDs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['CHD']['num_parents'])
                 samples_str  = 'Machines [with Samples] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Samples']['num_parents'])
                 bios_str     = 'Machines [BIOS] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
+            elif mame_view_mode == VIEW_MODE_PARENTS_ONLY:
+                machines_str = 'Machines with coin slot [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['Machines']['num_parents'])
+                nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
+                mecha_str    = 'Mechanical machines [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
+                dead_str     = 'Dead machines [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['Dead']['num_parents'])
+                norom_str    = 'Machines [with no ROMs] [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['NoROM']['num_parents'])
+                chd_str      = 'Machines [with CHDs] [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['CHD']['num_parents'])
+                samples_str  = 'Machines [with Samples] [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['Samples']['num_parents'])
+                bios_str     = 'Machines [BIOS] [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
 
         # >> Binary filters (Virtual catalog 'None')
         self._render_root_list_row(machines_str, self._misc_url_2_arg('catalog', 'None', 'category', 'Machines'))
@@ -470,10 +479,13 @@ class Main:
                 num_machines = catalog_dic[catalog_key]['num_machines']
                 if num_machines == 1: machine_str = 'machine'
                 else:                 machine_str = 'machines'
-            elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
+            elif mame_view_mode == VIEW_MODE_PCLONE:
                 num_machines = catalog_dic[catalog_key]['num_parents']
                 if num_machines == 1: machine_str = 'parent'
                 else:                 machine_str = 'parents'
+            elif mame_view_mode == VIEW_MODE_PARENTS_ONLY:
+                num_machines = catalog_dic[catalog_key]['num_parents']
+                machine_str = '1G1R'
             self._render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_str)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
