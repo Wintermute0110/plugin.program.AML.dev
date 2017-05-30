@@ -890,7 +890,7 @@ class Main:
             if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
 
         # --- Assets/artwork ---
-        icon_path   = assets[self.SL_icon] if machine_assets[self.mame_icon] else 'DefaultProgram.png'
+        icon_path   = assets[self.SL_icon] if assets[self.SL_icon] else 'DefaultProgram.png'
         fanart_path = assets[self.SL_fanart]
         poster_path = assets['boxfront']
 
@@ -2273,6 +2273,9 @@ class Main:
             machine_name = fav_SL_roms[SL_fav_key]['launch_machine']
             machine_desc = '[ Not available ]'
             log_info('_run_SL_machine() launch_machine = "{0}"'.format(machine_name))
+        else:
+            machine_name = ''
+            machine_desc = ''
 
         # >> Load SL machines
         SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
@@ -2283,7 +2286,7 @@ class Main:
             SL_machine_names_list      = []
             SL_machine_desc_list       = []
             SL_machine_interfaces_list = []
-            for SL_machine in SL_machine_list: 
+            for SL_machine in sorted(SL_machine_list):
                 SL_machine_names_list.append(SL_machine['machine'])
                 SL_machine_desc_list.append(SL_machine['description'])
                 SL_machine_interfaces_list.append(SL_machine['device_tags'])

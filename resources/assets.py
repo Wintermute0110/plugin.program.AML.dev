@@ -60,13 +60,12 @@ def assets_get_asset_key_SL_icon(asset_index):
     return asset_key
 
 #
-# values="Boxfront|Title|Snap"
+# values="Snap|Title"
 #
 def assets_get_asset_key_SL_fanart(asset_index):
     asset_key = 'snap' # Default value
 
-    if   asset_index == 0: asset_key = 'boxfront'
+    if   asset_index == 0: asset_key = 'snap'
     elif asset_index == 1: asset_key = 'title'
-    elif asset_index == 2: asset_key = 'snap'
 
     return asset_key

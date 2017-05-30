@@ -32,7 +32,7 @@
     <setting label="MAME icon" type="enum" id="artwork_mame_icon"  default="0" values="Title|Snap|Flyer|Cabinet|PCB" />
     <setting label="MAME fanart" type="enum" id="artwork_mame_fanart"  default="0" values="Snap|Title|Flyer|CPanel" />
     <setting label="Software Lists icon" type="enum" id="artwork_SL_icon"  default="0" values="Boxfront|Title|Snap" />
-    <setting label="Software Lists fanart" type="enum" id="artwork_SL_fanart"  default="0" values="Boxfront|Title|Snap" />
+    <setting label="Software Lists fanart" type="enum" id="artwork_SL_fanart"  default="0" values="Snap|Title" />
 </category>
 <category label="Advanced">
     <setting label="Log level" type="enum" id="log_level" default="2" values="ERROR|WARNING|INFO|VERBOSE|DEBUG" />
