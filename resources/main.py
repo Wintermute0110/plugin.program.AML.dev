@@ -1802,7 +1802,7 @@ class Main:
         if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
 
         # --- Assets/artwork ---
-        icon_path   = assets[self.SL_icon] if machine_assets[self.mame_icon] else 'DefaultProgram.png'
+        icon_path   = assets[self.SL_icon] if assets[self.SL_icon] else 'DefaultProgram.png'
         fanart_path = assets[self.SL_fanart]
         poster_path = assets['boxfront']
 
