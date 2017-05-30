@@ -2270,6 +2270,8 @@ class Main:
     # Most common cases are A) and C).
     #
     def _run_SL_machine(self, SL_name, ROM_name, location):
+        SL_LAUNCH_WITH_MEDIA = 100
+        SL_LAUNCH_NO_MEDIA   = 200
         log_info('_run_SL_machine() Launching SL machine (location = {0}) ...'.format(location))
         log_info('_run_SL_machine() SL_name  "{0}"'.format(SL_name))
         log_info('_run_SL_machine() ROM_name "{0}"'.format(ROM_name))
@@ -2360,11 +2362,14 @@ class Main:
         elif num_machine_interfaces == 1 and num_SL_ROM_interfaces == 1:
             log_info('_run_SL_machine() Launch case A)')
             media_name = machine_interfaces[0]['i_name']
+            sl_launch_mode = SL_LAUNCH_WITH_MEDIA
 
         # >> Case B
+        #    User chooses media to launch?
         elif num_machine_interfaces == 1 and num_SL_ROM_interfaces > 1:
             log_info('_run_SL_machine() Launch case B)')
             media_name = ''
+            sl_launch_mode = SL_LAUNCH_NO_MEDIA
 
         # >> Case C
         elif num_machine_interfaces > 1 and num_SL_ROM_interfaces == 1:
@@ -2378,17 +2383,21 @@ class Main:
             if not m_interface_found:
                 kodi_dialog_OK('SL launch case C), not machine interface found! Aborting launch.')
                 return
+            sl_launch_mode = SL_LAUNCH_WITH_MEDIA
 
         # >> Case D
+        #    User chooses media to launch?
         elif num_machine_interfaces > 1 and num_SL_ROM_interfaces > 1:
             log_info('_run_SL_machine() Launch case D)')
             media_name = ''
+            sl_launch_mode = SL_LAUNCH_NO_MEDIA
 
         else:
             log_info(unicode(machine_interfaces))
             log_warning('_run_SL_machine() Logical error in SL launch case.')
             kodi_dialog_OK('Logical error in SL launch case. This is a bug, please report it.')
             media_name = ''
+            sl_launch_mode = SL_LAUNCH_NO_MEDIA
 
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
@@ -2410,8 +2419,13 @@ class Main:
             _info = None
 
         # --- Launch MAME ---
-        arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
-        # arg_list = [mame_prog_FN.getPath(), machine_name, ROM_name]
+        if sl_launch_mode == SL_LAUNCH_WITH_MEDIA:
+            arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
+        elif sl_launch_mode == SL_LAUNCH_NO_MEDIA:
+            arg_list = [mame_prog_FN.getPath(), machine_name, '{0}:{1}'.format(SL_name, ROM_name)]
+        else:
+            kodi_dialog_OK('Unknown sl_launch_mode = {0}. This is a bug, please report it.'.format(sl_launch_mode))
+            return
         log_info('arg_list = {0}'.format(arg_list))
         log_info('_run_SL_machine() Calling subprocess.Popen()...')
         with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
