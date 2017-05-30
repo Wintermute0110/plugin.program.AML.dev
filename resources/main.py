@@ -213,13 +213,21 @@ class Main:
         elif 'command' in args:
             command = args['command'][0]
 
-            # >> Auxiliar command from parent machine context menu
-            if command == 'EXEC_SHOW_CLONES':
+            # >> Auxiliar commands from parent machine context menu
+            # >> Not sure if this will cause problems with the concurrent protected code once it's
+            #    implemented.
+            if command == 'EXEC_SHOW_MAME_CLONES':
                 catalog_name  = args['catalog'][0] if 'catalog' in args else ''
                 category_name = args['category'][0] if 'category' in args else ''
                 machine_name  = args['parent'][0] if 'parent' in args else ''
                 url = self._misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
-                log_debug('run_plugin() Container.Update URL {0}'.format(url))
+                xbmc.executebuiltin('Container.Update({0})'.format(url))
+
+            elif command == 'EXEC_SHOW_SL_CLONES':
+                catalog_name  = args['catalog'][0] if 'catalog' in args else ''
+                category_name = args['category'][0] if 'category' in args else ''
+                machine_name  = args['parent'][0] if 'parent' in args else ''
+                url = self._misc_url_3_arg('catalog', 'SL', 'category', category_name, 'parent', machine_name)
                 xbmc.executebuiltin('Container.Update({0})'.format(url))
 
             elif command == 'LAUNCH':
@@ -676,7 +684,7 @@ class Main:
         # --- Create context menu ---
         commands = []
         URL_view        = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
-        URL_show_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_CLONES', 
+        URL_show_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_MAME_CLONES', 
                                                          'catalog', catalog_name, 'category', category_name, 'parent', machine_name)
         # URL_display     = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_MAME',
         #                                                  'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
@@ -784,7 +792,7 @@ class Main:
 
         self._set_Kodi_all_sorting_methods()
         SL_proper_name = SL_catalog_dic[SL_name]['display_name']
-        if view_mode_property == VIEW_MODE_PCLONE:
+        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
             log_info('_render_SL_ROMs() Rendering Parent/Clone launcher')
             # >> Get list of parents
             parent_list = []
@@ -794,14 +802,14 @@ class Main:
                 assets     = SL_asset_dic[parent_name] if parent_name in SL_asset_dic else fs_new_SL_asset()
                 num_clones = len(SL_PClone_dic[SL_name][parent_name])
                 ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
-                self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, num_clones)
+                self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, view_mode_property, num_clones)
         elif view_mode_property == VIEW_MODE_FLAT:
             log_info('_render_SL_ROMs() Rendering Flat launcher')
             for rom_name in SL_roms:
                 ROM    = SL_roms[rom_name]
                 assets = SL_asset_dic[rom_name] if rom_name in SL_asset_dic else fs_new_SL_asset()
                 ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
-                self._render_SL_ROM_row(SL_name, rom_name, ROM, assets, False)
+                self._render_SL_ROM_row(SL_name, rom_name, ROM, assets, False, view_mode_property)
         else:
             kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
             return
@@ -810,6 +818,8 @@ class Main:
     def _render_SL_pclone_set(self, SL_name, parent_name):
         log_info('_render_SL_pclone_set() SL_name     "{0}"'.format(SL_name))
         log_info('_render_SL_pclone_set() parent_name "{0}"'.format(parent_name))
+        view_mode_property = self.settings['sl_view_mode']
+        log_debug('_render_SL_pclone_set() view_mode_property = {0}'.format(view_mode_property))
 
         # >> Load Software List ROMs
         SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
@@ -829,7 +839,7 @@ class Main:
         ROM = SL_roms[parent_name]
         assets = SL_asset_dic[parent_name] if parent_name in SL_asset_dic else fs_new_SL_asset()
         ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
-        self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, False)
+        self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, False, view_mode_property)
 
         # >> Render clones belonging to parent in this category
         for clone_name in sorted(SL_PClone_dic[SL_name][parent_name]):
@@ -837,7 +847,7 @@ class Main:
             assets = SL_asset_dic[clone_name] if clone_name in SL_asset_dic else fs_new_SL_asset()
             ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
             log_debug(unicode(ROM))
-            self._render_SL_ROM_row(SL_name, clone_name, ROM, assets, False)
+            self._render_SL_ROM_row(SL_name, clone_name, ROM, assets, False, view_mode_property)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_SL_list_row(self, SL_name, SL):
@@ -867,7 +877,7 @@ class Main:
         URL = self._misc_url_2_arg('catalog', 'SL', 'category', SL_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_SL_ROM_row(self, SL_name, rom_name, ROM, assets, flag_parent_list, num_clones = 0):
+    def _render_SL_ROM_row(self, SL_name, rom_name, ROM, assets, flag_parent_list, view_mode_property, num_clones = 0):
         display_name = ROM['description']
         if flag_parent_list and num_clones > 0:
             display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
@@ -902,10 +912,14 @@ class Main:
         # --- Create context menu ---
         commands = []
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
+        URL_show_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_SL_CLONES', 
+                                                         'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
         # URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_SL', 
         #                                              'catalog', 'SL', 'category', SL_name, 'machine', rom_name)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
         commands.append(('View', URL_view))
+        if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
+            commands.append(('Show clones',  URL_show_clones))
         # commands.append(('Display settings', URL_display))
         commands.append(('Add ROM to SL Favourites', URL_fav))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
@@ -913,7 +927,7 @@ class Main:
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        if flag_parent_list and num_clones > 0:
+        if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PCLONE:
             URL = self._misc_url_3_arg('catalog', 'SL', 'category', SL_name, 'parent', rom_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         else:
