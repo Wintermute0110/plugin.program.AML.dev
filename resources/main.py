@@ -26,6 +26,7 @@ import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 # --- Modules/packages in this plugin ---
 from utils import *
 from utils_kodi import *
+from assets import *
 from disk_IO import *
 
 # --- Addon object (used to access settings) ---
@@ -314,8 +315,20 @@ class Main:
         self.settings['display_rom_available']   = True if __addon_obj__.getSetting('display_rom_available') == 'true' else False
         self.settings['display_chd_available']   = True if __addon_obj__.getSetting('display_chd_available') == 'true' else False
 
+        # --- Display ---
+        self.settings['artwork_mame_icon']   = int(__addon_obj__.getSetting('artwork_mame_icon'))
+        self.settings['artwork_mame_fanart'] = int(__addon_obj__.getSetting('artwork_mame_fanart'))
+        self.settings['artwork_SL_icon']     = int(__addon_obj__.getSetting('artwork_SL_icon'))
+        self.settings['artwork_SL_fanart']   = int(__addon_obj__.getSetting('artwork_SL_fanart'))
+
         # --- Advanced ---
-        self.settings['log_level']               = int(__addon_obj__.getSetting('log_level'))
+        self.settings['log_level'] = int(__addon_obj__.getSetting('log_level'))
+
+        # --- Transform settings data ---
+        self.mame_icon   = assets_get_asset_key_MAME_icon(self.settings['artwork_mame_icon'])
+        self.mame_fanart = assets_get_asset_key_MAME_fanart(self.settings['artwork_mame_fanart'])
+        self.SL_icon     = assets_get_asset_key_SL_icon(self.settings['artwork_SL_icon'])
+        self.SL_fanart   = assets_get_asset_key_SL_fanart(self.settings['artwork_SL_fanart'])
 
         # --- Dump settings for DEBUG ---
         # log_debug('Settings dump BEGIN')
@@ -600,7 +613,6 @@ class Main:
     def _render_catalog_machine_row(self, machine_name, machine, machine_assets, flag_parent_list, view_mode_property,
                                     catalog_name, category_name, num_clones = 0):
         # --- Default values for flags ---
-        AEL_InFav_bool_value     = AEL_INFAV_BOOL_VALUE_FALSE
         AEL_PClone_stat_value    = AEL_PCLONE_STAT_VALUE_NONE
 
         # --- Render a Parent only list ---
@@ -633,8 +645,8 @@ class Main:
             else:                  AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
 
         # --- Assets/artwork ---
-        icon_path      = machine_assets['title'] if machine_assets['title'] else 'DefaultProgram.png'
-        fanart_path    = machine_assets['snap']
+        icon_path      = machine_assets[self.mame_icon] if machine_assets[self.mame_icon] else 'DefaultProgram.png'
+        fanart_path    = machine_assets[self.mame_fanart]
         banner_path    = machine_assets['marquee']
         clearlogo_path = machine_assets['clearlogo']
         poster_path    = machine_assets['flyer']
@@ -650,17 +662,15 @@ class Main:
         listitem.setProperty('platform', 'MAME')
 
         # --- Assets ---
-        # >> AEL custom artwork fields
+        # >> AEL/AML custom artwork fields
         listitem.setArt({'title'     : machine_assets['title'],   'snap'    : machine_assets['snap'],
                          'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'],
                          'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
-
         # >> Kodi official artwork fields
         listitem.setArt({'icon'   : icon_path,   'fanart'    : fanart_path,
                          'banner' : banner_path, 'clearlogo' : clearlogo_path, 'poster' : poster_path })
 
         # --- ROM flags (Skins will use these flags to render icons) ---
-        listitem.setProperty(AEL_INFAV_BOOL_LABEL,  AEL_InFav_bool_value)
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
 
         # --- Create context menu ---
@@ -841,10 +851,8 @@ class Main:
             display_name = '{0}  [COLOR orange]({1} ROMs and {2} CHDs)[/COLOR]'.format(SL['display_name'], SL['rom_count'], SL['chd_count'])
 
         # --- Create listitem row ---
-        icon = 'DefaultFolder.png'
-        listitem = xbmcgui.ListItem(display_name, iconImage = icon)
         ICON_OVERLAY = 6
-        # listitem.setProperty('fanart_image', category_dic['fanart'])
+        listitem = xbmcgui.ListItem(display_name)
         listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
 
         # --- Create context menu ---
@@ -861,7 +869,6 @@ class Main:
 
     def _render_SL_ROM_row(self, SL_name, rom_name, ROM, assets, flag_parent_list, num_clones = 0):
         display_name = ROM['description']
-        
         if flag_parent_list and num_clones > 0:
             display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
             status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
@@ -873,8 +880,8 @@ class Main:
             if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
 
         # --- Assets/artwork ---
-        icon_path   = assets['title'] if assets['title'] else 'DefaultProgram.png'
-        fanart_path = assets['snap']
+        icon_path   = assets[self.SL_icon] if machine_assets[self.mame_icon] else 'DefaultProgram.png'
+        fanart_path = assets[self.SL_fanart]
         poster_path = assets['boxfront']
 
         # --- Create listitem row ---
@@ -889,21 +896,20 @@ class Main:
         # --- Assets ---
         # >> AEL custom artwork fields
         listitem.setArt({'title' : assets['title'], 'snap' : assets['snap'], 'boxfront' : assets['boxfront']})
-
         # >> Kodi official artwork fields
         listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
 
         # --- Create context menu ---
         commands = []
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
-        URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_SL', 
-                                                     'catalog', 'SL', 'category', SL_name, 'machine', rom_name)
+        # URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_SL', 
+        #                                              'catalog', 'SL', 'category', SL_name, 'machine', rom_name)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
-        commands.append(('View', URL_view ))
-        # commands.append(('Display settings', URL_display ))
-        commands.append(('Add ROM to SL Favourites', URL_fav ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+        commands.append(('View', URL_view))
+        # commands.append(('Display settings', URL_display))
+        commands.append(('Add ROM to SL Favourites', URL_fav))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
@@ -1538,11 +1544,11 @@ class Main:
         else:                  AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
 
         # --- Assets/artwork ---
-        icon_path       = machine_assets['title'] if machine_assets['title'] else 'DefaultProgram.png'
-        thumb_fanart    = machine_assets['snap']
-        thumb_banner    = machine_assets['marquee']
-        thumb_clearlogo = machine_assets['clearlogo']
-        thumb_poster    = machine_assets['flyer']
+        icon_path      = machine_assets[self.mame_icon] if machine_assets[self.mame_icon] else 'DefaultProgram.png'
+        fanart_path    = machine_assets[self.mame_fanart]
+        banner_path    = machine_assets['marquee']
+        clearlogo_path = machine_assets['clearlogo']
+        poster_path    = machine_assets['flyer']
 
         # --- Create listitem row ---
         ICON_OVERLAY = 6
@@ -1561,10 +1567,9 @@ class Main:
         listitem.setArt({'title'     : machine_assets['title'],   'snap'    : machine_assets['snap'],
                          'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'],
                          'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
-
         # >> Kodi official artwork fields
-        listitem.setArt({'icon'   : icon_path,    'fanart'    : thumb_fanart,
-                         'banner' : thumb_banner, 'clearlogo' : thumb_clearlogo, 'poster' : thumb_poster })
+        listitem.setArt({'icon'   : icon_path,   'fanart'    : fanart_path,
+                         'banner' : banner_path, 'clearlogo' : clearlogo_path, 'poster' : poster_path })
 
         # --- ROM flags (Skins will use these flags to render icons) ---
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
@@ -1747,8 +1752,8 @@ class Main:
         if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
 
         # --- Assets/artwork ---
-        icon_path   = assets['title'] if assets['title'] else 'DefaultProgram.png'
-        fanart_path = assets['snap']
+        icon_path   = assets[self.SL_icon] if machine_assets[self.mame_icon] else 'DefaultProgram.png'
+        fanart_path = assets[self.SL_fanart]
         poster_path = assets['boxfront']
 
         # --- Create listitem row ---
@@ -1763,7 +1768,6 @@ class Main:
         # --- Assets ---
         # >> AEL custom artwork fields
         listitem.setArt({'title' : assets['title'], 'snap' : assets['snap'], 'boxfront' : assets['boxfront']})
-
         # >> Kodi official artwork fields
         listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
 
@@ -1772,11 +1776,11 @@ class Main:
         URL_view    = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
         URL_manage  = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         URL_fav     = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
-        commands.append(('View', URL_view ))
-        commands.append(('Manage SL Favourite machines',  URL_manage ))
-        commands.append(('Delete ROM from SL Favourites', URL_fav ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+        commands.append(('View', URL_view))
+        commands.append(('Manage SL Favourite machines',  URL_manage))
+        commands.append(('Delete ROM from SL Favourites', URL_fav))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
