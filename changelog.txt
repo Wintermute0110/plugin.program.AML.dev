@@ -1,5 +1,7 @@
 [B]Advanced Emulator Launcher | version 0.9.4 | xx August 2017[/B]
 
+FEATURE  Support bestgames.ini and series.ini.
+
 WIP      Display MAMEINFO.DAT in Machine context menu.
 
 WIP      Display HISTORY.DAT in Machine context menu.

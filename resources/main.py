@@ -84,6 +84,10 @@ class AML_Paths:
         self.CATALOG_GENRE_ALL_PATH             = self.CATALOG_DIR.pjoin('catalog_genre_all.json')
         self.CATALOG_NPLAYERS_PARENT_PATH       = self.CATALOG_DIR.pjoin('catalog_nplayers_parents.json')
         self.CATALOG_NPLAYERS_ALL_PATH          = self.CATALOG_DIR.pjoin('catalog_nplayers_all.json')
+        self.CATALOG_BESTGAMES_PARENT_PATH      = self.CATALOG_DIR.pjoin('catalog_bestgames_parents.json')
+        self.CATALOG_BESTGAMES_ALL_PATH         = self.CATALOG_DIR.pjoin('catalog_bestgames_all.json')
+        self.CATALOG_SERIES_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_series_parents.json')
+        self.CATALOG_SERIES_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_series_all.json')
         self.CATALOG_MANUFACTURER_PARENT_PATH   = self.CATALOG_DIR.pjoin('catalog_manufacturer_parents.json')
         self.CATALOG_MANUFACTURER_ALL_PATH      = self.CATALOG_DIR.pjoin('catalog_manufacturer_all.json')
         self.CATALOG_YEAR_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_year_parents.json')
@@ -300,16 +304,18 @@ class Main:
         self.settings['mame_prog']     = __addon_obj__.getSetting('mame_prog').decode('utf-8')
         self.settings['rom_path']      = __addon_obj__.getSetting('rom_path').decode('utf-8')
 
-        self.settings['assets_path']   = __addon_obj__.getSetting('assets_path').decode('utf-8')
-        self.settings['chd_path']      = __addon_obj__.getSetting('chd_path').decode('utf-8')        
-        self.settings['SL_hash_path']  = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
-        self.settings['SL_rom_path']   = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
-        self.settings['SL_chd_path']   = __addon_obj__.getSetting('SL_chd_path').decode('utf-8')
-        self.settings['samples_path']  = __addon_obj__.getSetting('samples_path').decode('utf-8')
-        self.settings['catver_path']   = __addon_obj__.getSetting('catver_path').decode('utf-8')
-        self.settings['catlist_path']  = __addon_obj__.getSetting('catlist_path').decode('utf-8')
-        self.settings['genre_path']    = __addon_obj__.getSetting('genre_path').decode('utf-8')
-        self.settings['nplayers_path'] = __addon_obj__.getSetting('nplayers_path').decode('utf-8')
+        self.settings['assets_path']    = __addon_obj__.getSetting('assets_path').decode('utf-8')
+        self.settings['chd_path']       = __addon_obj__.getSetting('chd_path').decode('utf-8')        
+        self.settings['SL_hash_path']   = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
+        self.settings['SL_rom_path']    = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
+        self.settings['SL_chd_path']    = __addon_obj__.getSetting('SL_chd_path').decode('utf-8')
+        self.settings['samples_path']   = __addon_obj__.getSetting('samples_path').decode('utf-8')
+        self.settings['catver_path']    = __addon_obj__.getSetting('catver_path').decode('utf-8')
+        self.settings['catlist_path']   = __addon_obj__.getSetting('catlist_path').decode('utf-8')
+        self.settings['genre_path']     = __addon_obj__.getSetting('genre_path').decode('utf-8')
+        self.settings['nplayers_path']  = __addon_obj__.getSetting('nplayers_path').decode('utf-8')
+        self.settings['bestgames_path'] = __addon_obj__.getSetting('bestgames_path').decode('utf-8')
+        self.settings['series_path']    = __addon_obj__.getSetting('series_path').decode('utf-8')
 
         # --- ROM sets ---
         self.settings['mame_rom_set'] = int(__addon_obj__.getSetting('mame_rom_set'))
@@ -377,7 +383,7 @@ class Main:
                 chd_str      = 'Machines [with CHDs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['CHD']['num_machines'])
                 samples_str  = 'Machines [with Samples] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Samples']['num_machines'])
                 bios_str     = 'Machines [BIOS] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['BIOS']['num_machines'])
-            elif mame_view_mode == VIEW_MODE_PCLONE:
+            elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
                 machines_str = 'Machines with coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Machines']['num_parents'])
                 nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
                 mecha_str    = 'Mechanical machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
@@ -386,15 +392,6 @@ class Main:
                 chd_str      = 'Machines [with CHDs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['CHD']['num_parents'])
                 samples_str  = 'Machines [with Samples] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Samples']['num_parents'])
                 bios_str     = 'Machines [BIOS] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
-            elif mame_view_mode == VIEW_MODE_PARENTS_ONLY:
-                machines_str = 'Machines with coin slot [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['Machines']['num_parents'])
-                nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
-                mecha_str    = 'Mechanical machines [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
-                dead_str     = 'Dead machines [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['Dead']['num_parents'])
-                norom_str    = 'Machines [with no ROMs] [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['NoROM']['num_parents'])
-                chd_str      = 'Machines [with CHDs] [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['CHD']['num_parents'])
-                samples_str  = 'Machines [with Samples] [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['Samples']['num_parents'])
-                bios_str     = 'Machines [BIOS] [COLOR orange]({0} 1G1R)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
 
         # >> Binary filters (Virtual catalog 'None')
         self._render_root_list_row(machines_str, self._misc_url_2_arg('catalog', 'None', 'category', 'Machines'))
@@ -409,13 +406,18 @@ class Main:
 
         # >> Cataloged filters
         if self.settings['catver_path']:
-            self._render_root_list_row('Machines by Category (Catver)',   self._misc_url_1_arg('catalog', 'Catver'))
+            self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('catalog', 'Catver'))
         if self.settings['catlist_path']:
-            self._render_root_list_row('Machines by Category (Catlist)',  self._misc_url_1_arg('catalog', 'Catlist'))
+            self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('catalog', 'Catlist'))
         if self.settings['genre_path']:
-            self._render_root_list_row('Machines by Category (Genre)',    self._misc_url_1_arg('catalog', 'Genre'))
+            self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('catalog', 'Genre'))
         if self.settings['nplayers_path']:
-            self._render_root_list_row('Machines by Number of players',   self._misc_url_1_arg('catalog', 'NPlayers'))
+            self._render_root_list_row('Machines by Number of players',  self._misc_url_1_arg('catalog', 'NPlayers'))
+        if self.settings['bestgames_path']:
+            self._render_root_list_row('Machines by Score',              self._misc_url_1_arg('catalog', 'Bestgames'))
+        if self.settings['series_path']:
+            self._render_root_list_row('Machines by Series',             self._misc_url_1_arg('catalog', 'Series'))
+
         self._render_root_list_row('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
         self._render_root_list_row('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
         self._render_root_list_row('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
@@ -427,8 +429,9 @@ class Main:
         self._render_root_list_row('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
 
         # >> Software lists
-        self._render_root_list_row('Software Lists',                  self._misc_url_1_arg('catalog', 'SL'))
-        
+        if self.settings['SL_hash_path']:
+            self._render_root_list_row('Software Lists', self._misc_url_1_arg('catalog', 'SL'))
+
         # >> Special launchers
         self._render_root_list_row('<Favourite MAME machines>',       self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
         self._render_root_list_row('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
@@ -455,7 +458,8 @@ class Main:
     # Cataloged machines
     #----------------------------------------------------------------------------------------------
     def _render_catalog_list(self, catalog_name):
-        log_error('_render_catalog_list() Starting ...')
+        log_debug('_render_catalog_list() Starting ...')
+        log_debug('_render_catalog_list() catalog_name = "{0}"'.format(catalog_name))
 
         # >> Render categories in catalog index
         self._set_Kodi_all_sorting_methods_and_size()
@@ -479,13 +483,10 @@ class Main:
                 num_machines = catalog_dic[catalog_key]['num_machines']
                 if num_machines == 1: machine_str = 'machine'
                 else:                 machine_str = 'machines'
-            elif mame_view_mode == VIEW_MODE_PCLONE:
+            elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
                 num_machines = catalog_dic[catalog_key]['num_parents']
                 if num_machines == 1: machine_str = 'parent'
                 else:                 machine_str = 'parents'
-            elif mame_view_mode == VIEW_MODE_PARENTS_ONLY:
-                num_machines = catalog_dic[catalog_key]['num_parents']
-                machine_str = '1G1R'
             self._render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_str)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
@@ -575,7 +576,7 @@ class Main:
     # hence all ROMs databases exist.
     #
     def _render_catalog_clone_list(self, catalog_name, category_name, parent_name):
-        log_error('_render_catalog_clone_list() Starting ...')
+        log_debug('_render_catalog_clone_list() Starting ...')
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
@@ -781,7 +782,7 @@ class Main:
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_SL_ROMs(self, SL_name):
-        log_info('_render_SL_ROMs() SL_name "{0}"'.format(SL_name))
+        log_debug('_render_SL_ROMs() SL_name "{0}"'.format(SL_name))
 
         # >> Load ListItem properties (Not used at the moment)
         # SL_properties_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath()) 
@@ -795,7 +796,7 @@ class Main:
         SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        log_info('_render_SL_ROMs() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        log_debug('_render_SL_ROMs() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
         assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -805,7 +806,7 @@ class Main:
         self._set_Kodi_all_sorting_methods()
         SL_proper_name = SL_catalog_dic[SL_name]['display_name']
         if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
-            log_info('_render_SL_ROMs() Rendering Parent/Clone launcher')
+            log_debug('_render_SL_ROMs() Rendering Parent/Clone launcher')
             # >> Get list of parents
             parent_list = []
             for parent_name in sorted(SL_PClone_dic[SL_name]): parent_list.append(parent_name)
@@ -816,7 +817,7 @@ class Main:
                 ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
                 self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, view_mode_property, num_clones)
         elif view_mode_property == VIEW_MODE_FLAT:
-            log_info('_render_SL_ROMs() Rendering Flat launcher')
+            log_debug('_render_SL_ROMs() Rendering Flat launcher')
             for rom_name in SL_roms:
                 ROM    = SL_roms[rom_name]
                 assets = SL_asset_dic[rom_name] if rom_name in SL_asset_dic else fs_new_SL_asset()
@@ -828,8 +829,8 @@ class Main:
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_SL_pclone_set(self, SL_name, parent_name):
-        log_info('_render_SL_pclone_set() SL_name     "{0}"'.format(SL_name))
-        log_info('_render_SL_pclone_set() parent_name "{0}"'.format(parent_name))
+        log_debug('_render_SL_pclone_set() SL_name     "{0}"'.format(SL_name))
+        log_debug('_render_SL_pclone_set() parent_name "{0}"'.format(parent_name))
         view_mode_property = self.settings['sl_view_mode']
         log_debug('_render_SL_pclone_set() view_mode_property = {0}'.format(view_mode_property))
 
@@ -838,7 +839,7 @@ class Main:
         SL_PClone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        log_info('_render_SL_pclone_set() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        log_debug('_render_SL_pclone_set() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
         assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -1064,6 +1065,7 @@ class Main:
                 info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
 
                 info_text += '\n[COLOR orange]Machine data[/COLOR]\n'.format(machine_name)
+                info_text += "[COLOR violet]bestgames[/COLOR]: '{0}'\n".format(machine['bestgames'])
                 info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
                 info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])
                 info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
@@ -1079,6 +1081,7 @@ class Main:
                 info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
                 info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
                 info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
+                info_text += "[COLOR violet]series[/COLOR]: '{0}'\n".format(machine['series'])
                 info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(unicode(machine['softwarelists']))
                 info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
 
@@ -1199,10 +1202,12 @@ class Main:
             info_text  = '[COLOR orange]Main information[/COLOR]\n'
             info_text += "AML version: {0}\n".format(__addon_version__)
             info_text += "MAME version: {0}\n".format(control_dic['mame_version'])
-            info_text += "Catver.ini version: {0}\n".format(control_dic['catver_version'])
-            info_text += "Catlist.ini version: {0}\n".format(control_dic['catlist_version'])
-            info_text += "Genre.ini version: {0}\n".format(control_dic['genre_version'])
+            info_text += "catver.ini version: {0}\n".format(control_dic['catver_version'])
+            info_text += "catlist.ini version: {0}\n".format(control_dic['catlist_version'])
+            info_text += "genre.ini version: {0}\n".format(control_dic['genre_version'])
             info_text += "nplayers.ini version: {0}\n".format(control_dic['nplayers_version'])
+            info_text += "bestgames.ini version: {0}\n".format(control_dic['bestgames_version'])
+            info_text += "series.ini version: {0}\n".format(control_dic['series_version'])
 
             info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
             t = "Machines   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"

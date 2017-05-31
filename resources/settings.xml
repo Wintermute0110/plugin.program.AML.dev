@@ -15,6 +15,8 @@
     <setting label="Catlist.ini path"         type="file"   id="catlist_path" />
     <setting label="Genre.ini path"           type="file"   id="genre_path" />
     <setting label="nplayers.ini path"        type="file"   id="nplayers_path" />
+    <setting label="bestgames.ini path"       type="file"   id="bestgames_path" />
+    <setting label="series.ini path"          type="file"   id="series_path" />
 </category>
 <category label="ROM sets">
     <setting label="MAME ROM set" type="enum" id="mame_rom_set"  default="1" values="Merged|Split|Non-merged" />

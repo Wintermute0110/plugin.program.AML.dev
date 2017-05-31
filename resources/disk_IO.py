@@ -57,9 +57,11 @@ def fs_new_machine_dic():
         'device_tags'    : [],
         # >> Custom AML data
         'catver'         : '', # External catalog
+        'nplayers'       : '', # External catalog
         'catlist'        : '', # External catalog
         'genre'          : '', # External catalog
-        'nplayers'       : '', # External catalog
+        'bestgames'      : '', # External catalog
+        'series'         : '', # External catalog
         'isDead'         : False
     }
 
@@ -222,6 +224,8 @@ def fs_new_control_dic():
         'catlist_version'     : 'Unknown. MAME database not built',
         'genre_version'       : 'Unknown. MAME database not built',
         'nplayers_version'    : 'Unknown. MAME database not built',
+        'bestgames_version'   : 'Unknown. MAME database not built',
+        'series_version'      : 'Unknown. MAME database not built',
         'processed_machines'  : 0,
         'parent_machines'     : 0,
         'clone_machines'      : 0,
@@ -295,8 +299,8 @@ SL_NONMERGED   = 2 # 'Non-merged'
 # >> Used to build the properties list. 
 #    1) Must match names in main.py @_render_root_list()
 #    2) Must match names in disk_IO.py @fs_build_MAME_catalogs()
-CATALOG_NAME_LIST  = ['None', 'Catver', 'Catlist', 'Genre', 'NPlayers', 'Manufacturer', 
-                      'Year', 'Driver', 'Controls', 
+CATALOG_NAME_LIST  = ['None', 'Catver', 'Catlist', 'Genre', 'NPlayers', 'Bestgames', 'Series',
+                      'Manufacturer', 'Year', 'Driver', 'Controls', 
                       'Display_Tag', 'Display_Type', 'Display_Rotate',
                       'Devices', 'BySL']
 
@@ -306,6 +310,8 @@ def fs_get_cataloged_dic_parents(PATHS, catalog_name):
     elif catalog_name == 'Catlist':        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath())
     elif catalog_name == 'Genre':          catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PARENT_PATH.getPath())
     elif catalog_name == 'NPlayers':       catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath())
+    elif catalog_name == 'Bestgames':      catalog_dic = fs_load_JSON_file(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath())
+    elif catalog_name == 'Series':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath())
     elif catalog_name == 'Manufacturer':   catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath())
     elif catalog_name == 'Year':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath())
     elif catalog_name == 'Driver':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath())
@@ -324,6 +330,8 @@ def fs_get_cataloged_dic_all(PATHS, catalog_name):
     elif catalog_name == 'Catlist':        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_ALL_PATH.getPath())
     elif catalog_name == 'Genre':          catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_ALL_PATH.getPath())
     elif catalog_name == 'NPlayers':       catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath())
+    elif catalog_name == 'Bestgames':      catalog_dic = fs_load_JSON_file(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath())
+    elif catalog_name == 'Series':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath())
     elif catalog_name == 'Manufacturer':   catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath())
     elif catalog_name == 'Year':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath())
     elif catalog_name == 'Driver':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath())
@@ -417,8 +425,6 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
 
     return (filesize, total_machines)
 
-# -------------------------------------------------------------------------------------------------
-#
 def fs_count_MAME_Machines(PATHS):
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
@@ -432,194 +438,6 @@ def fs_count_MAME_Machines(PATHS):
     pDialog.close()
 
     return num_machines
-
-# -------------------------------------------------------------------------------------------------
-# Load Catver.ini/Catlist.ini/Genre.ini
-# -------------------------------------------------------------------------------------------------
-def fs_load_Catver_ini(filename):
-    log_info('fs_load_Catver_ini() Parsing "{0}"'.format(filename))
-    catver_version = 'Not found'
-    categories_dic = {}
-    categories_set = set()
-    __debug_do_list_categories = False
-    read_status = 0
-    # read_status FSM values
-    # 0 -> Looking for '[Category]' tag
-    # 1 -> Reading categories
-    # 2 -> Categories finished. STOP
-    try:
-        f = open(filename, 'rt')
-    except IOError:
-        log_info('fs_load_Catver_ini() (IOError) opening "{0}"'.format(filename))
-        return (categories_dic, catver_version)
-    for cat_line in f:
-        stripped_line = cat_line.strip()
-        if __debug_do_list_categories: print('Line "' + stripped_line + '"')
-        if read_status == 0:
-            # >> Look for Catver version
-            m = re.search(r'^;; CatVer ([0-9\.]+) / ', stripped_line)
-            if m: catver_version = m.group(1)
-            m = re.search(r'^;; CATVER.ini ([0-9\.]+) / ', stripped_line)
-            if m: catver_version = m.group(1)
-            if stripped_line == '[Category]':
-                if __debug_do_list_categories: print('Found [Category]')
-                read_status = 1
-        elif read_status == 1:
-            line_list = stripped_line.split("=")
-            if len(line_list) == 1:
-                read_status = 2
-                continue
-            else:
-                if __debug_do_list_categories: print(line_list)
-                machine_name = line_list[0]
-                category = line_list[1]
-                if machine_name not in categories_dic:
-                    categories_dic[machine_name] = category
-                categories_set.add(category)
-        elif read_status == 2:
-            log_info('fs_load_Catver_ini() Reached end of categories parsing.')
-            break
-        else:
-            raise CriticalError('Unknown read_status FSM value')
-    f.close()
-    log_info('fs_load_Catver_ini() Version "{0}"'.format(catver_version))
-    log_info('fs_load_Catver_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
-    log_info('fs_load_Catver_ini() Number of categories {0:6d}'.format(len(categories_set)))
-
-    return (categories_dic, catver_version)
-
-def fs_load_Catlist_ini(filename):
-    log_info('fs_load_Catlist_ini() Parsing "{0}"'.format(filename))
-    catlist_version = 'Not found'
-    catlist_dic = {}
-    catlist_set = set()
-    try:
-        f = open(filename, 'rt')
-    except IOError:
-        log_info('fs_load_Catlist_ini() (IOError) opening "{0}"'.format(filename))
-        return (catlist_dic, catlist_version)
-    for file_line in f:
-        stripped_line = file_line.strip()
-        # Skip comments: lines starting with ';;'
-        # Look for version in comments
-        if re.search(r'^;;', stripped_line):
-            m = re.search(r'Catlist.ini ([0-9\.]+) / ', stripped_line)
-            if m:
-                catlist_version = m.group(1)
-                continue
-            m = re.search(r'CATLIST.ini ([0-9\.]+) / ', stripped_line)
-            if m:
-                catlist_version = m.group(1)
-                continue
-            continue
-        # Skip blanks
-        if stripped_line == '': continue
-        # New category
-        searchObj = re.search(r'^\[(.*)\]', stripped_line)
-        if searchObj:
-            current_category = searchObj.group(1)
-            catlist_set.add(current_category)
-        else:
-            machine_name = stripped_line
-            catlist_dic[machine_name] = current_category
-    f.close()
-    log_info('fs_load_Catlist_ini() Version "{0}"'.format(catlist_version))
-    log_info('fs_load_Catlist_ini() Number of machines   {0:6d}'.format(len(catlist_dic)))
-    log_info('fs_load_Catlist_ini() Number of categories {0:6d}'.format(len(catlist_set)))
-
-    return (catlist_dic, catlist_version)
-
-def fs_load_Genre_ini(filename):
-    log_info('fs_load_Genre_ini() Parsing "{0}"'.format(filename))
-    genre_version = 'Not found'
-    genre_dic = {}
-    genre_set = set()
-    try:
-        f = open(filename, 'rt')
-    except IOError:
-        log_info('fs_load_Genre_ini() (IOError) opening "{0}"'.format(filename))
-        return (genre_dic, genre_version)
-    for file_line in f:
-        stripped_line = file_line.strip()
-        # Skip comments: lines starting with ';;'
-        if re.search(r'^;;', stripped_line):
-            m = re.search(r'Genre.ini ([0-9\.]+) / ', stripped_line)
-            if m:
-                genre_version = m.group(1)
-                continue
-            m = re.search(r'GENRE.ini ([0-9\.]+) / ', stripped_line)
-            if m:
-                genre_version = m.group(1)
-                continue
-            continue
-        # Skip blanks
-        if stripped_line == '': continue
-        # New category
-        searchObj = re.search(r'^\[(.*)\]', stripped_line)
-        if searchObj:
-            current_category = searchObj.group(1)
-            genre_set.add(current_category)
-        else:
-            machine_name = stripped_line
-            genre_dic[machine_name] = current_category
-    f.close
-    log_info('fs_load_Genre_ini() Version "{0}"'.format(genre_version))
-    log_info('fs_load_Genre_ini() Number of machines   {0:6d}'.format(len(genre_dic)))
-    log_info('fs_load_Genre_ini() Number of categories {0:6d}'.format(len(genre_set)))
-
-    return (genre_dic, genre_version)
-
-# -------------------------------------------------------------------------------------------------
-# Load nplayers.ini. Structure similar to catver.ini
-# -------------------------------------------------------------------------------------------------
-def fs_load_nplayers_ini(filename):
-    log_info('fs_load_nplayers_ini() Parsing "{0}"'.format(filename))
-    nplayers_version = 'Not found'
-    categories_dic = {}
-    categories_set = set()
-    __debug_do_list_categories = False
-    read_status = 0
-    # read_status FSM values
-    # 0 -> Looking for '[NPlayers]' tag
-    # 1 -> Reading categories
-    # 2 -> Categories finished. STOP
-    try:
-        f = open(filename, 'rt')
-    except IOError:
-        log_info('fs_load_nplayers_ini() (IOError) opening "{0}"'.format(filename))
-        return (categories_dic, nplayers_version)
-    for cat_line in f:
-        stripped_line = cat_line.strip()
-        if __debug_do_list_categories: print('Line "' + stripped_line + '"')
-        if read_status == 0:
-            m = re.search(r'NPlayers ([0-9\.]+) / ', stripped_line)
-            if m: nplayers_version = m.group(1)
-            if stripped_line == '[NPlayers]':
-                if __debug_do_list_categories: print('Found [NPlayers]')
-                read_status = 1
-        elif read_status == 1:
-            line_list = stripped_line.split("=")
-            if len(line_list) == 1:
-                read_status = 2
-                continue
-            else:
-                if __debug_do_list_categories: print(line_list)
-                machine_name = line_list[0]
-                category = line_list[1]
-                if machine_name not in categories_dic:
-                    categories_dic[machine_name] = category
-                categories_set.add(category)
-        elif read_status == 2:
-            log_info('fs_load_nplayers_ini() Reached end of nplayers parsing.')
-            break
-        else:
-            raise CriticalError('Unknown read_status FSM value')
-    f.close()
-    log_info('fs_load_nplayers_ini() Version "{0}"'.format(nplayers_version))
-    log_info('fs_load_nplayers_ini() Number of machines           {0:6d}'.format(len(categories_dic)))
-    log_info('fs_load_nplayers_ini() Number of nplayer categories {0:6d}'.format(len(categories_set)))
-
-    return (categories_dic, nplayers_version)
 
 def fs_initial_flags(machine, m_render, m_rom):
     flag_ROM = '?'
@@ -705,10 +523,12 @@ def fs_set_Sample_flag(m_render, new_Sample_flag):
 STOP_AFTER_MACHINES = 100000
 def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # --- Load Catver.ini to include cateogory information ---
-    (categories_dic, catver_version)   = fs_load_Catver_ini(settings['catver_path'])
-    (catlist_dic,    catlist_version)  = fs_load_Catlist_ini(settings['catlist_path'])
-    (genre_dic,      genre_version)    = fs_load_Genre_ini(settings['genre_path'])
-    (nplayers_dic,   nplayers_version) = fs_load_nplayers_ini(settings['nplayers_path'])
+    (categories_dic, catver_version)    = fs_load_Catver_ini(settings['catver_path'])
+    (nplayers_dic,   nplayers_version)  = fs_load_nplayers_ini(settings['nplayers_path'])
+    (catlist_dic,    catlist_version)   = fs_load_INI_datfile(settings['catlist_path'])
+    (genre_dic,      genre_version)     = fs_load_INI_datfile(settings['genre_path'])
+    (bestgames_dic,  bestgames_version) = fs_load_INI_datfile(settings['bestgames_path'])
+    (series_dic,     series_version)    = fs_load_INI_datfile(settings['series_path'])
 
     # --- Progress dialog ---
     pDialog = xbmcgui.DialogProgress()
@@ -819,14 +639,18 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             if 'sampleof' in elem.attrib: machine['sampleof'] = elem.attrib['sampleof']
 
             # >> Add catver/catlist/genre
-            if m_name in categories_dic: machine['catver']   = categories_dic[m_name]
-            else:                        machine['catver']   = '[ Not set ]'
-            if m_name in catlist_dic:    machine['catlist']  = catlist_dic[m_name]
-            else:                        machine['catlist']  = '[ Not set ]'
-            if m_name in genre_dic:      machine['genre']    = genre_dic[m_name]
-            else:                        machine['genre']    = '[ Not set ]'
-            if m_name in nplayers_dic:   machine['nplayers'] = nplayers_dic[m_name]
-            else:                        machine['nplayers'] = '[ Not set ]'
+            if m_name in categories_dic: machine['catver']    = categories_dic[m_name]
+            else:                        machine['catver']    = '[ Not set ]'
+            if m_name in nplayers_dic:   machine['nplayers']  = nplayers_dic[m_name]
+            else:                        machine['nplayers']  = '[ Not set ]'
+            if m_name in catlist_dic:    machine['catlist']   = catlist_dic[m_name]
+            else:                        machine['catlist']   = '[ Not set ]'
+            if m_name in genre_dic:      machine['genre']     = genre_dic[m_name]
+            else:                        machine['genre']     = '[ Not set ]'
+            if m_name in bestgames_dic:  machine['bestgames'] = bestgames_dic[m_name]
+            else:                        machine['bestgames'] = '[ Not set ]'
+            if m_name in series_dic:     machine['series']    = series_dic[m_name]
+            else:                        machine['series']    = '[ Not set ]'
 
             # >> Increment number of machines
             processed_machines += 1
@@ -1211,6 +1035,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['catlist_version']     = catlist_version
     control_dic['genre_version']       = genre_version
     control_dic['nplayers_version']    = nplayers_version
+    control_dic['bestgames_version']   = bestgames_version
+    control_dic['series_version']      = series_version
+    
     # >> Statistics
     control_dic['processed_machines']  = processed_machines
     control_dic['parent_machines']     = parent_machines
@@ -1468,6 +1295,28 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'nplayers')
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- Bestgames catalog ---
+    log_info('Making Bestgames catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Making Bestgames catalog ...')
+    catalog_parents = {}
+    catalog_all = {}
+    fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'bestgames')
+    fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath(), catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath(), catalog_all)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- Series catalog ---
+    log_info('Making Series catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Making Series catalog ...')
+    catalog_parents = {}
+    catalog_all = {}
+    fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'series')
+    fs_write_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 

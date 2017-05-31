@@ -13,6 +13,16 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+# --- Python standard library ---
+from __future__ import unicode_literals
+
+# --- AEL packages ---
+from utils import *
+try:
+    from utils_kodi import *
+except:
+    from utils_kodi_standalone import *
+
 # -------------------------------------------------------------------------------------------------
 # Data structures
 # -------------------------------------------------------------------------------------------------
@@ -113,3 +123,149 @@ def mame_compress_item_list(item_list):
                reduced_list.append('{0}'.format(current_item))
 
     return reduced_list
+
+# -------------------------------------------------------------------------------------------------
+# Loading of data files
+# -------------------------------------------------------------------------------------------------
+def fs_load_Catver_ini(filename):
+    log_info('fs_load_Catver_ini() Parsing "{0}"'.format(filename))
+    catver_version = 'Not found'
+    categories_dic = {}
+    categories_set = set()
+    __debug_do_list_categories = False
+    read_status = 0
+    # read_status FSM values
+    # 0 -> Looking for '[Category]' tag
+    # 1 -> Reading categories
+    # 2 -> Categories finished. STOP
+    try:
+        f = open(filename, 'rt')
+    except IOError:
+        log_info('fs_load_Catver_ini() (IOError) opening "{0}"'.format(filename))
+        return (categories_dic, catver_version)
+    for cat_line in f:
+        stripped_line = cat_line.strip()
+        if __debug_do_list_categories: print('Line "' + stripped_line + '"')
+        if read_status == 0:
+            # >> Look for Catver version
+            m = re.search(r'^;; CatVer ([0-9\.]+) / ', stripped_line)
+            if m: catver_version = m.group(1)
+            m = re.search(r'^;; CATVER.ini ([0-9\.]+) / ', stripped_line)
+            if m: catver_version = m.group(1)
+            if stripped_line == '[Category]':
+                if __debug_do_list_categories: print('Found [Category]')
+                read_status = 1
+        elif read_status == 1:
+            line_list = stripped_line.split("=")
+            if len(line_list) == 1:
+                read_status = 2
+                continue
+            else:
+                if __debug_do_list_categories: print(line_list)
+                machine_name = line_list[0]
+                category = line_list[1]
+                if machine_name not in categories_dic:
+                    categories_dic[machine_name] = category
+                categories_set.add(category)
+        elif read_status == 2:
+            log_info('fs_load_Catver_ini() Reached end of categories parsing.')
+            break
+        else:
+            raise CriticalError('Unknown read_status FSM value')
+    f.close()
+    log_info('fs_load_Catver_ini() Version "{0}"'.format(catver_version))
+    log_info('fs_load_Catver_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
+    log_info('fs_load_Catver_ini() Number of categories {0:6d}'.format(len(categories_set)))
+
+    return (categories_dic, catver_version)
+
+# -------------------------------------------------------------------------------------------------
+# Load nplayers.ini. Structure similar to catver.ini
+# -------------------------------------------------------------------------------------------------
+def fs_load_nplayers_ini(filename):
+    log_info('fs_load_nplayers_ini() Parsing "{0}"'.format(filename))
+    nplayers_version = 'Not found'
+    categories_dic = {}
+    categories_set = set()
+    __debug_do_list_categories = False
+    read_status = 0
+    # read_status FSM values
+    # 0 -> Looking for '[NPlayers]' tag
+    # 1 -> Reading categories
+    # 2 -> Categories finished. STOP
+    try:
+        f = open(filename, 'rt')
+    except IOError:
+        log_info('fs_load_nplayers_ini() (IOError) opening "{0}"'.format(filename))
+        return (categories_dic, nplayers_version)
+    for cat_line in f:
+        stripped_line = cat_line.strip()
+        if __debug_do_list_categories: print('Line "' + stripped_line + '"')
+        if read_status == 0:
+            m = re.search(r'NPlayers ([0-9\.]+) / ', stripped_line)
+            if m: nplayers_version = m.group(1)
+            if stripped_line == '[NPlayers]':
+                if __debug_do_list_categories: print('Found [NPlayers]')
+                read_status = 1
+        elif read_status == 1:
+            line_list = stripped_line.split("=")
+            if len(line_list) == 1:
+                read_status = 2
+                continue
+            else:
+                if __debug_do_list_categories: print(line_list)
+                machine_name = line_list[0]
+                category = line_list[1]
+                if machine_name not in categories_dic:
+                    categories_dic[machine_name] = category
+                categories_set.add(category)
+        elif read_status == 2:
+            log_info('fs_load_nplayers_ini() Reached end of nplayers parsing.')
+            break
+        else:
+            raise CriticalError('Unknown read_status FSM value')
+    f.close()
+    log_info('fs_load_nplayers_ini() Version "{0}"'.format(nplayers_version))
+    log_info('fs_load_nplayers_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
+    log_info('fs_load_nplayers_ini() Number of categories {0:6d}'.format(len(categories_set)))
+
+    return (categories_dic, nplayers_version)
+
+#
+# Generic MAME INI file loader.
+# Supports Catlist.ini, Genre.ini, Bestgames.ini and Series.ini
+#
+def fs_load_INI_datfile(filename):
+    log_info('fs_load_INI_datfile() Parsing "{0}"'.format(filename))
+    ini_version = 'Not found'
+    ini_dic = {}
+    ini_set = set()
+    try:
+        f = open(filename, 'rt')
+    except IOError:
+        log_info('fs_load_INI_datfile() (IOError) opening "{0}"'.format(filename))
+        return (ini_dic, ini_version)
+    for file_line in f:
+        stripped_line = file_line.strip()
+        # >> Skip comments: lines starting with ';;'
+        # >> Look for version string in comments
+        if re.search(r'^;;', stripped_line):
+            m = re.search(r';; (\w+)\.ini ([0-9\.]+) / ', stripped_line)
+            if m: ini_version = m.group(2)
+            continue
+        # >> Skip blanks
+        if stripped_line == '': continue
+        # >> New category
+        searchObj = re.search(r'^\[(.*)\]', stripped_line)
+        if searchObj:
+            current_category = searchObj.group(1)
+            ini_set.add(current_category)
+        else:
+            machine_name = stripped_line
+            ini_dic[machine_name] = current_category
+    f.close()
+    log_info('fs_load_INI_datfile() Version "{0}"'.format(ini_version))
+    log_info('fs_load_INI_datfile() Number of machines   {0:6d}'.format(len(ini_dic)))
+    log_info('fs_load_INI_datfile() Number of categories {0:6d}'.format(len(ini_set)))
+
+    return (ini_dic, ini_version)
