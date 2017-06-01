@@ -20,6 +20,7 @@ import io
 import codecs, time
 import subprocess
 import re
+import threading
 
 # --- XML stuff ---
 # ~~~ cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
@@ -382,6 +383,17 @@ def fs_write_JSON_file(json_filename, json_data):
         gui_kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(roms_json_file))
     except IOError:
         gui_kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (IOError)'.format(roms_json_file))
+
+# -------------------------------------------------------------------------------------------------
+# Threaded JSON loader
+# -------------------------------------------------------------------------------------------------
+class Threaded_Load_JSON(threading.Thread):
+    def __init__(self, json_filename): 
+        threading.Thread.__init__(self) 
+        self.json_filename = json_filename
+ 
+    def run(self): 
+        self.output_dic = fs_load_JSON_file(self.json_filename)
 
 # -------------------------------------------------------------------------------------------------
 # MAME_XML_PATH -> (FileName object) path of MAME XML output file.

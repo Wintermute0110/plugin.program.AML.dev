@@ -500,6 +500,10 @@ class Main:
     # Display mode: a) parents only b) all machines
     #
     def _render_catalog_parent_list(self, catalog_name, category_name):
+        # When using threads the performance gain is small: from 0.76 to 0.71, just 20 ms.
+        # It's not worth it.
+        USE_THREADED_JSON_LOADER = False
+
         log_debug('_render_catalog_parent_list() catalog_name  = {0}'.format(catalog_name))
         log_debug('_render_catalog_parent_list() category_name = {0}'.format(category_name))
         display_hide_nonworking = self.settings['display_hide_nonworking']
@@ -522,24 +526,65 @@ class Main:
             return
 
         # >> Load main MAME info DB and catalog
-        l_render_db_start = time.time()
-        MAME_db_dic     = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-        l_render_db_end = time.time()
-        l_assets_db_start = time.time()
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        l_assets_db_end = time.time()
-        l_pclone_dic_start = time.time()
-        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-        l_pclone_dic_end = time.time()
-        l_cataloged_dic_start = time.time()
-        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
-            catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
-        elif view_mode_property == VIEW_MODE_FLAT:
-            catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
+        if USE_THREADED_JSON_LOADER:
+            total_time_start = time.time()
+            # --- Create thread objects  and run ---
+            render_thread = Threaded_Load_JSON(PATHS.RENDER_DB_PATH.getPath())
+            assets_thread = Threaded_Load_JSON(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            pclone_thread = Threaded_Load_JSON(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            render_thread.start()
+            assets_thread.start()
+            pclone_thread.start()
+
+            # --- Do not use a thread for the catalog. Loads very fast ---
+            l_cataloged_dic_start = time.time()
+            if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+                catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+            elif view_mode_property == VIEW_MODE_FLAT:
+                catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
+            else:
+                kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
+                return
+            l_cataloged_dic_end = time.time()
+
+            # --- Wait for everybody to finish execution ---
+            pclone_thread.join() # Should finish first
+            render_thread.join()
+            assets_thread.join()
+
+            # --- Get data ---
+            MAME_db_dic     = render_thread.output_dic
+            MAME_assets_dic = assets_thread.output_dic
+            main_pclone_dic = pclone_thread.output_dic
+            total_time_end = time.time()
+
+            render_t = assets_t = pclone_t = 0
+            catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
+            loading_time = total_time_end - total_time_start
         else:
-            kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
-            return
-        l_cataloged_dic_end = time.time()
+            l_render_db_start = time.time()
+            MAME_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            l_render_db_end = time.time()
+            l_assets_db_start = time.time()
+            MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            l_assets_db_end = time.time()
+            l_pclone_dic_start = time.time()
+            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            l_pclone_dic_end = time.time()
+            l_cataloged_dic_start = time.time()
+            if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+                catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+            elif view_mode_property == VIEW_MODE_FLAT:
+                catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
+            else:
+                kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
+                return
+            l_cataloged_dic_end = time.time()
+            render_t     = l_render_db_end - l_render_db_start
+            assets_t     = l_assets_db_end - l_assets_db_start
+            pclone_t     = l_pclone_dic_end - l_pclone_dic_start
+            catalog_t    = l_cataloged_dic_end - l_cataloged_dic_start
+            loading_time = render_t + assets_t + pclone_t + catalog_t
 
         # >> Check if catalog is empty
         if not catalog_dic:
@@ -575,11 +620,6 @@ class Main:
         rendering_ticks_end = time.time()
 
         # --- DEBUG Data loading/rendering statistics ---
-        render_t     = l_render_db_end - l_render_db_start
-        assets_t     = l_assets_db_end - l_assets_db_start
-        pclone_t     = l_pclone_dic_end - l_pclone_dic_start
-        catalog_t    = l_cataloged_dic_end - l_cataloged_dic_start
-        loading_time = render_t + assets_t + pclone_t + catalog_t
         log_debug('Loading render db     {0:.4f} s'.format(render_t))
         log_debug('Loading assets db     {0:.4f} s'.format(assets_t))
         log_debug('Loading pclone dic    {0:.4f} s'.format(pclone_t))
