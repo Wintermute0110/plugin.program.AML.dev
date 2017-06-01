@@ -580,12 +580,12 @@ class Main:
         pclone_t     = l_pclone_dic_end - l_pclone_dic_start
         catalog_t    = l_cataloged_dic_end - l_cataloged_dic_start
         loading_time = render_t + assets_t + pclone_t + catalog_t
-        log_debug('Loading render db     {0} s'.format(render_t))
-        log_debug('Loading assets db     {0} s'.format(assets_t))
-        log_debug('Loading pclone dic    {0} s'.format(pclone_t))
-        log_debug('Loading cataloged dic {0} s'.format(catalog_t))
-        log_debug('Loading               {0} s'.format(loading_time))
-        log_debug('Rendering             {0} s'.format(rendering_ticks_end - rendering_ticks_start))
+        log_debug('Loading render db     {0:.4f} s'.format(render_t))
+        log_debug('Loading assets db     {0:.4f} s'.format(assets_t))
+        log_debug('Loading pclone dic    {0:.4f} s'.format(pclone_t))
+        log_debug('Loading cataloged dic {0:.4f} s'.format(catalog_t))
+        log_debug('Loading               {0:.4f} s'.format(loading_time))
+        log_debug('Rendering             {0:.4f} s'.format(rendering_ticks_end - rendering_ticks_start))
 
     #
     # No need to check for DB existance here. If this function is called is because parents and
