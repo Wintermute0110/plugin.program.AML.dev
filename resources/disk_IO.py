@@ -546,7 +546,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # --- Progress dialog ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Building main MAME database...')
+    pDialog.create('Advanced MAME Launcher', 'Building main MAME database ...')
 
     # ---------------------------------------------------------------------------------------------
     # Incremental Parsing approach B (from [1])
@@ -1052,12 +1052,15 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     log_info('Building machine plots/descriptions ...')
     for machine_name in machines:
         m = machines[machine_name]
-        controls_str = mame_get_control_str(m['control_type'])
+        if m['control_type']:
+            controls_str = 'Controls {0}'.format(mame_get_control_str(m['control_type']))
+        else:
+            controls_str = 'No controls'
         mecha_str = 'Mechanical' if m['isMechanical'] else 'Not mechanical'
         coin_str  = 'Machine has {0} coin slots'.format(m['coins']) if m['coins'] > 0 else 'Machine has no coin slots'
         SL_str    = ', '.join(m['softwarelists']) if m['softwarelists'] else ''
 
-        plot_str  = 'Controls {0}\n'.format(controls_str)
+        plot_str  = '{0}\n'.format(controls_str)
         plot_str += '{0}\n'.format(mame_get_screen_str(m))
         plot_str += '{0} and driver is {1}\n'.format(mecha_str, m['sourcefile'])
         plot_str += '{0}\n'.format(coin_str)
