@@ -95,9 +95,10 @@ def fs_new_machine_render_dic():
         'manufacturer'   : '',
         'driver_status'  : '',
         # >> Custom AML data
-        'genre'          : '', # Taken from Genre.ini, Catver.ini or Catlist.ini
-        'nplayers'       : '', # Taken from NPlayers.ini
+        'genre'          : '',      # Taken from Genre.ini, Catver.ini or Catlist.ini
+        'nplayers'       : '',      # Taken from NPlayers.ini
         'flags'          : '-----',
+        'plot'           : '',      # Generated from other fields
     }
 
     return m
@@ -1003,12 +1004,12 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # ---------------------------------------------------------------------------------------------
     # Build main distributed hashed database
     # ---------------------------------------------------------------------------------------------
-    log_info('Creating main hashed database index ...')
+    log_info('Building main hashed database index ...')
     # machine_name -> MD5 -> take first letter -> a.json, b.json, ...
     # A) First create an index
     #    db_main_hash_idx = { 'machine_name' : 'a', ... }
     # B) Then traverse a list [0, 1, ..., f] and write the machines in that sub database section.
-    pDialog.create('Advanced MAME Launcher', 'Creating main hashed database index ...')
+    pDialog.create('Advanced MAME Launcher', 'Building main hashed database index ...')
     db_main_hash_idx = {}
     for key in machines:
         md5_str = hashlib.md5(key).hexdigest()
@@ -1017,10 +1018,10 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog.update(100)
     pDialog.close()
 
-    log_info('Creating main hashed database JSON files ...')
+    log_info('Building main hashed database JSON files ...')
     distributed_db_files = ['0', '1', '2', '3', '4', '5', '6', '7', 
                             '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-    pDialog.create('Advanced MAME Launcher', 'Creating main hashed database JSON files ...')
+    pDialog.create('Advanced MAME Launcher', 'Building main hashed database JSON files ...')
     num_items = len(distributed_db_files)
     item_count = 0
     for db_prefix in distributed_db_files:
@@ -1038,6 +1039,30 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         item_count += 1
         pDialog.update(int((item_count*100) / num_items))
     pDialog.close()
+
+    # ---------------------------------------------------------------------------------------------
+    # Generate plot in render database
+    # Line 1) Controls are {Joystick}
+    # Line 2) {One Vertical Raster screen}
+    # Line 3) Machine [is|is not] mechanical and driver is neogeo.hpp
+    # Line 4) Machine has [no coin slots| N coin slots]
+    # Line 5) Machine [supports|does not support] a Software List.
+    # Line 6)
+    # ---------------------------------------------------------------------------------------------
+    log_info('Building machine plots/descriptions ...')
+    for machine_name in machines:
+        m = machines[machine_name]
+        controls_str = mame_get_control_str(m['control_type'])
+        mecha_str = 'Mechanical' if m['isMechanical'] else 'Not mechanical'
+        coin_str  = 'Machine has {0} coin slots'.format(m['coins']) if m['coins'] > 0 else 'Machine has no coin slots'
+        SL_str    = ', '.join(m['softwarelists']) if m['softwarelists'] else ''
+
+        plot_str  = 'Controls {0}\n'.format(controls_str)
+        plot_str += '{0}\n'.format(mame_get_screen_str(m))
+        plot_str += '{0} and driver is {1}\n'.format(mecha_str, m['sourcefile'])
+        plot_str += '{0}\n'.format(coin_str)
+        plot_str += 'SL {0}'.format(SL_str) if SL_str else ''
+        machines_render[machine_name]['plot'] = plot_str
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary

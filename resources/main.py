@@ -734,7 +734,7 @@ class Main:
         # >> Make all the infolabels compatible with Advanced Emulator Launcher
         listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
                                    'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                   'plot'    : '',               'overlay' : ICON_OVERLAY})
+                                   'plot'    : machine['plot'],  'overlay' : ICON_OVERLAY})
         listitem.setProperty('nplayers', machine['nplayers'])
         listitem.setProperty('platform', 'MAME')
 

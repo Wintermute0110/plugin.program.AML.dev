@@ -68,6 +68,56 @@ mame_driver_name_dic = {
 # -------------------------------------------------------------------------------------------------
 # Functions
 # -------------------------------------------------------------------------------------------------
+def mame_get_control_str(control_type_list):
+    control_set = set()
+    improved_c_type_list = mame_improve_control_type_list(control_type_list)
+    for control in improved_c_type_list: control_set.add(control)
+    control_str = ', '.join(list(sorted(control_set)))
+
+    return control_str
+
+def mame_get_screen_rotation_str(display_rotate):
+    if display_rotate == '0' or display_rotate == '180':
+        screen_str = 'horizontal'
+    elif display_rotate == '90' or display_rotate == '270':
+        screen_str = 'vertical'
+    else:
+        raise TypeError
+
+    return screen_str
+
+def mame_get_screen_str(machine):
+    d_list = machine['display_type']
+    if d_list:
+        if len(d_list) == 1:
+            rotation_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
+            screen_str = 'One {0} {1} screen'.format(d_list[0], rotation_str)
+        elif len(d_list) == 2:
+            if d_list[0] == 'lcd' and d_list[1] == 'raster':
+                r_str_1 = mame_get_screen_rotation_str(machine['display_rotate'][0])
+                r_str_2 = mame_get_screen_rotation_str(machine['display_rotate'][1])
+                screen_str = 'One LCD {0} screen and one raster {1} screen'.format(r_str_1, r_str_2)
+            elif d_list[0] == 'raster' and d_list[1] == 'raster':
+                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
+                screen_str = 'Two raster {1} screens'.format(d_list[0], r_str)
+            else:
+                raise TypeError
+        elif len(d_list) == 3:
+            if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster':
+                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
+                screen_str = 'Three raster {1} screens'.format(d_list[0], r_str)
+            elif d_list[0] == 'raster' and d_list[1] == 'lcd' and d_list[2] == 'lcd':
+                screen_str = 'Three screens special case'
+            else:
+                log_error('d_list = {0}'.format(unicode(d_list)))
+                raise TypeError
+        else:
+            raise TypeError
+    else:
+        screen_str = 'No screen'
+
+    return screen_str
+
 #
 # A) Capitalise every list item
 # B) Substitute Only_buttons -> Only buttons

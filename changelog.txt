@@ -2,6 +2,8 @@
 
 FEATURE  Support bestgames.ini and series.ini.
 
+FEATURE  Generate machine plot from MAME XMl information.
+
 WIP      Display MAMEINFO.DAT in Machine context menu.
 
 WIP      Display HISTORY.DAT in Machine context menu.
