@@ -12,7 +12,7 @@
   </extension>
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Kodi meets MAME!</summary>
-    <description lang="en">Advanced MAME fronted for Kodi. Supports both Arcade and Software Lists.</description>
+    <description lang="en">MAME front-end for Kodi. Supports both MAME arcade machines and MAME Software Lists.</description>
     <platform>all</platform>
     <license>GNU General Public License version 2</license>
     <email>wintermute0110@gmail.com</email>    
@@ -28,6 +28,6 @@
       <screenshot>media/shot_MAME_flat.jpg</screenshot>
       <screenshot>media/shot_SL_parents.jpg</screenshot>
     </assets>
-    <news>Development version / comment 2</news>
+    <news>See changelog.txt for information about the latests release.</news>
   </extension>
 </addon>
