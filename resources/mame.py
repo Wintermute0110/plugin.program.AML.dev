@@ -99,8 +99,11 @@ def mame_get_screen_str(machine):
                 screen_str = 'One LCD {0} screen and one raster {1} screen'.format(r_str_1, r_str_2)
             elif d_list[0] == 'raster' and d_list[1] == 'raster':
                 r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
-                screen_str = 'Two raster {1} screens'.format(d_list[0], r_str)
+                screen_str = 'Two raster {0} screens'.format(r_str)
+            elif d_list[0] == 'unknown' and d_list[1] == 'unknown':
+                screen_str = 'Two unknown screens'
             else:
+                log_error('d_list = {0}'.format(unicode(d_list)))
                 raise TypeError
         elif len(d_list) == 3:
             if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster':

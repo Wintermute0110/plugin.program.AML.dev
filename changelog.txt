@@ -17,6 +17,8 @@ WIP      Allow user to choose default assets as AEL does in addon seetings.
 
 WIP      Manage SL Favourites.
 
+WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
+
 
 [B]Advanced Emulator Launcher | version 0.9.3 | 30 May 2017[/B]
 
