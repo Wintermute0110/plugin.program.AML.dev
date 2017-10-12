@@ -57,7 +57,7 @@ LOCATION_SL_FAVS   = 'SL_FAVS'
 # --- Plugin database indices ---
 class AML_Paths:
     def __init__(self):
-        # >> MAME XML, main database and main PClone list
+        # >> MAME XML, main database and main PClone list.
         self.MAME_XML_PATH        = PLUGIN_DATA_DIR.pjoin('MAME.xml')
         self.MAME_STDOUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_stdout.log')
         self.MAME_STDERR_PATH     = PLUGIN_DATA_DIR.pjoin('log_stderr.log')
@@ -69,7 +69,18 @@ class AML_Paths:
         self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
         self.MAIN_CONTROL_PATH    = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
         self.ROM_SETS_PATH        = PLUGIN_DATA_DIR.pjoin('ROM_sets.json')
-        # >> Disabled. There are global properties
+
+        # >> DAT indices and databases.
+        self.HISTORY_IDX_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_History_index.json')
+        self.HISTORY_DB_PATH      = PLUGIN_DATA_DIR.pjoin('DAT_History_DB.json')
+        self.MAMEINFO_IDX_PATH    = PLUGIN_DATA_DIR.pjoin('DAT_MAMEInfo_index.json')
+        self.MAMEINFO_DB_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_MAMEInfo_DB.json')
+        self.GAMEINIT_IDX_PATH    = PLUGIN_DATA_DIR.pjoin('DAT_GameInit_index.json')
+        self.GAMEINIT_DB_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_GameInit_DB.json')
+        self.COMMAND_IDX_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_Command_index.json')
+        self.COMMAND_DB_PATH      = PLUGIN_DATA_DIR.pjoin('DAT_Command_DB.json')
+
+        # >> Disabled. There are global properties for this.
         # self.MAIN_PROPERTIES_PATH = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
 
         # >> Catalogs
@@ -195,7 +206,8 @@ class Main:
         if 'catalog' in args and not 'command' in args:
             catalog_name = args['catalog'][0]
             # --- Software list is a special case ---
-            if catalog_name == 'SL':
+            if catalog_name == 'SL' or catalog_name == 'SL_ROM' or \
+               catalog_name == 'SL_CHD' or catalog_name == 'SL_ROM_CHD':
                 SL_name     = args['category'][0] if 'category' in args else ''
                 parent_name = args['parent'][0] if 'parent' in args else ''
                 if SL_name and parent_name:
@@ -204,6 +216,17 @@ class Main:
                     self._render_SL_ROMs(SL_name)
                 else:
                     self._render_SL_list()
+            # --- DAT browsing ---
+            elif catalog_name == 'History' or catalog_name == 'MAMEINFO' or \
+                 catalog_name == 'Gameinit' or catalog_name == 'Command':
+                category_name = args['category'][0] if 'category' in args else ''
+                machine_name = args['machine'][0] if 'machine' in args else ''
+                if category_name and machine_name:
+                    self._render_DAT_machine(catalog_name, category_name, machine_name)
+                elif category_name and not machine_name:
+                    self._render_DAT_category(catalog_name, category_name)
+                else:
+                    self._render_DAT_list(catalog_name)
             else:
                 category_name = args['category'][0] if 'category' in args else ''
                 parent_name   = args['parent'][0] if 'parent' in args else ''
@@ -301,8 +324,8 @@ class Main:
     #
     def _get_settings(self):
         # --- Paths ---
-        self.settings['mame_prog']     = __addon_obj__.getSetting('mame_prog').decode('utf-8')
-        self.settings['rom_path']      = __addon_obj__.getSetting('rom_path').decode('utf-8')
+        self.settings['mame_prog']      = __addon_obj__.getSetting('mame_prog').decode('utf-8')
+        self.settings['rom_path']       = __addon_obj__.getSetting('rom_path').decode('utf-8')
 
         self.settings['assets_path']    = __addon_obj__.getSetting('assets_path').decode('utf-8')
         self.settings['chd_path']       = __addon_obj__.getSetting('chd_path').decode('utf-8')        
@@ -310,12 +333,17 @@ class Main:
         self.settings['SL_rom_path']    = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
         self.settings['SL_chd_path']    = __addon_obj__.getSetting('SL_chd_path').decode('utf-8')
         self.settings['samples_path']   = __addon_obj__.getSetting('samples_path').decode('utf-8')
+
         self.settings['catver_path']    = __addon_obj__.getSetting('catver_path').decode('utf-8')
         self.settings['catlist_path']   = __addon_obj__.getSetting('catlist_path').decode('utf-8')
         self.settings['genre_path']     = __addon_obj__.getSetting('genre_path').decode('utf-8')
         self.settings['nplayers_path']  = __addon_obj__.getSetting('nplayers_path').decode('utf-8')
         self.settings['bestgames_path'] = __addon_obj__.getSetting('bestgames_path').decode('utf-8')
         self.settings['series_path']    = __addon_obj__.getSetting('series_path').decode('utf-8')
+        self.settings['history_path']   = __addon_obj__.getSetting('history_path').decode('utf-8')
+        self.settings['mameinfo_path']  = __addon_obj__.getSetting('mameinfo_path').decode('utf-8')
+        self.settings['gameinit_path']  = __addon_obj__.getSetting('gameinit_path').decode('utf-8')
+        self.settings['command_path']   = __addon_obj__.getSetting('command_path').decode('utf-8')
 
         # --- ROM sets ---
         self.settings['mame_rom_set'] = int(__addon_obj__.getSetting('mame_rom_set'))
@@ -434,9 +462,18 @@ class Main:
         self._render_root_list_row('Machines by Device',              self._misc_url_1_arg('catalog', 'Devices'))
         self._render_root_list_row('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
 
+        # >> history.dat, mameinfo.dat, gameinit.dat, command.dat
+        self._render_root_list_row('History DAT',       self._misc_url_1_arg('catalog', 'History'))
+        self._render_root_list_row('MAMEINFO DAT',       self._misc_url_1_arg('catalog', 'MAMEINFO'))
+        self._render_root_list_row('Gameinit DAT',       self._misc_url_1_arg('catalog', 'Gameinit'))
+        self._render_root_list_row('Command DAT',       self._misc_url_1_arg('catalog', 'Command'))
+
         # >> Software lists
         if self.settings['SL_hash_path']:
             self._render_root_list_row('Software Lists', self._misc_url_1_arg('catalog', 'SL'))
+            self._render_root_list_row('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
+            self._render_root_list_row('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
+            self._render_root_list_row('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
 
         # >> Special launchers
         self._render_root_list_row('<Favourite MAME machines>',       self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
@@ -1008,6 +1045,116 @@ class Main:
         else:
             URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
             xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+
+    #----------------------------------------------------------------------------------------------
+    # DATs
+    #----------------------------------------------------------------------------------------------
+    def _render_DAT_list(self, catalog_name):
+        # >> Load Software List catalog
+        if catalog_name == 'History':
+            DAT_catalog_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+        elif catalog_name == 'MAMEINFO':
+            DAT_catalog_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
+        elif catalog_name == 'Gameinit':
+            DAT_catalog_dic = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
+        elif catalog_name == 'Command':
+            DAT_catalog_dic = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
+        else:
+            kodi_dialog_OK('DAT database file "{0}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+        if not DAT_catalog_dic:
+            kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+
+        self._set_Kodi_all_sorting_methods()
+        for category_name in DAT_catalog_dic:
+            self._render_DAT_list_row(catalog_name, category_name)
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_DAT_category(self, catalog_name, category_name):
+        # >> Load Software List catalog
+        if catalog_name == 'History':
+            DAT_catalog_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+        elif catalog_name == 'MAMEINFO':
+            DAT_catalog_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
+        elif catalog_name == 'Gameinit':
+            DAT_catalog_dic = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
+        elif catalog_name == 'Command':
+            DAT_catalog_dic = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
+        else:
+            kodi_dialog_OK('DAT database file "{0}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+        if not DAT_catalog_dic:
+            kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+
+        self._set_Kodi_all_sorting_methods()
+        categories_list = DAT_catalog_dic[category_name]
+        for sub_name in categories_list:
+            self._render_DAT_category_row(catalog_name, category_name, sub_name)
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_DAT_machine(self, catalog_name, category_name, machine_name):
+        # >> Load Software List catalog
+        # if catalog_name == 'History':
+        #     DAT_catalog_dic = fs_load_JSON_file(PATHS.HISTORY_DB_PATH.getPath())
+        info_text  = '[COLOR orange]Not implemented yet[/COLOR]\n'
+        info_text += 'catalog_name  "{0}"\n'.format(catalog_name)
+        info_text += 'category_name "{0}"\n'.format(category_name)
+        info_text += 'machine_name  "{0}"\n'.format(machine_name)
+
+        # --- Show information window ---
+        window_title = '{0} information'.format(catalog_name)
+        log_debug('Setting Window(10000) Property "FontWidth" = "monospaced"')
+        xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+        dialog = xbmcgui.Dialog()
+        dialog.textviewer(window_title, info_text)
+        log_debug('Setting Window(10000) Property "FontWidth" = "proportional"')
+        xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+
+    def _render_DAT_list_row(self, catalog_name, category_name):
+        display_name = category_name
+
+        # --- Create listitem row ---
+        ICON_OVERLAY = 6
+        listitem = xbmcgui.ListItem(display_name)
+        listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
+
+        # --- Create context menu ---
+        commands = []
+        URL_view = self._misc_url_1_arg_RunPlugin('command', 'VIEW')
+        commands.append(('View', URL_view ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+        listitem.addContextMenuItems(commands, replaceItems = True)
+
+        # --- Add row ---
+        URL = self._misc_url_2_arg('catalog', catalog_name, 'category', category_name)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+
+    def _render_DAT_category_row(self, catalog_name, category_name, sub_name):
+        display_name = sub_name
+
+        # --- Create listitem row ---
+        ICON_OVERLAY = 6
+        listitem = xbmcgui.ListItem(display_name)
+        listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
+
+        # --- Create context menu ---
+        commands = []
+        URL_view = self._misc_url_1_arg_RunPlugin('command', 'VIEW')
+        commands.append(('View', URL_view ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+        listitem.addContextMenuItems(commands, replaceItems = True)
+
+        # --- Add row ---
+        URL = self._misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', sub_name)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     #
     # Not used at the moment -> There are global display settings.

@@ -530,18 +530,24 @@ def fs_set_Sample_flag(m_render, new_Sample_flag):
 #   ROMS_DB_PATH
 #   MAIN_ASSETS_DB_PATH  (empty JSON file)
 #   MAIN_PCLONE_DIC_PATH
-#   MAIN_CONTROL_PATH    (updated and saved JSON file)
+#   MAIN_CONTROL_PATH    (updated and then JSON file saved)
 #   ROM_SETS_PATH
 #
-STOP_AFTER_MACHINES = 100000
+STOP_AFTER_MACHINES = 500000
 def fs_build_MAME_main_database(PATHS, settings, control_dic):
-    # --- Load Catver.ini to include cateogory information ---
+    # --- Load INI files to include category information ---
     (categories_dic, catver_version)    = fs_load_Catver_ini(settings['catver_path'])
     (nplayers_dic,   nplayers_version)  = fs_load_nplayers_ini(settings['nplayers_path'])
     (catlist_dic,    catlist_version)   = fs_load_INI_datfile(settings['catlist_path'])
     (genre_dic,      genre_version)     = fs_load_INI_datfile(settings['genre_path'])
     (bestgames_dic,  bestgames_version) = fs_load_INI_datfile(settings['bestgames_path'])
     (series_dic,     series_version)    = fs_load_INI_datfile(settings['series_path'])
+
+    # --- Load DAT files to include category information ---
+    (history_idx_dic, history_dic)      = mame_load_History_DAT(settings['history_path'])
+    (mameinfo_idx_dic, mameinfo_dic)    = mame_load_MameInfo_DAT(settings['mameinfo_path'])
+    # (categories_dic, catver_version)    = mame_load_GameInit_DAT(settings['gameinit_path'])
+    # (categories_dic, catver_version)    = mame_load_Command_DAT(settings['command_path'])
 
     # --- Progress dialog ---
     pDialog = xbmcgui.DialogProgress()
@@ -1123,6 +1129,10 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
     fs_write_JSON_file(PATHS.ROM_SETS_PATH.getPath(), rom_sets)
+    
+    fs_write_JSON_file(PATHS.HISTORY_IDX_PATH.getPath(), history_idx_dic)
+    fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
+    fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
     kodi_busydialog_OFF()
 
 #

@@ -4,9 +4,15 @@ FEATURE  Support bestgames.ini and series.ini.
 
 FEATURE  Generate machine plot from MAME XMl information.
 
-WIP      Display MAMEINFO.DAT in Machine context menu.
+FEATURE  New Normal and Unusual filters.
 
-WIP      Display HISTORY.DAT in Machine context menu.
+WIP      Display MAMEINFO.DAT information.
+
+WIP      Display HISTORY.DAT in information.
+
+WIP      Display gameinit.dat in information.
+
+WIP      Display command.dat in information.
 
 WIP      At launching, do not check ROMs for machines which doesn't have ROMs.
          Requires loading machines database, which will slow down launching process a lot!
