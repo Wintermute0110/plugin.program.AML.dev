@@ -1204,205 +1204,260 @@ class Main:
     # Information display
     # ---------------------------------------------------------------------------------------------
     def _command_context_view(self, machine_name, SL_name, SL_ROM, location):
+        VIEW_SIMPLE       = 100
+        VIEW_MAME_MACHINE = 200
+        VIEW_SL_ROM       = 300
+
+        ACTION_VIEW_MACHINE_DATA   = 100
+        ACTION_VIEW_MACHINE_ROMS   = 200
+        ACTION_VIEW_SL_ROM_DATA    = 300
+        ACTION_VIEW_SL_ROM_ROMS    = 400
+        ACTION_VIEW_DB_STATS       = 500
+        ACTION_VIEW_EXEC_OUTPUT    = 600
+        ACTION_VIEW_REPORT_SCANNER = 700
+        ACTION_VIEW_REPORT_ASSETS  = 800
+
+        # --- Determine if we are in a category, launcher or ROM ---
         log_debug('_command_view() machine_name "{0}"'.format(machine_name))
         log_debug('_command_view() SL_name      "{0}"'.format(SL_name))
         log_debug('_command_view() SL_ROM       "{0}"'.format(SL_ROM))
         log_debug('_command_view() location     "{0}"'.format(location))
-        MENU_SIMPLE    = 100
-        MENU_MAME_DATA = 200
-        MENU_SL_DATA   = 300
-        menu_kind = 0
-        size_output = 0
-        if PATHS.MAME_OUTPUT_PATH.exists():
-            stat_output = PATHS.MAME_OUTPUT_PATH.stat()
-            size_output = stat_output.st_size
-        dialog = xbmcgui.Dialog()
         if not machine_name and not SL_name:
-            menu_kind = MENU_SIMPLE
-            type = dialog.select('View ...',
-                                 ['View database information',
-                                  'MAME last execution output ({0} bytes)'.format(size_output),
-                                  'View scanner reports ...',
-                                  'View asset/artwork reports ...'])
+            view_type = VIEW_SIMPLE
         elif machine_name:
-            menu_kind = MENU_MAME_DATA
-            type = dialog.select('View ...',
-                                 ['View MAME machine data',
-                                  'View database information',
-                                  'MAME last execution output ({0} bytes)'.format(size_output),
-                                  'View scanner reports ...',
-                                  'View asset/artwork reports ...'])
+            view_type = VIEW_MAME_MACHINE
         elif SL_name:
-            menu_kind = MENU_SL_DATA
-            type = dialog.select('View ...',
-                                 ['View Software List machine data',
-                                  'View database information',
-                                  'MAME last execution output ({0} bytes)'.format(size_output),
-                                  'View scanner reports ...',
-                                  'View asset/artwork reports ...'])
+            view_type = VIEW_SL_ROM
+        log_debug('_command_view_menu() view_type = {0}'.format(view_type))
+
+        # --- Build menu base on view_type ---
+        if PATHS.MAME_OUTPUT_PATH.exists():
+            filesize = PATHS.MAME_OUTPUT_PATH.fileSize()
+            STD_status = '{0} bytes'.format(filesize)
         else:
-            kodi_dialog_OK('_command_view() runtime error. Report this bug')
+            STD_status = 'not found'
+
+        if view_type == VIEW_SIMPLE:
+            d_list = [
+              'View database statistics',
+              'View scanner reports ...',
+              'View asset/artwork reports ...',
+              'View MAME last execution output ({0})'.format(STD_status),
+            ]
+        elif view_type == VIEW_MAME_MACHINE:
+            d_list = [
+              'View MAME machine data',
+              'View MAME machine ROMs',
+              'View database statistics',
+              'View scanner reports ...',
+              'View asset/artwork reports ...',
+              'View MAME last execution output ({0})'.format(STD_status),
+            ]
+
+        elif view_type == VIEW_SL_ROM:
+            d_list = [
+              'View Software List machine data',
+              'View Software List machine ROMs',
+              'View database statistics',
+              'View scanner reports ...',
+              'View asset/artwork reports ...',
+              'View MAME last execution output ({0})'.format(STD_status),
+            ]
+        else:
+            kodi_dialog_OK('Wrong view_type = {0}. This is a bug, please report it.'.format(view_type))
             return
-        if type < 0: return
+        selected_value = xbmcgui.Dialog().select('View', d_list)
+        if selected_value < 0: return
 
-        # --- View MAME Machine ---
-        if menu_kind == MENU_MAME_DATA:
-            type_nb = 0
-            if type == 0:
-                if location == LOCATION_STANDARD:
-                    # >> Read MAME machine information
-                    kodi_busydialog_ON()
-                    machine    = fs_get_machine_main_db_hash(PATHS, machine_name)
-                    assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-                    kodi_busydialog_OFF()
-                    assets  = assets_dic[machine_name]
-                    window_title = 'MAME Machine Information'
-                elif location == LOCATION_MAME_FAVS:
-                    machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
-                    machine = machines[machine_name]
-                    assets = machine['assets']
-                    window_title = 'Favourite MAME Machine Information'
-
-                # --- Make information string ---
-                info_text  = '[COLOR orange]Machine {0} / Render data[/COLOR]\n'.format(machine_name)
-                if location == LOCATION_MAME_FAVS:
-                    info_text += "[COLOR slateblue]mame_version[/COLOR]: {0}\n".format(machine['mame_version'])
-                info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
-                info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
-                info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
-                info_text += "[COLOR violet]flags[/COLOR]: '{0}'\n".format(machine['flags'])
-                info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
-                info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
-                info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
-                info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
-                info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
-                info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
-
-                info_text += '\n[COLOR orange]Machine data[/COLOR]\n'.format(machine_name)
-                info_text += "[COLOR violet]bestgames[/COLOR]: '{0}'\n".format(machine['bestgames'])
-                info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
-                info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])
-                info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
-                info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(unicode(machine['control_type']))
-                info_text += "[COLOR skyblue]device_list[/COLOR]: {0}\n".format(unicode(machine['device_list']))
-                info_text += "[COLOR skyblue]device_tags[/COLOR]: {0}\n".format(unicode(machine['device_tags']))                
-                info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(unicode(machine['display_rotate']))
-                info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(unicode(machine['display_tag']))
-                info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(unicode(machine['display_type']))
-                info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
-                info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(unicode(machine['isDead']))
-                info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(unicode(machine['isMechanical']))
-                info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
-                info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
-                info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
-                info_text += "[COLOR violet]series[/COLOR]: '{0}'\n".format(machine['series'])
-                info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(unicode(machine['softwarelists']))
-                info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
-
-                info_text += '\n[COLOR orange]Asset/artwork data[/COLOR]\n'
-                info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
-                info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
-                info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
-                info_text += "[COLOR violet]marquee[/COLOR]: '{0}'\n".format(assets['marquee'])
-                info_text += "[COLOR violet]PCB[/COLOR]: '{0}'\n".format(assets['PCB'])
-                info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
-                info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
-                info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
-
-                # --- Show information window ---
-                xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-                dialog = xbmcgui.Dialog()
-                dialog.textviewer(window_title, info_text)
-                xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
-
-        # --- View Software List Machine ---
-        elif menu_kind == MENU_SL_DATA:
-            type_nb = 0
-            if type == type_nb:
-                if location == LOCATION_STANDARD:
-                    SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
-                    kodi_busydialog_ON()
-                    SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-                    SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
-                    assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
-                    SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
-                    SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
-                    kodi_busydialog_OFF()
-                    SL_dic = SL_catalog_dic[SL_name]
-                    SL_machine_list = SL_machines_dic[SL_name]
-                    roms = fs_load_JSON_file(SL_DB_FN.getPath())
-                    rom = roms[SL_ROM]
-                    assets = SL_asset_dic[SL_ROM] if SL_ROM in SL_asset_dic else fs_new_SL_asset()
-                    window_title = 'Software List ROM Information'
-
-                    # >> Build information string
-                    info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(SL_ROM)
-                    info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(rom['CHDs'])
-                    info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
-                    info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
-                    info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(rom['num_roms'])
-                    info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
-                    info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
-                    info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
-                    info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
-                    info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
-                    info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
-
-                    info_text += '\n[COLOR orange]Software List assets[/COLOR]\n'
-                    info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
-                    info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
-                    info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(assets['boxfront'])
-
-                    info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SL_name)
-                    info_text += "[COLOR skyblue]chd_count[/COLOR]: {0}\n".format(SL_dic['chd_count'])
-                    info_text += "[COLOR violet]display_name[/COLOR]: '{0}'\n".format(SL_dic['display_name'])
-                    info_text += "[COLOR violet]rom_DB_noext[/COLOR]: '{0}'\n".format(SL_dic['rom_DB_noext'])
-                    info_text += "[COLOR violet]rom_count[/COLOR]: '{0}'\n".format(SL_dic['rom_count'])
-
-                    info_text += '\n[COLOR orange]Runnable by[/COLOR]\n'
-                    for machine_dic in sorted(SL_machine_list):
-                        t = "[COLOR violet]machine[/COLOR]: '{0}' [COLOR slateblue]({1})[/COLOR]\n"
-                        info_text += t.format(machine_dic['description'], machine_dic['machine'])
-
-                elif location == LOCATION_SL_FAVS:
-                    fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
-                    fav_key = SL_name + '-' + SL_ROM
-                    rom = fav_SL_roms[fav_key]
-                    window_title = 'Favourite Software List ROM Information'
-
-                    # >> Build information string
-                    info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(fav_key)
-                    info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(rom['CHDs'])
-                    info_text += "[COLOR violet]ROM_name[/COLOR]: '{0}'\n".format(rom['ROM_name'])
-                    info_text += "[COLOR violet]SL_name[/COLOR]: '{0}'\n".format(rom['SL_name'])
-                    info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
-                    info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
-                    info_text += "[COLOR violet]launch_machine[/COLOR]: '{0}'\n".format(rom['launch_machine'])
-                    info_text += "[COLOR violet]mame_version[/COLOR]: '{0}'\n".format(rom['mame_version'])
-                    info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(unicode(rom['num_roms']))
-                    info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(unicode(rom['part_interface']))
-                    info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(unicode(rom['part_name']))
-                    info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
-                    info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
-                    info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
-                    info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
-
-                    info_text += '\n[COLOR orange]Software List assets[/COLOR]\n'
-                    info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(rom['assets']['title'])
-                    info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(rom['assets']['snap'])
-                    info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(rom['assets']['boxfront'])
-
-                # --- Show information window ---
-                xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-                dialog = xbmcgui.Dialog()
-                dialog.textviewer(window_title, info_text)
-                xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+        # --- Polymorphic menu. Determine action to do. ---
+        if view_type == VIEW_SIMPLE:
+            if   selected_value == 0: action = ACTION_VIEW_DB_STATS
+            elif selected_value == 1: action = ACTION_VIEW_REPORT_SCANNER
+            elif selected_value == 2: action = ACTION_VIEW_REPORT_ASSETS
+            elif selected_value == 3: action = ACTION_VIEW_EXEC_OUTPUT
+            else:
+                kodi_dialog_OK('view_type == VIEW_SIMPLE and selected_value = {0}. '.format(selected_value) +
+                               'This is a bug, please report it.')
+                return
+        elif view_type == VIEW_MAME_MACHINE:
+            if   selected_value == 0: action = ACTION_VIEW_MACHINE_DATA
+            elif selected_value == 1: action = ACTION_VIEW_MACHINE_ROMS
+            elif selected_value == 2: action = ACTION_VIEW_DB_STATS
+            elif selected_value == 3: action = ACTION_VIEW_REPORT_SCANNER
+            elif selected_value == 4: action = ACTION_VIEW_REPORT_ASSETS
+            elif selected_value == 5: action = ACTION_VIEW_EXEC_OUTPUT
+            else:
+                kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
+                               'This is a bug, please report it.')
+                return
+        elif view_type == VIEW_SL_ROM:
+            if   selected_value == 0: action = ACTION_VIEW_SL_ROM_DATA
+            elif selected_value == 1: action = ACTION_VIEW_SL_ROM_ROMS
+            elif selected_value == 2: action = ACTION_VIEW_DB_STATS
+            elif selected_value == 3: action = ACTION_VIEW_REPORT_SCANNER
+            elif selected_value == 4: action = ACTION_VIEW_REPORT_ASSETS
+            elif selected_value == 5: action = ACTION_VIEW_EXEC_OUTPUT
+            else:
+                kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {0}. '.format(selected_value) +
+                               'This is a bug, please report it.')
+                return
         else:
-            type_nb = -1
+            kodi_dialog_OK('Wrong view_type = {0}. '.format(view_type) +
+                           'This is a bug, please report it.')
+            return
+        log_debug('_command_view_menu() action = {0}'.format(action))
+
+        # --- Execute action ---
+        if action == ACTION_VIEW_MACHINE_DATA:
+            if location == LOCATION_STANDARD:
+                # >> Read MAME machine information
+                kodi_busydialog_ON()
+                machine    = fs_get_machine_main_db_hash(PATHS, machine_name)
+                assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                kodi_busydialog_OFF()
+                assets  = assets_dic[machine_name]
+                window_title = 'MAME Machine Information'
+            elif location == LOCATION_MAME_FAVS:
+                machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+                machine = machines[machine_name]
+                assets = machine['assets']
+                window_title = 'Favourite MAME Machine Information'
+
+            # --- Make information string ---
+            info_text  = '[COLOR orange]Machine {0} / Render data[/COLOR]\n'.format(machine_name)
+            if location == LOCATION_MAME_FAVS:
+                info_text += "[COLOR slateblue]mame_version[/COLOR]: {0}\n".format(machine['mame_version'])
+            info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
+            info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
+            info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
+            info_text += "[COLOR violet]flags[/COLOR]: '{0}'\n".format(machine['flags'])
+            info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
+            info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
+            info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
+            info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
+            info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
+            info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
+
+            info_text += '\n[COLOR orange]Machine data[/COLOR]\n'.format(machine_name)
+            info_text += "[COLOR violet]bestgames[/COLOR]: '{0}'\n".format(machine['bestgames'])
+            info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
+            info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])
+            info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
+            info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(unicode(machine['control_type']))
+            info_text += "[COLOR skyblue]device_list[/COLOR]: {0}\n".format(unicode(machine['device_list']))
+            info_text += "[COLOR skyblue]device_tags[/COLOR]: {0}\n".format(unicode(machine['device_tags']))                
+            info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(unicode(machine['display_rotate']))
+            info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(unicode(machine['display_tag']))
+            info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(unicode(machine['display_type']))
+            info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
+            info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(unicode(machine['isDead']))
+            info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(unicode(machine['isMechanical']))
+            info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
+            info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
+            info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
+            info_text += "[COLOR violet]series[/COLOR]: '{0}'\n".format(machine['series'])
+            info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(unicode(machine['softwarelists']))
+            info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
+
+            info_text += '\n[COLOR orange]Asset/artwork data[/COLOR]\n'
+            info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
+            info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
+            info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
+            info_text += "[COLOR violet]marquee[/COLOR]: '{0}'\n".format(assets['marquee'])
+            info_text += "[COLOR violet]PCB[/COLOR]: '{0}'\n".format(assets['PCB'])
+            info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
+            info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
+            info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
+
+            # --- Show information window ---
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+
+        # --- View Software List ROM Machine data ---
+        elif action == ACTION_VIEW_SL_ROM_DATA:
+            if location == LOCATION_STANDARD:
+                SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
+                kodi_busydialog_ON()
+                SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+                SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+                assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+                SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+                SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
+                kodi_busydialog_OFF()
+                SL_dic = SL_catalog_dic[SL_name]
+                SL_machine_list = SL_machines_dic[SL_name]
+                roms = fs_load_JSON_file(SL_DB_FN.getPath())
+                rom = roms[SL_ROM]
+                assets = SL_asset_dic[SL_ROM] if SL_ROM in SL_asset_dic else fs_new_SL_asset()
+                window_title = 'Software List ROM Information'
+
+                # >> Build information string
+                info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(SL_ROM)
+                info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(rom['CHDs'])
+                info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
+                info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
+                info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(rom['num_roms'])
+                info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
+                info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
+                info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
+                info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
+                info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
+                info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
+
+                info_text += '\n[COLOR orange]Software List assets[/COLOR]\n'
+                info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
+                info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
+                info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(assets['boxfront'])
+
+                info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SL_name)
+                info_text += "[COLOR skyblue]chd_count[/COLOR]: {0}\n".format(SL_dic['chd_count'])
+                info_text += "[COLOR violet]display_name[/COLOR]: '{0}'\n".format(SL_dic['display_name'])
+                info_text += "[COLOR violet]rom_DB_noext[/COLOR]: '{0}'\n".format(SL_dic['rom_DB_noext'])
+                info_text += "[COLOR violet]rom_count[/COLOR]: '{0}'\n".format(SL_dic['rom_count'])
+
+                info_text += '\n[COLOR orange]Runnable by[/COLOR]\n'
+                for machine_dic in sorted(SL_machine_list):
+                    t = "[COLOR violet]machine[/COLOR]: '{0}' [COLOR slateblue]({1})[/COLOR]\n"
+                    info_text += t.format(machine_dic['description'], machine_dic['machine'])
+
+            elif location == LOCATION_SL_FAVS:
+                fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
+                fav_key = SL_name + '-' + SL_ROM
+                rom = fav_SL_roms[fav_key]
+                window_title = 'Favourite Software List ROM Information'
+
+                # >> Build information string
+                info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(fav_key)
+                info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(rom['CHDs'])
+                info_text += "[COLOR violet]ROM_name[/COLOR]: '{0}'\n".format(rom['ROM_name'])
+                info_text += "[COLOR violet]SL_name[/COLOR]: '{0}'\n".format(rom['SL_name'])
+                info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
+                info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
+                info_text += "[COLOR violet]launch_machine[/COLOR]: '{0}'\n".format(rom['launch_machine'])
+                info_text += "[COLOR violet]mame_version[/COLOR]: '{0}'\n".format(rom['mame_version'])
+                info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(unicode(rom['num_roms']))
+                info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(unicode(rom['part_interface']))
+                info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(unicode(rom['part_name']))
+                info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
+                info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
+                info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
+                info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
+
+                info_text += '\n[COLOR orange]Software List assets[/COLOR]\n'
+                info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(rom['assets']['title'])
+                info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(rom['assets']['snap'])
+                info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(rom['assets']['boxfront'])
+
+            # --- Show information window ---
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View database information and statistics ---
-        type_nb += 1
-        if type == type_nb:
+        elif action == ACTION_VIEW_DB_STATS:
             # --- Warn user if error ---
             if not PATHS.MAIN_CONTROL_PATH.exists():
                 kodi_dialog_OK('MAME database not found. Please setup the addon first.')
@@ -1479,9 +1534,16 @@ class Main:
             dialog.textviewer(window_title, info_text)
             xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
+        # --- View MAME machine ROMs ---
+        elif action == ACTION_VIEW_MACHINE_ROMS:
+            kodi_dialog_OK('ACTION_VIEW_MACHINE_ROMS not coded yet')
+
+        # --- View SL ROMs ---
+        elif action == ACTION_VIEW_SL_ROM_ROMS:
+            kodi_dialog_OK('ACTION_VIEW_SL_ROM_ROMS not coded yet')
+
         # --- View MAME stdout/stderr ---
-        type_nb += 1
-        if type == type_nb:
+        elif action == ACTION_VIEW_EXEC_OUTPUT:
             if not PATHS.MAME_OUTPUT_PATH.exists():
                 kodi_dialog_OK('MAME output file not found. Execute MAME and try again.')
                 return
@@ -1499,8 +1561,7 @@ class Main:
             xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View ROM scanner reports ---
-        type_nb += 1
-        if type == type_nb:
+        elif action == ACTION_VIEW_REPORT_SCANNER:
             type_sub = dialog.select('View scanner reports',
                                  ['View MAME ROM scanner report',
                                   'View MAME CHD scanner report',
@@ -1600,8 +1661,7 @@ class Main:
                 xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View asset/artwork scanner reports ---
-        type_nb += 1
-        if type == type_nb:
+        elif action == ACTION_VIEW_REPORT_ASSETS:
             type_sub = dialog.select('View asset/artwork reports',
                                  ['View MAME asset statistics',
                                   'View MAME asset report',
@@ -1625,6 +1685,8 @@ class Main:
             elif type_sub == 3:
                 kodi_dialog_OK('View Software Lists asset report not coded yet. Sorry.')
 
+        else:
+            kodi_dialog_OK('Wrong action == {0}. This is a bug, please report it.'.format(action))
 
     def _command_context_add_mame_fav(self, machine_name):
         log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(machine_name))

@@ -390,6 +390,10 @@ class FileName:
     def stat(self):
         return os.stat(self.path)
 
+    def fileSize(self):
+        stat_output = os.stat(self.path)
+        return stat_output.st_size
+
     def exists(self):
         return os.path.exists(self.path)
 
