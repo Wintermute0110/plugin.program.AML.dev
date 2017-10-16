@@ -397,6 +397,31 @@ class Threaded_Load_JSON(threading.Thread):
         self.output_dic = fs_load_JSON_file(self.json_filename)
 
 # -------------------------------------------------------------------------------------------------
+def fs_extract_MAME_version(PATHS, mame_prog_FN):
+    (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
+    log_info('fs_extract_MAME_version() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
+    log_debug('fs_extract_MAME_version() mame_dir     "{0}"'.format(mame_dir))
+    log_debug('fs_extract_MAME_version() mame_exec    "{0}"'.format(mame_exec))
+    with open(PATHS.MAME_STDOUT_VER_PATH.getPath(), 'wb') as out, open(PATHS.MAME_STDERR_VER_PATH.getPath(), 'wb') as err:
+        p = subprocess.Popen([mame_prog_FN.getPath(), '-?'], stdout=out, stderr=err, cwd=mame_dir)
+        p.wait()
+
+    # --- Check if everything OK ---
+    # statinfo = os.stat(PATHS.MAME_XML_PATH.getPath())
+    # filesize = statinfo.st_size
+
+    # --- Read version ---
+    with open(PATHS.MAME_STDOUT_VER_PATH.getPath()) as f:
+        lines = f.readlines()
+    version_str = ''
+    for line in lines:
+        m = re.search('^MAME v([0-9\.]+?) \(([a-z0-9]+?)\)$', line.strip())
+        if m:
+            version_str = m.group(1)
+            break
+
+    return version_str
+
 # MAME_XML_PATH -> (FileName object) path of MAME XML output file.
 # mame_prog_FN  -> (FileName object) path to MAME executable.
 # Returns filesize -> (int) file size of output MAME.xml

@@ -61,6 +61,8 @@ class AML_Paths:
         self.MAME_XML_PATH        = PLUGIN_DATA_DIR.pjoin('MAME.xml')
         self.MAME_STDOUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_stdout.log')
         self.MAME_STDERR_PATH     = PLUGIN_DATA_DIR.pjoin('log_stderr.log')
+        self.MAME_STDOUT_VER_PATH = PLUGIN_DATA_DIR.pjoin('log_version_stdout.log')
+        self.MAME_STDERR_VER_PATH = PLUGIN_DATA_DIR.pjoin('log_version_stderr.log')
         self.MAME_OUTPUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_output.log')
         self.MAIN_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_DB_main.json')
         self.RENDER_DB_PATH       = PLUGIN_DATA_DIR.pjoin('MAME_DB_render.json')
@@ -2124,14 +2126,25 @@ class Main:
     def _command_context_setup_plugin(self):
         dialog = xbmcgui.Dialog()
         menu_item = dialog.select('Setup plugin',
-                                 ['Extract MAME.xml',
+                                 ['Check MAME version',
+                                  'Extract MAME.xml',
                                   'Build all databases',
                                   'Scan everything',
                                   'Step by step ...'])
         if menu_item < 0: return
 
-        # --- Extract MAME.xml ---
+        # --- Check MAME version ---
+        # >> Run 'mame -?' and extract version from stdout
         if menu_item == 0:
+            if not self.settings['mame_prog']:
+                kodi_dialog_OK('MAME executable is not set.')
+                return
+            mame_prog_FN = FileName(self.settings['mame_prog'])
+            mame_version_str = fs_extract_MAME_version(PATHS, mame_prog_FN)
+            kodi_dialog_OK('MAME version is {0}'.format(mame_version_str))
+
+        # --- Extract MAME.xml ---
+        elif menu_item == 1:
             if not self.settings['mame_prog']:
                 kodi_dialog_OK('MAME executable is not set.')
                 return
@@ -2143,7 +2156,7 @@ class Main:
                            'Size is {0} MB and there are {1} machines.'.format(filesize / 1000000, total_machines))
 
         # --- Build everything ---
-        elif menu_item == 1:
+        elif menu_item == 2:
             if not PATHS.MAME_XML_PATH.exists():
                 kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
                 return
@@ -2170,7 +2183,7 @@ class Main:
             kodi_notify('All databases built')
 
         # --- Scan everything ---
-        elif menu_item == 2:
+        elif menu_item == 3:
             log_info('_command_setup_plugin() Scanning everything ...')
 
             # --- MAME Machines -------------------------------------------------------------------
@@ -2275,7 +2288,7 @@ class Main:
             kodi_notify('All ROM/asset scanning finished')
 
         # --- Build Step by Step ---
-        elif menu_item == 3:
+        elif menu_item == 4:
             submenu = dialog.select('Setup plugin (step by step)',
                                    ['Build MAME database ...',
                                     'Build MAME catalogs ...',
