@@ -1538,7 +1538,44 @@ class Main:
 
         # --- View MAME machine ROMs ---
         elif action == ACTION_VIEW_MACHINE_ROMS:
-            kodi_dialog_OK('ACTION_VIEW_MACHINE_ROMS not coded yet')
+            kodi_busydialog_ON()
+            machine    = fs_get_machine_main_db_hash(PATHS, machine_name)
+            roms_dic = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+            kodi_busydialog_OFF()
+            window_title = 'Machine ROMs'
+
+            # --- Render machine ROMs ---
+            rom_dic = roms_dic[machine_name]
+            info_text = []
+            if rom_dic['roms']:
+                info_text.append('[COLOR orange]Machine {0} ROMs[/COLOR]\n'.format(machine_name))
+                info_text.append('name     size     crc     merge     bios\n')
+                info_text.append('----------------------------------------\n')
+                for rom in rom_dic['roms']:
+                    info_text.append('{0} {1} "{2}" "{3}" "{4}"\n'.format(rom['name'],
+                        rom['size'], rom['crc'], rom['merge'], rom['bios']))
+
+            if rom_dic['disks']:
+                info_text.append('\n')
+                info_text.append('[COLOR orange]Machine {0} CHDs[/COLOR]\n'.format(machine_name))
+                info_text.append('name    merge     sha1\n')
+                info_text.append('----------------------\n')
+                for disk in rom_dic['disks']:
+                    info_text.append('{0} "{1}" "{2}..."\n'.format(disk['name'], disk['merge'], disk['sha1'][0:6]))
+
+            if rom_dic['bios']:
+                info_text.append('\n')
+                info_text.append('[COLOR orange]Machine {0} BIOS[/COLOR]\n'.format(machine_name))
+                info_text.append('name     description\n')
+                info_text.append('--------------------\n')
+                for bios in rom_dic['bios']:
+                    info_text.append('{0} "{1}"\n'.format(bios['name'], bios['description']))
+
+            # --- Show information window ---
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, ''.join(info_text))
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View SL ROMs ---
         elif action == ACTION_VIEW_SL_ROM_ROMS:
