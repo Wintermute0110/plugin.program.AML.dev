@@ -31,6 +31,7 @@
 <category label="Display">
     <setting label="MAME view mode" type="enum" id="mame_view_mode"  default="1" values="Flat|Parent/Clone|Parents only" />
     <setting label="Software Lists view mode" type="enum" id="sl_view_mode"  default="1" values="Flat|Parent/Clone|Parents only" />
+    <setting label="Hide BIOSes" type="bool" default="false" id="display_hide_BIOS" />
     <setting label="Hide non-working machines" type="bool" default="false" id="display_hide_nonworking" />
     <setting label="Hide imperfect machines" type="bool" default="false" id="display_hide_imperfect" />
     <setting label="Display machines with available ROMs only" type="bool" default="false" id="display_rom_available" />

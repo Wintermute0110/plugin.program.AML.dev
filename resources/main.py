@@ -352,6 +352,7 @@ class Main:
         # --- Display ---
         self.settings['mame_view_mode']          = int(__addon_obj__.getSetting('mame_view_mode'))
         self.settings['sl_view_mode']            = int(__addon_obj__.getSetting('sl_view_mode'))
+        self.settings['display_hide_BIOS']       = True if __addon_obj__.getSetting('display_hide_BIOS') == 'true' else False
         self.settings['display_hide_nonworking'] = True if __addon_obj__.getSetting('display_hide_nonworking') == 'true' else False
         self.settings['display_hide_imperfect']  = True if __addon_obj__.getSetting('display_hide_imperfect') == 'true' else False
         self.settings['display_rom_available']   = True if __addon_obj__.getSetting('display_rom_available') == 'true' else False
@@ -549,6 +550,8 @@ class Main:
 
         log_debug('_render_catalog_parent_list() catalog_name  = {0}'.format(catalog_name))
         log_debug('_render_catalog_parent_list() category_name = {0}'.format(category_name))
+        display_hide_BIOS       = self.settings['display_hide_BIOS']
+        if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
 
@@ -643,6 +646,7 @@ class Main:
             machine_list = catalog_dic[category_name]['parents']
             for machine_name in machine_list:
                 machine = MAME_db_dic[machine_name]
+                if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
                 assets  = MAME_assets_dic[machine_name]
@@ -654,6 +658,7 @@ class Main:
             machine_list = catalog_dic[category_name]['machines']
             for machine_name in machine_list:
                 machine = MAME_db_dic[machine_name]
+                if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
                 assets  = MAME_assets_dic[machine_name]
