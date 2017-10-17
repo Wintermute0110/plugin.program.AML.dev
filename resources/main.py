@@ -149,11 +149,11 @@ PATHS = AML_Paths()
 AEL_INFAV_BOOL_LABEL     = 'AEL_InFav'
 AEL_PCLONE_STAT_LABEL    = 'AEL_PClone_stat'
 
-AEL_INFAV_BOOL_VALUE_TRUE            = 'InFav_True'
-AEL_INFAV_BOOL_VALUE_FALSE           = 'InFav_False'
-AEL_PCLONE_STAT_VALUE_PARENT         = 'PClone_Parent'
-AEL_PCLONE_STAT_VALUE_CLONE          = 'PClone_Clone'
-AEL_PCLONE_STAT_VALUE_NONE           = 'PClone_None'
+AEL_INFAV_BOOL_VALUE_TRUE    = 'InFav_True'
+AEL_INFAV_BOOL_VALUE_FALSE   = 'InFav_False'
+AEL_PCLONE_STAT_VALUE_PARENT = 'PClone_Parent'
+AEL_PCLONE_STAT_VALUE_CLONE  = 'PClone_Clone'
+AEL_PCLONE_STAT_VALUE_NONE   = 'PClone_None'
 
 class Main:
     # --- Object variables ---
@@ -284,6 +284,13 @@ class Main:
                 self._command_context_display_settings(catalog_name, category_name)
             elif command == 'DISPLAY_SETTINGS_SL':
                 self._command_context_display_settings_SL(args['category'][0])
+
+            elif command == 'VIEW_DAT':
+                machine  = args['machine'][0]  if 'machine'  in args else ''
+                SL       = args['SL'][0]       if 'SL'       in args else ''
+                ROM      = args['ROM'][0]      if 'ROM'      in args else ''
+                location = args['location'][0] if 'location' in args else LOCATION_STANDARD
+                self._command_context_view_DAT(machine, SL, ROM, location)
 
             elif command == 'VIEW':
                 machine  = args['machine'][0]  if 'machine'  in args else ''
@@ -802,13 +809,15 @@ class Main:
 
         # --- Create context menu ---
         commands = []
+        URL_view_DAT    = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
         URL_view        = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
         URL_show_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_MAME_CLONES', 
                                                          'catalog', catalog_name, 'category', category_name, 'parent', machine_name)
         # URL_display     = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_MAME',
         #                                                  'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
         URL_fav         = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
-        commands.append(('View',  URL_view))
+        commands.append(('View DAT info',  URL_view_DAT))
+        commands.append(('View / Audit',  URL_view))
         if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
             commands.append(('Show clones',  URL_show_clones))
         # commands.append(('Display settings', URL_display))
@@ -1205,6 +1214,62 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     # Information display
     # ---------------------------------------------------------------------------------------------
+    def _command_context_view_DAT(self, machine_name, SL_name, SL_ROM, location):
+        # --- Determine if we are in a category, launcher or ROM ---
+        log_debug('_command_context_view_DAT() machine_name "{0}"'.format(machine_name))
+        log_debug('_command_context_view_DAT() SL_name      "{0}"'.format(SL_name))
+        log_debug('_command_context_view_DAT() SL_ROM       "{0}"'.format(SL_ROM))
+        log_debug('_command_context_view_DAT() location     "{0}"'.format(location))
+
+        d_list = [
+          'View History DAT',
+          'View MAMEinfo DAT',
+          'View Gameinit DAT',
+          'View Command DAT',
+        ]
+        s_value = xbmcgui.Dialog().select('View', d_list)
+        if s_value < 0: return
+
+        if s_value == 0:
+            # >> Open DAT JSON
+            info_text = 'History DAT not coded yet. Sorry'
+
+            # >> Display info
+            window_title = 'History DAT'
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            xbmcgui.Dialog().textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+        elif s_value == 1:
+            # >> Open DAT JSON
+            info_text = 'MAMEinfo DAT not coded yet. Sorry'
+
+            # >> Display info
+            window_title = 'MAMEinfo DAT'
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            xbmcgui.Dialog().textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+        elif s_value == 2:
+            # >> Open DAT JSON
+            info_text = 'Gameinit DAT not coded yet. Sorry'
+
+            # >> Display info
+            window_title = 'Gameinit DAT'
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            xbmcgui.Dialog().textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+        elif s_value == 3:
+            # >> Open DAT JSON
+            info_text = 'Command DAT not coded yet. Sorry'
+
+            # >> Display info
+            window_title = 'Command DAT'
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            xbmcgui.Dialog().textviewer(window_title, info_text)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+
+    # ---------------------------------------------------------------------------------------------
+    # Information display
+    # ---------------------------------------------------------------------------------------------
     def _command_context_view(self, machine_name, SL_name, SL_ROM, location):
         VIEW_SIMPLE       = 100
         VIEW_MAME_MACHINE = 200
@@ -1226,17 +1291,17 @@ class Main:
         ACTION_VIEW_SL_AUDIT_REPORT   = 1400
 
         # --- Determine if we are in a category, launcher or ROM ---
-        log_debug('_command_view() machine_name "{0}"'.format(machine_name))
-        log_debug('_command_view() SL_name      "{0}"'.format(SL_name))
-        log_debug('_command_view() SL_ROM       "{0}"'.format(SL_ROM))
-        log_debug('_command_view() location     "{0}"'.format(location))
+        log_debug('_command_context_view() machine_name "{0}"'.format(machine_name))
+        log_debug('_command_context_view() SL_name      "{0}"'.format(SL_name))
+        log_debug('_command_context_view() SL_ROM       "{0}"'.format(SL_ROM))
+        log_debug('_command_context_view() location     "{0}"'.format(location))
         if not machine_name and not SL_name:
             view_type = VIEW_SIMPLE
         elif machine_name:
             view_type = VIEW_MAME_MACHINE
         elif SL_name:
             view_type = VIEW_SL_ROM
-        log_debug('_command_view_menu() view_type = {0}'.format(view_type))
+        log_debug('_command_context_view() view_type = {0}'.format(view_type))
 
         # --- Build menu base on view_type ---
         if PATHS.MAME_OUTPUT_PATH.exists():
@@ -1324,7 +1389,7 @@ class Main:
             kodi_dialog_OK('Wrong view_type = {0}. '.format(view_type) +
                            'This is a bug, please report it.')
             return
-        log_debug('_command_view_menu() action = {0}'.format(action))
+        log_debug('_command_context_view() action = {0}'.format(action))
 
         # --- Execute action ---
         if action == ACTION_VIEW_MACHINE_DATA:
@@ -1390,8 +1455,7 @@ class Main:
 
             # --- Show information window ---
             xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            dialog = xbmcgui.Dialog()
-            dialog.textviewer(window_title, info_text)
+            xbmcgui.Dialog().textviewer(window_title, info_text)
             xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- View Software List ROM Machine data ---
