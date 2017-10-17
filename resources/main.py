@@ -1210,14 +1210,20 @@ class Main:
         VIEW_MAME_MACHINE = 200
         VIEW_SL_ROM       = 300
 
-        ACTION_VIEW_MACHINE_DATA   = 100
-        ACTION_VIEW_MACHINE_ROMS   = 200
-        ACTION_VIEW_SL_ROM_DATA    = 300
-        ACTION_VIEW_SL_ROM_ROMS    = 400
-        ACTION_VIEW_DB_STATS       = 500
-        ACTION_VIEW_EXEC_OUTPUT    = 600
-        ACTION_VIEW_REPORT_SCANNER = 700
-        ACTION_VIEW_REPORT_ASSETS  = 800
+        ACTION_VIEW_MACHINE_DATA      = 100
+        ACTION_VIEW_MACHINE_ROMS      = 200
+        ACTION_VIEW_SL_ROM_DATA       = 300
+        ACTION_VIEW_SL_ROM_ROMS       = 400
+        ACTION_VIEW_DB_STATS          = 500
+        ACTION_VIEW_EXEC_OUTPUT       = 600
+        ACTION_VIEW_REPORT_SCANNER    = 700
+        ACTION_VIEW_REPORT_ASSETS     = 800
+        ACTION_AUDIT_MAME_MACHINE     = 900
+        ACTION_AUDIT_MAME_ALL         = 1000
+        ACTION_VIEW_MAME_AUDIT_REPORT = 1100
+        ACTION_AUDIT_SL_MACHINE       = 1200
+        ACTION_AUDIT_SL_ALL           = 1300
+        ACTION_VIEW_SL_AUDIT_REPORT   = 1400
 
         # --- Determine if we are in a category, launcher or ROM ---
         log_debug('_command_view() machine_name "{0}"'.format(machine_name))
@@ -1250,19 +1256,24 @@ class Main:
             d_list = [
               'View MAME machine data',
               'View MAME machine ROMs',
+              'Audit MAME machine ROMs',
               'View database statistics',
               'View scanner reports ...',
               'View asset/artwork reports ...',
+              'Audit all MAME machine ROMs',
+              'View MAME audit report',
               'View MAME last execution output ({0})'.format(STD_status),
             ]
-
         elif view_type == VIEW_SL_ROM:
             d_list = [
-              'View Software List machine data',
-              'View Software List machine ROMs',
+              'View Software List item data',
+              'View Software List ROMs',
+              'Audit Software List ROMs',
               'View database statistics',
               'View scanner reports ...',
               'View asset/artwork reports ...',
+              'Audit all Software List ROMs',
+              'View SL audit report',
               'View MAME last execution output ({0})'.format(STD_status),
             ]
         else:
@@ -1284,10 +1295,13 @@ class Main:
         elif view_type == VIEW_MAME_MACHINE:
             if   selected_value == 0: action = ACTION_VIEW_MACHINE_DATA
             elif selected_value == 1: action = ACTION_VIEW_MACHINE_ROMS
-            elif selected_value == 2: action = ACTION_VIEW_DB_STATS
-            elif selected_value == 3: action = ACTION_VIEW_REPORT_SCANNER
-            elif selected_value == 4: action = ACTION_VIEW_REPORT_ASSETS
-            elif selected_value == 5: action = ACTION_VIEW_EXEC_OUTPUT
+            elif selected_value == 2: action = ACTION_AUDIT_MAME_MACHINE
+            elif selected_value == 3: action = ACTION_VIEW_DB_STATS
+            elif selected_value == 4: action = ACTION_VIEW_REPORT_SCANNER
+            elif selected_value == 5: action = ACTION_VIEW_REPORT_ASSETS
+            elif selected_value == 6: action = ACTION_AUDIT_MAME_ALL
+            elif selected_value == 7: action = ACTION_VIEW_MAME_AUDIT_REPORT
+            elif selected_value == 8: action = ACTION_VIEW_EXEC_OUTPUT
             else:
                 kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -1295,10 +1309,13 @@ class Main:
         elif view_type == VIEW_SL_ROM:
             if   selected_value == 0: action = ACTION_VIEW_SL_ROM_DATA
             elif selected_value == 1: action = ACTION_VIEW_SL_ROM_ROMS
-            elif selected_value == 2: action = ACTION_VIEW_DB_STATS
-            elif selected_value == 3: action = ACTION_VIEW_REPORT_SCANNER
-            elif selected_value == 4: action = ACTION_VIEW_REPORT_ASSETS
-            elif selected_value == 5: action = ACTION_VIEW_EXEC_OUTPUT
+            elif selected_value == 2: action = ACTION_AUDIT_SL_MACHINE
+            elif selected_value == 3: action = ACTION_VIEW_DB_STATS
+            elif selected_value == 4: action = ACTION_VIEW_REPORT_SCANNER
+            elif selected_value == 5: action = ACTION_VIEW_REPORT_ASSETS
+            elif selected_value == 6: action = ACTION_AUDIT_SL_ALL
+            elif selected_value == 7: action = ACTION_VIEW_SL_AUDIT_REPORT
+            elif selected_value == 8: action = ACTION_VIEW_EXEC_OUTPUT
             else:
                 kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -1599,14 +1616,39 @@ class Main:
             dialog.textviewer(window_title, info_text)
             xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
+        # --- Audit ROMs of a single machine ---
+        elif action == ACTION_AUDIT_MAME_MACHINE:
+            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+
+        # --- Audit all ROMs. This may take a long time ---
+        elif action == ACTION_AUDIT_MAME_ALL:
+            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+
+        # --- View all-ROM audit report ---
+        elif action == ACTION_VIEW_MAME_AUDIT_REPORT:
+            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+
+        # --- Audit ROMs of SL item ---
+        elif action == ACTION_AUDIT_SL_MACHINE:
+            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+
+        # --- Audit all SL ROms. This may take a long time ---
+        elif action == ACTION_AUDIT_SL_ALL:
+            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+
+        # --- View all-ROM SL audit report ---
+        elif action == ACTION_VIEW_SL_AUDIT_REPORT:
+            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+
         # --- View ROM scanner reports ---
         elif action == ACTION_VIEW_REPORT_SCANNER:
-            type_sub = dialog.select('View scanner reports',
-                                 ['View MAME ROM scanner report',
-                                  'View MAME CHD scanner report',
-                                  'View MAME Samples scanner report',
-                                  'View Software Lists ROM scanner report',
-                                  'View Software Lists CHD scanner report'])
+            d = xbmcgui.Dialog()
+            type_sub = d.select('View scanner reports',
+                                ['View MAME ROM scanner report',
+                                 'View MAME CHD scanner report',
+                                 'View MAME Samples scanner report',
+                                 'View Software Lists ROM scanner report',
+                                 'View Software Lists CHD scanner report'])
             if type_sub < 0: return
 
             # --- View MAME ROM scanner report ---
@@ -1701,11 +1743,12 @@ class Main:
 
         # --- View asset/artwork scanner reports ---
         elif action == ACTION_VIEW_REPORT_ASSETS:
-            type_sub = dialog.select('View asset/artwork reports',
-                                 ['View MAME asset statistics',
-                                  'View MAME asset report',
-                                  'View Software Lists statistics',
-                                  'View Software Lists asset report'])
+            d = xbmcgui.Dialog()
+            type_sub = d.select('View asset/artwork reports',
+                                ['View MAME asset statistics',
+                                 'View MAME asset report',
+                                 'View Software Lists statistics',
+                                 'View Software Lists asset report'])
             if type_sub < 0: return
 
             # --- View MAME asset statistics ---
