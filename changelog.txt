@@ -6,6 +6,14 @@ FEATURE  Generate machine plot from MAME XMl information.
 
 FEATURE  New Normal and Unusual filters.
 
+FEATURE  Show MAME ROMs.
+
+FEATURE  Audit MAME ROMs.
+
+WIP      Show SL ROMs.
+
+WIP      Audit SL ROMs.
+
 WIP      Display MAMEINFO.DAT information.
 
 WIP      Display HISTORY.DAT in information.

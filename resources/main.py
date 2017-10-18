@@ -19,6 +19,7 @@ from __future__ import unicode_literals
 import os
 import urlparse
 import subprocess
+import copy
 
 # --- Kodi stuff ---
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
@@ -1733,7 +1734,7 @@ class Main:
 
             # --- Make a list of the machine ROMs and where there should be ---
             # m_roms = [
-            #     {'name' : 'avph.03d', 'crc' : '01234567', 'location' : 'avsp.zip'}, ...
+            #     { deepcopy of rom, 'location' : 'avsp.zip'}, ...
             # ]
             m_roms = []
             for rom in roms_dic['roms']:
@@ -1747,12 +1748,14 @@ class Main:
                         # >> merge ROMs are in the parent archive.
                         if rom['merge']:
                             location = romof + '.zip'
-                            m_roms.append({'name' : rom['name'], 'crc' : rom['crc'],
-                                           'location' : location})
+                            rom_t = copy.deepcopy(rom)
+                            rom_t['location'] = location
+                            m_roms.append(rom_t)
                         else:
                             location = machine_name + '.zip'
-                            m_roms.append({'name' : rom['name'], 'crc' : rom['crc'],
-                                           'location' : location})
+                            rom_t = copy.deepcopy(rom)
+                            rom_t['location'] = location
+                            m_roms.append(rom_t)
                     elif rom_set == 'NONMERGED':
                         # >> In the NonMerged set all ROMs are in the machine archive
                         pass
@@ -1760,9 +1763,9 @@ class Main:
                 else:
                     pass
             # >> DEBUG print
-            log_debug('Machine {0} ROMs\n'.format(machine_name))
-            for rom in m_roms:
-                log_debug('{0} {1} {2}\n'.format(rom['name'], rom['crc'], rom['location']))
+            # log_debug('Machine {0} ROMs\n'.format(machine_name))
+            # for rom in m_roms:
+            #     log_debug('{0} {1} {2}\n'.format(rom['name'], rom['crc'], rom['location']))
 
             # --- Make a list of the archives and the ROMs the must have ---
             # m_archives = {
@@ -1778,10 +1781,10 @@ class Main:
             #     {'name' : 'avph.03d', 'crc' : '01234567', 'location' : 'avsp.zip'}
             # ]
             for m_rom in m_roms:
-                log_debug('Testing ROM {0}'.format(m_rom['name']))
+                # log_debug('Testing ROM {0}'.format(m_rom['name']))
                 # >> Test if ZIP file exists
                 zip_FN = FileName(self.settings['rom_path']).pjoin(m_rom['location'])
-                log_debug('ZIP {0}'.format(zip_FN.getPath()))
+                # log_debug('ZIP {0}'.format(zip_FN.getPath()))
                 if not zip_FN.exists():
                     m_rom['status'] = '[COLOR red]ZIP not found[/COLOR]'
                     continue
@@ -1789,7 +1792,7 @@ class Main:
                 # >> Open ZIP file and get list of files
                 zip_f = z.ZipFile(zip_FN.getPath(), 'r')
                 z_file_list = zip_f.namelist()
-                log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
+                # log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
                 if not m_rom['name'] in z_file_list:
                     zip_f.close()
                     m_rom['status'] = '[COLOR red]ROM not in ZIP[/COLOR]'
@@ -1800,8 +1803,12 @@ class Main:
                 # >> However, MAME encodes it as an hexadecimal number: CRC32 0123abcd
                 z_info = zip_f.getinfo(m_rom['name'])
                 z_crc_hex = '{0:x}'.format(z_info.CRC)
-                log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
-                log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
+                # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
+                # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
+                if z_info.file_size != m_rom['size']:
+                    zip_f.close()
+                    m_rom['status'] = '[COLOR red]ROM bad size[/COLOR]'
+                    continue
                 if z_crc_hex != m_rom['crc']:
                     zip_f.close()
                     m_rom['status'] = '[COLOR red]ROM bad CRC[/COLOR]'
@@ -1813,9 +1820,47 @@ class Main:
 
             # --- Generate report ---
             info_text = []
+            info_text.append('[COLOR violet]machine[/COLOR]   {0}\n'.format(machine_name))
+            info_text.append('[COLOR violet]cloneof[/COLOR]   {0}\n'.format(machine['cloneof']))
+            info_text.append('[COLOR violet]romof[/COLOR]     {0}\n'.format(machine['romof']))
+            info_text.append('[COLOR skyblue]isBIOS[/COLOR]    {0}\n'.format(unicode(machine['isBIOS'])))
+            info_text.append('[COLOR skyblue]isDevice[/COLOR]  {0}\n'.format(unicode(machine['isDevice'])))
+            info_text.append('\n')
+            # >> Cell max sizes
+            name_max_size     = text_str_dic_max_size(m_roms, 'name', 'name')
+            size_max_size     = text_str_dic_max_size(m_roms, 'size', 'size')
+            crc_max_size      = 8
+            merge_max_size    = text_str_dic_max_size(m_roms, 'merge', 'merge')
+            bios_max_size     = text_str_dic_max_size(m_roms, 'bios', 'bios')
+            location_max_size = text_str_dic_max_size(m_roms, 'location', 'location')
+            status_max_size   = text_str_dic_max_size(m_roms, 'status', 'status')
+            total_size = name_max_size + size_max_size + crc_max_size + merge_max_size + bios_max_size + \
+                         location_max_size + status_max_size + 6*2
+            # >> Table header
+            # info_text.append('[COLOR orange]Machine {0} ROMs[/COLOR]\n'.format(machine_name))
+            padded_name     = text_print_padded_left('name', name_max_size)
+            padded_size     = text_print_padded_left('size', size_max_size)
+            padded_crc      = text_print_padded_left('crc', crc_max_size)
+            padded_merge    = text_print_padded_left('merge', merge_max_size)
+            padded_bios     = text_print_padded_left('bios', bios_max_size)
+            padded_location = text_print_padded_left('location', location_max_size)
+            padded_status   = text_print_padded_left('status', status_max_size)
+            info_text.append('{0}  {1}  {2}  {3}  {4}  {5}  {6}\n'.format(
+                padded_name, padded_size, padded_crc, padded_merge, padded_bios,
+                padded_location, padded_status))
+            info_text.append('{0}\n'.format('-' * total_size))
+            # >> Table rows
             for m_rom in m_roms:
-                info_text.append('{0}  {1}  {2}  {3}\n'.format(
-                    m_rom['name'], m_rom['crc'], m_rom['location'], m_rom['status']))
+                padded_name     = text_print_padded_left('{0}'.format(m_rom['name']), name_max_size)
+                padded_size     = text_print_padded_right('{0}'.format(m_rom['size']), size_max_size)
+                padded_crc      = text_print_padded_left('{0}'.format(m_rom['crc']), crc_max_size)
+                padded_merge    = text_print_padded_left('{0}'.format(m_rom['merge']), merge_max_size)
+                padded_bios     = text_print_padded_left('{0}'.format(m_rom['bios']), merge_max_size)
+                padded_location = text_print_padded_left('{0}'.format(m_rom['location']), merge_max_size)
+                padded_status   = text_print_padded_left('{0}'.format(m_rom['status']), merge_max_size)
+                info_text.append('{0}  {1}  {2}  {3}  {4}  {5}  {6}\n'.format(
+                    padded_name, padded_size, padded_crc, padded_merge, padded_bios,
+                    padded_location, padded_status))
 
             # --- Show report ---
             window_title = 'Machine {0} ROM audit'.format(machine_name)
