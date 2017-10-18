@@ -284,14 +284,12 @@ class Main:
                 self._command_context_display_settings(catalog_name, category_name)
             elif command == 'DISPLAY_SETTINGS_SL':
                 self._command_context_display_settings_SL(args['category'][0])
-
             elif command == 'VIEW_DAT':
                 machine  = args['machine'][0]  if 'machine'  in args else ''
                 SL       = args['SL'][0]       if 'SL'       in args else ''
                 ROM      = args['ROM'][0]      if 'ROM'      in args else ''
                 location = args['location'][0] if 'location' in args else LOCATION_STANDARD
                 self._command_context_view_DAT(machine, SL, ROM, location)
-
             elif command == 'VIEW':
                 machine  = args['machine'][0]  if 'machine'  in args else ''
                 SL       = args['SL'][0]       if 'SL'       in args else ''
@@ -1619,37 +1617,65 @@ class Main:
 
         # --- View MAME machine ROMs ---
         elif action == ACTION_VIEW_MACHINE_ROMS:
+            # >> Load machine dictionary and ROM database
             kodi_busydialog_ON()
-            machine    = fs_get_machine_main_db_hash(PATHS, machine_name)
-            roms_dic = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+            machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+            roms_db_dic = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
             kodi_busydialog_OFF()
             window_title = 'Machine ROMs'
 
-            # --- Render machine ROMs ---
-            rom_dic = roms_dic[machine_name]
+            # --- ROM info ---
             info_text = []
-            if rom_dic['roms']:
-                info_text.append('[COLOR orange]Machine {0} ROMs[/COLOR]\n'.format(machine_name))
-                info_text.append('name     size     crc     merge     bios\n')
-                info_text.append('----------------------------------------\n')
-                for rom in rom_dic['roms']:
-                    info_text.append('{0} {1} "{2}" "{3}" "{4}"\n'.format(rom['name'],
-                        rom['size'], rom['crc'], rom['merge'], rom['bios']))
+            info_text.append('[COLOR violet]machine[/COLOR]   {0}\n'.format(machine_name))
+            info_text.append('[COLOR violet]cloneof[/COLOR]   {0}\n'.format(machine['cloneof']))
+            info_text.append('[COLOR violet]romof[/COLOR]     {0}\n'.format(machine['romof']))
+            info_text.append('[COLOR skyblue]isBIOS[/COLOR]    {0}\n'.format(unicode(machine['isBIOS'])))
+            info_text.append('[COLOR skyblue]isDevice[/COLOR]  {0}\n'.format(unicode(machine['isDevice'])))
+            info_text.append('\n')
 
-            if rom_dic['disks']:
+            # --- Render machine ROMs ---
+            roms_dic = roms_db_dic[machine_name]
+            if roms_dic['roms']:
+                # >> Cell max sizes
+                name_max_size  = text_str_dic_max_size(roms_dic['roms'], 'name', 'name')
+                size_max_size  = text_str_dic_max_size(roms_dic['roms'], 'size', 'size')
+                crc_max_size   = 8
+                merge_max_size = text_str_dic_max_size(roms_dic['roms'], 'merge', 'merge')
+                bios_max_size  = text_str_dic_max_size(roms_dic['roms'], 'bios', 'bios')
+                total_size = name_max_size + size_max_size + crc_max_size + merge_max_size + bios_max_size + 2*4
+                # >> Table header
+                info_text.append('[COLOR orange]Machine {0} ROMs[/COLOR]\n'.format(machine_name))
+                padded_name  = text_print_padded_left('name', name_max_size)
+                padded_size  = text_print_padded_left('size', size_max_size)
+                padded_crc   = text_print_padded_left('crc', crc_max_size)
+                padded_merge = text_print_padded_left('merge', merge_max_size)
+                padded_bios  = text_print_padded_left('bios', bios_max_size)
+                info_text.append('{0}  {1}  {2}  {3}  {4}\n'.format(
+                    padded_name, padded_size, padded_crc, padded_merge, padded_bios))
+                info_text.append('{0}\n'.format('-' * total_size))
+                # >> Table rows
+                for rom in roms_dic['roms']:
+                    padded_name  = text_print_padded_left('{0}'.format(rom['name']), name_max_size)
+                    padded_size  = text_print_padded_right('{0}'.format(rom['size']), size_max_size)
+                    padded_crc   = text_print_padded_left('{0}'.format(rom['crc']), crc_max_size)
+                    padded_merge = text_print_padded_left('{0}'.format(rom['merge']), merge_max_size)
+                    info_text.append('{0}  {1}  {2}  {3}  {4}\n'.format(
+                        padded_name, padded_size, padded_crc, padded_merge, rom['bios']))
+
+            if roms_dic['disks']:
                 info_text.append('\n')
                 info_text.append('[COLOR orange]Machine {0} CHDs[/COLOR]\n'.format(machine_name))
                 info_text.append('name    merge     sha1\n')
                 info_text.append('----------------------\n')
-                for disk in rom_dic['disks']:
+                for disk in roms_dic['disks']:
                     info_text.append('{0} "{1}" "{2}..."\n'.format(disk['name'], disk['merge'], disk['sha1'][0:6]))
 
-            if rom_dic['bios']:
+            if roms_dic['bios']:
                 info_text.append('\n')
                 info_text.append('[COLOR orange]Machine {0} BIOS[/COLOR]\n'.format(machine_name))
                 info_text.append('name     description\n')
                 info_text.append('--------------------\n')
-                for bios in rom_dic['bios']:
+                for bios in roms_dic['bios']:
                     info_text.append('{0} "{1}"\n'.format(bios['name'], bios['description']))
 
             # --- Show information window ---
@@ -1682,27 +1708,141 @@ class Main:
 
         # --- Audit ROMs of a single machine ---
         elif action == ACTION_AUDIT_MAME_MACHINE:
-            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+            # >> Only import stuff when needed. This should make AML faster.
+            import zipfile as z
+
+            # >> Load machine dictionary and ROM database
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
+            machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+            pDialog.update(25)
+            roms_db_dic = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+            pDialog.update(100)
+            pDialog.close()
+
+            # >> Grab data and settings
+            roms_dic = roms_db_dic[machine_name]
+            cloneof = machine['cloneof']
+            romof = machine['romof']
+            rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][self.settings['mame_rom_set']]
+            log_debug('_command_context_view() Auditing Machine ROMs\n')
+            log_debug('_command_context_view() machine {0}\n'.format(machine_name))
+            log_debug('_command_context_view() cloneof {0}\n'.format(cloneof))
+            log_debug('_command_context_view() romof   {0}\n'.format(romof))
+            log_debug('_command_context_view() rom_set {0}\n'.format(rom_set))
+
+            # --- Make a list of the machine ROMs and where there should be ---
+            # m_roms = [
+            #     {'name' : 'avph.03d', 'crc' : '01234567', 'location' : 'avsp.zip'}, ...
+            # ]
+            m_roms = []
+            for rom in roms_dic['roms']:
+                # >> Parent machine
+                if not cloneof:
+                    if rom_set == 'MERGED':
+                        # >> In the Merged set all ROMs are in the parent archive
+                        pass
+                    elif rom_set == 'SPLIT':
+                        # >> In the Split set non-merge ROMs are in the machine archive and
+                        # >> merge ROMs are in the parent archive.
+                        if rom['merge']:
+                            location = romof + '.zip'
+                            m_roms.append({'name' : rom['name'], 'crc' : rom['crc'],
+                                           'location' : location})
+                        else:
+                            location = machine_name + '.zip'
+                            m_roms.append({'name' : rom['name'], 'crc' : rom['crc'],
+                                           'location' : location})
+                    elif rom_set == 'NONMERGED':
+                        # >> In the NonMerged set all ROMs are in the machine archive
+                        pass
+                # >> Clone machine
+                else:
+                    pass
+            # >> DEBUG print
+            log_debug('Machine {0} ROMs\n'.format(machine_name))
+            for rom in m_roms:
+                log_debug('{0} {1} {2}\n'.format(rom['name'], rom['crc'], rom['location']))
+
+            # --- Make a list of the archives and the ROMs the must have ---
+            # m_archives = {
+            #     'avsp.zip'   : [{'name' : 'avph.03d', 'crc' : '01234567'}, ...],
+            #     'neogeo.zip' : [{'name' : 'avph.03d', 'crc' : '01234567'}, ...]
+            # }
+
+            # --- Open ZIP file and check CRC32 ---
+            # >> This code is very un-optimised! But it is better to get something that works
+            # >> and then optimise. "Premature optimization is the root of all evil" -- Donald Knuth
+            # >> Add new field 'status' : 'OK', 'ZIP not found', 'ZIP error', 'ROM not in ZIP', 'ROM bad size', 'ROM bad CRC'
+            # m_roms = [
+            #     {'name' : 'avph.03d', 'crc' : '01234567', 'location' : 'avsp.zip'}
+            # ]
+            for m_rom in m_roms:
+                log_debug('Testing ROM {0}'.format(m_rom['name']))
+                # >> Test if ZIP file exists
+                zip_FN = FileName(self.settings['rom_path']).pjoin(m_rom['location'])
+                log_debug('ZIP {0}'.format(zip_FN.getPath()))
+                if not zip_FN.exists():
+                    m_rom['status'] = '[COLOR red]ZIP not found[/COLOR]'
+                    continue
+
+                # >> Open ZIP file and get list of files
+                zip_f = z.ZipFile(zip_FN.getPath(), 'r')
+                z_file_list = zip_f.namelist()
+                log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
+                if not m_rom['name'] in z_file_list:
+                    zip_f.close()
+                    m_rom['status'] = '[COLOR red]ROM not in ZIP[/COLOR]'
+                    continue
+
+                # >> Get ZIP file object and test size and CRC
+                # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
+                # >> However, MAME encodes it as an hexadecimal number: CRC32 0123abcd
+                z_info = zip_f.getinfo(m_rom['name'])
+                z_crc_hex = '{0:x}'.format(z_info.CRC)
+                log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
+                log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
+                if z_crc_hex != m_rom['crc']:
+                    zip_f.close()
+                    m_rom['status'] = '[COLOR red]ROM bad CRC[/COLOR]'
+                    continue
+
+                # >> Close ZIP file
+                zip_f.close()
+                m_rom['status'] = '[COLOR green]OK[/COLOR]'
+
+            # --- Generate report ---
+            info_text = []
+            for m_rom in m_roms:
+                info_text.append('{0}  {1}  {2}  {3}\n'.format(
+                    m_rom['name'], m_rom['crc'], m_rom['location'], m_rom['status']))
+
+            # --- Show report ---
+            window_title = 'Machine {0} ROM audit'.format(machine_name)
+            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+            dialog = xbmcgui.Dialog()
+            dialog.textviewer(window_title, ''.join(info_text))
+            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
         # --- Audit all ROMs. This may take a long time ---
         elif action == ACTION_AUDIT_MAME_ALL:
-            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+            kodi_dialog_OK('ACTION_AUDIT_MAME_ALL note coded yet. Sorry.')
 
         # --- View all-ROM audit report ---
         elif action == ACTION_VIEW_MAME_AUDIT_REPORT:
-            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+            kodi_dialog_OK('ACTION_VIEW_MAME_AUDIT_REPORT note coded yet. Sorry.')
 
         # --- Audit ROMs of SL item ---
         elif action == ACTION_AUDIT_SL_MACHINE:
-            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+            kodi_dialog_OK('ACTION_AUDIT_SL_MACHINE note coded yet. Sorry.')
 
         # --- Audit all SL ROms. This may take a long time ---
         elif action == ACTION_AUDIT_SL_ALL:
-            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+            kodi_dialog_OK('ACTION_AUDIT_SL_ALL note coded yet. Sorry.')
 
         # --- View all-ROM SL audit report ---
         elif action == ACTION_VIEW_SL_AUDIT_REPORT:
-            kodi_dialog_OK('ACTION_AUDIT_MAME_MACHINE note coded yet. Sorry.')
+            kodi_dialog_OK('ACTION_VIEW_SL_AUDIT_REPORT note coded yet. Sorry.')
 
         # --- View ROM scanner reports ---
         elif action == ACTION_VIEW_REPORT_SCANNER:

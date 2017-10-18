@@ -154,6 +154,29 @@ def text_dump_str_to_file(filename, full_string):
     file_obj.write(full_string.encode('utf-8'))
     file_obj.close()
 
+def text_str_dic_max_size(dictionary_list, dic_key, title_str = ''):
+    max_str_size = 0
+    for item in dictionary_list:
+        str_size = len('{0}'.format(item[dic_key]))
+        if str_size > max_str_size: max_str_size = str_size
+    if title_str:
+        str_size = len(title_str)
+        if str_size > max_str_size: max_str_size = str_size
+
+    return max_str_size
+
+def text_print_padded_left(str, str_max_size):
+    formatted_str = '{0}'.format(str)
+    padded_str =  formatted_str + ' ' * (str_max_size - len(formatted_str))
+
+    return padded_str
+
+def text_print_padded_right(str, str_max_size):
+    formatted_str = '{0}'.format(str)
+    padded_str = ' ' * (str_max_size - len(formatted_str)) + formatted_str
+
+    return padded_str
+
 # -------------------------------------------------------------------------------------------------
 # ROM name cleaning and formatting
 # -------------------------------------------------------------------------------------------------
