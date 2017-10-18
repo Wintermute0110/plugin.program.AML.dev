@@ -1873,9 +1873,9 @@ class Main:
                 padded_size     = text_print_padded_right('{0}'.format(m_rom['size']), size_max_size)
                 padded_crc      = text_print_padded_left('{0}'.format(m_rom['crc']), crc_max_size)
                 padded_merge    = text_print_padded_left('{0}'.format(m_rom['merge']), merge_max_size)
-                padded_bios     = text_print_padded_left('{0}'.format(m_rom['bios']), merge_max_size)
-                padded_location = text_print_padded_left('{0}'.format(m_rom['location']), merge_max_size)
-                padded_status   = text_print_padded_left('{0}'.format(m_rom['status']), merge_max_size)
+                padded_bios     = text_print_padded_left('{0}'.format(m_rom['bios']), bios_max_size)
+                padded_location = text_print_padded_left('{0}'.format(m_rom['location']), location_max_size)
+                padded_status   = text_print_padded_left('{0}'.format(m_rom['status']), status_max_size)
                 info_text.append('{0}  {1}  {2}  {3}  {4}  {5}  {6}\n'.format(
                     padded_name, padded_size, padded_crc, padded_merge, padded_bios,
                     padded_location, padded_status))
