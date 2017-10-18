@@ -1738,8 +1738,8 @@ class Main:
             # ]
             m_roms = []
             for rom in roms_dic['roms']:
-                # >> Parent machine
                 if not cloneof:
+                    # --- Parent machine ---
                     if rom_set == 'MERGED':
                         # >> In the Merged set all ROMs are in the parent archive
                         pass
@@ -1759,9 +1759,27 @@ class Main:
                     elif rom_set == 'NONMERGED':
                         # >> In the NonMerged set all ROMs are in the machine archive
                         pass
-                # >> Clone machine
                 else:
-                    pass
+                    # --- Clone machine ---
+                    if rom_set == 'MERGED':
+                        # >> In the Merged set all ROMs are in the parent archive
+                        pass
+                    elif rom_set == 'SPLIT':
+                        # >> In the Split set non-merge ROMs are in the machine archive and
+                        # >> merge ROMs are in the parent archive.
+                        if rom['merge']:
+                            location = romof + '.zip'
+                            rom_t = copy.deepcopy(rom)
+                            rom_t['location'] = location
+                            m_roms.append(rom_t)
+                        else:
+                            location = machine_name + '.zip'
+                            rom_t = copy.deepcopy(rom)
+                            rom_t['location'] = location
+                            m_roms.append(rom_t)
+                    elif rom_set == 'NONMERGED':
+                        # >> In the NonMerged set all ROMs are in the machine archive
+                        pass
             # >> DEBUG print
             # log_debug('Machine {0} ROMs\n'.format(machine_name))
             # for rom in m_roms:
