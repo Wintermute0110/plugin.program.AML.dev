@@ -1267,48 +1267,84 @@ class Main:
         log_debug('_command_context_view_DAT() SL_ROM       "{0}"'.format(SL_ROM))
         log_debug('_command_context_view_DAT() location     "{0}"'.format(location))
 
+        # >> Load DAT indices
+        History_idx_dic   = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+        Mameinfo_idx_dic  = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
+        Gameinit_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
+        Command_idx_list  = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
+
+        # >> Check if DAT infor is available for machine
+        if location == 'STANDARD':
+            History_MAME_set = set(History_idx_dic['info'])
+            if machine_name in History_MAME_set: History_str = 'Found'
+            else:                                History_str = 'Not found'
+            
+            Mameinfo_MAME_set = set(Mameinfo_idx_dic['mame'])
+            if machine_name in Mameinfo_MAME_set: Mameinfo_str = 'Found'
+            else:                                 Mameinfo_str = 'Not found'
+
+            Gameinit_MAME_set = set(Gameinit_idx_list)
+            if machine_name in Gameinit_MAME_set: Gameinit_str = 'Found'
+            else:                                 Gameinit_str = 'Not found'
+
+            Command_MAME_set = set(Command_idx_list)
+            if machine_name in Command_MAME_set: Command_str = 'Found'
+            else:                                Command_str = 'Not found'
+        else:
+            kodi_dialog_OK('Location {0} not supported. This is a bug, please report it.'.format(location))
+            return
+
+        # >> Menu
         d_list = [
-          'View History DAT',
-          'View MAMEinfo DAT',
-          'View Gameinit DAT',
-          'View Command DAT',
+          'View History DAT ({0})'.format(History_str),
+          'View MAMEinfo DAT ({0})'.format(Mameinfo_str),
+          'View Gameinit DAT ({0})'.format(Gameinit_str),
+          'View Command DAT ({0})'.format(Command_str),
         ]
         s_value = xbmcgui.Dialog().select('View', d_list)
         if s_value < 0: return
 
         if s_value == 0:
-            # >> Open DAT JSON
-            info_text = 'History DAT not coded yet. Sorry'
+            if machine_name not in History_MAME_set:
+                kodi_dialog_OK('Machine {0} not in History DAT'.format(machine_name))
+                return
+            DAT_dic = fs_load_JSON_file(PATHS.HISTORY_DB_PATH.getPath())
+            info_text = DAT_dic['info'][machine_name]
 
-            # >> Display info
-            window_title = 'History DAT'
+            window_title = 'History DAT for machine {0}'.format(machine_name)
             xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
             xbmcgui.Dialog().textviewer(window_title, info_text)
             xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
         elif s_value == 1:
-            # >> Open DAT JSON
-            info_text = 'MAMEinfo DAT not coded yet. Sorry'
+            if machine_name not in Mameinfo_MAME_set:
+                kodi_dialog_OK('Machine {0} not in Mameinfo DAT'.format(machine_name))
+                return
+            DAT_dic = fs_load_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath())
+            info_text = DAT_dic['mame'][machine_name]
 
-            # >> Display info
-            window_title = 'MAMEinfo DAT'
+            window_title = 'MAMEinfo DAT for machine {0}'.format(machine_name)
             xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
             xbmcgui.Dialog().textviewer(window_title, info_text)
             xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
         elif s_value == 2:
-            # >> Open DAT JSON
-            info_text = 'Gameinit DAT not coded yet. Sorry'
+            if machine_name not in Gameinit_MAME_set:
+                kodi_dialog_OK('Machine {0} not in Gameinit DAT'.format(machine_name))
+                return
+            DAT_dic = fs_load_JSON_file(PATHS.GAMEINIT_DB_PATH.getPath())
+            info_text = DAT_dic[machine_name]
 
-            # >> Display info
-            window_title = 'Gameinit DAT'
+            window_title = 'Gameinit DAT for machine {0}'.format(machine_name)
             xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
             xbmcgui.Dialog().textviewer(window_title, info_text)
             xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
         elif s_value == 3:
-            # >> Open DAT JSON
-            info_text = 'Command DAT not coded yet. Sorry'
+            if machine_name not in Command_MAME_set:
+                kodi_dialog_OK('Machine {0} not in Command DAT'.format(machine_name))
+                return
+            DAT_dic = fs_load_JSON_file(PATHS.COMMAND_DB_PATH.getPath())
+            info_text = DAT_dic[machine_name]
 
-            # >> Display info
-            window_title = 'Command DAT'
+            window_title = 'Command DAT for machine {0}'.format(machine_name)
             xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
             xbmcgui.Dialog().textviewer(window_title, info_text)
             xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
