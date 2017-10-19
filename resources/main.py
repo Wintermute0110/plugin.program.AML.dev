@@ -1063,7 +1063,7 @@ class Main:
         # URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_SL', 
         #                                              'catalog', 'SL', 'category', SL_name, 'machine', rom_name)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
-        commands.append(('View', URL_view))
+        commands.append(('View / Audit', URL_view))
         if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
             commands.append(('Show clones',  URL_show_clones))
         # commands.append(('Display settings', URL_display))
@@ -2352,7 +2352,7 @@ class Main:
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', machine_name, 'location', LOCATION_MAME_FAVS)
         URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
         URL_display = self._misc_url_2_arg_RunPlugin('command', 'DELETE_MAME_FAV', 'machine', machine_name)
-        commands.append(('View',  URL_view ))
+        commands.append(('View / Audit',  URL_view ))
         commands.append(('Manage Favourite machines',  URL_manage ))
         commands.append(('Delete from Favourites', URL_display ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
@@ -2549,7 +2549,7 @@ class Main:
         URL_view    = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
         URL_manage  = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         URL_fav     = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
-        commands.append(('View', URL_view))
+        commands.append(('View / Audit', URL_view))
         commands.append(('Manage SL Favourite machines',  URL_manage))
         commands.append(('Delete ROM from SL Favourites', URL_fav))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
