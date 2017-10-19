@@ -1366,12 +1366,9 @@ class Main:
         ACTION_VIEW_EXEC_OUTPUT       = 600
         ACTION_VIEW_REPORT_SCANNER    = 700
         ACTION_VIEW_REPORT_ASSETS     = 800
-        ACTION_AUDIT_MAME_MACHINE     = 900
-        ACTION_AUDIT_MAME_ALL         = 1000
-        ACTION_VIEW_MAME_AUDIT_REPORT = 1100
-        ACTION_AUDIT_SL_MACHINE       = 1200
-        ACTION_AUDIT_SL_ALL           = 1300
-        ACTION_VIEW_SL_AUDIT_REPORT   = 1400
+        ACTION_VIEW_REPORT_AUDIT      = 900
+        ACTION_AUDIT_MAME_MACHINE     = 1000
+        ACTION_AUDIT_SL_MACHINE       = 1100
 
         # --- Determine if we are in a category, launcher or ROM ---
         log_debug('_command_context_view() machine_name "{0}"'.format(machine_name))
@@ -1398,6 +1395,7 @@ class Main:
               'View database statistics',
               'View scanner reports ...',
               'View asset/artwork reports ...',
+              'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
             ]
         elif view_type == VIEW_MAME_MACHINE:
@@ -1408,8 +1406,7 @@ class Main:
               'View database statistics',
               'View scanner reports ...',
               'View asset/artwork reports ...',
-              'Audit all MAME machine ROMs',
-              'View MAME audit report',
+              'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
             ]
         elif view_type == VIEW_SL_ROM:
@@ -1420,8 +1417,7 @@ class Main:
               'View database statistics',
               'View scanner reports ...',
               'View asset/artwork reports ...',
-              'Audit all Software List ROMs',
-              'View SL audit report',
+              'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
             ]
         else:
@@ -1435,7 +1431,8 @@ class Main:
             if   selected_value == 0: action = ACTION_VIEW_DB_STATS
             elif selected_value == 1: action = ACTION_VIEW_REPORT_SCANNER
             elif selected_value == 2: action = ACTION_VIEW_REPORT_ASSETS
-            elif selected_value == 3: action = ACTION_VIEW_EXEC_OUTPUT
+            elif selected_value == 3: action = ACTION_VIEW_REPORT_AUDIT
+            elif selected_value == 4: action = ACTION_VIEW_EXEC_OUTPUT
             else:
                 kodi_dialog_OK('view_type == VIEW_SIMPLE and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -1447,9 +1444,8 @@ class Main:
             elif selected_value == 3: action = ACTION_VIEW_DB_STATS
             elif selected_value == 4: action = ACTION_VIEW_REPORT_SCANNER
             elif selected_value == 5: action = ACTION_VIEW_REPORT_ASSETS
-            elif selected_value == 6: action = ACTION_AUDIT_MAME_ALL
-            elif selected_value == 7: action = ACTION_VIEW_MAME_AUDIT_REPORT
-            elif selected_value == 8: action = ACTION_VIEW_EXEC_OUTPUT
+            elif selected_value == 6: action = ACTION_VIEW_REPORT_AUDIT
+            elif selected_value == 7: action = ACTION_VIEW_EXEC_OUTPUT
             else:
                 kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -1461,9 +1457,8 @@ class Main:
             elif selected_value == 3: action = ACTION_VIEW_DB_STATS
             elif selected_value == 4: action = ACTION_VIEW_REPORT_SCANNER
             elif selected_value == 5: action = ACTION_VIEW_REPORT_ASSETS
-            elif selected_value == 6: action = ACTION_AUDIT_SL_ALL
-            elif selected_value == 7: action = ACTION_VIEW_SL_AUDIT_REPORT
-            elif selected_value == 8: action = ACTION_VIEW_EXEC_OUTPUT
+            elif selected_value == 6: action = ACTION_VIEW_REPORT_AUDIT
+            elif selected_value == 7: action = ACTION_VIEW_EXEC_OUTPUT
             else:
                 kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -1971,25 +1966,9 @@ class Main:
             dialog.textviewer(window_title, ''.join(info_text))
             xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
-        # --- Audit all ROMs. This may take a long time ---
-        elif action == ACTION_AUDIT_MAME_ALL:
-            kodi_dialog_OK('ACTION_AUDIT_MAME_ALL note coded yet. Sorry.')
-
-        # --- View all-ROM audit report ---
-        elif action == ACTION_VIEW_MAME_AUDIT_REPORT:
-            kodi_dialog_OK('ACTION_VIEW_MAME_AUDIT_REPORT note coded yet. Sorry.')
-
         # --- Audit ROMs of SL item ---
         elif action == ACTION_AUDIT_SL_MACHINE:
-            kodi_dialog_OK('ACTION_AUDIT_SL_MACHINE note coded yet. Sorry.')
-
-        # --- Audit all SL ROms. This may take a long time ---
-        elif action == ACTION_AUDIT_SL_ALL:
-            kodi_dialog_OK('ACTION_AUDIT_SL_ALL note coded yet. Sorry.')
-
-        # --- View all-ROM SL audit report ---
-        elif action == ACTION_VIEW_SL_AUDIT_REPORT:
-            kodi_dialog_OK('ACTION_VIEW_SL_AUDIT_REPORT note coded yet. Sorry.')
+            kodi_dialog_OK('ACTION_AUDIT_SL_MACHINE not coded yet. Sorry.')
 
         # --- View ROM scanner reports ---
         elif action == ACTION_VIEW_REPORT_SCANNER:
@@ -2117,6 +2096,18 @@ class Main:
             # --- View Software Lists asset report ---
             elif type_sub == 3:
                 kodi_dialog_OK('View Software Lists asset report not coded yet. Sorry.')
+
+        # --- View audit reports ---
+        elif action == ACTION_VIEW_REPORT_AUDIT:
+            d = xbmcgui.Dialog()
+            type_sub = d.select('View audit reports',
+                                ['View MAME audit report', 'View SL audit report'])
+            if type_sub < 0: return
+
+            if type_sub == 0:
+                kodi_dialog_OK('View MAME audit report not coded yet. Sorry.')
+            elif type_sub == 1:
+                kodi_dialog_OK('View SL audit report not coded yet. Sorry.')
 
         else:
             kodi_dialog_OK('Wrong action == {0}. This is a bug, please report it.'.format(action))
@@ -2561,6 +2552,8 @@ class Main:
                                   'Extract MAME.xml',
                                   'Build all databases',
                                   'Scan everything',
+                                  'Audit MAME machine ROMs/CHDs',
+                                  'Audit SL ROMs/CHDs',
                                   'Step by step ...'])
         if menu_item < 0: return
 
@@ -2718,8 +2711,18 @@ class Main:
             # --- All operations finished ---
             kodi_notify('All ROM/asset scanning finished')
 
-        # --- Build Step by Step ---
+        # --- Audit MAME machine ROMs/CHDs ---
         elif menu_item == 4:
+            log_info('_command_setup_plugin() Audit MAME machine ROMs/CHDs ...')
+            kodi_dialog_OK('Audit MAME machine ROMs/CHDs not implemented yet.')
+
+        # --- Audit SL ROMs/CHDs ---
+        elif menu_item == 5:
+            log_info('_command_setup_plugin() Audit SL ROMs/CHDs ...')
+            kodi_dialog_OK('Audit SL ROMs/CHDs not implemented yet.')
+
+        # --- Build Step by Step ---
+        elif menu_item == 6:
             submenu = dialog.select('Setup plugin (step by step)',
                                    ['Build MAME database ...',
                                     'Build MAME catalogs ...',
