@@ -1860,9 +1860,12 @@ class Main:
             # >> Load machine dictionary and ROM database
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
+            pDialog.update(0)
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-            pDialog.update(25)
+            pDialog.update(33)
             roms_db_dic = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+            pDialog.update(66)
+            devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
             pDialog.update(100)
             pDialog.close()
 
@@ -1969,7 +1972,7 @@ class Main:
                 # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
                 # >> However, MAME encodes it as an hexadecimal number: CRC32 0123abcd
                 z_info = zip_f.getinfo(m_rom['name'])
-                z_crc_hex = '{0:x}'.format(z_info.CRC)
+                z_crc_hex = '{0:08x}'.format(z_info.CRC)
                 # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
                 # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
                 if z_info.file_size != m_rom['size']:
