@@ -27,7 +27,7 @@ WIP      At launching, do not check ROMs for machines which doesn't have ROMs.
          A hashed database of machines is necessary to speed up plugin.
          Now, disable ROM checking.
 
-WIP      Allow user to choose default assets as AEL does in addon seetings.
+FEATURE  Allow user to choose default assets as AEL does in addon seetings.
 
 WIP      Manage SL Favourites.
 
