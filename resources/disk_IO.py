@@ -558,26 +558,41 @@ def fs_set_Sample_flag(m_render, new_Sample_flag):
 #   MAIN_CONTROL_PATH    (updated and then JSON file saved)
 #   ROM_SETS_PATH
 #
-STOP_AFTER_MACHINES = 500000
+STOP_AFTER_MACHINES = 5000
 def fs_build_MAME_main_database(PATHS, settings, control_dic):
+    # --- Progress dialog ---
+    pDialog_canceled = False
+    pDialog = xbmcgui.DialogProgress()
+
     # --- Load INI files to include category information ---
-    (categories_dic, catver_version)    = fs_load_Catver_ini(settings['catver_path'])
-    (nplayers_dic,   nplayers_version)  = fs_load_nplayers_ini(settings['nplayers_path'])
-    (catlist_dic,    catlist_version)   = fs_load_INI_datfile(settings['catlist_path'])
-    (genre_dic,      genre_version)     = fs_load_INI_datfile(settings['genre_path'])
-    (bestgames_dic,  bestgames_version) = fs_load_INI_datfile(settings['bestgames_path'])
-    (series_dic,     series_version)    = fs_load_INI_datfile(settings['series_path'])
+    pDialog.create('Advanced MAME Launcher',)
+    pDialog.update(0, 'Processing INI files ...', 'File: catver.ini')
+    (categories_dic, catver_version) = fs_load_Catver_ini(settings['catver_path'])
+    pDialog.update(16, 'Processing INI files ...', 'File: catlist.ini')
+    (catlist_dic, catlist_version) = fs_load_INI_datfile(settings['catlist_path'])
+    pDialog.update(32, 'Processing INI files ...', 'File: genre.ini')
+    (genre_dic, genre_version) = fs_load_INI_datfile(settings['genre_path'])
+    pDialog.update(48, 'Processing INI files ...', 'File: nplayers.ini')
+    (nplayers_dic, nplayers_version) = fs_load_nplayers_ini(settings['nplayers_path'])
+    pDialog.update(64, 'Processing INI files ...', 'File: bestgames.ini')
+    (bestgames_dic, bestgames_version) = fs_load_INI_datfile(settings['bestgames_path'])
+    pDialog.update(80, 'Processing INI files ...', 'File: series.ini')
+    (series_dic, series_version) = fs_load_INI_datfile(settings['series_path'])
+    pDialog.update(100)
+    pDialog.close()
 
     # --- Load DAT files to include category information ---
-    (history_idx_dic, history_dic)      = mame_load_History_DAT(settings['history_path'])
-    (mameinfo_idx_dic, mameinfo_dic)    = mame_load_MameInfo_DAT(settings['mameinfo_path'])
-    # (categories_dic, catver_version)    = mame_load_GameInit_DAT(settings['gameinit_path'])
-    # (categories_dic, catver_version)    = mame_load_Command_DAT(settings['command_path'])
-
-    # --- Progress dialog ---
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Building main MAME database ...')
+    pDialog.create('Advanced MAME Launcher')
+    pDialog.update(0, 'Processing DAT files ...', 'File: history.dat')
+    (history_idx_dic, history_dic) = mame_load_History_DAT(settings['history_path'])
+    pDialog.update(25, 'Processing DAT files ...', 'File: mameinfo.dat')
+    (mameinfo_idx_dic, mameinfo_dic) = mame_load_MameInfo_DAT(settings['mameinfo_path'])
+    pDialog.update(50, 'Processing DAT files ...', 'File: gameinit.dat')
+    (categories_dic, catver_version) = mame_load_GameInit_DAT(settings['gameinit_path'])
+    pDialog.update(75, 'Processing DAT files ...', 'File: command.dat')
+    (categories_dic, catver_version) = mame_load_Command_DAT(settings['command_path'])
+    pDialog.update(100)
+    pDialog.close()
 
     # ---------------------------------------------------------------------------------------------
     # Incremental Parsing approach B (from [1])
@@ -586,6 +601,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # grab only the information we want and discard the rest.
     # See http://effbot.org/zone/element-iterparse.htm [1]
     #
+    pDialog.create('Advanced MAME Launcher', 'Building main MAME database ...')
     log_info('fs_build_MAME_main_database() Loading "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
     context = ET.iterparse(PATHS.MAME_XML_PATH.getPath(), events=("start", "end"))
     context = iter(context)
@@ -1061,7 +1077,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         for key in db_main_hash_idx:
             if db_main_hash_idx[key] == db_prefix:
                 machine_dic = machines[key].copy()
-                # returns None since it mutates machine_dic
+                # >> returns None because it mutates machine_dic
                 machine_dic.update(machines_render[key])
                 hashed_db_dic[key] = machine_dic
         # --- Save JSON file ---
@@ -1146,19 +1162,29 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Now write simplified JSON
     # -----------------------------------------------------------------------------
     log_info('Saving database JSON files ...')
-    kodi_busydialog_ON()
+    num_items = 10
+    pDialog.create('Advanced MAME Launcher', 'Saving databases ...')
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+    pDialog.update(int((1*100) / num_items))
     fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
+    pDialog.update(int((2*100) / num_items))
     fs_write_JSON_file(PATHS.ROMS_DB_PATH.getPath(), machines_roms)
+    pDialog.update(int((3*100) / num_items))
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
+    pDialog.update(int((4*100) / num_items))
     fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
+    pDialog.update(int((5*100) / num_items))
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    pDialog.update(int((6*100) / num_items))
     fs_write_JSON_file(PATHS.ROM_SETS_PATH.getPath(), rom_sets)
-    
+    pDialog.update(int((7*100) / num_items))
     fs_write_JSON_file(PATHS.HISTORY_IDX_PATH.getPath(), history_idx_dic)
+    pDialog.update(int((8*100) / num_items))
     fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
+    pDialog.update(int((9*100) / num_items))
     fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
-    kodi_busydialog_OFF()
+    pDialog.update(int((10*100) / num_items))
+    pDialog.close()
 
 #
 # Retrieves machine from distributed database.
