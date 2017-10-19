@@ -1879,14 +1879,27 @@ class Main:
             import zipfile as z
 
             # >> Load machine dictionary and ROM database
+            # >> NOTE If rom_set == 'MERGED' all clones are required!
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
             pDialog.update(0)
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-            pDialog.update(33)
-            roms_db_dic = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
-            pDialog.update(66)
-            devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
+            if not machine['cloneof']:
+                # --- Parent machine ---
+                parent_machine = machine
+                pDialog.update(33)
+                roms_db_dic = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+                pDialog.update(66)
+                devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
+            else:
+                # --- Clone machine ---
+                clone_machine = machine
+                pDialog.update(25)
+                parent_machine = fs_get_machine_main_db_hash(PATHS, clone_machine['cloneof'])
+                pDialog.update(50)
+                roms_db_dic = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+                pDialog.update(75)
+                devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
             pDialog.update(100)
             pDialog.close()
 
@@ -1918,7 +1931,13 @@ class Main:
                 if not cloneof:
                     # --- Parent machine ---
                     if rom_set == 'MERGED':
-                        # >> In the Merged set all ROMs are in the parent archive
+                        # In the Merged set all Parent and Clone ROMs are in the parent archive.
+                        # However, according to the Pleasuredome DATs, ROMs are organised like
+                        # this:
+                        #   clone_name\clone_rom_1
+                        #   clone_name\clone_rom_2
+                        #   parent_rom_1
+                        #   parent_rom_2
                         pass
                     elif rom_set == 'SPLIT':
                         # >> In the Split set non-merge ROMs are in the machine archive and
@@ -1934,18 +1953,25 @@ class Main:
                             rom_t['location'] = location
                             m_roms.append(rom_t)
                     elif rom_set == 'NONMERGED':
-                        # >> In the NonMerged set all ROMs are in the machine archive
-                        pass
+                        # >> In the NonMerged set all ROMs are in the machine archive, including
+                        # >> BIOSes.
+                        location = machine_name + '.zip'
+                        rom_t = copy.deepcopy(rom)
+                        rom_t['location'] = location
+                        m_roms.append(rom_t)
                 else:
                     # --- Clone machine ---
                     if rom_set == 'MERGED':
-                        # >> In the Merged set all ROMs are in the parent archive
+                        # >> In the Merged set all ROMs are in the parent archive.
                         pass
                     elif rom_set == 'SPLIT':
                         # >> In the Split set non-merge ROMs are in the machine archive and
-                        # >> merge ROMs are in the parent archive.
+                        # >> merge ROMs are in the parent archive. However, if ROM is a BIOS it
+                        # >> is located in the romof of the parent. BIOS ROMs always have the
+                        # >> merge attribute.
                         if rom['merge']:
-                            location = romof + '.zip'
+                            if rom['bios']: location = parent_machine['romof'] + '.zip'
+                            else:           location = romof + '.zip'
                             rom_t = copy.deepcopy(rom)
                             rom_t['location'] = location
                             m_roms.append(rom_t)
@@ -1955,8 +1981,12 @@ class Main:
                             rom_t['location'] = location
                             m_roms.append(rom_t)
                     elif rom_set == 'NONMERGED':
-                        # >> In the NonMerged set all ROMs are in the machine archive
-                        pass
+                        # In the NonMerged set all ROMs, including BIOSes are in the machine
+                        # archive.
+                        location = machine_name + '.zip'
+                        rom_t = copy.deepcopy(rom)
+                        rom_t['location'] = location
+                        m_roms.append(rom_t)
             # --- Add device ROMs ---
             if device_roms_list: m_roms.extend(device_roms_list)
 
