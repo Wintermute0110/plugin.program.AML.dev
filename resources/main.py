@@ -1809,19 +1809,40 @@ class Main:
 
             if roms_dic['disks']:
                 info_text.append('\n')
+                # >> Cell max sizes
+                name_max_size  = text_str_dic_max_size(roms_dic['disks'], 'name', 'name')
+                sha1_max_size  = 8
+                merge_max_size = text_str_dic_max_size(roms_dic['disks'], 'merge', 'merge')
+                total_size = name_max_size + sha1_max_size + merge_max_size + 2*2
+                # >> Table header
                 info_text.append('[COLOR orange]Machine {0} CHDs[/COLOR]\n'.format(machine_name))
-                info_text.append('name    merge     sha1\n')
-                info_text.append('----------------------\n')
+                padded_name  = text_print_padded_left('name', name_max_size)
+                padded_sha1  = text_print_padded_left('sha1', sha1_max_size)
+                padded_merge = text_print_padded_left('merge', merge_max_size)
+                info_text.append('{0}  {1}  {2}\n'.format(padded_name, padded_sha1, padded_merge))
+                info_text.append('{0}\n'.format('-' * total_size))
                 for disk in roms_dic['disks']:
-                    info_text.append('{0} "{1}" "{2}..."\n'.format(disk['name'], disk['merge'], disk['sha1'][0:6]))
+                    padded_name  = text_print_padded_left('{0}'.format(disk['name']), name_max_size)
+                    padded_sha1  = text_print_padded_left('{0}'.format(disk['sha1']), sha1_max_size)[0:8]
+                    padded_merge = text_print_padded_left('{0}'.format(disk['merge']), merge_max_size)
+                    info_text.append('{0}  {1}  {2}\n'.format(padded_name, padded_sha1, padded_merge))
 
             if roms_dic['bios']:
                 info_text.append('\n')
+                # >> Cell max sizes
+                name_max_size = text_str_dic_max_size(roms_dic['bios'], 'name', 'name')
+                desc_max_size = text_str_dic_max_size(roms_dic['bios'], 'description', 'description')
+                total_size = name_max_size + desc_max_size + 2*1
+                # >> Table header
                 info_text.append('[COLOR orange]Machine {0} BIOS[/COLOR]\n'.format(machine_name))
-                info_text.append('name     description\n')
-                info_text.append('--------------------\n')
+                padded_name = text_print_padded_left('name', name_max_size)
+                padded_desc = text_print_padded_left('desc', desc_max_size)
+                info_text.append('{0}  {1}\n'.format(padded_name, padded_desc))
+                info_text.append('{0}\n'.format('-' * total_size))
                 for bios in roms_dic['bios']:
-                    info_text.append('{0} "{1}"\n'.format(bios['name'], bios['description']))
+                    padded_name  = text_print_padded_left('{0}'.format(bios['name']), name_max_size)
+                    padded_sha1  = text_print_padded_left('{0}'.format(bios['description']), desc_max_size)
+                    info_text.append('{0}  {1}\n'.format(padded_name, padded_sha1))
 
             # --- Show information window ---
             window_title = 'Machine ROMs'
