@@ -210,7 +210,8 @@ class Main:
         if 'catalog' in args and not 'command' in args:
             catalog_name = args['catalog'][0]
             # --- Software list is a special case ---
-            if catalog_name == 'SL_ROM' or catalog_name == 'SL_CHD' or catalog_name == 'SL_ROM_CHD':
+            if catalog_name == 'SL' or catalog_name == 'SL_ROM' or \
+               catalog_name == 'SL_CHD' or catalog_name == 'SL_ROM_CHD':
                 SL_name     = args['category'][0] if 'category' in args else ''
                 parent_name = args['parent'][0] if 'parent' in args else ''
                 if SL_name and parent_name:
