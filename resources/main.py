@@ -210,8 +210,7 @@ class Main:
         if 'catalog' in args and not 'command' in args:
             catalog_name = args['catalog'][0]
             # --- Software list is a special case ---
-            if catalog_name == 'SL' or catalog_name == 'SL_ROM' or \
-               catalog_name == 'SL_CHD' or catalog_name == 'SL_ROM_CHD':
+            if catalog_name == 'SL_ROM' or catalog_name == 'SL_CHD' or catalog_name == 'SL_ROM_CHD':
                 SL_name     = args['category'][0] if 'category' in args else ''
                 parent_name = args['parent'][0] if 'parent' in args else ''
                 if SL_name and parent_name:
@@ -219,7 +218,7 @@ class Main:
                 elif SL_name and not parent_name:
                     self._render_SL_ROMs(SL_name)
                 else:
-                    self._render_SL_list()
+                    self._render_SL_list(catalog_name)
             # --- DAT browsing ---
             elif catalog_name == 'History' or catalog_name == 'MAMEINFO' or \
                  catalog_name == 'Gameinit' or catalog_name == 'Command':
@@ -480,7 +479,6 @@ class Main:
 
         # >> Software lists
         if self.settings['SL_hash_path']:
-            self._render_root_list_row('Software Lists', self._misc_url_1_arg('catalog', 'SL'))
             self._render_root_list_row('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
             self._render_root_list_row('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
             self._render_root_list_row('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
@@ -882,13 +880,33 @@ class Main:
     #----------------------------------------------------------------------------------------------
     # Software Lists
     #----------------------------------------------------------------------------------------------
-    def _render_SL_list(self):
+    def _render_SL_list(self, catalog_name):
+        log_debug('_render_SL_list() catalog_name = {0}\n'.format(catalog_name))
         # >> Load Software List catalog
-        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-        if not SL_catalog_dic:
+        SL_main_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+        if not SL_main_catalog_dic:
             kodi_dialog_OK('Software Lists database not found. Check out "Setup plugin" context menu.')
             xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
             return
+
+        # >> Build SL
+        SL_catalog_dic = {}
+        if catalog_name == 'SL_ROM':
+            for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+                if SL_dic['rom_count'] > 0:
+                    SL_catalog_dic[SL_name] = SL_dic
+        elif catalog_name == 'SL_CHD':
+            for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+                if SL_dic['chd_count'] > 0:
+                    SL_catalog_dic[SL_name] = SL_dic
+        elif catalog_name == 'SL_ROM_CHD':
+            for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+                if SL_dic['rom_count'] > 0 and SL_dic['chd_count'] > 0:
+                    SL_catalog_dic[SL_name] = SL_dic
+        else:
+            kodi_dialog_OK('Wrong catalog_name {0}'.format(catalog_name))
+            return
+        log_debug('_render_SL_list() len(catalog_name) = {0}\n'.format(len(SL_catalog_dic)))
 
         self._set_Kodi_all_sorting_methods()
         for SL_name in SL_catalog_dic:

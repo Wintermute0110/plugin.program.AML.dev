@@ -380,10 +380,10 @@ def fs_write_JSON_file(json_filename, json_data):
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
             if COMPACT_JSON:
-                json_e = json.dumps(json_data, ensure_ascii = False, separators = (',', ':'))
+                json_e = json.dumps(json_data, ensure_ascii = False, sort_keys = True, separators = (',', ':'))
                 file.write(unicode(json_e))
             else:
-                json_e = json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 2, separators = (',', ':'))
+                json_e = json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))
                 file.write(unicode(json_e))
     except OSError:
         gui_kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(roms_json_file))
