@@ -177,6 +177,24 @@ def mame_compress_item_list(item_list):
 
     return reduced_list
 
+#
+# See tools/test_compress_item_list.py for reference
+# Output is sorted alphabetically
+# Input/Output examples:
+# 1) ['dial']                 ->  ['dial']
+# 2) ['dial', 'dial']         ->  ['dial']
+# 3) ['dial', 'dial', 'joy']  ->  ['dial', 'joy']
+# 4) ['joy', 'dial', 'dial']  ->  ['dial', 'joy']
+#
+def mame_compress_item_list_compact(item_list):
+    num_items = len(item_list)
+    if num_items == 0 or num_items == 1: return item_list
+    item_set = set(item_list)
+    reduced_list = list(item_set)
+    reduced_list_sorted = sorted(reduced_list)
+
+    return reduced_list_sorted
+
 # -------------------------------------------------------------------------------------------------
 # Loading of data files
 # -------------------------------------------------------------------------------------------------

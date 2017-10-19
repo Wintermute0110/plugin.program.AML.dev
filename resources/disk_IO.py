@@ -602,6 +602,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # See http://effbot.org/zone/element-iterparse.htm [1]
     #
     pDialog.create('Advanced MAME Launcher', 'Building main MAME database ...')
+    pDialog.update(0)
     log_info('fs_build_MAME_main_database() Loading "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
     context = ET.iterparse(PATHS.MAME_XML_PATH.getPath(), events=("start", "end"))
     context = iter(context)
@@ -905,8 +906,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         # --- Print something to prove we are doing stuff ---
         num_iteration += 1
         if num_iteration % 1000 == 0:
-            update_number = (float(processed_machines) / float(total_machines)) * 100
-            pDialog.update(int(update_number))
+            update_number = (processed_machines * 100) / total_machines
+            pDialog.update(update_number)
             # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(num_iteration, processed_machines))
             # log_debug('processed_machines   = {0}'.format(processed_machines))
             # log_debug('total_machines = {0}'.format(total_machines))
@@ -1549,7 +1550,9 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
         # >> Order alphabetically the list
         pretty_control_type_list = mame_improve_control_type_list(machine['control_type'])
         sorted_control_type_list = sorted(pretty_control_type_list)
-        sorted_control_type_list = mame_compress_item_list(sorted_control_type_list)
+        # >> Maybe a setting should be added for compact or non-compact control list
+        # sorted_control_type_list = mame_compress_item_list(sorted_control_type_list)
+        sorted_control_type_list = mame_compress_item_list_compact(sorted_control_type_list)
         catalog_key = " / ".join(sorted_control_type_list)
         # >> Change category name for machines with no controls
         if catalog_key == '': catalog_key = '[ No controls ]'
@@ -1657,7 +1660,9 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
         # >> Order alphabetically the list
         pretty_device_list = mame_improve_device_list(machine['device_list'])
         sorted_device_list = sorted(pretty_device_list)
-        sorted_device_list = mame_compress_item_list(sorted_device_list)
+        # >> Maybe a setting should be added for compact or non-compact control list
+        # sorted_device_list = mame_compress_item_list(sorted_device_list)
+        sorted_device_list = mame_compress_item_list_compact(sorted_device_list)
         catalog_key = " / ".join(sorted_device_list)
         # >> Change category name for machines with no devices
         if catalog_key == '': catalog_key = '[ No devices ]'
