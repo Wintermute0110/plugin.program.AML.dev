@@ -364,7 +364,7 @@ class GeneralError(DiskError):
 # -------------------------------------------------------------------------------------------------
 # JSON write/load
 # -------------------------------------------------------------------------------------------------
-COMPACT_JSON = True
+COMPACT_JSON = False
 def fs_load_JSON_file(json_filename):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
