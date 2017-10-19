@@ -405,11 +405,11 @@ def mame_load_History_DAT(filename):
 # Looks that mameinfo.dat has information for both machines and drivers.
 #
 # idx_dic  = { 
-#     'info' : ['88games', 'flagrall', ...],
+#     'mame' : ['88games', 'flagrall', ...],
 #     'drv' : ['88games', 'flagrall', ...],
 # }
 # data_dic = {
-#    'info' : {'88games' : string, 'flagrall' : string, ...},
+#    'mame' : {'88games' : string, 'flagrall' : string, ...},
 #    'drv' : {'1942.cpp' : string, '1943.cpp' : string, ...},
 # }
 #

@@ -558,7 +558,7 @@ def fs_set_Sample_flag(m_render, new_Sample_flag):
 #   MAIN_CONTROL_PATH    (updated and then JSON file saved)
 #   ROM_SETS_PATH
 #
-STOP_AFTER_MACHINES = 5000
+STOP_AFTER_MACHINES = 500000
 def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # --- Progress dialog ---
     pDialog_canceled = False
@@ -1097,8 +1097,18 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Line 6)
     # ---------------------------------------------------------------------------------------------
     log_info('Building machine plots/descriptions ...')
+    history_info_set = set(history_idx_dic['info'])
+    mameinfo_info_set = set(mameinfo_idx_dic['mame'])
+    gameinit_info_set = set(gameinit_idx_dic)
+    command_info_set = set(command_idx_dic)
     for machine_name in machines:
         m = machines[machine_name]
+        DAT_list = []
+        if machine_name in history_info_set: DAT_list.append('History')
+        if machine_name in mameinfo_info_set: DAT_list.append('Info')
+        if machine_name in gameinit_info_set: DAT_list.append('Gameinit')
+        if machine_name in command_info_set: DAT_list.append('Command')
+        DAT_str = ', '.join(DAT_list)
         if m['control_type']:
             controls_str = 'Controls {0}'.format(mame_get_control_str(m['control_type']))
         else:
@@ -1112,6 +1122,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         plot_str += '{0}\n'.format(mecha_str)
         plot_str += 'Driver is {0}\n'.format(m['sourcefile'])
         plot_str += '{0}\n'.format(coin_str)
+        plot_str += '{0}\n'.format(DAT_str) if DAT_str else ''
         plot_str += 'SL {0}'.format(SL_str) if SL_str else ''
         machines_render[machine_name]['plot'] = plot_str
 
