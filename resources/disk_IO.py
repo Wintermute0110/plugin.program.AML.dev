@@ -588,9 +588,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog.update(25, 'Processing DAT files ...', 'File: mameinfo.dat')
     (mameinfo_idx_dic, mameinfo_dic) = mame_load_MameInfo_DAT(settings['mameinfo_path'])
     pDialog.update(50, 'Processing DAT files ...', 'File: gameinit.dat')
-    (categories_dic, catver_version) = mame_load_GameInit_DAT(settings['gameinit_path'])
+    (gameinit_idx_dic, gameinit_dic) = mame_load_GameInit_DAT(settings['gameinit_path'])
     pDialog.update(75, 'Processing DAT files ...', 'File: command.dat')
-    (categories_dic, catver_version) = mame_load_Command_DAT(settings['command_path'])
+    (command_idx_dic, command_dic) = mame_load_Command_DAT(settings['command_path'])
     pDialog.update(100)
     pDialog.close()
 
@@ -1162,8 +1162,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Now write simplified JSON
     # -----------------------------------------------------------------------------
     log_info('Saving database JSON files ...')
-    num_items = 10
+    num_items = 15
     pDialog.create('Advanced MAME Launcher', 'Saving databases ...')
+    pDialog.update(int((0*100) / num_items))
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
     pDialog.update(int((1*100) / num_items))
     fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
@@ -1178,12 +1179,25 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog.update(int((6*100) / num_items))
     fs_write_JSON_file(PATHS.ROM_SETS_PATH.getPath(), rom_sets)
     pDialog.update(int((7*100) / num_items))
+
+    # >> DAT files
     fs_write_JSON_file(PATHS.HISTORY_IDX_PATH.getPath(), history_idx_dic)
     pDialog.update(int((8*100) / num_items))
-    fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
+    fs_write_JSON_file(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
     pDialog.update(int((9*100) / num_items))
-    fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
+    fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
     pDialog.update(int((10*100) / num_items))
+    fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
+    pDialog.update(int((11*100) / num_items))
+    fs_write_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath(), gameinit_idx_dic)
+    pDialog.update(int((12*100) / num_items))
+    fs_write_JSON_file(PATHS.GAMEINIT_DB_PATH.getPath(), gameinit_dic)
+    pDialog.update(int((13*100) / num_items))
+    fs_write_JSON_file(PATHS.COMMAND_IDX_PATH.getPath(), command_idx_dic)
+    pDialog.update(int((14*100) / num_items))
+    fs_write_JSON_file(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
+    pDialog.update(int((15*100) / num_items))
+
     pDialog.close()
 
 #

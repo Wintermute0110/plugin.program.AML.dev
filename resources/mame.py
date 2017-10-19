@@ -325,11 +325,16 @@ def fs_load_INI_datfile(filename):
 
 #
 # Loads History.dat
+#
 # history_idx_dic = {
 #    'nes' : ['100mandk', '89denku', ...],
 #    'info' : ['88games', 'flagrall', ...],
 # }
 #
+# history_dic = {
+#    'nes' : {'100mandk' : string, '89denku' : string, ...},
+#    'info' : {'88games' : string, 'flagrall' : string, ...},
+# }
 def mame_load_History_DAT(filename):
     log_info('mame_load_History_DAT() Parsing "{0}"'.format(filename))
     history_idx_dic = {}
@@ -358,7 +363,6 @@ def mame_load_History_DAT(filename):
             # >> Skip comments: lines starting with '##'
             if re.search(r'^##', line_uni):
                 continue
-            # >> Skip blanks
             if line_uni == '': continue
             # >> New machine history
             m = re.search(r'^\$(.+?)=(.+?),', line_uni)
@@ -371,17 +375,43 @@ def mame_load_History_DAT(filename):
                 else:
                     history_idx_dic[list_name] = []
                     history_idx_dic[list_name].append(machine_name)
+            read_status = 1
+        elif read_status == 1:
+            if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
+            if line_uni == '$bio':
+                read_status = 2
+                info_str_list = []
+            else:
+                raise TypeError('Wrong second line = "{0}"'.format(line_uni))
+        elif read_status == 2:
+            if line_uni == '$end':
+                if list_name in history_dic:
+                    history_dic[list_name][machine_name] = '\n'.join(info_str_list)
+                else:
+                    history_dic[list_name] = {}
+                    history_dic[list_name][machine_name] = '\n'.join(info_str_list)
+                read_status = 0
+            else:
+                info_str_list.append(line_uni)
+        else:
+            raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
-    log_info('mame_load_History_DAT() Number of entries on index {0:6d}'.format(len(history_idx_dic)))
+    log_info('mame_load_History_DAT() Number of entries on history_idx_dic {0:6d}'.format(len(history_idx_dic)))
+    log_info('mame_load_History_DAT() Number of entries on history_dic     {0:6d}'.format(len(history_dic)))
 
     return (history_idx_dic, history_dic)
 
 #
 # Looks that mameinfo.dat has information for both machines and drivers.
-# Ignore driver information now.
 #
-# idx_set  = { 'info' : ['88games', 'flagrall', ...] }
-# data_dic = { '88games' : 'string', 'flagrall' : 'string', ... }
+# idx_dic  = { 
+#     'info' : ['88games', 'flagrall', ...],
+#     'drv' : ['88games', 'flagrall', ...],
+# }
+# data_dic = {
+#    'info' : {'88games' : string, 'flagrall' : string, ...},
+#    'drv' : {'1942.cpp' : string, '1943.cpp' : string, ...},
+# }
 #
 def mame_load_MameInfo_DAT(filename):
     log_info('mame_load_MameInfo_DAT() Parsing "{0}"'.format(filename))
@@ -401,7 +431,7 @@ def mame_load_MameInfo_DAT(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_MameInfo_DAT() (IOError) opening "{0}"'.format(filename))
-        return ({}, {})
+        return (set(), {})
 
     # >> Parse file
     for file_line in f:
@@ -414,24 +444,100 @@ def mame_load_MameInfo_DAT(filename):
                 continue
             if line_uni == '': continue
             # >> New machine or driver information
-            m = re.search(r'^\$(.+?)=(.+?)$', line_uni)
+            m = re.search(r'^\$info=(.+?)$', line_uni)
             if m:
-                list_name = m.group(1)
-                machine_name = m.group(2)
-                if __debug_function: log_debug('List "{0}" / Machine "{1}"'.format(list_name, machine_name))
-                if list_name in idx_dic:
-                    idx_dic[list_name].append(machine_name)
-                else:
-                    idx_dic[list_name] = []
-                    idx_dic[list_name].append(machine_name)
+                machine_name = m.group(1)
+                if __debug_function: log_debug('Machine "{1}"'.format(machine_name))
                 read_status = 1
         elif read_status == 1:
             if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
             if line_uni == '$mame':
                 read_status = 2
                 info_str_list = []
+                list_name = 'mame'
+                if 'mame' in idx_dic:
+                    idx_dic['mame'].append(machine_name)
+                else:
+                    idx_dic['mame'] = []
+                    idx_dic['mame'].append(machine_name)
             elif line_uni == '$drv':
-                read_status = 3
+                read_status = 2
+                info_str_list = []
+                list_name = 'drv'
+                if 'drv' in idx_dic:
+                    idx_dic['drv'].append(machine_name)
+                else:
+                    idx_dic['drv'] = []
+                    idx_dic['drv'].append(machine_name)
+            else:
+                raise TypeError('Wrong second line = "{0}"'.format(line_uni))
+        elif read_status == 2:
+            if line_uni == '$end':
+                if list_name in data_dic:
+                    data_dic[list_name][machine_name] = '\n'.join(info_str_list)
+                else:
+                    data_dic[list_name] = {}
+                    data_dic[list_name][machine_name] = '\n'.join(info_str_list)
+                read_status = 0
+            else:
+                info_str_list.append(line_uni)
+        else:
+            raise TypeError('Wrong read_status = {0}'.format(read_status))
+    f.close()
+    log_info('mame_load_MameInfo_DAT() Number of entries on idx_dic  {0:6d}'.format(len(idx_dic)))
+    log_info('mame_load_MameInfo_DAT() Number of entries on data_dic {0:6d}'.format(len(data_dic)))
+
+    return (idx_dic, data_dic)
+
+#
+# NOTE set objects are not JSON-serializable. Use lists and transform lists to sets if
+#      necessary after loading the JSON file.
+#
+# idx_list  = [ '88games', 'flagrall', ... ]
+# data_dic = { '88games' : 'string', 'flagrall' : 'string', ... }
+#
+def mame_load_GameInit_DAT(filename):
+    log_info('mame_load_GameInit_DAT() Parsing "{0}"'.format(filename))
+    idx_list = []
+    data_dic = {}
+    __debug_function = False
+
+    # --- read_status FSM values ---
+    # 0 -> Looking for '$info=(machine_name)'
+    # 1 -> Looking for $mame
+    # 2 -> Reading information. If '$end' found go to 0.
+    # 3 -> Ignoring information. If '$end' found go to 0.
+    read_status = 0
+
+    # >> Open file
+    try:
+        f = open(filename, 'rt')
+    except IOError:
+        log_info('mame_load_GameInit_DAT() (IOError) opening "{0}"'.format(filename))
+        return ([], {})
+
+    # >> Parse file
+    for file_line in f:
+        stripped_line = file_line.strip()
+        line_uni = stripped_line.decode('utf-8', 'replace')
+        # if __debug_function: log_debug('Line "{0}"'.format(line_uni))
+        if read_status == 0:
+            # >> Skip comments: lines starting with '#'
+            if re.search(r'^#', line_uni):
+                continue
+            if line_uni == '': continue
+            # >> New machine or driver information
+            m = re.search(r'^\$info=(.+?)$', line_uni)
+            if m:
+                machine_name = m.group(1)
+                if __debug_function: log_debug('Machine "{0}"'.format(machine_name))
+                idx_list.append(machine_name)
+                read_status = 1
+        elif read_status == 1:
+            if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
+            if line_uni == '$mame':
+                read_status = 2
+                info_str_list = []
             else:
                 raise TypeError('Wrong second line = "{0}"'.format(line_uni))
         elif read_status == 2:
@@ -441,15 +547,75 @@ def mame_load_MameInfo_DAT(filename):
                 read_status = 0
             else:
                 info_str_list.append(line_uni)
-        elif read_status == 3:
-            if line_uni == '$end':
-                read_status = 0
-            else:
-                pass
         else:
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
-    log_info('mame_load_MameInfo_DAT() Number of entries on idx_dic  {0:6d}'.format(len(idx_dic)))
-    log_info('mame_load_MameInfo_DAT() Number of entries on data_dic {0:6d}'.format(len(data_dic)))
+    log_info('mame_load_GameInit_DAT() Number of entries on idx_list {0:6d}'.format(len(idx_list)))
+    log_info('mame_load_GameInit_DAT() Number of entries on data_dic {0:6d}'.format(len(data_dic)))
 
-    return (idx_dic, data_dic)
+    return (idx_list, data_dic)
+
+#
+# NOTE set objects are not JSON-serializable. Use lists and transform lists to sets if
+#      necessary after loading the JSON file.
+#
+# idx_list = [ '88games', 'flagrall', ... ]
+# data_dic = { '88games' : 'string', 'flagrall' : 'string', ... }
+#
+def mame_load_Command_DAT(filename):
+    log_info('mame_load_Command_DAT() Parsing "{0}"'.format(filename))
+    idx_list = []
+    data_dic = {}
+    __debug_function = False
+
+    # --- read_status FSM values ---
+    # 0 -> Looking for '$info=(machine_name)'
+    # 1 -> Looking for $cmd
+    # 2 -> Reading information. If '$end' found go to 0.
+    read_status = 0
+
+    # >> Open file
+    try:
+        f = open(filename, 'rt')
+    except IOError:
+        log_info('mame_load_Command_DAT() (IOError) opening "{0}"'.format(filename))
+        return (set(), {})
+
+    # >> Parse file
+    for file_line in f:
+        stripped_line = file_line.strip()
+        line_uni = stripped_line.decode('utf-8', 'replace')
+        # if __debug_function: log_debug('Line "{0}"'.format(line_uni))
+        if read_status == 0:
+            # >> Skip comments: lines starting with '#'
+            if re.search(r'^#', line_uni):
+                continue
+            if line_uni == '': continue
+            # >> New machine or driver information
+            m = re.search(r'^\$info=(.+?)$', line_uni)
+            if m:
+                machine_name = m.group(1)
+                if __debug_function: log_debug('Machine "{0}"'.format(machine_name))
+                idx_list.append(machine_name)
+                read_status = 1
+        elif read_status == 1:
+            if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
+            if line_uni == '$cmd':
+                read_status = 2
+                info_str_list = []
+            else:
+                raise TypeError('Wrong second line = "{0}"'.format(line_uni))
+        elif read_status == 2:
+            if line_uni == '$end':
+                data_dic[machine_name] = '\n'.join(info_str_list)
+                info_str_list = []
+                read_status = 0
+            else:
+                info_str_list.append(line_uni)
+        else:
+            raise TypeError('Wrong read_status = {0}'.format(read_status))
+    f.close()
+    log_info('mame_load_Command_DAT() Number of entries on idx_list {0:6d}'.format(len(idx_list)))
+    log_info('mame_load_Command_DAT() Number of entries on data_dic {0:6d}'.format(len(data_dic)))
+
+    return (idx_list, data_dic)
