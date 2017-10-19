@@ -1717,11 +1717,24 @@ class Main:
         # --- View MAME machine ROMs ---
         elif action == ACTION_VIEW_MACHINE_ROMS:
             # >> Load machine dictionary and ROM database
-            kodi_busydialog_ON()
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
+            pDialog.update(0)
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+            pDialog.update(33)
             roms_db_dic = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
-            kodi_busydialog_OFF()
-            window_title = 'Machine ROMs'
+            pDialog.update(66)
+            devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
+            pDialog.update(100)
+            pDialog.close()
+
+            # --- Make a dictionary with device ROMs ---
+            device_roms_list = []
+            for device in devices_db_dic[machine_name]:
+                device_roms_dic = roms_db_dic[device]
+                for rom in device_roms_dic['roms']:
+                    rom['location'] = device + '.zip'
+                    device_roms_list.append(copy.deepcopy(rom))
 
             # --- ROM info ---
             info_text = []
@@ -1730,11 +1743,11 @@ class Main:
             info_text.append('[COLOR violet]romof[/COLOR]     {0}\n'.format(machine['romof']))
             info_text.append('[COLOR skyblue]isBIOS[/COLOR]    {0}\n'.format(unicode(machine['isBIOS'])))
             info_text.append('[COLOR skyblue]isDevice[/COLOR]  {0}\n'.format(unicode(machine['isDevice'])))
-            info_text.append('\n')
 
             # --- Render machine ROMs ---
             roms_dic = roms_db_dic[machine_name]
             if roms_dic['roms']:
+                info_text.append('\n')
                 # >> Cell max sizes
                 name_max_size  = text_str_dic_max_size(roms_dic['roms'], 'name', 'name')
                 size_max_size  = text_str_dic_max_size(roms_dic['roms'], 'size', 'size')
@@ -1761,6 +1774,39 @@ class Main:
                     info_text.append('{0}  {1}  {2}  {3}  {4}\n'.format(
                         padded_name, padded_size, padded_crc, padded_merge, rom['bios']))
 
+            # --- Render device ROMs ---
+            if device_roms_list:
+                info_text.append('\n')
+                # >> Cell max sizes
+                name_max_size  = text_str_dic_max_size(device_roms_list, 'name', 'name')
+                size_max_size  = text_str_dic_max_size(device_roms_list, 'size', 'size')
+                crc_max_size   = 8
+                merge_max_size = text_str_dic_max_size(device_roms_list, 'merge', 'merge')
+                bios_max_size  = text_str_dic_max_size(device_roms_list, 'bios', 'bios')
+                location_max_size = text_str_dic_max_size(device_roms_list, 'location', 'location')
+                total_size = name_max_size + size_max_size + crc_max_size + merge_max_size + bios_max_size + \
+                             location_max_size + 2*5
+                # >> Table header
+                info_text.append('[COLOR orange]Machine {0} device ROMs[/COLOR]\n'.format(machine_name))
+                padded_name  = text_print_padded_left('name', name_max_size)
+                padded_size  = text_print_padded_left('size', size_max_size)
+                padded_crc   = text_print_padded_left('crc', crc_max_size)
+                padded_merge = text_print_padded_left('merge', merge_max_size)
+                padded_bios  = text_print_padded_left('bios', bios_max_size)
+                padded_location = text_print_padded_left('location', location_max_size)
+                info_text.append('{0}  {1}  {2}  {3}  {4}  {5}\n'.format(
+                    padded_name, padded_size, padded_crc, padded_merge, padded_bios, padded_location))
+                info_text.append('{0}\n'.format('-' * total_size))
+                # >> Table rows
+                for rom in device_roms_list:
+                    padded_name  = text_print_padded_left('{0}'.format(rom['name']), name_max_size)
+                    padded_size  = text_print_padded_right('{0}'.format(rom['size']), size_max_size)
+                    padded_crc   = text_print_padded_left('{0}'.format(rom['crc']), crc_max_size)
+                    padded_merge = text_print_padded_left('{0}'.format(rom['merge']), merge_max_size)
+                    padded_bios  = text_print_padded_left('{0}'.format(rom['bios']), bios_max_size)
+                    info_text.append('{0}  {1}  {2}  {3}  {4}  {5}\n'.format(
+                        padded_name, padded_size, padded_crc, padded_merge, padded_bios, rom['location']))
+
             if roms_dic['disks']:
                 info_text.append('\n')
                 info_text.append('[COLOR orange]Machine {0} CHDs[/COLOR]\n'.format(machine_name))
@@ -1778,6 +1824,7 @@ class Main:
                     info_text.append('{0} "{1}"\n'.format(bios['name'], bios['description']))
 
             # --- Show information window ---
+            window_title = 'Machine ROMs'
             xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
             dialog = xbmcgui.Dialog()
             dialog.textviewer(window_title, ''.join(info_text))
