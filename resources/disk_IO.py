@@ -558,7 +558,7 @@ def fs_set_Sample_flag(m_render, new_Sample_flag):
 #   MAIN_CONTROL_PATH    (updated and then JSON file saved)
 #   ROM_SETS_PATH
 #
-STOP_AFTER_MACHINES = 500000
+STOP_AFTER_MACHINES = 100000
 def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # --- Progress dialog ---
     pDialog_canceled = False
@@ -615,6 +615,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     machines = {}
     machines_render = {}
     machines_roms = {}
+    machines_devices = {}
     processed_machines          = 0
     parent_machines             = 0
     clone_machines              = 0
@@ -651,6 +652,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             machine  = fs_new_machine_dic()
             m_render = fs_new_machine_render_dic()
             m_rom    = fs_new_rom_object()
+            device_list = []
             runnable = False
             num_displays = 0
 
@@ -759,6 +761,10 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             rom['size']  = int(elem.attrib['size']) if 'size' in elem.attrib else 0
             rom['crc']   = unicode(elem.attrib['crc']) if 'crc' in elem.attrib else ''
             m_rom['roms'].append(rom)
+
+        # >> Machine devices
+        elif event == 'start' and elem.tag == 'device_ref':
+            device_list.append(unicode(elem.attrib['name']))
 
         # >> Check in machine has CHDs
         # CHD is considered valid if SHA1 hash exists only. Keep in mind that there can be multiple
@@ -902,6 +908,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             machines[m_name] = machine
             machines_render[m_name] = m_render
             machines_roms[m_name] = m_rom
+            machines_devices[m_name] = device_list
 
         # --- Print something to prove we are doing stuff ---
         num_iteration += 1
@@ -1174,7 +1181,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Now write simplified JSON
     # -----------------------------------------------------------------------------
     log_info('Saving database JSON files ...')
-    num_items = 15
+    num_items = 16
     pDialog.create('Advanced MAME Launcher', 'Saving databases ...')
     pDialog.update(int((0*100) / num_items))
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
@@ -1183,32 +1190,34 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog.update(int((2*100) / num_items))
     fs_write_JSON_file(PATHS.ROMS_DB_PATH.getPath(), machines_roms)
     pDialog.update(int((3*100) / num_items))
-    fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
+    fs_write_JSON_file(PATHS.DEVICES_DB_PATH.getPath(), machines_devices)
     pDialog.update(int((4*100) / num_items))
-    fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
+    fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     pDialog.update(int((5*100) / num_items))
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
     pDialog.update(int((6*100) / num_items))
-    fs_write_JSON_file(PATHS.ROM_SETS_PATH.getPath(), rom_sets)
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
     pDialog.update(int((7*100) / num_items))
+    fs_write_JSON_file(PATHS.ROM_SETS_PATH.getPath(), rom_sets)
+    pDialog.update(int((8*100) / num_items))
 
     # >> DAT files
     fs_write_JSON_file(PATHS.HISTORY_IDX_PATH.getPath(), history_idx_dic)
-    pDialog.update(int((8*100) / num_items))
-    fs_write_JSON_file(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
     pDialog.update(int((9*100) / num_items))
-    fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
+    fs_write_JSON_file(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
     pDialog.update(int((10*100) / num_items))
-    fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
+    fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
     pDialog.update(int((11*100) / num_items))
-    fs_write_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath(), gameinit_idx_dic)
+    fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
     pDialog.update(int((12*100) / num_items))
-    fs_write_JSON_file(PATHS.GAMEINIT_DB_PATH.getPath(), gameinit_dic)
+    fs_write_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath(), gameinit_idx_dic)
     pDialog.update(int((13*100) / num_items))
-    fs_write_JSON_file(PATHS.COMMAND_IDX_PATH.getPath(), command_idx_dic)
+    fs_write_JSON_file(PATHS.GAMEINIT_DB_PATH.getPath(), gameinit_dic)
     pDialog.update(int((14*100) / num_items))
-    fs_write_JSON_file(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
+    fs_write_JSON_file(PATHS.COMMAND_IDX_PATH.getPath(), command_idx_dic)
     pDialog.update(int((15*100) / num_items))
+    fs_write_JSON_file(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
+    pDialog.update(int((16*100) / num_items))
 
     pDialog.close()
 
