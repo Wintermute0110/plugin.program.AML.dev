@@ -1869,6 +1869,14 @@ class Main:
             pDialog.update(100)
             pDialog.close()
 
+            # --- Make a dictionary with device ROMs ---
+            device_roms_list = []
+            for device in devices_db_dic[machine_name]:
+                device_roms_dic = roms_db_dic[device]
+                for rom in device_roms_dic['roms']:
+                    rom['location'] = device + '.zip'
+                    device_roms_list.append(copy.deepcopy(rom))
+
             # >> Grab data and settings
             roms_dic = roms_db_dic[machine_name]
             cloneof = machine['cloneof']
@@ -1928,16 +1936,13 @@ class Main:
                     elif rom_set == 'NONMERGED':
                         # >> In the NonMerged set all ROMs are in the machine archive
                         pass
+            # --- Add device ROMs ---
+            if device_roms_list: m_roms.extend(device_roms_list)
+
             # >> DEBUG print
             # log_debug('Machine {0} ROMs\n'.format(machine_name))
             # for rom in m_roms:
             #     log_debug('{0} {1} {2}\n'.format(rom['name'], rom['crc'], rom['location']))
-
-            # --- Make a list of the archives and the ROMs the must have ---
-            # m_archives = {
-            #     'avsp.zip'   : [{'name' : 'avph.03d', 'crc' : '01234567'}, ...],
-            #     'neogeo.zip' : [{'name' : 'avph.03d', 'crc' : '01234567'}, ...]
-            # }
 
             # --- Open ZIP file and check CRC32 ---
             # >> This code is very un-optimised! But it is better to get something that works
