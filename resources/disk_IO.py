@@ -364,6 +364,7 @@ class GeneralError(DiskError):
 # -------------------------------------------------------------------------------------------------
 # JSON write/load
 # -------------------------------------------------------------------------------------------------
+COMPACT_JSON = True
 def fs_load_JSON_file(json_filename):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
@@ -378,8 +379,12 @@ def fs_write_JSON_file(json_filename, json_data):
     log_verb('fs_write_JSON_file() "{0}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
-          file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
-                                        indent = 2, separators = (',', ': '))))
+            if COMPACT_JSON:
+                json_e = json.dumps(json_data, ensure_ascii = False, separators = (',', ':'))
+                file.write(unicode(json_e))
+            else:
+                json_e = json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 2, separators = (',', ':'))
+                file.write(unicode(json_e))
     except OSError:
         gui_kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(roms_json_file))
     except IOError:
@@ -1218,7 +1223,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog.update(int((15*100) / num_items))
     fs_write_JSON_file(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
     pDialog.update(int((16*100) / num_items))
-
     pDialog.close()
 
 #
