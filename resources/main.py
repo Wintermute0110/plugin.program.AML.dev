@@ -183,7 +183,7 @@ class Main:
         # --- Addon data paths creation ---
         if not PLUGIN_DATA_DIR.exists():        PLUGIN_DATA_DIR.makedirs()
         if not PATHS.MAIN_DB_HASH_DIR.exists(): PATHS.MAIN_DB_HASH_DIR.makedirs()
-        if not PATHS.ROMS_DB_HASH_DIR.exists(): PATHS.ROMS_DB_HASH_DIR.makedirs()
+        # if not PATHS.ROMS_DB_HASH_DIR.exists(): PATHS.ROMS_DB_HASH_DIR.makedirs()
         if not PATHS.SL_DB_DIR.exists():        PATHS.SL_DB_DIR.makedirs()
         if not PATHS.CATALOG_DIR.exists():      PATHS.CATALOG_DIR.makedirs()
         if not PATHS.REPORTS_DIR.exists():      PATHS.REPORTS_DIR.makedirs()
@@ -472,10 +472,10 @@ class Main:
         self._render_root_list_row('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
 
         # >> history.dat, mameinfo.dat, gameinit.dat, command.dat
-        self._render_root_list_row('History DAT',       self._misc_url_1_arg('catalog', 'History'))
-        self._render_root_list_row('MAMEINFO DAT',       self._misc_url_1_arg('catalog', 'MAMEINFO'))
-        self._render_root_list_row('Gameinit DAT',       self._misc_url_1_arg('catalog', 'Gameinit'))
-        self._render_root_list_row('Command DAT',       self._misc_url_1_arg('catalog', 'Command'))
+        self._render_root_list_row('History DAT',  self._misc_url_1_arg('catalog', 'History'))
+        self._render_root_list_row('MAMEINFO DAT', self._misc_url_1_arg('catalog', 'MAMEINFO'))
+        self._render_root_list_row('Gameinit DAT', self._misc_url_1_arg('catalog', 'Gameinit'))
+        self._render_root_list_row('Command DAT',  self._misc_url_1_arg('catalog', 'Command'))
 
         # >> Software lists
         if self.settings['SL_hash_path']:
@@ -1063,29 +1063,81 @@ class Main:
 
     #----------------------------------------------------------------------------------------------
     # DATs
+    #
+    # catalog = 'History'  / category = '32x' / machine = 'sonic'
+    # catalog = 'MAMEINFO' / category = '32x' / machine = 'sonic'
+    # catalog = 'Gameinit' / category = 'None' / machine = 'sonic'
+    # catalog = 'Command'  / category = 'None' / machine = 'sonic'
     #----------------------------------------------------------------------------------------------
     def _render_DAT_list(self, catalog_name):
+        # --- Create context menu ---
+        commands = []
+        URL_view = self._misc_url_1_arg_RunPlugin('command', 'VIEW')
+        commands.append(('View', URL_view ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+
         # >> Load Software List catalog
         if catalog_name == 'History':
-            DAT_catalog_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+            DAT_idx_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+            if not DAT_idx_dic:
+                kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
+                xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+                return
+            self._set_Kodi_all_sorting_methods()            
+            for category_name in DAT_idx_dic:
+                ICON_OVERLAY = 6
+                listitem = xbmcgui.ListItem(display_name)
+                listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
+                listitem.addContextMenuItems(commands, replaceItems = True)
+                URL = self._misc_url_2_arg('catalog', catalog_name, 'category', category_name)
+                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         elif catalog_name == 'MAMEINFO':
-            DAT_catalog_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
+            DAT_idx_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
+            if not DAT_idx_dic:
+                kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
+                xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+                return
+            self._set_Kodi_all_sorting_methods()            
+            for category_name in DAT_idx_dic:
+                ICON_OVERLAY = 6
+                listitem = xbmcgui.ListItem(display_name)
+                listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
+                listitem.addContextMenuItems(commands, replaceItems = True)
+                URL = self._misc_url_2_arg('catalog', catalog_name, 'category', category_name)
+                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         elif catalog_name == 'Gameinit':
-            DAT_catalog_dic = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
+            DAT_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
+            if not DAT_idx_list:
+                kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
+                xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+                return
+            self._set_Kodi_all_sorting_methods()            
+            for machine_name in DAT_idx_list:
+                ICON_OVERLAY = 6
+                listitem = xbmcgui.ListItem(display_name)
+                listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
+                listitem.addContextMenuItems(commands, replaceItems = True)
+                URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name)
+                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         elif catalog_name == 'Command':
-            DAT_catalog_dic = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
+            DAT_idx_list = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
+            if not DAT_idx_list:
+                kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
+                xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+                return
+            self._set_Kodi_all_sorting_methods()            
+            for category_name in DAT_idx_list:
+                ICON_OVERLAY = 6
+                listitem = xbmcgui.ListItem(display_name)
+                listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
+                listitem.addContextMenuItems(commands, replaceItems = True)
+                URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', category_name)
+                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         else:
             kodi_dialog_OK('DAT database file "{0}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
             xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
             return
-        if not DAT_catalog_dic:
-            kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
-            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
-            return
-
-        self._set_Kodi_all_sorting_methods()
-        for category_name in DAT_catalog_dic:
-            self._render_DAT_list_row(catalog_name, category_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_DAT_category(self, catalog_name, category_name):
@@ -1113,44 +1165,6 @@ class Main:
             self._render_DAT_category_row(catalog_name, category_name, sub_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_DAT_machine(self, catalog_name, category_name, machine_name):
-        # >> Load Software List catalog
-        # if catalog_name == 'History':
-        #     DAT_catalog_dic = fs_load_JSON_file(PATHS.HISTORY_DB_PATH.getPath())
-        info_text  = '[COLOR orange]Not implemented yet[/COLOR]\n'
-        info_text += 'catalog_name  "{0}"\n'.format(catalog_name)
-        info_text += 'category_name "{0}"\n'.format(category_name)
-        info_text += 'machine_name  "{0}"\n'.format(machine_name)
-
-        # --- Show information window ---
-        window_title = '{0} information'.format(catalog_name)
-        log_debug('Setting Window(10000) Property "FontWidth" = "monospaced"')
-        xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-        dialog = xbmcgui.Dialog()
-        dialog.textviewer(window_title, info_text)
-        log_debug('Setting Window(10000) Property "FontWidth" = "proportional"')
-        xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
-
-    def _render_DAT_list_row(self, catalog_name, category_name):
-        display_name = category_name
-
-        # --- Create listitem row ---
-        ICON_OVERLAY = 6
-        listitem = xbmcgui.ListItem(display_name)
-        listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
-
-        # --- Create context menu ---
-        commands = []
-        URL_view = self._misc_url_1_arg_RunPlugin('command', 'VIEW')
-        commands.append(('View', URL_view ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
-        listitem.addContextMenuItems(commands, replaceItems = True)
-
-        # --- Add row ---
-        URL = self._misc_url_2_arg('catalog', catalog_name, 'category', category_name)
-        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
-
     def _render_DAT_category_row(self, catalog_name, category_name, sub_name):
         display_name = sub_name
 
@@ -1170,6 +1184,41 @@ class Main:
         # --- Add row ---
         URL = self._misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', sub_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+
+    def _render_DAT_machine_info(self, catalog_name, category_name, machine_name):
+        log_debug('_render_DAT_machine_info() catalog_name "{0}"'.format(catalog_name))
+        log_debug('_render_DAT_machine_info() category_name "{0}"'.format(category_name))
+        log_debug('_render_DAT_machine_info() machine_name "{0}"'.format(machine_name))
+
+        # >> Load Software List catalog
+        if catalog_name == 'History':
+            DAT_dic = fs_load_JSON_file(PATHS.HISTORY_DB_PATH.getPath())
+            info_str = DAT_dic[category_name][machine_name]
+            info_text = info_str
+        elif catalog_name == 'MAMEINFO':
+            DAT_dic = fs_load_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath())
+            info_str = DAT_dic[category_name][machine_name]
+            info_text = info_str
+        elif catalog_name == 'Gameinit':
+            DAT_dic = fs_load_JSON_file(PATHS.GAMEINIT_DB_PATH.getPath())
+            info_str = DAT_dic[machine_name]
+            info_text = info_str
+        elif catalog_name == 'Command':
+            DAT_dic = fs_load_JSON_file(PATHS.COMMAND_DB_PATH.getPath())
+            info_str = DAT_dic[machine_name]
+            info_text = info_str
+        else:
+            kodi_dialog_OK('Wrong catalog_name "{0}". '.format(catalog_name)
+                           'This is a bug, please report it.')
+            return
+
+        # --- Show information window ---
+        window_title = '{0} information'.format(catalog_name)
+        log_debug('Setting Window(10000) Property "FontWidth" = "monospaced"')
+        xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+        xbmcgui.Dialog().textviewer(window_title, info_text)
+        log_debug('Setting Window(10000) Property "FontWidth" = "proportional"')
+        xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
     #
     # Not used at the moment -> There are global display settings.
