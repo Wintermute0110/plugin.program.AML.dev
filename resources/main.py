@@ -225,7 +225,7 @@ class Main:
                 category_name = args['category'][0] if 'category' in args else ''
                 machine_name = args['machine'][0] if 'machine' in args else ''
                 if category_name and machine_name:
-                    self._render_DAT_machine(catalog_name, category_name, machine_name)
+                    self._render_DAT_machine_info(catalog_name, category_name, machine_name)
                 elif category_name and not machine_name:
                     self._render_DAT_category(catalog_name, category_name)
                 else:
@@ -1076,6 +1076,8 @@ class Main:
         commands.append(('View', URL_view ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+        # --- Unrolled variables ---
+        ICON_OVERLAY = 6
 
         # >> Load Software List catalog
         if catalog_name == 'History':
@@ -1086,9 +1088,8 @@ class Main:
                 return
             self._set_Kodi_all_sorting_methods()            
             for category_name in DAT_idx_dic:
-                ICON_OVERLAY = 6
-                listitem = xbmcgui.ListItem(display_name)
-                listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
+                listitem = xbmcgui.ListItem(category_name)
+                listitem.setInfo('video', {'title' : category_name, 'overlay' : ICON_OVERLAY } )
                 listitem.addContextMenuItems(commands, replaceItems = True)
                 URL = self._misc_url_2_arg('catalog', catalog_name, 'category', category_name)
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
@@ -1100,9 +1101,8 @@ class Main:
                 return
             self._set_Kodi_all_sorting_methods()            
             for category_name in DAT_idx_dic:
-                ICON_OVERLAY = 6
-                listitem = xbmcgui.ListItem(display_name)
-                listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
+                listitem = xbmcgui.ListItem(category_name)
+                listitem.setInfo('video', {'title' : category_name, 'overlay' : ICON_OVERLAY } )
                 listitem.addContextMenuItems(commands, replaceItems = True)
                 URL = self._misc_url_2_arg('catalog', catalog_name, 'category', category_name)
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
@@ -1114,12 +1114,11 @@ class Main:
                 return
             self._set_Kodi_all_sorting_methods()            
             for machine_name in DAT_idx_list:
-                ICON_OVERLAY = 6
-                listitem = xbmcgui.ListItem(display_name)
-                listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
+                listitem = xbmcgui.ListItem(machine_name)
+                listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
                 listitem.addContextMenuItems(commands, replaceItems = True)
                 URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name)
-                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
         elif catalog_name == 'Command':
             DAT_idx_list = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
             if not DAT_idx_list:
@@ -1127,13 +1126,12 @@ class Main:
                 xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
                 return
             self._set_Kodi_all_sorting_methods()            
-            for category_name in DAT_idx_list:
-                ICON_OVERLAY = 6
-                listitem = xbmcgui.ListItem(display_name)
-                listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
+            for machine_name in DAT_idx_list:
+                listitem = xbmcgui.ListItem(machine_name)
+                listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
                 listitem.addContextMenuItems(commands, replaceItems = True)
-                URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', category_name)
-                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+                URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name)
+                xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
         else:
             kodi_dialog_OK('DAT database file "{0}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
             xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
@@ -1208,7 +1206,7 @@ class Main:
             info_str = DAT_dic[machine_name]
             info_text = info_str
         else:
-            kodi_dialog_OK('Wrong catalog_name "{0}". '.format(catalog_name)
+            kodi_dialog_OK('Wrong catalog_name "{0}". '.format(catalog_name) +
                            'This is a bug, please report it.')
             return
 
