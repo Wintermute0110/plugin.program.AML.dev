@@ -22,6 +22,7 @@ import codecs, time
 import subprocess
 import re
 import threading
+import copy
 
 # --- XML stuff ---
 # ~~~ cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
@@ -1241,23 +1242,25 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
 # -------------------------------------------------------------------------------------------------
 # Generates the main ROM database and the Merged, Split and Non-merged databases.
 #
-# ROMS_romset = {
-#     'machine_name ' : {
-#         'roms' : { 
-#             'name' : string,
-#             'size' : int,
-#             'crc' : string,
-#             'location' : string
-#         },
-#         'chds' : {
-#             'name' : string,
-#             'crc' : string,
-#             'location' : string },
-#     },
+# split_roms_dic = {
+#     'machine_name ' : [
+#         'name' : string,
+#         'size' : int,
+#         'crc' : string,
+#         'location' : string
+#     ],
 #     ...
 # }
 #
-# ROMS_romset_index = {
+# split_chds_dic = {
+#     'machine_name ' : [
+#         'name' : string,
+#         'crc' : string,
+#         'location' : string
+#     ],
+# }
+#
+# split_idx_dic = {
 #     '___control___' : { 'num_ZIP_files' : int, 'num_CHD_files' : int },
 #     'machine_name ' : { 'roms' : True | False, 'CHDs' : [name1, name2] },
 # }
@@ -1265,44 +1268,132 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
 # Saves:
 #   ROMs_Merged.json
 #   ROMs_Merged_index.json
-#   ROMs_Split.json
-#   ROMs_Split_index.json
+#   Set_Split_ROMs.json
+#   Set_Split_CHDs.json
+#   Set_Split_index.json
 #   ROMs_Nonmerged.json
 #   ROMs_Nonmerged_index.json
 #
-def fs_build_ROM_databases(PATHS, settings, control_dic, machines_render, machine_roms, main_pclone_dic):
+def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_render, devices_db_dic, machine_roms):
     log_info('fs_build_ROM_databases() Initialising ...')
 
     # -------------------------------------------------------------------------
     # Make Merged, Spit and Nonmerged databases.
     # -------------------------------------------------------------------------
-    merged_dic = {}
+    merged_roms_dic = {}
+    merged_chds_dic = {}
     merged_idx_dic = {}
-    split_dic = {}
+    split_roms_dic = {}
+    split_chds_dic = {}
     split_idx_dic = {}
-    nonmerged_dic = {}
+    nonmerged_roms_dic = {}
+    nonmerged_chds_dic = {}
     nonmerged_idx_dic = {}
+
+    # >> Split ROM set
+    log_info('fs_build_ROM_databases() Building Split ROM set ...')
+    for machine_name in sorted(machines):
+        machine = machines[machine_name]
+        cloneof = machines_render[machine_name]['cloneof']
+        romof   = machine['romof']
+        m_roms  = machine_roms[machine_name]['roms']
+        m_disks = machine_roms[machine_name]['disks']
+        # log_info('machine_name {0}'.format(machine_name))
+        # log_info('len(m_roms) {0}'.format(len(m_roms)))
+
+        # --- ROMs ------------------------------------------------------------
+        split_roms = []
+        for rom in m_roms:
+            if not cloneof:
+                # --- Parent machine ---
+                # >> In the Split set non-merge ROMs are in the machine archive and
+                # >> merge ROMs are in the parent archive.
+                if rom['merge']:
+                    location = romof + '.zip/' + rom['name']
+                else:
+                    location = machine_name + '.zip/' + rom['name']
+            else:
+                parent_romof = machines[cloneof]['romof']
+                # >> In the Split set non-merge ROMs are in the machine archive and
+                # >> merge ROMs are in the parent archive. However, if ROM is a BIOS it
+                # >> is located in the romof of the parent. BIOS ROMs always have the
+                # >> merge attribute.
+                if rom['merge']:
+                    if rom['bios']:
+                        location = parent_romof + '.zip/' + rom['name']
+                    else:
+                        location = romof + '.zip/' + rom['name']
+                else:
+                    location = machine_name + '.zip/' + rom['name']
+            # >> Remove unused fields to save space in JSON database
+            rom_t = copy.deepcopy(rom)
+            rom_t['location'] = location
+            rom_t.pop('bios')
+            rom_t.pop('merge')
+            split_roms.append(rom_t)
+        # --- Make a dictionary with device ROMs ---
+        device_roms_list = []
+        for device in devices_db_dic[machine_name]:
+            device_roms_dic = machine_roms[device]
+            for rom in device_roms_dic['roms']:
+                rom['location'] = device + '.zip'
+                rom_t = copy.deepcopy(rom)
+                rom_t.pop('bios')
+                rom_t.pop('merge')
+                device_roms_list.append(rom_t)
+        if device_roms_list: split_roms.extend(device_roms_list)
+        split_roms_dic[machine_name] = split_roms
+
+        # --- CHDs ------------------------------------------------------------
+        split_chds = []
+        for disk in m_disks:
+            if not cloneof:
+                # --- Parent machine ---
+                if disk['merge']:
+                    location = romof + '/' + disk['name']
+                else:
+                    location = machine_name + '/' + disk['name']
+            else:
+                # --- Clone machine ---
+                parent_romof = machines[cloneof]['romof']
+                if disk['merge']:
+                    location = romof + '/' + disk['name']
+                else:
+                    location = machine_name + '/' + disk['name']
+            disk_t = copy.deepcopy(disk)
+            disk_t['location'] = location
+            disk_t.pop('merge')
+            split_chds.append(disk_t)
+        split_chds_dic[machine_name] = split_chds
 
     # -------------------------------------------------------------------------
     # Write JSON databases
     # -------------------------------------------------------------------------
-    log_info('Saving database JSON files ...')
-    num_items = 6
+    log_info('fs_build_ROM_databases() Saving database JSON files ...')
+    num_items = 9
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Saving databases ...')
     pDialog.update((0*100) // num_items)
-    fs_write_JSON_file(PATHS.ROMS_MERGED_DB_PATH.getPath(), merged_dic)
+    fs_write_JSON_file(PATHS.SET_MERGED_ROMS_DB_PATH.getPath(), merged_roms_dic)
     pDialog.update((1*100) // num_items)
-    fs_write_JSON_file(PATHS.ROMS_MERGED_IDX_DB_PATH.getPath(), merged_idx_dic)
+    fs_write_JSON_file(PATHS.SET_MERGED_CHDS_DB_PATH.getPath(), merged_chds_dic)
     pDialog.update((2*100) // num_items)
-    fs_write_JSON_file(PATHS.ROMS_SPLIT_DB_PATH.getPath(), split_dic)
+    fs_write_JSON_file(PATHS.SET_MERGED_IDX_DB_PATH.getPath(), merged_idx_dic)
     pDialog.update((3*100) // num_items)
-    fs_write_JSON_file(PATHS.ROMS_SPLIT_IDX_DB_PATH.getPath(), split_idx_dic)
+    
+    fs_write_JSON_file(PATHS.SET_SPLIT_ROMS_DB_PATH.getPath(), split_roms_dic)
     pDialog.update((4*100) // num_items)
-    fs_write_JSON_file(PATHS.ROMS_NONMERGED_DB_PATH.getPath(), nonmerged_dic)
+    fs_write_JSON_file(PATHS.SET_SPLIT_CHDS_DB_PATH.getPath(), split_chds_dic)
     pDialog.update((5*100) // num_items)
-    fs_write_JSON_file(PATHS.ROMS_NONMERGED_IDX_DB_PATH.getPath(), nonmerged_idx_dic)
+    fs_write_JSON_file(PATHS.SET_SPLIT_IDX_DB_PATH.getPath(), split_idx_dic)
     pDialog.update((6*100) // num_items)
+
+    fs_write_JSON_file(PATHS.SET_NONMERGED_ROMS_DB_PATH.getPath(), nonmerged_roms_dic)
+    pDialog.update((7*100) // num_items)
+    fs_write_JSON_file(PATHS.SET_NONMERGED_CHDS_DB_PATH.getPath(), nonmerged_chds_dic)
+    pDialog.update((8*100) // num_items)
+    fs_write_JSON_file(PATHS.SET_NONMERGED_IDX_DB_PATH.getPath(), nonmerged_idx_dic)
+    pDialog.update((9*100) // num_items)
     pDialog.close()
 
 # -------------------------------------------------------------------------------------------------
