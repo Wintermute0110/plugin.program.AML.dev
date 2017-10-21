@@ -15,7 +15,9 @@
 # GNU General Public License for more details.
 
 # --- Python standard library ---
+# Division operator: https://www.python.org/dev/peps/pep-0238/
 from __future__ import unicode_literals
+from __future__ import division
 import os
 import urlparse
 import subprocess
@@ -58,21 +60,30 @@ LOCATION_SL_FAVS   = 'SL_FAVS'
 # --- Plugin database indices ---
 class AML_Paths:
     def __init__(self):
-        # >> MAME XML, main database and main PClone list.
-        self.MAME_XML_PATH        = PLUGIN_DATA_DIR.pjoin('MAME.xml')
+        # >> MAME stdout/strderr files
         self.MAME_STDOUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_stdout.log')
         self.MAME_STDERR_PATH     = PLUGIN_DATA_DIR.pjoin('log_stderr.log')
         self.MAME_STDOUT_VER_PATH = PLUGIN_DATA_DIR.pjoin('log_version_stdout.log')
         self.MAME_STDERR_VER_PATH = PLUGIN_DATA_DIR.pjoin('log_version_stderr.log')
         self.MAME_OUTPUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_output.log')
+
+        # >> MAME XML, main database and main PClone list.
+        self.MAME_XML_PATH        = PLUGIN_DATA_DIR.pjoin('MAME.xml')
+        self.MAIN_ASSETS_DB_PATH  = PLUGIN_DATA_DIR.pjoin('MAME_assets.json')
+        self.MAIN_CONTROL_PATH    = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
+        self.DEVICES_DB_PATH      = PLUGIN_DATA_DIR.pjoin('MAME_DB_devices.json')
         self.MAIN_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_DB_main.json')
         self.RENDER_DB_PATH       = PLUGIN_DATA_DIR.pjoin('MAME_DB_render.json')
         self.ROMS_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_DB_roms.json')
-        self.DEVICES_DB_PATH      = PLUGIN_DATA_DIR.pjoin('MAME_DB_devices.json')
-        self.MAIN_ASSETS_DB_PATH  = PLUGIN_DATA_DIR.pjoin('MAME_assets.json')
         self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
-        self.MAIN_CONTROL_PATH    = PLUGIN_DATA_DIR.pjoin('MAME_control_dic.json')
-        self.ROM_SETS_PATH        = PLUGIN_DATA_DIR.pjoin('ROM_sets.json')
+
+        # >> ROM set databases
+        self.ROMS_MERGED_DB_PATH        = PLUGIN_DATA_DIR.pjoin('ROMs_Merged.json')
+        self.ROMS_MERGED_IDX_DB_PATH    = PLUGIN_DATA_DIR.pjoin('ROMs_Merged_index.json')
+        self.ROMS_SPLIT_DB_PATH         = PLUGIN_DATA_DIR.pjoin('ROMs_Split.json')
+        self.ROMS_SPLIT_IDX_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROMs_Split_index.json')
+        self.ROMS_NONMERGED_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROMs_Nonmerged.json')
+        self.ROMS_NONMERGED_IDX_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROMs_Nonmerged_index.json')
 
         # >> DAT indices and databases.
         self.HISTORY_IDX_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_History_index.json')
@@ -2853,7 +2864,8 @@ class Main:
         # --- Build Step by Step ---
         elif menu_item == 6:
             submenu = dialog.select('Setup plugin (step by step)',
-                                   ['Build MAME database ...',
+                                   ['Build MAME and SL databases ...',
+                                    'Build ROM databases ...',
                                     'Build MAME catalogs ...',
                                     'Build Software Lists catalogs ...',
                                     'Scan MAME ROMs/CHDs/Samples ...',
@@ -2862,7 +2874,7 @@ class Main:
                                     'Scan Software Lists assets/artwork ...' ])
             if submenu < 0: return
 
-            # --- Build main MAME database and PClone list ---
+            # --- Build main MAME database, PClone list and hashed database, SL database ---
             if submenu == 0:
                 # --- Error checks ---
                 # >> Check that MAME_XML_PATH exists
@@ -2872,16 +2884,31 @@ class Main:
 
                 # --- Parse MAME XML and generate main database and PClone list ---
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-                log_info('_command_setup_plugin() Generating MAME main database and PClone list...')
+                log_info('_command_setup_plugin() Generating MAME main database and PClone list ...')
                 try:
-                    fs_build_MAME_main_database(PATHS, self.settings, control_dic)
+                    fs_build_MAME_main_databases(PATHS, self.settings, control_dic)
                 except GeneralError as e:
                     log_error(e.msg)
                     raise SystemExit
-                kodi_notify('Main MAME database built')
+                kodi_notify('Main MAME databases built')
+
+            # --- Build ROM databases ---
+            elif submenu == 1:
+                # --- Error checks ---
+                # >> Check that MAME_XML_PATH exists
+                # if not PATHS.MAME_XML_PATH.exists():
+                #     kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
+                #     return
+                control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                machine_roms    = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+                main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+                log_info('_command_setup_plugin() Generating ROM databases ...')
+                fs_build_ROM_databases(PATHS, self.settings, control_dic, machines_render, machine_roms, main_pclone_dic)
+                kodi_notify('ROM databases built')
 
             # --- Build MAME catalogs ---
-            elif submenu == 1:
+            elif submenu == 2:
                 # --- Error checks ---
                 # >> Check that main MAME database exists
 
@@ -2896,7 +2923,7 @@ class Main:
                 kodi_notify('Indices and catalogs built')
 
             # --- Build Software Lists indices/catalogs ---
-            elif submenu == 2:
+            elif submenu == 3:
                 # --- Error checks ---
                 if not self.settings['SL_hash_path']:
                     kodi_dialog_OK('Software Lists hash path not set.')
@@ -2913,7 +2940,7 @@ class Main:
                 kodi_notify('Software Lists indices and catalogs built')
 
             # --- Scan ROMs/CHDs/Samples and updates ROM status ---
-            elif submenu == 3:
+            elif submenu == 4:
                 log_info('_command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
 
                 # >> Get paths and check they exist
@@ -2965,7 +2992,7 @@ class Main:
                 kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
             # --- Scans MAME assets/artwork ---
-            elif submenu == 4:
+            elif submenu == 5:
                 log_info('_command_setup_plugin() Scanning MAME assets/artwork ...')
 
                 # >> Get assets directory. Abort if not configured/found.
@@ -2985,7 +3012,7 @@ class Main:
                 kodi_notify('Scanning of assets/artwork finished')
 
             # --- Scan SL ROMs ---
-            elif submenu == 5:
+            elif submenu == 6:
                 log_info('_command_setup_plugin() Scanning SL ROMs/CHDs ...')
 
                 # >> Abort if SL hash path not configured.
@@ -3013,7 +3040,7 @@ class Main:
             # --- Scan SL assets/artwork ---
             # >> Database format: ADDON_DATA_DIR/db_SoftwareLists/32x_assets.json
             # >> { 'ROM_name' : {'asset1' : 'path', 'asset2' : 'path', ... }, ... }
-            elif submenu == 6:
+            elif submenu == 7:
                 log_info('_command_setup_plugin() Scanning SL assets/artwork ...')
 
                 # >> Get assets directory. Abort if not configured/found.

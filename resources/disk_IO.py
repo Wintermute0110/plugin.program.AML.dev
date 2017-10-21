@@ -15,6 +15,7 @@
 
 # --- Python standard library ---
 from __future__ import unicode_literals
+from __future__ import division
 import json
 import io
 import codecs, time
@@ -1183,7 +1184,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['non_merged_CHDs'] = num_CHD_non_merged
 
     # -----------------------------------------------------------------------------
-    # Now write simplified JSON
+    # Write JSON databases
     # -----------------------------------------------------------------------------
     log_info('Saving database JSON files ...')
     num_items = 16
@@ -1237,6 +1238,74 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
 
     return hashed_db_dic[machine_name]
 
+# -------------------------------------------------------------------------------------------------
+# Generates the main ROM database and the Merged, Split and Non-merged databases.
+#
+# ROMS_romset = {
+#     'machine_name ' : {
+#         'roms' : { 
+#             'name' : string,
+#             'size' : int,
+#             'crc' : string,
+#             'location' : string
+#         },
+#         'chds' : {
+#             'name' : string,
+#             'crc' : string,
+#             'location' : string },
+#     },
+#     ...
+# }
+#
+# ROMS_romset_index = {
+#     '___control___' : { 'num_ZIP_files' : int, 'num_CHD_files' : int },
+#     'machine_name ' : { 'roms' : True | False, 'CHDs' : [name1, name2] },
+# }
+#
+# Saves:
+#   ROMs_Merged.json
+#   ROMs_Merged_index.json
+#   ROMs_Split.json
+#   ROMs_Split_index.json
+#   ROMs_Nonmerged.json
+#   ROMs_Nonmerged_index.json
+#
+def fs_build_ROM_databases(PATHS, settings, control_dic, machines_render, machine_roms, main_pclone_dic):
+    log_info('fs_build_ROM_databases() Initialising ...')
+
+    # -------------------------------------------------------------------------
+    # Make Merged, Spit and Nonmerged databases.
+    # -------------------------------------------------------------------------
+    merged_dic = {}
+    merged_idx_dic = {}
+    split_dic = {}
+    split_idx_dic = {}
+    nonmerged_dic = {}
+    nonmerged_idx_dic = {}
+
+    # -------------------------------------------------------------------------
+    # Write JSON databases
+    # -------------------------------------------------------------------------
+    log_info('Saving database JSON files ...')
+    num_items = 6
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher', 'Saving databases ...')
+    pDialog.update((0*100) // num_items)
+    fs_write_JSON_file(PATHS.ROMS_MERGED_DB_PATH.getPath(), merged_dic)
+    pDialog.update((1*100) // num_items)
+    fs_write_JSON_file(PATHS.ROMS_MERGED_IDX_DB_PATH.getPath(), merged_idx_dic)
+    pDialog.update((2*100) // num_items)
+    fs_write_JSON_file(PATHS.ROMS_SPLIT_DB_PATH.getPath(), split_dic)
+    pDialog.update((3*100) // num_items)
+    fs_write_JSON_file(PATHS.ROMS_SPLIT_IDX_DB_PATH.getPath(), split_idx_dic)
+    pDialog.update((4*100) // num_items)
+    fs_write_JSON_file(PATHS.ROMS_NONMERGED_DB_PATH.getPath(), nonmerged_dic)
+    pDialog.update((5*100) // num_items)
+    fs_write_JSON_file(PATHS.ROMS_NONMERGED_IDX_DB_PATH.getPath(), nonmerged_idx_dic)
+    pDialog.update((6*100) // num_items)
+    pDialog.close()
+
+# -------------------------------------------------------------------------------------------------
 #
 # A) Builds the following catalog files
 #    CATALOG_NONE_PARENT_PATH

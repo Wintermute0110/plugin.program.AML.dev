@@ -33,6 +33,8 @@ WIP      Manage SL Favourites.
 
 WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
 
+WIP      Trailer support in MAME machines.
+
 
 [B]Advanced Emulator Launcher | version 0.9.3 | 30 May 2017[/B]
 
