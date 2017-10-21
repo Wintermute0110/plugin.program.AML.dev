@@ -1763,15 +1763,15 @@ class Main:
             if roms_dic['roms']:
                 info_text.append('\n')
                 # >> Cell max sizes
-                name_max_size  = text_str_dic_max_size(roms_dic['roms'], 'name', 'name')
+                name_max_size  = text_str_dic_max_size(roms_dic['roms'], 'name', 'ROM name')
                 size_max_size  = text_str_dic_max_size(roms_dic['roms'], 'size', 'size')
                 crc_max_size   = 8
                 merge_max_size = text_str_dic_max_size(roms_dic['roms'], 'merge', 'merge')
                 bios_max_size  = text_str_dic_max_size(roms_dic['roms'], 'bios', 'bios')
                 total_size = name_max_size + size_max_size + crc_max_size + merge_max_size + bios_max_size + 2*4
                 # >> Table header
-                info_text.append('[COLOR orange]Machine {0} ROMs[/COLOR]\n'.format(machine_name))
-                padded_name  = text_print_padded_left('name', name_max_size)
+                # info_text.append('[COLOR orange]Machine {0} ROMs[/COLOR]\n'.format(machine_name))
+                padded_name  = text_print_padded_left('ROM name', name_max_size)
                 padded_size  = text_print_padded_left('size', size_max_size)
                 padded_crc   = text_print_padded_left('crc', crc_max_size)
                 padded_merge = text_print_padded_left('merge', merge_max_size)
@@ -1792,7 +1792,7 @@ class Main:
             if device_roms_list:
                 info_text.append('\n')
                 # >> Cell max sizes
-                name_max_size  = text_str_dic_max_size(device_roms_list, 'name', 'name')
+                name_max_size  = text_str_dic_max_size(device_roms_list, 'name', 'Device ROM name')
                 size_max_size  = text_str_dic_max_size(device_roms_list, 'size', 'size')
                 crc_max_size   = 8
                 merge_max_size = text_str_dic_max_size(device_roms_list, 'merge', 'merge')
@@ -1801,8 +1801,8 @@ class Main:
                 total_size = name_max_size + size_max_size + crc_max_size + merge_max_size + bios_max_size + \
                              location_max_size + 2*5
                 # >> Table header
-                info_text.append('[COLOR orange]Machine {0} device ROMs[/COLOR]\n'.format(machine_name))
-                padded_name  = text_print_padded_left('name', name_max_size)
+                # info_text.append('[COLOR orange]Machine {0} device ROMs[/COLOR]\n'.format(machine_name))
+                padded_name  = text_print_padded_left('Device ROM name', name_max_size)
                 padded_size  = text_print_padded_left('size', size_max_size)
                 padded_crc   = text_print_padded_left('crc', crc_max_size)
                 padded_merge = text_print_padded_left('merge', merge_max_size)
@@ -1824,13 +1824,13 @@ class Main:
             if roms_dic['disks']:
                 info_text.append('\n')
                 # >> Cell max sizes
-                name_max_size  = text_str_dic_max_size(roms_dic['disks'], 'name', 'name')
+                name_max_size  = text_str_dic_max_size(roms_dic['disks'], 'name', 'Disk name')
                 sha1_max_size  = 8
                 merge_max_size = text_str_dic_max_size(roms_dic['disks'], 'merge', 'merge')
                 total_size = name_max_size + sha1_max_size + merge_max_size + 2*2
                 # >> Table header
-                info_text.append('[COLOR orange]Machine {0} CHDs[/COLOR]\n'.format(machine_name))
-                padded_name  = text_print_padded_left('name', name_max_size)
+                # info_text.append('[COLOR orange]Machine {0} CHDs[/COLOR]\n'.format(machine_name))
+                padded_name  = text_print_padded_left('Disk name', name_max_size)
                 padded_sha1  = text_print_padded_left('sha1', sha1_max_size)
                 padded_merge = text_print_padded_left('merge', merge_max_size)
                 info_text.append('{0}  {1}  {2}\n'.format(padded_name, padded_sha1, padded_merge))
@@ -1844,12 +1844,12 @@ class Main:
             if roms_dic['bios']:
                 info_text.append('\n')
                 # >> Cell max sizes
-                name_max_size = text_str_dic_max_size(roms_dic['bios'], 'name', 'name')
+                name_max_size = text_str_dic_max_size(roms_dic['bios'], 'name', 'BIOS name')
                 desc_max_size = text_str_dic_max_size(roms_dic['bios'], 'description', 'description')
                 total_size = name_max_size + desc_max_size + 2*1
                 # >> Table header
-                info_text.append('[COLOR orange]Machine {0} BIOS[/COLOR]\n'.format(machine_name))
-                padded_name = text_print_padded_left('name', name_max_size)
+                # info_text.append('[COLOR orange]Machine {0} BIOS[/COLOR]\n'.format(machine_name))
+                padded_name = text_print_padded_left('BIOS name', name_max_size)
                 padded_desc = text_print_padded_left('desc', desc_max_size)
                 info_text.append('{0}  {1}\n'.format(padded_name, padded_desc))
                 info_text.append('{0}\n'.format('-' * total_size))
@@ -1940,31 +1940,34 @@ class Main:
             #     {'name' : 'avph.03d', 'crc' : '01234567', 'location' : 'avsp.zip'}
             # ]
             for m_rom in roms_dic:
-                log_debug('Testing ROM {0}'.format(m_rom['name']))
-                log_debug('location {0}'.format(m_rom['location']))
                 zip_name = m_rom['location'].split('/')[0]
                 rom_name = m_rom['location'].split('/')[1]
-                log_debug('zip_name {0}'.format(zip_name))
-                log_debug('rom_name {0}'.format(rom_name))
+                # log_debug('Testing ROM {0}'.format(m_rom['name']))
+                # log_debug('location {0}'.format(m_rom['location']))
+                # log_debug('zip_name {0}'.format(zip_name))
+                # log_debug('rom_name {0}'.format(rom_name))
 
                 # >> Test if ZIP file exists
                 zip_FN = FileName(self.settings['rom_path']).pjoin(zip_name)
                 # log_debug('ZIP {0}'.format(zip_FN.getPath()))
                 if not zip_FN.exists():
-                    m_rom['status'] = '[COLOR red]ZIP not found[/COLOR]'
+                    m_rom['status'] = 'ZIP not found'
+                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
                     continue
 
                 # >> Open ZIP file and get list of files
                 try:
                     zip_f = z.ZipFile(zip_FN.getPath(), 'r')
                 except z.BadZipfile as e:
-                    m_rom['status'] = '[COLOR red]Bad ZIP file[/COLOR]'
+                    m_rom['status'] = 'Bad ZIP file'
+                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
                     continue
                 z_file_list = zip_f.namelist()
                 # log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
                 if not rom_name in z_file_list:
                     zip_f.close()
-                    m_rom['status'] = '[COLOR red]ROM not in ZIP[/COLOR]'
+                    m_rom['status'] = 'ROM not in ZIP'
+                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
                     continue
 
                 # >> Get ZIP file object and test size and CRC
@@ -1976,16 +1979,19 @@ class Main:
                 # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
                 if z_info.file_size != m_rom['size']:
                     zip_f.close()
-                    m_rom['status'] = '[COLOR red]ROM bad size[/COLOR]'
+                    m_rom['status'] = 'ROM bad size'
+                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
                     continue
                 if z_crc_hex != m_rom['crc']:
                     zip_f.close()
-                    m_rom['status'] = '[COLOR red]ROM bad CRC[/COLOR]'
+                    m_rom['status'] = 'ROM bad CRC'
+                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
                     continue
 
                 # >> Close ZIP file
                 zip_f.close()
-                m_rom['status'] = '[COLOR green]OK[/COLOR]'
+                m_rom['status'] = 'OK'
+                m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
 
             # --- Generate report ---
             info_text = []
@@ -2002,6 +2008,13 @@ class Main:
             location_max_size = text_str_dic_max_size(roms_dic, 'location', 'location')
             status_max_size   = text_str_dic_max_size(roms_dic, 'status', 'status')
             total_size = name_max_size + size_max_size + crc_max_size + location_max_size + status_max_size + 4*2
+            # log_debug('name_max_size     {0}'.format(name_max_size))
+            # log_debug('size_max_size     {0}'.format(size_max_size))
+            # log_debug('crc_max_size      {0}'.format(crc_max_size))
+            # log_debug('location_max_size {0}'.format(location_max_size))
+            # log_debug('status_max_size   {0}'.format(status_max_size))
+            # log_debug('total_size        {0}'.format(total_size))
+
             # >> Table header
             # info_text.append('[COLOR orange]Machine {0} ROMs[/COLOR]\n'.format(machine_name))
             padded_name     = text_print_padded_left('name', name_max_size)
@@ -2018,9 +2031,8 @@ class Main:
                 padded_size     = text_print_padded_right('{0}'.format(m_rom['size']), size_max_size)
                 padded_crc      = text_print_padded_left('{0}'.format(m_rom['crc']), crc_max_size)
                 padded_location = text_print_padded_left('{0}'.format(m_rom['location']), location_max_size)
-                padded_status   = text_print_padded_left('{0}'.format(m_rom['status']), status_max_size)
                 info_text.append('{0}  {1}  {2}  {3}  {4}\n'.format(
-                    padded_name, padded_size, padded_crc, padded_location, padded_status))
+                    padded_name, padded_size, padded_crc, padded_location, m_rom['status_colour']))
 
             # --- Show report ---
             window_title = 'Machine {0} ROM audit'.format(machine_name)
