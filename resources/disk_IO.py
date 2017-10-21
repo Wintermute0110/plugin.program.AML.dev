@@ -1290,6 +1290,19 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
     nonmerged_chds_dic = {}
     nonmerged_idx_dic = {}
 
+    # >> Merged ROM set
+    # In the Merged set all Parent and Clone ROMs are in the parent archive.
+    # However, according to the Pleasuredome DATs, ROMs are organised like
+    # this:
+    #   clone_name\clone_rom_1
+    #   clone_name\clone_rom_2
+    #   parent_rom_1
+    #   parent_rom_2
+
+    # >> Nonmerged ROM set
+    # >> In the NonMerged set all ROMs are in the machine archive, including
+    # >> BIOSes.
+
     # >> Split ROM set
     log_info('fs_build_ROM_databases() Building Split ROM set ...')
     for machine_name in sorted(machines):
