@@ -23,6 +23,8 @@ import subprocess
 import re
 import threading
 import copy
+import gc
+# import resource # Module not available on Windows
 
 # --- XML stuff ---
 # ~~~ cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
@@ -1276,21 +1278,11 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
 #
 def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_render, devices_db_dic, machine_roms):
     log_info('fs_build_ROM_databases() Initialising ...')
+    pDialog = xbmcgui.DialogProgress()
 
     # -------------------------------------------------------------------------
-    # Make Merged, Spit and Nonmerged databases.
+    # Merged ROM set
     # -------------------------------------------------------------------------
-    merged_roms_dic = {}
-    merged_chds_dic = {}
-    merged_idx_dic = {}
-    split_roms_dic = {}
-    split_chds_dic = {}
-    split_idx_dic = {}
-    nonmerged_roms_dic = {}
-    nonmerged_chds_dic = {}
-    nonmerged_idx_dic = {}
-
-    # >> Merged ROM set
     # In the Merged set all Parent and Clone ROMs are in the parent archive.
     # However, according to the Pleasuredome DATs, ROMs are organised like
     # this:
@@ -1298,12 +1290,101 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
     #   clone_name\clone_rom_2
     #   parent_rom_1
     #   parent_rom_2
+    log_info('fs_build_ROM_databases() Building Merged ROM set ...')
+    roms_dic = {}
+    chds_dic = {}
+    idx_dic = {}
 
-    # >> Nonmerged ROM set
+    pDialog.create('Advanced MAME Launcher', 'Saving Merged database ...')
+    pDialog.update(0)
+    fs_write_JSON_file(PATHS.SET_MERGED_ROMS_DB_PATH.getPath(), roms_dic)
+    pDialog.update(33)
+    fs_write_JSON_file(PATHS.SET_MERGED_CHDS_DB_PATH.getPath(), chds_dic)
+    pDialog.update(66)
+    fs_write_JSON_file(PATHS.SET_MERGED_IDX_DB_PATH.getPath(), idx_dic)
+    pDialog.update(100)
+    pDialog.close()
+    del roms_dic
+    del chds_dic
+    del idx_dic
+    # mem_before_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    gc.collect()
+    # mem_after_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    # log_debug('fs_build_ROM_databases() Memory before garbage collection {0}'.format(mem_before_gc))
+    # log_debug('fs_build_ROM_databases() Memory after garbage collection  {0}'.format(mem_after_gc))
+
+    # -------------------------------------------------------------------------
+    # Nonmerged ROM set
+    # -------------------------------------------------------------------------
     # >> In the NonMerged set all ROMs are in the machine archive, including
     # >> BIOSes.
+    log_info('fs_build_ROM_databases() Building Nonmerged ROM set ...')
+    roms_dic = {}
+    chds_dic = {}
+    idx_dic = {}
+    for machine_name in sorted(machines):
+        machine = machines[machine_name]
+        cloneof = machines_render[machine_name]['cloneof']
+        romof   = machine['romof']
+        m_roms  = machine_roms[machine_name]['roms']
+        m_disks = machine_roms[machine_name]['disks']
 
-    # >> Split ROM set
+        # --- ROMs ------------------------------------------------------------
+        nonmerged_roms = []
+        for rom in m_roms:
+            location = machine_name + '.zip/' + rom['name']
+            # >> Remove unused fields to save space in JSON database
+            rom_t = copy.deepcopy(rom)
+            rom_t['location'] = location
+            rom_t.pop('bios')
+            rom_t.pop('merge')
+            nonmerged_roms.append(rom_t)
+        # --- Make a dictionary with device ROMs ---
+        device_roms_list = []
+        for device in devices_db_dic[machine_name]:
+            device_roms_dic = machine_roms[device]
+            for rom in device_roms_dic['roms']:
+                rom['location'] = device + '.zip'
+                rom_t = copy.deepcopy(rom)
+                rom_t.pop('bios')
+                rom_t.pop('merge')
+                device_roms_list.append(rom_t)
+        if device_roms_list: nonmerged_roms.extend(device_roms_list)
+        roms_dic[machine_name] = nonmerged_roms
+
+        # --- CHDs ------------------------------------------------------------
+        nonmerged_chds = []
+        for disk in m_disks:
+            location = machine_name + '/' + disk['name']
+            disk_t = copy.deepcopy(disk)
+            disk_t['location'] = location
+            disk_t.pop('merge')
+            nonmerged_chds.append(disk_t)
+        chds_dic[machine_name] = nonmerged_chds
+    pDialog.create('Advanced MAME Launcher', 'Saving Nonmerged database ...')
+    pDialog.update(0)
+    fs_write_JSON_file(PATHS.SET_NONMERGED_ROMS_DB_PATH.getPath(), roms_dic)
+    pDialog.update(33)
+    fs_write_JSON_file(PATHS.SET_NONMERGED_CHDS_DB_PATH.getPath(), chds_dic)
+    pDialog.update(66)
+    fs_write_JSON_file(PATHS.SET_NONMERGED_IDX_DB_PATH.getPath(), idx_dic)
+    pDialog.update(100)
+    pDialog.close()
+    del roms_dic
+    del chds_dic
+    del idx_dic
+    # mem_before_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    gc.collect()
+    # mem_after_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    # log_debug('fs_build_ROM_databases() Memory before garbage collection {0}'.format(mem_before_gc))
+    # log_debug('fs_build_ROM_databases() Memory after garbage collection  {0}'.format(mem_after_gc))
+
+    # -------------------------------------------------------------------------
+    # Split ROM set
+    # -------------------------------------------------------------------------
+    roms_dic = {}
+    chds_dic = {}
+    idx_dic = {}
     log_info('fs_build_ROM_databases() Building Split ROM set ...')
     for machine_name in sorted(machines):
         machine = machines[machine_name]
@@ -1355,7 +1436,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 rom_t.pop('merge')
                 device_roms_list.append(rom_t)
         if device_roms_list: split_roms.extend(device_roms_list)
-        split_roms_dic[machine_name] = split_roms
+        roms_dic[machine_name] = split_roms
 
         # --- CHDs ------------------------------------------------------------
         split_chds = []
@@ -1377,37 +1458,24 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
             disk_t['location'] = location
             disk_t.pop('merge')
             split_chds.append(disk_t)
-        split_chds_dic[machine_name] = split_chds
-
-    # -------------------------------------------------------------------------
-    # Write JSON databases
-    # -------------------------------------------------------------------------
-    log_info('fs_build_ROM_databases() Saving database JSON files ...')
-    num_items = 9
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Saving databases ...')
-    pDialog.update((0*100) // num_items)
-    fs_write_JSON_file(PATHS.SET_MERGED_ROMS_DB_PATH.getPath(), merged_roms_dic)
-    pDialog.update((1*100) // num_items)
-    fs_write_JSON_file(PATHS.SET_MERGED_CHDS_DB_PATH.getPath(), merged_chds_dic)
-    pDialog.update((2*100) // num_items)
-    fs_write_JSON_file(PATHS.SET_MERGED_IDX_DB_PATH.getPath(), merged_idx_dic)
-    pDialog.update((3*100) // num_items)
-    
-    fs_write_JSON_file(PATHS.SET_SPLIT_ROMS_DB_PATH.getPath(), split_roms_dic)
-    pDialog.update((4*100) // num_items)
-    fs_write_JSON_file(PATHS.SET_SPLIT_CHDS_DB_PATH.getPath(), split_chds_dic)
-    pDialog.update((5*100) // num_items)
-    fs_write_JSON_file(PATHS.SET_SPLIT_IDX_DB_PATH.getPath(), split_idx_dic)
-    pDialog.update((6*100) // num_items)
-
-    fs_write_JSON_file(PATHS.SET_NONMERGED_ROMS_DB_PATH.getPath(), nonmerged_roms_dic)
-    pDialog.update((7*100) // num_items)
-    fs_write_JSON_file(PATHS.SET_NONMERGED_CHDS_DB_PATH.getPath(), nonmerged_chds_dic)
-    pDialog.update((8*100) // num_items)
-    fs_write_JSON_file(PATHS.SET_NONMERGED_IDX_DB_PATH.getPath(), nonmerged_idx_dic)
-    pDialog.update((9*100) // num_items)
+        chds_dic[machine_name] = split_chds
+    pDialog.create('Advanced MAME Launcher', 'Saving Split database ...')
+    pDialog.update(0)
+    fs_write_JSON_file(PATHS.SET_SPLIT_ROMS_DB_PATH.getPath(), roms_dic)
+    pDialog.update(33)
+    fs_write_JSON_file(PATHS.SET_SPLIT_CHDS_DB_PATH.getPath(), chds_dic)
+    pDialog.update(66)
+    fs_write_JSON_file(PATHS.SET_SPLIT_IDX_DB_PATH.getPath(), idx_dic)
+    pDialog.update(100)
     pDialog.close()
+    del roms_dic
+    del chds_dic
+    del idx_dic
+    # mem_before_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    gc.collect()
+    # mem_after_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    # log_debug('fs_build_ROM_databases() Memory before garbage collection {0}'.format(mem_before_gc))
+    # log_debug('fs_build_ROM_databases() Memory after garbage collection  {0}'.format(mem_after_gc))
 
 # -------------------------------------------------------------------------------------------------
 #

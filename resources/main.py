@@ -1892,30 +1892,45 @@ class Main:
             # >> Only import stuff when needed. This should make AML faster.
             import zipfile as z
 
-            # >> Load machine dictionary and ROM database
-            # >> NOTE If rom_set == 'MERGED' all clones are required!
+            # --- Load machine dictionary and ROM database ---
+            # FUTURE WORK ROMs and CHDs may have different set types. FE, split ROMs and merged CHDs.
+            rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][self.settings['mame_rom_set']]
+            log_debug('_command_context_view() Auditing Machine ROMs\n')
+            log_debug('_command_context_view() rom_set {0}\n'.format(rom_set))
+            if rom_set == 'MERGED':
+                kodi_dialog_OK('MERGED set not supported yet. Sorry.')
+                return
+
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
             pDialog.update(0)
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             pDialog.update(33)
-            roms_db_dic = fs_load_JSON_file(PATHS.SET_SPLIT_ROMS_DB_PATH.getPath())
-            pDialog.update(66)
-            chds_db_dic = fs_load_JSON_file(PATHS.SET_SPLIT_CHDS_DB_PATH.getPath())
-            pDialog.update(100)
-            pDialog.close()
+            if rom_set == 'SPLIT':
+                roms_db_dic = fs_load_JSON_file(PATHS.SET_SPLIT_ROMS_DB_PATH.getPath())
+                pDialog.update(66)
+                chds_db_dic = fs_load_JSON_file(PATHS.SET_SPLIT_CHDS_DB_PATH.getPath())
+                pDialog.update(100)
+                pDialog.close()
+            elif rom_set == 'NONMERGED':
+                roms_db_dic = fs_load_JSON_file(PATHS.SET_NONMERGED_ROMS_DB_PATH.getPath())
+                pDialog.update(66)
+                chds_db_dic = fs_load_JSON_file(PATHS.SET_NONMERGED_CHDS_DB_PATH.getPath())
+                pDialog.update(100)
+                pDialog.close()
+            else:
+                pDialog.close()
+                kodi_dialog_OK('Wrong rom_set = {0}'.format(rom_set))
+                return
 
-            # >> Grab data and settings
+            # --- Grab data and settings ---
             roms_dic = roms_db_dic[machine_name]
             chds_dic = roms_db_dic[machine_name]
             cloneof = machine['cloneof']
             romof = machine['romof']
-            rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][self.settings['mame_rom_set']]
-            log_debug('_command_context_view() Auditing Machine ROMs\n')
             log_debug('_command_context_view() machine {0}\n'.format(machine_name))
             log_debug('_command_context_view() cloneof {0}\n'.format(cloneof))
             log_debug('_command_context_view() romof   {0}\n'.format(romof))
-            log_debug('_command_context_view() rom_set {0}\n'.format(rom_set))
 
             # --- Open ZIP file and check CRC32 ---
             # >> This code is very un-optimised! But it is better to get something that works
