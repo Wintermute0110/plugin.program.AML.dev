@@ -224,7 +224,7 @@ def fs_new_control_dic():
         # >> Filed in when extracting MAME XML
         'total_machines' : 0,
 
-        # >> Files in when building main MAME database
+        # >> Filed in when building main MAME database
         'mame_version'        : 'Unknown. MAME database not built',
         'catver_version'      : 'Unknown. MAME database not built',
         'catlist_version'     : 'Unknown. MAME database not built',
@@ -232,6 +232,7 @@ def fs_new_control_dic():
         'nplayers_version'    : 'Unknown. MAME database not built',
         'bestgames_version'   : 'Unknown. MAME database not built',
         'series_version'      : 'Unknown. MAME database not built',
+
         'processed_machines'  : 0,
         'parent_machines'     : 0,
         'clone_machines'      : 0,
@@ -1104,13 +1105,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['dead_machines']               = dead_machines
     control_dic['dead_machines_parents']       = dead_machines_parents
     control_dic['dead_machines_clones']        = dead_machines_clones
-
-    control_dic['merged_ZIPs']     = num_ZIP_merged
-    control_dic['split_ZIPs']      = num_ZIP_split
-    control_dic['non_merged_ZIPs'] = num_ZIP_non_merged
-    control_dic['merged_CHDs']     = num_CHD_merged
-    control_dic['split_CHDs']      = num_CHD_split
-    control_dic['non_merged_CHDs'] = num_CHD_non_merged
 
     # -----------------------------------------------------------------------------
     # Write JSON databases
@@ -2242,7 +2236,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
 
         # >> Update progress
         processed_files += 1
-        pDialog.update(100 * processed_files / total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
+        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
     fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
 
     # --- Make SL Parent/Clone DB ---
@@ -2283,7 +2277,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
 
         # >> Update progress
         processed_SL += 1
-        pDialog.update(100 * processed_SL / total_SL, pdialog_line1, 'SL {0} ...'.format(SL_name))
+        pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'SL {0} ...'.format(SL_name))
     fs_write_JSON_file(PATHS.SL_MACHINES_PATH.getPath(), SL_machines_dic)
 
     # --- Rebuild Machine by Software List catalog with knowledge of the SL proper name ---
