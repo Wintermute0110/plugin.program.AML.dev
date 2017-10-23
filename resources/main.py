@@ -2755,17 +2755,23 @@ class Main:
             # >> Load machine database and control_dic
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
+            pDialog.update(0)
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            pDialog.update(16)
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(25)
+            pDialog.update(33)
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
             pDialog.update(50)
-            rom_set_idx = fs_load_JSON_file(PATHS.ROM_SET_IDX_DB_PATH.getPath())
-            pDialog.update(75)
-            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            machine_rom_sets = fs_load_JSON_file(PATHS.ROM_SET_MACHINES_DB_PATH.getPath())
+            pDialog.update(66)
+            main_rom_list = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath())
+            pDialog.update(83)
+            main_chd_list = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath())
             pDialog.update(100)
             pDialog.close()
+
             fs_scan_MAME_ROMs(PATHS, self.settings,
-                              machines, machines_render, rom_set_idx, control_dic, 
+                              control_dic, machines, machines_render, machine_rom_sets, main_rom_list, main_chd_list,
                               ROM_path_FN, CHD_path_FN, Samples_path_FN,
                               scan_CHDs, scan_Samples)
 
@@ -2782,6 +2788,7 @@ class Main:
             if do_MAME_asset_scan: fs_scan_MAME_assets(PATHS, machines_render, Asset_path_FN)
 
             pDialog.create('Advanced MAME Launcher', 'Saving databases ... ')
+            pDialog.update(0)
             fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
             pDialog.update(50)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
@@ -2962,14 +2969,23 @@ class Main:
                     Samples_path_FN = FileName('')
 
                 # >> Load machine database and control_dic and scan
-                kodi_busydialog_ON()
-                control_dic      = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-                machines         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-                machines_render  = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                pDialog = xbmcgui.DialogProgress()
+                pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
+                pDialog.update(0)
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                pDialog.update(16)
+                machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                pDialog.update(33)
+                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                pDialog.update(50)
                 machine_rom_sets = fs_load_JSON_file(PATHS.ROM_SET_MACHINES_DB_PATH.getPath())
-                main_rom_list    = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath())
-                main_chd_list    = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath())
-                kodi_busydialog_OFF()
+                pDialog.update(66)
+                main_rom_list = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath())
+                pDialog.update(83)
+                main_chd_list = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath())
+                pDialog.update(100)
+                pDialog.close()
+
                 fs_scan_MAME_ROMs(PATHS, self.settings,
                                   control_dic, machines, machines_render, machine_rom_sets, main_rom_list, main_chd_list,
                                   ROM_path_FN, CHD_path_FN, Samples_path_FN,
