@@ -1641,12 +1641,7 @@ class Main:
                 info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(rom['assets']['title'])
                 info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(rom['assets']['snap'])
                 info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(rom['assets']['boxfront'])
-
-            # --- Show information window ---
-            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            dialog = xbmcgui.Dialog()
-            dialog.textviewer(window_title, info_text)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            self._display_text_window(window_title, info_text)
 
         # --- View database information and statistics ---
         elif action == ACTION_VIEW_DB_STATS:
@@ -1750,12 +1745,7 @@ class Main:
             info_text += t.format(control_dic['scan_SL_CHDs_have'],
                                   control_dic['scan_SL_CHDs_total'],
                                   control_dic['scan_SL_CHDs_missing'])
-
-            # --- Show information window ---
-            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            dialog = xbmcgui.Dialog()
-            dialog.textviewer(window_title, info_text)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            self._display_text_window(window_title, info_text)
 
         # --- View MAME machine ROMs ---
         elif action == ACTION_VIEW_MACHINE_ROMS:
@@ -1886,13 +1876,8 @@ class Main:
                     padded_name  = text_print_padded_left('{0}'.format(bios['name']), name_max_size)
                     padded_sha1  = text_print_padded_left('{0}'.format(bios['description']), desc_max_size)
                     info_text.append('{0}  {1}\n'.format(padded_name, padded_sha1))
-
-            # --- Show information window ---
             window_title = 'Machine ROMs'
-            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            dialog = xbmcgui.Dialog()
-            dialog.textviewer(window_title, ''.join(info_text))
-            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            self._display_text_window(window_title, ''.join(info_text))
 
         # --- View SL ROMs ---
         elif action == ACTION_VIEW_SL_ROM_ROMS:
@@ -1909,12 +1894,7 @@ class Main:
             info_text = ''
             with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'r') as myfile:
                 info_text = myfile.read()
-
-            # --- Show information window ---
-            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            dialog = xbmcgui.Dialog()
-            dialog.textviewer(window_title, info_text)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            self._display_text_window(window_title, info_text)
 
         # --- Audit ROMs of a single machine ---
         elif action == ACTION_AUDIT_MAME_MACHINE:
@@ -1935,22 +1915,11 @@ class Main:
             pDialog.update(0)
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             pDialog.update(33)
-            if rom_set == 'SPLIT':
-                roms_db_dic = fs_load_JSON_file(PATHS.SET_SPLIT_ROMS_DB_PATH.getPath())
-                pDialog.update(66)
-                chds_db_dic = fs_load_JSON_file(PATHS.SET_SPLIT_CHDS_DB_PATH.getPath())
-                pDialog.update(100)
-                pDialog.close()
-            elif rom_set == 'NONMERGED':
-                roms_db_dic = fs_load_JSON_file(PATHS.SET_NONMERGED_ROMS_DB_PATH.getPath())
-                pDialog.update(66)
-                chds_db_dic = fs_load_JSON_file(PATHS.SET_NONMERGED_CHDS_DB_PATH.getPath())
-                pDialog.update(100)
-                pDialog.close()
-            else:
-                pDialog.close()
-                kodi_dialog_OK('Wrong rom_set = {0}'.format(rom_set))
-                return
+            roms_db_dic = fs_load_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath())
+            pDialog.update(66)
+            chds_db_dic = fs_load_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath())
+            pDialog.update(100)
+            pDialog.close()
 
             # --- Grab data and settings ---
             roms_dic = roms_db_dic[machine_name]
@@ -2062,13 +2031,8 @@ class Main:
                 padded_location = text_print_padded_left('{0}'.format(m_rom['location']), location_max_size)
                 info_text.append('{0}  {1}  {2}  {3}  {4}\n'.format(
                     padded_name, padded_size, padded_crc, padded_location, m_rom['status_colour']))
-
-            # --- Show report ---
             window_title = 'Machine {0} ROM audit'.format(machine_name)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            dialog = xbmcgui.Dialog()
-            dialog.textviewer(window_title, ''.join(info_text))
-            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            self._display_text_window(window_title, ''.join(info_text))
 
         # --- Audit ROMs of SL item ---
         elif action == ACTION_AUDIT_SL_MACHINE:
@@ -2078,51 +2042,69 @@ class Main:
         elif action == ACTION_VIEW_REPORT_SCANNER:
             d = xbmcgui.Dialog()
             type_sub = d.select('View scanner reports',
-                                ['View MAME ROM scanner report',
-                                 'View MAME CHD scanner report',
+                                ['View MAME machine ROM scanner report',
+                                 'View MAME ROM archive scanner report',
+                                 'View MAME machine CHD scanner report',
+                                 'View MAME CHD archive scanner report',
                                  'View MAME Samples scanner report',
                                  'View Software Lists ROM scanner report',
                                  'View Software Lists CHD scanner report'])
             if type_sub < 0: return
 
-            # --- View MAME ROM scanner report ---
+            # --- View MAME machine ROM scanner report ---
             if type_sub == 0:
-                if not PATHS.REPORT_MAME_SCAN_ROMS_PATH.exists():
-                    kodi_dialog_OK('MAME ROM scanner report not found. Please scan MAME ROMs and try again.')
+                if not PATHS.REPORT_MAME_SCAN_ROM_MACHINES_PATH.exists():
+                    kodi_dialog_OK('MAME machine ROM scanner report not found. Please scan MAME ROMs and try again.')
                     return
 
                 # --- Read stdout and put into a string ---
-                window_title = 'ROM scanner report'
+                window_title = 'MAME machine ROM scanner report'
                 info_text = ''
-                with open(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath(), "r") as myfile:
+                with open(PATHS.REPORT_MAME_SCAN_ROM_MACHINES_PATH.getPath(), "r") as myfile:
                     info_text = myfile.read()
+                self._display_text_window(window_title, info_text)
 
-                # --- Show information window ---
-                xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-                dialog = xbmcgui.Dialog()
-                dialog.textviewer(window_title, info_text)
-                xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
-
-            # --- View MAME CHD scanner report ---
+            # --- View MAME ROM archive scanner report ---
             elif type_sub == 1:
-                if not PATHS.REPORT_MAME_SCAN_CHDS_PATH.exists():
-                    kodi_dialog_OK('MAME CHD scanner report not found. Please scan MAME ROMs and try again.')
+                if not PATHS.REPORT_MAME_SCAN_ROM_ARCHIVES_PATH.exists():
+                    kodi_dialog_OK('MAME ROM archive scanner report not found. Please scan MAME ROMs and try again.')
                     return
 
                 # --- Read stdout and put into a string ---
-                window_title = 'MAME CHD scanner report'
+                window_title = 'MAME ROM archive scanner report'
                 info_text = ''
-                with open(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath(), "r") as myfile:
+                with open(PATHS.REPORT_MAME_SCAN_ROM_ARCHIVES_PATH.getPath(), "r") as myfile:
                     info_text = myfile.read()
+                self._display_text_window(window_title, info_text)
 
-                # --- Show information window ---
-                xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-                dialog = xbmcgui.Dialog()
-                dialog.textviewer(window_title, info_text)
-                xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            # --- View MAME machine CHD scanner report ---
+            elif type_sub == 2:
+                if not PATHS.REPORT_MAME_SCAN_CHD_MACHINES_PATH.exists():
+                    kodi_dialog_OK('MAME machine CHD scanner report not found. Please scan MAME ROMs and try again.')
+                    return
+
+                # --- Read stdout and put into a string ---
+                window_title = 'MAME machine CHD scanner report'
+                info_text = ''
+                with open(PATHS.REPORT_MAME_SCAN_CHD_MACHINES_PATH.getPath(), "r") as myfile:
+                    info_text = myfile.read()
+                self._display_text_window(window_title, info_text)
+
+            # --- View MAME CHD archive scanner report ---
+            elif type_sub == 3:
+                if not PATHS.REPORT_MAME_SCAN_CHD_ARCHIVES_PATH.exists():
+                    kodi_dialog_OK('MAME CHD archive scanner report not found. Please scan MAME ROMs and try again.')
+                    return
+
+                # --- Read stdout and put into a string ---
+                window_title = 'MAME CHD archive scanner report'
+                info_text = ''
+                with open(PATHS.REPORT_MAME_SCAN_CHD_ARCHIVES_PATH.getPath(), "r") as myfile:
+                    info_text = myfile.read()
+                self._display_text_window(window_title, info_text)
 
             # --- View MAME Samples scanner report ---
-            elif type_sub == 2:
+            elif type_sub == 4:
                 if not PATHS.REPORT_MAME_SCAN_SAMP_PATH.exists():
                     kodi_dialog_OK('MAME Samples scanner report not found. Please scan MAME ROMs and try again.')
                     return
@@ -2132,15 +2114,10 @@ class Main:
                 info_text = ''
                 with open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
-
-                # --- Show information window ---
-                xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-                dialog = xbmcgui.Dialog()
-                dialog.textviewer(window_title, info_text)
-                xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+                self._display_text_window(window_title, info_text)
 
             # --- View Software Lists ROM scanner report ---
-            elif type_sub == 3:
+            elif type_sub == 5:
                 if not PATHS.REPORT_SL_SCAN_ROMS_PATH.exists():
                     kodi_dialog_OK('SL ROM scanner report not found. Please scan MAME ROMs and try again.')
                     return
@@ -2150,15 +2127,10 @@ class Main:
                 info_text = ''
                 with open(PATHS.REPORT_SL_SCAN_ROMS_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
-
-                # --- Show information window ---
-                xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-                dialog = xbmcgui.Dialog()
-                dialog.textviewer(window_title, info_text)
-                xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+                self._display_text_window(window_title, info_text)
 
             # --- View Software Lists CHD scanner report ---
-            elif type_sub == 4:
+            elif type_sub == 6:
                 if not PATHS.REPORT_SL_SCAN_CHDS_PATH.exists():
                     kodi_dialog_OK('SL CHD scanner report not found. Please scan MAME ROMs and try again.')
                     return
@@ -2168,12 +2140,7 @@ class Main:
                 info_text = ''
                 with open(PATHS.REPORT_SL_SCAN_CHDS_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
-
-                # --- Show information window ---
-                xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-                dialog = xbmcgui.Dialog()
-                dialog.textviewer(window_title, info_text)
-                xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+                self._display_text_window(window_title, info_text)
 
         # --- View asset/artwork scanner reports ---
         elif action == ACTION_VIEW_REPORT_ASSETS:
@@ -2434,10 +2401,12 @@ class Main:
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
 
         # --- Create context menu ---
-        commands = []
+        URL_view_DAT = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', machine_name, 'location', LOCATION_MAME_FAVS)
         URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
         URL_display = self._misc_url_2_arg_RunPlugin('command', 'DELETE_MAME_FAV', 'machine', machine_name)
+        commands = []
+        commands.append(('View DAT info',  URL_view_DAT))
         commands.append(('View / Audit',  URL_view ))
         commands.append(('Manage Favourite machines',  URL_manage ))
         commands.append(('Delete from Favourites', URL_display ))
@@ -2631,10 +2600,10 @@ class Main:
         listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
 
         # --- Create context menu ---
+        URL_view = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
+        URL_manage = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
+        URL_fav = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         commands = []
-        URL_view    = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
-        URL_manage  = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
-        URL_fav     = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         commands.append(('View / Audit', URL_view))
         commands.append(('Manage SL Favourite machines',  URL_manage))
         commands.append(('Delete ROM from SL Favourites', URL_fav))
@@ -3349,6 +3318,12 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     # Misc functions
     # ---------------------------------------------------------------------------------------------
+    def _display_text_window(self, window_title, info_text):
+        xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
+        dialog = xbmcgui.Dialog()
+        dialog.textviewer(window_title, info_text)
+        xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+
     # List of sorting methods here http://mirrors.xbmc.org/docs/python-docs/16.x-jarvis/xbmcplugin.html#-setSetting
     def _set_Kodi_all_sorting_methods(self):
         if self.addon_handle < 0: return

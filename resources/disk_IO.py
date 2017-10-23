@@ -1265,6 +1265,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
         num_items = len(machines)
         item_count = 0
         for m_name in sorted(machines):
+            # >> Skip Devices
+            if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
             cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
@@ -1302,6 +1304,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
         num_items = len(machines)
         item_count = 0
         for m_name in sorted(machines):
+            # >> Skip Devices
+            if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
             cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
@@ -1370,6 +1374,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
         num_items = len(machines)
         item_count = 0
         for m_name in sorted(machines):
+            # >> Skip Devices
+            if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
             cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
@@ -1411,6 +1417,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
         num_items = len(machines)
         item_count = 0
         for m_name in sorted(machines):
+            # >> Skip Devices
+            if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
             cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
@@ -1447,6 +1455,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
         num_items = len(machines)
         item_count = 0
         for m_name in sorted(machines):
+            # >> Skip Devices
+            if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
             cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
@@ -1483,6 +1493,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
         num_items = len(machines)
         item_count = 0
         for m_name in sorted(machines):
+            # >> Skip Devices
+            if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
             cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
@@ -1544,18 +1556,26 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
             archives_CHD_set.add(rom['location'])
     archives_CHD_list = list(sorted(archives_CHD_set))
 
+    # -----------------------------------------------------------------------------
+    # Update MAME control dictionary
+    # -----------------------------------------------------------------------------
+    control_dic['MAME_ZIP_files'] = len(archives_ROM_list)
+    control_dic['MAME_CHD_files'] = len(archives_CHD_list)
+
     # --- Save databases ---
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Saving databases ...', 'ROMs database')
     fs_write_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath(), roms_dic)
-    pDialog.update(20, 'Saving databases ...', 'CHDs database')
+    pDialog.update(16, 'Saving databases ...', 'CHDs database')
     fs_write_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath(), chds_dic)
-    pDialog.update(40, 'Saving databases ...', 'Machine index')
+    pDialog.update(33, 'Saving databases ...', 'Machine index')
     fs_write_JSON_file(PATHS.ROM_SET_MACHINES_DB_PATH.getPath(), idx_dic)
-    pDialog.update(60, 'Saving databases ...', 'ROM list index')
+    pDialog.update(50, 'Saving databases ...', 'ROM list index')
     fs_write_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath(), archives_ROM_list)
-    pDialog.update(80, 'Saving databases ...', 'CHD list index')
+    pDialog.update(66, 'Saving databases ...', 'CHD list index')
     fs_write_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath(), archives_CHD_list)
+    pDialog.update(83, 'Saving databases ...', 'Control dictionery')
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
     pDialog.update(100)
     pDialog.close()
 
@@ -2436,6 +2456,8 @@ def fs_scan_MAME_ROMs(PATHS, settings,
     scan_ROM_machines_have = 0
     scan_ROM_machines_missing = 0
     for key in sorted(machines_render):
+        # >> Skip Devices
+        if machines_render[key]['isDevice']: continue
         rom_list = machine_rom_sets[key]['ROMs']
         # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
         if rom_list:
@@ -2497,6 +2519,8 @@ def fs_scan_MAME_ROMs(PATHS, settings,
     scan_CHD_machines_have = 0
     scan_CHD_machines_missing = 0
     for key in sorted(machines_render):
+        # >> Skip Devices
+        if machines_render[key]['isDevice']: continue
         chd_list = machine_rom_sets[key]['CHDs']
         # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
         if chd_list and scan_CHDs:
