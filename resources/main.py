@@ -78,9 +78,11 @@ class AML_Paths:
         self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
 
         # >> ROM set databases
-        self.ROM_SET_ROMS_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_ROMs.json')
-        self.ROM_SET_CHDS_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_CHDs.json')
-        self.ROM_SET_IDX_DB_PATH  = PLUGIN_DATA_DIR.pjoin('ROM_Set_index.json')
+        self.ROM_SET_ROMS_DB_PATH       = PLUGIN_DATA_DIR.pjoin('ROM_Set_ROMs.json')
+        self.ROM_SET_CHDS_DB_PATH       = PLUGIN_DATA_DIR.pjoin('ROM_Set_CHDs.json')
+        self.ROM_SET_MACHINES_DB_PATH   = PLUGIN_DATA_DIR.pjoin('ROM_Set_machines.json')
+        self.ROM_SET_ARCHIVES_R_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_archives_ROM.json')
+        self.ROM_SET_ARCHIVES_C_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_archives_CHD.json')
 
         # >> DAT indices and databases.
         self.HISTORY_IDX_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_History_index.json')

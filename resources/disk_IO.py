@@ -1216,16 +1216,26 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
 #     ],
 # }
 #
-# Use by the ROM scanner. For every machine stores the ZIP/CHD required files
+# Used by the ROM scanner to check how many machines can be run or not.
+# For every machine stores the ZIP/CHD required files
 #
-# idx_dic = {
-#     'machine_name ' : { 'roms' : [name1, name2], 'CHDs' : [dir/name1, dir/name2] },
+# machines_dic = {
+#     'machine_name ' : { 'ROMs' : [name1, name2], 'CHDs' : [dir/name1, dir/name2] },
 # }
+#
+# Use by the ROM scanner to determine how many ZIP files you have or not. Note that depeding of
+# the ROM set (Merged, Split, Non-merged) the number of machines you can run changes. Both lists 
+# have unique elements (instead of lists there should be sets but sets are not JSON serializable).
+#
+# archives_dic = [ name1, name2, ..., nameN ]
+# archives_CHD_dic = [ dir1/name1, dir2/name2, ..., dirN/nameN ]
 #
 # Saves:
 #   ROM_Set_ROMs.json
 #   ROM_Set_CHDs.json
-#   ROM_Set_index.json
+#   ROM_Set_machines.json
+#   ROM_Set_archives_ROM.json
+#   ROM_Set_archives_CHD.json
 #
 def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_render, devices_db_dic, machine_roms):
     log_info('fs_build_ROM_databases() Initialising ...')
@@ -1493,7 +1503,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
             pDialog.update((item_count*100)//num_items)
     pDialog.close()
 
-    # --- ROM/CHD index ---
+    # --- ROM/CHD machine index ---
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Building index ...')
     num_items = len(machines)
@@ -1518,14 +1528,34 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
         pDialog.update((item_count*100)//num_items)
     pDialog.close()
 
+    # --- Unique sorted list of ROM ZIP files and CHDs ---
+    archives_ROM_set = set()
+    for m_name in roms_dic:
+        for rom in roms_dic[m_name]:
+            location_list = rom['location'].split('/')
+            archive_str = location_list[0]
+            if not archive_str: continue
+            archives_ROM_set.add(archive_str)
+    archives_ROM_list = list(sorted(archives_ROM_set))
+
+    archives_CHD_set = set()
+    for m_name in chds_dic:
+        for rom in chds_dic[m_name]:
+            archives_CHD_set.add(rom['location'])
+    archives_CHD_list = list(sorted(archives_CHD_set))
+
     # --- Save databases ---
     pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Saving databases ...\nROMs database')
+    pDialog.update(0, 'Saving databases ...', 'ROMs database')
     fs_write_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath(), roms_dic)
-    pDialog.update(33, 'Saving databases ...\nCHDs database')
+    pDialog.update(20, 'Saving databases ...', 'CHDs database')
     fs_write_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath(), chds_dic)
-    pDialog.update(66, 'Saving databases ...\nROM/CHD index')
-    fs_write_JSON_file(PATHS.ROM_SET_IDX_DB_PATH.getPath(), idx_dic)
+    pDialog.update(40, 'Saving databases ...', 'Machine index')
+    fs_write_JSON_file(PATHS.ROM_SET_MACHINES_DB_PATH.getPath(), idx_dic)
+    pDialog.update(60, 'Saving databases ...', 'ROM list index')
+    fs_write_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath(), archives_ROM_list)
+    pDialog.update(80, 'Saving databases ...', 'CHD list index')
+    fs_write_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath(), archives_CHD_list)
     pDialog.update(100)
     pDialog.close()
 
