@@ -592,13 +592,13 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
     # --- Load DAT files to include category information ---
     pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Processing DAT files ...', 'File: history.dat')
+    pDialog.update(0, 'Processing DAT files ...', 'history.dat')
     (history_idx_dic, history_dic) = mame_load_History_DAT(settings['history_path'])
-    pDialog.update(25, 'Processing DAT files ...', 'File: mameinfo.dat')
+    pDialog.update(25, 'Processing DAT files ...', 'mameinfo.dat')
     (mameinfo_idx_dic, mameinfo_dic) = mame_load_MameInfo_DAT(settings['mameinfo_path'])
-    pDialog.update(50, 'Processing DAT files ...', 'File: gameinit.dat')
+    pDialog.update(50, 'Processing DAT files ...', 'gameinit.dat')
     (gameinit_idx_dic, gameinit_dic) = mame_load_GameInit_DAT(settings['gameinit_path'])
-    pDialog.update(75, 'Processing DAT files ...', 'File: command.dat')
+    pDialog.update(75, 'Processing DAT files ...', 'command.dat')
     (command_idx_dic, command_dic) = mame_load_Command_DAT(settings['command_path'])
     pDialog.update(100)
     pDialog.close()
@@ -922,8 +922,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         # --- Print something to prove we are doing stuff ---
         num_iteration += 1
         if num_iteration % 1000 == 0:
-            update_number = (processed_machines * 100) / total_machines
-            pDialog.update(update_number)
+            pDialog.update((processed_machines * 100) // total_machines)
             # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(num_iteration, processed_machines))
             # log_debug('processed_machines   = {0}'.format(processed_machines))
             # log_debug('total_machines = {0}'.format(total_machines))
