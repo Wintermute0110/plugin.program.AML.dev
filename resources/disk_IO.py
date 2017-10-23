@@ -221,17 +221,17 @@ def fs_new_SL_asset():
 
 def fs_new_control_dic():
     C = {
-        # >> Filed in when extracting MAME XML
+        # --- Filed in when extracting MAME XML ---
         'stats_total_machines' : 0,
 
-        # >> Filed in when building main MAME database
-        'ver_mame'        : 'Unknown. MAME database not built',
-        'ver_catver'      : 'Unknown. MAME database not built',
-        'ver_catlist'     : 'Unknown. MAME database not built',
-        'ver_genre'       : 'Unknown. MAME database not built',
-        'ver_nplayers'    : 'Unknown. MAME database not built',
-        'ver_bestgames'   : 'Unknown. MAME database not built',
-        'ver_series'      : 'Unknown. MAME database not built',
+        # --- Filed in when building main MAME database ---
+        'ver_mame'      : 'Unknown. MAME database not built',
+        'ver_catver'    : 'Unknown. MAME database not built',
+        'ver_catlist'   : 'Unknown. MAME database not built',
+        'ver_genre'     : 'Unknown. MAME database not built',
+        'ver_nplayers'  : 'Unknown. MAME database not built',
+        'ver_bestgames' : 'Unknown. MAME database not built',
+        'ver_series'    : 'Unknown. MAME database not built',
 
         'stats_processed_machines' : 0,
         'stats_parents'            : 0,
@@ -261,23 +261,45 @@ def fs_new_control_dic():
         'stats_dead_parents'       : 0,
         'stats_dead_clones'        : 0,
 
-        # >> Filed in when building SL index
-        'SL_files' : 0,
-        'SL_ROMs'  : 0,
-        'SL_CHDs'  : 0,
+        # --- Filed in when building SL index ---
+        # Number of ROM ZIP files in the Merged, Split or Non-merged sets.
+        'MAME_ZIP_files' : 0,
+        # Number of CHD files in the Merged, Split or Non-merged sets.
+        'MAME_CHD_files' : 0,
 
-        # >> Filed in by the MAME ROM/CHD/Samples scanner
-        'scan_ROMs_have'       : 0,
-        'scan_ROMs_total'      : 0,
-        'scan_ROMs_missing'    : 0,
-        'scan_CHDs_have'       : 0,
-        'scan_CHDs_total'      : 0,
-        'scan_CHDs_missing'    : 0,
+        # Number of SL databases (equal to the number of XML files).
+        'SL_XML_files'   : 0,
+        'SL_ROMs'        : 0,
+        'SL_CHDs'        : 0,
+
+        # --- Filed in by the MAME ROM/CHD/Samples scanner ---
+        # Number of ZIP files, including devices.
+        'scan_ZIP_files_total'   : 0,
+        'scan_ZIP_files_have'    : 0,
+        'scan_ZIP_files_missing' : 0,
+        # Number of CHD files.
+        'scan_CHD_files_total'   : 0,
+        'scan_CHD_files_have'    : 0,
+        'scan_CHD_files_missing' : 0,
+
+        # Number of machines that need a ROM ZIP file to run, excluding devices.
+        'scan_ROM_machines_total'   : 0,
+        # Number of machines you can run, excluding devices.
+        'scan_ROM_machines_have'    : 0,
+        # Number of machines you cannot run, excluding devices.
+        'scan_ROM_machines_missing' : 0,
+        # Number of machines that need a CHD or CHDs to run.
+        'scan_CHD_machines_total'   : 0,
+        # Number of machines with CHDs you can run.
+        'scan_CHD_machines_have'    : 0,
+        # Number of machines with CHDs you cannot run.
+        'scan_CHD_machines_missing' : 0,
+
         'scan_Samples_have'    : 0,
         'scan_Samples_total'   : 0,
         'scan_Samples_missing' : 0,
 
-        # >> Filed in by the SL ROM scanner
+        # --- Filed in by the SL ROM scanner ---
         'scan_SL_ROMs_have'    : 0,
         'scan_SL_ROMs_total'   : 0,
         'scan_SL_ROMs_missing' : 0,
@@ -906,7 +928,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
                 stats_BIOS += 1
                 if m_render['cloneof']: stats_BIOS_clones += 1
                 else:                   stats_BIOS_parents += 1
-            if not m_render['isDevice']:
+            if runnable:
                 if machine['coins'] > 0:
                     stats_coin += 1
                     if m_render['cloneof']: stats_coin_clones += 1
