@@ -149,12 +149,14 @@ class AML_Paths:
         self.FAV_SL_ROMS_PATH            = PLUGIN_DATA_DIR.pjoin('Favourite_SL_ROMs.json')
 
         # >> Reports
-        self.REPORTS_DIR                 = PLUGIN_DATA_DIR.pjoin('reports')
-        self.REPORT_MAME_SCAN_ROMS_PATH  = self.REPORTS_DIR.pjoin('Report_ROM_scanner.txt')
-        self.REPORT_MAME_SCAN_CHDS_PATH  = self.REPORTS_DIR.pjoin('Report_CHD_scanner.txt')
-        self.REPORT_MAME_SCAN_SAMP_PATH  = self.REPORTS_DIR.pjoin('Report_Samples_scanner.txt')
-        self.REPORT_SL_SCAN_ROMS_PATH    = self.REPORTS_DIR.pjoin('Report_SL_ROM_scanner.txt')
-        self.REPORT_SL_SCAN_CHDS_PATH    = self.REPORTS_DIR.pjoin('Report_SL_CHD_scanner.txt')
+        self.REPORTS_DIR                        = PLUGIN_DATA_DIR.pjoin('reports')
+        self.REPORT_MAME_SCAN_ROM_MACHINES_PATH = self.REPORTS_DIR.pjoin('Report_ROM_machine_scanner.txt')
+        self.REPORT_MAME_SCAN_ROM_ARCHIVES_PATH = self.REPORTS_DIR.pjoin('Report_ROM_archives_scanner.txt')
+        self.REPORT_MAME_SCAN_CHD_MACHINES_PATH = self.REPORTS_DIR.pjoin('Report_CHD_machine_scanner.txt')
+        self.REPORT_MAME_SCAN_CHD_ARCHIVES_PATH = self.REPORTS_DIR.pjoin('Report_CHD_archives_scanner.txt')
+        self.REPORT_MAME_SCAN_SAMP_PATH         = self.REPORTS_DIR.pjoin('Report_Samples_scanner.txt')
+        self.REPORT_SL_SCAN_ROMS_PATH           = self.REPORTS_DIR.pjoin('Report_SL_ROM_scanner.txt')
+        self.REPORT_SL_SCAN_CHDS_PATH           = self.REPORTS_DIR.pjoin('Report_SL_CHD_scanner.txt')
 PATHS = AML_Paths()
 
 # --- ROM flags used by skins to display status icons ---
@@ -2961,15 +2963,17 @@ class Main:
 
                 # >> Load machine database and control_dic and scan
                 kodi_busydialog_ON()
-                machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-                rom_sets        = fs_load_JSON_file(PATHS.ROM_SETS_PATH.getPath())
-                control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                control_dic      = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                machines         = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                machines_render  = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                machine_rom_sets = fs_load_JSON_file(PATHS.ROM_SET_MACHINES_DB_PATH.getPath())
+                main_rom_list    = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath())
+                main_chd_list    = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath())
                 kodi_busydialog_OFF()
-                fs_scan_MAME_ROMs(PATHS, machines, machines_render, rom_sets, control_dic, 
+                fs_scan_MAME_ROMs(PATHS, self.settings,
+                                  control_dic, machines, machines_render, machine_rom_sets, main_rom_list, main_chd_list,
                                   ROM_path_FN, CHD_path_FN, Samples_path_FN,
-                                  scan_CHDs, scan_Samples,
-                                  self.settings['mame_rom_set'], self.settings['mame_chd_set'])
+                                  scan_CHDs, scan_Samples)
                 kodi_busydialog_ON()
                 fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
