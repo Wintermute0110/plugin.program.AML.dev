@@ -1242,240 +1242,338 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
     return hashed_db_dic[machine_name]
 
 # -------------------------------------------------------------------------------------------------
-# Generates the main ROM database and the Merged, Split and Non-merged databases.
+# Generates the main ROM database.
 #
-# split_roms_dic = {
+# roms_dic = {
 #     'machine_name ' : [
 #         'name' : string,
 #         'size' : int,
 #         'crc' : string,
-#         'location' : string
+#         'location' : 'zip_name/rom_name.rom'
 #     ],
 #     ...
 # }
 #
-# split_chds_dic = {
+# chds_dic = {
 #     'machine_name ' : [
 #         'name' : string,
 #         'crc' : string,
-#         'location' : string
+#         'location' : 'dir_name/chd_name'
 #     ],
 # }
 #
-# split_idx_dic = {
-#     '___control___' : { 'num_ZIP_files' : int, 'num_CHD_files' : int },
-#     'machine_name ' : { 'roms' : True | False, 'CHDs' : [name1, name2] },
+# Use by the ROM scanner. For every machine stores the ZIP/CHD required files
+#
+# idx_dic = {
+#     'machine_name ' : { 'roms' : [name1, name2], 'CHDs' : [dir/name1, dir/name2] },
 # }
 #
 # Saves:
-#   ROMs_Merged.json
-#   ROMs_Merged_index.json
-#   Set_Split_ROMs.json
-#   Set_Split_CHDs.json
-#   Set_Split_index.json
-#   ROMs_Nonmerged.json
-#   ROMs_Nonmerged_index.json
+#   ROM_Set_ROMs.json
+#   ROM_Set_CHDs.json
+#   ROM_Set_index.json
 #
 def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_render, devices_db_dic, machine_roms):
     log_info('fs_build_ROM_databases() Initialising ...')
+
+    # --- Initialise ---
+    rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_rom_set']]
+    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
+    log_info('fs_build_ROM_databases() ROM set is {0}'.format(rom_set))
+    log_info('fs_build_ROM_databases() CHD set is {0}'.format(chd_set))
+    roms_dic = {}
+    chds_dic = {}
+    idx_dic = {}
     pDialog = xbmcgui.DialogProgress()
 
-    # -------------------------------------------------------------------------
-    # Merged ROM set
-    # -------------------------------------------------------------------------
-    # In the Merged set all Parent and Clone ROMs are in the parent archive.
-    # However, according to the Pleasuredome DATs, ROMs are organised like
-    # this:
-    #   clone_name\clone_rom_1
-    #   clone_name\clone_rom_2
-    #   parent_rom_1
-    #   parent_rom_2
-    log_info('fs_build_ROM_databases() Building Merged ROM set ...')
-    roms_dic = {}
-    chds_dic = {}
-    idx_dic = {}
+    # --- ROM set ---
+    pDialog.create('Advanced MAME Launcher')
+    if rom_set == 'MERGED':
+        # In the Merged set all Parent and Clone ROMs are in the parent archive.
+        # However, according to the Pleasuredome DATs, ROMs are organised like
+        # this:
+        #   clone_name\clone_rom_1
+        #   clone_name\clone_rom_2
+        #   parent_rom_1
+        #   parent_rom_2
+        log_info('fs_build_ROM_databases() Building Merged ROM set ...')
+        pDialog.update(0, 'Building Split ROM set ...')
+        num_items = len(machines)
+        item_count = 0
+        for m_name in sorted(machines):
+            machine = machines[m_name]
+            cloneof = machines_render[m_name]['cloneof']
+            romof   = machine['romof']
+            m_roms  = machine_roms[m_name]['roms']
 
-    pDialog.create('Advanced MAME Launcher', 'Saving Merged database ...')
-    pDialog.update(0)
-    fs_write_JSON_file(PATHS.SET_MERGED_ROMS_DB_PATH.getPath(), roms_dic)
-    pDialog.update(33)
-    fs_write_JSON_file(PATHS.SET_MERGED_CHDS_DB_PATH.getPath(), chds_dic)
-    pDialog.update(66)
-    fs_write_JSON_file(PATHS.SET_MERGED_IDX_DB_PATH.getPath(), idx_dic)
-    pDialog.update(100)
-    pDialog.close()
-    del roms_dic
-    del chds_dic
-    del idx_dic
-    # mem_before_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    gc.collect()
-    # mem_after_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    # log_debug('fs_build_ROM_databases() Memory before garbage collection {0}'.format(mem_before_gc))
-    # log_debug('fs_build_ROM_databases() Memory after garbage collection  {0}'.format(mem_after_gc))
-
-    # -------------------------------------------------------------------------
-    # Nonmerged ROM set
-    # -------------------------------------------------------------------------
-    # >> In the NonMerged set all ROMs are in the machine archive, including
-    # >> BIOSes.
-    log_info('fs_build_ROM_databases() Building Nonmerged ROM set ...')
-    roms_dic = {}
-    chds_dic = {}
-    idx_dic = {}
-    for machine_name in sorted(machines):
-        machine = machines[machine_name]
-        cloneof = machines_render[machine_name]['cloneof']
-        romof   = machine['romof']
-        m_roms  = machine_roms[machine_name]['roms']
-        m_disks = machine_roms[machine_name]['disks']
-
-        # --- ROMs ------------------------------------------------------------
-        nonmerged_roms = []
-        for rom in m_roms:
-            location = machine_name + '.zip/' + rom['name']
-            # >> Remove unused fields to save space in JSON database
-            rom_t = copy.deepcopy(rom)
-            rom_t['location'] = location
-            rom_t.pop('bios')
-            rom_t.pop('merge')
-            nonmerged_roms.append(rom_t)
-        # --- Make a dictionary with device ROMs ---
-        device_roms_list = []
-        for device in devices_db_dic[machine_name]:
-            device_roms_dic = machine_roms[device]
-            for rom in device_roms_dic['roms']:
-                rom['location'] = device + '.zip'
+            # --- ROMs ------------------------------------------------------------
+            nonmerged_roms = []
+            for rom in m_roms:
+                location = m_name + '/' + rom['name']
+                # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
+                rom_t['location'] = location
                 rom_t.pop('bios')
                 rom_t.pop('merge')
-                device_roms_list.append(rom_t)
-        if device_roms_list: nonmerged_roms.extend(device_roms_list)
-        roms_dic[machine_name] = nonmerged_roms
+                nonmerged_roms.append(rom_t)
+            # --- Make a dictionary with device ROMs ---
+            device_roms_list = []
+            for device in devices_db_dic[m_name]:
+                device_roms_dic = machine_roms[device]
+                for rom in device_roms_dic['roms']:
+                    rom['location'] = device + '/' + rom['name']
+                    rom_t = copy.deepcopy(rom)
+                    rom_t.pop('bios')
+                    rom_t.pop('merge')
+                    device_roms_list.append(rom_t)
+            if device_roms_list: nonmerged_roms.extend(device_roms_list)
+            roms_dic[m_name] = nonmerged_roms
 
-        # --- CHDs ------------------------------------------------------------
-        nonmerged_chds = []
-        for disk in m_disks:
-            location = machine_name + '/' + disk['name']
-            disk_t = copy.deepcopy(disk)
-            disk_t['location'] = location
-            disk_t.pop('merge')
-            nonmerged_chds.append(disk_t)
-        chds_dic[machine_name] = nonmerged_chds
-    pDialog.create('Advanced MAME Launcher', 'Saving Nonmerged database ...')
-    pDialog.update(0)
-    fs_write_JSON_file(PATHS.SET_NONMERGED_ROMS_DB_PATH.getPath(), roms_dic)
-    pDialog.update(33)
-    fs_write_JSON_file(PATHS.SET_NONMERGED_CHDS_DB_PATH.getPath(), chds_dic)
-    pDialog.update(66)
-    fs_write_JSON_file(PATHS.SET_NONMERGED_IDX_DB_PATH.getPath(), idx_dic)
-    pDialog.update(100)
-    pDialog.close()
-    del roms_dic
-    del chds_dic
-    del idx_dic
-    # mem_before_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    gc.collect()
-    # mem_after_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    # log_debug('fs_build_ROM_databases() Memory before garbage collection {0}'.format(mem_before_gc))
-    # log_debug('fs_build_ROM_databases() Memory after garbage collection  {0}'.format(mem_after_gc))
+            # --- Update dialog ---
+            item_count += 1
+            pDialog.update((item_count*100)//num_items)
+    elif rom_set == 'SPLIT':
+        log_info('fs_build_ROM_databases() Building Split ROM set ...')
+        pDialog.update(0, 'Building Split ROM set ...')
+        num_items = len(machines)
+        item_count = 0
+        for m_name in sorted(machines):
+            machine = machines[m_name]
+            cloneof = machines_render[m_name]['cloneof']
+            romof   = machine['romof']
+            m_roms  = machine_roms[m_name]['roms']
+            # log_info('m_name {0}'.format(m_name))
+            # log_info('len(m_roms) {0}'.format(len(m_roms)))
 
-    # -------------------------------------------------------------------------
-    # Split ROM set
-    # -------------------------------------------------------------------------
-    roms_dic = {}
-    chds_dic = {}
-    idx_dic = {}
-    log_info('fs_build_ROM_databases() Building Split ROM set ...')
-    for machine_name in sorted(machines):
-        machine = machines[machine_name]
-        cloneof = machines_render[machine_name]['cloneof']
-        romof   = machine['romof']
-        m_roms  = machine_roms[machine_name]['roms']
-        m_disks = machine_roms[machine_name]['disks']
-        # log_info('machine_name {0}'.format(machine_name))
-        # log_info('len(m_roms) {0}'.format(len(m_roms)))
-
-        # --- ROMs ------------------------------------------------------------
-        split_roms = []
-        for rom in m_roms:
-            if not cloneof:
-                # --- Parent machine ---
-                # >> In the Split set non-merge ROMs are in the machine archive and
-                # >> merge ROMs are in the parent archive.
-                if rom['merge']:
-                    location = romof + '.zip/' + rom['name']
-                else:
-                    location = machine_name + '.zip/' + rom['name']
-            else:
-                parent_romof = machines[cloneof]['romof']
-                # >> In the Split set non-merge ROMs are in the machine archive and
-                # >> merge ROMs are in the parent archive. However, if ROM is a BIOS it
-                # >> is located in the romof of the parent. BIOS ROMs always have the
-                # >> merge attribute.
-                if rom['merge']:
-                    if rom['bios']:
-                        location = parent_romof + '.zip/' + rom['name']
+            # --- ROMs ------------------------------------------------------------
+            split_roms = []
+            for rom in m_roms:
+                if not cloneof:
+                    # --- Parent machine ---
+                    # >> In the Split set non-merge ROMs are in the machine archive and
+                    # >> merge ROMs are in the parent archive.
+                    if rom['merge']:
+                        location = romof + '/' + rom['name']
                     else:
-                        location = romof + '.zip/' + rom['name']
+                        location = m_name + '/' + rom['name']
                 else:
-                    location = machine_name + '.zip/' + rom['name']
-            # >> Remove unused fields to save space in JSON database
-            rom_t = copy.deepcopy(rom)
-            rom_t['location'] = location
-            rom_t.pop('bios')
-            rom_t.pop('merge')
-            split_roms.append(rom_t)
-        # --- Make a dictionary with device ROMs ---
-        device_roms_list = []
-        for device in devices_db_dic[machine_name]:
-            device_roms_dic = machine_roms[device]
-            for rom in device_roms_dic['roms']:
-                rom['location'] = device + '.zip'
+                    # --- Clone machine ---
+                    # >> In the Split set non-merged ROMs are in the machine archive and
+                    # >> merge ROMs are in the parent archive. However, if ROM is a BIOS it
+                    # >> is located in the romof of the parent. BIOS ROMs always have the
+                    # >> merge attribute. Also, some machines (notably mslugN) also have non-BIOS
+                    # >> common ROMs merged in neogeo.zip BIOS archive.
+                    if rom['merge']:
+                        # >> If clone ROM is a BIOS then ROM is in the BIOS archive.
+                        if rom['bios']:
+                            parent_romof = machines[cloneof]['romof']
+                            location = parent_romof + '/' + rom['name']
+                        else:
+                            # >> Get parent merged ROM, and check if the ROM is also merged in
+                            # >> parent.
+                            # parent_roms = machine_roms[cloneof]['roms']
+                            # parent_rom = parent_roms
+                            location = romof + '/' + rom['name']
+                    else:
+                        location = m_name + '/' + rom['name']
+                # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
+                rom_t['location'] = location
                 rom_t.pop('bios')
                 rom_t.pop('merge')
-                device_roms_list.append(rom_t)
-        if device_roms_list: split_roms.extend(device_roms_list)
-        roms_dic[machine_name] = split_roms
+                split_roms.append(rom_t)
 
-        # --- CHDs ------------------------------------------------------------
-        split_chds = []
-        for disk in m_disks:
-            if not cloneof:
-                # --- Parent machine ---
-                if disk['merge']:
-                    location = romof + '/' + disk['name']
+            # --- Make a dictionary with device ROMs ---
+            device_roms_list = []
+            for device in devices_db_dic[m_name]:
+                device_roms_dic = machine_roms[device]
+                for rom in device_roms_dic['roms']:
+                    rom['location'] = device + '/' + rom['name']
+                    rom_t = copy.deepcopy(rom)
+                    rom_t.pop('bios')
+                    rom_t.pop('merge')
+                    device_roms_list.append(rom_t)
+            if device_roms_list: split_roms.extend(device_roms_list)
+            roms_dic[m_name] = split_roms
+
+            # --- Update dialog ---
+            item_count += 1
+            pDialog.update((item_count*100)//num_items)
+    elif rom_set == 'NONMERGED':
+        # >> In the NonMerged set all ROMs are in the machine archive, including BIOSes.
+        log_info('fs_build_ROM_databases() Building Nonmerged ROM set ...')
+        pDialog.update(0, 'Building Split ROM set ...')
+        num_items = len(machines)
+        item_count = 0
+        for m_name in sorted(machines):
+            machine = machines[m_name]
+            cloneof = machines_render[m_name]['cloneof']
+            romof   = machine['romof']
+            m_roms  = machine_roms[m_name]['roms']
+
+            # --- ROMs ------------------------------------------------------------
+            nonmerged_roms = []
+            for rom in m_roms:
+                location = m_name + '/' + rom['name']
+                # >> Remove unused fields to save space in JSON database
+                rom_t = copy.deepcopy(rom)
+                rom_t['location'] = location
+                rom_t.pop('bios')
+                rom_t.pop('merge')
+                nonmerged_roms.append(rom_t)
+            # --- Make a dictionary with device ROMs ---
+            device_roms_list = []
+            for device in devices_db_dic[m_name]:
+                device_roms_dic = machine_roms[device]
+                for rom in device_roms_dic['roms']:
+                    rom['location'] = device + '/' + rom['name']
+                    rom_t = copy.deepcopy(rom)
+                    rom_t.pop('bios')
+                    rom_t.pop('merge')
+                    device_roms_list.append(rom_t)
+            if device_roms_list: nonmerged_roms.extend(device_roms_list)
+            roms_dic[m_name] = nonmerged_roms
+
+            # --- Update dialog ---
+            item_count += 1
+            pDialog.update((item_count*100)//num_items)
+    pDialog.close()
+
+    # --- CHD set ---
+    pDialog.create('Advanced MAME Launcher')
+    if chd_set == 'MERGED':
+        log_info('fs_build_ROM_databases() Building Merged CHD set ...')
+        pDialog.update(0, 'Building Merged CHD set ...')
+        num_items = len(machines)
+        item_count = 0
+        for m_name in sorted(machines):
+            machine = machines[m_name]
+            cloneof = machines_render[m_name]['cloneof']
+            romof   = machine['romof']
+            m_disks = machine_roms[m_name]['disks']
+
+            # --- CHDs ------------------------------------------------------------
+            split_chds = []
+            for disk in m_disks:
+                if not cloneof:
+                    # --- Parent machine ---
+                    if disk['merge']:
+                        location = romof + '/' + disk['name']
+                    else:
+                        location = m_name + '/' + disk['name']
                 else:
-                    location = machine_name + '/' + disk['name']
-            else:
-                # --- Clone machine ---
-                parent_romof = machines[cloneof]['romof']
-                if disk['merge']:
-                    location = romof + '/' + disk['name']
+                    # --- Clone machine ---
+                    parent_romof = machines[cloneof]['romof']
+                    if disk['merge']:
+                        location = romof + '/' + disk['name']
+                    else:
+                        location = m_name + '/' + disk['name']
+                disk_t = copy.deepcopy(disk)
+                disk_t['location'] = location
+                disk_t.pop('merge')
+                split_chds.append(disk_t)
+            chds_dic[m_name] = split_chds
+
+            # --- Update dialog ---
+            item_count += 1
+            pDialog.update((item_count*100)//num_items)
+    elif chd_set == 'SPLIT':
+        log_info('fs_build_ROM_databases() Building Split CHD set ...')
+        pDialog.update(0, 'Building Split CHD set ...')
+        num_items = len(machines)
+        item_count = 0
+        for m_name in sorted(machines):
+            machine = machines[m_name]
+            cloneof = machines_render[m_name]['cloneof']
+            romof   = machine['romof']
+            m_disks = machine_roms[m_name]['disks']
+
+            # --- CHDs ------------------------------------------------------------
+            split_chds = []
+            for disk in m_disks:
+                if not cloneof:
+                    # --- Parent machine ---
+                    if disk['merge']:
+                        location = romof + '/' + disk['name']
+                    else:
+                        location = m_name + '/' + disk['name']
                 else:
-                    location = machine_name + '/' + disk['name']
-            disk_t = copy.deepcopy(disk)
-            disk_t['location'] = location
-            disk_t.pop('merge')
-            split_chds.append(disk_t)
-        chds_dic[machine_name] = split_chds
-    pDialog.create('Advanced MAME Launcher', 'Saving Split database ...')
-    pDialog.update(0)
-    fs_write_JSON_file(PATHS.SET_SPLIT_ROMS_DB_PATH.getPath(), roms_dic)
-    pDialog.update(33)
-    fs_write_JSON_file(PATHS.SET_SPLIT_CHDS_DB_PATH.getPath(), chds_dic)
-    pDialog.update(66)
-    fs_write_JSON_file(PATHS.SET_SPLIT_IDX_DB_PATH.getPath(), idx_dic)
+                    # --- Clone machine ---
+                    parent_romof = machines[cloneof]['romof']
+                    if disk['merge']:
+                        location = romof + '/' + disk['name']
+                    else:
+                        location = m_name + '/' + disk['name']
+                disk_t = copy.deepcopy(disk)
+                disk_t['location'] = location
+                disk_t.pop('merge')
+                split_chds.append(disk_t)
+            chds_dic[m_name] = split_chds
+
+            # --- Update dialog ---
+            item_count += 1
+            pDialog.update((item_count*100)//num_items)
+    elif chd_set == 'NONMERGED':
+        log_info('fs_build_ROM_databases() Building Non-merged ROM set ...')
+        pDialog.update(0, 'Building Non-merged CHD set ...')
+        num_items = len(machines)
+        item_count = 0
+        for m_name in sorted(machines):
+            machine = machines[m_name]
+            cloneof = machines_render[m_name]['cloneof']
+            romof   = machine['romof']
+            m_disks = machine_roms[m_name]['disks']
+
+            # --- CHDs ------------------------------------------------------------
+            nonmerged_chds = []
+            for disk in m_disks:
+                location = m_name + '/' + disk['name']
+                disk_t = copy.deepcopy(disk)
+                disk_t['location'] = location
+                disk_t.pop('merge')
+                nonmerged_chds.append(disk_t)
+            chds_dic[m_name] = nonmerged_chds
+
+            # --- Update dialog ---
+            item_count += 1
+            pDialog.update((item_count*100)//num_items)
+    pDialog.close()
+
+    # --- ROM/CHD index ---
+    pDialog.create('Advanced MAME Launcher')
+    pDialog.update(0, 'Building index ...')
+    num_items = len(machines)
+    item_count = 0
+    for m_name in roms_dic:
+        rom_list = roms_dic[m_name]
+        chd_list = chds_dic[m_name]
+        rom_archive_set = set()
+        chd_archive_set = set()
+        # --- ROM list ---
+        for rom in rom_list:
+            rom_str_list = rom['location'].split('/')
+            zip_name = rom_str_list[0]
+            rom_archive_set.add(zip_name)
+        # --- CHD list ---
+        for chd in chd_list:
+            chd_name = chd['location']
+            chd_archive_set.add(chd_name)
+        idx_dic[m_name] = {'ROMs' : list(rom_archive_set), 'CHDs' : list(chd_archive_set)}
+        # --- Update dialog ---
+        item_count += 1
+        pDialog.update((item_count*100)//num_items)
+    pDialog.close()
+
+    # --- Save databases ---
+    pDialog.create('Advanced MAME Launcher')
+    pDialog.update(0, 'Saving databases ...\nROMs database')
+    fs_write_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath(), roms_dic)
+    pDialog.update(33, 'Saving databases ...\nCHDs database')
+    fs_write_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath(), chds_dic)
+    pDialog.update(66, 'Saving databases ...\nROM/CHD index')
+    fs_write_JSON_file(PATHS.ROM_SET_IDX_DB_PATH.getPath(), idx_dic)
     pDialog.update(100)
     pDialog.close()
-    del roms_dic
-    del chds_dic
-    del idx_dic
-    # mem_before_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    gc.collect()
-    # mem_after_gc = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    # log_debug('fs_build_ROM_databases() Memory before garbage collection {0}'.format(mem_before_gc))
-    # log_debug('fs_build_ROM_databases() Memory after garbage collection  {0}'.format(mem_after_gc))
 
 # -------------------------------------------------------------------------------------------------
 #

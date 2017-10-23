@@ -78,15 +78,9 @@ class AML_Paths:
         self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
 
         # >> ROM set databases
-        self.SET_MERGED_ROMS_DB_PATH    = PLUGIN_DATA_DIR.pjoin('Set_Merged_ROMs.json')
-        self.SET_MERGED_CHDS_DB_PATH    = PLUGIN_DATA_DIR.pjoin('Set_Merged_CHDs.json')
-        self.SET_MERGED_IDX_DB_PATH     = PLUGIN_DATA_DIR.pjoin('Set_Merged_index.json')
-        self.SET_SPLIT_ROMS_DB_PATH     = PLUGIN_DATA_DIR.pjoin('Set_Split_ROMs.json')
-        self.SET_SPLIT_CHDS_DB_PATH     = PLUGIN_DATA_DIR.pjoin('Set_Split_CHDs.json')
-        self.SET_SPLIT_IDX_DB_PATH      = PLUGIN_DATA_DIR.pjoin('Set_Split_index.json')
-        self.SET_NONMERGED_ROMS_DB_PATH = PLUGIN_DATA_DIR.pjoin('Set_Nonmerged_ROMs.json')
-        self.SET_NONMERGED_CHDS_DB_PATH = PLUGIN_DATA_DIR.pjoin('Set_Nonmerged_CHDs.json')
-        self.SET_NONMERGED_IDX_DB_PATH  = PLUGIN_DATA_DIR.pjoin('Set_Nonmerged_index.json')
+        self.ROM_SET_ROMS_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_ROMs.json')
+        self.ROM_SET_CHDS_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_CHDs.json')
+        self.ROM_SET_IDX_DB_PATH  = PLUGIN_DATA_DIR.pjoin('ROM_Set_index.json')
 
         # >> DAT indices and databases.
         self.HISTORY_IDX_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_History_index.json')
@@ -2835,13 +2829,19 @@ class Main:
                 #     kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
                 #     return
                 log_info('_command_setup_plugin() Generating ROM databases ...')
-                kodi_busydialog_ON()
-                machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-                control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                pDialog = xbmcgui.DialogProgress()
+                pDialog.create('Advanced MAME Launcher', 'Loading databases ...')
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                pDialog.update(5)
+                machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                pDialog.update(25)
                 machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-                devices_db_dic  = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
-                machine_roms    = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
-                kodi_busydialog_OFF()
+                pDialog.update(50)
+                devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
+                pDialog.update(75)
+                machine_roms = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+                pDialog.update(100)
+                pDialog.close()
 
                 # >> Generate ROM databases
                 fs_build_ROM_databases(PATHS, self.settings,
