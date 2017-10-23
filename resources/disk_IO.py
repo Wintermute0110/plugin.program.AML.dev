@@ -1130,14 +1130,13 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             controls_str = 'Controls {0}'.format(mame_get_control_str(m['control_type']))
         else:
             controls_str = 'No controls'
-        mecha_str = 'Mechanical' if m['isMechanical'] else 'No mechanical'
+        mecha_str = 'Mechanical' if m['isMechanical'] else 'Non-mechanical'
         coin_str  = 'Machine has {0} coin slots'.format(m['coins']) if m['coins'] > 0 else 'Machine has no coin slots'
         SL_str    = ', '.join(m['softwarelists']) if m['softwarelists'] else ''
 
         plot_str  = '{0}\n'.format(controls_str)
         plot_str += '{0}\n'.format(mame_get_screen_str(m))
-        plot_str += '{0}\n'.format(mecha_str)
-        plot_str += 'Driver is {0}\n'.format(m['sourcefile'])
+        plot_str += '{0} / Driver is {1}\n'.format(mecha_str, m['sourcefile'])
         plot_str += '{0}\n'.format(coin_str)
         plot_str += '{0}\n'.format(DAT_str) if DAT_str else ''
         plot_str += 'SL {0}'.format(SL_str) if SL_str else ''
