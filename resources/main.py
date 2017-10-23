@@ -2742,16 +2742,21 @@ class Main:
                 Samples_path_FN = FileName('')
 
             # >> Load machine database and control_dic
-            kodi_busydialog_ON()
-            machines        = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
+            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            pDialog.update(25)
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            rom_sets        = fs_load_JSON_file(PATHS.ROM_SETS_PATH.getPath())
-            control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            kodi_busydialog_OFF()
-            fs_scan_MAME_ROMs(PATHS, machines, machines_render, rom_sets, control_dic, 
+            pDialog.update(50)
+            rom_set_idx = fs_load_JSON_file(PATHS.ROM_SET_IDX_DB_PATH.getPath())
+            pDialog.update(75)
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            pDialog.update(100)
+            pDialog.close()
+            fs_scan_MAME_ROMs(PATHS, self.settings,
+                              machines, machines_render, rom_set_idx, control_dic, 
                               ROM_path_FN, CHD_path_FN, Samples_path_FN,
-                              scan_CHDs, scan_Samples,
-                              self.settings['mame_rom_set'], self.settings['mame_chd_set'])
+                              scan_CHDs, scan_Samples)
 
             # >> Get assets directory. Abort if not configured/found.
             do_MAME_asset_scan = True
@@ -2765,10 +2770,12 @@ class Main:
 
             if do_MAME_asset_scan: fs_scan_MAME_assets(PATHS, machines_render, Asset_path_FN)
 
-            kodi_busydialog_ON()
+            pDialog.create('Advanced MAME Launcher', 'Saving databases ... ')
             fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
+            pDialog.update(50)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-            kodi_busydialog_OFF()
+            pDialog.update(100)
+            pDialog.close()
 
             # --- Software Lists ------------------------------------------------------------------
             # >> Abort if SL hash path not configured.

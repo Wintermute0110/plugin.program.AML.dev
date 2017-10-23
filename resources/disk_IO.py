@@ -2364,115 +2364,136 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
 # -------------------------------------------------------------------------------------------------
 # Does not save any file. machines_render and control_dic modified by assigment
 #
-def fs_scan_MAME_ROMs(PATHS, machines, machines_render, rom_sets, control_dic, 
-                      ROM_path_FN, CHD_path_FN, Samples_path_FN, scan_CHDs, scan_Samples,
-                      mame_rom_set, mame_chd_set):
-    # >> Scan ROMs
+def fs_scan_MAME_ROMs(PATHS, settings,
+                      machines, machines_render, rom_set_idx, control_dic, 
+                      ROM_path_FN, CHD_path_FN, Samples_path_FN,
+                      scan_CHDs, scan_Samples):
+    # --- Initialise ---
+    mame_rom_set = settings['mame_rom_set']
+    mame_chd_set = settings['mame_chd_set']
+
+    # --- Scan ROMs ---
     log_info('Opening ROMs report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath()))
     file = open(PATHS.REPORT_MAME_SCAN_ROMS_PATH.getPath(), 'w')
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Scanning MAME ROMs...')
+    pDialog.create('Advanced MAME Launcher', 'Scanning MAME ROMs ...')
     total_machines = len(machines_render)
     processed_machines = 0
-    ROMs_have = ROMs_missing = ROMs_total = 0
+    scan_ROMs_have = 0
+    scan_ROMs_missing = 0
+    scan_ROMs_total = 0
     for key in sorted(machines_render):
-        rom_set_dic = rom_sets[key]
-        # log_info(unicode(rom_set_dic))
+        rom_list = rom_set_idx[key]['ROMs']
         # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
-
-        if   mame_rom_set == MAME_MERGED:    machine_has_ROM_ZIP = rom_set_dic['hasMergedROM']
-        elif mame_rom_set == MAME_SPLIT:     machine_has_ROM_ZIP = rom_set_dic['hasSplitROM']
-        elif mame_rom_set == MAME_NONMERGED: machine_has_ROM_ZIP = rom_set_dic['hasNonMergedROM']
-        if machine_has_ROM_ZIP:
-            ROMs_total += 1
-            # >> Machine has ROM. Get ROM filename and check if file exist
-            ROM_FN = ROM_path_FN.pjoin(key + '.zip')
-            if ROM_FN.exists():
+        if rom_list:
+            have_rom_list = [False] * len(rom_list)
+            for i, rom in enumerate(rom_list):
+                ROM_FN = ROM_path_FN.pjoin(key + '.zip')
+                if ROM_FN.exists():
+                    have_rom_list[i] = True
+                else:
+                    file.write('Machine {0} missing {1}\n'.format(key, ROM_FN.getPath()))
+            scan_ROMs_total += 1
+            if all(have_rom_list):
+                # --- All ZIP files required to run this machine exist ---
                 ROM_flag = 'R'
-                ROMs_have += 1
+                scan_ROMs_have += 1
             else:
                 ROM_flag = 'r'
-                ROMs_missing += 1
-                file.write('Missing ROM {0}\n'.format(ROM_FN.getPath()))
+                scan_ROMs_missing += 1
         else:
             ROM_flag = '-'
         fs_set_ROM_flag(machines_render[key], ROM_flag)
-
         # >> Progress dialog
-        processed_machines = processed_machines + 1
-        pDialog.update(100 * processed_machines / total_machines)
+        processed_machines += 1
+        pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
     file.close()
 
-    # >> Scan CHDs
+    # --- Scan CHDs ---
     log_info('Opening CHDs report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath()))
     file = open(PATHS.REPORT_MAME_SCAN_CHDS_PATH.getPath(), 'w')
-    CHDs_have = CHDs_missing = CHDs_total = 0
+    pDialog.create('Advanced MAME Launcher', 'Scanning MAME CHDs ...')
+    total_machines = len(machines_render)
+    processed_machines = 0
+    scan_CHDs_have = 0
+    scan_CHDs_missing = 0
+    scan_CHDs_total = 0
     for key in sorted(machines_render):
-        rom_set_dic = rom_sets[key]
-        # log_info(unicode(rom_set_dic))
+        chd_list = rom_set_idx[key]['CHDs']
         # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
-
-        if   mame_rom_set == MAME_MERGED:    CHD_list = rom_set_dic['merged_CDHs']
-        elif mame_rom_set == MAME_SPLIT:     CHD_list = rom_set_dic['split_CDHs']
-        elif mame_rom_set == MAME_NONMERGED: CHD_list = rom_set_dic['non_merged_CDHs']
-        if CHD_list:
-            CHDs_total += len(CHD_list)
-            if scan_CHDs:
-                has_CHD_list = [False] * len(CHD_list)
-                for idx, CHD_name in enumerate(CHD_list):
-                    CHD_FN = CHD_path_FN.pjoin(key).pjoin(CHD_name + '.chd')
-                    if CHD_FN.exists():
-                        has_CHD_list[idx] = True
-                        CHDs_have += 1
-                    else:
-                        file.write('Missing CHD {0}\n'.format(CHD_FN.getPath()))
-                        CHDs_missing += 1
-                if all(has_CHD_list): CHD_flag = 'C'
-                else:                 CHD_flag = 'c'
+        if chd_list and scan_CHDs:
+            has_chd_list = [False] * len(chd_list)
+            for idx, chd_name in enumerate(chd_list):
+                CHD_FN = CHD_path_FN.pjoin(key).pjoin(chd_name + '.chd')
+                if CHD_FN.exists():
+                    has_chd_list[idx] = True
+                else:
+                    file.write('Machine {0} missing CHD {0}\n'.format(key, CHD_FN.getPath()))
+            scan_CHDs_total += 1
+            if all(has_chd_list):
+                CHD_flag = 'C'
+                scan_CHDs_have += 1
             else:
                 CHD_flag = 'c'
-                CHDs_missing += len(machine['CHDs'])
+                scan_CHDs_missing += 1
+        elif chd_list and not scan_CHDs:
+            scan_CHDs_total += 1
+            CHD_flag = 'c'
+            scan_CHDs_missing += 1
         else:
             CHD_flag = '-'
         fs_set_CHD_flag(machines_render[key], CHD_flag)
+        # >> Progress dialog
+        processed_machines += 1
+        pDialog.update((processed_machines*100) // total_machines)
+    pDialog.close()
     file.close()
 
-    # >> Scan Samples
+    # --- Scan Samples ---
     log_info('Opening Samples report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath()))
     file = open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), 'w')
-    Samples_have = Samples_missing = Samples_total = 0
+    pDialog.create('Advanced MAME Launcher', 'Scanning MAME Samples ...')
+    total_machines = len(machines_render)
+    processed_machines = 0
+    scan_Samples_have = 0
+    scan_Samples_missing = 0
+    scan_Samples_total = 0
     for key in sorted(machines):
         if machines[key]['sampleof']:
-            Samples_total += 1
+            scan_Samples_total += 1
             if scan_Samples:
                 Sample_FN = Samples_path_FN.pjoin(key + '.zip')
                 if Sample_FN.exists():
                     Sample_flag = 'S'
-                    Samples_have += 1
+                    scan_Samples_have += 1
                 else:
                     Sample_flag = 's'
-                    Samples_missing += 1
+                    scan_Samples_missing += 1
                     file.write('Missing Sample {0}\n'.format(Sample_FN.getPath()))
             else:
                 Sample_flag = 's'
-                Samples_missing += 1
+                scan_Samples_missing += 1
         else:
             Sample_flag = '-'
         fs_set_Sample_flag(machines_render[key], Sample_flag)
-    file.close()    
+        # >> Progress dialog
+        processed_machines += 1
+        pDialog.update((processed_machines*100) // total_machines)
+    pDialog.close()
+    file.close()
 
-    # >> Update statistics
-    control_dic['ROMs_have']       = ROMs_have
-    control_dic['ROMs_missing']    = ROMs_missing
-    control_dic['ROMs_total']      = ROMs_total
-    control_dic['CHDs_have']       = CHDs_have
-    control_dic['CHDs_missing']    = CHDs_missing
-    control_dic['CHDs_total']      = CHDs_total
-    control_dic['Samples_have']    = Samples_have
-    control_dic['Samples_missing'] = Samples_missing
-    control_dic['Samples_total']   = Samples_total
+    # --- Update statistics ---
+    control_dic['scan_ROMs_have']       = scan_ROMs_have
+    control_dic['scan_ROMs_missing']    = scan_ROMs_missing
+    control_dic['scan_ROMs_total']      = scan_ROMs_total
+    control_dic['scan_CHDs_have']       = scan_CHDs_have
+    control_dic['scan_CHDs_missing']    = scan_CHDs_missing
+    control_dic['scan_CHDs_total']      = scan_CHDs_total
+    control_dic['scan_Samples_have']    = scan_Samples_have
+    control_dic['scan_Samples_missing'] = scan_Samples_missing
+    control_dic['scan_Samples_total']   = scan_Samples_total
 
 # -------------------------------------------------------------------------------------------------
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
@@ -2482,7 +2503,7 @@ def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_d
     log_info('Opening SL ROMs report file "{0}"'.format(PATHS.REPORT_SL_SCAN_ROMS_PATH.getPath()))
     file = open(PATHS.REPORT_SL_SCAN_ROMS_PATH.getPath(), 'w')
     pDialog = xbmcgui.DialogProgress()
-    pdialog_line1 = 'Scanning Sofware Lists ROMs ...'
+    pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(0)
     total_files = len(SL_catalog_dic)
@@ -2509,7 +2530,7 @@ def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_d
                 rom['status_ROM'] = '-'
         fs_write_JSON_file(SL_DB_FN.getPath(), roms)
         processed_files += 1
-        update_number = 100 * processed_files / total_files
+        update_number = (processed_files*100) // total_files
         pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
     pDialog.close()
     file.close()
@@ -2546,7 +2567,7 @@ def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_d
                 rom['status_CHD'] = '-'
         fs_write_JSON_file(SL_DB_FN.getPath(), roms)
         processed_files += 1
-        update_number = 100 * processed_files / total_files
+        update_number = (processed_files*100) // total_files
         pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
     pDialog.close()
     file.close()
@@ -2584,7 +2605,7 @@ def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
 
         # >> Progress dialog
         processed_machines += 1
-        pDialog.update(100 * processed_machines / total_machines)
+        pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
 
     # >> Asset statistics
@@ -2597,7 +2618,7 @@ def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
 def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
     # >> Traverse Software List, check if ROM exists, update and save database
     pDialog = xbmcgui.DialogProgress()
-    pdialog_line1 = 'Scanning Sofware Lists ROMs ...'
+    pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(0)
     total_files = len(SL_catalog_dic)
@@ -2631,7 +2652,7 @@ def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
 
         # >> Update progress
         processed_files += 1
-        update_number = 100 * processed_files / total_files
+        update_number = (processed_files*100) // total_files
         pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
     pDialog.close()
 
