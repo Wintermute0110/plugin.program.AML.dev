@@ -974,78 +974,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     for key in machines: assets_dic[key] = fs_new_MAME_asset()
 
     # ---------------------------------------------------------------------------------------------
-    # Build ROM set database.
-    # This dabatase is used in the ROM/CHD scanner.
-    #
-    # BIOS   <machine />
-    # 
-    # Parent <machine />
-    #
-    # Clone  <machine />
-    #
-    # ---------------------------------------------------------------------------------------------
-    rom_sets = {}
-    num_ZIP_merged = num_ZIP_split = num_ZIP_non_merged = 0
-    num_CHD_merged = num_CHD_split = num_CHD_non_merged = 0
-    for key in machines:
-        rom_set = fs_new_rom_DB_dic()
-        m_rom = machines_roms[key]
-
-        # >> Useful conditionals
-        has_valid_ROMs = True if m_rom['roms'] else False
-        if has_valid_ROMs:
-            one_or_more_non_merged_ROM = False
-            for rom_dic in m_rom['roms']:
-                if not rom_dic['merge']:
-                    one_or_more_non_merged_ROM = True
-                    break
-        else:
-            one_or_more_non_merged_ROM = False
-        has_valid_CHDs = True if m_rom['disks'] else False
-
-        # >> In a Non-merged set the machine has a ROM ZIP file if there is a valid <rom> tag
-        rom_set['hasNonMergedROM'] = has_valid_ROMs
-
-        # >> In a Split set the machine has a ROM ZIP file if there is a valid <rom> tag
-        #    and there is a non-empty 'merge' ROM.
-        #    If there are no valid ROMs then no ROM ZIP file.
-        if has_valid_ROMs and one_or_more_non_merged_ROM:
-            rom_set['hasSplitROM'] = True
-        else:
-            rom_set['hasSplitROM'] = False
-
-        # >> In a Merged set the machine has a ROM ZIP file if it is a parent and the parent
-        #    has valid <rom> tags.
-        #    If a machine is a clone is does not have a ROM ZIP file.
-        if key in main_pclone_dic and has_valid_ROMs:
-            rom_set['hasMergedROM'] = True
-        else:
-            rom_set['hasMergedROM'] = False
-
-        # >> CHDs
-        if has_valid_CHDs:
-            for disk_dic in m_rom['disks']:
-                rom_set['non_merged_CDHs'].append(disk_dic['name'])
-                if key in main_pclone_dic:
-                    # >> Parent machine
-                    rom_set['split_CDHs'].append(disk_dic['name'])
-                    rom_set['merged_CDHs'].append(disk_dic['name'])
-                else:
-                    # >> Clone machine
-                    if not disk_dic['merge']: rom_set['split_CDHs'].append(disk_dic['name'])
-
-        rom_sets[key] = rom_set
-
-        # --- Statistics ---
-        if rom_set['hasMergedROM']:    num_ZIP_merged += 1
-        if rom_set['hasSplitROM']:     num_ZIP_split += 1
-        if rom_set['hasNonMergedROM']: num_ZIP_non_merged += 1
-
-        if rom_set['merged_CDHs']:     num_CHD_merged += len(rom_set['merged_CDHs'])
-        if rom_set['split_CDHs']:      num_CHD_split += len(rom_set['split_CDHs'])
-        if rom_set['non_merged_CDHs']: num_CHD_non_merged += len(rom_set['non_merged_CDHs'])
-
-    # ---------------------------------------------------------------------------------------------
     # Improve info in RENDER_DB_PATH
     # ---------------------------------------------------------------------------------------------
     # >> Add genre infolabel
@@ -1188,7 +1116,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Write JSON databases
     # -----------------------------------------------------------------------------
     log_info('Saving database JSON files ...')
-    num_items = 16
+    num_items = 15
     pDialog.create('Advanced MAME Launcher', 'Saving databases ...')
     pDialog.update(int((0*100) / num_items))
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
@@ -1205,26 +1133,24 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog.update(int((6*100) / num_items))
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
     pDialog.update(int((7*100) / num_items))
-    fs_write_JSON_file(PATHS.ROM_SETS_PATH.getPath(), rom_sets)
-    pDialog.update(int((8*100) / num_items))
 
     # >> DAT files
     fs_write_JSON_file(PATHS.HISTORY_IDX_PATH.getPath(), history_idx_dic)
-    pDialog.update(int((9*100) / num_items))
+    pDialog.update(int((8*100) / num_items))
     fs_write_JSON_file(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
-    pDialog.update(int((10*100) / num_items))
+    pDialog.update(int((9*100) / num_items))
     fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
-    pDialog.update(int((11*100) / num_items))
+    pDialog.update(int((10*100) / num_items))
     fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
-    pDialog.update(int((12*100) / num_items))
+    pDialog.update(int((11*100) / num_items))
     fs_write_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath(), gameinit_idx_dic)
-    pDialog.update(int((13*100) / num_items))
+    pDialog.update(int((12*100) / num_items))
     fs_write_JSON_file(PATHS.GAMEINIT_DB_PATH.getPath(), gameinit_dic)
-    pDialog.update(int((14*100) / num_items))
+    pDialog.update(int((13*100) / num_items))
     fs_write_JSON_file(PATHS.COMMAND_IDX_PATH.getPath(), command_idx_dic)
-    pDialog.update(int((15*100) / num_items))
+    pDialog.update(int((14*100) / num_items))
     fs_write_JSON_file(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
-    pDialog.update(int((16*100) / num_items))
+    pDialog.update(int((15*100) / num_items))
     pDialog.close()
 
 #
