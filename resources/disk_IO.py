@@ -222,73 +222,70 @@ def fs_new_SL_asset():
 def fs_new_control_dic():
     C = {
         # >> Filed in when extracting MAME XML
-        'total_machines' : 0,
+        'stats_total_machines' : 0,
 
         # >> Filed in when building main MAME database
-        'mame_version'        : 'Unknown. MAME database not built',
-        'catver_version'      : 'Unknown. MAME database not built',
-        'catlist_version'     : 'Unknown. MAME database not built',
-        'genre_version'       : 'Unknown. MAME database not built',
-        'nplayers_version'    : 'Unknown. MAME database not built',
-        'bestgames_version'   : 'Unknown. MAME database not built',
-        'series_version'      : 'Unknown. MAME database not built',
+        'ver_mame'        : 'Unknown. MAME database not built',
+        'ver_catver'      : 'Unknown. MAME database not built',
+        'ver_catlist'     : 'Unknown. MAME database not built',
+        'ver_genre'       : 'Unknown. MAME database not built',
+        'ver_nplayers'    : 'Unknown. MAME database not built',
+        'ver_bestgames'   : 'Unknown. MAME database not built',
+        'ver_series'      : 'Unknown. MAME database not built',
 
-        'processed_machines'  : 0,
-        'parent_machines'     : 0,
-        'clone_machines'      : 0,
-        'samples_machines'    : 0,
-
-        'device_machines'             : 0,
-        'device_machines_parents'     : 0,
-        'device_machines_clones'      : 0,
-        'BIOS_machines'               : 0,
-        'BIOS_machines_parents'       : 0,
-        'BIOS_machines_clones'        : 0,
-        'coin_machines'               : 0,
-        'coin_machines_parents'       : 0,
-        'coin_machines_clones'        : 0,
-        'nocoin_machines'             : 0,
-        'nocoin_machines_parents'     : 0,
-        'nocoin_machines_clones'      : 0,
-        'mechanical_machines'         : 0,
-        'mechanical_machines_parents' : 0,
-        'mechanical_machines_clones'  : 0,
-        'dead_machines'               : 0,
-        'dead_machines_parents'       : 0,
-        'dead_machines_clones'        : 0,
-
-        'merged_ZIPs'     : 0,
-        'split_ZIPs'      : 0,
-        'non_merged_ZIPs' : 0,
-        'merged_CHDs'     : 0,
-        'split_CHDs'      : 0,
-        'non_merged_CHDs' : 0,
+        'stats_processed_machines' : 0,
+        'stats_parents'            : 0,
+        'stats_clones'             : 0,
+        'stats_devices'            : 0,
+        'stats_devices_parents'    : 0,
+        'stats_devices_clones'     : 0,
+        'stats_runnable'           : 0,
+        'stats_runnable_parents'   : 0,
+        'stats_runnable_clones'    : 0,
+        'stats_samples'            : 0,
+        'stats_samples_parents'    : 0,
+        'stats_samples_clones'     : 0,
+        'stats_BIOS'               : 0,
+        'stats_BIOS_parents'       : 0,
+        'stats_BIOS_clones'        : 0,
+        'stats_coin'               : 0,
+        'stats_coin_parents'       : 0,
+        'stats_coin_clones'        : 0,
+        'stats_nocoin'             : 0,
+        'stats_nocoin_parents'     : 0,
+        'stats_nocoin_clones'      : 0,
+        'stats_mechanical'         : 0,
+        'stats_mechanical_parents' : 0,
+        'stats_mechanical_clones'  : 0,
+        'stats_dead'               : 0,
+        'stats_dead_parents'       : 0,
+        'stats_dead_clones'        : 0,
 
         # >> Filed in when building SL index
-        'num_SL_files' : 0,
-        'num_SL_ROMs'  : 0,
-        'num_SL_CHDs'  : 0,
+        'SL_files' : 0,
+        'SL_ROMs'  : 0,
+        'SL_CHDs'  : 0,
 
         # >> Filed in by the MAME ROM/CHD/Samples scanner
-        'ROMs_have'       : 0,
-        'ROMs_total'      : 0,
-        'ROMs_missing'    : 0,
-        'CHDs_have'       : 0,
-        'CHDs_total'      : 0,
-        'CHDs_missing'    : 0,
-        'Samples_have'    : 0,
-        'Samples_total'   : 0,
-        'Samples_missing' : 0,
+        'scan_ROMs_have'       : 0,
+        'scan_ROMs_total'      : 0,
+        'scan_ROMs_missing'    : 0,
+        'scan_CHDs_have'       : 0,
+        'scan_CHDs_total'      : 0,
+        'scan_CHDs_missing'    : 0,
+        'scan_Samples_have'    : 0,
+        'scan_Samples_total'   : 0,
+        'scan_Samples_missing' : 0,
 
         # >> Filed in by the SL ROM scanner
-        'SL_ROMs_have'    : 0,
-        'SL_ROMs_total'   : 0,
-        'SL_ROMs_missing' : 0,
-        'SL_CHDs_have'    : 0,
-        'SL_CHDs_total'   : 0,
-        'SL_CHDs_missing' : 0,
+        'scan_SL_ROMs_have'    : 0,
+        'scan_SL_ROMs_total'   : 0,
+        'scan_SL_ROMs_missing' : 0,
+        'scan_SL_CHDs_have'    : 0,
+        'scan_SL_CHDs_total'   : 0,
+        'scan_SL_CHDs_missing' : 0,
     }
-    
+
     return C
 
 # --- Constants ---
@@ -449,7 +446,7 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
         p = subprocess.Popen([mame_prog_FN.getPath(), '-listxml'], stdout=out, stderr=err, cwd=mame_dir)
         count = 0
         while p.poll() is None:
-            pDialog.update(count * 100 / 100)
+            pDialog.update((count * 100) // 100)
             time.sleep(1)
             count = count + 1
     pDialog.close()
@@ -576,30 +573,30 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
     # --- Load INI files to include category information ---
     pDialog.create('Advanced MAME Launcher',)
-    pDialog.update(0, 'Processing INI files ...', 'File: catver.ini')
+    pDialog.update(0, 'Processing INI files ...\ncatver.ini')
     (categories_dic, catver_version) = fs_load_Catver_ini(settings['catver_path'])
-    pDialog.update(16, 'Processing INI files ...', 'File: catlist.ini')
+    pDialog.update(16, 'Processing INI files ...\ncatlist.ini')
     (catlist_dic, catlist_version) = fs_load_INI_datfile(settings['catlist_path'])
-    pDialog.update(32, 'Processing INI files ...', 'File: genre.ini')
+    pDialog.update(32, 'Processing INI files ...\ngenre.ini')
     (genre_dic, genre_version) = fs_load_INI_datfile(settings['genre_path'])
-    pDialog.update(48, 'Processing INI files ...', 'File: nplayers.ini')
+    pDialog.update(48, 'Processing INI files ...\nnplayers.ini')
     (nplayers_dic, nplayers_version) = fs_load_nplayers_ini(settings['nplayers_path'])
-    pDialog.update(64, 'Processing INI files ...', 'File: bestgames.ini')
+    pDialog.update(64, 'Processing INI files ...\nbestgames.ini')
     (bestgames_dic, bestgames_version) = fs_load_INI_datfile(settings['bestgames_path'])
-    pDialog.update(80, 'Processing INI files ...', 'File: series.ini')
+    pDialog.update(80, 'Processing INI files ...\nseries.ini')
     (series_dic, series_version) = fs_load_INI_datfile(settings['series_path'])
     pDialog.update(100)
     pDialog.close()
 
     # --- Load DAT files to include category information ---
     pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Processing DAT files ...', 'history.dat')
+    pDialog.update(0, 'Processing DAT files ...\nhistory.dat')
     (history_idx_dic, history_dic) = mame_load_History_DAT(settings['history_path'])
-    pDialog.update(25, 'Processing DAT files ...', 'mameinfo.dat')
+    pDialog.update(25, 'Processing DAT files ...\nmameinfo.dat')
     (mameinfo_idx_dic, mameinfo_dic) = mame_load_MameInfo_DAT(settings['mameinfo_path'])
-    pDialog.update(50, 'Processing DAT files ...', 'gameinit.dat')
+    pDialog.update(50, 'Processing DAT files ...\ngameinit.dat')
     (gameinit_idx_dic, gameinit_dic) = mame_load_GameInit_DAT(settings['gameinit_path'])
-    pDialog.update(75, 'Processing DAT files ...', 'command.dat')
+    pDialog.update(75, 'Processing DAT files ...\ncommand.dat')
     (command_idx_dic, command_dic) = mame_load_Command_DAT(settings['command_path'])
     pDialog.update(100)
     pDialog.close()
@@ -611,8 +608,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # grab only the information we want and discard the rest.
     # See http://effbot.org/zone/element-iterparse.htm [1]
     #
-    pDialog.create('Advanced MAME Launcher', 'Building main MAME database ...')
-    pDialog.update(0)
+    pDialog.create('Advanced MAME Launcher')
+    pDialog.update(0, 'Building main MAME database ...')
     log_info('fs_build_MAME_main_database() Loading "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
     context = ET.iterparse(PATHS.MAME_XML_PATH.getPath(), events=("start", "end"))
     context = iter(context)
@@ -626,28 +623,33 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     machines_render = {}
     machines_roms = {}
     machines_devices = {}
-    processed_machines          = 0
-    parent_machines             = 0
-    clone_machines              = 0
-    samples_machines            = 0
-    devices_machines            = 0
-    devices_machines_parents    = 0
-    devices_machines_clones     = 0
-    BIOS_machines               = 0
-    BIOS_machines_parents       = 0
-    BIOS_machines_clones        = 0
-    coin_machines               = 0
-    coin_machines_parents       = 0
-    coin_machines_clones        = 0
-    nocoin_machines             = 0
-    nocoin_machines_parents     = 0
-    nocoin_machines_clones      = 0
-    mechanical_machines         = 0
-    mechanical_machines_parents = 0
-    mechanical_machines_clones  = 0
-    dead_machines               = 0
-    dead_machines_parents       = 0
-    dead_machines_clones        = 0
+    stats_processed_machines = 0
+    stats_parents            = 0
+    stats_clones             = 0
+    stats_devices            = 0
+    stats_devices_parents    = 0
+    stats_devices_clones     = 0
+    stats_runnable           = 0
+    stats_runnable_parents   = 0
+    stats_runnable_clones    = 0
+    stats_samples            = 0
+    stats_samples_parents    = 0
+    stats_samples_clones     = 0
+    stats_BIOS               = 0
+    stats_BIOS_parents       = 0
+    stats_BIOS_clones        = 0
+    stats_coin               = 0
+    stats_coin_parents       = 0
+    stats_coin_clones        = 0
+    stats_nocoin             = 0
+    stats_nocoin_parents     = 0
+    stats_nocoin_clones      = 0
+    stats_mechanical         = 0
+    stats_mechanical_parents = 0
+    stats_mechanical_clones  = 0
+    stats_dead               = 0
+    stats_dead_parents       = 0
+    stats_dead_clones        = 0
 
     log_info('fs_build_MAME_main_database() Parsing MAME XML file ...')
     num_iteration = 0
@@ -726,7 +728,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             else:                        machine['series']    = '[ Not set ]'
 
             # >> Increment number of machines
-            processed_machines += 1
+            stats_processed_machines += 1
 
         elif event == 'start' and elem.tag == 'description':
             m_render['description'] = unicode(elem.text)
@@ -756,6 +758,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         #    BIOS. However, in a split set only snes.zip ROM set exists.
         #    snes    -> <rom name="spc700.rom" size="64" crc="44bb3a40" ... >
         #    snespal -> <rom name="spc700.rom" merge="spc700.rom" size="64" crc="44bb3a40" ... >
+        #
         # C) In AML, hasROM actually means "machine has it own ROMs not found somewhere else".
         #
         elif event == 'start' and elem.tag == 'rom':
@@ -860,18 +863,18 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             # >> Assumption 1: isdevice = True if and only if runnable = False
             if m_render['isDevice'] == runnable:
                 print("Machine {0}: machine['isDevice'] == runnable".format(machine_name))
-                sys.exit(10)
+                raise GeneralError
 
             # >> Are there machines with more than 1 <display> tag. Answer: YES
             # if num_displays > 1:
             #     print("Machine {0}: num_displays = {1}".format(machine_name, num_displays))
-            #     sys.exit(10)
+            #     raise GeneralError
 
             # >> All machines with 0 displays are mechanical? NO, 24cdjuke has no screen and is not mechanical. However
             # >> 24cdjuke is a preliminary driver.
             # if num_displays == 0 and not machine['ismechanical']:
             #     print("Machine {0}: num_displays == 0 and not machine['ismechanical']".format(machine_name))
-            #     sys.exit(10)
+            #     raise GeneralError
 
             # >> Mark dead machines. A machine is dead if Status is preliminary AND have no controls
             if m_render['driver_status'] == 'preliminary' and not machine['control_type']:
@@ -885,34 +888,41 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             m_render['flags'] = fs_initial_flags(machine, m_render, m_rom)
 
             # --- Compute statistics ---
-            if m_render['cloneof']: clone_machines += 1
-            else:                   parent_machines += 1
+            if m_render['cloneof']: stats_clones += 1
+            else:                   stats_parents += 1
             if m_render['isDevice']:
-                devices_machines += 1
-                if m_render['cloneof']: devices_machines_clones += 1
-                else:                   devices_machines_parents += 1
-            if m_render['isBIOS']:
-                BIOS_machines += 1
-                if m_render['cloneof']: BIOS_machines_clones += 1
-                else:                   BIOS_machines_parents += 1
-            if machine['coins'] > 0:
-                coin_machines += 1
-                if m_render['cloneof']: coin_machines_clones += 1
-                else:                   coin_machines_parents += 1
-            else:
-                nocoin_machines += 1
-                if m_render['cloneof']: nocoin_machines_clones += 1
-                else:                   nocoin_machines_parents += 1
-            if machine['isMechanical']:
-                mechanical_machines += 1
-                if m_render['cloneof']: mechanical_machines_clones += 1
-                else:                   mechanical_machines_parents += 1
-            if machine['isDead']:
-                dead_machines += 1
-                if m_render['cloneof']: dead_machines_clones += 1
-                else:                   dead_machines_parents += 1
+                stats_devices += 1
+                if m_render['cloneof']: stats_devices_clones += 1
+                else:                   stats_devices_parents += 1
+            if runnable:
+                stats_runnable += 1
+                if m_render['cloneof']: stats_runnable_clones += 1
+                else:                   stats_runnable_parents += 1
             if machine['sampleof']:
-                samples_machines += 1
+                stats_samples += 1
+                if m_render['cloneof']: stats_samples_clones += 1
+                else:                   stats_samples_parents += 1
+            if m_render['isBIOS']:
+                stats_BIOS += 1
+                if m_render['cloneof']: stats_BIOS_clones += 1
+                else:                   stats_BIOS_parents += 1
+            if not m_render['isDevice']:
+                if machine['coins'] > 0:
+                    stats_coin += 1
+                    if m_render['cloneof']: stats_coin_clones += 1
+                    else:                   stats_coin_parents += 1
+                else:
+                    stats_nocoin += 1
+                    if m_render['cloneof']: stats_nocoin_clones += 1
+                    else:                   stats_nocoin_parents += 1
+                if machine['isMechanical']:
+                    stats_mechanical += 1
+                    if m_render['cloneof']: stats_mechanical_clones += 1
+                    else:                   stats_mechanical_parents += 1
+                if machine['isDead']:
+                    stats_dead += 1
+                    if m_render['cloneof']: stats_dead_clones += 1
+                    else:                   stats_dead_parents += 1
 
             # >> Add new machine
             machines[m_name] = machine
@@ -923,21 +933,21 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         # --- Print something to prove we are doing stuff ---
         num_iteration += 1
         if num_iteration % 1000 == 0:
-            pDialog.update((processed_machines * 100) // total_machines)
-            # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(num_iteration, processed_machines))
-            # log_debug('processed_machines   = {0}'.format(processed_machines))
+            pDialog.update((stats_processed_machines * 100) // total_machines)
+            # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(num_iteration, stats_processed_machines))
+            # log_debug('stats_processed_machines   = {0}'.format(stats_processed_machines))
             # log_debug('total_machines = {0}'.format(total_machines))
             # log_debug('Update number  = {0}'.format(update_number))
 
         # --- Stop after STOP_AFTER_MACHINES machines have been processed for debug ---
-        if processed_machines >= STOP_AFTER_MACHINES: break
+        if stats_processed_machines >= STOP_AFTER_MACHINES: break
     pDialog.update(100)
     pDialog.close()
     log_info('Processed {0} MAME XML events'.format(num_iteration))
-    log_info('Processed machines {0}'.format(processed_machines))
-    log_info('Parents            {0}'.format(parent_machines))
-    log_info('Clones             {0}'.format(clone_machines))
-    log_info('Dead machines      {0}'.format(dead_machines))
+    log_info('Processed machines {0}'.format(stats_processed_machines))
+    log_info('Parents            {0}'.format(stats_parents))
+    log_info('Clones             {0}'.format(stats_clones))
+    log_info('Dead machines      {0}'.format(stats_dead))
 
     # ---------------------------------------------------------------------------------------------
     # Main parent-clone list
@@ -1073,38 +1083,42 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
-    control_dic['mame_version']        = mame_version_raw
-    control_dic['catver_version']      = catver_version
-    control_dic['catlist_version']     = catlist_version
-    control_dic['genre_version']       = genre_version
-    control_dic['nplayers_version']    = nplayers_version
-    control_dic['bestgames_version']   = bestgames_version
-    control_dic['series_version']      = series_version
-    
-    # >> Statistics
-    control_dic['processed_machines']  = processed_machines
-    control_dic['parent_machines']     = parent_machines
-    control_dic['clone_machines']      = clone_machines
-    control_dic['samples_machines']    = samples_machines
+    control_dic['ver_mame']        = mame_version_raw
+    control_dic['ver_catver']      = catver_version
+    control_dic['ver_catlist']     = catlist_version
+    control_dic['ver_genre']       = genre_version
+    control_dic['ver_nplayers']    = nplayers_version
+    control_dic['ver_bestgames']   = bestgames_version
+    control_dic['ver_series']      = series_version
 
-    control_dic['devices_machines']            = devices_machines
-    control_dic['devices_machines_parents']    = devices_machines_parents
-    control_dic['devices_machines_clones']     = devices_machines_clones
-    control_dic['BIOS_machines']               = BIOS_machines
-    control_dic['BIOS_machines_parents']       = BIOS_machines_parents
-    control_dic['BIOS_machines_clones']        = BIOS_machines_clones
-    control_dic['coin_machines']               = coin_machines
-    control_dic['coin_machines_parents']       = coin_machines_parents
-    control_dic['coin_machines_clones']        = coin_machines_clones
-    control_dic['nocoin_machines']             = nocoin_machines
-    control_dic['nocoin_machines_parents']     = nocoin_machines_parents
-    control_dic['nocoin_machines_clones']      = nocoin_machines_clones
-    control_dic['mechanical_machines']         = mechanical_machines
-    control_dic['mechanical_machines_parents'] = mechanical_machines_parents
-    control_dic['mechanical_machines_clones']  = mechanical_machines_clones
-    control_dic['dead_machines']               = dead_machines
-    control_dic['dead_machines_parents']       = dead_machines_parents
-    control_dic['dead_machines_clones']        = dead_machines_clones
+    # >> Statistics
+    control_dic['stats_processed_machines'] = stats_processed_machines
+    control_dic['stats_parents']            = stats_parents
+    control_dic['stats_clones']             = stats_clones
+    control_dic['stats_devices']            = stats_devices
+    control_dic['stats_devices_parents']    = stats_devices_parents
+    control_dic['stats_devices_clones']     = stats_devices_clones
+    control_dic['stats_runnable']           = stats_runnable
+    control_dic['stats_runnable_parents']   = stats_runnable_parents
+    control_dic['stats_runnable_clones']    = stats_runnable_clones
+    control_dic['stats_samples']            = stats_samples
+    control_dic['stats_samples_parents']    = stats_samples_parents
+    control_dic['stats_samples_clones']     = stats_samples_clones
+    control_dic['stats_BIOS']               = stats_BIOS
+    control_dic['stats_BIOS_parents']       = stats_BIOS_parents
+    control_dic['stats_BIOS_clones']        = stats_BIOS_clones
+    control_dic['stats_coin']               = stats_coin
+    control_dic['stats_coin_parents']       = stats_coin_parents
+    control_dic['stats_coin_clones']        = stats_coin_clones
+    control_dic['stats_nocoin']             = stats_nocoin
+    control_dic['stats_nocoin_parents']     = stats_nocoin_parents
+    control_dic['stats_nocoin_clones']      = stats_nocoin_clones
+    control_dic['stats_mechanical']         = stats_mechanical
+    control_dic['stats_mechanical_parents'] = stats_mechanical_parents
+    control_dic['stats_mechanical_clones']  = stats_mechanical_clones
+    control_dic['stats_dead']               = stats_dead
+    control_dic['stats_dead_parents']       = stats_dead_parents
+    control_dic['stats_dead_clones']        = stats_dead_clones
 
     # -----------------------------------------------------------------------------
     # Write JSON databases
@@ -2342,9 +2356,9 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     # log_info('mame_properties_dic has {0} items'.format(len(mame_properties_dic)))
 
     # --- SL statistics and save control_dic ---
-    control_dic['num_SL_files'] = processed_files
-    control_dic['num_SL_ROMs']  = num_SL_ROMs
-    control_dic['num_SL_CHDs']  = num_SL_CHDs
+    control_dic['SL_files'] = processed_files
+    control_dic['SL_ROMs']  = num_SL_ROMs
+    control_dic['SL_CHDs']  = num_SL_CHDs
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------

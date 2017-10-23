@@ -1657,64 +1657,88 @@ class Main:
 
             # --- Main stuff ---
             info_text  = '[COLOR orange]Main information[/COLOR]\n'
-            info_text += "AML version: {0}\n".format(__addon_version__)
-            info_text += "MAME version: {0}\n".format(control_dic['mame_version'])
-            info_text += "catver.ini version: {0}\n".format(control_dic['catver_version'])
-            info_text += "catlist.ini version: {0}\n".format(control_dic['catlist_version'])
-            info_text += "genre.ini version: {0}\n".format(control_dic['genre_version'])
-            info_text += "nplayers.ini version: {0}\n".format(control_dic['nplayers_version'])
-            info_text += "bestgames.ini version: {0}\n".format(control_dic['bestgames_version'])
-            info_text += "series.ini version: {0}\n".format(control_dic['series_version'])
+            info_text += "AML version            {0}\n".format(__addon_version__)
+            info_text += "MAME version           {0}\n".format(control_dic['ver_mame'])
+            info_text += "catver.ini version     {0}\n".format(control_dic['ver_catver'])
+            info_text += "catlist.ini version    {0}\n".format(control_dic['ver_catlist'])
+            info_text += "genre.ini version      {0}\n".format(control_dic['ver_genre'])
+            info_text += "nplayers.ini version   {0}\n".format(control_dic['ver_nplayers'])
+            info_text += "bestgames.ini version  {0}\n".format(control_dic['ver_bestgames'])
+            info_text += "series.ini version     {0}\n".format(control_dic['ver_series'])
 
             info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
             t = "Machines   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['processed_machines'], control_dic['parent_machines'], 
-                                  control_dic['clone_machines'])
-            info_text += "Samples    {0:5d}\n".format(control_dic['samples_machines'])
-
+            info_text += t.format(control_dic['stats_processed_machines'],
+                                  control_dic['stats_parents'], 
+                                  control_dic['stats_clones'])
             t = "Devices    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['devices_machines'],    control_dic['devices_machines_parents'], 
-                                  control_dic['devices_machines_clones'])
-            t = "BIOS       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['BIOS_machines'],       control_dic['BIOS_machines_parents'], 
-                                  control_dic['BIOS_machines_clones'])
-            t = "Mechanical {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['mechanical_machines'], control_dic['mechanical_machines_parents'],
-                                  control_dic['mechanical_machines_clones'])
-            t = "Coin       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['coin_machines'],       control_dic['coin_machines_parents'], 
-                                  control_dic['coin_machines_clones'])
-            t = "Nocoin     {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['nocoin_machines'],     control_dic['nocoin_machines_parents'],
-                                  control_dic['nocoin_machines_clones'])
-            t = "Dead       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['dead_machines'],       control_dic['dead_machines_parents'], 
-                                  control_dic['dead_machines_clones'])
+            info_text += t.format(control_dic['stats_devices'],
+                                  control_dic['stats_devices_parents'], 
+                                  control_dic['stats_devices_clones'])
+            t = "Runnable   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['stats_runnable'],
+                                  control_dic['stats_runnable_parents'], 
+                                  control_dic['stats_runnable_clones'])
+            t = "Samples    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['stats_samples'],
+                                  control_dic['stats_samples_parents'], 
+                                  control_dic['stats_samples_clones'])
 
-            info_text += '\n[COLOR orange]ROM ZIP/CHD file count[/COLOR]\n'
-            info_text += "Merged     set has {0:5d} ZIP files\n".format(control_dic['merged_ZIPs'])
-            info_text += "Split      set has {0:5d} ZIP files\n".format(control_dic['split_ZIPs'])
-            info_text += "Non-merged set has {0:5d} ZIP files\n".format(control_dic['non_merged_ZIPs'])
-            info_text += "Merged     set has {0:5d} CHD files\n".format(control_dic['merged_CHDs'])
-            info_text += "Split      set has {0:5d} CHD files\n".format(control_dic['split_CHDs'])
-            info_text += "Non-merged set has {0:5d} CHD files\n".format(control_dic['non_merged_CHDs'])
+            t = "BIOS       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['stats_BIOS'],
+                                  control_dic['stats_BIOS_parents'], 
+                                  control_dic['stats_BIOS_clones'])
+            t = "Coin       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['stats_coin'],
+                                  control_dic['stats_coin_parents'], 
+                                  control_dic['stats_coin_clones'])
+            t = "Nocoin     {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['stats_nocoin'],
+                                  control_dic['stats_nocoin_parents'],
+                                  control_dic['stats_nocoin_clones'])
+            t = "Mechanical {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['stats_mechanical'],
+                                  control_dic['stats_mechanical_parents'],
+                                  control_dic['stats_mechanical_clones'])
+            t = "Dead       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['stats_dead'],
+                                  control_dic['stats_dead_parents'], 
+                                  control_dic['stats_dead_clones'])
+
+            # info_text += '\n[COLOR orange]ROM ZIP/CHD file count[/COLOR]\n'
+            # info_text += "Merged     set has {0:5d} ZIP files\n".format(control_dic['merged_ZIPs'])
+            # info_text += "Split      set has {0:5d} ZIP files\n".format(control_dic['split_ZIPs'])
+            # info_text += "Non-merged set has {0:5d} ZIP files\n".format(control_dic['non_merged_ZIPs'])
+            # info_text += "Merged     set has {0:5d} CHD files\n".format(control_dic['merged_CHDs'])
+            # info_text += "Split      set has {0:5d} CHD files\n".format(control_dic['split_CHDs'])
+            # info_text += "Non-merged set has {0:5d} CHD files\n".format(control_dic['non_merged_CHDs'])
 
             info_text += '\n[COLOR orange]Software Lists ROM count[/COLOR]\n'
-            info_text += "Number of SL files    {0:5d}\n".format(control_dic['num_SL_files'])
-            info_text += "Total ROMs in all SLs {0:5d}\n".format(control_dic['num_SL_ROMs'])
-            info_text += "Total CHDs in all SLs {0:5d}\n".format(control_dic['num_SL_CHDs'])
+            info_text += "Number of SL files    {0:5d}\n".format(control_dic['SL_files'])
+            info_text += "Total ROMs in all SLs {0:5d}\n".format(control_dic['SL_ROMs'])
+            info_text += "Total CHDs in all SLs {0:5d}\n".format(control_dic['SL_CHDs'])
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
             t = "You have {0:5d} ROMs    out of {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['ROMs_have'], control_dic['ROMs_total'], control_dic['ROMs_missing'])
+            info_text += t.format(control_dic['scan_ROMs_have'],
+                                  control_dic['scan_ROMs_total'],
+                                  control_dic['scan_ROMs_missing'])
             t = "You have {0:5d} CHDs    out of {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['CHDs_have'], control_dic['CHDs_total'], control_dic['CHDs_missing'])
+            info_text += t.format(control_dic['scan_CHDs_have'],
+                                  control_dic['scan_CHDs_total'],
+                                  control_dic['scan_CHDs_missing'])
             t = "You have {0:5d} Samples out of {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['Samples_have'], control_dic['Samples_total'], control_dic['Samples_missing'])
+            info_text += t.format(control_dic['scan_Samples_have'],
+                                  control_dic['scan_Samples_total'],
+                                  control_dic['scan_Samples_missing'])
             t = "You have {0:5d} SL ROMs out of {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['SL_ROMs_have'], control_dic['SL_ROMs_total'], control_dic['SL_ROMs_missing'])
+            info_text += t.format(control_dic['scan_SL_ROMs_have'],
+                                  control_dic['scan_SL_ROMs_total'],
+                                  control_dic['scan_SL_ROMs_missing'])
             t = "You have {0:5d} SL CHDs out of {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['SL_CHDs_have'], control_dic['SL_CHDs_total'], control_dic['SL_CHDs_missing'])
+            info_text += t.format(control_dic['scan_SL_CHDs_have'],
+                                  control_dic['scan_SL_CHDs_total'],
+                                  control_dic['scan_SL_CHDs_missing'])
 
             # --- Show information window ---
             xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
@@ -2797,17 +2821,17 @@ class Main:
         # --- Build Step by Step ---
         elif menu_item == 6:
             submenu = dialog.select('Setup plugin (step by step)',
-                                   ['Build MAME and SL databases ...',
+                                   ['Build MAME databases ...',
                                     'Build ROM databases ...',
                                     'Build MAME catalogs ...',
-                                    'Build Software Lists catalogs ...',
+                                    'Build Software Lists databases and catalogs ...',
                                     'Scan MAME ROMs/CHDs/Samples ...',
                                     'Scan MAME assets/artwork ...',
                                     'Scan Software Lists ROMs/CHDs ...',
                                     'Scan Software Lists assets/artwork ...' ])
             if submenu < 0: return
 
-            # --- Build main MAME database, PClone list and hashed database, SL database ---
+            # --- Build main MAME database, PClone list and hashed database ---
             if submenu == 0:
                 # --- Error checks ---
                 # >> Check that MAME_XML_PATH exists
@@ -2819,7 +2843,7 @@ class Main:
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 log_info('_command_setup_plugin() Generating MAME main database and PClone list ...')
                 try:
-                    fs_build_MAME_main_databases(PATHS, self.settings, control_dic)
+                    fs_build_MAME_main_database(PATHS, self.settings, control_dic)
                 except GeneralError as e:
                     log_error(e.msg)
                     raise SystemExit
@@ -2867,7 +2891,7 @@ class Main:
                 fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic)
                 kodi_notify('Indices and catalogs built')
 
-            # --- Build Software Lists indices/catalogs ---
+            # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
             elif submenu == 3:
                 # --- Error checks ---
                 if not self.settings['SL_hash_path']:
