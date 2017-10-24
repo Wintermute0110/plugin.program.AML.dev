@@ -44,6 +44,58 @@ from mame import *
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher data model
 # -------------------------------------------------------------------------------------------------
+# http://xmlwriter.net/xml_guide/attlist_declaration.shtml#CdataEx
+# #REQUIRED  The attribute must always be included
+# #IMPLIED   The attribute does not have to be included.
+#
+# Example from MAME 0.190:
+#   <!ELEMENT device (instance*, extension*)>
+#     <!ATTLIST device type CDATA #REQUIRED>
+#     <!ATTLIST device tag CDATA #IMPLIED>
+#     <!ATTLIST device fixed_image CDATA #IMPLIED>
+#     <!ATTLIST device mandatory CDATA #IMPLIED>
+#     <!ATTLIST device interface CDATA #IMPLIED>
+#     <!ELEMENT instance EMPTY>
+#       <!ATTLIST instance name CDATA #REQUIRED>
+#       <!ATTLIST instance briefname CDATA #REQUIRED>
+#     <!ELEMENT extension EMPTY>
+#       <!ATTLIST extension name CDATA #REQUIRED>
+#
+# <device> tags. Example of machine aes (Neo Geo AES)
+# <device type="memcard" tag="memcard">
+#   <instance name="memcard" briefname="memc"/>
+#   <extension name="neo"/>
+# </device>
+# <device type="cartridge" tag="cslot1" interface="neo_cart">
+#   <instance name="cartridge" briefname="cart"/>
+#   <extension name="bin"/>
+# </device>
+#
+# This is how it is stored:
+# devices = [
+#   {
+#     'att_type' : string,
+#     'att_tag' : string,
+#     'att_mandatory' : bool,
+#     'att_interface' : string,
+#     'inst_name' : string,
+#     'inst_briefname' : string,
+#     'ext_name' : [string1, string2],
+#   }, ...
+# ]
+#
+# Rendering on AML Machine Information text window.
+# devices[0, att_type]:
+#   att_type: string
+#   att_tag: string
+#   att_mandatory: unicode(bool)
+#   att_interface: string
+#   inst_name: string
+#   inst_briefname: string
+#   ext_names: unicode(string list),
+# devices[1, att_type]: unicode(device[1])
+#   ...
+#
 def fs_new_machine_dic():
     m = {
         # >> <machine> attributes
@@ -58,8 +110,7 @@ def fs_new_machine_dic():
         'control_type'   : [],
         'coins'          : 0,
         'softwarelists'  : [],
-        'device_list'    : [], # List of <instance name="cartridge1">. Ignore briefname
-        'device_tags'    : [],
+        'devices'        : [], # List of dictionaries. See comments avobe.
         # >> Custom AML data
         'catver'         : '', # External catalog
         'nplayers'       : '', # External catalog
@@ -504,12 +555,10 @@ def fs_initial_flags(machine, m_render, m_rom):
     else:                   flag_Samples = '-'
     if machine['softwarelists']: flag_SL  = 'L'
     else:                        flag_SL  = '-'
-    if machine['device_list']:
+    if machine['devices']:
         num_dev_mandatory = 0
-        for i in range(len(machine['device_list'])):
-            device = machine['device_list'][i]
-            tags   = machine['device_tags'][i]
-            if tags['d_mandatory']: 
+        for device in machine['devices']:
+            if device['att_mandatory']: 
                 flag_Devices = 'D'
                 num_dev_mandatory += 1
             else: 
@@ -585,31 +634,31 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog = xbmcgui.DialogProgress()
 
     # --- Load INI files to include category information ---
-    pDialog.create('Advanced MAME Launcher',)
-    pDialog.update(0, 'Processing INI files ...\ncatver.ini')
+    pDialog.create('Advanced MAME Launcher')
+    pDialog.update(0, 'Processing INI file: catver.ini ...')
     (categories_dic, catver_version) = fs_load_Catver_ini(settings['catver_path'])
-    pDialog.update(16, 'Processing INI files ...\ncatlist.ini')
+    pDialog.update(16, 'Processing INI file: catlist.ini ...')
     (catlist_dic, catlist_version) = fs_load_INI_datfile(settings['catlist_path'])
-    pDialog.update(32, 'Processing INI files ...\ngenre.ini')
+    pDialog.update(32, 'Processing INI file: genre.ini ...')
     (genre_dic, genre_version) = fs_load_INI_datfile(settings['genre_path'])
-    pDialog.update(48, 'Processing INI files ...\nnplayers.ini')
+    pDialog.update(48, 'Processing INI file: nplayers.ini ...')
     (nplayers_dic, nplayers_version) = fs_load_nplayers_ini(settings['nplayers_path'])
-    pDialog.update(64, 'Processing INI files ...\nbestgames.ini')
+    pDialog.update(64, 'Processing INI file: bestgames.ini ...')
     (bestgames_dic, bestgames_version) = fs_load_INI_datfile(settings['bestgames_path'])
-    pDialog.update(80, 'Processing INI files ...\nseries.ini')
+    pDialog.update(80, 'Processing INI file: series.ini ...')
     (series_dic, series_version) = fs_load_INI_datfile(settings['series_path'])
     pDialog.update(100)
     pDialog.close()
 
     # --- Load DAT files to include category information ---
     pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Processing DAT files ...\nhistory.dat')
+    pDialog.update(0, 'Processing DAT file: history.dat ...')
     (history_idx_dic, history_dic) = mame_load_History_DAT(settings['history_path'])
-    pDialog.update(25, 'Processing DAT files ...\nmameinfo.dat')
+    pDialog.update(25, 'Processing DAT file: mameinfo.dat ...')
     (mameinfo_idx_dic, mameinfo_dic) = mame_load_MameInfo_DAT(settings['mameinfo_path'])
-    pDialog.update(50, 'Processing DAT files ...\ngameinit.dat')
+    pDialog.update(50, 'Processing DAT file: gameinit.dat ...')
     (gameinit_idx_dic, gameinit_dic) = mame_load_GameInit_DAT(settings['gameinit_path'])
-    pDialog.update(75, 'Processing DAT files ...\ncommand.dat')
+    pDialog.update(75, 'Processing DAT file: command.dat ...')
     (command_idx_dic, command_dic) = mame_load_Command_DAT(settings['command_path'])
     pDialog.update(100)
     pDialog.close()
@@ -837,39 +886,42 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
         # >> Device tag for machines that support loading external files
         elif event == 'start' and elem.tag == 'device':
-            device_type      = elem.attrib['type'] # Mandatory attribute
-            device_tag       = elem.attrib['tag']       if 'tag'       in elem.attrib else ''
-            device_mandatory = elem.attrib['mandatory'] if 'mandatory' in elem.attrib else ''
-            device_interface = elem.attrib['interface'] if 'interface' in elem.attrib else ''
+            att_type      = elem.attrib['type'] # The only mandatory attribute
+            att_tag       = elem.attrib['tag']       if 'tag'       in elem.attrib else ''
+            att_mandatory = elem.attrib['mandatory'] if 'mandatory' in elem.attrib else ''
+            att_interface = elem.attrib['interface'] if 'interface' in elem.attrib else ''
             # >> Transform device_mandatory into bool
-            if device_mandatory and device_mandatory == '1': device_mandatory = True
-            else:                                            device_mandatory = False
+            if att_mandatory and att_mandatory == '1': att_mandatory = True
+            else:                                      att_mandatory = False
 
             # >> Iterate children of <device> and search for <instance> tags
             instance_tag_found = False
-            i_name = i_briefname = ''
-            exts_list   = []
+            inst_name = ''
+            inst_briefname = ''
+            ext_names = []
             for device_child in elem:
                 if device_child.tag == 'instance':
-                    i_name      = device_child.attrib['name']
-                    i_briefname = device_child.attrib['briefname']
+                    # >> Stop if <device> tag has more than one <instance> tags.
+                    if instance_tag_found:
+                        raise GeneralError('Machine {0} has more than one <instance> inside <device>')
+                    inst_name      = device_child.attrib['name']
+                    inst_briefname = device_child.attrib['briefname']
                     instance_tag_found = True
                 elif device_child.tag == 'extension':
-                    exts_list.append(device_child.attrib['name'])
+                    ext_names.append(device_child.attrib['name'])
 
             # >> NOTE Some machines have no instance inside <device>, for example 2020bb
             # >>      I don't know how to launch those machines
-            if not instance_tag_found:
+            # if not instance_tag_found:
                 # log_warning('<instance> tag not found inside <device> tag (machine {0})'.format(machine_name))
-                device_type = '{0} (NI)'.format(device_type)
+                # device_type = '{0} (NI)'.format(device_type)
 
             # >> Add device to database
-            # Extensions not needed now: 'exts' : exts_list
-            device_tags_dic = {'d_tag'       : device_tag,       'd_mandatory' : device_mandatory,
-                               'd_interface' : device_interface, 'i_name'      : i_name,
-                               'i_briefname' : i_briefname }
-            machine['device_list'].append(device_type)
-            machine['device_tags'].append(device_tags_dic)
+            device_dic = {'att_type'      : att_type,      'att_tag'        : att_tag,
+                          'att_mandatory' : att_mandatory, 'att_interface'  : att_interface,
+                          'inst_name'     : inst_name,     'inst_briefname' : inst_briefname,
+                          'ext_names'     : ext_names}
+            machine['devices'].append(device_dic)
 
         # --- <machine> tag closing. Add new machine to database ---
         elif event == 'end' and elem.tag == 'machine':
@@ -2005,7 +2057,8 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         # >> Order alphabetically the list
-        pretty_device_list = mame_improve_device_list(machine['device_list'])
+        device_list = [device['att_type'] for device in machine['devices']]
+        pretty_device_list = mame_improve_device_list(device_list)
         sorted_device_list = sorted(pretty_device_list)
         # >> Maybe a setting should be added for compact or non-compact control list
         # sorted_device_list = mame_compress_item_list(sorted_device_list)
@@ -2348,7 +2401,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
                 if machine_SL_name == SL_name:
                     SL_machine_dic = {'machine'     : machine_name,
                                       'description' : machines_render[machine_name]['description'],
-                                      'device_tags' : machines[machine_name]['device_tags']}
+                                      'devices'     : machines[machine_name]['devices']}
                     SL_machine_list.append(SL_machine_dic)
         SL_machines_dic[SL_name] = SL_machine_list
 

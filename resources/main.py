@@ -2211,7 +2211,7 @@ class Main:
 
         # >> Add machine. Add database version to Favourite.
         machine['assets'] = assets
-        machine['mame_version'] = control_dic['mame_version']
+        machine['mame_version'] = control_dic['ver_mame']
         fav_machines[machine_name] = machine
         log_info('_command_add_mame_fav() Added machine "{0}"'.format(machine_name))
 
