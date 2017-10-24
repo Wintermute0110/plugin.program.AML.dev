@@ -1,3 +1,9 @@
+[B]Advanced Emulator Launcher | version 0.9.5 | xx December 2017[/B]
+
+WIP      User Parent/Clone substituted artwork. For example, trailers are only available for the
+         Parent machine.
+
+
 [B]Advanced Emulator Launcher | version 0.9.4 | xx October 2017[/B]
 
 FEATURE  Support bestgames.ini and series.ini.

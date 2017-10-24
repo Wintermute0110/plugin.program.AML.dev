@@ -1938,9 +1938,10 @@ class Main:
             # --- Open ZIP file and check CRC32 ---
             # >> This code is very un-optimised! But it is better to get something that works
             # >> and then optimise. "Premature optimization is the root of all evil" -- Donald Knuth
-            # >> Add new field 'status' : 'OK', 'ZIP not found', 'Bad ZIP file', 'ROM not in ZIP', 'ROM bad size', 'ROM bad CRC'
+            # >> Add new field 'status' : 'OK', 'OK no CRC ROM', 'ZIP not found', 'Bad ZIP file', 
+            # >>                          'ROM not in ZIP', 'ROM bad size', 'ROM bad CRC'.
             # m_roms = [
-            #     {'name' : 'avph.03d', 'crc' : '01234567', 'location' : 'avsp.zip'}
+            #     {'name' : 'avph.03d', 'crc' : '01234567', 'location' : 'avsp/avph.03d'}
             # ]
             for m_rom in roms_dic:
                 zip_name = m_rom['location'].split('/')[0]
@@ -1951,7 +1952,7 @@ class Main:
                 # log_debug('rom_name {0}'.format(rom_name))
 
                 # >> Test if ZIP file exists
-                zip_FN = FileName(self.settings['rom_path']).pjoin(zip_name)
+                zip_FN = FileName(self.settings['rom_path']).pjoin(zip_name + '.zip')
                 # log_debug('ZIP {0}'.format(zip_FN.getPath()))
                 if not zip_FN.exists():
                     m_rom['status'] = 'ZIP not found'
