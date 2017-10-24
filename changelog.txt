@@ -3,6 +3,8 @@
 WIP      User Parent/Clone substituted artwork. For example, trailers are only available for the
          Parent machine.
 
+WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
+
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx October 2017[/B]
 
@@ -38,8 +40,6 @@ FEATURE  Allow user to choose default assets as AEL does in addon seetings.
 FEATURE  Trailer support in MAME machines and Software Lists.
 
 WIP      Manage SL Favourites.
-
-WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
 
 
 [B]Advanced Emulator Launcher | version 0.9.3 | 30 May 2017[/B]
