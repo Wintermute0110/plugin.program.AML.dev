@@ -1538,8 +1538,18 @@ class Main:
             info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])
             info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
             info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(unicode(machine['control_type']))
-            info_text += "[COLOR skyblue]device_list[/COLOR]: {0}\n".format(unicode(machine['device_list']))
-            info_text += "[COLOR skyblue]device_tags[/COLOR]: {0}\n".format(unicode(machine['device_tags']))                
+            # Devices list is a special case.
+            if machine['devices']:
+                for i, device in enumerate(machine['devices']):
+                    info_text += "[COLOR lime]devices[/COLOR][{0}, {1}]:\n".format(i, device['att_type'])
+                    info_text += "  [COLOR violet]att_type[/COLOR]: {0}\n".format(device['att_type'])
+                    info_text += "  [COLOR violet]att_tag[/COLOR]: {0}\n".format(device['att_tag'])
+                    info_text += "  [COLOR skyblue]att_mandatory[/COLOR]: {0}\n".format(unicode(device['att_mandatory']))
+                    info_text += "  [COLOR violet]att_interface[/COLOR]: {0}\n".format(device['att_interface'])
+                    info_text += "  [COLOR skyblue]instance[/COLOR]: {0}\n".format(unicode(device['instance']))
+                    info_text += "  [COLOR skyblue]ext_names[/COLOR]: {0}\n".format(unicode(device['ext_names']))
+            else:
+                info_text += "[COLOR lime]devices[/COLOR]: []\n"
             info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(unicode(machine['display_rotate']))
             info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(unicode(machine['display_tag']))
             info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(unicode(machine['display_type']))

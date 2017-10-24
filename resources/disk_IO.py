@@ -78,8 +78,7 @@ from mame import *
 #     'att_tag' : string,
 #     'att_mandatory' : bool,
 #     'att_interface' : string,
-#     'inst_name' : string,
-#     'inst_briefname' : string,
+#     'instance' : {'name' : string, 'briefname' : string}
 #     'ext_name' : [string1, string2],
 #   }, ...
 # ]
@@ -90,8 +89,7 @@ from mame import *
 #   att_tag: string
 #   att_mandatory: unicode(bool)
 #   att_interface: string
-#   inst_name: string
-#   inst_briefname: string
+#   instance: unicode(dictionary),
 #   ext_names: unicode(string list),
 # devices[1, att_type]: unicode(device[1])
 #   ...
@@ -901,7 +899,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             ext_names = []
             for device_child in elem:
                 if device_child.tag == 'instance':
-                    # >> Stop if <device> tag has more than one <instance> tags.
+                    # >> Stop if <device> tag has more than one <instance> tag. In MAME 0.190 no
+                    # >> machines trigger this.
                     if instance_tag_found:
                         raise GeneralError('Machine {0} has more than one <instance> inside <device>')
                     inst_name      = device_child.attrib['name']
@@ -919,7 +918,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             # >> Add device to database
             device_dic = {'att_type'      : att_type,      'att_tag'        : att_tag,
                           'att_mandatory' : att_mandatory, 'att_interface'  : att_interface,
-                          'inst_name'     : inst_name,     'inst_briefname' : inst_briefname,
+                          'instance'      : { 'name' : inst_name, 'briefname' : inst_briefname},
                           'ext_names'     : ext_names}
             machine['devices'].append(device_dic)
 
