@@ -1520,7 +1520,7 @@ class Main:
             # --- Make information string ---
             info_text  = '[COLOR orange]Machine {0} / Render data[/COLOR]\n'.format(machine_name)
             if location == LOCATION_MAME_FAVS:
-                info_text += "[COLOR slateblue]mame_version[/COLOR]: {0}\n".format(machine['mame_version'])
+                info_text += "[COLOR slateblue]ver_mame[/COLOR]: {0}\n".format(machine['ver_mame'])
             info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
             info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
             info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
@@ -2202,9 +2202,9 @@ class Main:
 
         # >> Get Machine database entry
         kodi_busydialog_ON()
-        machine    = fs_get_machine_main_db_hash(PATHS, machine_name)
+        control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+        machine = fs_get_machine_main_db_hash(PATHS, machine_name)
         assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
         kodi_busydialog_OFF()
         assets  = assets_dic[machine_name]
 
@@ -2219,7 +2219,7 @@ class Main:
 
         # >> Add machine. Add database version to Favourite.
         machine['assets'] = assets
-        machine['mame_version'] = control_dic['ver_mame']
+        machine['ver_mame'] = control_dic['ver_mame']
         fav_machines[machine_name] = machine
         log_info('_command_add_mame_fav() Added machine "{0}"'.format(machine_name))
 
