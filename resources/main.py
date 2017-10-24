@@ -1576,9 +1576,7 @@ class Main:
             info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
 
             # --- Show information window ---
-            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            xbmcgui.Dialog().textviewer(window_title, info_text)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            self._display_text_window(window_title, info_text)
 
         # --- View Software List ROM Machine data ---
         elif action == ACTION_VIEW_SL_ROM_DATA:
