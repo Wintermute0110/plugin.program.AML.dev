@@ -29,11 +29,11 @@ WIP      At launching, do not check ROMs for machines which doesn't have ROMs.
 
 FEATURE  Allow user to choose default assets as AEL does in addon seetings.
 
+FEATURE  Trailer support in MAME machines and Software Lists.
+
 WIP      Manage SL Favourites.
 
 WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
-
-WIP      Trailer support in MAME machines.
 
 
 [B]Advanced Emulator Launcher | version 0.9.3 | 30 May 2017[/B]

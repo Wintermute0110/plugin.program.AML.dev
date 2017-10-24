@@ -758,7 +758,7 @@ class Main:
     def _render_catalog_machine_row(self, machine_name, machine, machine_assets, flag_parent_list, view_mode_property,
                                     catalog_name, category_name, num_clones = 0):
         # --- Default values for flags ---
-        AEL_PClone_stat_value    = AEL_PCLONE_STAT_VALUE_NONE
+        AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
 
         # --- Render a Parent only list ---
         display_name = machine['description']
@@ -802,7 +802,8 @@ class Main:
         # >> Make all the infolabels compatible with Advanced Emulator Launcher
         listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
                                    'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                   'plot'    : machine['plot'],  'overlay' : ICON_OVERLAY})
+                                   'plot'    : machine['plot'],  'trailer' : machine_assets['trailer'],
+                                   'overlay' : ICON_OVERLAY})
         listitem.setProperty('nplayers', machine['nplayers'])
         listitem.setProperty('platform', 'MAME')
 
@@ -819,7 +820,6 @@ class Main:
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
 
         # --- Create context menu ---
-        commands = []
         URL_view_DAT    = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
         URL_view        = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
         URL_show_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_MAME_CLONES', 
@@ -827,6 +827,7 @@ class Main:
         # URL_display     = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_MAME',
         #                                                  'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
         URL_fav         = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
+        commands = []
         commands.append(('View DAT info',  URL_view_DAT))
         commands.append(('View / Audit',  URL_view))
         if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
@@ -1057,9 +1058,9 @@ class Main:
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(display_name)
         # >> Make all the infolabels compatible with Advanced Emulator Launcher
-        listitem.setInfo('video', {'title' : display_name, 'year'    : ROM['year'],
-                                   'genre' : ROM['genre'], 'studio'  : ROM['publisher'],
-                                   'overlay' : ICON_OVERLAY })
+        listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+                                   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+                                   'trailer' : assets['trailer'], 'overlay' : ICON_OVERLAY })
         listitem.setProperty('platform', 'MAME Software List')
 
         # --- Assets ---
@@ -1069,13 +1070,13 @@ class Main:
         listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
 
         # --- Create context menu ---
-        commands = []
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
         URL_show_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_SL_CLONES', 
                                                          'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
         # URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_SL', 
         #                                              'catalog', 'SL', 'category', SL_name, 'machine', rom_name)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
+        commands = []
         commands.append(('View / Audit', URL_view))
         if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
             commands.append(('Show clones',  URL_show_clones))

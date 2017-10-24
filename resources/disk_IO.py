@@ -197,8 +197,8 @@ def fs_new_SL_ROM():
 
     return R
 
-ASSET_SL_KEY_LIST  = ['title',     'snap',     'boxfront',  'trailer',    'manual']
-ASSET_SL_PATH_LIST = ['titles_SL', 'snaps_SL', 'covers_SL', 'videosnaps', 'manuals']
+ASSET_SL_KEY_LIST  = ['title',     'snap',     'boxfront',  'trailer',       'manual']
+ASSET_SL_PATH_LIST = ['titles_SL', 'snaps_SL', 'covers_SL', 'videosnaps_SL', 'manuals_SL']
 def fs_new_SL_asset():
     a = {
         'title'    : '',
@@ -2719,7 +2719,13 @@ def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
         machine_assets = fs_new_MAME_asset()
         for idx, asset_key in enumerate(ASSET_MAME_KEY_LIST):
             full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_MAME_PATH_LIST[idx])
-            asset_FN = full_asset_dir_FN.pjoin(key + '.png')
+            if asset_key == 'trailer':
+                asset_FN = full_asset_dir_FN.pjoin(key + '.mp4')
+            elif asset_key == 'manual':
+                machine_assets[asset_key] = ''
+                continue
+            else:
+                asset_FN = full_asset_dir_FN.pjoin(key + '.png')
             if asset_FN.exists(): machine_assets[asset_key] = asset_FN.getOriginalPath()
             else:                 machine_assets[asset_key] = ''
         assets_dic[key] = machine_assets
@@ -2731,6 +2737,7 @@ def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
 
     # >> Asset statistics
     
+
     # >> Save asset database and control_dic
     kodi_busydialog_ON()
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
@@ -2761,14 +2768,19 @@ def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
             SL_assets = fs_new_SL_asset()
             for idx, asset_key in enumerate(ASSET_SL_KEY_LIST):
                 full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_SL_PATH_LIST[idx]).pjoin(SL_name)
-                asset_FN = full_asset_dir_FN.pjoin(rom_key + '.png')
+                if asset_key == 'trailer':
+                    asset_FN = full_asset_dir_FN.pjoin(rom_key + '.mp4')
+                elif asset_key == 'manual':
+                    SL_assets[asset_key] = ''
+                    continue
+                else:
+                    asset_FN = full_asset_dir_FN.pjoin(rom_key + '.png')
                 # log_info('Testing P "{0}"'.format(asset_FN.getPath()))
                 if asset_FN.exists(): SL_assets[asset_key] = asset_FN.getOriginalPath()
                 else:                 SL_assets[asset_key] = ''
             SL_assets_dic[rom_key] = SL_assets
 
-        # >> Save SL ROMs and asset DB
-        # fs_write_JSON_file(SL_DB_FN.getPath(), SL_assets_dic)
+        # >> Save SL asset DB
         fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
 
         # >> Update progress
