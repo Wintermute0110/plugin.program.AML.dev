@@ -198,8 +198,8 @@ def mame_compress_item_list_compact(item_list):
 # -------------------------------------------------------------------------------------------------
 # Loading of data files
 # -------------------------------------------------------------------------------------------------
-def fs_load_Catver_ini(filename):
-    log_info('fs_load_Catver_ini() Parsing "{0}"'.format(filename))
+def mame_load_Catver_ini(filename):
+    log_info('mame_load_Catver_ini() Parsing "{0}"'.format(filename))
     catver_version = 'Not found'
     categories_dic = {}
     categories_set = set()
@@ -212,7 +212,7 @@ def fs_load_Catver_ini(filename):
     try:
         f = open(filename, 'rt')
     except IOError:
-        log_info('fs_load_Catver_ini() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_Catver_ini() (IOError) opening "{0}"'.format(filename))
         return (categories_dic, catver_version)
     for cat_line in f:
         stripped_line = cat_line.strip()
@@ -239,22 +239,22 @@ def fs_load_Catver_ini(filename):
                     categories_dic[machine_name] = category
                 categories_set.add(category)
         elif read_status == 2:
-            log_info('fs_load_Catver_ini() Reached end of categories parsing.')
+            log_info('mame_load_Catver_ini() Reached end of categories parsing.')
             break
         else:
             raise CriticalError('Unknown read_status FSM value')
     f.close()
-    log_info('fs_load_Catver_ini() Version "{0}"'.format(catver_version))
-    log_info('fs_load_Catver_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
-    log_info('fs_load_Catver_ini() Number of categories {0:6d}'.format(len(categories_set)))
+    log_info('mame_load_Catver_ini() Version "{0}"'.format(catver_version))
+    log_info('mame_load_Catver_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
+    log_info('mame_load_Catver_ini() Number of categories {0:6d}'.format(len(categories_set)))
 
     return (categories_dic, catver_version)
 
 # -------------------------------------------------------------------------------------------------
 # Load nplayers.ini. Structure similar to catver.ini
 # -------------------------------------------------------------------------------------------------
-def fs_load_nplayers_ini(filename):
-    log_info('fs_load_nplayers_ini() Parsing "{0}"'.format(filename))
+def mame_load_nplayers_ini(filename):
+    log_info('mame_load_nplayers_ini() Parsing "{0}"'.format(filename))
     nplayers_version = 'Not found'
     categories_dic = {}
     categories_set = set()
@@ -267,7 +267,7 @@ def fs_load_nplayers_ini(filename):
     try:
         f = open(filename, 'rt')
     except IOError:
-        log_info('fs_load_nplayers_ini() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_nplayers_ini() (IOError) opening "{0}"'.format(filename))
         return (categories_dic, nplayers_version)
     for cat_line in f:
         stripped_line = cat_line.strip()
@@ -291,14 +291,14 @@ def fs_load_nplayers_ini(filename):
                     categories_dic[machine_name] = category
                 categories_set.add(category)
         elif read_status == 2:
-            log_info('fs_load_nplayers_ini() Reached end of nplayers parsing.')
+            log_info('mame_load_nplayers_ini() Reached end of nplayers parsing.')
             break
         else:
             raise CriticalError('Unknown read_status FSM value')
     f.close()
-    log_info('fs_load_nplayers_ini() Version "{0}"'.format(nplayers_version))
-    log_info('fs_load_nplayers_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
-    log_info('fs_load_nplayers_ini() Number of categories {0:6d}'.format(len(categories_set)))
+    log_info('mame_load_nplayers_ini() Version "{0}"'.format(nplayers_version))
+    log_info('mame_load_nplayers_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
+    log_info('mame_load_nplayers_ini() Number of categories {0:6d}'.format(len(categories_set)))
 
     return (categories_dic, nplayers_version)
 
@@ -306,15 +306,15 @@ def fs_load_nplayers_ini(filename):
 # Generic MAME INI file loader.
 # Supports Catlist.ini, Genre.ini, Bestgames.ini and Series.ini
 #
-def fs_load_INI_datfile(filename):
-    log_info('fs_load_INI_datfile() Parsing "{0}"'.format(filename))
+def mame_load_INI_datfile(filename):
+    log_info('mame_load_INI_datfile() Parsing "{0}"'.format(filename))
     ini_version = 'Not found'
     ini_dic = {}
     ini_set = set()
     try:
         f = open(filename, 'rt')
     except IOError:
-        log_info('fs_load_INI_datfile() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_INI_datfile() (IOError) opening "{0}"'.format(filename))
         return (ini_dic, ini_version)
     for file_line in f:
         stripped_line = file_line.strip()
@@ -335,9 +335,9 @@ def fs_load_INI_datfile(filename):
             machine_name = stripped_line
             ini_dic[machine_name] = current_category
     f.close()
-    log_info('fs_load_INI_datfile() Version "{0}"'.format(ini_version))
-    log_info('fs_load_INI_datfile() Number of machines   {0:6d}'.format(len(ini_dic)))
-    log_info('fs_load_INI_datfile() Number of categories {0:6d}'.format(len(ini_set)))
+    log_info('mame_load_INI_datfile() Version "{0}"'.format(ini_version))
+    log_info('mame_load_INI_datfile() Number of machines   {0:6d}'.format(len(ini_dic)))
+    log_info('mame_load_INI_datfile() Number of categories {0:6d}'.format(len(ini_set)))
 
     return (ini_dic, ini_version)
 
