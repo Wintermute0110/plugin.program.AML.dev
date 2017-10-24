@@ -155,25 +155,12 @@ def fs_new_disk_dic():
     return m
 
 #
-# ROMs database
-#
-def fs_new_rom_DB_dic():
-    m = {
-        'hasMergedROM'    : False,
-        'hasSplitROM'     : False,
-        'hasNonMergedROM' : False,
-        'merged_CDHs'     : [],
-        'split_CDHs'      : [],
-        'non_merged_CDHs' : []
-    }
-
-    return m
-
-#
 # Object used in MAME_assets_db.json
 #
-ASSET_MAME_KEY_LIST  = ['cabinet',  'cpanel',  'flyer',  'marquee',  'PCB',  'snap',  'title',  'clearlogo']
-ASSET_MAME_PATH_LIST = ['cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles', 'clearlogos']
+ASSET_MAME_KEY_LIST  = ['cabinet',  'cpanel',  'flyer',  'marquee',  'PCB',  'snap',  'title',
+                        'clearlogo',  'trailer',    'manual']
+ASSET_MAME_PATH_LIST = ['cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles',
+                        'clearlogos', 'videosnaps', 'manuals']
 def fs_new_MAME_asset():
     a = {
         'cabinet'   : '',
@@ -184,6 +171,8 @@ def fs_new_MAME_asset():
         'snap'      : '',
         'title'     : '',
         'clearlogo' : '',
+        'trailer'   : '',
+        'manual'    : '',
     }
 
     return a
@@ -208,13 +197,15 @@ def fs_new_SL_ROM():
 
     return R
 
-ASSET_SL_KEY_LIST  = ['title',     'snap',     'boxfront']
-ASSET_SL_PATH_LIST = ['titles_SL', 'snaps_SL', 'covers_SL']
+ASSET_SL_KEY_LIST  = ['title',     'snap',     'boxfront',  'trailer',    'manual']
+ASSET_SL_PATH_LIST = ['titles_SL', 'snaps_SL', 'covers_SL', 'videosnaps', 'manuals']
 def fs_new_SL_asset():
     a = {
         'title'    : '',
         'snap'     : '',
         'boxfront' : '',
+        'trailer'   : '',
+        'manual'    : '',
     }
 
     return a

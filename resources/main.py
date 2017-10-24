@@ -50,8 +50,8 @@ HOME_DIR        = FileName('special://home')
 KODI_FAV_PATH   = FileName('special://profile/favourites.xml')
 ADDONS_DIR      = HOME_DIR.pjoin('addons')
 AML_ADDON_DIR   = ADDONS_DIR.pjoin(__addon_id__)
-ICON_IMG_PATH   = AML_ADDON_DIR.pjoin('icon.png')
-FANART_IMG_PATH = AML_ADDON_DIR.pjoin('fanart.jpg')
+# ICON_IMG_PATH   = AML_ADDON_DIR.pjoin('icon.png')
+# FANART_IMG_PATH = AML_ADDON_DIR.pjoin('fanart.jpg')
 
 LOCATION_STANDARD  = 'STANDARD'
 LOCATION_MAME_FAVS = 'MAME_FAVS'
@@ -1561,6 +1561,8 @@ class Main:
             info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
             info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
             info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
+            info_text += "[COLOR violet]trailer[/COLOR]: '{0}'\n".format(assets['trailer'])
+            info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
 
             # --- Show information window ---
             xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
@@ -1602,6 +1604,8 @@ class Main:
                 info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
                 info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
                 info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(assets['boxfront'])
+                info_text += "[COLOR violet]trailer[/COLOR]: '{0}'\n".format(assets['trailer'])
+                info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
 
                 info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SL_name)
                 info_text += "[COLOR skyblue]chd_count[/COLOR]: {0}\n".format(SL_dic['chd_count'])
