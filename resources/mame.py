@@ -636,4 +636,18 @@ def mame_load_Command_DAT(filename):
     log_info('mame_load_Command_DAT() Number of entries on idx_list {0:6d}'.format(len(idx_list)))
     log_info('mame_load_Command_DAT() Number of entries on data_dic {0:6d}'.format(len(data_dic)))
 
-    return (idx_list, data_dic)
+    # >> Expand database. Many machines share the same entry. Expand the database.
+    proper_idx_list = []
+    proper_data_dic = {}
+    for original_name in idx_list:
+        original_name_list = original_name.split(',')
+        for expanded_name in original_name_list:
+            # Skip empty strings
+            if not expanded_name: continue
+            expanded_name = expanded_name.strip()
+            proper_idx_list.append(expanded_name)
+            proper_data_dic[expanded_name] = data_dic[original_name]
+    log_info('mame_load_Command_DAT() Number of entries on proper_idx_list {0:6d}'.format(len(proper_idx_list)))
+    log_info('mame_load_Command_DAT() Number of entries on proper_data_dic {0:6d}'.format(len(proper_data_dic)))
+
+    return (proper_idx_list, proper_data_dic)
