@@ -2496,7 +2496,8 @@ def fs_scan_MAME_ROMs(PATHS, settings,
     scan_ROM_machines_total = 0
     scan_ROM_machines_have = 0
     scan_ROM_machines_missing = 0
-    r_list = []
+    rom_str_list = []
+    machine_str_list = []
     for key in sorted(machines_render):
         # >> Skip Devices
         if machines_render[key]['isDevice']: continue
@@ -2505,12 +2506,13 @@ def fs_scan_MAME_ROMs(PATHS, settings,
         if rom_list:
             have_rom_list = [False] * len(rom_list)
             for i, rom in enumerate(rom_list):
-                ROM_FN = ROM_path_FN.pjoin(rom + '.zip')
+                archive_name = rom + '.zip'
+                ROM_FN = ROM_path_FN.pjoin(archive_name)
                 if ROM_FN.exists():
                     have_rom_list[i] = True
                 else:
-                    r_list.append('Missing {0} machine {1} ({2})\n'.format(
-                        ROM_FN.getPath(), key, machines_render[key]['description']))
+                    rom_str_list.append('{0}'.format(archive_name))
+                    machine_str_list.append('{0} [{1}]'.format(key, machines_render[key]['description']))
             scan_ROM_machines_total += 1
             if all(have_rom_list):
                 # --- All ZIP files required to run this machine exist ---
@@ -2527,8 +2529,14 @@ def fs_scan_MAME_ROMs(PATHS, settings,
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
     log_info('Opening ROM machines report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROM_MACHINES_PATH.getPath()))
+    max_rom_size = 0
+    for rom_str in rom_str_list:
+        if len(rom_str) > max_rom_size: max_rom_size = len(rom_str)
     with open(PATHS.REPORT_MAME_SCAN_ROM_MACHINES_PATH.getPath(), 'w') as file:
-        for line in r_list: file.write(line.encode('utf-8'))
+        for i, rom_path in enumerate(rom_str_list):
+            padded_rom_str = text_print_padded_left(rom_path, max_rom_size)
+            str = 'Missing {0} machine {1}\n'.format(padded_rom_str, machine_str_list[i])
+            file.write(str.encode('utf-8'))
 
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
@@ -2562,7 +2570,8 @@ def fs_scan_MAME_ROMs(PATHS, settings,
     scan_CHD_machines_total = 0
     scan_CHD_machines_have = 0
     scan_CHD_machines_missing = 0
-    r_list = []
+    rom_list = []
+    machine_list = []
     for key in sorted(machines_render):
         # >> Skip Devices
         if machines_render[key]['isDevice']: continue
@@ -2572,12 +2581,13 @@ def fs_scan_MAME_ROMs(PATHS, settings,
             scan_CHD_machines_total += 1
             has_chd_list = [False] * len(chd_list)
             for idx, chd_name in enumerate(chd_list):
-                CHD_FN = CHD_path_FN.pjoin(key).pjoin(chd_name + '.chd')
+                archive_name = chd_name + '.chd'
+                CHD_FN = CHD_path_FN.pjoin(archive_name)
                 if CHD_FN.exists():
                     has_chd_list[idx] = True
                 else:
-                    r_list.append('Missing CHD {0} machine {1} ({2})\n'.format(
-                        CHD_FN.getPath(), key, machines_render[key]['description']))
+                    rom_list.append('{0}'.format(archive_name))
+                    machine_list.append('{0} [{1}]'.format(key, machines_render[key]['description']))
             if all(has_chd_list):
                 CHD_flag = 'C'
                 scan_CHD_machines_have += 1
@@ -2596,8 +2606,14 @@ def fs_scan_MAME_ROMs(PATHS, settings,
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
     log_info('Opening CHD machines report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHD_MACHINES_PATH.getPath()))
+    max_rom_size = 0
+    for rom_str in rom_list:
+        if len(rom_str) > max_rom_size: max_rom_size = len(rom_str)
     with open(PATHS.REPORT_MAME_SCAN_CHD_MACHINES_PATH.getPath(), 'w') as file:
-        for line in r_list: file.write(line.encode('utf-8'))
+        for i, rom_path in enumerate(rom_list):
+            padded_rom_str = text_print_padded_left(rom_path, max_rom_size)
+            str = 'Missing CHD {0} machine {1}\n'.format(padded_rom_str, machine_list[i])
+            file.write(str.encode('utf-8'))
 
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME CHDs ...')
     total_machines = len(machines_render)
@@ -2608,7 +2624,7 @@ def fs_scan_MAME_ROMs(PATHS, settings,
     r_list = []
     for chd_name in main_chd_list:
         scan_CHD_files_total += 1
-        CHD_FN = CHD_path_FN.pjoin(key).pjoin(chd_name + '.chd')
+        CHD_FN = CHD_path_FN.pjoin(chd_name + '.chd')
         if CHD_FN.exists():
             scan_CHD_files_have += 1
         else:
