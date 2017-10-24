@@ -2197,6 +2197,9 @@ class Main:
         else:
             kodi_dialog_OK('Wrong action == {0}. This is a bug, please report it.'.format(action))
 
+    # ---------------------------------------------------------------------------------------------
+    # Favourites
+    # ---------------------------------------------------------------------------------------------
     def _command_context_add_mame_fav(self, machine_name):
         log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(machine_name))
 

@@ -2488,8 +2488,6 @@ def fs_scan_MAME_ROMs(PATHS, settings,
     mame_chd_set = settings['mame_chd_set']
 
     # --- Scan ROMs ---
-    log_info('Opening ROM machines report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROM_MACHINES_PATH.getPath()))
-    file = open(PATHS.REPORT_MAME_SCAN_ROM_MACHINES_PATH.getPath(), 'w')
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME machine ROMs ...')
@@ -2498,6 +2496,7 @@ def fs_scan_MAME_ROMs(PATHS, settings,
     scan_ROM_machines_total = 0
     scan_ROM_machines_have = 0
     scan_ROM_machines_missing = 0
+    r_list = []
     for key in sorted(machines_render):
         # >> Skip Devices
         if machines_render[key]['isDevice']: continue
@@ -2510,7 +2509,8 @@ def fs_scan_MAME_ROMs(PATHS, settings,
                 if ROM_FN.exists():
                     have_rom_list[i] = True
                 else:
-                    file.write('Machine {0} missing {1}\n'.format(key, ROM_FN.getPath()))
+                    r_list.append('Missing {0} machine {1} ({2})\n'.format(
+                        ROM_FN.getPath(), key, machines_render[key]['description']))
             scan_ROM_machines_total += 1
             if all(have_rom_list):
                 # --- All ZIP files required to run this machine exist ---
@@ -2526,10 +2526,10 @@ def fs_scan_MAME_ROMs(PATHS, settings,
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
-    file.close()
+    log_info('Opening ROM machines report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROM_MACHINES_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_ROM_MACHINES_PATH.getPath(), 'w') as file:
+        for line in r_list: file.write(line.encode('utf-8'))
 
-    log_info('Opening ROM archives report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROM_ARCHIVES_PATH.getPath()))
-    file = open(PATHS.REPORT_MAME_SCAN_ROM_ARCHIVES_PATH.getPath(), 'w')
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME archive ROMs ...')
@@ -2538,6 +2538,7 @@ def fs_scan_MAME_ROMs(PATHS, settings,
     scan_ZIP_files_total = 0
     scan_ZIP_files_have = 0
     scan_ZIP_files_missing = 0
+    r_list = []
     for rom_name in main_rom_list:
         scan_ZIP_files_total += 1
         ROM_FN = ROM_path_FN.pjoin(rom_name + '.zip')
@@ -2545,22 +2546,23 @@ def fs_scan_MAME_ROMs(PATHS, settings,
             scan_ZIP_files_have += 1
         else:
             scan_ZIP_files_missing += 1
-            file.write('Missing {0}\n'.format(ROM_FN.getPath()))
+            r_list.append('Missing {0}\n'.format(ROM_FN.getPath()))
         # >> Progress dialog
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
-    file.close()
+    log_info('Opening ROM archives report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROM_ARCHIVES_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_ROM_ARCHIVES_PATH.getPath(), 'w') as file:
+        for line in r_list: file.write(line.encode('utf-8'))
 
     # --- Scan CHDs ---
-    log_info('Opening CHD machines report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHD_MACHINES_PATH.getPath()))
-    file = open(PATHS.REPORT_MAME_SCAN_CHD_MACHINES_PATH.getPath(), 'w')
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME CHDs machines ...')
     total_machines = len(machines_render)
     processed_machines = 0
     scan_CHD_machines_total = 0
     scan_CHD_machines_have = 0
     scan_CHD_machines_missing = 0
+    r_list = []
     for key in sorted(machines_render):
         # >> Skip Devices
         if machines_render[key]['isDevice']: continue
@@ -2574,7 +2576,8 @@ def fs_scan_MAME_ROMs(PATHS, settings,
                 if CHD_FN.exists():
                     has_chd_list[idx] = True
                 else:
-                    file.write('Machine {0} missing CHD {0}\n'.format(key, CHD_FN.getPath()))
+                    r_list.append('Missing CHD {0} machine {1} ({2})\n'.format(
+                        CHD_FN.getPath(), key, machines_render[key]['description']))
             if all(has_chd_list):
                 CHD_flag = 'C'
                 scan_CHD_machines_have += 1
@@ -2592,16 +2595,17 @@ def fs_scan_MAME_ROMs(PATHS, settings,
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
-    file.close()
+    log_info('Opening CHD machines report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHD_MACHINES_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_CHD_MACHINES_PATH.getPath(), 'w') as file:
+        for line in r_list: file.write(line.encode('utf-8'))
 
-    log_info('Opening CHD archives report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHD_ARCHIVES_PATH.getPath()))
-    file = open(PATHS.REPORT_MAME_SCAN_CHD_ARCHIVES_PATH.getPath(), 'w')
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME CHDs ...')
     total_machines = len(machines_render)
     processed_machines = 0
     scan_CHD_files_total = 0
     scan_CHD_files_have = 0
     scan_CHD_files_missing = 0
+    r_list = []
     for chd_name in main_chd_list:
         scan_CHD_files_total += 1
         CHD_FN = CHD_path_FN.pjoin(key).pjoin(chd_name + '.chd')
@@ -2609,22 +2613,23 @@ def fs_scan_MAME_ROMs(PATHS, settings,
             scan_CHD_files_have += 1
         else:
             scan_CHD_files_missing += 1
-            file.write('Missing CHD {0}\n'.format(CHD_FN.getPath()))
+            r_list.append('Missing CHD {0}\n'.format(CHD_FN.getPath()))
         # >> Progress dialog
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
-    file.close()
+    log_info('Opening CHD archives report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHD_ARCHIVES_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_CHD_ARCHIVES_PATH.getPath(), 'w') as file:
+        for line in r_list: file.write(line.encode('utf-8'))
 
     # --- Scan Samples ---
-    log_info('Opening Samples report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath()))
-    file = open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), 'w')
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME Samples ...')
     total_machines = len(machines_render)
     processed_machines = 0
     scan_Samples_have = 0
     scan_Samples_missing = 0
     scan_Samples_total = 0
+    r_list = []
     for key in sorted(machines):
         if machines[key]['sampleof']:
             scan_Samples_total += 1
@@ -2636,7 +2641,7 @@ def fs_scan_MAME_ROMs(PATHS, settings,
                 else:
                     Sample_flag = 's'
                     scan_Samples_missing += 1
-                    file.write('Missing Sample {0}\n'.format(Sample_FN.getPath()))
+                    r_list.append('Missing Sample {0}\n'.format(Sample_FN.getPath()))
             else:
                 Sample_flag = 's'
                 scan_Samples_missing += 1
@@ -2647,7 +2652,9 @@ def fs_scan_MAME_ROMs(PATHS, settings,
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
-    file.close()
+    log_info('Opening Samples report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), 'w') as file:
+        for line in r_list: file.write(line.encode('utf-8'))
 
     # --- Update statistics ---
     control_dic['scan_ZIP_files_total']      = scan_ZIP_files_total
