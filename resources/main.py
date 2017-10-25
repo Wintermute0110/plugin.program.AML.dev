@@ -835,7 +835,7 @@ class Main:
         #                                                  'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
         URL_fav         = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
         commands = []
-        commands.append(('View DAT info',  URL_view_DAT))
+        commands.append(('Info / Utils',  URL_view_DAT))
         commands.append(('View / Audit',  URL_view))
         if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
             commands.append(('Show clones',  URL_show_clones))
@@ -1298,7 +1298,7 @@ class Main:
         kodi_refresh_container()
 
     # ---------------------------------------------------------------------------------------------
-    # Information display
+    # Information display / Utilities
     # ---------------------------------------------------------------------------------------------
     def _command_context_view_DAT(self, machine_name, SL_name, SL_ROM, location):
         # --- Determine if we are in a category, launcher or ROM ---
@@ -1340,6 +1340,7 @@ class Main:
           'View MAMEinfo DAT ({0})'.format(Mameinfo_str),
           'View Gameinit DAT ({0})'.format(Gameinit_str),
           'View Command DAT ({0})'.format(Command_str),
+          'Display brother machines',
         ]
         s_value = xbmcgui.Dialog().select('View', d_list)
         if s_value < 0: return
@@ -1352,9 +1353,7 @@ class Main:
             info_text = DAT_dic['info'][machine_name]
 
             window_title = 'History DAT for machine {0}'.format(machine_name)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            xbmcgui.Dialog().textviewer(window_title, info_text)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            self._display_text_window(window_title, info_text)
         elif s_value == 1:
             if machine_name not in Mameinfo_MAME_set:
                 kodi_dialog_OK('Machine {0} not in Mameinfo DAT'.format(machine_name))
@@ -1363,9 +1362,7 @@ class Main:
             info_text = DAT_dic['mame'][machine_name]
 
             window_title = 'MAMEinfo DAT for machine {0}'.format(machine_name)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            xbmcgui.Dialog().textviewer(window_title, info_text)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            self._display_text_window(window_title, info_text)
         elif s_value == 2:
             if machine_name not in Gameinit_MAME_set:
                 kodi_dialog_OK('Machine {0} not in Gameinit DAT'.format(machine_name))
@@ -1374,9 +1371,7 @@ class Main:
             info_text = DAT_dic[machine_name]
 
             window_title = 'Gameinit DAT for machine {0}'.format(machine_name)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            xbmcgui.Dialog().textviewer(window_title, info_text)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            self._display_text_window(window_title, info_text)
         elif s_value == 3:
             if machine_name not in Command_MAME_set:
                 kodi_dialog_OK('Machine {0} not in Command DAT'.format(machine_name))
@@ -1385,9 +1380,10 @@ class Main:
             info_text = DAT_dic[machine_name]
 
             window_title = 'Command DAT for machine {0}'.format(machine_name)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-            xbmcgui.Dialog().textviewer(window_title, info_text)
-            xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+            self._display_text_window(window_title, info_text)
+        # --- Display brother machines (same driver) ---
+        elif s_value == 4:
+            
 
     # ---------------------------------------------------------------------------------------------
     # Information display
