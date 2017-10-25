@@ -1382,8 +1382,9 @@ class Main:
             window_title = 'Command DAT for machine {0}'.format(machine_name)
             self._display_text_window(window_title, info_text)
         # --- Display brother machines (same driver) ---
+        # catalog = 'Driver', 
         elif s_value == 4:
-            
+            kodi_dialog_OK('Not coded yet, sorry.')
 
     # ---------------------------------------------------------------------------------------------
     # Information display
@@ -3139,21 +3140,38 @@ class Main:
     # Complex syntax: $ mame <system> <media> <software> [options]
     # Easy syntax: $ mame <system> <software> [options]
     # Valid example: $ mame smspal -cart sonic
-    # 
-    # Software list <part> tag has an interface attribute that tells how to virtually plug the
-    # cartridge/cassete/disk/etc.
+    #
+    # Software list <part> tag has an 'interface' attribute that tells how to virtually plug the
+    # cartridge/cassete/disk/etc. into the MAME <device> with same 'interface' attribute. The
+    # <media> argument in the command line is the <device> <instance> 'name' attribute.
     #
     # Launching cases:
     #   A) Machine has only one device (defined by a <device> tag) with a valid <instance> and
     #      SL ROM has only one part (defined by a <part> tag).
     #      Valid examples:$ mame smspal -cart sonic
-    #      Launch as: $ mame machine_name -part_attib_name SL_ROM_name
+    #      Launch as: $ mame machine_name -part_attrib_name SL_ROM_name
+    #
+    # <device type="cartridge" tag="slot" interface="sms_cart">
+    #   <instance name="cartridge" briefname="cart"/>
+    #   <extension name="bin"/>
+    #   <extension name="sms"/>
+    # </device>
+    # <software name="sonic">
+    #   <part name="cart" interface="sms_cart">
+    #     <!-- PCB info based on SMS Power -->
+    #     <feature name="pcb" value="171-5507" />
+    #     <feature name="ic1" value="MPR-14271-F" />
+    #     <dataarea name="rom" size="262144">
+    #       <rom name="mpr-14271-f.ic1" size="262144" crc="b519e833" sha1="6b9..." offset="000000" />
+    #     </dataarea>
+    #   </part>
+    # </software>
     #
     #   B) Machine has only one device with a valid <instance> and SL ROM has multiple parts.
     #      In this case, user should choose which part to plug.
     #      Currently not implemented and launch using easy syntax.
     #      Valid examples: 
-    #      Launch as: $ mame machine_name -part_attib_name SL_ROM_name
+    #      Launch as: $ mame machine_name -part_attrib_name SL_ROM_name
     #
     #   C) Machine has two or more devices with a valid <instance> and SL ROM has only one part.
     #      Traverse the machine devices until there is a match of the <part> interface attribute 
@@ -3201,17 +3219,15 @@ class Main:
             log_info('_run_SL_machine() Selecting SL run machine ...')
             SL_machine_names_list      = []
             SL_machine_desc_list       = []
-            SL_machine_interfaces_list = []
             for SL_machine in sorted(SL_machine_list):
                 SL_machine_names_list.append(SL_machine['machine'])
                 SL_machine_desc_list.append(SL_machine['description'])
-                SL_machine_interfaces_list.append(SL_machine['device_tags'])
             dialog = xbmcgui.Dialog()
             m_index = dialog.select('Select machine', SL_machine_desc_list)
             if m_index < 0: return
-            machine_name       = SL_machine_names_list[m_index]
-            machine_desc       = SL_machine_desc_list[m_index]
-            machine_interfaces = SL_machine_interfaces_list[m_index]
+            machine_name    = SL_machine_names_list[m_index]
+            machine_desc    = SL_machine_desc_list[m_index]
+            machine_devices = SL_machine_list[m_index]['devices']
         else:
             # >> User selected a machine to launch this SL. Find the machine in the list
             log_info('_run_SL_machine() Finding SL run machine ...')
@@ -3247,7 +3263,7 @@ class Main:
             part_name_list      = SL_rom['part_name']
 
         # --- Select media depending on SL launching case ---
-        num_machine_interfaces = len(machine_interfaces)
+        num_machine_interfaces = len(machine_devices)
         num_SL_ROM_interfaces = len(part_interface_list)
         log_info('_run_SL_machine() Machine "{0}" has {1} interfaces'.format(machine_name, num_machine_interfaces))
         log_info('_run_SL_machine() SL ROM "{0}" has {1} parts'.format(ROM_name, num_SL_ROM_interfaces))
@@ -3263,7 +3279,7 @@ class Main:
         # >> Case A
         elif num_machine_interfaces == 1 and num_SL_ROM_interfaces == 1:
             log_info('_run_SL_machine() Launch case A)')
-            media_name = machine_interfaces[0]['i_name']
+            media_name = machine_devices[0]['instance']['name']
             sl_launch_mode = SL_LAUNCH_WITH_MEDIA
 
         # >> Case B
@@ -3277,9 +3293,9 @@ class Main:
         elif num_machine_interfaces > 1 and num_SL_ROM_interfaces == 1:
             log_info('_run_SL_machine() Launch case C)')
             m_interface_found = False
-            for m_interface in machine_interfaces:
-                if m_interface['d_interface'] == part_interface_list[0]:
-                    media_name = m_interface['i_briefname']
+            for device in machine_devices:
+                if device['att_interface'] == part_interface_list[0]:
+                    media_name = device['instance']['name']
                     m_interface_found = True
                     break
             if not m_interface_found:
