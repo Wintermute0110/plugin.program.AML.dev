@@ -378,6 +378,7 @@ class Main:
         self.settings['display_hide_imperfect']  = True if __addon_obj__.getSetting('display_hide_imperfect') == 'true' else False
         self.settings['display_rom_available']   = True if __addon_obj__.getSetting('display_rom_available') == 'true' else False
         self.settings['display_chd_available']   = True if __addon_obj__.getSetting('display_chd_available') == 'true' else False
+        self.settings['display_hide_trailers']   = True if __addon_obj__.getSetting('display_hide_trailers') == 'true' else False
 
         # --- Display ---
         self.settings['artwork_mame_icon']   = int(__addon_obj__.getSetting('artwork_mame_icon'))
@@ -800,10 +801,16 @@ class Main:
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(display_name)
         # >> Make all the infolabels compatible with Advanced Emulator Launcher
-        listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
-                                   'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                   'plot'    : machine['plot'],  'trailer' : machine_assets['trailer'],
-                                   'overlay' : ICON_OVERLAY})
+        if self.settings['display_hide_trailers']:
+            listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
+                                       'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
+                                       'plot'    : machine['plot'],
+                                       'overlay' : ICON_OVERLAY})
+        else:
+            listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
+                                       'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
+                                       'plot'    : machine['plot'],  'trailer' : machine_assets['trailer'],
+                                       'overlay' : ICON_OVERLAY})
         listitem.setProperty('nplayers', machine['nplayers'])
         listitem.setProperty('platform', 'MAME')
 

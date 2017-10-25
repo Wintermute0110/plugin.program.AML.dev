@@ -36,6 +36,7 @@
     <setting label="Hide imperfect machines" type="bool" default="false" id="display_hide_imperfect" />
     <setting label="Display machines with available ROMs only" type="bool" default="false" id="display_rom_available" />
     <setting label="Display machines with available CHDs only" type="bool" default="false" id="display_chd_available" />
+    <setting label="Do not render trailers" type="bool" default="false" id="display_hide_trailers" />
 </category>
 <category label="Artwork">
     <setting label="MAME icon" type="enum" id="artwork_mame_icon"  default="0" values="Title|Snap|Flyer|Cabinet|PCB" />
