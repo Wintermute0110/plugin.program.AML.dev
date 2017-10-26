@@ -2806,10 +2806,15 @@ class Main:
             report_list = []
             for machine in sorted(machines_render):
                 if machine in roms_db_dic:
-                    roms_dic = roms_db_dic[machine]
-                    if roms_dic:
+                    roms_list = roms_db_dic[machine]
+                    if roms_list:
                         report_list.append('Machine {0}'.format(machine))
-                        for m_rom in roms_dic:
+                        # >> Check if audit was canceled
+                        if 'status' not in roms_list[0]:
+                            report_list.append('Audit was canceled at this machine')
+                            break
+                        # >> Print audit results
+                        for m_rom in roms_list:
                             report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
                                 m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
                         report_list.append('')
@@ -2828,6 +2833,8 @@ class Main:
                     else:
                         report_list.append('Machine {0} has no CHDs'.format(machine))
                         report_list.append('')
+            else:
+                report_list.append('Audited all MAME machines')
 
             # >> Write report
             with open(PATHS.REPORT_MAME_ROM_AUDIT_PATH.getPath(), 'w') as file:
