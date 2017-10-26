@@ -62,6 +62,7 @@ mame_driver_name_dic = {
     'taito_f3.cpp' : 'Taito F3 System',
     'taito_f2.cpp' : 'Taito F2 System',
 
+    # --- SONY ---
     'zn.cpp'       : 'Sony ZN1/ZN2 (Arcade PSX)',
 }
 
@@ -345,13 +346,19 @@ def mame_load_INI_datfile(filename):
 # Loads History.dat
 #
 # history_idx_dic = {
-#    'nes' : ['100mandk', '89denku', ...],
-#    'info' : ['88games', 'flagrall', ...],
+#    'nes' : {
+#        'name': string,
+#        'machines' : ['100mandk', '89denku', ...],
+#    }
+#    'mame' : {
+#        'name' : string,
+#        'machines': ['88games', 'flagrall', ...],
+#    }
 # }
 #
 # history_dic = {
 #    'nes' : {'100mandk' : string, '89denku' : string, ...},
-#    'info' : {'88games' : string, 'flagrall' : string, ...},
+#    'mame' : {'88games' : string, 'flagrall' : string, ...},
 # }
 def mame_load_History_DAT(filename):
     log_info('mame_load_History_DAT() Parsing "{0}"'.format(filename))
@@ -387,12 +394,16 @@ def mame_load_History_DAT(filename):
             if m:
                 list_name = m.group(1)
                 machine_name = m.group(2)
+                # >> Transform some special list names
+                if   list_name == 'info':          list_name = 'mame'
+                elif list_name == 'info,megatech': list_name = 'mame'
+                elif list_name == 'info,stv':      list_name = 'mame'
                 if __debug_function: log_debug('List "{0}" / Machine "{1}"'.format(list_name, machine_name))
                 if list_name in history_idx_dic:
-                    history_idx_dic[list_name].append(machine_name)
+                    history_idx_dic[list_name]['machines'].append(machine_name)
                 else:
-                    history_idx_dic[list_name] = []
-                    history_idx_dic[list_name].append(machine_name)
+                    history_idx_dic[list_name] = {'name' : list_name, 'machines' : []}
+                    history_idx_dic[list_name]['machines'].append(machine_name)
             read_status = 1
         elif read_status == 1:
             if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
@@ -414,8 +425,8 @@ def mame_load_History_DAT(filename):
         else:
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
-    log_info('mame_load_History_DAT() Number of entries on history_idx_dic {0:6d}'.format(len(history_idx_dic)))
-    log_info('mame_load_History_DAT() Number of entries on history_dic     {0:6d}'.format(len(history_dic)))
+    log_info('mame_load_History_DAT() Number of rows in history_idx_dic {0:6d}'.format(len(history_idx_dic)))
+    log_info('mame_load_History_DAT() Number of rows in history_dic     {0:6d}'.format(len(history_dic)))
 
     return (history_idx_dic, history_dic)
 

@@ -444,11 +444,9 @@ def fs_write_JSON_file(json_filename, json_data):
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
             if COMPACT_JSON:
-                json_e = json.dumps(json_data, ensure_ascii = False, sort_keys = True, separators = (',', ':'))
-                file.write(unicode(json_e))
+                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, separators = (',', ':'))))
             else:
-                json_e = json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))
-                file.write(unicode(json_e))
+                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))))
     except OSError:
         gui_kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(roms_json_file))
     except IOError:
@@ -1049,7 +1047,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     for key in machines: assets_dic[key] = fs_new_MAME_asset()
 
     # ---------------------------------------------------------------------------------------------
-    # Improve info in RENDER_DB_PATH
+    # Improve information fields in RENDER_DB_PATH
     # ---------------------------------------------------------------------------------------------
     # >> Add genre infolabel
     if genre_dic:
@@ -1066,6 +1064,22 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     if nplayers_dic:
         for machine_name in machines_render:
             machines_render[machine_name]['nplayers'] = machines[machine_name]['nplayers']
+
+    # ---------------------------------------------------------------------------------------------
+    # Improve name in DAT indices
+    # ---------------------------------------------------------------------------------------------
+    # >> History DAT categories are Software List names.
+    if history_idx_dic:
+        log_debug('Updating History DAT names ...')
+        # >> Open Software List index if it exists.
+        SL_main_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+        # >> Update category names.
+        for cat_name in history_idx_dic:
+            if cat_name == 'mame':
+                history_idx_dic[cat_name]['name'] = 'MAME'
+            else:
+                if cat_name not in SL_main_catalog_dic: continue
+                history_idx_dic[cat_name]['name'] = SL_main_catalog_dic[cat_name]['display_name']
 
     # ---------------------------------------------------------------------------------------------
     # Build main distributed hashed database
@@ -1116,7 +1130,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Line 6)
     # ---------------------------------------------------------------------------------------------
     log_info('Building machine plots/descriptions ...')
-    history_info_set = set(history_idx_dic['info'])
+    history_info_set = set(history_idx_dic['mame']['machines'])
     mameinfo_info_set = set(mameinfo_idx_dic['mame'])
     gameinit_info_set = set(gameinit_idx_dic)
     command_info_set = set(command_idx_dic)

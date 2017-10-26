@@ -1124,12 +1124,13 @@ class Main:
                 kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
                 xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
                 return
-            self._set_Kodi_all_sorting_methods()            
-            for category_name in DAT_idx_dic:
+            self._set_Kodi_all_sorting_methods()
+            for key in DAT_idx_dic:
+                category_name = '{0} ({1})'.format(DAT_idx_dic[key]['name'], key)
                 listitem = xbmcgui.ListItem(category_name)
                 listitem.setInfo('video', {'title' : category_name, 'overlay' : ICON_OVERLAY } )
                 listitem.addContextMenuItems(commands, replaceItems = True)
-                URL = self._misc_url_2_arg('catalog', catalog_name, 'category', category_name)
+                URL = self._misc_url_2_arg('catalog', catalog_name, 'category', key)
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         elif catalog_name == 'MAMEINFO':
             DAT_idx_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
@@ -1137,7 +1138,7 @@ class Main:
                 kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
                 xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
                 return
-            self._set_Kodi_all_sorting_methods()            
+            self._set_Kodi_all_sorting_methods()
             for category_name in DAT_idx_dic:
                 listitem = xbmcgui.ListItem(category_name)
                 listitem.setInfo('video', {'title' : category_name, 'overlay' : ICON_OVERLAY } )
@@ -1150,7 +1151,7 @@ class Main:
                 kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
                 xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
                 return
-            self._set_Kodi_all_sorting_methods()            
+            self._set_Kodi_all_sorting_methods()
             for machine_name in DAT_idx_list:
                 listitem = xbmcgui.ListItem(machine_name)
                 listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
@@ -1163,7 +1164,7 @@ class Main:
                 kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
                 xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
                 return
-            self._set_Kodi_all_sorting_methods()            
+            self._set_Kodi_all_sorting_methods()
             for machine_name in DAT_idx_list:
                 listitem = xbmcgui.ListItem(machine_name)
                 listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
@@ -1196,8 +1197,8 @@ class Main:
             return
 
         self._set_Kodi_all_sorting_methods()
-        categories_list = DAT_catalog_dic[category_name]
-        for sub_name in categories_list:
+        category_machine_list = DAT_catalog_dic[category_name]['machines']
+        for sub_name in category_machine_list:
             self._render_DAT_category_row(catalog_name, category_name, sub_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
