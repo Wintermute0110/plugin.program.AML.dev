@@ -1311,21 +1311,21 @@ class Main:
         Gameinit_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
         Command_idx_list  = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
 
-        # >> Check if DAT infor is available for machine
+        # >> Check if DAT information is available for this machine
         if location == 'STANDARD':
-            History_MAME_set = set(History_idx_dic['info'])
+            History_MAME_set = set([ machine[0] for machine in History_idx_dic['mame']['machines'] ])
             if machine_name in History_MAME_set: History_str = 'Found'
             else:                                History_str = 'Not found'
             
-            Mameinfo_MAME_set = set(Mameinfo_idx_dic['mame'])
+            Mameinfo_MAME_set = set([ machine[0] for machine in Mameinfo_idx_dic['mame'] ])
             if machine_name in Mameinfo_MAME_set: Mameinfo_str = 'Found'
             else:                                 Mameinfo_str = 'Not found'
 
-            Gameinit_MAME_set = set(Gameinit_idx_list)
+            Gameinit_MAME_set = set([ machine[0] for machine in Gameinit_idx_list ])
             if machine_name in Gameinit_MAME_set: Gameinit_str = 'Found'
             else:                                 Gameinit_str = 'Not found'
 
-            Command_MAME_set = set(Command_idx_list)
+            Command_MAME_set = set([ machine[0] for machine in Command_idx_list ])
             if machine_name in Command_MAME_set: Command_str = 'Found'
             else:                                Command_str = 'Not found'
         else:
@@ -1348,9 +1348,8 @@ class Main:
                 kodi_dialog_OK('Machine {0} not in History DAT'.format(machine_name))
                 return
             DAT_dic = fs_load_JSON_file(PATHS.HISTORY_DB_PATH.getPath())
-            info_text = DAT_dic['info'][machine_name]
-
             window_title = 'History DAT for machine {0}'.format(machine_name)
+            info_text = DAT_dic['mame'][machine_name]
             self._display_text_window(window_title, info_text)
         elif s_value == 1:
             if machine_name not in Mameinfo_MAME_set:
@@ -1366,18 +1365,16 @@ class Main:
                 kodi_dialog_OK('Machine {0} not in Gameinit DAT'.format(machine_name))
                 return
             DAT_dic = fs_load_JSON_file(PATHS.GAMEINIT_DB_PATH.getPath())
-            info_text = DAT_dic[machine_name]
-
             window_title = 'Gameinit DAT for machine {0}'.format(machine_name)
+            info_text = DAT_dic[machine_name]
             self._display_text_window(window_title, info_text)
         elif s_value == 3:
             if machine_name not in Command_MAME_set:
                 kodi_dialog_OK('Machine {0} not in Command DAT'.format(machine_name))
                 return
             DAT_dic = fs_load_JSON_file(PATHS.COMMAND_DB_PATH.getPath())
-            info_text = DAT_dic[machine_name]
-
             window_title = 'Command DAT for machine {0}'.format(machine_name)
+            info_text = DAT_dic[machine_name]
             self._display_text_window(window_title, info_text)
         # --- Display brother machines (same driver) ---
         # catalog = 'Driver', 
@@ -2425,7 +2422,7 @@ class Main:
         URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
         URL_display = self._misc_url_2_arg_RunPlugin('command', 'DELETE_MAME_FAV', 'machine', machine_name)
         commands = []
-        commands.append(('View DAT info',  URL_view_DAT))
+        commands.append(('Info / Utils',  URL_view_DAT))
         commands.append(('View / Audit',  URL_view ))
         commands.append(('Manage Favourite machines',  URL_manage ))
         commands.append(('Delete from Favourites', URL_display ))
