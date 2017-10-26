@@ -1126,7 +1126,7 @@ class Main:
                 return
             self._set_Kodi_all_sorting_methods()
             for key in DAT_idx_dic:
-                category_name = '{0} [COLOR silver]({1})[/COLOR]'.format(DAT_idx_dic[key]['name'], key)
+                category_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(DAT_idx_dic[key]['name'], key)
                 listitem = xbmcgui.ListItem(category_name)
                 listitem.setInfo('video', {'title' : category_name, 'overlay' : ICON_OVERLAY } )
                 listitem.addContextMenuItems(commands, replaceItems = True)
@@ -1139,11 +1139,12 @@ class Main:
                 xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
                 return
             self._set_Kodi_all_sorting_methods()
-            for category_name in DAT_idx_dic:
+            for key in DAT_idx_dic:
+                category_name = '{0}'.format(key)
                 listitem = xbmcgui.ListItem(category_name)
                 listitem.setInfo('video', {'title' : category_name, 'overlay' : ICON_OVERLAY } )
                 listitem.addContextMenuItems(commands, replaceItems = True)
-                URL = self._misc_url_2_arg('catalog', catalog_name, 'category', category_name)
+                URL = self._misc_url_2_arg('catalog', catalog_name, 'category', key)
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         elif catalog_name == 'Gameinit':
             DAT_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
@@ -1152,11 +1153,12 @@ class Main:
                 xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
                 return
             self._set_Kodi_all_sorting_methods()
-            for machine_name in DAT_idx_list:
+            for machine_name_list in DAT_idx_list:
+                machine_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(machine_name_list[1], machine_name_list[0])
                 listitem = xbmcgui.ListItem(machine_name)
                 listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
                 listitem.addContextMenuItems(commands, replaceItems = True)
-                URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name)
+                URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
         elif catalog_name == 'Command':
             DAT_idx_list = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
@@ -1165,11 +1167,12 @@ class Main:
                 xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
                 return
             self._set_Kodi_all_sorting_methods()
-            for machine_name in DAT_idx_list:
+            for machine_name_list in DAT_idx_list:
+                machine_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(machine_name_list[1], machine_name_list[0])
                 listitem = xbmcgui.ListItem(machine_name)
                 listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
                 listitem.addContextMenuItems(commands, replaceItems = True)
-                URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name)
+                URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
         else:
             kodi_dialog_OK('DAT database file "{0}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
@@ -1183,10 +1186,6 @@ class Main:
             DAT_catalog_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
         elif catalog_name == 'MAMEINFO':
             DAT_catalog_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
-        elif catalog_name == 'Gameinit':
-            DAT_catalog_dic = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
-        elif catalog_name == 'Command':
-            DAT_catalog_dic = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
         else:
             kodi_dialog_OK('DAT database file "{0}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
             xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
@@ -1195,15 +1194,19 @@ class Main:
             kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
             return
-
         self._set_Kodi_all_sorting_methods()
-        category_machine_list = DAT_catalog_dic[category_name]['machines']
-        for machine_tuple in category_machine_list:
-            self._render_DAT_category_row(catalog_name, category_name, machine_tuple)
+        if catalog_name == 'History':
+            category_machine_list = DAT_catalog_dic[category_name]['machines']
+            for machine_tuple in category_machine_list:
+                self._render_DAT_category_row(catalog_name, category_name, machine_tuple)
+        elif catalog_name == 'MAMEINFO':
+            category_machine_list = DAT_catalog_dic[category_name]
+            for machine_tuple in category_machine_list:
+                self._render_DAT_category_row(catalog_name, category_name, machine_tuple)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_DAT_category_row(self, catalog_name, category_name, machine_tuple):
-        display_name = '{0} [COLOR silver]({1})[/COLOR]'.format(machine_tuple[1], machine_tuple[0])
+        display_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(machine_tuple[1], machine_tuple[0])
 
         # --- Create listitem row ---
         ICON_OVERLAY = 6
@@ -1251,11 +1254,7 @@ class Main:
 
         # --- Show information window ---
         window_title = '{0} information'.format(catalog_name)
-        log_debug('Setting Window(10000) Property "FontWidth" = "monospaced"')
-        xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-        xbmcgui.Dialog().textviewer(window_title, info_text)
-        log_debug('Setting Window(10000) Property "FontWidth" = "proportional"')
-        xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+        self._display_text_window(window_title, info_text)
 
     #
     # Not used at the moment -> There are global display settings.

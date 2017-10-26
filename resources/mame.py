@@ -352,7 +352,7 @@ def mame_load_INI_datfile(filename):
 #    }
 #    'mame' : {
 #        'name' : string,
-#        'machines': ['88games', 'flagrall', ...],
+#        'machines': [['88games', 'beautiful_name'], ['flagrall', 'beautiful_name'], ...],
 #    }
 # }
 #
@@ -434,8 +434,8 @@ def mame_load_History_DAT(filename):
 # Looks that mameinfo.dat has information for both machines and drivers.
 #
 # idx_dic  = { 
-#     'mame' : ['88games', 'flagrall', ...],
-#     'drv' : ['88games', 'flagrall', ...],
+#     'mame' : [['88games', 'beautiful_name'], ['flagrall', 'beautiful_name'], ...],
+#     'drv' : [['88games.cpp', 'beautiful_name'], ['flagrall.cpp', 'beautiful_name'], ...],
 # }
 # data_dic = {
 #    'mame' : {'88games' : string, 'flagrall' : string, ...},
@@ -485,19 +485,19 @@ def mame_load_MameInfo_DAT(filename):
                 info_str_list = []
                 list_name = 'mame'
                 if 'mame' in idx_dic:
-                    idx_dic['mame'].append(machine_name)
+                    idx_dic['mame'].append([machine_name, machine_name])
                 else:
                     idx_dic['mame'] = []
-                    idx_dic['mame'].append(machine_name)
+                    idx_dic['mame'].append([machine_name, machine_name])
             elif line_uni == '$drv':
                 read_status = 2
                 info_str_list = []
                 list_name = 'drv'
                 if 'drv' in idx_dic:
-                    idx_dic['drv'].append(machine_name)
+                    idx_dic['drv'].append([machine_name, machine_name])
                 else:
                     idx_dic['drv'] = []
-                    idx_dic['drv'].append(machine_name)
+                    idx_dic['drv'].append([machine_name, machine_name])
             else:
                 raise TypeError('Wrong second line = "{0}"'.format(line_uni))
         elif read_status == 2:
@@ -513,8 +513,8 @@ def mame_load_MameInfo_DAT(filename):
         else:
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
-    log_info('mame_load_MameInfo_DAT() Number of entries on idx_dic  {0:6d}'.format(len(idx_dic)))
-    log_info('mame_load_MameInfo_DAT() Number of entries on data_dic {0:6d}'.format(len(data_dic)))
+    log_info('mame_load_MameInfo_DAT() Number of rows in idx_dic  {0:6d}'.format(len(idx_dic)))
+    log_info('mame_load_MameInfo_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
 
     return (idx_dic, data_dic)
 
@@ -522,7 +522,7 @@ def mame_load_MameInfo_DAT(filename):
 # NOTE set objects are not JSON-serializable. Use lists and transform lists to sets if
 #      necessary after loading the JSON file.
 #
-# idx_list  = [ '88games', 'flagrall', ... ]
+# idx_list  = [['88games', 'beautiful_name'], ['flagrall', 'beautiful_name'], ...],
 # data_dic = { '88games' : 'string', 'flagrall' : 'string', ... }
 #
 def mame_load_GameInit_DAT(filename):
@@ -560,7 +560,7 @@ def mame_load_GameInit_DAT(filename):
             if m:
                 machine_name = m.group(1)
                 if __debug_function: log_debug('Machine "{0}"'.format(machine_name))
-                idx_list.append(machine_name)
+                idx_list.append([machine_name, machine_name])
                 read_status = 1
         elif read_status == 1:
             if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
@@ -579,8 +579,8 @@ def mame_load_GameInit_DAT(filename):
         else:
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
-    log_info('mame_load_GameInit_DAT() Number of entries on idx_list {0:6d}'.format(len(idx_list)))
-    log_info('mame_load_GameInit_DAT() Number of entries on data_dic {0:6d}'.format(len(data_dic)))
+    log_info('mame_load_GameInit_DAT() Number of rows in idx_list {0:6d}'.format(len(idx_list)))
+    log_info('mame_load_GameInit_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
 
     return (idx_list, data_dic)
 
@@ -588,7 +588,7 @@ def mame_load_GameInit_DAT(filename):
 # NOTE set objects are not JSON-serializable. Use lists and transform lists to sets if
 #      necessary after loading the JSON file.
 #
-# idx_list = [ '88games', 'flagrall', ... ]
+# idx_list = [['88games', 'beautiful_name'], ['flagrall', 'beautiful_name'], ...],
 # data_dic = { '88games' : 'string', 'flagrall' : 'string', ... }
 #
 def mame_load_Command_DAT(filename):
@@ -644,8 +644,8 @@ def mame_load_Command_DAT(filename):
         else:
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
-    log_info('mame_load_Command_DAT() Number of entries on idx_list {0:6d}'.format(len(idx_list)))
-    log_info('mame_load_Command_DAT() Number of entries on data_dic {0:6d}'.format(len(data_dic)))
+    log_info('mame_load_Command_DAT() Number of rows in idx_list {0:6d}'.format(len(idx_list)))
+    log_info('mame_load_Command_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
 
     # >> Expand database. Many machines share the same entry. Expand the database.
     proper_idx_list = []
@@ -656,7 +656,7 @@ def mame_load_Command_DAT(filename):
             # Skip empty strings
             if not expanded_name: continue
             expanded_name = expanded_name.strip()
-            proper_idx_list.append(expanded_name)
+            proper_idx_list.append([expanded_name, expanded_name])
             proper_data_dic[expanded_name] = data_dic[original_name]
     log_info('mame_load_Command_DAT() Number of entries on proper_idx_list {0:6d}'.format(len(proper_idx_list)))
     log_info('mame_load_Command_DAT() Number of entries on proper_data_dic {0:6d}'.format(len(proper_data_dic)))

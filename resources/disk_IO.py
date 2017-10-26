@@ -1070,18 +1070,42 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # ---------------------------------------------------------------------------------------------
     # >> History DAT categories are Software List names.
     if history_idx_dic:
-        log_debug('Updating History DAT names ...')
+        log_debug('Updating History DAT cateogories and machine names ...')
         # >> Open Software List index if it exists.
         SL_main_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
         # >> Update category names.
         for cat_name in history_idx_dic:
             if cat_name == 'mame':
                 history_idx_dic[cat_name]['name'] = 'MAME'
-            else:
-                if cat_name not in SL_main_catalog_dic: continue
+                # >> Improve MAME machine names
+                for machine_list in history_idx_dic[cat_name]['machines']:
+                    if machine_list[0] in machines_render:
+                        machine_list[1] = machines_render[machine_list[0]]['description']
+            elif cat_name in SL_main_catalog_dic:
                 history_idx_dic[cat_name]['name'] = SL_main_catalog_dic[cat_name]['display_name']
-            # >> Improve machine names
-            for machine_list in history_idx_dic[cat_name]['machines']:
+                # >> Improve SL machine names
+                
+
+    # >> MameInfo DAT machine names.
+    if mameinfo_idx_dic:
+        log_debug('Updating Mameinfo DAT machine names ...')
+        for cat_name in mameinfo_idx_dic:
+            for machine_list in mameinfo_idx_dic[cat_name]:
+                if machine_list[0] in machines_render:
+                    machine_list[1] = machines_render[machine_list[0]]['description']
+
+    # >> GameInit DAT machine names.
+    if gameinit_idx_dic:
+        log_debug('Updating GameInit DAT machine names ...')
+        for machine_list in gameinit_idx_dic:
+            if machine_list[0] in machines_render:
+                machine_list[1] = machines_render[machine_list[0]]['description']
+
+    # >> Command DAT machine names.
+    if command_idx_dic:
+        log_debug('Updating Command DAT machine names ...')
+        for machine_list in command_idx_dic:
+            if machine_list[0] in machines_render:
                 machine_list[1] = machines_render[machine_list[0]]['description']
 
     # ---------------------------------------------------------------------------------------------
@@ -1133,10 +1157,10 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Line 6)
     # ---------------------------------------------------------------------------------------------
     log_info('Building machine plots/descriptions ...')
-    history_info_set = set([ machine[0] for machine in history_idx_dic['mame']['machines'] ])
-    mameinfo_info_set = set(mameinfo_idx_dic['mame'])
-    gameinit_info_set = set(gameinit_idx_dic)
-    command_info_set = set(command_idx_dic)
+    history_info_set  = set([ machine[0] for machine in history_idx_dic['mame']['machines'] ])
+    mameinfo_info_set = set([ machine[0] for machine in mameinfo_idx_dic['mame'] ])
+    gameinit_info_set = set([ machine[0] for machine in gameinit_idx_dic ])
+    command_info_set  = set([ machine[0] for machine in command_idx_dic ])
     for machine_name in machines:
         m = machines[machine_name]
         DAT_list = []
