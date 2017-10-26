@@ -367,8 +367,9 @@ class Main:
         self.settings['command_path']   = __addon_obj__.getSetting('command_path').decode('utf-8')
 
         # --- ROM sets ---
-        self.settings['mame_rom_set'] = int(__addon_obj__.getSetting('mame_rom_set'))
-        self.settings['mame_chd_set'] = int(__addon_obj__.getSetting('mame_chd_set'))
+        self.settings['mame_rom_set']      = int(__addon_obj__.getSetting('mame_rom_set'))
+        self.settings['mame_chd_set']      = int(__addon_obj__.getSetting('mame_chd_set'))
+        self.settings['audit_only_errors'] = True if __addon_obj__.getSetting('audit_only_errors') == 'true' else False
 
         # --- Display ---
         self.settings['mame_view_mode']          = int(__addon_obj__.getSetting('mame_view_mode'))
@@ -2804,35 +2805,73 @@ class Main:
             # >> Generate report.
             # >> 1292apvs, 1392apvs have no ROMs (in 0.190)
             report_list = []
+            report_only_errors = self.settings['audit_only_errors']
             for machine in sorted(machines_render):
+                # --- ROMs report ---
                 if machine in roms_db_dic:
                     roms_list = roms_db_dic[machine]
                     if roms_list:
-                        report_list.append('Machine {0}'.format(machine))
-                        # >> Check if audit was canceled
+                        # >> Check if audit was canceled.
                         if 'status' not in roms_list[0]:
-                            report_list.append('Audit was canceled at this machine')
+                            report_list.append('Audit was canceled at machine {0}'.format(machine))
                             break
-                        # >> Print audit results
-                        for m_rom in roms_list:
-                            report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
-                                m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
-                        report_list.append('')
+                        # >> Check if machine has ROM errors.
+                        if report_only_errors:
+                            machine_has_errors = False
+                            for m_rom in roms_list:
+                                if m_rom['status'] != 'OK':
+                                    machine_has_errors = True
+                                    break
+                        # >> Print report.
+                        if report_only_errors:
+                            if machine_has_errors:
+                                report_list.append('Machine {0} (cloneof {1})'.format(machine, machines_render[machine]['cloneof']))
+                                for m_rom in roms_list:
+                                    if m_rom['status'] != 'OK':
+                                        report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
+                                            m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
+                                report_list.append('')
+                        else:
+                            report_list.append('Machine {0}'.format(machine))
+                            for m_rom in roms_list:
+                                report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
+                                    m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
+                            report_list.append('')
                     else:
-                        report_list.append('Machine {0} has no ROMs'.format(machine))
-                        report_list.append('')
+                        if not report_only_errors:
+                            report_list.append('Machine {0} has no ROMs'.format(machine))
+                            report_list.append('')
 
+                # --- CHDs report ---
                 if machine in chds_db_dic:
-                    chds_dic = chds_db_dic[machine]
-                    if chds_dic:
-                        report_list.append('Machine {0} has CHDs'.format(machine))
-                        for m_chd in chds_dic:
-                            report_list.append('{0}  {1}  {2}'.format(
-                                m_chd['name'], m_chd['sha1'][0:6], m_chd['status']))
-                        report_list.append('')
+                    chds_list = chds_db_dic[machine]
+                    if chds_list:
+                        # >> Check if machine has ROM errors.
+                        if report_only_errors:
+                            machine_has_errors = False
+                            for m_chd in chds_list:
+                                if m_chd['status'] != 'OK':
+                                    machine_has_errors = True
+                                    break
+                        # >> Print report.
+                        if report_only_errors:
+                            if machine_has_errors:
+                                report_list.append('Machine {0} has CHDs'.format(machine))
+                                for m_chd in chds_list:
+                                    if m_chd['status'] != 'OK':
+                                        report_list.append('{0}  {1}  {2}'.format(
+                                            m_chd['name'], m_chd['sha1'][0:6], m_chd['status']))
+                                report_list.append('')
+                        else:
+                            report_list.append('Machine {0} has CHDs'.format(machine))
+                            for m_chd in chds_list:
+                                report_list.append('{0}  {1}  {2}'.format(
+                                    m_chd['name'], m_chd['sha1'][0:6], m_chd['status']))
+                            report_list.append('')
                     else:
-                        report_list.append('Machine {0} has no CHDs'.format(machine))
-                        report_list.append('')
+                        if not report_only_errors:
+                            report_list.append('Machine {0} has no CHDs'.format(machine))
+                            report_list.append('')
             else:
                 report_list.append('Audited all MAME machines')
 
