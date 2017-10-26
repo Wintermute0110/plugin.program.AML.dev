@@ -348,7 +348,7 @@ def mame_load_INI_datfile(filename):
 # history_idx_dic = {
 #    'nes' : {
 #        'name': string,
-#        'machines' : ['100mandk', '89denku', ...],
+#        'machines' : [['100mandk', 'beautiful_name'], ['89denku', 'beautiful_name'], ...],
 #    }
 #    'mame' : {
 #        'name' : string,
@@ -400,10 +400,10 @@ def mame_load_History_DAT(filename):
                 elif list_name == 'info,stv':      list_name = 'mame'
                 if __debug_function: log_debug('List "{0}" / Machine "{1}"'.format(list_name, machine_name))
                 if list_name in history_idx_dic:
-                    history_idx_dic[list_name]['machines'].append(machine_name)
+                    history_idx_dic[list_name]['machines'].append([machine_name, machine_name])
                 else:
                     history_idx_dic[list_name] = {'name' : list_name, 'machines' : []}
-                    history_idx_dic[list_name]['machines'].append(machine_name)
+                    history_idx_dic[list_name]['machines'].append([machine_name, machine_name])
             read_status = 1
         elif read_status == 1:
             if __debug_function: log_debug('Second line "{0}"'.format(line_uni))

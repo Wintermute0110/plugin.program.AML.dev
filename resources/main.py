@@ -1126,7 +1126,7 @@ class Main:
                 return
             self._set_Kodi_all_sorting_methods()
             for key in DAT_idx_dic:
-                category_name = '{0} ({1})'.format(DAT_idx_dic[key]['name'], key)
+                category_name = '{0} [COLOR silver]({1})[/COLOR]'.format(DAT_idx_dic[key]['name'], key)
                 listitem = xbmcgui.ListItem(category_name)
                 listitem.setInfo('video', {'title' : category_name, 'overlay' : ICON_OVERLAY } )
                 listitem.addContextMenuItems(commands, replaceItems = True)
@@ -1198,12 +1198,12 @@ class Main:
 
         self._set_Kodi_all_sorting_methods()
         category_machine_list = DAT_catalog_dic[category_name]['machines']
-        for sub_name in category_machine_list:
-            self._render_DAT_category_row(catalog_name, category_name, sub_name)
+        for machine_tuple in category_machine_list:
+            self._render_DAT_category_row(catalog_name, category_name, machine_tuple)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_DAT_category_row(self, catalog_name, category_name, sub_name):
-        display_name = sub_name
+    def _render_DAT_category_row(self, catalog_name, category_name, machine_tuple):
+        display_name = '{0} [COLOR silver]({1})[/COLOR]'.format(machine_tuple[1], machine_tuple[0])
 
         # --- Create listitem row ---
         ICON_OVERLAY = 6
@@ -1219,7 +1219,7 @@ class Main:
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
-        URL = self._misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', sub_name)
+        URL = self._misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_tuple[0])
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     def _render_DAT_machine_info(self, catalog_name, category_name, machine_name):

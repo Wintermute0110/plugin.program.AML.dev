@@ -1066,7 +1066,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             machines_render[machine_name]['nplayers'] = machines[machine_name]['nplayers']
 
     # ---------------------------------------------------------------------------------------------
-    # Improve name in DAT indices
+    # Improve name in DAT indices and machine names
     # ---------------------------------------------------------------------------------------------
     # >> History DAT categories are Software List names.
     if history_idx_dic:
@@ -1080,6 +1080,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             else:
                 if cat_name not in SL_main_catalog_dic: continue
                 history_idx_dic[cat_name]['name'] = SL_main_catalog_dic[cat_name]['display_name']
+            # >> Improve machine names
+            for machine_list in history_idx_dic[cat_name]['machines']:
+                machine_list[1] = machines_render[machine_list[0]]['description']
 
     # ---------------------------------------------------------------------------------------------
     # Build main distributed hashed database
@@ -1130,7 +1133,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Line 6)
     # ---------------------------------------------------------------------------------------------
     log_info('Building machine plots/descriptions ...')
-    history_info_set = set(history_idx_dic['mame']['machines'])
+    history_info_set = set([ machine[0] for machine in history_idx_dic['mame']['machines'] ])
     mameinfo_info_set = set(mameinfo_idx_dic['mame'])
     gameinit_info_set = set(gameinit_idx_dic)
     command_info_set = set(command_idx_dic)
