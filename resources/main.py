@@ -50,8 +50,6 @@ HOME_DIR        = FileName('special://home')
 KODI_FAV_PATH   = FileName('special://profile/favourites.xml')
 ADDONS_DIR      = HOME_DIR.pjoin('addons')
 AML_ADDON_DIR   = ADDONS_DIR.pjoin(__addon_id__)
-# ICON_IMG_PATH   = AML_ADDON_DIR.pjoin('icon.png')
-# FANART_IMG_PATH = AML_ADDON_DIR.pjoin('fanart.jpg')
 
 LOCATION_STANDARD  = 'STANDARD'
 LOCATION_MAME_FAVS = 'MAME_FAVS'

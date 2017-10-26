@@ -1360,30 +1360,63 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
             for rom in m_roms:
                 if not cloneof:
                     # --- Parent machine ---
-                    # >> In the Split set non-merge ROMs are in the machine archive and
-                    # >> merge ROMs are in the parent archive.
+                    # 1. In the Split set non-merge ROMs are in the machine archive and merged ROMs
+                    #    are in the parent archive.
                     if rom['merge']:
                         location = romof + '/' + rom['name']
                     else:
                         location = m_name + '/' + rom['name']
                 else:
                     # --- Clone machine ---
-                    # >> In the Split set non-merged ROMs are in the machine archive and
-                    # >> merge ROMs are in the parent archive. However, if ROM is a BIOS it
-                    # >> is located in the romof of the parent. BIOS ROMs always have the
-                    # >> merge attribute. Also, some machines (notably mslugN) also have non-BIOS
-                    # >> common ROMs merged in neogeo.zip BIOS archive.
+                    # 1. In the Split set, non-merged ROMs are in the machine ZIP archive and
+                    #    merged ROMs are in the parent archive. 
+                    # 2. If ROM is a BIOS it is located in the romof of the parent. BIOS ROMs 
+                    #    always have the merge attribute. 
+                    # 3. Some machines (notably mslugN) also have non-BIOS common ROMs merged in 
+                    #    neogeo.zip BIOS archive.
+                    # 4. Some machines (notably XXXXX) have all ROMs merged. In other words, do not
+                    #    have their own ROMs.
+                    # 5. Special case: there could be duplicate ROMs with different regions.
+                    #    For example, in neogeo.zip
+                    #    <rom name="sm1.sm1" size="131072" crc="94416d67" sha1="42f..." region="audiobios" offset="0"/>
+                    #    <rom name="sm1.sm1" size="131072" crc="94416d67" sha1="42f..." region="audiocpu" offset="0"/>
+                    #
+                    #    Furthermore, some machines may have more than 2 identical ROMs:
+                    #    <machine name="aa3000" sourcefile="aa310.cpp" cloneof="aa310" romof="aa310">
+                    #    <rom name="cmos_riscos3.bin" merge="cmos_riscos3.bin" bios="300" size="256" crc="0da2d31d" region="i2cmem"/>
+                    #    <rom name="cmos_riscos3.bin" merge="cmos_riscos3.bin" bios="310" size="256" crc="0da2d31d" region="i2cmem"/>
+                    #    <rom name="cmos_riscos3.bin" merge="cmos_riscos3.bin" bios="311" size="256" crc="0da2d31d" region="i2cmem"/>
+                    #    <rom name="cmos_riscos3.bin" merge="cmos_riscos3.bin" bios="319" size="256" crc="0da2d31d" region="i2cmem"/>
+                    #
                     if rom['merge']:
-                        # >> If clone ROM is a BIOS then ROM is in the BIOS archive.
-                        if rom['bios']:
-                            parent_romof = machines[cloneof]['romof']
-                            location = parent_romof + '/' + rom['name']
+                        # >> Get merged ROM from parent
+                        parent_name = cloneof
+                        parent_romof = machines[parent_name]['romof']
+                        parent_roms =  machine_roms[parent_name]['roms']
+                        clone_rom_merged_name = rom['merge']
+                        # >> Pick ROMs with same name and choose the first one.
+                        parent_merged_rom_l = filter(lambda r: r['name'] == clone_rom_merged_name, parent_roms)
+                        # if len(parent_merged_rom_l) != 1:
+                        #     log_error('Machine "{0}" / ROM "{1}"\n'.format(m_name, rom['name']))
+                        #     log_error('len(parent_merged_rom_l) = {0}'.format(len(parent_merged_rom_l)))
+                        #     raise CriticalError('CriticalError')
+                        parent_merged_rom = parent_merged_rom_l[0]
+                        # >> Check if clone merged ROM is also merged in parent
+                        if parent_merged_rom['merge']:
+                            # >> ROM is in the 'romof' archive of the parent ROM
+                            super_parent_name = parent_romof
+                            super_parent_roms =  machine_roms[super_parent_name]['roms']
+                            parent_rom_merged_name = parent_merged_rom['merge']
+                            # >> Pick ROMs with same name and choose the first one.
+                            super_parent_merged_rom_l = filter(lambda r: r['name'] == parent_rom_merged_name, super_parent_roms)
+                            # if len(super_parent_merged_rom_l) > 1:
+                            #     log_error('Machine "{0}" / ROM "{1}"\n'.format(m_name, rom['name']))
+                            #     log_error('len(super_parent_merged_rom_l) = {0}\n'.format(len(super_parent_merged_rom_l)))
+                            #     raise CriticalError('CriticalError')
+                            super_parent_merged_rom = super_parent_merged_rom_l[0]
+                            location = super_parent_name + '/' + super_parent_merged_rom['name']
                         else:
-                            # >> Get parent merged ROM, and check if the ROM is also merged in
-                            # >> parent.
-                            # parent_roms = machine_roms[cloneof]['roms']
-                            # parent_rom = parent_roms
-                            location = romof + '/' + rom['name']
+                            location = parent_name + '/' + parent_merged_rom['name']
                     else:
                         location = m_name + '/' + rom['name']
                 # >> Remove unused fields to save space in JSON database
