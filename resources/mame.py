@@ -671,7 +671,7 @@ def mame_load_Command_DAT(filename):
 # and then optimise. "Premature optimization is the root of all evil" -- Donald Knuth
 # Add new field 'status' : 'OK', 'ROM has no CRC', 'ZIP not found', 'Bad ZIP file', 
 #                          'ROM not in ZIP', 'ROM bad size', 'ROM bad CRC'.
-# Also adds fields 'status_colour'
+# Also adds fields 'status_colour'.
 #
 # m_roms = [
 #     {'name' : 'avph.03d', 'crc' : '01234567', 'location' : 'avsp/avph.03d'}, ...
@@ -732,5 +732,25 @@ def mame_audit_machine_roms(settings, roms_dic):
         m_rom['status'] = 'OK'
         m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
 
+# Add new field 'status' : 'OK', 'CHD not found', 'CHD bad SHA1'
+# Also adds fields 'status_colour'.
+#
+# m_chds = [
+#     {'name' : 'avph.03d', 'sha1' : '012...', 'location' : 'avsp/avph.03d'}, ...
+# ]
+#
+# I'm not sure if the CHD sha1 value in MAME XML is the sha1 of the uncompressed data OR
+# the sha1 of the CHD file. If the formaer, then AEL can open the CHD file, get the sha1 from the
+# header and verify it. See
+# http://www.mameworld.info/ubbthreads/showflat.php?Cat=&Number=342940&page=0&view=expanded&sb=5&o=&vc=1
+#
 def mame_audit_machine_chds(settings, chds_dic):
-    pass
+    for m_chd in chds_dic:
+        chd_name = m_chd['name']
+        chd_FN = FileName(settings['chd_path']).pjoin(chd_name + '.chd')
+        if not chd_FN.exists():
+            m_chd['status'] = 'CHD not found'
+            m_chd['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_chd['status'])
+            continue
+        m_chd['status'] = 'OK'
+        m_chd['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_chd['status'])

@@ -2794,7 +2794,7 @@ class Main:
                 # >> Machine has CHDs
                 if machine in chds_db_dic:
                     chds_dic = chds_db_dic[machine]
-                    # mame_audit_machine_chds()
+                    mame_audit_machine_chds(self.settings, chds_dic)
 
                 # >> Update progress dialog. Check if user run out of patience.
                 processed_machines += 1
@@ -2802,15 +2802,32 @@ class Main:
                 if pDialog.iscanceled(): break
 
             # >> Generate report.
+            # >> 1292apvs, 1392apvs have no ROMs (in 0.190)
             report_list = []
             for machine in sorted(machines_render):
                 if machine in roms_db_dic:
                     roms_dic = roms_db_dic[machine]
-                    report_list.append('Machine {0}'.format(machine))
-                    for m_rom in roms_dic:
-                        report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
-                            m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
-                    report_list.append('')
+                    if roms_dic:
+                        report_list.append('Machine {0}'.format(machine))
+                        for m_rom in roms_dic:
+                            report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
+                                m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
+                        report_list.append('')
+                    else:
+                        report_list.append('Machine {0} has no ROMs'.format(machine))
+                        report_list.append('')
+
+                if machine in chds_db_dic:
+                    chds_dic = chds_db_dic[machine]
+                    if chds_dic:
+                        report_list.append('Machine {0} has CHDs'.format(machine))
+                        for m_chd in chds_dic:
+                            report_list.append('{0}  {1}  {2}'.format(
+                                m_chd['name'], m_chd['sha1'][0:6], m_chd['status']))
+                        report_list.append('')
+                    else:
+                        report_list.append('Machine {0} has no CHDs'.format(machine))
+                        report_list.append('')
 
             # >> Write report
             with open(PATHS.REPORT_MAME_ROM_AUDIT_PATH.getPath(), 'w') as file:
