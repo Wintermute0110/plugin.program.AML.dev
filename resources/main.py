@@ -2017,7 +2017,7 @@ class Main:
                 info_text = ''
                 with open(PATHS.REPORT_MAME_SCAN_ROM_MACHINES_PATH.getPath(), "r") as myfile:
                     info_text = myfile.read()
-                self._display_text_window(window_title, info_text)
+                    self._display_text_window(window_title, info_text)
 
             # --- View MAME ROM archive scanner report ---
             elif type_sub == 1:
@@ -2030,7 +2030,7 @@ class Main:
                 info_text = ''
                 with open(PATHS.REPORT_MAME_SCAN_ROM_ARCHIVES_PATH.getPath(), "r") as myfile:
                     info_text = myfile.read()
-                self._display_text_window(window_title, info_text)
+                    self._display_text_window(window_title, info_text)
 
             # --- View MAME machine CHD scanner report ---
             elif type_sub == 2:
@@ -2043,7 +2043,7 @@ class Main:
                 info_text = ''
                 with open(PATHS.REPORT_MAME_SCAN_CHD_MACHINES_PATH.getPath(), "r") as myfile:
                     info_text = myfile.read()
-                self._display_text_window(window_title, info_text)
+                    self._display_text_window(window_title, info_text)
 
             # --- View MAME CHD archive scanner report ---
             elif type_sub == 3:
@@ -2056,7 +2056,7 @@ class Main:
                 info_text = ''
                 with open(PATHS.REPORT_MAME_SCAN_CHD_ARCHIVES_PATH.getPath(), "r") as myfile:
                     info_text = myfile.read()
-                self._display_text_window(window_title, info_text)
+                    self._display_text_window(window_title, info_text)
 
             # --- View MAME Samples scanner report ---
             elif type_sub == 4:
@@ -2069,7 +2069,7 @@ class Main:
                 info_text = ''
                 with open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
-                self._display_text_window(window_title, info_text)
+                    self._display_text_window(window_title, info_text)
 
             # --- View Software Lists ROM scanner report ---
             elif type_sub == 5:
@@ -2082,7 +2082,7 @@ class Main:
                 info_text = ''
                 with open(PATHS.REPORT_SL_SCAN_ROMS_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
-                self._display_text_window(window_title, info_text)
+                    self._display_text_window(window_title, info_text)
 
             # --- View Software Lists CHD scanner report ---
             elif type_sub == 6:
@@ -2095,7 +2095,7 @@ class Main:
                 info_text = ''
                 with open(PATHS.REPORT_SL_SCAN_CHDS_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
-                self._display_text_window(window_title, info_text)
+                    self._display_text_window(window_title, info_text)
 
         # --- View asset/artwork scanner reports ---
         elif action == ACTION_VIEW_REPORT_ASSETS:
@@ -2131,9 +2131,15 @@ class Main:
             if type_sub < 0: return
 
             if type_sub == 0:
-                kodi_dialog_OK('View MAME audit report not coded yet. Sorry.')
+                if not PATHS.REPORT_MAME_ROM_AUDIT_PATH.exists():
+                    kodi_dialog_OK('MAME ROM audit report not found. Please audit your MAME ROMs and try again.')
+                    return
+                with open(PATHS.REPORT_MAME_ROM_AUDIT_PATH.getPath(), 'r') as myfile:
+                    info_text = myfile.read()
+                    self._display_text_window('SL CHD scanner report', info_text)
+
             elif type_sub == 1:
-                kodi_dialog_OK('View SL audit report not coded yet. Sorry.')
+                kodi_dialog_OK('View Software Lists audit report not coded yet. Sorry.')
 
         else:
             kodi_dialog_OK('Wrong action == {0}. This is a bug, please report it.'.format(action))
