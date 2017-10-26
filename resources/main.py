@@ -155,6 +155,8 @@ class AML_Paths:
         self.REPORT_MAME_SCAN_SAMP_PATH         = self.REPORTS_DIR.pjoin('Report_Samples_scanner.txt')
         self.REPORT_SL_SCAN_ROMS_PATH           = self.REPORTS_DIR.pjoin('Report_SL_ROM_scanner.txt')
         self.REPORT_SL_SCAN_CHDS_PATH           = self.REPORTS_DIR.pjoin('Report_SL_CHD_scanner.txt')
+        # >> Audit report
+        self.REPORT_MAME_ROM_AUDIT_PATH         = self.REPORTS_DIR.pjoin('Report_MAME_ROM_audit.txt')
 PATHS = AML_Paths()
 
 # --- ROM flags used by skins to display status icons ---
@@ -1910,9 +1912,6 @@ class Main:
 
         # --- Audit ROMs of a single machine ---
         elif action == ACTION_AUDIT_MAME_MACHINE:
-            # >> Only import stuff when needed. This should make AML faster.
-            import zipfile as z
-
             # --- Load machine dictionary and ROM database ---
             # FUTURE WORK ROMs and CHDs may have different set types. FE, split ROMs and merged CHDs.
             rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][self.settings['mame_rom_set']]
@@ -1943,66 +1942,8 @@ class Main:
             log_debug('_command_context_view() romof   {0}\n'.format(romof))
 
             # --- Open ZIP file and check CRC32 ---
-            # >> This code is very un-optimised! But it is better to get something that works
-            # >> and then optimise. "Premature optimization is the root of all evil" -- Donald Knuth
-            # >> Add new field 'status' : 'OK', 'OK no CRC ROM', 'ZIP not found', 'Bad ZIP file', 
-            # >>                          'ROM not in ZIP', 'ROM bad size', 'ROM bad CRC'.
-            # m_roms = [
-            #     {'name' : 'avph.03d', 'crc' : '01234567', 'location' : 'avsp/avph.03d'}
-            # ]
-            for m_rom in roms_dic:
-                zip_name = m_rom['location'].split('/')[0]
-                rom_name = m_rom['location'].split('/')[1]
-                # log_debug('Testing ROM {0}'.format(m_rom['name']))
-                # log_debug('location {0}'.format(m_rom['location']))
-                # log_debug('zip_name {0}'.format(zip_name))
-                # log_debug('rom_name {0}'.format(rom_name))
-
-                # >> Test if ZIP file exists
-                zip_FN = FileName(self.settings['rom_path']).pjoin(zip_name + '.zip')
-                # log_debug('ZIP {0}'.format(zip_FN.getPath()))
-                if not zip_FN.exists():
-                    m_rom['status'] = 'ZIP not found'
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-                    continue
-
-                # >> Open ZIP file and get list of files
-                try:
-                    zip_f = z.ZipFile(zip_FN.getPath(), 'r')
-                except z.BadZipfile as e:
-                    m_rom['status'] = 'Bad ZIP file'
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-                    continue
-                z_file_list = zip_f.namelist()
-                # log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
-                if not rom_name in z_file_list:
-                    zip_f.close()
-                    m_rom['status'] = 'ROM not in ZIP'
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-                    continue
-
-                # >> Get ZIP file object and test size and CRC
-                # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
-                # >> However, MAME encodes it as an hexadecimal number: CRC32 0123abcd
-                z_info = zip_f.getinfo(rom_name)
-                z_crc_hex = '{0:08x}'.format(z_info.CRC)
-                # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
-                # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
-                if z_info.file_size != m_rom['size']:
-                    zip_f.close()
-                    m_rom['status'] = 'ROM bad size'
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-                    continue
-                if z_crc_hex != m_rom['crc']:
-                    zip_f.close()
-                    m_rom['status'] = 'ROM bad CRC'
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-                    continue
-
-                # >> Close ZIP file
-                zip_f.close()
-                m_rom['status'] = 'OK'
-                m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+            mame_audit_machine_roms(self.settings, roms_dic)
+            # mame_audit_machine_chds(self.settings, chds_dic)
 
             # --- Generate report ---
             info_text = []
@@ -2819,9 +2760,62 @@ class Main:
             kodi_notify('All ROM/asset scanning finished')
 
         # --- Audit MAME machine ROMs/CHDs ---
+        # NOTE It is likekely that this function will take a looong time. It is important that the
+        #      audit process can be canceled and a partial report is written.
         elif menu_item == 4:
-            log_info('_command_setup_plugin() Audit MAME machine ROMs/CHDs ...')
-            kodi_dialog_OK('Audit MAME machine ROMs/CHDs not implemented yet.')
+            # >> Load machines, ROMs and CHDs databases.
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
+            pDialog.update(0)
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            pDialog.update(5)
+            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            pDialog.update(25)
+            machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            pDialog.update(50)
+            roms_db_dic = fs_load_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath())
+            pDialog.update(75)
+            chds_db_dic = fs_load_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath())
+            pDialog.update(100)
+            pDialog.close()
+
+            # >> Go machine by machine and audit ZIPs
+            # >> Adds new column 'status' to each ROM.
+            pDialog.create('Advanced MAME Launcher', 'Auditing MAME ROMs and CHDs ... ')
+            total_machines = control_dic['total_machines']
+            processed_machines = 0
+            for machine in sorted(machines_render):
+                # >> Machine has ROMs
+                if machine in roms_db_dic:
+                    roms_dic = roms_db_dic[machine]
+                    # >> roms_dic is mutable and edited inside the function
+                    mame_audit_machine_roms(self.settings, roms_dic)
+
+                # >> Machine has CHDs
+                if machine in chds_db_dic:
+                    chds_dic = chds_db_dic[machine]
+                    # mame_audit_machine_chds()
+
+                # >> Update progress dialog. Check if user run out of patience.
+                processed_machines += 1
+                pDialog.update((processed_machines * 100) // total_machines)
+                if pDialog.iscanceled(): break
+
+            # >> Generate report.
+            report_list = []
+            for machine in sorted(machines_render):
+                if machine in roms_db_dic:
+                    roms_dic = roms_db_dic[machine]
+                    report_list.append('Machine {0}'.format(machine))
+                    for m_rom in roms_dic:
+                        report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
+                            m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
+                    report_list.append('')
+
+            # >> Write report
+            with open(PATHS.REPORT_MAME_ROM_AUDIT_PATH.getPath(), 'w') as file:
+                out_str = '\n'.join(report_list)
+                file.write(out_str.encode('utf-8'))
 
         # --- Audit SL ROMs/CHDs ---
         elif menu_item == 5:
