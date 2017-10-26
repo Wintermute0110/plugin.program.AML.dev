@@ -1379,7 +1379,7 @@ class Main:
         # --- Display brother machines (same driver) ---
         # catalog = 'Driver', 
         elif s_value == 4:
-            kodi_dialog_OK('Not coded yet, sorry.')
+            kodi_dialog_OK('"Display brother machines" not coded yet, sorry.')
 
     # ---------------------------------------------------------------------------------------------
     # Information display
