@@ -51,6 +51,7 @@ KODI_FAV_PATH   = FileName('special://profile/favourites.xml')
 ADDONS_DIR      = HOME_DIR.pjoin('addons')
 AML_ADDON_DIR   = ADDONS_DIR.pjoin(__addon_id__)
 
+# --- Used in the addon URLs so mark the location of machines/ROMs ---
 LOCATION_STANDARD  = 'STANDARD'
 LOCATION_MAME_FAVS = 'MAME_FAVS'
 LOCATION_SL_FAVS   = 'SL_FAVS'
@@ -1543,7 +1544,7 @@ class Main:
             # Devices list is a special case.
             if machine['devices']:
                 for i, device in enumerate(machine['devices']):
-                    info_text += "[COLOR lime]devices[/COLOR][{0}, {1}]:\n".format(i, device['att_type'])
+                    info_text += "[COLOR lime]devices[/COLOR][{0}]:\n".format(i)
                     info_text += "  [COLOR violet]att_type[/COLOR]: {0}\n".format(device['att_type'])
                     info_text += "  [COLOR violet]att_tag[/COLOR]: {0}\n".format(device['att_tag'])
                     info_text += "  [COLOR skyblue]att_mandatory[/COLOR]: {0}\n".format(unicode(device['att_mandatory']))
