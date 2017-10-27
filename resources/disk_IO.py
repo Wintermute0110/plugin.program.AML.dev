@@ -1312,11 +1312,11 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 # device ROMs (<device_ref> ROMs).
 #
 # roms_dic = {
-#     'machine_name ' : [
+#     'machine_name ' : [ {
 #         'crc' : string,
 #         'location' : 'zip_name/rom_name.rom'
 #         'name' : string,
-#         'size' : int,
+#         'size' : int, }, ...
 #     ],
 #     ...
 # }
@@ -2245,6 +2245,106 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
 # -------------------------------------------------------------------------------------------------
 # Software Lists database build
 # -------------------------------------------------------------------------------------------------
+#
+# https://www.mess.org/mess/swlist_format
+# The basic idea (which leads basically the whole format) is that each <software> entry should 
+# correspond to a game box you could have bought in a shop, and that each <part> entry should 
+# correspond to a piece (i.e. a cart, a disk or a tape) that you would have found in such a box. 
+#
+# Example 1: 32x.xml-chaotix
+# Stored as: SL_ROMS/32x/chaotix.zip
+# <part name="cart" interface="_32x_cart">
+#   <dataarea name="rom" size="3145728">
+#     <rom name="knuckles' chaotix (europe).bin" size="3145728" crc="41d63572" sha1="5c1...922" offset="000000" />
+#   </dataarea>
+# </part>
+#
+# Example 2: 32x.xml-doom
+# Stored as: SL_ROMS/32x/doom.zip
+# <part name="cart" interface="_32x_cart">
+#   <feature name="pcb" value="171-6885A" />
+#   <dataarea name="rom" size="3145728">
+#     <rom name="mpr-17351-f.ic1" size="2097152" crc="e0ef6ebc" sha1="302...79d" offset="000000" />
+#     <rom name="mpr-17352-f.ic2" size="1048576" crc="c7079709" sha1="0f2...33b" offset="0x200000" />
+#   </dataarea>
+# </part>
+#
+# Example 3: a800.xml-diamond3
+# Stored as: SL_ROMS/a800/diamond3.zip (all ROMs from all parts)
+# <part name="cart" interface="a8bit_cart">
+#   <feature name="slot" value="a800_diamond" />
+#   <dataarea name="rom" size="65536">
+#     <rom name="diamond gos v3.0.rom" size="65536" crc="0ead07f8" sha1="e92...730" offset="0" />
+#   </dataarea>
+# </part>
+# <part name="flop1" interface="floppy_5_25">
+#   <dataarea name="flop" size="92176">
+#     <rom name="diamond paint.atr" size="92176" crc="d2994282" sha1="be8...287" offset="0" />
+#   </dataarea>
+# </part>
+# <part name="flop2" interface="floppy_5_25">
+#   <dataarea name="flop" size="92176">
+#     <rom name="diamond write.atr" size="92176" crc="e1e5b235" sha1="c3c...db5" offset="0" />
+#   </dataarea>
+# </part>
+# <part name="flop3" interface="floppy_5_25">
+#   <dataarea name="flop" size="92176">
+#     <rom name="diamond utilities.atr" size="92176" crc="bb48082d" sha1="eb7...4e4" offset="0" />
+#   </dataarea>
+# </part>
+#
+# Example 4: a2600.xml-harmbios
+# Stored as: SL_ROMS/a2600/harmbios.zip (all ROMs from all dataareas)
+# <part name="cart" interface="a2600_cart">
+#   <feature name="slot" value="a26_harmony" />
+#   <dataarea name="rom" size="0x8000">
+#     <rom name="bios_updater_NTSC.cu" size="0x8000" crc="03153eb2" sha1="cd9...009" offset="0" />
+#   </dataarea>
+#   <dataarea name="bios" size="0x21400">
+#     <rom name="hbios_106_NTSC_official_beta.bin" size="0x21400" crc="1e1d237b" sha1="8fd...1da" offset="0" />
+#     <rom name="hbios_106_NTSC_beta_2.bin"        size="0x21400" crc="807b86bd" sha1="633...e9d" offset="0" />
+#     <rom name="eeloader_104e_PAL60.bin" size="0x36f8" crc="58845532" sha1="255...71c" offset="0" />
+#   </dataarea>
+# </part>
+#
+# Example 5: psx.xml-traid
+# Stored as: SL_CHDS/psx/traid/tomb raider (usa) (v1.6).chd
+# <part name="cdrom" interface="psx_cdrom">
+#   <diskarea name="cdrom">
+#     <disk name="tomb raider (usa) (v1.6)" sha1="697...3ac"/>
+#   </diskarea>
+# </part>
+#
+# Example 6: psx.xml-traida cloneof=traid
+# <part name="cdrom" interface="psx_cdrom">
+#   <diskarea name="cdrom">
+#     <disk name="tomb raider (usa) (v1.5)" sha1="d48...0a9"/>
+#   </diskarea>
+# </part>
+#
+# Example 7: pico.xml-sanouk5
+# Stored as: SL_ROMS/pico/sanouk5.zip (mpr-18458-t.ic1 ROM)
+# Stored as: SL_CHDS/pico/sanouk5/imgpico-001.chd
+# <part name="cart" interface="pico_cart">
+#   <dataarea name="rom" size="524288">
+#     <rom name="mpr-18458-t.ic1" size="524288" crc="6340c18a" sha1="101..." offset="000000" loadflag="load16_word_swap" />
+#   </dataarea>
+#   <diskarea name="cdrom">
+#     <disk name="imgpico-001" sha1="c93...10d" />
+#   </diskarea>
+# </part>
+#
+# SL_roms = {
+#   'sl_name' : [
+#     {
+#       'part_name' : string,
+#       'part_interface' : string,
+#       'rom_list' : [string, string, ...],
+#       'disk_list' : [string, string, ...],
+#     }, ...
+#   ], ...
+# }
+#
 class SLData:
     def __init__(self):
         self.roms = {}
@@ -2255,6 +2355,7 @@ class SLData:
 def fs_load_SL_XML(xml_filename):
     __debug_xml_parser = False
     ret_obj = SLData()
+    SL_roms = {}
 
     # --- If file does not exist return empty dictionary ---
     if not os.path.isfile(xml_filename): return ret_obj
@@ -2275,6 +2376,7 @@ def fs_load_SL_XML(xml_filename):
             rom = fs_new_SL_ROM()
             num_roms = 0
             rom_name = root_element.attrib['name']
+            software_rom_list = []
             if 'cloneof' in root_element.attrib: rom['cloneof'] = root_element.attrib['cloneof']
             if 'romof' in root_element.attrib:
                 log_error('{0} -> "romof" in root_element.attrib'.format(rom_name))
@@ -2290,90 +2392,16 @@ def fs_load_SL_XML(xml_filename):
                 if xml_tag == 'description' or xml_tag == 'year' or xml_tag == 'publisher':
                     rom[xml_tag] = xml_text
                 elif xml_tag == 'part':
-                    # Example 1: 32x.xml-chaotix
-                    # Stored as: SL_ROMS/32x/chaotix.zip
                     # <part name="cart" interface="_32x_cart">
-                    #   <dataarea name="rom" size="3145728">
-                    #     <rom name="knuckles' chaotix (europe).bin" size="3145728" crc="41d63572" sha1="5c1...922" offset="000000" />
-                    #   </dataarea>
-                    # </part>
-                    #
-                    # Example 2: 32x.xml-doom
-                    # Stored as: SL_ROMS/32x/doom.zip
-                    # <part name="cart" interface="_32x_cart">
-                    #   <feature name="pcb" value="171-6885A" />
-                    #   <dataarea name="rom" size="3145728">
-                    #     <rom name="mpr-17351-f.ic1" size="2097152" crc="e0ef6ebc" sha1="302...79d" offset="000000" />
-                    #     <rom name="mpr-17352-f.ic2" size="1048576" crc="c7079709" sha1="0f2...33b" offset="0x200000" />
-                    #   </dataarea>
-                    # </part>
-                    #
-                    # Example 3: a800.xml-diamond3
-                    # Stored as: SL_ROMS/a800/diamond3.zip (all ROMs from all parts)
-                    # <part name="cart" interface="a8bit_cart">
-                    #   <feature name="slot" value="a800_diamond" />
-                    #   <dataarea name="rom" size="65536">
-                    #     <rom name="diamond gos v3.0.rom" size="65536" crc="0ead07f8" sha1="e92...730" offset="0" />
-                    #   </dataarea>
-                    # </part>
-                    # <part name="flop1" interface="floppy_5_25">
-                    #   <dataarea name="flop" size="92176">
-                    #     <rom name="diamond paint.atr" size="92176" crc="d2994282" sha1="be8...287" offset="0" />
-                    #   </dataarea>
-                    # </part>
-                    # <part name="flop2" interface="floppy_5_25">
-                    #   <dataarea name="flop" size="92176">
-                    #     <rom name="diamond write.atr" size="92176" crc="e1e5b235" sha1="c3c...db5" offset="0" />
-                    #   </dataarea>
-                    # </part>
-                    # <part name="flop3" interface="floppy_5_25">
-                    #   <dataarea name="flop" size="92176">
-                    #     <rom name="diamond utilities.atr" size="92176" crc="bb48082d" sha1="eb7...4e4" offset="0" />
-                    #   </dataarea>
-                    # </part>
-                    #
-                    # Example 4: a2600.xml-harmbios
-                    # Stored as: SL_ROMS/a2600/harmbios.zip (all ROMs from all dataareas)
-                    # <part name="cart" interface="a2600_cart">
-                    #   <feature name="slot" value="a26_harmony" />
-                    #   <dataarea name="rom" size="0x8000">
-                    #     <rom name="bios_updater_NTSC.cu" size="0x8000" crc="03153eb2" sha1="cd9...009" offset="0" />
-                    #   </dataarea>
-                    #   <dataarea name="bios" size="0x21400">
-                    #     <rom name="hbios_106_NTSC_official_beta.bin" size="0x21400" crc="1e1d237b" sha1="8fd...1da" offset="0" />
-                    #     <rom name="hbios_106_NTSC_beta_2.bin"        size="0x21400" crc="807b86bd" sha1="633...e9d" offset="0" />
-                    #     <rom name="eeloader_104e_PAL60.bin" size="0x36f8" crc="58845532" sha1="255...71c" offset="0" />
-                    #   </dataarea>
-                    # </part>
-                    #
-                    # Example 5: psx.xml-traid
-                    # Stored as: SL_CHDS/psx/traid/tomb raider (usa) (v1.6).chd
-                    # <part name="cdrom" interface="psx_cdrom">
-                    #   <diskarea name="cdrom">
-                    #     <disk name="tomb raider (usa) (v1.6)" sha1="697...3ac"/>
-                    #   </diskarea>
-                    # </part>
-                    #
-                    # Example 6: psx.xml-traida cloneof=traid
-                    # <part name="cdrom" interface="psx_cdrom">
-                    #   <diskarea name="cdrom">
-                    #     <disk name="tomb raider (usa) (v1.5)" sha1="d48...0a9"/>
-                    #   </diskarea>
-                    # </part>
-                    #
-                    # Example 7: pico.xml-sanouk5
-                    # Stored as: SL_ROMS/pico/sanouk5.zip (mpr-18458-t.ic1 ROM)
-                    # Stored as: SL_CHDS/pico/sanouk5/imgpico-001.chd
-                    # <part name="cart" interface="pico_cart">
-                    #   <dataarea name="rom" size="524288">
-                    #     <rom name="mpr-18458-t.ic1" size="524288" crc="6340c18a" sha1="101..." offset="000000" loadflag="load16_word_swap" />
-                    #   </dataarea>
-                    #   <diskarea name="cdrom">
-                    #     <disk name="imgpico-001" sha1="c93...10d" />
-                    #   </diskarea>
-                    # </part>
                     rom['part_name'].append(rom_child.attrib['name'])
                     rom['part_interface'].append(rom_child.attrib['interface'])
+
+                    software_rom_dic = {
+                        'part_name'      : rom_child.attrib['name'],
+                        'part_interface' : rom_child.attrib['interface'],
+                        'rom_list'       : [],
+                        'disk_list'      : [],
+                    }
 
                     # --- Count number of <dataarea> and <diskarea> tags inside this <part tag> ---
                     num_dataarea = num_diskarea = 0
@@ -2384,14 +2412,21 @@ def fs_load_SL_XML(xml_filename):
                             dataarea_num_roms = 0
                             for dataarea_child in part_child:
                                 if dataarea_child.tag == 'rom' and 'sha1' in dataarea_child.attrib:
+                                    software_rom_dic['rom_list'].append(dataarea_child.attrib['name'])
                                     dataarea_num_roms += 1
                                     num_roms += 1
+                                    # >> DEBUG
+                                    if 'merge' in dataarea_child.attrib:
+                                        log_error('software {0}'.format(rom_name))
+                                        log_error('rom {0} has merge attribute'.format(dataarea_child.attrib['name']))
+                                        raise CriticalError('DEBUG')
                             if dataarea_num_roms > 0: num_dataarea += 1
                         elif part_child.tag == 'diskarea':
-                            # >> Dataarea is valid ONLY if it contains valid ROMs
+                            # >> Dataarea is valid ONLY if it contains valid CHDs
                             diskarea_num_disks = 0
                             for dataarea_child in part_child:
                                 if dataarea_child.tag == 'disk' and 'sha1' in dataarea_child.attrib:
+                                    software_rom_dic['disk_list'].append(dataarea_child.attrib['name'])
                                     diskarea_num_disks += 1
                                     rom['CHDs'].append(dataarea_child.attrib['name'])
                             if diskarea_num_disks > 0: num_diskarea += 1
@@ -2402,6 +2437,10 @@ def fs_load_SL_XML(xml_filename):
                         else:
                             log_error('{0} -> Inside <part>, unrecognised tag <{0}>'.format(rom_name, part_child.tag))
                             raise CriticalError('DEBUG')
+                    # --- Add ROMs/disks ---
+                    software_rom_list.append(software_rom_dic)
+
+                    # --- DEBUG/Research code ---
                     # if num_dataarea > 1:
                     #     log_error('{0} -> num_dataarea = {1}'.format(rom_name, num_dataarea))
                     #     raise CriticalError('DEBUG')
@@ -2413,6 +2452,7 @@ def fs_load_SL_XML(xml_filename):
                     #     log_error('{0} -> num_diskarea = {1}'.format(rom_name, num_diskarea))
                     #     raise CriticalError('DEBUG')
 
+            # --- Finished processing of <software> element
             # >> If ROM has more than 1 ROM increase number of total ROMs (ZIP files).
             # >> If ROM has CHDs count the CHDs.
             rom['num_roms'] = num_roms
@@ -2426,10 +2466,11 @@ def fs_load_SL_XML(xml_filename):
             if rom['CHDs']:     ret_obj.num_CHDs += len(rom['CHDs'])
             if rom['num_roms']: ret_obj.num_roms += 1
 
-            # >> Add ROM to database
+            # >> Add <software> to database and software ROM/CHDs to database
             ret_obj.roms[rom_name] = rom
+            SL_roms[rom_name] = software_rom_list
 
-    return ret_obj
+    return (ret_obj, SL_roms)
 
 # -------------------------------------------------------------------------------------------------
 # SL_catalog = { 'name' : {'display_name': u'', 'rom_count' : int, 'rom_DB_noext' : u'' }, ...}
@@ -2455,10 +2496,12 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
         SL_path_FN = FileName(file)
-        SL_obj = fs_load_SL_XML(SL_path_FN.getPath())
+        (SL_obj, SL_roms) = fs_load_SL_XML(SL_path_FN.getPath())
         output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json')
         fs_write_JSON_file(output_FN.getPath(), SL_obj.roms)
-        
+        output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_roms.json')
+        fs_write_JSON_file(output_FN.getPath(), SL_roms)
+
         # >> Add software list to catalog
         num_SL_ROMs += SL_obj.num_roms
         num_SL_CHDs += SL_obj.num_CHDs
@@ -2583,8 +2626,9 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
+# ROM/CHD scanner
+# -------------------------------------------------------------------------------------------------
 # Does not save any file. machines_render and control_dic modified by assigment
-#
 def fs_scan_MAME_ROMs(PATHS, settings,
                       control_dic, machines, machines_render, machine_rom_sets, main_rom_list, main_chd_list,
                       ROM_path_FN, CHD_path_FN, Samples_path_FN,
