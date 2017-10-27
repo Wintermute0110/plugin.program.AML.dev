@@ -686,6 +686,12 @@ def mame_audit_machine_roms(settings, rom_list):
         # log_debug('zip_name {0}'.format(zip_name))
         # log_debug('rom_name {0}'.format(rom_name))
 
+        # >> Invalid ROMs are not in the ZIP file
+        if not m_rom['crc']:
+            m_rom['status'] = 'OK (invalid ROM)'
+            m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+            continue
+
         # >> Test if ZIP file exists
         zip_FN = FileName(settings['rom_path']).pjoin(zip_name + '.zip')
         # log_debug('ZIP {0}'.format(zip_FN.getPath()))
@@ -718,10 +724,6 @@ def mame_audit_machine_roms(settings, rom_list):
         zip_f.close()
         # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
         # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
-        if not m_rom['crc']:
-            m_rom['status'] = 'OK (invalid ROM)'
-            m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
-            continue
         if z_info_crc_hex_str != m_rom['crc']:
             m_rom['status'] = 'ROM bad CRC'
             m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
