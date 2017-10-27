@@ -166,7 +166,7 @@ def fs_new_machine_render_dic():
 #     }
 # }
 #
-def fs_new_rom_object():
+def fs_new_roms_object():
     r = {
         'bios'  : [],
         'roms'  : [],
@@ -544,13 +544,32 @@ def fs_count_MAME_Machines(PATHS):
 
     return num_machines
 
-def fs_initial_flags(machine, m_render, m_rom):
-    flag_ROM = '?'
-    flag_CHD = '?'
-    if machine['sampleof']: flag_Samples = '?'
-    else:                   flag_Samples = '-'
-    if machine['softwarelists']: flag_SL  = 'L'
-    else:                        flag_SL  = '-'
+# Valid ROM: ROM has CRC hash
+# Valid CHD: CHD has SHA1 hash
+def fs_initial_flags(machine, machine_render, m_roms):
+    # >> Machine has own ROMs (at least one ROM is valid and has empty 'merge' attribute)
+    has_own_ROMs = False
+    for rom in m_roms['roms']:
+        if not rom['merge'] and rom['crc']:
+            has_own_ROMs = True
+            break
+    flag_ROM = '?' if has_own_ROMs else '-'
+
+    # >> Machine has own CHDs
+    has_own_CHDs = False
+    for rom in m_roms['disks']:
+        if not rom['merge'] and rom['sha1']:
+            has_own_CHDs = True
+            break
+    flag_CHD = '?' if has_own_CHDs else '-'
+
+    # >> Samples flag
+    flag_Samples = '?' if machine['sampleof'] else '-'
+
+    # >> Software List flag
+    flag_SL = 'L' if machine['softwarelists'] else '-'
+
+    # >> Devices flag
     if machine['devices']:
         num_dev_mandatory = 0
         for device in machine['devices']:
@@ -564,9 +583,8 @@ def fs_initial_flags(machine, m_render, m_rom):
             raise CriticalError(message)
     else:
         flag_Devices  = '-'
-    flags_str = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
-    return flags_str
+    return '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
 #
 # Update m_render using Python pass by assignment.
@@ -579,11 +597,8 @@ def fs_set_ROM_flag(m_render, new_ROM_flag):
     flag_Samples  = old_flags_str[2]
     flag_SL       = old_flags_str[3]
     flag_Devices  = old_flags_str[4]
-
-    flag_ROM = new_ROM_flag
-
-    flags_str = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
-    m_render['flags'] = flags_str
+    flag_ROM      = new_ROM_flag
+    m_render['flags'] = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
 def fs_set_CHD_flag(m_render, new_CHD_flag):
     old_flags_str = m_render['flags']
@@ -592,11 +607,8 @@ def fs_set_CHD_flag(m_render, new_CHD_flag):
     flag_Samples  = old_flags_str[2]
     flag_SL       = old_flags_str[3]
     flag_Devices  = old_flags_str[4]
-
-    flag_CHD = new_CHD_flag
-
-    flags_str = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
-    m_render['flags'] = flags_str
+    flag_CHD      = new_CHD_flag
+    m_render['flags'] = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
 def fs_set_Sample_flag(m_render, new_Sample_flag):
     old_flags_str = m_render['flags']
@@ -605,11 +617,35 @@ def fs_set_Sample_flag(m_render, new_Sample_flag):
     flag_Samples  = old_flags_str[2]
     flag_SL       = old_flags_str[3]
     flag_Devices  = old_flags_str[4]
+    flag_Samples  = new_Sample_flag
+    m_render['flags'] = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
-    flag_Samples = new_Sample_flag
+#
+# Retrieves machine from distributed database.
+# This is very quick for retrieving individual machines, very slow for multiple machines.
+#
+def fs_get_machine_main_db_hash(PATHS, machine_name):
+    log_debug('fs_get_machine_main_db_hash() machine {0}'.format(machine_name))
+    md5_str = hashlib.md5(machine_name).hexdigest()
+    hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0] + '.json')
+    hashed_db_dic = fs_load_JSON_file(hash_DB_FN.getPath())
 
-    flags_str = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
-    m_render['flags'] = flags_str
+    return hashed_db_dic[machine_name]
+
+def fs_build_catalog_helper(catalog_parents, catalog_all, machines, main_pclone_dic, db_field):
+    for parent_name in main_pclone_dic:
+        catalog_key = machines[parent_name][db_field]
+        if catalog_key in catalog_parents:
+            catalog_parents[catalog_key]['parents'].append(parent_name)
+            catalog_parents[catalog_key]['num_parents'] = len(catalog_parents[catalog_key]['parents'])
+            catalog_all[catalog_key]['machines'].append(parent_name)
+            for clone in main_pclone_dic[parent_name]: catalog_all[catalog_key]['machines'].append(clone)
+            catalog_all[catalog_key]['num_machines'] = len(catalog_all[catalog_key]['machines'])
+        else:
+            catalog_parents[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+            all_list = [parent_name]
+            for clone in main_pclone_dic[parent_name]: all_list.append(clone)
+            catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
 
 # -------------------------------------------------------------------------------------------------
 # Reads and processes MAME.xml
@@ -721,7 +757,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         if event == 'start' and elem.tag == 'machine':
             machine  = fs_new_machine_dic()
             m_render = fs_new_machine_render_dic()
-            m_rom    = fs_new_rom_object()
+            m_roms   = fs_new_roms_object()
             device_list = []
             runnable = False
             num_displays = 0
@@ -804,11 +840,11 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             bios = fs_new_bios_dic()
             bios['name'] = unicode(elem.attrib['name'])
             bios['description'] = unicode(elem.attrib['description'])
-            m_rom['bios'].append(bios)
+            m_roms['bios'].append(bios)
 
         # >> Check in machine has ROMs
-        # A) ROM is considered to be valid if sha1 has exists. 
-        #    Are there ROMs with no sha1? There are, for example 
+        # A) ROM is considered to be valid if SHA1 has exists. 
+        #    Are there ROMs with no sha1? There are a lot, for example 
         #    machine 1941j <rom name="yi22b.1a" size="279" status="nodump" region="bboardplds" />
         #
         # B) A ROM is unique to that machine if the <rom> tag does not have the 'merge' attribute.
@@ -831,15 +867,19 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             rom['bios']  = unicode(elem.attrib['bios']) if 'bios' in elem.attrib else ''
             rom['size']  = int(elem.attrib['size']) if 'size' in elem.attrib else 0
             rom['crc']   = unicode(elem.attrib['crc']) if 'crc' in elem.attrib else ''
-            m_rom['roms'].append(rom)
+            m_roms['roms'].append(rom)
 
         # >> Machine devices
         elif event == 'start' and elem.tag == 'device_ref':
             device_list.append(unicode(elem.attrib['name']))
 
         # >> Check in machine has CHDs
-        # CHD is considered valid if SHA1 hash exists only. Keep in mind that there can be multiple
-        # disks per machine, some valid, some invalid: just one valid CHD is OK.
+        # A) CHD is considered valid if and only if SHA1 hash exists.
+        #    Keep in mind that there can be multiple disks per machine, some valid, some invalid.
+        #    Just one valid CHD is OK.
+        # B) A CHD is unique to a machine if the <disk> tag does not have the 'merge' attribute.
+        #    See comments for ROMs avobe.
+        #
         elif event == 'start' and elem.tag == 'disk':
             # <!ATTLIST disk name CDATA #REQUIRED>
             # if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['CHDs_merged'].append(elem.attrib['name'])
@@ -850,7 +890,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             disk['name']  = unicode(elem.attrib['name'])
             disk['merge'] = unicode(elem.attrib['merge']) if 'merge' in elem.attrib else ''
             disk['sha1']  = unicode(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
-            m_rom['disks'].append(disk)
+            m_roms['disks'].append(disk)
 
         # Some machines have more than one display tag (for example aquastge has 2).
         # Other machines have no display tag (18w)
@@ -947,7 +987,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 
             # >> Fill machine status
             # r/R flag takes precedence over * flag
-            m_render['flags'] = fs_initial_flags(machine, m_render, m_rom)
+            m_render['flags'] = fs_initial_flags(machine, m_render, m_roms)
 
             # --- Compute statistics ---
             if m_render['cloneof']: stats_clones += 1
@@ -989,7 +1029,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
             # >> Add new machine
             machines[m_name] = machine
             machines_render[m_name] = m_render
-            machines_roms[m_name] = m_rom
+            machines_roms[m_name] = m_roms
             machines_devices[m_name] = device_list
 
         # --- Print something to prove we are doing stuff ---
@@ -1266,49 +1306,43 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog.update(int((15*100) / num_items))
     pDialog.close()
 
-#
-# Retrieves machine from distributed database.
-# This is very quick for retrieving individual machines, very slow for multiple machines.
-#
-def fs_get_machine_main_db_hash(PATHS, machine_name):
-    log_debug('fs_get_machine_main_db_hash() machine {0}'.format(machine_name))
-    md5_str = hashlib.md5(machine_name).hexdigest()
-    hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0] + '.json')
-    hashed_db_dic = fs_load_JSON_file(hash_DB_FN.getPath())
-
-    return hashed_db_dic[machine_name]
-
 # -------------------------------------------------------------------------------------------------
-# Generates the main ROM database.
+# Generates the main ROM database. This database contains invalid ROMs also to display information
+# in "View / Audit", "View MAME machine ROMs" context menu. This database also includes
+# device ROMs (<device_ref> ROMs).
 #
 # roms_dic = {
 #     'machine_name ' : [
-#         'name' : string,
-#         'size' : int,
 #         'crc' : string,
 #         'location' : 'zip_name/rom_name.rom'
+#         'name' : string,
+#         'size' : int,
 #     ],
 #     ...
 # }
 #
 # chds_dic = {
 #     'machine_name ' : [
-#         'name' : string,
-#         'crc' : string,
 #         'location' : 'dir_name/chd_name'
+#         'name' : string,
+#         'sha1' : string,
 #     ],
 # }
 #
-# Used by the ROM scanner to check how many machines can be run or not.
-# For every machine stores the ZIP/CHD required files
+# A) Used by the ROM scanner to check how many machines may be run or not depending of the
+#    ZIPs/CHDs you have. Note that depeding of the ROM set (Merged, Split, Non-merged) the number
+#    of machines you can run changes.
+# B) For every machine stores the ZIP/CHD required files to run the machine.
+# C) A ZIP/CHD exists if and only if it is valid (CRC/SHA1 exists). Invalid ROMs are excluded.
 #
 # machines_dic = {
 #     'machine_name ' : { 'ROMs' : [name1, name2], 'CHDs' : [dir/name1, dir/name2] },
 # }
 #
-# Use by the ROM scanner to determine how many ZIP files you have or not. Note that depeding of
-# the ROM set (Merged, Split, Non-merged) the number of machines you can run changes. Both lists 
-# have unique elements (instead of lists there should be sets but sets are not JSON serializable).
+# A) Use by the ROM scanner to determine how many ZIPs/CHDs files you have or not.
+# B) Both lists have unique elements (instead of lists there should be sets but sets are 
+#    not JSON serializable).
+# C) A ZIP/CHD exists if and only if it is valid (CRC/SHA1 exists). Invalid ROMs are excluded.
 #
 # archives_dic = [ name1, name2, ..., nameN ]
 # archives_CHD_dic = [ dir1/name1, dir2/name2, ..., dirN/nameN ]
@@ -1330,7 +1364,6 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
     log_info('fs_build_ROM_databases() CHD set is {0}'.format(chd_set))
     roms_dic = {}
     chds_dic = {}
-    idx_dic = {}
     pDialog = xbmcgui.DialogProgress()
 
     # --- ROM set ---
@@ -1632,6 +1665,12 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
     pDialog.close()
 
     # --- ROM/CHD machine index ---
+    # NOTE roms_dic and chds_dic have invalid ROMs/CHDs. However, idx_dic must have only valid
+    #      ROMs.
+    # For every machine, it goes ROM by ROM and makes a list of ZIP archive locations. Then, it
+    # transforms the list into a set to have a list with unique elements.
+    # roms_dic/chds_dic have invalid ROMs. Skip invalid ROMs.
+    idx_dic = {}
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Building index ...')
     num_items = len(machines)
@@ -1643,11 +1682,15 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
         chd_archive_set = set()
         # --- ROM list ---
         for rom in rom_list:
+            # >> Skip invalid ROMs
+            if not rom['crc']: continue
             rom_str_list = rom['location'].split('/')
             zip_name = rom_str_list[0]
             rom_archive_set.add(zip_name)
         # --- CHD list ---
         for chd in chd_list:
+            # >> Skip invalid CHDs
+            if not chd['sha1']: continue
             chd_name = chd['location']
             chd_archive_set.add(chd_name)
         idx_dic[m_name] = {'ROMs' : list(rom_archive_set), 'CHDs' : list(chd_archive_set)}
@@ -1660,16 +1703,19 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
     archives_ROM_set = set()
     for m_name in roms_dic:
         for rom in roms_dic[m_name]:
-            location_list = rom['location'].split('/')
-            archive_str = location_list[0]
-            if not archive_str: continue
+            # >> Skip invalid ROMs.
+            if not rom['crc']: continue
+            archive_str = rom['location'].split('/')[0]
+            # if not archive_str: continue
             archives_ROM_set.add(archive_str)
     archives_ROM_list = list(sorted(archives_ROM_set))
 
     archives_CHD_set = set()
     for m_name in chds_dic:
-        for rom in chds_dic[m_name]:
-            archives_CHD_set.add(rom['location'])
+        for chd in chds_dic[m_name]:
+            # >> Skip invalid CHDs.
+            if not chd['sha1']: continue
+            archives_CHD_set.add(chd['location'])
     archives_CHD_list = list(sorted(archives_CHD_set))
 
     # -----------------------------------------------------------------------------
@@ -1904,7 +1950,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     pDialog.update(update_number, pDialog_line1, 'Making Catver catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'catver')
+    fs_build_catalog_helper(catalog_parents, catalog_all, machines, main_pclone_dic, 'catver')
     fs_write_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CATVER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
@@ -1915,7 +1961,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     pDialog.update(update_number, pDialog_line1, 'Making Catlist catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'catlist')
+    fs_build_catalog_helper(catalog_parents, catalog_all, machines, main_pclone_dic, 'catlist')
     fs_write_JSON_file(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CATLIST_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
@@ -1926,7 +1972,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     pDialog.update(update_number, pDialog_line1, 'Making Genre catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'genre')
+    fs_build_catalog_helper(catalog_parents, catalog_all, machines, main_pclone_dic, 'genre')
     fs_write_JSON_file(PATHS.CATALOG_GENRE_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_GENRE_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
@@ -1937,7 +1983,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     pDialog.update(update_number, pDialog_line1, 'Making Nplayers catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'nplayers')
+    fs_build_catalog_helper(catalog_parents, catalog_all, machines, main_pclone_dic, 'nplayers')
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
@@ -1948,7 +1994,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     pDialog.update(update_number, pDialog_line1, 'Making Bestgames catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'bestgames')
+    fs_build_catalog_helper(catalog_parents, catalog_all, machines, main_pclone_dic, 'bestgames')
     fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
@@ -1959,7 +2005,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     pDialog.update(update_number, pDialog_line1, 'Making Series catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, 'series')
+    fs_build_catalog_helper(catalog_parents, catalog_all, machines, main_pclone_dic, 'series')
     fs_write_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
@@ -1970,7 +2016,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     pDialog.update(update_number, pDialog_line1, 'Making Manufacturer catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog(catalog_parents, catalog_all, machines_render, main_pclone_dic, 'manufacturer')
+    fs_build_catalog_helper(catalog_parents, catalog_all, machines_render, main_pclone_dic, 'manufacturer')
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
@@ -1981,7 +2027,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     pDialog.update(update_number, pDialog_line1, 'Making Year catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog(catalog_parents, catalog_all, machines_render, main_pclone_dic, 'year')
+    fs_build_catalog_helper(catalog_parents, catalog_all, machines_render, main_pclone_dic, 'year')
     fs_write_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
@@ -2196,23 +2242,9 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
     # log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
 
-def fs_build_catalog(catalog_parents, catalog_all, machines, main_pclone_dic, db_field):
-    for parent_name in main_pclone_dic:
-        catalog_key = machines[parent_name][db_field]
-        if catalog_key in catalog_parents:
-            catalog_parents[catalog_key]['parents'].append(parent_name)
-            catalog_parents[catalog_key]['num_parents'] = len(catalog_parents[catalog_key]['parents'])
-            catalog_all[catalog_key]['machines'].append(parent_name)
-            for clone in main_pclone_dic[parent_name]: catalog_all[catalog_key]['machines'].append(clone)
-            catalog_all[catalog_key]['num_machines'] = len(catalog_all[catalog_key]['machines'])
-        else:
-            catalog_parents[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
-            all_list = [parent_name]
-            for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-            catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
-
 # -------------------------------------------------------------------------------------------------
-#
+# Software Lists database build
+# -------------------------------------------------------------------------------------------------
 class SLData:
     def __init__(self):
         self.roms = {}
@@ -2334,7 +2366,7 @@ def fs_load_SL_XML(xml_filename):
                     # Stored as: SL_CHDS/pico/sanouk5/imgpico-001.chd
                     # <part name="cart" interface="pico_cart">
                     #   <dataarea name="rom" size="524288">
-                    #     <rom name="mpr-18458-t.ic1" size="524288" crc="6340c18a" sha1="101...58a" offset="000000" loadflag="load16_word_swap" />
+                    #     <rom name="mpr-18458-t.ic1" size="524288" crc="6340c18a" sha1="101..." offset="000000" loadflag="load16_word_swap" />
                     #   </dataarea>
                     #   <diskarea name="cdrom">
                     #     <disk name="imgpico-001" sha1="c93...10d" />

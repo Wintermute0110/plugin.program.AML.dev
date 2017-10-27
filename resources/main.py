@@ -2826,20 +2826,28 @@ class Main:
                         if report_only_errors:
                             machine_has_errors = False
                             for m_rom in roms_list:
-                                if m_rom['status'] != 'OK':
+                                if m_rom['status'] != 'OK' and m_rom['status'] != 'OK (invalid ROM)':
                                     machine_has_errors = True
                                     break
                         # >> Print report.
-                        if report_only_errors:
-                            if machine_has_errors:
-                                report_list.append('Machine {0} (cloneof {1})'.format(machine, machines_render[machine]['cloneof']))
-                                for m_rom in roms_list:
-                                    if m_rom['status'] != 'OK':
-                                        report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
-                                            m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
-                                report_list.append('')
-                        else:
-                            report_list.append('Machine {0}'.format(machine))
+                        if report_only_errors and machine_has_errors:
+                            description = machines_render[machine]['description']
+                            cloneof = machines_render[machine]['cloneof']
+                            if cloneof:
+                                report_list.append('Machine {0} "{1}" (cloneof {2})'.format(machine, description, cloneof))
+                            else:
+                                report_list.append('Machine {0} "{1}"'.format(machine, description))
+                            for m_rom in roms_list:
+                                if m_rom['status'] != 'OK' and m_rom['status'] != 'OK (invalid ROM)':
+                                    report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
+                                        m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
+                            report_list.append('')
+                        elif not report_only_errors:
+                            cloneof = machines_render[machine]['cloneof']
+                            if cloneof:
+                                report_list.append('Machine {0} (cloneof {1})'.format(machine, cloneof))
+                            else:
+                                report_list.append('Machine {0}'.format(machine))
                             for m_rom in roms_list:
                                 report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
                                     m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
@@ -2857,19 +2865,18 @@ class Main:
                         if report_only_errors:
                             machine_has_errors = False
                             for m_chd in chds_list:
-                                if m_chd['status'] != 'OK':
+                                if m_chd['status'] != 'OK' and m_chd['status'] != 'OK (invalid CHD)':
                                     machine_has_errors = True
                                     break
                         # >> Print report.
-                        if report_only_errors:
-                            if machine_has_errors:
-                                report_list.append('Machine {0} has CHDs'.format(machine))
-                                for m_chd in chds_list:
-                                    if m_chd['status'] != 'OK':
-                                        report_list.append('{0}  {1}  {2}'.format(
-                                            m_chd['name'], m_chd['sha1'][0:6], m_chd['status']))
-                                report_list.append('')
-                        else:
+                        if report_only_errors and machine_has_errors:
+                            report_list.append('Machine {0} has CHDs'.format(machine))
+                            for m_chd in chds_list:
+                                if m_chd['status'] != 'OK' and m_chd['status'] != 'OK (invalid CHD)':
+                                    report_list.append('{0}  {1}  {2}'.format(
+                                        m_chd['name'], m_chd['sha1'][0:6], m_chd['status']))
+                            report_list.append('')
+                        elif not report_only_errors:
                             report_list.append('Machine {0} has CHDs'.format(machine))
                             for m_chd in chds_list:
                                 report_list.append('{0}  {1}  {2}'.format(

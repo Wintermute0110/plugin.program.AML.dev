@@ -669,16 +669,16 @@ def mame_load_Command_DAT(filename):
 # -------------------------------------------------------------------------------------------------
 # This code is very un-optimised! But it is better to get something that works
 # and then optimise. "Premature optimization is the root of all evil" -- Donald Knuth
-# Add new field 'status' : 'OK', 'ROM has no CRC', 'ZIP not found', 'Bad ZIP file', 
+# Add new field 'status' : 'OK', 'OK (invalid ROM)', 'ZIP not found', 'Bad ZIP file', 
 #                          'ROM not in ZIP', 'ROM bad size', 'ROM bad CRC'.
 # Also adds fields 'status_colour'.
 #
-# m_roms = [
+# rom_list = [
 #     {'name' : 'avph.03d', 'crc' : '01234567', 'location' : 'avsp/avph.03d'}, ...
 # ]
 #
-def mame_audit_machine_roms(settings, roms_dic):
-    for m_rom in roms_dic:
+def mame_audit_machine_roms(settings, rom_list):
+    for m_rom in rom_list:
         zip_name = m_rom['location'].split('/')[0]
         rom_name = m_rom['location'].split('/')[1]
         # log_debug('Testing ROM {0}'.format(m_rom['name']))
@@ -713,29 +713,32 @@ def mame_audit_machine_roms(settings, roms_dic):
         # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
         # >> However, MAME encodes it as an hexadecimal number: CRC32 0123abcd
         z_info = zip_f.getinfo(rom_name)
-        z_crc_hex = '{0:08x}'.format(z_info.CRC)
+        z_info_file_size = z_info.file_size
+        z_info_crc_hex_str = '{0:08x}'.format(z_info.CRC)
+        zip_f.close()
         # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
         # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
-        if z_info.file_size != m_rom['size']:
-            zip_f.close()
-            m_rom['status'] = 'ROM bad size'
-            m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+        if not m_rom['crc']:
+            m_rom['status'] = 'OK (invalid ROM)'
+            m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
             continue
-        if z_crc_hex != m_rom['crc']:
-            zip_f.close()
+        if z_info_crc_hex_str != m_rom['crc']:
             m_rom['status'] = 'ROM bad CRC'
             m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
             continue
+        if z_info_file_size != m_rom['size']:
+            m_rom['status'] = 'ROM bad size'
+            m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+            continue
 
-        # >> Close ZIP file
-        zip_f.close()
+        # >> ROM is OK
         m_rom['status'] = 'OK'
         m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
 
-# Add new field 'status' : 'OK', 'CHD not found', 'CHD bad SHA1'
+# Add new field 'status' : 'OK', 'OK (invalid CHD)', 'CHD not found', 'CHD bad SHA1'
 # Also adds fields 'status_colour'.
 #
-# m_chds = [
+# chd_list = [
 #     {'name' : 'avph.03d', 'sha1' : '012...', 'location' : 'avsp/avph.03d'}, ...
 # ]
 #
@@ -744,8 +747,12 @@ def mame_audit_machine_roms(settings, roms_dic):
 # header and verify it. See
 # http://www.mameworld.info/ubbthreads/showflat.php?Cat=&Number=342940&page=0&view=expanded&sb=5&o=&vc=1
 #
-def mame_audit_machine_chds(settings, chds_dic):
-    for m_chd in chds_dic:
+def mame_audit_machine_chds(settings, chd_list):
+    for m_chd in chd_list:
+        if not m_chd['sha1']:
+            m_chd['status'] = 'OK (invalid CHD)'
+            m_chd['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_chd['status'])
+            continue
         chd_name = m_chd['name']
         chd_FN = FileName(settings['chd_path']).pjoin(chd_name + '.chd')
         if not chd_FN.exists():
