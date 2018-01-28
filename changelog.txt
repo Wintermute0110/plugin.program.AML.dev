@@ -1,7 +1,7 @@
 [B]Advanced Emulator Launcher | version 0.9.5 | xx December 2017[/B]
 
-WIP      User Parent/Clone substituted artwork. For example, trailers are only available for the
-         Parent machine.
+WIP      User Parent/Clone substituted artwork. For example, most trailers are only available for
+         the Parent machine and can be used by Clone machines.
 
 WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
 
@@ -33,7 +33,6 @@ FEATURE  Display command.dat in information.
 WIP      At launching, do not check ROMs for machines which doesn't have ROMs.
          Requires loading machines database, which will slow down launching process a lot!
          A hashed database of machines is necessary to speed up plugin.
-         Now, disable ROM checking.
 
 FEATURE  Allow user to choose default assets as AEL does in addon seetings.
 
