@@ -3,7 +3,7 @@
 # Advanced MAME Launcher main script file
 #
 
-# Copyright (c) 2016-2017 Wintermute0110 <wintermute0110@gmail.com>
+# Copyright (c) 2016-2018 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -220,7 +220,7 @@ class Main:
             log_debug('Advanced MAME Launcher exit (addon root)')
             return
 
-        if 'catalog' in args and not 'command' in args:
+        elif 'catalog' in args and not 'command' in args:
             catalog_name = args['catalog'][0]
             # --- Software list is a special case ---
             if catalog_name == 'SL' or catalog_name == 'SL_ROM' or \
@@ -257,10 +257,18 @@ class Main:
         elif 'command' in args:
             command = args['command'][0]
 
+            # >> Commands used by skins to render items of the addon root menu.
+            if   command == 'SKIN_SHOW_FAV_SLOTS':       self._render_skin_fav_slots()
+            elif command == 'SKIN_SHOW_MAIN_FILTERS':    self._render_skin_main_filters()
+            elif command == 'SKIN_SHOW_BINARY_FILTERS':  self._render_skin_binary_filters()
+            elif command == 'SKIN_SHOW_CATALOG_FILTERS': self._render_skin_catalog_filters()
+            elif command == 'SKIN_SHOW_DAT_SLOTS':       self._render_skin_dat_slots()
+            elif command == 'SKIN_SHOW_SL_FILTERS':      self._render_skin_SL_filters()
+
             # >> Auxiliar commands from parent machine context menu
             # >> Not sure if this will cause problems with the concurrent protected code once it's
             #    implemented.
-            if command == 'EXEC_SHOW_MAME_CLONES':
+            elif command == 'EXEC_SHOW_MAME_CLONES':
                 catalog_name  = args['catalog'][0] if 'catalog' in args else ''
                 category_name = args['category'][0] if 'category' in args else ''
                 machine_name  = args['parent'][0] if 'parent' in args else ''
@@ -406,7 +414,6 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     # Root menu rendering
     # ---------------------------------------------------------------------------------------------
-    # NOTE Devices are excluded from main PClone list.
     def _render_root_list(self):
         mame_view_mode = self.settings['mame_view_mode']
 
@@ -431,33 +438,35 @@ class Main:
             if mame_view_mode == VIEW_MODE_FLAT:
                 machines_n_str = 'Machines with coin slot (Normal) [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Normal']['num_machines'])
                 machines_u_str = 'Machines with coin slot (Unusual) [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Unusual']['num_machines'])
-                nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoCoin']['num_machines'])
-                mecha_str    = 'Mechanical machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Mechanical']['num_machines'])
-                dead_str     = 'Dead machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Dead']['num_machines'])
-                devices_str  = 'Device machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Devices']['num_machines'])
-                norom_str    = 'Machines [with no ROMs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoROM']['num_machines'])
-                chd_str      = 'Machines [with CHDs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['CHD']['num_machines'])
-                samples_str  = 'Machines [with Samples] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Samples']['num_machines'])
-                bios_str     = 'Machines [BIOS] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['BIOS']['num_machines'])
+                nocoin_str = 'Machines with no coin slot [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoCoin']['num_machines'])
+                mecha_str = 'Mechanical machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Mechanical']['num_machines'])
+                dead_str = 'Dead machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Dead']['num_machines'])
+                devices_str = 'Device machines [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Devices']['num_machines'])
+                norom_str = 'Machines [with no ROMs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['NoROM']['num_machines'])
+                chd_str = 'Machines [with CHDs] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['CHD']['num_machines'])
+                samples_str = 'Machines [with Samples] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['Samples']['num_machines'])
+                bios_str = 'Machines [BIOS] [COLOR orange]({0} machines)[/COLOR]'.format(c_dic['BIOS']['num_machines'])
             elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
                 machines_n_str = 'Machines with coin slot (Normal) [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Normal']['num_parents'])
                 machines_u_str = 'Machines with coin slot (Unusual) [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Unusual']['num_parents'])
-                nocoin_str   = 'Machines with no coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
-                mecha_str    = 'Mechanical machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
-                dead_str     = 'Dead machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Dead']['num_parents'])
-                devices_str  = 'Device machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Devices']['num_parents'])
-                norom_str    = 'Machines [with no ROMs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoROM']['num_parents'])
-                chd_str      = 'Machines [with CHDs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['CHD']['num_parents'])
-                samples_str  = 'Machines [with Samples] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Samples']['num_parents'])
-                bios_str     = 'Machines [BIOS] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
+                nocoin_str = 'Machines with no coin slot [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoCoin']['num_parents'])
+                mecha_str = 'Mechanical machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Mechanical']['num_parents'])
+                dead_str = 'Dead machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Dead']['num_parents'])
+                devices_str = 'Device machines [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Devices']['num_parents'])
+                norom_str = 'Machines [with no ROMs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['NoROM']['num_parents'])
+                chd_str = 'Machines [with CHDs] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['CHD']['num_parents'])
+                samples_str = 'Machines [with Samples] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['Samples']['num_parents'])
+                bios_str = 'Machines [BIOS] [COLOR orange]({0} parents)[/COLOR]'.format(c_dic['BIOS']['num_parents'])
 
-        # >> Binary filters (Virtual catalog 'None')
+        # >> Main filters (Virtual catalog 'None')
         self._render_root_list_row(machines_n_str, self._misc_url_2_arg('catalog', 'None', 'category', 'Normal'))
         self._render_root_list_row(machines_u_str, self._misc_url_2_arg('catalog', 'None', 'category', 'Unusual'))
         self._render_root_list_row(nocoin_str,     self._misc_url_2_arg('catalog', 'None', 'category', 'NoCoin'))
         self._render_root_list_row(mecha_str,      self._misc_url_2_arg('catalog', 'None', 'category', 'Mechanical'))
         self._render_root_list_row(dead_str,       self._misc_url_2_arg('catalog', 'None', 'category', 'Dead'))
         self._render_root_list_row(devices_str,    self._misc_url_2_arg('catalog', 'None', 'category', 'Devices'))
+
+        # >> Binary filters (Virtual catalog 'None')
         self._render_root_list_row(norom_str,      self._misc_url_2_arg('catalog', 'None', 'category', 'NoROM'))
         self._render_root_list_row(chd_str,        self._misc_url_2_arg('catalog', 'None', 'category', 'CHD'))
         self._render_root_list_row(samples_str,    self._misc_url_2_arg('catalog', 'None', 'category', 'Samples'))
@@ -465,17 +474,17 @@ class Main:
 
         # >> Cataloged filters
         if self.settings['catver_path']:
-            self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('catalog', 'Catver'))
+            self._render_root_list_row('Machines by Category (Catver)', self._misc_url_1_arg('catalog', 'Catver'))
         if self.settings['catlist_path']:
             self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('catalog', 'Catlist'))
         if self.settings['genre_path']:
-            self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('catalog', 'Genre'))
+            self._render_root_list_row('Machines by Category (Genre)', self._misc_url_1_arg('catalog', 'Genre'))
         if self.settings['nplayers_path']:
-            self._render_root_list_row('Machines by Number of players',  self._misc_url_1_arg('catalog', 'NPlayers'))
+            self._render_root_list_row('Machines by Number of players', self._misc_url_1_arg('catalog', 'NPlayers'))
         if self.settings['bestgames_path']:
-            self._render_root_list_row('Machines by Score',              self._misc_url_1_arg('catalog', 'Bestgames'))
+            self._render_root_list_row('Machines by Score', self._misc_url_1_arg('catalog', 'Bestgames'))
         if self.settings['series_path']:
-            self._render_root_list_row('Machines by Series',             self._misc_url_1_arg('catalog', 'Series'))
+            self._render_root_list_row('Machines by Series', self._misc_url_1_arg('catalog', 'Series'))
 
         self._render_root_list_row('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
         self._render_root_list_row('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
@@ -502,6 +511,81 @@ class Main:
         # >> Special launchers
         self._render_root_list_row('<Favourite MAME machines>',       self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
         self._render_root_list_row('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    #
+    # These _render_skin_* functions used by skins only for widgets.
+    #
+    def _render_skin_fav_slots(self):
+        self._render_root_list_row('Favourite MAME machines', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
+        self._render_root_list_row('Favourite Software Lists ROMs', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_skin_main_filters(self):
+        machines_n_str = 'Machines with coin slot (Normal)'
+        machines_u_str = 'Machines with coin slot (Unusual)'
+        nocoin_str = 'Machines with no coin slot'
+        mecha_str = 'Mechanical machines'
+        dead_str = 'Dead machines'
+        devices_str = 'Device machines'
+
+        self._render_root_list_row(machines_n_str, self._misc_url_2_arg('catalog', 'None', 'category', 'Normal'))
+        self._render_root_list_row(machines_u_str, self._misc_url_2_arg('catalog', 'None', 'category', 'Unusual'))
+        self._render_root_list_row(nocoin_str,     self._misc_url_2_arg('catalog', 'None', 'category', 'NoCoin'))
+        self._render_root_list_row(mecha_str,      self._misc_url_2_arg('catalog', 'None', 'category', 'Mechanical'))
+        self._render_root_list_row(dead_str,       self._misc_url_2_arg('catalog', 'None', 'category', 'Dead'))
+        self._render_root_list_row(devices_str,    self._misc_url_2_arg('catalog', 'None', 'category', 'Devices'))
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_skin_binary_filters(self):
+        norom_str = 'Machines [with no ROMs]'
+        chd_str = 'Machines [with CHDs]'
+        samples_str = 'Machines [with Samples]'
+        bios_str = 'Machines [BIOS]'
+
+        self._render_root_list_row(norom_str,      self._misc_url_2_arg('catalog', 'None', 'category', 'NoROM'))
+        self._render_root_list_row(chd_str,        self._misc_url_2_arg('catalog', 'None', 'category', 'CHD'))
+        self._render_root_list_row(samples_str,    self._misc_url_2_arg('catalog', 'None', 'category', 'Samples'))
+        self._render_root_list_row(bios_str,       self._misc_url_2_arg('catalog', 'None', 'category', 'BIOS'))
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_skin_catalog_filters(self):
+        if self.settings['catver_path']:
+            self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('catalog', 'Catver'))
+        if self.settings['catlist_path']:
+            self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('catalog', 'Catlist'))
+        if self.settings['genre_path']:
+            self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('catalog', 'Genre'))
+        if self.settings['nplayers_path']:
+            self._render_root_list_row('Machines by Number of players',  self._misc_url_1_arg('catalog', 'NPlayers'))
+        if self.settings['bestgames_path']:
+            self._render_root_list_row('Machines by Score',              self._misc_url_1_arg('catalog', 'Bestgames'))
+        if self.settings['series_path']:
+            self._render_root_list_row('Machines by Series',             self._misc_url_1_arg('catalog', 'Series'))
+
+        self._render_root_list_row('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
+        self._render_root_list_row('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
+        self._render_root_list_row('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
+        self._render_root_list_row('Machines by Control Type',        self._misc_url_1_arg('catalog', 'Controls'))
+        self._render_root_list_row('Machines by Display Tag',         self._misc_url_1_arg('catalog', 'Display_Tag'))
+        self._render_root_list_row('Machines by Display Type',        self._misc_url_1_arg('catalog', 'Display_Type'))
+        self._render_root_list_row('Machines by Display Rotation',    self._misc_url_1_arg('catalog', 'Display_Rotate'))
+        self._render_root_list_row('Machines by Device',              self._misc_url_1_arg('catalog', 'Devices'))
+        self._render_root_list_row('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_skin_dat_slots(self):
+        self._render_root_list_row('History DAT',  self._misc_url_1_arg('catalog', 'History'))
+        self._render_root_list_row('MAMEINFO DAT', self._misc_url_1_arg('catalog', 'MAMEINFO'))
+        self._render_root_list_row('Gameinit DAT', self._misc_url_1_arg('catalog', 'Gameinit'))
+        self._render_root_list_row('Command DAT',  self._misc_url_1_arg('catalog', 'Command'))
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_skin_SL_filters(self):
+        if self.settings['SL_hash_path']:
+            self._render_root_list_row('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
+            self._render_root_list_row('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
+            self._render_root_list_row('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_root_list_row(self, root_name, root_URL):
