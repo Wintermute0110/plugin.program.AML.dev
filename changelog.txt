@@ -1,4 +1,4 @@
-[B]Advanced Emulator Launcher | version 0.9.5 | xx December 2017[/B]
+[B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
 WIP      User Parent/Clone substituted artwork. For example, most trailers are only available for
          the Parent machine and can be used by Clone machines.
@@ -6,7 +6,10 @@ WIP      User Parent/Clone substituted artwork. For example, most trailers are o
 WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
 
 
-[B]Advanced Emulator Launcher | version 0.9.4 | xx October 2017[/B]
+[B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
+
+FEATURE  Renamed plugin from plugin.program.advanced.MAME.launcher to plugin.program.AML.
+         Shorter name, shorter databases, higher speed.
 
 WIP      Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
