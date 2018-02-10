@@ -88,7 +88,7 @@ def mame_get_screen_rotation_str(display_rotate):
 
     return screen_str
 
-def mame_get_screen_str(machine):
+def mame_get_screen_str(machine_name, machine):
     d_list = machine['display_type']
     if d_list:
         if len(d_list) == 1:
@@ -102,10 +102,13 @@ def mame_get_screen_str(machine):
             elif d_list[0] == 'raster' and d_list[1] == 'raster':
                 r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
                 screen_str = 'Two raster {0} screens'.format(r_str)
+            elif d_list[0] == 'svg' and d_list[1] == 'svg':
+                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
+                screen_str = 'Two SVG {0} screens'.format(r_str)
             elif d_list[0] == 'unknown' and d_list[1] == 'unknown':
                 screen_str = 'Two unknown screens'
             else:
-                log_error('d_list = {0}'.format(unicode(d_list)))
+                log_error('Machine "{0}" d_list = {1}'.format(machine_name, unicode(d_list)))
                 raise TypeError
         elif len(d_list) == 3:
             if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster':
@@ -114,7 +117,7 @@ def mame_get_screen_str(machine):
             elif d_list[0] == 'raster' and d_list[1] == 'lcd' and d_list[2] == 'lcd':
                 screen_str = 'Three screens special case'
             else:
-                log_error('d_list = {0}'.format(unicode(d_list)))
+                log_error('Machine "{0}" d_list = {1}'.format(machine_name, unicode(d_list)))
                 raise TypeError
         else:
             raise TypeError
@@ -378,7 +381,7 @@ def mame_load_History_DAT(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_History_DAT() (IOError) opening "{0}"'.format(filename))
-        return ({}, {})
+        return (history_idx_dic, history_dic)
 
     # >> Parse file
     for file_line in f:
@@ -461,7 +464,7 @@ def mame_load_MameInfo_DAT(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_MameInfo_DAT() (IOError) opening "{0}"'.format(filename))
-        return (set(), {})
+        return (idx_dic, data_dic)
 
     # >> Parse file
     for file_line in f:
@@ -544,7 +547,7 @@ def mame_load_GameInit_DAT(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_GameInit_DAT() (IOError) opening "{0}"'.format(filename))
-        return ([], {})
+        return (idx_list, data_dic)
 
     # >> Parse file
     for file_line in f:
@@ -596,6 +599,8 @@ def mame_load_Command_DAT(filename):
     log_info('mame_load_Command_DAT() Parsing "{0}"'.format(filename))
     idx_list = []
     data_dic = {}
+    proper_idx_list = []
+    proper_data_dic = {}
     __debug_function = False
 
     # --- read_status FSM values ---
@@ -609,7 +614,7 @@ def mame_load_Command_DAT(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_Command_DAT() (IOError) opening "{0}"'.format(filename))
-        return (set(), {})
+        return (proper_idx_list, proper_data_dic)
 
     # >> Parse file
     for file_line in f:
@@ -649,8 +654,6 @@ def mame_load_Command_DAT(filename):
     log_info('mame_load_Command_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
 
     # >> Expand database. Many machines share the same entry. Expand the database.
-    proper_idx_list = []
-    proper_data_dic = {}
     for original_name in idx_list:
         original_name_list = original_name.split(',')
         for expanded_name in original_name_list:

@@ -1197,8 +1197,15 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Line 6)
     # ---------------------------------------------------------------------------------------------
     log_info('Building machine plots/descriptions ...')
-    history_info_set  = set([ machine[0] for machine in history_idx_dic['mame']['machines'] ])
-    mameinfo_info_set = set([ machine[0] for machine in mameinfo_idx_dic['mame'] ])
+    # >> Do not crash if DAT files are not used.
+    if history_idx_dic:
+        history_info_set  = set([ machine[0] for machine in history_idx_dic['mame']['machines'] ])
+    else:
+        history_info_set  = set()
+    if mameinfo_idx_dic:
+        mameinfo_info_set = set([ machine[0] for machine in mameinfo_idx_dic['mame'] ])
+    else:
+        mameinfo_info_set = set()
     gameinit_info_set = set([ machine[0] for machine in gameinit_idx_dic ])
     command_info_set  = set([ machine[0] for machine in command_idx_dic ])
     for machine_name in machines:
@@ -1218,7 +1225,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         SL_str    = ', '.join(m['softwarelists']) if m['softwarelists'] else ''
 
         plot_str  = '{0}\n'.format(controls_str)
-        plot_str += '{0}\n'.format(mame_get_screen_str(m))
+        plot_str += '{0}\n'.format(mame_get_screen_str(machine_name, m))
         plot_str += '{0} / Driver is {1}\n'.format(mecha_str, m['sourcefile'])
         plot_str += '{0}\n'.format(coin_str)
         plot_str += '{0}\n'.format(DAT_str) if DAT_str else ''
@@ -1292,6 +1299,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog.update(int((8*100) / num_items))
     fs_write_JSON_file(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
     pDialog.update(int((9*100) / num_items))
+    # log_debug('mameinfo_idx_dic = {0}'.format(unicode(mameinfo_idx_dic)))
     fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
     pDialog.update(int((10*100) / num_items))
     fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
