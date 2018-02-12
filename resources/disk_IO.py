@@ -1402,19 +1402,17 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 location = m_name + '/' + rom['name']
                 # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
+                rom_t['type'] = 'ROM'
                 rom_t['location'] = location
-                rom_t.pop('bios')
-                rom_t.pop('merge')
                 nonmerged_roms.append(rom_t)
             # --- Make a dictionary with device ROMs ---
             device_roms_list = []
             for device in devices_db_dic[m_name]:
                 device_roms_dic = machine_roms[device]
                 for rom in device_roms_dic['roms']:
-                    rom['location'] = device + '/' + rom['name']
                     rom_t = copy.deepcopy(rom)
-                    rom_t.pop('bios')
-                    rom_t.pop('merge')
+                    rom_t['type'] = 'DROM'
+                    rom_t['location'] = device + '/' + rom['name']
                     device_roms_list.append(rom_t)
             if device_roms_list: nonmerged_roms.extend(device_roms_list)
             roms_dic[m_name] = nonmerged_roms
@@ -1503,9 +1501,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                         location = m_name + '/' + rom['name']
                 # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
+                rom_t['type'] = 'ROM'
                 rom_t['location'] = location
-                rom_t.pop('bios')
-                rom_t.pop('merge')
                 split_roms.append(rom_t)
 
             # --- Make a dictionary with device ROMs ---
@@ -1513,10 +1510,9 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
             for device in devices_db_dic[m_name]:
                 device_roms_dic = machine_roms[device]
                 for rom in device_roms_dic['roms']:
-                    rom['location'] = device + '/' + rom['name']
                     rom_t = copy.deepcopy(rom)
-                    rom_t.pop('bios')
-                    rom_t.pop('merge')
+                    rom_t['type'] = 'DROM'
+                    rom_t['location'] = device + '/' + rom['name']
                     device_roms_list.append(rom_t)
             if device_roms_list: split_roms.extend(device_roms_list)
             roms_dic[m_name] = split_roms
@@ -1544,19 +1540,17 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 location = m_name + '/' + rom['name']
                 # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
+                rom_t['type'] = 'ROM'
                 rom_t['location'] = location
-                rom_t.pop('bios')
-                rom_t.pop('merge')
                 nonmerged_roms.append(rom_t)
             # --- Make a dictionary with device ROMs ---
             device_roms_list = []
             for device in devices_db_dic[m_name]:
                 device_roms_dic = machine_roms[device]
                 for rom in device_roms_dic['roms']:
-                    rom['location'] = device + '/' + rom['name']
                     rom_t = copy.deepcopy(rom)
-                    rom_t.pop('bios')
-                    rom_t.pop('merge')
+                    rom_t['type'] = 'DROM'
+                    rom_t['location'] = device + '/' + rom['name']
                     device_roms_list.append(rom_t)
             if device_roms_list: nonmerged_roms.extend(device_roms_list)
             roms_dic[m_name] = nonmerged_roms
@@ -1598,8 +1592,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                     else:
                         location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
+                disk_t['type'] = 'DISK'
                 disk_t['location'] = location
-                disk_t.pop('merge')
                 split_chds.append(disk_t)
             chds_dic[m_name] = split_chds
 
@@ -1636,8 +1630,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                     else:
                         location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
+                disk_t['type'] = 'DISK'
                 disk_t['location'] = location
-                disk_t.pop('merge')
                 split_chds.append(disk_t)
             chds_dic[m_name] = split_chds
 
@@ -1662,8 +1656,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
             for disk in m_disks:
                 location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
+                disk_t['type'] = 'DISK'
                 disk_t['location'] = location
-                disk_t.pop('merge')
                 nonmerged_chds.append(disk_t)
             chds_dic[m_name] = nonmerged_chds
 
@@ -1734,17 +1728,17 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
 
     # --- Save databases ---
     pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Saving databases ...', 'ROMs database')
+    pDialog.update(0, 'Saving databases (ROM Audit DB) ...')
     fs_write_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath(), roms_dic)
-    pDialog.update(16, 'Saving databases ...', 'CHDs database')
+    pDialog.update(16, 'Saving databases (CHD Audit DB) ...')
     fs_write_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath(), chds_dic)
-    pDialog.update(33, 'Saving databases ...', 'Machine index')
+    pDialog.update(33, 'Saving databases (Machines DB list) ...')
     fs_write_JSON_file(PATHS.ROM_SET_MACHINES_DB_PATH.getPath(), idx_dic)
-    pDialog.update(50, 'Saving databases ...', 'ROM list index')
+    pDialog.update(50, 'Saving databases (ROM List index) ...')
     fs_write_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath(), archives_ROM_list)
-    pDialog.update(66, 'Saving databases ...', 'CHD list index')
+    pDialog.update(66, 'Saving databases (CHD list index) ...')
     fs_write_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath(), archives_CHD_list)
-    pDialog.update(83, 'Saving databases ...', 'Control dictionery')
+    pDialog.update(83, 'Saving databases (Control dictionary) ...')
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
     pDialog.update(100)
     pDialog.close()

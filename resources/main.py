@@ -1487,17 +1487,18 @@ class Main:
         VIEW_MAME_MACHINE = 200
         VIEW_SL_ROM       = 300
 
-        ACTION_VIEW_MACHINE_DATA      = 100
-        ACTION_VIEW_MACHINE_ROMS      = 200
-        ACTION_VIEW_SL_ROM_DATA       = 300
-        ACTION_VIEW_SL_ROM_ROMS       = 400
-        ACTION_VIEW_DB_STATS          = 500
-        ACTION_VIEW_EXEC_OUTPUT       = 600
-        ACTION_VIEW_REPORT_SCANNER    = 700
-        ACTION_VIEW_REPORT_ASSETS     = 800
-        ACTION_VIEW_REPORT_AUDIT      = 900
-        ACTION_AUDIT_MAME_MACHINE     = 1000
-        ACTION_AUDIT_SL_MACHINE       = 1100
+        ACTION_VIEW_MACHINE_DATA       = 100
+        ACTION_VIEW_MACHINE_ROMS       = 200
+        ACTION_VIEW_MACHINE_AUDIT_ROMS = 300
+        ACTION_VIEW_SL_ROM_DATA        = 400
+        ACTION_VIEW_SL_ROM_ROMS        = 500
+        ACTION_VIEW_DB_STATS           = 600
+        ACTION_VIEW_EXEC_OUTPUT        = 700
+        ACTION_VIEW_REPORT_SCANNER     = 800
+        ACTION_VIEW_REPORT_ASSETS      = 900
+        ACTION_VIEW_REPORT_AUDIT       = 1000
+        ACTION_AUDIT_MAME_MACHINE      = 1100
+        ACTION_AUDIT_SL_MACHINE        = 1200
 
         # --- Determine if we are in a category, launcher or ROM ---
         log_debug('_command_context_view() machine_name "{0}"'.format(machine_name))
@@ -1530,7 +1531,8 @@ class Main:
         elif view_type == VIEW_MAME_MACHINE:
             d_list = [
               'View MAME machine data',
-              'View MAME machine ROMs',
+              'View MAME machine ROMs (ROMs DB)',
+              'View MAME machine ROMs (Audit DB)',
               'Audit MAME machine ROMs',
               'View database statistics',
               'View scanner reports ...',
@@ -1569,12 +1571,13 @@ class Main:
         elif view_type == VIEW_MAME_MACHINE:
             if   selected_value == 0: action = ACTION_VIEW_MACHINE_DATA
             elif selected_value == 1: action = ACTION_VIEW_MACHINE_ROMS
-            elif selected_value == 2: action = ACTION_AUDIT_MAME_MACHINE
-            elif selected_value == 3: action = ACTION_VIEW_DB_STATS
-            elif selected_value == 4: action = ACTION_VIEW_REPORT_SCANNER
-            elif selected_value == 5: action = ACTION_VIEW_REPORT_ASSETS
-            elif selected_value == 6: action = ACTION_VIEW_REPORT_AUDIT
-            elif selected_value == 7: action = ACTION_VIEW_EXEC_OUTPUT
+            elif selected_value == 2: action = ACTION_VIEW_MACHINE_AUDIT_ROMS
+            elif selected_value == 3: action = ACTION_AUDIT_MAME_MACHINE
+            elif selected_value == 4: action = ACTION_VIEW_DB_STATS
+            elif selected_value == 5: action = ACTION_VIEW_REPORT_SCANNER
+            elif selected_value == 6: action = ACTION_VIEW_REPORT_ASSETS
+            elif selected_value == 7: action = ACTION_VIEW_REPORT_AUDIT
+            elif selected_value == 8: action = ACTION_VIEW_EXEC_OUTPUT
             else:
                 kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -1857,9 +1860,9 @@ class Main:
                                   control_dic['scan_SL_CHDs_missing'])
             self._display_text_window(window_title, info_text)
 
-        # --- View MAME machine ROMs ---
+        # --- View MAME machine ROMs (ROMs database) ---
         elif action == ACTION_VIEW_MACHINE_ROMS:
-            # >> Load machine dictionary and ROM database
+            # >> Load machine dictionary, ROM database and Devices database.
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
             pDialog.update(0)
@@ -1876,12 +1879,11 @@ class Main:
             for device in devices_db_dic[machine_name]:
                 device_roms_dic = roms_db_dic[device]
                 for rom in device_roms_dic['roms']:
-                    rom['location'] = device + '.zip'
+                    # rom['location'] = device + '.zip'
                     device_roms_list.append(copy.deepcopy(rom))
 
             # --- ROM info ---
             info_text = []
-            info_text.append('[COLOR violet]machine[/COLOR] {0}\n'.format(machine_name))
             info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
                              '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
             info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
@@ -1892,52 +1894,100 @@ class Main:
             # Table cell padding: left, right
             # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
             table_str = []
-            table_str.append(['right', 'left',     'right', 'left',     'left',  'left', 'right'])
-            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS', 'Location'])
+            table_str.append(['right', 'left',     'right', 'left',     'left',  'left'])
+            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS'])
 
-            # --- Render machine ROMs ---
+            # --- Table: Machine ROMs ---
             roms_dic = roms_db_dic[machine_name]
             if roms_dic['roms']:
                 for rom in roms_dic['roms']:
-                    table_row = ['ROM', str(rom['name']), str(rom['size']), str(rom['crc']),
-                                 str(rom['merge']), str(rom['bios']), '']
+                    table_row = ['ROM', str(rom['name']), str(rom['size']),
+                                 str(rom['crc']), str(rom['merge']), str(rom['bios'])]
                     table_str.append(table_row)
 
-            # --- Render device ROMs ---
+            # --- Table: device ROMs ---
             if device_roms_list:
                 for rom in device_roms_list:
-                    table_row = ['DROM', str(rom['name']), str(rom['size']), str(rom['crc']),
-                                 str(rom['merge']), str(rom['bios']), rom['location']]
+                    table_row = ['DROM', str(rom['name']), str(rom['size']),
+                                 str(rom['crc']), str(rom['merge']), str(rom['bios'])]
                     table_str.append(table_row)
 
-            # --- Render machine CHDs ---
+            # --- Table: machine CHDs ---
             if roms_dic['disks']:
                 for disk in roms_dic['disks']:
-                    table_row = ['DISK', str(disk['name']), '', str(disk['sha1'])[0:8],
-                                 str(disk['merge']), '', '']
+                    table_row = ['DISK', str(disk['name']), '',
+                                 str(disk['sha1'])[0:8], str(disk['merge']), '']
                     table_str.append(table_row)
 
-            # --- Render BIOSes ---
-            # if roms_dic['bios']:
-            #     info_text.append('\n')
-            #     # >> Cell max sizes
-            #     name_max_size = text_str_dic_max_size(roms_dic['bios'], 'name', 'BIOS name')
-            #     desc_max_size = text_str_dic_max_size(roms_dic['bios'], 'description', 'description')
-            #     total_size = name_max_size + desc_max_size + 2*1
-            #     # >> Table header
-            #     # info_text.append('[COLOR orange]Machine {0} BIOS[/COLOR]\n'.format(machine_name))
-            #     padded_name = text_print_padded_left('BIOS name', name_max_size)
-            #     padded_desc = text_print_padded_left('desc', desc_max_size)
-            #     info_text.append('{0}  {1}\n'.format(padded_name, padded_desc))
-            #     info_text.append('{0}\n'.format('-' * total_size))
-            #     for bios in roms_dic['bios']:
-            #         padded_name  = text_print_padded_left('{0}'.format(bios['name']), name_max_size)
-            #         padded_sha1  = text_print_padded_left('{0}'.format(bios['description']), desc_max_size)
-            #         info_text.append('{0}  {1}\n'.format(padded_name, padded_sha1))
+            # --- Table: BIOSes ---
+            if roms_dic['bios']:
+                bios_table_str = []
+                bios_table_str.append(['right',     'left'])
+                bios_table_str.append(['BIOS name', 'Description'])
+                for bios in roms_dic['bios']:
+                    table_row = [str(bios['name']), str(bios['description'])]
+                    bios_table_str.append(table_row)
 
+            # --- Render text information window ---
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
+            if roms_dic['bios']:
+                bios_table_str_list = text_render_table_str(bios_table_str)
+                info_text.extend('\n')
+                info_text.extend(bios_table_str_list)
             window_title = 'Machine {0} ROMs'.format(machine_name)
+            self._display_text_window(window_title, ''.join(info_text))
+
+        # --- View MAME machine ROMs (Audit ROM database) ---
+        elif action == ACTION_VIEW_MACHINE_AUDIT_ROMS:
+            # --- Load machine dictionary and ROM database ---
+            rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][self.settings['mame_rom_set']]
+            log_debug('_command_context_view() View Machine ROMs (Audit database)\n')
+            log_debug('_command_context_view() rom_set {0}\n'.format(rom_set))
+
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
+            pDialog.update(0)
+            machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+            pDialog.update(33)
+            roms_db_dic = fs_load_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath())
+            pDialog.update(66)
+            chds_db_dic = fs_load_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath())
+            pDialog.update(100)
+            pDialog.close()
+
+            # --- Grab data and settings ---
+            roms_dic = roms_db_dic[machine_name]
+            chds_dic = roms_db_dic[machine_name]
+            cloneof = machine['cloneof']
+            romof = machine['romof']
+            log_debug('_command_context_view() machine {0}\n'.format(machine_name))
+            log_debug('_command_context_view() cloneof {0}\n'.format(cloneof))
+            log_debug('_command_context_view() romof   {0}\n'.format(romof))
+
+            # --- Generate report ---
+            info_text = []
+            info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
+                             '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+            info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
+                             '[COLOR skyblue]isDevice[/COLOR] {0}\n'.format(unicode(machine['isDevice'])))
+            info_text.append('\n')
+
+            # --- Table header ---
+            # Table cell padding: left, right
+            # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
+            table_str = []
+            table_str.append(['right', 'left',     'right', 'left',     'left',  'left', 'left'])
+            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS', 'Location'])
+
+            # --- Table rows ---
+            for m_rom in roms_dic:
+                table_row = [str(m_rom['type']), str(m_rom['name']), str(m_rom['size']), str(m_rom['crc']),
+                             str(m_rom['merge']), str(m_rom['bios']), m_rom['location']]
+                table_str.append(table_row)
+            table_str_list = text_render_table_str(table_str)
+            info_text.extend(table_str_list)
+            window_title = 'Machine {0} ROM audit'.format(machine_name)
             self._display_text_window(window_title, ''.join(info_text))
 
         # --- View SL ROMs ---
@@ -1960,13 +2010,9 @@ class Main:
         # --- Audit ROMs of a single machine ---
         elif action == ACTION_AUDIT_MAME_MACHINE:
             # --- Load machine dictionary and ROM database ---
-            # FUTURE WORK ROMs and CHDs may have different set types. FE, split ROMs and merged CHDs.
             rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][self.settings['mame_rom_set']]
             log_debug('_command_context_view() Auditing Machine ROMs\n')
             log_debug('_command_context_view() rom_set {0}\n'.format(rom_set))
-            if rom_set == 'MERGED':
-                kodi_dialog_OK('MERGED set not supported yet. Sorry.')
-                return
 
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
@@ -2930,7 +2976,7 @@ class Main:
         elif menu_item == 6:
             submenu = dialog.select('Setup plugin (step by step)',
                                    ['Build MAME databases ...',
-                                    'Build ROM databases ...',
+                                    'Build ROM Audit databases ...',
                                     'Build MAME catalogs ...',
                                     'Build Software Lists databases and catalogs ...',
                                     'Scan MAME ROMs/CHDs/Samples ...',
