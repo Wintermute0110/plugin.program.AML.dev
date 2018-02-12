@@ -1402,21 +1402,30 @@ class Main:
 
         # >> Check if DAT information is available for this machine
         if location == 'STANDARD':
-            History_MAME_set = set([ machine[0] for machine in History_idx_dic['mame']['machines'] ])
-            if machine_name in History_MAME_set: History_str = 'Found'
-            else:                                History_str = 'Not found'
-            
-            Mameinfo_MAME_set = set([ machine[0] for machine in Mameinfo_idx_dic['mame'] ])
-            if machine_name in Mameinfo_MAME_set: Mameinfo_str = 'Found'
-            else:                                 Mameinfo_str = 'Not found'
-
-            Gameinit_MAME_set = set([ machine[0] for machine in Gameinit_idx_list ])
-            if machine_name in Gameinit_MAME_set: Gameinit_str = 'Found'
-            else:                                 Gameinit_str = 'Not found'
-
-            Command_MAME_set = set([ machine[0] for machine in Command_idx_list ])
-            if machine_name in Command_MAME_set: Command_str = 'Found'
-            else:                                Command_str = 'Not found'
+            if History_idx_dic:
+                History_MAME_set = set([ machine[0] for machine in History_idx_dic['mame']['machines'] ])
+                if machine_name in History_MAME_set: History_str = 'Found'
+                else:                                History_str = 'Not found'
+            else:
+                History_str = 'Not configured'
+            if Mameinfo_idx_dic:
+                Mameinfo_MAME_set = set([ machine[0] for machine in Mameinfo_idx_dic['mame'] ])
+                if machine_name in Mameinfo_MAME_set: Mameinfo_str = 'Found'
+                else:                                 Mameinfo_str = 'Not found'
+            else:
+                Mameinfo_str = 'Not configured'
+            if Gameinit_idx_list:
+                Gameinit_MAME_set = set([ machine[0] for machine in Gameinit_idx_list ])
+                if machine_name in Gameinit_MAME_set: Gameinit_str = 'Found'
+                else:                                 Gameinit_str = 'Not found'
+            else:
+                Gameinit_str = 'Not configured'
+            if Command_idx_list:
+                Command_MAME_set = set([ machine[0] for machine in Command_idx_list ])
+                if machine_name in Command_MAME_set: Command_str = 'Found'
+                else:                                Command_str = 'Not found'
+            else:
+                Command_str = 'Not configured'
         else:
             kodi_dialog_OK('Location {0} not supported. This is a bug, please report it.'.format(location))
             return

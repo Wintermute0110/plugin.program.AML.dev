@@ -48,6 +48,14 @@ FEATURE  Trailer support in MAME machines and Software Lists.
 
 WIP      Manage SL Favourites.
 
+WIP      Implemented "Most played MAME machines"
+
+WIP      Implemented "Recently played MAME machines"
+
+WIP      Implemented "Most played SL ROMs"
+
+WIP      Implemented "Recently played SL ROMs"
+
 
 [B]Advanced Emulator Launcher | version 0.9.3 | 30 May 2017[/B]
 
