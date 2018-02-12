@@ -364,6 +364,7 @@ class Main:
         self.settings['SL_chd_path']    = __addon_obj__.getSetting('SL_chd_path').decode('utf-8')
         self.settings['samples_path']   = __addon_obj__.getSetting('samples_path').decode('utf-8')
 
+        # --- DAT Paths ---
         self.settings['catver_path']    = __addon_obj__.getSetting('catver_path').decode('utf-8')
         self.settings['catlist_path']   = __addon_obj__.getSetting('catlist_path').decode('utf-8')
         self.settings['genre_path']     = __addon_obj__.getSetting('genre_path').decode('utf-8')
@@ -388,13 +389,13 @@ class Main:
         self.settings['display_hide_imperfect']  = True if __addon_obj__.getSetting('display_hide_imperfect') == 'true' else False
         self.settings['display_rom_available']   = True if __addon_obj__.getSetting('display_rom_available') == 'true' else False
         self.settings['display_chd_available']   = True if __addon_obj__.getSetting('display_chd_available') == 'true' else False
-        self.settings['display_hide_trailers']   = True if __addon_obj__.getSetting('display_hide_trailers') == 'true' else False
 
         # --- Display ---
         self.settings['artwork_mame_icon']   = int(__addon_obj__.getSetting('artwork_mame_icon'))
         self.settings['artwork_mame_fanart'] = int(__addon_obj__.getSetting('artwork_mame_fanart'))
         self.settings['artwork_SL_icon']     = int(__addon_obj__.getSetting('artwork_SL_icon'))
         self.settings['artwork_SL_fanart']   = int(__addon_obj__.getSetting('artwork_SL_fanart'))
+        self.settings['display_hide_trailers']   = True if __addon_obj__.getSetting('display_hide_trailers') == 'true' else False
 
         # --- Advanced ---
         self.settings['log_level'] = int(__addon_obj__.getSetting('log_level'))

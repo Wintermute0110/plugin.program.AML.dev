@@ -1,5 +1,5 @@
 <settings>
-<category label="Paths and DATs">
+<category label="Paths">
     <setting id="separator" type="lsep" label="Mandatory paths" />
     <setting label="MAME executable" type="file"   id="mame_prog" />
     <setting label="MAME ROMs path"  type="folder" id="rom_path" source="auto" option="" />
@@ -11,7 +11,8 @@
     <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="auto" option="" />
     <setting label="Software Lists CHDs path" type="folder" id="SL_chd_path" source="auto" option="" />
     <setting label="Samples path"             type="folder" id="samples_path" source="auto" option="" />
-
+</category>
+<category label="DAT paths">
     <setting id="separator" type="lsep" label="Optional DATs" />
     <setting label="Catver.ini path"          type="file"   id="catver_path" />
     <setting label="Catlist.ini path"         type="file"   id="catlist_path" />
@@ -37,13 +38,13 @@
     <setting label="Hide imperfect machines" type="bool" default="false" id="display_hide_imperfect" />
     <setting label="Display machines with available ROMs only" type="bool" default="false" id="display_rom_available" />
     <setting label="Display machines with available CHDs only" type="bool" default="false" id="display_chd_available" />
-    <setting label="Do not render trailers" type="bool" default="false" id="display_hide_trailers" />
 </category>
-<category label="Artwork">
+<category label="Artwork / Assets">
     <setting label="MAME icon" type="enum" id="artwork_mame_icon"  default="0" values="Title|Snap|Flyer|Cabinet|PCB" />
     <setting label="MAME fanart" type="enum" id="artwork_mame_fanart"  default="0" values="Snap|Title|Flyer|CPanel" />
     <setting label="Software Lists icon" type="enum" id="artwork_SL_icon"  default="0" values="Boxfront|Title|Snap" />
     <setting label="Software Lists fanart" type="enum" id="artwork_SL_fanart"  default="0" values="Snap|Title" />
+    <setting label="Do not render trailers" type="bool" default="false" id="display_hide_trailers" />
 </category>
 <category label="Advanced">
     <setting label="Log level" type="enum" id="log_level" default="2" values="ERROR|WARNING|INFO|VERBOSE|DEBUG" />
