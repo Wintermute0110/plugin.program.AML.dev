@@ -43,6 +43,92 @@ def text_limit_string(string, max_length):
 
   return string
 
+def text_render_table_str(table_str):
+    rows = len(table_str)
+    cols = len(table_str[0])
+    table_str_list = []
+    col_sizes = text_get_table_str_col_sizes(table_str, rows, cols)
+    col_padding = table_str[0]
+
+    # --- Table header ---
+    row_str = ''
+    for j in range(cols):
+        if j < cols - 1:
+            row_str += text_print_padded_left(table_str[1][j], col_sizes[j]) + '  '
+        else:
+            row_str += text_print_padded_left(table_str[1][j], col_sizes[j]) + '\n'
+    table_str_list.append(row_str)
+    # >> Table -----
+    total_size = sum(col_sizes) + 2*(cols-1)
+    table_str_list.append('{0}\n'.format('-' * total_size))
+
+    # --- Data rows ---
+    for i in range(2, rows):
+        row_str = ''
+        for j in range(cols):
+            if j < cols - 1:
+                if col_padding[j] == 'right':
+                    row_str += text_print_padded_right(table_str[i][j], col_sizes[j]) + '  '
+                else:
+                    row_str += text_print_padded_left(table_str[i][j], col_sizes[j]) + '  '
+            else:
+                if col_padding[j] == 'right':
+                    row_str += text_print_padded_right(table_str[i][j], col_sizes[j]) + '\n'
+                else:
+                    row_str += text_print_padded_left(table_str[i][j], col_sizes[j]) + '\n'
+        table_str_list.append(row_str)
+
+    return table_str_list
+
+#
+# Removed Kodi colour tags before computing size (substitute by ''):
+#   A) [COLOR skyblue]
+#   B) [/COLOR]
+#
+def text_get_table_str_col_sizes(table_str, rows, cols):
+    col_sizes = [0] * cols
+    for j in range(cols):
+        col_max_size = 0
+        for i in range(rows):
+            cell_str = re.sub(r'\[COLOR \w+?\]', '', table_str[i][j])
+            cell_str = re.sub(r'\[/COLOR\]', '', cell_str)
+            str_size = len('{0}'.format(cell_str))
+            if str_size > col_max_size: col_max_size = str_size
+        col_sizes[j] = col_max_size
+
+    return col_sizes
+
+def text_str_list_size(str_list):
+    max_str_size = 0
+    for str_item in str_list:
+        str_size = len('{0}'.format(str_item))
+        if str_size > max_str_size: max_str_size = str_size
+
+    return max_str_size
+
+def text_str_dic_max_size(dictionary_list, dic_key, title_str = ''):
+    max_str_size = 0
+    for item in dictionary_list:
+        str_size = len('{0}'.format(item[dic_key]))
+        if str_size > max_str_size: max_str_size = str_size
+    if title_str:
+        str_size = len(title_str)
+        if str_size > max_str_size: max_str_size = str_size
+
+    return max_str_size
+
+def text_print_padded_left(str, str_max_size):
+    formatted_str = '{0}'.format(str)
+    padded_str =  formatted_str + ' ' * (str_max_size - len(formatted_str))
+
+    return padded_str
+
+def text_print_padded_right(str, str_max_size):
+    formatted_str = '{0}'.format(str)
+    padded_str = ' ' * (str_max_size - len(formatted_str)) + formatted_str
+
+    return padded_str
+
 # Some XML encoding of special characters:
 #   {'\n': '&#10;', '\r': '&#13;', '\t':'&#9;'}
 #
@@ -153,29 +239,6 @@ def text_dump_str_to_file(filename, full_string):
     file_obj = open(filename, 'w')
     file_obj.write(full_string.encode('utf-8'))
     file_obj.close()
-
-def text_str_dic_max_size(dictionary_list, dic_key, title_str = ''):
-    max_str_size = 0
-    for item in dictionary_list:
-        str_size = len('{0}'.format(item[dic_key]))
-        if str_size > max_str_size: max_str_size = str_size
-    if title_str:
-        str_size = len(title_str)
-        if str_size > max_str_size: max_str_size = str_size
-
-    return max_str_size
-
-def text_print_padded_left(str, str_max_size):
-    formatted_str = '{0}'.format(str)
-    padded_str =  formatted_str + ' ' * (str_max_size - len(formatted_str))
-
-    return padded_str
-
-def text_print_padded_right(str, str_max_size):
-    formatted_str = '{0}'.format(str)
-    padded_str = ' ' * (str_max_size - len(formatted_str)) + formatted_str
-
-    return padded_str
 
 # -------------------------------------------------------------------------------------------------
 # ROM name cleaning and formatting

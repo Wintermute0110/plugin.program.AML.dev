@@ -1881,112 +1881,63 @@ class Main:
 
             # --- ROM info ---
             info_text = []
-            info_text.append('[COLOR violet]machine[/COLOR]   {0}\n'.format(machine_name))
-            info_text.append('[COLOR violet]cloneof[/COLOR]   {0}\n'.format(machine['cloneof']))
-            info_text.append('[COLOR violet]romof[/COLOR]     {0}\n'.format(machine['romof']))
-            info_text.append('[COLOR skyblue]isBIOS[/COLOR]    {0}\n'.format(unicode(machine['isBIOS'])))
-            info_text.append('[COLOR skyblue]isDevice[/COLOR]  {0}\n'.format(unicode(machine['isDevice'])))
+            info_text.append('[COLOR violet]machine[/COLOR] {0}\n'.format(machine_name))
+            info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
+                             '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+            info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
+                             '[COLOR skyblue]isDevice[/COLOR] {0}\n'.format(unicode(machine['isDevice'])))
+            info_text.append('\n')
+
+            # --- Table header ---
+            # Table cell padding: left, right
+            # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
+            table_str = []
+            table_str.append(['right', 'left',     'right', 'left',     'left',  'left', 'right'])
+            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS', 'Location'])
 
             # --- Render machine ROMs ---
             roms_dic = roms_db_dic[machine_name]
             if roms_dic['roms']:
-                info_text.append('\n')
-                # >> Cell max sizes
-                name_max_size  = text_str_dic_max_size(roms_dic['roms'], 'name', 'ROM name')
-                size_max_size  = text_str_dic_max_size(roms_dic['roms'], 'size', 'size')
-                crc_max_size   = 8
-                merge_max_size = text_str_dic_max_size(roms_dic['roms'], 'merge', 'merge')
-                bios_max_size  = text_str_dic_max_size(roms_dic['roms'], 'bios', 'bios')
-                total_size = name_max_size + size_max_size + crc_max_size + merge_max_size + bios_max_size + 2*4
-                # >> Table header
-                # info_text.append('[COLOR orange]Machine {0} ROMs[/COLOR]\n'.format(machine_name))
-                padded_name  = text_print_padded_left('ROM name', name_max_size)
-                padded_size  = text_print_padded_left('size', size_max_size)
-                padded_crc   = text_print_padded_left('crc', crc_max_size)
-                padded_merge = text_print_padded_left('merge', merge_max_size)
-                padded_bios  = text_print_padded_left('bios', bios_max_size)
-                info_text.append('{0}  {1}  {2}  {3}  {4}\n'.format(
-                    padded_name, padded_size, padded_crc, padded_merge, padded_bios))
-                info_text.append('{0}\n'.format('-' * total_size))
-                # >> Table rows
                 for rom in roms_dic['roms']:
-                    padded_name  = text_print_padded_left('{0}'.format(rom['name']), name_max_size)
-                    padded_size  = text_print_padded_right('{0}'.format(rom['size']), size_max_size)
-                    padded_crc   = text_print_padded_left('{0}'.format(rom['crc']), crc_max_size)
-                    padded_merge = text_print_padded_left('{0}'.format(rom['merge']), merge_max_size)
-                    info_text.append('{0}  {1}  {2}  {3}  {4}\n'.format(
-                        padded_name, padded_size, padded_crc, padded_merge, rom['bios']))
+                    table_row = ['ROM', str(rom['name']), str(rom['size']), str(rom['crc']),
+                                 str(rom['merge']), str(rom['bios']), '']
+                    table_str.append(table_row)
 
             # --- Render device ROMs ---
             if device_roms_list:
-                info_text.append('\n')
-                # >> Cell max sizes
-                name_max_size  = text_str_dic_max_size(device_roms_list, 'name', 'Device ROM name')
-                size_max_size  = text_str_dic_max_size(device_roms_list, 'size', 'size')
-                crc_max_size   = 8
-                merge_max_size = text_str_dic_max_size(device_roms_list, 'merge', 'merge')
-                bios_max_size  = text_str_dic_max_size(device_roms_list, 'bios', 'bios')
-                location_max_size = text_str_dic_max_size(device_roms_list, 'location', 'location')
-                total_size = name_max_size + size_max_size + crc_max_size + merge_max_size + bios_max_size + \
-                             location_max_size + 2*5
-                # >> Table header
-                # info_text.append('[COLOR orange]Machine {0} device ROMs[/COLOR]\n'.format(machine_name))
-                padded_name  = text_print_padded_left('Device ROM name', name_max_size)
-                padded_size  = text_print_padded_left('size', size_max_size)
-                padded_crc   = text_print_padded_left('crc', crc_max_size)
-                padded_merge = text_print_padded_left('merge', merge_max_size)
-                padded_bios  = text_print_padded_left('bios', bios_max_size)
-                padded_location = text_print_padded_left('location', location_max_size)
-                info_text.append('{0}  {1}  {2}  {3}  {4}  {5}\n'.format(
-                    padded_name, padded_size, padded_crc, padded_merge, padded_bios, padded_location))
-                info_text.append('{0}\n'.format('-' * total_size))
-                # >> Table rows
                 for rom in device_roms_list:
-                    padded_name  = text_print_padded_left('{0}'.format(rom['name']), name_max_size)
-                    padded_size  = text_print_padded_right('{0}'.format(rom['size']), size_max_size)
-                    padded_crc   = text_print_padded_left('{0}'.format(rom['crc']), crc_max_size)
-                    padded_merge = text_print_padded_left('{0}'.format(rom['merge']), merge_max_size)
-                    padded_bios  = text_print_padded_left('{0}'.format(rom['bios']), bios_max_size)
-                    info_text.append('{0}  {1}  {2}  {3}  {4}  {5}\n'.format(
-                        padded_name, padded_size, padded_crc, padded_merge, padded_bios, rom['location']))
+                    table_row = ['DROM', str(rom['name']), str(rom['size']), str(rom['crc']),
+                                 str(rom['merge']), str(rom['bios']), rom['location']]
+                    table_str.append(table_row)
 
+            # --- Render machine CHDs ---
             if roms_dic['disks']:
-                info_text.append('\n')
-                # >> Cell max sizes
-                name_max_size  = text_str_dic_max_size(roms_dic['disks'], 'name', 'Disk name')
-                sha1_max_size  = 8
-                merge_max_size = text_str_dic_max_size(roms_dic['disks'], 'merge', 'merge')
-                total_size = name_max_size + sha1_max_size + merge_max_size + 2*2
-                # >> Table header
-                # info_text.append('[COLOR orange]Machine {0} CHDs[/COLOR]\n'.format(machine_name))
-                padded_name  = text_print_padded_left('Disk name', name_max_size)
-                padded_sha1  = text_print_padded_left('sha1', sha1_max_size)
-                padded_merge = text_print_padded_left('merge', merge_max_size)
-                info_text.append('{0}  {1}  {2}\n'.format(padded_name, padded_sha1, padded_merge))
-                info_text.append('{0}\n'.format('-' * total_size))
                 for disk in roms_dic['disks']:
-                    padded_name  = text_print_padded_left('{0}'.format(disk['name']), name_max_size)
-                    padded_sha1  = text_print_padded_left('{0}'.format(disk['sha1']), sha1_max_size)[0:8]
-                    padded_merge = text_print_padded_left('{0}'.format(disk['merge']), merge_max_size)
-                    info_text.append('{0}  {1}  {2}\n'.format(padded_name, padded_sha1, padded_merge))
+                    table_row = ['DISK', str(disk['name']), '', str(disk['sha1'])[0:8],
+                                 str(disk['merge']), '', '']
+                    table_str.append(table_row)
 
-            if roms_dic['bios']:
-                info_text.append('\n')
-                # >> Cell max sizes
-                name_max_size = text_str_dic_max_size(roms_dic['bios'], 'name', 'BIOS name')
-                desc_max_size = text_str_dic_max_size(roms_dic['bios'], 'description', 'description')
-                total_size = name_max_size + desc_max_size + 2*1
-                # >> Table header
-                # info_text.append('[COLOR orange]Machine {0} BIOS[/COLOR]\n'.format(machine_name))
-                padded_name = text_print_padded_left('BIOS name', name_max_size)
-                padded_desc = text_print_padded_left('desc', desc_max_size)
-                info_text.append('{0}  {1}\n'.format(padded_name, padded_desc))
-                info_text.append('{0}\n'.format('-' * total_size))
-                for bios in roms_dic['bios']:
-                    padded_name  = text_print_padded_left('{0}'.format(bios['name']), name_max_size)
-                    padded_sha1  = text_print_padded_left('{0}'.format(bios['description']), desc_max_size)
-                    info_text.append('{0}  {1}\n'.format(padded_name, padded_sha1))
-            window_title = 'Machine ROMs'
+            # --- Render BIOSes ---
+            # if roms_dic['bios']:
+            #     info_text.append('\n')
+            #     # >> Cell max sizes
+            #     name_max_size = text_str_dic_max_size(roms_dic['bios'], 'name', 'BIOS name')
+            #     desc_max_size = text_str_dic_max_size(roms_dic['bios'], 'description', 'description')
+            #     total_size = name_max_size + desc_max_size + 2*1
+            #     # >> Table header
+            #     # info_text.append('[COLOR orange]Machine {0} BIOS[/COLOR]\n'.format(machine_name))
+            #     padded_name = text_print_padded_left('BIOS name', name_max_size)
+            #     padded_desc = text_print_padded_left('desc', desc_max_size)
+            #     info_text.append('{0}  {1}\n'.format(padded_name, padded_desc))
+            #     info_text.append('{0}\n'.format('-' * total_size))
+            #     for bios in roms_dic['bios']:
+            #         padded_name  = text_print_padded_left('{0}'.format(bios['name']), name_max_size)
+            #         padded_sha1  = text_print_padded_left('{0}'.format(bios['description']), desc_max_size)
+            #         info_text.append('{0}  {1}\n'.format(padded_name, padded_sha1))
+
+            table_str_list = text_render_table_str(table_str)
+            info_text.extend(table_str_list)
+            window_title = 'Machine {0} ROMs'.format(machine_name)
             self._display_text_window(window_title, ''.join(info_text))
 
         # --- View SL ROMs ---
@@ -2043,44 +1994,26 @@ class Main:
 
             # --- Generate report ---
             info_text = []
-            info_text.append('[COLOR violet]machine[/COLOR]   {0}\n'.format(machine_name))
-            info_text.append('[COLOR violet]cloneof[/COLOR]   {0}\n'.format(machine['cloneof']))
-            info_text.append('[COLOR violet]romof[/COLOR]     {0}\n'.format(machine['romof']))
-            info_text.append('[COLOR skyblue]isBIOS[/COLOR]    {0}\n'.format(unicode(machine['isBIOS'])))
-            info_text.append('[COLOR skyblue]isDevice[/COLOR]  {0}\n'.format(unicode(machine['isDevice'])))
+            info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
+                             '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+            info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
+                             '[COLOR skyblue]isDevice[/COLOR] {0}\n'.format(unicode(machine['isDevice'])))
             info_text.append('\n')
-            # >> Cell max sizes
-            name_max_size     = text_str_dic_max_size(roms_dic, 'name', 'name')
-            size_max_size     = text_str_dic_max_size(roms_dic, 'size', 'size')
-            crc_max_size      = 8
-            location_max_size = text_str_dic_max_size(roms_dic, 'location', 'location')
-            status_max_size   = text_str_dic_max_size(roms_dic, 'status', 'status')
-            total_size = name_max_size + size_max_size + crc_max_size + location_max_size + status_max_size + 4*2
-            # log_debug('name_max_size     {0}'.format(name_max_size))
-            # log_debug('size_max_size     {0}'.format(size_max_size))
-            # log_debug('crc_max_size      {0}'.format(crc_max_size))
-            # log_debug('location_max_size {0}'.format(location_max_size))
-            # log_debug('status_max_size   {0}'.format(status_max_size))
-            # log_debug('total_size        {0}'.format(total_size))
 
-            # >> Table header
-            # info_text.append('[COLOR orange]Machine {0} ROMs[/COLOR]\n'.format(machine_name))
-            padded_name     = text_print_padded_left('name', name_max_size)
-            padded_size     = text_print_padded_left('size', size_max_size)
-            padded_crc      = text_print_padded_left('crc', crc_max_size)
-            padded_location = text_print_padded_left('location', location_max_size)
-            padded_status   = text_print_padded_left('status', status_max_size)
-            info_text.append('{0}  {1}  {2}  {3}  {4}\n'.format(
-                padded_name, padded_size, padded_crc, padded_location, padded_status))
-            info_text.append('{0}\n'.format('-' * total_size))
-            # >> Table rows
+            # --- Table header ---
+            # Table cell padding: left, right
+            # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
+            table_str = []
+            table_str.append(['right', 'left',     'right', 'left',     'left',  'left', 'left',     'left'])
+            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS', 'Location', 'Status'])
+
+            # --- Table rows ---
             for m_rom in roms_dic:
-                padded_name     = text_print_padded_left('{0}'.format(m_rom['name']), name_max_size)
-                padded_size     = text_print_padded_right('{0}'.format(m_rom['size']), size_max_size)
-                padded_crc      = text_print_padded_left('{0}'.format(m_rom['crc']), crc_max_size)
-                padded_location = text_print_padded_left('{0}'.format(m_rom['location']), location_max_size)
-                info_text.append('{0}  {1}  {2}  {3}  {4}\n'.format(
-                    padded_name, padded_size, padded_crc, padded_location, m_rom['status_colour']))
+                table_row = ['ROM', str(m_rom['name']), str(m_rom['size']), str(m_rom['crc']),
+                             '', '', m_rom['location'], m_rom['status_colour']]
+                table_str.append(table_row)
+            table_str_list = text_render_table_str(table_str)
+            info_text.extend(table_str_list)
             window_title = 'Machine {0} ROM audit'.format(machine_name)
             self._display_text_window(window_title, ''.join(info_text))
 
