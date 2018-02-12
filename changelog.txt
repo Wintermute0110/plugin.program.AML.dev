@@ -56,6 +56,8 @@ WIP      Implemented "Most played SL ROMs"
 
 WIP      Implemented "Recently played SL ROMs"
 
+WIP      Create a hased database for main ROM database and Audit ROM database.
+
 
 [B]Advanced Emulator Launcher | version 0.9.3 | 30 May 2017[/B]
 
