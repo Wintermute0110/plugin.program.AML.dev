@@ -1702,8 +1702,16 @@ class Main:
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
                 info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
                 info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(rom['num_roms'])
-                info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(rom['part_interface'])
-                info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(rom['part_name'])
+                if rom['part_interface']:
+                    for i, device in enumerate(rom['part_interface']):
+                        info_text += "[COLOR lime]part_interface[/COLOR][{0}]: {1}\n".format(i, rom['part_interface'][i])
+                else:
+                    info_text += '[COLOR lime]part_interface[/COLOR]: []\n'
+                if rom['part_name']:
+                    for i, device in enumerate(rom['part_name']):
+                        info_text += "[COLOR lime]part_name[/COLOR][{0}]: {1}\n".format(i, rom['part_name'][i])
+                else:
+                    info_text += '[COLOR lime]part_name[/COLOR]: []\n'
                 info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
                 info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
                 info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
