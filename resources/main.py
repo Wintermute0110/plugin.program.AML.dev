@@ -2000,7 +2000,48 @@ class Main:
 
         # --- View SL ROMs ---
         elif action == ACTION_VIEW_SL_ROM_ROMS:
-            kodi_dialog_OK('ACTION_VIEW_SL_ROM_ROMS not coded yet')
+            SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
+            SL_ROMS_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_roms.json')
+            # kodi_busydialog_ON()
+            # SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+            # SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+            # assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+            # SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+            # SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
+            # kodi_busydialog_OFF()
+            # SL_dic = SL_catalog_dic[SL_name]
+            # SL_machine_list = SL_machines_dic[SL_name]
+            # assets = SL_asset_dic[SL_ROM] if SL_ROM in SL_asset_dic else fs_new_SL_asset()
+            roms = fs_load_JSON_file(SL_DB_FN.getPath())
+            rom = roms[SL_ROM]
+            roms_db = fs_load_JSON_file(SL_ROMS_DB_FN.getPath())
+            rom_db_list = roms_db[SL_ROM]
+
+            info_text = []
+            info_text.append('[COLOR violet]SL_name[/COLOR] {0}\n'.format(SL_name))
+            info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}\n'.format(SL_ROM))
+            info_text.append('[COLOR violet]description[/COLOR] {0}\n'.format(rom['description']))
+            info_text.append('\n')
+
+            table_str = []
+            table_str.append(['right', 'left',   'left', 'left', 'left',     'left',   'left'])
+            table_str.append(['Type',  'P name', 'Name', 'Size', 'CRC/SHA1', 'Offset', 'Location'])
+            # >> Iterate Parts
+            for rom_item in rom_db_list:
+                # >> Iterate ROMs in a part
+                for rom_name in rom_item['rom_list']:
+                    table_row = ['ROM', str(rom_item['part_name']), str(rom_name), '', '', '', '']
+                    table_str.append(table_row)
+
+                # >> Iterate CHDs in a part
+                for disk_name in rom_item['disk_list']:
+                    table_row = ['DISK', str(rom_item['part_name']), str(disk_name), '', '', '', '']
+                    table_str.append(table_row)
+
+            table_str_list = text_render_table_str(table_str)
+            info_text.extend(table_str_list)
+            window_title = 'Software List ROM List'
+            self._display_text_window(window_title, ''.join(info_text))
 
         # --- View MAME stdout/stderr ---
         elif action == ACTION_VIEW_EXEC_OUTPUT:
