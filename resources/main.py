@@ -1764,7 +1764,7 @@ class Main:
                 info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(rom['assets']['boxfront'])
             self._display_text_window(window_title, info_text)
 
-        # --- View database information and statistics ---
+        # --- View database information and statistics stored in control dictionary ---
         elif action == ACTION_VIEW_DB_STATS:
             # --- Warn user if error ---
             if not PATHS.MAIN_CONTROL_PATH.exists():
@@ -1778,7 +1778,8 @@ class Main:
             # --- Main stuff ---
             info_text  = '[COLOR orange]Main information[/COLOR]\n'
             info_text += "AML version            {0}\n".format(__addon_version__)
-            info_text += "MAME version           {0}\n".format(control_dic['ver_mame'])
+            info_text += "MAME version string    {0}\n".format(control_dic['ver_mame_str'])
+            info_text += "MAME version numerical {0}\n".format(control_dic['ver_mame'])
             info_text += "catver.ini version     {0}\n".format(control_dic['ver_catver'])
             info_text += "catlist.ini version    {0}\n".format(control_dic['ver_catlist'])
             info_text += "genre.ini version      {0}\n".format(control_dic['ver_genre'])
