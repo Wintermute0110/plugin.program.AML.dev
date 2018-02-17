@@ -161,8 +161,8 @@ class AML_Paths:
 PATHS = AML_Paths()
 
 # --- ROM flags used by skins to display status icons ---
-AEL_INFAV_BOOL_LABEL     = 'AEL_InFav'
-AEL_PCLONE_STAT_LABEL    = 'AEL_PClone_stat'
+AEL_INFAV_BOOL_LABEL  = 'AEL_InFav'
+AEL_PCLONE_STAT_LABEL = 'AEL_PClone_stat'
 
 AEL_INFAV_BOOL_VALUE_TRUE    = 'InFav_True'
 AEL_INFAV_BOOL_VALUE_FALSE   = 'InFav_False'
@@ -323,8 +323,6 @@ class Main:
             # >> MAME Favourites
             elif command == 'ADD_MAME_FAV':
                 self._command_context_add_mame_fav(args['machine'][0])
-            elif command == 'DELETE_MAME_FAV':
-                self._command_context_delete_mame_fav(args['machine'][0])
             elif command == 'MANAGE_MAME_FAV':
                 self._command_context_manage_mame_fav(args['machine'][0])
             elif command == 'SHOW_MAME_FAVS':
@@ -333,8 +331,6 @@ class Main:
             # >> SL Favourites
             elif command == 'ADD_SL_FAV':
                 self._command_context_add_sl_fav(args['SL'][0], args['ROM'][0])
-            elif command == 'DELETE_SL_FAV':
-                self._command_context_delete_sl_fav(args['SL'][0], args['ROM'][0])
             elif command == 'MANAGE_SL_FAV':
                 self._command_context_manage_sl_fav(args['SL'][0], args['ROM'][0])
             elif command == 'SHOW_SL_FAVS':
@@ -2317,31 +2313,30 @@ class Main:
         fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
         kodi_notify('Machine {0} added to MAME Favourites'.format(machine_name))
 
-    def _command_context_delete_mame_fav(self, machine_name):
-        log_debug('_command_delete_mame_fav() Machine_name "{0}"'.format(machine_name))
 
-        # >> Open Favourite Machines dictionary
-        fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
-        
-        # >> Ask user for confirmation.
-        ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(fav_machines[machine_name]['description'], machine_name))
-        if ret < 1: return
-        
-        # >> Delete machine
-        del fav_machines[machine_name]
-        log_info('_command_delete_mame_fav() Deleted machine "{0}"'.format(machine_name))
-
-        # >> Save Favourites
-        fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
-        kodi_refresh_container()
-        kodi_notify('Machine {0} deleted from MAME Favourites'.format(machine_name))
-
+    #
+    # Context menu "Manage Favourite machines"
+    #   * 'Scan all ROMs/CHDs/Samples'
+    #      Scan Favourite machines ROM ZIPs and CHDs and update flags of the Favourites 
+    #      database JSON.
+    #
+    #   * 'Scan all assets/artwork'
+    #      Scan Favourite machines assets/artwork and update MAME Favourites database JSON.
+    #
+    #   * 'Check/Update all MAME Favourites'
+    #      Checks that all MAME Favourite machines exist in current database. If the ROM exists,
+    #      then update information from current MAME database. If the machine doesn't exist, then
+    #      delete it from MAME Favourites (prompt the user about this).
+    #
+    #   * 'Delete machine from MAME Favourites'
+    #
     def _command_context_manage_mame_fav(self, machine_name):
         dialog = xbmcgui.Dialog()
         idx = dialog.select('Manage MAME Favourites', 
-                           ['Scan ROMs/CHDs/Samples',
-                            'Scan assets/artwork',
-                            'Check MAME Favourites'])
+                           ['Scan all ROMs/CHDs/Samples',
+                            'Scan all assets/artwork',
+                            'Check/Update all MAME Favourites',
+                            'Delete machine from MAME Favourites'])
         if idx < 0: return
 
         # --- Scan ROMs/CHDs/Samples ---
@@ -2420,7 +2415,7 @@ class Main:
             fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
             kodi_notify('Scanning of MAME Favourite Assets finished')
 
-        # --- Check Favourites ---
+        # --- Check/Update all MAME Favourites ---
         # >> Check if Favourites can be found in current MAME main database. It may happen that
         # >> a machine is renamed between MAME version although I think this is very unlikely.
         # >> MAME Favs can not be relinked. If the machine is not found in current database it must
@@ -2437,6 +2432,28 @@ class Main:
                     t = 'Favourite machine "{0}" not found in database'
                     kodi_dialog_OK(t.format(fav_key))
             kodi_notify('MAME Favourite checked')
+
+        # --- Delete machine from MAME Favourites ---
+        elif idx == 3:
+            log_debug('_command_context_manage_mame_fav() Delete MAME Favourite machine')
+            log_debug('_command_context_manage_mame_fav() Machine_name "{0}"'.format(machine_name))
+
+            # >> Open Favourite Machines dictionary
+            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+            
+            # >> Ask user for confirmation.
+            ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(fav_machines[machine_name]['description'], machine_name))
+            if ret < 1: return
+            
+            # >> Delete machine
+            del fav_machines[machine_name]
+            log_info('_command_context_manage_mame_fav() Deleted machine "{0}"'.format(machine_name))
+
+            # >> Save Favourites
+            fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+            kodi_refresh_container()
+            kodi_notify('Machine {0} deleted from MAME Favourites'.format(machine_name))
+
 
     def _command_show_mame_fav(self):
         log_debug('_command_show_mame_fav() Starting ...')
@@ -2508,12 +2525,10 @@ class Main:
         URL_view_DAT = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', machine_name, 'location', LOCATION_MAME_FAVS)
         URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
-        URL_display = self._misc_url_2_arg_RunPlugin('command', 'DELETE_MAME_FAV', 'machine', machine_name)
         commands = []
         commands.append(('Info / Utils',  URL_view_DAT))
         commands.append(('View / Audit',  URL_view ))
         commands.append(('Manage Favourite machines',  URL_manage ))
-        commands.append(('Delete from Favourites', URL_display ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
         listitem.addContextMenuItems(commands, replaceItems = True)
@@ -2566,52 +2581,21 @@ class Main:
         fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
         kodi_notify('ROM {0} added to SL Favourite ROMs'.format(ROM_name))
 
-    def _command_context_delete_sl_fav(self, SL_name, ROM_name):
-        log_debug('_command_delete_sl_fav() SL_name  "{0}"'.format(SL_name))
-        log_debug('_command_delete_sl_fav() ROM_name "{0}"'.format(ROM_name))
-
-        # >> Get Machine database entry
-        kodi_busydialog_ON()
-        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-        file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
-        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
-        kodi_busydialog_OFF()
-        ROM = SL_roms[ROM_name]
-        
-        # >> Open Favourite Machines dictionary
-        fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
-        SL_fav_key = SL_name + '-' + ROM_name
-        log_debug('_command_delete_sl_fav() SL_fav_key "{0}"'.format(SL_fav_key))
-        
-        # >> Ask user for confirmation.
-        ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(ROM_name, SL_name))
-        if ret < 1: return
-
-        # >> Delete machine
-        del fav_SL_roms[SL_fav_key]
-        log_info('_command_delete_sl_fav() Deleted machine {0} ({1})'.format(ROM_name, SL_name))
-
-        # >> Save Favourites
-        fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
-        kodi_refresh_container()
-        kodi_notify('ROM {0} deleted from SL Favourites'.format(ROM_name))
-
     #
     # Context menu "Manage SL Favourite ROMs"
     #   * 'Choose default machine for SL ROM'
-    #     Allows to set the default machine to launch each SL ROM.
+    #      Allows to set the default machine to launch each SL ROM.
     #
     #   * 'Scan all SL Favourite ROMs/CHDs'
-    #     Scan SL ROM ZIPs and CHDs and update flags of the SL Favourites database JSON.
+    #      Scan SL ROM ZIPs and CHDs and update flags of the SL Favourites database JSON.
     #
     #   * 'Scan all SL Favourite assets/artwork'
-    #     Scan SL ROMs assets/artwork and update SL Favourites database JSON.
+    #      Scan SL ROMs assets/artwork and update SL Favourites database JSON.
     #
     #   * 'Check/Update all SL Favourites ROMs'
-    #     Checks that all SL Favourite ROMs exist in current database. If the ROM exists, then
-    #     update information from current SL database. If the ROM doesn't exist, then delete it
-    #     from SL Favourites (prompt the user about this).
+    #      Checks that all SL Favourite ROMs exist in current database. If the ROM exists,
+    #      then update information from current SL database. If the ROM doesn't exist, then
+    #      delete it from SL Favourites (prompt the user about this).
     #
     #   * 'Delete ROM from SL Favourites'
     #
@@ -2625,22 +2609,8 @@ class Main:
                             'Delete ROM from SL Favourites'])
         if idx < 0: return
 
-        # --- Scan ROMs/CHDs ---
-        # Reuse SL scanner for Favourites
+        # --- Choose default machine for SL ROM ---
         if idx == 0:
-            kodi_dialog_OK('SL scanner not coded yet. Sorry.')
-
-        # --- Scan assets/artwork ---
-        # Reuse SL scanner for Favourites
-        elif idx == 1:
-            kodi_dialog_OK('SL asset scanner not coded yet. Sorry.')
-
-        # --- Check SL Favourties ---
-        elif idx == 2:
-            kodi_dialog_OK('Check not coded yet. Sorry.')
-
-        # --- Choose machine for SL ROM ---
-        elif idx == 3:
             # >> Load Favs
             fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
             SL_fav_key = SL_name + '-' + ROM_name
@@ -2667,7 +2637,55 @@ class Main:
             # >> Edit and save
             fav_SL_roms[SL_fav_key]['launch_machine'] = machine_name
             fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
-            kodi_notify('Machine set to {0} ({1})'.format(machine_name, machine_desc))
+            kodi_notify('Deafult machine set to {0} ({1})'.format(machine_name, machine_desc))
+
+        # --- Scan ROMs/CHDs ---
+        # Reuse SL scanner for Favourites
+        elif idx == 1:
+            kodi_dialog_OK('SL scanner not coded yet. Sorry.')
+
+        # --- Scan assets/artwork ---
+        # Reuse SL scanner for Favourites
+        elif idx == 2:
+            kodi_dialog_OK('SL asset scanner not coded yet. Sorry.')
+
+        # --- Check/Update SL Favourties ---
+        elif idx == 3:
+            kodi_dialog_OK('Check not coded yet. Sorry.')
+
+        # --- Delete ROM from SL Favourites ---
+        elif idx == 4:
+            log_debug('_command_context_manage_sl_fav() Delete SL Favourite ROM')
+            log_debug('_command_context_manage_sl_fav() SL_name  "{0}"'.format(SL_name))
+            log_debug('_command_context_manage_sl_fav() ROM_name "{0}"'.format(ROM_name))
+
+            # >> Get Machine database row
+            kodi_busydialog_ON()
+            SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+            file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+            SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+            SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
+            kodi_busydialog_OFF()
+            ROM = SL_roms[ROM_name]
+            
+            # >> Open Favourite Machines dictionary
+            fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
+            SL_fav_key = SL_name + '-' + ROM_name
+            log_debug('_command_delete_sl_fav() SL_fav_key "{0}"'.format(SL_fav_key))
+            
+            # >> Ask user for confirmation.
+            ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(ROM_name, SL_name))
+            if ret < 1: return
+
+            # >> Delete machine
+            del fav_SL_roms[SL_fav_key]
+            log_info('_command_delete_sl_fav() Deleted machine {0} ({1})'.format(ROM_name, SL_name))
+
+            # >> Save Favourites
+            fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+            kodi_refresh_container()
+            kodi_notify('ROM {0} deleted from SL Favourites'.format(ROM_name))
+
 
     def _command_show_sl_fav(self):
         log_debug('_command_show_sl_fav() Starting ...')
@@ -2726,11 +2744,9 @@ class Main:
         # --- Create context menu ---
         URL_view = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
         URL_manage = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
-        URL_fav = self._misc_url_3_arg_RunPlugin('command', 'DELETE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         commands = []
         commands.append(('View / Audit', URL_view))
-        commands.append(('Manage SL Favourite machines',  URL_manage))
-        commands.append(('Delete ROM from SL Favourites', URL_fav))
+        commands.append(('Manage SL Favourite ROMs',  URL_manage))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
         listitem.addContextMenuItems(commands, replaceItems = True)
