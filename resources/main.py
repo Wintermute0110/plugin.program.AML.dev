@@ -2699,7 +2699,7 @@ class Main:
 
                 # >> Update progress dialog (BEGIN)
                 update_number = (num_iteration * 100) // num_SL_favs
-                pDialog.update(update_number, 'Checking Favourites ...\nMachine "{0}"'.format(fav_ROM_name))
+                pDialog.update(update_number, 'Checking SL Favourites (ROM "{0}") ...'.format(fav_ROM_name))
 
                 # >> Load SL ROMs DB and assets
                 file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '.json'
