@@ -1982,7 +1982,7 @@ class Main:
 
             # --- Grab data and settings ---
             roms_dic = roms_db_dic[machine_name]
-            chds_dic = roms_db_dic[machine_name]
+            chds_dic = chds_db_dic[machine_name]
             cloneof = machine['cloneof']
             romof = machine['romof']
             log_debug('_command_context_view() machine {0}\n'.format(machine_name))
@@ -2001,13 +2001,18 @@ class Main:
             # Table cell padding: left, right
             # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
             table_str = []
-            table_str.append(['right', 'left',     'right', 'left',     'left',  'left', 'left'])
-            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS', 'Location'])
+            table_str.append(['right', 'left',     'right', 'left',     'left'])
+            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location'])
 
             # --- Table rows ---
             for m_rom in roms_dic:
-                table_row = [str(m_rom['type']), str(m_rom['name']), str(m_rom['size']), str(m_rom['crc']),
-                             str(m_rom['merge']), str(m_rom['bios']), m_rom['location']]
+                table_row = [str(m_rom['type']), str(m_rom['name']), str(m_rom['size']),
+                             str(m_rom['crc']), str(m_rom['location'])]
+                table_str.append(table_row)
+            for m_disk in chds_dic:
+                loc = str(m_disk['location']) + '.chd'
+                table_row = [str(m_disk['type']), str(m_disk['name']), '',
+                             str(m_disk['sha1'])[0:8], loc]
                 table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
