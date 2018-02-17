@@ -1408,8 +1408,15 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 location = m_name + '/' + rom['name']
                 # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
-                rom_t['type'] = 'ROM'
+                if       rom_t['bios'] and     rom_t['merge']: r_type = 'BROM'
+                elif     rom_t['bios'] and not rom_t['merge']: r_type = 'XROM'
+                elif not rom_t['bios'] and     rom_t['merge']: r_type = 'MROM'
+                elif not rom_t['bios'] and not rom_t['merge']: r_type = 'ROM'
+                else:                                          r_type = 'ERROR'
+                rom_t['type'] = r_type
                 rom_t['location'] = location
+                rom_t.pop('merge')
+                rom_t.pop('bios')
                 nonmerged_roms.append(rom_t)
             # --- Make a dictionary with device ROMs ---
             device_roms_list = []
@@ -1419,6 +1426,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                     rom_t = copy.deepcopy(rom)
                     rom_t['type'] = 'DROM'
                     rom_t['location'] = device + '/' + rom['name']
+                    rom_t.pop('merge')
+                    rom_t.pop('bios')
                     device_roms_list.append(rom_t)
             if device_roms_list: nonmerged_roms.extend(device_roms_list)
             roms_dic[m_name] = nonmerged_roms
@@ -1507,8 +1516,15 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                         location = m_name + '/' + rom['name']
                 # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
-                rom_t['type'] = 'ROM'
+                if       rom_t['bios'] and     rom_t['merge']: r_type = 'BROM'
+                elif     rom_t['bios'] and not rom_t['merge']: r_type = 'XROM'
+                elif not rom_t['bios'] and     rom_t['merge']: r_type = 'MROM'
+                elif not rom_t['bios'] and not rom_t['merge']: r_type = 'ROM'
+                else:                                          r_type = 'ERROR'
+                rom_t['type'] = r_type
                 rom_t['location'] = location
+                rom_t.pop('merge')
+                rom_t.pop('bios')
                 split_roms.append(rom_t)
 
             # --- Make a dictionary with device ROMs ---
@@ -1519,6 +1535,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                     rom_t = copy.deepcopy(rom)
                     rom_t['type'] = 'DROM'
                     rom_t['location'] = device + '/' + rom['name']
+                    rom_t.pop('merge')
+                    rom_t.pop('bios')
                     device_roms_list.append(rom_t)
             if device_roms_list: split_roms.extend(device_roms_list)
             roms_dic[m_name] = split_roms
@@ -1546,8 +1564,15 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 location = m_name + '/' + rom['name']
                 # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
-                rom_t['type'] = 'ROM'
+                if       rom_t['bios'] and     rom_t['merge']: r_type = 'BROM'
+                elif     rom_t['bios'] and not rom_t['merge']: r_type = 'XROM'
+                elif not rom_t['bios'] and     rom_t['merge']: r_type = 'MROM'
+                elif not rom_t['bios'] and not rom_t['merge']: r_type = 'ROM'
+                else:                                          r_type = 'ERROR'
+                rom_t['type'] = r_type
                 rom_t['location'] = location
+                rom_t.pop('merge')
+                rom_t.pop('bios')
                 nonmerged_roms.append(rom_t)
             # --- Make a dictionary with device ROMs ---
             device_roms_list = []
@@ -1557,6 +1582,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                     rom_t = copy.deepcopy(rom)
                     rom_t['type'] = 'DROM'
                     rom_t['location'] = device + '/' + rom['name']
+                    rom_t.pop('merge')
+                    rom_t.pop('bios')
                     device_roms_list.append(rom_t)
             if device_roms_list: nonmerged_roms.extend(device_roms_list)
             roms_dic[m_name] = nonmerged_roms
@@ -1600,6 +1627,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 disk_t = copy.deepcopy(disk)
                 disk_t['type'] = 'DISK'
                 disk_t['location'] = location
+                disk_t.pop('merge')
                 split_chds.append(disk_t)
             chds_dic[m_name] = split_chds
 
@@ -1638,6 +1666,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 disk_t = copy.deepcopy(disk)
                 disk_t['type'] = 'DISK'
                 disk_t['location'] = location
+                disk_t.pop('merge')
                 split_chds.append(disk_t)
             chds_dic[m_name] = split_chds
 
@@ -1664,6 +1693,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 disk_t = copy.deepcopy(disk)
                 disk_t['type'] = 'DISK'
                 disk_t['location'] = location
+                disk_t.pop('merge')
                 nonmerged_chds.append(disk_t)
             chds_dic[m_name] = nonmerged_chds
 

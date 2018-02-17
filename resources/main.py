@@ -1898,7 +1898,7 @@ class Main:
             for device in devices_db_dic[machine_name]:
                 device_roms_dic = roms_db_dic[device]
                 for rom in device_roms_dic['roms']:
-                    # rom['location'] = device + '.zip'
+                    rom['device_name'] = device
                     device_roms_list.append(copy.deepcopy(rom))
 
             # --- ROM info ---
@@ -1914,13 +1914,18 @@ class Main:
             # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
             table_str = []
             table_str.append(['right', 'left',     'right', 'left',     'left',  'left'])
-            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS'])
+            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS/Device'])
 
             # --- Table: Machine ROMs ---
             roms_dic = roms_db_dic[machine_name]
             if roms_dic['roms']:
                 for rom in roms_dic['roms']:
-                    table_row = ['ROM', str(rom['name']), str(rom['size']),
+                    if       rom['bios'] and     rom['merge']: r_type = 'BROM'
+                    elif     rom['bios'] and not rom['merge']: r_type = 'XROM'
+                    elif not rom['bios'] and     rom['merge']: r_type = 'MROM'
+                    elif not rom['bios'] and not rom['merge']: r_type = 'ROM'
+                    else:                                      r_type = 'ERROR'
+                    table_row = [r_type, str(rom['name']), str(rom['size']),
                                  str(rom['crc']), str(rom['merge']), str(rom['bios'])]
                     table_str.append(table_row)
 
@@ -1928,7 +1933,7 @@ class Main:
             if device_roms_list:
                 for rom in device_roms_list:
                     table_row = ['DROM', str(rom['name']), str(rom['size']),
-                                 str(rom['crc']), str(rom['merge']), str(rom['bios'])]
+                                 str(rom['crc']), str(rom['merge']), str(rom['device_name'])]
                     table_str.append(table_row)
 
             # --- Table: machine CHDs ---
