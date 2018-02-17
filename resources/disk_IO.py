@@ -265,7 +265,10 @@ def fs_new_control_dic():
         'stats_total_machines' : 0,
 
         # --- Filed in when building main MAME database ---
-        'ver_mame'      : 'Unknown. MAME database not built',
+        # >> Numerical MAME version. Allows for comparisons like ver_mame >= MAME_VERSION_0190
+        'ver_mame'      : 0,
+        # >> MAME string version, as reported by the executable stdout. Example: '0.194 (mame0194)'
+        'ver_mame_str'  : 'Unknown. MAME database not built',
         'ver_catver'    : 'Unknown. MAME database not built',
         'ver_catlist'   : 'Unknown. MAME database not built',
         'ver_genre'     : 'Unknown. MAME database not built',
@@ -709,7 +712,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     context = iter(context)
     event, root = context.next()
     mame_version_raw = root.attrib['build']
-    log_info('fs_build_MAME_main_database() MAME version is "{0}"'.format(mame_version_raw))
+    mame_version_int = mame_get_numerical_version(mame_version_raw)
+    log_info('fs_build_MAME_main_database() MAME str version "{0}"'.format(mame_version_raw))
+    log_info('fs_build_MAME_main_database() MAME numerical version {0}'.format(mame_version_int))
 
     # --- Process MAME XML ---
     total_machines = control_dic['total_machines']
@@ -1235,7 +1240,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
-    control_dic['ver_mame']        = mame_version_raw
+    control_dic['ver_mame']        = mame_version_int
+    control_dic['ver_mame_str']    = mame_version_raw
     control_dic['ver_catver']      = catver_version
     control_dic['ver_catlist']     = catlist_version
     control_dic['ver_genre']       = genre_version

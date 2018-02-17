@@ -67,6 +67,36 @@ mame_driver_name_dic = {
     'zn.cpp'       : 'Sony ZN1/ZN2 (Arcade PSX)',
 }
 
+#
+# Numerical MAME version. Allows for comparisons like ver_mame >= MAME_VERSION_0190
+# Support MAME versions higher than 0.53 August 12th 2001.
+# See header of MAMEINFO.dat for a list of all MAME versions.
+# a.bbb.ccc gets transformed into an uint a,bbb,ccc
+# Examples:
+#   '0.53'   ->  53000
+#   '0.70'   ->  70000
+#   '0.70u1' ->  70001
+#   '0.150'  -> 150000
+#   '0.190'  -> 190000
+#
+# mame_version_raw examples:
+#   a) '0.194 (mame0194)' from '<mame build="0.194 (mame0194)" debug="no" mameconfig="10">'
+#
+# re.search() returns a MatchObject https://docs.python.org/2/library/re.html#re.MatchObject
+def mame_get_numerical_version(mame_version_str):
+    log_verb('mame_get_numerical_version() mame_version_str = "{0}"'.format(mame_version_str))
+    version_int = 0
+    m_obj = re.search('^(\d+?)\.(\d+?) \(', mame_version_str)
+    if m_obj:
+        major = int(m_obj.group(1))
+        minor = int(m_obj.group(2))
+        log_verb('mame_get_numerical_version() major = {0}'.format(major))
+        log_verb('mame_get_numerical_version() minor = {0}'.format(minor))
+        version_int = major * 100000 + minor * 1000
+    log_verb('mame_get_numerical_version() version_int = {0}'.format(version_int))
+
+    return version_int
+
 # -------------------------------------------------------------------------------------------------
 # Functions
 # -------------------------------------------------------------------------------------------------
