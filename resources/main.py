@@ -1620,7 +1620,14 @@ class Main:
             # --- Make information string ---
             info_text  = '[COLOR orange]Machine {0} / Render data[/COLOR]\n'.format(machine_name)
             if location == LOCATION_MAME_FAVS:
-                info_text += "[COLOR slateblue]ver_mame[/COLOR]: {0}\n".format(machine['ver_mame'])
+                if 'ver_mame' in machine:
+                    info_text += "[COLOR slateblue]ver_mame[/COLOR]: {0}\n".format(machine['ver_mame'])
+                else:
+                    info_text += "[COLOR slateblue]ver_mame[/COLOR]: not available\n"
+                if 'ver_mame_str' in machine:
+                    info_text += "[COLOR slateblue]ver_mame_str[/COLOR]: {0}\n".format(machine['ver_mame_str'])
+                else:
+                    info_text += "[COLOR slateblue]ver_mame_str[/COLOR]: not available\n"
             info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
             info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
             info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
@@ -2271,6 +2278,7 @@ class Main:
     # ---------------------------------------------------------------------------------------------
     # Favourites
     # ---------------------------------------------------------------------------------------------
+    # >> Favourites use the main hashed database, not the main and render databases.
     def _command_context_add_mame_fav(self, machine_name):
         log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(machine_name))
 
@@ -2294,6 +2302,7 @@ class Main:
         # >> Add machine. Add database version to Favourite.
         machine['assets'] = assets
         machine['ver_mame'] = control_dic['ver_mame']
+        machine['ver_mame_str'] = control_dic['ver_mame_str']
         fav_machines[machine_name] = machine
         log_info('_command_add_mame_fav() Added machine "{0}"'.format(machine_name))
 
