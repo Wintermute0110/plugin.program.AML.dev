@@ -1,5 +1,7 @@
 [B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
+WIP      Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
+
 WIP      User Parent/Clone substituted artwork. For example, most trailers are only available for
          the Parent machine and can be used by Clone machines.
 
@@ -7,8 +9,6 @@ WIP      Port the file scanner cache from AEL to AML. This will increase the sca
 
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
-
-WIP      Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
 FEATURE  Renamed plugin from plugin.program.advanced.MAME.launcher to plugin.program.AML.
          Shorter name, shorter databases, higher speed.
@@ -19,7 +19,7 @@ FEATURE  Support bestgames.ini and series.ini.
 
 FEATURE  Generate machine plot from MAME XML information.
 
-FEATURE  New Main filters: Normal and Unusual.
+FEATURE  New Main filters Normal and Unusual.
 
 FEATURE  Show ROMs of a MAME machine that should be in a ZIP file. Supports Merged, Split and
          Non-merged sets, CHDs, BIOS and Devices with ROMs.
@@ -46,7 +46,9 @@ FEATURE  Allow user to choose default assets as AEL does in addon seetings.
 
 FEATURE  Trailer support in MAME machines and Software Lists.
 
-WIP      Manage SL Favourites.
+WIP      Manage MAME Favourites context menu.
+
+WIP      Manage SL Favourites context menu.
 
 WIP      Implemented "Most played MAME machines"
 

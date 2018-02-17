@@ -2597,13 +2597,32 @@ class Main:
         kodi_refresh_container()
         kodi_notify('ROM {0} deleted from SL Favourites'.format(ROM_name))
 
+    #
+    # Context menu "Manage SL Favourite ROMs"
+    #   * 'Choose default machine for SL ROM'
+    #     Allows to set the default machine to launch each SL ROM.
+    #
+    #   * 'Scan all SL Favourite ROMs/CHDs'
+    #     Scan SL ROM ZIPs and CHDs and update flags of the SL Favourites database JSON.
+    #
+    #   * 'Scan all SL Favourite assets/artwork'
+    #     Scan SL ROMs assets/artwork and update SL Favourites database JSON.
+    #
+    #   * 'Check/Update all SL Favourites ROMs'
+    #     Checks that all SL Favourite ROMs exist in current database. If the ROM exists, then
+    #     update information from current SL database. If the ROM doesn't exist, then delete it
+    #     from SL Favourites (prompt the user about this).
+    #
+    #   * 'Delete ROM from SL Favourites'
+    #
     def _command_context_manage_sl_fav(self, SL_name, ROM_name):
         dialog = xbmcgui.Dialog()
         idx = dialog.select('Manage Software Lists Favourites', 
-                           ['Scan ROMs/CHDs',
-                            'Scan assets/artwork',
-                            'Check SL Favourites',
-                            'Choose machine for SL ROM'])
+                           ['Choose default machine for SL ROM',
+                            'Scan all SL Favourite ROMs/CHDs',
+                            'Scan all SL Favourite assets/artwork',
+                            'Check/Update all SL Favourites ROMs',
+                            'Delete ROM from SL Favourites'])
         if idx < 0: return
 
         # --- Scan ROMs/CHDs ---
