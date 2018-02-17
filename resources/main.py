@@ -1701,20 +1701,17 @@ class Main:
 
                 # >> Build information string
                 info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(SL_ROM)
-                info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(rom['CHDs'])
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
                 info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
+                info_text += "[COLOR skyblue]num_disks[/COLOR]: {0}\n".format(rom['num_disks'])
                 info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(rom['num_roms'])
-                if rom['part_interface']:
-                    for i, device in enumerate(rom['part_interface']):
-                        info_text += "[COLOR lime]part_interface[/COLOR][{0}]: {1}\n".format(i, rom['part_interface'][i])
+                if rom['parts']:
+                    for i, part in enumerate(rom['parts']):
+                        info_text += "[COLOR lime]parts[/COLOR][{0}]:\n".format(i)
+                        info_text += "  [COLOR violet]interface[/COLOR]: '{0}'\n".format(part['interface'])
+                        info_text += "  [COLOR violet]name[/COLOR]: '{0}'\n".format(part['name'])
                 else:
-                    info_text += '[COLOR lime]part_interface[/COLOR]: []\n'
-                if rom['part_name']:
-                    for i, device in enumerate(rom['part_name']):
-                        info_text += "[COLOR lime]part_name[/COLOR][{0}]: {1}\n".format(i, rom['part_name'][i])
-                else:
-                    info_text += '[COLOR lime]part_name[/COLOR]: []\n'
+                    info_text += '[COLOR lime]parts[/COLOR]: []\n'
                 info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
                 info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
                 info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
@@ -1754,15 +1751,20 @@ class Main:
                     info_text += "[COLOR slateblue]ver_mame_str[/COLOR]: {0}\n".format(rom['ver_mame_str'])
                 else:
                     info_text += "[COLOR slateblue]ver_mame_str[/COLOR]: not available\n"
-                info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(rom['CHDs'])
                 info_text += "[COLOR violet]ROM_name[/COLOR]: '{0}'\n".format(rom['ROM_name'])
                 info_text += "[COLOR violet]SL_name[/COLOR]: '{0}'\n".format(rom['SL_name'])
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
                 info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
                 info_text += "[COLOR violet]launch_machine[/COLOR]: '{0}'\n".format(rom['launch_machine'])
+                info_text += "[COLOR skyblue]num_disks[/COLOR]: {0}\n".format(unicode(rom['num_disks']))
                 info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(unicode(rom['num_roms']))
-                info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(unicode(rom['part_interface']))
-                info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(unicode(rom['part_name']))
+                if rom['parts']:
+                    for i, part in enumerate(rom['parts']):
+                        info_text += "[COLOR lime]parts[/COLOR][{0}]:\n".format(i)
+                        info_text += "  [COLOR violet]interface[/COLOR]: '{0}'\n".format(part['interface'])
+                        info_text += "  [COLOR violet]name[/COLOR]: '{0}'\n".format(part['name'])
+                else:
+                    info_text += '[COLOR lime]parts[/COLOR]: []\n'
                 info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
                 info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
                 info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
@@ -2045,18 +2047,22 @@ class Main:
             info_text.append('\n')
 
             table_str = []
-            table_str.append(['right', 'left',   'left', 'left', 'left',     'left',   'left'])
-            table_str.append(['Type',  'P name', 'Name', 'Size', 'CRC/SHA1', 'Offset', 'Location'])
+            table_str.append(['right', 'left',      'left',       'left',      'left', 'left', 'left'])
+            table_str.append(['Type',  'Part name', 'Part iface', 'Area name', 'Name', 'Size', 'CRC/SHA1'])
             # >> Iterate Parts
             for rom_item in rom_db_list:
                 # >> Iterate ROMs in a part
                 for rom_name in rom_item['rom_list']:
-                    table_row = ['ROM', str(rom_item['part_name']), str(rom_name), '', '', '', '']
+                    table_row = ['ROM',
+                                 str(rom_item['part_name']), str(rom_item['part_interface']),
+                                 str(rom_item['dataarea_name']), str(rom_name), '', '']
                     table_str.append(table_row)
 
                 # >> Iterate CHDs in a part
                 for disk_name in rom_item['disk_list']:
-                    table_row = ['DISK', str(rom_item['part_name']), str(disk_name), '', '', '', '']
+                    table_row = ['DISK',
+                                 str(rom_item['part_name']), str(rom_item['part_interface']),
+                                 str(rom_item['diskarea_name']), str(disk_name), '', '']
                     table_str.append(table_row)
 
             table_str_list = text_render_table_str(table_str)

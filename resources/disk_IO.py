@@ -157,12 +157,12 @@ def fs_new_machine_render_dic():
     return m
 
 #
-# Object used in MAME_roms_db.json
+# Object used in MAME_DB_roms.json
 # machine_roms = {
 #     'machine_name' : {
 #         'bios'  : [ ... ],
-#         'roms'  : [ ... ],
-#         'disks' : [ ... ]
+#         'disks' : [ ... ],
+#         'roms'  : [ ... ]
 #     }
 # }
 #
@@ -230,16 +230,23 @@ def fs_new_MAME_asset():
 #   ?  SL ROM not scanned
 #   r  Missing ROM
 #   R  Have ROM
+def fs_new_SL_ROM_part():
+    p = {
+        'name'      : '',
+        'interface' : ''
+    }
+
+    return p
+
 def fs_new_SL_ROM():
     R = {
         'description'    : '',
         'year'           : '',
         'publisher'      : '',
         'cloneof'        : '',
-        'part_name'      : [],
-        'part_interface' : [],
+        'parts'          : [],
         'num_roms'       : 0,
-        'CHDs'           : [],
+        'num_disks'      : 0,
         'status_ROM'     : '-',
         'status_CHD'     : '-',
     }
@@ -2281,7 +2288,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     # log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
 
 # -------------------------------------------------------------------------------------------------
-# Software Lists database build
+# Software Lists and ROM audit database building function
 # -------------------------------------------------------------------------------------------------
 #
 # https://www.mess.org/mess/swlist_format
@@ -2289,16 +2296,18 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
 # correspond to a game box you could have bought in a shop, and that each <part> entry should 
 # correspond to a piece (i.e. a cart, a disk or a tape) that you would have found in such a box. 
 #
-# Example 1: 32x.xml-chaotix
+# --- Example 1: 32x.xml-chaotix ---
 # Stored as: SL_ROMS/32x/chaotix.zip
+#
 # <part name="cart" interface="_32x_cart">
 #   <dataarea name="rom" size="3145728">
 #     <rom name="knuckles' chaotix (europe).bin" size="3145728" crc="41d63572" sha1="5c1...922" offset="000000" />
 #   </dataarea>
 # </part>
 #
-# Example 2: 32x.xml-doom
+# --- Example 2: 32x.xml-doom ---
 # Stored as: SL_ROMS/32x/doom.zip
+#
 # <part name="cart" interface="_32x_cart">
 #   <feature name="pcb" value="171-6885A" />
 #   <dataarea name="rom" size="3145728">
@@ -2307,8 +2316,9 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
 #   </dataarea>
 # </part>
 #
-# Example 3: a800.xml-diamond3
+# --- Example 3: a800.xml-diamond3 ---
 # Stored as: SL_ROMS/a800/diamond3.zip (all ROMs from all parts)
+#
 # <part name="cart" interface="a8bit_cart">
 #   <feature name="slot" value="a800_diamond" />
 #   <dataarea name="rom" size="65536">
@@ -2331,8 +2341,9 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
 #   </dataarea>
 # </part>
 #
-# Example 4: a2600.xml-harmbios
+# --- Example 4: a2600.xml-harmbios ---
 # Stored as: SL_ROMS/a2600/harmbios.zip (all ROMs from all dataareas)
+#
 # <part name="cart" interface="a2600_cart">
 #   <feature name="slot" value="a26_harmony" />
 #   <dataarea name="rom" size="0x8000">
@@ -2341,26 +2352,27 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
 #   <dataarea name="bios" size="0x21400">
 #     <rom name="hbios_106_NTSC_official_beta.bin" size="0x21400" crc="1e1d237b" sha1="8fd...1da" offset="0" />
 #     <rom name="hbios_106_NTSC_beta_2.bin"        size="0x21400" crc="807b86bd" sha1="633...e9d" offset="0" />
-#     <rom name="eeloader_104e_PAL60.bin" size="0x36f8" crc="58845532" sha1="255...71c" offset="0" />
+#     <rom name="eeloader_104e_PAL60.bin"          size="0x36f8" crc="58845532" sha1="255...71c" offset="0" />
 #   </dataarea>
 # </part>
 #
-# Example 5: psx.xml-traid
+# --- Example 5: psx.xml-traid ---
 # Stored as: SL_CHDS/psx/traid/tomb raider (usa) (v1.6).chd
+#
 # <part name="cdrom" interface="psx_cdrom">
 #   <diskarea name="cdrom">
 #     <disk name="tomb raider (usa) (v1.6)" sha1="697...3ac"/>
 #   </diskarea>
 # </part>
 #
-# Example 6: psx.xml-traida cloneof=traid
+# --- Example 6: psx.xml-traida cloneof=traid ---
 # <part name="cdrom" interface="psx_cdrom">
 #   <diskarea name="cdrom">
 #     <disk name="tomb raider (usa) (v1.5)" sha1="d48...0a9"/>
 #   </diskarea>
 # </part>
 #
-# Example 7: pico.xml-sanouk5
+# --- Example 7: pico.xml-sanouk5 ---
 # Stored as: SL_ROMS/pico/sanouk5.zip (mpr-18458-t.ic1 ROM)
 # Stored as: SL_CHDS/pico/sanouk5/imgpico-001.chd
 # <part name="cart" interface="pico_cart">
@@ -2372,11 +2384,15 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
 #   </diskarea>
 # </part>
 #
+# -------------------------------------------------------------------------------------------------
+#
 # SL_roms = {
 #   'sl_name' : [
 #     {
 #       'part_name' : string,
 #       'part_interface' : string,
+#       'dataarea_name' : string,
+#       'diskarea_name' : string,
 #       'rom_list' : [string, string, ...],
 #       'disk_list' : [string, string, ...],
 #     }, ...
@@ -2413,6 +2429,7 @@ def fs_load_SL_XML(xml_filename):
         if root_element.tag == 'software':
             rom = fs_new_SL_ROM()
             num_roms = 0
+            num_disks = 0
             rom_name = root_element.attrib['name']
             software_rom_list = []
             if 'cloneof' in root_element.attrib: rom['cloneof'] = root_element.attrib['cloneof']
@@ -2429,14 +2446,19 @@ def fs_load_SL_XML(xml_filename):
                 # --- Only pick tags we want ---
                 if xml_tag == 'description' or xml_tag == 'year' or xml_tag == 'publisher':
                     rom[xml_tag] = xml_text
+
                 elif xml_tag == 'part':
                     # <part name="cart" interface="_32x_cart">
-                    rom['part_name'].append(rom_child.attrib['name'])
-                    rom['part_interface'].append(rom_child.attrib['interface'])
+                    part_dic = fs_new_SL_ROM_part()
+                    part_dic['name']      = rom_child.attrib['name']
+                    part_dic['interface'] = rom_child.attrib['interface']
+                    rom['parts'].append(part_dic)
 
                     software_rom_dic = {
                         'part_name'      : rom_child.attrib['name'],
                         'part_interface' : rom_child.attrib['interface'],
+                        'dataarea_name'  : '',
+                        'diskarea_name'  : '',
                         'rom_list'       : [],
                         'disk_list'      : [],
                     }
@@ -2446,6 +2468,7 @@ def fs_load_SL_XML(xml_filename):
                     dataarea_num_roms = []
                     for part_child in rom_child:
                         if part_child.tag == 'dataarea':
+                            software_rom_dic['dataarea_name'] = part_child.attrib['name']
                             # >> Dataarea is valid ONLY if it contains valid ROMs
                             dataarea_num_roms = 0
                             for dataarea_child in part_child:
@@ -2460,13 +2483,14 @@ def fs_load_SL_XML(xml_filename):
                                         raise CriticalError('DEBUG')
                             if dataarea_num_roms > 0: num_dataarea += 1
                         elif part_child.tag == 'diskarea':
+                            software_rom_dic['diskarea_name'] = part_child.attrib['name']
                             # >> Dataarea is valid ONLY if it contains valid CHDs
                             diskarea_num_disks = 0
                             for dataarea_child in part_child:
                                 if dataarea_child.tag == 'disk' and 'sha1' in dataarea_child.attrib:
                                     software_rom_dic['disk_list'].append(dataarea_child.attrib['name'])
                                     diskarea_num_disks += 1
-                                    rom['CHDs'].append(dataarea_child.attrib['name'])
+                                    num_disks += 1
                             if diskarea_num_disks > 0: num_diskarea += 1
                         elif part_child.tag == 'feature':
                             pass
@@ -2493,16 +2517,17 @@ def fs_load_SL_XML(xml_filename):
             # --- Finished processing of <software> element
             # >> If ROM has more than 1 ROM increase number of total ROMs (ZIP files).
             # >> If ROM has CHDs count the CHDs.
-            rom['num_roms'] = num_roms
+            rom['num_roms']  = num_roms
+            rom['num_disks'] = num_disks
 
-            if rom['num_roms']: rom['status_ROM'] = '?'
-            else:               rom['status_ROM'] = '-'
-            if rom['CHDs']:     rom['status_CHD'] = '?'
-            else:               rom['status_CHD'] = '-'
+            if rom['num_roms']:  rom['status_ROM'] = '?'
+            else:                rom['status_ROM'] = '-'
+            if rom['num_disks']: rom['status_CHD'] = '?'
+            else:                rom['status_CHD'] = '-'
 
             # >> Statistics
-            if rom['CHDs']:     ret_obj.num_CHDs += len(rom['CHDs'])
-            if rom['num_roms']: ret_obj.num_roms += 1
+            if rom['num_roms']:  ret_obj.num_roms += 1
+            if rom['num_disks']: ret_obj.num_CHDs += num_disks
 
             # >> Add <software> to database and software ROM/CHDs to database
             ret_obj.roms[rom_name] = rom
@@ -2557,7 +2582,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
 
     # --- Make SL Parent/Clone DB ---
     SL_PClone_dic = {}
-    for sl_name in SL_catalog_dic:
+    for sl_name in sorted(SL_catalog_dic):
         pclone_dic = {}
         SL_database_FN = PATHS.SL_DB_DIR.pjoin(sl_name + '.json')
         ROMs = fs_load_JSON_file(SL_database_FN.getPath())
@@ -2579,7 +2604,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     total_SL = len(SL_catalog_dic)
     processed_SL = 0
     SL_machines_dic = {}
-    for SL_name in SL_catalog_dic:
+    for SL_name in sorted(SL_catalog_dic):
         SL_machine_list = []
         for machine_name in machines:
             # if not machines[machine_name]['softwarelists']: continue
@@ -2623,7 +2648,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
                 catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
     # >> Include Software Lists with no machines in the catalog. In other words, there are
     #    software lists that apparently cannot be launched by any machine.
-    for sl_name in SL_catalog_dic:
+    for sl_name in sorted(SL_catalog_dic):
         catalog_key = SL_catalog_dic[sl_name]['display_name']
         if not catalog_key in catalog_parents:
             catalog_parents[catalog_key] = {'parents' : list(), 'num_parents' : 0}
