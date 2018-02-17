@@ -43,6 +43,11 @@ def text_limit_string(string, max_length):
 
   return string
 
+#
+# First row            column aligment 'right' or 'left'
+# Second row           column titles
+# Third and next rows  table data
+#
 def text_render_table_str(table_str):
     rows = len(table_str)
     cols = len(table_str[0])
@@ -89,7 +94,7 @@ def text_get_table_str_col_sizes(table_str, rows, cols):
     col_sizes = [0] * cols
     for j in range(cols):
         col_max_size = 0
-        for i in range(rows):
+        for i in range(1, rows):
             cell_str = re.sub(r'\[COLOR \w+?\]', '', table_str[i][j])
             cell_str = re.sub(r'\[/COLOR\]', '', cell_str)
             str_size = len('{0}'.format(cell_str))
