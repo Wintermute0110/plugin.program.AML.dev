@@ -1033,7 +1033,7 @@ class Main:
         SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        log_debug('_render_SL_ROMs() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        # log_debug('_render_SL_ROMs() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
 
         assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -2575,16 +2575,15 @@ class Main:
         kodi_busydialog_ON()
         control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
         SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+        # >> Load SL ROMs
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
-        # >> Load assets
+        # >> Load SL assets
         assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
         SL_assets_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
         kodi_busydialog_OFF()
-        ROM = SL_roms[ROM_name]
-        assets = SL_assets_dic[ROM_name] if ROM_name in SL_assets_dic else fs_new_SL_asset()
 
         # >> Open Favourite Machines dictionary
         fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
@@ -2598,6 +2597,8 @@ class Main:
             if ret < 1: return
 
         # >> Add machine to SL Favourites
+        ROM = SL_roms[ROM_name]
+        assets = SL_assets_dic[ROM_name] if ROM_name in SL_assets_dic else fs_new_SL_asset()
         ROM['ROM_name']       = ROM_name
         ROM['SL_name']        = SL_name
         ROM['ver_mame']       = control_dic['ver_mame']
@@ -2672,16 +2673,70 @@ class Main:
         # --- Scan ROMs/CHDs ---
         # Reuse SL scanner for Favourites
         elif idx == 1:
-            kodi_dialog_OK('SL scanner not coded yet. Sorry.')
+            kodi_dialog_OK('SL Favourites scanner not coded yet. Sorry.')
 
         # --- Scan assets/artwork ---
         # Reuse SL scanner for Favourites
         elif idx == 2:
-            kodi_dialog_OK('SL asset scanner not coded yet. Sorry.')
+            kodi_dialog_OK('SL Favourites asset scanner not coded yet. Sorry.')
 
-        # --- Check/Update SL Favourties ---
+        # --- Check/Update SL Favourites ---
         elif idx == 3:
-            kodi_dialog_OK('Check not coded yet. Sorry.')
+            # --- Load databases ---
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+            fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
+
+            # --- Check/Update SL Favourite ROMs ---
+            num_SL_favs = len(fav_SL_roms)
+            num_iteration = 0
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher')
+            for fav_SL_key in sorted(fav_SL_roms):
+                fav_ROM_name = fav_SL_roms[fav_SL_key]['ROM_name']
+                fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
+                log_debug('Checking Favourite "{0}" / "{1}"'.format(fav_ROM_name, fav_SL_name))
+
+                # >> Update progress dialog (BEGIN)
+                update_number = (num_iteration * 100) // num_SL_favs
+                pDialog.update(update_number, 'Checking Favourites ...\nMachine "{0}"'.format(fav_ROM_name))
+
+                # >> Load SL ROMs DB and assets
+                file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '.json'
+                SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+                SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
+                assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+                SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+                SL_assets_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
+
+                if fav_ROM_name in SL_roms:
+                    # >> Update Favourite DB
+                    new_Fav_ROM = SL_roms[fav_ROM_name]
+                    new_assets = SL_assets_dic[fav_ROM_name] if fav_ROM_name in SL_assets_dic else fs_new_SL_asset()
+                    new_Fav_ROM['ROM_name']       = fav_ROM_name
+                    new_Fav_ROM['SL_name']        = fav_SL_name
+                    new_Fav_ROM['ver_mame']       = control_dic['ver_mame']
+                    new_Fav_ROM['ver_mame_str']   = control_dic['ver_mame_str']
+                    new_Fav_ROM['launch_machine'] = ''
+                    new_Fav_ROM['assets']         = new_assets
+                    fav_SL_roms[fav_SL_key] = new_Fav_ROM
+                    log_debug('Updated SL Fav ROM "{0}" / "{1}"'.format(fav_ROM_name, fav_SL_name))
+
+                else:
+                    # >> Delete Favourite ROM from Favourite DB
+                    log_debug('Machine "{0}" / "{1}" not found in MAME main DB'.format(fav_ROM_name, fav_SL_name))
+                    t = 'Favourite machine "{0}" in SL "{1}" not found in database'.format(fav_ROM_name, fav_SL_name)
+                    kodi_dialog_OK(t)
+
+                # >> Update progress dialog (END)
+                num_iteration += 1
+            pDialog.update(100)
+            pDialog.close()
+
+            # --- Save SL Favourite ROMs DB ---
+            fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+            kodi_refresh_container()
+            kodi_notify('SL Favourite ROMs checked and updated')
 
         # --- Delete ROM from SL Favourites ---
         elif idx == 4:
