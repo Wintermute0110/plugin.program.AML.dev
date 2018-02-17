@@ -1749,14 +1749,21 @@ class Main:
                 window_title = 'Favourite Software List ROM Information'
 
                 # >> Build information string
-                info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(fav_key)
+                info_text = '[COLOR orange]ROM {0}[/COLOR]\n'.format(fav_key)
+                if 'ver_mame' in rom:
+                    info_text += "[COLOR slateblue]ver_mame[/COLOR]: {0}\n".format(rom['ver_mame'])
+                else:
+                    info_text += "[COLOR slateblue]ver_mame[/COLOR]: not available\n"
+                if 'ver_mame_str' in rom:
+                    info_text += "[COLOR slateblue]ver_mame_str[/COLOR]: {0}\n".format(rom['ver_mame_str'])
+                else:
+                    info_text += "[COLOR slateblue]ver_mame_str[/COLOR]: not available\n"
                 info_text += "[COLOR skyblue]CHDs[/COLOR]: {0}\n".format(rom['CHDs'])
                 info_text += "[COLOR violet]ROM_name[/COLOR]: '{0}'\n".format(rom['ROM_name'])
                 info_text += "[COLOR violet]SL_name[/COLOR]: '{0}'\n".format(rom['SL_name'])
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
                 info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
                 info_text += "[COLOR violet]launch_machine[/COLOR]: '{0}'\n".format(rom['launch_machine'])
-                info_text += "[COLOR violet]mame_version[/COLOR]: '{0}'\n".format(rom['mame_version'])
                 info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(unicode(rom['num_roms']))
                 info_text += "[COLOR skyblue]part_interface[/COLOR]: {0}\n".format(unicode(rom['part_interface']))
                 info_text += "[COLOR skyblue]part_name[/COLOR]: {0}\n".format(unicode(rom['part_name']))
@@ -2548,7 +2555,8 @@ class Main:
         # >> Add machine to SL Favourites
         ROM['ROM_name']       = ROM_name
         ROM['SL_name']        = SL_name
-        ROM['mame_version']   = control_dic['mame_version']
+        ROM['ver_mame']       = control_dic['ver_mame']
+        ROM['ver_mame_str']   = control_dic['ver_mame_str']
         ROM['launch_machine'] = ''
         ROM['assets']         = assets
         fav_SL_roms[SL_fav_key] = ROM
