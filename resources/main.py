@@ -2291,7 +2291,6 @@ class Main:
         machine = fs_get_machine_main_db_hash(PATHS, machine_name)
         assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         kodi_busydialog_OFF()
-        assets  = assets_dic[machine_name]
 
         # >> Open Favourite Machines dictionary
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
@@ -2303,6 +2302,7 @@ class Main:
             if ret < 1: return
 
         # >> Add machine. Add database version to Favourite.
+        assets = assets_dic[machine_name]
         machine['assets'] = assets
         machine['ver_mame'] = control_dic['ver_mame']
         machine['ver_mame_str'] = control_dic['ver_mame_str']
@@ -2341,6 +2341,8 @@ class Main:
 
         # --- Scan ROMs/CHDs/Samples ---
         if idx == 0:
+            kodi_dialog_OK('Check this code. It is not working properly.')
+
             # >> Check paths
             if not self.settings['rom_path']:
                 kodi_dialog_OK('ROM directory not configured. Aborting.')
@@ -2420,18 +2422,46 @@ class Main:
         # >> a machine is renamed between MAME version although I think this is very unlikely.
         # >> MAME Favs can not be relinked. If the machine is not found in current database it must
         # >> be deleted by the user and a new Favourite created.
+        # >> If the machine is found in the main database, then update the Favourite database
+        # >> with data from the main database.
         elif idx == 2:
-            # >> Now just report if a machine is not found in main DB.
-            kodi_busydialog_ON()
-            machines     = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            # >> Load databases.
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(0, 'Loading databases (Control DB) ... ')
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            pDialog.update(20, 'Loading databases (MAME Favourites DB) ... ')
             fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
-            kodi_busydialog_OFF()
+            pDialog.update(40, 'Loading databases (Main machines DB) ... ')
+            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            pDialog.update(60, 'Loading databases (Render machines DB) ... ')
+            machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            pDialog.update(80, 'Loading databases (Machine assets DB) ... ')
+            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            pDialog.update(100)
+            pDialog.close()
+
+            # >> Check/Update MAME Favourite machines.
             for fav_key in sorted(fav_machines):
                 log_debug('Checking Favourite "{0}"'.format(fav_key))
-                if fav_key not in machines:
-                    t = 'Favourite machine "{0}" not found in database'
-                    kodi_dialog_OK(t.format(fav_key))
-            kodi_notify('MAME Favourite checked')
+                if fav_key in machines:
+                    # >> Update Favourite database (info + assets)
+                    new_fav = machines[fav_key].copy()
+                    new_fav.update(machines_render[fav_key])
+                    new_fav['assets'] = assets_dic[fav_key]
+                    new_fav['ver_mame'] = control_dic['ver_mame']
+                    new_fav['ver_mame_str'] = control_dic['ver_mame_str']
+                    fav_machines[fav_key] = new_fav
+                    log_debug('Updated machine "{0}"'.format(fav_key))
+                else:
+                    log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
+                    t = 'Favourite machine "{0}" not found in database'.format(fav_key)
+                    kodi_dialog_OK(t)
+
+            # >> Save MAME Favourites DB
+            fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+            kodi_refresh_container()
+            kodi_notify('MAME Favourite checked and updated')
 
         # --- Delete machine from MAME Favourites ---
         elif idx == 3:
