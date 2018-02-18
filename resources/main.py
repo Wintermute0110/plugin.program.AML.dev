@@ -1488,13 +1488,14 @@ class Main:
         ACTION_VIEW_MACHINE_AUDIT_ROMS = 300
         ACTION_VIEW_SL_ROM_DATA        = 400
         ACTION_VIEW_SL_ROM_ROMS        = 500
-        ACTION_VIEW_DB_STATS           = 600
-        ACTION_VIEW_EXEC_OUTPUT        = 700
-        ACTION_VIEW_REPORT_SCANNER     = 800
-        ACTION_VIEW_REPORT_ASSETS      = 900
-        ACTION_VIEW_REPORT_AUDIT       = 1000
-        ACTION_AUDIT_MAME_MACHINE      = 1100
-        ACTION_AUDIT_SL_MACHINE        = 1200
+        ACTION_VIEW_SL_ROM_AUDIT_ROMS  = 600
+        ACTION_VIEW_DB_STATS           = 700
+        ACTION_VIEW_EXEC_OUTPUT        = 800
+        ACTION_VIEW_REPORT_SCANNER     = 900
+        ACTION_VIEW_REPORT_ASSETS      = 1000
+        ACTION_VIEW_REPORT_AUDIT       = 1100
+        ACTION_AUDIT_MAME_MACHINE      = 1200
+        ACTION_AUDIT_SL_MACHINE        = 1300
 
         # --- Determine if we are in a category, launcher or ROM ---
         log_debug('_command_context_view() machine_name "{0}"'.format(machine_name))
@@ -1539,7 +1540,8 @@ class Main:
         elif view_type == VIEW_SL_ROM:
             d_list = [
               'View Software List item data',
-              'View Software List ROMs',
+              'View Software List ROMs (ROMs DB)',
+              'View Software List ROMs (Audit DB)',
               'Audit Software List ROMs',
               'View database statistics',
               'View scanner reports ...',
@@ -1581,12 +1583,13 @@ class Main:
         elif view_type == VIEW_SL_ROM:
             if   selected_value == 0: action = ACTION_VIEW_SL_ROM_DATA
             elif selected_value == 1: action = ACTION_VIEW_SL_ROM_ROMS
-            elif selected_value == 2: action = ACTION_AUDIT_SL_MACHINE
-            elif selected_value == 3: action = ACTION_VIEW_DB_STATS
-            elif selected_value == 4: action = ACTION_VIEW_REPORT_SCANNER
-            elif selected_value == 5: action = ACTION_VIEW_REPORT_ASSETS
-            elif selected_value == 6: action = ACTION_VIEW_REPORT_AUDIT
-            elif selected_value == 7: action = ACTION_VIEW_EXEC_OUTPUT
+            elif selected_value == 2: action = ACTION_VIEW_SL_ROM_AUDIT_ROMS
+            elif selected_value == 3: action = ACTION_AUDIT_SL_MACHINE
+            elif selected_value == 4: action = ACTION_VIEW_DB_STATS
+            elif selected_value == 5: action = ACTION_VIEW_REPORT_SCANNER
+            elif selected_value == 6: action = ACTION_VIEW_REPORT_ASSETS
+            elif selected_value == 7: action = ACTION_VIEW_REPORT_AUDIT
+            elif selected_value == 8: action = ACTION_VIEW_EXEC_OUTPUT
             else:
                 kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -2076,6 +2079,46 @@ class Main:
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
             window_title = 'Software List ROM List'
+            self._display_text_window(window_title, ''.join(info_text))
+
+        # --- View SL ROM Audit ROMs ---
+        elif action == ACTION_VIEW_SL_ROM_AUDIT_ROMS:
+            SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
+            # SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_roms.json')
+            SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_audit_ROMs.json')
+            SL_CHD_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_audit_CHDs.json')
+
+            roms = fs_load_JSON_file(SL_DB_FN.getPath())
+            roms_audit_db = fs_load_JSON_file(SL_ROM_Audit_DB_FN.getPath())
+            chds_audit_db = fs_load_JSON_file(SL_CHD_Audit_DB_FN.getPath())
+            rom = roms[SL_ROM]
+            rom_db_list = roms_audit_db[SL_ROM]
+            chd_db_list = chds_audit_db[SL_ROM]
+
+            info_text = []
+            log_debug(unicode(rom))
+            info_text.append('[COLOR violet]SL_name[/COLOR] {0}\n'.format(SL_name))
+            info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}\n'.format(SL_ROM))
+            info_text.append('[COLOR violet]description[/COLOR] {0}\n'.format(rom['description']))
+            info_text.append('\n')
+
+            table_str = []
+            table_str.append(['left', 'left',         'left', 'left',     'left'])
+            table_str.append(['Type', 'ROM/CHD name', 'Size', 'CRC/SHA1', 'Location'])
+            # >> Iterate ROMs
+            for rom_dic in rom_db_list:
+                table_row = [rom_dic['type'], rom_dic['name'], rom_dic['size'],
+                             rom_dic['crc'], rom_dic['location']]
+                table_str.append(table_row)
+            # >> Iterate CHDs
+            for chd_dic in chd_db_list:
+                sha1_srt = chd_dic['sha1'][0:8]
+                table_row = [chd_dic['type'], chd_dic['name'], '', sha1_srt, chd_dic['location']]
+                table_str.append(table_row)
+
+            table_str_list = text_render_table_str(table_str)
+            info_text.extend(table_str_list)
+            window_title = 'Software List ROM List (Audit DB)'
             self._display_text_window(window_title, ''.join(info_text))
 
         # --- View MAME stdout/stderr ---

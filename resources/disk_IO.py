@@ -2677,7 +2677,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
                             rom_audit_dic['name']     = rom_dic['name']
                             rom_audit_dic['size']     = rom_dic['size']
                             rom_audit_dic['crc']      = rom_dic['crc']
-                            rom_audit_dic['location'] = SL_name + '/' + SL_rom + '.zip/' + rom_dic['name']
+                            rom_audit_dic['location'] = SL_name + '/' + SL_rom + '/' + rom_dic['name']
                             SL_Audit_ROMs[SL_rom].append(rom_audit_dic)
                 if 'diskarea' in part_dic:
                     # >> Iterate Diskareas
