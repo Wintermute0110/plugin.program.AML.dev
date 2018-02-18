@@ -2047,24 +2047,32 @@ class Main:
             info_text.append('\n')
 
             table_str = []
-            table_str.append(['right', 'left',      'left',       'left',      'left', 'left', 'left'])
-            table_str.append(['Type',  'Part name', 'Part iface', 'Area name', 'Name', 'Size', 'CRC/SHA1'])
+            table_str.append(['left',      'left',       'left',      'left',      'left', 'left', 'left'])
+            table_str.append(['Part name', 'Part iface', 'Area type', 'A name', 'ROM/CHD name', 'Size', 'CRC/SHA1'])
             # >> Iterate Parts
-            for rom_item in rom_db_list:
-                # >> Iterate ROMs in a part
-                for rom_name in rom_item['rom_list']:
-                    table_row = ['ROM',
-                                 str(rom_item['part_name']), str(rom_item['part_interface']),
-                                 str(rom_item['dataarea_name']), str(rom_name), '', '']
-                    table_str.append(table_row)
-
-                # >> Iterate CHDs in a part
-                for disk_name in rom_item['disk_list']:
-                    table_row = ['DISK',
-                                 str(rom_item['part_name']), str(rom_item['part_interface']),
-                                 str(rom_item['diskarea_name']), str(disk_name), '', '']
-                    table_str.append(table_row)
-
+            for part_dic in rom_db_list:
+                part_name = part_dic['part_name']
+                part_interface = part_dic['part_interface']
+                if 'dataarea' in part_dic:
+                    # >> Iterate Dataareas
+                    for dataarea_dic in part_dic['dataarea']:
+                        dataarea_name = dataarea_dic['name']
+                        # >> Interate ROMs in dataarea
+                        for rom_dic in dataarea_dic['roms']:
+                            table_row = [part_name, part_interface,
+                                         'dataarea', dataarea_name,
+                                         rom_dic['name'], rom_dic['size'], rom_dic['crc']]
+                            table_str.append(table_row)
+                if 'diskarea' in part_dic:
+                    # >> Iterate Diskareas
+                    for diskarea_dic in part_dic['diskarea']:
+                        diskarea_name = diskarea_dic['name']
+                        # >> Iterate DISKs in diskarea
+                        for rom_dic in diskarea_dic['disks']:
+                            table_row = [part_name, part_interface,
+                                         'diskarea', diskarea_name,
+                                         rom_dic['name'], '', rom_dic['sha1'][0:8]]
+                            table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
             window_title = 'Software List ROM List'

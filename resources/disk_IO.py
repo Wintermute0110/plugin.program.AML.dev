@@ -2375,6 +2375,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
 # --- Example 7: pico.xml-sanouk5 ---
 # Stored as: SL_ROMS/pico/sanouk5.zip (mpr-18458-t.ic1 ROM)
 # Stored as: SL_CHDS/pico/sanouk5/imgpico-001.chd
+#
 # <part name="cart" interface="pico_cart">
 #   <dataarea name="rom" size="524288">
 #     <rom name="mpr-18458-t.ic1" size="524288" crc="6340c18a" sha1="101..." offset="000000" loadflag="load16_word_swap" />
@@ -2385,34 +2386,53 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
 # </part>
 #
 # -------------------------------------------------------------------------------------------------
+# A) One part may have a dataarea, a diskarea, or both.
+#
+# B) One part may have more than one dataarea with different names.
 #
 # SL_roms = {
-#   'sl_name' : [
+#   'sl_rom_name' : [
 #     {
 #       'part_name' : string,
 #       'part_interface' : string,
-#       'dataarea_name' : string,
-#       'diskarea_name' : string,
-#       'rom_list' : [string, string, ...],
-#       'disk_list' : [string, string, ...],
+#       'dataarea' : [
+#         {
+#           'name' : string,
+#           'roms' : [
+#             {
+#               'name' : string, 'size' : int, 'crc' : string
+#             },
+#           ]
+#         }
+#       ]
+#       'diskarea' : [
+#         {
+#           'name' : string,
+#           'disks' : [
+#             {
+#               'name' : string, 'sha1' : string
+#             },
+#           ]
+#         }
+#       ]
 #     }, ...
 #   ], ...
 # }
 #
-class SLData:
+class SLDataObj:
     def __init__(self):
         self.roms = {}
+        self.SL_roms = {}
         self.display_name = ''
         self.num_roms = 0
         self.num_CHDs = 0
 
 def fs_load_SL_XML(xml_filename):
     __debug_xml_parser = False
-    ret_obj = SLData()
-    SL_roms = {}
+    SLData = SLDataObj()
 
     # --- If file does not exist return empty dictionary ---
-    if not os.path.isfile(xml_filename): return ret_obj
+    if not os.path.isfile(xml_filename): return SLData
 
     # --- Parse using cElementTree ---
     log_debug('fs_load_SL_XML() Loading XML file "{0}"'.format(xml_filename))
@@ -2420,18 +2440,18 @@ def fs_load_SL_XML(xml_filename):
     try:
         xml_tree = ET.parse(xml_filename)
     except:
-        return ret_obj
+        return SLData
     xml_root = xml_tree.getroot()
-    ret_obj.display_name = xml_root.attrib['description']
+    SLData.display_name = xml_root.attrib['description']
     for root_element in xml_root:
         if __debug_xml_parser: print('Root child {0}'.format(root_element.tag))
 
         if root_element.tag == 'software':
             rom = fs_new_SL_ROM()
+            SL_rom_list = []
             num_roms = 0
             num_disks = 0
             rom_name = root_element.attrib['name']
-            software_rom_list = []
             if 'cloneof' in root_element.attrib: rom['cloneof'] = root_element.attrib['cloneof']
             if 'romof' in root_element.attrib:
                 log_error('{0} -> "romof" in root_element.attrib'.format(rom_name))
@@ -2450,17 +2470,12 @@ def fs_load_SL_XML(xml_filename):
                 elif xml_tag == 'part':
                     # <part name="cart" interface="_32x_cart">
                     part_dic = fs_new_SL_ROM_part()
-                    part_dic['name']      = rom_child.attrib['name']
+                    part_dic['name'] = rom_child.attrib['name']
                     part_dic['interface'] = rom_child.attrib['interface']
                     rom['parts'].append(part_dic)
-
-                    software_rom_dic = {
-                        'part_name'      : rom_child.attrib['name'],
-                        'part_interface' : rom_child.attrib['interface'],
-                        'dataarea_name'  : '',
-                        'diskarea_name'  : '',
-                        'rom_list'       : [],
-                        'disk_list'      : [],
+                    SL_roms_dic = {
+                        'part_name' : rom_child.attrib['name'],
+                        'part_interface' : rom_child.attrib['interface']
                     }
 
                     # --- Count number of <dataarea> and <diskarea> tags inside this <part tag> ---
@@ -2468,30 +2483,39 @@ def fs_load_SL_XML(xml_filename):
                     dataarea_num_roms = []
                     for part_child in rom_child:
                         if part_child.tag == 'dataarea':
-                            software_rom_dic['dataarea_name'] = part_child.attrib['name']
-                            # >> Dataarea is valid ONLY if it contains valid ROMs
+                            dataarea_dic = { 'name' : part_child.attrib['name'], 'roms' : [] }
                             dataarea_num_roms = 0
                             for dataarea_child in part_child:
-                                if dataarea_child.tag == 'rom' and 'sha1' in dataarea_child.attrib:
-                                    software_rom_dic['rom_list'].append(dataarea_child.attrib['name'])
-                                    dataarea_num_roms += 1
-                                    num_roms += 1
-                                    # >> DEBUG
-                                    if 'merge' in dataarea_child.attrib:
-                                        log_error('software {0}'.format(rom_name))
-                                        log_error('rom {0} has merge attribute'.format(dataarea_child.attrib['name']))
-                                        raise CriticalError('DEBUG')
+                                rom_dic = { 'name' : '', 'size' : '', 'crc'  : '' }
+                                rom_dic['name'] = dataarea_child.attrib['name'] if 'name' in dataarea_child.attrib else ''
+                                rom_dic['size'] = dataarea_child.attrib['size'] if 'size' in dataarea_child.attrib else ''
+                                rom_dic['crc'] = dataarea_child.attrib['crc'] if 'crc' in dataarea_child.attrib else ''
+                                dataarea_dic['roms'].append(rom_dic)
+                                dataarea_num_roms += 1
+                                num_roms += 1
+                                # --- DEBUG: Error if rom has merge attribute ---
+                                if 'merge' in dataarea_child.attrib:
+                                    log_error('software {0}'.format(rom_name))
+                                    log_error('rom {0} has merge attribute'.format(dataarea_child.attrib['name']))
+                                    raise CriticalError('DEBUG')
+                            # >> Dataarea is valid ONLY if it contains valid ROMs
                             if dataarea_num_roms > 0: num_dataarea += 1
+                            if 'dataarea' not in SL_roms_dic: SL_roms_dic['dataarea'] = []
+                            SL_roms_dic['dataarea'].append(dataarea_dic)
                         elif part_child.tag == 'diskarea':
-                            software_rom_dic['diskarea_name'] = part_child.attrib['name']
-                            # >> Dataarea is valid ONLY if it contains valid CHDs
+                            diskarea_dic = { 'name' : part_child.attrib['name'], 'disks' : [] }
                             diskarea_num_disks = 0
-                            for dataarea_child in part_child:
-                                if dataarea_child.tag == 'disk' and 'sha1' in dataarea_child.attrib:
-                                    software_rom_dic['disk_list'].append(dataarea_child.attrib['name'])
-                                    diskarea_num_disks += 1
-                                    num_disks += 1
+                            for diskarea_child in part_child:
+                                disk_dic = { 'name' : '', 'sha1' : '' }
+                                disk_dic['name'] = diskarea_child.attrib['name'] if 'name' in diskarea_child.attrib else ''
+                                disk_dic['sha1'] = diskarea_child.attrib['sha1'] if 'sha1' in diskarea_child.attrib else ''
+                                diskarea_dic['disks'].append(disk_dic)
+                                diskarea_num_disks += 1
+                                num_disks += 1
+                            # >> diskarea is valid ONLY if it contains valid CHDs
                             if diskarea_num_disks > 0: num_diskarea += 1
+                            if 'diskarea' not in SL_roms_dic: SL_roms_dic['diskarea'] = []
+                            SL_roms_dic['diskarea'].append(diskarea_dic)
                         elif part_child.tag == 'feature':
                             pass
                         elif part_child.tag == 'dipswitch':
@@ -2500,7 +2524,7 @@ def fs_load_SL_XML(xml_filename):
                             log_error('{0} -> Inside <part>, unrecognised tag <{0}>'.format(rom_name, part_child.tag))
                             raise CriticalError('DEBUG')
                     # --- Add ROMs/disks ---
-                    software_rom_list.append(software_rom_dic)
+                    SL_rom_list.append(SL_roms_dic)
 
                     # --- DEBUG/Research code ---
                     # if num_dataarea > 1:
@@ -2526,14 +2550,14 @@ def fs_load_SL_XML(xml_filename):
             else:                rom['status_CHD'] = '-'
 
             # >> Statistics
-            if rom['num_roms']:  ret_obj.num_roms += 1
-            if rom['num_disks']: ret_obj.num_CHDs += num_disks
+            if rom['num_roms']:  SLData.num_roms += 1
+            if rom['num_disks']: SLData.num_CHDs += num_disks
 
             # >> Add <software> to database and software ROM/CHDs to database
-            ret_obj.roms[rom_name] = rom
-            SL_roms[rom_name] = software_rom_list
+            SLData.roms[rom_name] = rom
+            SLData.SL_roms[rom_name] = SL_rom_list
 
-    return (ret_obj, SL_roms)
+    return SLData
 
 # -------------------------------------------------------------------------------------------------
 # SL_catalog = { 'name' : {'display_name': u'', 'rom_count' : int, 'rom_DB_noext' : u'' }, ...}
@@ -2547,7 +2571,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     # --- Scan all XML files in Software Lists directory and save DB ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pdialog_line1 = 'Building Sofware Lists ROM databases and SL catalog ...'
+    pdialog_line1 = 'Building Sofware Lists ROM databases ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
     total_files = len(SL_file_list)
@@ -2559,18 +2583,18 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
         SL_path_FN = FileName(file)
-        (SL_obj, SL_roms) = fs_load_SL_XML(SL_path_FN.getPath())
+        SLData = fs_load_SL_XML(SL_path_FN.getPath())
         output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json')
-        fs_write_JSON_file(output_FN.getPath(), SL_obj.roms)
+        fs_write_JSON_file(output_FN.getPath(), SLData.roms)
         output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_roms.json')
-        fs_write_JSON_file(output_FN.getPath(), SL_roms)
+        fs_write_JSON_file(output_FN.getPath(), SLData.SL_roms)
 
         # >> Add software list to catalog
-        num_SL_ROMs += SL_obj.num_roms
-        num_SL_CHDs += SL_obj.num_CHDs
-        SL = {'display_name' : SL_obj.display_name, 
-              'rom_count'    : SL_obj.num_roms,
-              'chd_count'    : SL_obj.num_CHDs,
+        num_SL_ROMs += SLData.num_roms
+        num_SL_CHDs += SLData.num_CHDs
+        SL = {'display_name' : SLData.display_name, 
+              'rom_count'    : SLData.num_roms,
+              'chd_count'    : SLData.num_CHDs,
               'rom_DB_noext' : FN.getBase_noext()
         }
         SL_catalog_dic[FN.getBase_noext()] = SL
