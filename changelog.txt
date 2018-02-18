@@ -7,6 +7,16 @@ WIP      User Parent/Clone substituted artwork. For example, most trailers are o
 
 WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
 
+WIP      Implemented "Most played MAME machines"
+
+WIP      Implemented "Recently played MAME machines"
+
+WIP      Implemented "Most played SL ROMs"
+
+WIP      Implemented "Recently played SL ROMs"
+
+WIP      Create a hased database for main ROM database and Audit ROM database.
+
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
@@ -26,7 +36,7 @@ FEATURE  Show ROMs of a MAME machine that should be in a ZIP file. Supports Merg
 
 FEATURE  Audit MAME ROMs for all machines.
 
-WIP      Show SL ROMs of a SL entry. Supports Merged, Split and Non-merged sets and SL CHDs.
+FEATURE  Show SL ROMs of a SL entry. Supports Merged, Split and Non-merged sets and SL CHDs.
 
 WIP      Audit SL ROMs.
 
@@ -49,16 +59,6 @@ FEATURE  Trailer support in MAME machines and Software Lists.
 WIP      Manage MAME Favourites context menu.
 
 WIP      Manage SL Favourites context menu.
-
-WIP      Implemented "Most played MAME machines"
-
-WIP      Implemented "Recently played MAME machines"
-
-WIP      Implemented "Most played SL ROMs"
-
-WIP      Implemented "Recently played SL ROMs"
-
-WIP      Create a hased database for main ROM database and Audit ROM database.
 
 
 [B]Advanced Emulator Launcher | version 0.9.3 | 30 May 2017[/B]

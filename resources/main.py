@@ -2078,7 +2078,7 @@ class Main:
                             table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
-            window_title = 'Software List ROM List'
+            window_title = 'Software List ROM List (ROMs DB)'
             self._display_text_window(window_title, ''.join(info_text))
 
         # --- View SL ROM Audit ROMs ---

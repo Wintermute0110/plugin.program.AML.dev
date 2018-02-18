@@ -2699,6 +2699,11 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
         pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
 
     # --- Make SL Parent/Clone databases ---
+    log_info('Building Software List PClone list ...')
+    pdialog_line1 = 'Building Software List PClone list ...'
+    pDialog.update(0, pdialog_line1)
+    total_files = len(SL_catalog_dic)
+    processed_files = 0
     SL_PClone_dic = {}
     for sl_name in sorted(SL_catalog_dic):
         pclone_dic = {}
@@ -2713,6 +2718,9 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
             else:
                 if rom_name not in pclone_dic: pclone_dic[rom_name] = []
         SL_PClone_dic[sl_name] = pclone_dic
+        # >> Update progress
+        processed_files += 1
+        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(sl_name))
     fs_write_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath(), SL_PClone_dic)
 
     # --- Make a list of machines that can launch each SL ---
