@@ -74,11 +74,11 @@ class AML_Paths:
         self.MAIN_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_DB_main.json')
         self.RENDER_DB_PATH       = PLUGIN_DATA_DIR.pjoin('MAME_DB_render.json')
         self.ROMS_DB_PATH         = PLUGIN_DATA_DIR.pjoin('MAME_DB_roms.json')
-        self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_pclone_dic.json')
+        self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_DB_pclone_dic.json')
 
         # >> ROM set databases
-        self.ROM_SET_ROMS_DB_PATH       = PLUGIN_DATA_DIR.pjoin('ROM_Set_ROMs.json')
-        self.ROM_SET_CHDS_DB_PATH       = PLUGIN_DATA_DIR.pjoin('ROM_Set_CHDs.json')
+        self.ROM_AUDIT_ROMS_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Audit_DB_ROMs.json')
+        self.ROM_AUDIT_CHDS_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Audit_DB_CHDs.json')
         self.ROM_SET_MACHINES_DB_PATH   = PLUGIN_DATA_DIR.pjoin('ROM_Set_machines.json')
         self.ROM_SET_ARCHIVES_R_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_archives_ROM.json')
         self.ROM_SET_ARCHIVES_C_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_archives_CHD.json')
@@ -1976,9 +1976,9 @@ class Main:
             pDialog.update(0)
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             pDialog.update(33)
-            roms_db_dic = fs_load_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath())
+            roms_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_ROMS_DB_PATH.getPath())
             pDialog.update(66)
-            chds_db_dic = fs_load_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath())
+            chds_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_CHDS_DB_PATH.getPath())
             pDialog.update(100)
             pDialog.close()
 

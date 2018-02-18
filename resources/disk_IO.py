@@ -1770,18 +1770,19 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
     control_dic['MAME_CHD_files'] = len(archives_CHD_list)
 
     # --- Save databases ---
+    line1_str = 'Saving databases ...'
     pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Saving databases (ROM Audit DB) ...')
-    fs_write_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath(), roms_dic)
-    pDialog.update(16, 'Saving databases (CHD Audit DB) ...')
-    fs_write_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath(), chds_dic)
-    pDialog.update(33, 'Saving databases (Machines DB list) ...')
+    pDialog.update(0, line1_str, 'ROM Audit DB')
+    fs_write_JSON_file(PATHS.ROM_AUDIT_ROMS_DB_PATH.getPath(), roms_dic)
+    pDialog.update(16, line1_str, 'CHD Audit DB')
+    fs_write_JSON_file(PATHS.ROM_AUDIT_CHDS_DB_PATH.getPath(), chds_dic)
+    pDialog.update(33, line1_str, 'Machines DB list')
     fs_write_JSON_file(PATHS.ROM_SET_MACHINES_DB_PATH.getPath(), idx_dic)
-    pDialog.update(50, 'Saving databases (ROM List index) ...')
+    pDialog.update(50, line1_str, 'ROM List index')
     fs_write_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath(), archives_ROM_list)
-    pDialog.update(66, 'Saving databases (CHD list index) ...')
+    pDialog.update(66, line1_str, 'CHD list index')
     fs_write_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath(), archives_CHD_list)
-    pDialog.update(83, 'Saving databases (Control dictionary) ...')
+    pDialog.update(83, line1_str, 'Control dictionary')
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
     pDialog.update(100)
     pDialog.close()
@@ -2366,6 +2367,8 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
 # </part>
 #
 # --- Example 6: psx.xml-traida cloneof=traid ---
+# Stored as: SL_CHDS/psx/traid/tomb raider (usa) (v1.5).chd
+#
 # <part name="cdrom" interface="psx_cdrom">
 #   <diskarea name="cdrom">
 #     <disk name="tomb raider (usa) (v1.5)" sha1="d48...0a9"/>
@@ -2415,6 +2418,35 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
 #           ]
 #         }
 #       ]
+#     }, ...
+#   ], ...
+# }
+#
+# -------------------------------------------------------------------------------------------------
+# --- SL List ROM Audit database ---
+#
+# A) For each SL ROM entry, create a list of the ROM files and CHD files, names, sizes, crc/sha1
+#    and location.
+# SL_roms = {
+#   'sl_rom_name' : [
+#     {
+#       'type'     : string,
+#       'name'     : string,
+#       'size      : int,
+#       'crc'      : sting,
+#       'location' : string
+#     }, ...
+#   ], ...
+# }
+
+#
+# SL_disks = {
+#   'sl_rom_name' : [
+#     {
+#       'type' : string,
+#       'name' : string,
+#       'sha1' : sting,
+#       'location' : string
 #     }, ...
 #   ], ...
 # }
@@ -2568,7 +2600,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     SL_dir_FN = FileName(settings['SL_hash_path'])
     log_debug('fs_build_SoftwareLists_index() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
 
-    # --- Scan all XML files in Software Lists directory and save DB ---
+    # --- Scan all XML files in Software Lists directory and save SL and SL ROMs databases ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pdialog_line1 = 'Building Sofware Lists ROM databases ...'
@@ -2577,7 +2609,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     total_files = len(SL_file_list)
     processed_files = num_SL_ROMs = num_SL_CHDs = 0
     SL_catalog_dic = {}
-    for file in SL_file_list:
+    for file in sorted(SL_file_list):
         # log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
         FN = FileName(file)
 
@@ -2604,7 +2636,69 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
         pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
     fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
 
-    # --- Make SL Parent/Clone DB ---
+    # --- Make the SL ROM Audit databases ---
+    log_info('Building Software List ROM Audit database ...')
+    pdialog_line1 = 'Building Software List ROM Audit database ...'
+    pDialog.update(0, pdialog_line1)
+    total_files = len(SL_file_list)
+    processed_files = 0
+    for file in sorted(SL_file_list):
+        # >> Filenames of the databases.
+        FN = FileName(file)
+        SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_roms.json')
+        SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_audit_ROMs.json')
+        SL_CHD_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_audit_CHDs.json')
+
+        # >> Open software list XML and parse it. Then, save data fields we want in JSON.
+        SL_roms = fs_load_JSON_file(SL_ROMs_DB_FN.getPath())
+
+        # >> Traverse list of ROMs and make a list of ROMs and CHDs. Also compute ROM locations.
+        SL_Audit_ROMs = {}
+        SL_Audit_CHDs = {}
+        SL_name = FN.getBase_noext()
+        for SL_rom in SL_roms:
+            SL_Audit_ROMs[SL_rom] = []
+            SL_Audit_CHDs[SL_rom] = []
+
+            # >> Iterate Parts in a SL ROM.
+            rom_db_list = SL_roms[SL_rom]
+            for part_dic in rom_db_list:
+                # part_name = part_dic['part_name']
+                # part_interface = part_dic['part_interface']
+                if 'dataarea' in part_dic:
+                    # >> Iterate Dataareas
+                    for dataarea_dic in part_dic['dataarea']:
+                        # dataarea_name = dataarea_dic['name']
+                        # >> Interate ROMs in dataarea
+                        for rom_dic in dataarea_dic['roms']:
+                            rom_audit_dic = {'type' : '', 'name' : '', 'size' : '', 'crc' : '',
+                                             'location' : ''}
+                            rom_audit_dic['type']     = 'ROM'
+                            rom_audit_dic['name']     = rom_dic['name']
+                            rom_audit_dic['size']     = rom_dic['size']
+                            rom_audit_dic['crc']      = rom_dic['crc']
+                            rom_audit_dic['location'] = SL_name + '/' + SL_rom + '.zip/' + rom_dic['name']
+                            SL_Audit_ROMs[SL_rom].append(rom_audit_dic)
+                if 'diskarea' in part_dic:
+                    # >> Iterate Diskareas
+                    for diskarea_dic in part_dic['diskarea']:
+                        # diskarea_name = diskarea_dic['name']
+                        # >> Iterate DISKs in diskarea
+                        for disk_dic in diskarea_dic['disks']:
+                            disk_audit_dic = {'type' : '', 'name' : '', 'sha1' : '', 'location' : ''}
+                            disk_audit_dic['type']     = 'DISK'
+                            disk_audit_dic['name']     = disk_dic['name']
+                            disk_audit_dic['sha1']     = disk_dic['sha1']
+                            disk_audit_dic['location'] = SL_name + '/' + SL_rom + '/' + disk_dic['name'] + '.chd'
+                            SL_Audit_CHDs[SL_rom].append(disk_audit_dic)
+        # >> Save databases.
+        fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs)
+        fs_write_JSON_file(SL_CHD_Audit_DB_FN.getPath(), SL_Audit_CHDs)
+        # >> Update progress
+        processed_files += 1
+        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
+
+    # --- Make SL Parent/Clone databases ---
     SL_PClone_dic = {}
     for sl_name in sorted(SL_catalog_dic):
         pclone_dic = {}
