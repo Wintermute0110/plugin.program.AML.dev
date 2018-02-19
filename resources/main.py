@@ -3121,9 +3121,9 @@ class Main:
             pDialog.update(25)
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
             pDialog.update(50)
-            roms_db_dic = fs_load_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath())
+            roms_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_ROMS_DB_PATH.getPath())
             pDialog.update(75)
-            chds_db_dic = fs_load_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath())
+            chds_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_CHDS_DB_PATH.getPath())
             pDialog.update(100)
             pDialog.close()
 
@@ -3233,11 +3233,13 @@ class Main:
             with open(PATHS.REPORT_MAME_ROM_AUDIT_PATH.getPath(), 'w') as file:
                 out_str = '\n'.join(report_list)
                 file.write(out_str.encode('utf-8'))
+            kodi_notify('ROM and CHD audit finished')
 
         # --- Audit SL ROMs/CHDs ---
         elif menu_item == 5:
             log_info('_command_setup_plugin() Audit SL ROMs/CHDs ...')
             kodi_dialog_OK('Audit SL ROMs/CHDs not implemented yet.')
+            # kodi_notify('Software Lists audit finished')
 
         # --- Build Step by Step ---
         elif menu_item == 6:
