@@ -2350,14 +2350,19 @@ class Main:
 
             if type_sub == 0:
                 if not PATHS.REPORT_MAME_ROM_AUDIT_PATH.exists():
-                    kodi_dialog_OK('MAME ROM audit report not found. Please audit your MAME ROMs and try again.')
+                    kodi_dialog_OK('MAME audit report not found. Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_ROM_AUDIT_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
-                    self._display_text_window('SL CHD scanner report', info_text)
+                    self._display_text_window('MAME audit report', info_text)
 
             elif type_sub == 1:
-                kodi_dialog_OK('View Software Lists audit report not coded yet. Sorry.')
+                if not PATHS.REPORT_SL_ROM_AUDIT_PATH.exists():
+                    kodi_dialog_OK('SL audit report not found. Please audit your SL ROMs and try again.')
+                    return
+                with open(PATHS.REPORT_SL_ROM_AUDIT_PATH.getPath(), 'r') as myfile:
+                    info_text = myfile.read()
+                    self._display_text_window('SL audit report', info_text)
 
         else:
             kodi_dialog_OK('Wrong action == {0}. This is a bug, please report it.'.format(action))
@@ -3264,7 +3269,7 @@ class Main:
 
             # >> Generate report.
             report_list = []
-            for SL_dic in sorted(SL_catalog_dic):
+            for SL_name in sorted(SL_catalog_dic):
                 SL_dic = SL_catalog_dic[SL_name]
                 SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '.json')
                 SL_AUDIT_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_audit_ROMs.json')
@@ -3277,9 +3282,9 @@ class Main:
                     description = rom['description']
                     cloneof = rom['cloneof']
                     if cloneof:
-                        report_list.append('SL {0} ROM {1} "{2}" (cloneof {3})'.format(SL_dic, rom_key, description, cloneof))
+                        report_list.append('SL {0} ROM {1} "{2}" (cloneof {3})'.format(SL_name, rom_key, description, cloneof))
                     else:
-                        report_list.append('SL {0} ROM {1} "{2}"'.format(SL_dic, rom_key, description))
+                        report_list.append('SL {0} ROM {1} "{2}"'.format(SL_name, rom_key, description))
 
             # >> Write report
             with open(PATHS.REPORT_SL_ROM_AUDIT_PATH.getPath(), 'w') as file:
