@@ -698,7 +698,7 @@ def mame_load_Command_DAT(filename):
     return (proper_idx_list, proper_data_dic)
 
 # -------------------------------------------------------------------------------------------------
-# ROM/CHD audit code
+# MAME ROM/CHD audit code
 # -------------------------------------------------------------------------------------------------
 # This code is very un-optimised! But it is better to get something that works
 # and then optimise. "Premature optimization is the root of all evil" -- Donald Knuth
@@ -796,3 +796,14 @@ def mame_audit_machine_chds(settings, chd_list):
             continue
         m_chd['status'] = 'OK'
         m_chd['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_chd['status'])
+
+# -------------------------------------------------------------------------------------------------
+# SL ROM/CHD audit code
+# -------------------------------------------------------------------------------------------------
+def mame_SL_audit_machine_roms(settings, rom_list):
+    for m_rom in rom_list:
+        m_rom['status'] = 'Not coded!'
+
+def mame_SL_audit_machine_chds(settings, chd_list):
+    for m_chd in chd_list:
+        m_chd['status'] = 'Not coded!'

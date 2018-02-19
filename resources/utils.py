@@ -86,6 +86,36 @@ def text_render_table_str(table_str):
     return table_str_list
 
 #
+# First row             column aligment 'right' or 'left'
+# Second and next rows  table data
+#
+def text_render_table_str_NO_HEADER(table_str):
+    rows = len(table_str)
+    cols = len(table_str[0])
+    table_str_list = []
+    # >> Ignore row 0 when computing sizes.
+    col_sizes = text_get_table_str_col_sizes(table_str, rows, cols)
+    col_padding = table_str[0]
+
+    # --- Data rows ---
+    for i in range(1, rows):
+        row_str = ''
+        for j in range(cols):
+            if j < cols - 1:
+                if col_padding[j] == 'right':
+                    row_str += text_print_padded_right(table_str[i][j], col_sizes[j]) + '  '
+                else:
+                    row_str += text_print_padded_left(table_str[i][j], col_sizes[j]) + '  '
+            else:
+                if col_padding[j] == 'right':
+                    row_str += text_print_padded_right(table_str[i][j], col_sizes[j])
+                else:
+                    row_str += text_print_padded_left(table_str[i][j], col_sizes[j])
+        table_str_list.append(row_str)
+
+    return table_str_list
+
+#
 # Removed Kodi colour tags before computing size (substitute by ''):
 #   A) [COLOR skyblue]
 #   B) [/COLOR]
