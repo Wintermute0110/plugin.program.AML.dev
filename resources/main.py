@@ -1603,22 +1603,32 @@ class Main:
 
         # --- Execute action ---
         if action == ACTION_VIEW_MACHINE_DATA:
+            pDialog = xbmcgui.DialogProgress()
             if location == LOCATION_STANDARD:
-                # >> Read MAME machine information
-                kodi_busydialog_ON()
-                machine    = fs_get_machine_main_db_hash(PATHS, machine_name)
+                pdialog_line1 = 'Loading databases ...'
+                pDialog.create('Advanced MAME Launcher')
+                pDialog.update(0, pdialog_line1, 'ROM hashed database')
+                machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+                pDialog.update(50, pdialog_line1, 'Assets database')
                 assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-                kodi_busydialog_OFF()
+                pDialog.update(100, pdialog_line1)
+                pDialog.close()
                 assets  = assets_dic[machine_name]
                 window_title = 'MAME Machine Information'
             elif location == LOCATION_MAME_FAVS:
+                pdialog_line1 = 'Loading databases ...'
+                pDialog.create('Advanced MAME Launcher')
+                pDialog.update(0, pdialog_line1, 'MAME Favourites database')
                 machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+                pDialog.update(100, pdialog_line1)
+                pDialog.close()
                 machine = machines[machine_name]
                 assets = machine['assets']
                 window_title = 'Favourite MAME Machine Information'
 
             # --- Make information string ---
             info_text  = '[COLOR orange]Machine {0} / Render data[/COLOR]\n'.format(machine_name)
+            # >> Print MAME Favourites special fields
             if location == LOCATION_MAME_FAVS:
                 if 'ver_mame' in machine:
                     info_text += "[COLOR slateblue]ver_mame[/COLOR]: {0}\n".format(machine['ver_mame'])
@@ -1637,6 +1647,7 @@ class Main:
             info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
             info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
             info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
+            info_text += "[COLOR violet]plot[/COLOR]: '{0}'\n".format(machine['plot'])
             info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
 
             info_text += '\n[COLOR orange]Machine data[/COLOR]\n'.format(machine_name)
@@ -2573,7 +2584,7 @@ class Main:
 
     def _render_fav_machine_row(self, machine_name, machine, machine_assets):
         # --- Default values for flags ---
-        AEL_PClone_stat_value    = AEL_PCLONE_STAT_VALUE_NONE
+        AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
 
         # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
         display_name = machine['description']
@@ -2603,7 +2614,8 @@ class Main:
         # >> Make all the infotables compatible with Advanced Emulator Launcher
         listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
                                    'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                   'plot'    : '',               'overlay' : ICON_OVERLAY})
+                                   'plot'    : machine['plot'],
+                                   'overlay' : ICON_OVERLAY})
         listitem.setProperty('nplayers', machine['nplayers'])
         listitem.setProperty('platform', 'MAME')
 
