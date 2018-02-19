@@ -1161,6 +1161,52 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
                 machine_list[1] = machines_render[machine_list[0]]['description']
 
     # ---------------------------------------------------------------------------------------------
+    # Generate plot in render database
+    # Line 1) Controls are {Joystick}
+    # Line 2) {One Vertical Raster screen}
+    # Line 3) Machine [is|is not] mechanical and driver is neogeo.hpp
+    # Line 4) Machine has [no coin slots| N coin slots]
+    # Line 5) DAT info
+    # Line 6) Machine [supports|does not support] a Software List.
+    # ---------------------------------------------------------------------------------------------
+    log_info('Building machine plots/descriptions ...')
+    # >> Do not crash if DAT files are not used.
+    if history_idx_dic:
+        history_info_set  = set([ machine[0] for machine in history_idx_dic['mame']['machines'] ])
+    else:
+        history_info_set  = set()
+    if mameinfo_idx_dic:
+        mameinfo_info_set = set([ machine[0] for machine in mameinfo_idx_dic['mame'] ])
+    else:
+        mameinfo_info_set = set()
+    gameinit_info_set = set([ machine[0] for machine in gameinit_idx_dic ])
+    command_info_set  = set([ machine[0] for machine in command_idx_dic ])
+    for machine_name in machines:
+        m = machines[machine_name]
+        DAT_list = []
+        if machine_name in history_info_set: DAT_list.append('History')
+        if machine_name in mameinfo_info_set: DAT_list.append('Info')
+        if machine_name in gameinit_info_set: DAT_list.append('Gameinit')
+        if machine_name in command_info_set: DAT_list.append('Command')
+        DAT_str = ', '.join(DAT_list)
+        if m['control_type']:
+            controls_str = 'Controls {0}'.format(mame_get_control_str(m['control_type']))
+        else:
+            controls_str = 'No controls'
+        mecha_str = 'Mechanical' if m['isMechanical'] else 'Non-mechanical'
+        coin_str  = 'Machine has {0} coin slots'.format(m['coins']) if m['coins'] > 0 else 'Machine has no coin slots'
+        SL_str    = ', '.join(m['softwarelists']) if m['softwarelists'] else ''
+
+        plot_str_list = []
+        plot_str_list.append('{0}'.format(controls_str))
+        plot_str_list.append('{0}'.format(mame_get_screen_str(machine_name, m)))
+        plot_str_list.append('{0} / Driver is {1}'.format(mecha_str, m['sourcefile']))
+        plot_str_list.append('{0}'.format(coin_str))
+        if DAT_str: plot_str_list.append('{0}'.format(DAT_str))
+        if SL_str: plot_str_list.append('SL {0}'.format(SL_str))
+        machines_render[machine_name]['plot'] = '\n'.join(plot_str_list)
+
+    # ---------------------------------------------------------------------------------------------
     # Build main distributed hashed database
     # ---------------------------------------------------------------------------------------------
     log_info('Building main hashed database index ...')
@@ -1198,51 +1244,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
         item_count += 1
         pDialog.update(int((item_count*100) / num_items))
     pDialog.close()
-
-    # ---------------------------------------------------------------------------------------------
-    # Generate plot in render database
-    # Line 1) Controls are {Joystick}
-    # Line 2) {One Vertical Raster screen}
-    # Line 3) Machine [is|is not] mechanical and driver is neogeo.hpp
-    # Line 4) Machine has [no coin slots| N coin slots]
-    # Line 5) Machine [supports|does not support] a Software List.
-    # Line 6)
-    # ---------------------------------------------------------------------------------------------
-    log_info('Building machine plots/descriptions ...')
-    # >> Do not crash if DAT files are not used.
-    if history_idx_dic:
-        history_info_set  = set([ machine[0] for machine in history_idx_dic['mame']['machines'] ])
-    else:
-        history_info_set  = set()
-    if mameinfo_idx_dic:
-        mameinfo_info_set = set([ machine[0] for machine in mameinfo_idx_dic['mame'] ])
-    else:
-        mameinfo_info_set = set()
-    gameinit_info_set = set([ machine[0] for machine in gameinit_idx_dic ])
-    command_info_set  = set([ machine[0] for machine in command_idx_dic ])
-    for machine_name in machines:
-        m = machines[machine_name]
-        DAT_list = []
-        if machine_name in history_info_set: DAT_list.append('History')
-        if machine_name in mameinfo_info_set: DAT_list.append('Info')
-        if machine_name in gameinit_info_set: DAT_list.append('Gameinit')
-        if machine_name in command_info_set: DAT_list.append('Command')
-        DAT_str = ', '.join(DAT_list)
-        if m['control_type']:
-            controls_str = 'Controls {0}'.format(mame_get_control_str(m['control_type']))
-        else:
-            controls_str = 'No controls'
-        mecha_str = 'Mechanical' if m['isMechanical'] else 'Non-mechanical'
-        coin_str  = 'Machine has {0} coin slots'.format(m['coins']) if m['coins'] > 0 else 'Machine has no coin slots'
-        SL_str    = ', '.join(m['softwarelists']) if m['softwarelists'] else ''
-
-        plot_str  = '{0}\n'.format(controls_str)
-        plot_str += '{0}\n'.format(mame_get_screen_str(machine_name, m))
-        plot_str += '{0} / Driver is {1}\n'.format(mecha_str, m['sourcefile'])
-        plot_str += '{0}\n'.format(coin_str)
-        plot_str += '{0}\n'.format(DAT_str) if DAT_str else ''
-        plot_str += 'SL {0}'.format(SL_str) if SL_str else ''
-        machines_render[machine_name]['plot'] = plot_str
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
