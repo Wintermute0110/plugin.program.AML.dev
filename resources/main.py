@@ -27,6 +27,7 @@ import copy
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 
 # --- Modules/packages in this plugin ---
+from constants import *
 from utils import *
 from utils_kodi import *
 from assets import *
@@ -3642,8 +3643,7 @@ class Main:
 
         # --- Get SL ROM list of <part> tags ---
         if location == LOCATION_SL_FAVS:
-            part_interface_list = fav_SL_roms[SL_fav_key]['part_interface']
-            part_name_list      = fav_SL_roms[SL_fav_key]['part_name']
+            part_list = fav_SL_roms[SL_fav_key]['parts']
         else:
             # >> Open SL ROM database and get information
             SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
@@ -3652,63 +3652,74 @@ class Main:
             log_info('_run_SL_machine() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
             SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
             SL_rom = SL_roms[ROM_name]
-            part_interface_list = SL_rom['part_interface']
-            part_name_list      = SL_rom['part_name']
+            part_list = SL_rom['parts']
 
         # --- Select media depending on SL launching case ---
         num_machine_interfaces = len(machine_devices)
-        num_SL_ROM_interfaces = len(part_interface_list)
+        num_SL_ROM_parts = len(part_list)
         log_info('_run_SL_machine() Machine "{0}" has {1} interfaces'.format(machine_name, num_machine_interfaces))
-        log_info('_run_SL_machine() SL ROM "{0}" has {1} parts'.format(ROM_name, num_SL_ROM_interfaces))
+        log_info('_run_SL_machine() SL ROM  "{0}" has {1} parts'.format(ROM_name, num_SL_ROM_parts))
 
         # >> Error
         if num_machine_interfaces == 0:
-            kodi_dialog_OK('Machine has no inferfaces! Aborting launch')
+            kodi_dialog_OK('Machine has no inferfaces! Aborting launch.')
             return
-        elif num_SL_ROM_interfaces == 0:
-            kodi_dialog_OK('SL ROM has no parts! Aborting launch')
+        elif num_SL_ROM_parts == 0:
+            kodi_dialog_OK('SL ROM has no parts! Aborting launch.')
             return
 
         # >> Case A
-        elif num_machine_interfaces == 1 and num_SL_ROM_interfaces == 1:
+        elif num_machine_interfaces == 1 and num_SL_ROM_parts == 1:
             log_info('_run_SL_machine() Launch case A)')
+            launch_case = SL_LAUNCH_CASE_A
             media_name = machine_devices[0]['instance']['name']
             sl_launch_mode = SL_LAUNCH_WITH_MEDIA
 
         # >> Case B
         #    User chooses media to launch?
-        elif num_machine_interfaces == 1 and num_SL_ROM_interfaces > 1:
+        elif num_machine_interfaces == 1 and num_SL_ROM_parts > 1:
             log_info('_run_SL_machine() Launch case B)')
+            launch_case = SL_LAUNCH_CASE_B
             media_name = ''
             sl_launch_mode = SL_LAUNCH_NO_MEDIA
 
         # >> Case C
-        elif num_machine_interfaces > 1 and num_SL_ROM_interfaces == 1:
+        elif num_machine_interfaces > 1 and num_SL_ROM_parts == 1:
             log_info('_run_SL_machine() Launch case C)')
+            launch_case = SL_LAUNCH_CASE_C
             m_interface_found = False
             for device in machine_devices:
-                if device['att_interface'] == part_interface_list[0]:
+                if device['att_interface'] == part_list[0]['interface']:
                     media_name = device['instance']['name']
                     m_interface_found = True
                     break
             if not m_interface_found:
                 kodi_dialog_OK('SL launch case C), not machine interface found! Aborting launch.')
                 return
+            log_info('_run_SL_machine() Matched machine device interface "{0}" '.format(device['att_interface']) +
+                     'to SL ROM part "{0}"'.format(part_list[0]['interface']))
             sl_launch_mode = SL_LAUNCH_WITH_MEDIA
 
-        # >> Case D
-        #    User chooses media to launch?
-        elif num_machine_interfaces > 1 and num_SL_ROM_interfaces > 1:
+        # >> Case D.
+        # >> User chooses media to launch?
+        elif num_machine_interfaces > 1 and num_SL_ROM_parts > 1:
             log_info('_run_SL_machine() Launch case D)')
+            launch_case = SL_LAUNCH_CASE_D
             media_name = ''
             sl_launch_mode = SL_LAUNCH_NO_MEDIA
 
         else:
             log_info(unicode(machine_interfaces))
             log_warning('_run_SL_machine() Logical error in SL launch case.')
+            launch_case = SL_LAUNCH_CASE_ERROR
             kodi_dialog_OK('Logical error in SL launch case. This is a bug, please report it.')
             media_name = ''
             sl_launch_mode = SL_LAUNCH_NO_MEDIA
+
+        # >> Display some DEBUG information.
+        kodi_dialog_OK('Launch case {0}. '.format(launch_case) +
+                       'Machine has {0} device interfaces and '.format(num_machine_interfaces) +
+                       'SL ROM has {0} parts.'.format(num_SL_ROM_parts))
 
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
@@ -3718,6 +3729,16 @@ class Main:
         log_info('_run_SL_machine() machine_name "{0}"'.format(machine_name))
         log_info('_run_SL_machine() machine_desc "{0}"'.format(machine_desc))
         log_info('_run_SL_machine() media_name   "{0}"'.format(media_name))
+
+        # >> Build MAME arguments
+        if sl_launch_mode == SL_LAUNCH_WITH_MEDIA:
+            arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
+        elif sl_launch_mode == SL_LAUNCH_NO_MEDIA:
+            arg_list = [mame_prog_FN.getPath(), machine_name, '{0}:{1}'.format(SL_name, ROM_name)]
+        else:
+            kodi_dialog_OK('Unknown sl_launch_mode = {0}. This is a bug, please report it.'.format(sl_launch_mode))
+            return
+        log_info('arg_list = {0}'.format(arg_list))
 
         # >> Prevent a console window to be shown in Windows. Not working yet!
         if sys.platform == 'win32':
@@ -3730,14 +3751,6 @@ class Main:
             _info = None
 
         # --- Launch MAME ---
-        if sl_launch_mode == SL_LAUNCH_WITH_MEDIA:
-            arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
-        elif sl_launch_mode == SL_LAUNCH_NO_MEDIA:
-            arg_list = [mame_prog_FN.getPath(), machine_name, '{0}:{1}'.format(SL_name, ROM_name)]
-        else:
-            kodi_dialog_OK('Unknown sl_launch_mode = {0}. This is a bug, please report it.'.format(sl_launch_mode))
-            return
-        log_info('arg_list = {0}'.format(arg_list))
         log_info('_run_SL_machine() Calling subprocess.Popen()...')
         with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
             p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info, stdout = f, stderr = subprocess.STDOUT)

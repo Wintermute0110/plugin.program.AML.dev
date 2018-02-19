@@ -50,3 +50,10 @@ class Addon_Error(Exception):
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher constants
 # -------------------------------------------------------------------------------------------------
+
+# --- SL ROM launching cases ---
+SL_LAUNCH_CASE_A     = 'Case A'
+SL_LAUNCH_CASE_B     = 'Case B'
+SL_LAUNCH_CASE_C     = 'Case C'
+SL_LAUNCH_CASE_D     = 'Case D'
+SL_LAUNCH_CASE_ERROR = 'Case ERROR!'
