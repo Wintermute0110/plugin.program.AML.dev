@@ -998,15 +998,15 @@ class Main:
         SL_catalog_dic = {}
         if catalog_name == 'SL_ROM':
             for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
-                if SL_dic['rom_count'] > 0:
+                if SL_dic['num_with_ROMs'] > 0 and SL_dic['num_with_CHDs'] == 0:
                     SL_catalog_dic[SL_name] = SL_dic
         elif catalog_name == 'SL_CHD':
             for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
-                if SL_dic['chd_count'] > 0:
+                if SL_dic['num_with_CHDs'] > 0 and SL_dic['num_with_ROMs'] == 0:
                     SL_catalog_dic[SL_name] = SL_dic
         elif catalog_name == 'SL_ROM_CHD':
             for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
-                if SL_dic['rom_count'] > 0 and SL_dic['chd_count'] > 0:
+                if SL_dic['num_with_ROMs'] > 0 and SL_dic['num_with_CHDs'] > 0:
                     SL_catalog_dic[SL_name] = SL_dic
         else:
             kodi_dialog_OK('Wrong catalog_name {0}'.format(catalog_name))
@@ -1102,14 +1102,18 @@ class Main:
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_SL_list_row(self, SL_name, SL):
-        if SL['chd_count'] == 0:
-            if SL['rom_count'] == 1: display_name = '{0}  [COLOR orange]({1} ROM)[/COLOR]'.format(SL['display_name'], SL['rom_count'])
-            else:                    display_name = '{0}  [COLOR orange]({1} ROMs)[/COLOR]'.format(SL['display_name'], SL['rom_count'])
-        elif SL['rom_count'] == 0:
-            if SL['chd_count'] == 1: display_name = '{0}  [COLOR orange]({1} CHD)[/COLOR]'.format(SL['display_name'], SL['chd_count'])
-            else:                    display_name = '{0}  [COLOR orange]({1} CHDs)[/COLOR]'.format(SL['display_name'], SL['chd_count'])
+        if SL['num_with_CHDs'] == 0:
+            if SL['num_with_ROMs'] == 1:
+                display_name = '{0}  [COLOR orange]({1} ROM)[/COLOR]'.format(SL['display_name'], SL['num_with_ROMs'])
+            else:
+                display_name = '{0}  [COLOR orange]({1} ROMs)[/COLOR]'.format(SL['display_name'], SL['num_with_ROMs'])
+        elif SL['num_with_ROMs'] == 0:
+            if SL['num_with_CHDs'] == 1:
+                display_name = '{0}  [COLOR orange]({1} CHD)[/COLOR]'.format(SL['display_name'], SL['num_with_CHDs'])
+            else:
+                display_name = '{0}  [COLOR orange]({1} CHDs)[/COLOR]'.format(SL['display_name'], SL['num_with_CHDs'])
         else:
-            display_name = '{0}  [COLOR orange]({1} ROMs and {2} CHDs)[/COLOR]'.format(SL['display_name'], SL['rom_count'], SL['chd_count'])
+            display_name = '{0}  [COLOR orange]({1} ROMs and {2} CHDs)[/COLOR]'.format(SL['display_name'], SL['num_with_ROMs'], SL['num_with_CHDs'])
 
         # --- Create listitem row ---
         ICON_OVERLAY = 6
