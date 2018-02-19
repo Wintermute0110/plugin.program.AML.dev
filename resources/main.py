@@ -158,7 +158,8 @@ class AML_Paths:
         self.REPORT_SL_SCAN_ROMS_PATH           = self.REPORTS_DIR.pjoin('Report_SL_ROM_scanner.txt')
         self.REPORT_SL_SCAN_CHDS_PATH           = self.REPORTS_DIR.pjoin('Report_SL_CHD_scanner.txt')
         # >> Audit report
-        self.REPORT_MAME_ROM_AUDIT_PATH         = self.REPORTS_DIR.pjoin('Report_MAME_ROM_audit.txt')
+        self.REPORT_MAME_ROM_AUDIT_PATH = self.REPORTS_DIR.pjoin('Report_MAME_ROM_audit.txt')
+        self.REPORT_SL_ROM_AUDIT_PATH   = self.REPORTS_DIR.pjoin('Report_SL_ROM_audit.txt')
 PATHS = AML_Paths()
 
 # --- ROM flags used by skins to display status icons ---
@@ -3115,6 +3116,7 @@ class Main:
         # NOTE It is likekely that this function will take a looong time. It is important that the
         #      audit process can be canceled and a partial report is written.
         elif menu_item == 4:
+            log_info('_command_setup_plugin() Audit MAME machines ROMs/CHDs ...')
             # >> Load machines, ROMs and CHDs databases.
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
@@ -3242,8 +3244,48 @@ class Main:
         # --- Audit SL ROMs/CHDs ---
         elif menu_item == 5:
             log_info('_command_setup_plugin() Audit SL ROMs/CHDs ...')
-            kodi_dialog_OK('Audit SL ROMs/CHDs not implemented yet.')
-            # kodi_notify('Software Lists audit finished')
+
+            # >> Load SL catalog.
+            SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+
+            # >> Iterate all SL databases and audit ROMs.
+            for SL_name in sorted(SL_catalog_dic):
+                SL_dic = SL_catalog_dic[SL_name]
+                SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '.json')
+                SL_AUDIT_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_audit_ROMs.json')
+                SL_AUDIT_CHDs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_audit_CHDs.json')
+                roms = fs_load_JSON_file(SL_DB_FN.getPath())
+                audit_roms = fs_load_JSON_file(SL_AUDIT_ROMs_DB_FN.getPath())
+                audit_chds = fs_load_JSON_file(SL_AUDIT_CHDs_DB_FN.getPath())
+
+                # >> Iterate SL ROMs
+                for rom in sorted(roms):
+                    pass
+
+            # >> Generate report.
+            report_list = []
+            for SL_dic in sorted(SL_catalog_dic):
+                SL_dic = SL_catalog_dic[SL_name]
+                SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '.json')
+                SL_AUDIT_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_audit_ROMs.json')
+                SL_AUDIT_CHDs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_audit_CHDs.json')
+                roms = fs_load_JSON_file(SL_DB_FN.getPath())
+                audit_roms = fs_load_JSON_file(SL_AUDIT_ROMs_DB_FN.getPath())
+                audit_chds = fs_load_JSON_file(SL_AUDIT_CHDs_DB_FN.getPath())
+                for rom_key in sorted(roms):
+                    rom = roms[rom_key]
+                    description = rom['description']
+                    cloneof = rom['cloneof']
+                    if cloneof:
+                        report_list.append('SL {0} ROM {1} "{2}" (cloneof {3})'.format(SL_dic, rom_key, description, cloneof))
+                    else:
+                        report_list.append('SL {0} ROM {1} "{2}"'.format(SL_dic, rom_key, description))
+
+            # >> Write report
+            with open(PATHS.REPORT_SL_ROM_AUDIT_PATH.getPath(), 'w') as file:
+                out_str = '\n'.join(report_list)
+                file.write(out_str.encode('utf-8'))
+            kodi_notify('Software Lists audit finished')
 
         # --- Build Step by Step ---
         elif menu_item == 6:
