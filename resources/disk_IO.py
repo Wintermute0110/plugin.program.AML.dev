@@ -240,15 +240,15 @@ def fs_new_SL_ROM_part():
 
 def fs_new_SL_ROM():
     R = {
-        'description'    : '',
-        'year'           : '',
-        'publisher'      : '',
-        'cloneof'        : '',
-        'parts'          : [],
-        'num_roms'       : 0,
-        'num_disks'      : 0,
-        'status_ROM'     : '-',
-        'status_CHD'     : '-',
+        'description' : '',
+        'year'        : '',
+        'publisher'   : '',
+        'cloneof'     : '',
+        'parts'       : [],
+        'hasROMs'     : False,
+        'hasCHDs'     : False,
+        'status_ROM'  : '-',
+        'status_CHD'  : '-',
     }
 
     return R
@@ -273,8 +273,8 @@ def fs_new_control_dic():
 
         # --- Filed in when building main MAME database ---
         # >> Numerical MAME version. Allows for comparisons like ver_mame >= MAME_VERSION_0190
-        'ver_mame'      : 0,
         # >> MAME string version, as reported by the executable stdout. Example: '0.194 (mame0194)'
+        'ver_mame'      : 0,
         'ver_mame_str'  : 'Unknown. MAME database not built',
         'ver_catver'    : 'Unknown. MAME database not built',
         'ver_catlist'   : 'Unknown. MAME database not built',
@@ -318,9 +318,9 @@ def fs_new_control_dic():
         'MAME_CHD_files' : 0,
 
         # Number of SL databases (equal to the number of XML files).
-        'SL_XML_files'   : 0,
-        'SL_ROMs'        : 0,
-        'SL_CHDs'        : 0,
+        'SL_XML_files' : 0,
+        'SL_with_ROMs' : 0,
+        'SL_with_CHDs' : 0,
 
         # --- Filed in by the MAME ROM/CHD/Samples scanner ---
         # Number of ZIP files, including devices.
@@ -2489,8 +2489,8 @@ class SLDataObj:
         self.roms = {}
         self.SL_roms = {}
         self.display_name = ''
-        self.num_roms = 0
-        self.num_CHDs = 0
+        self.num_with_ROMs = 0
+        self.num_with_CHDs = 0
 
 def fs_load_SL_XML(xml_filename):
     __debug_xml_parser = False
@@ -2544,8 +2544,8 @@ def fs_load_SL_XML(xml_filename):
                     }
 
                     # --- Count number of <dataarea> and <diskarea> tags inside this <part tag> ---
-                    num_dataarea = num_diskarea = 0
-                    dataarea_num_roms = []
+                    num_dataarea = 0
+                    num_diskarea = 0
                     for part_child in rom_child:
                         if part_child.tag == 'dataarea':
                             dataarea_dic = { 'name' : part_child.attrib['name'], 'roms' : [] }
@@ -2603,22 +2603,23 @@ def fs_load_SL_XML(xml_filename):
                     #     log_error('{0} -> num_diskarea = {1}'.format(rom_name, num_diskarea))
                     #     raise CriticalError('DEBUG')
 
-            # --- Finished processing of <software> element
-            # >> If ROM has more than 1 ROM increase number of total ROMs (ZIP files).
-            # >> If ROM has CHDs count the CHDs.
-            rom['num_roms']  = num_roms
-            rom['num_disks'] = num_disks
+            # --- Finished processing of <software> element ---
+            if num_roms:
+                rom['hasROMs'] = True
+                rom['status_ROM'] = '?'
+                SLData.num_with_ROMs += 1
+            else:
+                rom['hasROMs'] = False
+                rom['status_ROM'] = '-'
+            if num_disks:
+                rom['hasCHDs'] = True
+                rom['status_CHD'] = '?'
+                SLData.num_with_CHDs += 1
+            else:
+                rom['hasCHDs'] = False
+                rom['status_CHD'] = '-'
 
-            if rom['num_roms']:  rom['status_ROM'] = '?'
-            else:                rom['status_ROM'] = '-'
-            if rom['num_disks']: rom['status_CHD'] = '?'
-            else:                rom['status_CHD'] = '-'
-
-            # >> Statistics
-            if rom['num_roms']:  SLData.num_roms += 1
-            if rom['num_disks']: SLData.num_CHDs += num_disks
-
-            # >> Add <software> to database and software ROM/CHDs to database
+            # >> Add <software> element (SL ROM) to database and software ROM/CHDs to database
             SLData.roms[rom_name] = rom
             SLData.SL_roms[rom_name] = SL_rom_list
 
@@ -2639,9 +2640,11 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     pdialog_line1 = 'Building Sofware Lists ROM databases ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
-    total_files = len(SL_file_list)
-    processed_files = num_SL_ROMs = num_SL_CHDs = 0
+    total_SL_files = len(SL_file_list)
+    num_SL_with_ROMs = 0
+    num_SL_with_CHDs = 0
     SL_catalog_dic = {}
+    processed_files = 0
     for file in sorted(SL_file_list):
         # log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
         FN = FileName(file)
@@ -2655,18 +2658,18 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
         fs_write_JSON_file(output_FN.getPath(), SLData.SL_roms)
 
         # >> Add software list to catalog
-        num_SL_ROMs += SLData.num_roms
-        num_SL_CHDs += SLData.num_CHDs
+        num_SL_with_ROMs += SLData.num_with_ROMs
+        num_SL_with_CHDs += SLData.num_with_CHDs
         SL = {'display_name' : SLData.display_name, 
-              'rom_count'    : SLData.num_roms,
-              'chd_count'    : SLData.num_CHDs,
+              'num_with_ROMs'    : SLData.num_with_ROMs,
+              'num_with_CHDs'    : SLData.num_with_CHDs,
               'rom_DB_noext' : FN.getBase_noext()
         }
         SL_catalog_dic[FN.getBase_noext()] = SL
 
         # >> Update progress
         processed_files += 1
-        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
+        pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
     fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
 
     # --- Make the SL ROM Audit databases ---
@@ -2842,9 +2845,9 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     # log_info('mame_properties_dic has {0} items'.format(len(mame_properties_dic)))
 
     # --- SL statistics and save control_dic ---
-    control_dic['SL_files'] = processed_files
-    control_dic['SL_ROMs']  = num_SL_ROMs
-    control_dic['SL_CHDs']  = num_SL_CHDs
+    control_dic['SL_XML_files'] = total_SL_files
+    control_dic['SL_with_ROMs'] = num_SL_with_ROMs
+    control_dic['SL_with_CHDs'] = num_SL_with_CHDs
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
