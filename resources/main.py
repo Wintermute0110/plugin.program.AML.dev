@@ -2049,9 +2049,8 @@ class Main:
                              str(m_rom['crc']), str(m_rom['location'])]
                 table_str.append(table_row)
             for m_disk in chds_dic:
-                loc = str(m_disk['location']) + '.chd'
                 table_row = [str(m_disk['type']), str(m_disk['name']), '',
-                             str(m_disk['sha1'])[0:8], loc]
+                             str(m_disk['sha1'])[0:8], m_disk['location']]
                 table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
@@ -2180,15 +2179,15 @@ class Main:
             pDialog.update(0)
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             pDialog.update(33)
-            roms_db_dic = fs_load_JSON_file(PATHS.ROM_SET_ROMS_DB_PATH.getPath())
+            roms_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_ROMS_DB_PATH.getPath())
             pDialog.update(66)
-            chds_db_dic = fs_load_JSON_file(PATHS.ROM_SET_CHDS_DB_PATH.getPath())
+            chds_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_CHDS_DB_PATH.getPath())
             pDialog.update(100)
             pDialog.close()
 
             # --- Grab data and settings ---
             roms_dic = roms_db_dic[machine_name]
-            chds_dic = roms_db_dic[machine_name]
+            chds_dic = chds_db_dic[machine_name]
             cloneof = machine['cloneof']
             romof = machine['romof']
             log_debug('_command_context_view() machine {0}\n'.format(machine_name))
@@ -2216,8 +2215,15 @@ class Main:
 
             # --- Table rows ---
             for m_rom in roms_dic:
-                table_row = ['ROM', str(m_rom['name']), str(m_rom['size']), str(m_rom['crc']),
+                table_row = [str(m_rom['type']), str(m_rom['name']),
+                             str(m_rom['size']), str(m_rom['crc']),
                              '', '', m_rom['location'], m_rom['status_colour']]
+                table_str.append(table_row)
+            for m_chd in chds_dic:
+                sha1_srt = m_chd['sha1'][0:8]
+                table_row = [m_chd['type'], m_chd['name'],
+                             '', sha1_srt,
+                             '', '', m_chd['location'], m_chd['status_colour']]
                 table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
@@ -3305,12 +3311,12 @@ class Main:
                             report_list.append('Machine {0} has CHDs'.format(machine))
                             for m_chd in chds_list:
                                 report_list.append('{0}  {1}  {2}'.format(
-                                    m_chd['name'], m_chd['sha1'][0:6], m_chd['status']))
+                                    m_chd['name'] + '.chd', m_chd['sha1'][0:6], m_chd['location'], m_chd['status']))
                             report_list.append('')
-                    else:
-                        if not report_only_errors:
-                            report_list.append('Machine {0} has no CHDs'.format(machine))
-                            report_list.append('')
+                    # else:
+                    #     if not report_only_errors:
+                    #         report_list.append('Machine {0} has no CHDs'.format(machine))
+                    #         report_list.append('')
             else:
                 report_list.append('Audited all MAME machines')
 

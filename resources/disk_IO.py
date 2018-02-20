@@ -1650,7 +1650,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                         location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
                 disk_t['type'] = 'DISK'
-                disk_t['location'] = location
+                disk_t['location'] = location + '.chd'
                 disk_t.pop('merge')
                 split_chds.append(disk_t)
             chds_dic[m_name] = split_chds
@@ -1689,7 +1689,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                         location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
                 disk_t['type'] = 'DISK'
-                disk_t['location'] = location
+                disk_t['location'] = location + '.chd'
                 disk_t.pop('merge')
                 split_chds.append(disk_t)
             chds_dic[m_name] = split_chds
@@ -1716,7 +1716,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
                 disk_t['type'] = 'DISK'
-                disk_t['location'] = location
+                disk_t['location'] = location + '.chd'
                 disk_t.pop('merge')
                 nonmerged_chds.append(disk_t)
             chds_dic[m_name] = nonmerged_chds

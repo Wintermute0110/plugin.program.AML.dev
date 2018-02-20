@@ -784,16 +784,28 @@ def mame_audit_machine_roms(settings, rom_list):
 #
 def mame_audit_machine_chds(settings, chd_list):
     for m_chd in chd_list:
+        machine_name = m_chd['location'].split('/')[0]
+        disk_name    = m_chd['location'].split('/')[1]
+        # log_debug('Testing CHD {0}'.format(m_chd['name']))
+        # log_debug('location {0}'.format(m_chd['location']))
+        # log_debug('machine_name "{0}"'.format(machine_name))
+        # log_debug('disk_name    "{0}"'.format(disk_name))
+
+        # >> Invalid CHDs
         if not m_chd['sha1']:
             m_chd['status'] = 'OK (invalid CHD)'
             m_chd['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_chd['status'])
             continue
-        chd_name = m_chd['name']
-        chd_FN = FileName(settings['chd_path']).pjoin(chd_name + '.chd')
+
+        # >> Test if DISK file exists
+        chd_FN = FileName(settings['chd_path']).pjoin(machine_name).pjoin(disk_name)
+        # log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
         if not chd_FN.exists():
             m_chd['status'] = 'CHD not found'
             m_chd['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_chd['status'])
             continue
+
+        # >> DISK is OK
         m_chd['status'] = 'OK'
         m_chd['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_chd['status'])
 
@@ -802,14 +814,14 @@ def mame_audit_machine_chds(settings, chd_list):
 # -------------------------------------------------------------------------------------------------
 def mame_SL_audit_machine_roms(settings, rom_list):
     for m_rom in rom_list:
-        log_debug('Testing ROM {0}'.format(m_rom['name']))
-        log_debug('location {0}'.format(m_rom['location']))
         SL_name  = m_rom['location'].split('/')[0]
         zip_name = m_rom['location'].split('/')[1] + '.zip'
         rom_name = m_rom['location'].split('/')[2]
-        log_debug('SL_name  "{0}"'.format(SL_name))
-        log_debug('zip_name "{0}"'.format(zip_name))
-        log_debug('rom_name "{0}"'.format(rom_name))
+        # log_debug('Testing ROM {0}'.format(m_rom['name']))
+        # log_debug('location {0}'.format(m_rom['location']))
+        # log_debug('SL_name  "{0}"'.format(SL_name))
+        # log_debug('zip_name "{0}"'.format(zip_name))
+        # log_debug('rom_name "{0}"'.format(rom_name))
 
         # >> Invalid ROMs are not in the ZIP file
         if not m_rom['crc']:
@@ -819,7 +831,7 @@ def mame_SL_audit_machine_roms(settings, rom_list):
 
         # >> Test if ZIP file exists
         zip_FN = FileName(settings['SL_rom_path']).pjoin(SL_name).pjoin(zip_name)
-        log_debug('zip_FN P {0}'.format(zip_FN.getPath()))
+        # log_debug('zip_FN P {0}'.format(zip_FN.getPath()))
         if not zip_FN.exists():
             m_rom['status'] = 'ZIP not found'
             m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
@@ -864,14 +876,14 @@ def mame_SL_audit_machine_roms(settings, rom_list):
 
 def mame_SL_audit_machine_chds(settings, chd_list):
     for m_chd in chd_list:
-        log_debug('Testing CHD {0}'.format(m_chd['name']))
-        log_debug('location {0}'.format(m_chd['location']))
         SL_name   = m_chd['location'].split('/')[0]
         rom_name  = m_chd['location'].split('/')[1]
         disk_name = m_chd['location'].split('/')[2]
-        log_debug('SL_name   "{0}"'.format(SL_name))
-        log_debug('rom_name  "{0}"'.format(rom_name))
-        log_debug('disk_name "{0}"'.format(disk_name))
+        # log_debug('Testing CHD {0}'.format(m_chd['name']))
+        # log_debug('location {0}'.format(m_chd['location']))
+        # log_debug('SL_name   "{0}"'.format(SL_name))
+        # log_debug('rom_name  "{0}"'.format(rom_name))
+        # log_debug('disk_name "{0}"'.format(disk_name))
 
         # >> Invalid CHDs
         if not m_chd['sha1']:
@@ -881,7 +893,7 @@ def mame_SL_audit_machine_chds(settings, chd_list):
 
         # >> Test if DISK file exists
         chd_FN = FileName(settings['SL_chd_path']).pjoin(SL_name).pjoin(rom_name).pjoin(disk_name)
-        log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
+        # log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
         if not chd_FN.exists():
             m_chd['status'] = 'CHD not found'
             m_chd['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_chd['status'])
