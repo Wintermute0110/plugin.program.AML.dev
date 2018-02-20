@@ -50,6 +50,20 @@ class Addon_Error(Exception):
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher constants
 # -------------------------------------------------------------------------------------------------
+# --- Used in the addon URLs so mark the location of machines/ROMs ---
+LOCATION_STANDARD  = 'STANDARD'
+LOCATION_MAME_FAVS = 'MAME_FAVS'
+LOCATION_SL_FAVS   = 'SL_FAVS'
+
+# --- ROM flags used by skins to display status icons ---
+AEL_INFAV_BOOL_LABEL  = 'AEL_InFav'
+AEL_PCLONE_STAT_LABEL = 'AEL_PClone_stat'
+
+AEL_INFAV_BOOL_VALUE_TRUE    = 'InFav_True'
+AEL_INFAV_BOOL_VALUE_FALSE   = 'InFav_False'
+AEL_PCLONE_STAT_VALUE_PARENT = 'PClone_Parent'
+AEL_PCLONE_STAT_VALUE_CLONE  = 'PClone_Clone'
+AEL_PCLONE_STAT_VALUE_NONE   = 'PClone_None'
 
 # --- SL ROM launching cases ---
 SL_LAUNCH_CASE_A     = 'Case A'
