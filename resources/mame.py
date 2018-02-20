@@ -802,8 +802,91 @@ def mame_audit_machine_chds(settings, chd_list):
 # -------------------------------------------------------------------------------------------------
 def mame_SL_audit_machine_roms(settings, rom_list):
     for m_rom in rom_list:
-        m_rom['status'] = 'Not coded!'
+        log_debug('Testing ROM {0}'.format(m_rom['name']))
+        log_debug('location {0}'.format(m_rom['location']))
+        SL_name  = m_rom['location'].split('/')[0]
+        zip_name = m_rom['location'].split('/')[1] + '.zip'
+        rom_name = m_rom['location'].split('/')[2]
+        log_debug('SL_name  "{0}"'.format(SL_name))
+        log_debug('zip_name "{0}"'.format(zip_name))
+        log_debug('rom_name "{0}"'.format(rom_name))
+
+        # >> Invalid ROMs are not in the ZIP file
+        if not m_rom['crc']:
+            m_rom['status'] = 'OK (invalid ROM)'
+            m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+            continue
+
+        # >> Test if ZIP file exists
+        zip_FN = FileName(settings['SL_rom_path']).pjoin(SL_name).pjoin(zip_name)
+        log_debug('zip_FN P {0}'.format(zip_FN.getPath()))
+        if not zip_FN.exists():
+            m_rom['status'] = 'ZIP not found'
+            m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+            continue
+
+        # >> Open ZIP file and get list of files
+        try:
+            zip_f = z.ZipFile(zip_FN.getPath(), 'r')
+        except z.BadZipfile as e:
+            m_rom['status'] = 'Bad ZIP file'
+            m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+            continue
+        z_file_list = zip_f.namelist()
+        # log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
+        if not rom_name in z_file_list:
+            zip_f.close()
+            m_rom['status'] = 'ROM not in ZIP'
+            m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+            continue
+
+        # >> Get ZIP file object and test size and CRC
+        # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
+        # >> However, MAME encodes it as an hexadecimal number: CRC32 0123abcd
+        z_info = zip_f.getinfo(rom_name)
+        z_info_file_size = z_info.file_size
+        z_info_crc_hex_str = '{0:08x}'.format(z_info.CRC)
+        zip_f.close()
+        # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
+        # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
+        if z_info_crc_hex_str != m_rom['crc']:
+            m_rom['status'] = 'ROM bad CRC'
+            m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+            continue
+        if z_info_file_size != m_rom['size']:
+            m_rom['status'] = 'ROM bad size'
+            m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+            continue
+
+        # >> ROM is OK
+        m_rom['status'] = 'OK'
+        m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
 
 def mame_SL_audit_machine_chds(settings, chd_list):
     for m_chd in chd_list:
-        m_chd['status'] = 'Not coded!'
+        log_debug('Testing CHD {0}'.format(m_chd['name']))
+        log_debug('location {0}'.format(m_chd['location']))
+        SL_name   = m_chd['location'].split('/')[0]
+        rom_name  = m_chd['location'].split('/')[1]
+        disk_name = m_chd['location'].split('/')[2]
+        log_debug('SL_name   "{0}"'.format(SL_name))
+        log_debug('rom_name  "{0}"'.format(rom_name))
+        log_debug('disk_name "{0}"'.format(disk_name))
+
+        # >> Invalid CHDs
+        if not m_chd['sha1']:
+            m_chd['status'] = 'OK (invalid CHD)'
+            m_chd['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_chd['status'])
+            continue
+
+        # >> Test if DISK file exists
+        chd_FN = FileName(settings['SL_chd_path']).pjoin(SL_name).pjoin(rom_name).pjoin(disk_name)
+        log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
+        if not chd_FN.exists():
+            m_chd['status'] = 'CHD not found'
+            m_chd['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_chd['status'])
+            continue
+
+        # >> DISK is OK
+        m_chd['status'] = 'OK'
+        m_chd['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_chd['status'])

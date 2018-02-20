@@ -2136,18 +2136,18 @@ class Main:
             info_text.append('[COLOR violet]description[/COLOR] {0}\n'.format(rom['description']))
             info_text.append('\n')
 
-            table_str = []
-            table_str.append(['left', 'left',         'left', 'left',     'left'])
-            table_str.append(['Type', 'ROM/CHD name', 'Size', 'CRC/SHA1', 'Location'])
-            # >> Iterate ROMs
+            # table_str = [    ['left', 'left',         'left', 'left',     'left'] ]
+            # table_str.append(['Type', 'ROM/CHD name', 'Size', 'CRC/SHA1', 'Location'])
+            table_str = [    ['left', 'left', 'left',     'left'] ]
+            table_str.append(['Type', 'Size', 'CRC/SHA1', 'Location'])
             for rom_dic in rom_db_list:
-                table_row = [rom_dic['type'], rom_dic['name'], rom_dic['size'],
-                             rom_dic['crc'], rom_dic['location']]
+                table_row = [rom_dic['type'], # rom_dic['name'],
+                             rom_dic['size'], rom_dic['crc'], rom_dic['location']]
                 table_str.append(table_row)
-            # >> Iterate CHDs
             for chd_dic in chd_db_list:
                 sha1_srt = chd_dic['sha1'][0:8]
-                table_row = [chd_dic['type'], chd_dic['name'], '', sha1_srt, chd_dic['location']]
+                table_row = [chd_dic['type'], # chd_dic['name'],
+                             '', sha1_srt, chd_dic['location']]
                 table_str.append(table_row)
 
             table_str_list = text_render_table_str(table_str)
@@ -2197,7 +2197,7 @@ class Main:
 
             # --- Open ZIP file and check CRC32 ---
             mame_audit_machine_roms(self.settings, roms_dic)
-            # mame_audit_machine_chds(self.settings, chds_dic)
+            mame_audit_machine_chds(self.settings, chds_dic)
 
             # --- Generate report ---
             info_text = []
@@ -2226,7 +2226,54 @@ class Main:
 
         # --- Audit ROMs of SL item ---
         elif action == ACTION_AUDIT_SL_MACHINE:
-            kodi_dialog_OK('ACTION_AUDIT_SL_MACHINE not coded yet. Sorry.')
+            # --- Load machine dictionary and ROM database ---
+            log_debug('_command_context_view() Auditing SL Software ROMs\n')
+            log_debug('_command_context_view() SL_name {0}\n'.format(SL_name))
+            log_debug('_command_context_view() SL_ROM {0}\n'.format(SL_ROM))
+
+            SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
+            # SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_roms.json')
+            SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_audit_ROMs.json')
+            SL_CHD_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_audit_CHDs.json')
+
+            roms = fs_load_JSON_file(SL_DB_FN.getPath())
+            roms_audit_db = fs_load_JSON_file(SL_ROM_Audit_DB_FN.getPath())
+            chds_audit_db = fs_load_JSON_file(SL_CHD_Audit_DB_FN.getPath())
+            rom = roms[SL_ROM]
+            rom_db_list = roms_audit_db[SL_ROM]
+            chd_db_list = chds_audit_db[SL_ROM]
+
+            # --- Open ZIP file and check CRC32 ---
+            mame_SL_audit_machine_roms(self.settings, rom_db_list)
+            mame_SL_audit_machine_chds(self.settings, chd_db_list)
+
+            info_text = []
+            info_text.append('[COLOR violet]SL_name[/COLOR] {0}\n'.format(SL_name))
+            info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}\n'.format(SL_ROM))
+            info_text.append('[COLOR violet]description[/COLOR] {0}\n'.format(rom['description']))
+            info_text.append('\n')
+
+            # --- Table header and rows ---
+            # >> Do not render ROM name in SLs, cos they are really long.
+            # table_str = [    ['right', 'left',     'right', 'left',     'left',     'left'] ]
+            # table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location', 'Status'])
+            table_str = [    ['right', 'right', 'left',     'left',     'left'] ]
+            table_str.append(['Type',  'Size',  'CRC/SHA1', 'Location', 'Status'])
+            for m_rom in rom_db_list:
+                table_row = [m_rom['type'], # m_rom['name'],
+                             m_rom['size'], m_rom['crc'], m_rom['location'],
+                             m_rom['status_colour']]
+                table_str.append(table_row)
+            for m_chd in chd_db_list:
+                sha1_srt = m_chd['sha1'][0:8]
+                table_row = [m_chd['type'], # m_chd['name'],
+                             '', sha1_srt, m_chd['location'],
+                             m_chd['status_colour']]
+                table_str.append(table_row)
+            table_str_list = text_render_table_str(table_str)
+            info_text.extend(table_str_list)
+            window_title = 'SL {0} Software {1} ROM audit'.format(SL_name, SL_ROM)
+            self._display_text_window(window_title, ''.join(info_text))
 
         # --- View ROM scanner reports ---
         elif action == ACTION_VIEW_REPORT_SCANNER:
