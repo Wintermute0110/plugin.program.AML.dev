@@ -485,16 +485,16 @@ class Main:
         # >> Main filters (Virtual catalog 'Main')
         self._render_root_list_row(machines_n_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Normal'))
         self._render_root_list_row(machines_u_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Unusual'))
-        self._render_root_list_row(nocoin_str,     self._misc_url_2_arg('catalog', 'Main', 'category', 'NoCoin'))
-        self._render_root_list_row(mecha_str,      self._misc_url_2_arg('catalog', 'Main', 'category', 'Mechanical'))
-        self._render_root_list_row(dead_str,       self._misc_url_2_arg('catalog', 'Main', 'category', 'Dead'))
-        self._render_root_list_row(devices_str,    self._misc_url_2_arg('catalog', 'Main', 'category', 'Devices'))
+        self._render_root_list_row(nocoin_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'NoCoin'))
+        self._render_root_list_row(mecha_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Mechanical'))
+        self._render_root_list_row(dead_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Dead'))
+        self._render_root_list_row(devices_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Devices'))
 
         # >> Binary filters (Virtual catalog 'Binary')
-        self._render_root_list_row(norom_str,      self._misc_url_2_arg('catalog', 'Binary', 'category', 'NoROM'))
-        self._render_root_list_row(chd_str,        self._misc_url_2_arg('catalog', 'Binary', 'category', 'CHD'))
-        self._render_root_list_row(samples_str,    self._misc_url_2_arg('catalog', 'Binary', 'category', 'Samples'))
-        self._render_root_list_row(bios_str,       self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
+        self._render_root_list_row(norom_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'NoROM'))
+        self._render_root_list_row(chd_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'CHD'))
+        self._render_root_list_row(samples_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'Samples'))
+        self._render_root_list_row(bios_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
 
         # >> Cataloged filters
         self._render_root_list_row(catver_str, self._misc_url_1_arg('catalog', 'Catver'))
@@ -520,13 +520,12 @@ class Main:
         self._render_root_list_row('Command DAT',  self._misc_url_1_arg('catalog', 'Command'))
 
         # >> Software lists
-        if self.settings['SL_hash_path']:
-            self._render_root_list_row('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
-            self._render_root_list_row('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
-            self._render_root_list_row('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
+        self._render_root_list_row('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
+        self._render_root_list_row('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
+        self._render_root_list_row('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
 
         # >> Special launchers
-        self._render_root_list_row('<Favourite MAME machines>',       self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
+        self._render_root_list_row('<Favourite MAME machines>', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
         self._render_root_list_row('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
