@@ -2430,7 +2430,7 @@ class Main:
                     return
                 with open(PATHS.REPORT_FULL_MAME_ROM_AUDIT_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
-                    self._display_text_window('MAME audit report', info_text)
+                    self._display_text_window('MAME audit report (full)', info_text)
 
             elif type_sub == 1:
                 if not PATHS.REPORT_ERRORS_MAME_ROM_AUDIT_PATH.exists():
@@ -2438,7 +2438,7 @@ class Main:
                     return
                 with open(PATHS.REPORT_ERRORS_MAME_ROM_AUDIT_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
-                    self._display_text_window('MAME audit report', info_text)
+                    self._display_text_window('MAME audit report (errors only)', info_text)
 
             elif type_sub == 2:
                 if not PATHS.REPORT_FULL_SL_ROM_AUDIT_PATH.exists():
@@ -3221,121 +3221,111 @@ class Main:
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             pDialog.update(5)
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(25)
+            pDialog.update(30)
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(50)
-            roms_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_ROMS_DB_PATH.getPath())
-            pDialog.update(75)
-            chds_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_CHDS_DB_PATH.getPath())
+            pDialog.update(60)
+            audit_roms_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_DB_PATH.getPath())
             pDialog.update(100)
             pDialog.close()
 
             # >> Go machine by machine and audit ZIPs and CHDs.
             # >> Adds new column 'status' to each ROM.
             pDialog.create('Advanced MAME Launcher', 'Auditing MAME ROMs and CHDs ... ')
-            total_machines = control_dic['total_machines']
+            total_machines = len(machines_render)
             processed_machines = 0
             for machine in sorted(machines_render):
                 # >> Machine has ROMs
-                if machine in roms_db_dic:
+                if machine in audit_roms_dic:
                     # >> roms_dic is mutable and edited inside the function
-                    roms_dic = roms_db_dic[machine]
-                    mame_audit_machine_roms(self.settings, roms_dic)
-
-                # >> Machine has CHDs
-                if machine in chds_db_dic:
-                    chds_dic = chds_db_dic[machine]
-                    mame_audit_machine_chds(self.settings, chds_dic)
-
+                    rom_list = audit_roms_dic[machine]
+                    mame_audit_machine(self.settings, rom_list)
                 # >> Update progress dialog. Check if user run out of patience.
                 processed_machines += 1
                 pDialog.update((processed_machines * 100) // total_machines)
                 if pDialog.iscanceled(): break
+            pDialog.close()
 
             # >> Generate report.
             # >> 1292apvs, 1392apvs have no ROMs (in 0.190)
             report_list = []
             error_report_list = []
+            pDialog.create('Advanced MAME Launcher', 'Generating audit reports ... ')
+            total_machines = len(machines_render)
+            processed_machines = 0
             for machine in sorted(machines_render):
-                # --- ROMs report ---
-                if machine in roms_db_dic:
-                    roms_list = roms_db_dic[machine]
-                    if roms_list:
+                if machine in audit_roms_dic:
+                    rom_list = audit_roms_dic[machine]
+                    if rom_list:
                         # >> Check if audit was canceled.
-                        if 'status' not in roms_list[0]:
+                        if 'status' not in rom_list[0]:
                             report_list.append('Audit was canceled at machine {0}'.format(machine))
                             break
                         # >> Check if machine has ROM errors.
                         machine_has_errors = False
-                        for m_rom in roms_list:
-                            if m_rom['status'] != 'OK' and m_rom['status'] != 'OK (invalid ROM)':
+                        for m_rom in rom_list:
+                            if m_rom['status'] != 'OK' and \
+                               m_rom['status'] != 'OK (invalid ROM)' and \
+                               m_rom['status'] != 'OK (invalid CHD)':
                                 machine_has_errors = True
                                 break
+
+                        # >> Build report.
+                        local_str_list = []
+                        description = machines_render[machine]['description']
+                        cloneof = machines_render[machine]['cloneof']
+                        if cloneof:
+                            u = 'Machine {0} "{1}" (cloneof {2})'.format(machine, description, cloneof)
+                        else:
+                            u = 'Machine {0} "{1}"'.format(machine, description)
+                        local_str_list.append(u)
+
+                        table_str = []
+                        table_str.append(['right', 'left',     'right', 'left',     'left',     'left'])
+                        for m_rom in rom_list:
+                            if m_rom['type'] == 'DISK':
+                                sha1_srt = m_rom['sha1'][0:8]
+                                table_row = [m_rom['type'], m_rom['name'],
+                                             '', sha1_srt,
+                                             m_rom['location'], m_rom['status']]
+                            else:
+                                table_row = [m_rom['type'], m_rom['name'],
+                                             str(m_rom['size']), m_rom['crc'],
+                                             m_rom['location'], m_rom['status']]
+                            table_str.append(table_row)
+                        local_str_list.extend(text_render_table_str_NO_HEADER(table_str))
+                        local_str_list.append('')
+
                         # >> Machine has errors, print on both reports.
                         if machine_has_errors:
-                            description = machines_render[machine]['description']
-                            cloneof = machines_render[machine]['cloneof']
-                            if cloneof:
-                                report_list.append('Machine {0} "{1}" (cloneof {2})'.format(machine, description, cloneof))
-                            else:
-                                report_list.append('Machine {0} "{1}"'.format(machine, description))
-                            for m_rom in roms_list:
-                                if m_rom['status'] != 'OK' and m_rom['status'] != 'OK (invalid ROM)':
-                                    report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
-                                        m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
-                            report_list.append('')
-                        # >> Machine has no errors. Only print full report.
+                            report_list.extend(local_str_list)
+                            error_report_list.extend(local_str_list)
                         else:
-                            cloneof = machines_render[machine]['cloneof']
-                            if cloneof:
-                                report_list.append('Machine {0} (cloneof {1})'.format(machine, cloneof))
-                            else:
-                                report_list.append('Machine {0}'.format(machine))
-                            for m_rom in roms_list:
-                                report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
-                                    m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
-                            report_list.append('')
+                            report_list.extend(local_str_list)
                     else:
-                        if not report_only_errors:
-                            report_list.append('Machine {0} has no ROMs'.format(machine))
-                            report_list.append('')
-
-                # --- CHDs report ---
-                if machine in chds_db_dic:
-                    chds_list = chds_db_dic[machine]
-                    if chds_list:
-                        # >> Check if machine has ROM errors.
-                        if report_only_errors:
-                            machine_has_errors = False
-                            for m_chd in chds_list:
-                                if m_chd['status'] != 'OK' and m_chd['status'] != 'OK (invalid CHD)':
-                                    machine_has_errors = True
-                                    break
-                        # >> Print report.
-                        if report_only_errors and machine_has_errors:
-                            report_list.append('Machine {0} has CHDs'.format(machine))
-                            for m_chd in chds_list:
-                                if m_chd['status'] != 'OK' and m_chd['status'] != 'OK (invalid CHD)':
-                                    report_list.append('{0}  {1}  {2}'.format(
-                                        m_chd['name'], m_chd['sha1'][0:6], m_chd['status']))
-                            report_list.append('')
-                        elif not report_only_errors:
-                            report_list.append('Machine {0} has CHDs'.format(machine))
-                            for m_chd in chds_list:
-                                report_list.append('{0}  {1}  {2}'.format(
-                                    m_chd['name'] + '.chd', m_chd['sha1'][0:6], m_chd['location'], m_chd['status']))
-                            report_list.append('')
-                    # else:
-                    #     if not report_only_errors:
-                    #         report_list.append('Machine {0} has no CHDs'.format(machine))
-                    #         report_list.append('')
+                        report_list.append('Machine {0} has no ROMs nor CHDs'.format(machine))
+                        report_list.append('')
+                else:
+                    report_list.append('Machine {0} not in audit_roms_dic'.format(machine))
+                    report_list.append('')
+                # >> Update progress dialog. Check if user run out of patience.
+                processed_machines += 1
+                pDialog.update((processed_machines * 100) // total_machines)
             else:
                 report_list.append('Audited all MAME machines')
+            pDialog.close()
 
-            # >> Write report
-            with open(PATHS.REPORT_MAME_ROM_AUDIT_PATH.getPath(), 'w') as file:
+            # >> Write reports
+            pDialog.create('Advanced MAME Launcher', 'Writing report files ... ')
+            pDialog.update(0)
+            with open(PATHS.REPORT_FULL_MAME_ROM_AUDIT_PATH.getPath(), 'w') as file:
                 out_str = '\n'.join(report_list)
                 file.write(out_str.encode('utf-8'))
+            pDialog.update(50)
+            with open(PATHS.REPORT_ERRORS_MAME_ROM_AUDIT_PATH.getPath(), 'w') as file:
+                out_str = '\n'.join(error_report_list)
+                file.write(out_str.encode('utf-8'))
+            pDialog.update(100)
+            pDialog.close()
             kodi_notify('ROM and CHD audit finished')
 
         # --- Audit SL ROMs/CHDs ---
