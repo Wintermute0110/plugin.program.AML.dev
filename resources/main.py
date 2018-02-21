@@ -73,11 +73,10 @@ class AML_Paths:
         self.MAIN_PCLONE_DIC_PATH = PLUGIN_DATA_DIR.pjoin('MAME_DB_pclone_dic.json')
 
         # >> ROM set databases
-        self.ROM_AUDIT_ROMS_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Audit_DB_ROMs.json')
-        self.ROM_AUDIT_CHDS_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Audit_DB_CHDs.json')
-        self.ROM_SET_MACHINES_DB_PATH   = PLUGIN_DATA_DIR.pjoin('ROM_Set_machines.json')
-        self.ROM_SET_ARCHIVES_R_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_archives_ROM.json')
-        self.ROM_SET_ARCHIVES_C_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_archives_CHD.json')
+        self.ROM_AUDIT_DB_PATH                = PLUGIN_DATA_DIR.pjoin('ROM_Audit_DB.json')
+        self.ROM_SET_MACHINE_ARCHIVES_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_machine_archives.json')
+        self.ROM_SET_ROM_ARCHIVES_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Set_ROM_archives.json')
+        self.ROM_SET_CHD_ARCHIVES_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Set_CHD_archives.json')
 
         # >> DAT indices and databases.
         self.HISTORY_IDX_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_History_index.json')
@@ -3415,9 +3414,9 @@ class Main:
         elif menu_item == 6:
             submenu = dialog.select('Setup plugin (step by step)',
                                    ['Build MAME databases ...',
-                                    'Build ROM Audit databases ...',
+                                    'Build Audit/Scanner databases ...',
                                     'Build MAME catalogs ...',
-                                    'Build Software Lists databases and catalogs ...',
+                                    'Build Software Lists databases ...',
                                     'Scan MAME ROMs/CHDs/Samples ...',
                                     'Scan MAME assets/artwork ...',
                                     'Scan Software Lists ROMs/CHDs ...',
@@ -3442,32 +3441,38 @@ class Main:
                     raise SystemExit
                 kodi_notify('Main MAME databases built')
 
-            # --- Build ROM databases ---
+            # --- Build ROM audit/scanner databases ---
             elif submenu == 1:
                 # --- Error checks ---
                 # >> Check that MAME_XML_PATH exists
                 # if not PATHS.MAME_XML_PATH.exists():
                 #     kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
                 #     return
-                log_info('_command_setup_plugin() Generating ROM databases ...')
+                log_info('_command_setup_plugin() Generating ROM audit/scanner databases ...')
                 pDialog = xbmcgui.DialogProgress()
-                pDialog.create('Advanced MAME Launcher', 'Loading databases ...')
+                line1_str = 'Loading databases ...'
+                pDialog.create('Advanced MAME Launcher')
+                pDialog.update(0, line1_str, 'Control dictionary')
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-                pDialog.update(5)
+                pDialog.update(5, line1_str, 'Machines main database')
                 machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-                pDialog.update(25)
+                pDialog.update(25, line1_str, 'Machines render database')
                 machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-                pDialog.update(50)
+                pDialog.update(50, line1_str, 'Devices database')
                 devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
-                pDialog.update(75)
+                pDialog.update(75, line1_str, 'ROMs database')
                 machine_roms = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
-                pDialog.update(100)
+                # >> Kodi BUG: when the progress dialog is closed and reopened again, the
+                # >> second line of the previous dialog is not deleted (still printed).
+                pDialog.update(100, ' ', ' ')
                 pDialog.close()
 
                 # >> Generate ROM databases
-                fs_build_ROM_databases(PATHS, self.settings,
-                                       control_dic, machines, machines_render, devices_db_dic, machine_roms)
-                kodi_notify('ROM databases built')
+                fs_build_ROM_audit_databases(PATHS, self.settings,
+                                             control_dic,
+                                             machines, machines_render, devices_db_dic,
+                                             machine_roms)
+                kodi_notify('ROM audit/scanner databases built')
 
             # --- Build MAME catalogs ---
             elif submenu == 2:

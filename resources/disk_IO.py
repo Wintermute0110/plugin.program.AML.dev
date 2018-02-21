@@ -1345,26 +1345,27 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog.close()
 
 # -------------------------------------------------------------------------------------------------
-# Generates the main ROM database. This database contains invalid ROMs also to display information
+# Generates the ROM audit database. This database contains invalid ROMs also to display information
 # in "View / Audit", "View MAME machine ROMs" context menu. This database also includes
 # device ROMs (<device_ref> ROMs).
 #
-# roms_dic = {
-#     'machine_name ' : [ {
-#         'crc' : string,
-#         'location' : 'zip_name/rom_name.rom'
-#         'name' : string,
-#         'size' : int, }, ...
+# audit_roms_dic = {
+#     'machine_name ' : [
+#         {
+#             'crc'      : string,
+#             'location' : 'zip_name/rom_name.rom'
+#             'name'     : string,
+#             'size'     : int,
+#             'type'     : 'ROM' or 'BROM' or 'MROM' or 'XROM'
+#         },
+#         {
+#             'location' : 'machine_name/chd_name.chd'
+#             'name'     : string,
+#             'sha1'     : string,
+#             'type'     : 'DISK'
+#         }, ...
 #     ],
 #     ...
-# }
-#
-# chds_dic = {
-#     'machine_name ' : [
-#         'location' : 'dir_name/chd_name'
-#         'name' : string,
-#         'sha1' : string,
-#     ],
 # }
 #
 # A) Used by the ROM scanner to check how many machines may be run or not depending of the
@@ -1373,35 +1374,33 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
 # B) For every machine stores the ZIP/CHD required files to run the machine.
 # C) A ZIP/CHD exists if and only if it is valid (CRC/SHA1 exists). Invalid ROMs are excluded.
 #
-# machines_dic = {
-#     'machine_name ' : { 'ROMs' : [name1, name2], 'CHDs' : [dir/name1, dir/name2] },
+# machine_archives_dic = {
+#     'machine_name ' : { 'ROMs' : [name1, name2, ...], 'CHDs' : [dir/name1, dir/name2, ...] }, ...
 # }
 #
-# A) Use by the ROM scanner to determine how many ZIPs/CHDs files you have or not.
+# A) Used by the ROM scanner to determine how many ZIPs/CHDs files you have or not.
 # B) Both lists have unique elements (instead of lists there should be sets but sets are 
 #    not JSON serializable).
 # C) A ZIP/CHD exists if and only if it is valid (CRC/SHA1 exists). Invalid ROMs are excluded.
 #
-# archives_dic = [ name1, name2, ..., nameN ]
-# archives_CHD_dic = [ dir1/name1, dir2/name2, ..., dirN/nameN ]
+# ROM_archive_list = [ name1, name2, ..., nameN ]
+# CHD_archive_list = [ dir1/name1, dir2/name2, ..., dirN/nameN ]
 #
 # Saves:
-#   ROM_Set_ROMs.json
-#   ROM_Set_CHDs.json
-#   ROM_Set_machines.json
-#   ROM_Set_archives_ROM.json
-#   ROM_Set_archives_CHD.json
+#   ROM_AUDIT_DB_PATH
+#   ROM_SET_MACHINE_ARCHIVES_DB_PATH
+#   ROM_SET_ROM_ARCHIVES_DB_PATH
+#   ROM_SET_CHD_ARCHIVES_DB_PATH
 #
-def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_render, devices_db_dic, machine_roms):
-    log_info('fs_build_ROM_databases() Initialising ...')
+def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machines_render, devices_db_dic, machine_roms):
+    log_info('fs_build_ROM_audit_databases() Initialising ...')
 
     # --- Initialise ---
     rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_rom_set']]
     chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
-    log_info('fs_build_ROM_databases() ROM set is {0}'.format(rom_set))
-    log_info('fs_build_ROM_databases() CHD set is {0}'.format(chd_set))
-    roms_dic = {}
-    chds_dic = {}
+    log_info('fs_build_ROM_audit_databases() ROM set is {0}'.format(rom_set))
+    log_info('fs_build_ROM_audit_databases() CHD set is {0}'.format(chd_set))
+    audit_roms_dic = {}
     pDialog = xbmcgui.DialogProgress()
 
     # --- ROM set ---
@@ -1454,7 +1453,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                     rom_t.pop('bios')
                     device_roms_list.append(rom_t)
             if device_roms_list: nonmerged_roms.extend(device_roms_list)
-            roms_dic[m_name] = nonmerged_roms
+            audit_roms_dic[m_name] = nonmerged_roms
 
             # --- Update dialog ---
             item_count += 1
@@ -1563,7 +1562,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                     rom_t.pop('bios')
                     device_roms_list.append(rom_t)
             if device_roms_list: split_roms.extend(device_roms_list)
-            roms_dic[m_name] = split_roms
+            audit_roms_dic[m_name] = split_roms
 
             # --- Update dialog ---
             item_count += 1
@@ -1610,7 +1609,7 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                     rom_t.pop('bios')
                     device_roms_list.append(rom_t)
             if device_roms_list: nonmerged_roms.extend(device_roms_list)
-            roms_dic[m_name] = nonmerged_roms
+            audit_roms_dic[m_name] = nonmerged_roms
 
             # --- Update dialog ---
             item_count += 1
@@ -1653,7 +1652,9 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 disk_t['location'] = location + '.chd'
                 disk_t.pop('merge')
                 split_chds.append(disk_t)
-            chds_dic[m_name] = split_chds
+            # >> Apend CHDs at the end of the ROM list.
+            if m_name in audit_roms_dic: audit_roms_dic[m_name].extend(split_chds)
+            else:                        audit_roms_dic[m_name] = split_chds
 
             # --- Update dialog ---
             item_count += 1
@@ -1692,7 +1693,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 disk_t['location'] = location + '.chd'
                 disk_t.pop('merge')
                 split_chds.append(disk_t)
-            chds_dic[m_name] = split_chds
+            if m_name in audit_roms_dic: audit_roms_dic[m_name].extend(split_chds)
+            else:                        audit_roms_dic[m_name] = split_chds
 
             # --- Update dialog ---
             item_count += 1
@@ -1719,7 +1721,8 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
                 disk_t['location'] = location + '.chd'
                 disk_t.pop('merge')
                 nonmerged_chds.append(disk_t)
-            chds_dic[m_name] = nonmerged_chds
+            if m_name in audit_roms_dic: audit_roms_dic[m_name].extend(split_chds)
+            else:                        audit_roms_dic[m_name] = split_chds
 
             # --- Update dialog ---
             item_count += 1
@@ -1727,79 +1730,66 @@ def fs_build_ROM_databases(PATHS, settings, control_dic, machines, machines_rend
     pDialog.close()
 
     # --- ROM/CHD machine index ---
-    # NOTE roms_dic and chds_dic have invalid ROMs/CHDs. However, idx_dic must have only valid
-    #      ROMs.
+    # NOTE roms_dic and chds_dic may have invalid ROMs/CHDs. However, machine_archives_dic must
+    #      have only valid ROM archives (ZIP/7Z).
     # For every machine, it goes ROM by ROM and makes a list of ZIP archive locations. Then, it
     # transforms the list into a set to have a list with unique elements.
     # roms_dic/chds_dic have invalid ROMs. Skip invalid ROMs.
-    idx_dic = {}
+    machine_archives_dic = {}
+    full_ROM_archive_set = set()
+    full_CHD_archive_set = set()
     pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Building index ...')
+    pDialog.update(0, 'Building ROM and CHD archive lists ...')
     num_items = len(machines)
     item_count = 0
-    for m_name in roms_dic:
-        rom_list = roms_dic[m_name]
-        chd_list = chds_dic[m_name]
-        rom_archive_set = set()
-        chd_archive_set = set()
+    for m_name in audit_roms_dic:
+        rom_list = audit_roms_dic[m_name]
+        machine_rom_archive_set = set()
+        machine_chd_archive_set = set()
         # --- ROM list ---
         for rom in rom_list:
-            # >> Skip invalid ROMs
-            if not rom['crc']: continue
-            rom_str_list = rom['location'].split('/')
-            zip_name = rom_str_list[0]
-            rom_archive_set.add(zip_name)
-        # --- CHD list ---
-        for chd in chd_list:
-            # >> Skip invalid CHDs
-            if not chd['sha1']: continue
-            chd_name = chd['location']
-            chd_archive_set.add(chd_name)
-        idx_dic[m_name] = {'ROMs' : list(rom_archive_set), 'CHDs' : list(chd_archive_set)}
+            if rom['type'] == 'DISK':
+                # >> Skip invalid CHDs
+                if not rom['sha1']: continue
+                chd_name = rom['location']
+                machine_chd_archive_set.add(chd_name)
+                full_CHD_archive_set.add(rom['location'])
+            else:
+                # >> Skip invalid ROMs
+                if not rom['crc']: continue
+                rom_str_list = rom['location'].split('/')
+                zip_name = rom_str_list[0]
+                machine_rom_archive_set.add(zip_name)
+                archive_str = rom['location'].split('/')[0]
+                # if not archive_str: continue
+                full_ROM_archive_set.add(archive_str)
+        machine_archives_dic[m_name] = {'ROMs' : list(machine_rom_archive_set),
+                                        'CHDs' : list(machine_chd_archive_set)}
         # --- Update dialog ---
         item_count += 1
         pDialog.update((item_count*100)//num_items)
     pDialog.close()
-
-    # --- Unique sorted list of ROM ZIP files and CHDs ---
-    archives_ROM_set = set()
-    for m_name in roms_dic:
-        for rom in roms_dic[m_name]:
-            # >> Skip invalid ROMs.
-            if not rom['crc']: continue
-            archive_str = rom['location'].split('/')[0]
-            # if not archive_str: continue
-            archives_ROM_set.add(archive_str)
-    archives_ROM_list = list(sorted(archives_ROM_set))
-
-    archives_CHD_set = set()
-    for m_name in chds_dic:
-        for chd in chds_dic[m_name]:
-            # >> Skip invalid CHDs.
-            if not chd['sha1']: continue
-            archives_CHD_set.add(chd['location'])
-    archives_CHD_list = list(sorted(archives_CHD_set))
+    ROM_archive_list = list(sorted(full_ROM_archive_set))
+    CHD_archive_list = list(sorted(full_CHD_archive_set))
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
-    control_dic['MAME_ZIP_files'] = len(archives_ROM_list)
-    control_dic['MAME_CHD_files'] = len(archives_CHD_list)
+    control_dic['MAME_ZIP_files'] = len(ROM_archive_list)
+    control_dic['MAME_CHD_files'] = len(CHD_archive_list)
 
     # --- Save databases ---
-    line1_str = 'Saving databases ...'
+    line1_str = 'Saving audit/scanner databases ...'
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, line1_str, 'ROM Audit DB')
-    fs_write_JSON_file(PATHS.ROM_AUDIT_ROMS_DB_PATH.getPath(), roms_dic)
-    pDialog.update(16, line1_str, 'CHD Audit DB')
-    fs_write_JSON_file(PATHS.ROM_AUDIT_CHDS_DB_PATH.getPath(), chds_dic)
-    pDialog.update(33, line1_str, 'Machines DB list')
-    fs_write_JSON_file(PATHS.ROM_SET_MACHINES_DB_PATH.getPath(), idx_dic)
-    pDialog.update(50, line1_str, 'ROM List index')
-    fs_write_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath(), archives_ROM_list)
-    pDialog.update(66, line1_str, 'CHD list index')
-    fs_write_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath(), archives_CHD_list)
-    pDialog.update(83, line1_str, 'Control dictionary')
+    fs_write_JSON_file(PATHS.ROM_AUDIT_DB_PATH.getPath(), audit_roms_dic)
+    pDialog.update(20, line1_str, 'Machine archives DB list')
+    fs_write_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath(), machine_archives_dic)
+    pDialog.update(40, line1_str, 'ROM List index')
+    fs_write_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath(), ROM_archive_list)
+    pDialog.update(60, line1_str, 'CHD list index')
+    fs_write_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath(), CHD_archive_list)
+    pDialog.update(80, line1_str, 'Control dictionary')
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
     pDialog.update(100)
     pDialog.close()
