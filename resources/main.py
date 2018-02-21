@@ -2011,16 +2011,13 @@ class Main:
             pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
             pDialog.update(0)
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-            pDialog.update(33)
-            roms_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_ROMS_DB_PATH.getPath())
-            pDialog.update(66)
-            chds_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_CHDS_DB_PATH.getPath())
+            pDialog.update(50)
+            audit_roms_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_DB_PATH.getPath())
             pDialog.update(100)
             pDialog.close()
 
             # --- Grab data and settings ---
-            roms_dic = roms_db_dic[machine_name]
-            chds_dic = chds_db_dic[machine_name]
+            rom_list = audit_roms_dic[machine_name]
             cloneof = machine['cloneof']
             romof = machine['romof']
             log_debug('_command_context_view() machine {0}\n'.format(machine_name))
@@ -2029,8 +2026,13 @@ class Main:
 
             # --- Generate report ---
             info_text = []
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
-                             '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+            if machine['cloneof'] and machine['romof']:
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
+                                 '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+            elif machine['cloneof']:
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(machine['cloneof']))
+            elif machine['romof']:
+                info_text.append('[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
             info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
                              '[COLOR skyblue]isDevice[/COLOR] {0}\n'.format(unicode(machine['isDevice'])))
             info_text.append('\n')
@@ -2043,13 +2045,14 @@ class Main:
             table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location'])
 
             # --- Table rows ---
-            for m_rom in roms_dic:
-                table_row = [str(m_rom['type']), str(m_rom['name']), str(m_rom['size']),
-                             str(m_rom['crc']), str(m_rom['location'])]
-                table_str.append(table_row)
-            for m_disk in chds_dic:
-                table_row = [str(m_disk['type']), str(m_disk['name']), '',
-                             str(m_disk['sha1'])[0:8], m_disk['location']]
+            for m_rom in rom_list:
+                if m_rom['type'] == 'DISK':
+                    sha1_str = str(m_rom['sha1'])[0:8]
+                    table_row = [str(m_rom['type']), str(m_rom['name']), '',
+                                 sha1_str, m_rom['location']]
+                else:
+                    table_row = [str(m_rom['type']), str(m_rom['name']), str(m_rom['size']),
+                                 str(m_rom['crc']), str(m_rom['location'])]
                 table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
@@ -2177,30 +2180,31 @@ class Main:
             pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
             pDialog.update(0)
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-            pDialog.update(33)
-            roms_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_ROMS_DB_PATH.getPath())
-            pDialog.update(66)
-            chds_db_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_CHDS_DB_PATH.getPath())
+            pDialog.update(50)
+            audit_roms_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_DB_PATH.getPath())
             pDialog.update(100)
             pDialog.close()
 
             # --- Grab data and settings ---
-            roms_dic = roms_db_dic[machine_name]
-            chds_dic = chds_db_dic[machine_name]
+            rom_list = audit_roms_dic[machine_name]
             cloneof = machine['cloneof']
             romof = machine['romof']
             log_debug('_command_context_view() machine {0}\n'.format(machine_name))
             log_debug('_command_context_view() cloneof {0}\n'.format(cloneof))
             log_debug('_command_context_view() romof   {0}\n'.format(romof))
 
-            # --- Open ZIP file and check CRC32 ---
-            mame_audit_machine_roms(self.settings, roms_dic)
-            mame_audit_machine_chds(self.settings, chds_dic)
+            # --- Open ZIP file, check CRC32 and also CHDs ---
+            mame_audit_machine(self.settings, rom_list)
 
             # --- Generate report ---
             info_text = []
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
-                             '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+            if machine['cloneof'] and machine['romof']:
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
+                                 '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+            elif machine['cloneof']:
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(machine['cloneof']))
+            elif machine['romof']:
+                info_text.append('[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
             info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
                              '[COLOR skyblue]isDevice[/COLOR] {0}\n'.format(unicode(machine['isDevice'])))
             info_text.append('\n')
@@ -2209,20 +2213,20 @@ class Main:
             # Table cell padding: left, right
             # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
             table_str = []
-            table_str.append(['right', 'left',     'right', 'left',     'left',  'left', 'left',     'left'])
-            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS', 'Location', 'Status'])
+            table_str.append(['right', 'left',     'right', 'left',     'left',     'left'])
+            table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location', 'Status'])
 
             # --- Table rows ---
-            for m_rom in roms_dic:
-                table_row = [str(m_rom['type']), str(m_rom['name']),
-                             str(m_rom['size']), str(m_rom['crc']),
-                             '', '', m_rom['location'], m_rom['status_colour']]
-                table_str.append(table_row)
-            for m_chd in chds_dic:
-                sha1_srt = m_chd['sha1'][0:8]
-                table_row = [m_chd['type'], m_chd['name'],
-                             '', sha1_srt,
-                             '', '', m_chd['location'], m_chd['status_colour']]
+            for m_rom in rom_list:
+                if m_rom['type'] == 'DISK':
+                    sha1_srt = m_rom['sha1'][0:8]
+                    table_row = [m_rom['type'], m_rom['name'],
+                                 '', sha1_srt,
+                                 m_rom['location'], m_rom['status_colour']]
+                else:
+                    table_row = [str(m_rom['type']), str(m_rom['name']),
+                                 str(m_rom['size']), str(m_rom['crc']),
+                                 m_rom['location'], m_rom['status_colour']]
                 table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
