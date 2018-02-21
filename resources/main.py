@@ -156,9 +156,10 @@ class AML_Paths:
         self.REPORT_SL_SCAN_ROMS_PATH           = self.REPORTS_DIR.pjoin('Report_SL_ROM_scanner.txt')
         self.REPORT_SL_SCAN_CHDS_PATH           = self.REPORTS_DIR.pjoin('Report_SL_CHD_scanner.txt')
         # >> Audit report
-        self.REPORT_MAME_ROM_AUDIT_PATH     = self.REPORTS_DIR.pjoin('Report_MAME_ROM_audit.txt')
-        self.REPORT_FULL_SL_ROM_AUDIT_PATH  = self.REPORTS_DIR.pjoin('Report_SL_ROM_audit_full.txt')
-        self.REPORT_ERROR_SL_ROM_AUDIT_PATH = self.REPORTS_DIR.pjoin('Report_SL_ROM_audit_errors.txt')
+        self.REPORT_FULL_MAME_ROM_AUDIT_PATH    = self.REPORTS_DIR.pjoin('Report_MAME_ROM_audit_full.txt')
+        self.REPORT_ERRORS_MAME_ROM_AUDIT_PATH  = self.REPORTS_DIR.pjoin('Report_MAME_ROM_audit_errors.txt')
+        self.REPORT_FULL_SL_ROM_AUDIT_PATH      = self.REPORTS_DIR.pjoin('Report_SL_ROM_audit_full.txt')
+        self.REPORT_ERRORS_SL_ROM_AUDIT_PATH    = self.REPORTS_DIR.pjoin('Report_SL_ROM_audit_errors.txt')
 PATHS = AML_Paths()
 
 class Main:
@@ -2414,20 +2415,29 @@ class Main:
         elif action == ACTION_VIEW_REPORT_AUDIT:
             d = xbmcgui.Dialog()
             type_sub = d.select('View audit reports',
-                                ['View MAME audit report',
+                                ['View MAME audit report (full)',
+                                 'View MAME audit report (errors only)',
                                  'View SL audit report (full)',
                                  'View SL audit report (errors only)'])
             if type_sub < 0: return
 
             if type_sub == 0:
-                if not PATHS.REPORT_MAME_ROM_AUDIT_PATH.exists():
-                    kodi_dialog_OK('MAME audit report not found. Please audit your MAME ROMs and try again.')
+                if not PATHS.REPORT_FULL_MAME_ROM_AUDIT_PATH.exists():
+                    kodi_dialog_OK('MAME audit report (full) not found. Please audit your MAME ROMs and try again.')
                     return
-                with open(PATHS.REPORT_MAME_ROM_AUDIT_PATH.getPath(), 'r') as myfile:
+                with open(PATHS.REPORT_FULL_MAME_ROM_AUDIT_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
                     self._display_text_window('MAME audit report', info_text)
 
             elif type_sub == 1:
+                if not PATHS.REPORT_ERRORS_MAME_ROM_AUDIT_PATH.exists():
+                    kodi_dialog_OK('MAME audit report (errors only) not found. Please audit your MAME ROMs and try again.')
+                    return
+                with open(PATHS.REPORT_ERRORS_MAME_ROM_AUDIT_PATH.getPath(), 'r') as myfile:
+                    info_text = myfile.read()
+                    self._display_text_window('MAME audit report', info_text)
+
+            elif type_sub == 2:
                 if not PATHS.REPORT_FULL_SL_ROM_AUDIT_PATH.exists():
                     kodi_dialog_OK('SL audit report (full) not found. Please audit your SL ROMs and try again.')
                     return
@@ -2435,11 +2445,11 @@ class Main:
                     info_text = myfile.read()
                     self._display_text_window('SL audit report (full)', info_text)
 
-            elif type_sub == 2:
-                if not PATHS.REPORT_ERROR_SL_ROM_AUDIT_PATH.exists():
+            elif type_sub == 3:
+                if not PATHS.REPORT_ERRORS_SL_ROM_AUDIT_PATH.exists():
                     kodi_dialog_OK('SL audit report (errors only) not found. Please audit your SL ROMs and try again.')
                     return
-                with open(PATHS.REPORT_ERROR_SL_ROM_AUDIT_PATH.getPath(), 'r') as myfile:
+                with open(PATHS.REPORT_ERRORS_SL_ROM_AUDIT_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
                     self._display_text_window('SL audit report (errors only)', info_text)
 
@@ -3217,7 +3227,7 @@ class Main:
             pDialog.update(100)
             pDialog.close()
 
-            # >> Go machine by machine and audit ZIPs
+            # >> Go machine by machine and audit ZIPs and CHDs.
             # >> Adds new column 'status' to each ROM.
             pDialog.create('Advanced MAME Launcher', 'Auditing MAME ROMs and CHDs ... ')
             total_machines = control_dic['total_machines']
@@ -3242,7 +3252,7 @@ class Main:
             # >> Generate report.
             # >> 1292apvs, 1392apvs have no ROMs (in 0.190)
             report_list = []
-            report_only_errors = self.settings['audit_only_errors']
+            error_report_list = []
             for machine in sorted(machines_render):
                 # --- ROMs report ---
                 if machine in roms_db_dic:
@@ -3253,14 +3263,13 @@ class Main:
                             report_list.append('Audit was canceled at machine {0}'.format(machine))
                             break
                         # >> Check if machine has ROM errors.
-                        if report_only_errors:
-                            machine_has_errors = False
-                            for m_rom in roms_list:
-                                if m_rom['status'] != 'OK' and m_rom['status'] != 'OK (invalid ROM)':
-                                    machine_has_errors = True
-                                    break
-                        # >> Print report.
-                        if report_only_errors and machine_has_errors:
+                        machine_has_errors = False
+                        for m_rom in roms_list:
+                            if m_rom['status'] != 'OK' and m_rom['status'] != 'OK (invalid ROM)':
+                                machine_has_errors = True
+                                break
+                        # >> Machine has errors, print on both reports.
+                        if machine_has_errors:
                             description = machines_render[machine]['description']
                             cloneof = machines_render[machine]['cloneof']
                             if cloneof:
@@ -3272,7 +3281,8 @@ class Main:
                                     report_list.append('{0}  {1}  {2}  {3}  {4}'.format(
                                         m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']))
                             report_list.append('')
-                        elif not report_only_errors:
+                        # >> Machine has no errors. Only print full report.
+                        else:
                             cloneof = machines_render[machine]['cloneof']
                             if cloneof:
                                 report_list.append('Machine {0} (cloneof {1})'.format(machine, cloneof))
