@@ -34,13 +34,13 @@ from assets import *
 from disk_IO import *
 
 # --- Addon object (used to access settings) ---
-__addon_obj__     = xbmcaddon.Addon()
-__addon_id__      = __addon_obj__.getAddonInfo('id').decode('utf-8')
-__addon_name__    = __addon_obj__.getAddonInfo('name').decode('utf-8')
-__addon_version__ = __addon_obj__.getAddonInfo('version').decode('utf-8')
-__addon_author__  = __addon_obj__.getAddonInfo('author').decode('utf-8')
-__addon_profile__ = __addon_obj__.getAddonInfo('profile').decode('utf-8')
-__addon_type__    = __addon_obj__.getAddonInfo('type').decode('utf-8')
+__addon__         = xbmcaddon.Addon()
+__addon_id__      = __addon__.getAddonInfo('id').decode('utf-8')
+__addon_name__    = __addon__.getAddonInfo('name').decode('utf-8')
+__addon_version__ = __addon__.getAddonInfo('version').decode('utf-8')
+__addon_author__  = __addon__.getAddonInfo('author').decode('utf-8')
+__addon_profile__ = __addon__.getAddonInfo('profile').decode('utf-8')
+__addon_type__    = __addon__.getAddonInfo('type').decode('utf-8')
 
 # --- Addon paths and constant definition ---
 # _PATH is a filename | _DIR is a directory
@@ -341,51 +341,50 @@ class Main:
     #
     def _get_settings(self):
         # --- Paths ---
-        self.settings['mame_prog']      = __addon_obj__.getSetting('mame_prog').decode('utf-8')
-        self.settings['rom_path']       = __addon_obj__.getSetting('rom_path').decode('utf-8')
+        self.settings['mame_prog']    = __addon__.getSetting('mame_prog').decode('utf-8')
+        self.settings['rom_path']     = __addon__.getSetting('rom_path').decode('utf-8')
 
-        self.settings['assets_path']    = __addon_obj__.getSetting('assets_path').decode('utf-8')
-        self.settings['chd_path']       = __addon_obj__.getSetting('chd_path').decode('utf-8')        
-        self.settings['SL_hash_path']   = __addon_obj__.getSetting('SL_hash_path').decode('utf-8')
-        self.settings['SL_rom_path']    = __addon_obj__.getSetting('SL_rom_path').decode('utf-8')
-        self.settings['SL_chd_path']    = __addon_obj__.getSetting('SL_chd_path').decode('utf-8')
-        self.settings['samples_path']   = __addon_obj__.getSetting('samples_path').decode('utf-8')
+        self.settings['assets_path']  = __addon__.getSetting('assets_path').decode('utf-8')
+        self.settings['chd_path']     = __addon__.getSetting('chd_path').decode('utf-8')        
+        self.settings['SL_hash_path'] = __addon__.getSetting('SL_hash_path').decode('utf-8')
+        self.settings['SL_rom_path']  = __addon__.getSetting('SL_rom_path').decode('utf-8')
+        self.settings['SL_chd_path']  = __addon__.getSetting('SL_chd_path').decode('utf-8')
+        self.settings['samples_path'] = __addon__.getSetting('samples_path').decode('utf-8')
 
         # --- DAT Paths ---
-        self.settings['catver_path']    = __addon_obj__.getSetting('catver_path').decode('utf-8')
-        self.settings['catlist_path']   = __addon_obj__.getSetting('catlist_path').decode('utf-8')
-        self.settings['genre_path']     = __addon_obj__.getSetting('genre_path').decode('utf-8')
-        self.settings['nplayers_path']  = __addon_obj__.getSetting('nplayers_path').decode('utf-8')
-        self.settings['bestgames_path'] = __addon_obj__.getSetting('bestgames_path').decode('utf-8')
-        self.settings['series_path']    = __addon_obj__.getSetting('series_path').decode('utf-8')
-        self.settings['history_path']   = __addon_obj__.getSetting('history_path').decode('utf-8')
-        self.settings['mameinfo_path']  = __addon_obj__.getSetting('mameinfo_path').decode('utf-8')
-        self.settings['gameinit_path']  = __addon_obj__.getSetting('gameinit_path').decode('utf-8')
-        self.settings['command_path']   = __addon_obj__.getSetting('command_path').decode('utf-8')
+        self.settings['catver_path']    = __addon__.getSetting('catver_path').decode('utf-8')
+        self.settings['catlist_path']   = __addon__.getSetting('catlist_path').decode('utf-8')
+        self.settings['genre_path']     = __addon__.getSetting('genre_path').decode('utf-8')
+        self.settings['nplayers_path']  = __addon__.getSetting('nplayers_path').decode('utf-8')
+        self.settings['bestgames_path'] = __addon__.getSetting('bestgames_path').decode('utf-8')
+        self.settings['series_path']    = __addon__.getSetting('series_path').decode('utf-8')
+        self.settings['history_path']   = __addon__.getSetting('history_path').decode('utf-8')
+        self.settings['mameinfo_path']  = __addon__.getSetting('mameinfo_path').decode('utf-8')
+        self.settings['gameinit_path']  = __addon__.getSetting('gameinit_path').decode('utf-8')
+        self.settings['command_path']   = __addon__.getSetting('command_path').decode('utf-8')
 
         # --- ROM sets ---
-        self.settings['mame_rom_set']      = int(__addon_obj__.getSetting('mame_rom_set'))
-        self.settings['mame_chd_set']      = int(__addon_obj__.getSetting('mame_chd_set'))
-        self.settings['audit_only_errors'] = True if __addon_obj__.getSetting('audit_only_errors') == 'true' else False
+        self.settings['mame_rom_set'] = int(__addon__.getSetting('mame_rom_set'))
+        self.settings['mame_chd_set'] = int(__addon__.getSetting('mame_chd_set'))
 
         # --- Display ---
-        self.settings['mame_view_mode']          = int(__addon_obj__.getSetting('mame_view_mode'))
-        self.settings['sl_view_mode']            = int(__addon_obj__.getSetting('sl_view_mode'))
-        self.settings['display_hide_BIOS']       = True if __addon_obj__.getSetting('display_hide_BIOS') == 'true' else False
-        self.settings['display_hide_nonworking'] = True if __addon_obj__.getSetting('display_hide_nonworking') == 'true' else False
-        self.settings['display_hide_imperfect']  = True if __addon_obj__.getSetting('display_hide_imperfect') == 'true' else False
-        self.settings['display_rom_available']   = True if __addon_obj__.getSetting('display_rom_available') == 'true' else False
-        self.settings['display_chd_available']   = True if __addon_obj__.getSetting('display_chd_available') == 'true' else False
+        self.settings['mame_view_mode']          = int(__addon__.getSetting('mame_view_mode'))
+        self.settings['sl_view_mode']            = int(__addon__.getSetting('sl_view_mode'))
+        self.settings['display_hide_BIOS']       = True if __addon__.getSetting('display_hide_BIOS') == 'true' else False
+        self.settings['display_hide_nonworking'] = True if __addon__.getSetting('display_hide_nonworking') == 'true' else False
+        self.settings['display_hide_imperfect']  = True if __addon__.getSetting('display_hide_imperfect') == 'true' else False
+        self.settings['display_rom_available']   = True if __addon__.getSetting('display_rom_available') == 'true' else False
+        self.settings['display_chd_available']   = True if __addon__.getSetting('display_chd_available') == 'true' else False
 
         # --- Display ---
-        self.settings['artwork_mame_icon']   = int(__addon_obj__.getSetting('artwork_mame_icon'))
-        self.settings['artwork_mame_fanart'] = int(__addon_obj__.getSetting('artwork_mame_fanart'))
-        self.settings['artwork_SL_icon']     = int(__addon_obj__.getSetting('artwork_SL_icon'))
-        self.settings['artwork_SL_fanart']   = int(__addon_obj__.getSetting('artwork_SL_fanart'))
-        self.settings['display_hide_trailers']   = True if __addon_obj__.getSetting('display_hide_trailers') == 'true' else False
+        self.settings['artwork_mame_icon']     = int(__addon__.getSetting('artwork_mame_icon'))
+        self.settings['artwork_mame_fanart']   = int(__addon__.getSetting('artwork_mame_fanart'))
+        self.settings['artwork_SL_icon']       = int(__addon__.getSetting('artwork_SL_icon'))
+        self.settings['artwork_SL_fanart']     = int(__addon__.getSetting('artwork_SL_fanart'))
+        self.settings['display_hide_trailers'] = True if __addon__.getSetting('display_hide_trailers') == 'true' else False
 
         # --- Advanced ---
-        self.settings['log_level'] = int(__addon_obj__.getSetting('log_level'))
+        self.settings['log_level'] = int(__addon__.getSetting('log_level'))
 
         # --- Transform settings data ---
         self.mame_icon   = assets_get_asset_key_MAME_icon(self.settings['artwork_mame_icon'])
