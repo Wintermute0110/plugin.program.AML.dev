@@ -167,11 +167,11 @@ class AML_Paths:
         self.REPORT_MAME_AUDIT_CHD_GOOD_PATH   = self.REPORTS_DIR.pjoin('Report_MAME_audit_CHDs_good.txt')
         self.REPORT_MAME_AUDIT_CHD_ERRORS_PATH = self.REPORTS_DIR.pjoin('Report_MAME_audit_CHDs_errors.txt')
 
-        self.REPORT_SL_AUDIT_GOOD_PATH         = self.REPORTS_DIR.pjoin('Report_SL_audit_full.txt')
+        self.REPORT_SL_AUDIT_GOOD_PATH         = self.REPORTS_DIR.pjoin('Report_SL_audit_good.txt')
         self.REPORT_SL_AUDIT_ERRORS_PATH       = self.REPORTS_DIR.pjoin('Report_SL_audit_errors.txt')
-        self.REPORT_SL_AUDIT_ROMS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Report_SL_audit_ROMs_full.txt')
+        self.REPORT_SL_AUDIT_ROMS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Report_SL_audit_ROMs_good.txt')
         self.REPORT_SL_AUDIT_ROMS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Report_SL_audit_ROMs_errors.txt')
-        self.REPORT_SL_AUDIT_CHDS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Report_SL_audit_CHDs_full.txt')
+        self.REPORT_SL_AUDIT_CHDS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Report_SL_audit_CHDs_good.txt')
         self.REPORT_SL_AUDIT_CHDS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Report_SL_audit_CHDs_errors.txt')
 PATHS = AML_Paths()
 
@@ -3320,7 +3320,7 @@ class Main:
                 if pDialog.iscanceled(): break
             pDialog.close()
 
-            # Report header and statistics
+            # >> Report header and statistics
             report_good_list      = ['This report shows machines with good ROMs and/or CHDs']
             report_error_list     = ['This report shows machines with errors in ROMs and/or CHDs']
             ROM_report_good_list  = ['This report shows machines with good ROMs']
@@ -3374,8 +3374,7 @@ class Main:
                             t_list.append('Cloneof {0} "{1}"'.format(cloneof, clone_desc))
 
                         # >> ROM/CHD report.
-                        table_str = []
-                        table_str.append(['right', 'left', 'right', 'left', 'left', 'left'])
+                        table_str = [ ['right', 'left', 'right', 'left', 'left', 'left'] ]
                         for m_rom in rom_list:
                             if m_rom['type'] == ROM_TYPE_DISK:
                                 table_row = [m_rom['type'], m_rom['name'],
@@ -3464,9 +3463,24 @@ class Main:
             # >> Load SL catalog.
             SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
 
+            # >> Report header and statistics
+            report_good_list      = ['This report shows machines with good ROMs and/or CHDs']
+            report_error_list     = ['This report shows machines with errors in ROMs and/or CHDs']
+            ROM_report_good_list  = ['This report shows machines with good ROMs']
+            ROM_report_error_list = ['This report shows machines with errors in ROMs']
+            CHD_report_good_list  = ['This report shows machines with good CHDs']
+            CHD_report_error_list = ['This report shows machines with errors in CHDs']
+            h_list = []
+            h_list.append('There are {0} software lists'.format(len(SL_catalog_dic)))
+            h_list.append('')
+            report_good_list.extend(h_list)
+            report_error_list.extend(h_list)
+            ROM_report_good_list.extend(h_list)
+            ROM_report_error_list.extend(h_list)
+            CHD_report_good_list.extend(h_list)
+            CHD_report_error_list.extend(h_list)
+
             # >> Iterate all SL databases and audit ROMs.
-            report_list = []
-            error_report_list = []
             pDialog = xbmcgui.DialogProgress()
             pDialog_canceled = False
             pdialog_line1 = 'Auditing Sofware Lists ROMs ...'
@@ -3476,43 +3490,78 @@ class Main:
             for SL_name in sorted(SL_catalog_dic):
                 SL_dic = SL_catalog_dic[SL_name]
                 SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '.json')
-                SL_AUDIT_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_audit_ROMs.json')
-                SL_AUDIT_CHDs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_audit_CHDs.json')
+                SL_AUDIT_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_ROM_audit.json')
                 roms = fs_load_JSON_file(SL_DB_FN.getPath())
                 audit_roms = fs_load_JSON_file(SL_AUDIT_ROMs_DB_FN.getPath())
-                audit_chds = fs_load_JSON_file(SL_AUDIT_CHDs_DB_FN.getPath())
 
                 # >> Iterate SL ROMs
                 for rom_key in sorted(roms):
                     # >> audit_roms_list is mutable and edited inside the function()
                     audit_rom_list = audit_roms[rom_key]
-                    audit_chd_list = audit_chds[rom_key]
-                    mame_SL_audit_machine_roms(self.settings, audit_rom_list)
-                    mame_SL_audit_machine_chds(self.settings, audit_chd_list)
+                    mame_SL_audit_machine(self.settings, audit_rom_list)
 
-                    # >> Audit and write report.
+                    # >> Check if machine has ROM and/or CHD errors.
+                    machine_has_ROMs = False
+                    machine_has_CHDs = False
+                    machine_has_ROM_errors = False
+                    machine_has_CHD_errors = False
+                    for m_rom in audit_rom_list:
+                        if m_rom['type'] == ROM_TYPE_DISK:
+                            machine_has_CHDs = True
+                            if not(m_rom['status'] == AUDIT_STATUS_OK or m_rom['status'] == AUDIT_STATUS_OK_INVALID_CHD):
+                                machine_has_CHD_errors = True
+                        else:
+                            machine_has_ROMs = True
+                            if not(m_rom['status'] == AUDIT_STATUS_OK or m_rom['status'] == AUDIT_STATUS_OK_INVALID_ROM):
+                                machine_has_ROM_errors = True
+
+                    # >> Software/machine header.
                     # WARNING: Kodi crashes with a 22 MB text file with colours. No problem
                     # if file has not colours.
                     rom = roms[rom_key]
                     cloneof = rom['cloneof']
+                    t_list = []
                     if cloneof:
-                        u = 'SL {0} ROM {1} (cloneof {2})'.format(SL_name, rom_key, cloneof)
+                        t_list.append('SL {0} ROM {1} (cloneof {2})'.format(SL_name, rom_key, cloneof))
                     else:
-                        u = 'SL {0} ROM {1}'.format(SL_name, rom_key)
-                    report_list.append(u)
-                    error_report_list.append(u)
+                        t_list.append('SL {0} ROM {1}'.format(SL_name, rom_key))
 
-                    table_str = [ ['right', 'right', 'right', 'right', 'right'] ]
+                    # >> ROM/CHD report.
+                    table_str = [ ['right', 'left', 'left', 'left', 'left'] ]
                     for m_rom in audit_rom_list:
-                        table_row = [m_rom['name'], m_rom['size'], m_rom['crc'], m_rom['location'], m_rom['status']]
+                        if m_rom['type'] == ROM_TYPE_DISK:
+                            table_row = [m_rom['type'], '',
+                                         m_rom['sha1'][0:8], m_rom['location'], m_rom['status']]
+                        else:
+                            table_row = [m_rom['type'], m_rom['size'],
+                                         m_rom['crc'], m_rom['location'], m_rom['status']]
                         table_str.append(table_row)
-                    report_list.extend(text_render_table_str_NO_HEADER(table_str))
+                    local_str_list = text_render_table_str_NO_HEADER(table_str)
+                    local_str_list.append('')
 
-                    for m_chd in audit_chd_list:
-                        report_list.append('{0}  {1}  {2}  {3}'.format(
-                            m_chd['name'], m_chd['sha1'], m_chd['location'], m_chd['status']))
-                    report_list.append('')
-                    error_report_list.append('')
+                    # >> ROMs and CHDs report.
+                    if machine_has_ROM_errors or machine_has_CHD_errors:
+                        report_error_list.extend(t_list)
+                        report_error_list.extend(local_str_list)
+                    elif machine_has_ROMs or machine_has_CHDs:
+                        report_good_list.extend(t_list)
+                        report_good_list.extend(local_str_list)
+
+                    # >> ROM report
+                    if machine_has_ROMs and machine_has_ROM_errors:
+                        ROM_report_error_list.extend(t_list)
+                        ROM_report_error_list.extend(local_str_list)
+                    elif machine_has_ROMs:
+                        ROM_report_good_list.extend(t_list)
+                        ROM_report_good_list.extend(local_str_list)
+
+                    # >> CHD report.
+                    if machine_has_CHDs and machine_has_CHD_errors:
+                        CHD_report_error_list.extend(t_list)
+                        CHD_report_error_list.extend(local_str_list)
+                    elif machine_has_CHDs:
+                        CHD_report_good_list.extend(t_list)
+                        CHD_report_good_list.extend(local_str_list)
                 # >> Update progress
                 processed_files += 1
                 pDialog.update((processed_files*100) // total_files, pdialog_line1, 'SL {0} ...'.format(SL_name))
@@ -3521,13 +3570,29 @@ class Main:
             # >> Write report.
             pdialog_line1 = 'Auditing Sofware Lists ROMs ...'
             pDialog.create('Advanced MAME Launcher', pdialog_line1)
-            pDialog.update(0, pdialog_line1, 'Full report')
-            with open(PATHS.REPORT_FULL_SL_ROM_AUDIT_PATH.getPath(), 'w') as file:
-                out_str = '\n'.join(report_list)
+            pDialog.update(0)
+            with open(PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'w') as file:
+                out_str = '\n'.join(report_good_list)
                 file.write(out_str.encode('utf-8'))
-            pDialog.update(50, pdialog_line1, 'Error-only report')
-            with open(PATHS.REPORT_ERROR_SL_ROM_AUDIT_PATH.getPath(), 'w') as file:
-                out_str = '\n'.join(error_report_list)
+            pDialog.update(16)
+            with open(PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'w') as file:
+                out_str = '\n'.join(report_error_list)
+                file.write(out_str.encode('utf-8'))
+            pDialog.update(33)
+            with open(PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'w') as file:
+                out_str = '\n'.join(ROM_report_good_list)
+                file.write(out_str.encode('utf-8'))
+            pDialog.update(50)
+            with open(PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'w') as file:
+                out_str = '\n'.join(ROM_report_error_list)
+                file.write(out_str.encode('utf-8'))
+            pDialog.update(66)
+            with open(PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'w') as file:
+                out_str = '\n'.join(CHD_report_good_list)
+                file.write(out_str.encode('utf-8'))
+            pDialog.update(83)
+            with open(PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'w') as file:
+                out_str = '\n'.join(CHD_report_error_list)
                 file.write(out_str.encode('utf-8'))
             pDialog.update(100)
             pDialog.close()
