@@ -40,7 +40,7 @@ FEATURE  Audit MAME ROMs for all machines.
 
 FEATURE  Show SL ROMs of a SL entry. Supports Merged, Split and Non-merged sets and SL CHDs.
 
-WIP      Audit SL ROMs.
+FEATURE  Audit SL ROMs.
 
 FEATURE  Display MAMEINFO.DAT information.
 

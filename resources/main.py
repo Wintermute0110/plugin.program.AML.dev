@@ -1805,9 +1805,9 @@ class Main:
                 info_text += "[COLOR violet]SL_name[/COLOR]: '{0}'\n".format(rom['SL_name'])
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
                 info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
+                info_text += "[COLOR skyblue]hasCHDs[/COLOR]: {0}\n".format(unicode(rom['hasCHDs']))
+                info_text += "[COLOR skyblue]hasROMs[/COLOR]: {0}\n".format(unicode(rom['hasROMs']))
                 info_text += "[COLOR violet]launch_machine[/COLOR]: '{0}'\n".format(rom['launch_machine'])
-                info_text += "[COLOR skyblue]num_disks[/COLOR]: {0}\n".format(unicode(rom['num_disks']))
-                info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(unicode(rom['num_roms']))
                 if rom['parts']:
                     for i, part in enumerate(rom['parts']):
                         info_text += "[COLOR lime]parts[/COLOR][{0}]:\n".format(i)
@@ -1891,11 +1891,11 @@ class Main:
             rom_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_rom_set']]
             chd_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_chd_set']]
             info_text += '\n[COLOR orange]ROM/CHD/SL files count[/COLOR]\n'
-            info_text += "Number of ROM ZIPs    {0:5d} in the {1} set\n".format(control_dic['MAME_ZIP_files'], rom_set)
-            info_text += "Number of CHDs        {0:5d} in the {1} set\n".format(control_dic['MAME_CHD_files'], chd_set)
-            info_text += "Number of SL files    {0:5d}\n".format(control_dic['SL_files'])
-            info_text += "Total ROMs in all SLs {0:5d}\n".format(control_dic['SL_ROMs'])
-            info_text += "Total CHDs in all SLs {0:5d}\n".format(control_dic['SL_CHDs'])
+            info_text += "Number of ROM ZIPs {0:5d} in the {1} set\n".format(control_dic['MAME_ZIP_files'], rom_set)
+            info_text += "Number of CHDs     {0:5d} in the {1} set\n".format(control_dic['MAME_CHD_files'], chd_set)
+            info_text += "Number of SL files {0:5d}\n".format(control_dic['SL_XML_files'])
+            info_text += "SL items with ROMs {0:5d}\n".format(control_dic['SL_with_ROMs'])
+            info_text += "SL items with CHDs {0:5d}\n".format(control_dic['SL_with_CHDs'])
 
             info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
             t = "You have {0:5d} ZIP files out of    {1:5d} ({2:5d} missing)\n"
@@ -1955,8 +1955,13 @@ class Main:
 
             # --- ROM info ---
             info_text = []
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
-                             '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+            if machine['cloneof'] and machine['romof']:
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
+                                 '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+            elif machine['cloneof']:
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0}\n'.format(machine['cloneof']))
+            elif machine['romof']:
+                info_text.append('[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
             info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
                              '[COLOR skyblue]isDevice[/COLOR] {0}\n'.format(unicode(machine['isDevice'])))
             info_text.append('\n')
@@ -2088,14 +2093,16 @@ class Main:
             # SL_machine_list = SL_machines_dic[SL_name]
             # assets = SL_asset_dic[SL_ROM] if SL_ROM in SL_asset_dic else fs_new_SL_asset()
             roms = fs_load_JSON_file(SL_DB_FN.getPath())
-            rom = roms[SL_ROM]
             roms_db = fs_load_JSON_file(SL_ROMS_DB_FN.getPath())
+            rom = roms[SL_ROM]
             rom_db_list = roms_db[SL_ROM]
 
             info_text = []
             info_text.append('[COLOR violet]SL_name[/COLOR] {0}\n'.format(SL_name))
             info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}\n'.format(SL_ROM))
             info_text.append('[COLOR violet]description[/COLOR] {0}\n'.format(rom['description']))
+            if rom['cloneof']:
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0}\n'.format(rom['cloneof']))
             info_text.append('\n')
 
             table_str = []
@@ -2146,6 +2153,8 @@ class Main:
             info_text.append('[COLOR violet]SL_name[/COLOR] {0}\n'.format(SL_name))
             info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}\n'.format(SL_ROM))
             info_text.append('[COLOR violet]description[/COLOR] {0}\n'.format(rom['description']))
+            if rom['cloneof']:
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0}\n'.format(rom['cloneof']))
             info_text.append('\n')
 
             # table_str = [    ['left', 'left',         'left', 'left',     'left'] ]
