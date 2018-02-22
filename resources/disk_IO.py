@@ -1431,11 +1431,11 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
                 location = m_name + '/' + rom['name']
                 # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
-                if       rom_t['bios'] and     rom_t['merge']: r_type = 'BROM'
-                elif     rom_t['bios'] and not rom_t['merge']: r_type = 'XROM'
-                elif not rom_t['bios'] and     rom_t['merge']: r_type = 'MROM'
-                elif not rom_t['bios'] and not rom_t['merge']: r_type = 'ROM'
-                else:                                          r_type = 'ERROR'
+                if       rom_t['bios'] and     rom_t['merge']: r_type = ROM_TYPE_BROM
+                elif     rom_t['bios'] and not rom_t['merge']: r_type = ROM_TYPE_XROM
+                elif not rom_t['bios'] and     rom_t['merge']: r_type = ROM_TYPE_MROM
+                elif not rom_t['bios'] and not rom_t['merge']: r_type = ROM_TYPE_ROM
+                else:                                          r_type = ROM_TYPE_ERROR
                 rom_t['type'] = r_type
                 rom_t['location'] = location
                 rom_t.pop('merge')
@@ -1447,7 +1447,7 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
                 device_roms_dic = machine_roms[device]
                 for rom in device_roms_dic['roms']:
                     rom_t = copy.deepcopy(rom)
-                    rom_t['type'] = 'DROM'
+                    rom_t['type'] = ROM_TYPE_DROM
                     rom_t['location'] = device + '/' + rom['name']
                     rom_t.pop('merge')
                     rom_t.pop('bios')
@@ -1539,11 +1539,11 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
                         location = m_name + '/' + rom['name']
                 # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
-                if       rom_t['bios'] and     rom_t['merge']: r_type = 'BROM'
-                elif     rom_t['bios'] and not rom_t['merge']: r_type = 'XROM'
-                elif not rom_t['bios'] and     rom_t['merge']: r_type = 'MROM'
-                elif not rom_t['bios'] and not rom_t['merge']: r_type = 'ROM'
-                else:                                          r_type = 'ERROR'
+                if       rom_t['bios'] and     rom_t['merge']: r_type = ROM_TYPE_BROM
+                elif     rom_t['bios'] and not rom_t['merge']: r_type = ROM_TYPE_XROM
+                elif not rom_t['bios'] and     rom_t['merge']: r_type = ROM_TYPE_MROM
+                elif not rom_t['bios'] and not rom_t['merge']: r_type = ROM_TYPE_ROM
+                else:                                          r_type = ROM_TYPE_ERROR
                 rom_t['type'] = r_type
                 rom_t['location'] = location
                 rom_t.pop('merge')
@@ -1556,7 +1556,7 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
                 device_roms_dic = machine_roms[device]
                 for rom in device_roms_dic['roms']:
                     rom_t = copy.deepcopy(rom)
-                    rom_t['type'] = 'DROM'
+                    rom_t['type'] = ROM_TYPE_DROM
                     rom_t['location'] = device + '/' + rom['name']
                     rom_t.pop('merge')
                     rom_t.pop('bios')
@@ -1587,11 +1587,11 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
                 location = m_name + '/' + rom['name']
                 # >> Remove unused fields to save space in JSON database
                 rom_t = copy.deepcopy(rom)
-                if       rom_t['bios'] and     rom_t['merge']: r_type = 'BROM'
-                elif     rom_t['bios'] and not rom_t['merge']: r_type = 'XROM'
-                elif not rom_t['bios'] and     rom_t['merge']: r_type = 'MROM'
-                elif not rom_t['bios'] and not rom_t['merge']: r_type = 'ROM'
-                else:                                          r_type = 'ERROR'
+                if       rom_t['bios'] and     rom_t['merge']: r_type = ROM_TYPE_BROM
+                elif     rom_t['bios'] and not rom_t['merge']: r_type = ROM_TYPE_XROM
+                elif not rom_t['bios'] and     rom_t['merge']: r_type = ROM_TYPE_MROM
+                elif not rom_t['bios'] and not rom_t['merge']: r_type = ROM_TYPE_ROM
+                else:                                          r_type = ROM_TYPE_ERROR
                 rom_t['type'] = r_type
                 rom_t['location'] = location
                 rom_t.pop('merge')
@@ -1603,7 +1603,7 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
                 device_roms_dic = machine_roms[device]
                 for rom in device_roms_dic['roms']:
                     rom_t = copy.deepcopy(rom)
-                    rom_t['type'] = 'DROM'
+                    rom_t['type'] = ROM_TYPE_DROM
                     rom_t['location'] = device + '/' + rom['name']
                     rom_t.pop('merge')
                     rom_t.pop('bios')
@@ -1648,7 +1648,7 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
                     else:
                         location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
-                disk_t['type'] = 'DISK'
+                disk_t['type'] = ROM_TYPE_DISK
                 disk_t['location'] = location + '.chd'
                 disk_t.pop('merge')
                 split_chds.append(disk_t)
@@ -1689,7 +1689,7 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
                     else:
                         location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
-                disk_t['type'] = 'DISK'
+                disk_t['type'] = ROM_TYPE_DISK
                 disk_t['location'] = location + '.chd'
                 disk_t.pop('merge')
                 split_chds.append(disk_t)
@@ -1717,7 +1717,7 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
             for disk in m_disks:
                 location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
-                disk_t['type'] = 'DISK'
+                disk_t['type'] = ROM_TYPE_DISK
                 disk_t['location'] = location + '.chd'
                 disk_t.pop('merge')
                 nonmerged_chds.append(disk_t)
@@ -1748,7 +1748,7 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
         machine_chd_archive_set = set()
         # --- ROM list ---
         for rom in rom_list:
-            if rom['type'] == 'DISK':
+            if rom['type'] == ROM_TYPE_DISK:
                 # >> Skip invalid CHDs
                 if not rom['sha1']: continue
                 chd_name = rom['location']
@@ -1919,7 +1919,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
         parent_list.append(parent_name)
         all_list.append(parent_name)
         for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    main_catalog_parents['NoCoin'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
+    main_catalog_parents['NoCoin'] = {'parents'  : parent_list, 'num_parents'  : len(parent_list)}
     main_catalog_all['NoCoin']     = {'machines' : all_list,    'num_machines' : len(all_list)}
     catalog_count_dic['Main']['cats']['NoCoin'] = {}
     catalog_count_dic['Main']['cats']['NoCoin']['num_parents']  = len(parent_list)
@@ -1939,7 +1939,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
         parent_list.append(parent_name)
         all_list.append(parent_name)
         for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    main_catalog_parents['Mechanical'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
+    main_catalog_parents['Mechanical'] = {'parents'  : parent_list, 'num_parents'  : len(parent_list)}
     main_catalog_all['Mechanical']     = {'machines' : all_list,    'num_machines' : len(all_list)}
     catalog_count_dic['Main']['cats']['Mechanical'] = {}
     catalog_count_dic['Main']['cats']['Mechanical']['num_parents']  = len(parent_list)
@@ -1957,7 +1957,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
         parent_list.append(parent_name)
         all_list.append(parent_name)
         for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    main_catalog_parents['Dead'] = {'parents' : parent_list, 'num_parents' : len(parent_list)}
+    main_catalog_parents['Dead'] = {'parents'  : parent_list, 'num_parents'  : len(parent_list)}
     main_catalog_all['Dead']     = {'machines' : all_list,    'num_machines' : len(all_list)}
     catalog_count_dic['Main']['cats']['Dead'] = {}
     catalog_count_dic['Main']['cats']['Dead']['num_parents']  = len(parent_list)

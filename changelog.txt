@@ -5,6 +5,8 @@ WIP      Improve AML wiki in Github and move documentation from Kodi forum to Gi
 WIP      User Parent/Clone substituted artwork. For example, most trailers are only available for
          the Parent machine and can be used by Clone machines.
 
+WIP      Use Parent/Clone substitution for DAT files: MAMEINFO, History, etc.
+
 WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
 
 WIP      Implemented "Most played MAME machines"
