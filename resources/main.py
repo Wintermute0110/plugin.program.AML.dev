@@ -3167,7 +3167,7 @@ class Main:
             # --- Build everything ---
             fs_build_ROM_audit_databases(PATHS, self.settings, control_dic, machines, machines_render, devices_db_dic, machine_roms)
             fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic)
-            fs_build_SoftwareLists_index(PATHS, self.settings, machines, machines_render, main_pclone_dic, control_dic)
+            fs_build_SoftwareLists_databases(PATHS, self.settings, machines, machines_render, main_pclone_dic, control_dic)
             kodi_notify('All databases built')
 
         # --- Scan everything ---
@@ -3635,7 +3635,7 @@ class Main:
                 main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
                 control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 kodi_busydialog_OFF()
-                fs_build_SoftwareLists_index(PATHS, self.settings, machines, machines_render, main_pclone_dic, control_dic)
+                fs_build_SoftwareLists_databases(PATHS, self.settings, machines, machines_render, main_pclone_dic, control_dic)
                 kodi_notify('Software Lists indices and catalogs built')
 
             # --- Scan ROMs/CHDs/Samples and updates ROM status ---

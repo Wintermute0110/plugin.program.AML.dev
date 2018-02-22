@@ -34,6 +34,7 @@ import gc
 import xml.etree.ElementTree as ET
 
 # --- AEL packages ---
+from constants import *
 from utils import *
 try:
     from utils_kodi import *
@@ -2711,11 +2712,20 @@ def fs_load_SL_XML(xml_filename):
     return SLData
 
 # -------------------------------------------------------------------------------------------------
-# SL_catalog = { 'name' : {'display_name': u'', 'rom_count' : int, 'rom_DB_noext' : u'' }, ...}
+# SL_catalog = { 'name' : {
+#     'display_name': u'', 'num_with_CHDs' : int, 'num_with_ROMs' : int, 'rom_DB_noext' : u'' }, ...
+# }
 #
-# Saves SL_INDEX_PATH, SL_MACHINES_PATH, CATALOG_SL_PATH, MAIN_CONTROL_PATH, SL JSON files.
+# Saves:
+# SL_INDEX_PATH,
+# SL_MACHINES_PATH,
+# SL_PCLONE_DIC_PATH,
+# per-SL database                          (32x.json)
+# per-SL database                          (32x_ROMs.json)
+# per-SL ROM audit database                (32x_ROM_audit.json)
+# per-SL software archies (ROMs and CHDs)  (32x_software_archives.json)
 #
-def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, main_pclone_dic, control_dic):
+def fs_build_SoftwareLists_databases(PATHS, settings, machines, machines_render, main_pclone_dic, control_dic):
     SL_dir_FN = FileName(settings['SL_hash_path'])
     log_debug('fs_build_SoftwareLists_index() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
 
@@ -2739,16 +2749,16 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
         SLData = fs_load_SL_XML(SL_path_FN.getPath())
         output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json')
         fs_write_JSON_file(output_FN.getPath(), SLData.roms)
-        output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_roms.json')
+        output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
         fs_write_JSON_file(output_FN.getPath(), SLData.SL_roms)
 
         # >> Add software list to catalog
         num_SL_with_ROMs += SLData.num_with_ROMs
         num_SL_with_CHDs += SLData.num_with_CHDs
-        SL = {'display_name' : SLData.display_name, 
-              'num_with_ROMs'    : SLData.num_with_ROMs,
-              'num_with_CHDs'    : SLData.num_with_CHDs,
-              'rom_DB_noext' : FN.getBase_noext()
+        SL = {'display_name'  : SLData.display_name, 
+              'num_with_ROMs' : SLData.num_with_ROMs,
+              'num_with_CHDs' : SLData.num_with_CHDs,
+              'rom_DB_noext'  : FN.getBase_noext()
         }
         SL_catalog_dic[FN.getBase_noext()] = SL
 
@@ -2757,7 +2767,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
         pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
     fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
 
-    # --- Make the SL ROM Audit databases ---
+    # --- Make the SL ROM/CHD unified Audit databases ---
     log_info('Building Software List ROM Audit database ...')
     pdialog_line1 = 'Building Software List ROM Audit database ...'
     pDialog.update(0, pdialog_line1)
@@ -2766,20 +2776,17 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
     for file in sorted(SL_file_list):
         # >> Filenames of the databases.
         FN = FileName(file)
-        SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_roms.json')
-        SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_audit_ROMs.json')
-        SL_CHD_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_audit_CHDs.json')
+        SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
+        SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_audit.json')
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
         SL_roms = fs_load_JSON_file(SL_ROMs_DB_FN.getPath())
 
         # >> Traverse list of ROMs and make a list of ROMs and CHDs. Also compute ROM locations.
         SL_Audit_ROMs = {}
-        SL_Audit_CHDs = {}
         SL_name = FN.getBase_noext()
         for SL_rom in SL_roms:
             SL_Audit_ROMs[SL_rom] = []
-            SL_Audit_CHDs[SL_rom] = []
 
             # >> Iterate Parts in a SL ROM.
             rom_db_list = SL_roms[SL_rom]
@@ -2794,7 +2801,7 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
                         for rom_dic in dataarea_dic['roms']:
                             rom_audit_dic = {'type' : '', 'name' : '', 'size' : '', 'crc' : '',
                                              'location' : ''}
-                            rom_audit_dic['type']     = 'ROM'
+                            rom_audit_dic['type']     = ROM_TYPE_ROM
                             rom_audit_dic['name']     = rom_dic['name']
                             rom_audit_dic['size']     = rom_dic['size']
                             rom_audit_dic['crc']      = rom_dic['crc']
@@ -2807,14 +2814,13 @@ def fs_build_SoftwareLists_index(PATHS, settings, machines, machines_render, mai
                         # >> Iterate DISKs in diskarea
                         for disk_dic in diskarea_dic['disks']:
                             disk_audit_dic = {'type' : '', 'name' : '', 'sha1' : '', 'location' : ''}
-                            disk_audit_dic['type']     = 'DISK'
+                            disk_audit_dic['type']     = ROM_TYPE_DISK
                             disk_audit_dic['name']     = disk_dic['name']
                             disk_audit_dic['sha1']     = disk_dic['sha1']
                             disk_audit_dic['location'] = SL_name + '/' + SL_rom + '/' + disk_dic['name'] + '.chd'
-                            SL_Audit_CHDs[SL_rom].append(disk_audit_dic)
+                            SL_Audit_ROMs[SL_rom].append(disk_audit_dic)
         # >> Save databases.
         fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs)
-        fs_write_JSON_file(SL_CHD_Audit_DB_FN.getPath(), SL_Audit_CHDs)
         # >> Update progress
         processed_files += 1
         pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
