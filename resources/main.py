@@ -79,21 +79,21 @@ class AML_Paths:
         self.ROM_SET_CHD_ARCHIVES_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Set_CHD_archives.json')
 
         # >> DAT indices and databases.
-        self.HISTORY_IDX_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_History_index.json')
-        self.HISTORY_DB_PATH      = PLUGIN_DATA_DIR.pjoin('DAT_History_DB.json')
-        self.MAMEINFO_IDX_PATH    = PLUGIN_DATA_DIR.pjoin('DAT_MAMEInfo_index.json')
-        self.MAMEINFO_DB_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_MAMEInfo_DB.json')
-        self.GAMEINIT_IDX_PATH    = PLUGIN_DATA_DIR.pjoin('DAT_GameInit_index.json')
-        self.GAMEINIT_DB_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_GameInit_DB.json')
-        self.COMMAND_IDX_PATH     = PLUGIN_DATA_DIR.pjoin('DAT_Command_index.json')
-        self.COMMAND_DB_PATH      = PLUGIN_DATA_DIR.pjoin('DAT_Command_DB.json')
+        self.HISTORY_IDX_PATH  = PLUGIN_DATA_DIR.pjoin('DAT_History_index.json')
+        self.HISTORY_DB_PATH   = PLUGIN_DATA_DIR.pjoin('DAT_History_DB.json')
+        self.MAMEINFO_IDX_PATH = PLUGIN_DATA_DIR.pjoin('DAT_MAMEInfo_index.json')
+        self.MAMEINFO_DB_PATH  = PLUGIN_DATA_DIR.pjoin('DAT_MAMEInfo_DB.json')
+        self.GAMEINIT_IDX_PATH = PLUGIN_DATA_DIR.pjoin('DAT_GameInit_index.json')
+        self.GAMEINIT_DB_PATH  = PLUGIN_DATA_DIR.pjoin('DAT_GameInit_DB.json')
+        self.COMMAND_IDX_PATH  = PLUGIN_DATA_DIR.pjoin('DAT_Command_index.json')
+        self.COMMAND_DB_PATH   = PLUGIN_DATA_DIR.pjoin('DAT_Command_DB.json')
 
-        # >> Disabled. There are global properties for this.
+        # >> Disabled. Now there are global properties for this.
         # self.MAIN_PROPERTIES_PATH = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
 
         # >> Catalogs
-        self.CATALOG_COUNT_PATH                 = PLUGIN_DATA_DIR.pjoin('catalog_count.json')
         self.CATALOG_DIR                        = PLUGIN_DATA_DIR.pjoin('catalogs')
+        self.CATALOG_COUNT_PATH                 = self.CATALOG_DIR.pjoin('catalog_count.json')
         self.CATALOG_MAIN_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_main_parents.json')
         self.CATALOG_MAIN_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_main_all.json')
         self.CATALOG_BINARY_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_binary_parents.json')
@@ -130,30 +130,36 @@ class AML_Paths:
         self.CATALOG_SL_ALL_PATH                = self.CATALOG_DIR.pjoin('catalog_SL_all.json')
 
         # >> Distributed hashed database
-        self.MAIN_DB_HASH_DIR                   = PLUGIN_DATA_DIR.pjoin('db_main_hash')
-        self.ROMS_DB_HASH_DIR                   = PLUGIN_DATA_DIR.pjoin('db_ROMs_hash')
+        self.MAIN_DB_HASH_DIR      = PLUGIN_DATA_DIR.pjoin('db_Main_hash')
+        self.ROMS_DB_HASH_DIR      = PLUGIN_DATA_DIR.pjoin('db_ROMs_hash')
+        self.ROM_AUDIT_DB_HASH_DIR = PLUGIN_DATA_DIR.pjoin('db_ROM_Audit_hash')
 
         # >> Software Lists
-        self.SL_DB_DIR                   = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')
-        self.SL_INDEX_PATH               = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
-        self.SL_MACHINES_PATH            = PLUGIN_DATA_DIR.pjoin('SoftwareLists_machines.json')
-        self.SL_PCLONE_DIC_PATH          = PLUGIN_DATA_DIR.pjoin('SoftwareLists_pclone_dic.json')
+        self.SL_DB_DIR             = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')
+        self.SL_INDEX_PATH         = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
+        self.SL_MACHINES_PATH      = PLUGIN_DATA_DIR.pjoin('SoftwareLists_machines.json')
+        self.SL_PCLONE_DIC_PATH    = PLUGIN_DATA_DIR.pjoin('SoftwareLists_pclone_dic.json')
         # >> Disabled. There are global properties
-        # self.SL_MACHINES_PROP_PATH       = PLUGIN_DATA_DIR.pjoin('SoftwareLists_properties.json')
+        # self.SL_MACHINES_PROP_PATH = PLUGIN_DATA_DIR.pjoin('SoftwareLists_properties.json')
 
         # >> Favourites
-        self.FAV_MACHINES_PATH           = PLUGIN_DATA_DIR.pjoin('Favourite_Machines.json')
-        self.FAV_SL_ROMS_PATH            = PLUGIN_DATA_DIR.pjoin('Favourite_SL_ROMs.json')
+        self.FAV_MACHINES_PATH = PLUGIN_DATA_DIR.pjoin('Favourite_Machines.json')
+        self.FAV_SL_ROMS_PATH  = PLUGIN_DATA_DIR.pjoin('Favourite_SL_ROMs.json')
 
-        # >> Reports
+        # >> ROM/CHD scanner reports. These reports show missing ROM/CHDs only.
         self.REPORTS_DIR                        = PLUGIN_DATA_DIR.pjoin('reports')
-        self.REPORT_MAME_SCAN_ROM_MACHINES_PATH = self.REPORTS_DIR.pjoin('Report_ROM_machine_scanner.txt')
-        self.REPORT_MAME_SCAN_ROM_ARCHIVES_PATH = self.REPORTS_DIR.pjoin('Report_ROM_archives_scanner.txt')
-        self.REPORT_MAME_SCAN_CHD_MACHINES_PATH = self.REPORTS_DIR.pjoin('Report_CHD_machine_scanner.txt')
-        self.REPORT_MAME_SCAN_CHD_ARCHIVES_PATH = self.REPORTS_DIR.pjoin('Report_CHD_archives_scanner.txt')
-        self.REPORT_MAME_SCAN_SAMP_PATH         = self.REPORTS_DIR.pjoin('Report_Samples_scanner.txt')
-        self.REPORT_SL_SCAN_ROMS_PATH           = self.REPORTS_DIR.pjoin('Report_SL_ROM_scanner.txt')
-        self.REPORT_SL_SCAN_CHDS_PATH           = self.REPORTS_DIR.pjoin('Report_SL_CHD_scanner.txt')
+        self.REPORT_MAME_SCAN_MACHINE_ARCH_PATH = self.REPORTS_DIR.pjoin('Report_scanner_MAME_machine_archives.txt')
+        self.REPORT_MAME_SCAN_ROM_LIST_PATH     = self.REPORTS_DIR.pjoin('Report_scanner_MAME_ROM_list.txt')
+        self.REPORT_MAME_SCAN_CHD_LIST_PATH     = self.REPORTS_DIR.pjoin('Report_scanner_MAME_CHD_list.txt')
+        self.REPORT_MAME_SCAN_SAMP_PATH         = self.REPORTS_DIR.pjoin('Report_scanner_Samples.txt')
+
+        self.REPORT_SL_SCAN_ROMS_PATH           = self.REPORTS_DIR.pjoin('Report_scanner_SL_soft_archives.txt')
+        self.REPORT_SL_SCAN_CHDS_PATH           = self.REPORTS_DIR.pjoin('Report_scanner_SL_ROM_list.txt')
+        self.REPORT_SL_SCAN_ROMS_PATH           = self.REPORTS_DIR.pjoin('Report_scanner_SL_CHD_list.txt')
+
+        # >> Asset scanner reports. These reports show have and missing assets.
+        
+
         # >> Audit report
         self.REPORT_MAME_AUDIT_GOOD_PATH       = self.REPORTS_DIR.pjoin('Report_MAME_audit_good.txt')
         self.REPORT_MAME_AUDIT_ERRORS_PATH     = self.REPORTS_DIR.pjoin('Report_MAME_audit_errors.txt')
@@ -3234,16 +3240,17 @@ class Main:
             pDialog.update(33)
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
             pDialog.update(50)
-            machine_rom_sets = fs_load_JSON_file(PATHS.ROM_SET_MACHINES_DB_PATH.getPath())
+            machine_archives_dic = fs_load_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
             pDialog.update(66)
-            main_rom_list = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath())
+            ROM_archive_list = fs_load_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath())
             pDialog.update(83)
-            main_chd_list = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath())
+            CHD_archive_list = fs_load_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath())
             pDialog.update(100)
             pDialog.close()
 
             fs_scan_MAME_ROMs(PATHS, self.settings,
-                              control_dic, machines, machines_render, machine_rom_sets, main_rom_list, main_chd_list,
+                              control_dic, machines, machines_render,
+                              machine_archives_dic, ROM_archive_list, CHD_archive_list,
                               ROM_path_FN, CHD_path_FN, Samples_path_FN,
                               scan_CHDs, scan_Samples)
 
@@ -3266,6 +3273,9 @@ class Main:
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             pDialog.update(100)
             pDialog.close()
+
+            # >> Regenerate Main hashed database
+            
 
             # --- Software Lists ------------------------------------------------------------------
             # >> Abort if SL hash path not configured.
@@ -3695,16 +3705,17 @@ class Main:
                 pDialog.update(33)
                 machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
                 pDialog.update(50)
-                machine_rom_sets = fs_load_JSON_file(PATHS.ROM_SET_MACHINES_DB_PATH.getPath())
+                machine_archives_dic = fs_load_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
                 pDialog.update(66)
-                main_rom_list = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_R_DB_PATH.getPath())
+                ROM_archive_list = fs_load_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath())
                 pDialog.update(83)
-                main_chd_list = fs_load_JSON_file(PATHS.ROM_SET_ARCHIVES_C_DB_PATH.getPath())
+                CHD_archive_list = fs_load_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath())
                 pDialog.update(100)
                 pDialog.close()
 
                 fs_scan_MAME_ROMs(PATHS, self.settings,
-                                  control_dic, machines, machines_render, machine_rom_sets, main_rom_list, main_chd_list,
+                                  control_dic, machines, machines_render,
+                                  machine_archives_dic, ROM_archive_list, CHD_archive_list,
                                   ROM_path_FN, CHD_path_FN, Samples_path_FN,
                                   scan_CHDs, scan_Samples)
                 kodi_busydialog_ON()
