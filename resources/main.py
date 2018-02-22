@@ -2134,15 +2134,12 @@ class Main:
         elif action == ACTION_VIEW_SL_ROM_AUDIT_ROMS:
             SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
             # SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_roms.json')
-            SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_audit_ROMs.json')
-            SL_CHD_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_audit_CHDs.json')
+            SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
 
             roms = fs_load_JSON_file(SL_DB_FN.getPath())
-            roms_audit_db = fs_load_JSON_file(SL_ROM_Audit_DB_FN.getPath())
-            chds_audit_db = fs_load_JSON_file(SL_CHD_Audit_DB_FN.getPath())
+            rom_audit_db = fs_load_JSON_file(SL_ROM_Audit_DB_FN.getPath())
             rom = roms[SL_ROM]
-            rom_db_list = roms_audit_db[SL_ROM]
-            chd_db_list = chds_audit_db[SL_ROM]
+            rom_db_list = rom_audit_db[SL_ROM]
 
             info_text = []
             log_debug(unicode(rom))
@@ -2156,15 +2153,14 @@ class Main:
             table_str = [    ['left', 'left', 'left',     'left'] ]
             table_str.append(['Type', 'Size', 'CRC/SHA1', 'Location'])
             for rom_dic in rom_db_list:
-                table_row = [rom_dic['type'], # rom_dic['name'],
-                             rom_dic['size'], rom_dic['crc'], rom_dic['location']]
-                table_str.append(table_row)
-            for chd_dic in chd_db_list:
-                sha1_srt = chd_dic['sha1'][0:8]
-                table_row = [chd_dic['type'], # chd_dic['name'],
-                             '', sha1_srt, chd_dic['location']]
-                table_str.append(table_row)
-
+                if rom_dic['type'] == ROM_TYPE_DISK:
+                    table_row = [rom_dic['type'], # rom_dic['name'],
+                                 '', rom_dic['sha1'][0:8], rom_dic['location']]
+                    table_str.append(table_row)
+                else:
+                    table_row = [rom_dic['type'], # rom_dic['name'],
+                                 rom_dic['size'], rom_dic['crc'], rom_dic['location']]
+                    table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
             window_title = 'Software List ROM List (Audit DB)'
