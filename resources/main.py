@@ -2251,20 +2251,15 @@ class Main:
             log_debug('_command_context_view() SL_ROM {0}\n'.format(SL_ROM))
 
             SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
-            # SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_roms.json')
-            SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_audit_ROMs.json')
-            SL_CHD_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_audit_CHDs.json')
+            SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
 
             roms = fs_load_JSON_file(SL_DB_FN.getPath())
             roms_audit_db = fs_load_JSON_file(SL_ROM_Audit_DB_FN.getPath())
-            chds_audit_db = fs_load_JSON_file(SL_CHD_Audit_DB_FN.getPath())
             rom = roms[SL_ROM]
             rom_db_list = roms_audit_db[SL_ROM]
-            chd_db_list = chds_audit_db[SL_ROM]
 
             # --- Open ZIP file and check CRC32 ---
-            mame_SL_audit_machine_roms(self.settings, rom_db_list)
-            mame_SL_audit_machine_chds(self.settings, chd_db_list)
+            mame_SL_audit_machine(self.settings, rom_db_list)
 
             info_text = []
             info_text.append('[COLOR violet]SL_name[/COLOR] {0}\n'.format(SL_name))
@@ -2279,16 +2274,16 @@ class Main:
             table_str = [    ['right', 'right', 'left',     'left',     'left'] ]
             table_str.append(['Type',  'Size',  'CRC/SHA1', 'Location', 'Status'])
             for m_rom in rom_db_list:
-                table_row = [m_rom['type'], # m_rom['name'],
-                             m_rom['size'], m_rom['crc'], m_rom['location'],
-                             m_rom['status_colour']]
-                table_str.append(table_row)
-            for m_chd in chd_db_list:
-                sha1_srt = m_chd['sha1'][0:8]
-                table_row = [m_chd['type'], # m_chd['name'],
-                             '', sha1_srt, m_chd['location'],
-                             m_chd['status_colour']]
-                table_str.append(table_row)
+                if m_rom['type'] == ROM_TYPE_DISK:
+                    table_row = [m_rom['type'], # m_rom['name'],
+                                 '', m_rom['sha1'][0:8], m_rom['location'],
+                                 m_rom['status_colour']]
+                    table_str.append(table_row)
+                else:
+                    table_row = [m_rom['type'], # m_rom['name'],
+                                 m_rom['size'], m_rom['crc'], m_rom['location'],
+                                 m_rom['status_colour']]
+                    table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
             window_title = 'SL {0} Software {1} ROM audit'.format(SL_name, SL_ROM)
