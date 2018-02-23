@@ -1529,10 +1529,9 @@ class Main:
         ACTION_VIEW_DB_STATS           = 700
         ACTION_VIEW_EXEC_OUTPUT        = 800
         ACTION_VIEW_REPORT_SCANNER     = 900
-        ACTION_VIEW_REPORT_ASSETS      = 1000
-        ACTION_VIEW_REPORT_AUDIT       = 1100
-        ACTION_AUDIT_MAME_MACHINE      = 1200
-        ACTION_AUDIT_SL_MACHINE        = 1300
+        ACTION_VIEW_REPORT_AUDIT       = 1000
+        ACTION_AUDIT_MAME_MACHINE      = 1100
+        ACTION_AUDIT_SL_MACHINE        = 1200
 
         # --- Determine if we are in a category, launcher or ROM ---
         log_debug('_command_context_view() machine_name "{0}"'.format(machine_name))
@@ -1558,7 +1557,6 @@ class Main:
             d_list = [
               'View database statistics',
               'View scanner reports ...',
-              'View asset/artwork reports ...',
               'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
             ]
@@ -1569,7 +1567,6 @@ class Main:
               'View MAME machine ROMs (Audit DB)',
               'Audit MAME machine ROMs',
               'View database statistics',
-              'View scanner reports ...',
               'View asset/artwork reports ...',
               'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
@@ -1581,7 +1578,6 @@ class Main:
               'View Software List ROMs (Audit DB)',
               'Audit Software List ROMs',
               'View database statistics',
-              'View scanner reports ...',
               'View asset/artwork reports ...',
               'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
@@ -1596,9 +1592,8 @@ class Main:
         if view_type == VIEW_SIMPLE:
             if   selected_value == 0: action = ACTION_VIEW_DB_STATS
             elif selected_value == 1: action = ACTION_VIEW_REPORT_SCANNER
-            elif selected_value == 2: action = ACTION_VIEW_REPORT_ASSETS
-            elif selected_value == 3: action = ACTION_VIEW_REPORT_AUDIT
-            elif selected_value == 4: action = ACTION_VIEW_EXEC_OUTPUT
+            elif selected_value == 2: action = ACTION_VIEW_REPORT_AUDIT
+            elif selected_value == 3: action = ACTION_VIEW_EXEC_OUTPUT
             else:
                 kodi_dialog_OK('view_type == VIEW_SIMPLE and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -1610,9 +1605,8 @@ class Main:
             elif selected_value == 3: action = ACTION_AUDIT_MAME_MACHINE
             elif selected_value == 4: action = ACTION_VIEW_DB_STATS
             elif selected_value == 5: action = ACTION_VIEW_REPORT_SCANNER
-            elif selected_value == 6: action = ACTION_VIEW_REPORT_ASSETS
-            elif selected_value == 7: action = ACTION_VIEW_REPORT_AUDIT
-            elif selected_value == 8: action = ACTION_VIEW_EXEC_OUTPUT
+            elif selected_value == 6: action = ACTION_VIEW_REPORT_AUDIT
+            elif selected_value == 7: action = ACTION_VIEW_EXEC_OUTPUT
             else:
                 kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -1624,9 +1618,8 @@ class Main:
             elif selected_value == 3: action = ACTION_AUDIT_SL_MACHINE
             elif selected_value == 4: action = ACTION_VIEW_DB_STATS
             elif selected_value == 5: action = ACTION_VIEW_REPORT_SCANNER
-            elif selected_value == 6: action = ACTION_VIEW_REPORT_ASSETS
-            elif selected_value == 7: action = ACTION_VIEW_REPORT_AUDIT
-            elif selected_value == 8: action = ACTION_VIEW_EXEC_OUTPUT
+            elif selected_value == 6: action = ACTION_VIEW_REPORT_AUDIT
+            elif selected_value == 7: action = ACTION_VIEW_EXEC_OUTPUT
             else:
                 kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -2309,7 +2302,9 @@ class Main:
                                  'View MAME missing Samples',
                                  'View Software Lists missing archives',
                                  'View Software Lists missing ROM list',
-                                 'View Software Lists missing CHD list'])
+                                 'View Software Lists missing CHD list',
+                                 'View MAME asset report',
+                                 'View Software Lists asset report'])
             if type_sub < 0: return
 
             # --- View MAME machine ROM scanner report ---
@@ -2382,31 +2377,25 @@ class Main:
                     info_text = myfile.read()
                     self._display_text_window('Software Lists missing CHD list scanner report', info_text)
 
-        # --- View asset/artwork scanner reports ---
-        elif action == ACTION_VIEW_REPORT_ASSETS:
-            d = xbmcgui.Dialog()
-            type_sub = d.select('View asset/artwork reports',
-                                ['View MAME asset statistics',
-                                 'View Software Lists asset statistics',
-                                 'View MAME asset report',
-                                 'View Software Lists asset report'])
-            if type_sub < 0: return
-
-            # --- View MAME asset statistics ---
-            if type_sub == 0:
-                kodi_dialog_OK('MAME asset statistics not coded yet. Sorry.')
-
-            # --- View Software Lists statistics ---
-            elif type_sub == 1:
-                kodi_dialog_OK('View Software Lists statistics not coded yet. Sorry.')
-
             # --- View MAME asset report ---
-            elif type_sub == 2:
-                kodi_dialog_OK('View MAME asset report not coded yet. Sorry.')
+            elif type_sub == 7:
+                if not PATHS.REPORT_MAME_ASSETS_PATH.exists():
+                    kodi_dialog_OK('MAME asset report report not found. '
+                                   'Please scan MAME assets and try again.')
+                    return
+                with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'r') as myfile:
+                    info_text = myfile.read()
+                    self._display_text_window('MAME asset report', info_text)
 
             # --- View Software Lists asset report ---
-            elif type_sub == 3:
-                kodi_dialog_OK('View Software Lists asset report not coded yet. Sorry.')
+            elif type_sub == 8:
+                if not PATHS.REPORT_SL_ASSETS_PATH.exists():
+                    kodi_dialog_OK('Software Lists asset report not found. '
+                                   'Please scan Software List assets and try again.')
+                    return
+                with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'r') as myfile:
+                    info_text = myfile.read()
+                    self._display_text_window('Software Lists asset report', info_text)
 
         # --- View audit reports ---
         elif action == ACTION_VIEW_REPORT_AUDIT:
