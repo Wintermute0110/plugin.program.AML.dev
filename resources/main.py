@@ -1470,6 +1470,8 @@ class Main:
           'View Gameinit DAT ({0})'.format(Gameinit_str),
           'View Command DAT ({0})'.format(Command_str),
           'Display brother machines',
+          'Display machines with same Genre',
+          'Display machines by same Manufacturer'
         ]
         s_value = xbmcgui.Dialog().select('View', d_list)
         if s_value < 0: return
@@ -1507,10 +1509,37 @@ class Main:
             window_title = 'Command DAT for machine {0}'.format(machine_name)
             info_text = DAT_dic[machine_name]
             self._display_text_window(window_title, info_text)
+
         # --- Display brother machines (same driver) ---
-        # catalog = 'Driver', 
         elif s_value == 4:
-            kodi_dialog_OK('"Display brother machines" not coded yet, sorry.')
+            # >> Load Main hashed database
+            machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+            sourcefile_str = machine['sourcefile']
+
+            # --- Replace current window by search window ---
+            # When user press Back in search window it returns to the original window (either showing
+            # launcher in a cateogory or displaying ROMs in a launcher/virtual launcher).
+            #
+            # NOTE ActivateWindow() / RunPlugin() / RunAddon() seem not to work here
+            url = self._misc_url_2_arg('catalog', 'Driver', 'category', sourcefile_str)
+            log_debug('Container.Update URL {0}'.format(url))
+            xbmc.executebuiltin('Container.Update({0})'.format(url))
+
+        # --- Display machines with same Genre ---
+        elif s_value == 5:
+            machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+            genre_str = machine['genre']
+            url = self._misc_url_2_arg('catalog', 'Genre', 'category', genre_str)
+            log_debug('Container.Update URL {0}'.format(url))
+            xbmc.executebuiltin('Container.Update({0})'.format(url))
+
+        # --- Display machines by same Manufacturer ---
+        elif s_value == 6:
+            machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+            manufacturer_str = machine['manufacturer']
+            url = self._misc_url_2_arg('catalog', 'Manufacturer', 'category', manufacturer_str)
+            log_debug('Container.Update URL {0}'.format(url))
+            xbmc.executebuiltin('Container.Update({0})'.format(url))
 
     # ---------------------------------------------------------------------------------------------
     # Information display
