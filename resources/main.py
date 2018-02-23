@@ -3183,7 +3183,7 @@ class Main:
             pDialog.update(100)
             pDialog.close()
 
-            # --- Build everything ---
+            # --- Build and save everything ---
             fs_build_ROM_audit_databases(PATHS, self.settings, control_dic, machines, machines_render, devices_db_dic, machine_roms)
             fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic)
             fs_build_SoftwareLists_databases(PATHS, self.settings, machines, machines_render, main_pclone_dic, control_dic)

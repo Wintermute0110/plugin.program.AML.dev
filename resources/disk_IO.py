@@ -282,21 +282,14 @@ def fs_new_control_dic():
         'ver_bestgames' : 'Unknown. MAME database not built',
         'ver_series'    : 'Unknown. MAME database not built',
 
+        # Basic stats
         'stats_processed_machines' : 0,
         'stats_parents'            : 0,
         'stats_clones'             : 0,
-        'stats_devices'            : 0,
-        'stats_devices_parents'    : 0,
-        'stats_devices_clones'     : 0,
-        'stats_runnable'           : 0,
+        'stats_runnable'           : 0, # Excluding devices (devices are not runnable)
         'stats_runnable_parents'   : 0,
         'stats_runnable_clones'    : 0,
-        'stats_samples'            : 0,
-        'stats_samples_parents'    : 0,
-        'stats_samples_clones'     : 0,
-        'stats_BIOS'               : 0,
-        'stats_BIOS_parents'       : 0,
-        'stats_BIOS_clones'        : 0,
+        # Main filters
         'stats_coin'               : 0,
         'stats_coin_parents'       : 0,
         'stats_coin_clones'        : 0,
@@ -309,52 +302,121 @@ def fs_new_control_dic():
         'stats_dead'               : 0,
         'stats_dead_parents'       : 0,
         'stats_dead_clones'        : 0,
+        'stats_devices'            : 0,
+        'stats_devices_parents'    : 0,
+        'stats_devices_clones'     : 0,
+        # Binary filters
+        'stats_BIOS'               : 0,
+        'stats_BIOS_parents'       : 0,
+        'stats_BIOS_clones'        : 0,
+        'stats_samples'            : 0,
+        'stats_samples_parents'    : 0,
+        'stats_samples_clones'     : 0,
 
-        # --- Filed in when building SL index ---
+        # --- Filed in when building the ROM audit databases ---
         # Number of ROM ZIP files in the Merged, Split or Non-merged sets.
-        'MAME_ZIP_files' : 0,
+        'audit_MAME_ZIP_files' : 0,
         # Number of CHD files in the Merged, Split or Non-merged sets.
-        'MAME_CHD_files' : 0,
+        'audit_MAME_CHD_files' : 0,
 
+        # Number of machines that require one or more ROM ZIP archives to run
+        'audit_machine_archives_ROM'         : 0,
+        'audit_machine_archives_ROM_parents' : 0,
+        'audit_machine_archives_ROM_clones'  : 0,
+        # Number of machines that require one or more CHDs to run
+        'audit_machine_archives_CHD'         : 0,
+        'audit_machine_archives_CHD_parents' : 0,
+        'audit_machine_archives_CHD_clones'  : 0,
+        # ROM less machines do not need any ZIP archive or CHD to run
+        'audit_archive_less'                 : 0,
+        'audit_archive_less_parents'         : 0,
+        'audit_archive_less_clones'          : 0,
+
+        # --- Filed in when building the SL databases ---
         # Number of SL databases (equal to the number of XML files).
-        'SL_XML_files' : 0,
-        'SL_with_ROMs' : 0,
-        'SL_with_CHDs' : 0,
+        'stats_SL_XML_files'      : 0,
+        'stats_SL_software_items' : 0,
+        # Number of SL items that require one or more ROM ZIP archives to run
+        'stats_SL_machine_archives_ROM'      : 0,
+        # Number of SL items that require one or more CHDs to run
+        'stats_SL_machine_archives_CHD'      : 0,
 
         # --- Filed in by the MAME ROM/CHD/Samples scanner ---
-        # Number of ZIP files, including devices.
-        'scan_ZIP_files_total'   : 0,
-        'scan_ZIP_files_have'    : 0,
-        'scan_ZIP_files_missing' : 0,
+        # >> ROM_Set_ROM_archives.json database
+        # Number of ROM ZIP files, including devices.
+        'scan_ROM_ZIP_files'   : 0,
+        'scan_ROM_ZIP_files_have'    : 0,
+        'scan_ROM_ZIP_files_missing' : 0,
+
+        # >> ROM_Set_CHD_archives.json database
         # Number of CHD files.
-        'scan_CHD_files_total'   : 0,
+        'scan_CHD_files'   : 0,
         'scan_CHD_files_have'    : 0,
         'scan_CHD_files_missing' : 0,
 
-        # Number of machines that need a ROM ZIP file to run, excluding devices.
-        'scan_ROM_machines_total'   : 0,
+        # >> ROM_Set_machine_archives.json database
+        # Number of runnable machines that need one or more ROM ZIP file to run (excluding devices).
+        'scan_machine_archives_ROM_total'   : 0,
         # Number of machines you can run, excluding devices.
-        'scan_ROM_machines_have'    : 0,
+        'scan_machine_archives_ROM_have'    : 0,
         # Number of machines you cannot run, excluding devices.
-        'scan_ROM_machines_missing' : 0,
-        # Number of machines that need a CHD or CHDs to run.
-        'scan_CHD_machines_total'   : 0,
-        # Number of machines with CHDs you can run.
-        'scan_CHD_machines_have'    : 0,
-        # Number of machines with CHDs you cannot run.
-        'scan_CHD_machines_missing' : 0,
+        'scan_machine_archives_ROM_missing' : 0,
 
+        # Number of machines that need one or more CHDs to run.
+        'scan_machine_archives_CHD'   : 0,
+        # Number of machines with CHDs you can run.
+        'scan_machine_archives_CHD_have'    : 0,
+        # Number of machines with CHDs you cannot run.
+        'scan_machine_archives_CHD_missing' : 0,
+
+        # >> Samples is not reliable yet
         'scan_Samples_have'    : 0,
         'scan_Samples_total'   : 0,
         'scan_Samples_missing' : 0,
 
-        # --- Filed in by the SL ROM scanner ---
-        'scan_SL_ROMs_have'    : 0,
-        'scan_SL_ROMs_total'   : 0,
-        'scan_SL_ROMs_missing' : 0,
-        'scan_SL_CHDs_have'    : 0,
-        'scan_SL_CHDs_total'   : 0,
-        'scan_SL_CHDs_missing' : 0,
+        # --- Filed in by the SL ROM/CHD scanner ---
+        'scan_software_archives_ROM_total'   : 0,
+        'scan_software_archives_ROM_have'    : 0,
+        'scan_software_archives_ROM_missing' : 0,
+        'scan_software_archives_CHD_total'   : 0,
+        'scan_software_archives_CHD_have'    : 0,
+        'scan_software_archives_CHD_missing' : 0,
+
+        # --- Filed in by the MAME asset scanner ---
+        'assets_num_MAME_machines'  : 0,
+        'assets_cabinets_have'      : 0,
+        'assets_cabinets_missing'   : 0,
+        'assets_cpanels_have'       : 0,
+        'assets_cpanels_missing'    : 0,
+        'assets_flyers_have'        : 0,
+        'assets_flyers_missing'     : 0,
+        'assets_marquees_have'      : 0,
+        'assets_marquees_missing'   : 0,
+        'assets_PCBs_have'          : 0,
+        'assets_PCBs_missing'       : 0,
+        'assets_snaps_have'         : 0,
+        'assets_snaps_missing'      : 0,
+        'assets_titles_have'        : 0,
+        'assets_titles_missing'     : 0,
+        'assets_clearlogos_have'    : 0,
+        'assets_clearlogos_missing' : 0,
+        'assets_trailers_have'      : 0,
+        'assets_trailers_missing'   : 0,
+        'assets_manuals_have'       : 0,
+        'assets_manuals_missing'    : 0,
+
+        # --- Filed in by the SL asset scanner ---
+        'assets_SL_num_items'         : 0,
+        'assets_SL_titles_have'       : 0,
+        'assets_SL_titles_missing'    : 0,
+        'assets_SL_snaps_have'        : 0,
+        'assets_SL_snaps_missing'     : 0,
+        'assets_SL_boxfronts_have'    : 0,
+        'assets_SL_boxfronts_missing' : 0,
+        'assets_SL_trailers_have'     : 0,
+        'assets_SL_trailers_missing'  : 0,
+        'assets_SL_manuals_have'      : 0,
+        'assets_SL_manuals_missing'   : 0,
     }
 
     return C
@@ -1231,9 +1293,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['stats_processed_machines'] = stats_processed_machines
     control_dic['stats_parents']            = stats_parents
     control_dic['stats_clones']             = stats_clones
-    control_dic['stats_devices']            = stats_devices
-    control_dic['stats_devices_parents']    = stats_devices_parents
-    control_dic['stats_devices_clones']     = stats_devices_clones
     control_dic['stats_runnable']           = stats_runnable
     control_dic['stats_runnable_parents']   = stats_runnable_parents
     control_dic['stats_runnable_clones']    = stats_runnable_clones
@@ -1250,6 +1309,9 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['stats_dead']               = stats_dead
     control_dic['stats_dead_parents']       = stats_dead_parents
     control_dic['stats_dead_clones']        = stats_dead_clones
+    control_dic['stats_devices']            = stats_devices
+    control_dic['stats_devices_parents']    = stats_devices_parents
+    control_dic['stats_devices_clones']     = stats_devices_clones
     # >> Binary filters
     control_dic['stats_BIOS']               = stats_BIOS
     control_dic['stats_BIOS_parents']       = stats_BIOS_parents
@@ -1730,8 +1792,17 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
-    control_dic['MAME_ZIP_files'] = len(ROM_archive_list)
-    control_dic['MAME_CHD_files'] = len(CHD_archive_list)
+    control_dic['audit_MAME_ZIP_files'] = len(ROM_archive_list)
+    control_dic['audit_MAME_CHD_files'] = len(CHD_archive_list)
+    control_dic['audit_machine_archives_ROM'] = -1
+    control_dic['audit_machine_archives_ROM_parents'] = -1
+    control_dic['audit_machine_archives_ROM_clones'] = -1
+    control_dic['audit_machine_archives_CHD'] = -1
+    control_dic['audit_machine_archives_CHD_parents'] = -1
+    control_dic['audit_machine_archives_CHD_clones'] = -1
+    control_dic['audit_archive_less'] = -1
+    control_dic['audit_archive_less_parents'] = -1
+    control_dic['audit_archive_less_clones'] = -1
 
     # --- Save databases ---
     line1_str = 'Saving audit/scanner databases ...'
@@ -2905,9 +2976,10 @@ def fs_build_SoftwareLists_databases(PATHS, settings, machines, machines_render,
     # log_info('mame_properties_dic has {0} items'.format(len(mame_properties_dic)))
 
     # --- SL statistics and save control_dic ---
-    control_dic['SL_XML_files'] = total_SL_files
-    control_dic['SL_with_ROMs'] = num_SL_with_ROMs
-    control_dic['SL_with_CHDs'] = num_SL_with_CHDs
+    control_dic['stats_SL_XML_files']            = total_SL_files
+    control_dic['stats_SL_software_items']       = -1
+    control_dic['stats_SL_machine_archives_ROM'] = num_SL_with_ROMs
+    control_dic['stats_SL_machine_archives_CHD'] = num_SL_with_CHDs
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
@@ -3093,19 +3165,19 @@ def fs_scan_MAME_ROMs(PATHS, settings,
         for line in r_list: file.write(line.encode('utf-8'))
 
     # --- Update statistics ---
-    control_dic['scan_ZIP_files_total']      = scan_ZIP_files_total
-    control_dic['scan_ZIP_files_have']       = scan_ZIP_files_have
-    control_dic['scan_ZIP_files_missing']    = scan_ZIP_files_missing
-    control_dic['scan_CHD_files_total']      = scan_CHD_files_total
+    control_dic['scan_ROM_ZIP_files']      = scan_ZIP_files_total
+    control_dic['scan_ROM_ZIP_files_have']       = scan_ZIP_files_have
+    control_dic['scan_ROM_ZIP_files_missing']    = scan_ZIP_files_missing
+    control_dic['scan_CHD_files']      = scan_CHD_files_total
     control_dic['scan_CHD_files_have']       = scan_CHD_files_have
     control_dic['scan_CHD_files_missing']    = scan_CHD_files_missing
     
-    control_dic['scan_ROM_machines_total']   = scan_ROM_machines_total
-    control_dic['scan_ROM_machines_have']    = scan_ROM_machines_have
-    control_dic['scan_ROM_machines_missing'] = scan_ROM_machines_missing
-    control_dic['scan_CHD_machines_total']   = scan_CHD_machines_total
-    control_dic['scan_CHD_machines_have']    = scan_CHD_machines_have
-    control_dic['scan_CHD_machines_missing'] = scan_CHD_machines_missing
+    control_dic['scan_machine_archives_ROM']   = scan_ROM_machines_total
+    control_dic['scan_machine_archives_ROM_have']    = scan_ROM_machines_have
+    control_dic['scan_machine_archives_ROM_missing'] = scan_ROM_machines_missing
+    control_dic['scan_machine_archives_CHD']   = scan_CHD_machines_total
+    control_dic['scan_machine_archives_CHD_have']    = scan_CHD_machines_have
+    control_dic['scan_machine_archives_CHD_missing'] = scan_CHD_machines_missing
 
     control_dic['scan_Samples_have']    = scan_Samples_have
     control_dic['scan_Samples_missing'] = scan_Samples_missing
@@ -3213,12 +3285,12 @@ def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_d
     #     file.write('\n'.join(report_list).encode('utf-8'))
 
     # >> Update statistics
-    control_dic['SL_ROMs_have']    = SL_ROMs_have
-    control_dic['SL_ROMs_missing'] = SL_ROMs_missing
-    control_dic['SL_ROMs_total']   = SL_ROMs_total
-    control_dic['SL_CHDs_have']    = SL_CHDs_have
-    control_dic['SL_CHDs_missing'] = SL_CHDs_missing
-    control_dic['SL_CHDs_total']   = SL_CHDs_total
+    control_dic['scan_software_archives_ROM_total']    = SL_ROMs_have
+    control_dic['scan_software_archives_ROM_have'] = SL_ROMs_missing
+    control_dic['scan_software_archives_ROM_missing']   = SL_ROMs_total
+    control_dic['scan_software_archives_CHD_total']    = SL_CHDs_have
+    control_dic['scan_software_archives_CHD_have'] = SL_CHDs_missing
+    control_dic['scan_software_archives_CHD_missing']   = SL_CHDs_total
 
     # >> Save databases
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
@@ -3284,10 +3356,33 @@ def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
     with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(report_str_list).encode('utf-8'))
 
-    # >> Save asset database and control_dic
+    # >> Save asset database
     kodi_busydialog_ON()
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     kodi_busydialog_OFF()
+
+    # >> Update control_dic by assigment (will be saved in caller)
+    control_dic['assets_num_MAME_machines'] = -1
+    control_dic['assets_cabinets_have'] = -1
+    control_dic['assets_cabinets_missing'] = -1
+    control_dic['assets_cpanels_have'] = -1
+    control_dic['assets_cpanels_missing'] = -1
+    control_dic['assets_flyers_have'] = -1
+    control_dic['assets_flyers_missing'] = -1
+    control_dic['assets_marquees_have'] = -1
+    control_dic['assets_marquees_missing'] = -1
+    control_dic['assets_PCBs_have'] = -1
+    control_dic['assets_PCBs_missing'] = -1
+    control_dic['assets_snaps_have'] = -1
+    control_dic['assets_snaps_missing'] = -1
+    control_dic['assets_titles_have'] = -1
+    control_dic['assets_titles_missing'] = -1
+    control_dic['assets_clearlogos_have'] = -1
+    control_dic['assets_clearlogos_missing'] = -1
+    control_dic['assets_trailers_have'] = -1
+    control_dic['assets_trailers_missing'] = -1
+    control_dic['assets_manuals_have'] = -1
+    control_dic['assets_manuals_missing'] = -1
 
 def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
     # >> Traverse Software List, check if ROM exists, update and save database
@@ -3361,7 +3456,18 @@ def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
     with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(report_str_list).encode('utf-8'))
 
-    # >> Save control_dic (with updated statistics)
+    # >> Update control_dic by assigment (will be saved in caller)
+    control_dic['assets_SL_num_items'] = -1
+    control_dic['assets_SL_titles_have'] = -1
+    control_dic['assets_SL_titles_missing'] = -1
+    control_dic['assets_SL_snaps_have'] = -1
+    control_dic['assets_SL_snaps_missing'] = -1
+    control_dic['assets_SL_boxfronts_have'] = -1
+    control_dic['assets_SL_boxfronts_missing'] = -1
+    control_dic['assets_SL_trailers_have'] = -1
+    control_dic['assets_SL_trailers_missing'] = -1
+    control_dic['assets_SL_manuals_have'] = -1
+    control_dic['assets_SL_manuals_missing'] = -1
 
 # -------------------------------------------------------------------------------------------------
 # Hashed databases. Useful when only one item in a big dictionary is required.
