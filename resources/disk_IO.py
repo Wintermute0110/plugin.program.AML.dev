@@ -3017,12 +3017,11 @@ def fs_scan_MAME_ROMs(PATHS, settings,
             scan_CHD_machines_total += 1
             has_chd_list = [False] * len(chd_list)
             for idx, chd_name in enumerate(chd_list):
-                archive_name = chd_name + '.chd'
-                CHD_FN = CHD_path_FN.pjoin(archive_name)
+                CHD_FN = CHD_path_FN.pjoin(chd_name)
                 if CHD_FN.exists():
                     has_chd_list[idx] = True
                 else:
-                    m_str_list.append('Missing CHD {0}'.format(archive_name))
+                    m_str_list.append('Missing CHD {0}'.format(chd_name))
             if all(has_chd_list):
                 CHD_flag = 'C'
                 scan_CHD_machines_have += 1
