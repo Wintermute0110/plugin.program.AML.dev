@@ -1776,8 +1776,8 @@ class Main:
                 info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(SL_ROM)
                 info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
                 info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
-                info_text += "[COLOR skyblue]num_disks[/COLOR]: {0}\n".format(rom['num_disks'])
-                info_text += "[COLOR skyblue]num_roms[/COLOR]: {0}\n".format(rom['num_roms'])
+                info_text += "[COLOR skyblue]hasCHDs[/COLOR]: {0}\n".format(unicode(rom['hasCHDs']))
+                info_text += "[COLOR skyblue]hasROMs[/COLOR]: {0}\n".format(unicode(rom['hasROMs']))
                 if rom['parts']:
                     for i, part in enumerate(rom['parts']):
                         info_text += "[COLOR lime]parts[/COLOR][{0}]:\n".format(i)
@@ -1798,10 +1798,10 @@ class Main:
                 info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
 
                 info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SL_name)
-                info_text += "[COLOR skyblue]chd_count[/COLOR]: {0}\n".format(SL_dic['chd_count'])
                 info_text += "[COLOR violet]display_name[/COLOR]: '{0}'\n".format(SL_dic['display_name'])
+                info_text += "[COLOR skyblue]num_with_CHDs[/COLOR]: {0}\n".format(unicode(SL_dic['num_with_CHDs']))
+                info_text += "[COLOR skyblue]num_with_ROMs[/COLOR]: {0}\n".format(unicode(SL_dic['num_with_ROMs']))
                 info_text += "[COLOR violet]rom_DB_noext[/COLOR]: '{0}'\n".format(SL_dic['rom_DB_noext'])
-                info_text += "[COLOR violet]rom_count[/COLOR]: '{0}'\n".format(SL_dic['rom_count'])
 
                 info_text += '\n[COLOR orange]Runnable by[/COLOR]\n'
                 for machine_dic in sorted(SL_machine_list):
@@ -1877,23 +1877,10 @@ class Main:
             info_text += t.format(control_dic['stats_processed_machines'],
                                   control_dic['stats_parents'], 
                                   control_dic['stats_clones'])
-            t = "Devices    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_devices'],
-                                  control_dic['stats_devices_parents'], 
-                                  control_dic['stats_devices_clones'])
             t = "Runnable   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['stats_runnable'],
                                   control_dic['stats_runnable_parents'], 
                                   control_dic['stats_runnable_clones'])
-            t = "Samples    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_samples'],
-                                  control_dic['stats_samples_parents'], 
-                                  control_dic['stats_samples_clones'])
-
-            t = "BIOS       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_BIOS'],
-                                  control_dic['stats_BIOS_parents'], 
-                                  control_dic['stats_BIOS_clones'])
             t = "Coin       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['stats_coin'],
                                   control_dic['stats_coin_parents'], 
@@ -1910,48 +1897,143 @@ class Main:
             info_text += t.format(control_dic['stats_dead'],
                                   control_dic['stats_dead_parents'], 
                                   control_dic['stats_dead_clones'])
+            t = "Devices    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['stats_devices'],
+                                  control_dic['stats_devices_parents'], 
+                                  control_dic['stats_devices_clones'])
+            # >> Binary filters
+            t = "BIOS       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['stats_BIOS'],
+                                  control_dic['stats_BIOS_parents'], 
+                                  control_dic['stats_BIOS_clones'])
+            t = "Samples    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['stats_samples'],
+                                  control_dic['stats_samples_parents'], 
+                                  control_dic['stats_samples_clones'])
 
+            info_text += '\n[COLOR orange]Software Lists item count[/COLOR]\n'
+            info_text += "SL files           {0:5d}\n".format(control_dic['stats_SL_XML_files'])
+            info_text += "SL software items  {0:5d}\n".format(control_dic['stats_SL_software_items'])
+            info_text += "SL items with ROMs {0:5d}\n".format(control_dic['stats_SL_machine_archives_ROM'])
+            info_text += "SL items with CHDs {0:5d}\n".format(control_dic['stats_SL_machine_archives_CHD'])
+
+            info_text += '\n[COLOR orange]ROM audit statistics[/COLOR]\n'
             rom_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_rom_set']]
             chd_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_chd_set']]
-            info_text += '\n[COLOR orange]ROM/CHD/SL files count[/COLOR]\n'
-            info_text += "Number of ROM ZIPs {0:5d} in the {1} set\n".format(control_dic['MAME_ZIP_files'], rom_set)
-            info_text += "Number of CHDs     {0:5d} in the {1} set\n".format(control_dic['MAME_CHD_files'], chd_set)
-            info_text += "Number of SL files {0:5d}\n".format(control_dic['SL_XML_files'])
-            info_text += "SL items with ROMs {0:5d}\n".format(control_dic['SL_with_ROMs'])
-            info_text += "SL items with CHDs {0:5d}\n".format(control_dic['SL_with_CHDs'])
+            info_text += "There are {0:5d} ROM ZIP archives in the {1} set\n".format(control_dic['audit_MAME_ZIP_files'], rom_set)
+            info_text += "There are {0:5d}     CHD archives in the {1} set\n".format(control_dic['audit_MAME_CHD_files'], chd_set)
+            t = "{0:5d} machines require ROM ZIPs {1:5d} ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['audit_machine_archives_ROM'],
+                                  control_dic['audit_machine_archives_ROM_parents'],
+                                  control_dic['audit_machine_archives_ROM_clones'])
+            t = "{0:5d} machines require CHDs     {1:5d} ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['audit_machine_archives_CHD'],
+                                  control_dic['audit_machine_archives_CHD_parents'],
+                                  control_dic['audit_machine_archives_CHD_clones'])
+            t = "{0:5d} machines require nothing  {1:5d} ({1:5d} Parents / {2:5d} Clones)\n"
+            info_text += t.format(control_dic['audit_archive_less'],
+                                  control_dic['audit_archive_less_parents'],
+                                  control_dic['audit_archive_less_clones'])
 
-            info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
-            t = "You have {0:5d} ZIP files out of    {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['scan_ZIP_files_have'],
-                                  control_dic['scan_ZIP_files_total'],
-                                  control_dic['scan_ZIP_files_missing'])
-            t = "You have {0:5d} CHDs out of         {1:5d} ({2:5d} missing)\n"
+            # >> Not coded yet.
+            # info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
+
+            info_text += '\n[COLOR orange]ROM scanner information[/COLOR]\n'
+            t = "You have {0:5d} ROM ZIP files out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['scan_ROM_ZIP_files_have'],
+                                  control_dic['scan_ROM_ZIP_files_total'],
+                                  control_dic['scan_ROM_ZIP_files_missing'])
+            t = "You have {0:5d} CHDs out of          {1:5d} ({2:5d} missing)\n"
             info_text += t.format(control_dic['scan_CHD_files_have'],
                                   control_dic['scan_CHD_files_total'],
                                   control_dic['scan_CHD_files_missing'])
-
-            t = "Can run  {0:5d} ROM machines out of {1:5d} ({2:5d} unrunnable machines)\n"
-            info_text += t.format(control_dic['scan_ROM_machines_have'],
-                                  control_dic['scan_ROM_machines_total'],
-                                  control_dic['scan_ROM_machines_missing'])
-            t = "Can run  {0:5d} CHD machines out of {1:5d} ({2:5d} unrunnable machines)\n"
-            info_text += t.format(control_dic['scan_CHD_machines_have'],
-                                  control_dic['scan_CHD_machines_total'],
-                                  control_dic['scan_CHD_machines_missing'])
-            info_text += '\n'
-
-            t = "You have {0:5d} Samples out of {1:5d} ({2:5d} missing)\n"
+            t = "Can run  {0:5d} ROM machines out of  {1:5d} ({2:5d} unrunnable machines)\n"
+            info_text += t.format(control_dic['scan_machine_archives_ROM_have'],
+                                  control_dic['scan_machine_archives_ROM_total'],
+                                  control_dic['scan_machine_archives_ROM_missing'])
+            t = "Can run  {0:5d} CHD machines out of  {1:5d} ({2:5d} unrunnable machines)\n"
+            info_text += t.format(control_dic['scan_machine_archives_CHD_have'],
+                                  control_dic['scan_machine_archives_CHD_total'],
+                                  control_dic['scan_machine_archives_CHD_missing'])
+            # >> Samples
+            t = "You have {0:5d} Samples out of       {1:5d} ({2:5d} missing)\n"
             info_text += t.format(control_dic['scan_Samples_have'],
                                   control_dic['scan_Samples_total'],
                                   control_dic['scan_Samples_missing'])
-            t = "You have {0:5d} SL ROMs out of {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['scan_SL_ROMs_have'],
-                                  control_dic['scan_SL_ROMs_total'],
-                                  control_dic['scan_SL_ROMs_missing'])
-            t = "You have {0:5d} SL CHDs out of {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['scan_SL_CHDs_have'],
-                                  control_dic['scan_SL_CHDs_total'],
-                                  control_dic['scan_SL_CHDs_missing'])
+            # >> SL scanner
+            t = "You have {0:5d} SL ROMs out of       {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['scan_software_archives_ROM_have'],
+                                  control_dic['scan_software_archives_ROM_total'],
+                                  control_dic['scan_software_archives_ROM_missing'])
+            t = "You have {0:5d} SL CHDs out of       {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['scan_software_archives_CHD_have'],
+                                  control_dic['scan_software_archives_CHD_total'],
+                                  control_dic['scan_software_archives_CHD_missing'])
+
+            info_text += '\n[COLOR orange]Asset scanner information[/COLOR]\n'
+            # >> MAME assets.
+            t = "You have {0:5d} MAME Cabinets   out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_cabinets_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_cabinets_missing'])
+            t = "You have {0:5d} MAME CPanels    out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_cpanels_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_cpanels_missing'])
+            t = "You have {0:5d} MAME Flyers     out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_flyers_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_flyers_missing'])
+            t = "You have {0:5d} MAME Marquees   out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_marquees_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_marquees_missing'])
+            t = "You have {0:5d} MAME PCBs       out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_PCBs_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_PCBs_missing'])
+            t = "You have {0:5d} MAME Snaps      out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_snaps_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_snaps_missing'])
+            t = "You have {0:5d} MAME Titles     out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_titles_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_titles_missing'])
+            t = "You have {0:5d} MAME Clearlogos out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_clearlogos_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_clearlogos_missing'])
+            t = "You have {0:5d} MAME Trailers   out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_trailers_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_trailers_missing'])
+            t = "You have {0:5d} MAME Manuals    out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_manuals_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_manuals_missing'])
+            # >> Software Lists
+            t = "You have {0:5d} SL Titles       out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_SL_titles_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_SL_titles_missing'])
+            t = "You have {0:5d} SL Snaps        out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_SL_snaps_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_SL_snaps_missing'])
+            t = "You have {0:5d} SL Boxfronts    out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_SL_boxfronts_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_SL_boxfronts_missing'])
+            t = "You have {0:5d} SL Trailers     out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_SL_trailers_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_SL_trailers_missing'])
+            t = "You have {0:5d} SL Manuals      out of {1:5d} ({2:5d} missing)\n"
+            info_text += t.format(control_dic['assets_SL_manuals_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_SL_manuals_missing'])
+
             self._display_text_window(window_title, info_text)
 
         # --- View MAME machine ROMs (ROMs database) ---
@@ -3166,27 +3248,30 @@ class Main:
 
             # --- Build all databases ---
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            fs_build_MAME_main_database(PATHS, self.settings, control_dic)
+            DB = fs_build_MAME_main_database(PATHS, self.settings, control_dic)
 
             # --- Load databases ---
-            pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
-            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(20)
-            machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(40)
-            devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
-            pDialog.update(60)
-            machine_roms = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
-            pDialog.update(80)
-            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            pDialog.update(100)
-            pDialog.close()
+            # pDialog = xbmcgui.DialogProgress()
+            # pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
+            # machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            # pDialog.update(20)
+            # machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            # pDialog.update(40)
+            # devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
+            # pDialog.update(60)
+            # machine_roms = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+            # pDialog.update(80)
+            # main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            # pDialog.update(100)
+            # pDialog.close()
 
             # --- Build and save everything ---
-            fs_build_ROM_audit_databases(PATHS, self.settings, control_dic, machines, machines_render, devices_db_dic, machine_roms)
-            fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic)
-            fs_build_SoftwareLists_databases(PATHS, self.settings, machines, machines_render, main_pclone_dic, control_dic)
+            fs_build_ROM_audit_databases(PATHS, self.settings, control_dic,
+                                         DB.machines, DB.machines_render, DB.devices_db_dic, DB.machine_roms)
+            fs_build_MAME_catalogs(PATHS,
+                                   DB.machines, DB.machines_render, DB.machine_roms, DB.main_pclone_dic)
+            fs_build_SoftwareLists_databases(PATHS, self.settings, control_dic,
+                                             DB.machines, DB.machines_render, DB.main_pclone_dic)
             kodi_notify('All databases built')
 
         # --- Scan everything ---
@@ -3261,7 +3346,8 @@ class Main:
                 kodi_dialog_OK('Asset directory does not exist. Aborting.')
                 do_MAME_asset_scan = False
 
-            if do_MAME_asset_scan: fs_scan_MAME_assets(PATHS, machines_render, Asset_path_FN)
+            if do_MAME_asset_scan:
+                fs_scan_MAME_assets(PATHS, control_dic, machines_render, Asset_path_FN)
 
             pDialog.create('Advanced MAME Launcher', 'Saving databases ... ')
             pDialog.update(0)
@@ -3272,7 +3358,7 @@ class Main:
             pDialog.close()
 
             # >> Regenerate Main hashed database
-            
+            fs_make_main_hashed_db(PATHS, machines, machines_render, pDialog)
 
             # --- Software Lists ------------------------------------------------------------------
             # >> Abort if SL hash path not configured.
@@ -3294,8 +3380,9 @@ class Main:
 
             # >> Load SL catalog
             SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())            
-            control_dic    = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            if do_SL_ROM_scan: fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_dir_FN)
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            if do_SL_ROM_scan:
+                fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_dir_FN)
 
             # >> Get assets directory. Abort if not configured/found.
             do_SL_asset_scan = True
@@ -3307,7 +3394,11 @@ class Main:
                 kodi_dialog_OK('Asset directory does not exist. Aborting.')
                 do_SL_asset_scan = False
 
-            if do_SL_asset_scan: fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN)
+            if do_SL_asset_scan: 
+                fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN)
+
+            # >> Save control_dic (has been updated in the scanner functions).
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
             # --- All operations finished ---
             kodi_notify('All ROM/asset scanning finished')
@@ -3719,7 +3810,7 @@ class Main:
                 main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
                 control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 kodi_busydialog_OFF()
-                fs_build_SoftwareLists_databases(PATHS, self.settings, machines, machines_render, main_pclone_dic, control_dic)
+                fs_build_SoftwareLists_databases(PATHS, self.settings, control_dic, machines, machines_render, main_pclone_dic)
                 kodi_notify('Software Lists indices and catalogs built')
 
             # --- Scan ROMs/CHDs/Samples and updates ROM status ---
@@ -3783,7 +3874,7 @@ class Main:
                                   ROM_path_FN, CHD_path_FN, Samples_path_FN,
                                   scan_CHDs, scan_Samples)
 
-                # >> Update Main ROM hashed database
+                # >> Regenerate Main hashed database
                 fs_make_main_hashed_db(PATHS, machines, machines_render, pDialog)
 
                 # >> Save databases

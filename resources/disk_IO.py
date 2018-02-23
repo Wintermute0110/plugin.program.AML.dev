@@ -344,13 +344,13 @@ def fs_new_control_dic():
         # --- Filed in by the MAME ROM/CHD/Samples scanner ---
         # >> ROM_Set_ROM_archives.json database
         # Number of ROM ZIP files, including devices.
-        'scan_ROM_ZIP_files'   : 0,
+        'scan_ROM_ZIP_files_total'   : 0,
         'scan_ROM_ZIP_files_have'    : 0,
         'scan_ROM_ZIP_files_missing' : 0,
 
         # >> ROM_Set_CHD_archives.json database
         # Number of CHD files.
-        'scan_CHD_files'   : 0,
+        'scan_CHD_files_total'   : 0,
         'scan_CHD_files_have'    : 0,
         'scan_CHD_files_missing' : 0,
 
@@ -363,7 +363,7 @@ def fs_new_control_dic():
         'scan_machine_archives_ROM_missing' : 0,
 
         # Number of machines that need one or more CHDs to run.
-        'scan_machine_archives_CHD'   : 0,
+        'scan_machine_archives_CHD_total'   : 0,
         # Number of machines with CHDs you can run.
         'scan_machine_archives_CHD_have'    : 0,
         # Number of machines with CHDs you cannot run.
@@ -510,14 +510,14 @@ def fs_load_JSON_file(json_filename):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
     if not os.path.isfile(json_filename): return data_dic
-    log_verb('fs_load_ROMs_JSON() "{0}"'.format(json_filename))
+    log_debug('fs_load_ROMs_JSON() "{0}"'.format(json_filename))
     with open(json_filename) as file:
         data_dic = json.load(file)
 
     return data_dic
 
 def fs_write_JSON_file(json_filename, json_data):
-    log_verb('fs_write_JSON_file() "{0}"'.format(json_filename))
+    log_debug('fs_write_JSON_file() "{0}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
             if COMPACT_JSON:
@@ -735,6 +735,14 @@ def fs_catalog_counter(cat_name, catalog_count_dic, catalog_all, catalog_parents
 #   ROM_SETS_PATH
 #
 STOP_AFTER_MACHINES = 100000
+class DB_obj:
+    def __init__(self, machines, machines_render, devices_db_dic, machine_roms, main_pclone_dic):
+        self.machines        = machines
+        self.machines_render = machines_render
+        self.devices_db_dic  = devices_db_dic
+        self.machine_roms    = machine_roms
+        self.main_pclone_dic = main_pclone_dic
+
 def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # --- Progress dialog ---
     pDialog_canceled = False
@@ -1360,6 +1368,13 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     fs_write_JSON_file(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
     pDialog.update(int((15*100) / num_items))
     pDialog.close()
+
+    # Return an object with reference to the objects just in case they are needed after
+    # this function (in "Build everything", for example. This saves time (databases do not
+    # need to be reloaded) and apparently memory as well.
+    DB = DB_obj(machines, machines_render, machines_devices, machines_roms, main_pclone_dic)
+
+    return DB
 
 # -------------------------------------------------------------------------------------------------
 # Generates the ROM audit database. This database contains invalid ROMs also to display information
@@ -2750,7 +2765,7 @@ def fs_load_SL_XML(xml_filename):
 # per-SL ROM audit database                (32x_ROM_audit.json)
 # per-SL software archies (ROMs and CHDs)  (32x_software_archives.json)
 #
-def fs_build_SoftwareLists_databases(PATHS, settings, machines, machines_render, main_pclone_dic, control_dic):
+def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, machines_render, main_pclone_dic):
     SL_dir_FN = FileName(settings['SL_hash_path'])
     log_debug('fs_build_SoftwareLists_index() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
 
@@ -3186,7 +3201,7 @@ def fs_scan_MAME_ROMs(PATHS, settings,
 # -------------------------------------------------------------------------------------------------
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
 #
-def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_dir_FN):
+def fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_dir_FN):
     # >> SL ROMs: Traverse Software List, check if ROM exists, update and save database
     pDialog = xbmcgui.DialogProgress()
     pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
@@ -3239,7 +3254,7 @@ def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_d
                 SL_CHDs_total += 1
                 has_chd_list = [False] * len(chd_list)
                 for idx, chd_name in enumerate(chd_list):
-                    SL_CHD_FN = SL_ROM_dir_FN.pjoin(SL_name).pjoin(rom_key).pjoin(CHD_name + '.chd')
+                    SL_CHD_FN = SL_ROM_dir_FN.pjoin(SL_name).pjoin(rom_key).pjoin(chd_name)
                     # log_debug('Scanning "{0}"'.format(SL_CHD_FN.getPath()))
                     if SL_CHD_FN.exists():
                         has_chd_list[idx] = True
@@ -3285,17 +3300,17 @@ def fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_d
     #     file.write('\n'.join(report_list).encode('utf-8'))
 
     # >> Update statistics
-    control_dic['scan_software_archives_ROM_total']    = SL_ROMs_have
-    control_dic['scan_software_archives_ROM_have'] = SL_ROMs_missing
-    control_dic['scan_software_archives_ROM_missing']   = SL_ROMs_total
-    control_dic['scan_software_archives_CHD_total']    = SL_CHDs_have
-    control_dic['scan_software_archives_CHD_have'] = SL_CHDs_missing
-    control_dic['scan_software_archives_CHD_missing']   = SL_CHDs_total
+    control_dic['scan_software_archives_ROM_total']   = SL_ROMs_have
+    control_dic['scan_software_archives_ROM_have']    = SL_ROMs_missing
+    control_dic['scan_software_archives_ROM_missing'] = SL_ROMs_total
+    control_dic['scan_software_archives_CHD_total']   = SL_CHDs_have
+    control_dic['scan_software_archives_CHD_have']    = SL_CHDs_missing
+    control_dic['scan_software_archives_CHD_missing'] = SL_CHDs_total
 
     # >> Save databases
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
+def fs_scan_MAME_assets(PATHS, control_dic, machines, Asset_path_FN):
     # >> Iterate machines, check if assets/artwork exist.
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
@@ -3362,29 +3377,29 @@ def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
     kodi_busydialog_OFF()
 
     # >> Update control_dic by assigment (will be saved in caller)
-    control_dic['assets_num_MAME_machines'] = -1
-    control_dic['assets_cabinets_have'] = -1
-    control_dic['assets_cabinets_missing'] = -1
-    control_dic['assets_cpanels_have'] = -1
-    control_dic['assets_cpanels_missing'] = -1
-    control_dic['assets_flyers_have'] = -1
-    control_dic['assets_flyers_missing'] = -1
-    control_dic['assets_marquees_have'] = -1
-    control_dic['assets_marquees_missing'] = -1
-    control_dic['assets_PCBs_have'] = -1
-    control_dic['assets_PCBs_missing'] = -1
-    control_dic['assets_snaps_have'] = -1
-    control_dic['assets_snaps_missing'] = -1
-    control_dic['assets_titles_have'] = -1
-    control_dic['assets_titles_missing'] = -1
-    control_dic['assets_clearlogos_have'] = -1
-    control_dic['assets_clearlogos_missing'] = -1
-    control_dic['assets_trailers_have'] = -1
-    control_dic['assets_trailers_missing'] = -1
-    control_dic['assets_manuals_have'] = -1
-    control_dic['assets_manuals_missing'] = -1
+    control_dic['assets_num_MAME_machines']  = total_machines
+    control_dic['assets_cabinets_have']      = have_count_list[0]
+    control_dic['assets_cabinets_missing']   = total_machines - have_count_list[0]
+    control_dic['assets_cpanels_have']       = have_count_list[1]
+    control_dic['assets_cpanels_missing']    = total_machines - have_count_list[1]
+    control_dic['assets_flyers_have']        = have_count_list[2]
+    control_dic['assets_flyers_missing']     = total_machines - have_count_list[2]
+    control_dic['assets_marquees_have']      = have_count_list[3]
+    control_dic['assets_marquees_missing']   = total_machines - have_count_list[3]
+    control_dic['assets_PCBs_have']          = have_count_list[4]
+    control_dic['assets_PCBs_missing']       = total_machines - have_count_list[4]
+    control_dic['assets_snaps_have']         = have_count_list[5]
+    control_dic['assets_snaps_missing']      = total_machines - have_count_list[5]
+    control_dic['assets_titles_have']        = have_count_list[6]
+    control_dic['assets_titles_missing']     = total_machines - have_count_list[6]
+    control_dic['assets_clearlogos_have']    = have_count_list[7]
+    control_dic['assets_clearlogos_missing'] = total_machines - have_count_list[7]
+    control_dic['assets_trailers_have']      = have_count_list[8]
+    control_dic['assets_trailers_missing']   = total_machines - have_count_list[8]
+    control_dic['assets_manuals_have']       = have_count_list[9]
+    control_dic['assets_manuals_missing']    = total_machines - have_count_list[9]
 
-def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
+def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
     # >> Traverse Software List, check if ROM exists, update and save database
     pDialog = xbmcgui.DialogProgress()
     pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
@@ -3457,17 +3472,17 @@ def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
         file.write('\n'.join(report_str_list).encode('utf-8'))
 
     # >> Update control_dic by assigment (will be saved in caller)
-    control_dic['assets_SL_num_items'] = -1
-    control_dic['assets_SL_titles_have'] = -1
-    control_dic['assets_SL_titles_missing'] = -1
-    control_dic['assets_SL_snaps_have'] = -1
-    control_dic['assets_SL_snaps_missing'] = -1
-    control_dic['assets_SL_boxfronts_have'] = -1
-    control_dic['assets_SL_boxfronts_missing'] = -1
-    control_dic['assets_SL_trailers_have'] = -1
-    control_dic['assets_SL_trailers_missing'] = -1
-    control_dic['assets_SL_manuals_have'] = -1
-    control_dic['assets_SL_manuals_missing'] = -1
+    control_dic['assets_SL_num_items']         = SL_item_count
+    control_dic['assets_SL_titles_have']       = have_count_list[0]
+    control_dic['assets_SL_titles_missing']    = SL_item_count - have_count_list[0]
+    control_dic['assets_SL_snaps_have']        = have_count_list[1]
+    control_dic['assets_SL_snaps_missing']     = SL_item_count - have_count_list[1]
+    control_dic['assets_SL_boxfronts_have']    = have_count_list[2]
+    control_dic['assets_SL_boxfronts_missing'] = SL_item_count - have_count_list[2]
+    control_dic['assets_SL_trailers_have']     = have_count_list[3]
+    control_dic['assets_SL_trailers_missing']  = SL_item_count - have_count_list[3]
+    control_dic['assets_SL_manuals_have']      = have_count_list[4]
+    control_dic['assets_SL_manuals_missing']   = SL_item_count - have_count_list[4]
 
 # -------------------------------------------------------------------------------------------------
 # Hashed databases. Useful when only one item in a big dictionary is required.
