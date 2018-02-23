@@ -1224,41 +1224,8 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # ---------------------------------------------------------------------------------------------
     # Build main distributed hashed database
     # ---------------------------------------------------------------------------------------------
-    log_info('Building main hashed database index ...')
-    # machine_name -> MD5 -> take first letter -> a.json, b.json, ...
-    # A) First create an index
-    #    db_main_hash_idx = { 'machine_name' : 'a', ... }
-    # B) Then traverse a list [0, 1, ..., f] and write the machines in that sub database section.
-    pDialog.create('Advanced MAME Launcher', 'Building main hashed database index ...')
-    db_main_hash_idx = {}
-    for key in machines:
-        md5_str = hashlib.md5(key).hexdigest()
-        db_main_hash_idx[key] = md5_str[0]
-        # log_debug('Machine {0:12s} / hash {1} / db file {2}'.format(key, md5_str, md5_str[0]))
-    pDialog.update(100)
-    pDialog.close()
-
-    log_info('Building main hashed database JSON files ...')
-    distributed_db_files = ['0', '1', '2', '3', '4', '5', '6', '7', 
-                            '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-    pDialog.create('Advanced MAME Launcher', 'Building main hashed database JSON files ...')
-    num_items = len(distributed_db_files)
-    item_count = 0
-    for db_prefix in distributed_db_files:
-        # --- Generate dictionary in this JSON file ---
-        hashed_db_dic = {}
-        for key in db_main_hash_idx:
-            if db_main_hash_idx[key] == db_prefix:
-                machine_dic = machines[key].copy()
-                # >> returns None because it mutates machine_dic
-                machine_dic.update(machines_render[key])
-                hashed_db_dic[key] = machine_dic
-        # --- Save JSON file ---
-        hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '.json')
-        fs_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic)
-        item_count += 1
-        pDialog.update(int((item_count*100) / num_items))
-    pDialog.close()
+    # >> This saves the hashs files in the database directory.
+    fs_make_main_hashed_db(PATHS, machines, machines_render, pDialog)
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
@@ -1282,12 +1249,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['stats_runnable']           = stats_runnable
     control_dic['stats_runnable_parents']   = stats_runnable_parents
     control_dic['stats_runnable_clones']    = stats_runnable_clones
-    control_dic['stats_samples']            = stats_samples
-    control_dic['stats_samples_parents']    = stats_samples_parents
-    control_dic['stats_samples_clones']     = stats_samples_clones
-    control_dic['stats_BIOS']               = stats_BIOS
-    control_dic['stats_BIOS_parents']       = stats_BIOS_parents
-    control_dic['stats_BIOS_clones']        = stats_BIOS_clones
+    # >> Main filters
     control_dic['stats_coin']               = stats_coin
     control_dic['stats_coin_parents']       = stats_coin_parents
     control_dic['stats_coin_clones']        = stats_coin_clones
@@ -1300,6 +1262,13 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     control_dic['stats_dead']               = stats_dead
     control_dic['stats_dead_parents']       = stats_dead_parents
     control_dic['stats_dead_clones']        = stats_dead_clones
+    # >> Binary filters
+    control_dic['stats_BIOS']               = stats_BIOS
+    control_dic['stats_BIOS_parents']       = stats_BIOS_parents
+    control_dic['stats_BIOS_clones']        = stats_BIOS_clones
+    control_dic['stats_samples']            = stats_samples
+    control_dic['stats_samples_parents']    = stats_samples_parents
+    control_dic['stats_samples_clones']     = stats_samples_clones
 
     # -----------------------------------------------------------------------------
     # Write JSON databases
@@ -1328,7 +1297,6 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog.update(int((8*100) / num_items))
     fs_write_JSON_file(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
     pDialog.update(int((9*100) / num_items))
-    # log_debug('mameinfo_idx_dic = {0}'.format(unicode(mameinfo_idx_dic)))
     fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
     pDialog.update(int((10*100) / num_items))
     fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
@@ -3410,3 +3378,60 @@ def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
         file.write('\n'.join(report_str_list).encode('utf-8'))
 
     # >> Save control_dic (with updated statistics)
+
+# -------------------------------------------------------------------------------------------------
+# Hashed databases. Useful when only one item in a big dictionary is required.
+# -------------------------------------------------------------------------------------------------
+#
+# Main ROMs database
+# Hash database with 256 elements (2 hex digits)
+#
+def fs_make_main_hashed_db(PATHS, machines, machines_render, pDialog):
+    log_info('fs_make_main_hashed_db() Building main hashed database index ...')
+
+    # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
+    # A) First create an index
+    #    db_main_hash_idx = { 'machine_name' : 'aa', ... }
+    # B) Then traverse a list [0, 1, ..., f] and write the machines in that sub database section.
+    pDialog.create('Advanced MAME Launcher', 'Building main hashed database index ...')
+    db_main_hash_idx = {}
+    for key in machines:
+        md5_str = hashlib.md5(key).hexdigest()
+        db_name = md5_str[0:2] # WARNING: Python slicing does not work like in C/C++!
+        db_main_hash_idx[key] = db_name
+        # log_debug('Machine {0:20s} / hash {1} / db file {2}'.format(key, md5_str, db_name))
+    pDialog.update(100)
+    pDialog.close()
+
+    log_info('Building main hashed database JSON files ...')
+    hex_digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+    distributed_db_files = []
+    for u in range(len(hex_digits)):
+        for v in range(len(hex_digits)):
+            db_str = '{0}{1}'.format(hex_digits[u], hex_digits[v])
+            distributed_db_files.append(db_str)
+    pDialog.create('Advanced MAME Launcher', 'Building main hashed database JSON files ...')
+    num_items = len(distributed_db_files)
+    item_count = 0
+    for db_prefix in distributed_db_files:
+        # log_debug('db prefix {0}'.format(db_prefix))
+        # --- Generate dictionary in this JSON file ---
+        hashed_db_dic = {}
+        for key in db_main_hash_idx:
+            if db_main_hash_idx[key] == db_prefix:
+                machine_dic = machines[key].copy()
+                # >> returns None because it mutates machine_dic
+                machine_dic.update(machines_render[key])
+                hashed_db_dic[key] = machine_dic
+        # --- Save JSON file ---
+        hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '.json')
+        fs_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic)
+        item_count += 1
+        pDialog.update(int((item_count*100) / num_items))
+    pDialog.close()
+
+#
+# Gets an item from main ROM hashed database.
+#
+def fs_get_main_hashed_db_item(PATHS, machine_name):
+    pass
