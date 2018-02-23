@@ -1774,7 +1774,17 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
     pDialog.update(0, 'Building ROM and CHD archive lists ...')
     num_items = len(machines)
     item_count = 0
+    machine_archives_ROM = 0
+    machine_archives_ROM_parents = 0
+    machine_archives_ROM_clones = 0
+    machine_archives_CHD = 0
+    machine_archives_CHD_parents = 0
+    machine_archives_CHD_clones = 0
+    archive_less = 0
+    archive_less_parents = 0
+    archive_less_clones = 0
     for m_name in audit_roms_dic:
+        isClone = True if machines_render[m_name]['cloneof'] else False
         rom_list = audit_roms_dic[m_name]
         machine_rom_archive_set = set()
         machine_chd_archive_set = set()
@@ -1797,6 +1807,26 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
                 full_ROM_archive_set.add(archive_str)
         machine_archives_dic[m_name] = {'ROMs' : list(machine_rom_archive_set),
                                         'CHDs' : list(machine_chd_archive_set)}
+        # --- Statistics ---
+        if machine_rom_archive_set:
+            machine_archives_ROM += 1
+            if isClone:
+                machine_archives_ROM_clones += 1
+            else:
+                machine_archives_ROM_parents += 1
+        if machine_chd_archive_set:
+            machine_archives_CHD += 1
+            if isClone:
+                machine_archives_CHD_clones += 1
+            else:
+                machine_archives_CHD_parents += 1
+        if not (machine_rom_archive_set or machine_chd_archive_set):
+            archive_less += 1
+            if isClone:
+                archive_less_clones += 1
+            else:
+                archive_less_parents += 1
+
         # --- Update dialog ---
         item_count += 1
         pDialog.update((item_count*100)//num_items)
@@ -1807,17 +1837,17 @@ def fs_build_ROM_audit_databases(PATHS, settings, control_dic, machines, machine
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
-    control_dic['audit_MAME_ZIP_files'] = len(ROM_archive_list)
-    control_dic['audit_MAME_CHD_files'] = len(CHD_archive_list)
-    control_dic['audit_machine_archives_ROM'] = -1
-    control_dic['audit_machine_archives_ROM_parents'] = -1
-    control_dic['audit_machine_archives_ROM_clones'] = -1
-    control_dic['audit_machine_archives_CHD'] = -1
-    control_dic['audit_machine_archives_CHD_parents'] = -1
-    control_dic['audit_machine_archives_CHD_clones'] = -1
-    control_dic['audit_archive_less'] = -1
-    control_dic['audit_archive_less_parents'] = -1
-    control_dic['audit_archive_less_clones'] = -1
+    control_dic['audit_MAME_ZIP_files']               = len(ROM_archive_list)
+    control_dic['audit_MAME_CHD_files']               = len(CHD_archive_list)
+    control_dic['audit_machine_archives_ROM']         = machine_archives_ROM
+    control_dic['audit_machine_archives_ROM_parents'] = machine_archives_ROM_parents
+    control_dic['audit_machine_archives_ROM_clones']  = machine_archives_ROM_clones
+    control_dic['audit_machine_archives_CHD']         = machine_archives_CHD
+    control_dic['audit_machine_archives_CHD_parents'] = machine_archives_CHD_parents
+    control_dic['audit_machine_archives_CHD_clones']  = machine_archives_CHD_clones
+    control_dic['audit_archive_less']                 = archive_less
+    control_dic['audit_archive_less_parents']         = archive_less_parents
+    control_dic['audit_archive_less_clones']          = archive_less_clones
 
     # --- Save databases ---
     line1_str = 'Saving audit/scanner databases ...'
@@ -2887,11 +2917,15 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
     total_files = len(SL_catalog_dic)
     processed_files = 0
     SL_PClone_dic = {}
+    total_SL_XML_files = 0
+    total_SL_software_items = 0
     for sl_name in sorted(SL_catalog_dic):
+        total_SL_XML_files += 1
         pclone_dic = {}
         SL_database_FN = PATHS.SL_DB_DIR.pjoin(sl_name + '.json')
         ROMs = fs_load_JSON_file(SL_database_FN.getPath())
         for rom_name in ROMs:
+            total_SL_software_items += 1
             ROM = ROMs[rom_name]
             if ROM['cloneof']:
                 parent_name = ROM['cloneof']
@@ -2991,8 +3025,8 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
     # log_info('mame_properties_dic has {0} items'.format(len(mame_properties_dic)))
 
     # --- SL statistics and save control_dic ---
-    control_dic['stats_SL_XML_files']            = total_SL_files
-    control_dic['stats_SL_software_items']       = -1
+    control_dic['stats_SL_XML_files']            = total_SL_XML_files
+    control_dic['stats_SL_software_items']       = total_SL_software_items
     control_dic['stats_SL_machine_archives_ROM'] = num_SL_with_ROMs
     control_dic['stats_SL_machine_archives_CHD'] = num_SL_with_CHDs
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)

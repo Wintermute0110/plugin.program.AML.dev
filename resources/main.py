@@ -1922,15 +1922,15 @@ class Main:
             chd_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_chd_set']]
             info_text += "There are {0:5d} ROM ZIP archives in the {1} set\n".format(control_dic['audit_MAME_ZIP_files'], rom_set)
             info_text += "There are {0:5d}     CHD archives in the {1} set\n".format(control_dic['audit_MAME_CHD_files'], chd_set)
-            t = "{0:5d} machines require ROM ZIPs {1:5d} ({1:5d} Parents / {2:5d} Clones)\n"
+            t = "{0:5d} machines require ROM ZIPs ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['audit_machine_archives_ROM'],
                                   control_dic['audit_machine_archives_ROM_parents'],
                                   control_dic['audit_machine_archives_ROM_clones'])
-            t = "{0:5d} machines require CHDs     {1:5d} ({1:5d} Parents / {2:5d} Clones)\n"
+            t = "{0:5d} machines require CHDs     ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['audit_machine_archives_CHD'],
                                   control_dic['audit_machine_archives_CHD_parents'],
                                   control_dic['audit_machine_archives_CHD_clones'])
-            t = "{0:5d} machines require nothing  {1:5d} ({1:5d} Parents / {2:5d} Clones)\n"
+            t = "{0:5d} machines require nothing  ({1:5d} Parents / {2:5d} Clones)\n"
             info_text += t.format(control_dic['audit_archive_less'],
                                   control_dic['audit_archive_less_parents'],
                                   control_dic['audit_archive_less_clones'])
