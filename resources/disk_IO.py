@@ -3345,6 +3345,11 @@ def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
     pDialog.update(0)
     total_files = len(SL_catalog_dic)
     processed_files = 0
+    table_str = []
+    table_str.append(['left', 'left', 'left', 'left', 'left', 'left', 'left'])
+    table_str.append(['Soft', 'Name', 'Tit',  'Snap', 'Bft',  'Tra',  'Man'])
+    have_count_list = [0] * len(ASSET_SL_KEY_LIST)
+    SL_item_count = 0
     for SL_name in sorted(SL_catalog_dic):
         # >> Open database
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
@@ -3358,8 +3363,10 @@ def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
         # log_info('Assets JSON "{0}"'.format(SL_asset_DB_FN.getPath()))
         SL_assets_dic = {}
         for rom_key in sorted(SL_roms):
+            SL_item_count += 1
             rom = SL_roms[rom_key]
             SL_assets = fs_new_SL_asset()
+            asset_row = ['---'] * len(ASSET_SL_KEY_LIST)
             for idx, asset_key in enumerate(ASSET_SL_KEY_LIST):
                 full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_SL_PATH_LIST[idx]).pjoin(SL_name)
                 if asset_key == 'trailer':
@@ -3370,11 +3377,15 @@ def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
                 else:
                     asset_FN = full_asset_dir_FN.pjoin(rom_key + '.png')
                 # log_info('Testing P "{0}"'.format(asset_FN.getPath()))
-                if asset_FN.exists(): SL_assets[asset_key] = asset_FN.getOriginalPath()
-                else:                 SL_assets[asset_key] = ''
+                if asset_FN.exists():
+                    SL_assets[asset_key] = asset_FN.getOriginalPath()
+                    have_count_list[idx] += 1
+                    asset_row[idx] = 'YES'
+                else:
+                    SL_assets[asset_key] = ''
+            table_row = [SL_name, rom_key] + asset_row
+            table_str.append(table_row)
             SL_assets_dic[rom_key] = SL_assets
-
-        # >> Save SL asset DB
         fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
 
         # >> Update progress
@@ -3383,6 +3394,19 @@ def fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN):
         pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
     pDialog.close()
 
-    # >> Asset statistics
-    
+    # >> Asset statistics and report.
+    report_str_list = []
+    report_str_list.append('Number of SL items {0}'.format(SL_item_count))
+    report_str_list.append('Have Titles    {0:5d} (Missing {1})'.format(have_count_list[0], SL_item_count - have_count_list[0]))
+    report_str_list.append('Have Snaps     {0:5d} (Missing {1})'.format(have_count_list[1], SL_item_count - have_count_list[1]))
+    report_str_list.append('Have Boxfronts {0:5d} (Missing {1})'.format(have_count_list[2], SL_item_count - have_count_list[2]))
+    report_str_list.append('Have Trailers  {0:5d} (Missing {1})'.format(have_count_list[3], SL_item_count - have_count_list[3]))
+    report_str_list.append('Have Manuals   {0:5d} (Missing {1})'.format(have_count_list[4], SL_item_count - have_count_list[4]))
+    report_str_list.append('')
+    table_str_list = text_render_table_str(table_str)
+    report_str_list.extend(table_str_list)
+    log_info('Opening SL asset report file "{0}"'.format(PATHS.REPORT_SL_ASSETS_PATH.getPath()))
+    with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(report_str_list).encode('utf-8'))
+
     # >> Save control_dic (with updated statistics)
