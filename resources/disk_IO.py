@@ -2831,7 +2831,7 @@ def fs_build_SoftwareLists_databases(PATHS, settings, machines, machines_render,
             if soft_item_has_ROMs:
                 SL_Software_Archives[SL_rom]['ROMs'].append(SL_rom)
             if soft_item_disk_list:
-                SL_Software_Archives[SL_rom]['ROMs'].extend(soft_item_disk_list)
+                SL_Software_Archives[SL_rom]['CHDs'].extend(soft_item_disk_list)
 
         # >> Save databases
         fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs)
