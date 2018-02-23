@@ -207,10 +207,8 @@ def fs_new_disk_dic():
 #
 # Object used in MAME_assets_db.json
 #
-ASSET_MAME_KEY_LIST  = ['cabinet',  'cpanel',  'flyer',  'marquee',  'PCB',  'snap',  'title',
-                        'clearlogo',  'trailer',    'manual']
-ASSET_MAME_PATH_LIST = ['cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles',
-                        'clearlogos', 'videosnaps', 'manuals']
+ASSET_MAME_KEY_LIST  = ['cabinet',  'cpanel',  'flyer',  'marquee',  'PCB',  'snap',  'title',  'clearlogo',  'trailer',    'manual']
+ASSET_MAME_PATH_LIST = ['cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles', 'clearlogos', 'videosnaps', 'manuals']
 def fs_new_MAME_asset():
     a = {
         'cabinet'   : '',
@@ -3281,11 +3279,16 @@ def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
     total_machines = len(machines)
     processed_machines = 0
     assets_dic = {}
+    table_str = []
+    table_str.append(['left', 'left', 'left',   'left', 'left', 'left', 'left', 'left', 'left',  'left', 'left'])
+    table_str.append(['Name', 'Cab',  'CPanel', 'Fly',  'Mar',  'PCB',  'Snap', 'Tit',  'Clear', 'Tra',  'Man'])
+    have_count_list = [0] * len(ASSET_MAME_KEY_LIST)
     for key in sorted(machines):
         machine = machines[key]
 
         # >> Scan assets
         machine_assets = fs_new_MAME_asset()
+        asset_row = ['---'] * len(ASSET_MAME_KEY_LIST)
         for idx, asset_key in enumerate(ASSET_MAME_KEY_LIST):
             full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_MAME_PATH_LIST[idx])
             if asset_key == 'trailer':
@@ -3295,17 +3298,39 @@ def fs_scan_MAME_assets(PATHS, machines, Asset_path_FN):
                 continue
             else:
                 asset_FN = full_asset_dir_FN.pjoin(key + '.png')
-            if asset_FN.exists(): machine_assets[asset_key] = asset_FN.getOriginalPath()
-            else:                 machine_assets[asset_key] = ''
+            if asset_FN.exists():
+                machine_assets[asset_key] = asset_FN.getOriginalPath()
+                have_count_list[idx] += 1
+                asset_row[idx] = 'YES'
+            else:
+                machine_assets[asset_key] = ''
+        table_row = [key] + asset_row
+        # table_row.extend(asset_row)
+        table_str.append(table_row)
         assets_dic[key] = machine_assets
-
-        # >> Progress dialog
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
 
-    # >> Asset statistics
-    
+    # >> Asset statistics and report.
+    report_str_list = []
+    report_str_list.append('Number of MAME machines {0}'.format(total_machines))
+    report_str_list.append('Have Cabinets   {0:5d} (Missing {1})'.format(have_count_list[0], total_machines - have_count_list[0]))
+    report_str_list.append('Have CPanels    {0:5d} (Missing {1})'.format(have_count_list[1], total_machines - have_count_list[1]))
+    report_str_list.append('Have Flyers     {0:5d} (Missing {1})'.format(have_count_list[2], total_machines - have_count_list[2]))
+    report_str_list.append('Have Marquees   {0:5d} (Missing {1})'.format(have_count_list[3], total_machines - have_count_list[3]))
+    report_str_list.append('Have PCBs       {0:5d} (Missing {1})'.format(have_count_list[4], total_machines - have_count_list[4]))
+    report_str_list.append('Have Snaps      {0:5d} (Missing {1})'.format(have_count_list[5], total_machines - have_count_list[5]))
+    report_str_list.append('Have Titles     {0:5d} (Missing {1})'.format(have_count_list[6], total_machines - have_count_list[6]))
+    report_str_list.append('Have Clearlogos {0:5d} (Missing {1})'.format(have_count_list[7], total_machines - have_count_list[7]))
+    report_str_list.append('Have Trailers   {0:5d} (Missing {1})'.format(have_count_list[8], total_machines - have_count_list[8]))
+    report_str_list.append('Have Manuals    {0:5d} (Missing {1})'.format(have_count_list[9], total_machines - have_count_list[9]))
+    report_str_list.append('')
+    table_str_list = text_render_table_str(table_str)
+    report_str_list.extend(table_str_list)
+    log_info('Opening MAME asset report file "{0}"'.format(PATHS.REPORT_MAME_ASSETS_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(report_str_list).encode('utf-8'))
 
     # >> Save asset database and control_dic
     kodi_busydialog_ON()

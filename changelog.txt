@@ -17,8 +17,6 @@ WIP      Implemented "Most played SL ROMs"
 
 WIP      Implemented "Recently played SL ROMs"
 
-WIP      Create a hased database for main ROM database and Audit ROM database.
-
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
@@ -59,9 +57,11 @@ FEATURE  Allow user to choose default assets as AEL does in addon seetings.
 
 FEATURE  Trailer support in MAME machines and Software Lists.
 
-WIP      Manage MAME Favourites context menu.
+FEATURE  Manage MAME Favourites context menu.
 
-WIP      Manage SL Favourites context menu.
+FEATURE  Manage SL Favourites context menu.
+
+WIP      Create a hased database for main ROM database and Audit ROM database.
 
 
 [B]Advanced Emulator Launcher | version 0.9.3 | 30 May 2017[/B]
@@ -143,6 +143,8 @@ FIX      "I get an error whenever trying to open any "Ball & Paddle" category. I
 
 
 [B]Advanced Emulator Launcher | version 0.9.0 | 15 January 2017[/B]
+
+         Initial release
 
 FEATURE  Extract MAME.xml from MAME executable. Tested only on Linux.
 

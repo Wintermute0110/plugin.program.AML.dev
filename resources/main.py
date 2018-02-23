@@ -157,7 +157,8 @@ class AML_Paths:
         self.REPORT_SL_SCAN_CHD_LIST_PATH       = self.REPORTS_DIR.pjoin('Report_scanner_SL_CHD_list.txt')
 
         # >> Asset scanner reports. These reports show have and missing assets.
-        
+        self.REPORT_MAME_ASSETS_PATH = self.REPORTS_DIR.pjoin('Report_asset_MAME.txt')
+        self.REPORT_SL_ASSETS_PATH   = self.REPORTS_DIR.pjoin('Report_asset_SL.txt')
 
         # >> Audit report
         self.REPORT_MAME_AUDIT_GOOD_PATH       = self.REPORTS_DIR.pjoin('Report_MAME_audit_good.txt')

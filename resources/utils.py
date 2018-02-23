@@ -48,6 +48,8 @@ def text_limit_string(string, max_length):
 # Second row           column titles
 # Third and next rows  table data
 #
+# Returns a list of strings that must be joined with '\n'.join()
+#
 def text_render_table_str(table_str):
     rows = len(table_str)
     cols = len(table_str[0])
@@ -61,11 +63,11 @@ def text_render_table_str(table_str):
         if j < cols - 1:
             row_str += text_print_padded_left(table_str[1][j], col_sizes[j]) + '  '
         else:
-            row_str += text_print_padded_left(table_str[1][j], col_sizes[j]) + '\n'
+            row_str += text_print_padded_left(table_str[1][j], col_sizes[j])
     table_str_list.append(row_str)
     # >> Table -----
     total_size = sum(col_sizes) + 2*(cols-1)
-    table_str_list.append('{0}\n'.format('-' * total_size))
+    table_str_list.append('{0}'.format('-' * total_size))
 
     # --- Data rows ---
     for i in range(2, rows):
@@ -78,9 +80,9 @@ def text_render_table_str(table_str):
                     row_str += text_print_padded_left(table_str[i][j], col_sizes[j]) + '  '
             else:
                 if col_padding[j] == 'right':
-                    row_str += text_print_padded_right(table_str[i][j], col_sizes[j]) + '\n'
+                    row_str += text_print_padded_right(table_str[i][j], col_sizes[j])
                 else:
-                    row_str += text_print_padded_left(table_str[i][j], col_sizes[j]) + '\n'
+                    row_str += text_print_padded_left(table_str[i][j], col_sizes[j])
         table_str_list.append(row_str)
 
     return table_str_list
