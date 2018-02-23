@@ -3730,31 +3730,42 @@ class Main:
 
                 # >> Load machine database and control_dic and scan
                 pDialog = xbmcgui.DialogProgress()
-                pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
-                pDialog.update(0)
+                line1_str = 'Loading databases ... '
+                pDialog.create('Advanced MAME Launcher', line1_str)
+                pDialog.update(0, line1_str, 'Control DB')
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-                pDialog.update(16)
+                pDialog.update(16, line1_str, 'Machines DB')
                 machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-                pDialog.update(33)
+                pDialog.update(33, line1_str, 'Machines render DB')
                 machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-                pDialog.update(50)
+                pDialog.update(50, line1_str, 'Machine archives DB')
                 machine_archives_dic = fs_load_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
-                pDialog.update(66)
+                pDialog.update(66, line1_str, 'ROM archive list')
                 ROM_archive_list = fs_load_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath())
-                pDialog.update(83)
+                pDialog.update(83, line1_str, 'CHD archive list')
                 CHD_archive_list = fs_load_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath())
-                pDialog.update(100)
+                pDialog.update(100, ' ', ' ')
                 pDialog.close()
 
+                # >> Updates machines_render machine flags 'flags' and control_dic
                 fs_scan_MAME_ROMs(PATHS, self.settings,
                                   control_dic, machines, machines_render,
                                   machine_archives_dic, ROM_archive_list, CHD_archive_list,
                                   ROM_path_FN, CHD_path_FN, Samples_path_FN,
                                   scan_CHDs, scan_Samples)
-                kodi_busydialog_ON()
+
+                # >> Update Main ROM hashed database
+                fs_make_main_hashed_db(PATHS, machines, machines_render, pDialog)
+
+                # >> Save databases
+                line1_str = 'Loading databases ... '
+                pDialog.create('Advanced MAME Launcher', line1_str)
+                pDialog.update(0, line1_str, 'Machines render DB')
                 fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
+                pDialog.update(50, line1_str, 'Control DB')
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-                kodi_busydialog_OFF()
+                pDialog.update(100, ' ', ' ')
+                pDialog.close()
                 kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
             # --- Scans MAME assets/artwork ---
@@ -3771,9 +3782,12 @@ class Main:
                     return
 
                 # >> Load machine database and scan
+                # WARNING if xbmcgui.DialogProgress() is called more than twice problems happen.
                 kodi_busydialog_ON()
                 machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
                 kodi_busydialog_OFF()
+
+                # >> Updates and saves the MAME Asset database.
                 fs_scan_MAME_assets(PATHS, machines_render, Asset_path_FN)
                 kodi_notify('Scanning of assets/artwork finished')
 
@@ -3797,8 +3811,8 @@ class Main:
                 log_info('_command_setup_plugin() SL ROM dir OP {0}'.format(SL_ROM_dir_FN.getOriginalPath()))
                 log_info('_command_setup_plugin() SL ROM dir  P {0}'.format(SL_ROM_dir_FN.getPath()))
 
-                # >> Load SL and scan
-                SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())            
+                # >> Load SL and scan ROMs/CHDs. fs_scan_SL_ROMs() updates each SL database.
+                SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
                 control_dic    = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_dir_FN)
                 kodi_notify('Scanning of SL ROMs finished')
@@ -3819,10 +3833,8 @@ class Main:
                     return
 
                 # >> Load SL database and scan
-                kodi_busydialog_ON()
-                SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-                kodi_busydialog_OFF()
-                fs_scan_SL_assets(PATHS, SL_catalog_dic, Asset_path_FN)
+                SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+                fs_scan_SL_assets(PATHS, SL_index_dic, Asset_path_FN)
                 kodi_notify('Scanning of SL assets finished')
 
     #

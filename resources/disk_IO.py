@@ -635,18 +635,6 @@ def fs_set_Sample_flag(m_render, new_Sample_flag):
     flag_Samples  = new_Sample_flag
     m_render['flags'] = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
-#
-# Retrieves machine from distributed database.
-# This is very quick for retrieving individual machines, very slow for multiple machines.
-#
-def fs_get_machine_main_db_hash(PATHS, machine_name):
-    log_debug('fs_get_machine_main_db_hash() machine {0}'.format(machine_name))
-    md5_str = hashlib.md5(machine_name).hexdigest()
-    hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0] + '.json')
-    hashed_db_dic = fs_load_JSON_file(hash_DB_FN.getPath())
-
-    return hashed_db_dic[machine_name]
-
 def fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, db_field):
     for parent_name in main_pclone_dic:
         # >> Skip device machines in calatogs.
@@ -2925,16 +2913,12 @@ def fs_build_SoftwareLists_databases(PATHS, settings, machines, machines_render,
 # -------------------------------------------------------------------------------------------------
 # ROM/CHD scanner
 # -------------------------------------------------------------------------------------------------
-# Does not save any file. machines_render and control_dic modified by assigment
+# Does not save any file. machines_render and control_dic mutated by assigment.
 def fs_scan_MAME_ROMs(PATHS, settings,
                       control_dic, machines, machines_render,
                       machine_archives_dic, ROM_archive_list, CHD_archive_list,
                       ROM_path_FN, CHD_path_FN, Samples_path_FN,
                       scan_CHDs, scan_Samples):
-    # --- Initialise ---
-    # mame_rom_set = settings['mame_rom_set']
-    # mame_chd_set = settings['mame_chd_set']
-
     # --- Scan ROMs ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
@@ -3397,7 +3381,7 @@ def fs_make_main_hashed_db(PATHS, machines, machines_render, pDialog):
     db_main_hash_idx = {}
     for key in machines:
         md5_str = hashlib.md5(key).hexdigest()
-        db_name = md5_str[0:2] # WARNING: Python slicing does not work like in C/C++!
+        db_name = md5_str[0:2] # WARNING Python slicing does not work like in C/C++!
         db_main_hash_idx[key] = db_name
         # log_debug('Machine {0:20s} / hash {1} / db file {2}'.format(key, md5_str, db_name))
     pDialog.update(100)
@@ -3431,7 +3415,14 @@ def fs_make_main_hashed_db(PATHS, machines, machines_render, pDialog):
     pDialog.close()
 
 #
-# Gets an item from main ROM hashed database.
+# Retrieves machine from distributed database.
+# This is very quick for retrieving individual machines, very slow for multiple machines.
 #
-def fs_get_main_hashed_db_item(PATHS, machine_name):
-    pass
+def fs_get_machine_main_db_hash(PATHS, machine_name):
+    log_debug('fs_get_machine_main_db_hash() machine {0}'.format(machine_name))
+    md5_str = hashlib.md5(machine_name).hexdigest()
+    # WARNING Python slicing does not work like in C/C++!
+    hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '.json')
+    hashed_db_dic = fs_load_JSON_file(hash_DB_FN.getPath())
+
+    return hashed_db_dic[machine_name]
