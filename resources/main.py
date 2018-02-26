@@ -2062,14 +2062,14 @@ class Main:
             info_text = []
             if machine['cloneof'] and machine['romof']:
                 info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
-                                 '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+                                 '[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
             elif machine['cloneof']:
-                info_text.append('[COLOR violet]cloneof[/COLOR] {0}\n'.format(machine['cloneof']))
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(machine['cloneof']))
             elif machine['romof']:
-                info_text.append('[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+                info_text.append('[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
             info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
-                             '[COLOR skyblue]isDevice[/COLOR] {0}\n'.format(unicode(machine['isDevice'])))
-            info_text.append('\n')
+                             '[COLOR skyblue]isDevice[/COLOR] {0}'.format(unicode(machine['isDevice'])))
+            info_text.append('')
 
             # --- Table header ---
             # Table cell padding: left, right
@@ -2119,10 +2119,10 @@ class Main:
             info_text.extend(table_str_list)
             if roms_dic['bios']:
                 bios_table_str_list = text_render_table_str(bios_table_str)
-                info_text.extend('\n')
+                info_text.extend('')
                 info_text.extend(bios_table_str_list)
             window_title = 'Machine {0} ROMs'.format(machine_name)
-            self._display_text_window(window_title, ''.join(info_text))
+            self._display_text_window(window_title, '\n'.join(info_text))
 
         # --- View MAME machine ROMs (Audit ROM database) ---
         elif action == ACTION_VIEW_MACHINE_AUDIT_ROMS:
@@ -2152,14 +2152,14 @@ class Main:
             info_text = []
             if machine['cloneof'] and machine['romof']:
                 info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
-                                 '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+                                 '[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
             elif machine['cloneof']:
                 info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(machine['cloneof']))
             elif machine['romof']:
-                info_text.append('[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+                info_text.append('[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
             info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
-                             '[COLOR skyblue]isDevice[/COLOR] {0}\n'.format(unicode(machine['isDevice'])))
-            info_text.append('\n')
+                             '[COLOR skyblue]isDevice[/COLOR] {0}'.format(unicode(machine['isDevice'])))
+            info_text.append('')
 
             # --- Table header ---
             # Table cell padding: left, right
@@ -2181,7 +2181,7 @@ class Main:
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
             window_title = 'Machine {0} ROM audit'.format(machine_name)
-            self._display_text_window(window_title, ''.join(info_text))
+            self._display_text_window(window_title, '\n'.join(info_text))
 
         # --- View SL ROMs ---
         elif action == ACTION_VIEW_SL_ROM_ROMS:
@@ -2203,12 +2203,12 @@ class Main:
             rom_db_list = roms_db[SL_ROM]
 
             info_text = []
-            info_text.append('[COLOR violet]SL_name[/COLOR] {0}\n'.format(SL_name))
-            info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}\n'.format(SL_ROM))
-            info_text.append('[COLOR violet]description[/COLOR] {0}\n'.format(rom['description']))
+            info_text.append('[COLOR violet]SL_name[/COLOR] {0}'.format(SL_name))
+            info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}'.format(SL_ROM))
+            info_text.append('[COLOR violet]description[/COLOR] {0}'.format(rom['description']))
             if rom['cloneof']:
-                info_text.append('[COLOR violet]cloneof[/COLOR] {0}\n'.format(rom['cloneof']))
-            info_text.append('\n')
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(rom['cloneof']))
+            info_text.append('')
 
             table_str = []
             table_str.append(['left',      'left',       'left',      'left',      'left', 'left', 'left'])
@@ -2240,7 +2240,7 @@ class Main:
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
             window_title = 'Software List ROM List (ROMs DB)'
-            self._display_text_window(window_title, ''.join(info_text))
+            self._display_text_window(window_title, '\n'.join(info_text))
 
         # --- View SL ROM Audit ROMs ---
         elif action == ACTION_VIEW_SL_ROM_AUDIT_ROMS:
@@ -2255,12 +2255,12 @@ class Main:
 
             info_text = []
             log_debug(unicode(rom))
-            info_text.append('[COLOR violet]SL_name[/COLOR] {0}\n'.format(SL_name))
-            info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}\n'.format(SL_ROM))
-            info_text.append('[COLOR violet]description[/COLOR] {0}\n'.format(rom['description']))
+            info_text.append('[COLOR violet]SL_name[/COLOR] {0}'.format(SL_name))
+            info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}'.format(SL_ROM))
+            info_text.append('[COLOR violet]description[/COLOR] {0}'.format(rom['description']))
             if rom['cloneof']:
-                info_text.append('[COLOR violet]cloneof[/COLOR] {0}\n'.format(rom['cloneof']))
-            info_text.append('\n')
+                info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(rom['cloneof']))
+            info_text.append('')
 
             # table_str = [    ['left', 'left',         'left', 'left',     'left'] ]
             # table_str.append(['Type', 'ROM/CHD name', 'Size', 'CRC/SHA1', 'Location'])
@@ -2278,7 +2278,7 @@ class Main:
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
             window_title = 'Software List ROM List (Audit DB)'
-            self._display_text_window(window_title, ''.join(info_text))
+            self._display_text_window(window_title, '\n'.join(info_text))
 
         # --- View MAME stdout/stderr ---
         elif action == ACTION_VIEW_EXEC_OUTPUT:
@@ -2324,14 +2324,14 @@ class Main:
             info_text = []
             if machine['cloneof'] and machine['romof']:
                 info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
-                                 '[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+                                 '[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
             elif machine['cloneof']:
                 info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(machine['cloneof']))
             elif machine['romof']:
-                info_text.append('[COLOR violet]romof[/COLOR] {0}\n'.format(machine['romof']))
+                info_text.append('[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
             info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
-                             '[COLOR skyblue]isDevice[/COLOR] {0}\n'.format(unicode(machine['isDevice'])))
-            info_text.append('\n')
+                             '[COLOR skyblue]isDevice[/COLOR] {0}'.format(unicode(machine['isDevice'])))
+            info_text.append('')
 
             # --- Table header ---
             # Table cell padding: left, right
@@ -2355,7 +2355,7 @@ class Main:
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
             window_title = 'Machine {0} ROM audit'.format(machine_name)
-            self._display_text_window(window_title, ''.join(info_text))
+            self._display_text_window(window_title, '\n'.join(info_text))
 
         # --- Audit ROMs of SL item ---
         elif action == ACTION_AUDIT_SL_MACHINE:
@@ -2376,10 +2376,10 @@ class Main:
             mame_SL_audit_machine(self.settings, rom_db_list)
 
             info_text = []
-            info_text.append('[COLOR violet]SL_name[/COLOR] {0}\n'.format(SL_name))
-            info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}\n'.format(SL_ROM))
-            info_text.append('[COLOR violet]description[/COLOR] {0}\n'.format(rom['description']))
-            info_text.append('\n')
+            info_text.append('[COLOR violet]SL_name[/COLOR] {0}'.format(SL_name))
+            info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}'.format(SL_ROM))
+            info_text.append('[COLOR violet]description[/COLOR] {0}'.format(rom['description']))
+            info_text.append('')
 
             # --- Table header and rows ---
             # >> Do not render ROM name in SLs, cos they are really long.
@@ -2401,7 +2401,7 @@ class Main:
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
             window_title = 'SL {0} Software {1} ROM audit'.format(SL_name, SL_ROM)
-            self._display_text_window(window_title, ''.join(info_text))
+            self._display_text_window(window_title, '\n'.join(info_text))
 
         # --- View ROM scanner reports ---
         elif action == ACTION_VIEW_REPORT_SCANNER:
