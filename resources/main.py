@@ -128,6 +128,10 @@ class AML_Paths:
         self.CATALOG_DEVICE_LIST_ALL_PATH       = self.CATALOG_DIR.pjoin('catalog_device_list_all.json')
         self.CATALOG_SL_PARENT_PATH             = self.CATALOG_DIR.pjoin('catalog_SL_parents.json')
         self.CATALOG_SL_ALL_PATH                = self.CATALOG_DIR.pjoin('catalog_SL_all.json')
+        self.CATALOG_SHORTNAME_PARENT_PATH      = self.CATALOG_DIR.pjoin('catalog_shortname_parents.json')
+        self.CATALOG_SHORTNAME_ALL_PATH         = self.CATALOG_DIR.pjoin('catalog_shortname_all.json')
+        self.CATALOG_LONGNAME_PARENT_PATH       = self.CATALOG_DIR.pjoin('catalog_longname_parents.json')
+        self.CATALOG_LONGNAME_ALL_PATH          = self.CATALOG_DIR.pjoin('catalog_longname_all.json')
 
         # >> Distributed hashed database
         self.MAIN_DB_HASH_DIR      = PLUGIN_DATA_DIR.pjoin('db_Main_hash')
@@ -487,21 +491,25 @@ class Main:
             bios_str       += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Binary']['cats']['BIOS']['num_parents'])
 
         if cat_count_dic:
+            # >> Optional
             catver_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Catver']['num_categories'])
             catlist_str      += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Catlist']['num_categories'])
             genre_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Genre']['num_categories'])
             NPLayers_str     += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['NPlayers']['num_categories'])
             score_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Bestgames']['num_categories'])
             series_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Series']['num_categories'])
-            manufacturer_str += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Manufacturer']['num_categories'])
-            year_str         += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Year']['num_categories'])
-            driver_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Driver']['num_categories'])
+            # >> Always there
             ctype_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Controls']['num_categories'])
+            drotation_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Display_Rotate']['num_categories'])
             dtag_str         += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Display_Tag']['num_categories'])
             dtype_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Display_Type']['num_categories'])
-            drotation_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Display_Rotate']['num_categories'])
             device_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Devices']['num_categories'])
+            driver_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Driver']['num_categories'])
+            manufacturer_str += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Manufacturer']['num_categories'])
+            shortname_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['ShortName']['num_categories'])
+            longname_str     += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['LongName']['num_categories'])
             SL_str           += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['BySL']['num_categories'])
+            year_str         += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Year']['num_categories'])
 
         # >> Main filters (Virtual catalog 'Main')
         self._render_root_list_row(machines_n_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Normal'))
@@ -526,15 +534,17 @@ class Main:
         self._render_root_list_row(series_str, self._misc_url_1_arg('catalog', 'Series'))
 
         # >> Cataloged filters (always there)
-        self._render_root_list_row(manufacturer_str, self._misc_url_1_arg('catalog', 'Manufacturer'))
-        self._render_root_list_row(year_str, self._misc_url_1_arg('catalog', 'Year'))
-        self._render_root_list_row(driver_str, self._misc_url_1_arg('catalog', 'Driver'))
         self._render_root_list_row(ctype_str, self._misc_url_1_arg('catalog', 'Controls'))
+        self._render_root_list_row(drotation_str, self._misc_url_1_arg('catalog', 'Display_Rotate'))
         self._render_root_list_row(dtag_str, self._misc_url_1_arg('catalog', 'Display_Tag'))
         self._render_root_list_row(dtype_str, self._misc_url_1_arg('catalog', 'Display_Type'))
-        self._render_root_list_row(drotation_str, self._misc_url_1_arg('catalog', 'Display_Rotate'))
         self._render_root_list_row(device_str, self._misc_url_1_arg('catalog', 'Devices'))
+        self._render_root_list_row(driver_str, self._misc_url_1_arg('catalog', 'Driver'))
+        self._render_root_list_row(manufacturer_str, self._misc_url_1_arg('catalog', 'Manufacturer'))
+        self._render_root_list_row(shortname_str, self._misc_url_1_arg('catalog', 'ShortName'))
+        self._render_root_list_row(longname_str, self._misc_url_1_arg('catalog', 'LongName'))
         self._render_root_list_row(SL_str, self._misc_url_1_arg('catalog', 'BySL'))
+        self._render_root_list_row(year_str, self._misc_url_1_arg('catalog', 'Year'))
 
         # >> history.dat, mameinfo.dat, gameinit.dat, command.dat
         self._render_root_list_row('History DAT',  self._misc_url_1_arg('catalog', 'History'))

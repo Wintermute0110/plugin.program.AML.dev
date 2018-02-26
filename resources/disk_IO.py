@@ -459,6 +459,8 @@ def fs_get_cataloged_dic_parents(PATHS, catalog_name):
     elif catalog_name == 'Display_Rotate': catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PARENT_PATH.getPath())
     elif catalog_name == 'Devices':        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_LIST_PARENT_PATH.getPath())
     elif catalog_name == 'BySL':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath())
+    elif catalog_name == 'ShortName':      catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath())
+    elif catalog_name == 'LongName':       catalog_dic = fs_load_JSON_file(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath())
     else:
         log_error('fs_get_cataloged_dic_parents() Unknown catalog_name = "{0}"'.format(catalog_name))
 
@@ -482,6 +484,8 @@ def fs_get_cataloged_dic_all(PATHS, catalog_name):
     elif catalog_name == 'Display_Rotate': catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_ALL_PATH.getPath())
     elif catalog_name == 'Devices':        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_LIST_ALL_PATH.getPath())
     elif catalog_name == 'BySL':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath())
+    elif catalog_name == 'ShortName':      catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath())
+    elif catalog_name == 'LongName':       catalog_dic = fs_load_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath())
     else:
         log_error('fs_get_cataloged_dic_all() Unknown catalog_name = "{0}"'.format(catalog_name))
 
@@ -1916,7 +1920,9 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
         'Display_Type'   : { 'num_categories' : 0, 'cats' : {} },
         'Display_Rotate' : { 'num_categories' : 0, 'cats' : {} },
         'Devices'        : { 'num_categories' : 0, 'cats' : {} },
-        'BySL'           : { 'num_categories' : 0, 'cats' : {} }
+        'BySL'           : { 'num_categories' : 0, 'cats' : {} },
+        'ShortName'      : { 'num_categories' : 0, 'cats' : {} },
+        'LongName'       : { 'num_categories' : 0, 'cats' : {} },
     }
     NUM_CATALOGS = len(catalog_count_dic)
 
@@ -2456,6 +2462,60 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     fs_catalog_counter('BySL', catalog_count_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- MAME short name catalog ---
+    log_info('Making MAME short name catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Making short name catalog ...')
+    catalog_parents = {}
+    catalog_all = {}
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
+        machine_render = machines_render[parent_name]
+        if machine_render['isDevice']: continue # >> Skip device machines
+        catalog_key = parent_name[0]
+        if catalog_key in catalog_parents:
+            catalog_parents[catalog_key]['parents'].append(parent_name)
+            catalog_parents[catalog_key]['num_parents'] = len(catalog_parents[catalog_key]['parents'])
+            catalog_all[catalog_key]['machines'].append(parent_name)
+            for clone in main_pclone_dic[parent_name]: catalog_all[catalog_key]['machines'].append(clone)
+            catalog_all[catalog_key]['num_machines'] = len(catalog_all[catalog_key]['machines'])
+        else:
+            catalog_parents[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+            all_list = [parent_name]
+            for clone in main_pclone_dic[parent_name]: all_list.append(clone)
+            catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
+    fs_catalog_counter('ShortName', catalog_count_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath(), catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath(), catalog_all)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- MAME long name catalog ---
+    log_info('Making MAME long name catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Making MAME long name catalog ...')
+    catalog_parents = {}
+    catalog_all = {}
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
+        machine_render = machines_render[parent_name]
+        if machine_render['isDevice']: continue # >> Skip device machines
+        catalog_key = machine_render['description'][0]
+        if catalog_key in catalog_parents:
+            catalog_parents[catalog_key]['parents'].append(parent_name)
+            catalog_parents[catalog_key]['num_parents'] = len(catalog_parents[catalog_key]['parents'])
+            catalog_all[catalog_key]['machines'].append(parent_name)
+            for clone in main_pclone_dic[parent_name]: catalog_all[catalog_key]['machines'].append(clone)
+            catalog_all[catalog_key]['num_machines'] = len(catalog_all[catalog_key]['machines'])
+        else:
+            catalog_parents[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
+            all_list = [parent_name]
+            for clone in main_pclone_dic[parent_name]: all_list.append(clone)
+            catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
+    fs_catalog_counter('LongName', catalog_count_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath(), catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
     pDialog.update(update_number)

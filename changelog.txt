@@ -20,9 +20,11 @@ WIP      Implemented "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
+WIP      Build Fanarts from other pieces of artwork.
+
 WIP      Support MAME artwork by Mr. Do's. Note that Clones use Parnet's artwork automatically.
 
-WIP      "Browse by MAME short name" and "Browse by MAME long name" alphabetical catalogs.
+FEATURE  "Browse by MAME short name" and "Browse by MAME long name" alphabetical catalogs.
 
 FEATURE  Renamed plugin from plugin.program.advanced.MAME.launcher to plugin.program.AML.
          Shorter name, shorter databases, higher speed.
