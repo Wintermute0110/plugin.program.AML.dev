@@ -432,10 +432,11 @@ class Main:
         devices_str    = 'Device machines'
 
         # >> Binary filters
-        norom_str      = 'Machines [with no ROMs]'
+        bios_str       = 'Machines [BIOS]'
+        norom_str      = 'Machines [ROMless]'
         chd_str        = 'Machines [with CHDs]'
         samples_str    = 'Machines [with Samples]'
-        bios_str       = 'Machines [BIOS]'
+        softlists_str  = 'Machines [with Software Lists]'
 
         # >> Cataloged filters (optional)
         catver_str       = 'Machines by Category (Catver)'
@@ -445,15 +446,21 @@ class Main:
         score_str        = 'Machines by Score'
         series_str       = 'Machines by Series'
         # >> Cataloged filters (always there)
-        manufacturer_str = 'Machines by Manufacturer'
-        year_str         = 'Machines by Year'
-        driver_str       = 'Machines by Driver'
+        # NOTE: use the same names as MAME executable
+        # -listdevices         list available devices
+        # -listslots           list available slots and slot devices
+        # -listmedia           list available media for the system
         ctype_str        = 'Machines by Control Type'
+        drotation_str    = 'Machines by Display Rotation'
         dtag_str         = 'Machines by Display Tag'
         dtype_str        = 'Machines by Display Type'
-        drotation_str    = 'Machines by Display Rotation'
         device_str       = 'Machines by Device'
+        driver_str       = 'Machines by Driver'
+        shortname_str    = 'Machines by MAME short name'
+        longname_str     = 'Machines by MAME long name'
+        manufacturer_str = 'Machines by Manufacturer'
         SL_str           = 'Machines by Software List'
+        year_str         = 'Machines by Year'
 
         if cat_count_dic and mame_view_mode == VIEW_MODE_FLAT:
             machines_n_str += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Main']['cats']['Normal']['num_machines'])
@@ -510,13 +517,15 @@ class Main:
         self._render_root_list_row(samples_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'Samples'))
         self._render_root_list_row(bios_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
 
-        # >> Cataloged filters
+        # >> Optional cataloged filters (depend on a INI file)
         self._render_root_list_row(catver_str, self._misc_url_1_arg('catalog', 'Catver'))
         self._render_root_list_row(catlist_str, self._misc_url_1_arg('catalog', 'Catlist'))
         self._render_root_list_row(genre_str, self._misc_url_1_arg('catalog', 'Genre'))
         self._render_root_list_row(NPLayers_str, self._misc_url_1_arg('catalog', 'NPlayers'))
         self._render_root_list_row(score_str, self._misc_url_1_arg('catalog', 'Bestgames'))
         self._render_root_list_row(series_str, self._misc_url_1_arg('catalog', 'Series'))
+
+        # >> Cataloged filters (always there)
         self._render_root_list_row(manufacturer_str, self._misc_url_1_arg('catalog', 'Manufacturer'))
         self._render_root_list_row(year_str, self._misc_url_1_arg('catalog', 'Year'))
         self._render_root_list_row(driver_str, self._misc_url_1_arg('catalog', 'Driver'))
