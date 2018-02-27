@@ -1,13 +1,28 @@
 <!-- Example Advanced MAME Launcher custom filters -->
 <Advanced_MAME_Launcher_custom_filters>
 <DEFINE name="CAPCOM_DRIVERS">cps1.cpp or cps2.cpp or cps3.cpp</DEFINE>
+<DEFINE name="KONAMI_DRIVERS">konamigx.cpp or konamim2.cpp</DEFINE>
+<DEFINE name="NAMCO_DRIVERS">galaxian.cpp or namcops2.cpp</DEFINE>
+<DEFINE name="SEGA_DRIVERS">system1.cpp or segac2.cpp or segae.cpp or segaorun.cpp or segas16a.cpp or segas16b.cpp or segas18.cpp or segas24.cpp or segas32.cpp</DEFINE>
 <DEFINE name="NEOGEO_DRIVERS">neogeo.cpp</DEFINE>
-<DEFINE name="SEGA_DRIVERS">system1.cpp or segas16a.cpp or segas16b.cpp or segas18.cpp</DEFINE>
+<DEFINE name="TAITO_DRIVERS">taito_b.cpp or taito_l.cpp or taito_f2.cpp or taito_f3.cpp</DEFINE>
 
 <MAMEFilter>
     <Name>Capcom Play System</Name>
     <Options></Options>
     <Driver>CAPCOM_DRIVERS</Driver>
+</MAMEFilter>
+
+<MAMEFilter>
+    <Name>Konami</Name>
+    <Options></Options>
+    <Driver>KONAMI_DRIVERS</Driver>
+</MAMEFilter>
+
+<MAMEFilter>
+    <Name>Namco</Name>
+    <Options></Options>
+    <Driver>NAMCO_DRIVERS</Driver>
 </MAMEFilter>
 
 <MAMEFilter>
@@ -22,4 +37,9 @@
     <Driver>NEOGEO_DRIVERS</Driver>
 </MAMEFilter>
 
+<MAMEFilter>
+    <Name>Taito</Name>
+    <Options></Options>
+    <Driver>TAITO_DRIVERS</Driver>
+</MAMEFilter>
 </Advanced_MAME_Launcher_custom_filters>

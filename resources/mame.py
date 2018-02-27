@@ -35,21 +35,23 @@ mame_driver_name_dic = {
     'cps2.cpp'     : 'Capcom Play System 2',
     'cps3.cpp'     : 'Capcom Play System 3',
 
+    # --- Konami ---
+    'konamigx.cpp' : 'Konami System GX',
+    'konamim2.cpp' : 'Konami M2 Hardware',
+
     # --- Namco ---
     'galaxian.cpp' : 'Namco Galaxian-derived hardware',
     'namcops2.cpp' : 'Namco System 246 / System 256 (Sony PS2 based)',
 
     # --- SNK ---
-    'neodriv.hxx'  : 'SNK NeoGeo MVS',
-    'neogeo.cpp'   : 'SNK NeoGeo',
+    'neodriv.hxx'  : 'SNK NeoGeo AES',
+    'neogeo.cpp'   : 'SNK NeoGeo MVS',
 
     # --- Misc drivers ---
     'seta.cpp'     : 'Seta Hardware',
 
     # --- SEGA ---
-    'chihiro.cpp'  : 'SEGA Chihiro (Xbox-based)',
-    'model2.cpp'   : 'SEGA Model 2',
-    'naomi.cpp'    : 'SEGA Naomi / Naomi 2 / Atomiswave',
+    'system1.cpp'  : 'SEGA System1 / System 2',
     'segac2.cpp'   : 'SEGA System C (System 14)',
     'segae.cpp'    : 'SEGA System E',
     'segaorun.cpp' : 'SEGA Out Run hardware',
@@ -58,15 +60,17 @@ mame_driver_name_dic = {
     'segas18.cpp'  : 'SEGA System 18',
     'segas24.cpp'  : 'SEGA System 24',
     'segas32.cpp'  : 'SEGA System 32',
+    'chihiro.cpp'  : 'SEGA Chihiro (Xbox-based)',
+    'model2.cpp'   : 'SEGA Model 2',
+    'naomi.cpp'    : 'SEGA Naomi / Naomi 2 / Atomiswave',
     'segasp.cpp'   : 'SEGA System SP (Spider)',
     'segaxbd.cpp'  : 'SEGA X-board',
-    'system1.cpp'  : 'SEGA System1 / System 2',
 
     # --- Taito ---
     'taito_b.cpp'  : 'Taito B System',
     'taito_l.cpp'  : 'Taito L System',
-    'taito_f3.cpp' : 'Taito F3 System',
     'taito_f2.cpp' : 'Taito F2 System',
+    'taito_f3.cpp' : 'Taito F3 System',
 
     # --- SONY ---
     'zn.cpp'       : 'Sony ZN1/ZN2 (Arcade PSX)',
@@ -1008,6 +1012,7 @@ def tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
     # (?:...) -> A non-capturing version of regular parentheses.
     # \b -> Matches the empty string, but only at the beginning or end of a word.
+    # \w -> Matches [a-zA-Z0-9_]
     for operator, string in re.findall("\s*(?:(and|or|not|\(|\))|([\.\w_]+))", program):
         # print 'Tokenize >> Program -> "' + program + \
         #       '", String -> "' + string + '", Operator -> "' + operator + '"\n';
