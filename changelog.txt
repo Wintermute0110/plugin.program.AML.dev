@@ -20,6 +20,9 @@ WIP      Implemented "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
+WIP      Custom MAME filters, using XML files. Merge some of the functionality of NARS into AML.
+         First, give to support to filter by driver. Later, more filters can be added.
+
 WIP      Build Fanarts from other pieces of artwork.
 
 WIP      Support MAME artwork by Mr. Do's. Note that Clones use Parnet's artwork automatically.

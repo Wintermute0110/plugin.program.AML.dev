@@ -346,6 +346,12 @@ class Main:
             elif command == 'SHOW_SL_FAVS':
                 self._command_show_sl_fav()
 
+            # >> Custom filters
+            elif command == 'SHOW_CUSTOM_FILTERS':
+                self._command_show_custom_filters()
+            elif command == 'SETUP_CUSTOM_FILTERS':
+                self._command_context_setup_custom_filters()
+
             else:
                 log_error('Unknown command "{0}"'.format(command))
 
@@ -560,10 +566,15 @@ class Main:
         # >> Special launchers
         self._render_root_list_row('<Favourite MAME machines>', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
         self._render_root_list_row('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
+        self._render_custom_filter_row('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+        # self._render_root_list_row('{Most played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+        # self._render_root_list_row('{Recently played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+        # self._render_root_list_row('{Most played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+        # self._render_root_list_row('{Recently played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #
-    # These _render_skin_* functions used by skins only for widgets.
+    # These _render_skin_* functions used by skins to display widgets.
     #
     def _render_skin_fav_slots(self):
         self._render_root_list_row('Favourite MAME machines', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
@@ -646,6 +657,24 @@ class Main:
         # --- Create context menu ---
         commands = []
         commands.append(('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW'), ))
+        commands.append(('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN'), ))
+        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
+        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        listitem.addContextMenuItems(commands, replaceItems = True)
+
+        # --- Add row ---
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = root_URL, listitem = listitem, isFolder = True)
+
+    def _render_custom_filter_row(self, root_name, root_URL):
+        # --- Create listitem row ---
+        ICON_OVERLAY = 6
+        listitem = xbmcgui.ListItem(root_name)
+        listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY})
+
+        # --- Create context menu ---
+        commands = []
+        commands.append(('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW'), ))
+        commands.append(('Setup custom filters', self._misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS'), ))
         commands.append(('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN'), ))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
@@ -3221,6 +3250,37 @@ class Main:
         # --- Add row ---
         URL = self._misc_url_4_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+
+    # ---------------------------------------------------------------------------------------------
+    # Custom MAME filters
+    # Custom filters behave like standard catalogs.
+    # Custom filters are defined in a XML file, the XML file is processed and the custom catalogs
+    # created from the main database.
+    # ---------------------------------------------------------------------------------------------
+    def _command_show_custom_filters(self):
+        log_debug('_command_show_custom_filters() Starting ...')
+
+        # >> Open Custom filter count database and index
+        # fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+        # if not fav_machines:
+        #     kodi_dialog_OK('No Favourite MAME machines. Add some machines to MAME Favourites first.')
+        #     xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+        #     return
+
+        # >> Render Favourites
+        # self._set_Kodi_all_sorting_methods()
+        # for m_name in fav_machines:
+        #     machine = fav_machines[m_name]
+        #     assets  = machine['assets']
+        #     self._render_fav_machine_row(m_name, machine, assets)
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _command_context_setup_custom_filters(self):
+        dialog = xbmcgui.Dialog()
+        menu_item = dialog.select('Setup custom filters',
+                                 ['View custom filter XML',
+                                  'Update custom filters'])
+        if menu_item < 0: return
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases
