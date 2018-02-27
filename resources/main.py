@@ -746,7 +746,7 @@ class Main:
 
         log_debug('_render_catalog_parent_list() catalog_name  = {0}'.format(catalog_name))
         log_debug('_render_catalog_parent_list() category_name = {0}'.format(category_name))
-        display_hide_BIOS       = self.settings['display_hide_BIOS']
+        display_hide_BIOS = self.settings['display_hide_BIOS']
         if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
@@ -3338,7 +3338,7 @@ class Main:
         # ]
         #
         elif menu_item == 1:
-            __debug_xml_parser = True
+            __debug_xml_parser = False
 
             # >> Open custom filter XML and parse it
             # If XML has errors (invalid characters, etc.) this will rais exception 'err'
@@ -3361,7 +3361,7 @@ class Main:
                 if root_element.tag == 'DEFINE':
                     name_str = root_element.attrib['name']
                     define_str = root_element.text
-                    if __debug_xml_parser: log_debug('DEFINE "{0}" := "{1}"'.format(name_str, define_str))
+                    log_debug('DEFINE "{0}" := "{1}"'.format(name_str, define_str))
                     define_dic[name_str] = define_str
                 elif root_element.tag == 'MAMEFilter':
                     this_filter_dic = {
@@ -3373,28 +3373,65 @@ class Main:
                         if filter_element.tag == 'Name': this_filter_dic['name'] = filter_element.text
                         elif filter_element.tag == 'Options': this_filter_dic['options'] = filter_element.text
                         elif filter_element.tag == 'Driver': this_filter_dic['driver'] = filter_element.text
-                    if __debug_xml_parser: log_debug('Adding filter "{0}"'.format(this_filter_dic['name']))
+                    log_debug('Adding filter "{0}"'.format(this_filter_dic['name']))
                     filters_dic[this_filter_dic['name']] = this_filter_dic
 
             # >> Resolve DEFINE tags (substitute by the defined value)
-            
-
-            # >> Open main ROM databases
-            
-
-            # >> Traverse list of filters, build filter index and compute filter list.
-            Filters_index_dic = {}
             for filter_key in filters_dic:
                 filter_def = filters_dic[filter_key]
+                for replace_initial_str, replace_final_str in define_dic.iteritems():
+                    filter_def['driver'] = filter_def['driver'].replace(replace_initial_str, replace_final_str)
+
+            # >> Open main ROM databases
+            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            machine_main_dic = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            # machine_render_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+
+            # >> Make a dictionary of object to be filtered
+            main_filter_dic = {}
+            for m_name in main_pclone_dic:
+                main_filter_dic[m_name] = {
+                    'sourcefile' : machine_main_dic[m_name]['sourcefile']
+                }
+
+            # >> Traverse list of filters, build filter index and compute filter list.
+            pDialog = xbmcgui.DialogProgress()
+            pDialog_canceled = False
+            pdialog_line1 = 'Building custom MAME filters'
+            pDialog.create('Advanced MAME Launcher', pdialog_line1)
+            Filters_index_dic = {}
+            total_items = len(filters_dic)
+            processed_items = 0
+            for filter_key in filters_dic:
+                # >> Initialise
+                filter_def = filters_dic[filter_key]
+                f_name = filter_def['name']
                 # log_debug('filter_def = {0}'.format(unicode(filter_def)))
 
-                f_name = filter_def['name']
+                # >> Initial progress
+                pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{0}" ...'.format(f_name))
+
+                # >> Driver filter
+                filtered_machine_dic = mame_filter_Driver_tag(main_filter_dic, filter_def['driver'])
+
+                # >> Make index entry
+                filtered_machine_list = sorted(filtered_machine_dic.keys())
+                rom_DB_noext = hashlib.md5(f_name).hexdigest()
                 this_filter_idx_dic = {
-                    'display_name' : f_name, 
+                    'display_name' : filter_def['name'],
                     'num_machines' : 0,
-                    'rom_DB_noext' : f_name
+                    'rom_DB_noext' : rom_DB_noext
                 }
                 Filters_index_dic[f_name] = this_filter_idx_dic
+
+                # >> Save filter database
+                output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '.json')
+                fs_write_JSON_file(output_FN.getPath(), filtered_machine_list)
+                # >> Final progress
+                processed_items += 1
+            pDialog.update((processed_items*100) // total_items, pdialog_line1, ' ')
+            pDialog.close()
+            # >> Save custom filter index.
             fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
 
     # ---------------------------------------------------------------------------------------------
