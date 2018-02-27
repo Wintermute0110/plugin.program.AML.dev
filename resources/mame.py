@@ -31,9 +31,9 @@ except:
 # >> Substitute notable drivers with a proper name
 mame_driver_name_dic = {
     # --- Capcom ---
-    'cps1.cpp'     : 'Capcom Play System 1',
-    'cps2.cpp'     : 'Capcom Play System 2',
-    'cps3.cpp'     : 'Capcom Play System 3',
+    'cps1.cpp' : 'Capcom Play System 1',
+    'cps2.cpp' : 'Capcom Play System 2',
+    'cps3.cpp' : 'Capcom Play System 3',
 
     # --- Konami ---
     'konamigx.cpp' : 'Konami System GX',
@@ -44,27 +44,36 @@ mame_driver_name_dic = {
     'namcops2.cpp' : 'Namco System 246 / System 256 (Sony PS2 based)',
 
     # --- SNK ---
-    'neodriv.hxx'  : 'SNK NeoGeo AES',
-    'neogeo.cpp'   : 'SNK NeoGeo MVS',
+    'neodriv.hxx' : 'SNK NeoGeo AES',
+    'neogeo.cpp'  : 'SNK NeoGeo MVS',
 
-    # --- Misc drivers ---
-    'seta.cpp'     : 'Seta Hardware',
+    # --- Misc important drivers (important enough to have a fancy name!) ---
+    'seta.cpp' : 'Seta Hardware',
 
     # --- SEGA ---
-    'system1.cpp'  : 'SEGA System1 / System 2',
-    'segac2.cpp'   : 'SEGA System C (System 14)',
-    'segae.cpp'    : 'SEGA System E',
-    'segaorun.cpp' : 'SEGA Out Run hardware',
-    'segas16a.cpp' : 'SEGA System 16A',
-    'segas16b.cpp' : 'SEGA System 16B',
-    'segas18.cpp'  : 'SEGA System 18',
-    'segas24.cpp'  : 'SEGA System 24',
-    'segas32.cpp'  : 'SEGA System 32',
-    'chihiro.cpp'  : 'SEGA Chihiro (Xbox-based)',
-    'model2.cpp'   : 'SEGA Model 2',
-    'naomi.cpp'    : 'SEGA Naomi / Naomi 2 / Atomiswave',
-    'segasp.cpp'   : 'SEGA System SP (Spider)',
-    'segaxbd.cpp'  : 'SEGA X-board',
+    'zaxxon.cpp'    : 'SEGA Zaxxon hardware',
+    'system1.cpp'   : 'SEGA System1 / System 2',
+    'segac2.cpp'    : 'SEGA System C (System 14)',
+    'segae.cpp'     : 'SEGA System E',
+    'segas16a.cpp'  : 'SEGA System 16A',
+    'segas16b.cpp'  : 'SEGA System 16B',
+    'segas24.cpp'   : 'SEGA System 24',
+    'segas18.cpp'   : 'SEGA System 18',
+    'kyugo.cpp'     : 'SEGA Kyugo Hardware',
+    'segahang.cpp'  : 'Sega Hang On hardware', # AKA Sega Space Harrier
+    'segaorun.cpp'  : 'SEGA Out Run hardware',
+    'segaxbd.cpp'   : 'SEGA X-board',
+    'segaybd.cpp'   : 'SEGA Y-board',
+    'segas32.cpp'   : 'SEGA System 32',
+    'model1.cpp'    : 'SEGA Model 1',
+    'model2.cpp'    : 'SEGA Model 2',
+    'model3.cpp'    : 'SEGA Model 3',
+    'stv.cpp'       : 'SEGA ST-V hardware',
+    'naomi.cpp'     : 'SEGA Naomi / Naomi 2 / Atomiswave',
+    'segasp.cpp'    : 'SEGA System SP (Spider)', # Naomi derived
+    'chihiro.cpp'   : 'SEGA Chihiro (Xbox-based)',
+    'triforce.cpp'  : 'SEGA Triforce Hardware',
+    'lindbergh.cpp' : 'SEGA Lindbergh',
 
     # --- Taito ---
     'taito_b.cpp'  : 'Taito B System',
@@ -73,7 +82,7 @@ mame_driver_name_dic = {
     'taito_f3.cpp' : 'Taito F3 System',
 
     # --- SONY ---
-    'zn.cpp'       : 'Sony ZN1/ZN2 (Arcade PSX)',
+    'zn.cpp' : 'Sony ZN1/ZN2 (Arcade PSX)',
 }
 
 #

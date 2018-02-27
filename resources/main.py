@@ -3286,16 +3286,26 @@ class Main:
             return
 
         # >> Render Custom Filters
+        mame_view_mode = self.settings['mame_view_mode']
         self._set_Kodi_all_sorting_methods()
         for f_name in filter_index_dic:
-            self._render_custom_filter_item_row(f_name)
+            if mame_view_mode == VIEW_MODE_FLAT:
+                num_machines = filter_index_dic[f_name]['num_machines']
+                if num_machines == 1: machine_str = 'machine'
+                else:                 machine_str = 'machines'
+            elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
+                num_machines = filter_index_dic[f_name]['num_parents']
+                if num_machines == 1: machine_str = 'parent'
+                else:                 machine_str = 'parents'
+            self._render_custom_filter_item_row(f_name, num_machines, machine_str)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_custom_filter_item_row(self, f_name):
+    def _render_custom_filter_item_row(self, f_name, num_machines, machine_str):
         # --- Create listitem row ---
         ICON_OVERLAY = 6
-        listitem = xbmcgui.ListItem(f_name)
-        listitem.setInfo('video', {'title' : f_name, 'overlay' : ICON_OVERLAY})
+        title_str = '{0} [COLOR orange]({1} {2})[/COLOR]'.format(f_name, num_machines, machine_str)
+        listitem = xbmcgui.ListItem(title_str)
+        listitem.setInfo('video', {'title' : title_str, 'overlay' : ICON_OVERLAY})
 
         # --- Create context menu ---
         # >> Make a list of tuples
@@ -3368,18 +3378,26 @@ class Main:
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
         if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
-            render_mode = True
+            # >> Parent/Clone mode render parents only
+            for machine_name in machine_list:
+                machine = MAME_db_dic[machine_name]
+                if display_hide_BIOS and machine['isBIOS']: continue
+                if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+                if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
+                assets = MAME_assets_dic[machine_name]
+                num_clones = len(main_pclone_dic[machine_name])
+                self._render_catalog_machine_row(machine_name, machine, assets, True, view_mode_property,
+                                                 'Custom', filter_name, num_clones)
         else:
-            render_mode = False
-        for machine_name in machine_list:
-            machine = MAME_db_dic[machine_name]
-            if display_hide_BIOS and machine['isBIOS']: continue
-            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            assets  = MAME_assets_dic[machine_name]
-            num_clones = len(main_pclone_dic[machine_name])
-            self._render_catalog_machine_row(machine_name, machine, assets, render_mode, view_mode_property,
-                                             'Custom', filter_name, num_clones)
+            # >> Flat mode renders all machines
+            for machine_name in machine_list:
+                machine = MAME_db_dic[machine_name]
+                if display_hide_BIOS and machine['isBIOS']: continue
+                if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+                if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
+                assets = MAME_assets_dic[machine_name]
+                self._render_catalog_machine_row(machine_name, machine, assets, False, view_mode_property,
+                                                 'Custom', filter_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
@@ -3415,7 +3433,7 @@ class Main:
         machine = MAME_db_dic[parent_name]
         assets  = MAME_assets_dic[parent_name]
         self._render_catalog_machine_row(parent_name, machine, assets, False, view_mode_property, 
-                                         catalog_name, category_name)
+                                         'Custom', filter_name)
         # >> and clones next.
         for p_name in main_pclone_dic[parent_name]:
             machine = MAME_db_dic[p_name]
@@ -3423,7 +3441,7 @@ class Main:
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
             self._render_catalog_machine_row(p_name, machine, assets, False, view_mode_property,
-                                             catalog_name, category_name)
+                                             'Custom', filter_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
@@ -3513,11 +3531,19 @@ class Main:
                     filter_def['driver'] = filter_def['driver'].replace(replace_initial_str, replace_final_str)
 
             # >> Open main ROM databases
+            pDialog = xbmcgui.DialogProgress()
+            pDialog_canceled = False
+            pdialog_line1 = 'Loading databases ...'
+            pDialog.create('Advanced MAME Launcher', pdialog_line1)
+            pDialog.update(0, pdialog_line1, 'Main PClone ...')
             main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            pDialog.update(50, pdialog_line1, 'Render DB ...')
             machine_main_dic = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
             # machine_render_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            pDialog.update(100, pdialog_line1, ' ')
+            pDialog.close()
 
-            # >> Make a dictionary of object to be filtered
+            # >> Make a dictionary of objects to be filtered
             main_filter_dic = {}
             for m_name in main_pclone_dic:
                 main_filter_dic[m_name] = {
@@ -3525,8 +3551,6 @@ class Main:
                 }
 
             # >> Traverse list of filters, build filter index and compute filter list.
-            pDialog = xbmcgui.DialogProgress()
-            pDialog_canceled = False
             pdialog_line1 = 'Building custom MAME filters'
             pDialog.create('Advanced MAME Launcher', pdialog_line1)
             Filters_index_dic = {}
@@ -3546,14 +3570,15 @@ class Main:
 
                 # >> Make index entry
                 filtered_machine_parents_list = sorted(filtered_machine_dic.keys())
-                filtered_machine_clones_list = []
+                filtered_machine_all_list = []
                 for p_name in filtered_machine_parents_list:
-                    filtered_machine_clones_list.append(p_name)
-                    filtered_machine_clones_list.extend(main_pclone_dic[p_name])
+                    filtered_machine_all_list.append(p_name)
+                    filtered_machine_all_list.extend(main_pclone_dic[p_name])
                 rom_DB_noext = hashlib.md5(f_name).hexdigest()
                 this_filter_idx_dic = {
                     'display_name' : filter_def['name'],
-                    'num_machines' : 0,
+                    'num_parents'  : len(filtered_machine_parents_list),
+                    'num_machines' : len(filtered_machine_all_list),
                     'rom_DB_noext' : rom_DB_noext
                 }
                 Filters_index_dic[f_name] = this_filter_idx_dic
@@ -3562,13 +3587,14 @@ class Main:
                 output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
                 fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_list)
                 output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
-                fs_write_JSON_file(output_FN.getPath(), filtered_machine_clones_list)
+                fs_write_JSON_file(output_FN.getPath(), filtered_machine_all_list)
                 # >> Final progress
                 processed_items += 1
             pDialog.update((processed_items*100) // total_items, pdialog_line1, ' ')
             pDialog.close()
             # >> Save custom filter index.
             fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
+            kodi_notify('Custom filter database built')
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases
