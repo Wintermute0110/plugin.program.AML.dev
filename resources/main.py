@@ -248,6 +248,14 @@ class Main:
                     self._render_SL_ROMs(SL_name)
                 else:
                     self._render_SL_list(catalog_name)
+            # --- Custom filter ---
+            elif catalog_name == 'Custom':
+                filter_name = args['category'][0] if 'category' in args else ''
+                parent_name = args['parent'][0] if 'parent' in args else ''
+                if filter_name and parent_name:
+                    self._render_custom_filter_clones(filter_name, parent_name)
+                else:
+                    self._render_custom_filter_ROMs(filter_name)
             # --- DAT browsing ---
             elif catalog_name == 'History' or catalog_name == 'MAMEINFO' or \
                  catalog_name == 'Gameinit' or catalog_name == 'Command':
@@ -3298,8 +3306,130 @@ class Main:
         listitem.addContextMenuItems(commands)
 
         # --- Add row ---
-        URL = self._misc_url_2_arg('command', 'SHOW_CUSTOM_FILTER_MACHINES', 'filter', f_name)
+        URL = self._misc_url_2_arg('catalog', 'Custom', 'category', f_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+
+    #
+    # Renders a Parent or Flat machine list
+    #
+    def _render_custom_filter_ROMs(self, filter_name):
+        log_debug('_render_custom_filter_ROMs() filter_name  = {0}'.format(filter_name))
+        display_hide_BIOS = self.settings['display_hide_BIOS']
+        display_hide_nonworking = self.settings['display_hide_nonworking']
+        display_hide_imperfect  = self.settings['display_hide_imperfect']
+
+        # >> Global properties
+        view_mode_property = self.settings['mame_view_mode']
+        log_debug('_render_custom_filter_ROMs() view_mode_property = {0}'.format(view_mode_property))
+
+        # >> Check id main DB exists
+        if not PATHS.RENDER_DB_PATH.exists():
+            kodi_dialog_OK('MAME database not found. Check out "Setup plugin" context menu.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+
+        # >> Load main MAME info DB and catalog
+        l_render_db_start = time.time()
+        MAME_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+        l_render_db_end = time.time()
+        l_assets_db_start = time.time()
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        l_assets_db_end = time.time()
+        l_pclone_dic_start = time.time()
+        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+        l_pclone_dic_end = time.time()
+        l_cataloged_dic_start = time.time()
+        Filters_index_dic = fs_load_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath())
+        rom_DB_noext = Filters_index_dic[filter_name]['rom_DB_noext']
+        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
+            machine_list = fs_load_JSON_file(output_FN.getPath())
+        elif view_mode_property == VIEW_MODE_FLAT:
+            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
+            machine_list = fs_load_JSON_file(output_FN.getPath())
+        else:
+            kodi_dialog_OK('Wrong view_mode_property = "{0}". '.format(view_mode_property) +
+                           'This is a bug, please report it.')
+            return
+        l_cataloged_dic_end = time.time()
+        render_t = l_render_db_end - l_render_db_start
+        assets_t = l_assets_db_end - l_assets_db_start
+        pclone_t = l_pclone_dic_end - l_pclone_dic_start
+        catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
+        loading_time = render_t + assets_t + pclone_t + catalog_t
+
+        # >> Check if catalog is empty
+        if not machine_list:
+            kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+
+        # >> Render parent main list
+        rendering_ticks_start = time.time()
+        self._set_Kodi_all_sorting_methods()
+        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+            render_mode = True
+        else:
+            render_mode = False
+        for machine_name in machine_list:
+            machine = MAME_db_dic[machine_name]
+            if display_hide_BIOS and machine['isBIOS']: continue
+            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
+            assets  = MAME_assets_dic[machine_name]
+            num_clones = len(main_pclone_dic[machine_name])
+            self._render_catalog_machine_row(machine_name, machine, assets, render_mode, view_mode_property,
+                                             'Custom', filter_name, num_clones)
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+        rendering_ticks_end = time.time()
+
+        # --- DEBUG Data loading/rendering statistics ---
+        log_debug('Loading render db     {0:.4f} s'.format(render_t))
+        log_debug('Loading assets db     {0:.4f} s'.format(assets_t))
+        log_debug('Loading pclone dic    {0:.4f} s'.format(pclone_t))
+        log_debug('Loading cataloged dic {0:.4f} s'.format(catalog_t))
+        log_debug('Loading               {0:.4f} s'.format(loading_time))
+        log_debug('Rendering             {0:.4f} s'.format(rendering_ticks_end - rendering_ticks_start))
+
+    #
+    # No need to check for DB existance here. If this function is called is because parents and
+    # hence all ROMs databases exist.
+    #
+    def _render_custom_filter_clones(self, filter_name, parent_name):
+        log_debug('_render_custom_filter_clones() Starting ...')
+        display_hide_nonworking = self.settings['display_hide_nonworking']
+        display_hide_imperfect  = self.settings['display_hide_imperfect']
+
+        # >> Load main MAME info DB
+        loading_ticks_start = time.time()
+        MAME_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+        view_mode_property = self.settings['mame_view_mode']
+        log_debug('_render_custom_filter_clones() view_mode_property = {0}'.format(view_mode_property))
+        loading_ticks_end = time.time()
+
+        # >> Render parent first
+        rendering_ticks_start = time.time()
+        self._set_Kodi_all_sorting_methods()
+        machine = MAME_db_dic[parent_name]
+        assets  = MAME_assets_dic[parent_name]
+        self._render_catalog_machine_row(parent_name, machine, assets, False, view_mode_property, 
+                                         catalog_name, category_name)
+        # >> and clones next.
+        for p_name in main_pclone_dic[parent_name]:
+            machine = MAME_db_dic[p_name]
+            assets  = MAME_assets_dic[p_name]
+            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
+            self._render_catalog_machine_row(p_name, machine, assets, False, view_mode_property,
+                                             catalog_name, category_name)
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+        rendering_ticks_end = time.time()
+
+        # --- DEBUG Data loading/rendering statistics ---
+        log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
+        log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
     def _command_context_setup_custom_filters(self):
         dialog = xbmcgui.Dialog()
@@ -3425,7 +3555,9 @@ class Main:
                 Filters_index_dic[f_name] = this_filter_idx_dic
 
                 # >> Save filter database
-                output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '.json')
+                output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
+                fs_write_JSON_file(output_FN.getPath(), filtered_machine_list)
+                output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
                 fs_write_JSON_file(output_FN.getPath(), filtered_machine_list)
                 # >> Final progress
                 processed_items += 1
