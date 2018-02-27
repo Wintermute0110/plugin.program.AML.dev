@@ -88,6 +88,10 @@ class AML_Paths:
         self.COMMAND_IDX_PATH  = PLUGIN_DATA_DIR.pjoin('DAT_Command_index.json')
         self.COMMAND_DB_PATH   = PLUGIN_DATA_DIR.pjoin('DAT_Command_DB.json')
 
+        # >> MAME custom filters
+        self.FILTERS_DB_DIR     = PLUGIN_DATA_DIR.pjoin('filters')
+        self.FILTERS_INDEX_PATH = PLUGIN_DATA_DIR.pjoin('Filter_index.json')
+
         # >> Disabled. Now there are global properties for this.
         # self.MAIN_PROPERTIES_PATH = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
 
@@ -205,12 +209,13 @@ class Main:
         for i in range(len(sys.argv)): log_debug('sys.argv[{0}] = "{1}"'.format(i, sys.argv[i]))
 
         # --- Addon data paths creation ---
-        if not PLUGIN_DATA_DIR.exists():        PLUGIN_DATA_DIR.makedirs()
+        if not PLUGIN_DATA_DIR.exists(): PLUGIN_DATA_DIR.makedirs()
         if not PATHS.MAIN_DB_HASH_DIR.exists(): PATHS.MAIN_DB_HASH_DIR.makedirs()
         # if not PATHS.ROMS_DB_HASH_DIR.exists(): PATHS.ROMS_DB_HASH_DIR.makedirs()
-        if not PATHS.SL_DB_DIR.exists():        PATHS.SL_DB_DIR.makedirs()
-        if not PATHS.CATALOG_DIR.exists():      PATHS.CATALOG_DIR.makedirs()
-        if not PATHS.REPORTS_DIR.exists():      PATHS.REPORTS_DIR.makedirs()
+        if not PATHS.SL_DB_DIR.exists(): PATHS.SL_DB_DIR.makedirs()
+        if not PATHS.CATALOG_DIR.exists(): PATHS.CATALOG_DIR.makedirs()
+        if not PATHS.REPORTS_DIR.exists(): PATHS.REPORTS_DIR.makedirs()
+        if not PATHS.FILTERS_DB_DIR.exists(): PATHS.FILTERS_DB_DIR.makedirs()
 
         # --- Process URL ---
         self.base_url     = sys.argv[0]
@@ -353,10 +358,15 @@ class Main:
                 self._command_context_setup_custom_filters()
 
             else:
-                log_error('Unknown command "{0}"'.format(command))
-
+                u = 'Unknown command "{0}"'.format(command)
+                log_error(u)
+                kodi_dialog_OK(u)
+                xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         else:
-            log_error('Error in URL routing')
+            u = 'Error in URL routing'
+            log_error(u)
+            kodi_dialog_OK(u)
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
         # --- So Long, and Thanks for All the Fish ---
         log_debug('Advanced MAME Launcher exit')
@@ -391,6 +401,7 @@ class Main:
         # --- ROM sets ---
         self.settings['mame_rom_set'] = int(__addon__.getSetting('mame_rom_set'))
         self.settings['mame_chd_set'] = int(__addon__.getSetting('mame_chd_set'))
+        self.settings['filter_XML']   = __addon__.getSetting('filter_XML').decode('utf-8')
 
         # --- Display ---
         self.settings['mame_view_mode']          = int(__addon__.getSetting('mame_view_mode'))
@@ -2894,7 +2905,6 @@ class Main:
             kodi_refresh_container()
             kodi_notify('Machine {0} deleted from MAME Favourites'.format(machine_name))
 
-
     def _command_show_mame_fav(self):
         log_debug('_command_show_mame_fav() Starting ...')
 
@@ -3261,26 +3271,131 @@ class Main:
         log_debug('_command_show_custom_filters() Starting ...')
 
         # >> Open Custom filter count database and index
-        # fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
-        # if not fav_machines:
-        #     kodi_dialog_OK('No Favourite MAME machines. Add some machines to MAME Favourites first.')
-        #     xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
-        #     return
+        filter_index_dic = fs_load_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath())
+        if not filter_index_dic:
+            kodi_dialog_OK('MAME filter index is empty. Please rebuild your filters.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
 
-        # >> Render Favourites
-        # self._set_Kodi_all_sorting_methods()
-        # for m_name in fav_machines:
-        #     machine = fav_machines[m_name]
-        #     assets  = machine['assets']
-        #     self._render_fav_machine_row(m_name, machine, assets)
+        # >> Render Custom Filters
+        self._set_Kodi_all_sorting_methods()
+        for f_name in filter_index_dic:
+            self._render_custom_filter_item_row(f_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _render_custom_filter_item_row(self, f_name):
+        # --- Create listitem row ---
+        ICON_OVERLAY = 6
+        listitem = xbmcgui.ListItem(f_name)
+        listitem.setInfo('video', {'title' : f_name, 'overlay' : ICON_OVERLAY})
+
+        # --- Create context menu ---
+        # >> Make a list of tuples
+        commands = [
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
+        listitem.addContextMenuItems(commands)
+
+        # --- Add row ---
+        URL = self._misc_url_2_arg('command', 'SHOW_CUSTOM_FILTER_MACHINES', 'filter', f_name)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
     def _command_context_setup_custom_filters(self):
         dialog = xbmcgui.Dialog()
-        menu_item = dialog.select('Setup custom filters',
+        menu_item = dialog.select('Setup AML custom filters',
                                  ['View custom filter XML',
-                                  'Update custom filters'])
+                                  'Build custom filter databases'])
         if menu_item < 0: return
+
+        # --- View custom filter XML ---
+        if menu_item == 0:
+            XML_FN = FileName(self.settings['filter_XML'])
+            log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+            log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+            if not XML_FN.exists():
+                kodi_dialog_OK('Custom filter XML file not found.')
+                return
+            with open(XML_FN.getPath(), 'r') as myfile:
+                info_text = myfile.read().decode('utf-8')
+                self._display_text_window('Custom filter XML', info_text)
+
+        # --- Update custom filters ---
+        # filter_index_dic = {
+        #     'name' : {
+        #         'display_name' : str,
+        #         'num_machines' : int,
+        #         'rom_DB_noext' : 
+        #     }
+        # }
+        #
+        # AML_DATA_DIR/filters/'rom_DB_noext'_all.json -> machine_list = [
+        #     'machine1', 'machine2', 'machine3', ...
+        # ]
+        #
+        # AML_DATA_DIR/filters/'rom_DB_noext'_parents.json -> machine_list = [
+        #     'machine1', 'machine2', 'machine3', ...
+        # ]
+        #
+        elif menu_item == 1:
+            __debug_xml_parser = True
+
+            # >> Open custom filter XML and parse it
+            # If XML has errors (invalid characters, etc.) this will rais exception 'err'
+            XML_FN = FileName(self.settings['filter_XML'])
+            if not XML_FN.exists():
+                kodi_dialog_OK('Custom filter XML file not found.')
+                return
+            log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+            log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+            try:
+                xml_tree = ET.parse(XML_FN.getPath())
+            except:
+                return SLData
+            xml_root = xml_tree.getroot()
+            define_dic = {}
+            filters_dic = {}
+            for root_element in xml_root:
+                if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
+
+                if root_element.tag == 'DEFINE':
+                    name_str = root_element.attrib['name']
+                    define_str = root_element.text
+                    if __debug_xml_parser: log_debug('DEFINE "{0}" := "{1}"'.format(name_str, define_str))
+                    define_dic[name_str] = define_str
+                elif root_element.tag == 'MAMEFilter':
+                    this_filter_dic = {
+                        'name' : '',
+                        'options' : '',
+                        'driver' : ''
+                    }
+                    for filter_element in root_element:
+                        if filter_element.tag == 'Name': this_filter_dic['name'] = filter_element.text
+                        elif filter_element.tag == 'Options': this_filter_dic['options'] = filter_element.text
+                        elif filter_element.tag == 'Driver': this_filter_dic['driver'] = filter_element.text
+                    if __debug_xml_parser: log_debug('Adding filter "{0}"'.format(this_filter_dic['name']))
+                    filters_dic[this_filter_dic['name']] = this_filter_dic
+
+            # >> Resolve DEFINE tags (substitute by the defined value)
+            
+
+            # >> Open main ROM databases
+            
+
+            # >> Traverse list of filters, build filter index and compute filter list.
+            Filters_index_dic = {}
+            for filter_key in filters_dic:
+                filter_def = filters_dic[filter_key]
+                # log_debug('filter_def = {0}'.format(unicode(filter_def)))
+
+                f_name = filter_def['name']
+                this_filter_idx_dic = {
+                    'display_name' : f_name, 
+                    'num_machines' : 0,
+                    'rom_DB_noext' : f_name
+                }
+                Filters_index_dic[f_name] = this_filter_idx_dic
+            fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
 
     # ---------------------------------------------------------------------------------------------
     # Setup plugin databases

@@ -1,0 +1,25 @@
+<!-- Example Advanced MAME Launcher custom filters -->
+<Advanced_MAME_Launcher_custom_filters>
+<DEFINE name="CAPCOM_DRIVERS">cps1.cpp or cps2.cpp or cps3.cpp</DEFINE>
+<DEFINE name="NEOGEO_DRIVERS">neodriv.hxx</DEFINE>
+<DEFINE name="SEGA_DRIVERS">system1.cpp or segas16a.cpp or segas16b.cpp or segas18.cpp</DEFINE>
+
+<MAMEFilter>
+    <Name>Capcom Play System</Name>
+    <Options></Options>
+    <Driver>CAPCOM_DRIVERS</Driver>
+</MAMEFilter>
+
+<MAMEFilter>
+    <Name>SEGA</Name>
+    <Options></Options>
+    <Driver>SEGA_DRIVERS</Driver>
+</MAMEFilter>
+
+<MAMEFilter>
+    <Name>SNK NeoGeo MVS</Name>
+    <Options></Options>
+    <Driver>NEOGEO_DRIVERS</Driver>
+</MAMEFilter>
+
+</Advanced_MAME_Launcher_custom_filters>

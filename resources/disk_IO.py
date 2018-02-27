@@ -2716,8 +2716,8 @@ def fs_load_SL_XML(xml_filename):
     if not os.path.isfile(xml_filename): return SLData
 
     # --- Parse using cElementTree ---
-    log_debug('fs_load_SL_XML() Loading XML file "{0}"'.format(xml_filename))
     # If XML has errors (invalid characters, etc.) this will rais exception 'err'
+    log_debug('fs_load_SL_XML() Loading XML file "{0}"'.format(xml_filename))
     try:
         xml_tree = ET.parse(xml_filename)
     except:
