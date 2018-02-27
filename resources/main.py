@@ -3545,7 +3545,11 @@ class Main:
                 filtered_machine_dic = mame_filter_Driver_tag(main_filter_dic, filter_def['driver'])
 
                 # >> Make index entry
-                filtered_machine_list = sorted(filtered_machine_dic.keys())
+                filtered_machine_parents_list = sorted(filtered_machine_dic.keys())
+                filtered_machine_clones_list = []
+                for p_name in filtered_machine_parents_list:
+                    filtered_machine_clones_list.append(p_name)
+                    filtered_machine_clones_list.extend(main_pclone_dic[p_name])
                 rom_DB_noext = hashlib.md5(f_name).hexdigest()
                 this_filter_idx_dic = {
                     'display_name' : filter_def['name'],
@@ -3556,9 +3560,9 @@ class Main:
 
                 # >> Save filter database
                 output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
-                fs_write_JSON_file(output_FN.getPath(), filtered_machine_list)
+                fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_list)
                 output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
-                fs_write_JSON_file(output_FN.getPath(), filtered_machine_list)
+                fs_write_JSON_file(output_FN.getPath(), filtered_machine_clones_list)
                 # >> Final progress
                 processed_items += 1
             pDialog.update((processed_items*100) // total_items, pdialog_line1, ' ')
