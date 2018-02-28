@@ -2871,10 +2871,12 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
     SL_catalog_dic = {}
     processed_files = 0
     for file in sorted(SL_file_list):
-        # log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
+        # >> Progress dialog
         FN = FileName(file)
+        pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
+        # log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
         SL_path_FN = FileName(file)
         SLData = fs_load_SL_XML(SL_path_FN.getPath())
         output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json')
@@ -2894,8 +2896,8 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
 
         # >> Update progress
         processed_files += 1
-        pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
     fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
+    pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, ' ')
 
     # --- Make the SL ROM/CHD unified Audit databases ---
     log_info('Building Software List ROM Audit database ...')
@@ -2904,8 +2906,11 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
     total_files = len(SL_file_list)
     processed_files = 0
     for file in sorted(SL_file_list):
-        # >> Filenames of the databases.
+        # >> Update progress
         FN = FileName(file)
+        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
+
+        # >> Filenames of the databases.
         SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
         SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_audit.json')
         SL_Soft_Archives_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_software_archives.json')
@@ -2968,7 +2973,7 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
         fs_write_JSON_file(SL_Soft_Archives_DB_FN.getPath(), SL_Software_Archives)
         # >> Update progress
         processed_files += 1
-        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
+    pDialog.update((processed_files*100) // total_files, pdialog_line1, ' ')
 
     # --- Make SL Parent/Clone databases ---
     log_info('Building Software List PClone list ...')
@@ -2980,6 +2985,7 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
     total_SL_XML_files = 0
     total_SL_software_items = 0
     for sl_name in sorted(SL_catalog_dic):
+        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(sl_name))
         total_SL_XML_files += 1
         pclone_dic = {}
         SL_database_FN = PATHS.SL_DB_DIR.pjoin(sl_name + '.json')
@@ -2996,8 +3002,8 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
         SL_PClone_dic[sl_name] = pclone_dic
         # >> Update progress
         processed_files += 1
-        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(sl_name))
     fs_write_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath(), SL_PClone_dic)
+    pDialog.update((processed_files*100) // total_files, pdialog_line1, ' ')
 
     # --- Make a list of machines that can launch each SL ---
     log_info('Making Software List machine list ...')
@@ -3007,6 +3013,7 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
     processed_SL = 0
     SL_machines_dic = {}
     for SL_name in sorted(SL_catalog_dic):
+        pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'SL {0} ...'.format(SL_name))
         SL_machine_list = []
         for machine_name in machines:
             # if not machines[machine_name]['softwarelists']: continue
@@ -3020,8 +3027,8 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
 
         # >> Update progress
         processed_SL += 1
-        pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'SL {0} ...'.format(SL_name))
     fs_write_JSON_file(PATHS.SL_MACHINES_PATH.getPath(), SL_machines_dic)
+    pDialog.update((processed_SL*100) // total_SL, pdialog_line1, ' ')
 
     # --- Rebuild Machine by Software List catalog with knowledge of the SL proper name ---
     log_info('Making Software List catalog ...')
@@ -3049,14 +3056,16 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
                 for clone in main_pclone_dic[parent_name]: all_list.append(clone)
                 catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
     # >> Include Software Lists with no machines in the catalog. In other words, there are
-    #    software lists that apparently cannot be launched by any machine.
+    # >> software lists that apparently cannot be launched by any machine.
+    pDialog.update(85)
     for sl_name in sorted(SL_catalog_dic):
         catalog_key = SL_catalog_dic[sl_name]['display_name']
         if not catalog_key in catalog_parents:
             catalog_parents[catalog_key] = {'parents' : list(), 'num_parents' : 0}
             catalog_all[catalog_key] = {'machines' : list(), 'num_machines' : 0}
-
+    pDialog.update(90)
     fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
+    pDialog.update(95)
     fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
     pDialog.update(100)
     pDialog.close()
@@ -3085,8 +3094,8 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
     # log_info('mame_properties_dic has {0} items'.format(len(mame_properties_dic)))
 
     # --- SL statistics and save control_dic ---
-    control_dic['stats_SL_XML_files']            = total_SL_XML_files
-    control_dic['stats_SL_software_items']       = total_SL_software_items
+    control_dic['stats_SL_XML_files'] = total_SL_XML_files
+    control_dic['stats_SL_software_items'] = total_SL_software_items
     control_dic['stats_SL_machine_archives_ROM'] = num_SL_with_ROMs
     control_dic['stats_SL_machine_archives_CHD'] = num_SL_with_CHDs
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
