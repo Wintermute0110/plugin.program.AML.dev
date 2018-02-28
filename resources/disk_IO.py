@@ -3295,7 +3295,7 @@ def fs_scan_MAME_ROMs(PATHS, settings,
 # -------------------------------------------------------------------------------------------------
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
 #
-def fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_dir_FN):
+def fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN):
     # >> SL ROMs: Traverse Software List, check if ROM exists, update and save database
     pDialog = xbmcgui.DialogProgress()
     pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
@@ -3311,6 +3311,11 @@ def fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_d
     SL_CHDs_total = 0
     report_list = []
     for SL_name in sorted(SL_catalog_dic):
+        # >> Progress dialog
+        update_number = (processed_files*100) // total_files
+        pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+
+        # >> Initialise
         SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
         SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_software_archives.json')
         sl_roms = fs_load_JSON_file(SL_DB_FN.getPath())
@@ -3328,7 +3333,7 @@ def fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_d
                     SL_ROMs_total += 1
                     archive_name = rom_archive + '.zip'
                     SL_ROM_FN = SL_ROM_dir_FN.pjoin(SL_name).pjoin(archive_name)
-                    # log_debug('Scanning "{0}"'.format(SL_ROM_FN.getPath()))
+                    # log_debug('Scanning ROM "{0}"'.format(SL_ROM_FN.getPath()))
                     if SL_ROM_FN.exists():
                         have_rom_list[i] = True
                     else:
@@ -3345,18 +3350,22 @@ def fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_d
             # --- Disks ---
             chd_list = soft_archives[rom_key]['CHDs']
             if chd_list:
-                SL_CHDs_total += 1
-                has_chd_list = [False] * len(chd_list)
-                for idx, chd_name in enumerate(chd_list):
-                    SL_CHD_FN = SL_ROM_dir_FN.pjoin(SL_name).pjoin(rom_key).pjoin(chd_name)
-                    # log_debug('Scanning "{0}"'.format(SL_CHD_FN.getPath()))
-                    if SL_CHD_FN.exists():
-                        has_chd_list[idx] = True
+                if scan_SL_CHDs:
+                    SL_CHDs_total += 1
+                    has_chd_list = [False] * len(chd_list)
+                    for idx, chd_name in enumerate(chd_list):
+                        SL_CHD_FN = SL_CHD_path_FN.pjoin(SL_name).pjoin(rom_key).pjoin(chd_name)
+                        log_debug('Scanning CHD "{0}"'.format(SL_CHD_FN.getPath()))
+                        if SL_CHD_FN.exists():
+                            has_chd_list[idx] = True
+                        else:
+                            m_str_list.append('Missing SL CHD {0}'.format(SL_CHD_FN.getPath()))
+                    if all(has_chd_list):
+                        rom['status_CHD'] = 'C'
+                        SL_CHDs_have += 1
                     else:
-                        m_str_list.append('Missing SL CHD {0}'.format(SL_CHD_FN.getPath()))
-                if all(has_chd_list):
-                    rom['status_CHD'] = 'C'
-                    SL_CHDs_have += 1
+                        rom['status_CHD'] = 'c'
+                        SL_CHDs_missing += 1
                 else:
                     rom['status_CHD'] = 'c'
                     SL_CHDs_missing += 1
@@ -3373,9 +3382,9 @@ def fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_d
                 report_list.append('')
         # >> Save SL database to update flags.
         fs_write_JSON_file(SL_DB_FN.getPath(), sl_roms)
+        # >> Increment file count
         processed_files += 1
-        update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+    pDialog.update(update_number, pdialog_line1, ' ')
     pDialog.close()
 
     # >> Write report

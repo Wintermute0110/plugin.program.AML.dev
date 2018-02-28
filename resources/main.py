@@ -3643,21 +3643,6 @@ class Main:
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             DB = fs_build_MAME_main_database(PATHS, self.settings, control_dic)
 
-            # --- Load databases ---
-            # pDialog = xbmcgui.DialogProgress()
-            # pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
-            # machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            # pDialog.update(20)
-            # machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            # pDialog.update(40)
-            # devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
-            # pDialog.update(60)
-            # machine_roms = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
-            # pDialog.update(80)
-            # main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            # pDialog.update(100)
-            # pDialog.close()
-
             # --- Build and save everything ---
             fs_build_ROM_audit_databases(PATHS, self.settings, control_dic,
                                          DB.machines, DB.machines_render, DB.devices_db_dic, DB.machine_roms)
@@ -3707,20 +3692,21 @@ class Main:
 
             # >> Load machine database and control_dic
             pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
-            pDialog.update(0)
+            pdialog_line1 = 'Loading databases ...'
+            pDialog.create('Advanced MAME Launcher', 'Loading databases ...')
+            pDialog.update(0, pdialog_line1, 'Control')
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(16)
+            pDialog.update(16, pdialog_line1, 'Main')
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(33)
+            pDialog.update(33, pdialog_line1, 'Render')
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(50)
+            pDialog.update(50, pdialog_line1, 'Machine archives')
             machine_archives_dic = fs_load_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(66)
+            pDialog.update(66, pdialog_line1, 'ROMs')
             ROM_archive_list = fs_load_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(83)
+            pDialog.update(83, pdialog_line1, 'CHDs')
             CHD_archive_list = fs_load_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(100)
+            pDialog.update(100, pdialog_line1, ' ')
             pDialog.close()
 
             fs_scan_MAME_ROMs(PATHS, self.settings,
@@ -3757,7 +3743,7 @@ class Main:
             # >> Abort if SL hash path not configured.
             do_SL_ROM_scan = True
             if not self.settings['SL_hash_path']:
-                kodi_dialog_OK('Software Lists hash path not set. Scanning aborted.')
+                kodi_dialog_OK('Software Lists hash path not set. SL scanning disabled.')
                 do_SL_ROM_scan = False
             SL_hash_dir_FN = PATHS.SL_DB_DIR
             log_info('_command_setup_plugin() SL hash dir OP {0}'.format(SL_hash_dir_FN.getOriginalPath()))
@@ -3765,17 +3751,30 @@ class Main:
 
             # >> Abort if SL ROM dir not configured.
             if not self.settings['SL_rom_path']:
-                kodi_dialog_OK('Software Lists ROM path not set. Scanning aborted.')
+                kodi_dialog_OK('Software Lists ROM path not set. SL scanning disabled.')
                 do_SL_ROM_scan = False
             SL_ROM_dir_FN = FileName(self.settings['SL_rom_path'])
             log_info('_command_setup_plugin() SL ROM dir OP {0}'.format(SL_ROM_dir_FN.getOriginalPath()))
             log_info('_command_setup_plugin() SL ROM dir  P {0}'.format(SL_ROM_dir_FN.getPath()))
 
+            # >> SL CHDs scanning is optional
+            scan_SL_CHDs = False
+            if self.settings['SL_chd_path']:
+                SL_CHD_path_FN = FileName(self.settings['SL_chd_path'])
+                if not SL_CHD_path_FN.isdir():
+                    kodi_dialog_OK('SL CHD directory does not exist. SL CHD scanning disabled.')
+                else:
+                    scan_SL_CHDs = True
+            else:
+                kodi_dialog_OK('SL CHD directory not configured. SL CHD scanning disabled.')
+                SL_CHD_path_FN = FileName('')
+
             # >> Load SL catalog
             SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())            
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             if do_SL_ROM_scan:
-                fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_dir_FN)
+                fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN,
+                                SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN)
 
             # >> Get assets directory. Abort if not configured/found.
             do_SL_asset_scan = True
@@ -4304,7 +4303,7 @@ class Main:
                 fs_scan_MAME_assets(PATHS, machines_render, Asset_path_FN)
                 kodi_notify('Scanning of assets/artwork finished')
 
-            # --- Scan SL ROMs ---
+            # --- Scan SL ROMs/CHDs ---
             elif submenu == 6:
                 log_info('_command_setup_plugin() Scanning SL ROMs/CHDs ...')
 
@@ -4324,10 +4323,23 @@ class Main:
                 log_info('_command_setup_plugin() SL ROM dir OP {0}'.format(SL_ROM_dir_FN.getOriginalPath()))
                 log_info('_command_setup_plugin() SL ROM dir  P {0}'.format(SL_ROM_dir_FN.getPath()))
 
+                # >> SL CHDs scanning is optional
+                scan_SL_CHDs = False
+                if self.settings['SL_chd_path']:
+                    SL_CHD_path_FN = FileName(self.settings['SL_chd_path'])
+                    if not SL_CHD_path_FN.isdir():
+                        kodi_dialog_OK('SL CHD directory does not exist. SL CHD scanning disabled.')
+                    else:
+                        scan_SL_CHDs = True
+                else:
+                    kodi_dialog_OK('SL CHD directory not configured. SL CHD scanning disabled.')
+                    SL_CHD_path_FN = FileName('')
+
                 # >> Load SL and scan ROMs/CHDs. fs_scan_SL_ROMs() updates each SL database.
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-                control_dic    = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-                fs_scan_SL_ROMs(PATHS, SL_catalog_dic, control_dic, SL_hash_dir_FN, SL_ROM_dir_FN)
+                fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN,
+                                SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN)
                 kodi_notify('Scanning of SL ROMs finished')
 
             # --- Scan SL assets/artwork ---
