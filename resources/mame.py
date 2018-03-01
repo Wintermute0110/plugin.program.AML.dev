@@ -1189,13 +1189,19 @@ layout = {
 font_mono = None
 
 #
-# This function must be optimized. Assets must be checked before image object generation.
-# Now, image is generated first, which takes time, and then not written to disk if no assets
-# found. Checking if an asset exists or not in the asset DB is cheap and quick, so do it
-# before creating the image.
+# Rebuild Fanart for a given machine
 #
 def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
     # log_debug('mame_build_fanart() Building fanart for machine {0}'.format(m_name))
+
+    # >> Quickly check if machine has valid assets, and skip fanart generation if not.
+    machine_has_valid_assets = False
+    for asset_key in layout:
+        m_assets = assets_dic[m_name]
+        if asset_key != 'text' and m_assets[asset_key]:
+            machine_has_valid_assets = True
+            break
+    if not machine_has_valid_assets: return
 
     # >> If font object does not exists open font an cache it.
     if not font_mono:
@@ -1209,7 +1215,6 @@ def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
     draw = ImageDraw.Draw(fanart_img)
 
     # >> Draw assets according to layout
-    num_assets_found = 0
     for asset_key in layout:
         # log_debug('{0:<10} initialising'.format(asset_key))
         m_assets = assets_dic[m_name]
@@ -1224,17 +1229,13 @@ def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
             if not Asset_FN.exists():
                 # log_debug('{0:<10} file not found'.format(asset_key))
                 continue
-            num_assets_found += 1
             # log_debug('{0:<10} found'.format(asset_key))
             img_asset = Image.open(Asset_FN.getPath())
             img_asset = PIL_resize_proportional(img_asset, layout, asset_key)
             fanart_img = PIL_paste_image(fanart_img, img_asset, layout, asset_key)
 
     # >> Save fanart and update database
-    if num_assets_found:
-        Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
-        # log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
-        fanart_img.save(Fanart_FN.getPath())
-        assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
-    # else:
-        # log_debug('mame_build_fanart() No assets found. Fanart not generated.')
+    Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
+    # log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
+    fanart_img.save(Fanart_FN.getPath())
+    assets_dic[m_name]['fanart'] = Fanart_FN.getPath()

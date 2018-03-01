@@ -4348,11 +4348,13 @@ class Main:
                 # >> Load machine database and scan
                 # WARNING if xbmcgui.DialogProgress() is called more than twice problems happen.
                 kodi_busydialog_ON()
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
                 kodi_busydialog_OFF()
 
                 # >> Updates and saves the MAME Asset database.
-                fs_scan_MAME_assets(PATHS, machines_render, Asset_path_FN)
+                fs_scan_MAME_assets(PATHS, control_dic, machines_render, Asset_path_FN)
+                fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
                 kodi_notify('Scanning of assets/artwork finished')
 
             # --- Scan SL ROMs/CHDs ---
