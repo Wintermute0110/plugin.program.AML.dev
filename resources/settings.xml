@@ -28,6 +28,10 @@
 <category label="ROM sets">
     <setting label="MAME ROM set" type="enum" id="mame_rom_set"  default="1" values="Merged|Split|Non-merged" />
     <setting label="MAME CHD set" type="enum" id="mame_chd_set"  default="0" values="Merged|Split|Non-merged" />
+    <setting label="Software Lists ROM set" type="enum" id="SL_rom_set"  default="1" values="Merged|Split" />
+    <setting label="Software Lists CHD set" type="enum" id="SL_chd_set"  default="0" values="Merged|Split" />
+
+    <setting id="separator" type="lsep" label="Misc" />
     <setting label="Custom filter XML path" type="file" id="filter_XML" default="special://home/addons/plugin.program.AML/AML-filters.xml" />
 </category>
 <category label="Display">
