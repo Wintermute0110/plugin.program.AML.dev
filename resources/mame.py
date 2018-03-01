@@ -1195,7 +1195,7 @@ font_mono = None
 # before creating the image.
 #
 def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
-    log_debug('mame_build_fanart() Building fanart for machine {0}'.format(m_name))
+    # log_debug('mame_build_fanart() Building fanart for machine {0}'.format(m_name))
 
     # >> If font object does not exists open font an cache it.
     if not font_mono:
@@ -1233,8 +1233,8 @@ def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
     # >> Save fanart and update database
     if num_assets_found:
         Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
-        log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
+        # log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
         fanart_img.save(Fanart_FN.getPath())
         assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
-    else:
-        log_debug('mame_build_fanart() No assets found. Fanart not generated.')
+    # else:
+        # log_debug('mame_build_fanart() No assets found. Fanart not generated.')
