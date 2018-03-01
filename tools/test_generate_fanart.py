@@ -61,7 +61,7 @@ def PIL_paste_image(img, img_title, layout, dic_key):
 
     return img
 
-# --- CONSTANTS ---
+# --- Fanart layout ---
 layout = {
     'title'      : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 50,   'y_pos' : 50},
     'snap'       : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 50,   'y_pos' : 550},

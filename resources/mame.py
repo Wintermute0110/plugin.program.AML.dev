@@ -16,6 +16,11 @@
 # --- Python standard library ---
 from __future__ import unicode_literals
 import zipfile as z
+try:
+    from PIL import Image, ImageDraw, ImageFont
+    PILLOW_AVAILABLE = True
+except:
+    PILLOW_AVAILABLE = False
 
 # --- AEL packages ---
 from constants import *
@@ -1106,3 +1111,117 @@ def mame_filter_Driver_tag(mame_xml_dic, driver_filter_expression):
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
+
+# -------------------------------------------------------------------------------------------------
+# Fanart generation
+# -------------------------------------------------------------------------------------------------
+#
+# Scales and centers img into a box of size (box_x_size, box_y_size).
+# Scaling keeps original img aspect ratio.
+# Returns an image of size (box_x_size, box_y_size)
+#
+def PIL_resize_proportional(img, layout, dic_key):
+    # CANVAS_COLOR = (25, 255, 25)
+    CANVAS_COLOR = (0, 0, 0)
+    box_x_size = layout[dic_key]['x_size']
+    box_y_size = layout[dic_key]['y_size']
+    # print('PIL_resize_proportional() Initialising ...')
+    # print('img X_size = {0} | Y_size = {1}'.format(img.size[0], img.size[1]))
+    # print('box X_size = {0} | Y_size = {1}'.format(box_x_size, box_y_size))
+
+    # --- First try to fit X dimension ---
+    # print('PIL_resize_proportional() Fitting X dimension')
+    wpercent = (box_x_size / float(img.size[0]))
+    hsize = int((float(img.size[1]) * float(wpercent)))
+    r_x_size = box_x_size
+    r_y_size = hsize
+    x_offset = 0
+    y_offset = (box_y_size - r_y_size) / 2
+    # print('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
+    # print('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
+
+    # --- Second try to fit Y dimension ---
+    if y_offset < 0:
+        # print('Fitting Y dimension')
+        hpercent = (box_y_size / float(img.size[1]))
+        wsize = int((float(img.size[0]) * float(hpercent)))
+        r_x_size = wsize
+        r_y_size = box_y_size
+        x_offset = (box_x_size - r_x_size) / 2
+        y_offset = 0
+        # print('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
+        # print('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
+
+    # >> Create a new image and paste original image centered.
+    canvas_img = Image.new('RGB', (box_x_size, box_y_size), CANVAS_COLOR)
+    # >> Resize and paste
+    img = img.resize((r_x_size, r_y_size), Image.ANTIALIAS)
+    canvas_img.paste(img, (x_offset, y_offset, x_offset + r_x_size, y_offset + r_y_size))
+
+    return canvas_img
+
+def PIL_paste_image(img, img_title, layout, dic_key):
+    box = (
+        layout[dic_key]['x_pos'],
+        layout[dic_key]['y_pos'], 
+        layout[dic_key]['x_pos'] + layout[dic_key]['x_size'],
+        layout[dic_key]['y_pos'] + layout[dic_key]['y_size']
+    )
+    img.paste(img_title, box)
+
+    return img
+
+# --- Fanart layout ---
+layout = {
+    'title'      : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 50,   'y_pos' : 50},
+    'snap'       : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 50,   'y_pos' : 550},
+    'flyer'      : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 1420, 'y_pos' : 50},
+    'cabinet'    : {'x_size' : 300, 'y_size' : 425, 'x_pos' : 1050, 'y_pos' : 625},
+    'artpreview' : {'x_size' : 450, 'y_size' : 550, 'x_pos' : 550,  'y_pos' : 500},
+    'PCB'        : {'x_size' : 300, 'y_size' : 300, 'x_pos' : 1500, 'y_pos' : 525},
+    'clearlogo'  : {'x_size' : 450, 'y_size' : 200, 'x_pos' : 1400, 'y_pos' : 850},
+    'cpanel'     : {'x_size' : 300, 'y_size' : 100, 'x_pos' : 1050, 'y_pos' : 500},
+    'marquee'    : {'x_size' : 800, 'y_size' : 275, 'x_pos' : 550,  'y_pos' : 200},
+    'text'       : {'x_size' : 550, 'y_size' : 50, 'color' : (255, 255, 255), 'size' : 72},
+}
+
+# >> Cache font object in global variable
+font_mono = None
+
+def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
+    log_debug('mame_build_fanart() Building fanart for machine {0}'.format(m_name))
+
+    # >> If font object does not exists open font an cache it.
+    if not font_mono:
+        global font_mono
+        log_debug('mame_build_fanart() Creating font_mono object')
+        log_debug('mame_build_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['text']['size'])
+
+    # >> Create fanart canvas
+    fanart_img = Image.new('RGB', (1920, 1080), (0, 0, 0))
+    draw = ImageDraw.Draw(fanart_img)
+
+    # >> Draw assets according to layout
+    for asset_key in layout:
+        log_debug('{0} initialising'.format(asset_key))
+        m_assets = assets_dic[m_name]
+        if asset_key == 'text':
+            draw.text((layout['text']['x_size'], layout['text']['y_size']),
+                      'dino',
+                      layout['text']['color'], font = font_mono)
+        else:
+            Asset_FN = FileName(m_assets[asset_key])
+            if not Asset_FN.exists():
+                log_debug('{0} not found'.format(asset_key))            
+                continue
+            log_debug('{0} found'.format(asset_key))
+            img_asset = Image.open(Asset_FN.getPath())
+            img_asset = PIL_resize_proportional(img_asset, layout, asset_key)
+            fanart_img = PIL_paste_image(fanart_img, img_asset, layout, asset_key)
+
+    # >> Save fanart and update database
+    Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
+    log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
+    img.save(Fanart_FN.getPath())
+    assets_dic[m_name]['fanart'] = Fanart_FN.getPath()

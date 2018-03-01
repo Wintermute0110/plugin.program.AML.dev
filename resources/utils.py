@@ -522,7 +522,7 @@ class FileName:
 
     def isdir(self):
         return os.path.isdir(self.path)
-        
+
     def isfile(self):
         return os.path.isfile(self.path)
 

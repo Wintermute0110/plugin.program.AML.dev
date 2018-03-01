@@ -207,20 +207,28 @@ def fs_new_disk_dic():
 #
 # Object used in MAME_assets_db.json
 #
-ASSET_MAME_KEY_LIST  = ['cabinet',  'cpanel',  'flyer',  'marquee',  'PCB',  'snap',  'title',  'clearlogo',  'trailer',    'manual']
-ASSET_MAME_PATH_LIST = ['cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles', 'clearlogos', 'videosnaps', 'manuals']
+ASSET_MAME_KEY_LIST  = [
+    'artpreview', 'cabinet', 'cpanel', 'flyer', 'marquee', 'PCB', 'snap', 'title',
+    'clearlogo', 'trailer', 'manual', 'fanart'
+]
+ASSET_MAME_PATH_LIST = [
+    'artpreviews', 'cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles',
+    'clearlogos', 'videosnaps', 'manuals', 'fanarts'
+]
 def fs_new_MAME_asset():
     a = {
-        'cabinet'   : '',
-        'cpanel'    : '',
-        'flyer'     : '',
-        'marquee'   : '',
-        'PCB'       : '',
-        'snap'      : '',
-        'title'     : '',
-        'clearlogo' : '',
-        'trailer'   : '',
-        'manual'    : '',
+        'artpreview' : '',
+        'cabinet'    : '',
+        'cpanel'     : '',
+        'flyer'      : '',
+        'marquee'    : '',
+        'PCB'        : '',
+        'snap'       : '',
+        'title'      : '',
+        'clearlogo'  : '',
+        'trailer'    : '',
+        'manual'     : '',
+        'fanart'     : '',
     }
 
     return a

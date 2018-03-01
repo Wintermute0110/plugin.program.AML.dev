@@ -61,6 +61,7 @@ class AML_Paths:
         self.MAME_STDOUT_VER_PATH = PLUGIN_DATA_DIR.pjoin('log_version_stdout.log')
         self.MAME_STDERR_VER_PATH = PLUGIN_DATA_DIR.pjoin('log_version_stderr.log')
         self.MAME_OUTPUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_output.log')
+        self.MONO_FONT_PATH       = PLUGIN_DATA_DIR.pjoin('fonts/Inconsolata.otf')
 
         # >> MAME XML, main database and main PClone list.
         self.MAME_XML_PATH        = PLUGIN_DATA_DIR.pjoin('MAME.xml')
@@ -3606,6 +3607,7 @@ class Main:
                                   'Extract MAME.xml',
                                   'Build all databases',
                                   'Scan everything',
+                                  'Build Fanarts',
                                   'Audit MAME machine ROMs/CHDs',
                                   'Audit SL ROMs/CHDs',
                                   'Step by step ...'])
@@ -3795,10 +3797,47 @@ class Main:
             # --- All operations finished ---
             kodi_notify('All ROM/asset scanning finished')
 
+        # --- Build Fanarts ---
+        elif menu_item == 4:
+            log_info('_command_setup_plugin() Build Fanarts ...')
+
+            # >> Check if Pillow library is available.
+            if not PILLOW_AVAILABLE:
+                kodi_dialog_OK('Pillow library is not available. Aborting Fanart generation.')
+                return
+
+            # >> If artwork directory not configured abort.
+            if not self.settings['assets_path']:
+                kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
+                return
+
+            # >> If fanart directory doesn't exist create it.
+            Asset_path_FN = FileName(self.settings['assets_path'])
+            Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
+            if not Fanart_path_FN.isdir():
+                log_info('Creating Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
+                Fanart_path_FN.makedirs()
+
+            # >> Load Assets DB
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Loading asset database ... ')
+            pDialog.update(0)
+            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            pDialog.update(100)
+            pDialog.close()
+
+            # >> Traverse all machines and build fanart from other pieces of artwork
+            for m_name in sorted(assets_dic):
+                mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
+
+            # >> Save assets DB
+            fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
+            kodi_notify('Fanart building finished')
+
         # --- Audit MAME machine ROMs/CHDs ---
         # NOTE It is likekely that this function will take a looong time. It is important that the
         #      audit process can be canceled and a partial report is written.
-        elif menu_item == 4:
+        elif menu_item == 5:
             log_info('_command_setup_plugin() Audit MAME machines ROMs/CHDs ...')
             # >> Load machines, ROMs and CHDs databases.
             pDialog = xbmcgui.DialogProgress()
@@ -3968,7 +4007,7 @@ class Main:
             kodi_notify('ROM and CHD audit finished')
 
         # --- Audit SL ROMs/CHDs ---
-        elif menu_item == 5:
+        elif menu_item == 6:
             log_info('_command_setup_plugin() Audit SL ROMs/CHDs ...')
 
             # >> Load SL catalog.
@@ -4110,7 +4149,7 @@ class Main:
             kodi_notify('Software Lists audit finished')
 
         # --- Build Step by Step ---
-        elif menu_item == 6:
+        elif menu_item == 7:
             submenu = dialog.select('Setup plugin (step by step)',
                                    ['Build MAME databases ...',
                                     'Build Audit/Scanner databases ...',
