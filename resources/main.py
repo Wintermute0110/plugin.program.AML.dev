@@ -976,7 +976,7 @@ class Main:
 
         # --- Assets/artwork ---
         icon_path      = machine_assets[self.mame_icon] if machine_assets[self.mame_icon] else 'DefaultProgram.png'
-        fanart_path    = machine_assets[self.mame_fanart]
+        fanart_path    = machine_assets['fanart']
         banner_path    = machine_assets['marquee']
         clearlogo_path = machine_assets['clearlogo']
         poster_path    = machine_assets['flyer']
@@ -3831,8 +3831,8 @@ class Main:
             processed_machines = 0
             pDialog.create('Advanced MAME Launcher', 'Building MAME machine Fanarts ... ')
             pDialog.update(0)
-            # for m_name in sorted(assets_dic):
-            for m_name in ['005', 'dino']:
+            # for m_name in ['005', 'dino']:
+            for m_name in sorted(assets_dic):
                 pDialog.update((processed_machines * 100) // total_machines)
                 mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
                 processed_machines += 1
