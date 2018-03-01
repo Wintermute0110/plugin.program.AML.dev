@@ -976,7 +976,7 @@ class Main:
 
         # --- Assets/artwork ---
         icon_path      = machine_assets[self.mame_icon] if machine_assets[self.mame_icon] else 'DefaultProgram.png'
-        fanart_path    = machine_assets['fanart']
+        fanart_path    = machine_assets[self.mame_fanart]
         banner_path    = machine_assets['marquee']
         clearlogo_path = machine_assets['clearlogo']
         poster_path    = machine_assets['flyer']
@@ -1808,6 +1808,7 @@ class Main:
             info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
 
             info_text += '\n[COLOR orange]Asset/artwork data[/COLOR]\n'
+            info_text += "[COLOR violet]artpreview[/COLOR]: '{0}'\n".format(assets['artpreview'])
             info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
             info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
             info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
@@ -1818,6 +1819,7 @@ class Main:
             info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
             info_text += "[COLOR violet]trailer[/COLOR]: '{0}'\n".format(assets['trailer'])
             info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
+            info_text += "[COLOR violet]fanart[/COLOR]: '{0}'\n".format(assets['fanart'])
 
             # --- Show information window ---
             self._display_text_window(window_title, info_text)

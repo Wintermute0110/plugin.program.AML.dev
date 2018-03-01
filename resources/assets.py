@@ -35,15 +35,16 @@ def assets_get_asset_key_MAME_icon(asset_index):
     return asset_key
 
 #
-# values="Snap|Title|Flyer|CPanel"
+# values="Fanart|Snap|Title|Flyer|CPanel"
 #
 def assets_get_asset_key_MAME_fanart(asset_index):
-    asset_key = 'snap' # Default value
+    asset_key = 'fanart' # Default value
 
-    if   asset_index == 0: asset_key = 'snap'
-    elif asset_index == 1: asset_key = 'title'
-    elif asset_index == 2: asset_key = 'flyer'
-    elif asset_index == 3: asset_key = 'cpanel'
+    if   asset_index == 0: asset_key = 'fanart'
+    elif asset_index == 1: asset_key = 'snap'
+    elif asset_index == 2: asset_key = 'title'
+    elif asset_index == 3: asset_key = 'flyer'
+    elif asset_index == 4: asset_key = 'cpanel'
 
     return asset_key
 
