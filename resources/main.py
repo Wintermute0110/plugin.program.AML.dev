@@ -61,7 +61,7 @@ class AML_Paths:
         self.MAME_STDOUT_VER_PATH = PLUGIN_DATA_DIR.pjoin('log_version_stdout.log')
         self.MAME_STDERR_VER_PATH = PLUGIN_DATA_DIR.pjoin('log_version_stderr.log')
         self.MAME_OUTPUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_output.log')
-        self.MONO_FONT_PATH       = PLUGIN_DATA_DIR.pjoin('fonts/Inconsolata.otf')
+        self.MONO_FONT_PATH       = AML_ADDON_DIR.pjoin('fonts/Inconsolata.otf')
 
         # >> MAME XML, main database and main PClone list.
         self.MAME_XML_PATH        = PLUGIN_DATA_DIR.pjoin('MAME.xml')
@@ -3827,11 +3827,24 @@ class Main:
             pDialog.close()
 
             # >> Traverse all machines and build fanart from other pieces of artwork
-            for m_name in sorted(assets_dic):
+            total_machines = len(assets_dic)
+            processed_machines = 0
+            pDialog.create('Advanced MAME Launcher', 'Building MAME machine Fanarts ... ')
+            pDialog.update(0)
+            # for m_name in sorted(assets_dic):
+            for m_name in ['005', 'dino']:
+                pDialog.update((processed_machines * 100) // total_machines)
                 mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
+                processed_machines += 1
+            pDialog.update(100)
+            pDialog.close()
 
             # >> Save assets DB
+            pDialog.create('Advanced MAME Launcher', 'Saving asset database ... ')
+            pDialog.update(0)
             fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
+            pDialog.update(100)
+            pDialog.close()
             kodi_notify('Fanart building finished')
 
         # --- Audit MAME machine ROMs/CHDs ---

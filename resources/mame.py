@@ -1203,25 +1203,29 @@ def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
     draw = ImageDraw.Draw(fanart_img)
 
     # >> Draw assets according to layout
+    num_assets_found = 0
     for asset_key in layout:
-        log_debug('{0} initialising'.format(asset_key))
+        # log_debug('{0:<10} initialising'.format(asset_key))
         m_assets = assets_dic[m_name]
         if asset_key == 'text':
-            draw.text((layout['text']['x_size'], layout['text']['y_size']),
-                      'dino',
+            draw.text((layout['text']['x_size'], layout['text']['y_size']), m_name,
                       layout['text']['color'], font = font_mono)
         else:
             Asset_FN = FileName(m_assets[asset_key])
             if not Asset_FN.exists():
-                log_debug('{0} not found'.format(asset_key))            
+                log_debug('{0:<10} not found'.format(asset_key))            
                 continue
-            log_debug('{0} found'.format(asset_key))
+            num_assets_found += 1
+            log_debug('{0:<10} found'.format(asset_key))
             img_asset = Image.open(Asset_FN.getPath())
             img_asset = PIL_resize_proportional(img_asset, layout, asset_key)
             fanart_img = PIL_paste_image(fanart_img, img_asset, layout, asset_key)
 
     # >> Save fanart and update database
-    Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
-    log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
-    img.save(Fanart_FN.getPath())
-    assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
+    if num_assets_found:
+        Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
+        log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
+        fanart_img.save(Fanart_FN.getPath())
+        assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
+    else:
+        log_debug('mame_build_fanart() No assets found. Fanart not generated.')
