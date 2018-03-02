@@ -3825,11 +3825,11 @@ class Main:
             # --- 1 -> Rebuild all MAME Fanarts ---
             # >> For a complete MAME artwork collection rebuilding all Fanarts will take hours!
             if submenu == 0 or submenu == 1:
-                REBUILD_ALL = True if submenu == 1 else False
-                if REBUILD_ALL: log_info('_command_setup_plugin() Rebuilding all Fanarts ...')
-                else: log_info('_command_setup_plugin() Building missing Fanarts ...')
+                REBUILD_MISSING = True if submenu == 0 else False
+                if REBUILD_MISSING: log_info('_command_setup_plugin() Building missing Fanarts ...')
+                else:               log_info('_command_setup_plugin() Rebuilding all Fanarts ...')
 
-                # >> Check if Pillow library is available.
+                # >> Check if Pillow library is available. Abort if not.
                 if not PILLOW_AVAILABLE:
                     kodi_dialog_OK('Pillow library is not available. Aborting Fanart generation.')
                     return
@@ -3865,7 +3865,16 @@ class Main:
                         pDialog_canceled = True
                         # kodi_dialog_OK('Fanart generation was cancelled by the user.')
                         break
-                    mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
+                    # >> If build missing Fanarts was chosen only build fanart if file cannot
+                    # >> be found.
+                    if REBUILD_MISSING:
+                        Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
+                        if Fanart_FN.exists():
+                            assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
+                        else:
+                            mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
+                    else:
+                        mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
                     processed_machines += 1
                 pDialog.update(100)
                 pDialog.close()
