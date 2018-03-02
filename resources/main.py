@@ -3621,7 +3621,7 @@ class Main:
                                   'Extract MAME.xml',
                                   'Build all databases',
                                   'Scan everything',
-                                  'Build Fanarts',
+                                  'Build Fanarts ...',
                                   'Audit MAME machine ROMs/CHDs',
                                   'Audit SL ROMs/CHDs',
                                   'Step by step ...'])
@@ -3813,53 +3813,79 @@ class Main:
 
         # --- Build Fanarts ---
         elif menu_item == 4:
-            log_info('_command_setup_plugin() Build Fanarts ...')
+            submenu = dialog.select('Build Fanarts',
+                                   ['Build missing MAME Fanarts',
+                                    'Rebuild all MAME Fanarts',
+                                    'Build missing Software Lists Fanarts',
+                                    'Rebuild all Software Lists Fanarts',
+                                    ])
+            if submenu < 0: return
 
-            # >> Check if Pillow library is available.
-            if not PILLOW_AVAILABLE:
-                kodi_dialog_OK('Pillow library is not available. Aborting Fanart generation.')
-                return
+            # --- 0 -> Missing MAME Fanarts ---
+            # --- 1 -> Rebuild all MAME Fanarts ---
+            # >> For a complete MAME artwork collection rebuilding all Fanarts will take hours!
+            if submenu == 0 or submenu == 1:
+                REBUILD_ALL = True if submenu == 1 else False
+                if REBUILD_ALL: log_info('_command_setup_plugin() Rebuilding all Fanarts ...')
+                else: log_info('_command_setup_plugin() Building missing Fanarts ...')
 
-            # >> If artwork directory not configured abort.
-            if not self.settings['assets_path']:
-                kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
-                return
+                # >> Check if Pillow library is available.
+                if not PILLOW_AVAILABLE:
+                    kodi_dialog_OK('Pillow library is not available. Aborting Fanart generation.')
+                    return
 
-            # >> If fanart directory doesn't exist create it.
-            Asset_path_FN = FileName(self.settings['assets_path'])
-            Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
-            if not Fanart_path_FN.isdir():
-                log_info('Creating Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
-                Fanart_path_FN.makedirs()
+                # >> If artwork directory not configured abort.
+                if not self.settings['assets_path']:
+                    kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
+                    return
 
-            # >> Load Assets DB
-            pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Loading asset database ... ')
-            pDialog.update(0)
-            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(100)
-            pDialog.close()
+                # >> If fanart directory doesn't exist create it.
+                Asset_path_FN = FileName(self.settings['assets_path'])
+                Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
+                if not Fanart_path_FN.isdir():
+                    log_info('Creating Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
+                    Fanart_path_FN.makedirs()
 
-            # >> Traverse all machines and build fanart from other pieces of artwork
-            total_machines = len(assets_dic)
-            processed_machines = 0
-            pDialog.create('Advanced MAME Launcher', 'Building MAME machine Fanarts ... ')
-            pDialog.update(0)
-            # for m_name in ['005', 'dino']:
-            for m_name in sorted(assets_dic):
-                pDialog.update((processed_machines * 100) // total_machines)
-                mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
-                processed_machines += 1
-            pDialog.update(100)
-            pDialog.close()
+                # >> Load Assets DB
+                pDialog_canceled = False
+                pDialog = xbmcgui.DialogProgress()
+                pDialog.create('Advanced MAME Launcher', 'Loading asset database ... ')
+                pDialog.update(0)
+                assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                pDialog.update(100)
+                pDialog.close()
 
-            # >> Save assets DB
-            pDialog.create('Advanced MAME Launcher', 'Saving asset database ... ')
-            pDialog.update(0)
-            fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-            pDialog.update(100)
-            pDialog.close()
-            kodi_notify('Fanart building finished')
+                # >> Traverse all machines and build fanart from other pieces of artwork
+                total_machines = len(assets_dic)
+                processed_machines = 0
+                pDialog.create('Advanced MAME Launcher', 'Building MAME machine Fanarts ... ')
+                for m_name in sorted(assets_dic):
+                    pDialog.update((processed_machines * 100) // total_machines)
+                    if pDialog.iscanceled():
+                        pDialog_canceled = True
+                        # kodi_dialog_OK('Fanart generation was cancelled by the user.')
+                        break
+                    mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
+                    processed_machines += 1
+                pDialog.update(100)
+                pDialog.close()
+
+                # >> Save assets DB
+                pDialog.create('Advanced MAME Launcher', 'Saving asset database ... ')
+                pDialog.update(0)
+                fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
+                pDialog.update(100)
+                pDialog.close()
+                if pDialog_canceled: kodi_notify('Fanart building stopped. Partial progress saved.')
+                else:                kodi_notify('Fanart building finished')
+
+            # --- Missing SL Fanarts ---
+            elif submenu == 2:
+                kodi_dialog_OK('Build missing Software Lists Fanarts not coded yet. Sorry!')
+
+            # --- Rebuild all SL Fanarts ---
+            elif submenu == 3:
+                kodi_dialog_OK('Rebuild all Software Lists Fanarts not coded yet. Sorry!')
 
         # --- Audit MAME machine ROMs/CHDs ---
         # NOTE It is likekely that this function will take a looong time. It is important that the
