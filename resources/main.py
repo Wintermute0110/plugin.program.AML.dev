@@ -3529,9 +3529,9 @@ class Main:
 
             # >> Resolve DEFINE tags (substitute by the defined value)
             for filter_key in filters_dic:
-                filter_def = filters_dic[filter_key]
+                f_definition = filters_dic[filter_key]
                 for replace_initial_str, replace_final_str in define_dic.iteritems():
-                    filter_def['driver'] = filter_def['driver'].replace(replace_initial_str, replace_final_str)
+                    f_definition['driver'] = f_definition['driver'].replace(replace_initial_str, replace_final_str)
 
             # >> Open main ROM databases
             pDialog = xbmcgui.DialogProgress()
@@ -3561,15 +3561,15 @@ class Main:
             processed_items = 0
             for filter_key in filters_dic:
                 # >> Initialise
-                filter_def = filters_dic[filter_key]
-                f_name = filter_def['name']
-                # log_debug('filter_def = {0}'.format(unicode(filter_def)))
+                f_definition = filters_dic[filter_key]
+                f_name = f_definition['name']
+                # log_debug('f_definition = {0}'.format(unicode(f_definition)))
 
                 # >> Initial progress
                 pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{0}" ...'.format(f_name))
 
                 # >> Driver filter
-                filtered_machine_dic = mame_filter_Driver_tag(main_filter_dic, filter_def['driver'])
+                filtered_machine_dic = mame_filter_Driver_tag(main_filter_dic, f_definition['driver'])
 
                 # >> Make index entry
                 filtered_machine_parents_list = sorted(filtered_machine_dic.keys())
@@ -3579,7 +3579,7 @@ class Main:
                     filtered_machine_all_list.extend(main_pclone_dic[p_name])
                 rom_DB_noext = hashlib.md5(f_name).hexdigest()
                 this_filter_idx_dic = {
-                    'display_name' : filter_def['name'],
+                    'display_name' : f_definition['name'],
                     'num_parents'  : len(filtered_machine_parents_list),
                     'num_machines' : len(filtered_machine_all_list),
                     'rom_DB_noext' : rom_DB_noext
