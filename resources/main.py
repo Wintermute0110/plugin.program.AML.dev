@@ -1537,6 +1537,7 @@ class Main:
           'View MAMEinfo DAT ({0})'.format(Mameinfo_str),
           'View Gameinit DAT ({0})'.format(Gameinit_str),
           'View Command DAT ({0})'.format(Command_str),
+          'View Manual',
           'Display brother machines',
           'Display machines with same Genre',
           'Display machines by same Manufacturer'
@@ -1578,8 +1579,19 @@ class Main:
             info_text = DAT_dic[machine_name]
             self._display_text_window(window_title, info_text)
 
-        # --- Display brother machines (same driver) ---
+        # --- View Manual ---
+        # For the PDF viewer implementation look at https://github.com/i96751414/plugin.image.pdfreader
         elif s_value == 4:
+            kodi_dialog_OK('Manual viewer not coded yet. Sorry!')
+
+            # >> Open ROM in hased database
+            
+
+            # >> If manual found then display it.
+            
+
+        # --- Display brother machines (same driver) ---
+        elif s_value == 5:
             # >> Load Main hashed database
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             sourcefile_str = machine['sourcefile']
@@ -1594,7 +1606,7 @@ class Main:
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         # --- Display machines with same Genre ---
-        elif s_value == 5:
+        elif s_value == 6:
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             genre_str = machine['genre']
             url = self._misc_url_2_arg('catalog', 'Genre', 'category', genre_str)
@@ -1602,7 +1614,7 @@ class Main:
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         # --- Display machines by same Manufacturer ---
-        elif s_value == 6:
+        elif s_value == 7:
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             manufacturer_str = machine['manufacturer']
             url = self._misc_url_2_arg('catalog', 'Manufacturer', 'category', manufacturer_str)
