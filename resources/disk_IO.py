@@ -436,6 +436,8 @@ def fs_new_control_dic():
         'assets_SL_snaps_missing'     : 0,
         'assets_SL_boxfronts_have'    : 0,
         'assets_SL_boxfronts_missing' : 0,
+        'assets_SL_fanarts_have'      : 0,
+        'assets_SL_fanarts_missing'   : 0,
         'assets_SL_trailers_have'     : 0,
         'assets_SL_trailers_missing'  : 0,
         'assets_SL_manuals_have'      : 0,
