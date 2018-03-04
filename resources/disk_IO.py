@@ -206,21 +206,21 @@ def fs_new_disk_dic():
 
 #
 # Object used in MAME_assets_db.json, ordered alphabetically.
-# dictionary key -> asset name / dictionary value -> directory name
-ASSET_MAME_DIC  = {
-    'PCB'        : 'PCBs',
-    'artpreview' : 'artpreviews',
-    'cabinet'    : 'cabinets',
-    'clearlogo'  : 'clearlogos',
-    'cpanel'     : 'cpanels',
-    'fanart'     : 'fanarts',
-    'flyer'      : 'flyers',
-    'manual'     : 'manuals',
-    'marquee'    : 'marquees',
-    'snap'       : 'snaps',
-    'title'      : 'titles',
-    'trailer'    : 'videosnaps',
-}
+#
+ASSET_MAME_T_LIST  = [
+    ('PCB',        'PCBs'),
+    ('artpreview', 'artpreviews'),
+    ('cabinet',    'cabinets'),
+    ('clearlogo',  'clearlogos'),
+    ('cpanel',     'cpanels'),
+    ('fanart',     'fanarts'),
+    ('flyer',      'flyers'),
+    ('manual',     'manuals'),
+    ('marquee',    'marquees'),
+    ('snap',       'snaps'),
+    ('title',      'titles'),
+    ('trailer',    'videosnaps'),
+]
 def fs_new_MAME_asset():
     a = {
         'PCB'        : '',
@@ -266,18 +266,20 @@ def fs_new_SL_ROM():
 
     return R
 
-ASSET_SL_DIC = {
-    'title'    : 'titles_SL',
-    'snap'     : 'snaps_SL',
-    'boxfront' : 'covers_SL',
-    'trailer'  : 'videosnaps_SL',
-    'manual'   : 'manuals_SL',
-}
+ASSET_SL_T_LIST = [
+    ('title',    'titles_SL'),
+    ('snap',     'snaps_SL'),
+    ('boxfront', 'covers_SL'),
+    ('fanart',   'fanarts_SL'),
+    ('trailer',  'videosnaps_SL'),
+    ('manual',   'manuals_SL'),
+]
 def fs_new_SL_asset():
     a = {
         'title'    : '',
         'snap'     : '',
         'boxfront' : '',
+        'fanart'   : '',
         'trailer'   : '',
         'manual'    : '',
     }
@@ -413,8 +415,8 @@ def fs_new_control_dic():
         'assets_clearlogos_missing' : 0,
         'assets_cpanels_have'       : 0,
         'assets_cpanels_missing'    : 0,
-        'assets_fanart_have'        : 0,
-        'assets_fanart_missing'     : 0,
+        'assets_fanarts_have'       : 0,
+        'assets_fanarts_missing'    : 0,
         'assets_flyers_have'        : 0,
         'assets_flyers_missing'     : 0,
         'assets_manuals_have'       : 0,
@@ -3456,17 +3458,19 @@ def fs_scan_MAME_assets(PATHS, control_dic, machines, Asset_path_FN):
     processed_machines = 0
     assets_dic = {}
     table_str = []
-    table_str.append(['left', 'left', 'left',   'left', 'left', 'left', 'left', 'left', 'left',  'left', 'left'])
-    table_str.append(['Name', 'Cab',  'CPanel', 'Fly',  'Mar',  'PCB',  'Snap', 'Tit',  'Clear', 'Tra',  'Man'])
-    have_count_list = [0] * len(ASSET_MAME_KEY_LIST)
+    table_str.append(['left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
+    table_str.append(['Name', 'PCB',  'Art',  'Cab',  'Clr',  'CPan', 'Fan',  'Fly',  'Man',  'Mar',  'Snap', 'Tit',  'Tra'])
+    have_count_list = [0] * len(ASSET_MAME_T_LIST)
     for key in sorted(machines):
         machine = machines[key]
 
         # >> Scan assets
         machine_assets = fs_new_MAME_asset()
-        asset_row = ['---'] * len(ASSET_MAME_KEY_LIST)
-        for idx, asset_key in enumerate(ASSET_MAME_KEY_LIST):
-            full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_MAME_PATH_LIST[idx])
+        asset_row = ['---'] * len(ASSET_MAME_T_LIST)
+        for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
+            asset_key = asset_tuple[0]
+            asset_dir = asset_tuple[1]
+            full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir)
             if asset_key == 'trailer':
                 asset_FN = full_asset_dir_FN.pjoin(key + '.mp4')
             elif asset_key == 'manual':
@@ -3486,55 +3490,63 @@ def fs_scan_MAME_assets(PATHS, control_dic, machines, Asset_path_FN):
         assets_dic[key] = machine_assets
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
-    pDialog.close()
 
     # >> Asset statistics and report.
+    pDialog.update(0, 'Creating MAME asset report ...')
     report_str_list = []
     report_str_list.append('Number of MAME machines {0}'.format(total_machines))
-    report_str_list.append('Have Cabinets   {0:5d} (Missing {1})'.format(have_count_list[0], total_machines - have_count_list[0]))
-    report_str_list.append('Have CPanels    {0:5d} (Missing {1})'.format(have_count_list[1], total_machines - have_count_list[1]))
-    report_str_list.append('Have Flyers     {0:5d} (Missing {1})'.format(have_count_list[2], total_machines - have_count_list[2]))
-    report_str_list.append('Have Marquees   {0:5d} (Missing {1})'.format(have_count_list[3], total_machines - have_count_list[3]))
-    report_str_list.append('Have PCBs       {0:5d} (Missing {1})'.format(have_count_list[4], total_machines - have_count_list[4]))
-    report_str_list.append('Have Snaps      {0:5d} (Missing {1})'.format(have_count_list[5], total_machines - have_count_list[5]))
-    report_str_list.append('Have Titles     {0:5d} (Missing {1})'.format(have_count_list[6], total_machines - have_count_list[6]))
-    report_str_list.append('Have Clearlogos {0:5d} (Missing {1})'.format(have_count_list[7], total_machines - have_count_list[7]))
-    report_str_list.append('Have Trailers   {0:5d} (Missing {1})'.format(have_count_list[8], total_machines - have_count_list[8]))
-    report_str_list.append('Have Manuals    {0:5d} (Missing {1})'.format(have_count_list[9], total_machines - have_count_list[9]))
+    report_str_list.append('Have PCBs       {0:5d} (Missing {1})'.format(have_count_list[0], total_machines - have_count_list[0]))
+    report_str_list.append('Have Artpreview {0:5d} (Missing {1})'.format(have_count_list[1], total_machines - have_count_list[1]))
+    report_str_list.append('Have Cabinets   {0:5d} (Missing {1})'.format(have_count_list[2], total_machines - have_count_list[2]))
+    report_str_list.append('Have Clearlogos {0:5d} (Missing {1})'.format(have_count_list[3], total_machines - have_count_list[3]))
+    report_str_list.append('Have CPanels    {0:5d} (Missing {1})'.format(have_count_list[4], total_machines - have_count_list[4]))
+    report_str_list.append('Have Fanarts    {0:5d} (Missing {1})'.format(have_count_list[5], total_machines - have_count_list[5]))
+    report_str_list.append('Have Flyers     {0:5d} (Missing {1})'.format(have_count_list[6], total_machines - have_count_list[6]))
+    report_str_list.append('Have Manuals    {0:5d} (Missing {1})'.format(have_count_list[7], total_machines - have_count_list[7]))
+    report_str_list.append('Have Marquees   {0:5d} (Missing {1})'.format(have_count_list[8], total_machines - have_count_list[8]))
+    report_str_list.append('Have Snaps      {0:5d} (Missing {1})'.format(have_count_list[9], total_machines - have_count_list[9]))
+    report_str_list.append('Have Titles     {0:5d} (Missing {1})'.format(have_count_list[10], total_machines - have_count_list[10]))
+    report_str_list.append('Have Trailers   {0:5d} (Missing {1})'.format(have_count_list[11], total_machines - have_count_list[11]))
     report_str_list.append('')
     table_str_list = text_render_table_str(table_str)
     report_str_list.extend(table_str_list)
     log_info('Opening MAME asset report file "{0}"'.format(PATHS.REPORT_MAME_ASSETS_PATH.getPath()))
     with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(report_str_list).encode('utf-8'))
+    pDialog.update(100)
 
     # >> Save asset database
-    kodi_busydialog_ON()
+    pDialog.update(0, 'Saving MAME assets database ...')
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-    kodi_busydialog_OFF()
+    pDialog.update(100)
+    pDialog.close()
 
     # >> Update control_dic by assigment (will be saved in caller)
     control_dic['assets_num_MAME_machines']  = total_machines
-    control_dic['assets_cabinets_have']      = have_count_list[0]
-    control_dic['assets_cabinets_missing']   = total_machines - have_count_list[0]
-    control_dic['assets_cpanels_have']       = have_count_list[1]
-    control_dic['assets_cpanels_missing']    = total_machines - have_count_list[1]
-    control_dic['assets_flyers_have']        = have_count_list[2]
-    control_dic['assets_flyers_missing']     = total_machines - have_count_list[2]
-    control_dic['assets_marquees_have']      = have_count_list[3]
-    control_dic['assets_marquees_missing']   = total_machines - have_count_list[3]
-    control_dic['assets_PCBs_have']          = have_count_list[4]
-    control_dic['assets_PCBs_missing']       = total_machines - have_count_list[4]
-    control_dic['assets_snaps_have']         = have_count_list[5]
-    control_dic['assets_snaps_missing']      = total_machines - have_count_list[5]
-    control_dic['assets_titles_have']        = have_count_list[6]
-    control_dic['assets_titles_missing']     = total_machines - have_count_list[6]
-    control_dic['assets_clearlogos_have']    = have_count_list[7]
-    control_dic['assets_clearlogos_missing'] = total_machines - have_count_list[7]
-    control_dic['assets_trailers_have']      = have_count_list[8]
-    control_dic['assets_trailers_missing']   = total_machines - have_count_list[8]
-    control_dic['assets_manuals_have']       = have_count_list[9]
-    control_dic['assets_manuals_missing']    = total_machines - have_count_list[9]
+    control_dic['assets_PCBs_have']          = have_count_list[0]
+    control_dic['assets_PCBs_missing']       = total_machines - have_count_list[0]
+    control_dic['assets_artpreview_have']    = have_count_list[1]
+    control_dic['assets_artpreview_missing'] = total_machines - have_count_list[1]
+    control_dic['assets_cabinets_have']      = have_count_list[2]
+    control_dic['assets_cabinets_missing']   = total_machines - have_count_list[2]
+    control_dic['assets_clearlogos_have']    = have_count_list[3]
+    control_dic['assets_clearlogos_missing'] = total_machines - have_count_list[3]
+    control_dic['assets_cpanels_have']       = have_count_list[4]
+    control_dic['assets_cpanels_missing']    = total_machines - have_count_list[4]
+    control_dic['assets_fanarts_have']       = have_count_list[5]
+    control_dic['assets_fanarts_missing']    = total_machines - have_count_list[5]
+    control_dic['assets_flyers_have']        = have_count_list[6]
+    control_dic['assets_flyers_missing']     = total_machines - have_count_list[6]
+    control_dic['assets_manuals_have']       = have_count_list[7]
+    control_dic['assets_manuals_missing']    = total_machines - have_count_list[7]
+    control_dic['assets_marquees_have']      = have_count_list[8]
+    control_dic['assets_marquees_missing']   = total_machines - have_count_list[8]
+    control_dic['assets_snaps_have']         = have_count_list[9]
+    control_dic['assets_snaps_missing']      = total_machines - have_count_list[9]
+    control_dic['assets_titles_have']        = have_count_list[10]
+    control_dic['assets_titles_missing']     = total_machines - have_count_list[10]
+    control_dic['assets_trailers_have']      = have_count_list[11]
+    control_dic['assets_trailers_missing']   = total_machines - have_count_list[11]
 
 def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
     # >> Traverse Software List, check if ROM exists, update and save database
@@ -3545,9 +3557,9 @@ def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
     total_files = len(SL_catalog_dic)
     processed_files = 0
     table_str = []
-    table_str.append(['left', 'left', 'left', 'left', 'left', 'left', 'left'])
-    table_str.append(['Soft', 'Name', 'Tit',  'Snap', 'Bft',  'Tra',  'Man'])
-    have_count_list = [0] * len(ASSET_SL_KEY_LIST)
+    table_str.append(['left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
+    table_str.append(['Soft', 'Name', 'Tit',  'Snap', 'Bft',  'Fan',  'Tra',  'Man'])
+    have_count_list = [0] * len(ASSET_SL_T_LIST)
     SL_item_count = 0
     for SL_name in sorted(SL_catalog_dic):
         # >> Update progress
@@ -3569,9 +3581,11 @@ def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
             SL_item_count += 1
             rom = SL_roms[rom_key]
             SL_assets = fs_new_SL_asset()
-            asset_row = ['---'] * len(ASSET_SL_KEY_LIST)
-            for idx, asset_key in enumerate(ASSET_SL_KEY_LIST):
-                full_asset_dir_FN = Asset_path_FN.pjoin(ASSET_SL_PATH_LIST[idx]).pjoin(SL_name)
+            asset_row = ['---'] * len(ASSET_SL_T_LIST)
+            for idx, asset_tuple in enumerate(ASSET_SL_T_LIST):
+                asset_key = asset_tuple[0]
+                asset_dir = asset_tuple[1]
+                full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir).pjoin(SL_name)
                 if asset_key == 'trailer':
                     asset_FN = full_asset_dir_FN.pjoin(rom_key + '.mp4')
                 elif asset_key == 'manual':
@@ -3595,7 +3609,6 @@ def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
         processed_files += 1
     update_number = (processed_files*100) // total_files
     pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
-    pDialog.close()
 
     # >> Asset statistics and report.
     report_str_list = []
@@ -3603,14 +3616,16 @@ def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
     report_str_list.append('Have Titles    {0:5d} (Missing {1})'.format(have_count_list[0], SL_item_count - have_count_list[0]))
     report_str_list.append('Have Snaps     {0:5d} (Missing {1})'.format(have_count_list[1], SL_item_count - have_count_list[1]))
     report_str_list.append('Have Boxfronts {0:5d} (Missing {1})'.format(have_count_list[2], SL_item_count - have_count_list[2]))
-    report_str_list.append('Have Trailers  {0:5d} (Missing {1})'.format(have_count_list[3], SL_item_count - have_count_list[3]))
-    report_str_list.append('Have Manuals   {0:5d} (Missing {1})'.format(have_count_list[4], SL_item_count - have_count_list[4]))
+    report_str_list.append('Have Fanarts   {0:5d} (Missing {1})'.format(have_count_list[3], SL_item_count - have_count_list[3]))
+    report_str_list.append('Have Trailers  {0:5d} (Missing {1})'.format(have_count_list[4], SL_item_count - have_count_list[4]))
+    report_str_list.append('Have Manuals   {0:5d} (Missing {1})'.format(have_count_list[5], SL_item_count - have_count_list[5]))
     report_str_list.append('')
     table_str_list = text_render_table_str(table_str)
     report_str_list.extend(table_str_list)
     log_info('Opening SL asset report file "{0}"'.format(PATHS.REPORT_SL_ASSETS_PATH.getPath()))
     with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(report_str_list).encode('utf-8'))
+    pDialog.close()
 
     # >> Update control_dic by assigment (will be saved in caller)
     control_dic['assets_SL_num_items']         = SL_item_count
@@ -3620,10 +3635,12 @@ def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
     control_dic['assets_SL_snaps_missing']     = SL_item_count - have_count_list[1]
     control_dic['assets_SL_boxfronts_have']    = have_count_list[2]
     control_dic['assets_SL_boxfronts_missing'] = SL_item_count - have_count_list[2]
-    control_dic['assets_SL_trailers_have']     = have_count_list[3]
-    control_dic['assets_SL_trailers_missing']  = SL_item_count - have_count_list[3]
-    control_dic['assets_SL_manuals_have']      = have_count_list[4]
-    control_dic['assets_SL_manuals_missing']   = SL_item_count - have_count_list[4]
+    control_dic['assets_SL_fanarts_have']      = have_count_list[3]
+    control_dic['assets_SL_fanarts_missing']   = SL_item_count - have_count_list[3]
+    control_dic['assets_SL_trailers_have']     = have_count_list[4]
+    control_dic['assets_SL_trailers_missing']  = SL_item_count - have_count_list[4]
+    control_dic['assets_SL_manuals_have']      = have_count_list[5]
+    control_dic['assets_SL_manuals_missing']   = SL_item_count - have_count_list[5]
 
 # -------------------------------------------------------------------------------------------------
 # Hashed databases. Useful when only one item in a big dictionary is required.
