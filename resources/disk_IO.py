@@ -205,30 +205,36 @@ def fs_new_disk_dic():
     return m
 
 #
-# Object used in MAME_assets_db.json
-#
-ASSET_MAME_KEY_LIST  = [
-    'artpreview', 'cabinet', 'cpanel', 'flyer', 'marquee', 'PCB', 'snap', 'title',
-    'clearlogo', 'trailer', 'manual', 'fanart'
-]
-ASSET_MAME_PATH_LIST = [
-    'artpreviews', 'cabinets', 'cpanels', 'flyers', 'marquees', 'PCBs', 'snaps', 'titles',
-    'clearlogos', 'videosnaps', 'manuals', 'fanarts'
-]
+# Object used in MAME_assets_db.json, ordered alphabetically.
+# dictionary key -> asset name / dictionary value -> directory name
+ASSET_MAME_DIC  = {
+    'PCB'        : 'PCBs',
+    'artpreview' : 'artpreviews',
+    'cabinet'    : 'cabinets',
+    'clearlogo'  : 'clearlogos',
+    'cpanel'     : 'cpanels',
+    'fanart'     : 'fanarts',
+    'flyer'      : 'flyers',
+    'manual'     : 'manuals',
+    'marquee'    : 'marquees',
+    'snap'       : 'snaps',
+    'title'      : 'titles',
+    'trailer'    : 'videosnaps',
+}
 def fs_new_MAME_asset():
     a = {
+        'PCB'        : '',
         'artpreview' : '',
         'cabinet'    : '',
+        'clearlogo'  : '',
         'cpanel'     : '',
+        'fanart'     : '',
         'flyer'      : '',
+        'manual'     : '',
         'marquee'    : '',
-        'PCB'        : '',
         'snap'       : '',
         'title'      : '',
-        'clearlogo'  : '',
         'trailer'    : '',
-        'manual'     : '',
-        'fanart'     : '',
     }
 
     return a
@@ -260,8 +266,13 @@ def fs_new_SL_ROM():
 
     return R
 
-ASSET_SL_KEY_LIST  = ['title',     'snap',     'boxfront',  'trailer',       'manual']
-ASSET_SL_PATH_LIST = ['titles_SL', 'snaps_SL', 'covers_SL', 'videosnaps_SL', 'manuals_SL']
+ASSET_SL_DIC = {
+    'title'    : 'titles_SL',
+    'snap'     : 'snaps_SL',
+    'boxfront' : 'covers_SL',
+    'trailer'  : 'videosnaps_SL',
+    'manual'   : 'manuals_SL',
+}
 def fs_new_SL_asset():
     a = {
         'title'    : '',
@@ -392,26 +403,30 @@ def fs_new_control_dic():
 
         # --- Filed in by the MAME asset scanner ---
         'assets_num_MAME_machines'  : 0,
-        'assets_cabinets_have'      : 0,
-        'assets_cabinets_missing'   : 0,
-        'assets_cpanels_have'       : 0,
-        'assets_cpanels_missing'    : 0,
-        'assets_flyers_have'        : 0,
-        'assets_flyers_missing'     : 0,
-        'assets_marquees_have'      : 0,
-        'assets_marquees_missing'   : 0,
         'assets_PCBs_have'          : 0,
         'assets_PCBs_missing'       : 0,
+        'assets_artpreview_have'    : 0,
+        'assets_artpreview_missing' : 0,
+        'assets_cabinets_have'      : 0,
+        'assets_cabinets_missing'   : 0,
+        'assets_clearlogos_have'    : 0,
+        'assets_clearlogos_missing' : 0,
+        'assets_cpanels_have'       : 0,
+        'assets_cpanels_missing'    : 0,
+        'assets_fanart_have'        : 0,
+        'assets_fanart_missing'     : 0,
+        'assets_flyers_have'        : 0,
+        'assets_flyers_missing'     : 0,
+        'assets_manuals_have'       : 0,
+        'assets_manuals_missing'    : 0,
+        'assets_marquees_have'      : 0,
+        'assets_marquees_missing'   : 0,
         'assets_snaps_have'         : 0,
         'assets_snaps_missing'      : 0,
         'assets_titles_have'        : 0,
         'assets_titles_missing'     : 0,
-        'assets_clearlogos_have'    : 0,
-        'assets_clearlogos_missing' : 0,
         'assets_trailers_have'      : 0,
         'assets_trailers_missing'   : 0,
-        'assets_manuals_have'       : 0,
-        'assets_manuals_missing'    : 0,
 
         # --- Filed in by the SL asset scanner ---
         'assets_SL_num_items'         : 0,
