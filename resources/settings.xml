@@ -11,6 +11,7 @@
     <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="auto" option="" />
     <setting label="Software Lists CHDs path" type="folder" id="SL_chd_path" source="auto" option="" />
     <setting label="Samples path"             type="folder" id="samples_path" source="auto" option="" />
+    <setting label="Artwork path"             type="folder" id="artwork_path" source="auto" option="" />
 </category>
 <category label="DAT paths">
     <setting id="separator" type="lsep" label="Optional DATs" />
