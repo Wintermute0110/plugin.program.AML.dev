@@ -11,7 +11,7 @@ from PIL import ImageDraw
 # Returns an image of size (box_x_size, box_y_size)
 #
 def PIL_resize_proportional(img, layout, dic_key):
-    # CANVAS_COLOR = (25, 255, 25)
+    # CANVAS_COLOR = (25, 100, 25)
     CANVAS_COLOR = (0, 0, 0)
     box_x_size = layout[dic_key]['x_size']
     box_y_size = layout[dic_key]['y_size']
@@ -63,22 +63,18 @@ def PIL_paste_image(img, img_title, layout, dic_key):
 
 # --- Fanart layout ---
 layout = {
-    'title'      : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 50,   'y_pos' : 50},
-    'snap'       : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 50,   'y_pos' : 550},
-    'flyer'      : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 1420, 'y_pos' : 50},
-    'cabinet'    : {'x_size' : 300, 'y_size' : 425, 'x_pos' : 1050, 'y_pos' : 625},
-    'artpreview' : {'x_size' : 450, 'y_size' : 550, 'x_pos' : 550,  'y_pos' : 500},
-    'PCB'        : {'x_size' : 300, 'y_size' : 300, 'x_pos' : 1500, 'y_pos' : 525},
-    'clearlogo'  : {'x_size' : 450, 'y_size' : 200, 'x_pos' : 1400, 'y_pos' : 850},
-    'cpanel'     : {'x_size' : 300, 'y_size' : 100, 'x_pos' : 1050, 'y_pos' : 500},
-    'marquee'    : {'x_size' : 800, 'y_size' : 275, 'x_pos' : 550,  'y_pos' : 200},
-    'text'       : {                                'x_pos' : 550,  'y_pos' : 50, 'size' : 72},
+    'title'     : {'x_size' : 600, 'y_size' : 600, 'x_pos' : 690,  'y_pos' : 430},
+    'snap'      : {'x_size' : 600, 'y_size' : 600, 'x_pos' : 1300, 'y_pos' : 430},
+    'boxfront'  : {'x_size' : 650, 'y_size' : 980, 'x_pos' : 30,   'y_pos' : 50},
+    'text_SL'   : {                                'x_pos' : 730,  'y_pos' : 90, 'size' : 76},
+    'text_item' : {                                'x_pos' : 730,  'y_pos' : 180, 'size' : 76},
 }
 
 # --- Create fanart canvas ---
 img = Image.new('RGB', (1920, 1080), (0, 0, 0))
 draw = ImageDraw.Draw(img)
-font_mono = ImageFont.truetype('../fonts/Inconsolata.otf', layout['text']['size'])
+font_mono_SL = ImageFont.truetype('../fonts/Inconsolata.otf', layout['text_SL']['size'])
+font_mono_item = ImageFont.truetype('../fonts/Inconsolata.otf', layout['text_item']['size'])
 
 # --- Title and Snap (colour rectangle for placement) ---
 # img_title = Image.new('RGB', (TITLE_X_SIZE, TITLE_Y_SIZE), (25, 25, 25))
@@ -87,42 +83,26 @@ font_mono = ImageFont.truetype('../fonts/Inconsolata.otf', layout['text']['size'
 # print(img_title.format, img_title.size, img_title.mode)
 
 # --- Title and Snap (open PNG actual screenshot) ---
-img_title = Image.open('dino_title.png')
-img_snap = Image.open('dino_snap.png')
-img_artpreview = Image.open('dino_artpreview.png')
-img_cabinet = Image.open('dino_cabinet.png')
-img_clearlogo = Image.open('dino_clearlogo.png')
-img_cpanel = Image.open('dino_cpanel.png')
-img_flyer = Image.open('dino_flyer.png')
-img_marquee = Image.open('dino_marquee.png')
-img_PCB = Image.open('dino_PCB.png')
+img_title = Image.open('doom_title.png')
+img_snap = Image.open('doom_snap.png')
+img_boxfront = Image.open('doom_boxfront.png')
 
 # --- Resize keeping aspect ratio ---
 img_title = PIL_resize_proportional(img_title, layout, 'title')
 img_snap = PIL_resize_proportional(img_snap, layout, 'snap')
-img_artpreview = PIL_resize_proportional(img_artpreview, layout, 'artpreview')
-img_cabinet = PIL_resize_proportional(img_cabinet, layout, 'cabinet')
-img_clearlogo = PIL_resize_proportional(img_clearlogo, layout, 'clearlogo')
-img_cpanel = PIL_resize_proportional(img_cpanel, layout, 'cpanel')
-img_flyer = PIL_resize_proportional(img_flyer, layout, 'flyer')
-img_marquee = PIL_resize_proportional(img_marquee, layout, 'marquee')
-img_PCB = PIL_resize_proportional(img_PCB, layout, 'PCB')
+img_boxfront = PIL_resize_proportional(img_boxfront, layout, 'boxfront')
 
 # --- Compsite fanart ---
 # NOTE The box dimensions must have the same size as the pasted image.
 img = PIL_paste_image(img, img_title, layout, 'title')
 img = PIL_paste_image(img, img_snap, layout, 'snap')
-img = PIL_paste_image(img, img_artpreview, layout, 'artpreview')
-img = PIL_paste_image(img, img_cabinet, layout, 'cabinet')
-img = PIL_paste_image(img, img_clearlogo, layout, 'clearlogo')
-img = PIL_paste_image(img, img_cpanel, layout, 'cpanel')
-img = PIL_paste_image(img, img_flyer, layout, 'flyer')
-img = PIL_paste_image(img, img_marquee, layout, 'marquee')
-img = PIL_paste_image(img, img_PCB, layout, 'PCB')
+img = PIL_paste_image(img, img_boxfront, layout, 'boxfront')
 
 # --- Print machine name ---
-draw.text((layout['text']['x_pos'], layout['text']['y_pos']),
-          'dino', (255, 255, 255), font = font_mono)
+draw.text((layout['text_SL']['x_pos'], layout['text_SL']['y_pos']),
+          '32x', (255, 255, 255), font = font_mono_SL)
+draw.text((layout['text_item']['x_pos'], layout['text_item']['y_pos']),
+          'doom', (255, 255, 255), font = font_mono_item)
 
 # --- Save test fanart ---
-img.save('fanart.png')
+img.save('fanart_SL.png')
