@@ -25,6 +25,7 @@ WIP      Support MAME artwork by Mr. Do's. Note that Clones use Parent's artwork
 
 WIP      User Parent/Clone substituted artwork. For example, most trailers are only available for
          the Parent machine and can be used by Clone machines.
+         Maybe the scanner cache is a requirement for this feature ...
 
 FEATURE  Build Fanarts from other pieces of artwork for Software List items.
 

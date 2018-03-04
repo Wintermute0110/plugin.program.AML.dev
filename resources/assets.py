@@ -61,12 +61,13 @@ def assets_get_asset_key_SL_icon(asset_index):
     return asset_key
 
 #
-# values="Snap|Title"
+# values="Fanart|Snap|Title"
 #
 def assets_get_asset_key_SL_fanart(asset_index):
-    asset_key = 'snap' # Default value
+    asset_key = 'fanart' # Default value
 
-    if   asset_index == 0: asset_key = 'snap'
-    elif asset_index == 1: asset_key = 'title'
+    if   asset_index == 0: asset_key = 'fanart'
+    elif asset_index == 1: asset_key = 'snap'
+    elif asset_index == 2: asset_key = 'title'
 
     return asset_key

@@ -45,10 +45,10 @@
     <setting label="Display machines with available CHDs only" type="bool" default="false" id="display_chd_available" />
 </category>
 <category label="Artwork / Assets">
-    <setting label="MAME icon" type="enum" id="artwork_mame_icon"  default="0" values="Title|Snap|Flyer|Cabinet|PCB" />
-    <setting label="MAME fanart" type="enum" id="artwork_mame_fanart"  default="0" values="Fanart|Snap|Title|Flyer|CPanel" />
-    <setting label="Software Lists icon" type="enum" id="artwork_SL_icon"  default="0" values="Boxfront|Title|Snap" />
-    <setting label="Software Lists fanart" type="enum" id="artwork_SL_fanart"  default="0" values="Snap|Title" />
+    <setting label="MAME Icon" type="enum" id="artwork_mame_icon"  default="0" values="Title|Snap|Flyer|Cabinet|PCB" />
+    <setting label="MAME Fanart" type="enum" id="artwork_mame_fanart"  default="0" values="Fanart|Snap|Title|Flyer|CPanel" />
+    <setting label="Software Lists Icon" type="enum" id="artwork_SL_icon"  default="0" values="Boxfront|Title|Snap" />
+    <setting label="Software Lists Fanart" type="enum" id="artwork_SL_fanart"  default="0" values="Fanart|Snap|Title" />
     <setting label="Do not render trailers" type="bool" default="false" id="display_hide_trailers" />
 </category>
 <category label="Advanced">

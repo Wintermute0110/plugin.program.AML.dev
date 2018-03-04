@@ -2075,9 +2075,9 @@ class Main:
                                   control_dic['assets_num_MAME_machines'],
                                   control_dic['assets_cpanels_missing'])
             t = "You have {0:5d} MAME Fanart      out of {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['assets_fanart_have'],
+            info_text += t.format(control_dic['assets_fanarts_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_fanart_missing'])
+                                  control_dic['assets_fanarts_missing'])
             t = "You have {0:5d} MAME Flyers      out of {1:5d} ({2:5d} missing)\n"
             info_text += t.format(control_dic['assets_flyers_have'],
                                   control_dic['assets_num_MAME_machines'],
@@ -3012,12 +3012,13 @@ class Main:
         URL_view_DAT = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', machine_name, 'location', LOCATION_MAME_FAVS)
         URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
-        commands = []
-        commands.append(('Info / Utils',  URL_view_DAT))
-        commands.append(('View / Audit',  URL_view ))
-        commands.append(('Manage Favourite machines',  URL_manage ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+        commands = [
+            ('Info / Utils',  URL_view_DAT),
+            ('View / Audit',  URL_view ),
+            ('Manage Favourite machines',  URL_manage ),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)' ),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__) )
+        ]
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
@@ -3286,11 +3287,12 @@ class Main:
         # --- Create context menu ---
         URL_view = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
         URL_manage = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
-        commands = []
-        commands.append(('View / Audit', URL_view))
-        commands.append(('Manage SL Favourite ROMs',  URL_manage))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
+        commands = [
+            ('View / Audit', URL_view),
+            ('Manage SL Favourite ROMs', URL_manage),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
