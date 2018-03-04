@@ -5,11 +5,10 @@ WIP      Improve AML wiki in Github and move documentation from Kodi forum to Gi
 WIP      Create a hased database for all catalog filter combination. This will require the
          creation of about 5000 json files but will make AEL as fast as possible.
 
-WIP      Use Parent/Clone substitution for DAT files: MAMEINFO, History, etc.
-         Not sure if this feature will be useful for purists.
-
 WIP      Render PDF manuals consisting of image scans (99% of game manuals are scans of images).
          Have a look at the PDF reader addon https://forum.kodi.tv/showthread.php?tid=187421
+
+WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
 
 WIP      Implemented "Most played MAME machines"
 
@@ -23,8 +22,6 @@ WIP      Implemented "Recently played SL ROMs"
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
 WIP      Support MAME artwork by Mr. Do's. Note that Clones use Parent's artwork automatically.
-
-WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
 
 WIP      User Parent/Clone substituted artwork. For example, most trailers are only available for
          the Parent machine and can be used by Clone machines.
