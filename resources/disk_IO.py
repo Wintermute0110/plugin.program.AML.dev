@@ -3550,6 +3550,10 @@ def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
     have_count_list = [0] * len(ASSET_SL_KEY_LIST)
     SL_item_count = 0
     for SL_name in sorted(SL_catalog_dic):
+        # >> Update progress
+        update_number = (processed_files*100) // total_files
+        pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+
         # >> Open database
         file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
@@ -3589,8 +3593,8 @@ def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
 
         # >> Update progress
         processed_files += 1
-        update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+    update_number = (processed_files*100) // total_files
+    pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
     pDialog.close()
 
     # >> Asset statistics and report.

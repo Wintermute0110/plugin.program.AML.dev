@@ -3838,9 +3838,9 @@ class Main:
             # --- 1 -> Rebuild all MAME Fanarts ---
             # >> For a complete MAME artwork collection rebuilding all Fanarts will take hours!
             if submenu == 0 or submenu == 1:
-                REBUILD_MISSING = True if submenu == 0 else False
-                if REBUILD_MISSING: log_info('_command_setup_plugin() Building missing Fanarts ...')
-                else:               log_info('_command_setup_plugin() Rebuilding all Fanarts ...')
+                BUILD_MISSING = True if submenu == 0 else False
+                if BUILD_MISSING: log_info('_command_setup_plugin() Building missing Fanarts ...')
+                else:             log_info('_command_setup_plugin() Rebuilding all Fanarts ...')
 
                 # >> Check if Pillow library is available. Abort if not.
                 if not PILLOW_AVAILABLE:
@@ -3880,7 +3880,7 @@ class Main:
                         break
                     # >> If build missing Fanarts was chosen only build fanart if file cannot
                     # >> be found.
-                    if REBUILD_MISSING:
+                    if BUILD_MISSING:
                         Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
                         if Fanart_FN.exists():
                             assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
@@ -3901,13 +3901,86 @@ class Main:
                 if pDialog_canceled: kodi_notify('Fanart building stopped. Partial progress saved.')
                 else:                kodi_notify('Fanart building finished')
 
-            # --- Missing SL Fanarts ---
-            elif submenu == 2:
-                kodi_dialog_OK('Build missing Software Lists Fanarts not coded yet. Sorry!')
+            # --- 2 -> Missing SL Fanarts ---
+            # --- 3 -> Rebuild all SL Fanarts ---
+            elif submenu == 2 or submenu == 3:
+                BUILD_MISSING = True if submenu == 0 else False
+                if BUILD_MISSING: log_info('_command_setup_plugin() Building missing Software Lists Fanarts ...')
+                else:             log_info('_command_setup_plugin() Rebuilding all Software Lists Fanarts ...')
 
-            # --- Rebuild all SL Fanarts ---
-            elif submenu == 3:
-                kodi_dialog_OK('Rebuild all Software Lists Fanarts not coded yet. Sorry!')
+                # >> Check if Pillow library is available. Abort if not.
+                if not PILLOW_AVAILABLE:
+                    kodi_dialog_OK('Pillow library is not available. Aborting Fanart generation.')
+                    return
+
+                # >> If artwork directory not configured abort.
+                if not self.settings['assets_path']:
+                    kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
+                    return
+
+                # >> Load SL index
+                SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+
+                # >> Traverse all SL and on each SL every item
+                pDialog_canceled = False
+                pDialog = xbmcgui.DialogProgress()
+                pDialog.create('Advanced MAME Launcher')
+                SL_number = len(SL_index_dic)
+                SL_count = 1
+                for SL_name in sorted(SL_index_dic):
+                    # >> Update progres dialog
+                    pdialog_line1 = 'Processing SL {0} ({1} of {2})...'.format(SL_name, SL_count, SL_number)
+                    pdialog_line2 = ' '
+                    pDialog.update(0, pdialog_line1, pdialog_line2)
+
+                    # >> If fanart directory doesn't exist create it.
+                    Asset_path_FN = FileName(self.settings['assets_path'])
+                    Fanart_path_FN = Asset_path_FN.pjoin('fanarts_SL/{0}'.format(SL_name))
+                    if not Fanart_path_FN.isdir():
+                        log_info('Creating SL Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
+                        Fanart_path_FN.makedirs()
+
+                    # >> Load Assets DB
+                    pdialog_line2 = 'Loading SL asset database ... '
+                    pDialog.update(0, pdialog_line1, pdialog_line2)
+                    assets_file_name =  SL_index_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+                    SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+                    SL_assets_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
+
+                    # >> Traverse all SL items and build fanart from other pieces of artwork
+                    total_SL_items = len(SL_assets_dic)
+                    processed_SL_items = 0
+                    for m_name in sorted(SL_assets_dic):
+                        pdialog_line2 = 'SL item {0}'.format(m_name)
+                        update_number = (processed_SL_items * 100) // total_SL_items
+                        pDialog.update(update_number, pdialog_line1, pdialog_line2)
+                        if pDialog.iscanceled():
+                            pDialog_canceled = True
+                            # kodi_dialog_OK('SL Fanart generation was cancelled by the user.')
+                            break
+                        # >> If build missing Fanarts was chosen only build fanart if file cannot
+                        # >> be found.
+                        if BUILD_MISSING:
+                            Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
+                            if Fanart_FN.exists():
+                                SL_assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
+                            else:
+                                mame_build_SL_fanart(PATHS, SL_name, m_name, SL_assets_dic, Fanart_path_FN)
+                        else:
+                            mame_build_SL_fanart(PATHS, SL_name, m_name, SL_assets_dic, Fanart_path_FN)
+                        processed_SL_items += 1
+
+                    # >> Save assets DB
+                    pdialog_line2 = 'Saving SL {0} asset database ... '.format(SL_name)
+                    pDialog.update(100, pdialog_line1, pdialog_line2)
+                    fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
+
+                    # >> Update progress
+                    SL_count += 1
+                    if pDialog_canceled: break
+                pDialog.close()
+                if pDialog_canceled: kodi_notify('SL Fanart building stopped. Partial progress saved.')
+                else:                kodi_notify('SL Fanart building finished')
 
         # --- Audit MAME machine ROMs/CHDs ---
         # NOTE It is likekely that this function will take a looong time. It is important that the

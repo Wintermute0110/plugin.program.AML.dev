@@ -1253,12 +1253,12 @@ def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
 # Rebuild Fanart for a given SL item
 #
 def mame_build_SL_fanart(PATHS, SL_name, m_name, assets_dic, Fanart_path_FN):
-    # log_debug('mame_build_SL_fanart() Building fanart for machine {0}'.format(m_name))
+    # log_debug('mame_build_SL_fanart() Building fanart for SL {0} item {1}'.format(SL_name, m_name))
 
     # >> Quickly check if machine has valid assets, and skip fanart generation if not.
     machine_has_valid_assets = False
     for asset_key in layout_SL:
-        if asset_key == 'text_SL' or asset_key = 'text_item': continue
+        if asset_key == 'text_SL' or asset_key == 'text_item': continue
         m_assets = assets_dic[m_name]
         if m_assets[asset_key]:
             machine_has_valid_assets = True
@@ -1270,12 +1270,12 @@ def mame_build_SL_fanart(PATHS, SL_name, m_name, assets_dic, Fanart_path_FN):
         global font_mono_SL
         log_debug('mame_build_SL_fanart() Creating font_mono_SL object')
         log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_SL = ImageFont.truetype('../fonts/Inconsolata.otf', layout_SL['text_SL']['size'])
+        font_mono_SL = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout_SL['text_SL']['size'])
     if not font_mono_item:
         global font_mono_item
         log_debug('mame_build_SL_fanart() Creating font_mono_item object')
         log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_item = ImageFont.truetype('../fonts/Inconsolata.otf', layout_SL['text_item']['size'])
+        font_mono_item = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout_SL['text_item']['size'])
 
     # >> Create fanart canvas
     fanart_img = Image.new('RGB', (1920, 1080), (0, 0, 0))
@@ -1286,10 +1286,10 @@ def mame_build_SL_fanart(PATHS, SL_name, m_name, assets_dic, Fanart_path_FN):
         # log_debug('{0:<10} initialising'.format(asset_key))
         m_assets = assets_dic[m_name]
         if asset_key == 'text_SL':
-            draw.text((layout_SL['text']['x_pos'], layout_SL['text']['y_pos']), SL_name,
+            draw.text((layout_SL['text_SL']['x_pos'], layout_SL['text_SL']['y_pos']), SL_name,
                       (255, 255, 255), font = font_mono_SL)
         elif asset_key == 'text_item':
-            draw.text((layout_SL['text']['x_pos'], layout_SL['text']['y_pos']), m_name,
+            draw.text((layout_SL['text_item']['x_pos'], layout_SL['text_item']['y_pos']), m_name,
                       (255, 255, 255), font = font_mono_item)
         else:
             if not m_assets[asset_key]:
