@@ -3923,7 +3923,7 @@ class Main:
             # --- 2 -> Missing SL Fanarts ---
             # --- 3 -> Rebuild all SL Fanarts ---
             elif submenu == 2 or submenu == 3:
-                BUILD_MISSING = True if submenu == 0 else False
+                BUILD_MISSING = True if submenu == 2 else False
                 if BUILD_MISSING: log_info('_command_setup_plugin() Building missing Software Lists Fanarts ...')
                 else:             log_info('_command_setup_plugin() Rebuilding all Software Lists Fanarts ...')
 
