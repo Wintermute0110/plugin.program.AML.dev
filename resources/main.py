@@ -1881,6 +1881,7 @@ class Main:
                 info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
                 info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
                 info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(assets['boxfront'])
+                info_text += "[COLOR violet]fanart[/COLOR]: '{0}'\n".format(assets['fanart'])
                 info_text += "[COLOR violet]trailer[/COLOR]: '{0}'\n".format(assets['trailer'])
                 info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
 
@@ -1934,6 +1935,9 @@ class Main:
                 info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(rom['assets']['title'])
                 info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(rom['assets']['snap'])
                 info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(rom['assets']['boxfront'])
+                info_text += "[COLOR violet]fanart[/COLOR]: '{0}'\n".format(rom['assets']['fanart'])
+                info_text += "[COLOR violet]trailer[/COLOR]: '{0}'\n".format(rom['assets']['trailer'])
+                info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(rom['assets']['manual'])
             self._display_text_window(window_title, info_text)
 
         # --- View database information and statistics stored in control dictionary ---

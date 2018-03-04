@@ -1185,18 +1185,11 @@ layout = {
     'text'       : {                                'x_pos' : 550,  'y_pos' : 50, 'size' : 72},
 }
 
-layout_SL = {
-    'title'     : {'x_size' : 600, 'y_size' : 600, 'x_pos' : 690,  'y_pos' : 430},
-    'snap'      : {'x_size' : 600, 'y_size' : 600, 'x_pos' : 1300, 'y_pos' : 430},
-    'boxfront'  : {'x_size' : 650, 'y_size' : 980, 'x_pos' : 30,   'y_pos' : 50},
-    'text_SL'   : {                                'x_pos' : 730,  'y_pos' : 90, 'size' : 76},
-    'text_item' : {                                'x_pos' : 730,  'y_pos' : 180, 'size' : 76},
-}
-
 # >> Cache font object in global variable
 font_mono = None
 font_mono_SL = None
 font_mono_item = None
+
 #
 # Rebuild Fanart for a given MAME machine
 #
@@ -1248,6 +1241,14 @@ def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
     # log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
+
+layout_SL = {
+    'title'     : {'x_size' : 600, 'y_size' : 600, 'x_pos' : 690,  'y_pos' : 430},
+    'snap'      : {'x_size' : 600, 'y_size' : 600, 'x_pos' : 1300, 'y_pos' : 430},
+    'boxfront'  : {'x_size' : 650, 'y_size' : 980, 'x_pos' : 30,   'y_pos' : 50},
+    'text_SL'   : {                                'x_pos' : 730,  'y_pos' : 90, 'size' : 76},
+    'text_item' : {                                'x_pos' : 730,  'y_pos' : 180, 'size' : 76},
+}
 
 #
 # Rebuild Fanart for a given SL item
