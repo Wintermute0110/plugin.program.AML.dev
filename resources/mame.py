@@ -1182,14 +1182,23 @@ layout = {
     'clearlogo'  : {'x_size' : 450, 'y_size' : 200, 'x_pos' : 1400, 'y_pos' : 850},
     'cpanel'     : {'x_size' : 300, 'y_size' : 100, 'x_pos' : 1050, 'y_pos' : 500},
     'marquee'    : {'x_size' : 800, 'y_size' : 275, 'x_pos' : 550,  'y_pos' : 200},
-    'text'       : {'x_size' : 550, 'y_size' : 50, 'color' : (255, 255, 255), 'size' : 72},
+    'text'       : {                                'x_pos' : 550,  'y_pos' : 50, 'size' : 72},
+}
+
+layout_SL = {
+    'title'     : {'x_size' : 600, 'y_size' : 600, 'x_pos' : 690,  'y_pos' : 430},
+    'snap'      : {'x_size' : 600, 'y_size' : 600, 'x_pos' : 1300, 'y_pos' : 430},
+    'boxfront'  : {'x_size' : 650, 'y_size' : 980, 'x_pos' : 30,   'y_pos' : 50},
+    'text_SL'   : {                                'x_pos' : 730,  'y_pos' : 90, 'size' : 76},
+    'text_item' : {                                'x_pos' : 730,  'y_pos' : 180, 'size' : 76},
 }
 
 # >> Cache font object in global variable
 font_mono = None
-
+font_mono_SL = None
+font_mono_item = None
 #
-# Rebuild Fanart for a given machine
+# Rebuild Fanart for a given MAME machine
 #
 def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
     # log_debug('mame_build_fanart() Building fanart for machine {0}'.format(m_name))
@@ -1219,8 +1228,8 @@ def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
         # log_debug('{0:<10} initialising'.format(asset_key))
         m_assets = assets_dic[m_name]
         if asset_key == 'text':
-            draw.text((layout['text']['x_size'], layout['text']['y_size']), m_name,
-                      layout['text']['color'], font = font_mono)
+            draw.text((layout['text']['x_pos'], layout['text']['y_pos']), m_name,
+                      (255, 255, 255), font = font_mono)
         else:
             if not m_assets[asset_key]:
                 # log_debug('{0:<10} DB empty'.format(asset_key))
@@ -1237,5 +1246,66 @@ def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
     # >> Save fanart and update database
     Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
     # log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
+    fanart_img.save(Fanart_FN.getPath())
+    assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
+
+#
+# Rebuild Fanart for a given SL item
+#
+def mame_build_SL_fanart(PATHS, SL_name, m_name, assets_dic, Fanart_path_FN):
+    # log_debug('mame_build_SL_fanart() Building fanart for machine {0}'.format(m_name))
+
+    # >> Quickly check if machine has valid assets, and skip fanart generation if not.
+    machine_has_valid_assets = False
+    for asset_key in layout_SL:
+        if asset_key == 'text_SL' or asset_key = 'text_item': continue
+        m_assets = assets_dic[m_name]
+        if m_assets[asset_key]:
+            machine_has_valid_assets = True
+            break
+    if not machine_has_valid_assets: return
+
+    # >> If font object does not exists open font an cache it.
+    if not font_mono_SL:
+        global font_mono_SL
+        log_debug('mame_build_SL_fanart() Creating font_mono_SL object')
+        log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        font_mono_SL = ImageFont.truetype('../fonts/Inconsolata.otf', layout_SL['text_SL']['size'])
+    if not font_mono_item:
+        global font_mono_item
+        log_debug('mame_build_SL_fanart() Creating font_mono_item object')
+        log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        font_mono_item = ImageFont.truetype('../fonts/Inconsolata.otf', layout_SL['text_item']['size'])
+
+    # >> Create fanart canvas
+    fanart_img = Image.new('RGB', (1920, 1080), (0, 0, 0))
+    draw = ImageDraw.Draw(fanart_img)
+
+    # >> Draw assets according to layout_SL
+    for asset_key in layout_SL:
+        # log_debug('{0:<10} initialising'.format(asset_key))
+        m_assets = assets_dic[m_name]
+        if asset_key == 'text_SL':
+            draw.text((layout_SL['text']['x_pos'], layout_SL['text']['y_pos']), SL_name,
+                      (255, 255, 255), font = font_mono_SL)
+        elif asset_key == 'text_item':
+            draw.text((layout_SL['text']['x_pos'], layout_SL['text']['y_pos']), m_name,
+                      (255, 255, 255), font = font_mono_item)
+        else:
+            if not m_assets[asset_key]:
+                # log_debug('{0:<10} DB empty'.format(asset_key))
+                continue
+            Asset_FN = FileName(m_assets[asset_key])
+            if not Asset_FN.exists():
+                # log_debug('{0:<10} file not found'.format(asset_key))
+                continue
+            # log_debug('{0:<10} found'.format(asset_key))
+            img_asset = Image.open(Asset_FN.getPath())
+            img_asset = PIL_resize_proportional(img_asset, layout_SL, asset_key)
+            fanart_img = PIL_paste_image(fanart_img, img_asset, layout_SL, asset_key)
+
+    # >> Save fanart and update database
+    Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
+    # log_debug('mame_build_SL_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
