@@ -675,11 +675,12 @@ class Main:
         listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY})
 
         # --- Create context menu ---
-        commands = []
-        commands.append(('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW'), ))
-        commands.append(('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN'), ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        commands = [
+            ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
+            ('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ]
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
@@ -4646,26 +4647,28 @@ class Main:
             machine_name = ''
             machine_desc = ''
 
-        # >> Load SL machines
+        # --- Load SL machines ---
         SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
         SL_machine_list = SL_machines_dic[SL_name]
         if not machine_name:
             # >> Get a list of machines that can launch this SL ROM. User chooses in a select dialog
-            log_info('_run_SL_machine() Selecting SL run machine ...')
-            SL_machine_names_list      = []
-            SL_machine_desc_list       = []
+            log_info('_run_SL_machine() User selecting SL run machine ...')
+            SL_machine_names_list = []
+            SL_machine_desc_list  = []
+            SL_machine_devices    = []
             for SL_machine in sorted(SL_machine_list):
                 SL_machine_names_list.append(SL_machine['machine'])
                 SL_machine_desc_list.append(SL_machine['description'])
-            dialog = xbmcgui.Dialog()
-            m_index = dialog.select('Select machine', SL_machine_desc_list)
+                SL_machine_devices.append(SL_machine['devices'])
+            m_index = xbmcgui.Dialog().select('Select machine', SL_machine_desc_list)
             if m_index < 0: return
             machine_name    = SL_machine_names_list[m_index]
             machine_desc    = SL_machine_desc_list[m_index]
-            machine_devices = SL_machine_list[m_index]['devices']
+            machine_devices = SL_machine_devices[m_index]
+            log_info('_run_SL_machine() User chose machine "{0}" ({1})'.format(machine_name, machine_desc))
         else:
-            # >> User selected a machine to launch this SL. Find the machine in the list
-            log_info('_run_SL_machine() Finding SL run machine ...')
+            # >> User configured a machine to launch this SL item. Find the machine in the machine list.
+            log_info('_run_SL_machine() Searching configured SL item running machine ...')
             machine_found = False
             for SL_machine in SL_machine_list:
                 if SL_machine['machine'] == machine_name:
@@ -4674,8 +4677,8 @@ class Main:
                     break
             if machine_found:
                 log_info('_run_SL_machine() Found machine "{0}"'.format(machine_name))
-                machine_desc       = SL_machine['description']
-                machine_interfaces = SL_machine['device_tags']
+                machine_desc    = SL_machine['description']
+                machine_devices = SL_machine['devices']
             else:
                 log_error('_run_SL_machine() Machine "{0}" not found'.format(machine_name))
                 log_error('_run_SL_machine() Aborting launch')
@@ -4695,17 +4698,25 @@ class Main:
             SL_rom = SL_roms[ROM_name]
             part_list = SL_rom['parts']
 
+        # --- DEBUG ---
+        log_info('_run_SL_machine() Machine "{0}" has {1} interfaces'.format(machine_name, len(machine_devices)))
+        log_info('_run_SL_machine() SL ROM  "{0}" has {1} parts'.format(ROM_name, len(part_list)))
+        for device_dic in machine_devices:
+            u = '<device type="{1}" interface="{0}">'.format(device_dic['att_type'], device_dic['att_interface'])
+            log_info(u)
+        for part_dic in part_list:
+            u = '<part name="{1}" interface="{0}">'.format(part_dic['name'], part_dic['interface'])
+            log_info(u)
+
         # --- Select media depending on SL launching case ---
         num_machine_interfaces = len(machine_devices)
         num_SL_ROM_parts = len(part_list)
-        log_info('_run_SL_machine() Machine "{0}" has {1} interfaces'.format(machine_name, num_machine_interfaces))
-        log_info('_run_SL_machine() SL ROM  "{0}" has {1} parts'.format(ROM_name, num_SL_ROM_parts))
 
         # >> Error
         if num_machine_interfaces == 0:
             kodi_dialog_OK('Machine has no inferfaces! Aborting launch.')
             return
-        elif num_SL_ROM_parts == 0:
+        if num_SL_ROM_parts == 0:
             kodi_dialog_OK('SL ROM has no parts! Aborting launch.')
             return
 
@@ -4760,7 +4771,8 @@ class Main:
         # >> Display some DEBUG information.
         kodi_dialog_OK('Launch case {0}. '.format(launch_case) +
                        'Machine has {0} device interfaces and '.format(num_machine_interfaces) +
-                       'SL ROM has {0} parts.'.format(num_SL_ROM_parts))
+                       'SL ROM has {0} parts. '.format(num_SL_ROM_parts) + 
+                       'Media name is "{0}"'.format(media_name))
 
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
