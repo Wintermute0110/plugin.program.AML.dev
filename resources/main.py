@@ -2782,106 +2782,28 @@ class Main:
 
     #
     # Context menu "Manage Favourite machines"
-    #   * 'Scan all ROMs/CHDs/Samples'
-    #      Scan Favourite machines ROM ZIPs and CHDs and update flags of the Favourites 
-    #      database JSON.
+    #   * UNIMPLEMENTED. IS IT USEFUL?
+    #     'Scan all ROMs/CHDs/Samples'
+    #     Scan Favourite machines ROM ZIPs and CHDs and update flags of the Favourites 
+    #     database JSON.
     #
-    #   * 'Scan all assets/artwork'
-    #      Scan Favourite machines assets/artwork and update MAME Favourites database JSON.
+    #   * UNIMPLEMENTED. IS IT USEFUL?
+    #     'Scan all assets/artwork'
+    #     Scan Favourite machines assets/artwork and update MAME Favourites database JSON.
     #
     #   * 'Check/Update all MAME Favourites'
-    #      Checks that all MAME Favourite machines exist in current database. If the ROM exists,
-    #      then update information from current MAME database. If the machine doesn't exist, then
-    #      delete it from MAME Favourites (prompt the user about this).
+    #     Checks that all MAME Favourite machines exist in current database. If the ROM exists,
+    #     then update information from current MAME database. If the machine doesn't exist, then
+    #     delete it from MAME Favourites (prompt the user about this).
     #
     #   * 'Delete machine from MAME Favourites'
     #
     def _command_context_manage_mame_fav(self, machine_name):
         dialog = xbmcgui.Dialog()
         idx = dialog.select('Manage MAME Favourites', 
-                           ['Scan all ROMs/CHDs/Samples',
-                            'Scan all assets/artwork',
-                            'Check/Update all MAME Favourites',
+                           ['Check/Update all MAME Favourites',
                             'Delete machine from MAME Favourites'])
         if idx < 0: return
-
-        # --- Scan ROMs/CHDs/Samples ---
-        if idx == 0:
-            kodi_dialog_OK('Check this code. It is not working properly.')
-
-            # >> Check paths
-            if not self.settings['rom_path']:
-                kodi_dialog_OK('ROM directory not configured. Aborting.')
-                return
-            ROM_path_FN = FileName(self.settings['rom_path'])
-            if not ROM_path_FN.isdir():
-                kodi_dialog_OK('ROM directory does not exist. Aborting.')
-                return
-
-            scan_CHDs = False
-            if self.settings['chd_path']:
-                CHD_path_FN = FileName(self.settings['chd_path'])
-                if not CHD_path_FN.isdir():
-                    kodi_dialog_OK('CHD directory does not exist. CHD scanning disabled.')
-                else:
-                    scan_CHDs = True
-            else:
-                kodi_dialog_OK('CHD directory not configured. CHD scanning disabled.')
-                CHD_path_FN = FileName('')
-
-            scan_Samples = False
-            if self.settings['samples_path']:
-                Samples_path_FN = FileName(self.settings['samples_path'])
-                if not Samples_path_FN.isdir():
-                    kodi_dialog_OK('Samples directory does not exist. Samples scanning disabled.')
-                else:
-                    scan_Samples = True
-            else:
-                kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
-                Samples_path_FN = FileName('')
-
-            # >> Load database
-            # >> Create a fake control_dic for the FAV MAME ROMs
-            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
-            control_dic = fs_new_control_dic()
-            fs_scan_MAME_ROMs(PATHS, fav_machines, control_dic, ROM_path_FN, CHD_path_FN, Samples_path_FN, scan_CHDs, scan_Samples)
-
-            # >> Save updated database
-            fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
-            kodi_refresh_container()
-            kodi_notify('Scanning of MAME Favourites finished')
-
-        # --- Scan assets/artwork ---
-        elif idx == 1:
-            kodi_dialog_OK('Check this code. I think is wrong. Data must be in machine["assets"]')
-
-            # >> Get assets directory. Abort if not configured/found.
-            if not self.settings['assets_path']:
-                kodi_dialog_OK('Asset directory not configured. Aborting.')
-                return
-            Asset_path_FN = FileName(self.settings['assets_path'])
-            if not Asset_path_FN.isdir():
-                kodi_dialog_OK('Asset directory does not exist. Aborting.')
-                return
-
-            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
-            pDialog = xbmcgui.DialogProgress()
-            pDialog_canceled = False
-            pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork...')
-            total_machines = len(fav_machines)
-            processed_machines = 0
-            assets_dic = {}
-            for key in sorted(fav_machines):
-                machine = fav_machines[key]
-                for idx, asset_key in enumerate(ASSET_MAME_KEY_LIST):
-                    asset_FN = Asset_path_FN.pjoin(ASSET_MAME_PATH_LIST[idx]).pjoin(key + '.png')
-                    if asset_FN.exists(): machine[asset_key] = asset_FN.getOriginalPath()
-                    else:                 machine[asset_key] = ''
-                processed_machines = processed_machines + 1
-                pDialog.update(100 * processed_machines / total_machines)
-            pDialog.close()
-            fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
-            kodi_notify('Scanning of MAME Favourite Assets finished')
 
         # --- Check/Update all MAME Favourites ---
         # >> Check if Favourites can be found in current MAME main database. It may happen that
@@ -2890,7 +2812,7 @@ class Main:
         # >> be deleted by the user and a new Favourite created.
         # >> If the machine is found in the main database, then update the Favourite database
         # >> with data from the main database.
-        elif idx == 2:
+        if idx == 0:
             # >> Load databases.
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher')
@@ -2930,7 +2852,7 @@ class Main:
             kodi_notify('MAME Favourite checked and updated')
 
         # --- Delete machine from MAME Favourites ---
-        elif idx == 3:
+        elif idx == 1:
             log_debug('_command_context_manage_mame_fav() Delete MAME Favourite machine')
             log_debug('_command_context_manage_mame_fav() Machine_name "{0}"'.format(machine_name))
 
@@ -3090,10 +3012,12 @@ class Main:
     #   * 'Choose default machine for SL ROM'
     #      Allows to set the default machine to launch each SL ROM.
     #
-    #   * 'Scan all SL Favourite ROMs/CHDs'
+    #   * (UNIMPLEMENTED, IS IT USEFUL?)
+    #     'Scan all SL Favourite ROMs/CHDs'
     #      Scan SL ROM ZIPs and CHDs and update flags of the SL Favourites database JSON.
     #
-    #   * 'Scan all SL Favourite assets/artwork'
+    #   * (UNIMPLEMENTED, IS IT USEFUL?)
+    #     'Scan all SL Favourite assets/artwork'
     #      Scan SL ROMs assets/artwork and update SL Favourites database JSON.
     #
     #   * 'Check/Update all SL Favourites ROMs'
@@ -3107,8 +3031,6 @@ class Main:
         dialog = xbmcgui.Dialog()
         idx = dialog.select('Manage Software Lists Favourites', 
                            ['Choose default machine for SL ROM',
-                            'Scan all SL Favourite ROMs/CHDs',
-                            'Scan all SL Favourite assets/artwork',
                             'Check/Update all SL Favourites ROMs',
                             'Delete ROM from SL Favourites'])
         if idx < 0: return
@@ -3143,18 +3065,8 @@ class Main:
             fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
             kodi_notify('Deafult machine set to {0} ({1})'.format(machine_name, machine_desc))
 
-        # --- Scan ROMs/CHDs ---
-        # Reuse SL scanner for Favourites
-        elif idx == 1:
-            kodi_dialog_OK('SL Favourites scanner not coded yet. Sorry.')
-
-        # --- Scan assets/artwork ---
-        # Reuse SL scanner for Favourites
-        elif idx == 2:
-            kodi_dialog_OK('SL Favourites asset scanner not coded yet. Sorry.')
-
         # --- Check/Update SL Favourites ---
-        elif idx == 3:
+        elif idx == 1:
             # --- Load databases ---
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
@@ -3185,7 +3097,7 @@ class Main:
                 if fav_ROM_name in SL_roms:
                     # >> Update Favourite DB
                     new_Fav_ROM = SL_roms[fav_ROM_name]
-                    new_assets = SL_assets_dic[fav_ROM_name] if fav_ROM_name in SL_assets_dic else fs_new_SL_asset()
+                    new_assets = SL_assets_dic[fav_ROM_name]
                     new_Fav_ROM['ROM_name']       = fav_ROM_name
                     new_Fav_ROM['SL_name']        = fav_SL_name
                     new_Fav_ROM['ver_mame']       = control_dic['ver_mame']
@@ -3212,7 +3124,7 @@ class Main:
             kodi_notify('SL Favourite ROMs checked and updated')
 
         # --- Delete ROM from SL Favourites ---
-        elif idx == 4:
+        elif idx == 2:
             log_debug('_command_context_manage_sl_fav() Delete SL Favourite ROM')
             log_debug('_command_context_manage_sl_fav() SL_name  "{0}"'.format(SL_name))
             log_debug('_command_context_manage_sl_fav() ROM_name "{0}"'.format(ROM_name))
