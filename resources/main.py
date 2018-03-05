@@ -3091,7 +3091,7 @@ class Main:
                 file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '.json'
                 SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
                 SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
-                assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+                assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
                 SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
                 SL_assets_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
 
