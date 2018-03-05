@@ -166,13 +166,21 @@ def mame_get_screen_str(machine_name, machine):
         elif len(d_list) == 3:
             if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster':
                 r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
-                screen_str = 'Three raster {1} screens'.format(d_list[0], r_str)
+                screen_str = 'Three raster {0} screens'.format(r_str)
             elif d_list[0] == 'raster' and d_list[1] == 'lcd' and d_list[2] == 'lcd':
                 screen_str = 'Three screens special case'
             else:
                 log_error('Machine "{0}" d_list = {1}'.format(machine_name, unicode(d_list)))
                 raise TypeError
+        elif len(d_list) == 4:
+            if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster' and d_list[3] == 'raster':
+                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
+                screen_str = 'Four raster {0} screens'.format(r_str)
+            else:
+                log_error('Machine "{0}" d_list = {1}'.format(machine_name, unicode(d_list)))
+                raise TypeError
         else:
+            log_error('mame_get_screen_str() d_list = {0}'.format(unicode(d_list)))
             raise TypeError
     else:
         screen_str = 'No screen'
