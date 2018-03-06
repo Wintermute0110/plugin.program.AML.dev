@@ -540,7 +540,9 @@ COMPACT_JSON = False
 def fs_load_JSON_file(json_filename):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
-    if not os.path.isfile(json_filename): return data_dic
+    if not os.path.isfile(json_filename):
+        log_warning('fs_load_ROMs_JSON() File not found "{0}"'.format(json_filename))
+        return data_dic
     log_debug('fs_load_ROMs_JSON() "{0}"'.format(json_filename))
     with open(json_filename) as file:
         data_dic = json.load(file)

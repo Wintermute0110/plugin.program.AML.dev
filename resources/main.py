@@ -2291,7 +2291,7 @@ class Main:
         # --- View SL ROMs ---
         elif action == ACTION_VIEW_SL_ROM_ROMS:
             SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
-            SL_ROMS_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_roms.json')
+            SL_ROMS_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
             # kodi_busydialog_ON()
             # SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
             # SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
@@ -2359,7 +2359,6 @@ class Main:
             rom_db_list = rom_audit_db[SL_ROM]
 
             info_text = []
-            log_debug(unicode(rom))
             info_text.append('[COLOR violet]SL_name[/COLOR] {0}'.format(SL_name))
             info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}'.format(SL_ROM))
             info_text.append('[COLOR violet]description[/COLOR] {0}'.format(rom['description']))
