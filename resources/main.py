@@ -453,8 +453,7 @@ class Main:
         mame_view_mode = self.settings['mame_view_mode']
 
         # ----- Machine count -----
-        # cat_count_dic = {}
-        cat_count_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+        cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
 
         # >> Main filter
         machines_n_str = 'Machines with coin slot (Normal)'
@@ -495,50 +494,50 @@ class Main:
         SL_str           = 'Machines by Software List'
         year_str         = 'Machines by Year'
 
-        if cat_count_dic and mame_view_mode == VIEW_MODE_FLAT:
-            machines_n_str += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Main']['cats']['Normal']['num_machines'])
-            machines_u_str += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Main']['cats']['Unusual']['num_machines'])
-            nocoin_str     += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Main']['cats']['NoCoin']['num_machines'])
-            mecha_str      += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Main']['cats']['Mechanical']['num_machines'])
-            dead_str       += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Main']['cats']['Dead']['num_machines'])
-            devices_str    += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Main']['cats']['Devices']['num_machines'])
-            norom_str      += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Binary']['cats']['NoROM']['num_machines'])
-            chd_str        += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Binary']['cats']['CHD']['num_machines'])
-            samples_str    += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Binary']['cats']['Samples']['num_machines'])
-            bios_str       += ' [COLOR orange]({0} machines)[/COLOR]'.format(cat_count_dic['Binary']['cats']['BIOS']['num_machines'])
+        if cache_index_dic and mame_view_mode == VIEW_MODE_FLAT:
+            machines_n_str += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Normal']['num_machines'])
+            machines_u_str += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Unusual']['num_machines'])
+            nocoin_str     += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['NoCoin']['num_machines'])
+            mecha_str      += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Mechanical']['num_machines'])
+            dead_str       += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Dead']['num_machines'])
+            devices_str    += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Devices']['num_machines'])
+            norom_str      += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['NoROM']['num_machines'])
+            chd_str        += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['CHD']['num_machines'])
+            samples_str    += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['Samples']['num_machines'])
+            bios_str       += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['BIOS']['num_machines'])
 
-        elif cat_count_dic and (mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY):
-            machines_n_str += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Main']['cats']['Normal']['num_parents'])
-            machines_u_str += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Main']['cats']['Unusual']['num_parents'])
-            nocoin_str     += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Main']['cats']['NoCoin']['num_parents'])
-            mecha_str      += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Main']['cats']['Mechanical']['num_parents'])
-            dead_str       += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Main']['cats']['Dead']['num_parents'])
-            devices_str    += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Main']['cats']['Devices']['num_parents'])
-            norom_str      += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Binary']['cats']['NoROM']['num_parents'])
-            chd_str        += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Binary']['cats']['CHD']['num_parents'])
-            samples_str    += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Binary']['cats']['Samples']['num_parents'])
-            bios_str       += ' [COLOR orange]({0} parents)[/COLOR]'.format(cat_count_dic['Binary']['cats']['BIOS']['num_parents'])
+        elif cache_index_dic and (mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY):
+            machines_n_str += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Normal']['num_parents'])
+            machines_u_str += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Unusual']['num_parents'])
+            nocoin_str     += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['NoCoin']['num_parents'])
+            mecha_str      += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Mechanical']['num_parents'])
+            dead_str       += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Dead']['num_parents'])
+            devices_str    += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Devices']['num_parents'])
+            norom_str      += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['NoROM']['num_parents'])
+            chd_str        += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['CHD']['num_parents'])
+            samples_str    += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['Samples']['num_parents'])
+            bios_str       += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['BIOS']['num_parents'])
 
-        if cat_count_dic:
+        if cache_index_dic:
             # >> Optional
-            catver_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Catver']['num_categories'])
-            catlist_str      += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Catlist']['num_categories'])
-            genre_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Genre']['num_categories'])
-            NPLayers_str     += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['NPlayers']['num_categories'])
-            score_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Bestgames']['num_categories'])
-            series_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Series']['num_categories'])
+            catver_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Catver']))
+            catlist_str      += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Catlist']))
+            genre_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Genre']))
+            NPLayers_str     += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['NPlayers']))
+            score_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Bestgames']))
+            series_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Series']))
             # >> Always there
-            ctype_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Controls']['num_categories'])
-            drotation_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Display_Rotate']['num_categories'])
-            dtag_str         += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Display_Tag']['num_categories'])
-            dtype_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Display_Type']['num_categories'])
-            device_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Devices']['num_categories'])
-            driver_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Driver']['num_categories'])
-            manufacturer_str += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Manufacturer']['num_categories'])
-            shortname_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['ShortName']['num_categories'])
-            longname_str     += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['LongName']['num_categories'])
-            SL_str           += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['BySL']['num_categories'])
-            year_str         += ' [COLOR gold]({0} items)[/COLOR]'.format(cat_count_dic['Year']['num_categories'])
+            ctype_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Controls']))
+            drotation_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Rotate']))
+            dtag_str         += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Tag']))
+            dtype_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Type']))
+            device_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Devices']))
+            driver_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Driver']))
+            manufacturer_str += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Manufacturer']))
+            shortname_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['ShortName']))
+            longname_str     += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['LongName']))
+            SL_str           += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['BySL']))
+            year_str         += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Year']))
 
         # >> Main filters (Virtual catalog 'Main')
         self._render_root_list_row(machines_n_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Normal'))
@@ -781,65 +780,40 @@ class Main:
             return
 
         # >> Load main MAME info DB and catalog
-        if USE_THREADED_JSON_LOADER:
-            total_time_start = time.time()
-            # --- Create thread objects  and run ---
-            render_thread = Threaded_Load_JSON(PATHS.RENDER_DB_PATH.getPath())
-            assets_thread = Threaded_Load_JSON(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pclone_thread = Threaded_Load_JSON(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            render_thread.start()
-            assets_thread.start()
-            pclone_thread.start()
-
-            # --- Do not use a thread for the catalog. Loads very fast ---
-            l_cataloged_dic_start = time.time()
+        l_cataloged_dic_start = time.time()
+        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+            catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+        elif view_mode_property == VIEW_MODE_FLAT:
+            catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
+        else:
+            kodi_dialog_OK('Wrong view_mode_property = "{0}". '.format(view_mode_property) +
+                           'This is a bug, please report it.')
+            return
+        l_cataloged_dic_end = time.time()
+        if USE_ROM_CACHE:
+            l_render_db_start = time.time()
+            cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
             if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
-                catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+                MAME_render_db_dic = fs_load_roms_parents(PATHS, cache_index_dic, catalog_name, category_name)
             elif view_mode_property == VIEW_MODE_FLAT:
-                catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
-            else:
-                kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
-                return
-            l_cataloged_dic_end = time.time()
-
-            # --- Wait for everybody to finish execution ---
-            pclone_thread.join() # Should finish first
-            render_thread.join()
-            assets_thread.join()
-
-            # --- Get data ---
-            MAME_db_dic     = render_thread.output_dic
-            MAME_assets_dic = assets_thread.output_dic
-            main_pclone_dic = pclone_thread.output_dic
-            total_time_end = time.time()
-
-            render_t = assets_t = pclone_t = 0
-            catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
-            loading_time = total_time_end - total_time_start
+                MAME_render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
+            l_render_db_end = time.time()
         else:
             l_render_db_start = time.time()
-            MAME_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            MAME_render_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
             l_render_db_end = time.time()
-            l_assets_db_start = time.time()
-            MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            l_assets_db_end = time.time()
-            l_pclone_dic_start = time.time()
-            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            l_pclone_dic_end = time.time()
-            l_cataloged_dic_start = time.time()
-            if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
-                catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
-            elif view_mode_property == VIEW_MODE_FLAT:
-                catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
-            else:
-                kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
-                return
-            l_cataloged_dic_end = time.time()
-            render_t     = l_render_db_end - l_render_db_start
-            assets_t     = l_assets_db_end - l_assets_db_start
-            pclone_t     = l_pclone_dic_end - l_pclone_dic_start
-            catalog_t    = l_cataloged_dic_end - l_cataloged_dic_start
-            loading_time = render_t + assets_t + pclone_t + catalog_t
+        l_assets_db_start = time.time()
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        l_assets_db_end = time.time()
+        l_pclone_dic_start = time.time()
+        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+        l_pclone_dic_end = time.time()
+        # >> Compute loading times.
+        catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
+        render_t = l_render_db_end - l_render_db_start
+        assets_t = l_assets_db_end - l_assets_db_start
+        pclone_t = l_pclone_dic_end - l_pclone_dic_start
+        loading_time = catalog_t + render_t + assets_t + pclone_t
 
         # >> Check if catalog is empty
         if not catalog_dic:
@@ -852,37 +826,40 @@ class Main:
         self._set_Kodi_all_sorting_methods()
         if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
             # >> Parent/Clone mode render parents only
-            machine_list = catalog_dic[category_name]['parents']
+            machine_list = catalog_dic[category_name]
             for machine_name in machine_list:
-                machine = MAME_db_dic[machine_name]
+                machine = MAME_render_db_dic[machine_name]
                 if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-                assets  = MAME_assets_dic[machine_name]
+                assets = MAME_assets_dic[machine_name]
                 num_clones = len(main_pclone_dic[machine_name])
                 self._render_catalog_machine_row(machine_name, machine, assets, True, view_mode_property,
                                                  catalog_name, category_name, num_clones)
         else:
             # >> Flat mode renders all machines
-            machine_list = catalog_dic[category_name]['machines']
+            machine_list = catalog_dic[category_name]
             for machine_name in machine_list:
-                machine = MAME_db_dic[machine_name]
+                machine = MAME_render_db_dic[machine_name]
                 if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-                assets  = MAME_assets_dic[machine_name]
+                assets = MAME_assets_dic[machine_name]
                 self._render_catalog_machine_row(machine_name, machine, assets, False, view_mode_property,
                                                  catalog_name, category_name)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
+        rendering_time = rendering_ticks_end - rendering_ticks_start
+        total_time = loading_time + rendering_time
 
         # --- DEBUG Data loading/rendering statistics ---
-        log_debug('Loading render db     {0:.4f} s'.format(render_t))
-        log_debug('Loading assets db     {0:.4f} s'.format(assets_t))
-        log_debug('Loading pclone dic    {0:.4f} s'.format(pclone_t))
-        log_debug('Loading cataloged dic {0:.4f} s'.format(catalog_t))
-        log_debug('Loading               {0:.4f} s'.format(loading_time))
-        log_debug('Rendering             {0:.4f} s'.format(rendering_ticks_end - rendering_ticks_start))
+        log_debug('Loading catalog dic {0:.4f} s'.format(catalog_t))
+        log_debug('Loading render db   {0:.4f} s'.format(render_t))
+        log_debug('Loading assets db   {0:.4f} s'.format(assets_t))
+        log_debug('Loading pclone dic  {0:.4f} s'.format(pclone_t))
+        log_debug('Loading             {0:.4f} s'.format(loading_time))
+        log_debug('Rendering           {0:.4f} s'.format(rendering_time))
+        log_debug('Total               {0:.4f} s'.format(total_time))
 
     #
     # No need to check for DB existance here. If this function is called is because parents and
@@ -892,27 +869,31 @@ class Main:
         log_debug('_render_catalog_clone_list() Starting ...')
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
-
-        # >> Load main MAME info DB
-        loading_ticks_start = time.time()
-        MAME_db_dic     = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         view_mode_property = self.settings['mame_view_mode']
         log_debug('_render_catalog_clone_list() view_mode_property = {0}'.format(view_mode_property))
 
-        # >> Render parent first
+        # >> Load main MAME info DB
+        loading_ticks_start = time.time()
+        if USE_ROM_CACHE:
+            cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+            MAME_render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
+        else:
+            MAME_render_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         loading_ticks_end = time.time()
+
+        # >> Render parent first
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
-        machine = MAME_db_dic[parent_name]
+        machine = MAME_render_db_dic[parent_name]
         assets  = MAME_assets_dic[parent_name]
         self._render_catalog_machine_row(parent_name, machine, assets, False, view_mode_property, 
                                          catalog_name, category_name)
 
         # >> Render clones belonging to parent in this category
         for p_name in main_pclone_dic[parent_name]:
-            machine = MAME_db_dic[p_name]
+            machine = MAME_render_db_dic[p_name]
             assets  = MAME_assets_dic[p_name]
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue

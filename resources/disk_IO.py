@@ -570,6 +570,16 @@ def fs_write_JSON_file(json_filename, json_data):
 # -------------------------------------------------------------------------------------------------
 # Threaded JSON loader
 # -------------------------------------------------------------------------------------------------
+# How to use this code:
+#     render_thread = Threaded_Load_JSON(PATHS.RENDER_DB_PATH.getPath())
+#     assets_thread = Threaded_Load_JSON(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+#     render_thread.start()
+#     assets_thread.start()
+#     render_thread.join()
+#     assets_thread.join()
+#     MAME_db_dic     = render_thread.output_dic
+#     MAME_assets_dic = assets_thread.output_dic
+#
 class Threaded_Load_JSON(threading.Thread):
     def __init__(self, json_filename): 
         threading.Thread.__init__(self) 
@@ -3703,8 +3713,8 @@ def fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialo
 
         for catalog_key in catalog_index_dic:
             hash_str = catalog_index_dic[catalog_key]['hash']
-            log_info('fs_build_rom_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
-            log_info('fs_build_rom_cache() hash {0}'.format(hash_str))
+            log_verb('fs_build_rom_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
+            log_verb('fs_build_rom_cache() hash {0}'.format(hash_str))
 
             # >> Build all machines cache
             m_render_all_dic = {}
@@ -3720,7 +3730,31 @@ def fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialo
             ROM_parents_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_parents.json')
             fs_write_JSON_file(ROM_parents_all_FN.getPath(), m_render_parents_dic)
 
-def fs_rom_cache_get_hash(catalog_name, catalog_key):
-    prop_key = '{0} - {1}'.format(catalog_name, catalog_key)
+def fs_rom_cache_get_hash(catalog_name, category_name):
+    prop_key = '{0} - {1}'.format(catalog_name, category_name)
 
     return hashlib.md5(prop_key).hexdigest()
+
+def fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name):
+    hash_str = cache_index_dic[catalog_name][category_name]['hash']
+    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_all.json')
+
+    return fs_load_JSON_file(ROMs_all_FN.getPath())
+
+def fs_load_roms_parents(PATHS, cache_index_dic, catalog_name, category_name):
+    hash_str = cache_index_dic[catalog_name][category_name]['hash']
+    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_parents.json')
+
+    return fs_load_JSON_file(ROMs_all_FN.getPath())
+
+def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
+    hash_str = cache_index_dic[catalog_name][category_name]['hash']
+    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets_all.json')
+
+    return fs_load_JSON_file(ROMs_all_FN.getPath())
+
+def fs_load_assets_parents(PATHS, cache_index_dic, catalog_name, category_name):
+    hash_str = cache_index_dic[catalog_name][category_name]['hash']
+    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets_parents.json')
+
+    return fs_load_JSON_file(ROMs_all_FN.getPath())
