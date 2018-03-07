@@ -3050,46 +3050,53 @@ def fs_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, mac
         processed_SL += 1
     fs_write_JSON_file(PATHS.SL_MACHINES_PATH.getPath(), SL_machines_dic)
     pDialog.update((processed_SL*100) // total_SL, pdialog_line1, ' ')
+    pDialog.close()
 
     # --- Rebuild Machine by Software List catalog with knowledge of the SL proper name ---
-    log_info('Making Software List catalog ...')
-    pDialog.update(0, 'Rebuilding Software List catalog ...')
-    catalog_parents = {}
-    catalog_all = {}
-    for parent_name in main_pclone_dic:
-        # >> A machine may have more than 1 software lists
-        for sl_name in machines[parent_name]['softwarelists']:
-            if sl_name in SL_catalog_dic:
-                sl_name = SL_catalog_dic[sl_name]['display_name']
-            else:
-                log_warning('sl_name = "{0}" not found in SL_catalog_dic'.format(sl_name))
-                log_warning('In other words, there is no {0}.xlm SL database'.format(sl_name))
-            catalog_key = sl_name
-            if catalog_key in catalog_parents:
-                catalog_parents[catalog_key]['parents'].append(parent_name)
-                catalog_parents[catalog_key]['num_parents'] = len(catalog_parents[catalog_key]['parents'])
-                catalog_all[catalog_key]['machines'].append(parent_name)
-                for clone in main_pclone_dic[parent_name]: catalog_all[catalog_key]['machines'].append(clone)
-                catalog_all[catalog_key]['num_machines'] = len(catalog_all[catalog_key]['machines'])
-            else:
-                catalog_parents[catalog_key] = {'parents' : [parent_name], 'num_parents' : 1}
-                all_list = [parent_name]
-                for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-                catalog_all[catalog_key] = {'machines' : all_list, 'num_machines' : len(all_list)}
-    # >> Include Software Lists with no machines in the catalog. In other words, there are
-    # >> software lists that apparently cannot be launched by any machine.
-    pDialog.update(85)
-    for sl_name in sorted(SL_catalog_dic):
-        catalog_key = SL_catalog_dic[sl_name]['display_name']
-        if not catalog_key in catalog_parents:
-            catalog_parents[catalog_key] = {'parents' : list(), 'num_parents' : 0}
-            catalog_all[catalog_key] = {'machines' : list(), 'num_machines' : 0}
-    pDialog.update(90)
-    fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
-    pDialog.update(95)
-    fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
-    pDialog.update(100)
-    pDialog.close()
+    # NOTE The proper names of the SLs must be obtained at the time of building the main
+    #      database. Otherwise, the ROM cache must be refresed again after rebuilding the SL
+    #      catalog, which is inneficient.
+    # NOTE Maybe the cache must not be rebuilt, because the ROMs don't change, just the catalog.
+    #      Anyway, it is better to get the SL proper names earlier, if user configure the /hash/ dir.
+    # WARNING if the catalog names are change then the catalog index must be update. Otherwise
+    #         AML crashes when displaying this catalog. The catalog must be built earlier with the
+    #         SL proper names.
+    #
+    # log_info('Making Software List catalog ...')
+    # pDialog.update(0, 'Rebuilding Software List catalog ...')
+    # catalog_parents = {}
+    # catalog_all = {}
+    # for parent_name in main_pclone_dic:
+    #     # >> A machine may have more than 1 software lists
+    #     for sl_name in machines[parent_name]['softwarelists']:
+    #         if sl_name in SL_catalog_dic:
+    #             sl_name = SL_catalog_dic[sl_name]['display_name']
+    #         else:
+    #             log_warning('sl_name = "{0}" not found in SL_catalog_dic'.format(sl_name))
+    #             log_warning('In other words, there is no {0}.xlm SL database'.format(sl_name))
+    #         catalog_key = sl_name
+    #         if catalog_key in catalog_parents:
+    #             catalog_parents[catalog_key].append(parent_name)
+    #             catalog_all[catalog_key].append(parent_name)
+    #             catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+    #         else:
+    #             catalog_parents[catalog_key] = [ parent_name ]
+    #             catalog_all[catalog_key] = [ parent_name ]
+    #             catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+    # # >> Include Software Lists with no machines in the catalog. In other words, there are
+    # # >> software lists that apparently cannot be launched by any machine.
+    # pDialog.update(85)
+    # for sl_name in sorted(SL_catalog_dic):
+    #     catalog_key = SL_catalog_dic[sl_name]['display_name']
+    #     if not catalog_key in catalog_parents:
+    #         catalog_parents[catalog_key] = []
+    #         catalog_all[catalog_key] = []
+    # pDialog.update(90)
+    # fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
+    # pDialog.update(95)
+    # fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
+    # pDialog.update(100)
+    # pDialog.close()
 
     # --- Create properties database with default values ---
     # --- Make SL properties DB ---
