@@ -89,16 +89,15 @@ class AML_Paths:
         self.COMMAND_IDX_PATH  = PLUGIN_DATA_DIR.pjoin('DAT_Command_index.json')
         self.COMMAND_DB_PATH   = PLUGIN_DATA_DIR.pjoin('DAT_Command_DB.json')
 
-        # >> MAME custom filters
-        self.FILTERS_DB_DIR     = PLUGIN_DATA_DIR.pjoin('filters')
-        self.FILTERS_INDEX_PATH = PLUGIN_DATA_DIR.pjoin('Filter_index.json')
-
         # >> Disabled. Now there are global properties for this.
         # self.MAIN_PROPERTIES_PATH = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
 
+        # >> ROM cache
+        self.CACHE_DIR        = PLUGIN_DATA_DIR.pjoin('cache')
+        self.CACHE_INDEX_PATH = PLUGIN_DATA_DIR.pjoin('MAME_cache_index.json')
+
         # >> Catalogs
         self.CATALOG_DIR                        = PLUGIN_DATA_DIR.pjoin('catalogs')
-        self.CATALOG_COUNT_PATH                 = self.CATALOG_DIR.pjoin('catalog_count.json')
         self.CATALOG_MAIN_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_main_parents.json')
         self.CATALOG_MAIN_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_main_all.json')
         self.CATALOG_BINARY_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_binary_parents.json')
@@ -142,6 +141,10 @@ class AML_Paths:
         self.MAIN_DB_HASH_DIR      = PLUGIN_DATA_DIR.pjoin('db_Main_hash')
         self.ROMS_DB_HASH_DIR      = PLUGIN_DATA_DIR.pjoin('db_ROMs_hash')
         self.ROM_AUDIT_DB_HASH_DIR = PLUGIN_DATA_DIR.pjoin('db_ROM_Audit_hash')
+
+        # >> MAME custom filters
+        self.FILTERS_DB_DIR     = PLUGIN_DATA_DIR.pjoin('filters')
+        self.FILTERS_INDEX_PATH = PLUGIN_DATA_DIR.pjoin('Filter_index.json')
 
         # >> Software Lists
         self.SL_DB_DIR             = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')
@@ -211,12 +214,12 @@ class Main:
 
         # --- Addon data paths creation ---
         if not PLUGIN_DATA_DIR.exists(): PLUGIN_DATA_DIR.makedirs()
-        if not PATHS.MAIN_DB_HASH_DIR.exists(): PATHS.MAIN_DB_HASH_DIR.makedirs()
-        # if not PATHS.ROMS_DB_HASH_DIR.exists(): PATHS.ROMS_DB_HASH_DIR.makedirs()
-        if not PATHS.SL_DB_DIR.exists(): PATHS.SL_DB_DIR.makedirs()
+        if not PATHS.CACHE_DIR.exists(): PATHS.CACHE_DIR.makedirs()
         if not PATHS.CATALOG_DIR.exists(): PATHS.CATALOG_DIR.makedirs()
-        if not PATHS.REPORTS_DIR.exists(): PATHS.REPORTS_DIR.makedirs()
+        if not PATHS.MAIN_DB_HASH_DIR.exists(): PATHS.MAIN_DB_HASH_DIR.makedirs()
         if not PATHS.FILTERS_DB_DIR.exists(): PATHS.FILTERS_DB_DIR.makedirs()
+        if not PATHS.SL_DB_DIR.exists(): PATHS.SL_DB_DIR.makedirs()
+        if not PATHS.REPORTS_DIR.exists(): PATHS.REPORTS_DIR.makedirs()
 
         # --- Process URL ---
         self.base_url     = sys.argv[0]
@@ -451,7 +454,7 @@ class Main:
 
         # ----- Machine count -----
         # cat_count_dic = {}
-        cat_count_dic = fs_load_JSON_file(PATHS.CATALOG_COUNT_PATH.getPath())
+        cat_count_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
 
         # >> Main filter
         machines_n_str = 'Machines with coin slot (Normal)'

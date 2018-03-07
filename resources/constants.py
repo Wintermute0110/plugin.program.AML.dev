@@ -18,6 +18,11 @@
 from __future__ import unicode_literals
 
 # -------------------------------------------------------------------------------------------------
+# Addon configuration options
+# -------------------------------------------------------------------------------------------------
+USE_ROM_CACHE = True
+
+# -------------------------------------------------------------------------------------------------
 # A universal Addon error reporting exception
 # This exception is raised to report errors in the GUI.
 # Unhandled exceptions must not raise AEL_Error() so the addon crashes and the traceback is printed
