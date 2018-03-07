@@ -1335,7 +1335,7 @@ def fs_build_MAME_main_database(PATHS, settings, control_dic):
     # Build main distributed hashed database
     # ---------------------------------------------------------------------------------------------
     # >> This saves the hashs files in the database directory.
-    fs_make_main_hashed_db(PATHS, machines, machines_render, pDialog)
+    fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
