@@ -3706,11 +3706,19 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
 def fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog):
     log_info('fs_build_rom_cache() Building ROM cache ...')
 
+    pDialog.create('Advanced MAME Launcher', ' ', ' ')
+    num_catalogs = len(cache_index_dic)
+    catalog_count = 1
     for catalog_name in cache_index_dic:
         catalog_index_dic = cache_index_dic[catalog_name]
         catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
         catalog_parents = fs_get_cataloged_dic_parents(PATHS, catalog_name)
 
+        pdialog_line1 = 'Building {0} cache ({1} of {2}) ...'.format(
+            catalog_name, catalog_count, num_catalogs)
+        pDialog.update(0, pdialog_line1)
+        total_items = len(catalog_index_dic)
+        item_count = 0
         for catalog_key in catalog_index_dic:
             hash_str = catalog_index_dic[catalog_key]['hash']
             log_verb('fs_build_rom_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
@@ -3729,6 +3737,13 @@ def fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialo
                 m_render_parents_dic[machine_name] = machines_render[machine_name]
             ROM_parents_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_parents.json')
             fs_write_JSON_file(ROM_parents_all_FN.getPath(), m_render_parents_dic)
+
+            # >> Progress dialog
+            item_count += 1
+            pDialog.update((item_count*100) // total_items, pdialog_line1)
+        # >> Progress dialog
+        catalog_count += 1
+    pDialog.close()
 
 def fs_rom_cache_get_hash(catalog_name, category_name):
     prop_key = '{0} - {1}'.format(catalog_name, category_name)
