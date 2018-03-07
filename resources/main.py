@@ -3685,8 +3685,11 @@ class Main:
             pDialog.update(100)
             pDialog.close()
 
-            # >> Regenerate Main hashed database
-            fs_make_main_hashed_db(PATHS, machines, machines_render, pDialog)
+            # >> Regenerate Main hashed database and ROM cache.
+            # >> MAME ROM scanner changed ROM flags.
+            cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+            fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
+            fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
 
             # --- Software Lists ------------------------------------------------------------------
             # >> Abort if SL hash path not configured.
