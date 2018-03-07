@@ -2208,7 +2208,7 @@ class Main:
             info_text.extend(table_str_list)
             if roms_dic['bios']:
                 bios_table_str_list = text_render_table_str(bios_table_str)
-                info_text.extend('')
+                info_text.append('')
                 info_text.extend(bios_table_str_list)
             window_title = 'Machine {0} ROMs'.format(machine_name)
             self._display_text_window(window_title, '\n'.join(info_text))
