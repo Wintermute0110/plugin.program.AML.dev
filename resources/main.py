@@ -695,12 +695,13 @@ class Main:
         listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY})
 
         # --- Create context menu ---
-        commands = []
-        commands.append(('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW'), ))
-        commands.append(('Setup custom filters', self._misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS'), ))
-        commands.append(('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN'), ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)', ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__), ))
+        commands = [
+            ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
+            ('Setup custom filters', self._misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS')),
+            ('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
@@ -717,6 +718,7 @@ class Main:
         self._set_Kodi_all_sorting_methods_and_size()
         mame_view_mode = self.settings['mame_view_mode']
         loading_ticks_start = time.time()
+        cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
         if mame_view_mode == VIEW_MODE_FLAT:
             catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
         elif mame_view_mode == VIEW_MODE_PCLONE:
@@ -732,11 +734,11 @@ class Main:
         rendering_ticks_start = time.time()
         for catalog_key in sorted(catalog_dic):
             if mame_view_mode == VIEW_MODE_FLAT:
-                num_machines = catalog_dic[catalog_key]['num_machines']
+                num_machines = cache_index_dic[catalog_name][catalog_key]['num_machines']
                 if num_machines == 1: machine_str = 'machine'
                 else:                 machine_str = 'machines'
             elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
-                num_machines = catalog_dic[catalog_key]['num_parents']
+                num_machines = cache_index_dic[catalog_name][catalog_key]['num_parents']
                 if num_machines == 1: machine_str = 'parent'
                 else:                 machine_str = 'parents'
             self._render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_str)
