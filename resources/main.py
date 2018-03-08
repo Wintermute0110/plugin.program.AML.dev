@@ -1529,6 +1529,7 @@ class Main:
           'View MAMEinfo DAT ({0})'.format(Mameinfo_str),
           'View Gameinit DAT ({0})'.format(Gameinit_str),
           'View Command DAT ({0})'.format(Command_str),
+          'View Fanart',
           'View Manual',
           'Display brother machines',
           'Display machines with same Genre',
@@ -1571,9 +1572,30 @@ class Main:
             info_text = DAT_dic[machine_name]
             self._display_text_window(window_title, info_text)
 
+        # --- View Fanart ---
+        elif s_value == 4:
+            # >> Open ROM in assets database
+            if location == 'STANDARD':
+                assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                m_assets = assets_dic[machine_name]
+            else:
+                mame_favs_dic = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+                m_assets = mame_favs_dic[machine_name]['assets']
+            if not m_assets['fanart']:
+                kodi_dialog_OK('Fanart for machine {0} not found.'.format(machine_name))
+                return
+
+            # >> If manual found then display it.
+            log_debug('Rendering fanart "{0}"'.format(m_assets['fanart']))
+            xbmc.executebuiltin('ShowPicture("{0}")'.format(m_assets['fanart']))
+
+            # >> DEBUG
+            # >> Also "SlideShow(dir [,recursive, [not]random])" may be used
+            # xbmc.executebuiltin('SlideShow("{0}")'.format('E:\\AML-stuff\\AML-assets\\fanarts\\'))
+
         # --- View Manual ---
         # For the PDF viewer implementation look at https://github.com/i96751414/plugin.image.pdfreader
-        elif s_value == 4:
+        elif s_value == 5:
             kodi_dialog_OK('Manual viewer not coded yet. Sorry!')
 
             # >> Open ROM in hased database
@@ -1583,7 +1605,7 @@ class Main:
             
 
         # --- Display brother machines (same driver) ---
-        elif s_value == 5:
+        elif s_value == 6:
             # >> Load Main hashed database
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             sourcefile_str = machine['sourcefile']
@@ -1598,7 +1620,7 @@ class Main:
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         # --- Display machines with same Genre ---
-        elif s_value == 6:
+        elif s_value == 7:
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             genre_str = machine['genre']
             url = self._misc_url_2_arg('catalog', 'Genre', 'category', genre_str)
@@ -1606,7 +1628,7 @@ class Main:
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         # --- Display machines by same Manufacturer ---
-        elif s_value == 7:
+        elif s_value == 8:
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             manufacturer_str = machine['manufacturer']
             url = self._misc_url_2_arg('catalog', 'Manufacturer', 'category', manufacturer_str)
