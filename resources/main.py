@@ -1573,6 +1573,17 @@ class Main:
             self._display_text_window(window_title, info_text)
 
         # --- View Fanart ---
+        # When Pictures menu is clicked on Home, the window pictures (MyPics.xml) opens.
+        # Pictures are browsed with the pictures window.
+        #
+        # When an image is clicked with ENTER the window changes to slideshow (SlideShow.xml)
+        # and the pictures are displayed in full screen with not rotozoom effects. Pictures
+        # can be changed with the arrow keys (they do not change automatically).
+        #
+        # The slideshow can also be started from the side menu "View slideshow". Initiated this
+        # way, the slideshow has a zooming effect and all pictures in the list are changed every
+        # few seconds.
+        #
         elif s_value == 4:
             # >> Open ROM in assets database
             if location == 'STANDARD':
