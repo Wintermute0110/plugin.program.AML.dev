@@ -1623,9 +1623,14 @@ class Main:
 
         # --- Display brother machines (same driver) ---
         elif s_value == 6:
-            # >> Load Main hashed database
+            # >> Load ROM Render data from hashed database
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+            # >> Some (important) drivers have a different name
             sourcefile_str = machine['sourcefile']
+            log_debug('Original driver "{0}"'.format(sourcefile_str))
+            if sourcefile_str in mame_driver_name_dic:
+                sourcefile_str = mame_driver_name_dic[sourcefile_str]
+            log_debug('Final driver    "{0}"'.format(sourcefile_str))
 
             # --- Replace current window by search window ---
             # When user press Back in search window it returns to the original window (either showing
@@ -1633,7 +1638,7 @@ class Main:
             #
             # NOTE ActivateWindow() / RunPlugin() / RunAddon() seem not to work here
             url = self._misc_url_2_arg('catalog', 'Driver', 'category', sourcefile_str)
-            log_debug('Container.Update URL {0}'.format(url))
+            log_debug('Container.Update URL "{0}"'.format(url))
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         # --- Display machines with same Genre ---
