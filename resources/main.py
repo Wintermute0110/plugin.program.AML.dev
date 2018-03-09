@@ -1573,17 +1573,6 @@ class Main:
             self._display_text_window(window_title, info_text)
 
         # --- View Fanart ---
-        # When Pictures menu is clicked on Home, the window pictures (MyPics.xml) opens.
-        # Pictures are browsed with the pictures window.
-        #
-        # When an image is clicked with ENTER the window changes to slideshow (SlideShow.xml)
-        # and the pictures are displayed in full screen with not rotozoom effects. Pictures
-        # can be changed with the arrow keys (they do not change automatically).
-        #
-        # The slideshow can also be started from the side menu "View slideshow". Initiated this
-        # way, the slideshow has a zooming effect and all pictures in the list are changed every
-        # few seconds.
-        #
         elif s_value == 4:
             # >> Open ROM in assets database
             if location == 'STANDARD':
@@ -1597,22 +1586,39 @@ class Main:
                 return
 
             # >> If manual found then display it.
-            log_debug('Rendering fanart "{0}"'.format(m_assets['fanart']))
+            log_debug('Rendering FS fanart "{0}"'.format(m_assets['fanart']))
             xbmc.executebuiltin('ShowPicture("{0}")'.format(m_assets['fanart']))
-
-            # >> DEBUG
-            # >> Also "SlideShow(dir [,recursive, [not]random])" may be used
-            # xbmc.executebuiltin('SlideShow("{0}")'.format('E:\\AML-stuff\\AML-assets\\fanarts\\'))
 
         # --- View Manual ---
         # For the PDF viewer implementation look at https://github.com/i96751414/plugin.image.pdfreader
+        #
+        # When Pictures menu is clicked on Home, the window pictures (MyPics.xml) opens.
+        # Pictures are browsed with the pictures window. When an image is clicked with ENTER the
+        # window changes to slideshow (SlideShow.xml) and the pictures are displayed in full 
+        # screen with not pan/zoom effects. Pictures can be changed with the arrow keys (they
+        # do not change automatically). The slideshow can also be started from the side menu 
+        # "View slideshow". Initiated this way, the slideshow has a pan/zooming effects and all 
+        # pictures in the list are changed every few seconds.
+        #
+        # Use the builtin function SlideShow("{0}",pause) to show a set of pictures in full screen.
+        # See https://forum.kodi.tv/showthread.php?tid=329349
+        #
         elif s_value == 5:
-            kodi_dialog_OK('Manual viewer not coded yet. Sorry!')
+            # --- Slideshow DEBUG snippet ---
+            # >> https://kodi.wiki/view/List_of_built-in_functions is outdated!
+            # >> See https://github.com/xbmc/xbmc/blob/master/xbmc/interfaces/builtins/PictureBuiltins.cpp
+            # >> '\' in path strings must be escaped like '\\'
+            # >> Builtin function arguments can be in any order (at least for this function).
+            # xbmc.executebuiltin('SlideShow("{0}",pause)'.format(r'E:\\AML-stuff\\AML-assets\\fanarts\\'))
 
-            # >> Open ROM in hased database
-            
+            # >> Open machine/SL item in hased database
+            kodi_dialog_OK('Not implemented yet. Sorry!')
 
             # >> If manual found then display it.
+            # >> First, extract images from the PDF/CBZ.
+            # >> Put the extracted images in a directory named MANUALS_DIR/manual_name.pages/
+            # >> Check the modification times of the PDF manual file witht the timestamp of
+            # >> the first file to regenerate the images if PDF is newer than first extracted img.
             
 
         # --- Display brother machines (same driver) ---
