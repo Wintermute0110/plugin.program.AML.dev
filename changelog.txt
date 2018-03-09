@@ -1,5 +1,9 @@
 [B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
+WIP      Check out the ListItem constructor offscreen parameter in Leia. It can dramatically speed
+         up ListItem creation and population.
+         See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
+
 WIP      Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
 WIP      Create a hased database for all catalog filter combination. This will require the
