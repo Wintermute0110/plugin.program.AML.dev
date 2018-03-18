@@ -3721,19 +3721,21 @@ class Main:
             pDialog = xbmcgui.DialogProgress()
             pdialog_line1 = 'Loading databases ...'
             pDialog.create('Advanced MAME Launcher')
-            pDialog.update(0, pdialog_line1, 'Control dic ...')
+            pDialog.update(0, pdialog_line1, 'Control dic')
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(14, pdialog_line1, 'Machines Main')
+            pDialog.update(12, pdialog_line1, 'Machines Main')
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(28, pdialog_line1, 'Machines Render')
+            pDialog.update(25, pdialog_line1, 'Machines Render')
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(42, pdialog_line1, 'Machine assets')
+            pDialog.update(37, pdialog_line1, 'Machine assets')
             assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(57, pdialog_line1, 'Machine archives')
+            pDialog.update(50, pdialog_line1, 'Main Parent/Clone')
+            main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+            pDialog.update(62, pdialog_line1, 'Machine archives')
             machine_archives_dic = fs_load_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(71, pdialog_line1, 'ROM list')
+            pDialog.update(75, pdialog_line1, 'ROM list')
             ROM_archive_list = fs_load_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(85, pdialog_line1, 'CHD list')
+            pDialog.update(87, pdialog_line1, 'CHD list')
             CHD_archive_list = fs_load_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath())
             pDialog.update(100, pdialog_line1, ' ')
             pDialog.close()
@@ -3759,7 +3761,7 @@ class Main:
 
             if do_MAME_asset_scan:
                 # >> Updates assets_dic dictionary
-                fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, Asset_path_FN)
+                fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pclone_dic, Asset_path_FN, pDialog)
                 # >> Save control_dic (has been updated in the scanner function).
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
@@ -3882,7 +3884,7 @@ class Main:
                 pDialog.close()
                 cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
                 fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
-                fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+                fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
                 kodi_notify('MAME machines plot generation finished')
 
             # --- Buils Software List items plot ---
@@ -4636,11 +4638,21 @@ class Main:
                 kodi_busydialog_ON()
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
                 kodi_busydialog_OFF()
 
                 # >> Updates and saves the MAME Asset database.
-                fs_scan_MAME_assets(PATHS, control_dic, machines_render, Asset_path_FN)
+                pDialog = xbmcgui.DialogProgress()
+                fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pclone_dic, Asset_path_FN, pDialog)
+
+                # >> Save asset DB and control dic
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+                fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
+
+                # >> Asset cache must be regenerated.
+                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
                 kodi_notify('Scanning of assets/artwork finished')
 
             # --- Scan SL ROMs/CHDs ---

@@ -2511,7 +2511,7 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     fs_write_JSON_file(PATHS.CACHE_INDEX_PATH.getPath(), cache_index_dic)
 
     # --- Build the ROM hashed database and the ROM cache ---
-    fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+    fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
 
 # -------------------------------------------------------------------------------------------------
 # Software Lists and ROM audit database building function
@@ -3408,50 +3408,97 @@ def fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_d
 #
 # Note that MAME is able to use clone artwork from parent machines. Mr. Do's Artwork ZIP files
 # are provided only for parents.
+# First pass: search for on-disk assets.
+# Second pass: do artwork substitution
+#   A) A clone may use assets from parent.
+#   B) A parent may use assets from a clone.
 #
-def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines, Asset_path_FN):
+def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pclone_dic, Asset_path_FN, pDialog):
     # >> Iterate machines, check if assets/artwork exist.
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork...')
-    total_machines = len(machines)
-    processed_machines = 0
     table_str = []
-    table_str.append(['left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
-    table_str.append(['Name', 'PCB',  'Art',  'Cab',  'Clr',  'CPan', 'Fan',  'Fly',  'Man',  'Mar',  'Snap', 'Tit',  'Tra'])
+    table_str.append(['left', 'left', 'left',  'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
+    table_str.append(['Name', 'PCB',  'Artp',  'Art',  'Cab',  'Clr',  'CPan', 'Fan',  'Fly',  'Man',  'Mar',  'Snap', 'Tit',  'Tra'])
     have_count_list = [0] * len(ASSET_MAME_T_LIST)
-    for key in sorted(machines):
-        machine = machines[key]
 
-        # >> Scan assets
+    # >> First pass: search for on-disk assets
+    pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork (first pass) ...')
+    total_machines = len(machines_render)
+    processed_machines = 0
+    ondisk_assets_dic = {}
+    for m_name in sorted(machines_render):
         machine_assets = fs_new_MAME_asset()
-        asset_row = ['---'] * len(ASSET_MAME_T_LIST)
         for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
             asset_key = asset_tuple[0]
             asset_dir = asset_tuple[1]
             full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir)
             if asset_key == 'artwork':
-                asset_FN = full_asset_dir_FN.pjoin(key + '.zip')
+                asset_FN = full_asset_dir_FN.pjoin(m_name + '.zip')
             elif asset_key == 'manual':
-                asset_FN = full_asset_dir_FN.pjoin(key + '.pdf')
+                asset_FN = full_asset_dir_FN.pjoin(m_name + '.pdf')
             elif asset_key == 'trailer':
-                asset_FN = full_asset_dir_FN.pjoin(key + '.mp4')
+                asset_FN = full_asset_dir_FN.pjoin(m_name + '.mp4')
             else:
-                asset_FN = full_asset_dir_FN.pjoin(key + '.png')
+                asset_FN = full_asset_dir_FN.pjoin(m_name + '.png')
             if asset_FN.exists():
                 machine_assets[asset_key] = asset_FN.getOriginalPath()
-                have_count_list[idx] += 1
-                asset_row[idx] = 'YES'
             else:
                 machine_assets[asset_key] = ''
-        table_row = [key] + asset_row
-        # table_row.extend(asset_row)
-        table_str.append(table_row)
-        assets_dic[key] = machine_assets
+        ondisk_assets_dic[m_name] = machine_assets
+        # >> Update progress
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
+    pDialog.close()
+
+    # >> Second pass: substitute artwork
+    pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork (second pass) ...')
+    total_machines = len(machines_render)
+    processed_machines = 0
+    for m_name in sorted(machines_render):
+        asset_row = ['---'] * len(ASSET_MAME_T_LIST)
+        for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
+            asset_key = asset_tuple[0]
+            asset_dir = asset_tuple[1]
+            # >> If artwork exists do nothing
+            if ondisk_assets_dic[m_name][asset_key]:
+                assets_dic[m_name][asset_key] = ondisk_assets_dic[m_name][asset_key]
+                have_count_list[idx] += 1
+                asset_row[idx] = 'YES'
+            # >> If artwork does not exist:
+            else:
+                # >> if machine is a parent search in the clone list
+                if m_name in main_pclone_dic:
+                    for clone_key in main_pclone_dic[m_name]:
+                        if ondisk_assets_dic[clone_key][asset_key]:
+                            assets_dic[m_name][asset_key] = ondisk_assets_dic[clone_key][asset_key]
+                            have_count_list[idx] += 1
+                            asset_row[idx] = 'CLO'
+                            break
+                # >> if machine is a clone search in the parent first, then search in the clones
+                else:
+                    # >> Search parent
+                    parent_name = machines_render[m_name]['cloneof']
+                    if ondisk_assets_dic[parent_name][asset_key]:
+                        assets_dic[m_name][asset_key] = ondisk_assets_dic[parent_name][asset_key]
+                        have_count_list[idx] += 1
+                        asset_row[idx] = 'PAR'
+                    # >> Search clones
+                    else:
+                        for clone_key in main_pclone_dic[parent_name]:
+                            if clone_key == m_name: continue
+                            if ondisk_assets_dic[clone_key][asset_key]:
+                                assets_dic[m_name][asset_key] = ondisk_assets_dic[clone_key][asset_key]
+                                have_count_list[idx] += 1
+                                asset_row[idx] = 'CLX'
+                                break
+        table_row = [m_name] + asset_row
+        table_str.append(table_row)
+        # >> Update progress
+        processed_machines += 1
+        pDialog.update((processed_machines*100) // total_machines)
+    pDialog.close()
 
     # >> Asset statistics and report.
+    pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Creating MAME asset report ...')
     report_str_list = []
     report_str_list.append('Number of MAME machines {0}'.format(total_machines))

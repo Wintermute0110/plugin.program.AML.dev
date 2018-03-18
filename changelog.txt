@@ -7,9 +7,6 @@ WIP      Check out the ListItem constructor offscreen parameter in Leia. It can 
          See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
          and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
 
-WIP      Render PDF manuals consisting of image scans (99% of game manuals are scans of images).
-         Have a look at the PDF reader addon https://forum.kodi.tv/showthread.php?tid=187421
-
 WIP      Implemented "Most played MAME machines"
 
 WIP      Implemented "Recently played MAME machines"
@@ -31,11 +28,15 @@ FEATURE  Make a ROM cache and a assets cache for the MAME filters. That will inc
 
 FEATURE  Support MAME artwork by Mr. Do's. Note that Clones use Parent's artwork automatically.
 
-WIP      User Parent/Clone substituted artwork. For example, most trailers are only available for
-         the Parent machine and can be used by Clone machines.
-         Maybe the scanner cache is a requirement for this feature ...
+FEATURE  Use Parent/Clone substituted artwork in MAME. For example, most trailers are only available
+         for the Parent machine and can be used by Clone machines.
+
+WIP      Use Parent/Clone substituted artwork in Software Lists.
 
 WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
+
+WIP      Render PDF manuals consisting of image scans (99% of game manuals are scans of images).
+         Have a look at the PDF reader addon https://forum.kodi.tv/showthread.php?tid=187421
 
 FEATURE  Build Fanarts from other pieces of artwork for Software List items.
 
