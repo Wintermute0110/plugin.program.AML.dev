@@ -1205,10 +1205,8 @@ MAME_layout_assets = {
 }
 
 def mame_load_MAME_Fanart_template(Template_FN):
-    __debug_xml_parser = False
-    layout = {}
-    
     # >> Load XML file
+    layout = {}
     if not os.path.isfile(Template_FN.getPath()): return None
     log_debug('mame_load_MAME_Fanart_template() Loading XML "{0}"'.format(Template_FN.getPath()))
     try:
@@ -1223,8 +1221,7 @@ def mame_load_MAME_Fanart_template(Template_FN):
     text_list = ['MachineName']
     test_tag_list = ['left', 'top', 'fontsize']
     for root_element in xml_root:
-        if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
-
+        # log_debug('Root child {0}'.format(root_element.tag))
         if root_element.tag in art_list:
             art_dic = d = {key : 0 for key in art_tag_list}
             for art_child in root_element:
@@ -1235,7 +1232,6 @@ def mame_load_MAME_Fanart_template(Template_FN):
                     log_error('Unknown tag <{0}>'.format(art_child.tag))
                     return None
             layout[root_element.tag] = art_dic
-
         elif root_element.tag in text_list:
             text_dic = d = {key : 0 for key in test_tag_list}
             for art_child in root_element:
@@ -1246,7 +1242,6 @@ def mame_load_MAME_Fanart_template(Template_FN):
                     log_error('Unknown tag <{0}>'.format(art_child.tag))
                     return None
             layout[root_element.tag] = text_dic
-
         else:
             log_error('Unknown tag <{0}>'.format(root_element.tag))
             return None
@@ -1312,26 +1307,76 @@ def mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
 
-layout_SL = {
-    'title'     : {'x_size' : 600, 'y_size' : 600, 'x_pos' : 690,  'y_pos' : 430},
-    'snap'      : {'x_size' : 600, 'y_size' : 600, 'x_pos' : 1300, 'y_pos' : 430},
-    'boxfront'  : {'x_size' : 650, 'y_size' : 980, 'x_pos' : 30,   'y_pos' : 50},
-    'text_SL'   : {                                'x_pos' : 730,  'y_pos' : 90, 'size' : 76},
-    'text_item' : {                                'x_pos' : 730,  'y_pos' : 180, 'size' : 76},
+SL_layout_example = {
+    'Title'    : {'width' : 600, 'height' : 600, 'left' : 690,  'top' : 430},
+    'Snap'     : {'width' : 600, 'height' : 600, 'left' : 1300, 'top' : 430},
+    'BoxFront' : {'width' : 650, 'height' : 980, 'left' : 30,   'top' : 50},
+    'SLName'   : {'left' : 730, 'top' : 90,  'fontsize' : 76},
+    'ItemName' : {'left' : 730, 'top' : 180, 'fontsize' : 76},
 }
+
+SL_layout_assets = {
+    'Title'    : 'title',
+    'Snap'     : 'snap',
+    'BoxFront' : 'boxfront',
+}
+
+def mame_load_SL_Fanart_template(Template_FN):
+    # >> Load XML file
+    layout = {}
+    if not os.path.isfile(Template_FN.getPath()): return None
+    log_debug('mame_load_SL_Fanart_template() Loading XML "{0}"'.format(Template_FN.getPath()))
+    try:
+        xml_tree = ET.parse(Template_FN.getPath())
+    except IOError as E:
+        return None
+    xml_root = xml_tree.getroot()
+
+    # >> Parse file
+    art_list = ['Title', 'Snap', 'BoxFront']
+    art_tag_list = ['width', 'height', 'left', 'top']
+    text_list = ['SLName', 'ItemName']
+    test_tag_list = ['left', 'top', 'fontsize']
+    for root_element in xml_root:
+        # log_debug('Root child {0}'.format(root_element.tag))
+        if root_element.tag in art_list:
+            art_dic = d = {key : 0 for key in art_tag_list}
+            for art_child in root_element:
+                if art_child.tag in art_tag_list:
+                    art_dic[art_child.tag] = int(art_child.text)
+                else:
+                    log_error('Inside root tag <{0}>'.format(root_element.tag))
+                    log_error('Unknown tag <{0}>'.format(art_child.tag))
+                    return None
+            layout[root_element.tag] = art_dic
+        elif root_element.tag in text_list:
+            text_dic = d = {key : 0 for key in test_tag_list}
+            for art_child in root_element:
+                if art_child.tag in test_tag_list:
+                    text_dic[art_child.tag] = int(art_child.text)
+                else:
+                    log_error('Inside root tag <{0}>'.format(root_element.tag))
+                    log_error('Unknown tag <{0}>'.format(art_child.tag))
+                    return None
+            layout[root_element.tag] = text_dic
+        else:
+            log_error('Unknown tag <{0}>'.format(root_element.tag))
+            return None
+
+    return layout
 
 #
 # Rebuild Fanart for a given SL item
 #
-def mame_build_SL_fanart(PATHS, SL_name, m_name, assets_dic, Fanart_path_FN):
+def mame_build_SL_fanart(PATHS, layout_SL, SL_name, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (0, 0, 0)):
     # log_debug('mame_build_SL_fanart() Building fanart for SL {0} item {1}'.format(SL_name, m_name))
 
     # >> Quickly check if machine has valid assets, and skip fanart generation if not.
     machine_has_valid_assets = False
     for asset_key in layout_SL:
-        if asset_key == 'text_SL' or asset_key == 'text_item': continue
+        asset_db_name = SL_layout_assets[asset_key]
         m_assets = assets_dic[m_name]
-        if m_assets[asset_key]:
+        if m_assets[asset_db_name]:
             machine_has_valid_assets = True
             break
     if not machine_has_valid_assets: return
@@ -1341,12 +1386,12 @@ def mame_build_SL_fanart(PATHS, SL_name, m_name, assets_dic, Fanart_path_FN):
         global font_mono_SL
         log_debug('mame_build_SL_fanart() Creating font_mono_SL object')
         log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_SL = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout_SL['text_SL']['size'])
+        font_mono_SL = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout_SL['SLName']['fontsize'])
     if not font_mono_item:
         global font_mono_item
         log_debug('mame_build_SL_fanart() Creating font_mono_item object')
         log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_item = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout_SL['text_item']['size'])
+        font_mono_item = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout_SL['ItemName']['fontsize'])
 
     # >> Create fanart canvas
     fanart_img = Image.new('RGB', (1920, 1080), (0, 0, 0))
@@ -1356,27 +1401,29 @@ def mame_build_SL_fanart(PATHS, SL_name, m_name, assets_dic, Fanart_path_FN):
     for asset_key in layout_SL:
         # log_debug('{0:<10} initialising'.format(asset_key))
         m_assets = assets_dic[m_name]
-        if asset_key == 'text_SL':
-            draw.text((layout_SL['text_SL']['x_pos'], layout_SL['text_SL']['y_pos']), SL_name,
-                      (255, 255, 255), font = font_mono_SL)
-        elif asset_key == 'text_item':
-            draw.text((layout_SL['text_item']['x_pos'], layout_SL['text_item']['y_pos']), m_name,
-                      (255, 255, 255), font = font_mono_item)
+        if asset_key == 'SLName':
+            t_left = layout_SL['SLName']['left']
+            t_top = layout_SL['SLName']['top']
+            draw.text((t_left, t_top), SL_name, (255, 255, 255), font = font_mono_SL)
+        elif asset_key == 'ItemName':
+            t_left = layout_SL['ItemName']['left']
+            t_top = layout_SL['ItemName']['top']
+            draw.text((t_left, t_top), m_name, (255, 255, 255), font = font_mono_item)
         else:
-            if not m_assets[asset_key]:
-                # log_debug('{0:<10} DB empty'.format(asset_key))
+            asset_db_name = SL_layout_assets[asset_key]
+            if not m_assets[asset_db_name]:
+                # log_debug('{0:<10} DB empty'.format(asset_db_name))
                 continue
-            Asset_FN = FileName(m_assets[asset_key])
+            Asset_FN = FileName(m_assets[asset_db_name])
             if not Asset_FN.exists():
-                # log_debug('{0:<10} file not found'.format(asset_key))
+                # log_debug('{0:<10} file not found'.format(asset_db_name))
                 continue
-            # log_debug('{0:<10} found'.format(asset_key))
+            # log_debug('{0:<10} found'.format(asset_db_name))
             img_asset = Image.open(Asset_FN.getPath())
-            img_asset = PIL_resize_proportional(img_asset, layout_SL, asset_key)
+            img_asset = PIL_resize_proportional(img_asset, layout_SL, asset_key, CANVAS_COLOR)
             fanart_img = PIL_paste_image(fanart_img, img_asset, layout_SL, asset_key)
 
     # >> Save fanart and update database
-    Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
     # log_debug('mame_build_SL_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()

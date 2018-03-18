@@ -3857,8 +3857,36 @@ class Main:
 
             # --- Test SL Fanart ---
             elif submenu == 1:
-                kodi_dialog_OK('Not coded yet')
-                return
+                Template_FN = AML_ADDON_DIR.pjoin('AML-SL-Fanart-template.xml')
+                Fanart_FN = PLUGIN_DATA_DIR.pjoin('Fanart_SL.png')
+                Asset_path_FN = AML_ADDON_DIR.pjoin('media/SL_assets')
+                log_debug('Testing Software List Fanart generation ...')
+                log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
+                log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
+                log_debug('Asset_path_FN "{0}"'.format(Asset_path_FN.getPath()))
+
+                # >> Load Fanart template from XML file
+                layout = mame_load_SL_Fanart_template(Template_FN)
+                # log_debug(unicode(layout))
+                if not layout:
+                    kodi_dialog_OK('Error loading XML Software List Fanart layout.')
+                    return
+    
+                # >> Use hard-coded assets
+                SL_name = '32x'
+                m_name = 'doom'
+                assets_dic = {
+                    m_name : {
+                        'title' :    Asset_path_FN.pjoin('doom_title.png').getPath(),
+                        'snap' :     Asset_path_FN.pjoin('doom_snap.png').getPath(),
+                        'boxfront' : Asset_path_FN.pjoin('doom_boxfront.png').getPath(),
+                    }
+                }
+                mame_build_SL_fanart(PATHS, layout, SL_name, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (50, 50, 75))
+
+                # >> Display Fanart
+                log_debug('Rendering fanart "{0}"'.format(Fanart_FN.getPath()))
+                xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
 
             # --- 2 -> Build missing MAME Fanarts ---
             # --- 3 -> Rebuild all MAME Fanarts ---
