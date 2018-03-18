@@ -205,11 +205,12 @@ def fs_new_disk_dic():
     return m
 
 #
-# Object used in MAME_assets_db.json, ordered alphabetically.
+# Object used in MAME_assets.json, ordered alphabetically.
 #
 ASSET_MAME_T_LIST  = [
     ('PCB',        'PCBs'),
     ('artpreview', 'artpreviews'),
+    ('artwork',    'artwork'),
     ('cabinet',    'cabinets'),
     ('clearlogo',  'clearlogos'),
     ('cpanel',     'cpanels'),
@@ -221,10 +222,12 @@ ASSET_MAME_T_LIST  = [
     ('title',      'titles'),
     ('trailer',    'videosnaps'),
 ]
+
 def fs_new_MAME_asset():
     a = {
         'PCB'        : '',
         'artpreview' : '',
+        'artwork' : '',
         'cabinet'    : '',
         'clearlogo'  : '',
         'cpanel'     : '',
