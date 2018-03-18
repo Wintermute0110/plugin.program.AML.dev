@@ -3485,6 +3485,10 @@ class Main:
         #     'machine1', 'machine2', 'machine3', ...
         # ]
         #
+        # AML_DATA_DIR/filters/'rom_DB_noext'_ROMs.json -> machine_render = {}
+        #
+        # AML_DATA_DIR/filters/'rom_DB_noext'_assets.json -> asset_dic = {}
+        #
         elif menu_item == 1:
             __debug_xml_parser = False
 
@@ -3508,7 +3512,7 @@ class Main:
 
                 if root_element.tag == 'DEFINE':
                     name_str = root_element.attrib['name']
-                    define_str = root_element.text
+                    define_str = root_element.text if root_element.text else ''
                     log_debug('DEFINE "{0}" := "{1}"'.format(name_str, define_str))
                     define_dic[name_str] = define_str
                 elif root_element.tag == 'MAMEFilter':
@@ -3518,9 +3522,10 @@ class Main:
                         'driver' : ''
                     }
                     for filter_element in root_element:
-                        if filter_element.tag == 'Name': this_filter_dic['name'] = filter_element.text
-                        elif filter_element.tag == 'Options': this_filter_dic['options'] = filter_element.text
-                        elif filter_element.tag == 'Driver': this_filter_dic['driver'] = filter_element.text
+                        text_t = filter_element.text if filter_element.text else ''
+                        if filter_element.tag == 'Name': this_filter_dic['name'] = text_t
+                        elif filter_element.tag == 'Options': this_filter_dic['options'] = text_t
+                        elif filter_element.tag == 'Driver': this_filter_dic['driver'] = text_t
                     log_debug('Adding filter "{0}"'.format(this_filter_dic['name']))
                     filters_dic[this_filter_dic['name']] = this_filter_dic
 
@@ -3534,12 +3539,15 @@ class Main:
             pDialog = xbmcgui.DialogProgress()
             pDialog_canceled = False
             pdialog_line1 = 'Loading databases ...'
-            pDialog.create('Advanced MAME Launcher', pdialog_line1)
-            pDialog.update(0, pdialog_line1, 'Main PClone ...')
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(0, pdialog_line1, 'Parent/Clone')
             main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            pDialog.update(50, pdialog_line1, 'Render DB ...')
+            pDialog.update(25, pdialog_line1, 'Machines Main')
             machine_main_dic = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            # machine_render_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            pDialog.update(50, pdialog_line1, 'Machines Render')
+            machine_render_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            pDialog.update(75, pdialog_line1, 'Machine assets')
+            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
             pDialog.update(100, pdialog_line1, ' ')
             pDialog.close()
 
@@ -3571,9 +3579,16 @@ class Main:
                 # >> Make index entry
                 filtered_machine_parents_list = sorted(filtered_machine_dic.keys())
                 filtered_machine_all_list = []
+                filtered_render_ROMs = {}
+                filtered_assets_dic = {}
                 for p_name in filtered_machine_parents_list:
                     filtered_machine_all_list.append(p_name)
-                    filtered_machine_all_list.extend(main_pclone_dic[p_name])
+                    filtered_render_ROMs[p_name] = machine_render_dic[p_name]
+                    filtered_assets_dic[p_name] = assets_dic[p_name]
+                    for c_name in main_pclone_dic[p_name]:
+                        filtered_machine_all_list.append(c_name)
+                        filtered_render_ROMs[c_name] = machine_render_dic[c_name]
+                        filtered_assets_dic[c_name] = assets_dic[c_name]
                 rom_DB_noext = hashlib.md5(f_name).hexdigest()
                 this_filter_idx_dic = {
                     'display_name' : f_definition['name'],
@@ -3588,6 +3603,10 @@ class Main:
                 fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_list)
                 output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
                 fs_write_JSON_file(output_FN.getPath(), filtered_machine_all_list)
+                output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json')
+                fs_write_JSON_file(output_FN.getPath(), filtered_render_ROMs)
+                output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
+                fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic)
                 # >> Final progress
                 processed_items += 1
             pDialog.update((processed_items*100) // total_items, pdialog_line1, ' ')
