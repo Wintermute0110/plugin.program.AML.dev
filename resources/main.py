@@ -3804,25 +3804,37 @@ class Main:
         # --- Build Fanarts ---
         elif menu_item == 5:
             submenu = dialog.select('Build Fanarts',
-                                   ['Build missing MAME Fanarts',
+                                   ['Test MAME Fanart',
+                                    'Test Software List item Fanart',
+                                    'Build missing MAME Fanarts',
                                     'Rebuild all MAME Fanarts',
                                     'Build missing Software Lists Fanarts',
                                     'Rebuild all Software Lists Fanarts',
                                     ])
             if submenu < 0: return
+            # >> Check if Pillow library is available. Abort if not.
+            if not PILLOW_AVAILABLE:
+                kodi_dialog_OK('Pillow Python library is not available. Aborting Fanart generation.')
+                return
 
-            # --- 0 -> Missing MAME Fanarts ---
-            # --- 1 -> Rebuild all MAME Fanarts ---
+            # --- Test MAME Fanart ---
+            if submenu == 0:
+                kodi_dialog_OK('Not coded yet')
+                return
+                mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
+
+            # --- Test SL Fanart ---
+            elif submenu == 1:
+                kodi_dialog_OK('Not coded yet')
+                return
+
+            # --- 2 -> Build missing MAME Fanarts ---
+            # --- 3 -> Rebuild all MAME Fanarts ---
             # >> For a complete MAME artwork collection rebuilding all Fanarts will take hours!
-            if submenu == 0 or submenu == 1:
-                BUILD_MISSING = True if submenu == 0 else False
+            elif submenu == 2 or submenu == 3:
+                BUILD_MISSING = True if submenu == 2 else False
                 if BUILD_MISSING: log_info('_command_setup_plugin() Building missing Fanarts ...')
                 else:             log_info('_command_setup_plugin() Rebuilding all Fanarts ...')
-
-                # >> Check if Pillow library is available. Abort if not.
-                if not PILLOW_AVAILABLE:
-                    kodi_dialog_OK('Pillow library is not available. Aborting Fanart generation.')
-                    return
 
                 # >> If artwork directory not configured abort.
                 if not self.settings['assets_path']:
@@ -3878,17 +3890,12 @@ class Main:
                 if pDialog_canceled: kodi_notify('Fanart building stopped. Partial progress saved.')
                 else:                kodi_notify('Fanart building finished')
 
-            # --- 2 -> Missing SL Fanarts ---
-            # --- 3 -> Rebuild all SL Fanarts ---
-            elif submenu == 2 or submenu == 3:
-                BUILD_MISSING = True if submenu == 2 else False
+            # --- 4 -> Missing SL Fanarts ---
+            # --- 5 -> Rebuild all SL Fanarts ---
+            elif submenu == 4 or submenu == 5:
+                BUILD_MISSING = True if submenu == 4 else False
                 if BUILD_MISSING: log_info('_command_setup_plugin() Building missing Software Lists Fanarts ...')
                 else:             log_info('_command_setup_plugin() Rebuilding all Software Lists Fanarts ...')
-
-                # >> Check if Pillow library is available. Abort if not.
-                if not PILLOW_AVAILABLE:
-                    kodi_dialog_OK('Pillow library is not available. Aborting Fanart generation.')
-                    return
 
                 # >> If artwork directory not configured abort.
                 if not self.settings['assets_path']:
