@@ -1856,18 +1856,19 @@ class Main:
             info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
 
             info_text += '\n[COLOR orange]Asset/artwork data[/COLOR]\n'
-            info_text += "[COLOR violet]artpreview[/COLOR]: '{0}'\n".format(assets['artpreview'])
-            info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
-            info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
-            info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
-            info_text += "[COLOR violet]marquee[/COLOR]: '{0}'\n".format(assets['marquee'])
             info_text += "[COLOR violet]PCB[/COLOR]: '{0}'\n".format(assets['PCB'])
+            info_text += "[COLOR violet]artpreview[/COLOR]: '{0}'\n".format(assets['artpreview'])
+            info_text += "[COLOR violet]artwork[/COLOR]: '{0}'\n".format(assets['artwork'])
+            info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
+            info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
+            info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
+            info_text += "[COLOR violet]fanart[/COLOR]: '{0}'\n".format(assets['fanart'])
+            info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
+            info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
+            info_text += "[COLOR violet]marquee[/COLOR]: '{0}'\n".format(assets['marquee'])
             info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
             info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
-            info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
             info_text += "[COLOR violet]trailer[/COLOR]: '{0}'\n".format(assets['trailer'])
-            info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
-            info_text += "[COLOR violet]fanart[/COLOR]: '{0}'\n".format(assets['fanart'])
 
             # --- Show information window ---
             self._display_text_window(window_title, info_text)

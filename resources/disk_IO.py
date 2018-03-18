@@ -3453,6 +3453,10 @@ def fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_d
     # >> Save databases
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
+#
+# Note that MAME is able to use clone artwork from parent machines. Mr. Do's Artwork ZIP files
+# are provided only for parents.
+#
 def fs_scan_MAME_assets(PATHS, control_dic, machines, Asset_path_FN):
     # >> Iterate machines, check if assets/artwork exist.
     pDialog = xbmcgui.DialogProgress()
@@ -3475,11 +3479,12 @@ def fs_scan_MAME_assets(PATHS, control_dic, machines, Asset_path_FN):
             asset_key = asset_tuple[0]
             asset_dir = asset_tuple[1]
             full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir)
-            if asset_key == 'trailer':
-                asset_FN = full_asset_dir_FN.pjoin(key + '.mp4')
+            if asset_key == 'artwork':
+                asset_FN = full_asset_dir_FN.pjoin(key + '.zip')
             elif asset_key == 'manual':
-                machine_assets[asset_key] = ''
-                continue
+                asset_FN = full_asset_dir_FN.pjoin(key + '.pdf')
+            elif asset_key == 'trailer':
+                asset_FN = full_asset_dir_FN.pjoin(key + '.mp4')
             else:
                 asset_FN = full_asset_dir_FN.pjoin(key + '.png')
             if asset_FN.exists():
