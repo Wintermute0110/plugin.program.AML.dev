@@ -3833,14 +3833,22 @@ class Main:
                                       pDialog)
 
                 # >> Update hashed DBs and save DBs
+                # >> cache_index_dic built in fs_build_MAME_catalogs()
+                pdialog_line1 = 'Saving databases ...'
+                pDialog.create('Advanced MAME Launcher')
+                pDialog.update(0, pdialog_line1, 'Machines Render')
                 fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
-                # cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
-                # fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
-                # fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+                pDialog.update(100, pdialog_line1, ' ')
+                pDialog.close()
+                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
+                fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
                 kodi_notify('MAME machines plot generation finished')
 
             # --- Buils Software List items plot ---
             elif submenu == 1:
+                kodi_dialog_OK('SL item plot generation not finished yet.')
+                return
                 # mame_build_SL_plots()
                 kodi_notify('SL item plot generation finished')
 

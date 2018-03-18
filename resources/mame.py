@@ -755,6 +755,12 @@ def mame_build_MAME_plots(machines, machines_render, assets_dic,
         mameinfo_info_set = set()
     gameinit_info_set = {machine[0] for machine in gameinit_idx_dic}
     command_info_set  = {machine[0] for machine in command_idx_dic}
+
+    # >> Built machine plots
+    total_machines = len(machines)
+    num_machines = 0
+    pDialog.create('Advanced MAME Launcher')
+    pDialog.update(0, 'Generating MAME machine plots ...')
     for machine_name, m in machines.iteritems():
         Flag_list = []
         if assets_dic[machine_name]['artwork']: Flag_list.append('Artwork')
@@ -780,6 +786,11 @@ def mame_build_MAME_plots(machines, machines_render, assets_dic,
         if Flag_str: plot_str_list.append('{0}'.format(Flag_str))
         if SL_str: plot_str_list.append('SL {0}'.format(SL_str))
         machines_render[machine_name]['plot'] = '\n'.join(plot_str_list)
+
+        # >> Update progress
+        num_machines += 1
+        pDialog.update((num_machines*100)//total_machines)
+    pDialog.close()
 
 # -------------------------------------------------------------------------------------------------
 # MAME ROM/CHD audit code
