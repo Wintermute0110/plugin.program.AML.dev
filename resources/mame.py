@@ -792,6 +792,9 @@ def mame_build_MAME_plots(machines, machines_render, assets_dic,
         pDialog.update((num_machines*100)//total_machines)
     pDialog.close()
 
+def mame_build_SL_plots():
+    pass
+
 # -------------------------------------------------------------------------------------------------
 # MAME ROM/CHD audit code
 # -------------------------------------------------------------------------------------------------

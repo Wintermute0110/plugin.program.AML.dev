@@ -2507,11 +2507,11 @@ def fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_
     # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
     # log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
 
-    # --- Build ROM cache ---
-    fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
-
     # --- Save Catalog count ----------------------------------------------------------------------
     fs_write_JSON_file(PATHS.CACHE_INDEX_PATH.getPath(), cache_index_dic)
+
+    # --- Build the ROM hashed database and the ROM cache ---
+    fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
 
 # -------------------------------------------------------------------------------------------------
 # Software Lists and ROM audit database building function
@@ -3409,14 +3409,13 @@ def fs_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_d
 # Note that MAME is able to use clone artwork from parent machines. Mr. Do's Artwork ZIP files
 # are provided only for parents.
 #
-def fs_scan_MAME_assets(PATHS, control_dic, machines, Asset_path_FN):
+def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines, Asset_path_FN):
     # >> Iterate machines, check if assets/artwork exist.
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork...')
     total_machines = len(machines)
     processed_machines = 0
-    assets_dic = {}
     table_str = []
     table_str.append(['left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
     table_str.append(['Name', 'PCB',  'Art',  'Cab',  'Clr',  'CPan', 'Fan',  'Fly',  'Man',  'Mar',  'Snap', 'Tit',  'Tra'])
@@ -3475,12 +3474,6 @@ def fs_scan_MAME_assets(PATHS, control_dic, machines, Asset_path_FN):
     with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(report_str_list).encode('utf-8'))
     pDialog.update(100)
-
-    # >> Save asset database
-    pDialog.update(0, 'Saving MAME assets database ...')
-    fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-    pDialog.update(100)
-    pDialog.close()
 
     # >> Update control_dic by assigment (will be saved in caller)
     control_dic['assets_num_MAME_machines']  = total_machines
@@ -3670,8 +3663,13 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
 # -------------------------------------------------------------------------------------------------
 # ROM cache
 # -------------------------------------------------------------------------------------------------
-def fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog):
-    log_info('fs_build_rom_cache() Building ROM cache ...')
+def fs_rom_cache_get_hash(catalog_name, category_name):
+    prop_key = '{0} - {1}'.format(catalog_name, category_name)
+
+    return hashlib.md5(prop_key).hexdigest()
+
+def fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog):
+    log_info('fs_build_ROM_cache() Building ROM cache ...')
 
     pDialog.create('Advanced MAME Launcher', ' ', ' ')
     num_catalogs = len(cache_index_dic)
@@ -3679,31 +3677,23 @@ def fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialo
     for catalog_name in cache_index_dic:
         catalog_index_dic = cache_index_dic[catalog_name]
         catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
-        catalog_parents = fs_get_cataloged_dic_parents(PATHS, catalog_name)
 
-        pdialog_line1 = 'Building {0} cache ({1} of {2}) ...'.format(
+        pdialog_line1 = 'Building {0} ROM cache ({1} of {2}) ...'.format(
             catalog_name, catalog_count, num_catalogs)
         pDialog.update(0, pdialog_line1)
         total_items = len(catalog_index_dic)
         item_count = 0
         for catalog_key in catalog_index_dic:
             hash_str = catalog_index_dic[catalog_key]['hash']
-            log_verb('fs_build_rom_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
-            log_verb('fs_build_rom_cache() hash {0}'.format(hash_str))
+            log_verb('fs_build_ROM_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
+            log_verb('fs_build_ROM_cache() hash {0}'.format(hash_str))
 
             # >> Build all machines cache
             m_render_all_dic = {}
             for machine_name in catalog_all[catalog_key]:
                 m_render_all_dic[machine_name] = machines_render[machine_name]
-            ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_all.json')
+            ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_ROMs.json')
             fs_write_JSON_file(ROMs_all_FN.getPath(), m_render_all_dic)
-
-            # >> Build parent machines cache
-            m_render_parents_dic = {}
-            for machine_name in catalog_parents[catalog_key]:
-                m_render_parents_dic[machine_name] = machines_render[machine_name]
-            ROM_parents_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_parents.json')
-            fs_write_JSON_file(ROM_parents_all_FN.getPath(), m_render_parents_dic)
 
             # >> Progress dialog
             item_count += 1
@@ -3712,31 +3702,48 @@ def fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialo
         catalog_count += 1
     pDialog.close()
 
-def fs_rom_cache_get_hash(catalog_name, category_name):
-    prop_key = '{0} - {1}'.format(catalog_name, category_name)
-
-    return hashlib.md5(prop_key).hexdigest()
-
 def fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
-    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_all.json')
+    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_ROMs.json')
 
     return fs_load_JSON_file(ROMs_all_FN.getPath())
 
-def fs_load_roms_parents(PATHS, cache_index_dic, catalog_name, category_name):
-    hash_str = cache_index_dic[catalog_name][category_name]['hash']
-    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_parents.json')
+def fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog):
+    log_info('fs_build_asset_cache() Building Asset cache ...')
 
-    return fs_load_JSON_file(ROMs_all_FN.getPath())
+    pDialog.create('Advanced MAME Launcher', ' ', ' ')
+    num_catalogs = len(cache_index_dic)
+    catalog_count = 1
+    for catalog_name in cache_index_dic:
+        catalog_index_dic = cache_index_dic[catalog_name]
+        catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
+
+        pdialog_line1 = 'Building {0} asset cache ({1} of {2}) ...'.format(
+            catalog_name, catalog_count, num_catalogs)
+        pDialog.update(0, pdialog_line1)
+        total_items = len(catalog_index_dic)
+        item_count = 0
+        for catalog_key in catalog_index_dic:
+            hash_str = catalog_index_dic[catalog_key]['hash']
+            log_verb('fs_build_asset_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
+            log_verb('fs_build_asset_cache() hash {0}'.format(hash_str))
+
+            # >> Build all machines cache
+            m_assets_all_dic = {}
+            for machine_name in catalog_all[catalog_key]:
+                m_assets_all_dic[machine_name] = assets_dic[machine_name]
+            ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
+            fs_write_JSON_file(ROMs_all_FN.getPath(), m_assets_all_dic)
+
+            # >> Progress dialog
+            item_count += 1
+            pDialog.update((item_count*100) // total_items, pdialog_line1)
+        # >> Progress dialog
+        catalog_count += 1
+    pDialog.close()
 
 def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
-    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets_all.json')
-
-    return fs_load_JSON_file(ROMs_all_FN.getPath())
-
-def fs_load_assets_parents(PATHS, cache_index_dic, catalog_name, category_name):
-    hash_str = cache_index_dic[catalog_name][category_name]['hash']
-    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets_parents.json')
+    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
 
     return fs_load_JSON_file(ROMs_all_FN.getPath())

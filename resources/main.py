@@ -795,18 +795,18 @@ class Main:
         if USE_ROM_CACHE:
             l_render_db_start = time.time()
             cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
-            if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
-                MAME_render_db_dic = fs_load_roms_parents(PATHS, cache_index_dic, catalog_name, category_name)
-            elif view_mode_property == VIEW_MODE_FLAT:
-                MAME_render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
+            MAME_render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
             l_render_db_end = time.time()
+            l_assets_db_start = time.time()
+            MAME_assets_dic = fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name)
+            l_assets_db_end = time.time()
         else:
             l_render_db_start = time.time()
             MAME_render_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
             l_render_db_end = time.time()
-        l_assets_db_start = time.time()
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        l_assets_db_end = time.time()
+            l_assets_db_start = time.time()
+            MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            l_assets_db_end = time.time()
         l_pclone_dic_start = time.time()
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         l_pclone_dic_end = time.time()
@@ -987,12 +987,13 @@ class Main:
 
         # --- Assets ---
         # >> AEL/AML custom artwork fields
-        listitem.setArt({'title'     : machine_assets['title'],   'snap'    : machine_assets['snap'],
-                         'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'],
-                         'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
-        # >> Kodi official artwork fields
-        listitem.setArt({'icon'   : icon_path,   'fanart'    : fanart_path,
-                         'banner' : banner_path, 'clearlogo' : clearlogo_path, 'poster' : poster_path })
+        listitem.setArt({
+            'title'     : machine_assets['title'],   'snap'      : machine_assets['snap'],
+            'boxfront'  : machine_assets['cabinet'], 'boxback'   : machine_assets['cpanel'],
+            'cartridge' : machine_assets['PCB'],     'flyer'     : machine_assets['flyer'],
+            'icon'      : icon_path,                 'fanart'    : fanart_path,
+            'banner'    : banner_path,               'clearlogo' : clearlogo_path, 'poster' : poster_path
+        })
 
         # --- ROM flags (Skins will use these flags to render icons) ---
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
@@ -1000,20 +1001,26 @@ class Main:
         # --- Create context menu ---
         URL_view_DAT    = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
         URL_view        = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
-        URL_show_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_MAME_CLONES', 
-                                                         'catalog', catalog_name, 'category', category_name, 'parent', machine_name)
-        # URL_display     = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_MAME',
-        #                                                  'catalog', catalog_name, 'category', category_name, 'machine', machine_name)
         URL_fav         = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
-        commands = []
-        commands.append(('Info / Utils',  URL_view_DAT))
-        commands.append(('View / Audit',  URL_view))
         if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
-            commands.append(('Show clones',  URL_show_clones))
-        # commands.append(('Display settings', URL_display))
-        commands.append(('Add to MAME Favourites', URL_fav))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
+            URL_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_MAME_CLONES', 
+                                                        'catalog', catalog_name, 'category', category_name, 'parent', machine_name)
+            commands = [
+                ('Info / Utils',  URL_view_DAT),
+                ('View / Audit',  URL_view),
+                ('Show clones',  URL_clones),
+                ('Add to MAME Favourites', URL_fav),
+                ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+                ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+            ]
+        else:
+            commands = [
+                ('Info / Utils',  URL_view_DAT),
+                ('View / Audit',  URL_view),
+                ('Add to MAME Favourites', URL_fav),
+                ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+                ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+            ]
         listitem.addContextMenuItems(commands, replaceItems = True)
 
         # --- Add row ---
@@ -3635,10 +3642,13 @@ class Main:
                 return
 
             # --- Build all databases ---
+            # >> fs_build_MAME_main_database() creates the ROM hashed database and the (empty)
+            # >> Asset cache.
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             DB = fs_build_MAME_main_database(PATHS, self.settings, control_dic)
 
             # --- Build and save everything ---
+            # >> fs_build_MAME_catalogs() creates the cache_index_dic and updates the ROM cache.
             fs_build_ROM_audit_databases(PATHS, self.settings, control_dic,
                                          DB.machines, DB.machines_render, DB.devices_db_dic, DB.machine_roms)
             fs_build_MAME_catalogs(PATHS,
@@ -3688,22 +3698,25 @@ class Main:
             # >> Load machine database and control_dic
             pDialog = xbmcgui.DialogProgress()
             pdialog_line1 = 'Loading databases ...'
-            pDialog.create('Advanced MAME Launcher', 'Loading databases')
+            pDialog.create('Advanced MAME Launcher')
             pDialog.update(0, pdialog_line1, 'Control dic ...')
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(16, pdialog_line1, 'Machine Main DB ...')
+            pDialog.update(14, pdialog_line1, 'Machines Main')
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(33, pdialog_line1, 'Machine Render DB ...')
+            pDialog.update(28, pdialog_line1, 'Machines Render')
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(50, pdialog_line1, 'Machine archives DB ...')
+            pDialog.update(42, pdialog_line1, 'Machine assets')
+            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            pDialog.update(57, pdialog_line1, 'Machine archives')
             machine_archives_dic = fs_load_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(66, pdialog_line1, 'ROM list DB ...')
+            pDialog.update(71, pdialog_line1, 'ROM list')
             ROM_archive_list = fs_load_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(83, pdialog_line1, 'CHD list DB ...')
+            pDialog.update(85, pdialog_line1, 'CHD list')
             CHD_archive_list = fs_load_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath())
             pDialog.update(100, pdialog_line1, ' ')
             pDialog.close()
 
+            # >> Updates machines_render dictionary
             fs_scan_MAME_ROMs(PATHS, self.settings,
                               control_dic, machines, machines_render,
                               machine_archives_dic, ROM_archive_list, CHD_archive_list,
@@ -3723,21 +3736,26 @@ class Main:
                 do_MAME_asset_scan = False
 
             if do_MAME_asset_scan:
-                fs_scan_MAME_assets(PATHS, control_dic, machines_render, Asset_path_FN)
+                # >> Updates assets_dic dictionary
+                fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, Asset_path_FN)
                 # >> Save control_dic (has been updated in the scanner function).
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-            pDialog.create('Advanced MAME Launcher', 'Saving Machine Render database ... ')
-            pDialog.update(0)
+            pdialog_line1 = 'Saving databases ...'
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(0, pdialog_line1, 'Machines Render')
             fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
+            pDialog.update(50, pdialog_line1, 'Machine Assets')
+            fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
             pDialog.update(100)
             pDialog.close()
 
             # >> Regenerate Main hashed database and ROM cache.
-            # >> MAME ROM scanner changed ROM flags.
+            # >> MAME ROM scanner changed ROM flags in Render DB.
             cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
             fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
-            fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+            fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+            fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
 
             # --- Software Lists ------------------------------------------------------------------
             # >> Abort if SL hash path not configured.
