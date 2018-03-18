@@ -3339,34 +3339,37 @@ class Main:
             return
 
         # >> Load main MAME info DB and catalog
-        l_render_db_start = time.time()
-        MAME_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-        l_render_db_end = time.time()
-        l_assets_db_start = time.time()
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        l_assets_db_end = time.time()
-        l_pclone_dic_start = time.time()
-        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-        l_pclone_dic_end = time.time()
         l_cataloged_dic_start = time.time()
         Filters_index_dic = fs_load_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath())
         rom_DB_noext = Filters_index_dic[filter_name]['rom_DB_noext']
         if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
-            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
-            machine_list = fs_load_JSON_file(output_FN.getPath())
+            DB_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
+            machine_list = fs_load_JSON_file(DB_FN.getPath())
         elif view_mode_property == VIEW_MODE_FLAT:
-            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
-            machine_list = fs_load_JSON_file(output_FN.getPath())
+            DB_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
+            machine_list = fs_load_JSON_file(DB_FN.getPath())
         else:
             kodi_dialog_OK('Wrong view_mode_property = "{0}". '.format(view_mode_property) +
                            'This is a bug, please report it.')
             return
         l_cataloged_dic_end = time.time()
+        l_render_db_start = time.time()
+        # machine_render_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+        machine_render_dic = fs_load_JSON_file(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json').getPath())
+        l_render_db_end = time.time()
+        l_assets_db_start = time.time()
+        # MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json').getPath())
+        l_assets_db_end = time.time()
+        l_pclone_dic_start = time.time()
+        main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+        l_pclone_dic_end = time.time()
+
+        catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
         render_t = l_render_db_end - l_render_db_start
         assets_t = l_assets_db_end - l_assets_db_start
         pclone_t = l_pclone_dic_end - l_pclone_dic_start
-        catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
-        loading_time = render_t + assets_t + pclone_t + catalog_t
+        loading_time = catalog_t + render_t + assets_t + pclone_t
 
         # >> Check if catalog is empty
         if not machine_list:
@@ -3380,7 +3383,7 @@ class Main:
         if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
             # >> Parent/Clone mode render parents only
             for machine_name in machine_list:
-                machine = MAME_db_dic[machine_name]
+                machine = machine_render_dic[machine_name]
                 if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
@@ -3391,7 +3394,7 @@ class Main:
         else:
             # >> Flat mode renders all machines
             for machine_name in machine_list:
-                machine = MAME_db_dic[machine_name]
+                machine = machine_render_dic[machine_name]
                 if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
@@ -3420,8 +3423,12 @@ class Main:
 
         # >> Load main MAME info DB
         loading_ticks_start = time.time()
-        MAME_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        Filters_index_dic = fs_load_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath())
+        rom_DB_noext = Filters_index_dic[filter_name]['rom_DB_noext']
+        # machine_render_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+        machine_render_dic = fs_load_JSON_file(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json').getPath())
+        # MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        MAME_assets_dic = fs_load_JSON_file(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json').getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         view_mode_property = self.settings['mame_view_mode']
         log_debug('_render_custom_filter_clones() view_mode_property = {0}'.format(view_mode_property))
@@ -3430,13 +3437,13 @@ class Main:
         # >> Render parent first
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
-        machine = MAME_db_dic[parent_name]
+        machine = machine_render_dic[parent_name]
         assets  = MAME_assets_dic[parent_name]
         self._render_catalog_machine_row(parent_name, machine, assets, False, view_mode_property, 
                                          'Custom', filter_name)
         # >> and clones next.
         for p_name in main_pclone_dic[parent_name]:
-            machine = MAME_db_dic[p_name]
+            machine = machine_render_dic[p_name]
             assets  = MAME_assets_dic[p_name]
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
@@ -3516,11 +3523,7 @@ class Main:
                     log_debug('DEFINE "{0}" := "{1}"'.format(name_str, define_str))
                     define_dic[name_str] = define_str
                 elif root_element.tag == 'MAMEFilter':
-                    this_filter_dic = {
-                        'name' : '',
-                        'options' : '',
-                        'driver' : ''
-                    }
+                    this_filter_dic = {'name' : '', 'options' : '', 'driver' : ''}
                     for filter_element in root_element:
                         text_t = filter_element.text if filter_element.text else ''
                         if filter_element.tag == 'Name': this_filter_dic['name'] = text_t

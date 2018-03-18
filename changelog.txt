@@ -1,18 +1,14 @@
 [B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
+WIP      Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
+
 WIP      Check out the ListItem constructor offscreen parameter in Leia. It can dramatically speed
          up ListItem creation and population.
          See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
-
-WIP      Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
-
-WIP      Create a hased database for all catalog filter combination. This will require the
-         creation of about 5000 json files but will make AEL as fast as possible.
+         and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
 
 WIP      Render PDF manuals consisting of image scans (99% of game manuals are scans of images).
          Have a look at the PDF reader addon https://forum.kodi.tv/showthread.php?tid=187421
-
-WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
 
 WIP      Implemented "Most played MAME machines"
 
@@ -25,18 +21,27 @@ WIP      Implemented "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
-WIP      Make a ROM cache and a assets cache for the MAME filters. That will increase the
+FEATURE  Create a hased database for all catalog filter combination. This will require the
+         creation of about 5000 json files but will make AEL as fast as possible.
+
+FEATURE  Hashed database for assets, in a similar fashion to the catalog ROM hashed database.
+
+FEATURE  Make a ROM cache and a assets cache for the MAME filters. That will increase the
          loading speed of the MAME filters a lot.
 
-WIP      Support MAME artwork by Mr. Do's. Note that Clones use Parent's artwork automatically.
+FEATURE  Support MAME artwork by Mr. Do's. Note that Clones use Parent's artwork automatically.
 
 WIP      User Parent/Clone substituted artwork. For example, most trailers are only available for
          the Parent machine and can be used by Clone machines.
          Maybe the scanner cache is a requirement for this feature ...
 
+WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
+
 FEATURE  Build Fanarts from other pieces of artwork for Software List items.
 
 FEATURE  Build Fanarts from other pieces of artwork for MAME machines.
+
+FEATURE  Test MAME and SL Fanart building.
 
 FEATURE  Custom MAME filters, using XML files. Merge some of the functionality of NARS into AML.
          First, give to support to filter by driver. Later, more filters can be added.
