@@ -3598,6 +3598,7 @@ class Main:
                                   'Extract MAME.xml',
                                   'Build all databases',
                                   'Scan everything',
+                                  'Build Plots ...',
                                   'Build Fanarts ...',
                                   'Audit MAME machine ROMs/CHDs',
                                   'Audit SL ROMs/CHDs',
@@ -3792,8 +3793,16 @@ class Main:
             # --- All operations finished ---
             kodi_notify('All ROM/asset scanning finished')
 
-        # --- Build Fanarts ---
+        # --- Build plots ---
         elif menu_item == 4:
+            submenu = dialog.select('Build Plots',
+                                   ['Build MAME machines plot',
+                                    'Buils Software List items plot',
+                                    ])
+            if submenu < 0: return
+
+        # --- Build Fanarts ---
+        elif menu_item == 5:
             submenu = dialog.select('Build Fanarts',
                                    ['Build missing MAME Fanarts',
                                     'Rebuild all MAME Fanarts',
@@ -3953,7 +3962,7 @@ class Main:
         # --- Audit MAME machine ROMs/CHDs ---
         # NOTE It is likekely that this function will take a looong time. It is important that the
         #      audit process can be canceled and a partial report is written.
-        elif menu_item == 5:
+        elif menu_item == 6:
             log_info('_command_setup_plugin() Audit MAME machines ROMs/CHDs ...')
             # >> Load machines, ROMs and CHDs databases.
             pDialog = xbmcgui.DialogProgress()
@@ -4123,7 +4132,7 @@ class Main:
             kodi_notify('ROM and CHD audit finished')
 
         # --- Audit SL ROMs/CHDs ---
-        elif menu_item == 6:
+        elif menu_item == 7:
             log_info('_command_setup_plugin() Audit SL ROMs/CHDs ...')
 
             # >> Load SL catalog.
@@ -4265,7 +4274,7 @@ class Main:
             kodi_notify('Software Lists audit finished')
 
         # --- Build Step by Step ---
-        elif menu_item == 7:
+        elif menu_item == 8:
             submenu = dialog.select('Setup plugin (step by step)',
                                    ['Build MAME databases ...',
                                     'Build Audit/Scanner databases ...',
