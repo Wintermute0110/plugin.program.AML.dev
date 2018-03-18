@@ -3820,8 +3820,8 @@ class Main:
             # --- Test MAME Fanart ---
             if submenu == 0:
                 Template_FN = AML_ADDON_DIR.pjoin('AML-MAME-Fanart-template.xml')
-                Fanart_FN = PLUGIN_DATA_DIR.pjoin('Fanart_MAME.png')
                 Asset_path_FN = AML_ADDON_DIR.pjoin('media/MAME_assets')
+                Fanart_FN = PLUGIN_DATA_DIR.pjoin('Fanart_MAME.png')
                 log_debug('Testing MAME Fanart generation ...')
                 log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
                 log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
@@ -3902,11 +3902,19 @@ class Main:
                     return
 
                 # >> If fanart directory doesn't exist create it.
+                Template_FN = AML_ADDON_DIR.pjoin('AML-MAME-Fanart-template.xml')
                 Asset_path_FN = FileName(self.settings['assets_path'])
                 Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
                 if not Fanart_path_FN.isdir():
                     log_info('Creating Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
                     Fanart_path_FN.makedirs()
+
+                # >> Load Fanart template from XML file
+                layout = mame_load_MAME_Fanart_template(Template_FN)
+                # log_debug(unicode(layout))
+                if not layout:
+                    kodi_dialog_OK('Error loading XML MAME Fanart layout.')
+                    return
 
                 # >> Load Assets DB
                 pDialog_canceled = False
@@ -3929,14 +3937,14 @@ class Main:
                         break
                     # >> If build missing Fanarts was chosen only build fanart if file cannot
                     # >> be found.
+                    Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
                     if BUILD_MISSING:
-                        Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
                         if Fanart_FN.exists():
                             assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
                         else:
-                            mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
+                            mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN)
                     else:
-                        mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
+                        mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN)
                     processed_machines += 1
                 pDialog.update(100)
                 pDialog.close()
@@ -3960,6 +3968,14 @@ class Main:
                 # >> If artwork directory not configured abort.
                 if not self.settings['assets_path']:
                     kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
+                    return
+
+                # >> Load Fanart template from XML file
+                Template_FN = AML_ADDON_DIR.pjoin('AML-SL-Fanart-template.xml')
+                layout = mame_load_SL_Fanart_template(Template_FN)
+                # log_debug(unicode(layout))
+                if not layout:
+                    kodi_dialog_OK('Error loading XML Software List Fanart layout.')
                     return
 
                 # >> Load SL index
@@ -4004,14 +4020,14 @@ class Main:
                             break
                         # >> If build missing Fanarts was chosen only build fanart if file cannot
                         # >> be found.
+                        Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
                         if BUILD_MISSING:
-                            Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
                             if Fanart_FN.exists():
                                 SL_assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
                             else:
-                                mame_build_SL_fanart(PATHS, SL_name, m_name, SL_assets_dic, Fanart_path_FN)
+                                mame_build_SL_fanart(PATHS, layout, SL_name, m_name, SL_assets_dic, Fanart_FN)
                         else:
-                            mame_build_SL_fanart(PATHS, SL_name, m_name, SL_assets_dic, Fanart_path_FN)
+                            mame_build_SL_fanart(PATHS, layout, SL_name, m_name, SL_assets_dic, Fanart_FN)
                         processed_SL_items += 1
 
                     # >> Save assets DB

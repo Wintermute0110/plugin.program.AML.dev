@@ -1261,8 +1261,7 @@ def mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR
 
     # >> Quickly check if machine has valid assets, and skip fanart generation if not.
     machine_has_valid_assets = False
-    for asset_key in layout:
-        asset_db_name = MAME_layout_assets[asset_key]
+    for asset_key, asset_db_name in MAME_layout_assets.iteritems():
         m_assets = assets_dic[m_name]
         if m_assets[asset_db_name]:
             machine_has_valid_assets = True
@@ -1373,8 +1372,7 @@ def mame_build_SL_fanart(PATHS, layout_SL, SL_name, m_name, assets_dic, Fanart_F
 
     # >> Quickly check if machine has valid assets, and skip fanart generation if not.
     machine_has_valid_assets = False
-    for asset_key in layout_SL:
-        asset_db_name = SL_layout_assets[asset_key]
+    for asset_key, asset_db_name in SL_layout_assets.iteritems():
         m_assets = assets_dic[m_name]
         if m_assets[asset_db_name]:
             machine_has_valid_assets = True
