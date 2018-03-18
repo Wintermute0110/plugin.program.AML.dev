@@ -3802,6 +3802,48 @@ class Main:
                                     ])
             if submenu < 0: return
 
+            # --- Build MAME machines plot ---
+            if submenu == 0:
+                # >> Load machine database and control_dic
+                pDialog = xbmcgui.DialogProgress()
+                pdialog_line1 = 'Loading databases ...'
+                pDialog.create('Advanced MAME Launcher')
+                pDialog.update(0, pdialog_line1, 'Control dic')
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                pDialog.update(12, pdialog_line1, 'Machines Main')
+                machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                pDialog.update(25, pdialog_line1, 'Machines Render')
+                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                pDialog.update(37, pdialog_line1, 'MAME assets')
+                assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                pDialog.update(50, pdialog_line1, 'History DAT')
+                history_idx_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+                pDialog.update(62, pdialog_line1, 'Mameinfo DAT')
+                mameinfo_idx_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
+                pDialog.update(75, pdialog_line1, 'Gameinit DAT')
+                gameinit_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
+                pDialog.update(87, pdialog_line1, 'Command DAT')
+                command_idx_list = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
+                pDialog.update(100, pdialog_line1, ' ')
+                pDialog.close()
+
+                # >> Traverse MAME machines and build plot. Updates machines_render
+                mame_build_MAME_plots(machines, machines_render, assets_dic,
+                                      history_idx_dic, mameinfo_idx_dic, gameinit_idx_list, command_idx_list,
+                                      pDialog)
+
+                # >> Update hashed DBs and save DBs
+                fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
+                # cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                # fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
+                # fs_build_rom_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+                kodi_notify('MAME machines plot generation finished')
+
+            # --- Buils Software List items plot ---
+            elif submenu == 1:
+                # mame_build_SL_plots()
+                kodi_notify('SL item plot generation finished')
+
         # --- Build Fanarts ---
         elif menu_item == 5:
             submenu = dialog.select('Build Fanarts',

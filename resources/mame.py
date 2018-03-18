@@ -730,6 +730,58 @@ def mame_load_Command_DAT(filename):
     return (proper_idx_list, proper_data_dic)
 
 # -------------------------------------------------------------------------------------------------
+# Build MAME and SL plots
+# -------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------
+# Generate plot in render database
+# Line 1) Controls are {Joystick}
+# Line 2) {One Vertical Raster screen}
+# Line 3) Machine [is|is not] mechanical and driver is neogeo.hpp
+# Line 4) Machine has [no coin slots| N coin slots]
+# Line 5) Artwork, Manual, History, Info, Gameinit, Command
+# Line 6) Machine [supports|does not support] a Software List.
+# ---------------------------------------------------------------------------------------------
+def mame_build_MAME_plots(machines, machines_render, assets_dic,
+                          history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic, pDialog):
+    log_info('mame_build_plots() Building machine plots/descriptions ...')
+    # >> Do not crash if DAT files are not configured.
+    if history_idx_dic:
+        history_info_set  = {machine[0] for machine in history_idx_dic['mame']['machines']}
+    else:
+        history_info_set  = set()
+    if mameinfo_idx_dic:
+        mameinfo_info_set = {machine[0] for machine in mameinfo_idx_dic['mame']}
+    else:
+        mameinfo_info_set = set()
+    gameinit_info_set = {machine[0] for machine in gameinit_idx_dic}
+    command_info_set  = {machine[0] for machine in command_idx_dic}
+    for machine_name, m in machines.iteritems():
+        Flag_list = []
+        if assets_dic[machine_name]['artwork']: Flag_list.append('Artwork')
+        if assets_dic[machine_name]['manual']: Flag_list.append('Manual')
+        if machine_name in history_info_set: Flag_list.append('History')
+        if machine_name in mameinfo_info_set: Flag_list.append('Info')
+        if machine_name in gameinit_info_set: Flag_list.append('Gameinit')
+        if machine_name in command_info_set: Flag_list.append('Command')
+        Flag_str = ', '.join(Flag_list)
+        if m['control_type']:
+            controls_str = 'Controls {0}'.format(mame_get_control_str(m['control_type']))
+        else:
+            controls_str = 'No controls'
+        mecha_str = 'Mechanical' if m['isMechanical'] else 'Non-mechanical'
+        coin_str  = 'Machine has {0} coin slots'.format(m['coins']) if m['coins'] > 0 else 'Machine has no coin slots'
+        SL_str    = ', '.join(m['softwarelists']) if m['softwarelists'] else ''
+
+        plot_str_list = []
+        plot_str_list.append('{0}'.format(controls_str))
+        plot_str_list.append('{0}'.format(mame_get_screen_str(machine_name, m)))
+        plot_str_list.append('{0} / Driver is {1}'.format(mecha_str, m['sourcefile']))
+        plot_str_list.append('{0}'.format(coin_str))
+        if Flag_str: plot_str_list.append('{0}'.format(Flag_str))
+        if SL_str: plot_str_list.append('SL {0}'.format(SL_str))
+        machines_render[machine_name]['plot'] = '\n'.join(plot_str_list)
+
+# -------------------------------------------------------------------------------------------------
 # MAME ROM/CHD audit code
 # -------------------------------------------------------------------------------------------------
 # This code is very un-optimised! But it is better to get something that works
