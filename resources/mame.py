@@ -16,6 +16,7 @@
 # --- Python standard library ---
 from __future__ import unicode_literals
 import zipfile as z
+import xml.etree.ElementTree as ET
 try:
     from PIL import Image, ImageDraw, ImageFont
     PILLOW_AVAILABLE = True
@@ -1128,11 +1129,9 @@ def mame_filter_Driver_tag(mame_xml_dic, driver_filter_expression):
 # Scaling keeps original img aspect ratio.
 # Returns an image of size (box_x_size, box_y_size)
 #
-def PIL_resize_proportional(img, layout, dic_key):
-    # CANVAS_COLOR = (25, 255, 25)
-    CANVAS_COLOR = (0, 0, 0)
-    box_x_size = layout[dic_key]['x_size']
-    box_y_size = layout[dic_key]['y_size']
+def PIL_resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
+    box_x_size = layout[dic_key]['width']
+    box_y_size = layout[dic_key]['height']
     # print('PIL_resize_proportional() Initialising ...')
     # print('img X_size = {0} | Y_size = {1}'.format(img.size[0], img.size[1]))
     # print('box X_size = {0} | Y_size = {1}'.format(box_x_size, box_y_size))
@@ -1170,28 +1169,89 @@ def PIL_resize_proportional(img, layout, dic_key):
 
 def PIL_paste_image(img, img_title, layout, dic_key):
     box = (
-        layout[dic_key]['x_pos'],
-        layout[dic_key]['y_pos'], 
-        layout[dic_key]['x_pos'] + layout[dic_key]['x_size'],
-        layout[dic_key]['y_pos'] + layout[dic_key]['y_size']
+        layout[dic_key]['left'],
+        layout[dic_key]['top'], 
+        layout[dic_key]['left'] + layout[dic_key]['width'],
+        layout[dic_key]['top']  + layout[dic_key]['height']
     )
     img.paste(img_title, box)
 
     return img
 
 # --- Fanart layout ---
-layout = {
-    'title'      : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 50,   'y_pos' : 50},
-    'snap'       : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 50,   'y_pos' : 550},
-    'flyer'      : {'x_size' : 450, 'y_size' : 450, 'x_pos' : 1420, 'y_pos' : 50},
-    'cabinet'    : {'x_size' : 300, 'y_size' : 425, 'x_pos' : 1050, 'y_pos' : 625},
-    'artpreview' : {'x_size' : 450, 'y_size' : 550, 'x_pos' : 550,  'y_pos' : 500},
-    'PCB'        : {'x_size' : 300, 'y_size' : 300, 'x_pos' : 1500, 'y_pos' : 525},
-    'clearlogo'  : {'x_size' : 450, 'y_size' : 200, 'x_pos' : 1400, 'y_pos' : 850},
-    'cpanel'     : {'x_size' : 300, 'y_size' : 100, 'x_pos' : 1050, 'y_pos' : 500},
-    'marquee'    : {'x_size' : 800, 'y_size' : 275, 'x_pos' : 550,  'y_pos' : 200},
-    'text'       : {                                'x_pos' : 550,  'y_pos' : 50, 'size' : 72},
+MAME_layout_example = {
+    'Title'       : {'width' : 450, 'height' : 450, 'left' : 50,   'top' : 50},
+    'Snap'        : {'width' : 450, 'height' : 450, 'left' : 50,   'top' : 550},
+    'Flyer'       : {'width' : 450, 'height' : 450, 'left' : 1420, 'top' : 50},
+    'Cabinet'     : {'width' : 300, 'height' : 425, 'left' : 1050, 'top' : 625},
+    'Artpreview'  : {'width' : 450, 'height' : 550, 'left' : 550,  'top' : 500},
+    'PCB'         : {'width' : 300, 'height' : 300, 'left' : 1500, 'top' : 525},
+    'Clearlogo'   : {'width' : 450, 'height' : 200, 'left' : 1400, 'top' : 850},
+    'CPanel'      : {'width' : 300, 'height' : 100, 'left' : 1050, 'top' : 500},
+    'Marquee'     : {'width' : 800, 'height' : 275, 'left' : 550,  'top' : 200},
+    'MachineName' : {'left' : 550, 'top' : 50, 'fontsize' : 72},
 }
+
+MAME_layout_assets = {
+    'Title'       : 'title',
+    'Snap'        : 'snap',
+    'Flyer'       : 'flyer',
+    'Cabinet'     : 'cabinet',
+    'Artpreview'  : 'artpreview',
+    'PCB'         : 'PCB',
+    'Clearlogo'   : 'clearlogo',
+    'CPanel'      : 'cpanel',
+    'Marquee'     : 'marquee',
+}
+
+def mame_load_MAME_Fanart_template(Template_FN):
+    __debug_xml_parser = False
+    layout = {}
+    
+    # >> Load XML file
+    if not os.path.isfile(Template_FN.getPath()): return None
+    log_debug('mame_load_MAME_Fanart_template() Loading XML "{0}"'.format(Template_FN.getPath()))
+    try:
+        xml_tree = ET.parse(Template_FN.getPath())
+    except IOError as E:
+        return None
+    xml_root = xml_tree.getroot()
+
+    # >> Parse file
+    art_list = ['Title', 'Snap', 'Flyer', 'Cabinet', 'Artpreview', 'PCB', 'Clearlogo', 'CPanel', 'Marquee']
+    art_tag_list = ['width', 'height', 'left', 'top']
+    text_list = ['MachineName']
+    test_tag_list = ['left', 'top', 'fontsize']
+    for root_element in xml_root:
+        if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
+
+        if root_element.tag in art_list:
+            art_dic = d = {key : 0 for key in art_tag_list}
+            for art_child in root_element:
+                if art_child.tag in art_tag_list:
+                    art_dic[art_child.tag] = int(art_child.text)
+                else:
+                    log_error('Inside root tag <{0}>'.format(root_element.tag))
+                    log_error('Unknown tag <{0}>'.format(art_child.tag))
+                    return None
+            layout[root_element.tag] = art_dic
+
+        elif root_element.tag in text_list:
+            text_dic = d = {key : 0 for key in test_tag_list}
+            for art_child in root_element:
+                if art_child.tag in test_tag_list:
+                    text_dic[art_child.tag] = int(art_child.text)
+                else:
+                    log_error('Inside root tag <{0}>'.format(root_element.tag))
+                    log_error('Unknown tag <{0}>'.format(art_child.tag))
+                    return None
+            layout[root_element.tag] = text_dic
+
+        else:
+            log_error('Unknown tag <{0}>'.format(root_element.tag))
+            return None
+
+    return layout
 
 # >> Cache font object in global variable
 font_mono = None
@@ -1201,14 +1261,15 @@ font_mono_item = None
 #
 # Rebuild Fanart for a given MAME machine
 #
-def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
+def mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (0, 0, 0)):
     # log_debug('mame_build_fanart() Building fanart for machine {0}'.format(m_name))
 
     # >> Quickly check if machine has valid assets, and skip fanart generation if not.
     machine_has_valid_assets = False
     for asset_key in layout:
+        asset_db_name = MAME_layout_assets[asset_key]
         m_assets = assets_dic[m_name]
-        if asset_key != 'text' and m_assets[asset_key]:
+        if m_assets[asset_db_name]:
             machine_has_valid_assets = True
             break
     if not machine_has_valid_assets: return
@@ -1218,7 +1279,7 @@ def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
         global font_mono
         log_debug('mame_build_fanart() Creating font_mono object')
         log_debug('mame_build_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['text']['size'])
+        font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['MachineName']['fontsize'])
 
     # >> Create fanart canvas
     fanart_img = Image.new('RGB', (1920, 1080), (0, 0, 0))
@@ -1228,24 +1289,25 @@ def mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN):
     for asset_key in layout:
         # log_debug('{0:<10} initialising'.format(asset_key))
         m_assets = assets_dic[m_name]
-        if asset_key == 'text':
-            draw.text((layout['text']['x_pos'], layout['text']['y_pos']), m_name,
-                      (255, 255, 255), font = font_mono)
+        if asset_key == 'MachineName':
+            t_left = layout['MachineName']['left']
+            t_top = layout['MachineName']['top']
+            draw.text((t_left, t_top), m_name, (255, 255, 255), font = font_mono)
         else:
-            if not m_assets[asset_key]:
-                # log_debug('{0:<10} DB empty'.format(asset_key))
+            asset_db_name = MAME_layout_assets[asset_key]
+            if not m_assets[asset_db_name]:
+                # log_debug('{0:<10} DB empty'.format(asset_db_name))
                 continue
-            Asset_FN = FileName(m_assets[asset_key])
+            Asset_FN = FileName(m_assets[asset_db_name])
             if not Asset_FN.exists():
-                # log_debug('{0:<10} file not found'.format(asset_key))
+                # log_debug('{0:<10} file not found'.format(asset_db_name))
                 continue
-            # log_debug('{0:<10} found'.format(asset_key))
+            # log_debug('{0:<10} found'.format(asset_db_name))
             img_asset = Image.open(Asset_FN.getPath())
-            img_asset = PIL_resize_proportional(img_asset, layout, asset_key)
+            img_asset = PIL_resize_proportional(img_asset, layout, asset_key, CANVAS_COLOR)
             fanart_img = PIL_paste_image(fanart_img, img_asset, layout, asset_key)
 
     # >> Save fanart and update database
-    Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
     # log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()

@@ -3819,9 +3819,41 @@ class Main:
 
             # --- Test MAME Fanart ---
             if submenu == 0:
-                kodi_dialog_OK('Not coded yet')
-                return
-                mame_build_fanart(PATHS, m_name, assets_dic, Fanart_path_FN)
+                Template_FN = AML_ADDON_DIR.pjoin('AML-MAME-Fanart-template.xml')
+                Fanart_FN = PLUGIN_DATA_DIR.pjoin('Fanart_MAME.png')
+                Asset_path_FN = AML_ADDON_DIR.pjoin('media/MAME_assets')
+                log_debug('Testing MAME Fanart generation ...')
+                log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
+                log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
+                log_debug('Asset_path_FN "{0}"'.format(Asset_path_FN.getPath()))
+
+                # >> Load Fanart template from XML file
+                layout = mame_load_MAME_Fanart_template(Template_FN)
+                # log_debug(unicode(layout))
+                if not layout:
+                    kodi_dialog_OK('Error loading XML MAME Fanart layout.')
+                    return
+    
+                # >> Use hard-coded assets
+                m_name = 'dino'
+                assets_dic = {
+                    m_name : {
+                        'title' :      Asset_path_FN.pjoin('dino_title.png').getPath(),
+                        'snap' :       Asset_path_FN.pjoin('dino_snap.png').getPath(),
+                        'flyer' :      Asset_path_FN.pjoin('dino_flyer.png').getPath(),
+                        'cabinet' :    Asset_path_FN.pjoin('dino_cabinet.png').getPath(),
+                        'artpreview' : Asset_path_FN.pjoin('dino_artpreview.png').getPath(),
+                        'PCB' :        Asset_path_FN.pjoin('dino_PCB.png').getPath(),
+                        'clearlogo' :  Asset_path_FN.pjoin('dino_clearlogo.png').getPath(),
+                        'cpanel' :     Asset_path_FN.pjoin('dino_cpanel.png').getPath(),
+                        'marquee' :    Asset_path_FN.pjoin('dino_marquee.png').getPath(),
+                    }
+                }
+                mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (25, 25, 50))
+
+                # >> Display Fanart
+                log_debug('Rendering fanart "{0}"'.format(Fanart_FN.getPath()))
+                xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
 
             # --- Test SL Fanart ---
             elif submenu == 1:
