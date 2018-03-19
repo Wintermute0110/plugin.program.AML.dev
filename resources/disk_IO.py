@@ -227,7 +227,7 @@ def fs_new_MAME_asset():
     a = {
         'PCB'        : '',
         'artpreview' : '',
-        'artwork' : '',
+        'artwork'    : '',
         'cabinet'    : '',
         'clearlogo'  : '',
         'cpanel'     : '',
@@ -407,31 +407,46 @@ def fs_new_control_dic():
         'scan_software_archives_CHD_missing' : 0,
 
         # --- Filed in by the MAME asset scanner ---
-        'assets_num_MAME_machines'  : 0,
-        'assets_PCBs_have'          : 0,
-        'assets_PCBs_missing'       : 0,
-        'assets_artpreview_have'    : 0,
-        'assets_artpreview_missing' : 0,
-        'assets_cabinets_have'      : 0,
-        'assets_cabinets_missing'   : 0,
-        'assets_clearlogos_have'    : 0,
-        'assets_clearlogos_missing' : 0,
-        'assets_cpanels_have'       : 0,
-        'assets_cpanels_missing'    : 0,
-        'assets_fanarts_have'       : 0,
-        'assets_fanarts_missing'    : 0,
-        'assets_flyers_have'        : 0,
-        'assets_flyers_missing'     : 0,
-        'assets_manuals_have'       : 0,
-        'assets_manuals_missing'    : 0,
-        'assets_marquees_have'      : 0,
-        'assets_marquees_missing'   : 0,
-        'assets_snaps_have'         : 0,
-        'assets_snaps_missing'      : 0,
-        'assets_titles_have'        : 0,
-        'assets_titles_missing'     : 0,
-        'assets_trailers_have'      : 0,
-        'assets_trailers_missing'   : 0,
+        'assets_num_MAME_machines'    : 0,
+        'assets_PCBs_have'            : 0,
+        'assets_PCBs_missing'         : 0,
+        'assets_PCBs_alternate'       : 0,
+        'assets_artpreview_have'      : 0,
+        'assets_artpreview_missing'   : 0,
+        'assets_artpreview_alternate' : 0,
+        'assets_artwork_have'         : 0,
+        'assets_artwork_missing'      : 0,
+        'assets_artwork_alternate'    : 0,
+        'assets_cabinets_have'        : 0,
+        'assets_cabinets_missing'     : 0,
+        'assets_cabinets_alternate'   : 0,
+        'assets_clearlogos_have'      : 0,
+        'assets_clearlogos_missing'   : 0,
+        'assets_clearlogos_alternate' : 0,
+        'assets_cpanels_have'         : 0,
+        'assets_cpanels_missing'      : 0,
+        'assets_cpanels_alternate'    : 0,
+        'assets_fanarts_have'         : 0,
+        'assets_fanarts_missing'      : 0,
+        'assets_fanarts_alternate'    : 0,
+        'assets_flyers_have'          : 0,
+        'assets_flyers_missing'       : 0,
+        'assets_flyers_alternate'     : 0,
+        'assets_manuals_have'         : 0,
+        'assets_manuals_missing'      : 0,
+        'assets_manuals_alternate'    : 0,
+        'assets_marquees_have'        : 0,
+        'assets_marquees_missing'     : 0,
+        'assets_marquees_alternate'   : 0,
+        'assets_snaps_have'           : 0,
+        'assets_snaps_missing'        : 0,
+        'assets_snaps_alternate'      : 0,
+        'assets_titles_have'          : 0,
+        'assets_titles_missing'       : 0,
+        'assets_titles_alternate'     : 0,
+        'assets_trailers_have'        : 0,
+        'assets_trailers_missing'     : 0,
+        'assets_trailers_alternate'   : 0,
 
         # --- Filed in by the SL asset scanner ---
         'assets_SL_num_items'         : 0,
@@ -3418,7 +3433,6 @@ def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pc
     table_str = []
     table_str.append(['left', 'left', 'left',  'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
     table_str.append(['Name', 'PCB',  'Artp',  'Art',  'Cab',  'Clr',  'CPan', 'Fan',  'Fly',  'Man',  'Mar',  'Snap', 'Tit',  'Tra'])
-    have_count_list = [0] * len(ASSET_MAME_T_LIST)
 
     # >> First pass: search for on-disk assets
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork (first pass) ...')
@@ -3451,6 +3465,8 @@ def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pc
 
     # >> Second pass: substitute artwork
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork (second pass) ...')
+    have_count_list = [0] * len(ASSET_MAME_T_LIST)
+    alternate_count_list = [0] * len(ASSET_MAME_T_LIST)
     total_machines = len(machines_render)
     processed_machines = 0
     for m_name in sorted(machines_render):
@@ -3463,7 +3479,7 @@ def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pc
                 assets_dic[m_name][asset_key] = ondisk_assets_dic[m_name][asset_key]
                 have_count_list[idx] += 1
                 asset_row[idx] = 'YES'
-            # >> If artwork does not exist:
+            # >> If artwork does not exist ...
             else:
                 # >> if machine is a parent search in the clone list
                 if m_name in main_pclone_dic:
@@ -3471,6 +3487,7 @@ def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pc
                         if ondisk_assets_dic[clone_key][asset_key]:
                             assets_dic[m_name][asset_key] = ondisk_assets_dic[clone_key][asset_key]
                             have_count_list[idx] += 1
+                            alternate_count_list[idx] += 1
                             asset_row[idx] = 'CLO'
                             break
                 # >> if machine is a clone search in the parent first, then search in the clones
@@ -3480,6 +3497,7 @@ def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pc
                     if ondisk_assets_dic[parent_name][asset_key]:
                         assets_dic[m_name][asset_key] = ondisk_assets_dic[parent_name][asset_key]
                         have_count_list[idx] += 1
+                        alternate_count_list[idx] += 1
                         asset_row[idx] = 'PAR'
                     # >> Search clones
                     else:
@@ -3488,6 +3506,7 @@ def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pc
                             if ondisk_assets_dic[clone_key][asset_key]:
                                 assets_dic[m_name][asset_key] = ondisk_assets_dic[clone_key][asset_key]
                                 have_count_list[idx] += 1
+                                alternate_count_list[idx] += 1
                                 asset_row[idx] = 'CLX'
                                 break
         table_row = [m_name] + asset_row
@@ -3498,22 +3517,36 @@ def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pc
     pDialog.close()
 
     # >> Asset statistics and report.
+    PCB  = (have_count_list[0],  total_machines - have_count_list[0],  alternate_count_list[0])
+    Artp = (have_count_list[1],  total_machines - have_count_list[1],  alternate_count_list[1])
+    Art  = (have_count_list[2],  total_machines - have_count_list[2],  alternate_count_list[2])
+    Cab  = (have_count_list[3],  total_machines - have_count_list[3],  alternate_count_list[3])
+    Clr  = (have_count_list[4],  total_machines - have_count_list[4],  alternate_count_list[4])
+    CPan = (have_count_list[5],  total_machines - have_count_list[5],  alternate_count_list[5])
+    Fan  = (have_count_list[6],  total_machines - have_count_list[6],  alternate_count_list[6])
+    Fly  = (have_count_list[7],  total_machines - have_count_list[7],  alternate_count_list[7])
+    Man  = (have_count_list[8],  total_machines - have_count_list[8],  alternate_count_list[8])
+    Mar  = (have_count_list[9],  total_machines - have_count_list[9],  alternate_count_list[9])
+    Snap = (have_count_list[10], total_machines - have_count_list[10], alternate_count_list[10])
+    Tit  = (have_count_list[11], total_machines - have_count_list[11], alternate_count_list[11])
+    Tra  = (have_count_list[12], total_machines - have_count_list[12], alternate_count_list[12])
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Creating MAME asset report ...')
     report_str_list = []
     report_str_list.append('Number of MAME machines {0}'.format(total_machines))
-    report_str_list.append('Have PCBs       {0:5d} (Missing {1})'.format(have_count_list[0], total_machines - have_count_list[0]))
-    report_str_list.append('Have Artpreview {0:5d} (Missing {1})'.format(have_count_list[1], total_machines - have_count_list[1]))
-    report_str_list.append('Have Cabinets   {0:5d} (Missing {1})'.format(have_count_list[2], total_machines - have_count_list[2]))
-    report_str_list.append('Have Clearlogos {0:5d} (Missing {1})'.format(have_count_list[3], total_machines - have_count_list[3]))
-    report_str_list.append('Have CPanels    {0:5d} (Missing {1})'.format(have_count_list[4], total_machines - have_count_list[4]))
-    report_str_list.append('Have Fanarts    {0:5d} (Missing {1})'.format(have_count_list[5], total_machines - have_count_list[5]))
-    report_str_list.append('Have Flyers     {0:5d} (Missing {1})'.format(have_count_list[6], total_machines - have_count_list[6]))
-    report_str_list.append('Have Manuals    {0:5d} (Missing {1})'.format(have_count_list[7], total_machines - have_count_list[7]))
-    report_str_list.append('Have Marquees   {0:5d} (Missing {1})'.format(have_count_list[8], total_machines - have_count_list[8]))
-    report_str_list.append('Have Snaps      {0:5d} (Missing {1})'.format(have_count_list[9], total_machines - have_count_list[9]))
-    report_str_list.append('Have Titles     {0:5d} (Missing {1})'.format(have_count_list[10], total_machines - have_count_list[10]))
-    report_str_list.append('Have Trailers   {0:5d} (Missing {1})'.format(have_count_list[11], total_machines - have_count_list[11]))
+    report_str_list.append('Have PCBs       {0:5d} (Missing {1:5d}, Alternate {2})'.format(PCB[0],  PCB[1],  PCB[2]))
+    report_str_list.append('Have Artpreview {0:5d} (Missing {1:5d}, Alternate {2})'.format(Artp[0], Artp[1], Artp[2]))
+    report_str_list.append('Have Artwork    {0:5d} (Missing {1:5d}, Alternate {2})'.format(Art[0],  Art[1],  Art[2]))
+    report_str_list.append('Have Cabinets   {0:5d} (Missing {1:5d}, Alternate {2})'.format(Cab[0],  Cab[1],  Cab[2]))
+    report_str_list.append('Have Clearlogos {0:5d} (Missing {1:5d}, Alternate {2})'.format(Clr[0],  Clr[1],  Clr[2]))
+    report_str_list.append('Have CPanels    {0:5d} (Missing {1:5d}, Alternate {2})'.format(CPan[0], CPan[1], CPan[2]))
+    report_str_list.append('Have Fanarts    {0:5d} (Missing {1:5d}, Alternate {2})'.format(Fan[0],  Fan[1],  Fan[2]))
+    report_str_list.append('Have Flyers     {0:5d} (Missing {1:5d}, Alternate {2})'.format(Fly[0],  Fly[1],  Fly[2]))
+    report_str_list.append('Have Manuals    {0:5d} (Missing {1:5d}, Alternate {2})'.format(Man[0],  Man[1],  Man[2]))
+    report_str_list.append('Have Marquees   {0:5d} (Missing {1:5d}, Alternate {2})'.format(Mar[0],  Mar[1],  Mar[2]))
+    report_str_list.append('Have Snaps      {0:5d} (Missing {1:5d}, Alternate {2})'.format(Snap[0], Snap[1], Snap[2]))
+    report_str_list.append('Have Titles     {0:5d} (Missing {1:5d}, Alternate {2})'.format(Tit[0],  Tit[1],  Tit[2]))
+    report_str_list.append('Have Trailers   {0:5d} (Missing {1:5d}, Alternate {2})'.format(Tra[0],  Tra[1],  Tra[2]))
     report_str_list.append('')
     table_str_list = text_render_table_str(table_str)
     report_str_list.extend(table_str_list)
@@ -3523,31 +3556,46 @@ def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pc
     pDialog.update(100)
 
     # >> Update control_dic by assigment (will be saved in caller)
-    control_dic['assets_num_MAME_machines']  = total_machines
-    control_dic['assets_PCBs_have']          = have_count_list[0]
-    control_dic['assets_PCBs_missing']       = total_machines - have_count_list[0]
-    control_dic['assets_artpreview_have']    = have_count_list[1]
-    control_dic['assets_artpreview_missing'] = total_machines - have_count_list[1]
-    control_dic['assets_cabinets_have']      = have_count_list[2]
-    control_dic['assets_cabinets_missing']   = total_machines - have_count_list[2]
-    control_dic['assets_clearlogos_have']    = have_count_list[3]
-    control_dic['assets_clearlogos_missing'] = total_machines - have_count_list[3]
-    control_dic['assets_cpanels_have']       = have_count_list[4]
-    control_dic['assets_cpanels_missing']    = total_machines - have_count_list[4]
-    control_dic['assets_fanarts_have']       = have_count_list[5]
-    control_dic['assets_fanarts_missing']    = total_machines - have_count_list[5]
-    control_dic['assets_flyers_have']        = have_count_list[6]
-    control_dic['assets_flyers_missing']     = total_machines - have_count_list[6]
-    control_dic['assets_manuals_have']       = have_count_list[7]
-    control_dic['assets_manuals_missing']    = total_machines - have_count_list[7]
-    control_dic['assets_marquees_have']      = have_count_list[8]
-    control_dic['assets_marquees_missing']   = total_machines - have_count_list[8]
-    control_dic['assets_snaps_have']         = have_count_list[9]
-    control_dic['assets_snaps_missing']      = total_machines - have_count_list[9]
-    control_dic['assets_titles_have']        = have_count_list[10]
-    control_dic['assets_titles_missing']     = total_machines - have_count_list[10]
-    control_dic['assets_trailers_have']      = have_count_list[11]
-    control_dic['assets_trailers_missing']   = total_machines - have_count_list[11]
+    control_dic['assets_num_MAME_machines']    = total_machines
+    control_dic['assets_PCBs_have']            = PCB[0]
+    control_dic['assets_PCBs_missing']         = PCB[1]
+    control_dic['assets_PCBs_alternate']       = PCB[2]
+    control_dic['assets_artpreview_have']      = Artp[0]
+    control_dic['assets_artpreview_missing']   = Artp[1]
+    control_dic['assets_artpreview_alternate'] = Artp[2]
+    control_dic['assets_artwork_have']         = Art[0]
+    control_dic['assets_artwork_missing']      = Art[1]
+    control_dic['assets_artwork_alternate']    = Art[2]
+    control_dic['assets_cabinets_have']        = Cab[0]
+    control_dic['assets_cabinets_missing']     = Cab[1]
+    control_dic['assets_cabinets_alternate']   = Cab[2]
+    control_dic['assets_clearlogos_have']      = Clr[0]
+    control_dic['assets_clearlogos_missing']   = Clr[1]
+    control_dic['assets_clearlogos_alternate'] = Clr[2]
+    control_dic['assets_cpanels_have']         = CPan[0]
+    control_dic['assets_cpanels_missing']      = CPan[1]
+    control_dic['assets_cpanels_alternate']    = CPan[2]
+    control_dic['assets_fanarts_have']         = Fan[0]
+    control_dic['assets_fanarts_missing']      = Fan[1]
+    control_dic['assets_fanarts_alternate']    = Fan[2]
+    control_dic['assets_flyers_have']          = Fly[0]
+    control_dic['assets_flyers_missing']       = Fly[1]
+    control_dic['assets_flyers_alternate']     = Fly[2]
+    control_dic['assets_manuals_have']         = Man[0]
+    control_dic['assets_manuals_missing']      = Man[1]
+    control_dic['assets_manuals_alternate']    = Man[2]
+    control_dic['assets_marquees_have']        = Mar[0]
+    control_dic['assets_marquees_missing']     = Mar[1]
+    control_dic['assets_marquees_alternate']   = Mar[2]
+    control_dic['assets_snaps_have']           = Snap[0]
+    control_dic['assets_snaps_missing']        = Snap[1]
+    control_dic['assets_snaps_alternate']      = Snap[2]
+    control_dic['assets_titles_have']          = Tit[0]
+    control_dic['assets_titles_missing']       = Tit[1]
+    control_dic['assets_titles_alternate']     = Tit[2]
+    control_dic['assets_trailers_have']        = Tra[0]
+    control_dic['assets_trailers_missing']     = Tra[1]
+    control_dic['assets_trailers_alternate']   = Tra[2]
 
 def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
     # >> Traverse Software List, check if ROM exists, update and save database
