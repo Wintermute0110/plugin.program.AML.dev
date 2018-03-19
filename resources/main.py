@@ -2102,77 +2102,94 @@ class Main:
 
             # >> MAME assets.
             info_text += '\n[COLOR orange]Asset scanner information[/COLOR]\n'
-            t = "You have {0:5d} MAME PCBs        out of {1:5d} ({2:5d} missing)\n"
+            t = "You have {0:6d} MAME PCBs        out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_PCBs_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_PCBs_missing'])
-            t = "You have {0:5d} MAME Artpreviews out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_PCBs_missing'],
+                                  control_dic['assets_PCBs_alternate'])
+            t = "You have {0:6d} MAME Artpreviews out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_artpreview_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_artpreview_missing'])
-            t = "You have {0:5d} MAME Cabinets    out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_artpreview_missing'],
+                                  control_dic['assets_artpreview_alternate'])
+            t = "You have {0:6d} MAME Artwork     out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+            info_text += t.format(control_dic['assets_artwork_have'],
+                                  control_dic['assets_num_MAME_machines'],
+                                  control_dic['assets_artwork_missing'],
+                                  control_dic['assets_artwork_alternate'])
+            t = "You have {0:6d} MAME Cabinets    out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_cabinets_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_cabinets_missing'])
-            t = "You have {0:5d} MAME Clearlogos  out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_cabinets_missing'],
+                                  control_dic['assets_cabinets_alternate'])
+            t = "You have {0:6d} MAME Clearlogos  out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_clearlogos_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_clearlogos_missing'])
-            t = "You have {0:5d} MAME CPanels     out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_clearlogos_missing'],
+                                  control_dic['assets_clearlogos_alternate'])
+            t = "You have {0:6d} MAME CPanels     out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_cpanels_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_cpanels_missing'])
-            t = "You have {0:5d} MAME Fanart      out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_cpanels_missing'],
+                                  control_dic['assets_cpanels_alternate'])
+            t = "You have {0:6d} MAME Fanart      out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_fanarts_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_fanarts_missing'])
-            t = "You have {0:5d} MAME Flyers      out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_fanarts_missing'],
+                                  control_dic['assets_fanarts_alternate'])
+            t = "You have {0:6d} MAME Flyers      out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_flyers_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_flyers_missing'])
-            t = "You have {0:5d} MAME Manuals     out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_flyers_missing'],
+                                  control_dic['assets_flyers_alternate'])
+            t = "You have {0:6d} MAME Manuals     out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_manuals_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_manuals_missing'])
-            t = "You have {0:5d} MAME Marquees    out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_manuals_missing'],
+                                  control_dic['assets_manuals_alternate'])
+            t = "You have {0:6d} MAME Marquees    out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_marquees_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_marquees_missing'])
-            t = "You have {0:5d} MAME Snaps       out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_marquees_missing'],
+                                  control_dic['assets_marquees_alternate'])
+            t = "You have {0:6d} MAME Snaps       out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_snaps_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_snaps_missing'])
-            t = "You have {0:5d} MAME Titles      out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_snaps_missing'],
+                                  control_dic['assets_snaps_alternate'])
+            t = "You have {0:6d} MAME Titles      out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_titles_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_titles_missing'])
-            t = "You have {0:5d} MAME Trailers    out of {1:5d} ({2:5d} missing)\n"
+                                  control_dic['assets_titles_missing'],
+                                  control_dic['assets_titles_alternate'])
+            t = "You have {0:6d} MAME Trailers    out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
             info_text += t.format(control_dic['assets_trailers_have'],
                                   control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_trailers_missing'])
+                                  control_dic['assets_trailers_missing'],
+                                  control_dic['assets_trailers_alternate'])
 
             # >> Software Lists
-            t = "You have {0:5d} SL Titles        out of {1:5d} ({2:5d} missing)\n"
+            t = "You have {0:6d} SL Titles        out of {1:6d} ({2:6d} missing)\n"
             info_text += t.format(control_dic['assets_SL_titles_have'],
                                   control_dic['assets_SL_num_items'],
                                   control_dic['assets_SL_titles_missing'])
-            t = "You have {0:5d} SL Snaps         out of {1:5d} ({2:5d} missing)\n"
+            t = "You have {0:6d} SL Snaps         out of {1:6d} ({2:6d} missing)\n"
             info_text += t.format(control_dic['assets_SL_snaps_have'],
                                   control_dic['assets_SL_num_items'],
                                   control_dic['assets_SL_snaps_missing'])
-            t = "You have {0:5d} SL Boxfronts     out of {1:5d} ({2:5d} missing)\n"
+            t = "You have {0:6d} SL Boxfronts     out of {1:6d} ({2:6d} missing)\n"
             info_text += t.format(control_dic['assets_SL_boxfronts_have'],
                                   control_dic['assets_SL_num_items'],
                                   control_dic['assets_SL_boxfronts_missing'])
-            t = "You have {0:5d} SL Fanarts       out of {1:5d} ({2:5d} missing)\n"
+            t = "You have {0:6d} SL Fanarts       out of {1:6d} ({2:6d} missing)\n"
             info_text += t.format(control_dic['assets_SL_fanarts_have'],
                                   control_dic['assets_SL_num_items'],
                                   control_dic['assets_SL_fanarts_missing'])
-            t = "You have {0:5d} SL Trailers      out of {1:5d} ({2:5d} missing)\n"
+            t = "You have {0:6d} SL Trailers      out of {1:6d} ({2:6d} missing)\n"
             info_text += t.format(control_dic['assets_SL_trailers_have'],
                                   control_dic['assets_SL_num_items'],
                                   control_dic['assets_SL_trailers_missing'])
-            t = "You have {0:5d} SL Manuals       out of {1:5d} ({2:5d} missing)\n"
+            t = "You have {0:6d} SL Manuals       out of {1:6d} ({2:6d} missing)\n"
             info_text += t.format(control_dic['assets_SL_manuals_have'],
                                   control_dic['assets_SL_num_items'],
                                   control_dic['assets_SL_manuals_missing'])
