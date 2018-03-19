@@ -3828,8 +3828,9 @@ class Main:
                 kodi_dialog_OK('SL CHD directory not configured. SL CHD scanning disabled.')
                 SL_CHD_path_FN = FileName('')
 
-            # >> Load SL catalog
-            SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())            
+            # >> Load SL catalog and PClone dictionary
+            SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+            SL_pclone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
             if do_SL_ROM_scan:
                 fs_scan_SL_ROMs(PATHS, control_dic, SL_index_dic, SL_hash_dir_FN,
                                 SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN)
@@ -3845,7 +3846,7 @@ class Main:
                 do_SL_asset_scan = False
 
             if do_SL_asset_scan: 
-                fs_scan_SL_assets(PATHS, control_dic, SL_index_dic, Asset_path_FN)
+                fs_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN)
 
             # >> Save control_dic (has been updated in the SL scanner functions).
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
@@ -4730,7 +4731,8 @@ class Main:
                 # >> Load SL database and scan
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-                fs_scan_SL_assets(PATHS, control_dic, SL_index_dic, Asset_path_FN)
+                SL_pclone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
+                fs_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
                 kodi_notify('Scanning of SL assets finished')
 

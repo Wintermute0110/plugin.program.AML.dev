@@ -18,6 +18,11 @@ WIP      Implemented "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
+WIP      Render PDF manuals consisting of image scans (99% of game manuals are scans of images).
+         Have a look at the PDF reader addon https://forum.kodi.tv/showthread.php?tid=187421
+
+WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
+
 FEATURE  Create a hased database for all catalog filter combination. This will require the
          creation of about 5000 json files but will make AEL as fast as possible.
 
@@ -31,12 +36,7 @@ FEATURE  Support MAME artwork by Mr. Do's. Note that Clones use Parent's artwork
 FEATURE  Use Parent/Clone substituted artwork in MAME. For example, most trailers are only available
          for the Parent machine and can be used by Clone machines.
 
-WIP      Use Parent/Clone substituted artwork in Software Lists.
-
-WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
-
-WIP      Render PDF manuals consisting of image scans (99% of game manuals are scans of images).
-         Have a look at the PDF reader addon https://forum.kodi.tv/showthread.php?tid=187421
+FEATURE  Use Parent/Clone substituted artwork in Software Lists.
 
 FEATURE  Build Fanarts from other pieces of artwork for Software List items.
 

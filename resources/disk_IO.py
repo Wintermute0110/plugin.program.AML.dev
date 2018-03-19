@@ -168,24 +168,20 @@ def fs_new_machine_render_dic():
 # }
 #
 def fs_new_roms_object():
-    r = {
+    return {
         'bios'  : [],
         'roms'  : [],
         'disks' : []
     }
 
-    return r
-
 def fs_new_bios_dic():
-    m = {
+    return {
         'name'        : '',
         'description' : ''
     }
 
-    return m
-
 def fs_new_rom_dic():
-    m = {
+    return {
         'name'  : '',
         'merge' : '',
         'bios'  : '',
@@ -193,16 +189,12 @@ def fs_new_rom_dic():
         'crc'  : '' # crc allows to know if ROM is valid or not
     }
 
-    return m
-
 def fs_new_disk_dic():
-    m = {
+    return {
         'name'  : '',
         'merge' : '',
         'sha1'  : '' # sha1 allows to know if CHD is valid or not. CHDs don't have crc
     }
-
-    return m
 
 #
 # Object used in MAME_assets.json, ordered alphabetically.
@@ -224,7 +216,7 @@ ASSET_MAME_T_LIST  = [
 ]
 
 def fs_new_MAME_asset():
-    a = {
+    return {
         'PCB'        : '',
         'artpreview' : '',
         'artwork'    : '',
@@ -240,22 +232,15 @@ def fs_new_MAME_asset():
         'trailer'    : '',
     }
 
-    return a
-
 # Status flags meaning:
 #   ?  SL ROM not scanned
 #   r  Missing ROM
 #   R  Have ROM
 def fs_new_SL_ROM_part():
-    p = {
-        'name'      : '',
-        'interface' : ''
-    }
-
-    return p
+    return { 'name' : '', 'interface' : '' }
 
 def fs_new_SL_ROM():
-    R = {
+    return {
         'description' : '',
         'year'        : '',
         'publisher'   : '',
@@ -267,8 +252,6 @@ def fs_new_SL_ROM():
         'status_CHD'  : '-',
     }
 
-    return R
-
 ASSET_SL_T_LIST = [
     ('title',    'titles_SL'),
     ('snap',     'snaps_SL'),
@@ -277,20 +260,19 @@ ASSET_SL_T_LIST = [
     ('trailer',  'videosnaps_SL'),
     ('manual',   'manuals_SL'),
 ]
+
 def fs_new_SL_asset():
-    a = {
+    return {
         'title'    : '',
         'snap'     : '',
         'boxfront' : '',
         'fanart'   : '',
-        'trailer'   : '',
-        'manual'    : '',
+        'trailer'  : '',
+        'manual'   : '',
     }
 
-    return a
-
 def fs_new_control_dic():
-    C = {
+    return {
         # --- Filed in when extracting MAME XML ---
         'stats_total_machines' : 0,
 
@@ -449,22 +431,26 @@ def fs_new_control_dic():
         'assets_trailers_alternate'   : 0,
 
         # --- Filed in by the SL asset scanner ---
-        'assets_SL_num_items'         : 0,
-        'assets_SL_titles_have'       : 0,
-        'assets_SL_titles_missing'    : 0,
-        'assets_SL_snaps_have'        : 0,
-        'assets_SL_snaps_missing'     : 0,
-        'assets_SL_boxfronts_have'    : 0,
-        'assets_SL_boxfronts_missing' : 0,
-        'assets_SL_fanarts_have'      : 0,
-        'assets_SL_fanarts_missing'   : 0,
-        'assets_SL_trailers_have'     : 0,
-        'assets_SL_trailers_missing'  : 0,
-        'assets_SL_manuals_have'      : 0,
-        'assets_SL_manuals_missing'   : 0,
+        'assets_SL_num_items'           : 0,
+        'assets_SL_titles_have'         : 0,
+        'assets_SL_titles_missing'      : 0,
+        'assets_SL_titles_alternate'    : 0,
+        'assets_SL_snaps_have'          : 0,
+        'assets_SL_snaps_missing'       : 0,
+        'assets_SL_snaps_alternate'     : 0,
+        'assets_SL_boxfronts_have'      : 0,
+        'assets_SL_boxfronts_missing'   : 0,
+        'assets_SL_boxfronts_alternate' : 0,
+        'assets_SL_fanarts_have'        : 0,
+        'assets_SL_fanarts_missing'     : 0,
+        'assets_SL_fanarts_alternate'   : 0,
+        'assets_SL_trailers_have'       : 0,
+        'assets_SL_trailers_missing'    : 0,
+        'assets_SL_trailers_alternate'  : 0,
+        'assets_SL_manuals_have'        : 0,
+        'assets_SL_manuals_missing'     : 0,
+        'assets_SL_manuals_alternate'   : 0,
     }
-
-    return C
 
 # --- Constants ---
 # >> Make sure these strings are equal to the ones in settings.xml
@@ -560,20 +546,22 @@ class GeneralError(DiskError):
 # JSON write/load
 # -------------------------------------------------------------------------------------------------
 COMPACT_JSON = False
-def fs_load_JSON_file(json_filename):
+def fs_load_JSON_file(json_filename, verbose = True):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
     if not os.path.isfile(json_filename):
         log_warning('fs_load_ROMs_JSON() File not found "{0}"'.format(json_filename))
         return data_dic
-    log_debug('fs_load_ROMs_JSON() "{0}"'.format(json_filename))
+    if verbose:
+        log_debug('fs_load_ROMs_JSON() "{0}"'.format(json_filename))
     with open(json_filename) as file:
         data_dic = json.load(file)
 
     return data_dic
 
-def fs_write_JSON_file(json_filename, json_data):
-    log_debug('fs_write_JSON_file() "{0}"'.format(json_filename))
+def fs_write_JSON_file(json_filename, json_data, verbose = True):
+    if verbose:
+        log_debug('fs_write_JSON_file() "{0}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
             if COMPACT_JSON:
@@ -3453,10 +3441,7 @@ def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pc
                 asset_FN = full_asset_dir_FN.pjoin(m_name + '.mp4')
             else:
                 asset_FN = full_asset_dir_FN.pjoin(m_name + '.png')
-            if asset_FN.exists():
-                machine_assets[asset_key] = asset_FN.getOriginalPath()
-            else:
-                machine_assets[asset_key] = ''
+            machine_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN.exists() else ''
         ondisk_assets_dic[m_name] = machine_assets
         # >> Update progress
         processed_machines += 1
@@ -3597,99 +3582,153 @@ def fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pc
     control_dic['assets_trailers_missing']     = Tra[1]
     control_dic['assets_trailers_alternate']   = Tra[2]
 
-def fs_scan_SL_assets(PATHS, control_dic, SL_catalog_dic, Asset_path_FN):
+def fs_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN):
     # >> Traverse Software List, check if ROM exists, update and save database
     pDialog = xbmcgui.DialogProgress()
     pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(0)
-    total_files = len(SL_catalog_dic)
+    total_files = len(SL_index_dic)
     processed_files = 0
     table_str = []
     table_str.append(['left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
     table_str.append(['Soft', 'Name', 'Tit',  'Snap', 'Bft',  'Fan',  'Tra',  'Man'])
     have_count_list = [0] * len(ASSET_SL_T_LIST)
+    alternate_count_list = [0] * len(ASSET_SL_T_LIST)
     SL_item_count = 0
-    for SL_name in sorted(SL_catalog_dic):
+    for SL_name in sorted(SL_index_dic):
         # >> Update progress
         update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+        pDialog.update(update_number, pdialog_line1, 'Processing Software List {0}'.format(SL_name))
 
         # >> Open database
-        file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+        file_name =  SL_index_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        # log_debug('Processing "{0}" ({1})'.format(SL_name, SL_catalog_dic[SL_name]['display_name']))
-        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
+        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
 
-        # >> Scan for assets
-        assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+        # >> First pass: scan for on-disk assets
+        assets_file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
         # log_info('Assets JSON "{0}"'.format(SL_asset_DB_FN.getPath()))
-        SL_assets_dic = {}
+        ondisk_assets_dic = {}
         for rom_key in sorted(SL_roms):
-            SL_item_count += 1
-            rom = SL_roms[rom_key]
             SL_assets = fs_new_SL_asset()
-            asset_row = ['---'] * len(ASSET_SL_T_LIST)
             for idx, asset_tuple in enumerate(ASSET_SL_T_LIST):
                 asset_key = asset_tuple[0]
                 asset_dir = asset_tuple[1]
                 full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir).pjoin(SL_name)
-                if asset_key == 'trailer':
+                if asset_key == 'manual':
+                    asset_FN = full_asset_dir_FN.pjoin(rom_key + '.pdf')
+                elif asset_key == 'trailer':
                     asset_FN = full_asset_dir_FN.pjoin(rom_key + '.mp4')
-                elif asset_key == 'manual':
-                    SL_assets[asset_key] = ''
-                    continue
                 else:
                     asset_FN = full_asset_dir_FN.pjoin(rom_key + '.png')
                 # log_info('Testing P "{0}"'.format(asset_FN.getPath()))
-                if asset_FN.exists():
-                    SL_assets[asset_key] = asset_FN.getOriginalPath()
+                SL_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN.exists() else ''
+            ondisk_assets_dic[rom_key] = SL_assets
+
+        # >> Second pass: substitute artwork.
+        main_pclone_dic = SL_pclone_dic[SL_name]
+        SL_assets_dic = {}
+        for rom_key in sorted(SL_roms):
+            SL_item_count += 1
+            SL_assets_dic[rom_key] = fs_new_SL_asset()
+            asset_row = ['---'] * len(ASSET_SL_T_LIST)
+            for idx, asset_tuple in enumerate(ASSET_SL_T_LIST):
+                asset_key = asset_tuple[0]
+                asset_dir = asset_tuple[1]
+                # >> If artwork exists do nothing
+                if ondisk_assets_dic[rom_key][asset_key]:
+                    SL_assets_dic[rom_key][asset_key] = ondisk_assets_dic[rom_key][asset_key]
                     have_count_list[idx] += 1
                     asset_row[idx] = 'YES'
+                # >> If artwork does not exist ...
                 else:
-                    SL_assets[asset_key] = ''
+                    # >> if machine is a parent search in the clone list
+                    if rom_key in main_pclone_dic:
+                        for clone_key in main_pclone_dic[rom_key]:
+                            if ondisk_assets_dic[clone_key][asset_key]:
+                                SL_assets_dic[rom_key][asset_key] = ondisk_assets_dic[clone_key][asset_key]
+                                have_count_list[idx] += 1
+                                alternate_count_list[idx] += 1
+                                asset_row[idx] = 'CLO'
+                                break
+                    # >> if machine is a clone search in the parent first, then search in the clones
+                    else:
+                        # >> Search parent
+                        parent_name = SL_roms[rom_key]['cloneof']
+                        if ondisk_assets_dic[parent_name][asset_key]:
+                            SL_assets_dic[rom_key][asset_key] = ondisk_assets_dic[parent_name][asset_key]
+                            have_count_list[idx] += 1
+                            alternate_count_list[idx] += 1
+                            asset_row[idx] = 'PAR'
+                        # >> Search clones
+                        else:
+                            for clone_key in main_pclone_dic[parent_name]:
+                                if clone_key == rom_key: continue
+                                if ondisk_assets_dic[clone_key][asset_key]:
+                                    SL_assets_dic[rom_key][asset_key] = ondisk_assets_dic[clone_key][asset_key]
+                                    have_count_list[idx] += 1
+                                    alternate_count_list[idx] += 1
+                                    asset_row[idx] = 'CLX'
+                                    break
             table_row = [SL_name, rom_key] + asset_row
             table_str.append(table_row)
-            SL_assets_dic[rom_key] = SL_assets
-        fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
+
+        # >> Write SL asset JSON
+        fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
 
         # >> Update progress
         processed_files += 1
     update_number = (processed_files*100) // total_files
-    pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+    pDialog.close()
 
     # >> Asset statistics and report.
+    Tit  = (have_count_list[0], SL_item_count - have_count_list[0], alternate_count_list[0])
+    Snap = (have_count_list[1], SL_item_count - have_count_list[1], alternate_count_list[1])
+    Boxf = (have_count_list[2], SL_item_count - have_count_list[2], alternate_count_list[2])
+    Fan  = (have_count_list[3], SL_item_count - have_count_list[3], alternate_count_list[3])
+    Tra  = (have_count_list[4], SL_item_count - have_count_list[4], alternate_count_list[4])
+    Man  = (have_count_list[5], SL_item_count - have_count_list[5], alternate_count_list[5])
+    pDialog.create('Advanced MAME Launcher')
+    pDialog.update(0, 'Creating SL asset report ...')
     report_str_list = []
     report_str_list.append('Number of SL items {0}'.format(SL_item_count))
-    report_str_list.append('Have Titles    {0:5d} (Missing {1})'.format(have_count_list[0], SL_item_count - have_count_list[0]))
-    report_str_list.append('Have Snaps     {0:5d} (Missing {1})'.format(have_count_list[1], SL_item_count - have_count_list[1]))
-    report_str_list.append('Have Boxfronts {0:5d} (Missing {1})'.format(have_count_list[2], SL_item_count - have_count_list[2]))
-    report_str_list.append('Have Fanarts   {0:5d} (Missing {1})'.format(have_count_list[3], SL_item_count - have_count_list[3]))
-    report_str_list.append('Have Trailers  {0:5d} (Missing {1})'.format(have_count_list[4], SL_item_count - have_count_list[4]))
-    report_str_list.append('Have Manuals   {0:5d} (Missing {1})'.format(have_count_list[5], SL_item_count - have_count_list[5]))
+    report_str_list.append('Have Titles    {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Tit))
+    report_str_list.append('Have Snaps     {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Snap))
+    report_str_list.append('Have Boxfronts {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Boxf))
+    report_str_list.append('Have Fanarts   {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Fan))
+    report_str_list.append('Have Trailers  {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Tra))
+    report_str_list.append('Have Manuals   {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Man))
     report_str_list.append('')
     table_str_list = text_render_table_str(table_str)
     report_str_list.extend(table_str_list)
     log_info('Opening SL asset report file "{0}"'.format(PATHS.REPORT_SL_ASSETS_PATH.getPath()))
     with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(report_str_list).encode('utf-8'))
+    pDialog.update(100)
     pDialog.close()
 
     # >> Update control_dic by assigment (will be saved in caller)
-    control_dic['assets_SL_num_items']         = SL_item_count
-    control_dic['assets_SL_titles_have']       = have_count_list[0]
-    control_dic['assets_SL_titles_missing']    = SL_item_count - have_count_list[0]
-    control_dic['assets_SL_snaps_have']        = have_count_list[1]
-    control_dic['assets_SL_snaps_missing']     = SL_item_count - have_count_list[1]
-    control_dic['assets_SL_boxfronts_have']    = have_count_list[2]
-    control_dic['assets_SL_boxfronts_missing'] = SL_item_count - have_count_list[2]
-    control_dic['assets_SL_fanarts_have']      = have_count_list[3]
-    control_dic['assets_SL_fanarts_missing']   = SL_item_count - have_count_list[3]
-    control_dic['assets_SL_trailers_have']     = have_count_list[4]
-    control_dic['assets_SL_trailers_missing']  = SL_item_count - have_count_list[4]
-    control_dic['assets_SL_manuals_have']      = have_count_list[5]
-    control_dic['assets_SL_manuals_missing']   = SL_item_count - have_count_list[5]
+    control_dic['assets_SL_num_items']           = SL_item_count
+    control_dic['assets_SL_titles_have']         = Tit[0]
+    control_dic['assets_SL_titles_missing']      = Tit[1]
+    control_dic['assets_SL_titles_alternate']    = Tit[2]
+    control_dic['assets_SL_snaps_have']          = Snap[0]
+    control_dic['assets_SL_snaps_missing']       = Snap[1]
+    control_dic['assets_SL_snaps_alternate']     = Snap[2]
+    control_dic['assets_SL_boxfronts_have']      = Boxf[0]
+    control_dic['assets_SL_boxfronts_missing']   = Boxf[1]
+    control_dic['assets_SL_boxfronts_alternate'] = Boxf[2]
+    control_dic['assets_SL_fanarts_have']        = Fan[0]
+    control_dic['assets_SL_fanarts_missing']     = Fan[1]
+    control_dic['assets_SL_fanarts_alternate']   = Fan[2]
+    control_dic['assets_SL_trailers_have']       = Tra[0]
+    control_dic['assets_SL_trailers_missing']    = Tra[1]
+    control_dic['assets_SL_trailers_alternate']  = Tra[2]
+    control_dic['assets_SL_manuals_have']        = Man[0]
+    control_dic['assets_SL_manuals_missing']     = Man[1]
+    control_dic['assets_SL_manuals_alternate']   = Man[2]
 
 # -------------------------------------------------------------------------------------------------
 # Hashed databases. Useful when only one item in a big dictionary is required.
