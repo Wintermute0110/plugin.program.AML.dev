@@ -1618,15 +1618,43 @@ class Main:
             # >> Builtin function arguments can be in any order (at least for this function).
             # xbmc.executebuiltin('SlideShow("{0}",pause)'.format(r'E:\\AML-stuff\\AML-assets\\fanarts\\'))
 
-            # >> Open machine/SL item in hased database
-            kodi_dialog_OK('Not implemented yet. Sorry!')
-
             # >> If manual found then display it.
             # >> First, extract images from the PDF/CBZ.
             # >> Put the extracted images in a directory named MANUALS_DIR/manual_name.pages/
             # >> Check the modification times of the PDF manual file witht the timestamp of
             # >> the first file to regenerate the images if PDF is newer than first extracted img.
-            
+            # NOTE CBZ/CBR files are supported by Kodi. It can be extracted with the builtin
+            #      function extract. In addition to PDF extension, CBR and CBZ extensions must
+            #      also be searched for manuals.
+            log_debug('Displaying Manual for MAME machine {0} ...'.format(machine_name))
+            machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            PDF_file_FN = FileName(assets_dic[machine_name]['manual'])
+            img_dir_FN = FileName(self.settings['assets_path']).pjoin('manuals').pjoin(machine_name + '.pages')
+            log_debug('PDF_file_FN P "{0}"'.format(PDF_file_FN.getPath()))
+            log_debug('img_dir_FN P  "{0}"'.format(img_dir_FN.getPath()))
+
+            # >> Progress dialog
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Extracting images from PDF file ...')
+            pDialog.update(0)
+
+            # >> Extract images from PDF
+            from ReaderPDF import *
+            reader = PDFReader(PDF_file_FN.getPath(), img_dir_FN.getPath())
+            log_debug('reader.info() = {0}'.format(unicode(reader.info())))
+            images = reader.convert_to_images()
+            # log_debug(unicode(images))
+            pDialog.update(100)
+            pDialog.close()
+
+            # >> Show images
+            if not images:
+                kodi_dialog_OK('Cannot find images inside the PDF file.')
+                return
+            # kodi_dialog_OK('PDF contains {0} images. Showing them ...'.format(len(images)))
+            log_debug('Rendering images in "{0}"'.format(img_dir_FN.getPath()))
+            xbmc.executebuiltin('SlideShow("{0}",pause)'.format(img_dir_FN.getPath()))
 
         # --- Display brother machines (same driver) ---
         elif s_value == 6:
