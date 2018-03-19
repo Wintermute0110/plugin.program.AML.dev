@@ -1006,17 +1006,17 @@ class Main:
             URL_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_MAME_CLONES', 
                                                         'catalog', catalog_name, 'category', category_name, 'parent', machine_name)
             commands = [
-                ('Info / Utils',  URL_view_DAT),
-                ('View / Audit',  URL_view),
-                ('Show clones',  URL_clones),
+                ('Info / Utils', URL_view_DAT),
+                ('View / Audit', URL_view),
+                ('Show clones', URL_clones),
                 ('Add to MAME Favourites', URL_fav),
                 ('Kodi File Manager', 'ActivateWindow(filemanager)'),
                 ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
             ]
         else:
             commands = [
-                ('Info / Utils',  URL_view_DAT),
-                ('View / Audit',  URL_view),
+                ('Info / Utils', URL_view_DAT),
+                ('View / Audit', URL_view),
                 ('Add to MAME Favourites', URL_fav),
                 ('Kodi File Manager', 'ActivateWindow(filemanager)'),
                 ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
@@ -1264,17 +1264,16 @@ class Main:
         listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
 
         # --- Create context menu ---
+        URL_view_DAT    = self._misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', rom_name)
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
         URL_show_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_SL_CLONES', 
                                                          'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
-        # URL_display = self._misc_url_4_arg_RunPlugin('command', 'DISPLAY_SETTINGS_SL', 
-        #                                              'catalog', 'SL', 'category', SL_name, 'machine', rom_name)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
         commands = []
+        commands.append(('Info / Utils', URL_view_DAT))
         commands.append(('View / Audit', URL_view))
         if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
-            commands.append(('Show clones',  URL_show_clones))
-        # commands.append(('Display settings', URL_display))
+            commands.append(('Show clones', URL_show_clones))
         commands.append(('Add ROM to SL Favourites', URL_fav))
         commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
         commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
@@ -1488,20 +1487,38 @@ class Main:
     # Information display / Utilities
     # ---------------------------------------------------------------------------------------------
     def _command_context_view_DAT(self, machine_name, SL_name, SL_ROM, location):
+        VIEW_MAME_MACHINE = 100
+        VIEW_SL_ROM       = 200
+
+        ACTION_VIEW_HISTORY           = 100
+        ACTION_VIEW_MAMEINFO          = 200
+        ACTION_VIEW_GAMEINIT          = 300
+        ACTION_VIEW_COMMAND           = 400
+        ACTION_VIEW_FANART            = 500
+        ACTION_VIEW_MANUAL            = 600
+        ACTION_VIEW_BROTHERS          = 700
+        ACTION_VIEW_SAME_GENRE        = 800
+        ACTION_VIEW_SAME_MANUFACTURER = 900
+
         # --- Determine if we are in a category, launcher or ROM ---
         log_debug('_command_context_view_DAT() machine_name "{0}"'.format(machine_name))
         log_debug('_command_context_view_DAT() SL_name      "{0}"'.format(SL_name))
         log_debug('_command_context_view_DAT() SL_ROM       "{0}"'.format(SL_ROM))
         log_debug('_command_context_view_DAT() location     "{0}"'.format(location))
+        if machine_name:
+            view_type = VIEW_MAME_MACHINE
+        elif SL_name:
+            view_type = VIEW_SL_ROM
+        log_debug('_command_context_view_DAT() view_type = {0}'.format(view_type))
 
-        # >> Load DAT indices
-        History_idx_dic   = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
-        Mameinfo_idx_dic  = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
-        Gameinit_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
-        Command_idx_list  = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
+        if view_type == VIEW_MAME_MACHINE:
+            # >> Load DAT indices
+            History_idx_dic   = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+            Mameinfo_idx_dic  = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
+            Gameinit_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
+            Command_idx_list  = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
 
-        # >> Check if DAT information is available for this machine
-        if location == 'STANDARD':
+            # >> Check if DAT information is available for this machine
             if History_idx_dic:
                 History_MAME_set = set([ machine[0] for machine in History_idx_dic['mame']['machines'] ])
                 if machine_name in History_MAME_set: History_str = 'Found'
@@ -1526,26 +1543,56 @@ class Main:
                 else:                                Command_str = 'Not found'
             else:
                 Command_str = 'Not configured'
+
+        # --- Build menu base on view_type ---
+        if view_type == VIEW_MAME_MACHINE:
+            d_list = [
+              'View History DAT ({0})'.format(History_str),
+              'View MAMEinfo DAT ({0})'.format(Mameinfo_str),
+              'View Gameinit DAT ({0})'.format(Gameinit_str),
+              'View Command DAT ({0})'.format(Command_str),
+              'View Fanart',
+              'View Manual',
+              'Display brother machines',
+              'Display machines with same Genre',
+              'Display machines by same Manufacturer',
+            ]
+        elif view_type == VIEW_SL_ROM:
+            d_list = [
+              'View Fanart',
+              'View Manual',
+            ]
         else:
-            kodi_dialog_OK('Location {0} not supported. This is a bug, please report it.'.format(location))
+            kodi_dialog_OK('Wrong view_type = {0}. This is a bug, please report it.'.format(view_type))
             return
+        selected_value = xbmcgui.Dialog().select('View', d_list)
+        if selected_value < 0: return
 
-        # >> Menu
-        d_list = [
-          'View History DAT ({0})'.format(History_str),
-          'View MAMEinfo DAT ({0})'.format(Mameinfo_str),
-          'View Gameinit DAT ({0})'.format(Gameinit_str),
-          'View Command DAT ({0})'.format(Command_str),
-          'View Fanart',
-          'View Manual',
-          'Display brother machines',
-          'Display machines with same Genre',
-          'Display machines by same Manufacturer'
-        ]
-        s_value = xbmcgui.Dialog().select('View', d_list)
-        if s_value < 0: return
+        # --- Polymorphic menu. Determine action to do. ---
+        if view_type == VIEW_MAME_MACHINE:
+            if   selected_value == 0: action = ACTION_VIEW_HISTORY
+            elif selected_value == 1: action = ACTION_VIEW_MAMEINFO
+            elif selected_value == 2: action = ACTION_VIEW_GAMEINIT
+            elif selected_value == 3: action = ACTION_VIEW_COMMAND
+            elif selected_value == 4: action = ACTION_VIEW_FANART
+            elif selected_value == 5: action = ACTION_VIEW_MANUAL
+            elif selected_value == 6: action = ACTION_VIEW_BROTHERS
+            elif selected_value == 7: action = ACTION_VIEW_SAME_GENRE
+            elif selected_value == 8: action = ACTION_VIEW_SAME_MANUFACTURER
+            else:
+                kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
+                               'This is a bug, please report it.')
+                return
+        elif view_type == VIEW_SL_ROM:
+            if   selected_value == 0: action = ACTION_VIEW_FANART
+            elif selected_value == 1: action = ACTION_VIEW_MANUAL
+            else:
+                kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {0}. '.format(selected_value) +
+                               'This is a bug, please report it.')
+                return
 
-        if s_value == 0:
+        # --- Execute action ---
+        if action == ACTION_VIEW_HISTORY:
             if machine_name not in History_MAME_set:
                 kodi_dialog_OK('Machine {0} not in History DAT'.format(machine_name))
                 return
@@ -1553,7 +1600,8 @@ class Main:
             window_title = 'History DAT for machine {0}'.format(machine_name)
             info_text = DAT_dic['mame'][machine_name]
             self._display_text_window(window_title, info_text)
-        elif s_value == 1:
+
+        elif action == ACTION_VIEW_MAMEINFO:
             if machine_name not in Mameinfo_MAME_set:
                 kodi_dialog_OK('Machine {0} not in Mameinfo DAT'.format(machine_name))
                 return
@@ -1562,7 +1610,8 @@ class Main:
 
             window_title = 'MAMEinfo DAT for machine {0}'.format(machine_name)
             self._display_text_window(window_title, info_text)
-        elif s_value == 2:
+
+        elif action == ACTION_VIEW_GAMEINIT:
             if machine_name not in Gameinit_MAME_set:
                 kodi_dialog_OK('Machine {0} not in Gameinit DAT'.format(machine_name))
                 return
@@ -1570,7 +1619,8 @@ class Main:
             window_title = 'Gameinit DAT for machine {0}'.format(machine_name)
             info_text = DAT_dic[machine_name]
             self._display_text_window(window_title, info_text)
-        elif s_value == 3:
+
+        elif action == ACTION_VIEW_COMMAND:
             if machine_name not in Command_MAME_set:
                 kodi_dialog_OK('Machine {0} not in Command DAT'.format(machine_name))
                 return
@@ -1580,17 +1630,27 @@ class Main:
             self._display_text_window(window_title, info_text)
 
         # --- View Fanart ---
-        elif s_value == 4:
+        elif action == ACTION_VIEW_FANART:
             # >> Open ROM in assets database
-            if location == 'STANDARD':
-                assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-                m_assets = assets_dic[machine_name]
-            else:
-                mame_favs_dic = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
-                m_assets = mame_favs_dic[machine_name]['assets']
-            if not m_assets['fanart']:
-                kodi_dialog_OK('Fanart for machine {0} not found.'.format(machine_name))
-                return
+            if view_type == VIEW_MAME_MACHINE:
+                if location == 'STANDARD':
+                    assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                    m_assets = assets_dic[machine_name]
+                else:
+                    mame_favs_dic = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+                    m_assets = mame_favs_dic[machine_name]['assets']
+                if not m_assets['fanart']:
+                    kodi_dialog_OK('Fanart for machine {0} not found.'.format(machine_name))
+                    return
+            elif view_type == VIEW_SL_ROM:
+                SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+                assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+                SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+                SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
+                m_assets = SL_asset_dic[SL_ROM]
+                if not m_assets['fanart']:
+                    kodi_dialog_OK('Fanart for SL item {0} not found.'.format(SL_ROM))
+                    return
 
             # >> If manual found then display it.
             log_debug('Rendering FS fanart "{0}"'.format(m_assets['fanart']))
@@ -1610,7 +1670,7 @@ class Main:
         # Use the builtin function SlideShow("{0}",pause) to show a set of pictures in full screen.
         # See https://forum.kodi.tv/showthread.php?tid=329349
         #
-        elif s_value == 5:
+        elif action == ACTION_VIEW_MANUAL:
             # --- Slideshow DEBUG snippet ---
             # >> https://kodi.wiki/view/List_of_built-in_functions is outdated!
             # >> See https://github.com/xbmc/xbmc/blob/master/xbmc/interfaces/builtins/PictureBuiltins.cpp
@@ -1626,11 +1686,20 @@ class Main:
             # NOTE CBZ/CBR files are supported by Kodi. It can be extracted with the builtin
             #      function extract. In addition to PDF extension, CBR and CBZ extensions must
             #      also be searched for manuals.
-            log_debug('Displaying Manual for MAME machine {0} ...'.format(machine_name))
-            machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            PDF_file_FN = FileName(assets_dic[machine_name]['manual'])
-            img_dir_FN = FileName(self.settings['assets_path']).pjoin('manuals').pjoin(machine_name + '.pages')
+            if view_type == VIEW_MAME_MACHINE:
+                log_debug('Displaying Manual for MAME machine {0} ...'.format(machine_name))
+                # machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+                assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                PDF_file_FN = FileName(assets_dic[machine_name]['manual'])
+                img_dir_FN = FileName(self.settings['assets_path']).pjoin('manuals').pjoin(machine_name + '.pages')
+            elif view_type == VIEW_SL_ROM:
+                log_debug('Displaying Manual for SL {0} item {1} ...'.format(SL_name, SL_ROM))
+                SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+                assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+                SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+                SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
+                PDF_file_FN = FileName(SL_asset_dic[SL_ROM]['manual'])
+                img_dir_FN = FileName(self.settings['assets_path']).pjoin('manuals_SL').pjoin(SL_name).pjoin(SL_ROM + '.pages')
             log_debug('PDF_file_FN P "{0}"'.format(PDF_file_FN.getPath()))
             log_debug('img_dir_FN P  "{0}"'.format(img_dir_FN.getPath()))
 
@@ -1657,7 +1726,7 @@ class Main:
             xbmc.executebuiltin('SlideShow("{0}",pause)'.format(img_dir_FN.getPath()))
 
         # --- Display brother machines (same driver) ---
-        elif s_value == 6:
+        elif action == ACTION_VIEW_BROTHERS:
             # >> Load ROM Render data from hashed database
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             # >> Some (important) drivers have a different name
@@ -1677,7 +1746,7 @@ class Main:
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         # --- Display machines with same Genre ---
-        elif s_value == 7:
+        elif action == ACTION_VIEW_SAME_GENRE:
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             genre_str = machine['genre']
             url = self._misc_url_2_arg('catalog', 'Genre', 'category', genre_str)
@@ -1685,12 +1754,16 @@ class Main:
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         # --- Display machines by same Manufacturer ---
-        elif s_value == 8:
+        elif action == ACTION_VIEW_SAME_MANUFACTURER:
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             manufacturer_str = machine['manufacturer']
             url = self._misc_url_2_arg('catalog', 'Manufacturer', 'category', manufacturer_str)
             log_debug('Container.Update URL {0}'.format(url))
             xbmc.executebuiltin('Container.Update({0})'.format(url))
+
+        else:
+            kodi_dialog_OK('Unknown action == {0}. '.format(action) +
+                           'This is a bug, please report it.')
 
     # ---------------------------------------------------------------------------------------------
     # Information display
@@ -1911,19 +1984,19 @@ class Main:
         # --- View Software List ROM Machine data ---
         elif action == ACTION_VIEW_SL_ROM_DATA:
             if location == LOCATION_STANDARD:
-                SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
                 kodi_busydialog_ON()
-                SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
                 SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
-                assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+                SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+                assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
                 SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
                 SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
-                kodi_busydialog_OFF()
-                SL_dic = SL_catalog_dic[SL_name]
-                SL_machine_list = SL_machines_dic[SL_name]
+                SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
                 roms = fs_load_JSON_file(SL_DB_FN.getPath())
+                kodi_busydialog_OFF()
+                SL_machine_list = SL_machines_dic[SL_name]
+                SL_dic = SL_catalog_dic[SL_name]
                 rom = roms[SL_ROM]
-                assets = SL_asset_dic[SL_ROM] if SL_ROM in SL_asset_dic else fs_new_SL_asset()
+                assets = SL_asset_dic[SL_ROM]
                 window_title = 'Software List ROM Information'
 
                 # >> Build information string
@@ -3300,13 +3373,15 @@ class Main:
         listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
 
         # --- Create context menu ---
+        URL_view_DAT = self._misc_url_4_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
         URL_view = self._misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
         URL_manage = self._misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', ROM_name)
         commands = [
+            ('Info / Utils', URL_view_DAT),
             ('View / Audit', URL_view),
             ('Manage SL Favourite ROMs', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
         ]
         listitem.addContextMenuItems(commands, replaceItems = True)
 
