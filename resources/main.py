@@ -421,6 +421,7 @@ class Main:
         self.settings['filter_XML']   = __addon__.getSetting('filter_XML').decode('utf-8')
 
         # --- Display ---
+        self.settings['display_launcher_notify'] = True if __addon__.getSetting('display_launcher_notify') == 'true' else False
         self.settings['mame_view_mode']          = int(__addon__.getSetting('mame_view_mode'))
         self.settings['sl_view_mode']            = int(__addon__.getSetting('sl_view_mode'))
         self.settings['display_hide_BIOS']       = True if __addon__.getSetting('display_hide_BIOS') == 'true' else False
@@ -4981,7 +4982,11 @@ class Main:
             log_info('_run_machine() _info is None')
             _info = None
 
-        # >> Launch MAME
+        # --- User notification ---
+        if self.settings['display_launcher_notify']:
+            kodi_notify('Launching MAME machine "{0}"'.format(machine_name))
+
+        # --- Launch MAME and run machine ---
         # arg_list = [mame_prog_FN.getPath(), '-window', machine_name]
         if BIOS_name: arg_list = [mame_prog_FN.getPath(), machine_name, '-bios', BIOS_name]
         else:         arg_list = [mame_prog_FN.getPath(), machine_name]
@@ -5223,6 +5228,10 @@ class Main:
         else:
             log_info('_run_SL_machine() _info is None')
             _info = None
+
+        # --- User notification ---
+        if self.settings['display_launcher_notify']:
+            kodi_notify('Launching MAME SL item "{0}"'.format(ROM_name))
 
         # --- Launch MAME ---
         log_info('_run_SL_machine() Calling subprocess.Popen()...')

@@ -36,6 +36,8 @@
     <setting label="Custom filter XML path" type="file" id="filter_XML" default="special://home/addons/plugin.program.AML/AML-MAME-filters.xml" />
 </category>
 <category label="Display">
+    <setting id="separator" type="lsep" label="General"/>
+    <setting label="Launching application notification" type="bool" id="display_launcher_notify" default="true" />
     <setting label="MAME view mode" type="enum" id="mame_view_mode" default="1" values="Flat|Parent/Clone" />
     <setting label="Software Lists view mode" type="enum" id="sl_view_mode" default="1" values="Flat|Parent/Clone" />
     <setting label="Hide BIOSes" type="bool" default="false" id="display_hide_BIOS" />
@@ -44,7 +46,7 @@
     <setting label="Display machines with available ROMs only" type="bool" default="false" id="display_rom_available" />
     <setting label="Display machines with available CHDs only" type="bool" default="false" id="display_chd_available" />
 
-    <setting id="separator" type="lsep" label="Addon root filters" />
+    <setting id="separator" type="lsep" label="Addon filters" />
     <setting label="Display Main filters" type="bool" default="true" id="display_main_filters" />
     <setting label="Display Binary filters" type="bool" default="true" id="display_binary_filters" />
     <setting label="Display Catalog filters" type="bool" default="true" id="display_catalog_filters" />
