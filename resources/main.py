@@ -3999,10 +3999,12 @@ class Main:
 
             # >> Load SL catalog and PClone dictionary
             SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+            SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
             SL_pclone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
+            History_idx_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
             if do_SL_ROM_scan:
-                fs_scan_SL_ROMs(PATHS, control_dic, SL_index_dic, SL_hash_dir_FN,
-                                SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN)
+                mame_scan_SL_ROMs(PATHS, control_dic, SL_index_dic, SL_hash_dir_FN,
+                                  SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN)
 
             # >> Get assets directory. Abort if not configured/found.
             do_SL_asset_scan = True
@@ -4015,12 +4017,13 @@ class Main:
                 do_SL_asset_scan = False
 
             if do_SL_asset_scan: 
-                fs_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN)
+                mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN)
+            
+            # >> Build MAME machine plots
+            mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, pDialog)
 
             # >> Save control_dic (has been updated in the SL scanner functions).
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-
-            # --- All operations finished ---
             kodi_notify('All ROM/asset scanning finished')
 
         # --- Build Fanarts ---
