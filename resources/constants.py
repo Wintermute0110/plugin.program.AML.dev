@@ -31,8 +31,8 @@ USE_ROM_CACHE = True
 # >> Top-level GUI code looks like this
 # try:
 #     autoconfig_export_category(category, export_FN)
-# except Addon_Error as E:
-#     kodi_notify_warn('{0}'.format(E))
+# except Addon_Error as ex:
+#     kodi_notify_warn('{0}'.format(ex))
 # else:
 #     kodi_notify('Exported Category "{0}" XML config'.format(category['m_name']))
 #
@@ -55,6 +55,17 @@ class Addon_Error(Exception):
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher constants
 # -------------------------------------------------------------------------------------------------
+# >> Make sure these strings are equal to the ones in settings.xml
+VIEW_MODE_FLAT         = 0 # 'Flat'
+VIEW_MODE_PCLONE       = 1 # 'Parent/Clone'
+VIEW_MODE_PARENTS_ONLY = 2 # 'Parents only'
+ROMSET_MAME_MERGED     = 0 # 'Merged'
+ROMSET_MAME_SPLIT      = 1 # 'Split'
+ROMSET_MAME_NONMERGED  = 2 # 'Non-merged'
+ROMSET_SL_MERGED       = 0 # 'Merged'
+ROMSET_SL_SPLIT        = 1 # 'Split'
+ROMSET_SL_NONMERGED    = 2 # 'Non-merged'
+
 # --- Used in the addon URLs so mark the location of machines/ROMs ---
 LOCATION_STANDARD  = 'STANDARD'
 LOCATION_MAME_FAVS = 'MAME_FAVS'

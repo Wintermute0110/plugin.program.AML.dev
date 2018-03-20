@@ -449,31 +449,6 @@ def fs_new_control_dic():
         'assets_SL_manuals_alternate'   : 0,
     }
 
-# --- Constants ---
-# >> Make sure these strings are equal to the ones in settings.xml
-VIEW_MODE_FLAT         = 0 # 'Flat'
-VIEW_MODE_PCLONE       = 1 # 'Parent/Clone'
-VIEW_MODE_PARENTS_ONLY = 2 # 'Parents only'
-MAME_MERGED    = 0 # 'Merged'
-MAME_SPLIT     = 1 # 'Split'
-MAME_NONMERGED = 2 # 'Non-merged'
-SL_MERGED      = 0 # 'Merged'
-SL_SPLIT       = 1 # 'Split'
-SL_NONMERGED   = 2 # 'Non-merged'
-
-# >> Used to build the properties list. 
-#    1) Must match names in main.py @_render_root_list()
-#    2) Must match names in disk_IO.py @fs_build_MAME_catalogs()
-CATALOG_NAME_LIST  = [
-    # >> Special
-    'Main', 'Binary',
-    # >> INI files
-    'Catver', 'Catlist', 'Genre', 'NPlayers', 'Bestgames', 'Series',
-    # >> Standard from MAME XML data fields.
-    'Manufacturer', 'Year', 'Driver', 'Controls', 'Display_Tag', 'Display_Type', 'Display_Rotate',
-    'Devices', 'BySL', 'ShortName', 'LongName'
-]
-
 def fs_get_cataloged_dic_parents(PATHS, catalog_name):
     if   catalog_name == 'Main':           catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MAIN_PARENT_PATH.getPath())
     elif catalog_name == 'Binary':         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_BINARY_PARENT_PATH.getPath())
@@ -523,21 +498,6 @@ def fs_get_cataloged_dic_all(PATHS, catalog_name):
         log_error('fs_get_cataloged_dic_all() Unknown catalog_name = "{0}"'.format(catalog_name))
 
     return catalog_dic
-
-# -------------------------------------------------------------------------------------------------
-# Exceptions raised by this module
-# -------------------------------------------------------------------------------------------------
-class DiskError(Exception):
-    """Base class for exceptions in this module."""
-    pass
-
-class CriticalError(DiskError):
-    def __init__(self, msg):
-        self.msg = msg
-
-class GeneralError(DiskError):
-    def __init__(self, msg):
-        self.msg = msg
 
 # -------------------------------------------------------------------------------------------------
 # JSON write/load
