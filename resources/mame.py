@@ -30,6 +30,7 @@ try:
     from utils_kodi import *
 except:
     from utils_kodi_standalone import *
+from disk_IO import *
 
 # -------------------------------------------------------------------------------------------------
 # Data structures
@@ -733,7 +734,7 @@ def mame_load_Command_DAT(filename):
 # Build MAME and SL plots
 # -------------------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------------
-# Generate plot in render database
+# Generate plot for MAME machines.
 # Line 1) Controls are {Joystick}
 # Line 2) {One Vertical Raster screen}
 # Line 3) Machine [is|is not] mechanical and driver is neogeo.hpp
@@ -742,7 +743,8 @@ def mame_load_Command_DAT(filename):
 # Line 6) Machine [supports|does not support] a Software List.
 # ---------------------------------------------------------------------------------------------
 def mame_build_MAME_plots(machines, machines_render, assets_dic,
-                          history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic, pDialog):
+                          history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic,
+                          pDialog):
     log_info('mame_build_plots() Building machine plots/descriptions ...')
     # >> Do not crash if DAT files are not configured.
     if history_idx_dic:
@@ -757,10 +759,10 @@ def mame_build_MAME_plots(machines, machines_render, assets_dic,
     command_info_set  = {machine[0] for machine in command_idx_dic}
 
     # >> Built machine plots
-    total_machines = len(machines)
-    num_machines = 0
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Generating MAME machine plots ...')
+    total_machines = len(machines)
+    num_machines = 0
     for machine_name, m in machines.iteritems():
         Flag_list = []
         if assets_dic[machine_name]['artwork']: Flag_list.append('Artwork')
@@ -792,8 +794,56 @@ def mame_build_MAME_plots(machines, machines_render, assets_dic,
         pDialog.update((num_machines*100)//total_machines)
     pDialog.close()
 
-def mame_build_SL_plots():
-    pass
+# ---------------------------------------------------------------------------------------------
+# Generate plot for Software Lists
+# Line 1) SL item has {0} parts
+# Line 2) {0} ROMs and {1} disks
+# Line 3) Manual, History
+# Line 4) Machines: machine list ...
+# ---------------------------------------------------------------------------------------------
+def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, pDialog):
+    pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    pDialog.update(0)
+    total_files = len(SL_index_dic)
+    processed_files = 0
+    for SL_name in sorted(SL_index_dic):
+        # >> Update progress
+        update_number = (processed_files*100) // total_files
+        pDialog.update(update_number, pdialog_line1, 'Processing Software List {0}'.format(SL_name))
+
+        # >> Open database
+        SL_DB_prefix = SL_index_dic[SL_name]['rom_DB_noext']
+        SL_ROMs_FN      = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '.json')
+        SL_assets_FN    = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_assets.json')
+        SL_ROM_audit_FN = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_ROM_audit.json')
+        SL_roms          = fs_load_JSON_file(SL_ROMs_FN.getPath(), verbose = False)
+        SL_assets_dic    = fs_load_JSON_file(SL_assets_FN.getPath(), verbose = False)
+        SL_ROM_audit_dic = fs_load_JSON_file(SL_ROM_audit_FN.getPath(), verbose = False)
+
+        # >> Traverse SL ROMs and make plot
+        for rom_key in sorted(SL_roms):
+            SL_rom = SL_roms[rom_key]
+            parts_str = 'SL item has {0} parts'.format(len(SL_rom['parts']))
+            num_ROMs = 0
+            num_disks = 0
+            for SL_rom in SL_ROM_audit_dic[rom_key]:
+                if SL_rom['type'] == 'ROM': num_ROMs += 1
+                elif SL_rom['type'] == 'DISK': num_disks += 1
+            roms_str = '{0} ROMs and {1} disks'.format(num_ROMs, num_disks)
+            Flag_list = []
+            if SL_assets_dic[rom_key]['manual']: Flag_list.append('Manual')
+            if machine_name in history_info_set: Flag_list.append('History')
+            Flag_str = ', '.join(Flag_list)
+
+            SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str])
+
+        # >> Write SL ROMs JSON
+        fs_write_JSON_file(SL_ROMs_FN.getPath(), SL_roms, verbose = False)
+        # >> Update progress
+        processed_files += 1
+    update_number = (processed_files*100) // total_files
+    pDialog.close()
 
 # -------------------------------------------------------------------------------------------------
 # MAME ROM/CHD audit code

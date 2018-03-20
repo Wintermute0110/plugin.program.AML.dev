@@ -27,11 +27,15 @@ import copy
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 
 # --- Modules/packages in this plugin ---
+# Addon module dependencies:
+#   main <-- mame <-- disk_IO <-- assets, utils, utils_kodi, constants (no dependencies)
+#   ReaderPDF <-- utils, utils_kodi (no dependencies)
 from constants import *
+from assets import *
 from utils import *
 from utils_kodi import *
-from assets import *
 from disk_IO import *
+from mame import *
 
 # --- Addon object (used to access settings) ---
 __addon__         = xbmcaddon.Addon()
@@ -4841,9 +4845,18 @@ class Main:
 
             # --- Buils Software List items plot ---
             elif submenu == 9:
-                kodi_dialog_OK('SL item plot generation not finished yet.')
-                return
-                # mame_build_SL_plots()
+                # >> Load SL index and SL machine index.
+                pDialog = xbmcgui.DialogProgress()
+                pdialog_line1 = 'Loading databases ...'
+                pDialog.create('Advanced MAME Launcher')
+                pDialog.update(0, pdialog_line1, 'Control dic')
+                SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+                pDialog.update(50, pdialog_line1, 'Control dic')
+                SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+                pDialog.update(100, pdialog_line1, ' ')
+                pDialog.close()
+
+                mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, pDialog)
                 kodi_notify('SL item plot generation finished')
 
     #

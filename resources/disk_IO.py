@@ -96,7 +96,7 @@ from mame import *
 #   ...
 #
 def fs_new_machine_dic():
-    m = {
+    return {
         # >> <machine> attributes
         'sourcefile'     : '',
         'isMechanical'   : False,
@@ -120,8 +120,6 @@ def fs_new_machine_dic():
         'isDead'         : False
     }
 
-    return m
-
 #
 # Object used in MAME_render_db.json
 #   flags -> ROM, CHD, Samples, SoftwareLists, Devices
@@ -138,7 +136,7 @@ def fs_new_machine_dic():
 #   D  Machine has device/s and must be plugged in order to boot.
 #
 def fs_new_machine_render_dic():
-    m = {
+    return {
         # >> <machine> attributes
         'isBIOS'         : False,
         'isDevice'       : False,
@@ -154,8 +152,6 @@ def fs_new_machine_render_dic():
         'flags'          : '-----',
         'plot'           : '',      # Generated from other fields
     }
-
-    return m
 
 #
 # Object used in MAME_DB_roms.json
@@ -244,6 +240,7 @@ def fs_new_SL_ROM():
         'description' : '',
         'year'        : '',
         'publisher'   : '',
+        'plot'        : '',
         'cloneof'     : '',
         'parts'       : [],
         'hasROMs'     : False,
@@ -3674,10 +3671,8 @@ def fs_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_pat
                                     break
             table_row = [SL_name, rom_key] + asset_row
             table_str.append(table_row)
-
         # >> Write SL asset JSON
         fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
-
         # >> Update progress
         processed_files += 1
     update_number = (processed_files*100) // total_files
