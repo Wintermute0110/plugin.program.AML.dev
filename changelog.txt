@@ -19,7 +19,7 @@ WIP      Implemented "Recently played SL ROMs"
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
 WIP      Clean Render and main machine JSON files. Currently, there are repeated fields on both
-         DBs like nplayers.
+         databases like nplayers.
 
 WIP      Move flags and plot from the render database to the assets database. Flags are modified
          by the scanner only and plot generated after the scanner. If flags and plot are in

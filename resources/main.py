@@ -3747,8 +3747,7 @@ class Main:
                                  ['Check MAME version',
                                   'Extract MAME.xml',
                                   'Build all databases',
-                                  'Scan everything',
-                                  'Build Plots ...',
+                                  'Scan everything and build plots',
                                   'Build Fanarts ...',
                                   'Audit MAME machine ROMs/CHDs',
                                   'Audit SL ROMs/CHDs',
@@ -3843,20 +3842,28 @@ class Main:
             pDialog.create('Advanced MAME Launcher')
             pDialog.update(0, pdialog_line1, 'Control dic')
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(12, pdialog_line1, 'Machines Main')
+            pDialog.update(8, pdialog_line1, 'MAME machines Main')
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(25, pdialog_line1, 'Machines Render')
+            pDialog.update(16, pdialog_line1, 'MAME machines Render')
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(37, pdialog_line1, 'Machine assets')
+            pDialog.update(25, pdialog_line1, 'MAME machine Assets')
             assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(50, pdialog_line1, 'Main Parent/Clone')
+            pDialog.update(33, pdialog_line1, 'MAME Parent/Clone')
             main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            pDialog.update(62, pdialog_line1, 'Machine archives')
+            pDialog.update(41, pdialog_line1, 'MAME machine archives')
             machine_archives_dic = fs_load_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(75, pdialog_line1, 'ROM list')
+            pDialog.update(50, pdialog_line1, 'MAME ROM list')
             ROM_archive_list = fs_load_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(87, pdialog_line1, 'CHD list')
+            pDialog.update(58, pdialog_line1, 'MAME CHD list')
             CHD_archive_list = fs_load_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath())
+            pDialog.update(66, pdialog_line1, 'History DAT')
+            history_idx_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+            pDialog.update(75, pdialog_line1, 'Mameinfo DAT')
+            mameinfo_idx_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
+            pDialog.update(83, pdialog_line1, 'Gameinit DAT')
+            gameinit_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
+            pDialog.update(91, pdialog_line1, 'Command DAT')
+            command_idx_list = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
             pDialog.update(100, pdialog_line1, ' ')
             pDialog.close()
 
@@ -3881,9 +3888,15 @@ class Main:
 
             if do_MAME_asset_scan:
                 # >> Updates assets_dic dictionary
-                fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pclone_dic, Asset_path_FN, pDialog)
+                fs_scan_MAME_assets(PATHS, assets_dic, control_dic,
+                                    machines_render, main_pclone_dic, Asset_path_FN, pDialog)
                 # >> Save control_dic (has been updated in the scanner function).
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+            # >> Traverse MAME machines and build plot. Updates machines_render
+            mame_build_MAME_plots(machines, machines_render, assets_dic,
+                                  history_idx_dic, mameinfo_idx_dic, gameinit_idx_list, command_idx_list,
+                                  pDialog)
 
             pdialog_line1 = 'Saving databases ...'
             pDialog.create('Advanced MAME Launcher')
@@ -3957,66 +3970,8 @@ class Main:
             # --- All operations finished ---
             kodi_notify('All ROM/asset scanning finished')
 
-        # --- Build plots ---
-        elif menu_item == 4:
-            submenu = dialog.select('Build Plots',
-                                   ['Build MAME machines plot',
-                                    'Buils Software List items plot',
-                                    ])
-            if submenu < 0: return
-
-            # --- Build MAME machines plot ---
-            if submenu == 0:
-                # >> Load machine database and control_dic
-                pDialog = xbmcgui.DialogProgress()
-                pdialog_line1 = 'Loading databases ...'
-                pDialog.create('Advanced MAME Launcher')
-                pDialog.update(0, pdialog_line1, 'Control dic')
-                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-                pDialog.update(12, pdialog_line1, 'Machines Main')
-                machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-                pDialog.update(25, pdialog_line1, 'Machines Render')
-                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-                pDialog.update(37, pdialog_line1, 'MAME assets')
-                assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-                pDialog.update(50, pdialog_line1, 'History DAT')
-                history_idx_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
-                pDialog.update(62, pdialog_line1, 'Mameinfo DAT')
-                mameinfo_idx_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
-                pDialog.update(75, pdialog_line1, 'Gameinit DAT')
-                gameinit_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
-                pDialog.update(87, pdialog_line1, 'Command DAT')
-                command_idx_list = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
-                pDialog.update(100, pdialog_line1, ' ')
-                pDialog.close()
-
-                # >> Traverse MAME machines and build plot. Updates machines_render
-                mame_build_MAME_plots(machines, machines_render, assets_dic,
-                                      history_idx_dic, mameinfo_idx_dic, gameinit_idx_list, command_idx_list,
-                                      pDialog)
-
-                # >> Update hashed DBs and save DBs
-                # >> cache_index_dic built in fs_build_MAME_catalogs()
-                pdialog_line1 = 'Saving databases ...'
-                pDialog.create('Advanced MAME Launcher')
-                pDialog.update(0, pdialog_line1, 'Machines Render')
-                fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
-                pDialog.update(100, pdialog_line1, ' ')
-                pDialog.close()
-                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
-                fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
-                kodi_notify('MAME machines plot generation finished')
-
-            # --- Buils Software List items plot ---
-            elif submenu == 1:
-                kodi_dialog_OK('SL item plot generation not finished yet.')
-                return
-                # mame_build_SL_plots()
-                kodi_notify('SL item plot generation finished')
-
         # --- Build Fanarts ---
-        elif menu_item == 5:
+        elif menu_item == 4:
             submenu = dialog.select('Build Fanarts',
                                    ['Test MAME Fanart',
                                     'Test Software List item Fanart',
@@ -4259,7 +4214,7 @@ class Main:
         # --- Audit MAME machine ROMs/CHDs ---
         # NOTE It is likekely that this function will take a looong time. It is important that the
         #      audit process can be canceled and a partial report is written.
-        elif menu_item == 6:
+        elif menu_item == 5:
             log_info('_command_setup_plugin() Audit MAME machines ROMs/CHDs ...')
             # >> Load machines, ROMs and CHDs databases.
             pDialog = xbmcgui.DialogProgress()
@@ -4429,7 +4384,7 @@ class Main:
             kodi_notify('ROM and CHD audit finished')
 
         # --- Audit SL ROMs/CHDs ---
-        elif menu_item == 7:
+        elif menu_item == 6:
             log_info('_command_setup_plugin() Audit SL ROMs/CHDs ...')
 
             # >> Load SL catalog.
@@ -4571,7 +4526,7 @@ class Main:
             kodi_notify('Software Lists audit finished')
 
         # --- Build Step by Step ---
-        elif menu_item == 8:
+        elif menu_item == 7:
             submenu = dialog.select('Setup plugin (step by step)',
                                    ['Build MAME databases ...',
                                     'Build Audit/Scanner databases ...',
@@ -4580,7 +4535,9 @@ class Main:
                                     'Scan MAME ROMs/CHDs/Samples ...',
                                     'Scan MAME assets/artwork ...',
                                     'Scan Software Lists ROMs/CHDs ...',
-                                    'Scan Software Lists assets/artwork ...' ])
+                                    'Scan Software Lists assets/artwork ...',
+                                    'Build MAME machines plot',
+                                    'Buils Software List items plot'])
             if submenu < 0: return
 
             # --- Build main MAME database, PClone list and hashed database ---
@@ -4838,6 +4795,56 @@ class Main:
                 fs_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
                 kodi_notify('Scanning of SL assets finished')
+
+            # --- Build MAME machines plot ---
+            elif submenu == 8:
+                # >> Load machine database and control_dic
+                pDialog = xbmcgui.DialogProgress()
+                pdialog_line1 = 'Loading databases ...'
+                pDialog.create('Advanced MAME Launcher')
+                pDialog.update(0, pdialog_line1, 'Control dic')
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                pDialog.update(12, pdialog_line1, 'MAME machines Main')
+                machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                pDialog.update(25, pdialog_line1, 'MAME machines Render')
+                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                pDialog.update(37, pdialog_line1, 'MAME machine Assets')
+                assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                pDialog.update(50, pdialog_line1, 'History DAT')
+                history_idx_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+                pDialog.update(62, pdialog_line1, 'Mameinfo DAT')
+                mameinfo_idx_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
+                pDialog.update(75, pdialog_line1, 'Gameinit DAT')
+                gameinit_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
+                pDialog.update(87, pdialog_line1, 'Command DAT')
+                command_idx_list = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
+                pDialog.update(100, pdialog_line1, ' ')
+                pDialog.close()
+
+                # >> Traverse MAME machines and build plot. Updates machines_render
+                mame_build_MAME_plots(machines, machines_render, assets_dic,
+                                      history_idx_dic, mameinfo_idx_dic, gameinit_idx_list, command_idx_list,
+                                      pDialog)
+
+                # >> Update hashed DBs and save DBs
+                # >> cache_index_dic built in fs_build_MAME_catalogs()
+                pdialog_line1 = 'Saving databases ...'
+                pDialog.create('Advanced MAME Launcher')
+                pDialog.update(0, pdialog_line1, 'Machines Render')
+                fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
+                pDialog.update(100, pdialog_line1, ' ')
+                pDialog.close()
+                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
+                fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+                kodi_notify('MAME machines plot generation finished')
+
+            # --- Buils Software List items plot ---
+            elif submenu == 9:
+                kodi_dialog_OK('SL item plot generation not finished yet.')
+                return
+                # mame_build_SL_plots()
+                kodi_notify('SL item plot generation finished')
 
     #
     # Launch MAME machine. Syntax: $ mame <machine_name> [options]
