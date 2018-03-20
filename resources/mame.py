@@ -3653,10 +3653,10 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
         SL_path_FN = FileName(file)
         SLData = mame_load_SL_XML(SL_path_FN.getPath())
-        output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json')
-        fs_write_JSON_file(output_FN.getPath(), SLData.roms)
-        output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
-        fs_write_JSON_file(output_FN.getPath(), SLData.SL_roms)
+        fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json').getPath(),
+                           SLData.roms, verbose = False)
+        fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(),
+                           SLData.SL_roms, verbose = False)
 
         # >> Add software list to catalog
         num_SL_with_ROMs += SLData.num_with_ROMs
@@ -3690,7 +3690,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         SL_Soft_Archives_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_software_archives.json')
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
-        SL_roms = fs_load_JSON_file(SL_ROMs_DB_FN.getPath())
+        SL_roms = fs_load_JSON_file(SL_ROMs_DB_FN.getPath(), verbose = False)
 
         # >> Traverse list of ROMs and make a list of ROMs and CHDs. Also compute ROM locations.
         SL_Audit_ROMs = {}
@@ -3763,7 +3763,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         total_SL_XML_files += 1
         pclone_dic = {}
         SL_database_FN = PATHS.SL_DB_DIR.pjoin(sl_name + '.json')
-        ROMs = fs_load_JSON_file(SL_database_FN.getPath())
+        ROMs = fs_load_JSON_file(SL_database_FN.getPath(), verbose = False)
         for rom_name in ROMs:
             total_SL_software_items += 1
             ROM = ROMs[rom_name]
