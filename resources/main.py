@@ -2011,6 +2011,7 @@ class Main:
                         info_text += "  [COLOR violet]name[/COLOR]: '{0}'\n".format(part['name'])
                 else:
                     info_text += '[COLOR lime]parts[/COLOR]: []\n'
+                info_text += "[COLOR violet]plot[/COLOR]: '{0}'\n".format(rom['plot'])
                 info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
                 info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
                 info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
@@ -2065,6 +2066,7 @@ class Main:
                         info_text += "  [COLOR violet]name[/COLOR]: '{0}'\n".format(part['name'])
                 else:
                     info_text += '[COLOR lime]parts[/COLOR]: []\n'
+                info_text += "[COLOR violet]plot[/COLOR]: '{0}'\n".format(rom['plot'])
                 info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
                 info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
                 info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])

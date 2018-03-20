@@ -825,6 +825,8 @@ def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, p
             History_SL_set = { machine[0] for machine in History_idx_dic[SL_name]['machines'] }
         else:
             History_SL_set = set()
+        # Machine_list = [ m['machine'] for m in SL_machines_dic[SL_name] ]
+        # Machines_str = 'Machines: {0}'.format(', '.join(sorted(Machine_list)))
 
         # >> Traverse SL ROMs and make plot
         for rom_key in sorted(SL_roms):
@@ -840,7 +842,8 @@ def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, p
             if SL_assets_dic[rom_key]['manual']: Flag_list.append('Manual')
             if rom_key in History_SL_set: Flag_list.append('History')
             Flag_str = ', '.join(Flag_list)
-
+            # >> Build plot
+            # SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str, Machines_str])
             SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str])
 
         # >> Write SL ROMs JSON
