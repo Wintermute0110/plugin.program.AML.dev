@@ -831,13 +831,22 @@ def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, p
         # >> Traverse SL ROMs and make plot
         for rom_key in sorted(SL_roms):
             SL_rom = SL_roms[rom_key]
-            parts_str = 'SL item has {0} parts'.format(len(SL_rom['parts']))
+            num_parts = len(SL_rom['parts'])
+            if num_parts == 0:   parts_str = 'SL item has no parts'
+            elif num_parts == 1: parts_str = 'SL item has {0} part'.format(num_parts)
+            elif num_parts > 1:  parts_str = 'SL item has {0} parts'.format(num_parts)
             num_ROMs = 0
             num_disks = 0
             for SL_rom in SL_ROM_audit_dic[rom_key]:
                 if SL_rom['type'] == 'ROM': num_ROMs += 1
                 elif SL_rom['type'] == 'DISK': num_disks += 1
-            roms_str = '{0} ROMs and {1} disks'.format(num_ROMs, num_disks)
+            if num_ROMs == 0:   ROM_str = 'ROMs'
+            elif num_ROMs == 1: ROM_str = 'ROM'
+            elif num_ROMs > 1:  ROM_str = 'ROMs'
+            if num_disks == 0:   disk_str = 'disks'
+            elif num_disks == 1: disk_str = 'disk'
+            elif num_disks > 1:  disk_str = 'disks'
+            roms_str = '{0} {1} and {2} {3}'.format(num_ROMs, ROM_str, num_disks, disk_str)
             Flag_list = []
             if SL_assets_dic[rom_key]['manual']: Flag_list.append('Manual')
             if rom_key in History_SL_set: Flag_list.append('History')

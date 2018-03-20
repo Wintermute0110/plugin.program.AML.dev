@@ -1543,6 +1543,17 @@ class Main:
                 else:                                Command_str = 'Not found'
             else:
                 Command_str = 'Not configured'
+        elif view_type == VIEW_SL_ROM:
+            History_idx_dic   = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+            if History_idx_dic:
+                if SL_name in History_idx_dic:
+                    History_MAME_set = { machine[0] for machine in History_idx_dic[SL_name]['machines'] }
+                    if SL_ROM in History_MAME_set: History_str = 'Found'
+                    else:                          History_str = 'Not found'
+                else:
+                    History_str = 'SL not found'
+            else:
+                History_str = 'Not configured'
 
         # --- Build menu base on view_type ---
         if view_type == VIEW_MAME_MACHINE:
@@ -1559,6 +1570,7 @@ class Main:
             ]
         elif view_type == VIEW_SL_ROM:
             d_list = [
+              'View History DAT ({0})'.format(History_str),
               'View Fanart',
               'View Manual',
             ]
@@ -1584,8 +1596,9 @@ class Main:
                                'This is a bug, please report it.')
                 return
         elif view_type == VIEW_SL_ROM:
-            if   selected_value == 0: action = ACTION_VIEW_FANART
-            elif selected_value == 1: action = ACTION_VIEW_MANUAL
+            if   selected_value == 0: action = ACTION_VIEW_HISTORY
+            elif selected_value == 1: action = ACTION_VIEW_FANART
+            elif selected_value == 2: action = ACTION_VIEW_MANUAL
             else:
                 kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {0}. '.format(selected_value) +
                                'This is a bug, please report it.')
@@ -1593,12 +1606,20 @@ class Main:
 
         # --- Execute action ---
         if action == ACTION_VIEW_HISTORY:
-            if machine_name not in History_MAME_set:
-                kodi_dialog_OK('Machine {0} not in History DAT'.format(machine_name))
-                return
-            DAT_dic = fs_load_JSON_file(PATHS.HISTORY_DB_PATH.getPath())
-            window_title = 'History DAT for machine {0}'.format(machine_name)
-            info_text = DAT_dic['mame'][machine_name]
+            if view_type == VIEW_MAME_MACHINE:
+                if machine_name not in History_MAME_set:
+                    kodi_dialog_OK('MAME machine {0} not in History DAT'.format(machine_name))
+                    return
+                DAT_dic = fs_load_JSON_file(PATHS.HISTORY_DB_PATH.getPath())
+                window_title = 'History DAT for MAME machine {0}'.format(machine_name)
+                info_text = DAT_dic['mame'][machine_name]
+            elif view_type == VIEW_SL_ROM:
+                if SL_ROM not in History_MAME_set:
+                    kodi_dialog_OK('SL item {0} not in History DAT'.format(SL_ROM))
+                    return
+                DAT_dic = fs_load_JSON_file(PATHS.HISTORY_DB_PATH.getPath())
+                window_title = 'History DAT for SL item {0}'.format(SL_ROM)
+                info_text = DAT_dic[SL_name][SL_ROM]
             self._display_text_window(window_title, info_text)
 
         elif action == ACTION_VIEW_MAMEINFO:
