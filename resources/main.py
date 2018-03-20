@@ -429,6 +429,15 @@ class Main:
         self.settings['display_rom_available']   = True if __addon__.getSetting('display_rom_available') == 'true' else False
         self.settings['display_chd_available']   = True if __addon__.getSetting('display_chd_available') == 'true' else False
 
+        self.settings['display_main_filters']    = True if __addon__.getSetting('display_main_filters') == 'true' else False
+        self.settings['display_binary_filters']  = True if __addon__.getSetting('display_binary_filters') == 'true' else False
+        self.settings['display_catalog_filters'] = True if __addon__.getSetting('display_catalog_filters') == 'true' else False
+        self.settings['display_DAT_browser']     = True if __addon__.getSetting('display_DAT_browser') == 'true' else False
+        self.settings['display_SL_browser']      = True if __addon__.getSetting('display_SL_browser') == 'true' else False
+        self.settings['display_MAME_favs']       = True if __addon__.getSetting('display_MAME_favs') == 'true' else False
+        self.settings['display_SL_favs']         = True if __addon__.getSetting('display_SL_favs') == 'true' else False
+        self.settings['display_custom_filters']  = True if __addon__.getSetting('display_custom_filters') == 'true' else False
+
         # --- Display ---
         self.settings['artwork_mame_icon']     = int(__addon__.getSetting('artwork_mame_icon'))
         self.settings['artwork_mame_fanart']   = int(__addon__.getSetting('artwork_mame_fanart'))
@@ -510,7 +519,7 @@ class Main:
             samples_str    += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['Samples']['num_machines'])
             bios_str       += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['BIOS']['num_machines'])
 
-        elif cache_index_dic and (mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY):
+        elif cache_index_dic and mame_view_mode == VIEW_MODE_PCLONE:
             machines_n_str += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Normal']['num_parents'])
             machines_u_str += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Unusual']['num_parents'])
             nocoin_str     += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['NoCoin']['num_parents'])
@@ -542,55 +551,70 @@ class Main:
             SL_str           += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['BySL']))
             year_str         += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Year']))
 
+        # >> If everything deactivated render the main filters so user has access to the context menu.
+        big_OR = self.settings['display_main_filters'] or self.settings['display_binary_filters'] or \
+                 self.settings['display_catalog_filters'] or self.settings['display_DAT_browser'] or \
+                 self.settings['display_SL_browser'] or self.settings['display_MAME_favs'] or \
+                 self.settings['display_SL_favs'] or self.settings['display_custom_filters']
+        if not big_OR:
+            self.settings['display_main_filters'] = True
+
         # >> Main filters (Virtual catalog 'Main')
-        self._render_root_list_row(machines_n_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Normal'))
-        self._render_root_list_row(machines_u_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Unusual'))
-        self._render_root_list_row(nocoin_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'NoCoin'))
-        self._render_root_list_row(mecha_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Mechanical'))
-        self._render_root_list_row(dead_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Dead'))
-        self._render_root_list_row(devices_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Devices'))
+        if self.settings['display_main_filters']:
+            self._render_root_list_row(machines_n_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Normal'))
+            self._render_root_list_row(machines_u_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Unusual'))
+            self._render_root_list_row(nocoin_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'NoCoin'))
+            self._render_root_list_row(mecha_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Mechanical'))
+            self._render_root_list_row(dead_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Dead'))
+            self._render_root_list_row(devices_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Devices'))
 
         # >> Binary filters (Virtual catalog 'Binary')
-        self._render_root_list_row(norom_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'NoROM'))
-        self._render_root_list_row(chd_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'CHD'))
-        self._render_root_list_row(samples_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'Samples'))
-        self._render_root_list_row(bios_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
+        if self.settings['display_binary_filters']:
+            self._render_root_list_row(norom_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'NoROM'))
+            self._render_root_list_row(chd_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'CHD'))
+            self._render_root_list_row(samples_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'Samples'))
+            self._render_root_list_row(bios_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
 
-        # >> Optional cataloged filters (depend on a INI file)
-        self._render_root_list_row(catver_str, self._misc_url_1_arg('catalog', 'Catver'))
-        self._render_root_list_row(catlist_str, self._misc_url_1_arg('catalog', 'Catlist'))
-        self._render_root_list_row(genre_str, self._misc_url_1_arg('catalog', 'Genre'))
-        self._render_root_list_row(NPLayers_str, self._misc_url_1_arg('catalog', 'NPlayers'))
-        self._render_root_list_row(score_str, self._misc_url_1_arg('catalog', 'Bestgames'))
-        self._render_root_list_row(series_str, self._misc_url_1_arg('catalog', 'Series'))
-
-        # >> Cataloged filters (always there)
-        self._render_root_list_row(ctype_str, self._misc_url_1_arg('catalog', 'Controls'))
-        self._render_root_list_row(drotation_str, self._misc_url_1_arg('catalog', 'Display_Rotate'))
-        self._render_root_list_row(dtype_str, self._misc_url_1_arg('catalog', 'Display_Type'))
-        self._render_root_list_row(device_str, self._misc_url_1_arg('catalog', 'Devices'))
-        self._render_root_list_row(driver_str, self._misc_url_1_arg('catalog', 'Driver'))
-        self._render_root_list_row(manufacturer_str, self._misc_url_1_arg('catalog', 'Manufacturer'))
-        self._render_root_list_row(shortname_str, self._misc_url_1_arg('catalog', 'ShortName'))
-        self._render_root_list_row(longname_str, self._misc_url_1_arg('catalog', 'LongName'))
-        self._render_root_list_row(SL_str, self._misc_url_1_arg('catalog', 'BySL'))
-        self._render_root_list_row(year_str, self._misc_url_1_arg('catalog', 'Year'))
+        if self.settings['display_catalog_filters']:
+            # >> Optional cataloged filters (depend on a INI file)
+            self._render_root_list_row(catver_str, self._misc_url_1_arg('catalog', 'Catver'))
+            self._render_root_list_row(catlist_str, self._misc_url_1_arg('catalog', 'Catlist'))
+            self._render_root_list_row(genre_str, self._misc_url_1_arg('catalog', 'Genre'))
+            self._render_root_list_row(NPLayers_str, self._misc_url_1_arg('catalog', 'NPlayers'))
+            self._render_root_list_row(score_str, self._misc_url_1_arg('catalog', 'Bestgames'))
+            self._render_root_list_row(series_str, self._misc_url_1_arg('catalog', 'Series'))
+            # >> Cataloged filters (always there)
+            self._render_root_list_row(ctype_str, self._misc_url_1_arg('catalog', 'Controls'))
+            self._render_root_list_row(drotation_str, self._misc_url_1_arg('catalog', 'Display_Rotate'))
+            self._render_root_list_row(dtype_str, self._misc_url_1_arg('catalog', 'Display_Type'))
+            self._render_root_list_row(device_str, self._misc_url_1_arg('catalog', 'Devices'))
+            self._render_root_list_row(driver_str, self._misc_url_1_arg('catalog', 'Driver'))
+            self._render_root_list_row(manufacturer_str, self._misc_url_1_arg('catalog', 'Manufacturer'))
+            self._render_root_list_row(shortname_str, self._misc_url_1_arg('catalog', 'ShortName'))
+            self._render_root_list_row(longname_str, self._misc_url_1_arg('catalog', 'LongName'))
+            self._render_root_list_row(SL_str, self._misc_url_1_arg('catalog', 'BySL'))
+            self._render_root_list_row(year_str, self._misc_url_1_arg('catalog', 'Year'))
 
         # >> history.dat, mameinfo.dat, gameinit.dat, command.dat
-        self._render_root_list_row('History DAT',  self._misc_url_1_arg('catalog', 'History'))
-        self._render_root_list_row('MAMEINFO DAT', self._misc_url_1_arg('catalog', 'MAMEINFO'))
-        self._render_root_list_row('Gameinit DAT', self._misc_url_1_arg('catalog', 'Gameinit'))
-        self._render_root_list_row('Command DAT',  self._misc_url_1_arg('catalog', 'Command'))
+        if self.settings['display_DAT_browser']:
+            self._render_root_list_row('History DAT',  self._misc_url_1_arg('catalog', 'History'))
+            self._render_root_list_row('MAMEINFO DAT', self._misc_url_1_arg('catalog', 'MAMEINFO'))
+            self._render_root_list_row('Gameinit DAT', self._misc_url_1_arg('catalog', 'Gameinit'))
+            self._render_root_list_row('Command DAT',  self._misc_url_1_arg('catalog', 'Command'))
 
         # >> Software lists
-        self._render_root_list_row('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
-        self._render_root_list_row('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
-        self._render_root_list_row('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
+        if self.settings['display_SL_browser']:
+            self._render_root_list_row('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
+            self._render_root_list_row('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
+            self._render_root_list_row('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
 
         # >> Special launchers
-        self._render_root_list_row('<Favourite MAME machines>', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
-        self._render_root_list_row('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
-        self._render_custom_filter_row('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+        if self.settings['display_MAME_favs']:
+            self._render_root_list_row('<Favourite MAME machines>', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
+        if self.settings['display_SL_favs']:
+            self._render_root_list_row('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
+        if self.settings['display_custom_filters']:
+            self._render_custom_filter_row('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         # self._render_root_list_row('{Most played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         # self._render_root_list_row('{Recently played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         # self._render_root_list_row('{Most played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
