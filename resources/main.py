@@ -1711,6 +1711,9 @@ class Main:
                 log_debug('Displaying Manual for MAME machine {0} ...'.format(machine_name))
                 # machine = fs_get_machine_main_db_hash(PATHS, machine_name)
                 assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                if not assets_dic[machine_name]['manual']:
+                    kodi_dialog_OK('Manual not found in database.')
+                    return
                 PDF_file_FN = FileName(assets_dic[machine_name]['manual'])
                 img_dir_FN = FileName(self.settings['assets_path']).pjoin('manuals').pjoin(machine_name + '.pages')
             elif view_type == VIEW_SL_ROM:
@@ -1719,10 +1722,16 @@ class Main:
                 assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
                 SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
                 SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
+                if not SL_asset_dic[SL_ROM]['manual']:
+                    kodi_dialog_OK('Manual not found in database.')
+                    return
                 PDF_file_FN = FileName(SL_asset_dic[SL_ROM]['manual'])
                 img_dir_FN = FileName(self.settings['assets_path']).pjoin('manuals_SL').pjoin(SL_name).pjoin(SL_ROM + '.pages')
             log_debug('PDF_file_FN P "{0}"'.format(PDF_file_FN.getPath()))
             log_debug('img_dir_FN P  "{0}"'.format(img_dir_FN.getPath()))
+            if not PDF_file_FN.exists():
+                kodi_dialog_OK('PDF file {0} not found.'.format(PDF_file_FN.getPath()))
+                return
 
             # >> Progress dialog
             pDialog = xbmcgui.DialogProgress()
