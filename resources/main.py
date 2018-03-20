@@ -650,7 +650,6 @@ class Main:
         self._render_root_list_row('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
         self._render_root_list_row('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
         self._render_root_list_row('Machines by Control Type',        self._misc_url_1_arg('catalog', 'Controls'))
-        self._render_root_list_row('Machines by Display Tag',         self._misc_url_1_arg('catalog', 'Display_Tag'))
         self._render_root_list_row('Machines by Display Type',        self._misc_url_1_arg('catalog', 'Display_Type'))
         self._render_root_list_row('Machines by Display Rotation',    self._misc_url_1_arg('catalog', 'Display_Rotate'))
         self._render_root_list_row('Machines by Device',              self._misc_url_1_arg('catalog', 'Devices'))
@@ -682,9 +681,9 @@ class Main:
             ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
             ('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
         ]
-        listitem.addContextMenuItems(commands, replaceItems = True)
+        listitem.addContextMenuItems(commands)
 
         # --- Add row ---
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = root_URL, listitem = listitem, isFolder = True)
@@ -701,9 +700,9 @@ class Main:
             ('Setup custom filters', self._misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS')),
             ('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
         ]
-        listitem.addContextMenuItems(commands, replaceItems = True)
+        listitem.addContextMenuItems(commands)
 
         # --- Add row ---
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = root_URL, listitem = listitem, isFolder = True)
@@ -711,6 +710,7 @@ class Main:
     #----------------------------------------------------------------------------------------------
     # Cataloged machines
     #----------------------------------------------------------------------------------------------
+    # Renders the category names in a catalog.
     def _render_catalog_list(self, catalog_name):
         log_debug('_render_catalog_list() Starting ...')
         log_debug('_render_catalog_list() catalog_name = "{0}"'.format(catalog_name))
@@ -724,8 +724,6 @@ class Main:
             catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
         elif mame_view_mode == VIEW_MODE_PCLONE:
             catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
-        elif mame_view_mode == VIEW_MODE_PARENTS_ONLY:
-            catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
         if not catalog_dic:
             kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
             xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
@@ -738,7 +736,7 @@ class Main:
                 num_machines = cache_index_dic[catalog_name][catalog_key]['num_machines']
                 if num_machines == 1: machine_str = 'machine'
                 else:                 machine_str = 'machines'
-            elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
+            elif mame_view_mode == VIEW_MODE_PCLONE:
                 num_machines = cache_index_dic[catalog_name][catalog_key]['num_parents']
                 if num_machines == 1: machine_str = 'parent'
                 else:                 machine_str = 'parents'
@@ -751,8 +749,8 @@ class Main:
         log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
     #
-    # Renders a Parent list knowing the catalog name and the category.
-    # Display mode: a) parents only b) all machines
+    # Renders a list of parent MAME machines knowing the catalog name and the category.
+    # Display mode: a) parents only b) all machines (flat)
     #
     def _render_catalog_parent_list(self, catalog_name, category_name):
         # When using threads the performance gain is small: from 0.76 to 0.71, just 20 ms.
@@ -784,7 +782,7 @@ class Main:
 
         # >> Load main MAME info DB and catalog
         l_cataloged_dic_start = time.time()
-        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+        if view_mode_property == VIEW_MODE_PCLONE:
             catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
         elif view_mode_property == VIEW_MODE_FLAT:
             catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
@@ -827,7 +825,7 @@ class Main:
         # >> Render parent main list
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
-        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+        if view_mode_property == VIEW_MODE_PCLONE:
             # >> Parent/Clone mode render parents only
             machine_list = catalog_dic[category_name]
             for machine_name in machine_list:
@@ -837,8 +835,8 @@ class Main:
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
                 assets = MAME_assets_dic[machine_name]
                 num_clones = len(main_pclone_dic[machine_name])
-                self._render_catalog_machine_row(machine_name, machine, assets, True, view_mode_property,
-                                                 catalog_name, category_name, num_clones)
+                self._render_catalog_machine_row(machine_name, machine, assets,
+                                                 True, num_clones, catalog_name, category_name)
         else:
             # >> Flat mode renders all machines
             machine_list = catalog_dic[category_name]
@@ -848,8 +846,7 @@ class Main:
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
                 assets = MAME_assets_dic[machine_name]
-                self._render_catalog_machine_row(machine_name, machine, assets, False, view_mode_property,
-                                                 catalog_name, category_name)
+                self._render_catalog_machine_row(machine_name, machine, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
         rendering_time = rendering_ticks_end - rendering_ticks_start
@@ -865,6 +862,7 @@ class Main:
         log_debug('Total               {0:.4f} s'.format(total_time))
 
     #
+    # Renders a list of MAME Clone machines (including parent).
     # No need to check for DB existance here. If this function is called is because parents and
     # hence all ROMs databases exist.
     #
@@ -891,8 +889,7 @@ class Main:
         self._set_Kodi_all_sorting_methods()
         machine = MAME_render_db_dic[parent_name]
         assets  = MAME_assets_dic[parent_name]
-        self._render_catalog_machine_row(parent_name, machine, assets, False, view_mode_property, 
-                                         catalog_name, category_name)
+        self._render_catalog_machine_row(parent_name, machine, assets)
 
         # >> Render clones belonging to parent in this category
         for p_name in main_pclone_dic[parent_name]:
@@ -900,8 +897,7 @@ class Main:
             assets  = MAME_assets_dic[p_name]
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            self._render_catalog_machine_row(p_name, machine, assets, False, view_mode_property,
-                                             catalog_name, category_name)
+            self._render_catalog_machine_row(p_name, machine, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
@@ -914,22 +910,22 @@ class Main:
         ICON_OVERLAY = 6
         title_str = '{0} [COLOR orange]({1} {2})[/COLOR]'.format(catalog_key, num_machines, machine_str)
         listitem = xbmcgui.ListItem(title_str)
-        listitem.setInfo('video', {'Title'   : title_str, 'Overlay' : ICON_OVERLAY, 'size' : num_machines})
+        listitem.setInfo('video', {'Title' : title_str, 'Overlay' : ICON_OVERLAY, 'size' : num_machines})
 
         # --- Create context menu ---
-        commands = []
-        URL_view = self._misc_url_1_arg_RunPlugin('command', 'VIEW')
-        commands.append(('View', URL_view ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
-        listitem.addContextMenuItems(commands, replaceItems = True)
+        commands = [
+            ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ]
+        listitem.addContextMenuItems(commands)
 
         # --- Add row ---
         URL = self._misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_catalog_machine_row(self, machine_name, machine, machine_assets, flag_parent_list, view_mode_property,
-                                    catalog_name, category_name, num_clones = 0):
+    def _render_catalog_machine_row(self, machine_name, machine, machine_assets,
+                                    flag_parent_list = False, num_clones = 0, catalog_name = '', category_name = ''):
         # --- Default values for flags ---
         AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
 
@@ -1000,10 +996,10 @@ class Main:
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
 
         # --- Create context menu ---
-        URL_view_DAT    = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
-        URL_view        = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
-        URL_fav         = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
-        if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
+        URL_view_DAT = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
+        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
+        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
+        if flag_parent_list and num_clones > 0:
             URL_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_MAME_CLONES', 
                                                         'catalog', catalog_name, 'category', category_name, 'parent', machine_name)
             commands = [
@@ -1012,7 +1008,7 @@ class Main:
                 ('Show clones', URL_clones),
                 ('Add to MAME Favourites', URL_fav),
                 ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-                ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+                ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
             ]
         else:
             commands = [
@@ -1020,17 +1016,13 @@ class Main:
                 ('View / Audit', URL_view),
                 ('Add to MAME Favourites', URL_fav),
                 ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-                ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+                ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
             ]
-        listitem.addContextMenuItems(commands, replaceItems = True)
+        listitem.addContextMenuItems(commands)
 
         # --- Add row ---
-        if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PCLONE:
-            URL = self._misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
-            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
-        else:
-            URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
-            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+        URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     #
     # Not used at the moment -> There are global display settings.
@@ -1138,7 +1130,7 @@ class Main:
 
         self._set_Kodi_all_sorting_methods()
         SL_proper_name = SL_catalog_dic[SL_name]['display_name']
-        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+        if view_mode_property == VIEW_MODE_PCLONE:
             log_debug('_render_SL_ROMs() Rendering Parent/Clone launcher')
             # >> Get list of parents
             parent_list = []
@@ -1148,14 +1140,14 @@ class Main:
                 assets     = SL_asset_dic[parent_name] if parent_name in SL_asset_dic else fs_new_SL_asset()
                 num_clones = len(SL_PClone_dic[SL_name][parent_name])
                 ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
-                self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, view_mode_property, num_clones)
+                self._render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, num_clones)
         elif view_mode_property == VIEW_MODE_FLAT:
             log_debug('_render_SL_ROMs() Rendering Flat launcher')
             for rom_name in SL_roms:
                 ROM    = SL_roms[rom_name]
                 assets = SL_asset_dic[rom_name] if rom_name in SL_asset_dic else fs_new_SL_asset()
                 ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
-                self._render_SL_ROM_row(SL_name, rom_name, ROM, assets, False, view_mode_property)
+                self._render_SL_ROM_row(SL_name, rom_name, ROM, assets)
         else:
             kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
             return
@@ -1193,7 +1185,7 @@ class Main:
             assets = SL_asset_dic[clone_name] if clone_name in SL_asset_dic else fs_new_SL_asset()
             ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
             log_debug(unicode(ROM))
-            self._render_SL_ROM_row(SL_name, clone_name, ROM, assets, False, view_mode_property)
+            self._render_SL_ROM_row(SL_name, clone_name, ROM, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_SL_list_row(self, SL_name, SL):
@@ -1216,18 +1208,18 @@ class Main:
         listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
 
         # --- Create context menu ---
-        commands = []
-        URL_view = self._misc_url_1_arg_RunPlugin('command', 'VIEW')
-        commands.append(('View', URL_view ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
-        listitem.addContextMenuItems(commands, replaceItems = True)
+        commands = [
+            ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)' ),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
+        listitem.addContextMenuItems(commands)
 
         # --- Add row ---
         URL = self._misc_url_2_arg('catalog', 'SL', 'category', SL_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_SL_ROM_row(self, SL_name, rom_name, ROM, assets, flag_parent_list, view_mode_property, num_clones = 0):
+    def _render_SL_ROM_row(self, SL_name, rom_name, ROM, assets, flag_parent_list = False, num_clones = 0):
         display_name = ROM['description']
         if flag_parent_list and num_clones > 0:
             display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
@@ -1260,33 +1252,37 @@ class Main:
 
         # --- Assets ---
         # >> AEL custom artwork fields
-        listitem.setArt({'title' : assets['title'], 'snap' : assets['snap'], 'boxfront' : assets['boxfront']})
-        # >> Kodi official artwork fields
-        listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
+        listitem.setArt({'title' : assets['title'], 'snap' : assets['snap'], 'boxfront' : assets['boxfront'],
+                         'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
 
         # --- Create context menu ---
-        URL_view_DAT    = self._misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', rom_name)
+        URL_view_DAT = self._misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', rom_name)
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
-        URL_show_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_SL_CLONES', 
-                                                         'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
         URL_fav = self._misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
-        commands = []
-        commands.append(('Info / Utils', URL_view_DAT))
-        commands.append(('View / Audit', URL_view))
-        if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PARENTS_ONLY:
-            commands.append(('Show clones', URL_show_clones))
-        commands.append(('Add ROM to SL Favourites', URL_fav))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
-        listitem.addContextMenuItems(commands, replaceItems = True)
+        if flag_parent_list and num_clones > 0:
+            URL_show_c = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_SL_CLONES', 
+                                                        'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
+            commands = [
+                ('Info / Utils', URL_view_DAT),
+                ('View / Audit', URL_view),
+                ('Show clones', URL_show_c),
+                ('Add ROM to SL Favourites', URL_fav),
+                ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+                ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ]
+        else:
+            commands = [
+                ('Info / Utils', URL_view_DAT),
+                ('View / Audit', URL_view),
+                ('Add ROM to SL Favourites', URL_fav),
+                ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+                ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ]
+        listitem.addContextMenuItems(commands)
 
         # --- Add row ---
-        if flag_parent_list and num_clones > 0 and view_mode_property == VIEW_MODE_PCLONE:
-            URL = self._misc_url_3_arg('catalog', 'SL', 'category', SL_name, 'parent', rom_name)
-            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
-        else:
-            URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
-            xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+        URL = self._misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     #----------------------------------------------------------------------------------------------
     # DATs
@@ -1298,11 +1294,11 @@ class Main:
     #----------------------------------------------------------------------------------------------
     def _render_DAT_list(self, catalog_name):
         # --- Create context menu ---
-        commands = []
-        URL_view = self._misc_url_1_arg_RunPlugin('command', 'VIEW')
-        commands.append(('View', URL_view ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
+        commands = [
+            ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
         # --- Unrolled variables ---
         ICON_OVERLAY = 6
 
@@ -1318,7 +1314,7 @@ class Main:
                 category_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(DAT_idx_dic[key]['name'], key)
                 listitem = xbmcgui.ListItem(category_name)
                 listitem.setInfo('video', {'title' : category_name, 'overlay' : ICON_OVERLAY } )
-                listitem.addContextMenuItems(commands, replaceItems = True)
+                listitem.addContextMenuItems(commands)
                 URL = self._misc_url_2_arg('catalog', catalog_name, 'category', key)
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         elif catalog_name == 'MAMEINFO':
@@ -1332,7 +1328,7 @@ class Main:
                 category_name = '{0}'.format(key)
                 listitem = xbmcgui.ListItem(category_name)
                 listitem.setInfo('video', {'title' : category_name, 'overlay' : ICON_OVERLAY } )
-                listitem.addContextMenuItems(commands, replaceItems = True)
+                listitem.addContextMenuItems(commands)
                 URL = self._misc_url_2_arg('catalog', catalog_name, 'category', key)
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
         elif catalog_name == 'Gameinit':
@@ -1346,7 +1342,7 @@ class Main:
                 machine_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(machine_name_list[1], machine_name_list[0])
                 listitem = xbmcgui.ListItem(machine_name)
                 listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
-                listitem.addContextMenuItems(commands, replaceItems = True)
+                listitem.addContextMenuItems(commands)
                 URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
         elif catalog_name == 'Command':
@@ -1360,7 +1356,7 @@ class Main:
                 machine_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(machine_name_list[1], machine_name_list[0])
                 listitem = xbmcgui.ListItem(machine_name)
                 listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
-                listitem.addContextMenuItems(commands, replaceItems = True)
+                listitem.addContextMenuItems(commands)
                 URL = self._misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
                 xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
         else:
@@ -1403,12 +1399,12 @@ class Main:
         listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
 
         # --- Create context menu ---
-        commands = []
-        URL_view = self._misc_url_1_arg_RunPlugin('command', 'VIEW')
-        commands.append(('View', URL_view ))
-        commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)' ))
-        commands.append(('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__) ))
-        listitem.addContextMenuItems(commands, replaceItems = True)
+        commands = [
+            ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
+        listitem.addContextMenuItems(commands)
 
         # --- Add row ---
         URL = self._misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_tuple[0])
@@ -3094,10 +3090,10 @@ class Main:
         # >> AEL custom artwork fields
         listitem.setArt({'title'     : machine_assets['title'],   'snap'    : machine_assets['snap'],
                          'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'],
-                         'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'] })
-        # >> Kodi official artwork fields
-        listitem.setArt({'icon'   : icon_path,   'fanart'    : fanart_path,
-                         'banner' : banner_path, 'clearlogo' : clearlogo_path, 'poster' : poster_path })
+                         'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'],
+                         'icon'      : icon_path,                 'fanart'    : fanart_path,
+                         'banner'    : banner_path,               'clearlogo' : clearlogo_path,
+                         'poster'    : poster_path})
 
         # --- ROM flags (Skins will use these flags to render icons) ---
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
@@ -3108,12 +3104,12 @@ class Main:
         URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
         commands = [
             ('Info / Utils',  URL_view_DAT),
-            ('View / Audit',  URL_view ),
-            ('Manage Favourite machines',  URL_manage ),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)' ),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__) )
+            ('View / Audit',  URL_view),
+            ('Manage Favourite machines', URL_manage),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
         ]
-        listitem.addContextMenuItems(commands, replaceItems = True)
+        listitem.addContextMenuItems(commands)
 
         # --- Add row ---
         URL = self._misc_url_3_arg('command', 'LAUNCH', 'machine', machine_name, 'location', 'MAME_FAV')
@@ -3369,9 +3365,8 @@ class Main:
 
         # --- Assets ---
         # >> AEL custom artwork fields
-        listitem.setArt({'title' : assets['title'], 'snap' : assets['snap'], 'boxfront' : assets['boxfront']})
-        # >> Kodi official artwork fields
-        listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
+        listitem.setArt({'title' : assets['title'], 'snap' : assets['snap'], 'boxfront' : assets['boxfront'],
+                         'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
 
         # --- Create context menu ---
         URL_view_DAT = self._misc_url_4_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
@@ -3384,7 +3379,7 @@ class Main:
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
             ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
         ]
-        listitem.addContextMenuItems(commands, replaceItems = True)
+        listitem.addContextMenuItems(commands)
 
         # --- Add row ---
         URL = self._misc_url_4_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
@@ -3414,7 +3409,7 @@ class Main:
                 num_machines = filter_index_dic[f_name]['num_machines']
                 if num_machines == 1: machine_str = 'machine'
                 else:                 machine_str = 'machines'
-            elif mame_view_mode == VIEW_MODE_PCLONE or mame_view_mode == VIEW_MODE_PARENTS_ONLY:
+            elif mame_view_mode == VIEW_MODE_PCLONE:
                 num_machines = filter_index_dic[f_name]['num_parents']
                 if num_machines == 1: machine_str = 'parent'
                 else:                 machine_str = 'parents'
@@ -3432,7 +3427,7 @@ class Main:
         # >> Make a list of tuples
         commands = [
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
         ]
         listitem.addContextMenuItems(commands)
 
@@ -3463,7 +3458,7 @@ class Main:
         l_cataloged_dic_start = time.time()
         Filters_index_dic = fs_load_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath())
         rom_DB_noext = Filters_index_dic[filter_name]['rom_DB_noext']
-        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+        if view_mode_property == VIEW_MODE_PCLONE:
             DB_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
             machine_list = fs_load_JSON_file(DB_FN.getPath())
         elif view_mode_property == VIEW_MODE_FLAT:
@@ -3501,7 +3496,7 @@ class Main:
         # >> Render parent main list
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
-        if view_mode_property == VIEW_MODE_PCLONE or view_mode_property == VIEW_MODE_PARENTS_ONLY:
+        if view_mode_property == VIEW_MODE_PCLONE:
             # >> Parent/Clone mode render parents only
             for machine_name in machine_list:
                 machine = machine_render_dic[machine_name]
@@ -3510,8 +3505,8 @@ class Main:
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
                 assets = MAME_assets_dic[machine_name]
                 num_clones = len(main_pclone_dic[machine_name])
-                self._render_catalog_machine_row(machine_name, machine, assets, True, view_mode_property,
-                                                 'Custom', filter_name, num_clones)
+                self._render_catalog_machine_row(machine_name, machine, assets,
+                                                 True, num_clones, 'Custom', filter_name)
         else:
             # >> Flat mode renders all machines
             for machine_name in machine_list:
@@ -3520,8 +3515,7 @@ class Main:
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
                 assets = MAME_assets_dic[machine_name]
-                self._render_catalog_machine_row(machine_name, machine, assets, False, view_mode_property,
-                                                 'Custom', filter_name)
+                self._render_catalog_machine_row(machine_name, machine, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
@@ -3560,16 +3554,14 @@ class Main:
         self._set_Kodi_all_sorting_methods()
         machine = machine_render_dic[parent_name]
         assets  = MAME_assets_dic[parent_name]
-        self._render_catalog_machine_row(parent_name, machine, assets, False, view_mode_property, 
-                                         'Custom', filter_name)
+        self._render_catalog_machine_row(parent_name, machine, assets)
         # >> and clones next.
         for p_name in main_pclone_dic[parent_name]:
             machine = machine_render_dic[p_name]
             assets  = MAME_assets_dic[p_name]
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            self._render_catalog_machine_row(p_name, machine, assets, False, view_mode_property,
-                                             'Custom', filter_name)
+            self._render_catalog_machine_row(p_name, machine, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 

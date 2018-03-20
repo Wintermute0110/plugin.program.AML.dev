@@ -36,14 +36,14 @@
     <setting label="Custom filter XML path" type="file" id="filter_XML" default="special://home/addons/plugin.program.AML/AML-MAME-filters.xml" />
 </category>
 <category label="Display">
-    <setting label="MAME view mode" type="enum" id="mame_view_mode"  default="2" values="Flat|Parent/Clone|Parents only" />
-    <setting label="Software Lists view mode" type="enum" id="sl_view_mode"  default="2" values="Flat|Parent/Clone|Parents only" />
+    <setting label="MAME view mode" type="enum" id="mame_view_mode" default="1" values="Flat|Parent/Clone" />
+    <setting label="Software Lists view mode" type="enum" id="sl_view_mode" default="1" values="Flat|Parent/Clone" />
     <setting label="Hide BIOSes" type="bool" default="false" id="display_hide_BIOS" />
     <setting label="Hide non-working machines" type="bool" default="false" id="display_hide_nonworking" />
     <setting label="Hide imperfect machines" type="bool" default="false" id="display_hide_imperfect" />
     <setting label="Display machines with available ROMs only" type="bool" default="false" id="display_rom_available" />
     <setting label="Display machines with available CHDs only" type="bool" default="false" id="display_chd_available" />
-    
+
     <setting id="separator" type="lsep" label="Addon root" />
     <setting label="Display Main filters" type="bool" default="false" id="display_main_filters" />
     <setting label="Display Binary filters" type="bool" default="false" id="display_binary_filters" />

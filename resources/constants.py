@@ -58,13 +58,11 @@ class Addon_Error(Exception):
 # >> Make sure these strings are equal to the ones in settings.xml
 VIEW_MODE_FLAT         = 0 # 'Flat'
 VIEW_MODE_PCLONE       = 1 # 'Parent/Clone'
-VIEW_MODE_PARENTS_ONLY = 2 # 'Parents only'
 ROMSET_MAME_MERGED     = 0 # 'Merged'
 ROMSET_MAME_SPLIT      = 1 # 'Split'
 ROMSET_MAME_NONMERGED  = 2 # 'Non-merged'
 ROMSET_SL_MERGED       = 0 # 'Merged'
 ROMSET_SL_SPLIT        = 1 # 'Split'
-ROMSET_SL_NONMERGED    = 2 # 'Non-merged'
 
 # --- Used in the addon URLs so mark the location of machines/ROMs ---
 LOCATION_STANDARD  = 'STANDARD'
