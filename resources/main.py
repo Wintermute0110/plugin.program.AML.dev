@@ -488,7 +488,6 @@ class Main:
         # -listmedia           list available media for the system
         ctype_str        = 'Machines by Control Type'
         drotation_str    = 'Machines by Display Rotation'
-        dtag_str         = 'Machines by Display Tag'
         dtype_str        = 'Machines by Display Type'
         device_str       = 'Machines by Device'
         driver_str       = 'Machines by Driver'
@@ -533,7 +532,6 @@ class Main:
             # >> Always there
             ctype_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Controls']))
             drotation_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Rotate']))
-            dtag_str         += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Tag']))
             dtype_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Type']))
             device_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Devices']))
             driver_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Driver']))
@@ -568,7 +566,6 @@ class Main:
         # >> Cataloged filters (always there)
         self._render_root_list_row(ctype_str, self._misc_url_1_arg('catalog', 'Controls'))
         self._render_root_list_row(drotation_str, self._misc_url_1_arg('catalog', 'Display_Rotate'))
-        self._render_root_list_row(dtag_str, self._misc_url_1_arg('catalog', 'Display_Tag'))
         self._render_root_list_row(dtype_str, self._misc_url_1_arg('catalog', 'Display_Type'))
         self._render_root_list_row(device_str, self._misc_url_1_arg('catalog', 'Devices'))
         self._render_root_list_row(driver_str, self._misc_url_1_arg('catalog', 'Driver'))

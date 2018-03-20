@@ -2705,7 +2705,6 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
         'Year'           : {},
         'Driver'         : {},
         'Controls'       : {},
-        'Display_Tag'    : {},
         'Display_Type'   : {},
         'Display_Rotate' : {},
         'Devices'        : {},
@@ -2832,7 +2831,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     # >> Build ROM cache index and save Main catalog JSON file
     for catalog_key in main_catalog_all: main_catalog_all[catalog_key].sort()
     for catalog_key in main_catalog_parents: main_catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('Main', cache_index_dic, main_catalog_all, main_catalog_parents)
+    _cache_index_builder('Main', cache_index_dic, main_catalog_all, main_catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_MAIN_ALL_PATH.getPath(), main_catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_MAIN_PARENT_PATH.getPath(), main_catalog_parents)
     processed_filters += 1
@@ -2908,7 +2907,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     # >> Build cache index and save Binary catalog JSON file
     for catalog_key in binary_catalog_all: binary_catalog_all[catalog_key].sort()
     for catalog_key in binary_catalog_parents: binary_catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('Binary', cache_index_dic, binary_catalog_all, binary_catalog_parents)
+    _cache_index_builder('Binary', cache_index_dic, binary_catalog_all, binary_catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_BINARY_ALL_PATH.getPath(), binary_catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_BINARY_PARENT_PATH.getPath(), binary_catalog_parents)
     processed_filters += 1
@@ -2923,7 +2922,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     catalog_parents = {}
     catalog_all = {}
     fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'catver')
-    fs_cache_index_builder('Catver', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Catver', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CATVER_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -2935,7 +2934,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     catalog_parents = {}
     catalog_all = {}
     fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'catlist')
-    fs_cache_index_builder('Catlist', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Catlist', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CATLIST_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -2947,7 +2946,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     catalog_parents = {}
     catalog_all = {}
     fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'genre')
-    fs_cache_index_builder('Genre', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Genre', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_GENRE_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_GENRE_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -2959,7 +2958,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     catalog_parents = {}
     catalog_all = {}
     fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'nplayers')
-    fs_cache_index_builder('NPlayers', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('NPlayers', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -2971,7 +2970,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     catalog_parents = {}
     catalog_all = {}
     fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'bestgames')
-    fs_cache_index_builder('Bestgames', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Bestgames', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -2983,7 +2982,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     catalog_parents = {}
     catalog_all = {}
     fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'series')
-    fs_cache_index_builder('Series', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Series', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -2995,7 +2994,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     catalog_parents = {}
     catalog_all = {}
     fs_build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'manufacturer')
-    fs_cache_index_builder('Manufacturer', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Manufacturer', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -3007,7 +3006,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     catalog_parents = {}
     catalog_all = {}
     fs_build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'year')
-    fs_cache_index_builder('Year', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Year', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -3034,7 +3033,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
             catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
     for catalog_key in catalog_all: catalog_all[catalog_key].sort()
     for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('Driver', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Driver', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -3068,39 +3067,40 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
             catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
     for catalog_key in catalog_all: catalog_all[catalog_key].sort()
     for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('Controls', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Controls', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Display tag catalog ---
-    log_info('Making Display Tag catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Display tag catalog ...')
-    catalog_parents = {}
-    catalog_all = {}
-    for parent_name in main_pclone_dic:
-        machine = machines[parent_name]
-        machine_render = machines_render[parent_name]
-        if machine_render['isDevice']: continue # >> Skip device machines
-        catalog_key = " / ".join(machine['display_tag'])
-        # >> Change category name for machines with no display
-        if catalog_key == '': catalog_key = '[ No display ]'
-        if catalog_key in catalog_parents:
-            catalog_parents[catalog_key].append(parent_name)
-            catalog_all[catalog_key].append(parent_name)
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-        else:
-            catalog_parents[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('Display_Tag', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_ALL_PATH.getPath(), catalog_all)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PARENT_PATH.getPath(), catalog_parents)
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+    # >> Not very useful, removed in AML 0.9.4
+    # log_info('Making Display Tag catalog ...')
+    # pDialog.update(update_number, pDialog_line1, 'Making Display tag catalog ...')
+    # catalog_parents = {}
+    # catalog_all = {}
+    # for parent_name in main_pclone_dic:
+    #     machine = machines[parent_name]
+    #     machine_render = machines_render[parent_name]
+    #     if machine_render['isDevice']: continue # >> Skip device machines
+    #     catalog_key = " / ".join(machine['display_tag'])
+    #     # >> Change category name for machines with no display
+    #     if catalog_key == '': catalog_key = '[ No display ]'
+    #     if catalog_key in catalog_parents:
+    #         catalog_parents[catalog_key].append(parent_name)
+    #         catalog_all[catalog_key].append(parent_name)
+    #         catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+    #     else:
+    #         catalog_parents[catalog_key] = [ parent_name ]
+    #         catalog_all[catalog_key] = [ parent_name ]
+    #         catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+    # for catalog_key in catalog_all: catalog_all[catalog_key].sort()
+    # for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
+    # _cache_index_builder('Display_Tag', cache_index_dic, catalog_all, catalog_parents)
+    # fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_ALL_PATH.getPath(), catalog_all)
+    # fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PARENT_PATH.getPath(), catalog_parents)
+    # processed_filters += 1
+    # update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Display type catalog ---
     log_info('Making Display Type catalog ...')
@@ -3124,7 +3124,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
             catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
     for catalog_key in catalog_all: catalog_all[catalog_key].sort()
     for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -3152,7 +3152,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
             catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
     for catalog_key in catalog_all: catalog_all[catalog_key].sort()
     for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('Display_Rotate', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Display_Rotate', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -3187,7 +3187,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
             catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
     for catalog_key in catalog_all: catalog_all[catalog_key].sort()
     for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('Devices', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('Devices', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_LIST_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_LIST_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -3215,7 +3215,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
                 catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
     for catalog_key in catalog_all: catalog_all[catalog_key].sort()
     for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -3241,7 +3241,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
             catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
     for catalog_key in catalog_all: catalog_all[catalog_key].sort()
     for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('ShortName', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('ShortName', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
@@ -3267,7 +3267,7 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
             catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
     for catalog_key in catalog_all: catalog_all[catalog_key].sort()
     for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-    fs_cache_index_builder('LongName', cache_index_dic, catalog_all, catalog_parents)
+    _cache_index_builder('LongName', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
