@@ -43,6 +43,16 @@
     <setting label="Hide imperfect machines" type="bool" default="false" id="display_hide_imperfect" />
     <setting label="Display machines with available ROMs only" type="bool" default="false" id="display_rom_available" />
     <setting label="Display machines with available CHDs only" type="bool" default="false" id="display_chd_available" />
+    
+    <setting id="separator" type="lsep" label="Addon root" />
+    <setting label="Display Main filters" type="bool" default="false" id="display_main_filters" />
+    <setting label="Display Binary filters" type="bool" default="false" id="display_binary_filters" />
+    <setting label="Display Catalog filters" type="bool" default="false" id="display_catalog_filters" />
+    <setting label="Display DAT browser" type="bool" default="false" id="display_DAT_browser" />
+    <setting label="Display Software List browser" type="bool" default="false" id="display_SL_browser" />
+    <setting label="Display MAME Favourites" type="bool" default="false" id="display_MAME_favs" />
+    <setting label="Display SL Favourites" type="bool" default="false" id="display_SL_favs" />
+    <setting label="Display Custom filters" type="bool" default="false" id="display_custom_filters" />
 </category>
 <category label="Artwork / Assets">
     <setting label="MAME Icon" type="enum" id="artwork_mame_icon"  default="0" values="Title|Snap|Flyer|Cabinet|PCB" />
