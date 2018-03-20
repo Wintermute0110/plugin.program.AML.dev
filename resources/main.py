@@ -36,6 +36,7 @@ from utils import *
 from utils_kodi import *
 from disk_IO import *
 from mame import *
+from ReaderPDF import *
 
 # --- Addon object (used to access settings) ---
 __addon__         = xbmcaddon.Addon()
@@ -1243,11 +1244,12 @@ class Main:
         if self.settings['display_hide_trailers']:
             listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
                                        'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-                                       'overlay' : ICON_OVERLAY })
+                                       'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY })
         else:
             listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
                                        'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-                                       'trailer' : assets['trailer'], 'overlay' : ICON_OVERLAY })
+                                       'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
+                                       'trailer' : assets['trailer'] })
         listitem.setProperty('platform', 'MAME Software List')
 
         # --- Assets ---
@@ -1517,25 +1519,26 @@ class Main:
 
             # >> Check if DAT information is available for this machine
             if History_idx_dic:
-                History_MAME_set = set([ machine[0] for machine in History_idx_dic['mame']['machines'] ])
+                # >> Python Set Comprehension
+                History_MAME_set = { machine[0] for machine in History_idx_dic['mame']['machines'] }
                 if machine_name in History_MAME_set: History_str = 'Found'
                 else:                                History_str = 'Not found'
             else:
                 History_str = 'Not configured'
             if Mameinfo_idx_dic:
-                Mameinfo_MAME_set = set([ machine[0] for machine in Mameinfo_idx_dic['mame'] ])
+                Mameinfo_MAME_set = { machine[0] for machine in Mameinfo_idx_dic['mame'] }
                 if machine_name in Mameinfo_MAME_set: Mameinfo_str = 'Found'
                 else:                                 Mameinfo_str = 'Not found'
             else:
                 Mameinfo_str = 'Not configured'
             if Gameinit_idx_list:
-                Gameinit_MAME_set = set([ machine[0] for machine in Gameinit_idx_list ])
+                Gameinit_MAME_set = { machine[0] for machine in Gameinit_idx_list }
                 if machine_name in Gameinit_MAME_set: Gameinit_str = 'Found'
                 else:                                 Gameinit_str = 'Not found'
             else:
                 Gameinit_str = 'Not configured'
             if Command_idx_list:
-                Command_MAME_set = set([ machine[0] for machine in Command_idx_list ])
+                Command_MAME_set = { machine[0] for machine in Command_idx_list }
                 if machine_name in Command_MAME_set: Command_str = 'Found'
                 else:                                Command_str = 'Not found'
             else:
@@ -1706,7 +1709,6 @@ class Main:
             pDialog.update(0)
 
             # >> Extract images from PDF
-            from ReaderPDF import *
             reader = PDFReader(PDF_file_FN.getPath(), img_dir_FN.getPath())
             log_debug('reader.info() = {0}'.format(unicode(reader.info())))
             images = reader.convert_to_images()
@@ -3779,16 +3781,16 @@ class Main:
             # >> fs_build_MAME_main_database() creates the ROM hashed database and the (empty)
             # >> Asset cache.
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            DB = fs_build_MAME_main_database(PATHS, self.settings, control_dic)
+            DB = mame_build_MAME_main_database(PATHS, self.settings, control_dic)
 
             # --- Build and save everything ---
             # >> fs_build_MAME_catalogs() creates the cache_index_dic and updates the ROM cache.
-            fs_build_ROM_audit_databases(PATHS, self.settings, control_dic,
-                                         DB.machines, DB.machines_render, DB.devices_db_dic, DB.machine_roms)
-            fs_build_MAME_catalogs(PATHS,
-                                   DB.machines, DB.machines_render, DB.machine_roms, DB.main_pclone_dic)
-            fs_build_SoftwareLists_databases(PATHS, self.settings, control_dic,
-                                             DB.machines, DB.machines_render, DB.main_pclone_dic)
+            mame_build_ROM_audit_databases(PATHS, self.settings, control_dic,
+                                           DB.machines, DB.machines_render, DB.devices_db_dic, DB.machine_roms)
+            mame_build_MAME_catalogs(PATHS,
+                                     DB.machines, DB.machines_render, DB.machine_roms, DB.main_pclone_dic)
+            mame_build_SoftwareLists_databases(PATHS, self.settings, control_dic,
+                                               DB.machines, DB.machines_render, DB.main_pclone_dic)
             kodi_notify('All databases built')
 
         # --- Scan everything ---
@@ -3861,11 +3863,11 @@ class Main:
             pDialog.close()
 
             # >> Updates machines_render dictionary
-            fs_scan_MAME_ROMs(PATHS, self.settings,
-                              control_dic, machines, machines_render,
-                              machine_archives_dic, ROM_archive_list, CHD_archive_list,
-                              ROM_path_FN, CHD_path_FN, Samples_path_FN,
-                              scan_CHDs, scan_Samples)
+            mame_scan_MAME_ROMs(PATHS, self.settings,
+                                control_dic, machines, machines_render,
+                                machine_archives_dic, ROM_archive_list, CHD_archive_list,
+                                ROM_path_FN, CHD_path_FN, Samples_path_FN,
+                                scan_CHDs, scan_Samples)
             # >> Save control_dic (has been updated in the scanner function).
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
@@ -3881,8 +3883,8 @@ class Main:
 
             if do_MAME_asset_scan:
                 # >> Updates assets_dic dictionary
-                fs_scan_MAME_assets(PATHS, assets_dic, control_dic,
-                                    machines_render, main_pclone_dic, Asset_path_FN, pDialog)
+                mame_scan_MAME_assets(PATHS, assets_dic, control_dic,
+                                      machines_render, main_pclone_dic, Asset_path_FN, pDialog)
                 # >> Save control_dic (has been updated in the scanner function).
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
@@ -4545,7 +4547,7 @@ class Main:
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 log_info('_command_setup_plugin() Generating MAME main database and PClone list ...')
                 try:
-                    fs_build_MAME_main_database(PATHS, self.settings, control_dic)
+                    mame_build_MAME_main_database(PATHS, self.settings, control_dic)
                 except GeneralError as e:
                     log_error(e.msg)
                     raise SystemExit
@@ -4578,7 +4580,7 @@ class Main:
                 pDialog.close()
 
                 # >> Generate ROM databases
-                fs_build_ROM_audit_databases(PATHS, self.settings,
+                mame_build_ROM_audit_databases(PATHS, self.settings,
                                              control_dic,
                                              machines, machines_render, devices_db_dic,
                                              machine_roms)
@@ -4596,7 +4598,7 @@ class Main:
                 machine_roms    = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
                 main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
                 kodi_busydialog_OFF()
-                fs_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic)
+                mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic)
                 kodi_notify('Indices and catalogs built')
 
             # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
@@ -4613,7 +4615,8 @@ class Main:
                 main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
                 control_dic     = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 kodi_busydialog_OFF()
-                fs_build_SoftwareLists_databases(PATHS, self.settings, control_dic, machines, machines_render, main_pclone_dic)
+                mame_build_SoftwareLists_databases(PATHS, self.settings, control_dic,
+                                                   machines, machines_render, main_pclone_dic)
                 kodi_notify('Software Lists indices and catalogs built')
 
             # --- Scan ROMs/CHDs/Samples and updates ROM status ---
@@ -4671,11 +4674,11 @@ class Main:
                 pDialog.close()
 
                 # >> Updates machines_render machine flags 'flags' and control_dic
-                fs_scan_MAME_ROMs(PATHS, self.settings,
-                                  control_dic, machines, machines_render,
-                                  machine_archives_dic, ROM_archive_list, CHD_archive_list,
-                                  ROM_path_FN, CHD_path_FN, Samples_path_FN,
-                                  scan_CHDs, scan_Samples)
+                mame_scan_MAME_ROMs(PATHS, self.settings,
+                                    control_dic, machines, machines_render,
+                                    machine_archives_dic, ROM_archive_list, CHD_archive_list,
+                                    ROM_path_FN, CHD_path_FN, Samples_path_FN,
+                                    scan_CHDs, scan_Samples)
 
                 # >> Regenerate Main hashed database
                 fs_make_main_hashed_db(PATHS, machines, machines_render, pDialog)
@@ -4715,7 +4718,8 @@ class Main:
 
                 # >> Updates and saves the MAME Asset database.
                 pDialog = xbmcgui.DialogProgress()
-                fs_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pclone_dic, Asset_path_FN, pDialog)
+                mame_scan_MAME_assets(PATHS, assets_dic, control_dic,
+                                      machines_render, main_pclone_dic, Asset_path_FN, pDialog)
 
                 # >> Save asset DB and control dic
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
@@ -4761,8 +4765,8 @@ class Main:
                 # >> Load SL and scan ROMs/CHDs. fs_scan_SL_ROMs() updates each SL database.
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-                fs_scan_SL_ROMs(PATHS, control_dic, SL_index_dic, SL_hash_dir_FN,
-                                SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN)
+                mame_scan_SL_ROMs(PATHS, control_dic, SL_index_dic, SL_hash_dir_FN,
+                                  SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
                 kodi_notify('Scanning of SL ROMs finished')
 
@@ -4785,7 +4789,7 @@ class Main:
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
                 SL_pclone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
-                fs_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN)
+                mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
                 kodi_notify('Scanning of SL assets finished')
 
@@ -4838,14 +4842,16 @@ class Main:
                 pDialog = xbmcgui.DialogProgress()
                 pdialog_line1 = 'Loading databases ...'
                 pDialog.create('Advanced MAME Launcher')
-                pDialog.update(0, pdialog_line1, 'Control dic')
+                pDialog.update(0, pdialog_line1, 'Software Lists index')
                 SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-                pDialog.update(50, pdialog_line1, 'Control dic')
+                pDialog.update(33, pdialog_line1, 'Software Lists machines')
                 SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+                pDialog.update(66, pdialog_line1, 'History DAT index')
+                History_idx_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
                 pDialog.update(100, pdialog_line1, ' ')
                 pDialog.close()
 
-                mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, pDialog)
+                mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, pDialog)
                 kodi_notify('SL item plot generation finished')
 
     #

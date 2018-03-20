@@ -240,7 +240,7 @@ def fs_new_SL_ROM():
         'description' : '',
         'year'        : '',
         'publisher'   : '',
-        'plot'        : '',
+        'plot'        : '', # Generated from other fields
         'cloneof'     : '',
         'parts'       : [],
         'hasROMs'     : False,

@@ -801,7 +801,7 @@ def mame_build_MAME_plots(machines, machines_render, assets_dic,
 # Line 3) Manual, History
 # Line 4) Machines: machine list ...
 # ---------------------------------------------------------------------------------------------
-def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, pDialog):
+def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, pDialog):
     pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(0)
@@ -810,7 +810,7 @@ def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, pDialog):
     for SL_name in sorted(SL_index_dic):
         # >> Update progress
         update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, 'Processing Software List {0}'.format(SL_name))
+        pDialog.update(update_number, pdialog_line1, 'Software List {0}'.format(SL_name))
 
         # >> Open database
         SL_DB_prefix = SL_index_dic[SL_name]['rom_DB_noext']
@@ -820,6 +820,11 @@ def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, pDialog):
         SL_roms          = fs_load_JSON_file(SL_ROMs_FN.getPath(), verbose = False)
         SL_assets_dic    = fs_load_JSON_file(SL_assets_FN.getPath(), verbose = False)
         SL_ROM_audit_dic = fs_load_JSON_file(SL_ROM_audit_FN.getPath(), verbose = False)
+        # >> Python Set Comprehension
+        if SL_name in History_idx_dic:
+            History_SL_set = { machine[0] for machine in History_idx_dic[SL_name]['machines'] }
+        else:
+            History_SL_set = set()
 
         # >> Traverse SL ROMs and make plot
         for rom_key in sorted(SL_roms):
@@ -833,7 +838,7 @@ def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, pDialog):
             roms_str = '{0} ROMs and {1} disks'.format(num_ROMs, num_disks)
             Flag_list = []
             if SL_assets_dic[rom_key]['manual']: Flag_list.append('Manual')
-            if machine_name in history_info_set: Flag_list.append('History')
+            if rom_key in History_SL_set: Flag_list.append('History')
             Flag_str = ', '.join(Flag_list)
 
             SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str])
@@ -3635,7 +3640,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
         # log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
         SL_path_FN = FileName(file)
-        SLData = fs_load_SL_XML(SL_path_FN.getPath())
+        SLData = mame_load_SL_XML(SL_path_FN.getPath())
         output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json')
         fs_write_JSON_file(output_FN.getPath(), SLData.roms)
         output_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
@@ -3726,8 +3731,8 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
                 SL_Software_Archives[SL_rom]['CHDs'].extend(soft_item_disk_list)
 
         # >> Save databases
-        fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs)
-        fs_write_JSON_file(SL_Soft_Archives_DB_FN.getPath(), SL_Software_Archives)
+        fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs, verbose = False)
+        fs_write_JSON_file(SL_Soft_Archives_DB_FN.getPath(), SL_Software_Archives, verbose = False)
         # >> Update progress
         processed_files += 1
     pDialog.update((processed_files*100) // total_files, pdialog_line1, ' ')
@@ -3770,7 +3775,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     processed_SL = 0
     SL_machines_dic = {}
     for SL_name in sorted(SL_catalog_dic):
-        pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'SL {0} ...'.format(SL_name))
+        pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'Software List {0} ...'.format(SL_name))
         SL_machine_list = []
         for machine_name in machines:
             # if not machines[machine_name]['softwarelists']: continue
