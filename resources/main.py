@@ -3358,13 +3358,14 @@ class Main:
         listitem = xbmcgui.ListItem(display_name)
         # >> Make all the infolabels compatible with Advanced Emulator Launcher
         if self.settings['display_hide_trailers']:
-            listitem.setInfo('video', {'title' : display_name, 'year'    : ROM['year'],
-                                       'genre' : ROM['genre'], 'studio'  : ROM['publisher'],
-                                       'overlay' : ICON_OVERLAY })
+            listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+                                       'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+                                       'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY })
         else:
             listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
                                        'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-                                       'trailer' : assets['trailer'], 'overlay' : ICON_OVERLAY })
+                                       'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
+                                       'trailer' : assets['trailer'] })
         listitem.setProperty('platform', 'MAME Software List')
 
         # --- Assets ---
