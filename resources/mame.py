@@ -1628,7 +1628,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     (bestgames_dic, bestgames_version) = mame_load_INI_datfile(settings['bestgames_path'])
     pDialog.update(80, pdialog_line1, 'series.ini')
     (series_dic, series_version) = mame_load_INI_datfile(settings['series_path'])
-    pDialog.update(100, ' ')
+    pDialog.update(100, ' ', ' ')
     pDialog.close()
 
     # --- Load DAT files to include category information ---
@@ -1642,9 +1642,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     (gameinit_idx_dic, gameinit_dic, gameinit_version) = mame_load_GameInit_DAT(settings['gameinit_path'])
     pDialog.update(75, pdialog_line1, 'command.dat')
     (command_idx_dic, command_dic, command_version) = mame_load_Command_DAT(settings['command_path'])
-    pDialog.update(100, ' ')
+    pDialog.update(100, ' ', ' ')
     pDialog.close()
-    return
 
     # ---------------------------------------------------------------------------------------------
     # Incremental Parsing approach B (from [1])
@@ -1655,14 +1654,14 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     #
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Building main MAME database ...')
-    log_info('fs_build_MAME_main_database() Loading "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
+    log_info('mame_build_MAME_main_database() Loading "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
     context = ET.iterparse(PATHS.MAME_XML_PATH.getPath(), events=("start", "end"))
     context = iter(context)
     event, root = context.next()
     mame_version_raw = root.attrib['build']
     mame_version_int = mame_get_numerical_version(mame_version_raw)
-    log_info('fs_build_MAME_main_database() MAME str version "{0}"'.format(mame_version_raw))
-    log_info('fs_build_MAME_main_database() MAME numerical version {0}'.format(mame_version_int))
+    log_info('mame_build_MAME_main_database() MAME str version "{0}"'.format(mame_version_raw))
+    log_info('mame_build_MAME_main_database() MAME numerical version {0}'.format(mame_version_int))
 
     # --- Process MAME XML ---
     total_machines = control_dic['total_machines']
@@ -1698,7 +1697,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     stats_dead_parents       = 0
     stats_dead_clones        = 0
 
-    log_info('fs_build_MAME_main_database() Parsing MAME XML file ...')
+    log_info('mame_build_MAME_main_database() Parsing MAME XML file ...')
     num_iteration = 0
     for event, elem in context:
         # --- Debug the elements we are iterating from the XML file ---
@@ -1741,18 +1740,26 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
                 machine['sourcefile'] = raw_driver_name
 
             # Optional, default no
-            if 'isbios' not in elem.attrib:       m_render['isBIOS'] = False
-            else:                                 m_render['isBIOS'] = True if elem.attrib['isbios'] == 'yes' else False
-            if 'isdevice' not in elem.attrib:     m_render['isDevice'] = False
-            else:                                 m_render['isDevice'] = True if elem.attrib['isdevice'] == 'yes' else False
-            if 'ismechanical' not in elem.attrib: machine['isMechanical'] = False
-            else:                                 machine['isMechanical'] = True if elem.attrib['ismechanical'] == 'yes' else False
+            if 'isbios' not in elem.attrib:
+                m_render['isBIOS'] = False
+            else:
+                m_render['isBIOS'] = True if elem.attrib['isbios'] == 'yes' else False
+            if 'isdevice' not in elem.attrib:
+                m_render['isDevice'] = False
+            else:
+                m_render['isDevice'] = True if elem.attrib['isdevice'] == 'yes' else False
+            if 'ismechanical' not in elem.attrib:
+                machine['isMechanical'] = False
+            else:
+                machine['isMechanical'] = True if elem.attrib['ismechanical'] == 'yes' else False
             # Optional, default yes
-            if 'runnable' not in elem.attrib:     runnable = True
-            else:                                 runnable = False if elem.attrib['runnable'] == 'no' else True
+            if 'runnable' not in elem.attrib:
+                runnable = True
+            else:
+                runnable = False if elem.attrib['runnable'] == 'no' else True
 
             # cloneof is #IMPLIED attribute
-            if 'cloneof' in elem.attrib: m_render['cloneof'] = elem.attrib['cloneof']
+            if 'cloneof' in elem.attrib: machine['cloneof'] = elem.attrib['cloneof']
 
             # romof is #IMPLIED attribute
             if 'romof' in elem.attrib: machine['romof'] = elem.attrib['romof']
@@ -1849,7 +1856,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
         # Other machines have no display tag (18w)
         elif event == 'start' and elem.tag == 'display':
             rotate_str = elem.attrib['rotate'] if 'rotate' in elem.attrib else '0'
-            machine['display_tag'].append(elem.attrib['tag'])
+            # machine['display_tag'].append(elem.attrib['tag'])
             machine['display_type'].append(elem.attrib['type'])
             machine['display_rotate'].append(rotate_str)
             num_displays += 1
@@ -1938,46 +1945,42 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
             # >> Delete XML element once it has been processed
             elem.clear()
 
-            # >> Fill machine status
-            # r/R flag takes precedence over * flag
-            m_render['flags'] = fs_initial_flags(machine, m_render, m_roms)
-
             # --- Compute statistics ---
-            if m_render['cloneof']: stats_clones += 1
-            else:                   stats_parents += 1
+            if machine['cloneof']: stats_clones += 1
+            else:                  stats_parents += 1
             if m_render['isDevice']:
                 stats_devices += 1
-                if m_render['cloneof']: stats_devices_clones += 1
-                else:                   stats_devices_parents += 1
+                if machine['cloneof']: stats_devices_clones += 1
+                else:                  stats_devices_parents += 1
             if runnable:
                 stats_runnable += 1
-                if m_render['cloneof']: stats_runnable_clones += 1
-                else:                   stats_runnable_parents += 1
+                if machine['cloneof']: stats_runnable_clones += 1
+                else:                  stats_runnable_parents += 1
             if machine['sampleof']:
                 stats_samples += 1
-                if m_render['cloneof']: stats_samples_clones += 1
-                else:                   stats_samples_parents += 1
+                if machine['cloneof']: stats_samples_clones += 1
+                else:                  stats_samples_parents += 1
             if m_render['isBIOS']:
                 stats_BIOS += 1
-                if m_render['cloneof']: stats_BIOS_clones += 1
-                else:                   stats_BIOS_parents += 1
+                if machine['cloneof']: stats_BIOS_clones += 1
+                else:                  stats_BIOS_parents += 1
             if runnable:
                 if machine['coins'] > 0:
                     stats_coin += 1
-                    if m_render['cloneof']: stats_coin_clones += 1
-                    else:                   stats_coin_parents += 1
+                    if machine['cloneof']: stats_coin_clones += 1
+                    else:                  stats_coin_parents += 1
                 else:
                     stats_nocoin += 1
-                    if m_render['cloneof']: stats_nocoin_clones += 1
-                    else:                   stats_nocoin_parents += 1
+                    if machine['cloneof']: stats_nocoin_clones += 1
+                    else:                  stats_nocoin_parents += 1
                 if machine['isMechanical']:
                     stats_mechanical += 1
-                    if m_render['cloneof']: stats_mechanical_clones += 1
-                    else:                   stats_mechanical_parents += 1
+                    if machine['cloneof']: stats_mechanical_clones += 1
+                    else:                  stats_mechanical_parents += 1
                 if machine['isDead']:
                     stats_dead += 1
-                    if m_render['cloneof']: stats_dead_clones += 1
-                    else:                   stats_dead_parents += 1
+                    if machine['cloneof']: stats_dead_clones += 1
+                    else:                  stats_dead_parents += 1
 
             # >> Add new machine
             machines[m_name] = machine
@@ -2003,6 +2006,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     log_info('Parents            {0}'.format(stats_parents))
     log_info('Clones             {0}'.format(stats_clones))
     log_info('Dead machines      {0}'.format(stats_dead))
+    log_info('Dead parents       {0}'.format(stats_dead_parents))
+    log_info('Dead clones        {0}'.format(stats_dead_clones))
 
     # ---------------------------------------------------------------------------------------------
     # Main parent-clone list
@@ -2014,8 +2019,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     log_info('Making PClone list...')
     main_pclone_dic = {}
     main_clone_to_parent_dic = {}
-    for machine_name in machines_render:
-        machine = machines_render[machine_name]
+    for machine_name in machines:
+        machine = machines[machine_name]
         # >> Exclude devices
         # if machine['isDevice']: continue
 
@@ -2036,6 +2041,9 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # Make empty asset list
     # ---------------------------------------------------------------------------------------------
     assets_dic = {key : fs_new_MAME_asset() for key in machines}
+    for m_name, asset in assets_dic.iteritems():
+        asset['flags'] = fs_initial_flags(machines[m_name],
+                                          machines_render[m_name], machines_roms[m_name])
 
     # ---------------------------------------------------------------------------------------------
     # Improve information fields in RENDER_DB_PATH
@@ -2109,6 +2117,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # Update MAME control dictionary
     # ---------------------------------------------------------------------------------------------
     control_dic['t_MAME_DB_build'] = time.time()
+
+    # >> Versions
     control_dic['ver_mame']      = mame_version_int
     control_dic['ver_mame_str']  = mame_version_raw
     control_dic['ver_catver']    = catver_version
@@ -2157,41 +2167,40 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # Write JSON databases
     # -----------------------------------------------------------------------------
     log_info('Saving database JSON files ...')
-    num_items = 15
-    pDialog.create('Advanced MAME Launcher', 'Saving databases ...')
-    pDialog.update(int((0*100) / num_items))
+    pdialog_line1 = 'Saving databases ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    num_items = 14
+    pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machines Main')
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
-    pDialog.update(int((1*100) / num_items))
+    pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Render')
     fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
-    pDialog.update(int((2*100) / num_items))
+    pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machine ROMs')
     fs_write_JSON_file(PATHS.ROMS_DB_PATH.getPath(), machines_roms)
-    pDialog.update(int((3*100) / num_items))
+    pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME machine Devices')
     fs_write_JSON_file(PATHS.DEVICES_DB_PATH.getPath(), machines_devices)
-    pDialog.update(int((4*100) / num_items))
+    pDialog.update(int((4*100) / num_items), pdialog_line1, 'MAME machine Assets')
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-    pDialog.update(int((5*100) / num_items))
+    pDialog.update(int((5*100) / num_items), pdialog_line1, 'MAME PClone dictionary')
     fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
-    pDialog.update(int((6*100) / num_items))
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-    pDialog.update(int((7*100) / num_items))
 
     # >> DAT files
+    pDialog.update(int((6*100) / num_items), pdialog_line1, 'History DAT index')
     fs_write_JSON_file(PATHS.HISTORY_IDX_PATH.getPath(), history_idx_dic)
-    pDialog.update(int((8*100) / num_items))
+    pDialog.update(int((7*100) / num_items), pdialog_line1, 'History DAT database')
     fs_write_JSON_file(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
-    pDialog.update(int((9*100) / num_items))
+    pDialog.update(int((8*100) / num_items), pdialog_line1, 'MAMEInfo DAT index')
     fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
-    pDialog.update(int((10*100) / num_items))
+    pDialog.update(int((9*100) / num_items), pdialog_line1, 'MAMEInfo DAT database')
     fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
-    pDialog.update(int((11*100) / num_items))
+    pDialog.update(int((10*100) / num_items), pdialog_line1, 'Gameinit DAT index')
     fs_write_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath(), gameinit_idx_dic)
-    pDialog.update(int((12*100) / num_items))
+    pDialog.update(int((11*100) / num_items), pdialog_line1, 'Gameinit DAT database')
     fs_write_JSON_file(PATHS.GAMEINIT_DB_PATH.getPath(), gameinit_dic)
-    pDialog.update(int((13*100) / num_items))
+    pDialog.update(int((12*100) / num_items), pdialog_line1, 'Command DAT index')
     fs_write_JSON_file(PATHS.COMMAND_IDX_PATH.getPath(), command_idx_dic)
-    pDialog.update(int((14*100) / num_items))
+    pDialog.update(int((13*100) / num_items), pdialog_line1, 'Command DAT database')
     fs_write_JSON_file(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
-    pDialog.update(int((15*100) / num_items))
+    pDialog.update(int((14*100) / num_items), ' ', ' ')
     pDialog.close()
 
     # Return an object with reference to the objects just in case they are needed after
@@ -2251,13 +2260,13 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
 #
 def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
                                    machines, machines_render, devices_db_dic, machine_roms):
-    log_info('fs_build_ROM_audit_databases() Initialising ...')
+    log_info('mame_build_ROM_audit_databases() Initialising ...')
 
     # --- Initialise ---
     rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_rom_set']]
     chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
-    log_info('fs_build_ROM_audit_databases() ROM set is {0}'.format(rom_set))
-    log_info('fs_build_ROM_audit_databases() CHD set is {0}'.format(chd_set))
+    log_info('mame_build_ROM_audit_databases() ROM set is {0}'.format(rom_set))
+    log_info('mame_build_ROM_audit_databases() CHD set is {0}'.format(chd_set))
     audit_roms_dic = {}
     pDialog = xbmcgui.DialogProgress()
 
@@ -2271,7 +2280,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         #   clone_name\clone_rom_2
         #   parent_rom_1
         #   parent_rom_2
-        log_info('fs_build_ROM_databases() Building Merged ROM set ...')
+        log_info('mame_build_ROM_audit_databases() Building Merged ROM set ...')
         pDialog.update(0, 'Building Split ROM set ...')
         num_items = len(machines)
         item_count = 0
@@ -2279,7 +2288,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machines_render[m_name]['cloneof']
+            cloneof = machine['cloneof']
             romof   = machine['romof']
             m_roms  = machine_roms[m_name]['roms']
 
@@ -2317,7 +2326,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             item_count += 1
             pDialog.update((item_count*100)//num_items)
     elif rom_set == 'SPLIT':
-        log_info('fs_build_ROM_databases() Building Split ROM set ...')
+        log_info('mame_build_ROM_audit_databases() Building Split ROM set ...')
         pDialog.update(0, 'Building Split ROM set ...')
         num_items = len(machines)
         item_count = 0
@@ -2325,7 +2334,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machines_render[m_name]['cloneof']
+            cloneof = machine['cloneof']
             romof   = machine['romof']
             m_roms  = machine_roms[m_name]['roms']
             # log_info('m_name {0}'.format(m_name))
@@ -2427,7 +2436,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             pDialog.update((item_count*100)//num_items)
     elif rom_set == 'NONMERGED':
         # >> In the NonMerged set all ROMs are in the machine archive, including BIOSes.
-        log_info('fs_build_ROM_databases() Building Nonmerged ROM set ...')
+        log_info('mame_build_ROM_audit_databases() Building Nonmerged ROM set ...')
         pDialog.update(0, 'Building Split ROM set ...')
         num_items = len(machines)
         item_count = 0
@@ -2435,7 +2444,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machines_render[m_name]['cloneof']
+            cloneof = machine['cloneof']
             romof   = machine['romof']
             m_roms  = machine_roms[m_name]['roms']
 
@@ -2477,7 +2486,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # --- CHD set ---
     pDialog.create('Advanced MAME Launcher')
     if chd_set == 'MERGED':
-        log_info('fs_build_ROM_databases() Building Merged CHD set ...')
+        log_info('mame_build_ROM_audit_databases() Building Merged CHD set ...')
         pDialog.update(0, 'Building Merged CHD set ...')
         num_items = len(machines)
         item_count = 0
@@ -2485,7 +2494,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machines_render[m_name]['cloneof']
+            cloneof = machine['cloneof']
             romof   = machine['romof']
             m_disks = machine_roms[m_name]['disks']
 
@@ -2518,7 +2527,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             item_count += 1
             pDialog.update((item_count*100)//num_items)
     elif chd_set == 'SPLIT':
-        log_info('fs_build_ROM_databases() Building Split CHD set ...')
+        log_info('mame_build_ROM_audit_databases() Building Split CHD set ...')
         pDialog.update(0, 'Building Split CHD set ...')
         num_items = len(machines)
         item_count = 0
@@ -2526,7 +2535,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machines_render[m_name]['cloneof']
+            cloneof = machine['cloneof']
             romof   = machine['romof']
             m_disks = machine_roms[m_name]['disks']
 
@@ -2558,7 +2567,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             item_count += 1
             pDialog.update((item_count*100)//num_items)
     elif chd_set == 'NONMERGED':
-        log_info('fs_build_ROM_databases() Building Non-merged ROM set ...')
+        log_info('mame_build_ROM_audit_databases() Building Non-merged ROM set ...')
         pDialog.update(0, 'Building Non-merged CHD set ...')
         num_items = len(machines)
         item_count = 0
@@ -2566,7 +2575,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machines_render[m_name]['cloneof']
+            cloneof = machine['cloneof']
             romof   = machine['romof']
             m_disks = machine_roms[m_name]['disks']
 
@@ -2610,7 +2619,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     archive_less_parents = 0
     archive_less_clones = 0
     for m_name in audit_roms_dic:
-        isClone = True if machines_render[m_name]['cloneof'] else False
+        isClone = True if machines[m_name]['cloneof'] else False
         rom_list = audit_roms_dic[m_name]
         machine_rom_archive_set = set()
         machine_chd_archive_set = set()
@@ -2674,21 +2683,21 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     control_dic['audit_archive_less']                 = archive_less
     control_dic['audit_archive_less_parents']         = archive_less_parents
     control_dic['audit_archive_less_clones']          = archive_less_clones
+    control_dic['t_MAME_Audit_DB_build'] = time.time()
 
     # --- Save databases ---
     line1_str = 'Saving audit/scanner databases ...'
     pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, line1_str, 'ROM Audit DB')
+    num_items = 4
+    pDialog.update(int((0*100) / num_items), line1_str, 'MAME ROM Audit')
     fs_write_JSON_file(PATHS.ROM_AUDIT_DB_PATH.getPath(), audit_roms_dic)
-    pDialog.update(20, line1_str, 'Machine archives DB list')
+    pDialog.update(int((1*100) / num_items), line1_str, 'Machine archives list')
     fs_write_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath(), machine_archives_dic)
-    pDialog.update(40, line1_str, 'ROM List index')
+    pDialog.update(int((2*100) / num_items), line1_str, 'ROM List index')
     fs_write_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath(), ROM_archive_list)
-    pDialog.update(60, line1_str, 'CHD list index')
+    pDialog.update(int((3*100) / num_items), line1_str, 'CHD list index')
     fs_write_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath(), CHD_archive_list)
-    pDialog.update(80, line1_str, 'Control dictionary')
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-    pDialog.update(100)
+    pDialog.update(int((4*100) / num_items), ' ', ' ')
     pDialog.close()
 
 # -------------------------------------------------------------------------------------------------
@@ -2733,7 +2742,7 @@ def _cache_index_builder(cat_name, cache_index_dic, catalog_all, catalog_parents
 #        }, ...
 #    }
 #
-def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, main_pclone_dic):
+def mame_build_MAME_catalogs(PATHS, control_dic, machines, machines_render, machine_roms, main_pclone_dic):
     # >> Progress dialog
     pDialog_line1 = 'Building catalogs ...'
     pDialog = xbmcgui.DialogProgress()
@@ -3338,11 +3347,14 @@ def mame_build_MAME_catalogs(PATHS, machines, machines_render, machine_roms, mai
     # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
     # log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
 
-    # --- Save Catalog count ----------------------------------------------------------------------
+    # --- Save Catalog index ----------------------------------------------------------------------
     fs_write_JSON_file(PATHS.CACHE_INDEX_PATH.getPath(), cache_index_dic)
 
-    # --- Build the ROM hashed database and the ROM cache ---
+    # --- Build the ROM cache ---
     fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+
+    # --- Update timestamp ---
+    control_dic['t_MAME_Catalog_build'] = time.time()
 
 # -------------------------------------------------------------------------------------------------
 # Software Lists and ROM audit database building function
@@ -3524,7 +3536,7 @@ def mame_load_SL_XML(xml_filename):
 
     # --- Parse using cElementTree ---
     # If XML has errors (invalid characters, etc.) this will rais exception 'err'
-    log_debug('fs_load_SL_XML() Loading XML file "{0}"'.format(xml_filename))
+    # log_debug('fs_load_SL_XML() Loading XML file "{0}"'.format(xml_filename))
     try:
         xml_tree = ET.parse(xml_filename)
     except:
@@ -3664,7 +3676,7 @@ def mame_load_SL_XML(xml_filename):
 #
 def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, machines_render, main_pclone_dic):
     SL_dir_FN = FileName(settings['SL_hash_path'])
-    log_debug('fs_build_SoftwareLists_index() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
+    log_debug('mame_build_SoftwareLists_databases() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
 
     # --- Scan all XML files in Software Lists directory and save SL and SL ROMs databases ---
     pDialog = xbmcgui.DialogProgress()
@@ -3683,7 +3695,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
-        # log_debug('fs_build_SoftwareLists_index() Processing "{0}"'.format(file))
+        # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
         SL_path_FN = FileName(file)
         SLData = mame_load_SL_XML(SL_path_FN.getPath())
         fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json').getPath(),
@@ -3912,7 +3924,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     control_dic['stats_SL_software_items'] = total_SL_software_items
     control_dic['stats_SL_machine_archives_ROM'] = num_SL_with_ROMs
     control_dic['stats_SL_machine_archives_CHD'] = num_SL_with_CHDs
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    control_dic['t_SL_DB_build'] = time.time()    
 
 # -------------------------------------------------------------------------------------------------
 # ROM/CHD and asset scanner

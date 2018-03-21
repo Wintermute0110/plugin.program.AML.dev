@@ -2,7 +2,7 @@
 # Advanced MAME Launcher filesystem I/O functions
 #
 
-# Copyright (c) 2016-2017 Wintermute0110 <wintermute0110@gmail.com>
+# Copyright (c) 2016-2018 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,10 +28,10 @@ import copy
 # import resource # Module not available on Windows
 
 # --- XML stuff ---
-# ~~~ cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
+# >> cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
 # import xml.etree.cElementTree as ET
 
-# ~~~ Using ElementTree seems to solve the problem
+# >> Using ElementTree seems to solve the problem
 import xml.etree.ElementTree as ET
 
 # --- AEL packages ---
@@ -75,72 +75,58 @@ except:
 # This is how it is stored:
 # devices = [
 #   {
-#     'att_type' : string,
-#     'att_tag' : string,
-#     'att_mandatory' : bool,
 #     'att_interface' : string,
+#     'att_mandatory' : bool,
+#     'att_tag' : string,
+#     'att_type' : string,
+#     'ext_names' : [string1, string2],
 #     'instance' : {'name' : string, 'briefname' : string}
-#     'ext_name' : [string1, string2],
 #   }, ...
 # ]
 #
 # Rendering on AML Machine Information text window.
-# devices[0, att_type]:
-#   att_type: string
-#   att_tag: string
-#   att_mandatory: unicode(bool)
+# devices[0]:
 #   att_interface: string
-#   instance: unicode(dictionary),
+#   att_mandatory: unicode(bool)
+#   att_tag: string
+#   att_type: string
 #   ext_names: unicode(string list),
-# devices[1, att_type]: unicode(device[1])
+#   instance: unicode(dictionary),
+# devices[1]:
 #   ...
 #
 def fs_new_machine_dic():
     return {
         # >> <machine> attributes
-        'sourcefile'     : '',
-        'isMechanical'   : False,
+        'cloneof'        : '',
         'romof'          : '',
         'sampleof'       : '',
+        'sourcefile'     : '',
+        'isMechanical'   : False,
         # >> Other <machine> tags from MAME XML
-        'display_tag'    : [],
         'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
         'display_rotate' : [], # (0|90|180|270) #REQUIRED>
         'control_type'   : [],
         'coins'          : 0,
         'softwarelists'  : [],
         'devices'        : [], # List of dictionaries. See comments avobe.
-        # >> Custom AML data
+        # >> Custom AML data (from INI files or generated)
         'catver'         : '', # External catalog
-        'nplayers'       : '', # External catalog
         'catlist'        : '', # External catalog
         'genre'          : '', # External catalog
         'bestgames'      : '', # External catalog
         'series'         : '', # External catalog
-        'isDead'         : False
+        'isDead'         : False,
     }
 
 #
 # Object used in MAME_render_db.json
-#   flags -> ROM, CHD, Samples, SoftwareLists, Devices
-#
-# Status flags meaning:
-#   -  Machine doesn't have ROMs | Machine doesn't have Software Lists
-#   ?  Machine has own ROMs and ROMs not been scanned
-#   r  Machine has own ROMs and ROMs doesn't exist
-#   R  Machine has own ROMs and ROMs exists | Machine has Software Lists
-#
-# Status device flag:
-#   -  Machine has no devices
-#   d  Machine has device/s but are not mandatory (can be booted without the device).
-#   D  Machine has device/s and must be plugged in order to boot.
 #
 def fs_new_machine_render_dic():
     return {
         # >> <machine> attributes
         'isBIOS'         : False,
         'isDevice'       : False,
-        'cloneof'        : '',
         # >> Other <machine> tags from MAME XML
         'description'    : '',
         'year'           : '',
@@ -149,17 +135,15 @@ def fs_new_machine_render_dic():
         # >> Custom AML data
         'genre'          : '',      # Taken from Genre.ini, Catver.ini or Catlist.ini
         'nplayers'       : '',      # Taken from NPlayers.ini
-        'flags'          : '-----',
-        'plot'           : '',      # Generated from other fields
     }
 
 #
 # Object used in MAME_DB_roms.json
 # machine_roms = {
 #     'machine_name' : {
-#         'bios'  : [ ... ],
-#         'disks' : [ ... ],
-#         'roms'  : [ ... ]
+#         'bios'  : [ fs_new_bios_dic(), ... ],
+#         'disks' : [ fs_new_disk_dic(), ... ],
+#         'roms'  : [ fs_new_rom_dic(), ... ],
 #     }
 # }
 #
@@ -167,13 +151,20 @@ def fs_new_roms_object():
     return {
         'bios'  : [],
         'roms'  : [],
-        'disks' : []
+        'disks' : [],
     }
 
 def fs_new_bios_dic():
     return {
         'name'        : '',
-        'description' : ''
+        'description' : '',
+    }
+
+def fs_new_disk_dic():
+    return {
+        'name'  : '',
+        'merge' : '',
+        'sha1'  : '', # sha1 allows to know if CHD is valid or not. CHDs don't have crc
     }
 
 def fs_new_rom_dic():
@@ -182,14 +173,7 @@ def fs_new_rom_dic():
         'merge' : '',
         'bios'  : '',
         'size'  : 0,
-        'crc'  : '' # crc allows to know if ROM is valid or not
-    }
-
-def fs_new_disk_dic():
-    return {
-        'name'  : '',
-        'merge' : '',
-        'sha1'  : '' # sha1 allows to know if CHD is valid or not. CHDs don't have crc
+        'crc'   : '', # crc allows to know if ROM is valid or not
     }
 
 #
@@ -211,6 +195,20 @@ ASSET_MAME_T_LIST  = [
     ('trailer',    'videosnaps'),
 ]
 
+#
+# flags -> ROM, CHD, Samples, SoftwareLists, Devices
+#
+# Status flags meaning:
+#   -  Machine doesn't have ROMs | Machine doesn't have Software Lists
+#   ?  Machine has own ROMs and ROMs not been scanned
+#   r  Machine has own ROMs and ROMs doesn't exist
+#   R  Machine has own ROMs and ROMs exists | Machine has Software Lists
+#
+# Status device flag:
+#   -  Machine has no devices
+#   d  Machine has device/s but are not mandatory (can be booted without the device).
+#   D  Machine has device/s and must be plugged in order to boot.
+#
 def fs_new_MAME_asset():
     return {
         'PCB'        : '',
@@ -220,9 +218,11 @@ def fs_new_MAME_asset():
         'clearlogo'  : '',
         'cpanel'     : '',
         'fanart'     : '',
+        'flags'      : '-----',
         'flyer'      : '',
         'manual'     : '',
         'marquee'    : '',
+        'plot'       : '',
         'snap'       : '',
         'title'      : '',
         'trailer'    : '',
@@ -233,7 +233,10 @@ def fs_new_MAME_asset():
 #   r  Missing ROM
 #   R  Have ROM
 def fs_new_SL_ROM_part():
-    return { 'name' : '', 'interface' : '' }
+    return {
+        'name' : '',
+        'interface' : ''
+    }
 
 def fs_new_SL_ROM():
     return {
@@ -273,17 +276,28 @@ def fs_new_control_dic():
         # --- Filed in when extracting MAME XML ---
         'stats_total_machines' : 0,
 
+        # --- Timestamps ---
+        't_XML_extraction'      : 0,
+        't_MAME_DB_build'       : 0,
+        't_MAME_Audit_DB_build' : 0,
+        't_MAME_Catalog_build'  : 0,
+        't_SL_DB_build'         : 0,
+
         # --- Filed in when building main MAME database ---
         # >> Numerical MAME version. Allows for comparisons like ver_mame >= MAME_VERSION_0190
         # >> MAME string version, as reported by the executable stdout. Example: '0.194 (mame0194)'
         'ver_mame'      : 0,
-        'ver_mame_str'  : 'Unknown. MAME database not built',
-        'ver_catver'    : 'Unknown. MAME database not built',
-        'ver_catlist'   : 'Unknown. MAME database not built',
-        'ver_genre'     : 'Unknown. MAME database not built',
-        'ver_nplayers'  : 'Unknown. MAME database not built',
-        'ver_bestgames' : 'Unknown. MAME database not built',
-        'ver_series'    : 'Unknown. MAME database not built',
+        'ver_mame_str'  : 'MAME database not built',
+        'ver_catver'    : 'MAME database not built',
+        'ver_catlist'   : 'MAME database not built',
+        'ver_genre'     : 'MAME database not built',
+        'ver_nplayers'  : 'MAME database not built',
+        'ver_bestgames' : 'MAME database not built',
+        'ver_series'    : 'MAME database not built',
+        'ver_history'   : 'MAME database not built',
+        'ver_mameinfo'  : 'MAME database not built',
+        'ver_gameinit'  : 'MAME database not built',
+        'ver_command'   : 'MAME database not built',
 
         # Basic stats
         'stats_processed_machines' : 0,
@@ -575,9 +589,11 @@ def fs_extract_MAME_version(PATHS, mame_prog_FN):
 
     return version_str
 
-# MAME_XML_PATH -> (FileName object) path of MAME XML output file.
+#
 # mame_prog_FN  -> (FileName object) path to MAME executable.
-# Returns filesize -> (int) file size of output MAME.xml
+# Returns:
+#   filesize        (int) file size of output MAME.xml in bytes
+#   total_machines  (int) number of mame machines
 #
 def fs_extract_MAME_XML(PATHS, mame_prog_FN):
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
@@ -612,6 +628,7 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
     # -----------------------------------------------------------------------------
     control_dic = fs_new_control_dic()
     control_dic['total_machines'] = total_machines
+    control_dic['t_XML_extraction'] = time.time()
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     return (filesize, total_machines)

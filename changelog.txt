@@ -18,7 +18,7 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
-WIP      Clean Render and main machine JSON files. Currently, there are repeated fields on both
+FEATURE  Clean Render and main machine JSON files. Currently, there are repeated fields on both
          databases like nplayers.
 
 WIP      Move flags and plot from the render database to the assets database. Flags are modified

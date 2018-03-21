@@ -143,16 +143,16 @@ class AML_Paths:
         self.CATALOG_LONGNAME_ALL_PATH          = self.CATALOG_DIR.pjoin('catalog_longname_all.json')
 
         # >> Distributed hashed database
-        self.MAIN_DB_HASH_DIR      = PLUGIN_DATA_DIR.pjoin('db_Main_hash')
-        self.ROMS_DB_HASH_DIR      = PLUGIN_DATA_DIR.pjoin('db_ROMs_hash')
-        self.ROM_AUDIT_DB_HASH_DIR = PLUGIN_DATA_DIR.pjoin('db_ROM_Audit_hash')
+        self.MAIN_DB_HASH_DIR      = PLUGIN_DATA_DIR.pjoin('hash')
+        self.ROMS_DB_HASH_DIR      = PLUGIN_DATA_DIR.pjoin('hash_ROM')
+        self.ROM_AUDIT_DB_HASH_DIR = PLUGIN_DATA_DIR.pjoin('hash_ROM_Audit')
 
         # >> MAME custom filters
         self.FILTERS_DB_DIR     = PLUGIN_DATA_DIR.pjoin('filters')
         self.FILTERS_INDEX_PATH = PLUGIN_DATA_DIR.pjoin('Filter_index.json')
 
         # >> Software Lists
-        self.SL_DB_DIR             = PLUGIN_DATA_DIR.pjoin('db_SoftwareLists')
+        self.SL_DB_DIR             = PLUGIN_DATA_DIR.pjoin('SoftwareLists')
         self.SL_INDEX_PATH         = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
         self.SL_MACHINES_PATH      = PLUGIN_DATA_DIR.pjoin('SoftwareLists_machines.json')
         self.SL_PCLONE_DIC_PATH    = PLUGIN_DATA_DIR.pjoin('SoftwareLists_pclone_dic.json')
@@ -2158,6 +2158,15 @@ class Main:
             info_text += "nplayers.ini version   {0}\n".format(control_dic['ver_nplayers'])
             info_text += "bestgames.ini version  {0}\n".format(control_dic['ver_bestgames'])
             info_text += "series.ini version     {0}\n".format(control_dic['ver_series'])
+            info_text += "History.dat version    {0}\n".format(control_dic['ver_history'])
+            info_text += "MAMEinfo.dat version   {0}\n".format(control_dic['ver_mameinfo'])
+            info_text += "Gameinit.dat version   {0}\n".format(control_dic['ver_gameinit'])
+            info_text += "Command.dat version    {0}\n".format(control_dic['ver_command'])
+            info_text += "MAME XML extracted on  {0}\n".format(time.ctime(control_dic['t_XML_extraction']))
+            info_text += "MAME DB built on       {0}\n".format(time.ctime(control_dic['t_MAME_DB_build']))
+            info_text += "MAME Audit DB built on {0}\n".format(time.ctime(control_dic['t_MAME_Audit_DB_build']))
+            info_text += "MAME Catalog built on  {0}\n".format(time.ctime(control_dic['t_MAME_Catalog_build']))
+            info_text += "SL DB built on         {0}\n".format(time.ctime(control_dic['t_SL_DB_build']))
 
             info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
             t = "Machines   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
@@ -3836,19 +3845,29 @@ class Main:
                 return
 
             # --- Build all databases ---
-            # >> fs_build_MAME_main_database() creates the ROM hashed database and the (empty)
-            # >> Asset cache.
+            # 1) Creates the ROM hashed database.
+            # 2) Creates the (empty) Asset cache.
+            # 3) Updates control_dic and t_MAME_DB_build timestamp.
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             DB = mame_build_MAME_main_database(PATHS, self.settings, control_dic)
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
             # --- Build and save everything ---
-            # >> fs_build_MAME_catalogs() creates the cache_index_dic and updates the ROM cache.
+            # 1) Updates control_dic and t_MAME_Audit_DB_build timestamp.
             mame_build_ROM_audit_databases(PATHS, self.settings, control_dic,
                                            DB.machines, DB.machines_render, DB.devices_db_dic, DB.machine_roms)
-            mame_build_MAME_catalogs(PATHS,
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+            # 1) Creates cache_index_dic and updates the ROM cache.
+            # 2) Updates control_dic and t_MAME_Catalog_build timestamp.
+            mame_build_MAME_catalogs(PATHS, control_dic,
                                      DB.machines, DB.machines_render, DB.machine_roms, DB.main_pclone_dic)
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+            # 1) Updates control_dic and the t_SL_DB_build timestamp.
             mame_build_SoftwareLists_databases(PATHS, self.settings, control_dic,
                                                DB.machines, DB.machines_render, DB.main_pclone_dic)
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_notify('All databases built')
 
         # --- Scan everything ---
