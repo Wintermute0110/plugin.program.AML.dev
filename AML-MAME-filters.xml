@@ -2,60 +2,60 @@
     Example Advanced MAME Launcher custom filters
 -->
 <Advanced_MAME_Launcher_custom_filters>
-    <DEFINE name="ATARI_DRIVERS"></DEFINE>
+<DEFINE name="ATARI_DRIVERS"></DEFINE>
 
-    <!--
-        Capcom
-    -->
-    <DEFINE name="CAPCOM_DRIVERS">cps1.cpp or cps2.cpp or cps3.cpp</DEFINE>
+<!--
+    Capcom
+-->
+<DEFINE name="CAPCOM_DRIVERS">cps1.cpp or cps2.cpp or cps3.cpp</DEFINE>
 
-    <DEFINE name="KONAMI_DRIVERS">konamigx.cpp or konamim2.cpp</DEFINE>
+<DEFINE name="KONAMI_DRIVERS">konamigx.cpp or konamim2.cpp</DEFINE>
 
-    <DEFINE name="MIDWAY_DRIVERS"></DEFINE>
+<DEFINE name="MIDWAY_DRIVERS"></DEFINE>
 
-    <DEFINE name="NAMCO_DRIVERS">galaxian.cpp or namcops2.cpp</DEFINE>
+<DEFINE name="NAMCO_DRIVERS">galaxian.cpp or namcops2.cpp</DEFINE>
 
-    <DEFINE name="NEOGEO_DRIVERS">neogeo.cpp</DEFINE>
+<DEFINE name="NEOGEO_DRIVERS">neogeo.cpp</DEFINE>
 
-    <!--
-        In the following SEGA drivers most machines do not work, so do not include them in the filter.
-        
-    -->
-    <DEFINE name="SEGA_DRIVERS">zaxxon.cpp or system1.cpp or segac2.cpp or segae.cpp or segas16a.cpp or segas16b.cpp or segas24.cpp or segas18.cpp or kyugo.cpp or segahang.cpp or segaorun.cpp or segaxbd.cpp or segaybd.cpp or segas32.cpp or model1.cpp or model2.cpp or model3.cpp or stv.cpp or naomi.cpp or segasp.cpp or chihiro.cpp or triforce.cpp or lindbergh.cpp</DEFINE>
+<!--
+    In the following SEGA drivers most machines do not work, so do not include them in the filter.
+    
+-->
+<DEFINE name="SEGA_DRIVERS">zaxxon.cpp or system1.cpp or segac2.cpp or segae.cpp or segas16a.cpp or segas16b.cpp or segas24.cpp or segas18.cpp or kyugo.cpp or segahang.cpp or segaorun.cpp or segaxbd.cpp or segaybd.cpp or segas32.cpp or model1.cpp or model2.cpp or model3.cpp or stv.cpp or naomi.cpp or segasp.cpp or chihiro.cpp or triforce.cpp or lindbergh.cpp</DEFINE>
 
-    <DEFINE name="TAITO_DRIVERS">taito_b.cpp or taito_l.cpp or taito_f2.cpp or taito_f3.cpp</DEFINE>
+<DEFINE name="TAITO_DRIVERS">taito_b.cpp or taito_l.cpp or taito_f2.cpp or taito_f3.cpp</DEFINE>
 
-    <!--
-        Filter definitions
-    -->
-    <MAMEFilter>
-        <Name>Capcom</Name>
-        <Options></Options>
-        <Driver>CAPCOM_DRIVERS</Driver>
-    </MAMEFilter>
-    <MAMEFilter>
-        <Name>Konami</Name>
-        <Options></Options>
-        <Driver>KONAMI_DRIVERS</Driver>
-    </MAMEFilter>
-    <MAMEFilter>
-        <Name>Namco</Name>
-        <Options></Options>
-        <Driver>NAMCO_DRIVERS</Driver>
-    </MAMEFilter>
-    <MAMEFilter>
-        <Name>NeoGeo MVS</Name>
-        <Options></Options>
-        <Driver>NEOGEO_DRIVERS</Driver>
-    </MAMEFilter>
-    <MAMEFilter>
-        <Name>SEGA</Name>
-        <Options></Options>
-        <Driver>SEGA_DRIVERS</Driver>
-    </MAMEFilter>
-    <MAMEFilter>
-        <Name>Taito</Name>
-        <Options></Options>
-        <Driver>TAITO_DRIVERS</Driver>
-    </MAMEFilter>
+<!--
+    Filter definitions
+-->
+<MAMEFilter>
+    <Name>Capcom</Name>
+    <Options></Options>
+    <Driver>CAPCOM_DRIVERS</Driver>
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Konami</Name>
+    <Options></Options>
+    <Driver>KONAMI_DRIVERS</Driver>
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Namco</Name>
+    <Options></Options>
+    <Driver>NAMCO_DRIVERS</Driver>
+</MAMEFilter>
+<MAMEFilter>
+    <Name>NeoGeo MVS</Name>
+    <Options></Options>
+    <Driver>NEOGEO_DRIVERS</Driver>
+</MAMEFilter>
+<MAMEFilter>
+    <Name>SEGA</Name>
+    <Options></Options>
+    <Driver>SEGA_DRIVERS</Driver>
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Taito</Name>
+    <Options></Options>
+    <Driver>TAITO_DRIVERS</Driver>
+</MAMEFilter>
 </Advanced_MAME_Launcher_custom_filters>
