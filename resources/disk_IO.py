@@ -98,7 +98,6 @@ except:
 def fs_new_machine_dic():
     return {
         # >> <machine> attributes
-        'cloneof'        : '',
         'romof'          : '',
         'sampleof'       : '',
         'sourcefile'     : '',
@@ -125,6 +124,7 @@ def fs_new_machine_dic():
 def fs_new_machine_render_dic():
     return {
         # >> <machine> attributes
+        'cloneof'        : '', # Must be in the render DB to generate the PClone flag
         'isBIOS'         : False,
         'isDevice'       : False,
         # >> Other <machine> tags from MAME XML

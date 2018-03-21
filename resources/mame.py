@@ -1761,7 +1761,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
                 runnable = False if elem.attrib['runnable'] == 'no' else True
 
             # cloneof is #IMPLIED attribute
-            if 'cloneof' in elem.attrib: machine['cloneof'] = elem.attrib['cloneof']
+            if 'cloneof' in elem.attrib: m_render['cloneof'] = elem.attrib['cloneof']
 
             # romof is #IMPLIED attribute
             if 'romof' in elem.attrib: machine['romof'] = elem.attrib['romof']
@@ -1948,41 +1948,41 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
             elem.clear()
 
             # --- Compute statistics ---
-            if machine['cloneof']: stats_clones += 1
-            else:                  stats_parents += 1
+            if m_render['cloneof']: stats_clones += 1
+            else:                   stats_parents += 1
             if m_render['isDevice']:
                 stats_devices += 1
-                if machine['cloneof']: stats_devices_clones += 1
-                else:                  stats_devices_parents += 1
+                if m_render['cloneof']: stats_devices_clones += 1
+                else:                   stats_devices_parents += 1
             if runnable:
                 stats_runnable += 1
-                if machine['cloneof']: stats_runnable_clones += 1
-                else:                  stats_runnable_parents += 1
+                if m_render['cloneof']: stats_runnable_clones += 1
+                else:                   stats_runnable_parents += 1
             if machine['sampleof']:
                 stats_samples += 1
-                if machine['cloneof']: stats_samples_clones += 1
-                else:                  stats_samples_parents += 1
+                if m_render['cloneof']: stats_samples_clones += 1
+                else:                   stats_samples_parents += 1
             if m_render['isBIOS']:
                 stats_BIOS += 1
-                if machine['cloneof']: stats_BIOS_clones += 1
-                else:                  stats_BIOS_parents += 1
+                if m_render['cloneof']: stats_BIOS_clones += 1
+                else:                   stats_BIOS_parents += 1
             if runnable:
                 if machine['coins'] > 0:
                     stats_coin += 1
-                    if machine['cloneof']: stats_coin_clones += 1
-                    else:                  stats_coin_parents += 1
+                    if m_render['cloneof']: stats_coin_clones += 1
+                    else:                   stats_coin_parents += 1
                 else:
                     stats_nocoin += 1
-                    if machine['cloneof']: stats_nocoin_clones += 1
-                    else:                  stats_nocoin_parents += 1
+                    if m_render['cloneof']: stats_nocoin_clones += 1
+                    else:                   stats_nocoin_parents += 1
                 if machine['isMechanical']:
                     stats_mechanical += 1
-                    if machine['cloneof']: stats_mechanical_clones += 1
-                    else:                  stats_mechanical_parents += 1
+                    if m_render['cloneof']: stats_mechanical_clones += 1
+                    else:                   stats_mechanical_parents += 1
                 if machine['isDead']:
                     stats_dead += 1
-                    if machine['cloneof']: stats_dead_clones += 1
-                    else:                  stats_dead_parents += 1
+                    if m_render['cloneof']: stats_dead_clones += 1
+                    else:                   stats_dead_parents += 1
 
             # >> Add new machine
             machines[m_name] = machine
@@ -2021,14 +2021,10 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     log_info('Making PClone list...')
     main_pclone_dic = {}
     main_clone_to_parent_dic = {}
-    for machine_name in machines:
-        machine = machines[machine_name]
-        # >> Exclude devices
-        # if machine['isDevice']: continue
-
-        if machine['cloneof']:
+    for machine_name, m_render in machines_render.iteritems():
+        if m_render['cloneof']:
             # >> Machine is a clone
-            parent_name = machine['cloneof']
+            parent_name = m_render['cloneof']
             # >> If parent already in main_pclone_dic then add clone to parent list.
             # >> If parent not there, then add parent first and then add clone.
             if parent_name not in main_pclone_dic: main_pclone_dic[parent_name] = []
@@ -2291,7 +2287,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machine['cloneof']
+            cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
             m_roms  = machine_roms[m_name]['roms']
 
@@ -2337,7 +2333,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machine['cloneof']
+            cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
             m_roms  = machine_roms[m_name]['roms']
             # log_info('m_name {0}'.format(m_name))
@@ -2447,7 +2443,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machine['cloneof']
+            cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
             m_roms  = machine_roms[m_name]['roms']
 
@@ -2497,7 +2493,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machine['cloneof']
+            cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
             m_disks = machine_roms[m_name]['disks']
 
@@ -2538,7 +2534,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machine['cloneof']
+            cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
             m_disks = machine_roms[m_name]['disks']
 
@@ -2578,7 +2574,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             # >> Skip Devices
             if machines_render[m_name]['isDevice']: continue
             machine = machines[m_name]
-            cloneof = machine['cloneof']
+            cloneof = machines_render[m_name]['cloneof']
             romof   = machine['romof']
             m_disks = machine_roms[m_name]['disks']
 
@@ -2622,7 +2618,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     archive_less_parents = 0
     archive_less_clones = 0
     for m_name in audit_roms_dic:
-        isClone = True if machines[m_name]['cloneof'] else False
+        isClone = True if machines_render[m_name]['cloneof'] else False
         rom_list = audit_roms_dic[m_name]
         machine_rom_archive_set = set()
         machine_chd_archive_set = set()

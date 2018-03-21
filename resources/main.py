@@ -859,10 +859,10 @@ class Main:
                 if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-                assets = MAME_assets_dic[machine_name]
-                num_clones = len(main_pclone_dic[machine_name])
-                self._render_catalog_machine_row(machine_name, machine, assets,
-                                                 True, num_clones, catalog_name, category_name)
+                self._render_catalog_machine_row(machine_name, machine,
+                                                 MAME_assets_dic[machine_name],
+                                                 True, len(main_pclone_dic[machine_name]),
+                                                 catalog_name, category_name)
         else:
             # >> Flat mode renders all machines
             machine_list = catalog_dic[category_name]
@@ -871,8 +871,8 @@ class Main:
                 if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-                assets = MAME_assets_dic[machine_name]
-                self._render_catalog_machine_row(machine_name, machine, assets)
+                self._render_catalog_machine_row(machine_name, machine,
+                                                 MAME_assets_dic[machine_name])
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
         rendering_time = rendering_ticks_end - rendering_ticks_start
@@ -950,8 +950,9 @@ class Main:
         URL = self._misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-    def _render_catalog_machine_row(self, machine_name, machine, machine_assets,
-                                    flag_parent_list = False, num_clones = 0, catalog_name = '', category_name = ''):
+    def _render_catalog_machine_row(self, m_name, machine, m_assets,
+                                    flag_parent_list = False, num_clones = 0,
+                                    catalog_name = '', category_name = ''):
         # --- Default values for flags ---
         AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
 
@@ -963,7 +964,7 @@ class Main:
             display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
 
             # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
-            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(machine['flags'])
+            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
             if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
             if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
             if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
@@ -973,7 +974,7 @@ class Main:
             AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
         else:
             # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
-            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(machine['flags'])            
+            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
             if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
             if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
             if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
@@ -985,11 +986,11 @@ class Main:
             else:                  AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
 
         # --- Assets/artwork ---
-        icon_path      = machine_assets[self.mame_icon] if machine_assets[self.mame_icon] else 'DefaultProgram.png'
-        fanart_path    = machine_assets[self.mame_fanart]
-        banner_path    = machine_assets['marquee']
-        clearlogo_path = machine_assets['clearlogo']
-        poster_path    = machine_assets['flyer']
+        icon_path      = m_assets[self.mame_icon] if m_assets[self.mame_icon] else 'DefaultProgram.png'
+        fanart_path    = m_assets[self.mame_fanart]
+        banner_path    = m_assets['marquee']
+        clearlogo_path = m_assets['clearlogo']
+        poster_path    = m_assets['flyer']
 
         # --- Create listitem row ---
         ICON_OVERLAY = 6
@@ -998,12 +999,12 @@ class Main:
         if self.settings['display_hide_trailers']:
             listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
                                        'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                       'plot'    : machine['plot'],
+                                       'plot'    : m_assets['plot'],
                                        'overlay' : ICON_OVERLAY})
         else:
             listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
                                        'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                       'plot'    : machine['plot'],  'trailer' : machine_assets['trailer'],
+                                       'plot'    : m_assets['plot'], 'trailer' : machine_assets['trailer'],
                                        'overlay' : ICON_OVERLAY})
         listitem.setProperty('nplayers', machine['nplayers'])
         listitem.setProperty('platform', 'MAME')
@@ -1011,23 +1012,24 @@ class Main:
         # --- Assets ---
         # >> AEL/AML custom artwork fields
         listitem.setArt({
-            'title'     : machine_assets['title'],   'snap'      : machine_assets['snap'],
-            'boxfront'  : machine_assets['cabinet'], 'boxback'   : machine_assets['cpanel'],
-            'cartridge' : machine_assets['PCB'],     'flyer'     : machine_assets['flyer'],
-            'icon'      : icon_path,                 'fanart'    : fanart_path,
-            'banner'    : banner_path,               'clearlogo' : clearlogo_path, 'poster' : poster_path
+            'title'     : m_assets['title'],   'snap'      : m_assets['snap'],
+            'boxfront'  : m_assets['cabinet'], 'boxback'   : m_assets['cpanel'],
+            'cartridge' : m_assets['PCB'],     'flyer'     : m_assets['flyer'],
+            'icon'      : icon_path,           'fanart'    : fanart_path,
+            'banner'    : banner_path,         'clearlogo' : clearlogo_path, 'poster' : poster_path
         })
 
         # --- ROM flags (Skins will use these flags to render icons) ---
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
 
         # --- Create context menu ---
-        URL_view_DAT = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
-        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', machine_name)
-        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
+        URL_view_DAT = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', m_name)
+        URL_view = self._misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', m_name)
+        URL_fav = self._misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', m_name)
         if flag_parent_list and num_clones > 0:
             URL_clones = self._misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_MAME_CLONES', 
-                                                        'catalog', catalog_name, 'category', category_name, 'parent', machine_name)
+                                                        'catalog', catalog_name,
+                                                        'category', category_name, 'parent', m_name)
             commands = [
                 ('Info / Utils', URL_view_DAT),
                 ('View / Audit', URL_view),
@@ -1047,7 +1049,7 @@ class Main:
         listitem.addContextMenuItems(commands)
 
         # --- Add row ---
-        URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
+        URL = self._misc_url_2_arg('command', 'LAUNCH', 'machine', m_name)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     #
@@ -4648,7 +4650,7 @@ class Main:
                 # --- Load databases ---
                 pDialog = xbmcgui.DialogProgress()
                 line1_str = 'Loading databases ...'
-                num_items = 4
+                num_items = 5
                 pDialog.create('Advanced MAME Launcher')
                 pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
@@ -4662,7 +4664,7 @@ class Main:
                 machine_roms = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
                 # >> Kodi BUG: when the progress dialog is closed and reopened again, the
                 # >> second line of the previous dialog is not deleted (still printed).
-                pDialog.update(int((0*100) / num_items), ' ', ' ')
+                pDialog.update(int((5*100) / num_items), ' ', ' ')
                 pDialog.close()
 
                 # --- Generate ROM databases ---
