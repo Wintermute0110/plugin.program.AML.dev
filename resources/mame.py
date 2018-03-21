@@ -429,6 +429,7 @@ def mame_load_INI_datfile(filename):
 # }
 def mame_load_History_DAT(filename):
     log_info('mame_load_History_DAT() Parsing "{0}"'.format(filename))
+    version_str = 'Not found'
     history_idx_dic = {}
     history_dic = {}
     __debug_function = False
@@ -444,7 +445,7 @@ def mame_load_History_DAT(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_History_DAT() (IOError) opening "{0}"'.format(filename))
-        return (history_idx_dic, history_dic)
+        return (history_idx_dic, history_dic, version_str)
 
     # >> Parse file
     for file_line in f:
@@ -453,7 +454,10 @@ def mame_load_History_DAT(filename):
         if __debug_function: log_debug('Line "{0}"'.format(line_uni))
         if read_status == 0:
             # >> Skip comments: lines starting with '##'
+            # >> Look for version string in comments
             if re.search(r'^##', line_uni):
+                m = re.search(r'## REVISION\: ([0-9\.]+)', line_uni)
+                if m: version_str = m.group(1)
                 continue
             if line_uni == '': continue
             # >> New machine history
@@ -492,10 +496,11 @@ def mame_load_History_DAT(filename):
         else:
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
+    log_info('mame_load_History_DAT() Version "{0}"'.format(version_str))
     log_info('mame_load_History_DAT() Number of rows in history_idx_dic {0:6d}'.format(len(history_idx_dic)))
     log_info('mame_load_History_DAT() Number of rows in history_dic     {0:6d}'.format(len(history_dic)))
 
-    return (history_idx_dic, history_dic)
+    return (history_idx_dic, history_dic, version_str)
 
 #
 # Looks that mameinfo.dat has information for both machines and drivers.
@@ -511,6 +516,7 @@ def mame_load_History_DAT(filename):
 #
 def mame_load_MameInfo_DAT(filename):
     log_info('mame_load_MameInfo_DAT() Parsing "{0}"'.format(filename))
+    version_str = 'Not found'
     idx_dic = {}
     data_dic = {}
     __debug_function = False
@@ -527,7 +533,7 @@ def mame_load_MameInfo_DAT(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_MameInfo_DAT() (IOError) opening "{0}"'.format(filename))
-        return (idx_dic, data_dic)
+        return (idx_dic, data_dic, version_str)
 
     # >> Parse file
     for file_line in f:
@@ -536,7 +542,10 @@ def mame_load_MameInfo_DAT(filename):
         # if __debug_function: log_debug('Line "{0}"'.format(line_uni))
         if read_status == 0:
             # >> Skip comments: lines starting with '#'
+            # >> Look for version string in comments
             if re.search(r'^#', line_uni):
+                m = re.search(r'# MAMEINFO.DAT v([0-9\.]+)', line_uni)
+                if m: version_str = m.group(1)
                 continue
             if line_uni == '': continue
             # >> New machine or driver information
@@ -580,10 +589,11 @@ def mame_load_MameInfo_DAT(filename):
         else:
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
+    log_info('mame_load_MameInfo_DAT() Version "{0}"'.format(version_str))
     log_info('mame_load_MameInfo_DAT() Number of rows in idx_dic  {0:6d}'.format(len(idx_dic)))
     log_info('mame_load_MameInfo_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
 
-    return (idx_dic, data_dic)
+    return (idx_dic, data_dic, version_str)
 
 #
 # NOTE set objects are not JSON-serializable. Use lists and transform lists to sets if
@@ -594,6 +604,7 @@ def mame_load_MameInfo_DAT(filename):
 #
 def mame_load_GameInit_DAT(filename):
     log_info('mame_load_GameInit_DAT() Parsing "{0}"'.format(filename))
+    version_str = 'Not found'
     idx_list = []
     data_dic = {}
     __debug_function = False
@@ -610,16 +621,24 @@ def mame_load_GameInit_DAT(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_GameInit_DAT() (IOError) opening "{0}"'.format(filename))
-        return (idx_list, data_dic)
+        return (idx_list, data_dic, version_str)
 
     # >> Parse file
     for file_line in f:
         stripped_line = file_line.strip()
         line_uni = stripped_line.decode('utf-8', 'replace')
-        # if __debug_function: log_debug('Line "{0}"'.format(line_uni))
+        if __debug_function: log_debug('read_status {0} | Line "{1}"'.format(read_status, line_uni))
+        # >> Note that Gameinit.dat may have a BOM 0xEF,0xBB,0xBF
+        # >> See https://en.wikipedia.org/wiki/Byte_order_mark
+        # >> Remove BOM if present.
+        if line_uni and line_uni[0] == '\ufeff': line_uni = line_uni[1:]
         if read_status == 0:
             # >> Skip comments: lines starting with '#'
+            # >> Look for version string in comments
             if re.search(r'^#', line_uni):
+                if __debug_function: log_debug('Comment | "{0}"'.format(line_uni))
+                m = re.search(r'# MAME GAMEINIT\.DAT v([0-9\.]+) ', line_uni)
+                if m: version_str = m.group(1)
                 continue
             if line_uni == '': continue
             # >> New machine or driver information
@@ -646,10 +665,11 @@ def mame_load_GameInit_DAT(filename):
         else:
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
+    log_info('mame_load_GameInit_DAT() Version "{0}"'.format(version_str))
     log_info('mame_load_GameInit_DAT() Number of rows in idx_list {0:6d}'.format(len(idx_list)))
     log_info('mame_load_GameInit_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
 
-    return (idx_list, data_dic)
+    return (idx_list, data_dic, version_str)
 
 #
 # NOTE set objects are not JSON-serializable. Use lists and transform lists to sets if
@@ -660,6 +680,7 @@ def mame_load_GameInit_DAT(filename):
 #
 def mame_load_Command_DAT(filename):
     log_info('mame_load_Command_DAT() Parsing "{0}"'.format(filename))
+    version_str = 'Not found'
     idx_list = []
     data_dic = {}
     proper_idx_list = []
@@ -677,7 +698,7 @@ def mame_load_Command_DAT(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_Command_DAT() (IOError) opening "{0}"'.format(filename))
-        return (proper_idx_list, proper_data_dic)
+        return (proper_idx_list, proper_data_dic, version_str)
 
     # >> Parse file
     for file_line in f:
@@ -686,7 +707,10 @@ def mame_load_Command_DAT(filename):
         # if __debug_function: log_debug('Line "{0}"'.format(line_uni))
         if read_status == 0:
             # >> Skip comments: lines starting with '#'
+            # >> Look for version string in comments
             if re.search(r'^#', line_uni):
+                m = re.search(r'# Command List-[\w]+[\s]+([0-9\.]+) #', line_uni)
+                if m: version_str = m.group(1)
                 continue
             if line_uni == '': continue
             # >> New machine or driver information
@@ -713,6 +737,7 @@ def mame_load_Command_DAT(filename):
         else:
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
+    log_info('mame_load_Command_DAT() Version "{0}"'.format(version_str))
     log_info('mame_load_Command_DAT() Number of rows in idx_list {0:6d}'.format(len(idx_list)))
     log_info('mame_load_Command_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
 
@@ -728,7 +753,7 @@ def mame_load_Command_DAT(filename):
     log_info('mame_load_Command_DAT() Number of entries on proper_idx_list {0:6d}'.format(len(proper_idx_list)))
     log_info('mame_load_Command_DAT() Number of entries on proper_data_dic {0:6d}'.format(len(proper_data_dic)))
 
-    return (proper_idx_list, proper_data_dic)
+    return (proper_idx_list, proper_data_dic, version_str)
 
 # -------------------------------------------------------------------------------------------------
 # Build MAME and SL plots
@@ -1589,34 +1614,37 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     pDialog = xbmcgui.DialogProgress()
 
     # --- Load INI files to include category information ---
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Processing INI file: catver.ini ...')
+    pdialog_line1 = 'Processing INI files ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    pDialog.update(0, pdialog_line1, 'catver.ini')
     (categories_dic, catver_version) = mame_load_Catver_ini(settings['catver_path'])
-    pDialog.update(16, 'Processing INI file: catlist.ini ...')
+    pDialog.update(16, pdialog_line1, 'catlist.ini')
     (catlist_dic, catlist_version) = mame_load_INI_datfile(settings['catlist_path'])
-    pDialog.update(32, 'Processing INI file: genre.ini ...')
+    pDialog.update(32, pdialog_line1, 'genre.ini')
     (genre_dic, genre_version) = mame_load_INI_datfile(settings['genre_path'])
-    pDialog.update(48, 'Processing INI file: nplayers.ini ...')
+    pDialog.update(48, pdialog_line1, 'nplayers.ini')
     (nplayers_dic, nplayers_version) = mame_load_nplayers_ini(settings['nplayers_path'])
-    pDialog.update(64, 'Processing INI file: bestgames.ini ...')
+    pDialog.update(64, pdialog_line1, 'bestgames.ini')
     (bestgames_dic, bestgames_version) = mame_load_INI_datfile(settings['bestgames_path'])
-    pDialog.update(80, 'Processing INI file: series.ini ...')
+    pDialog.update(80, pdialog_line1, 'series.ini')
     (series_dic, series_version) = mame_load_INI_datfile(settings['series_path'])
-    pDialog.update(100)
+    pDialog.update(100, ' ')
     pDialog.close()
 
     # --- Load DAT files to include category information ---
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Processing DAT file: history.dat ...')
-    (history_idx_dic, history_dic) = mame_load_History_DAT(settings['history_path'])
-    pDialog.update(25, 'Processing DAT file: mameinfo.dat ...')
-    (mameinfo_idx_dic, mameinfo_dic) = mame_load_MameInfo_DAT(settings['mameinfo_path'])
-    pDialog.update(50, 'Processing DAT file: gameinit.dat ...')
-    (gameinit_idx_dic, gameinit_dic) = mame_load_GameInit_DAT(settings['gameinit_path'])
-    pDialog.update(75, 'Processing DAT file: command.dat ...')
-    (command_idx_dic, command_dic) = mame_load_Command_DAT(settings['command_path'])
-    pDialog.update(100)
+    pdialog_line1 = 'Processing DAT files ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    pDialog.update(0, pdialog_line1, 'history.dat')
+    (history_idx_dic, history_dic, history_version) = mame_load_History_DAT(settings['history_path'])
+    pDialog.update(25, pdialog_line1, 'mameinfo.dat')
+    (mameinfo_idx_dic, mameinfo_dic, mameinfo_version) = mame_load_MameInfo_DAT(settings['mameinfo_path'])
+    pDialog.update(50, pdialog_line1, 'gameinit.dat')
+    (gameinit_idx_dic, gameinit_dic, gameinit_version) = mame_load_GameInit_DAT(settings['gameinit_path'])
+    pDialog.update(75, pdialog_line1, 'command.dat')
+    (command_idx_dic, command_dic, command_version) = mame_load_Command_DAT(settings['command_path'])
+    pDialog.update(100, ' ')
     pDialog.close()
+    return
 
     # ---------------------------------------------------------------------------------------------
     # Incremental Parsing approach B (from [1])
@@ -2077,17 +2105,22 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # >> This saves the hashs files in the database directory.
     fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
 
-    # -----------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary
-    # -----------------------------------------------------------------------------
-    control_dic['ver_mame']        = mame_version_int
-    control_dic['ver_mame_str']    = mame_version_raw
-    control_dic['ver_catver']      = catver_version
-    control_dic['ver_catlist']     = catlist_version
-    control_dic['ver_genre']       = genre_version
-    control_dic['ver_nplayers']    = nplayers_version
-    control_dic['ver_bestgames']   = bestgames_version
-    control_dic['ver_series']      = series_version
+    # ---------------------------------------------------------------------------------------------
+    control_dic['t_MAME_DB_build'] = time.time()
+    control_dic['ver_mame']      = mame_version_int
+    control_dic['ver_mame_str']  = mame_version_raw
+    control_dic['ver_catver']    = catver_version
+    control_dic['ver_catlist']   = catlist_version
+    control_dic['ver_genre']     = genre_version
+    control_dic['ver_nplayers']  = nplayers_version
+    control_dic['ver_bestgames'] = bestgames_version
+    control_dic['ver_series']    = series_version
+    control_dic['ver_history']   = history_version
+    control_dic['ver_mameinfo']  = mameinfo_version
+    control_dic['ver_gameinit']  = gameinit_version
+    control_dic['ver_command']   = command_version
 
     # >> Statistics
     control_dic['stats_processed_machines'] = stats_processed_machines
