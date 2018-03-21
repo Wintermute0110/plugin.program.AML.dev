@@ -1979,13 +1979,11 @@ class Main:
             info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
             info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
             info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
-            info_text += "[COLOR violet]flags[/COLOR]: '{0}'\n".format(machine['flags'])
             info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
             info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
             info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
             info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
             info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
-            info_text += "[COLOR violet]plot[/COLOR]: '{0}'\n".format(machine['plot'])
             info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
 
             info_text += '\n[COLOR orange]Machine data[/COLOR]\n'.format(machine_name)
@@ -2007,12 +2005,10 @@ class Main:
             else:
                 info_text += "[COLOR lime]devices[/COLOR]: []\n"
             info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(unicode(machine['display_rotate']))
-            info_text += "[COLOR skyblue]display_tag[/COLOR]: {0}\n".format(unicode(machine['display_tag']))
             info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(unicode(machine['display_type']))
             info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
             info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(unicode(machine['isDead']))
             info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(unicode(machine['isMechanical']))
-            info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
             info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
             info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
             info_text += "[COLOR violet]series[/COLOR]: '{0}'\n".format(machine['series'])
@@ -2027,9 +2023,11 @@ class Main:
             info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
             info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
             info_text += "[COLOR violet]fanart[/COLOR]: '{0}'\n".format(assets['fanart'])
+            info_text += "[COLOR violet]flags[/COLOR]: '{0}'\n".format(assets['flags'])
             info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
             info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
             info_text += "[COLOR violet]marquee[/COLOR]: '{0}'\n".format(assets['marquee'])
+            info_text += "[COLOR violet]plot[/COLOR]: '{0}'\n".format(assets['plot'])
             info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
             info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
             info_text += "[COLOR violet]trailer[/COLOR]: '{0}'\n".format(assets['trailer'])
@@ -3038,18 +3036,20 @@ class Main:
         if idx == 0:
             # >> Load databases.
             pDialog = xbmcgui.DialogProgress()
+            line1_str = 'Loading databases ...'
+            num_items = 5
             pDialog.create('Advanced MAME Launcher')
-            pDialog.update(0, 'Loading databases (Control DB) ... ')
+            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(20, 'Loading databases (MAME Favourites DB) ... ')
+            pDialog.update(int((1*100) / num_items), line1_str, 'MAME Favourites')
             fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
-            pDialog.update(40, 'Loading databases (Main machines DB) ... ')
+            pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Main')
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(60, 'Loading databases (Render machines DB) ... ')
+            pDialog.update(int((3*100) / num_items), line1_str, 'MAME machines Render')
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(80, 'Loading databases (Machine assets DB) ... ')
+            pDialog.update(int((4*100) / num_items), line1_str, 'MAME machine Assets')
             assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(100)
+            pDialog.update(int((5*100) / num_items), ' ', ' ')
             pDialog.close()
 
             # >> Check/Update MAME Favourite machines.
@@ -3113,13 +3113,13 @@ class Main:
             self._render_fav_machine_row(m_name, machine, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_fav_machine_row(self, machine_name, machine, machine_assets):
+    def _render_fav_machine_row(self, m_name, machine, m_assets):
         # --- Default values for flags ---
         AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
 
         # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
         display_name = machine['description']
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(machine['flags'])            
+        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])            
         if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
         if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
         if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
@@ -3131,11 +3131,11 @@ class Main:
         else:                  AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
 
         # --- Assets/artwork ---
-        icon_path      = machine_assets[self.mame_icon] if machine_assets[self.mame_icon] else 'DefaultProgram.png'
-        fanart_path    = machine_assets[self.mame_fanart]
-        banner_path    = machine_assets['marquee']
-        clearlogo_path = machine_assets['clearlogo']
-        poster_path    = machine_assets['flyer']
+        icon_path      = m_assets[self.mame_icon] if m_assets[self.mame_icon] else 'DefaultProgram.png'
+        fanart_path    = m_assets[self.mame_fanart]
+        banner_path    = m_assets['marquee']
+        clearlogo_path = m_assets['clearlogo']
+        poster_path    = m_assets['flyer']
 
         # --- Create listitem row ---
         ICON_OVERLAY = 6
@@ -3146,32 +3146,32 @@ class Main:
         if self.settings['display_hide_trailers']:
             listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
                                        'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                       'plot'    : machine['plot'],
+                                       'plot'    : m_assets['plot'],
                                        'overlay' : ICON_OVERLAY})
         else:
             listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
                                        'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                       'plot'    : machine['plot'],  'trailer' : machine_assets['trailer'],
+                                       'plot'    : m_assets['plot'], 'trailer' : m_assets['trailer'],
                                        'overlay' : ICON_OVERLAY})
         listitem.setProperty('nplayers', machine['nplayers'])
         listitem.setProperty('platform', 'MAME')
 
         # --- Assets ---
         # >> AEL custom artwork fields
-        listitem.setArt({'title'     : machine_assets['title'],   'snap'    : machine_assets['snap'],
-                         'boxfront'  : machine_assets['cabinet'], 'boxback' : machine_assets['cpanel'],
-                         'cartridge' : machine_assets['PCB'],     'flyer'   : machine_assets['flyer'],
-                         'icon'      : icon_path,                 'fanart'    : fanart_path,
-                         'banner'    : banner_path,               'clearlogo' : clearlogo_path,
+        listitem.setArt({'title'     : m_assets['title'],   'snap'    : m_assets['snap'],
+                         'boxfront'  : m_assets['cabinet'], 'boxback' : m_assets['cpanel'],
+                         'cartridge' : m_assets['PCB'],     'flyer'   : m_assets['flyer'],
+                         'icon'      : icon_path,           'fanart'    : fanart_path,
+                         'banner'    : banner_path,         'clearlogo' : clearlogo_path,
                          'poster'    : poster_path})
 
         # --- ROM flags (Skins will use these flags to render icons) ---
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
 
         # --- Create context menu ---
-        URL_view_DAT = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', machine_name)
-        URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', machine_name, 'location', LOCATION_MAME_FAVS)
-        URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', machine_name)
+        URL_view_DAT = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', m_name)
+        URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', m_name, 'location', LOCATION_MAME_FAVS)
+        URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', m_name)
         commands = [
             ('Info / Utils',  URL_view_DAT),
             ('View / Audit',  URL_view),
@@ -3182,7 +3182,7 @@ class Main:
         listitem.addContextMenuItems(commands)
 
         # --- Add row ---
-        URL = self._misc_url_3_arg('command', 'LAUNCH', 'machine', machine_name, 'location', 'MAME_FAV')
+        URL = self._misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', 'MAME_FAV')
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     def _command_context_add_sl_fav(self, SL_name, ROM_name):

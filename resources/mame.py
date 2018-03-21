@@ -1772,8 +1772,6 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
             # >> Add catver/catlist/genre
             if m_name in categories_dic: machine['catver']    = categories_dic[m_name]
             else:                        machine['catver']    = '[ Not set ]'
-            if m_name in nplayers_dic:   machine['nplayers']  = nplayers_dic[m_name]
-            else:                        machine['nplayers']  = '[ Not set ]'
             if m_name in catlist_dic:    machine['catlist']   = catlist_dic[m_name]
             else:                        machine['catlist']   = '[ Not set ]'
             if m_name in genre_dic:      machine['genre']     = genre_dic[m_name]
@@ -1782,6 +1780,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
             else:                        machine['bestgames'] = '[ Not set ]'
             if m_name in series_dic:     machine['series']    = series_dic[m_name]
             else:                        machine['series']    = '[ Not set ]'
+            if m_name in nplayers_dic:   m_render['nplayers'] = nplayers_dic[m_name]
+            else:                        m_render['nplayers'] = '[ Not set ]'
 
             # >> Increment number of machines
             stats_processed_machines += 1
@@ -2046,7 +2046,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # ---------------------------------------------------------------------------------------------
     # Improve information fields in RENDER_DB_PATH
     # ---------------------------------------------------------------------------------------------
-    # >> Add genre infolabel
+    # >> Add genre infolabel into render database
     if genre_dic:
         for machine_name in machines_render:
             machines_render[machine_name]['genre'] = machines[machine_name]['genre']
@@ -2056,11 +2056,6 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     elif catlist_dic:
         for machine_name in machines_render:
             machines_render[machine_name]['genre'] = machines[machine_name]['catlist']
-
-    # >> Add nplayers infolabel
-    if nplayers_dic:
-        for machine_name in machines_render:
-            machines_render[machine_name]['nplayers'] = machines[machine_name]['nplayers']
 
     # ---------------------------------------------------------------------------------------------
     # Improve name in DAT indices and machine names
@@ -3016,7 +3011,7 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     pDialog.update(update_number, pDialog_line1, 'Making Nplayers catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'nplayers')
+    fs_build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'nplayers')
     _cache_index_builder('NPlayers', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
