@@ -18,15 +18,15 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
+WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
+
 FEATURE  Clean Render and main machine JSON files. Currently, there are repeated fields on both
          databases like nplayers.
 
-WIP      Move flags and plot from the render database to the assets database. Flags are modified
+FEATURE  Move flags and plot from the render database to the assets database. Flags are modified
          by the scanner only and plot generated after the scanner. If flags and plot are in
          the asset DB, the ROM cache and hashed DB must be regenerated after the database building
          only and not always like now.
-
-WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
 
 FEATURE  Render PDF manuals consisting of image scans (99% of game manuals are scans of images).
          Thank you very much to i96751414 for allowing use of his PDF reader addon code.

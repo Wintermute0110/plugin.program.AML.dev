@@ -3922,17 +3922,17 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     control_dic['stats_SL_software_items'] = total_SL_software_items
     control_dic['stats_SL_machine_archives_ROM'] = num_SL_with_ROMs
     control_dic['stats_SL_machine_archives_CHD'] = num_SL_with_CHDs
-    control_dic['t_SL_DB_build'] = time.time()    
+    control_dic['t_SL_DB_build'] = time.time()
 
 # -------------------------------------------------------------------------------------------------
 # ROM/CHD and asset scanner
 # -------------------------------------------------------------------------------------------------
-# Does not save any file. machines_render and control_dic mutated by assigment.
-def mame_scan_MAME_ROMs(PATHS, settings,
-                      control_dic, machines, machines_render,
-                      machine_archives_dic, ROM_archive_list, CHD_archive_list,
-                      ROM_path_FN, CHD_path_FN, Samples_path_FN,
-                      scan_CHDs, scan_Samples):
+# Does not save any file. assets_dic and control_dic mutated by assigment.
+def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
+                        machines, machines_render, assets_dic,
+                        machine_archives_dic, ROM_archive_list, CHD_archive_list,
+                        ROM_path_FN, CHD_path_FN, Samples_path_FN,
+                        scan_CHDs, scan_Samples):
     # --- Scan ROMs ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
@@ -3973,7 +3973,7 @@ def mame_scan_MAME_ROMs(PATHS, settings,
                 scan_ROM_machines_missing += 1
         else:
             ROM_flag = '-'
-        fs_set_ROM_flag(machines_render[key], ROM_flag)
+        fs_set_ROM_flag(assets_dic[key], ROM_flag)
 
         # --- Disks ---
         chd_list = machine_archives_dic[key]['CHDs']
@@ -3998,7 +3998,7 @@ def mame_scan_MAME_ROMs(PATHS, settings,
             scan_CHD_machines_missing += 1
         else:
             CHD_flag = '-'
-        fs_set_CHD_flag(machines_render[key], CHD_flag)
+        fs_set_CHD_flag(assets_dic[key], CHD_flag)
 
         # >> Build report.
         if m_str_list:
@@ -4096,7 +4096,7 @@ def mame_scan_MAME_ROMs(PATHS, settings,
                 scan_Samples_missing += 1
         else:
             Sample_flag = '-'
-        fs_set_Sample_flag(machines_render[key], Sample_flag)
+        fs_set_Sample_flag(assets_dic[key], Sample_flag)
         # >> Progress dialog
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
@@ -4107,23 +4107,22 @@ def mame_scan_MAME_ROMs(PATHS, settings,
         for line in r_list: file.write(line.encode('utf-8'))
 
     # --- Update statistics ---
-    control_dic['scan_ROM_ZIP_files']      = scan_ZIP_files_total
-    control_dic['scan_ROM_ZIP_files_have']       = scan_ZIP_files_have
-    control_dic['scan_ROM_ZIP_files_missing']    = scan_ZIP_files_missing
-    control_dic['scan_CHD_files']      = scan_CHD_files_total
-    control_dic['scan_CHD_files_have']       = scan_CHD_files_have
-    control_dic['scan_CHD_files_missing']    = scan_CHD_files_missing
-    
-    control_dic['scan_machine_archives_ROM']   = scan_ROM_machines_total
+    control_dic['scan_ROM_ZIP_files']                = scan_ZIP_files_total
+    control_dic['scan_ROM_ZIP_files_have']           = scan_ZIP_files_have
+    control_dic['scan_ROM_ZIP_files_missing']        = scan_ZIP_files_missing
+    control_dic['scan_CHD_files']                    = scan_CHD_files_total
+    control_dic['scan_CHD_files_have']               = scan_CHD_files_have
+    control_dic['scan_CHD_files_missing']            = scan_CHD_files_missing
+    control_dic['scan_machine_archives_ROM']         = scan_ROM_machines_total
     control_dic['scan_machine_archives_ROM_have']    = scan_ROM_machines_have
     control_dic['scan_machine_archives_ROM_missing'] = scan_ROM_machines_missing
-    control_dic['scan_machine_archives_CHD']   = scan_CHD_machines_total
+    control_dic['scan_machine_archives_CHD']         = scan_CHD_machines_total
     control_dic['scan_machine_archives_CHD_have']    = scan_CHD_machines_have
     control_dic['scan_machine_archives_CHD_missing'] = scan_CHD_machines_missing
-
-    control_dic['scan_Samples_have']    = scan_Samples_have
-    control_dic['scan_Samples_missing'] = scan_Samples_missing
-    control_dic['scan_Samples_total']   = scan_Samples_total
+    control_dic['scan_Samples_have']                 = scan_Samples_have
+    control_dic['scan_Samples_missing']              = scan_Samples_missing
+    control_dic['scan_Samples_total']                = scan_Samples_total
+    control_dic['t_MAME_ROMs_scan'] = time.time()
 
 # -------------------------------------------------------------------------------------------------
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
@@ -4150,8 +4149,8 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
         # >> Initialise
         SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
         SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_software_archives.json')
-        sl_roms = fs_load_JSON_file(SL_DB_FN.getPath())
-        soft_archives = fs_load_JSON_file(SL_SOFT_ARCHIVES_DB_FN.getPath())
+        sl_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
+        soft_archives = fs_load_JSON_file(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
 
         for rom_key in sorted(sl_roms):
             m_str_list = []
@@ -4213,7 +4212,7 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
                 report_list.extend(m_str_list)
                 report_list.append('')
         # >> Save SL database to update flags.
-        fs_write_JSON_file(SL_DB_FN.getPath(), sl_roms)
+        fs_write_JSON_file(SL_DB_FN.getPath(), sl_roms, verbose = False)
         # >> Increment file count
         processed_files += 1
     pDialog.update(update_number, pdialog_line1, ' ')
@@ -4241,9 +4240,7 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     control_dic['scan_software_archives_CHD_total']   = SL_CHDs_have
     control_dic['scan_software_archives_CHD_have']    = SL_CHDs_missing
     control_dic['scan_software_archives_CHD_missing'] = SL_CHDs_total
-
-    # >> Save databases
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    control_dic['t_SL_ROMs_scan'] = time.time()
 
 #
 # Note that MAME is able to use clone artwork from parent machines. Mr. Do's Artwork ZIP files
@@ -4253,7 +4250,8 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
 #   A) A clone may use assets from parent.
 #   B) A parent may use assets from a clone.
 #
-def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_pclone_dic, Asset_path_FN, pDialog):
+def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
+                          machines_render, main_pclone_dic, Asset_path_FN):
     # >> Iterate machines, check if assets/artwork exist.
     table_str = []
     table_str.append(['left', 'left', 'left',  'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
@@ -4418,6 +4416,7 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, machines_render, main_
     control_dic['assets_trailers_have']        = Tra[0]
     control_dic['assets_trailers_missing']     = Tra[1]
     control_dic['assets_trailers_alternate']   = Tra[2]
+    control_dic['t_MAME_assets_scan'] = time.time()
 
 def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN):
     # >> Traverse Software List, check if ROM exists, update and save database
@@ -4436,7 +4435,7 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
     for SL_name in sorted(SL_index_dic):
         # >> Update progress
         update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, 'Processing Software List {0}'.format(SL_name))
+        pDialog.update(update_number, pdialog_line1, 'Software List {0}'.format(SL_name))
 
         # >> Open database
         file_name =  SL_index_dic[SL_name]['rom_DB_noext'] + '.json'
@@ -4516,6 +4515,7 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
         # >> Update progress
         processed_files += 1
     update_number = (processed_files*100) // total_files
+    pDialog.update(update_number, ' ', ' ')
     pDialog.close()
 
     # >> Asset statistics and report.
@@ -4564,3 +4564,4 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
     control_dic['assets_SL_manuals_have']        = Man[0]
     control_dic['assets_SL_manuals_missing']     = Man[1]
     control_dic['assets_SL_manuals_alternate']   = Man[2]
+    control_dic['t_SL_assets_scan'] = time.time()
