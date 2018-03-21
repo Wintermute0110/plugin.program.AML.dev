@@ -2170,15 +2170,42 @@ class Main:
                 info_text += "Command.dat version    {0}\n".format(control_dic['ver_command'])
 
                 info_text += '\n[COLOR orange]Timestamps[/COLOR]\n'
-                info_text += "MAME XML extracted on  {0}\n".format(time.ctime(control_dic['t_XML_extraction']))
-                info_text += "MAME DB built on       {0}\n".format(time.ctime(control_dic['t_MAME_DB_build']))
-                info_text += "MAME Audit DB built on {0}\n".format(time.ctime(control_dic['t_MAME_Audit_DB_build']))
-                info_text += "MAME Catalog built on  {0}\n".format(time.ctime(control_dic['t_MAME_Catalog_build']))
-                info_text += "SL DB built on         {0}\n".format(time.ctime(control_dic['t_SL_DB_build']))
-                info_text += "MAME ROMs scaned on    {0}\n".format(time.ctime(control_dic['t_MAME_ROMs_scan']))
-                info_text += "MAME assets scaned on  {0}\n".format(time.ctime(control_dic['t_MAME_assets_scan']))
-                info_text += "SL ROMs scaned on      {0}\n".format(time.ctime(control_dic['t_SL_ROMs_scan']))
-                info_text += "SL assets scaned on    {0}\n".format(time.ctime(control_dic['t_SL_assets_scan']))
+                if control_dic['t_XML_extraction']:
+                    info_text += "MAME XML extracted on  {0}\n".format(time.ctime(control_dic['t_XML_extraction']))
+                else:
+                    info_text += "MAME XML never extracted\n"
+                if control_dic['t_MAME_DB_build']:
+                    info_text += "MAME DB built on       {0}\n".format(time.ctime(control_dic['t_MAME_DB_build']))
+                else:
+                    info_text += "MAME DB never built\n"
+                if control_dic['t_MAME_Audit_DB_build']:
+                    info_text += "MAME Audit DB built on {0}\n".format(time.ctime(control_dic['t_MAME_Audit_DB_build']))
+                else:
+                    info_text += "MAME Audit DB never built\n"
+                if control_dic['t_MAME_Catalog_build']:
+                    info_text += "MAME Catalog built on  {0}\n".format(time.ctime(control_dic['t_MAME_Catalog_build']))
+                else:
+                    info_text += "MAME Catalog never built\n"
+                if control_dic['t_SL_DB_build']:
+                    info_text += "SL DB built on         {0}\n".format(time.ctime(control_dic['t_SL_DB_build']))
+                else:
+                    info_text += "SL DB never built\n"
+                if control_dic['t_MAME_ROMs_scan']:
+                    info_text += "MAME ROMs scaned on    {0}\n".format(time.ctime(control_dic['t_MAME_ROMs_scan']))
+                else:
+                    info_text += "MAME ROMs never scaned\n"
+                if control_dic['t_MAME_assets_scan']:
+                    info_text += "MAME assets scaned on  {0}\n".format(time.ctime(control_dic['t_MAME_assets_scan']))
+                else:
+                    info_text += "MAME assets never scaned\n"
+                if control_dic['t_SL_ROMs_scan']:
+                    info_text += "SL ROMs scaned on      {0}\n".format(time.ctime(control_dic['t_SL_ROMs_scan']))
+                else:
+                    info_text += "SL ROMs never scaned\n"
+                if control_dic['t_SL_assets_scan']:
+                    info_text += "SL assets scaned on    {0}\n".format(time.ctime(control_dic['t_SL_assets_scan']))
+                else:
+                    info_text += "SL assets never scaned\n"
 
                 info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
                 t = "Machines   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
