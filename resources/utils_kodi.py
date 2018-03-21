@@ -52,31 +52,31 @@ def log_debug(str_text):
                                   
         # At this point we are sure str_text is a unicode string.
         log_text = u'AML DEBUG: ' + str_text
-        xbmc.log(log_text.encode('utf-8'), level=xbmc.LOGERROR)
+        xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
 def log_verb(str_text):
     if current_log_level >= LOG_VERB:
         if isinstance(str_text, str): str_text = str_text.decode('utf-8')
         log_text = u'AML VERB : ' + str_text
-        xbmc.log(log_text.encode('utf-8'), level=xbmc.LOGERROR)
+        xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
 def log_info(str_text):
     if current_log_level >= LOG_INFO:
         if isinstance(str_text, str): str_text = str_text.decode('utf-8')
         log_text = u'AML INFO : ' + str_text
-        xbmc.log(log_text.encode('utf-8'), level=xbmc.LOGERROR)
+        xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
 
 def log_warning(str_text):
     if current_log_level >= LOG_WARNING:
         if isinstance(str_text, str): str_text = str_text.decode('utf-8')
         log_text = u'AML WARN : ' + str_text
-        xbmc.log(log_text.encode('utf-8'), level=xbmc.LOGERROR)
+        xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGWARNING)
 
 def log_error(str_text):
     if current_log_level >= LOG_ERROR:
         if isinstance(str_text, str): str_text = str_text.decode('utf-8')
         log_text = u'AML ERROR: ' + str_text
-        xbmc.log(log_text.encode('utf-8'), level=xbmc.LOGERROR)
+        xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGERROR)
 
 # -----------------------------------------------------------------------------
 # Kodi notifications and dialogs
