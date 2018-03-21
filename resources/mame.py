@@ -767,9 +767,8 @@ def mame_load_Command_DAT(filename):
 # Line 5) Artwork, Manual, History, Info, Gameinit, Command
 # Line 6) Machine [supports|does not support] a Software List.
 # ---------------------------------------------------------------------------------------------
-def mame_build_MAME_plots(machines, machines_render, assets_dic,
-                          history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic,
-                          pDialog):
+def mame_build_MAME_plots(machines, machines_render, assets_dic, pDialog,
+                          history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic):
     log_info('mame_build_plots() Building machine plots/descriptions ...')
     # >> Do not crash if DAT files are not configured.
     if history_idx_dic:
@@ -812,7 +811,7 @@ def mame_build_MAME_plots(machines, machines_render, assets_dic,
         plot_str_list.append('{0}'.format(coin_str))
         if Flag_str: plot_str_list.append('{0}'.format(Flag_str))
         if SL_str: plot_str_list.append('SL {0}'.format(SL_str))
-        machines_render[machine_name]['plot'] = '\n'.join(plot_str_list)
+        assets_dic[machine_name]['plot'] = '\n'.join(plot_str_list)
 
         # >> Update progress
         num_machines += 1

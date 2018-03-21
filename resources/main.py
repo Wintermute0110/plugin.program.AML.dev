@@ -3938,42 +3938,42 @@ class Main:
             # >> Load machine database and control_dic
             pDialog = xbmcgui.DialogProgress()
             pdialog_line1 = 'Loading databases ...'
+            num_items = 12
             pDialog.create('Advanced MAME Launcher')
-            pDialog.update(0, pdialog_line1, 'Control dic')
+            pDialog.update(int((0*100) / num_items), pdialog_line1, 'Control dic')
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(8, pdialog_line1, 'MAME machines Main')
+            pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Main')
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(16, pdialog_line1, 'MAME machines Render')
+            pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machines Render')
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(25, pdialog_line1, 'MAME machine Assets')
+            pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME machine Assets')
             assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(33, pdialog_line1, 'MAME Parent/Clone')
+            pDialog.update(int((4*100) / num_items), pdialog_line1, 'MAME Parent/Clone')
             main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            pDialog.update(41, pdialog_line1, 'MAME machine archives')
+            pDialog.update(int((5*100) / num_items), pdialog_line1, 'MAME machine archives')
             machine_archives_dic = fs_load_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(50, pdialog_line1, 'MAME ROM list')
+            pDialog.update(int((6*100) / num_items), pdialog_line1, 'MAME ROM list')
             ROM_archive_list = fs_load_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(58, pdialog_line1, 'MAME CHD list')
+            pDialog.update(int((7*100) / num_items), pdialog_line1, 'MAME CHD list')
             CHD_archive_list = fs_load_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(66, pdialog_line1, 'History DAT')
+            pDialog.update(int((8*100) / num_items), pdialog_line1, 'History DAT index')
             history_idx_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
-            pDialog.update(75, pdialog_line1, 'Mameinfo DAT')
+            pDialog.update(int((9*100) / num_items), pdialog_line1, 'Mameinfo DAT index')
             mameinfo_idx_dic = fs_load_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath())
-            pDialog.update(83, pdialog_line1, 'Gameinit DAT')
+            pDialog.update(int((10*100) / num_items), pdialog_line1, 'Gameinit DAT index')
             gameinit_idx_list = fs_load_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath())
-            pDialog.update(91, pdialog_line1, 'Command DAT')
+            pDialog.update(int((11*100) / num_items), pdialog_line1, 'Command DAT index')
             command_idx_list = fs_load_JSON_file(PATHS.COMMAND_IDX_PATH.getPath())
-            pDialog.update(100, pdialog_line1, ' ')
+            pDialog.update(int((12*100) / num_items), ' ', ' ')
             pDialog.close()
 
-            # >> Updates machines_render dictionary
-            mame_scan_MAME_ROMs(PATHS, self.settings,
-                                control_dic, machines, machines_render,
+            # 1) Updates 'flags' field in assets_dic
+            # 2) Updates timestamp t_MAME_ROM_scan in control_dic
+            mame_scan_MAME_ROMs(PATHS, self.settings, control_dic,
+                                machines, machines_render, assets_dic,
                                 machine_archives_dic, ROM_archive_list, CHD_archive_list,
                                 ROM_path_FN, CHD_path_FN, Samples_path_FN,
                                 scan_CHDs, scan_Samples)
-            # >> Save control_dic (has been updated in the scanner function).
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
             # >> Get assets directory. Abort if not configured/found.
             do_MAME_asset_scan = True
@@ -3986,31 +3986,27 @@ class Main:
                 do_MAME_asset_scan = False
 
             if do_MAME_asset_scan:
-                # >> Updates assets_dic dictionary
-                mame_scan_MAME_assets(PATHS, assets_dic, control_dic,
-                                      machines_render, main_pclone_dic, Asset_path_FN, pDialog)
-                # >> Save control_dic (has been updated in the scanner function).
-                fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+                # 1) Mutates assets_dic and control_dic
+                mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
+                                      machines_render, main_pclone_dic, Asset_path_FN)
 
-            # >> Traverse MAME machines and build plot. Updates machines_render
+            # >> Traverse MAME machines and build plot. Updates assets_dic
             mame_build_MAME_plots(machines, machines_render, assets_dic,
                                   history_idx_dic, mameinfo_idx_dic, gameinit_idx_list, command_idx_list,
                                   pDialog)
 
             pdialog_line1 = 'Saving databases ...'
+            num_items = 2
             pDialog.create('Advanced MAME Launcher')
-            pDialog.update(0, pdialog_line1, 'Machines Render')
-            fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
-            pDialog.update(50, pdialog_line1, 'Machine Assets')
+            pDialog.update(int((0*100) / num_items), pdialog_line1, 'Control dictionary')
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machine Assets')
             fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-            pDialog.update(100)
+            pDialog.update(int((2*100) / num_items))
             pDialog.close()
 
-            # >> Regenerate Main hashed database and ROM cache.
-            # >> MAME ROM scanner changed ROM flags in Render DB.
+            # >> Regenerate asset cache.
             cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
-            fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
-            fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
             fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
 
             # --- Software Lists ------------------------------------------------------------------
@@ -4044,10 +4040,20 @@ class Main:
                 SL_CHD_path_FN = FileName('')
 
             # >> Load SL catalog and PClone dictionary
+            pdialog_line1 = 'Loading databases ...'
+            num_items = 4
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(int((0*100) / num_items), pdialog_line1, 'Software Lists index')
             SL_index_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+            pDialog.update(int((1*100) / num_items), pdialog_line1, 'Software Lists machines')
             SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+            pDialog.update(int((2*100) / num_items), pdialog_line1, 'Software Lists Parent/Clone dictionary')
             SL_pclone_dic = fs_load_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath())
+            pDialog.update(int((3*100) / num_items), pdialog_line1, 'History DAT index')
             History_idx_dic = fs_load_JSON_file(PATHS.HISTORY_IDX_PATH.getPath())
+            pDialog.update(int((4*100) / num_items), ' ', ' ')
+            pDialog.close()
+
             if do_SL_ROM_scan:
                 mame_scan_SL_ROMs(PATHS, control_dic, SL_index_dic, SL_hash_dir_FN,
                                   SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN)
@@ -4064,8 +4070,8 @@ class Main:
 
             if do_SL_asset_scan: 
                 mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN)
-            
-            # >> Build MAME machine plots
+
+            # >> Build Software Lists plots
             mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, pDialog)
 
             # >> Save control_dic (has been updated in the SL scanner functions).
@@ -4834,8 +4840,8 @@ class Main:
                 pDialog.create('Advanced MAME Launcher', line1_str)
                 pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-                pDialog.update(int((1*100) / num_items), line1_str, 'MAME machines Render')
-                fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
+                pDialog.update(int((1*100) / num_items), line1_str, 'MAME machine Assets')
+                fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
                 pDialog.update(int((2*100) / num_items), ' ', ' ')
                 pDialog.close()
 
@@ -5015,7 +5021,7 @@ class Main:
                 num_items = 1
                 pDialog.create('Advanced MAME Launcher')
                 pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machine Assets')
-                fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), assets_dic)
+                fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
                 pDialog.update(int((1*100) / num_items), ' ', ' ')
                 pDialog.close()
 
