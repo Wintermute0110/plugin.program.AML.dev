@@ -1864,7 +1864,7 @@ class Main:
 
         if view_type == VIEW_SIMPLE:
             d_list = [
-              'View database statistics',
+              'View database statistics ...',
               'View scanner reports ...',
               'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
@@ -1875,7 +1875,7 @@ class Main:
               'View MAME machine ROMs (ROMs DB)',
               'View MAME machine ROMs (Audit DB)',
               'Audit MAME machine ROMs',
-              'View database statistics',
+              'View database statistics ...',
               'View asset/artwork reports ...',
               'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
@@ -1886,7 +1886,7 @@ class Main:
               'View Software List ROMs (ROMs DB)',
               'View Software List ROMs (Audit DB)',
               'Audit Software List ROMs',
-              'View database statistics',
+              'View database statistics ...',
               'View asset/artwork reports ...',
               'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
@@ -2138,235 +2138,252 @@ class Main:
 
         # --- View database information and statistics stored in control dictionary ---
         elif action == ACTION_VIEW_DB_STATS:
-            # --- Warn user if error ---
-            if not PATHS.MAIN_CONTROL_PATH.exists():
-                kodi_dialog_OK('MAME database not found. Please setup the addon first.')
-                return
+            d = xbmcgui.Dialog()
+            type_sub = d.select('View scanner reports',
+                                ['View main statistics',
+                                 'View scanner statistics'])
+            if type_sub < 0: return
 
-            # --- Load control dic ---
-            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            window_title = 'Database information and statistics'
+            # --- Main stats ---
+            if type_sub == 0:
+                # --- Warn user if error ---
+                if not PATHS.MAIN_CONTROL_PATH.exists():
+                    kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+                    return
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                window_title = 'Database information and statistics'
 
-            # --- Main stuff ---
-            info_text  = '[COLOR orange]Main information[/COLOR]\n'
-            info_text += "AML version            {0}\n".format(__addon_version__)
-            info_text += "MAME version string    {0}\n".format(control_dic['ver_mame_str'])
-            info_text += "MAME version numerical {0}\n".format(control_dic['ver_mame'])
-            info_text += "catver.ini version     {0}\n".format(control_dic['ver_catver'])
-            info_text += "catlist.ini version    {0}\n".format(control_dic['ver_catlist'])
-            info_text += "genre.ini version      {0}\n".format(control_dic['ver_genre'])
-            info_text += "nplayers.ini version   {0}\n".format(control_dic['ver_nplayers'])
-            info_text += "bestgames.ini version  {0}\n".format(control_dic['ver_bestgames'])
-            info_text += "series.ini version     {0}\n".format(control_dic['ver_series'])
-            info_text += "History.dat version    {0}\n".format(control_dic['ver_history'])
-            info_text += "MAMEinfo.dat version   {0}\n".format(control_dic['ver_mameinfo'])
-            info_text += "Gameinit.dat version   {0}\n".format(control_dic['ver_gameinit'])
-            info_text += "Command.dat version    {0}\n".format(control_dic['ver_command'])
+                # --- Main stuff ---
+                info_text  = '[COLOR orange]Main information[/COLOR]\n'
+                info_text += "AML version            {0}\n".format(__addon_version__)
+                info_text += "MAME version string    {0}\n".format(control_dic['ver_mame_str'])
+                info_text += "MAME version numerical {0}\n".format(control_dic['ver_mame'])
+                info_text += "catver.ini version     {0}\n".format(control_dic['ver_catver'])
+                info_text += "catlist.ini version    {0}\n".format(control_dic['ver_catlist'])
+                info_text += "genre.ini version      {0}\n".format(control_dic['ver_genre'])
+                info_text += "nplayers.ini version   {0}\n".format(control_dic['ver_nplayers'])
+                info_text += "bestgames.ini version  {0}\n".format(control_dic['ver_bestgames'])
+                info_text += "series.ini version     {0}\n".format(control_dic['ver_series'])
+                info_text += "History.dat version    {0}\n".format(control_dic['ver_history'])
+                info_text += "MAMEinfo.dat version   {0}\n".format(control_dic['ver_mameinfo'])
+                info_text += "Gameinit.dat version   {0}\n".format(control_dic['ver_gameinit'])
+                info_text += "Command.dat version    {0}\n".format(control_dic['ver_command'])
 
-            info_text += '\n[COLOR orange]Timestamps[/COLOR]\n'
-            info_text += "MAME XML extracted on  {0}\n".format(time.ctime(control_dic['t_XML_extraction']))
-            info_text += "MAME DB built on       {0}\n".format(time.ctime(control_dic['t_MAME_DB_build']))
-            info_text += "MAME Audit DB built on {0}\n".format(time.ctime(control_dic['t_MAME_Audit_DB_build']))
-            info_text += "MAME Catalog built on  {0}\n".format(time.ctime(control_dic['t_MAME_Catalog_build']))
-            info_text += "SL DB built on         {0}\n".format(time.ctime(control_dic['t_SL_DB_build']))
-            info_text += "MAME ROMs scaned on    {0}\n".format(time.ctime(control_dic['t_MAME_ROMs_scan']))
-            info_text += "MAME assets scaned on  {0}\n".format(time.ctime(control_dic['t_MAME_assets_scan']))
-            info_text += "SL ROMs scaned on      {0}\n".format(time.ctime(control_dic['t_SL_ROMs_scan']))
-            info_text += "SL assets scaned on    {0}\n".format(time.ctime(control_dic['t_SL_assets_scan']))
+                info_text += '\n[COLOR orange]Timestamps[/COLOR]\n'
+                info_text += "MAME XML extracted on  {0}\n".format(time.ctime(control_dic['t_XML_extraction']))
+                info_text += "MAME DB built on       {0}\n".format(time.ctime(control_dic['t_MAME_DB_build']))
+                info_text += "MAME Audit DB built on {0}\n".format(time.ctime(control_dic['t_MAME_Audit_DB_build']))
+                info_text += "MAME Catalog built on  {0}\n".format(time.ctime(control_dic['t_MAME_Catalog_build']))
+                info_text += "SL DB built on         {0}\n".format(time.ctime(control_dic['t_SL_DB_build']))
+                info_text += "MAME ROMs scaned on    {0}\n".format(time.ctime(control_dic['t_MAME_ROMs_scan']))
+                info_text += "MAME assets scaned on  {0}\n".format(time.ctime(control_dic['t_MAME_assets_scan']))
+                info_text += "SL ROMs scaned on      {0}\n".format(time.ctime(control_dic['t_SL_ROMs_scan']))
+                info_text += "SL assets scaned on    {0}\n".format(time.ctime(control_dic['t_SL_assets_scan']))
 
-            info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
-            t = "Machines   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_processed_machines'],
-                                  control_dic['stats_parents'], 
-                                  control_dic['stats_clones'])
-            t = "Runnable   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_runnable'],
-                                  control_dic['stats_runnable_parents'], 
-                                  control_dic['stats_runnable_clones'])
-            t = "Coin       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_coin'],
-                                  control_dic['stats_coin_parents'], 
-                                  control_dic['stats_coin_clones'])
-            t = "Nocoin     {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_nocoin'],
-                                  control_dic['stats_nocoin_parents'],
-                                  control_dic['stats_nocoin_clones'])
-            t = "Mechanical {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_mechanical'],
-                                  control_dic['stats_mechanical_parents'],
-                                  control_dic['stats_mechanical_clones'])
-            t = "Dead       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_dead'],
-                                  control_dic['stats_dead_parents'], 
-                                  control_dic['stats_dead_clones'])
-            t = "Devices    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_devices'],
-                                  control_dic['stats_devices_parents'], 
-                                  control_dic['stats_devices_clones'])
-            # >> Binary filters
-            t = "BIOS       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_BIOS'],
-                                  control_dic['stats_BIOS_parents'], 
-                                  control_dic['stats_BIOS_clones'])
-            t = "Samples    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['stats_samples'],
-                                  control_dic['stats_samples_parents'], 
-                                  control_dic['stats_samples_clones'])
+                info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
+                t = "Machines   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['stats_processed_machines'],
+                                      control_dic['stats_parents'], 
+                                      control_dic['stats_clones'])
+                t = "Runnable   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['stats_runnable'],
+                                      control_dic['stats_runnable_parents'], 
+                                      control_dic['stats_runnable_clones'])
+                t = "Coin       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['stats_coin'],
+                                      control_dic['stats_coin_parents'], 
+                                      control_dic['stats_coin_clones'])
+                t = "Nocoin     {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['stats_nocoin'],
+                                      control_dic['stats_nocoin_parents'],
+                                      control_dic['stats_nocoin_clones'])
+                t = "Mechanical {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['stats_mechanical'],
+                                      control_dic['stats_mechanical_parents'],
+                                      control_dic['stats_mechanical_clones'])
+                t = "Dead       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['stats_dead'],
+                                      control_dic['stats_dead_parents'], 
+                                      control_dic['stats_dead_clones'])
+                t = "Devices    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['stats_devices'],
+                                      control_dic['stats_devices_parents'], 
+                                      control_dic['stats_devices_clones'])
+                # >> Binary filters
+                t = "BIOS       {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['stats_BIOS'],
+                                      control_dic['stats_BIOS_parents'], 
+                                      control_dic['stats_BIOS_clones'])
+                t = "Samples    {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['stats_samples'],
+                                      control_dic['stats_samples_parents'], 
+                                      control_dic['stats_samples_clones'])
 
-            info_text += '\n[COLOR orange]Software Lists item count[/COLOR]\n'
-            info_text += "SL files           {0:5d}\n".format(control_dic['stats_SL_XML_files'])
-            info_text += "SL software items  {0:5d}\n".format(control_dic['stats_SL_software_items'])
-            info_text += "SL items with ROMs {0:5d}\n".format(control_dic['stats_SL_machine_archives_ROM'])
-            info_text += "SL items with CHDs {0:5d}\n".format(control_dic['stats_SL_machine_archives_CHD'])
+                info_text += '\n[COLOR orange]Software Lists item count[/COLOR]\n'
+                info_text += "SL files           {0:5d}\n".format(control_dic['stats_SL_XML_files'])
+                info_text += "SL software items  {0:5d}\n".format(control_dic['stats_SL_software_items'])
+                info_text += "SL items with ROMs {0:5d}\n".format(control_dic['stats_SL_machine_archives_ROM'])
+                info_text += "SL items with CHDs {0:5d}\n".format(control_dic['stats_SL_machine_archives_CHD'])
 
-            info_text += '\n[COLOR orange]ROM audit statistics[/COLOR]\n'
-            rom_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_rom_set']]
-            chd_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_chd_set']]
-            info_text += "There are {0:5d} ROM ZIP archives in the {1} set\n".format(control_dic['audit_MAME_ZIP_files'], rom_set)
-            info_text += "There are {0:5d}     CHD archives in the {1} set\n".format(control_dic['audit_MAME_CHD_files'], chd_set)
-            t = "{0:5d} machines require ROM ZIPs ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['audit_machine_archives_ROM'],
-                                  control_dic['audit_machine_archives_ROM_parents'],
-                                  control_dic['audit_machine_archives_ROM_clones'])
-            t = "{0:5d} machines require CHDs     ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['audit_machine_archives_CHD'],
-                                  control_dic['audit_machine_archives_CHD_parents'],
-                                  control_dic['audit_machine_archives_CHD_clones'])
-            t = "{0:5d} machines require nothing  ({1:5d} Parents / {2:5d} Clones)\n"
-            info_text += t.format(control_dic['audit_archive_less'],
-                                  control_dic['audit_archive_less_parents'],
-                                  control_dic['audit_archive_less_clones'])
+                info_text += '\n[COLOR orange]ROM audit statistics[/COLOR]\n'
+                rom_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_rom_set']]
+                chd_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_chd_set']]
+                info_text += "There are {0:5d} ROM ZIP archives in the {1} set\n".format(control_dic['audit_MAME_ZIP_files'], rom_set)
+                info_text += "There are {0:5d}     CHD archives in the {1} set\n".format(control_dic['audit_MAME_CHD_files'], chd_set)
+                t = "{0:5d} machines require ROM ZIPs ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['audit_machine_archives_ROM'],
+                                      control_dic['audit_machine_archives_ROM_parents'],
+                                      control_dic['audit_machine_archives_ROM_clones'])
+                t = "{0:5d} machines require CHDs     ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['audit_machine_archives_CHD'],
+                                      control_dic['audit_machine_archives_CHD_parents'],
+                                      control_dic['audit_machine_archives_CHD_clones'])
+                t = "{0:5d} machines require nothing  ({1:5d} Parents / {2:5d} Clones)\n"
+                info_text += t.format(control_dic['audit_archive_less'],
+                                      control_dic['audit_archive_less_parents'],
+                                      control_dic['audit_archive_less_clones'])
 
-            # >> Not coded yet.
-            # info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
+                # >> Not coded yet.
+                # info_text += '\n[COLOR orange]ROM audit information[/COLOR]\n'
 
-            info_text += '\n[COLOR orange]ROM scanner information[/COLOR]\n'
-            t = "You have {0:5d} ROM ZIP files out of {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['scan_ROM_ZIP_files_have'],
-                                  control_dic['scan_ROM_ZIP_files_total'],
-                                  control_dic['scan_ROM_ZIP_files_missing'])
-            t = "You have {0:5d} CHDs out of          {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['scan_CHD_files_have'],
-                                  control_dic['scan_CHD_files_total'],
-                                  control_dic['scan_CHD_files_missing'])
-            t = "Can run  {0:5d} ROM machines out of  {1:5d} ({2:5d} unrunnable machines)\n"
-            info_text += t.format(control_dic['scan_machine_archives_ROM_have'],
-                                  control_dic['scan_machine_archives_ROM_total'],
-                                  control_dic['scan_machine_archives_ROM_missing'])
-            t = "Can run  {0:5d} CHD machines out of  {1:5d} ({2:5d} unrunnable machines)\n"
-            info_text += t.format(control_dic['scan_machine_archives_CHD_have'],
-                                  control_dic['scan_machine_archives_CHD_total'],
-                                  control_dic['scan_machine_archives_CHD_missing'])
-            # >> Samples
-            t = "You have {0:5d} Samples out of       {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['scan_Samples_have'],
-                                  control_dic['scan_Samples_total'],
-                                  control_dic['scan_Samples_missing'])
-            # >> SL scanner
-            t = "You have {0:5d} SL ROMs out of       {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['scan_software_archives_ROM_have'],
-                                  control_dic['scan_software_archives_ROM_total'],
-                                  control_dic['scan_software_archives_ROM_missing'])
-            t = "You have {0:5d} SL CHDs out of       {1:5d} ({2:5d} missing)\n"
-            info_text += t.format(control_dic['scan_software_archives_CHD_have'],
-                                  control_dic['scan_software_archives_CHD_total'],
-                                  control_dic['scan_software_archives_CHD_missing'])
+                self._display_text_window(window_title, info_text)
 
-            # >> MAME assets.
-            info_text += '\n[COLOR orange]Asset scanner information[/COLOR]\n'
-            t = "You have {0:6d} MAME PCBs        out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_PCBs_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_PCBs_missing'],
-                                  control_dic['assets_PCBs_alternate'])
-            t = "You have {0:6d} MAME Artpreviews out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_artpreview_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_artpreview_missing'],
-                                  control_dic['assets_artpreview_alternate'])
-            t = "You have {0:6d} MAME Artwork     out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_artwork_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_artwork_missing'],
-                                  control_dic['assets_artwork_alternate'])
-            t = "You have {0:6d} MAME Cabinets    out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_cabinets_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_cabinets_missing'],
-                                  control_dic['assets_cabinets_alternate'])
-            t = "You have {0:6d} MAME Clearlogos  out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_clearlogos_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_clearlogos_missing'],
-                                  control_dic['assets_clearlogos_alternate'])
-            t = "You have {0:6d} MAME CPanels     out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_cpanels_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_cpanels_missing'],
-                                  control_dic['assets_cpanels_alternate'])
-            t = "You have {0:6d} MAME Fanart      out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_fanarts_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_fanarts_missing'],
-                                  control_dic['assets_fanarts_alternate'])
-            t = "You have {0:6d} MAME Flyers      out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_flyers_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_flyers_missing'],
-                                  control_dic['assets_flyers_alternate'])
-            t = "You have {0:6d} MAME Manuals     out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_manuals_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_manuals_missing'],
-                                  control_dic['assets_manuals_alternate'])
-            t = "You have {0:6d} MAME Marquees    out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_marquees_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_marquees_missing'],
-                                  control_dic['assets_marquees_alternate'])
-            t = "You have {0:6d} MAME Snaps       out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_snaps_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_snaps_missing'],
-                                  control_dic['assets_snaps_alternate'])
-            t = "You have {0:6d} MAME Titles      out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_titles_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_titles_missing'],
-                                  control_dic['assets_titles_alternate'])
-            t = "You have {0:6d} MAME Trailers    out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
-            info_text += t.format(control_dic['assets_trailers_have'],
-                                  control_dic['assets_num_MAME_machines'],
-                                  control_dic['assets_trailers_missing'],
-                                  control_dic['assets_trailers_alternate'])
+            # --- Main stats ---
+            elif type_sub == 1:
+                # --- Warn user if error ---
+                if not PATHS.MAIN_CONTROL_PATH.exists():
+                    kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+                    return
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                window_title = 'Scanner statistics'
 
-            # >> Software Lists
-            t = "You have {0:6d} SL Titles        out of {1:6d} ({2:6d} missing)\n"
-            info_text += t.format(control_dic['assets_SL_titles_have'],
-                                  control_dic['assets_SL_num_items'],
-                                  control_dic['assets_SL_titles_missing'])
-            t = "You have {0:6d} SL Snaps         out of {1:6d} ({2:6d} missing)\n"
-            info_text += t.format(control_dic['assets_SL_snaps_have'],
-                                  control_dic['assets_SL_num_items'],
-                                  control_dic['assets_SL_snaps_missing'])
-            t = "You have {0:6d} SL Boxfronts     out of {1:6d} ({2:6d} missing)\n"
-            info_text += t.format(control_dic['assets_SL_boxfronts_have'],
-                                  control_dic['assets_SL_num_items'],
-                                  control_dic['assets_SL_boxfronts_missing'])
-            t = "You have {0:6d} SL Fanarts       out of {1:6d} ({2:6d} missing)\n"
-            info_text += t.format(control_dic['assets_SL_fanarts_have'],
-                                  control_dic['assets_SL_num_items'],
-                                  control_dic['assets_SL_fanarts_missing'])
-            t = "You have {0:6d} SL Trailers      out of {1:6d} ({2:6d} missing)\n"
-            info_text += t.format(control_dic['assets_SL_trailers_have'],
-                                  control_dic['assets_SL_num_items'],
-                                  control_dic['assets_SL_trailers_missing'])
-            t = "You have {0:6d} SL Manuals       out of {1:6d} ({2:6d} missing)\n"
-            info_text += t.format(control_dic['assets_SL_manuals_have'],
-                                  control_dic['assets_SL_num_items'],
-                                  control_dic['assets_SL_manuals_missing'])
+                info_text = '[COLOR orange]ROM scanner information[/COLOR]\n'
+                t = "You have {0:5d} ROM ZIP files out of {1:5d} ({2:5d} missing)\n"
+                info_text += t.format(control_dic['scan_ROM_ZIP_files_have'],
+                                      control_dic['scan_ROM_ZIP_files_total'],
+                                      control_dic['scan_ROM_ZIP_files_missing'])
+                t = "You have {0:5d} CHDs out of          {1:5d} ({2:5d} missing)\n"
+                info_text += t.format(control_dic['scan_CHD_files_have'],
+                                      control_dic['scan_CHD_files_total'],
+                                      control_dic['scan_CHD_files_missing'])
+                t = "Can run  {0:5d} ROM machines out of  {1:5d} ({2:5d} unrunnable machines)\n"
+                info_text += t.format(control_dic['scan_machine_archives_ROM_have'],
+                                      control_dic['scan_machine_archives_ROM_total'],
+                                      control_dic['scan_machine_archives_ROM_missing'])
+                t = "Can run  {0:5d} CHD machines out of  {1:5d} ({2:5d} unrunnable machines)\n"
+                info_text += t.format(control_dic['scan_machine_archives_CHD_have'],
+                                      control_dic['scan_machine_archives_CHD_total'],
+                                      control_dic['scan_machine_archives_CHD_missing'])
+                # >> Samples
+                t = "You have {0:5d} Samples out of       {1:5d} ({2:5d} missing)\n"
+                info_text += t.format(control_dic['scan_Samples_have'],
+                                      control_dic['scan_Samples_total'],
+                                      control_dic['scan_Samples_missing'])
+                # >> SL scanner
+                t = "You have {0:5d} SL ROMs out of       {1:5d} ({2:5d} missing)\n"
+                info_text += t.format(control_dic['scan_software_archives_ROM_have'],
+                                      control_dic['scan_software_archives_ROM_total'],
+                                      control_dic['scan_software_archives_ROM_missing'])
+                t = "You have {0:5d} SL CHDs out of       {1:5d} ({2:5d} missing)\n"
+                info_text += t.format(control_dic['scan_software_archives_CHD_have'],
+                                      control_dic['scan_software_archives_CHD_total'],
+                                      control_dic['scan_software_archives_CHD_missing'])
 
-            self._display_text_window(window_title, info_text)
+                # >> MAME assets.
+                info_text += '\n[COLOR orange]Asset scanner information[/COLOR]\n'
+                t = "You have {0:6d} MAME PCBs        out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_PCBs_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_PCBs_missing'],
+                                      control_dic['assets_PCBs_alternate'])
+                t = "You have {0:6d} MAME Artpreviews out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_artpreview_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_artpreview_missing'],
+                                      control_dic['assets_artpreview_alternate'])
+                t = "You have {0:6d} MAME Artwork     out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_artwork_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_artwork_missing'],
+                                      control_dic['assets_artwork_alternate'])
+                t = "You have {0:6d} MAME Cabinets    out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_cabinets_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_cabinets_missing'],
+                                      control_dic['assets_cabinets_alternate'])
+                t = "You have {0:6d} MAME Clearlogos  out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_clearlogos_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_clearlogos_missing'],
+                                      control_dic['assets_clearlogos_alternate'])
+                t = "You have {0:6d} MAME CPanels     out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_cpanels_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_cpanels_missing'],
+                                      control_dic['assets_cpanels_alternate'])
+                t = "You have {0:6d} MAME Fanart      out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_fanarts_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_fanarts_missing'],
+                                      control_dic['assets_fanarts_alternate'])
+                t = "You have {0:6d} MAME Flyers      out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_flyers_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_flyers_missing'],
+                                      control_dic['assets_flyers_alternate'])
+                t = "You have {0:6d} MAME Manuals     out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_manuals_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_manuals_missing'],
+                                      control_dic['assets_manuals_alternate'])
+                t = "You have {0:6d} MAME Marquees    out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_marquees_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_marquees_missing'],
+                                      control_dic['assets_marquees_alternate'])
+                t = "You have {0:6d} MAME Snaps       out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_snaps_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_snaps_missing'],
+                                      control_dic['assets_snaps_alternate'])
+                t = "You have {0:6d} MAME Titles      out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_titles_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_titles_missing'],
+                                      control_dic['assets_titles_alternate'])
+                t = "You have {0:6d} MAME Trailers    out of {1:6d} ({2:6d} missing, {3:6d} alternate)\n"
+                info_text += t.format(control_dic['assets_trailers_have'],
+                                      control_dic['assets_num_MAME_machines'],
+                                      control_dic['assets_trailers_missing'],
+                                      control_dic['assets_trailers_alternate'])
+
+                # >> Software Lists
+                t = "You have {0:6d} SL Titles        out of {1:6d} ({2:6d} missing)\n"
+                info_text += t.format(control_dic['assets_SL_titles_have'],
+                                      control_dic['assets_SL_num_items'],
+                                      control_dic['assets_SL_titles_missing'])
+                t = "You have {0:6d} SL Snaps         out of {1:6d} ({2:6d} missing)\n"
+                info_text += t.format(control_dic['assets_SL_snaps_have'],
+                                      control_dic['assets_SL_num_items'],
+                                      control_dic['assets_SL_snaps_missing'])
+                t = "You have {0:6d} SL Boxfronts     out of {1:6d} ({2:6d} missing)\n"
+                info_text += t.format(control_dic['assets_SL_boxfronts_have'],
+                                      control_dic['assets_SL_num_items'],
+                                      control_dic['assets_SL_boxfronts_missing'])
+                t = "You have {0:6d} SL Fanarts       out of {1:6d} ({2:6d} missing)\n"
+                info_text += t.format(control_dic['assets_SL_fanarts_have'],
+                                      control_dic['assets_SL_num_items'],
+                                      control_dic['assets_SL_fanarts_missing'])
+                t = "You have {0:6d} SL Trailers      out of {1:6d} ({2:6d} missing)\n"
+                info_text += t.format(control_dic['assets_SL_trailers_have'],
+                                      control_dic['assets_SL_num_items'],
+                                      control_dic['assets_SL_trailers_missing'])
+                t = "You have {0:6d} SL Manuals       out of {1:6d} ({2:6d} missing)\n"
+                info_text += t.format(control_dic['assets_SL_manuals_have'],
+                                      control_dic['assets_SL_num_items'],
+                                      control_dic['assets_SL_manuals_missing'])
+
+                self._display_text_window(window_title, info_text)
 
         # --- View MAME machine ROMs (ROMs database) ---
         elif action == ACTION_VIEW_MACHINE_ROMS:
