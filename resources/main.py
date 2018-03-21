@@ -1004,7 +1004,7 @@ class Main:
         else:
             listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
                                        'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                       'plot'    : m_assets['plot'], 'trailer' : machine_assets['trailer'],
+                                       'plot'    : m_assets['plot'], 'trailer' : m_assets['trailer'],
                                        'overlay' : ICON_OVERLAY})
         listitem.setProperty('nplayers', machine['nplayers'])
         listitem.setProperty('platform', 'MAME')
