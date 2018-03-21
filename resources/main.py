@@ -4259,6 +4259,9 @@ class Main:
                 fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
                 pDialog.update(100)
                 pDialog.close()
+                # >> Rebuild asset cache
+                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
                 if pDialog_canceled: kodi_notify('Fanart building stopped. Partial progress saved.')
                 else:                kodi_notify('Fanart building finished')
 
