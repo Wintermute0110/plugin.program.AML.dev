@@ -1601,12 +1601,14 @@ def mame_build_SL_fanart(PATHS, layout_SL, SL_name, m_name, assets_dic, Fanart_F
 #
 STOP_AFTER_MACHINES = 100000
 class DB_obj:
-    def __init__(self, machines, machines_render, devices_db_dic, machine_roms, main_pclone_dic):
+    def __init__(self, machines, machines_render, devices_db_dic,
+                 machine_roms, main_pclone_dic, assets_dic):
         self.machines        = machines
         self.machines_render = machines_render
         self.devices_db_dic  = devices_db_dic
         self.machine_roms    = machine_roms
         self.main_pclone_dic = main_pclone_dic
+        self.assets_dic      = assets_dic
 
 def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # --- Progress dialog ---
@@ -2168,8 +2170,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # -----------------------------------------------------------------------------
     log_info('Saving database JSON files ...')
     pdialog_line1 = 'Saving databases ...'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
     num_items = 14
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machines Main')
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
     pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Render')
@@ -2206,7 +2208,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # Return an object with reference to the objects just in case they are needed after
     # this function (in "Build everything", for example. This saves time (databases do not
     # need to be reloaded) and apparently memory as well.
-    DB = DB_obj(machines, machines_render, machines_devices, machines_roms, main_pclone_dic)
+    DB = DB_obj(machines, machines_render, machines_devices,
+                machines_roms, main_pclone_dic, assets_dic)
 
     return DB
 
@@ -2742,7 +2745,8 @@ def _cache_index_builder(cat_name, cache_index_dic, catalog_all, catalog_parents
 #        }, ...
 #    }
 #
-def mame_build_MAME_catalogs(PATHS, control_dic, machines, machines_render, machine_roms, main_pclone_dic):
+def mame_build_MAME_catalogs(PATHS, control_dic,
+                             machines, machines_render, machine_roms, main_pclone_dic, assets_dic):
     # >> Progress dialog
     pDialog_line1 = 'Building catalogs ...'
     pDialog = xbmcgui.DialogProgress()
@@ -3350,8 +3354,11 @@ def mame_build_MAME_catalogs(PATHS, control_dic, machines, machines_render, mach
     # --- Save Catalog index ----------------------------------------------------------------------
     fs_write_JSON_file(PATHS.CACHE_INDEX_PATH.getPath(), cache_index_dic)
 
-    # --- Build the ROM cache ---
+    # --- Build the ROM cache and the asset cache ---
+    # >> At this time the asset database will be empty. However, the asset cache with an empty
+    # >> database is required to render the machines in the catalogs.
     fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+    fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
 
     # --- Update timestamp ---
     control_dic['t_MAME_Catalog_build'] = time.time()
