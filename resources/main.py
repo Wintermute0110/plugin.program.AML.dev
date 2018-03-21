@@ -2171,41 +2171,45 @@ class Main:
 
                 info_text += '\n[COLOR orange]Timestamps[/COLOR]\n'
                 if control_dic['t_XML_extraction']:
-                    info_text += "MAME XML extracted on  {0}\n".format(time.ctime(control_dic['t_XML_extraction']))
+                    info_text += "MAME XML extracted on   {0}\n".format(time.ctime(control_dic['t_XML_extraction']))
                 else:
                     info_text += "MAME XML never extracted\n"
                 if control_dic['t_MAME_DB_build']:
-                    info_text += "MAME DB built on       {0}\n".format(time.ctime(control_dic['t_MAME_DB_build']))
+                    info_text += "MAME DB built on        {0}\n".format(time.ctime(control_dic['t_MAME_DB_build']))
                 else:
                     info_text += "MAME DB never built\n"
                 if control_dic['t_MAME_Audit_DB_build']:
-                    info_text += "MAME Audit DB built on {0}\n".format(time.ctime(control_dic['t_MAME_Audit_DB_build']))
+                    info_text += "MAME Audit DB built on  {0}\n".format(time.ctime(control_dic['t_MAME_Audit_DB_build']))
                 else:
                     info_text += "MAME Audit DB never built\n"
                 if control_dic['t_MAME_Catalog_build']:
-                    info_text += "MAME Catalog built on  {0}\n".format(time.ctime(control_dic['t_MAME_Catalog_build']))
+                    info_text += "MAME Catalog built on   {0}\n".format(time.ctime(control_dic['t_MAME_Catalog_build']))
                 else:
                     info_text += "MAME Catalog never built\n"
                 if control_dic['t_SL_DB_build']:
-                    info_text += "SL DB built on         {0}\n".format(time.ctime(control_dic['t_SL_DB_build']))
+                    info_text += "SL DB built on          {0}\n".format(time.ctime(control_dic['t_SL_DB_build']))
                 else:
                     info_text += "SL DB never built\n"
                 if control_dic['t_MAME_ROMs_scan']:
-                    info_text += "MAME ROMs scaned on    {0}\n".format(time.ctime(control_dic['t_MAME_ROMs_scan']))
+                    info_text += "MAME ROMs scaned on     {0}\n".format(time.ctime(control_dic['t_MAME_ROMs_scan']))
                 else:
                     info_text += "MAME ROMs never scaned\n"
                 if control_dic['t_MAME_assets_scan']:
-                    info_text += "MAME assets scaned on  {0}\n".format(time.ctime(control_dic['t_MAME_assets_scan']))
+                    info_text += "MAME assets scaned on   {0}\n".format(time.ctime(control_dic['t_MAME_assets_scan']))
                 else:
                     info_text += "MAME assets never scaned\n"
                 if control_dic['t_SL_ROMs_scan']:
-                    info_text += "SL ROMs scaned on      {0}\n".format(time.ctime(control_dic['t_SL_ROMs_scan']))
+                    info_text += "SL ROMs scaned on       {0}\n".format(time.ctime(control_dic['t_SL_ROMs_scan']))
                 else:
                     info_text += "SL ROMs never scaned\n"
                 if control_dic['t_SL_assets_scan']:
-                    info_text += "SL assets scaned on    {0}\n".format(time.ctime(control_dic['t_SL_assets_scan']))
+                    info_text += "SL assets scaned on     {0}\n".format(time.ctime(control_dic['t_SL_assets_scan']))
                 else:
                     info_text += "SL assets never scaned\n"
+                if control_dic['t_Custom_Filter_build']:
+                    info_text += "Custom filters built on {0}\n".format(time.ctime(control_dic['t_Custom_Filter_build']))
+                else:
+                    info_text += "Custom filters never built\n"
 
                 info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
                 t = "Machines   {0:5d}  ({1:5d} Parents / {2:5d} Clones)\n"
@@ -3850,6 +3854,10 @@ class Main:
             pDialog.close()
             # >> Save custom filter index.
             fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
+            # >> Update timestamp
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            control_dic['t_Custom_Filter_build'] = time.time()
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_notify('Custom filter database built')
 
     # ---------------------------------------------------------------------------------------------
@@ -4018,9 +4026,8 @@ class Main:
                                       machines_render, main_pclone_dic, Asset_path_FN)
 
             # >> Traverse MAME machines and build plot. Updates assets_dic
-            mame_build_MAME_plots(machines, machines_render, assets_dic,
-                                  history_idx_dic, mameinfo_idx_dic, gameinit_idx_list, command_idx_list,
-                                  pDialog)
+            mame_build_MAME_plots(machines, machines_render, assets_dic, pDialog,
+                                  history_idx_dic, mameinfo_idx_dic, gameinit_idx_list, command_idx_list)
 
             pdialog_line1 = 'Saving databases ...'
             num_items = 2

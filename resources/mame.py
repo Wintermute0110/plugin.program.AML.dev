@@ -4185,7 +4185,7 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
                     has_chd_list = [False] * len(chd_list)
                     for idx, chd_name in enumerate(chd_list):
                         SL_CHD_FN = SL_CHD_path_FN.pjoin(SL_name).pjoin(rom_key).pjoin(chd_name)
-                        log_debug('Scanning CHD "{0}"'.format(SL_CHD_FN.getPath()))
+                        # log_debug('Scanning CHD "{0}"'.format(SL_CHD_FN.getPath()))
                         if SL_CHD_FN.exists():
                             has_chd_list[idx] = True
                         else:
