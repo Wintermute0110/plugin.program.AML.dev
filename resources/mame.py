@@ -2390,7 +2390,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
                         location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
                 disk_t['type'] = ROM_TYPE_DISK
-                disk_t['location'] = location + '.chd'
+                disk_t['location'] = location
                 disk_t.pop('merge')
                 split_chds.append(disk_t)
             # >> Apend CHDs at the end of the ROM list.
@@ -2431,7 +2431,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
                         location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
                 disk_t['type'] = ROM_TYPE_DISK
-                disk_t['location'] = location + '.chd'
+                disk_t['location'] = location
                 disk_t.pop('merge')
                 split_chds.append(disk_t)
             if m_name in audit_roms_dic: audit_roms_dic[m_name].extend(split_chds)
@@ -2459,7 +2459,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
                 location = m_name + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
                 disk_t['type'] = ROM_TYPE_DISK
-                disk_t['location'] = location + '.chd'
+                disk_t['location'] = location
                 disk_t.pop('merge')
                 nonmerged_chds.append(disk_t)
             if m_name in audit_roms_dic: audit_roms_dic[m_name].extend(split_chds)
