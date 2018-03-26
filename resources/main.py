@@ -167,14 +167,15 @@ class AML_Paths:
         self.FAV_SL_ROMS_PATH  = PLUGIN_DATA_DIR.pjoin('Favourite_SL_ROMs.json')
 
         # >> ROM/CHD scanner reports. These reports show missing ROM/CHDs only.
-        self.REPORTS_DIR                        = PLUGIN_DATA_DIR.pjoin('reports')
-        self.REPORT_MAME_SCAN_MACHINE_ARCH_PATH = self.REPORTS_DIR.pjoin('Report_scanner_MAME_machine_archives.txt')
-        self.REPORT_MAME_SCAN_ROM_LIST_PATH     = self.REPORTS_DIR.pjoin('Report_scanner_MAME_ROM_list.txt')
-        self.REPORT_MAME_SCAN_CHD_LIST_PATH     = self.REPORTS_DIR.pjoin('Report_scanner_MAME_CHD_list.txt')
-        self.REPORT_MAME_SCAN_SAMP_PATH         = self.REPORTS_DIR.pjoin('Report_scanner_Samples.txt')
-        self.REPORT_SL_SCAN_MACHINE_ARCH_PATH   = self.REPORTS_DIR.pjoin('Report_scanner_SL_soft_archives.txt')
-        self.REPORT_SL_SCAN_ROM_LIST_PATH       = self.REPORTS_DIR.pjoin('Report_scanner_SL_ROM_list.txt')
-        self.REPORT_SL_SCAN_CHD_LIST_PATH       = self.REPORTS_DIR.pjoin('Report_scanner_SL_CHD_list.txt')
+        self.REPORTS_DIR                             = PLUGIN_DATA_DIR.pjoin('reports')
+        self.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH = self.REPORTS_DIR.pjoin('Scanner_MAME_machine_archives_have.txt')
+        self.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH = self.REPORTS_DIR.pjoin('Scanner_MAME_machine_archives_miss.txt')
+        self.REPORT_MAME_SCAN_ROM_LIST_PATH          = self.REPORTS_DIR.pjoin('Scanner_MAME_ROM_list.txt')
+        self.REPORT_MAME_SCAN_CHD_LIST_PATH          = self.REPORTS_DIR.pjoin('Scanner_MAME_CHD_list.txt')
+        self.REPORT_MAME_SCAN_SAMP_PATH              = self.REPORTS_DIR.pjoin('Scanner_Samples.txt')
+        self.REPORT_SL_SCAN_MACHINE_ARCH_PATH        = self.REPORTS_DIR.pjoin('Scanner_SL_soft_archives.txt')
+        self.REPORT_SL_SCAN_ROM_LIST_PATH            = self.REPORTS_DIR.pjoin('Scanner_SL_ROM_list.txt')
+        self.REPORT_SL_SCAN_CHD_LIST_PATH            = self.REPORTS_DIR.pjoin('Scanner_SL_CHD_list.txt')
 
         # >> Asset scanner reports. These reports show have and missing assets.
         self.REPORT_MAME_ASSETS_PATH = self.REPORTS_DIR.pjoin('Report_asset_MAME.txt')
@@ -2818,7 +2819,8 @@ class Main:
         elif action == ACTION_VIEW_REPORT_SCANNER:
             d = xbmcgui.Dialog()
             type_sub = d.select('View scanner reports',
-                                ['View MAME machines missing archives',
+                                ['View MAME machines have archives',
+                                 'View MAME machines missing archives',
                                  'View MAME missing ROM list',
                                  'View MAME missing CHD list',
                                  'View MAME missing Samples',
@@ -2829,18 +2831,28 @@ class Main:
                                  'View Software Lists asset report'])
             if type_sub < 0: return
 
-            # --- View MAME machine ROM scanner report ---
+            # --- View MAME machines have archives ---
             if type_sub == 0:
-                if not PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_PATH.exists():
+                if not PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
+                    kodi_dialog_OK('MAME machines have archives scanner report not found. '
+                                   'Please scan MAME ROMs and try again.')
+                    return
+                with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
+                    info_text = myfile.read()
+                    self._display_text_window('MAME machines have archives scanner report', info_text)
+
+            # --- View MAME machines missing archives ---
+            elif type_sub == 1:
+                if not PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.exists():
                     kodi_dialog_OK('MAME machines missing archives scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
                     return
-                with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_PATH.getPath(), 'r') as myfile:
+                with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
                     self._display_text_window('MAME machines missing archives scanner report', info_text)
 
             # --- View MAME ROM archive scanner report ---
-            elif type_sub == 1:
+            elif type_sub == 2:
                 if not PATHS.REPORT_MAME_SCAN_ROM_LIST_PATH.exists():
                     kodi_dialog_OK('MAME missing ROM list scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
@@ -2850,7 +2862,7 @@ class Main:
                     self._display_text_window('MAME missing ROM list scanner report', info_text)
 
             # --- View MAME machine CHD scanner report ---
-            elif type_sub == 2:
+            elif type_sub == 3:
                 if not PATHS.REPORT_MAME_SCAN_CHD_LIST_PATH.exists():
                     kodi_dialog_OK('MAME missing CHD list scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
@@ -2860,7 +2872,7 @@ class Main:
                     self._display_text_window('MAME missing CHD list scanner report', info_text)
 
             # --- View MAME Samples scanner report ---
-            elif type_sub == 3:
+            elif type_sub == 4:
                 if not PATHS.REPORT_MAME_SCAN_SAMP_PATH.exists():
                     kodi_dialog_OK('MAME missing Samples scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
@@ -2870,7 +2882,7 @@ class Main:
                     self._display_text_window('MAME missing Samples scanner report', info_text)
 
             # --- View Software Lists ROM scanner report ---
-            elif type_sub == 4:
+            elif type_sub == 5:
                 if not PATHS.REPORT_SL_SCAN_MACHINE_ARCH_PATH.exists():
                     kodi_dialog_OK('Software Lists missing archives scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
@@ -2880,7 +2892,7 @@ class Main:
                     self._display_text_window('Software Lists missing archives scanner report', info_text)
 
             # --- View Software Lists CHD scanner report ---
-            elif type_sub == 5:
+            elif type_sub == 6:
                 if not PATHS.REPORT_SL_SCAN_ROM_LIST_PATH.exists():
                     kodi_dialog_OK('Software Lists missing ROM list scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
@@ -2890,7 +2902,7 @@ class Main:
                     self._display_text_window('Software Lists missing ROM list scanner report', info_text)
 
             # --- View Software Lists CHD scanner report ---
-            elif type_sub == 6:
+            elif type_sub == 7:
                 if not PATHS.REPORT_SL_SCAN_CHD_LIST_PATH.exists():
                     kodi_dialog_OK('Software Lists missing CHD list scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
@@ -2900,7 +2912,7 @@ class Main:
                     self._display_text_window('Software Lists missing CHD list scanner report', info_text)
 
             # --- View MAME asset report ---
-            elif type_sub == 7:
+            elif type_sub == 8:
                 if not PATHS.REPORT_MAME_ASSETS_PATH.exists():
                     kodi_dialog_OK('MAME asset report report not found. '
                                    'Please scan MAME assets and try again.')
@@ -2910,7 +2922,7 @@ class Main:
                     self._display_text_window('MAME asset report', info_text)
 
             # --- View Software Lists asset report ---
-            elif type_sub == 8:
+            elif type_sub == 9:
                 if not PATHS.REPORT_SL_ASSETS_PATH.exists():
                     kodi_dialog_OK('Software Lists asset report not found. '
                                    'Please scan Software List assets and try again.')

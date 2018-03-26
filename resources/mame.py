@@ -3817,12 +3817,14 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     scan_CHD_machines_total = 0
     scan_CHD_machines_have = 0
     scan_CHD_machines_missing = 0
-    report_list = []
+    r_have_list = []
+    r_miss_list = []
     for key in sorted(machines_render):
         # --- Initialise machine ---
         # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
         if machines_render[key]['isDevice']: continue # Skip Devices
-        m_str_list = []
+        m_have_str_list = []
+        m_miss_str_list = []
 
         # --- ROMs ---
         rom_list = machine_archives_dic[key]['ROMs']
@@ -3837,8 +3839,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
                 ROM_FN = misc_search_file_cache(ROM_path_str, rom, MAME_ROM_EXTS)
                 if ROM_FN:
                     have_rom_list[i] = True
+                    m_have_str_list.append('Have ROM {0}'.format(rom))
                 else:
-                    m_str_list.append('Missing ROM {0}'.format(rom))
+                    m_miss_str_list.append('Missing ROM {0}'.format(rom))
             scan_ROM_machines_total += 1
             if all(have_rom_list):
                 # --- All ZIP files required to run this machine exist ---
@@ -3866,8 +3869,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
                 CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
                 if CHD_FN:
                     has_chd_list[idx] = True
+                    m_have_str_list.append('Have CHD {0}'.format(chd_name))
                 else:
-                    m_str_list.append('Missing CHD {0}'.format(chd_name))
+                    m_miss_str_list.append('Missing CHD {0}'.format(chd_name))
             if all(has_chd_list):
                 CHD_flag = 'C'
                 scan_CHD_machines_have += 1
@@ -3882,24 +3886,39 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
             CHD_flag = '-'
         fs_set_CHD_flag(assets_dic[key], CHD_flag)
 
-        # >> Build report.
-        if m_str_list:
-            report_list.append('Machine {0} [{1}]'.format(key, machines_render[key]['description']))
+        # >> Build HAVE and MISSING reports.
+        if m_have_str_list:
+            r_have_list.append('Machine {0} ({1})'.format(key, machines_render[key]['description']))
             if machines_render[key]['cloneof']:
                 cloneof = machines_render[key]['cloneof']
-                report_list.append('cloneof {0} [{1}]'.format(cloneof, machines_render[cloneof]['description']))
-            report_list.extend(m_str_list)
-            report_list.append('')
+                r_have_list.append('cloneof {0} ({1})'.format(cloneof, machines_render[cloneof]['description']))
+            r_have_list.extend(m_have_str_list)
+            # >> Also including missing ROMs if any.
+            if m_miss_str_list: r_have_list.extend(m_miss_str_list)
+            r_have_list.append('')
+        if m_miss_str_list:
+            r_miss_list.append('Machine {0} ({1})'.format(key, machines_render[key]['description']))
+            if machines_render[key]['cloneof']:
+                cloneof = machines_render[key]['cloneof']
+                r_miss_list.append('cloneof {0} ({1})'.format(cloneof, machines_render[cloneof]['description']))
+            if m_have_str_list: r_miss_list.extend(m_have_str_list)
+            r_miss_list.extend(m_miss_str_list)
+            r_miss_list.append('')
 
         # >> Progress dialog
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
 
-    # >> Write report
-    log_info('Writing ROM machines report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_list).encode('utf-8'))
+    # >> Write reports
+    have_path = PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()
+    log_info('Writing ROM machines HAVE report file "{0}"'.format(have_path))
+    with open(have_path, 'w') as file:
+        file.write('\n'.join(r_have_list).encode('utf-8'))
+    miss_path = PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()
+    log_info('Writing ROM machines MISS report file "{0}"'.format(miss_path))
+    with open(miss_path, 'w') as file:
+        file.write('\n'.join(r_miss_list).encode('utf-8'))
 
     # --- ROM list ---
     pDialog = xbmcgui.DialogProgress()
@@ -3973,7 +3992,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
                 else:
                     Sample_flag = 's'
                     scan_Samples_missing += 1
-                    r_list.append('Missing Sample {0}\n'.format(sample))
+                    r_list.append('Machine {0} missing sample {1}\n'.format(key, sample))
             else:
                 Sample_flag = 's'
                 scan_Samples_missing += 1
