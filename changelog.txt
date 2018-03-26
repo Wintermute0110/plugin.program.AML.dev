@@ -18,11 +18,11 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
-WIP      Create an AEL virtual launcher in XML from any AML filter.
-
 WIP      Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
          Also, this will allow supporting more image types (currently only PNG), manual
          types (currently only PDF) and trailer types (currently MP4 only).
+
+FEATURE  Create an AEL virtual launcher in XML from any AML filter.
 
 FEATURE  Use proper Software List name in "Machines by Software List" filter.
 

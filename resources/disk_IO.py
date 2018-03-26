@@ -548,6 +548,27 @@ def fs_write_JSON_file(json_filename, json_data, verbose = True):
         gui_kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (IOError)'.format(roms_json_file))
 
 # -------------------------------------------------------------------------------------------------
+# Generic file writer
+# str_list is a list of Unicode strings that will be joined and written to a file encoded in UTF-8.
+# -------------------------------------------------------------------------------------------------
+def fs_write_str_list_to_file(str_list, export_FN):
+    log_verb('fs_write_str_list_to_file() Exporting OP "{0}"'.format(export_FN.getOriginalPath()))
+    log_verb('fs_write_str_list_to_file() Exporting  P "{0}"'.format(export_FN.getPath()))
+    try:
+        full_string = ''.join(str_list).encode('utf-8')
+        file_obj = open(export_FN.getPath(), 'w')
+        file_obj.write(full_string)
+        file_obj.close()
+    except OSError:
+        log_error('(OSError) exception in fs_write_str_list_to_file()')
+        log_error('Cannot write {0} file'.format(export_FN.getBase()))
+        raise AEL_Error('(OSError) Cannot write {0} file'.format(export_FN.getBase()))
+    except IOError:
+        log_error('(IOError) exception in fs_write_str_list_to_file()')
+        log_error('Cannot write {0} file'.format(export_FN.getBase()))
+        raise AEL_Error('(IOError) Cannot write {0} file'.format(export_FN.getBase()))
+
+# -------------------------------------------------------------------------------------------------
 # Threaded JSON loader
 # -------------------------------------------------------------------------------------------------
 # How to use this code:
@@ -879,3 +900,27 @@ def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
     ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
 
     return fs_load_JSON_file(ROMs_all_FN.getPath())
+
+# -------------------------------------------------------------------------------------------------
+# Export stuff
+# -------------------------------------------------------------------------------------------------
+def fs_export_Virtual_Launcher(export_FN, catalog_dic, machines, machines_render, assets_dic):
+    log_verb('fs_export_Virtual_Launcher() File "{0}"'.format(export_FN.getPath()))
+
+    # --- Create list of strings ---
+    str_list = []
+    str_list.append('<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n')
+    str_list.append('<!-- Exported by AML on {0} -->\n'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
+    str_list.append('<advanced_MAME_launcher_virtual_launcher>\n')
+    for m_name, r_name in catalog_dic.iteritems():
+        str_list.append('<machine>\n')
+        str_list.append(XML_text('name', m_name))
+        str_list.append(XML_text('description', machines_render[m_name]['description']))
+        str_list.append(XML_text('genre', machines_render[m_name]['genre']))
+        str_list.append(XML_text('year', machines_render[m_name]['year']))
+        str_list.append(XML_text('cabinet', assets_dic[m_name]['cabinet']))
+        str_list.append('</machine>\n')
+    str_list.append('</advanced_MAME_launcher_virtual_launcher>\n')
+
+    # >> Export file. Strings in the list are Unicode. Encode to UTF-8 when writing to file.
+    fs_write_str_list_to_file(str_list, export_FN)

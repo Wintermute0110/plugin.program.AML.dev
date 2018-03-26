@@ -354,6 +354,10 @@ class Main:
                 ROM      = args['ROM'][0]      if 'ROM'      in args else ''
                 location = args['location'][0] if 'location' in args else LOCATION_STANDARD
                 self._command_context_view(machine, SL, ROM, location)
+            elif command == 'UTILITIES':
+                catalog_name  = args['catalog'][0] if 'catalog' in args else ''
+                category_name = args['category'][0] if 'category' in args else ''
+                self._command_context_utilities(catalog_name, category_name)
 
             # >> MAME Favourites
             elif command == 'ADD_MAME_FAV':
@@ -565,72 +569,72 @@ class Main:
 
         # >> Main filters (Virtual catalog 'Main')
         if self.settings['display_main_filters']:
-            self._render_root_list_row(machines_n_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Normal'))
-            self._render_root_list_row(machines_u_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Unusual'))
-            self._render_root_list_row(nocoin_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'NoCoin'))
-            self._render_root_list_row(mecha_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Mechanical'))
-            self._render_root_list_row(dead_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Dead'))
-            self._render_root_list_row(devices_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Devices'))
+            self._render_root_list_row_catalog(machines_n_str, 'Main', 'Normal')
+            self._render_root_list_row_catalog(machines_u_str, 'Main', 'Unusual')
+            self._render_root_list_row_catalog(nocoin_str, 'Main', 'NoCoin')
+            self._render_root_list_row_catalog(mecha_str, 'Main', 'Mechanical')
+            self._render_root_list_row_catalog(dead_str, 'Main', 'Dead')
+            self._render_root_list_row_catalog(devices_str, 'Main', 'Devices')
 
         # >> Binary filters (Virtual catalog 'Binary')
         if self.settings['display_binary_filters']:
-            self._render_root_list_row(norom_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'NoROM'))
-            self._render_root_list_row(chd_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'CHD'))
-            self._render_root_list_row(samples_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'Samples'))
-            self._render_root_list_row(bios_str, self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
+            self._render_root_list_row_catalog(norom_str, 'Binary', 'NoROM')
+            self._render_root_list_row_catalog(chd_str, 'Binary', 'CHD')
+            self._render_root_list_row_catalog(samples_str, 'Binary', 'Samples')
+            self._render_root_list_row_catalog(bios_str, 'Binary', 'BIOS')
 
         if self.settings['display_catalog_filters']:
             # >> Optional cataloged filters (depend on a INI file)
-            self._render_root_list_row(catver_str, self._misc_url_1_arg('catalog', 'Catver'))
-            self._render_root_list_row(catlist_str, self._misc_url_1_arg('catalog', 'Catlist'))
-            self._render_root_list_row(genre_str, self._misc_url_1_arg('catalog', 'Genre'))
-            self._render_root_list_row(NPLayers_str, self._misc_url_1_arg('catalog', 'NPlayers'))
-            self._render_root_list_row(score_str, self._misc_url_1_arg('catalog', 'Bestgames'))
-            self._render_root_list_row(series_str, self._misc_url_1_arg('catalog', 'Series'))
+            self._render_root_list_row_standard(catver_str, self._misc_url_1_arg('catalog', 'Catver'))
+            self._render_root_list_row_standard(catlist_str, self._misc_url_1_arg('catalog', 'Catlist'))
+            self._render_root_list_row_standard(genre_str, self._misc_url_1_arg('catalog', 'Genre'))
+            self._render_root_list_row_standard(NPLayers_str, self._misc_url_1_arg('catalog', 'NPlayers'))
+            self._render_root_list_row_standard(score_str, self._misc_url_1_arg('catalog', 'Bestgames'))
+            self._render_root_list_row_standard(series_str, self._misc_url_1_arg('catalog', 'Series'))
             # >> Cataloged filters (always there)
-            self._render_root_list_row(ctype_str, self._misc_url_1_arg('catalog', 'Controls'))
-            self._render_root_list_row(drotation_str, self._misc_url_1_arg('catalog', 'Display_Rotate'))
-            self._render_root_list_row(dtype_str, self._misc_url_1_arg('catalog', 'Display_Type'))
-            self._render_root_list_row(device_str, self._misc_url_1_arg('catalog', 'Devices'))
-            self._render_root_list_row(driver_str, self._misc_url_1_arg('catalog', 'Driver'))
-            self._render_root_list_row(manufacturer_str, self._misc_url_1_arg('catalog', 'Manufacturer'))
-            self._render_root_list_row(shortname_str, self._misc_url_1_arg('catalog', 'ShortName'))
-            self._render_root_list_row(longname_str, self._misc_url_1_arg('catalog', 'LongName'))
-            self._render_root_list_row(SL_str, self._misc_url_1_arg('catalog', 'BySL'))
-            self._render_root_list_row(year_str, self._misc_url_1_arg('catalog', 'Year'))
+            self._render_root_list_row_standard(ctype_str, self._misc_url_1_arg('catalog', 'Controls'))
+            self._render_root_list_row_standard(drotation_str, self._misc_url_1_arg('catalog', 'Display_Rotate'))
+            self._render_root_list_row_standard(dtype_str, self._misc_url_1_arg('catalog', 'Display_Type'))
+            self._render_root_list_row_standard(device_str, self._misc_url_1_arg('catalog', 'Devices'))
+            self._render_root_list_row_standard(driver_str, self._misc_url_1_arg('catalog', 'Driver'))
+            self._render_root_list_row_standard(manufacturer_str, self._misc_url_1_arg('catalog', 'Manufacturer'))
+            self._render_root_list_row_standard(shortname_str, self._misc_url_1_arg('catalog', 'ShortName'))
+            self._render_root_list_row_standard(longname_str, self._misc_url_1_arg('catalog', 'LongName'))
+            self._render_root_list_row_standard(SL_str, self._misc_url_1_arg('catalog', 'BySL'))
+            self._render_root_list_row_standard(year_str, self._misc_url_1_arg('catalog', 'Year'))
 
         # >> history.dat, mameinfo.dat, gameinit.dat, command.dat
         if self.settings['display_DAT_browser']:
-            self._render_root_list_row('History DAT',  self._misc_url_1_arg('catalog', 'History'))
-            self._render_root_list_row('MAMEINFO DAT', self._misc_url_1_arg('catalog', 'MAMEINFO'))
-            self._render_root_list_row('Gameinit DAT', self._misc_url_1_arg('catalog', 'Gameinit'))
-            self._render_root_list_row('Command DAT',  self._misc_url_1_arg('catalog', 'Command'))
+            self._render_root_list_row_standard('History DAT',  self._misc_url_1_arg('catalog', 'History'))
+            self._render_root_list_row_standard('MAMEINFO DAT', self._misc_url_1_arg('catalog', 'MAMEINFO'))
+            self._render_root_list_row_standard('Gameinit DAT', self._misc_url_1_arg('catalog', 'Gameinit'))
+            self._render_root_list_row_standard('Command DAT',  self._misc_url_1_arg('catalog', 'Command'))
 
         # >> Software lists
         if self.settings['display_SL_browser']:
-            self._render_root_list_row('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
-            self._render_root_list_row('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
-            self._render_root_list_row('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
+            self._render_root_list_row_standard('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
+            self._render_root_list_row_standard('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
+            self._render_root_list_row_standard('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
 
         # >> Special launchers
         if self.settings['display_MAME_favs']:
-            self._render_root_list_row('<Favourite MAME machines>', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
+            self._render_root_list_row_standard('<Favourite MAME machines>', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
         if self.settings['display_SL_favs']:
-            self._render_root_list_row('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
+            self._render_root_list_row_standard('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
         if self.settings['display_custom_filters']:
-            self._render_custom_filter_row('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
-        # self._render_root_list_row('{Most played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
-        # self._render_root_list_row('{Recently played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
-        # self._render_root_list_row('{Most played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
-        # self._render_root_list_row('{Recently played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+            self._render_root_list_row_standard('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+        # self._render_root_list_row_standard('{Most played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+        # self._render_root_list_row_standard('{Recently played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+        # self._render_root_list_row_standard('{Most played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+        # self._render_root_list_row_standard('{Recently played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #
     # These _render_skin_* functions used by skins to display widgets.
     #
     def _render_skin_fav_slots(self):
-        self._render_root_list_row('Favourite MAME machines', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
-        self._render_root_list_row('Favourite Software Lists ROMs', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
+        self._render_root_list_row_standard('Favourite MAME machines', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
+        self._render_root_list_row_standard('Favourite Software Lists ROMs', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_skin_main_filters(self):
@@ -641,12 +645,12 @@ class Main:
         dead_str = 'Dead machines'
         devices_str = 'Device machines'
 
-        self._render_root_list_row(machines_n_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Normal'))
-        self._render_root_list_row(machines_u_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Unusual'))
-        self._render_root_list_row(nocoin_str,     self._misc_url_2_arg('catalog', 'Main', 'category', 'NoCoin'))
-        self._render_root_list_row(mecha_str,      self._misc_url_2_arg('catalog', 'Main', 'category', 'Mechanical'))
-        self._render_root_list_row(dead_str,       self._misc_url_2_arg('catalog', 'Main', 'category', 'Dead'))
-        self._render_root_list_row(devices_str,    self._misc_url_2_arg('catalog', 'Main', 'category', 'Devices'))
+        self._render_root_list_row_standard(machines_n_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Normal'))
+        self._render_root_list_row_standard(machines_u_str, self._misc_url_2_arg('catalog', 'Main', 'category', 'Unusual'))
+        self._render_root_list_row_standard(nocoin_str,     self._misc_url_2_arg('catalog', 'Main', 'category', 'NoCoin'))
+        self._render_root_list_row_standard(mecha_str,      self._misc_url_2_arg('catalog', 'Main', 'category', 'Mechanical'))
+        self._render_root_list_row_standard(dead_str,       self._misc_url_2_arg('catalog', 'Main', 'category', 'Dead'))
+        self._render_root_list_row_standard(devices_str,    self._misc_url_2_arg('catalog', 'Main', 'category', 'Devices'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_skin_binary_filters(self):
@@ -655,51 +659,73 @@ class Main:
         samples_str = 'Machines [with Samples]'
         bios_str = 'Machines [BIOS]'
 
-        self._render_root_list_row(norom_str,      self._misc_url_2_arg('catalog', 'Binary', 'category', 'NoROM'))
-        self._render_root_list_row(chd_str,        self._misc_url_2_arg('catalog', 'Binary', 'category', 'CHD'))
-        self._render_root_list_row(samples_str,    self._misc_url_2_arg('catalog', 'Binary', 'category', 'Samples'))
-        self._render_root_list_row(bios_str,       self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
+        self._render_root_list_row_standard(norom_str,      self._misc_url_2_arg('catalog', 'Binary', 'category', 'NoROM'))
+        self._render_root_list_row_standard(chd_str,        self._misc_url_2_arg('catalog', 'Binary', 'category', 'CHD'))
+        self._render_root_list_row_standard(samples_str,    self._misc_url_2_arg('catalog', 'Binary', 'category', 'Samples'))
+        self._render_root_list_row_standard(bios_str,       self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_skin_catalog_filters(self):
         if self.settings['catver_path']:
-            self._render_root_list_row('Machines by Category (Catver)',  self._misc_url_1_arg('catalog', 'Catver'))
+            self._render_root_list_row_standard('Machines by Category (Catver)',  self._misc_url_1_arg('catalog', 'Catver'))
         if self.settings['catlist_path']:
-            self._render_root_list_row('Machines by Category (Catlist)', self._misc_url_1_arg('catalog', 'Catlist'))
+            self._render_root_list_row_standard('Machines by Category (Catlist)', self._misc_url_1_arg('catalog', 'Catlist'))
         if self.settings['genre_path']:
-            self._render_root_list_row('Machines by Category (Genre)',   self._misc_url_1_arg('catalog', 'Genre'))
+            self._render_root_list_row_standard('Machines by Category (Genre)',   self._misc_url_1_arg('catalog', 'Genre'))
         if self.settings['nplayers_path']:
-            self._render_root_list_row('Machines by Number of players',  self._misc_url_1_arg('catalog', 'NPlayers'))
+            self._render_root_list_row_standard('Machines by Number of players',  self._misc_url_1_arg('catalog', 'NPlayers'))
         if self.settings['bestgames_path']:
-            self._render_root_list_row('Machines by Score',              self._misc_url_1_arg('catalog', 'Bestgames'))
+            self._render_root_list_row_standard('Machines by Score',              self._misc_url_1_arg('catalog', 'Bestgames'))
         if self.settings['series_path']:
-            self._render_root_list_row('Machines by Series',             self._misc_url_1_arg('catalog', 'Series'))
+            self._render_root_list_row_standard('Machines by Series',             self._misc_url_1_arg('catalog', 'Series'))
 
-        self._render_root_list_row('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
-        self._render_root_list_row('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
-        self._render_root_list_row('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
-        self._render_root_list_row('Machines by Control Type',        self._misc_url_1_arg('catalog', 'Controls'))
-        self._render_root_list_row('Machines by Display Type',        self._misc_url_1_arg('catalog', 'Display_Type'))
-        self._render_root_list_row('Machines by Display Rotation',    self._misc_url_1_arg('catalog', 'Display_Rotate'))
-        self._render_root_list_row('Machines by Device',              self._misc_url_1_arg('catalog', 'Devices'))
-        self._render_root_list_row('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
+        self._render_root_list_row_standard('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
+        self._render_root_list_row_standard('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
+        self._render_root_list_row_standard('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
+        self._render_root_list_row_standard('Machines by Control Type',        self._misc_url_1_arg('catalog', 'Controls'))
+        self._render_root_list_row_standard('Machines by Display Type',        self._misc_url_1_arg('catalog', 'Display_Type'))
+        self._render_root_list_row_standard('Machines by Display Rotation',    self._misc_url_1_arg('catalog', 'Display_Rotate'))
+        self._render_root_list_row_standard('Machines by Device',              self._misc_url_1_arg('catalog', 'Devices'))
+        self._render_root_list_row_standard('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_skin_dat_slots(self):
-        self._render_root_list_row('History DAT',  self._misc_url_1_arg('catalog', 'History'))
-        self._render_root_list_row('MAMEINFO DAT', self._misc_url_1_arg('catalog', 'MAMEINFO'))
-        self._render_root_list_row('Gameinit DAT', self._misc_url_1_arg('catalog', 'Gameinit'))
-        self._render_root_list_row('Command DAT',  self._misc_url_1_arg('catalog', 'Command'))
+        self._render_root_list_row_standard('History DAT',  self._misc_url_1_arg('catalog', 'History'))
+        self._render_root_list_row_standard('MAMEINFO DAT', self._misc_url_1_arg('catalog', 'MAMEINFO'))
+        self._render_root_list_row_standard('Gameinit DAT', self._misc_url_1_arg('catalog', 'Gameinit'))
+        self._render_root_list_row_standard('Command DAT',  self._misc_url_1_arg('catalog', 'Command'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_skin_SL_filters(self):
         if self.settings['SL_hash_path']:
-            self._render_root_list_row('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
-            self._render_root_list_row('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
-            self._render_root_list_row('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
+            self._render_root_list_row_standard('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
+            self._render_root_list_row_standard('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
+            self._render_root_list_row_standard('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_root_list_row(self, root_name, root_URL):
+    def _render_root_list_row_catalog(self, display_name, catalog_name, catalog_key):
+        # --- Create listitem row ---
+        ICON_OVERLAY = 6
+        listitem = xbmcgui.ListItem(display_name)
+        listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY})
+
+        # --- Create context menu ---
+        URL_utils = self._misc_url_3_arg_RunPlugin('command', 'UTILITIES',
+                                                   'catalog', catalog_name, 'category', catalog_key)
+        commands = [
+            ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
+            ('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
+            ('Utilities', URL_utils),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ]
+        listitem.addContextMenuItems(commands)
+
+        # --- Add row ---
+        URL = self._misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+
+    def _render_root_list_row_standard(self, root_name, root_URL):
         # --- Create listitem row ---
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(root_name)
@@ -785,8 +811,11 @@ class Main:
         listitem.setInfo('video', {'Title' : title_str, 'Overlay' : ICON_OVERLAY, 'size' : num_machines})
 
         # --- Create context menu ---
+        URL_utils = self._misc_url_3_arg_RunPlugin('command', 'UTILITIES',
+                                                   'catalog', catalog_name, 'category', catalog_key)
         commands = [
             ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
+            ('Utilities', URL_utils),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
             ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
         ]
@@ -3021,6 +3050,58 @@ class Main:
 
         else:
             kodi_dialog_OK('Wrong action == {0}. This is a bug, please report it.'.format(action))
+
+    def _command_context_utilities(self, catalog_name, category_name):
+        log_debug('_command_context_utilities() catalog_name  "{0}"'.format(catalog_name))
+        log_debug('_command_context_utilities() category_name "{0}"'.format(category_name))
+
+        d_list = [
+          'Export AEL Virtual Launcher',
+        ]
+        selected_value = xbmcgui.Dialog().select('View', d_list)
+        if selected_value < 0: return
+
+        # --- Export AEL Virtual Launcher ---
+        if selected_value == 0:
+            log_debug('_command_context_utilities() Export AEL Virtual Launcher')
+
+            # >> Ask user for a path to export the launcher configuration
+            vlauncher_str_name = 'AML_VLauncher_' + catalog_name + '_' + category_name + '.xml'
+            dir_path = xbmcgui.Dialog().browse(0, 'Select XML export directory', 'files', 
+                                               '', False, False).decode('utf-8')
+            if not dir_path: return
+            export_FN = FileName(dir_path).pjoin(vlauncher_str_name)
+            if export_FN.exists():
+                ret = kodi_dialog_yesno('Overwrite file {0}?'.format(export_FN.getPath()))
+                if not ret:
+                    kodi_notify_warn('Export of Launcher XML cancelled')
+                    return
+
+            # --- Open databases and get list of machines of this filter ---
+            # >> This can be optimised: load stuff from the cache instead of the main databases.
+            pDialog = xbmcgui.DialogProgress()
+            pdialog_line1 = 'Loading databases ...'
+            num_items = 4
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(int((0*100) / num_items), pdialog_line1, 'Catalog dictionary')
+            catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
+            pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Main')
+            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machines Render')
+            machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME machine Assets')
+            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            pDialog.update(int((4*100) / num_items), ' ', ' ')
+            pDialog.close()
+
+            # --- Print error message is something goes wrong writing file ---
+            try:
+                fs_export_Virtual_Launcher(export_FN, catalog_dic[category_name],
+                                           machines, machines_render, assets_dic)
+            except Addon_Error as ex:
+                kodi_notify_warn('{0}'.format(ex))
+            else:
+                kodi_notify('Exported Virtual Launcher "{0}"'.format(vlauncher_str_name))
 
     # ---------------------------------------------------------------------------------------------
     # Favourites
