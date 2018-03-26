@@ -18,6 +18,8 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
+WIP      Create an AEL virtual launcher in XML from any AML filter.
+
 WIP      Use proper short name in "Machines by MAME short name" filter.
 
 WIP      Use proper Software List name in "Machines by Software List" filter.
