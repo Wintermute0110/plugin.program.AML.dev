@@ -109,10 +109,12 @@ AUDIT_STATUS_CHD_BAD_CRC    = 'CHD bad CRC'
 AUDIT_STATUS_ROM_BAD_SIZE   = 'ROM bad size'
 
 # --- File name extensions ---
-MAME_ROM_EXTS = ['zip']
-MAME_CHD_EXTS = ['chd']
-MAME_SAMPLE_EXTS = ['zip']
+MAME_ROM_EXTS      = ['zip']
+MAME_CHD_EXTS      = ['chd']
+MAME_SAMPLE_EXTS   = ['zip']
+SL_ROM_EXTS        = ['zip']
+SL_CHD_EXTS        = ['chd']
 ASSET_ARTWORK_EXTS = ['zip']
-ASSET_MANUAL_EXTS = ['pdf', 'cbz', 'cbr']
+ASSET_MANUAL_EXTS  = ['pdf', 'cbz', 'cbr']
 ASSET_TRAILER_EXTS = ['mp4']
-ASSET_IMAGE_EXTS = ['png']
+ASSET_IMAGE_EXTS   = ['png']

@@ -18,7 +18,7 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
 
-WIP      File cache for SL ROMs/CHDs and assets.
+WIP      File cache for SL ROMs/CHDs (DONE) and assets (MISSING).
 
 FEATURE  Port the file scanner cache from AEL to AML. This will increase the scanning speed a lot!
          Also, this will allow supporting more image types (currently only PNG), manual

@@ -393,6 +393,13 @@ def text_get_image_URL_extension(url):
 # File cache
 # -------------------------------------------------------------------------------------------------
 file_cache = {}
+
+def misc_clear_file_cache():
+    global file_cache
+
+    log_debug('misc_clear_file_cache() Clearing file cache')
+    file_cache = {}
+
 def misc_add_file_cache(dir_str):
     global file_cache
 
@@ -401,7 +408,7 @@ def misc_add_file_cache(dir_str):
         log_debug('misc_add_file_cache() Empty dir_str. Exiting')
         return
     dir_FN = FileName(dir_str)
-    log_debug('misc_add_file_cache() Scanning OP "{0}"'.format(dir_FN.getOriginalPath()))
+    # log_debug('misc_add_file_cache() Scanning OP "{0}"'.format(dir_FN.getOriginalPath()))
     log_debug('misc_add_file_cache() Scanning  P "{0}"'.format(dir_FN.getPath()))
     # >> A recursive function is needed
     # file_list = os.listdir(dir_FN.getPath())

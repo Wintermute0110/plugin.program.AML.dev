@@ -173,28 +173,29 @@ class AML_Paths:
         self.REPORT_MAME_SCAN_ROM_LIST_PATH          = self.REPORTS_DIR.pjoin('Scanner_MAME_ROM_list.txt')
         self.REPORT_MAME_SCAN_CHD_LIST_PATH          = self.REPORTS_DIR.pjoin('Scanner_MAME_CHD_list.txt')
         self.REPORT_MAME_SCAN_SAMP_PATH              = self.REPORTS_DIR.pjoin('Scanner_Samples.txt')
-        self.REPORT_SL_SCAN_MACHINE_ARCH_PATH        = self.REPORTS_DIR.pjoin('Scanner_SL_soft_archives.txt')
+        self.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH   = self.REPORTS_DIR.pjoin('Scanner_SL_item_archives_have.txt')
+        self.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH   = self.REPORTS_DIR.pjoin('Scanner_SL_itme_archives_miss.txt')
         self.REPORT_SL_SCAN_ROM_LIST_PATH            = self.REPORTS_DIR.pjoin('Scanner_SL_ROM_list.txt')
         self.REPORT_SL_SCAN_CHD_LIST_PATH            = self.REPORTS_DIR.pjoin('Scanner_SL_CHD_list.txt')
 
         # >> Asset scanner reports. These reports show have and missing assets.
-        self.REPORT_MAME_ASSETS_PATH = self.REPORTS_DIR.pjoin('Report_asset_MAME.txt')
-        self.REPORT_SL_ASSETS_PATH   = self.REPORTS_DIR.pjoin('Report_asset_SL.txt')
+        self.REPORT_MAME_ASSETS_PATH = self.REPORTS_DIR.pjoin('Assets_MAME.txt')
+        self.REPORT_SL_ASSETS_PATH   = self.REPORTS_DIR.pjoin('Assets_SL.txt')
 
         # >> Audit report
-        self.REPORT_MAME_AUDIT_GOOD_PATH       = self.REPORTS_DIR.pjoin('Report_MAME_audit_good.txt')
-        self.REPORT_MAME_AUDIT_ERRORS_PATH     = self.REPORTS_DIR.pjoin('Report_MAME_audit_errors.txt')
-        self.REPORT_MAME_AUDIT_ROM_GOOD_PATH   = self.REPORTS_DIR.pjoin('Report_MAME_audit_ROMs_good.txt')
-        self.REPORT_MAME_AUDIT_ROM_ERRORS_PATH = self.REPORTS_DIR.pjoin('Report_MAME_audit_ROMs_errors.txt')
-        self.REPORT_MAME_AUDIT_CHD_GOOD_PATH   = self.REPORTS_DIR.pjoin('Report_MAME_audit_CHDs_good.txt')
-        self.REPORT_MAME_AUDIT_CHD_ERRORS_PATH = self.REPORTS_DIR.pjoin('Report_MAME_audit_CHDs_errors.txt')
+        self.REPORT_MAME_AUDIT_GOOD_PATH       = self.REPORTS_DIR.pjoin('Audit_MAME_good.txt')
+        self.REPORT_MAME_AUDIT_ERRORS_PATH     = self.REPORTS_DIR.pjoin('Audit_MAME_errors.txt')
+        self.REPORT_MAME_AUDIT_ROM_GOOD_PATH   = self.REPORTS_DIR.pjoin('Audit_MAME_ROMs_good.txt')
+        self.REPORT_MAME_AUDIT_ROM_ERRORS_PATH = self.REPORTS_DIR.pjoin('Audit_MAME_ROMs_errors.txt')
+        self.REPORT_MAME_AUDIT_CHD_GOOD_PATH   = self.REPORTS_DIR.pjoin('Audit_MAME_CHDs_good.txt')
+        self.REPORT_MAME_AUDIT_CHD_ERRORS_PATH = self.REPORTS_DIR.pjoin('Audit_MAME_CHDs_errors.txt')
 
-        self.REPORT_SL_AUDIT_GOOD_PATH         = self.REPORTS_DIR.pjoin('Report_SL_audit_good.txt')
-        self.REPORT_SL_AUDIT_ERRORS_PATH       = self.REPORTS_DIR.pjoin('Report_SL_audit_errors.txt')
-        self.REPORT_SL_AUDIT_ROMS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Report_SL_audit_ROMs_good.txt')
-        self.REPORT_SL_AUDIT_ROMS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Report_SL_audit_ROMs_errors.txt')
-        self.REPORT_SL_AUDIT_CHDS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Report_SL_audit_CHDs_good.txt')
-        self.REPORT_SL_AUDIT_CHDS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Report_SL_audit_CHDs_errors.txt')
+        self.REPORT_SL_AUDIT_GOOD_PATH         = self.REPORTS_DIR.pjoin('Audit_SL_good.txt')
+        self.REPORT_SL_AUDIT_ERRORS_PATH       = self.REPORTS_DIR.pjoin('Audit_SL_errors.txt')
+        self.REPORT_SL_AUDIT_ROMS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Audit_SL_ROMs_good.txt')
+        self.REPORT_SL_AUDIT_ROMS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Audit_SL_ROMs_errors.txt')
+        self.REPORT_SL_AUDIT_CHDS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Audit_SL_CHDs_good.txt')
+        self.REPORT_SL_AUDIT_CHDS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Audit_SL_CHDs_errors.txt')
 PATHS = AML_Paths()
 
 class Main:
@@ -2824,6 +2825,7 @@ class Main:
                                  'View MAME missing ROM list',
                                  'View MAME missing CHD list',
                                  'View MAME missing Samples',
+                                 'View Software Lists have archives',
                                  'View Software Lists missing archives',
                                  'View Software Lists missing ROM list',
                                  'View Software Lists missing CHD list',
@@ -2881,38 +2883,53 @@ class Main:
                     info_text = myfile.read()
                     self._display_text_window('MAME missing Samples scanner report', info_text)
 
-            # --- View Software Lists ROM scanner report ---
+            # --- View Software Lists have archives ---
             elif type_sub == 5:
-                if not PATHS.REPORT_SL_SCAN_MACHINE_ARCH_PATH.exists():
-                    kodi_dialog_OK('Software Lists missing archives scanner report not found. '
-                                   'Please scan MAME ROMs and try again.')
+                if not PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
+                    kodi_dialog_OK('Software Lists have archives scanner report not found. '
+                                   'Please scan SL ROMs and try again.')
                     return
-                with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_PATH.getPath(), 'r') as myfile:
+                with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
+                    info_text = myfile.read()
+                    # >> Kodi BUG: if size of file is 0 then previous text in window is rendered.
+                    # log_debug('len(info_text) = {0}'.format(len(info_text)))
+                    if len(info_text) == 0:
+                        kodi_notify('Report is empty')
+                        return
+                    self._display_text_window('Software Lists have archives scanner report', info_text)
+
+            # --- View Software Lists miss archives ---
+            elif type_sub == 6:
+                if not PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.exists():
+                    kodi_dialog_OK('Software Lists missing archives scanner report not found. '
+                                   'Please scan SL ROMs and try again.')
+                    return
+                with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
                     self._display_text_window('Software Lists missing archives scanner report', info_text)
 
-            # --- View Software Lists CHD scanner report ---
-            elif type_sub == 6:
+            # --- View Software Lists ROM scanner report ---
+            elif type_sub == 7:
                 if not PATHS.REPORT_SL_SCAN_ROM_LIST_PATH.exists():
                     kodi_dialog_OK('Software Lists missing ROM list scanner report not found. '
-                                   'Please scan MAME ROMs and try again.')
+                                   'Please scan SL ROMs and try again.')
                     return
                 with open(PATHS.REPORT_SL_SCAN_ROM_LIST_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
                     self._display_text_window('Software Lists missing ROM list scanner report', info_text)
 
             # --- View Software Lists CHD scanner report ---
-            elif type_sub == 7:
+            elif type_sub == 8:
                 if not PATHS.REPORT_SL_SCAN_CHD_LIST_PATH.exists():
                     kodi_dialog_OK('Software Lists missing CHD list scanner report not found. '
-                                   'Please scan MAME ROMs and try again.')
+                                   'Please scan SL ROMs and try again.')
                     return
                 with open(PATHS.REPORT_SL_SCAN_CHD_LIST_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
                     self._display_text_window('Software Lists missing CHD list scanner report', info_text)
 
             # --- View MAME asset report ---
-            elif type_sub == 8:
+            elif type_sub == 9:
                 if not PATHS.REPORT_MAME_ASSETS_PATH.exists():
                     kodi_dialog_OK('MAME asset report report not found. '
                                    'Please scan MAME assets and try again.')
@@ -2922,7 +2939,7 @@ class Main:
                     self._display_text_window('MAME asset report', info_text)
 
             # --- View Software Lists asset report ---
-            elif type_sub == 9:
+            elif type_sub == 10:
                 if not PATHS.REPORT_SL_ASSETS_PATH.exists():
                     kodi_dialog_OK('Software Lists asset report not found. '
                                    'Please scan Software List assets and try again.')

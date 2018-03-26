@@ -3630,9 +3630,9 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
                             disk_audit_dic['type']     = ROM_TYPE_DISK
                             disk_audit_dic['name']     = disk_dic['name']
                             disk_audit_dic['sha1']     = disk_dic['sha1']
-                            disk_audit_dic['location'] = SL_name + '/' + SL_rom + '/' + disk_dic['name'] + '.chd'
+                            disk_audit_dic['location'] = SL_name + '/' + SL_rom + '/' + disk_dic['name']
                             SL_Audit_ROMs[SL_rom].append(disk_audit_dic)
-                            soft_item_disk_list.append(disk_dic['name'] + '.chd')
+                            soft_item_disk_list.append(disk_dic['name'])
 
             # >> Compute Software Archives
             SL_Software_Archives[SL_rom] = { 'ROMs' : [], 'CHDs' : [] }
@@ -4042,20 +4042,30 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     SL_CHDs_have = 0
     SL_CHDs_missing = 0
     SL_CHDs_total = 0
-    report_list = []
+    r_have_list = []
+    r_miss_list = []
     for SL_name in sorted(SL_catalog_dic):
         # >> Progress dialog
         update_number = (processed_files*100) // total_files
         pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
 
-        # >> Initialise
+        # >> Load SL databases
         SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
         SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_software_archives.json')
         sl_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
         soft_archives = fs_load_JSON_file(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
 
+        # >> Cache files
+        SL_ROM_path_str = SL_ROM_dir_FN.pjoin(SL_name).getPath()
+        SL_CHD_path_str = SL_CHD_path_FN.pjoin(SL_name).getPath()
+        misc_clear_file_cache()
+        misc_add_file_cache(SL_ROM_path_str)
+        misc_add_file_cache(SL_CHD_path_str)
+
+        # >> Scan
         for rom_key in sorted(sl_roms):
-            m_str_list = []
+            m_have_str_list = []
+            m_miss_str_list = []
             rom = sl_roms[rom_key]
 
             # --- ROMs ---
@@ -4064,13 +4074,12 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
                 have_rom_list = [False] * len(rom_list)
                 for i, rom_archive in enumerate(rom_list):
                     SL_ROMs_total += 1
-                    archive_name = rom_archive + '.zip'
-                    SL_ROM_FN = SL_ROM_dir_FN.pjoin(SL_name).pjoin(archive_name)
-                    # log_debug('Scanning ROM "{0}"'.format(SL_ROM_FN.getPath()))
-                    if SL_ROM_FN.exists():
+                    SL_ROM_FN = misc_search_file_cache(SL_ROM_path_str, rom_archive, SL_ROM_EXTS)
+                    if SL_ROM_FN:
                         have_rom_list[i] = True
+                        m_have_str_list.append('Have SL ROM {0}'.format(SL_name + '/' + rom_archive))
                     else:
-                        m_str_list.append('Missing SL ROM {0}'.format(SL_ROM_FN.getPath()))
+                        m_miss_str_list.append('Missing SL ROM {0}'.format(SL_name + '/' + rom_archive))
                 if all(have_rom_list):
                     rom['status_ROM'] = 'R'
                     SL_ROMs_have += 1
@@ -4087,12 +4096,14 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
                     SL_CHDs_total += 1
                     has_chd_list = [False] * len(chd_list)
                     for idx, chd_name in enumerate(chd_list):
-                        SL_CHD_FN = SL_CHD_path_FN.pjoin(SL_name).pjoin(rom_key).pjoin(chd_name)
-                        # log_debug('Scanning CHD "{0}"'.format(SL_CHD_FN.getPath()))
-                        if SL_CHD_FN.exists():
+                        chd_file = rom_key + '/' + chd_name
+                        # log_debug('Scanning CHD "{0}"'.format(chd_file))
+                        SL_CHD_FN = misc_search_file_cache(SL_CHD_path_str, chd_file, SL_CHD_EXTS)
+                        if SL_CHD_FN:
                             has_chd_list[idx] = True
+                            m_have_str_list.append('Have SL CHD {0}'.format(chd_file))
                         else:
-                            m_str_list.append('Missing SL CHD {0}'.format(SL_CHD_FN.getPath()))
+                            m_miss_str_list.append('Missing SL CHD {0}'.format(chd_file))
                     if all(has_chd_list):
                         rom['status_CHD'] = 'C'
                         SL_CHDs_have += 1
@@ -4106,13 +4117,25 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
                 rom['status_CHD'] = '-'
 
             # --- Build report ---
-            if m_str_list:
-                report_list.append('SL {0} Software Item {0}'.format(SL_name, rom_key))
+            if m_have_str_list:
+                r_have_list.append('SL {0} Software Item {1}'.format(SL_name, rom_key))
                 # if machines_render[rom_key]['cloneof']:
                 #     cloneof = machines_render[rom_key]['cloneof']
                 #     report_list.append('cloneof {0} [{1}]'.format(cloneof, machines_render[cloneof]['description']))
-                report_list.extend(m_str_list)
-                report_list.append('')
+                r_have_list.extend(m_have_str_list)
+                # >> Also including missing ROMs if any.
+                if m_miss_str_list: r_have_list.extend(m_miss_str_list)
+                r_have_list.append('')
+            if m_miss_str_list:
+                r_miss_list.append('SL {0} Software Item {1}'.format(SL_name, rom_key))
+                # if machines_render[rom_key]['cloneof']:
+                #     cloneof = machines_render[rom_key]['cloneof']
+                #     report_list.append('cloneof {0} [{1}]'.format(cloneof, machines_render[cloneof]['description']))
+                r_miss_list.extend(m_miss_str_list)
+                # >> Also including missing ROMs if any.
+                if m_have_str_list: r_miss_list.extend(m_have_str_list)
+                r_miss_list.append('')
+
         # >> Save SL database to update flags.
         fs_write_JSON_file(SL_DB_FN.getPath(), sl_roms, verbose = False)
         # >> Increment file count
@@ -4121,9 +4144,13 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     pDialog.close()
 
     # >> Write report
-    log_info('Opening SL ROMs report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_PATH.getPath()))
-    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_list).encode('utf-8'))
+    log_info('Opening SL ROMs HAVE report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
+    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(r_have_list).encode('utf-8'))
+
+    log_info('Opening SL ROMs MISS report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
+    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(r_miss_list).encode('utf-8'))
 
     # >> Not coded yet
     # log_info('Opening SL ROMs report file "{0}"'.format(PATHS.REPORT_SL_SCAN_ROM_LIST_PATH.getPath()))
