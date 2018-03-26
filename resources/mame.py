@@ -4159,6 +4159,20 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
     table_str.append(['left', 'left', 'left',  'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
     table_str.append(['Name', 'PCB',  'Artp',  'Art',  'Cab',  'Clr',  'CPan', 'Fan',  'Fly',  'Man',  'Mar',  'Snap', 'Tit',  'Tra'])
 
+    # --- Create a cache of assets ---
+    pDialog.create('Advanced MAME Launcher', 'Scanning files in asset directories ...')
+    num_assets = len(ASSET_MAME_T_LIST)
+    asset_dirs = [''] * num_assets
+    for i, asset_tuple in enumerate(ASSET_MAME_T_LIST):
+        asset_dir = asset_tuple[1]
+        full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir)
+        asset_dir_str = full_asset_dir_FN.getPath()
+        asset_dirs[i] = asset_dir_str
+        misc_add_file_cache(asset_dir_str)
+        pDialog.update((100*(i+1))/num_assets)
+    pDialog.update(100)
+    pDialog.close()
+
     # >> First pass: search for on-disk assets
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork (first pass) ...')
     total_machines = len(machines_render)
@@ -4169,16 +4183,15 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
         for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
             asset_key = asset_tuple[0]
             asset_dir = asset_tuple[1]
-            full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir)
             if asset_key == 'artwork':
-                asset_FN = full_asset_dir_FN.pjoin(m_name + '.zip')
+                asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_ARTWORK_EXTS)
             elif asset_key == 'manual':
-                asset_FN = full_asset_dir_FN.pjoin(m_name + '.pdf')
+                asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_MANUAL_EXTS)
             elif asset_key == 'trailer':
-                asset_FN = full_asset_dir_FN.pjoin(m_name + '.mp4')
+                asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_TRAILER_EXTS)
             else:
-                asset_FN = full_asset_dir_FN.pjoin(m_name + '.png')
-            machine_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN.exists() else ''
+                asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_IMAGE_EXTS)
+            machine_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN else ''
         ondisk_assets_dic[m_name] = machine_assets
         # >> Update progress
         processed_machines += 1
