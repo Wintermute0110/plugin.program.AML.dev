@@ -155,6 +155,7 @@ class AML_Paths:
 
         # >> Software Lists
         self.SL_DB_DIR             = PLUGIN_DATA_DIR.pjoin('SoftwareLists')
+        self.SL_NAMES_PATH         = PLUGIN_DATA_DIR.pjoin('SoftwareLists_names.json')
         self.SL_INDEX_PATH         = PLUGIN_DATA_DIR.pjoin('SoftwareLists_index.json')
         self.SL_MACHINES_PATH      = PLUGIN_DATA_DIR.pjoin('SoftwareLists_machines.json')
         self.SL_PCLONE_DIC_PATH    = PLUGIN_DATA_DIR.pjoin('SoftwareLists_pclone_dic.json')
@@ -4698,11 +4699,12 @@ class Main:
                 # --- Parse MAME XML and generate main database and PClone list ---
                 log_info('_command_setup_plugin() Generating MAME main database and PClone list ...')
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-                try:
-                    DB = mame_build_MAME_main_database(PATHS, self.settings, control_dic)
-                except GeneralError as err:
-                    log_error(err.msg)
-                    raise SystemExit
+                # try:
+                #     DB = mame_build_MAME_main_database(PATHS, self.settings, control_dic)
+                # except GeneralError as err:
+                #     log_error(err.msg)
+                #     raise SystemExit
+                DB = mame_build_MAME_main_database(PATHS, self.settings, control_dic)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
                 kodi_notify('Main MAME databases built')
 

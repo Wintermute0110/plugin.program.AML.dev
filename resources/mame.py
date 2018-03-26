@@ -1395,6 +1395,68 @@ def mame_build_SL_fanart(PATHS, layout_SL, SL_name, m_name, assets_dic, Fanart_F
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
 
+#
+# 1) Scan MAME hash dir for XML files.
+# 2) For each XML file, read the first XML_READ_LINES lines.
+# 3) Search for the line <softwarelist name="32x" description="Sega 32X cartridges">
+# 4) Create the file SL_NAMES_PATH with a dictionary sl_name : description
+#
+# <softwarelist name="32x" description="Sega 32X cartridges">
+# <softwarelist name="vsmile_cart" description="VTech V.Smile cartridges">
+# <softwarelist name="vsmileb_cart" description="VTech V.Smile Baby cartridges">
+#
+XML_READ_LINES = 600
+def mame_build_SL_names(PATHS, settings):
+    # >> If MAME hash path is not configured then create and empty file
+    SL_names_dic = {}
+    hash_dir_FN = FileName(settings['SL_hash_path'])
+    if not hash_dir_FN.exists():
+        log_info('mame_build_SL_names() MAME hash path does not exists.')
+        log_info('mame_build_SL_names() Creating empty SL_NAMES_PATH')
+        fs_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
+        return
+
+    # >> MAME hash path exists. Carry on.
+    file_list = os.listdir(hash_dir_FN.getPath())
+    log_debug('mame_build_SL_names() Found {0} files'.format(len(file_list)))
+    xml_files = []
+    for file in file_list:
+        if file.endswith('.xml'): xml_files.append(file)
+    log_debug('mame_build_SL_names() Found {0} XML files'.format(len(xml_files)))
+    for f_name in xml_files:
+        XML_FN = hash_dir_FN.pjoin(f_name)
+        log_debug('Inspecting file "{0}"'.format(XML_FN.getPath()))
+        # >> Read first XML_READ_LINES lines
+        try:
+            f = open(XML_FN.getPath(), 'r')
+        except IOError:
+            log_error('(IOError) Exception opening {0}'.format(XML_FN.getPath()))
+            continue
+        else:
+            # >> f.readlines(XML_READ_LINES) does not work well for some files
+            # content_list = f.readlines(XML_READ_LINES)
+            line_count = 0
+            content_list = []
+            for line in f:
+                content_list.append(line)
+                line_count += 1
+                if line_count > XML_READ_LINES: break
+            content_list = [x.strip() for x in content_list]
+            content_list = [x.decode('utf-8') for x in content_list]
+            for line in content_list:
+                # >> DEBUG
+                # if f_name == 'vsmileb_cart.xml': log_debug('Line "{0}"'.format(line))
+                # >> Search for SL name
+                if line.startswith('<softwarelist'):
+                    m = re.search(r'<softwarelist name="([^"]+?)" description="([^"]+?)"', line)
+                    if m:
+                        sl_name = m.group(1)
+                        sl_desc = m.group(2)
+                        log_debug('mame_build_SL_names() SL "{0}" -> "{1}"'.format(sl_name, sl_desc))
+                        SL_names_dic[sl_name] = sl_desc
+    # >> Save database
+    fs_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
+
 # -------------------------------------------------------------------------------------------------
 # MAME database building
 # -------------------------------------------------------------------------------------------------
@@ -1425,6 +1487,13 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # --- Progress dialog ---
     pDialog_canceled = False
     pDialog = xbmcgui.DialogProgress()
+
+    # --- Build SL_NAMES_PATH if available, to be used later in the catalog building ---
+    pDialog.create('Advanced MAME Launcher', 'Creating list of Software List names ...')
+    pDialog.update(0)
+    mame_build_SL_names(PATHS, settings)
+    pDialog.update(100)
+    pDialog.close()
 
     # --- Load INI files to include category information ---
     pdialog_line1 = 'Processing INI files ...'
