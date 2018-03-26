@@ -1425,7 +1425,7 @@ def mame_build_SL_names(PATHS, settings):
     log_debug('mame_build_SL_names() Found {0} XML files'.format(len(xml_files)))
     for f_name in xml_files:
         XML_FN = hash_dir_FN.pjoin(f_name)
-        log_debug('Inspecting file "{0}"'.format(XML_FN.getPath()))
+        # log_debug('Inspecting file "{0}"'.format(XML_FN.getPath()))
         # >> Read first XML_READ_LINES lines
         try:
             f = open(XML_FN.getPath(), 'r')
@@ -1452,7 +1452,7 @@ def mame_build_SL_names(PATHS, settings):
                     if m:
                         sl_name = m.group(1)
                         sl_desc = m.group(2)
-                        log_debug('mame_build_SL_names() SL "{0}" -> "{1}"'.format(sl_name, sl_desc))
+                        # log_debug('mame_build_SL_names() SL "{0}" -> "{1}"'.format(sl_name, sl_desc))
                         SL_names_dic[sl_name] = sl_desc
     # >> Save database
     fs_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
@@ -2630,7 +2630,7 @@ def _build_catalog_helper(catalog_parents, catalog_all, machines, machines_rende
 #        }, ...
 #    }
 #
-def mame_build_MAME_catalogs(PATHS, control_dic,
+def mame_build_MAME_catalogs(PATHS, settings, control_dic,
                              machines, machines_render, machine_roms, main_pclone_dic, assets_dic):
     # >> Progress dialog
     pDialog_line1 = 'Building catalogs ...'
@@ -3106,6 +3106,8 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     # --- Software List catalog ---
     log_info('Making Software List catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Making Software List catalog ...')
+    # >> Load proper Software List proper names, if available
+    SL_names_dic = fs_load_JSON_file(PATHS.SL_NAMES_PATH.getPath())
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
@@ -3115,6 +3117,7 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         # >> A machine may have more than 1 software lists
         for sl_name in machine['softwarelists']:
             catalog_key = sl_name
+            if catalog_key in SL_names_dic: catalog_key = SL_names_dic[catalog_key]
             if catalog_key in catalog_parents:
                 catalog_parents[catalog_key][parent_name] = machine_render['description']
                 catalog_all[catalog_key][parent_name] = machine_render['description']

@@ -3922,9 +3922,10 @@ class Main:
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
             # 1) Creates cache_index_dic and updates the ROM cache.
-            # 2) assets_dic is required to update the asset cache (even if empty).
+            # 2) Updates the asset cache. assets_dic is required to update the asset
+            #    cache (even if empty).
             # 3) Updates control_dic and t_MAME_Catalog_build timestamp.
-            mame_build_MAME_catalogs(PATHS, control_dic,
+            mame_build_MAME_catalogs(PATHS, self.settings, control_dic,
                                      DB.machines, DB.machines_render, DB.machine_roms,
                                      DB.main_pclone_dic, DB.assets_dic)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
@@ -4773,9 +4774,10 @@ class Main:
 
                 # --- Build MAME catalog ---
                 # 1) Creates cache_index_dic and updates the ROM cache.
-                # 2) assets_dic is required to update the asset cache (even if empty).
+                # 2) Updates the asset cache. assets_dic is required to update the asset
+                #    cache (even if empty).
                 # 3) Updates control_dic and t_MAME_Catalog_build timestamp.
-                mame_build_MAME_catalogs(PATHS, control_dic,
+                mame_build_MAME_catalogs(PATHS, self.settings, control_dic,
                                          machines, machines_render, machine_roms,
                                          main_pclone_dic, assets_dic)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)

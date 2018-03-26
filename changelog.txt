@@ -24,7 +24,7 @@ WIP      Port the file scanner cache from AEL to AML. This will increase the sca
          Also, this will allow supporting more image types (currently only PNG), manual
          types (currently only PDF) and trailer types (currently MP4 only).
 
-WIP      Use proper Software List name in "Machines by Software List" filter.
+FEATURE  Use proper Software List name in "Machines by Software List" filter.
 
 FEATURE  Use proper short name in "Machines by MAME short name" filter.
 
