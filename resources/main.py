@@ -28,8 +28,9 @@ import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 
 # --- Modules/packages in this plugin ---
 # Addon module dependencies:
-#   main <-- mame <-- disk_IO <-- assets, utils, utils_kodi, constants (no dependencies)
-#   ReaderPDF <-- utils, utils_kodi (no dependencies)
+#   main <-- mame <-- disk_IO <-- assets, utils, utils_kodi, constants
+#   ReaderPDF <-- utils, utils_kodi
+#   filters <- utils, utils_kodi
 from constants import *
 from assets import *
 from utils import *
@@ -37,6 +38,7 @@ from utils_kodi import *
 from disk_IO import *
 from mame import *
 from ReaderPDF import *
+from filters import *
 
 # --- Addon object (used to access settings) ---
 __addon__         = xbmcaddon.Addon()
@@ -774,6 +776,25 @@ class Main:
         log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
         log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
+    def _render_catalog_list_row(self, catalog_name, catalog_key, num_machines, machine_str):
+        # --- Create listitem row ---
+        ICON_OVERLAY = 6
+        title_str = '{0} [COLOR orange]({1} {2})[/COLOR]'.format(catalog_key, num_machines, machine_str)
+        listitem = xbmcgui.ListItem(title_str)
+        listitem.setInfo('video', {'Title' : title_str, 'Overlay' : ICON_OVERLAY, 'size' : num_machines})
+
+        # --- Create context menu ---
+        commands = [
+            ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ]
+        listitem.addContextMenuItems(commands)
+
+        # --- Add row ---
+        URL = self._misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
+
     #
     # Renders a list of parent MAME machines knowing the catalog name and the category.
     # Display mode: a) parents only b) all machines (flat)
@@ -930,25 +951,6 @@ class Main:
         # --- DEBUG Data loading/rendering statistics ---
         log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
         log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
-
-    def _render_catalog_list_row(self, catalog_name, catalog_key, num_machines, machine_str):
-        # --- Create listitem row ---
-        ICON_OVERLAY = 6
-        title_str = '{0} [COLOR orange]({1} {2})[/COLOR]'.format(catalog_key, num_machines, machine_str)
-        listitem = xbmcgui.ListItem(title_str)
-        listitem.setInfo('video', {'Title' : title_str, 'Overlay' : ICON_OVERLAY, 'size' : num_machines})
-
-        # --- Create context menu ---
-        commands = [
-            ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
-        ]
-        listitem.addContextMenuItems(commands)
-
-        # --- Add row ---
-        URL = self._misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
-        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = True)
 
     def _render_catalog_machine_row(self, m_name, machine, m_assets,
                                     flag_parent_list = False, num_clones = 0,
