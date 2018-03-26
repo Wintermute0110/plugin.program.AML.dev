@@ -2518,6 +2518,20 @@ def _cache_index_builder(cat_name, cache_index_dic, catalog_all, catalog_parents
             'hash'         : fs_rom_cache_get_hash(cat_name, cat_key)
         }
 
+def _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, db_field):
+    for parent_name in main_pclone_dic:
+        # >> Skip device machines in catalogs.
+        if machines_render[parent_name]['isDevice']: continue
+        catalog_key = machines[parent_name][db_field]
+        if catalog_key in catalog_parents:
+            catalog_parents[catalog_key][parent_name] = parent_name
+            catalog_all[catalog_key][parent_name] = parent_name
+        else:
+            catalog_parents[catalog_key] = { parent_name : parent_name }
+            catalog_all[catalog_key] = { parent_name : parent_name }
+        for clone_name in main_pclone_dic[parent_name]:
+            catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
+
 #
 # A) Builds the following catalog files
 #    CATALOG_MAIN_PARENT_PATH
@@ -2589,10 +2603,10 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     # --- Normal and Unusual machine list ---
     # Machines with Coin Slot and Non Mechanical and not Dead and not Device
     log_info('Making None catalog - Coin index ...')
-    normal_parent_list = []
-    normal_all_list = []
-    unusual_parent_list = []
-    unusual_all_list = []
+    normal_parent_dic = {}
+    normal_all_dic = {}
+    unusual_parent_dic = {}
+    unusual_all_dic = {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
         machine_render = machines_render[parent_name]
@@ -2609,30 +2623,33 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         if machine_main['sourcefile'] == '88games.cpp' or \
            machine_main['sourcefile'] == 'cball.cpp' or \
            machine_main['sourcefile'] == 'asteroid.cpp':
-            normal_parent_list.append(parent_name)
-            normal_all_list.append(parent_name)
-            for clone in main_pclone_dic[parent_name]: normal_all_list.append(clone)
+            normal_parent_dic[parent_name] = machine_render['description']
+            normal_all_dic[parent_name] = machine_render['description']
+            for clone_name in main_pclone_dic[parent_name]:
+                normal_all_dic[clone_name] = machines_render[clone_name]['description']
         elif 'only_buttons' in machine_main['control_type'] or \
              'gambling' in machine_main['control_type'] or \
              'hanafuda' in machine_main['control_type'] or \
              'mahjong' in machine_main['control_type']:
-            unusual_parent_list.append(parent_name)
-            unusual_all_list.append(parent_name)
-            for clone in main_pclone_dic[parent_name]: unusual_all_list.append(clone)
+            unusual_parent_dic[parent_name] = machine_render['description']
+            unusual_all_dic[parent_name] = machine_render['description']
+            for clone_name in main_pclone_dic[parent_name]:
+                normal_all_dic[clone_name] = machines_render[clone_name]['description']
         else:
-            normal_parent_list.append(parent_name)
-            normal_all_list.append(parent_name)
-            for clone in main_pclone_dic[parent_name]: normal_all_list.append(clone)
-    main_catalog_parents['Normal']  = normal_parent_list
-    main_catalog_all['Normal'] = normal_all_list
-    main_catalog_parents['Unusual'] = unusual_parent_list
-    main_catalog_all['Unusual'] = unusual_all_list
+            normal_parent_dic[parent_name] = machine_render['description']
+            normal_all_dic[parent_name] = machine_render['description']
+            for clone_name in main_pclone_dic[parent_name]:
+                normal_all_dic[clone_name] = machines_render[clone_name]['description']
+    main_catalog_parents['Normal']  = normal_parent_dic
+    main_catalog_all['Normal'] = normal_all_dic
+    main_catalog_parents['Unusual'] = unusual_parent_dic
+    main_catalog_all['Unusual'] = unusual_all_dic
 
     # --- NoCoin list ---
     # A) Machines with No Coin Slot and Non Mechanical and not Dead and not Device
     log_info('Making NoCoin index ...')
-    parent_list = []
-    all_list = []
+    parent_dic = {}
+    all_dic = {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
         machine_render = machines_render[parent_name]
@@ -2640,62 +2657,62 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         if machine_main['coins'] > 0: continue
         if machine_main['isDead']: continue
         if machine_render['isDevice']: continue
-        parent_list.append(parent_name)
-        all_list.append(parent_name)
-        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    main_catalog_parents['NoCoin'] = parent_list
-    main_catalog_all['NoCoin'] = all_list
+        parent_dic[parent_name] = machine_render['description']
+        all_dic[parent_name] = machine_render['description']
+        for clone_name in main_pclone_dic[parent_name]:
+            normal_all_dic[clone_name] = machines_render[clone_name]['description']
+    main_catalog_parents['NoCoin'] = parent_dic
+    main_catalog_all['NoCoin'] = all_dic
 
     # --- Mechanical machines ---
     # >> Mechanical machines and not Dead and not Device
     log_info('Making Mechanical index ...')
-    parent_list = []
-    all_list = []
+    parent_dic = {}
+    all_dic = {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
         machine_render = machines_render[parent_name]
         if not machine_main['isMechanical']: continue
         if machine_main['isDead']: continue
         if machine_render['isDevice']: continue
-        parent_list.append(parent_name)
-        all_list.append(parent_name)
-        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    main_catalog_parents['Mechanical'] = parent_list
-    main_catalog_all['Mechanical'] = all_list
+        parent_dic[parent_name] = machine_render['description']
+        all_dic[parent_name] = machine_render['description']
+        for clone_name in main_pclone_dic[parent_name]:
+            normal_all_dic[clone_name] = machines_render[clone_name]['description']
+    main_catalog_parents['Mechanical'] = parent_dic
+    main_catalog_all['Mechanical'] = all_dic
 
     # --- Dead machines ---
     # >> Dead machines
     log_info('Making Dead Machines index ...')
-    parent_list = []
-    all_list = []
+    parent_dic = {}
+    all_dic = {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
         if not machine_main['isDead']: continue
-
-        parent_list.append(parent_name)
-        all_list.append(parent_name)
-        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    main_catalog_parents['Dead'] = parent_list
-    main_catalog_all['Dead'] = all_list
+        parent_dic[parent_name] = machine_render['description']
+        all_dic[parent_name] = machine_render['description']
+        for clone_name in main_pclone_dic[parent_name]:
+            normal_all_dic[clone_name] = machines_render[clone_name]['description']
+    main_catalog_parents['Dead'] = parent_dic
+    main_catalog_all['Dead'] = all_dic
 
     # --- Device machines ---
     # >> Device machines
     log_info('Making Device Machines index ...')
-    parent_list = []
-    all_list = []
+    parent_dic = {}
+    all_dic = {}
     for parent_name in main_pclone_dic:
         machine_render = machines_render[parent_name]
         if not machine_render['isDevice']: continue
-
-        parent_list.append(parent_name)
-        all_list.append(parent_name)
-        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    main_catalog_parents['Devices'] = parent_list
-    main_catalog_all['Devices'] = all_list
+        parent_dic[parent_name] = machine_render['description']
+        all_dic[parent_name] = machine_render['description']
+        for clone_name in main_pclone_dic[parent_name]:
+            normal_all_dic[clone_name] = machines_render[clone_name]['description']
+    main_catalog_parents['Devices'] = parent_dic
+    main_catalog_all['Devices'] = all_dic
 
     # >> Build ROM cache index and save Main catalog JSON file
-    for catalog_key in main_catalog_all: main_catalog_all[catalog_key].sort()
-    for catalog_key in main_catalog_parents: main_catalog_parents[catalog_key].sort()
     _cache_index_builder('Main', cache_index_dic, main_catalog_all, main_catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_MAIN_ALL_PATH.getPath(), main_catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_MAIN_PARENT_PATH.getPath(), main_catalog_parents)
@@ -2711,67 +2728,65 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
 
     # --- No-ROM machines ---
     log_info('Making No-ROMs Machines index ...')
-    parent_list = []
-    all_list = []
+    parent_dic = {}
+    all_dic = {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
         m_roms = machine_roms[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         if m_roms['roms']: continue
-        parent_list.append(parent_name)
-        all_list.append(parent_name)
-        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    binary_catalog_parents['NoROM'] = parent_list
-    binary_catalog_all['NoROM'] = all_list
+        parent_dic[parent_name] = machine_render['description']
+        all_dic[parent_name] = machine_render['description']
+        for clone_name in main_pclone_dic[parent_name]: all_dic[clone_name] = clone_name
+    binary_catalog_parents['NoROM'] = parent_dic
+    binary_catalog_all['NoROM'] = all_dic
 
     # --- CHD machines ---
     log_info('Making CHD Machines index ...')
-    parent_list = []
-    all_list = []
+    parent_dic = {}
+    all_dic = {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         if not machine_roms[parent_name]['disks']: continue
-        parent_list.append(parent_name)
-        all_list.append(parent_name)
-        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    binary_catalog_parents['CHD'] = parent_list
-    binary_catalog_all['CHD'] = all_list
+        parent_dic[parent_name] = machine_render['description']
+        all_dic[parent_name] = machine_render['description']
+        for clone_name in main_pclone_dic[parent_name]: all_dic[clone_name] = clone_name
+    binary_catalog_parents['CHD'] = parent_dic
+    binary_catalog_all['CHD'] = all_dic
 
     # --- Machines with samples ---
     log_info('Making Samples Machines index ...')
-    parent_list = []
-    all_list = []
+    parent_dic = {}
+    all_dic = {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         if not machine['sampleof']: continue
-        parent_list.append(parent_name)
-        all_list.append(parent_name)
-        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    binary_catalog_parents['Samples'] = parent_list
-    binary_catalog_all['Samples'] = all_list
+        parent_dic[parent_name] = machine_render['description']
+        all_dic[parent_name] = machine_render['description']
+        for clone_name in main_pclone_dic[parent_name]: all_dic[clone_name] = clone_name
+    binary_catalog_parents['Samples'] = parent_dic
+    binary_catalog_all['Samples'] = all_dic
 
     # --- BIOS ---
     log_info('Making BIOS Machines index ...')
-    parent_list = []
-    all_list = []
+    parent_dic = {}
+    all_dic = {}
     for parent_name in main_pclone_dic:
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         if not machine_render['isBIOS']: continue
-        parent_list.append(parent_name)
-        all_list.append(parent_name)
-        for clone in main_pclone_dic[parent_name]: all_list.append(clone)
-    binary_catalog_parents['BIOS'] = parent_list
-    binary_catalog_all['BIOS'] = all_list
+        parent_dic[parent_name] = machine_render['description']
+        all_dic[parent_name] = machine_render['description']
+        for clone_name in main_pclone_dic[parent_name]: all_dic[clone_name] = clone_name
+    binary_catalog_parents['BIOS'] = parent_dic
+    binary_catalog_all['BIOS'] = all_dic
 
     # >> Build cache index and save Binary catalog JSON file
-    for catalog_key in binary_catalog_all: binary_catalog_all[catalog_key].sort()
-    for catalog_key in binary_catalog_parents: binary_catalog_parents[catalog_key].sort()
     _cache_index_builder('Binary', cache_index_dic, binary_catalog_all, binary_catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_BINARY_ALL_PATH.getPath(), binary_catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_BINARY_PARENT_PATH.getPath(), binary_catalog_parents)
@@ -2786,7 +2801,7 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     pDialog.update(update_number, pDialog_line1, 'Making Catver catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'catver')
+    _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'catver')
     _cache_index_builder('Catver', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CATVER_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath(), catalog_parents)
@@ -2798,7 +2813,7 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     pDialog.update(update_number, pDialog_line1, 'Making Catlist catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'catlist')
+    _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'catlist')
     _cache_index_builder('Catlist', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CATLIST_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath(), catalog_parents)
@@ -2810,7 +2825,7 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     pDialog.update(update_number, pDialog_line1, 'Making Genre catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'genre')
+    _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'genre')
     _cache_index_builder('Genre', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_GENRE_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_GENRE_PARENT_PATH.getPath(), catalog_parents)
@@ -2822,7 +2837,7 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     pDialog.update(update_number, pDialog_line1, 'Making Nplayers catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'nplayers')
+    _build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'nplayers')
     _cache_index_builder('NPlayers', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
@@ -2834,7 +2849,7 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     pDialog.update(update_number, pDialog_line1, 'Making Bestgames catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'bestgames')
+    _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'bestgames')
     _cache_index_builder('Bestgames', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath(), catalog_parents)
@@ -2846,7 +2861,7 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     pDialog.update(update_number, pDialog_line1, 'Making Series catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'series')
+    _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'series')
     _cache_index_builder('Series', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
@@ -2858,7 +2873,7 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     pDialog.update(update_number, pDialog_line1, 'Making Manufacturer catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'manufacturer')
+    _build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'manufacturer')
     _cache_index_builder('Manufacturer', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
@@ -2870,7 +2885,7 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     pDialog.update(update_number, pDialog_line1, 'Making Year catalog ...')
     catalog_parents = {}
     catalog_all = {}
-    fs_build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'year')
+    _build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'year')
     _cache_index_builder('Year', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
@@ -2889,15 +2904,13 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         catalog_key = machine['sourcefile']
         if catalog_key in mame_driver_name_dic: catalog_key = mame_driver_name_dic[catalog_key]
         if catalog_key in catalog_parents:
-            catalog_parents[catalog_key].append(parent_name)
-            catalog_all[catalog_key].append(parent_name)
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
         else:
-            catalog_parents[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        for clone_name in main_pclone_dic[parent_name]:
+            catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
     _cache_index_builder('Driver', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
@@ -2923,49 +2936,18 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         # >> Change category name for machines with no controls
         if catalog_key == '': catalog_key = '[ No controls ]'
         if catalog_key in catalog_parents:
-            catalog_parents[catalog_key].append(parent_name)
-            catalog_all[catalog_key].append(parent_name)
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
         else:
-            catalog_parents[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        for clone_name in main_pclone_dic[parent_name]:
+            catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
     _cache_index_builder('Controls', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
-
-    # --- Display tag catalog ---
-    # >> Not very useful, removed in AML 0.9.4
-    # log_info('Making Display Tag catalog ...')
-    # pDialog.update(update_number, pDialog_line1, 'Making Display tag catalog ...')
-    # catalog_parents = {}
-    # catalog_all = {}
-    # for parent_name in main_pclone_dic:
-    #     machine = machines[parent_name]
-    #     machine_render = machines_render[parent_name]
-    #     if machine_render['isDevice']: continue # >> Skip device machines
-    #     catalog_key = " / ".join(machine['display_tag'])
-    #     # >> Change category name for machines with no display
-    #     if catalog_key == '': catalog_key = '[ No display ]'
-    #     if catalog_key in catalog_parents:
-    #         catalog_parents[catalog_key].append(parent_name)
-    #         catalog_all[catalog_key].append(parent_name)
-    #         catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    #     else:
-    #         catalog_parents[catalog_key] = [ parent_name ]
-    #         catalog_all[catalog_key] = [ parent_name ]
-    #         catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    # for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    # for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-    # _cache_index_builder('Display_Tag', cache_index_dic, catalog_all, catalog_parents)
-    # fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_ALL_PATH.getPath(), catalog_all)
-    # fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TAG_PARENT_PATH.getPath(), catalog_parents)
-    # processed_filters += 1
-    # update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Display type catalog ---
     log_info('Making Display Type catalog ...')
@@ -2980,15 +2962,13 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
         if catalog_key in catalog_parents:
-            catalog_parents[catalog_key].append(parent_name)
-            catalog_all[catalog_key].append(parent_name)
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
         else:
-            catalog_parents[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        for clone_name in main_pclone_dic[parent_name]:
+            catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
     _cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
@@ -3008,15 +2988,13 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
         if catalog_key in catalog_parents:
-            catalog_parents[catalog_key].append(parent_name)
-            catalog_all[catalog_key].append(parent_name)
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
         else:
-            catalog_parents[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        for clone_name in main_pclone_dic[parent_name]:
+            catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
     _cache_index_builder('Display_Rotate', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PARENT_PATH.getPath(), catalog_parents)
@@ -3043,15 +3021,13 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         # >> Change category name for machines with no devices
         if catalog_key == '': catalog_key = '[ No devices ]'
         if catalog_key in catalog_parents:
-            catalog_parents[catalog_key].append(parent_name)
-            catalog_all[catalog_key].append(parent_name)
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
         else:
-            catalog_parents[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        for clone_name in main_pclone_dic[parent_name]:
+            catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
     _cache_index_builder('Devices', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_LIST_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_LIST_PARENT_PATH.getPath(), catalog_parents)
@@ -3071,15 +3047,13 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         for sl_name in machine['softwarelists']:
             catalog_key = sl_name
             if catalog_key in catalog_parents:
-                catalog_parents[catalog_key].append(parent_name)
-                catalog_all[catalog_key].append(parent_name)
-                catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+                catalog_parents[catalog_key][parent_name] = machine_render['description']
+                catalog_all[catalog_key][parent_name] = machine_render['description']
             else:
-                catalog_parents[catalog_key] = [ parent_name ]
-                catalog_all[catalog_key] = [ parent_name ]
-                catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
+                catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+                catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+            for clone_name in main_pclone_dic[parent_name]:
+                catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
     _cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
@@ -3097,15 +3071,14 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         if machine_render['isDevice']: continue # >> Skip device machines
         catalog_key = parent_name[0]
         if catalog_key in catalog_parents:
-            catalog_parents[catalog_key].append(parent_name)
-            catalog_all[catalog_key].append(parent_name)
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+            catalog_parents[catalog_key][parent_name] = '{0} ({1})'.format(parent_name, machine_render['description'])
+            catalog_all[catalog_key][parent_name] = '{0} ({1})'.format(parent_name, machine_render['description'])
         else:
-            catalog_parents[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
+            catalog_parents[catalog_key] = { parent_name : '{0} ({1})'.format(parent_name, machine_render['description']) }
+            catalog_all[catalog_key] = { parent_name : '{0} ({1})'.format(parent_name, machine_render['description']) }
+        for clone_name in main_pclone_dic[parent_name]:
+            t = '{0} ({1})'.format(clone_name, machines_render[clone_name]['description'])
+            catalog_all[catalog_key][clone_name] = t
     _cache_index_builder('ShortName', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath(), catalog_parents)
@@ -3123,15 +3096,13 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
         if machine_render['isDevice']: continue # >> Skip device machines
         catalog_key = machine_render['description'][0]
         if catalog_key in catalog_parents:
-            catalog_parents[catalog_key].append(parent_name)
-            catalog_all[catalog_key].append(parent_name)
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
         else:
-            catalog_parents[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        for clone_name in main_pclone_dic[parent_name]:
+            catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
     _cache_index_builder('LongName', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath(), catalog_parents)
@@ -3157,9 +3128,11 @@ def mame_build_MAME_catalogs(PATHS, control_dic,
     fs_write_JSON_file(PATHS.CACHE_INDEX_PATH.getPath(), cache_index_dic)
 
     # --- Build the ROM cache and the asset cache ---
+    # >> No need to rebuild the ROM cache.
+    # fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+
     # >> At this time the asset database will be empty. However, the asset cache with an empty
     # >> database is required to render the machines in the catalogs.
-    fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
     fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
 
     # --- Update timestamp ---

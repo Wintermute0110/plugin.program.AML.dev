@@ -872,27 +872,26 @@ class Main:
         # >> Render parent main list
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
+        machine_dic = catalog_dic[category_name]
         if view_mode_property == VIEW_MODE_PCLONE:
             # >> Parent/Clone mode render parents only
-            machine_list = catalog_dic[category_name]
-            for machine_name in machine_list:
+            for machine_name, render_name in machine_dic.iteritems():
                 machine = MAME_render_db_dic[machine_name]
                 if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-                self._render_catalog_machine_row(machine_name, machine,
+                self._render_catalog_machine_row(machine_name, render_name, machine,
                                                  MAME_assets_dic[machine_name],
                                                  True, len(main_pclone_dic[machine_name]),
                                                  catalog_name, category_name)
         else:
             # >> Flat mode renders all machines
-            machine_list = catalog_dic[category_name]
-            for machine_name in machine_list:
+            for machine_name, render_name in machine_dic.iteritems():
                 machine = MAME_render_db_dic[machine_name]
                 if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-                self._render_catalog_machine_row(machine_name, machine,
+                self._render_catalog_machine_row(machine_name, render_name, machine,
                                                  MAME_assets_dic[machine_name])
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
@@ -942,9 +941,11 @@ class Main:
         for p_name in main_pclone_dic[parent_name]:
             machine = MAME_render_db_dic[p_name]
             assets  = MAME_assets_dic[p_name]
+            render_name = p_name
+            if display_hide_BIOS and machine['isBIOS']: continue
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            self._render_catalog_machine_row(p_name, machine, assets)
+            self._render_catalog_machine_row(p_name, render_name, machine, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
@@ -952,14 +953,13 @@ class Main:
         log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
         log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
 
-    def _render_catalog_machine_row(self, m_name, machine, m_assets,
+    def _render_catalog_machine_row(self, m_name, display_name, machine, m_assets,
                                     flag_parent_list = False, num_clones = 0,
                                     catalog_name = '', category_name = ''):
         # --- Default values for flags ---
         AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
 
         # --- Render a Parent only list ---
-        display_name = machine['description']
         if flag_parent_list and num_clones > 0:
             # NOTE all machines here are parents
             # --- Mark number of clones ---

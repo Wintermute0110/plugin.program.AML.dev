@@ -728,23 +728,6 @@ def fs_set_Sample_flag(m_render, new_Sample_flag):
     flag_Samples  = new_Sample_flag
     m_render['flags'] = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
-def fs_build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, db_field):
-    for parent_name in main_pclone_dic:
-        # >> Skip device machines in catalogs.
-        if machines_render[parent_name]['isDevice']: continue
-        catalog_key = machines[parent_name][db_field]
-        if catalog_key in catalog_parents:
-            catalog_parents[catalog_key].append(parent_name)
-            catalog_all[catalog_key].append(parent_name)
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-        else:
-            catalog_parents[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key] = [ parent_name ]
-            catalog_all[catalog_key].extend(main_pclone_dic[parent_name])
-    # >> Sort lists alpahbetically
-    for catalog_key in catalog_all: catalog_all[catalog_key].sort()
-    for catalog_key in catalog_parents: catalog_parents[catalog_key].sort()
-
 # -------------------------------------------------------------------------------------------------
 # Hashed databases. Useful when only one item in a big dictionary is required.
 # -------------------------------------------------------------------------------------------------
