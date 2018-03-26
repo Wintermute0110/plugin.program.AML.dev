@@ -3789,9 +3789,25 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
                         machine_archives_dic, ROM_archive_list, CHD_archive_list,
                         ROM_path_FN, CHD_path_FN, Samples_path_FN,
                         scan_CHDs, scan_Samples):
-    # --- Scan ROMs ---
+
+    # --- Create a cache of assets ---
+    # >> misc_add_file_cache() creates a set with all files in a given directory.
+    # >> That set is stored in a function internal cache associated with the path.
+    # >> Files in the cache can be searched with misc_search_file_cache()
+    ROM_path_str = ROM_path_FN.getPath()
+    CHD_path_str = CHD_path_FN.getPath()
+    Samples_path_str = Samples_path_FN.getPath()
+    ASSET_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_path_str]
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
+    pDialog.create('Advanced MAME Launcher', 'Scanning files in ROM/CHD/Samples directories ...')
+    for i, asset_dir in enumerate(ASSET_PATH_LIST):
+        misc_add_file_cache(asset_dir)
+        pDialog.update((100*(i+1))/len(ASSET_PATH_LIST))
+    pDialog.update(100)
+    pDialog.close()
+
+    # --- Scan ROMs ---
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME machine archives (ROMs and CHDs) ...')
     total_machines = len(machines_render)
     processed_machines = 0
@@ -3813,12 +3829,16 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
         if rom_list:
             have_rom_list = [False] * len(rom_list)
             for i, rom in enumerate(rom_list):
-                archive_name = rom + '.zip'
-                ROM_FN = ROM_path_FN.pjoin(archive_name)
-                if ROM_FN.exists():
+                # --- Old code ---
+                # archive_name = rom + '.zip'
+                # ROM_FN = ROM_path_FN.pjoin(archive_name)
+                # if ROM_FN.exists():
+                # --- New code using file cache ---
+                ROM_FN = misc_search_file_cache(ROM_path_str, rom, MAME_ROM_EXTS)
+                if ROM_FN:
                     have_rom_list[i] = True
                 else:
-                    m_str_list.append('Missing ROM {0}'.format(archive_name))
+                    m_str_list.append('Missing ROM {0}'.format(rom))
             scan_ROM_machines_total += 1
             if all(have_rom_list):
                 # --- All ZIP files required to run this machine exist ---
@@ -3832,13 +3852,19 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
         fs_set_ROM_flag(assets_dic[key], ROM_flag)
 
         # --- Disks ---
+        # >> Machines with CHDs: 2spicy, sfiii2
         chd_list = machine_archives_dic[key]['CHDs']
         if chd_list and scan_CHDs:
             scan_CHD_machines_total += 1
             has_chd_list = [False] * len(chd_list)
             for idx, chd_name in enumerate(chd_list):
-                CHD_FN = CHD_path_FN.pjoin(chd_name)
-                if CHD_FN.exists():
+                # --- Old code ---
+                # CHD_FN = CHD_path_FN.pjoin(chd_name)
+                # if CHD_FN.exists():
+                # --- New code using file cache ---
+                # log_debug('Testing CHD "{0}"'.format(chd_name))
+                CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
+                if CHD_FN:
                     has_chd_list[idx] = True
                 else:
                     m_str_list.append('Missing CHD {0}'.format(chd_name))
@@ -3887,12 +3913,12 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     r_list = []
     for rom_name in ROM_archive_list:
         scan_ZIP_files_total += 1
-        ROM_FN = ROM_path_FN.pjoin(rom_name + '.zip')
-        if ROM_FN.exists():
+        ROM_FN = misc_search_file_cache(ROM_path_str, rom_name, MAME_ROM_EXTS)
+        if ROM_FN:
             scan_ZIP_files_have += 1
         else:
             scan_ZIP_files_missing += 1
-            r_list.append('Missing {0}\n'.format(ROM_FN.getPath()))
+            r_list.append('Missing ROM {0}\n'.format(rom_name))
         # >> Progress dialog
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
@@ -3912,12 +3938,12 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     r_list = []
     for chd_name in CHD_archive_list:
         scan_CHD_files_total += 1
-        CHD_FN = CHD_path_FN.pjoin(chd_name + '.chd')
-        if CHD_FN.exists():
+        CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
+        if CHD_FN:
             scan_CHD_files_have += 1
         else:
             scan_CHD_files_missing += 1
-            r_list.append('Missing CHD {0}\n'.format(CHD_FN.getPath()))
+            r_list.append('Missing CHD {0}\n'.format(chd_name))
         # >> Progress dialog
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
@@ -3939,14 +3965,15 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
         if machines[key]['sampleof']:
             scan_Samples_total += 1
             if scan_Samples:
-                Sample_FN = Samples_path_FN.pjoin(key + '.zip')
-                if Sample_FN.exists():
+                sample = machines[key]['sampleof']
+                Sample_FN = misc_search_file_cache(Samples_path_str, sample, MAME_SAMPLE_EXTS)
+                if Sample_FN:
                     Sample_flag = 'S'
                     scan_Samples_have += 1
                 else:
                     Sample_flag = 's'
                     scan_Samples_missing += 1
-                    r_list.append('Missing Sample {0}\n'.format(Sample_FN.getPath()))
+                    r_list.append('Missing Sample {0}\n'.format(sample))
             else:
                 Sample_flag = 's'
                 scan_Samples_missing += 1

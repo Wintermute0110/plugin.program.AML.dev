@@ -107,3 +107,8 @@ AUDIT_STATUS_ROM_NOT_IN_ZIP = 'ROM not in ZIP'
 AUDIT_STATUS_ROM_BAD_CRC    = 'ROM bad CRC'
 AUDIT_STATUS_CHD_BAD_CRC    = 'CHD bad CRC'
 AUDIT_STATUS_ROM_BAD_SIZE   = 'ROM bad size'
+
+# --- File name extensions ---
+MAME_ROM_EXTS = ['zip']
+MAME_CHD_EXTS = ['chd']
+MAME_SAMPLE_EXTS = ['zip']
