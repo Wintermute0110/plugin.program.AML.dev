@@ -4218,6 +4218,11 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
                 asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_TRAILER_EXTS)
             else:
                 asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_IMAGE_EXTS)
+            # if m_name == '005':
+            #     log_debug('asset_key       "{0}"'.format(asset_key))
+            #     log_debug('asset_dir       "{0}"'.format(asset_dir))
+            #     log_debug('asset_dirs[idx] "{0}"'.format(asset_dirs[idx]))
+            #     log_debug('asset_FN        "{0}"'.format(asset_FN))
             machine_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN else ''
         ondisk_assets_dic[m_name] = machine_assets
         # >> Update progress

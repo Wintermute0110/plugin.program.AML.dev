@@ -426,6 +426,8 @@ def misc_add_file_cache(dir_str):
             cache_file = my_file.replace(root_dir_str, '')
             # >> In the cache always store paths as '/' and not as '\'
             cache_file = cache_file.replace('\\', '/')
+            # >> Remove '/' character at the beginning of the file
+            if cache_file.startswith('/'): cache_file = cache_file[1:]
             file_list.append(cache_file)
     file_set = set(file_list)
     # for file in file_set: log_debug('File "{0}"'.format(file))
@@ -436,8 +438,10 @@ def misc_add_file_cache(dir_str):
 # See misc_look_for_file() documentation below.
 #
 def misc_search_file_cache(dir_str, filename_noext, file_exts):
-    # log_debug('misc_search_file_cache() Searching in  "{0}"'.format(dir_str))
     current_cache_set = file_cache[dir_str]
+    # if filename_noext == '005':
+    #     log_debug('misc_search_file_cache() Searching in "{0}"'.format(dir_str))
+    #     log_debug('misc_search_file_cache() current_cache_set "{0}"'.format(unicode(current_cache_set)))
     for ext in file_exts:
         file_base = filename_noext + '.' + ext
         # log_debug('misc_search_file_cache() file_Base = "{0}"'.format(file_base))
