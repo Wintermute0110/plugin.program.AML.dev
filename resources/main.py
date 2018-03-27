@@ -430,6 +430,8 @@ class Main:
         # --- ROM sets ---
         self.settings['mame_rom_set'] = int(__addon__.getSetting('mame_rom_set'))
         self.settings['mame_chd_set'] = int(__addon__.getSetting('mame_chd_set'))
+        self.settings['SL_rom_set']   = int(__addon__.getSetting('SL_rom_set'))
+        self.settings['SL_chd_set']   = int(__addon__.getSetting('SL_chd_set'))
         self.settings['filter_XML']   = __addon__.getSetting('filter_XML').decode('utf-8')
 
         # --- Display ---
@@ -4934,7 +4936,7 @@ class Main:
                 # --- Read main database and control dic ---
                 pDialog = xbmcgui.DialogProgress()
                 line1_str = 'Loading databases ...'
-                num_items = 4
+                num_items = 3
                 pDialog.create('Advanced MAME Launcher')
                 pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
@@ -4942,14 +4944,12 @@ class Main:
                 machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
                 pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Render')
                 machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-                pDialog.update(int((3*100) / num_items), line1_str, 'MAME PClone dictionary')
-                main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-                pDialog.update(int((4*100) / num_items), ' ', ' ')
+                pDialog.update(int((3*100) / num_items), ' ', ' ')
                 pDialog.close()
 
                 # --- Build SL databases ---
                 mame_build_SoftwareLists_databases(PATHS, self.settings, control_dic,
-                                                   machines, machines_render, main_pclone_dic)
+                                                   machines, machines_render)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
                 kodi_notify('Software Lists database built')
 

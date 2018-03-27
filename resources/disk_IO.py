@@ -252,6 +252,23 @@ def fs_new_SL_ROM():
         'status_CHD'  : '-',
     }
 
+def fs_new_SL_ROM_audit_dic():
+    return {
+        'type'     : '',
+        'name'     : '',
+        'size'     : '',
+        'crc'      : '',
+        'location' : '',
+    }
+
+def fs_new_SL_DISK_audit_dic():
+    return {
+        'type'     : '',
+        'name'     : '',
+        'sha1'     : '',
+        'location' : '',
+    }
+
 ASSET_SL_T_LIST = [
     ('title',    'titles_SL'),
     ('snap',     'snaps_SL'),
@@ -543,9 +560,9 @@ def fs_write_JSON_file(json_filename, json_data, verbose = True):
             else:
                 file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))))
     except OSError:
-        gui_kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(roms_json_file))
+        kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(json_filename))
     except IOError:
-        gui_kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (IOError)'.format(roms_json_file))
+        kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (IOError)'.format(json_filename))
 
 # -------------------------------------------------------------------------------------------------
 # Generic file writer
