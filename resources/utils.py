@@ -394,13 +394,12 @@ def text_get_image_URL_extension(url):
 # -------------------------------------------------------------------------------------------------
 file_cache = {}
 
-def misc_clear_file_cache():
+def misc_clear_file_cache(verbose = True):
     global file_cache
-
-    log_debug('misc_clear_file_cache() Clearing file cache')
+    if verbose: log_debug('misc_clear_file_cache() Clearing file cache')
     file_cache = {}
 
-def misc_add_file_cache(dir_str):
+def misc_add_file_cache(dir_str, verbose = True):
     global file_cache
 
     # >> Create a set with all the files in the directory
@@ -408,9 +407,10 @@ def misc_add_file_cache(dir_str):
         log_debug('misc_add_file_cache() Empty dir_str. Exiting')
         return
     dir_FN = FileName(dir_str)
-    # log_debug('misc_add_file_cache() Scanning OP "{0}"'.format(dir_FN.getOriginalPath()))
-    log_debug('misc_add_file_cache() Scanning  P "{0}"'.format(dir_FN.getPath()))
-    # >> A recursive function is needed
+    if verbose:
+        # log_debug('misc_add_file_cache() Scanning OP "{0}"'.format(dir_FN.getOriginalPath()))
+        log_debug('misc_add_file_cache() Scanning  P "{0}"'.format(dir_FN.getPath()))
+    # >> A recursive scanning function is needed. os.listdir() is not.
     # file_list = os.listdir(dir_FN.getPath())
     # >> os.walk() is recursive
     file_list = []
@@ -432,8 +432,9 @@ def misc_add_file_cache(dir_str):
             if cache_file.startswith('/'): cache_file = cache_file[1:]
             file_list.append(cache_file)
     file_set = set(file_list)
-    for file in file_set: log_debug('File "{0}"'.format(file))
-    log_debug('misc_add_file_cache() Adding {0} files to cache'.format(len(file_set)))
+    if verbose:
+        # for file in file_set: log_debug('File "{0}"'.format(file))
+        log_debug('misc_add_file_cache() Adding {0} files to cache'.format(len(file_set)))
     file_cache[dir_str] = file_set
 
 #

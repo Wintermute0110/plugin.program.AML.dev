@@ -3883,7 +3883,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
 
         # >> Build HAVE and MISSING reports.
         if m_have_str_list:
-            r_have_list.append('Machine {0} ({1})'.format(key, machines_render[key]['description']))
+            r_have_list.append('Machine {0} -- "{1}"'.format(key, machines_render[key]['description']))
             if machines_render[key]['cloneof']:
                 cloneof = machines_render[key]['cloneof']
                 r_have_list.append('cloneof {0} ({1})'.format(cloneof, machines_render[cloneof]['description']))
@@ -3892,7 +3892,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
             if m_miss_str_list: r_have_list.extend(m_miss_str_list)
             r_have_list.append('')
         if m_miss_str_list:
-            r_miss_list.append('Machine {0} ({1})'.format(key, machines_render[key]['description']))
+            r_miss_list.append('Machine {0} -- "{1}"'.format(key, machines_render[key]['description']))
             if machines_render[key]['cloneof']:
                 cloneof = machines_render[key]['cloneof']
                 r_miss_list.append('cloneof {0} ({1})'.format(cloneof, machines_render[cloneof]['description']))
@@ -3907,11 +3907,11 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
 
     # >> Write reports
     have_path = PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()
-    log_info('Writing ROM machines HAVE report file "{0}"'.format(have_path))
+    log_info('Writing report "{0}"'.format(have_path))
     with open(have_path, 'w') as file:
         file.write('\n'.join(r_have_list).encode('utf-8'))
     miss_path = PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()
-    log_info('Writing ROM machines MISS report file "{0}"'.format(miss_path))
+    log_info('Writing report "{0}"'.format(miss_path))
     with open(miss_path, 'w') as file:
         file.write('\n'.join(r_miss_list).encode('utf-8'))
 
@@ -3932,15 +3932,15 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
             scan_ZIP_files_have += 1
         else:
             scan_ZIP_files_missing += 1
-            r_list.append('Missing ROM {0}\n'.format(rom_name))
+            r_list.append('Missing ROM {0}'.format(rom_name))
         # >> Progress dialog
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
     # >> Write report
-    log_info('Opening ROM archives report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROM_LIST_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_PATH.getPath(), 'w') as file:
-        for line in r_list: file.write(line.encode('utf-8'))
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(r_list).encode('utf-8'))
 
     # --- CHD list ---
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME CHDs ...')
@@ -3957,15 +3957,15 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
             scan_CHD_files_have += 1
         else:
             scan_CHD_files_missing += 1
-            r_list.append('Missing CHD {0}\n'.format(chd_name))
+            r_list.append('Missing CHD {0}'.format(chd_name))
         # >> Progress dialog
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
     # >> Write report
-    log_info('Opening CHD archives report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHD_LIST_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_PATH.getPath(), 'w') as file:
-        for line in r_list: file.write(line.encode('utf-8'))
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(r_list).encode('utf-8'))
 
     # --- Scan Samples ---
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME Samples ...')
@@ -3974,8 +3974,11 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     scan_Samples_have = 0
     scan_Samples_missing = 0
     scan_Samples_total = 0
-    r_list = []
+    r_have_list = []
+    r_miss_list = []
     for key in sorted(machines):
+        m_have_str_list = []
+        m_miss_str_list = []
         if machines[key]['sampleof']:
             scan_Samples_total += 1
             if scan_Samples:
@@ -3984,24 +3987,45 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
                 if Sample_FN:
                     Sample_flag = 'S'
                     scan_Samples_have += 1
+                    m_have_str_list.append('Have sample {0}'.format(sample))
                 else:
                     Sample_flag = 's'
                     scan_Samples_missing += 1
-                    r_list.append('Machine {0} missing sample {1}\n'.format(key, sample))
+                    m_miss_str_list.append('Missing sample {0}'.format(sample))
             else:
                 Sample_flag = 's'
                 scan_Samples_missing += 1
         else:
             Sample_flag = '-'
         fs_set_Sample_flag(assets_dic[key], Sample_flag)
+        # >> Build HAVE and MISSING reports.
+        if m_have_str_list:
+            r_have_list.append('Machine {0} -- "{1}"'.format(key, machines_render[key]['description']))
+            if machines_render[key]['cloneof']:
+                cloneof = machines_render[key]['cloneof']
+                r_have_list.append('cloneof {0} ({1})'.format(cloneof, machines_render[cloneof]['description']))
+            r_have_list.extend(m_have_str_list)
+            if m_miss_str_list: r_have_list.extend(m_miss_str_list)
+            r_have_list.append('')
+        if m_miss_str_list:
+            r_miss_list.append('Machine {0} -- "{1}"'.format(key, machines_render[key]['description']))
+            if machines_render[key]['cloneof']:
+                cloneof = machines_render[key]['cloneof']
+                r_miss_list.append('cloneof {0} ({1})'.format(cloneof, machines_render[cloneof]['description']))
+            if m_have_str_list: r_miss_list.extend(m_have_str_list)
+            r_miss_list.extend(m_miss_str_list)
+            r_miss_list.append('')
         # >> Progress dialog
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
-    # >> Write report
-    log_info('Opening Samples report file "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_SAMP_PATH.getPath(), 'w') as file:
-        for line in r_list: file.write(line.encode('utf-8'))
+    # >> Write reports
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(r_have_list).encode('utf-8'))
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(r_miss_list).encode('utf-8'))
 
     # --- Update statistics ---
     control_dic['scan_ROM_ZIP_files']                = scan_ZIP_files_total
