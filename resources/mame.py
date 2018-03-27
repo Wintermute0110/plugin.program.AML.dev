@@ -4412,7 +4412,7 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
 
         # --- Cache files ---
-        misc_clear_file_cache()
+        misc_clear_file_cache(verbose = False)
         num_assets = len(ASSET_SL_T_LIST)
         asset_dirs = [''] * num_assets
         for i, asset_tuple in enumerate(ASSET_SL_T_LIST):
@@ -4420,7 +4420,7 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
             full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir).pjoin(SL_name)
             asset_dir_str = full_asset_dir_FN.getPath()
             asset_dirs[i] = asset_dir_str
-            misc_add_file_cache(asset_dir_str)
+            misc_add_file_cache(asset_dir_str, verbose = False)
 
         # --- First pass: scan for on-disk assets ---
         assets_file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_assets.json'
