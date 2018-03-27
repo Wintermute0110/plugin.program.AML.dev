@@ -24,12 +24,12 @@
     <assets>
       <icon>media/icon.png</icon>
       <fanart>media/fanart.jpg</fanart>
-      <screenshot>media/shot_root.jpg</screenshot>
-      <screenshot>media/shot_MAME_parents.jpg</screenshot>
-      <screenshot>media/shot_MAME_clones.jpg</screenshot>
-      <screenshot>media/shot_MAME_flat.jpg</screenshot>
-      <screenshot>media/shot_SL_parents.jpg</screenshot>
+      <screenshot>media/shot_root.png</screenshot>
+      <screenshot>media/shot_MAME_pclone_list.png</screenshot>
+      <screenshot>media/shot_SL_pclone_list.png</screenshot>
+      <screenshot>media/shot_MAME_fanart.png</screenshot>
+      <screenshot>media/shot_SL_fanart.png</screenshot>
     </assets>
-    <news>See changelog.txt for information about the latests release.</news>
+    <news>See changelog.txt for information about the latest release.</news>
   </extension>
 </addon>
