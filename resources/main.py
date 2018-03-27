@@ -2481,14 +2481,16 @@ class Main:
         elif action == ACTION_VIEW_MACHINE_ROMS:
             # >> Load machine dictionary, ROM database and Devices database.
             pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
-            pDialog.update(0)
+            pdialog_line1 = 'Loading databases ...'
+            num_items = 3
+            pDialog.create('Advanced MAME Launcher', pdialog_line1)
+            pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machines Main')
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-            pDialog.update(33)
+            pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machine ROMs')
             roms_db_dic = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
-            pDialog.update(66)
+            pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machine Devices')
             devices_db_dic = fs_load_JSON_file(PATHS.DEVICES_DB_PATH.getPath())
-            pDialog.update(100)
+            pDialog.update(int((3*100) / num_items), ' ', ' ')
             pDialog.close()
 
             # --- Make a dictionary with device ROMs ---
@@ -2573,12 +2575,14 @@ class Main:
             log_debug('_command_context_view() rom_set {0}\n'.format(rom_set))
 
             pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
-            pDialog.update(0)
+            pdialog_line1 = 'Loading databases ...'
+            num_items = 2
+            pDialog.create('Advanced MAME Launcher', pdialog_line1)
+            pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machine hash')
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-            pDialog.update(50)
+            pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME ROM Audit')
             audit_roms_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_DB_PATH.getPath())
-            pDialog.update(100)
+            pDialog.update(int((2*100) / num_items), ' ', ' ')
             pDialog.close()
 
             # --- Grab data and settings ---
@@ -2741,12 +2745,14 @@ class Main:
             log_debug('_command_context_view() rom_set {0}\n'.format(rom_set))
 
             pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
-            pDialog.update(0)
+            pdialog_line1 = 'Loading databases ...'
+            num_items = 2
+            pDialog.create('Advanced MAME Launcher', pdialog_line1)
+            pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machine hash')
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-            pDialog.update(50)
+            pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME ROM Audit')
             audit_roms_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_DB_PATH.getPath())
-            pDialog.update(100)
+            pDialog.update(int((2*100) / num_items), ' ', ' ')
             pDialog.close()
 
             # --- Grab data and settings ---
