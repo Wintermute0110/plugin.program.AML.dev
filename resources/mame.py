@@ -4075,11 +4075,11 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
         soft_archives = fs_load_JSON_file(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
 
         # >> Cache files
-        misc_clear_file_cache()
+        misc_clear_file_cache(verbose = False)
         SL_ROM_path_str = SL_ROM_dir_FN.pjoin(SL_name).getPath()
         SL_CHD_path_str = SL_CHD_path_FN.pjoin(SL_name).getPath()
-        misc_add_file_cache(SL_ROM_path_str)
-        misc_add_file_cache(SL_CHD_path_str)
+        misc_add_file_cache(SL_ROM_path_str, verbose = False)
+        misc_add_file_cache(SL_CHD_path_str, verbose = False)
 
         # >> Scan
         for rom_key in sorted(sl_roms):
@@ -4137,21 +4137,19 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
 
             # --- Build report ---
             if m_have_str_list:
-                r_have_list.append('SL {0} Software Item {1}'.format(SL_name, rom_key))
-                # if machines_render[rom_key]['cloneof']:
-                #     cloneof = machines_render[rom_key]['cloneof']
-                #     report_list.append('cloneof {0} [{1}]'.format(cloneof, machines_render[cloneof]['description']))
+                r_have_list.append('SL {0} Software item {1} "{2}"'.format(SL_name, rom_key, sl_roms[rom_key]['description']))
+                if sl_roms[rom_key]['cloneof']:
+                    cloneof = sl_roms[rom_key]['cloneof']
+                    r_have_list.append('cloneof {0} "{1}"'.format(cloneof, sl_roms[cloneof]['description']))
                 r_have_list.extend(m_have_str_list)
-                # >> Also including missing ROMs if any.
                 if m_miss_str_list: r_have_list.extend(m_miss_str_list)
                 r_have_list.append('')
             if m_miss_str_list:
-                r_miss_list.append('SL {0} Software Item {1}'.format(SL_name, rom_key))
-                # if machines_render[rom_key]['cloneof']:
-                #     cloneof = machines_render[rom_key]['cloneof']
-                #     report_list.append('cloneof {0} [{1}]'.format(cloneof, machines_render[cloneof]['description']))
+                r_miss_list.append('SL {0} Software item {1} "{2}"'.format(SL_name, rom_key, sl_roms[rom_key]['description']))
+                if sl_roms[rom_key]['cloneof']:
+                    cloneof = sl_roms[rom_key]['cloneof']
+                    r_miss_list.append('cloneof {0} "{1}"'.format(cloneof, sl_roms[cloneof]['description']))
                 r_miss_list.extend(m_miss_str_list)
-                # >> Also including missing ROMs if any.
                 if m_have_str_list: r_miss_list.extend(m_have_str_list)
                 r_miss_list.append('')
 
