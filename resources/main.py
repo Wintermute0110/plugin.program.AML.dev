@@ -982,26 +982,29 @@ class Main:
 
         # >> Load main MAME info DB
         loading_ticks_start = time.time()
+        catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
         if USE_ROM_CACHE:
             cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
             MAME_render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
+            MAME_assets_dic = fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name)
         else:
             MAME_render_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-        MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+        machine_dic = catalog_dic[category_name]
         loading_ticks_end = time.time()
 
         # >> Render parent first
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
-        render_name = parent_name
+        render_name = machine_dic[parent_name]
         machine = MAME_render_db_dic[parent_name]
         assets  = MAME_assets_dic[parent_name]
         self._render_catalog_machine_row(parent_name, render_name, machine, assets)
 
         # >> Render clones belonging to parent in this category
         for p_name in main_pclone_dic[parent_name]:
-            render_name = p_name
+            render_name = machine_dic[p_name]
             machine = MAME_render_db_dic[p_name]
             assets  = MAME_assets_dic[p_name]
             if display_hide_BIOS and machine['isBIOS']: continue
