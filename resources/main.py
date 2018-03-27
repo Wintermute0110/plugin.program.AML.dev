@@ -861,8 +861,6 @@ class Main:
     def _render_catalog_parent_list(self, catalog_name, category_name):
         # When using threads the performance gain is small: from 0.76 to 0.71, just 20 ms.
         # It's not worth it.
-        USE_THREADED_JSON_LOADER = False
-
         log_debug('_render_catalog_parent_list() catalog_name  = {0}'.format(catalog_name))
         log_debug('_render_catalog_parent_list() category_name = {0}'.format(category_name))
         display_hide_BIOS = self.settings['display_hide_BIOS']
@@ -972,7 +970,11 @@ class Main:
     # hence all ROMs databases exist.
     #
     def _render_catalog_clone_list(self, catalog_name, category_name, parent_name):
-        log_debug('_render_catalog_clone_list() Starting ...')
+        log_debug('_render_catalog_clone_list() catalog_name  = {0}'.format(catalog_name))
+        log_debug('_render_catalog_clone_list() category_name = {0}'.format(category_name))
+        log_debug('_render_catalog_clone_list() parent_name   = {0}'.format(parent_name))
+        display_hide_BIOS = self.settings['display_hide_BIOS']
+        if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
         display_hide_nonworking = self.settings['display_hide_nonworking']
         display_hide_imperfect  = self.settings['display_hide_imperfect']
         view_mode_property = self.settings['mame_view_mode']
@@ -992,15 +994,16 @@ class Main:
         # >> Render parent first
         rendering_ticks_start = time.time()
         self._set_Kodi_all_sorting_methods()
+        render_name = parent_name
         machine = MAME_render_db_dic[parent_name]
         assets  = MAME_assets_dic[parent_name]
-        self._render_catalog_machine_row(parent_name, machine, assets)
+        self._render_catalog_machine_row(parent_name, render_name, machine, assets)
 
         # >> Render clones belonging to parent in this category
         for p_name in main_pclone_dic[parent_name]:
+            render_name = p_name
             machine = MAME_render_db_dic[p_name]
             assets  = MAME_assets_dic[p_name]
-            render_name = p_name
             if display_hide_BIOS and machine['isBIOS']: continue
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
