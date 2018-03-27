@@ -51,13 +51,15 @@ __addon_type__    = __addon__.getAddonInfo('type').decode('utf-8')
 
 # --- Addon paths and constant definition ---
 # _PATH is a filename | _DIR is a directory
-ADDONS_DATA_DIR = FileName('special://profile/addon_data')
-PLUGIN_DATA_DIR = ADDONS_DATA_DIR.pjoin(__addon_id__)
-BASE_DIR        = FileName('special://profile')
-HOME_DIR        = FileName('special://home')
-KODI_FAV_PATH   = FileName('special://profile/favourites.xml')
-ADDONS_DIR      = HOME_DIR.pjoin('addons')
-AML_ADDON_DIR   = ADDONS_DIR.pjoin(__addon_id__)
+ADDONS_DATA_DIR      = FileName('special://profile/addon_data')
+PLUGIN_DATA_DIR      = ADDONS_DATA_DIR.pjoin(__addon_id__)
+BASE_DIR             = FileName('special://profile')
+HOME_DIR             = FileName('special://home')
+KODI_FAV_PATH        = FileName('special://profile/favourites.xml')
+ADDONS_DIR           = HOME_DIR.pjoin('addons')
+AML_ADDON_DIR        = ADDONS_DIR.pjoin(__addon_id__)
+AML_ICON_FILE_PATH   = AML_ADDON_DIR.pjoin('media/icon.png')
+AML_FANART_FILE_PATH = AML_ADDON_DIR.pjoin('media/fanart.jpg')
 
 # --- Plugin database indices ---
 class AML_Paths:
@@ -711,6 +713,11 @@ class Main:
         listitem = xbmcgui.ListItem(display_name)
         listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY})
 
+        # --- Artwork ---
+        icon_path   = AML_ICON_FILE_PATH.getPath()
+        fanart_path = AML_FANART_FILE_PATH.getPath()
+        listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
+
         # --- Create context menu ---
         URL_utils = self._misc_url_3_arg_RunPlugin('command', 'UTILITIES',
                                                    'catalog', catalog_name, 'category', catalog_key)
@@ -732,6 +739,11 @@ class Main:
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(root_name)
         listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY})
+
+        # --- Artwork ---
+        icon_path   = AML_ICON_FILE_PATH.getPath()
+        fanart_path = AML_FANART_FILE_PATH.getPath()
+        listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
 
         # --- Create context menu ---
         commands = [
@@ -809,8 +821,15 @@ class Main:
         # --- Create listitem row ---
         ICON_OVERLAY = 6
         title_str = '{0} [COLOR orange]({1} {2})[/COLOR]'.format(catalog_key, num_machines, machine_str)
+        plot_str = 'Catalog {0}\nCategory {1}'.format(catalog_name, catalog_key)
         listitem = xbmcgui.ListItem(title_str)
-        listitem.setInfo('video', {'Title' : title_str, 'Overlay' : ICON_OVERLAY, 'size' : num_machines})
+        listitem.setInfo('video', {'title' : title_str,      'plot' : plot_str,
+                                   'overlay' : ICON_OVERLAY, 'size' : num_machines})
+
+        # --- Artwork ---
+        icon_path   = AML_ICON_FILE_PATH.getPath()
+        fanart_path = AML_FANART_FILE_PATH.getPath()
+        listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
 
         # --- Create context menu ---
         URL_utils = self._misc_url_3_arg_RunPlugin('command', 'UTILITIES',
