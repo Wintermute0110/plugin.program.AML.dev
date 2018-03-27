@@ -4075,11 +4075,19 @@ class Main:
                 kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
                 return
 
+            pDialog = xbmcgui.DialogProgress()
+            line1_str = 'Loading databases ...'
+            num_items = 1
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            pDialog.update(int((1*100) / num_items), ' ', ' ')
+            pDialog.close()
+
             # --- Build all databases ---
             # 1) Creates the ROM hashed database.
             # 2) Creates the (empty) Asset cache.
             # 3) Updates control_dic and t_MAME_DB_build timestamp.
-            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
             DB = mame_build_MAME_main_database(PATHS, self.settings, control_dic)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
@@ -4089,14 +4097,20 @@ class Main:
                                            DB.machines, DB.machines_render, DB.devices_db_dic, DB.machine_roms)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-            # 1) Creates cache_index_dic and updates the ROM cache.
-            # 2) Updates the asset cache. assets_dic is required to update the asset
-            #    cache (even if empty).
-            # 3) Updates control_dic and t_MAME_Catalog_build timestamp.
+            # --- Build MAME catalog ---
+            # >> At this time the asset database will be empty (scanner has not been run). However, 
+            # >> the asset cache with an empty database is required to render the machines in the catalogs.
+            # 1) Creates cache_index_dic and SAVES it.
+            # 2) Requires rebuilding of the ROM cache.
+            # 3) Requires rebuilding of the asset cache.
+            # 4) Updates control_dic and t_MAME_Catalog_build timestamp.
             mame_build_MAME_catalogs(PATHS, self.settings, control_dic,
                                      DB.machines, DB.machines_render, DB.machine_roms,
                                      DB.main_pclone_dic, DB.assets_dic)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+            fs_build_ROM_cache(PATHS, DB.machines, DB.machines_render, cache_index_dic, pDialog)
+            fs_build_asset_cache(PATHS, DB.assets_dic, cache_index_dic, pDialog)
 
             # 1) Updates control_dic and the t_SL_DB_build timestamp.
             mame_build_SoftwareLists_databases(PATHS, self.settings, control_dic,
@@ -4868,6 +4882,8 @@ class Main:
                 # --- Parse MAME XML and generate main database and PClone list ---
                 log_info('_command_setup_plugin() Generating MAME main database and PClone list ...')
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                # 1) Builds the ROM hashed database.
+                # 2) Updates control_dic stats and timestamp.
                 # try:
                 #     DB = mame_build_MAME_main_database(PATHS, self.settings, control_dic)
                 # except GeneralError as err:
@@ -4941,14 +4957,19 @@ class Main:
                 pDialog.close()
 
                 # --- Build MAME catalog ---
-                # 1) Creates cache_index_dic and updates the ROM cache.
-                # 2) Updates the asset cache. assets_dic is required to update the asset
-                #    cache (even if empty).
-                # 3) Updates control_dic and t_MAME_Catalog_build timestamp.
+                # >> At this time the asset database will be empty (scanner has not been run). However, 
+                # >> the asset cache with an empty database is required to render the machines in the catalogs.
+                # 1) Creates cache_index_dic and SAVES it.
+                # 2) Requires rebuilding of the ROM cache.
+                # 3) Requires rebuilding of the asset cache.
+                # 4) Updates control_dic and t_MAME_Catalog_build timestamp.
                 mame_build_MAME_catalogs(PATHS, self.settings, control_dic,
                                          machines, machines_render, machine_roms,
                                          main_pclone_dic, assets_dic)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
                 kodi_notify('MAME Catalogs built')
 
             # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
@@ -5035,8 +5056,10 @@ class Main:
                 pDialog.update(int((7*100) / num_items), ' ', ' ')
                 pDialog.close()
 
+                # --- Scan MAME ROMs/CHDs/Samples ---
                 # 1) Updates 'flags' field in assets_dic
                 # 2) Updates timestamp t_MAME_ROM_scan in control_dic
+                # 3) Requires rebuilding of the asset cache.
                 mame_scan_MAME_ROMs(PATHS, self.settings, control_dic,
                                     machines, machines_render, assets_dic,
                                     machine_archives_dic, ROM_archive_list, CHD_archive_list,
@@ -5088,7 +5111,9 @@ class Main:
                 pDialog.update(int((4*100) / num_items), ' ', ' ')
                 pDialog.close()
 
-                # 1) Mutates assets_dic and control_dic
+                # --- Scan MAME assets ---
+                # 1) Mutates assets_dic and control_dic (timestamp and stats)
+                # 2) Requires rebuilding of the asset cache.
                 mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
                                       machines_render, main_pclone_dic, Asset_path_FN)
 
@@ -5152,7 +5177,7 @@ class Main:
                 pDialog.update(int((2*100) / num_items), ' ', ' ')
                 pDialog.close()
 
-                # 1) Mutates control_dic
+                # 1) Mutates control_dic (timestamp and statistics)
                 mame_scan_SL_ROMs(PATHS, control_dic, SL_index_dic, SL_hash_dir_FN,
                                   SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
@@ -5187,7 +5212,7 @@ class Main:
                 pDialog.update(int((3*100) / num_items), ' ', ' ')
                 pDialog.close()
 
-                # 1) Mutates control_dic
+                # 1) Mutates control_dic (timestamp and statistics)
                 mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
                 kodi_notify('Scanning of SL assets finished')
@@ -5220,6 +5245,7 @@ class Main:
 
                 # --- Traverse MAME machines and build plot ---
                 # 1) Mutates assets_dic
+                # 2) Requires rebuilding of the asset cache.
                 mame_build_MAME_plots(machines, machines_render, assets_dic, pDialog,
                                       history_idx_dic, mameinfo_idx_dic,
                                       gameinit_idx_list, command_idx_list)

@@ -3201,14 +3201,6 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Save Catalog index ----------------------------------------------------------------------
     fs_write_JSON_file(PATHS.CACHE_INDEX_PATH.getPath(), cache_index_dic)
 
-    # --- Build the ROM cache and the asset cache ---
-    # >> No need to rebuild the ROM cache.
-    # fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
-
-    # >> At this time the asset database will be empty. However, the asset cache with an empty
-    # >> database is required to render the machines in the catalogs.
-    fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
-
     # --- Update timestamp ---
     control_dic['t_MAME_Catalog_build'] = time.time()
 
