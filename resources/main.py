@@ -4416,7 +4416,7 @@ class Main:
                 # >> Load Assets DB
                 pDialog_canceled = False
                 pDialog = xbmcgui.DialogProgress()
-                pDialog.create('Advanced MAME Launcher', 'Loading asset database ... ')
+                pDialog.create('Advanced MAME Launcher', 'Loading assets database ... ')
                 pDialog.update(0)
                 assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
                 pDialog.update(100)

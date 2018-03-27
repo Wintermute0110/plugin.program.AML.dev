@@ -4264,12 +4264,14 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
         for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
             asset_key = asset_tuple[0]
             asset_dir = asset_tuple[1]
-            # >> If artwork exists do nothing
+            # >> Reset asset
+            assets_dic[m_name][asset_key] = ''
+            # >> If artwork exists on disk set it on database
             if ondisk_assets_dic[m_name][asset_key]:
                 assets_dic[m_name][asset_key] = ondisk_assets_dic[m_name][asset_key]
                 have_count_list[idx] += 1
                 asset_row[idx] = 'YES'
-            # >> If artwork does not exist ...
+            # >> If artwork does not exist on disk ...
             else:
                 # >> if machine is a parent search in the clone list
                 if m_name in main_pclone_dic:
@@ -4459,12 +4461,14 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
             for idx, asset_tuple in enumerate(ASSET_SL_T_LIST):
                 asset_key = asset_tuple[0]
                 asset_dir = asset_tuple[1]
-                # >> If artwork exists do nothing
+                # >> Reset asset
+                SL_assets_dic[rom_key][asset_key] = ''
+                # >> If artwork exists on disk set it on database
                 if ondisk_assets_dic[rom_key][asset_key]:
                     SL_assets_dic[rom_key][asset_key] = ondisk_assets_dic[rom_key][asset_key]
                     have_count_list[idx] += 1
                     asset_row[idx] = 'YES'
-                # >> If artwork does not exist ...
+                # >> If artwork does not exist on disk ...
                 else:
                     # >> if machine is a parent search in the clone list
                     if rom_key in main_pclone_dic:
