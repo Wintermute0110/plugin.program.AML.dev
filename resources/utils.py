@@ -426,11 +426,13 @@ def misc_add_file_cache(dir_str):
             cache_file = my_file.replace(root_dir_str, '')
             # >> In the cache always store paths as '/' and not as '\'
             cache_file = cache_file.replace('\\', '/')
-            # >> Remove '/' character at the beginning of the file
+            # >> Remove '/' character at the beginning of the file. If the directory dir_str
+            # >> is like '/example/dir/' then the slash at the beginning will be removed. However,
+            # >> if dir_str is like '/example/dir' it will be present.
             if cache_file.startswith('/'): cache_file = cache_file[1:]
             file_list.append(cache_file)
     file_set = set(file_list)
-    # for file in file_set: log_debug('File "{0}"'.format(file))
+    for file in file_set: log_debug('File "{0}"'.format(file))
     log_debug('misc_add_file_cache() Adding {0} files to cache'.format(len(file_set)))
     file_cache[dir_str] = file_set
 

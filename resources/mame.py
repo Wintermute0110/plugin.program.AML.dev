@@ -1217,18 +1217,14 @@ def mame_load_MAME_Fanart_template(Template_FN):
 
     return layout
 
-# >> Cache font object in global variable
-font_mono = None
-font_mono_SL = None
-font_mono_item = None
-
 #
 # Rebuild Fanart for a given MAME machine
 #
 def mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (0, 0, 0)):
-    # log_debug('mame_build_fanart() Building fanart for machine {0}'.format(m_name))
+    global font_mono
 
     # >> Quickly check if machine has valid assets, and skip fanart generation if not.
+    # log_debug('mame_build_fanart() Building fanart for machine {0}'.format(m_name))
     machine_has_valid_assets = False
     for asset_key, asset_db_name in MAME_layout_assets.iteritems():
         m_assets = assets_dic[m_name]
@@ -1239,7 +1235,6 @@ def mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR
 
     # >> If font object does not exists open font an cache it.
     if not font_mono:
-        global font_mono
         log_debug('mame_build_fanart() Creating font_mono object')
         log_debug('mame_build_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['MachineName']['fontsize'])
@@ -1337,9 +1332,11 @@ def mame_load_SL_Fanart_template(Template_FN):
 # Rebuild Fanart for a given SL item
 #
 def mame_build_SL_fanart(PATHS, layout_SL, SL_name, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (0, 0, 0)):
-    # log_debug('mame_build_SL_fanart() Building fanart for SL {0} item {1}'.format(SL_name, m_name))
+    global font_mono_SL
+    global font_mono_item
 
     # >> Quickly check if machine has valid assets, and skip fanart generation if not.
+    # log_debug('mame_build_SL_fanart() Building fanart for SL {0} item {1}'.format(SL_name, m_name))
     machine_has_valid_assets = False
     for asset_key, asset_db_name in SL_layout_assets.iteritems():
         m_assets = assets_dic[m_name]
@@ -1350,12 +1347,10 @@ def mame_build_SL_fanart(PATHS, layout_SL, SL_name, m_name, assets_dic, Fanart_F
 
     # >> If font object does not exists open font an cache it.
     if not font_mono_SL:
-        global font_mono_SL
         log_debug('mame_build_SL_fanart() Creating font_mono_SL object')
         log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono_SL = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout_SL['SLName']['fontsize'])
     if not font_mono_item:
-        global font_mono_item
         log_debug('mame_build_SL_fanart() Creating font_mono_item object')
         log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono_item = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout_SL['ItemName']['fontsize'])
@@ -4056,9 +4051,9 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
         soft_archives = fs_load_JSON_file(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
 
         # >> Cache files
+        misc_clear_file_cache()
         SL_ROM_path_str = SL_ROM_dir_FN.pjoin(SL_name).getPath()
         SL_CHD_path_str = SL_CHD_path_FN.pjoin(SL_name).getPath()
-        misc_clear_file_cache()
         misc_add_file_cache(SL_ROM_path_str)
         misc_add_file_cache(SL_CHD_path_str)
 
@@ -4200,7 +4195,7 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
     pDialog.update(100)
     pDialog.close()
 
-    # >> First pass: search for on-disk assets
+    # --- First pass: search for on-disk assets ---
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork (first pass) ...')
     total_machines = len(machines_render)
     processed_machines = 0
@@ -4230,7 +4225,7 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
 
-    # >> Second pass: substitute artwork
+    # --- Second pass: substitute artwork ---
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork (second pass) ...')
     have_count_list = [0] * len(ASSET_MAME_T_LIST)
     alternate_count_list = [0] * len(ASSET_MAME_T_LIST)
@@ -4283,7 +4278,7 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
 
-    # >> Asset statistics and report.
+    # --- Asset statistics and report ---
     PCB  = (have_count_list[0],  total_machines - have_count_list[0],  alternate_count_list[0])
     Artp = (have_count_list[1],  total_machines - have_count_list[1],  alternate_count_list[1])
     Art  = (have_count_list[2],  total_machines - have_count_list[2],  alternate_count_list[2])
@@ -4366,7 +4361,7 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
     control_dic['t_MAME_assets_scan'] = time.time()
 
 def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN):
-    # >> Traverse Software List, check if ROM exists, update and save database
+    # --- Traverse Software List, check if ROM exists, update and save database ---
     pDialog = xbmcgui.DialogProgress()
     pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
@@ -4379,17 +4374,33 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
     have_count_list = [0] * len(ASSET_SL_T_LIST)
     alternate_count_list = [0] * len(ASSET_SL_T_LIST)
     SL_item_count = 0
+    # >> DEBUG code
+    # SL_index_dic = {
+    #     "32x" :
+    #     { "display_name" : "Sega 32X cartridges", "num_with_CHDs" : 0, "num_with_ROMs" : 203, "rom_DB_noext" : "32x" }
+    # }
     for SL_name in sorted(SL_index_dic):
-        # >> Update progress
+        # --- Update progress ---
         update_number = (processed_files*100) // total_files
         pDialog.update(update_number, pdialog_line1, 'Software List {0}'.format(SL_name))
 
-        # >> Open database
+        # --- Load SL databases ---
         file_name =  SL_index_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
 
-        # >> First pass: scan for on-disk assets
+        # --- Cache files ---
+        misc_clear_file_cache()
+        num_assets = len(ASSET_SL_T_LIST)
+        asset_dirs = [''] * num_assets
+        for i, asset_tuple in enumerate(ASSET_SL_T_LIST):
+            asset_dir = asset_tuple[1]
+            full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir).pjoin(SL_name)
+            asset_dir_str = full_asset_dir_FN.getPath()
+            asset_dirs[i] = asset_dir_str
+            misc_add_file_cache(asset_dir_str)
+
+        # --- First pass: scan for on-disk assets ---
         assets_file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
         # log_info('Assets JSON "{0}"'.format(SL_asset_DB_FN.getPath()))
@@ -4401,16 +4412,16 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
                 asset_dir = asset_tuple[1]
                 full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir).pjoin(SL_name)
                 if asset_key == 'manual':
-                    asset_FN = full_asset_dir_FN.pjoin(rom_key + '.pdf')
+                    asset_FN = misc_search_file_cache(asset_dirs[idx], rom_key, ASSET_MANUAL_EXTS)
                 elif asset_key == 'trailer':
-                    asset_FN = full_asset_dir_FN.pjoin(rom_key + '.mp4')
+                    asset_FN = misc_search_file_cache(asset_dirs[idx], rom_key, ASSET_TRAILER_EXTS)
                 else:
-                    asset_FN = full_asset_dir_FN.pjoin(rom_key + '.png')
+                    asset_FN = misc_search_file_cache(asset_dirs[idx], rom_key, ASSET_IMAGE_EXTS)
                 # log_info('Testing P "{0}"'.format(asset_FN.getPath()))
-                SL_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN.exists() else ''
+                SL_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN else ''
             ondisk_assets_dic[rom_key] = SL_assets
 
-        # >> Second pass: substitute artwork.
+        # --- Second pass: substitute artwork ---
         main_pclone_dic = SL_pclone_dic[SL_name]
         SL_assets_dic = {}
         for rom_key in sorted(SL_roms):
@@ -4457,9 +4468,9 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
                                     break
             table_row = [SL_name, rom_key] + asset_row
             table_str.append(table_row)
-        # >> Write SL asset JSON
+        # --- Write SL asset JSON ---
         fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
-        # >> Update progress
+        # --- Update progress ---
         processed_files += 1
     update_number = (processed_files*100) // total_files
     pDialog.update(update_number, ' ', ' ')
