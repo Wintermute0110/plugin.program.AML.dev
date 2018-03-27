@@ -16,7 +16,7 @@ WIP      Implement "Most played SL ROMs"
 WIP      Implement "Recently played SL ROMs"
 
 
-[B]Advanced Emulator Launcher | version 0.9.4 | xx March 2018[/B]
+[B]Advanced Emulator Launcher | version 0.9.4 | 27 March 2018[/B]
 
 FEATURE  File cache for SL ROMs/CHDs and SL assets.
 

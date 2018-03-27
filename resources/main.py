@@ -4088,7 +4088,7 @@ class Main:
 
             # 1) Updates control_dic and the t_SL_DB_build timestamp.
             mame_build_SoftwareLists_databases(PATHS, self.settings, control_dic,
-                                               DB.machines, DB.machines_render, DB.main_pclone_dic)
+                                               DB.machines, DB.machines_render)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_notify('All databases built')
 
