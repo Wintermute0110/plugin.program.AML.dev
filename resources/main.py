@@ -629,7 +629,7 @@ class Main:
         if self.settings['display_SL_favs']:
             self._render_root_list_row_standard('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
         if self.settings['display_custom_filters']:
-            self._render_root_list_row_standard('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+            self._render_custom_filter_row('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         # self._render_root_list_row_standard('{Most played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         # self._render_root_list_row_standard('{Recently played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         # self._render_root_list_row_standard('{Most played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
@@ -765,6 +765,11 @@ class Main:
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(root_name)
         listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY})
+
+        # --- Artwork ---
+        icon_path   = AML_ICON_FILE_PATH.getPath()
+        fanart_path = AML_FANART_FILE_PATH.getPath()
+        listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
 
         # --- Create context menu ---
         commands = [
@@ -3694,6 +3699,11 @@ class Main:
         listitem = xbmcgui.ListItem(title_str)
         listitem.setInfo('video', {'title' : title_str, 'overlay' : ICON_OVERLAY})
 
+        # --- Artwork ---
+        icon_path   = AML_ICON_FILE_PATH.getPath()
+        fanart_path = AML_FANART_FILE_PATH.getPath()
+        listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
+
         # --- Create context menu ---
         # >> Make a list of tuples
         commands = [
@@ -3769,24 +3779,24 @@ class Main:
         self._set_Kodi_all_sorting_methods()
         if view_mode_property == VIEW_MODE_PCLONE:
             # >> Parent/Clone mode render parents only
-            for machine_name in machine_list:
+            for machine_name, render_name in machine_list.iteritems():
                 machine = machine_render_dic[machine_name]
                 if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
                 assets = MAME_assets_dic[machine_name]
                 num_clones = len(main_pclone_dic[machine_name])
-                self._render_catalog_machine_row(machine_name, machine, assets,
+                self._render_catalog_machine_row(machine_name, render_name, machine, assets,
                                                  True, num_clones, 'Custom', filter_name)
         else:
             # >> Flat mode renders all machines
-            for machine_name in machine_list:
+            for machine_name, render_name in machine_list.iteritems():
                 machine = machine_render_dic[machine_name]
                 if display_hide_BIOS and machine['isBIOS']: continue
                 if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
                 if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
                 assets = MAME_assets_dic[machine_name]
-                self._render_catalog_machine_row(machine_name, machine, assets)
+                self._render_catalog_machine_row(machine_name, render_name, machine, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
@@ -3868,13 +3878,13 @@ class Main:
         #     }
         # }
         #
-        # AML_DATA_DIR/filters/'rom_DB_noext'_all.json -> machine_list = [
-        #     'machine1', 'machine2', 'machine3', ...
-        # ]
+        # AML_DATA_DIR/filters/'rom_DB_noext'_all.json -> machine_list = {
+        #     'machine1' : 'display_name1', 'machine2' : 'display_name2', ...
+        # }
         #
-        # AML_DATA_DIR/filters/'rom_DB_noext'_parents.json -> machine_list = [
-        #     'machine1', 'machine2', 'machine3', ...
-        # ]
+        # AML_DATA_DIR/filters/'rom_DB_noext'_parents.json -> machine_list = {
+        #     'machine1' : 'display_name1', 'machine2' : 'display_name2', ...
+        # }
         #
         # AML_DATA_DIR/filters/'rom_DB_noext'_ROMs.json -> machine_render = {}
         #
@@ -3963,33 +3973,36 @@ class Main:
                 # >> Driver filter
                 filtered_machine_dic = mame_filter_Driver_tag(main_filter_dic, f_definition['driver'])
 
-                # >> Make index entry
-                filtered_machine_parents_list = sorted(filtered_machine_dic.keys())
-                filtered_machine_all_list = []
+                # >> Make indexed catalog
+                filtered_machine_parents_dic = {}
+                filtered_machine_all_dic = {}
                 filtered_render_ROMs = {}
                 filtered_assets_dic = {}
-                for p_name in filtered_machine_parents_list:
-                    filtered_machine_all_list.append(p_name)
+                for p_name in sorted(filtered_machine_dic.keys()):
+                    # >> Add parents
+                    filtered_machine_parents_dic[p_name] = machine_render_dic[p_name]['description']
+                    filtered_machine_all_dic[p_name] = machine_render_dic[p_name]['description']
                     filtered_render_ROMs[p_name] = machine_render_dic[p_name]
                     filtered_assets_dic[p_name] = assets_dic[p_name]
+                    # >> Add clones
                     for c_name in main_pclone_dic[p_name]:
-                        filtered_machine_all_list.append(c_name)
+                        filtered_machine_all_dic[c_name] = machine_render_dic[c_name]['description']
                         filtered_render_ROMs[c_name] = machine_render_dic[c_name]
                         filtered_assets_dic[c_name] = assets_dic[c_name]
                 rom_DB_noext = hashlib.md5(f_name).hexdigest()
                 this_filter_idx_dic = {
                     'display_name' : f_definition['name'],
-                    'num_parents'  : len(filtered_machine_parents_list),
-                    'num_machines' : len(filtered_machine_all_list),
+                    'num_parents'  : len(filtered_machine_parents_dic),
+                    'num_machines' : len(filtered_machine_all_dic),
                     'rom_DB_noext' : rom_DB_noext
                 }
                 Filters_index_dic[f_name] = this_filter_idx_dic
 
                 # >> Save filter database
                 output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
-                fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_list)
+                fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_dic)
                 output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
-                fs_write_JSON_file(output_FN.getPath(), filtered_machine_all_list)
+                fs_write_JSON_file(output_FN.getPath(), filtered_machine_all_dic)
                 output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json')
                 fs_write_JSON_file(output_FN.getPath(), filtered_render_ROMs)
                 output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
