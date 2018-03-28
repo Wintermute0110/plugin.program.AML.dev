@@ -404,9 +404,18 @@ def misc_add_file_cache(dir_str, verbose = True):
 
     # >> Create a set with all the files in the directory
     if not dir_str:
-        log_debug('misc_add_file_cache() Empty dir_str. Exiting')
+        log_warn('misc_add_file_cache() Empty dir_str. Exiting')
         return
     dir_FN = FileName(dir_str)
+    if not dir_FN.exists():
+        log_debug('misc_add_file_cache() dir_str = "{0}"'.format(dir_str))
+        log_debug('misc_add_file_cache() Does not exist.')
+        file_cache[dir_str] = set()
+        return
+    if not dir_FN.isdir():
+        log_warning('misc_add_file_cache() dir_str = "{0}"'.format(dir_str))
+        log_warning('misc_add_file_cache() Not a directory. Exiting')
+        return
     if verbose:
         # log_debug('misc_add_file_cache() Scanning OP "{0}"'.format(dir_FN.getOriginalPath()))
         log_debug('misc_add_file_cache() Scanning  P "{0}"'.format(dir_FN.getPath()))
@@ -415,14 +424,16 @@ def misc_add_file_cache(dir_str, verbose = True):
     # >> os.walk() is recursive
     file_list = []
     root_dir_str = dir_FN.getPath()
-    for root, dirs, files in os.walk(root_dir_str):
+    # >> For unicode errors in os.walk() see
+    # >> https://stackoverflow.com/questions/21772271/unicodedecodeerror-when-performing-os-walk
+    for root, dirs, files in os.walk(str(root_dir_str)):
         # log_debug('----------')
         # log_debug('root = {0}'.format(root))
         # log_debug('dirs = {0}'.format(unicode(dirs)))
         # log_debug('files = {0}'.format(unicode(files)))
         # log_debug('\n')
         for f in files:
-            my_file = os.path.join(root, f)
+            my_file = os.path.join(root, f).decode('utf-8')
             cache_file = my_file.replace(root_dir_str, '')
             # >> In the cache always store paths as '/' and not as '\'
             cache_file = cache_file.replace('\\', '/')

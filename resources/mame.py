@@ -4391,6 +4391,8 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
     control_dic['t_MAME_assets_scan'] = time.time()
 
 def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN):
+    log_debug('mame_scan_SL_assets() Starting ...')
+
     # --- Traverse Software List, check if ROM exists, update and save database ---
     pDialog = xbmcgui.DialogProgress()
     pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
