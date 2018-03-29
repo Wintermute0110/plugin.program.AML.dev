@@ -3693,7 +3693,14 @@ class Main:
         # >> Open Custom filter count database and index
         filter_index_dic = fs_load_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath())
         if not filter_index_dic:
-            kodi_dialog_OK('MAME filter index is empty. Please rebuild your filters.')
+            kodi_dialog_OK('MAME custom filter index is empty. Please rebuild your filters.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+
+        # >> Check if filters need to be rebuilt
+        control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+        if control_dic['t_Custom_Filter_build'] < control_dic['t_MAME_Catalog_build']:
+            kodi_dialog_OK('MAME custom filters need to be rebuilt.')
             xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
             return
 
