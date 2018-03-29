@@ -4547,18 +4547,21 @@ class Main:
         #      audit process can be canceled and a partial report is written.
         elif menu_item == 5:
             log_info('_command_setup_plugin() Audit MAME machines ROMs/CHDs ...')
-            # >> Load machines, ROMs and CHDs databases.
+
+            # --- Load machines, ROMs and CHDs databases ---
             pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Loading databases ... ')
-            pDialog.update(0)
+            pdialog_line1 = 'Loading databases ...'
+            num_items = 4
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(int((0*100) / num_items), pdialog_line1, 'Control dic')
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(5)
+            pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Main')
             machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(30)
+            pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machines Render')
             machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(60)
+            pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME ROM Audit')
             audit_roms_dic = fs_load_JSON_file(PATHS.ROM_AUDIT_DB_PATH.getPath())
-            pDialog.update(100)
+            pDialog.update(int((4*100) / num_items), ' ', ' ')
             pDialog.close()
 
             # >> Go machine by machine and audit ZIPs and CHDs.
@@ -4746,6 +4749,7 @@ class Main:
             total_files = len(SL_catalog_dic)
             processed_files = 0
             for SL_name in sorted(SL_catalog_dic):
+                pDialog.update((processed_files*100) // total_files, pdialog_line1, 'Software List {0}'.format(SL_name))
                 SL_dic = SL_catalog_dic[SL_name]
                 SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '.json')
                 SL_AUDIT_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_ROM_audit.json')
@@ -4822,7 +4826,6 @@ class Main:
                         CHD_report_good_list.extend(local_str_list)
                 # >> Update progress
                 processed_files += 1
-                pDialog.update((processed_files*100) // total_files, pdialog_line1, 'SL {0} ...'.format(SL_name))
             pDialog.close()
 
             # >> Write report.

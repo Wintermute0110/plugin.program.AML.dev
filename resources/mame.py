@@ -3544,7 +3544,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     for file in sorted(SL_file_list):
         # >> Progress dialog
         FN = FileName(file)
-        pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
+        pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, 'File {0}'.format(FN.getBase()))
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
         # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
@@ -3584,7 +3584,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # >> Update progress
         FN = FileName(file)
         SL_name = FN.getBase_noext()
-        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(FN.getBase()))
+        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0}'.format(FN.getBase()))
 
         # >> Filenames of the databases
         # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
@@ -3706,7 +3706,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     total_SL_XML_files = 0
     total_SL_software_items = 0
     for sl_name in sorted(SL_catalog_dic):
-        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0} ...'.format(sl_name))
+        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0}'.format(sl_name))
         total_SL_XML_files += 1
         pclone_dic = {}
         SL_database_FN = PATHS.SL_DB_DIR.pjoin(sl_name + '.json')
@@ -3734,7 +3734,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     processed_SL = 0
     SL_machines_dic = {}
     for SL_name in sorted(SL_catalog_dic):
-        pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+        pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'Software List {0}'.format(SL_name))
         SL_machine_list = []
         for machine_name in machines:
             # if not machines[machine_name]['softwarelists']: continue
