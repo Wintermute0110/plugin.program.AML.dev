@@ -163,8 +163,7 @@ def mame_get_screen_str(machine_name, machine):
             elif d_list[0] == 'unknown' and d_list[1] == 'unknown':
                 screen_str = 'Two unknown screens'
             else:
-                log_error('Machine "{0}" d_list = {1}'.format(machine_name, unicode(d_list)))
-                raise TypeError
+                screen_str = 'Two unrecognised screens'
         elif len(d_list) == 3:
             if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster':
                 r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
@@ -172,15 +171,17 @@ def mame_get_screen_str(machine_name, machine):
             elif d_list[0] == 'raster' and d_list[1] == 'lcd' and d_list[2] == 'lcd':
                 screen_str = 'Three screens special case'
             else:
-                log_error('Machine "{0}" d_list = {1}'.format(machine_name, unicode(d_list)))
-                raise TypeError
+                screen_str = 'Three unrecognised screens'
         elif len(d_list) == 4:
             if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster' and d_list[3] == 'raster':
                 r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
                 screen_str = 'Four raster {0} screens'.format(r_str)
             else:
-                log_error('Machine "{0}" d_list = {1}'.format(machine_name, unicode(d_list)))
-                raise TypeError
+                screen_str = 'Four unrecognised screens'
+        elif len(d_list) == 5:
+            screen_str = 'Five unrecognised screens'
+        elif len(d_list) == 6:
+            screen_str = 'Six unrecognised screens'
         else:
             log_error('mame_get_screen_str() d_list = {0}'.format(unicode(d_list)))
             raise TypeError
