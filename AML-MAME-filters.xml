@@ -1,12 +1,12 @@
 <!-- Example Advanced MAME Launcher custom filters -->
 <Advanced_MAME_Launcher_custom_filters>
-<DEFINE name="ATARI_DRIVERS"></DEFINE>
+<DEFINE name="ATARI_DRIVERS">atetris.cpp</DEFINE>
 
-<DEFINE name="CAPCOM_DRIVERS">cps1.cpp or cps2.cpp or cps3.cpp</DEFINE>
+<DEFINE name="CAPCOM_DRIVERS">1942.cpp or 1943.cpp or capcom.cpp or gng.cpp or cps1.cpp or cps2.cpp or cps3.cpp</DEFINE>
 
-<DEFINE name="KONAMI_DRIVERS">konamigx.cpp or konamim2.cpp</DEFINE>
+<DEFINE name="KONAMI_DRIVERS">88games.cpp or ajax.cpp or aliens.cpp or asterix.cpp or konamigv.cpp or konblands.cpp or konamigx.cpp or konamim2.cpp</DEFINE>
 
-<DEFINE name="MIDWAY_DRIVERS"></DEFINE>
+<DEFINE name="MIDWAY_DRIVERS">midtunit.cpp or midvunit.cpp or midwunit.cpp or midxunit.cpp or midyunit.cpp or midzeus.cpp</DEFINE>
 
 <DEFINE name="NAMCO_DRIVERS">galaxian.cpp or namcops2.cpp</DEFINE>
 
@@ -15,11 +15,18 @@
 <!-- In the following SEGA drivers most machines do not work, so do not include them in 
      the filter:
 -->
-<DEFINE name="SEGA_DRIVERS">zaxxon.cpp or system1.cpp or segac2.cpp or segae.cpp or segas16a.cpp or segas16b.cpp or segas24.cpp or segas18.cpp or kyugo.cpp or segahang.cpp or segaorun.cpp or segaxbd.cpp or segaybd.cpp or segas32.cpp or model1.cpp or model2.cpp or model3.cpp or stv.cpp or naomi.cpp or segasp.cpp or chihiro.cpp or triforce.cpp or lindbergh.cpp</DEFINE>
+<DEFINE name="SEGA_DRIVERS">segajw.cpp or segam1.cpp or segaufo.cpp or vicdual.cpp or segag80r.cpp or segag80v.cpp or zaxxon.cpp or segald.cpp or system1.cpp or segac2.cpp or segae.cpp or segas16a.cpp or segas16b.cpp or system16.cpp or segas24.cpp or segas18.cpp or kyugo.cpp or segahang.cpp or segaorun.cpp or segaxbd.cpp or segaybd.cpp or segas32.cpp or model1.cpp or model2.cpp or model3.cpp or stv.cpp or naomi.cpp or segasp.cpp or chihiro.cpp or triforce.cpp or lindbergh.cpp</DEFINE>
 
-<DEFINE name="TAITO_DRIVERS">taito_b.cpp or taito_l.cpp or taito_f2.cpp or taito_f3.cpp</DEFINE>
+<DEFINE name="TAITO_DRIVERS">taito_b.cpp or taito_f2.cpp or taito_f3.cpp or taito_h.cpp or taito_l.cpp or taito_o.cpp or taito_x.cpp or taito_z.cpp or taitoair.cpp or taitogn.cpp or taitojc.cpp or taitopjc.cpp or taitosj.cpp or taitottl.cpp or taitotz.cpp or taitowlf.cpp</DEFINE>
+
+<DEFINE name="SONY_DRIVERS">zn.cpp</DEFINE>
 
 <!-- Filter definitions -->
+<MAMEFilter>
+    <Name>Atari</Name>
+    <Options></Options>
+    <Driver>ATARI_DRIVERS</Driver>
+</MAMEFilter>
 <MAMEFilter>
     <Name>Capcom</Name>
     <Options></Options>
@@ -29,6 +36,11 @@
     <Name>Konami</Name>
     <Options></Options>
     <Driver>KONAMI_DRIVERS</Driver>
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Midway</Name>
+    <Options></Options>
+    <Driver>MIDWAY_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
     <Name>Namco</Name>
@@ -49,5 +61,10 @@
     <Name>Taito</Name>
     <Options></Options>
     <Driver>TAITO_DRIVERS</Driver>
+</MAMEFilter>
+<MAMEFilter>
+    <Name>SONY</Name>
+    <Options></Options>
+    <Driver>SONY_DRIVERS</Driver>
 </MAMEFilter>
 </Advanced_MAME_Launcher_custom_filters>

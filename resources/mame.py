@@ -36,15 +36,37 @@ from disk_IO import *
 # Data structures
 # -------------------------------------------------------------------------------------------------
 # >> Substitute notable drivers with a proper name
+# >> Drivers are located in https://github.com/mamedev/mame/blob/master/src/mame/drivers/<driver_name>.cpp
 mame_driver_name_dic = {
+    # --- Atari ---
+    'atetris.cpp' : 'Atari Tetris hardware',
+
     # --- Capcom ---
-    'cps1.cpp' : 'Capcom Play System 1',
-    'cps2.cpp' : 'Capcom Play System 2',
-    'cps3.cpp' : 'Capcom Play System 3',
+    '1942.cpp'   : 'Capcom 1942',
+    '1943.cpp'   : 'Capcom 1943: The Battle of Midway',
+    'capcom.cpp' : 'Capcom A0015405',
+    'gng.cpp'    : "Capcom Ghosts'n Goblins",
+    'cps1.cpp'   : 'Capcom Play System 1',
+    'cps2.cpp'   : 'Capcom Play System 2',
+    'cps3.cpp'   : 'Capcom Play System 3',
 
     # --- Konami ---
-    'konamigx.cpp' : 'Konami System GX',
-    'konamim2.cpp' : 'Konami M2 Hardware',
+    '88games.cpp'   : 'Konami 88 Games',
+    'ajax.cpp'      : 'Konami GX770',
+    'aliens.cpp'    : 'Konami Aliens',
+    'asterix.cpp'   : 'Konami Asterix',
+    'konamigv.cpp'  : 'Konami GV System (PSX Hardware)',
+    'konblands.cpp' : 'Konami GX455 - Konami Badlands',
+    'konamigx.cpp'  : 'Konami System GX',
+    'konamim2.cpp'  : 'Konami M2 Hardware',
+
+    # --- Midway ---
+    'midtunit.cpp' : 'Midway T-unit system',
+    'midvunit.cpp' : 'Midway V-Unit games',
+    'midwunit.cpp' : 'Midway Wolf-unit system',
+    'midxunit.cpp' : 'Midway X-unit system',
+    'midyunit.cpp' : 'Williams/Midway Y/Z-unit system',
+    'midzeus.cpp'  : 'Midway Zeus games',
 
     # --- Namco ---
     'galaxian.cpp' : 'Namco Galaxian-derived hardware',
@@ -58,16 +80,27 @@ mame_driver_name_dic = {
     'seta.cpp' : 'Seta Hardware',
 
     # --- SEGA ---
+    # Less known boards
+    'segajw.cpp'    : 'SEGA GOLDEN POKER SERIES',
+    'segam1.cpp'    : 'SEGA M1 hardware',
+    'segaufo.cpp'   : 'SEGA UFO Catcher, Z80 type hardware',
+    # Boards listed in wikipedia
+    # Sega Z80 board is included in galaxian.cpp
+    'vicdual.cpp'   : 'SEGA VIC Dual Game board',
+    'segag80r.cpp'  : 'SEGA G-80 raster hardware',
+    'segag80v.cpp'  : 'SEGA G-80 vector hardware',
     'zaxxon.cpp'    : 'SEGA Zaxxon hardware',
+    'segald.cpp'    : 'SEGA LaserDisc Hardware',
     'system1.cpp'   : 'SEGA System1 / System 2',
     'segac2.cpp'    : 'SEGA System C (System 14)',
     'segae.cpp'     : 'SEGA System E',
     'segas16a.cpp'  : 'SEGA System 16A',
     'segas16b.cpp'  : 'SEGA System 16B',
+    'system16.cpp'  : 'SEGA System 16 / 18 bootlegs',
     'segas24.cpp'   : 'SEGA System 24',
     'segas18.cpp'   : 'SEGA System 18',
     'kyugo.cpp'     : 'SEGA Kyugo Hardware',
-    'segahang.cpp'  : 'Sega Hang On hardware', # AKA Sega Space Harrier
+    'segahang.cpp'  : 'SEGA Hang On hardware', # AKA Sega Space Harrier
     'segaorun.cpp'  : 'SEGA Out Run hardware',
     'segaxbd.cpp'   : 'SEGA X-board',
     'segaybd.cpp'   : 'SEGA Y-board',
@@ -83,10 +116,23 @@ mame_driver_name_dic = {
     'lindbergh.cpp' : 'SEGA Lindbergh',
 
     # --- Taito ---
+    # Ordered alphabetically
     'taito_b.cpp'  : 'Taito B System',
-    'taito_l.cpp'  : 'Taito L System',
     'taito_f2.cpp' : 'Taito F2 System',
     'taito_f3.cpp' : 'Taito F3 System',
+    'taito_h.cpp'  : 'Taito H system',
+    'taito_l.cpp'  : 'Taito L System',
+    'taito_o.cpp'  : 'Taito O system (Gambling)',
+    'taito_x.cpp'  : 'Taito X system',
+    'taito_z.cpp'  : 'Taito Z System (twin 68K with optional Z80)',
+    'taitoair.cpp' : 'Taito Air System',
+    'taitogn.cpp'  : 'Taito GNET Motherboard',
+    'taitojc.cpp'  : 'Taito JC System',
+    'taitopjc.cpp' : 'Taito Power-JC System',
+    'taitosj.cpp'  : 'Taito SJ system',
+    'taitottl.cpp' : 'Taito Discrete Hardware Games',
+    'taitotz.cpp'  : 'Taito Type-Zero hardware',
+    'taitowlf.cpp' : 'Taito Wolf System',
 
     # --- SONY ---
     'zn.cpp' : 'Sony ZN1/ZN2 (Arcade PSX)',
