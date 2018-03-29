@@ -2322,8 +2322,8 @@ class Main:
                 info_text += '\n[COLOR orange]Software Lists item count[/COLOR]\n'
                 info_text += "SL files           {0:6d}\n".format(control_dic['stats_SL_XML_files'])
                 info_text += "SL software items  {0:6d}\n".format(control_dic['stats_SL_software_items'])
-                info_text += "SL items with ROMs {0:6d}\n".format(control_dic['stats_SL_machine_archives_ROM'])
-                info_text += "SL items with CHDs {0:6d}\n".format(control_dic['stats_SL_machine_archives_CHD'])
+                info_text += "SL items with ROMs {0:6d}\n".format(control_dic['stats_SL_items_with_ROMs'])
+                info_text += "SL items with CHDs {0:6d}\n".format(control_dic['stats_SL_items_with_CHDs'])
 
                 self._display_text_window(window_title, info_text)
 
@@ -2343,21 +2343,30 @@ class Main:
                 info_text = '[COLOR orange]MAME ROM audit statistics[/COLOR]\n'
                 info_text += "There are {0:5d} ROM ZIP archives in the {1} set\n".format(control_dic['audit_MAME_ZIP_files'], rom_set)
                 info_text += "There are {0:5d}     CHD archives in the {1} set\n".format(control_dic['audit_MAME_CHD_files'], chd_set)
-                t = "{0:5d} machines require ROM ZIPs ({1:5d} Parents / {2:5d} Clones)\n"
+                t = "{0:5d} machines require ROM ZIPs, parents {1:5d}, clones {2:5d}\n"
                 info_text += t.format(control_dic['audit_machine_archives_ROM'],
                                       control_dic['audit_machine_archives_ROM_parents'],
                                       control_dic['audit_machine_archives_ROM_clones'])
-                t = "{0:5d} machines require CHDs     ({1:5d} Parents / {2:5d} Clones)\n"
+                t = "{0:5d} machines require CHDs    , parents {1:5d}, clones {2:5d}\n"
                 info_text += t.format(control_dic['audit_machine_archives_CHD'],
                                       control_dic['audit_machine_archives_CHD_parents'],
                                       control_dic['audit_machine_archives_CHD_clones'])
-                t = "{0:5d} machines require nothing  ({1:5d} Parents / {2:5d} Clones)\n"
+                t = "{0:5d} machines require nothing , parents {1:5d}, clones {2:5d}\n"
                 info_text += t.format(control_dic['audit_archive_less'],
                                       control_dic['audit_archive_less_parents'],
                                       control_dic['audit_archive_less_clones'])
 
                 # >> Not coded yet.
+                info_text += '\n[COLOR orange]SL audit statistics[/COLOR]\n'
+                info_text += '[COLOR orchid]Not coded yet, sorry.[/COLOR]\n'
+
+                # >> Not coded yet.
                 info_text += '\n[COLOR orange]MAME ROM audit information[/COLOR]\n'
+                info_text += '[COLOR orchid]Not coded yet, sorry.[/COLOR]\n'
+
+                # >> Not coded yet.
+                info_text += '\n[COLOR orange]SL audit information[/COLOR]\n'
+                info_text += '[COLOR orchid]Not coded yet, sorry.[/COLOR]\n'
 
                 self._display_text_window(window_title, info_text)
 
@@ -2371,36 +2380,37 @@ class Main:
                 window_title = 'Scanner statistics'
 
                 i_tex = '[COLOR orange]ROM scanner information[/COLOR]\n'
-                t = "You have {0:5d} ROM ZIP files out of {1:5d} ({2:5d} missing)\n"
+                t = "You have {0:5d} ROM ZIP files out of {1:5d}, missing {2:5d}\n"
                 i_tex += t.format(control_dic['scan_ROM_ZIP_files_have'],
-                                      control_dic['scan_ROM_ZIP_files_total'],
-                                      control_dic['scan_ROM_ZIP_files_missing'])
-                t = "You have {0:5d} CHDs out of          {1:5d} ({2:5d} missing)\n"
+                                  control_dic['scan_ROM_ZIP_files_total'],
+                                  control_dic['scan_ROM_ZIP_files_missing'])
+                t = "You have {0:5d} CHDs out of          {1:5d}, missing {2:5d}\n"
                 i_tex += t.format(control_dic['scan_CHD_files_have'],
-                                      control_dic['scan_CHD_files_total'],
-                                      control_dic['scan_CHD_files_missing'])
-                t = "Can run  {0:5d} ROM machines out of  {1:5d} ({2:5d} unrunnable machines)\n"
+                                  control_dic['scan_CHD_files_total'],
+                                  control_dic['scan_CHD_files_missing'])
+                t = "Can run  {0:5d} ROM machines out of  {1:5d}, unrunnable machines {2:5d}\n"
                 i_tex += t.format(control_dic['scan_machine_archives_ROM_have'],
-                                      control_dic['scan_machine_archives_ROM_total'],
-                                      control_dic['scan_machine_archives_ROM_missing'])
-                t = "Can run  {0:5d} CHD machines out of  {1:5d} ({2:5d} unrunnable machines)\n"
+                                  control_dic['scan_machine_archives_ROM_total'],
+                                  control_dic['scan_machine_archives_ROM_missing'])
+                t = "Can run  {0:5d} CHD machines out of  {1:5d}, unrunnable machines {2:5d}\n"
                 i_tex += t.format(control_dic['scan_machine_archives_CHD_have'],
-                                      control_dic['scan_machine_archives_CHD_total'],
-                                      control_dic['scan_machine_archives_CHD_missing'])
+                                  control_dic['scan_machine_archives_CHD_total'],
+                                  control_dic['scan_machine_archives_CHD_missing'])
                 # >> Samples
-                t = "You have {0:5d} Samples out of       {1:5d} ({2:5d} missing)\n"
+                t = "You have {0:5d} Samples out of       {1:5d}, missing {2:5d}\n"
                 i_tex += t.format(control_dic['scan_Samples_have'],
-                                      control_dic['scan_Samples_total'],
-                                      control_dic['scan_Samples_missing'])
+                                  control_dic['scan_Samples_total'],
+                                  control_dic['scan_Samples_missing'])
+
                 # >> SL scanner
-                t = "You have {0:5d} SL ROMs out of       {1:5d} ({2:5d} missing)\n"
-                i_tex += t.format(control_dic['scan_software_archives_ROM_have'],
-                                      control_dic['scan_software_archives_ROM_total'],
-                                      control_dic['scan_software_archives_ROM_missing'])
-                t = "You have {0:5d} SL CHDs out of       {1:5d} ({2:5d} missing)\n"
-                i_tex += t.format(control_dic['scan_software_archives_CHD_have'],
-                                      control_dic['scan_software_archives_CHD_total'],
-                                      control_dic['scan_software_archives_CHD_missing'])
+                t = "You have {0:5d} SL ROMs out of       {1:5d}, missing {2:5d}\n"
+                i_tex += t.format(control_dic['scan_SL_archives_ROM_have'],
+                                  control_dic['scan_SL_archives_ROM_total'],
+                                  control_dic['scan_SL_archives_ROM_missing'])
+                t = "You have {0:5d} SL CHDs out of       {1:5d}, missing {2:5d}\n"
+                i_tex += t.format(control_dic['scan_SL_archives_CHD_have'],
+                                  control_dic['scan_SL_archives_CHD_total'],
+                                  control_dic['scan_SL_archives_CHD_missing'])
 
                 # >> MAME assets.
                 i_tex += '\n[COLOR orange]Asset scanner information[/COLOR]\n'

@@ -354,31 +354,45 @@ def fs_new_control_dic():
 
         # --- Filed in when building the ROM audit databases ---
         # Number of ROM ZIP files in the Merged, Split or Non-merged sets.
-        'audit_MAME_ZIP_files' : 0,
+        'stats_audit_MAME_ZIP_files' : 0,
         # Number of CHD files in the Merged, Split or Non-merged sets.
-        'audit_MAME_CHD_files' : 0,
+        'stats_audit_MAME_CHD_files' : 0,
 
         # Number of machines that require one or more ROM ZIP archives to run
-        'audit_machine_archives_ROM'         : 0,
-        'audit_machine_archives_ROM_parents' : 0,
-        'audit_machine_archives_ROM_clones'  : 0,
+        'stats_audit_machine_archives_ROM'         : 0,
+        'stats_audit_machine_archives_ROM_parents' : 0,
+        'stats_audit_machine_archives_ROM_clones'  : 0,
         # Number of machines that require one or more CHDs to run
-        'audit_machine_archives_CHD'         : 0,
-        'audit_machine_archives_CHD_parents' : 0,
-        'audit_machine_archives_CHD_clones'  : 0,
+        'stats_audit_machine_archives_CHD'         : 0,
+        'stats_audit_machine_archives_CHD_parents' : 0,
+        'stats_audit_machine_archives_CHD_clones'  : 0,
         # ROM less machines do not need any ZIP archive or CHD to run
-        'audit_archive_less'                 : 0,
-        'audit_archive_less_parents'         : 0,
-        'audit_archive_less_clones'          : 0,
+        'stats_audit_archive_less'         : 0,
+        'stats_audit_archive_less_parents' : 0,
+        'stats_audit_archive_less_clones'  : 0,
+
+        # --- Filed in when auditing the MAME machines ---
+        'audit_machine_archives_ROM_total'   : 0,
+        'audit_machine_archives_ROM_have'    : 0,
+        'audit_machine_archives_ROM_missing' : 0,
+        'audit_machine_archives_CHD_total'   : 0,
+        'audit_machine_archives_CHD_have'    : 0,
+        'audit_machine_archives_CHD_missing' : 0,
 
         # --- Filed in when building the SL databases ---
         # Number of SL databases (equal to the number of XML files).
-        'stats_SL_XML_files'      : 0,
+        'stats_SL_XML_files' : 0,
         'stats_SL_software_items' : 0,
         # Number of SL items that require one or more ROM ZIP archives to run
-        'stats_SL_machine_archives_ROM'      : 0,
+        'stats_SL_items_with_ROMs' : 0,
         # Number of SL items that require one or more CHDs to run
-        'stats_SL_machine_archives_CHD'      : 0,
+        'stats_SL_items_with_CHDs' : 0,
+
+        # --- Filed in when building the SL audit databases ---
+        
+
+        # --- Filed in when auditing the SL items ---
+        
 
         # --- Filed in by the MAME ROM/CHD/Samples scanner ---
         # >> ROM_Set_ROM_archives.json database
@@ -408,18 +422,18 @@ def fs_new_control_dic():
         # Number of machines with CHDs you cannot run.
         'scan_machine_archives_CHD_missing' : 0,
 
-        # >> Samples is not reliable yet
-        'scan_Samples_have'    : 0,
+        # >> Samples
         'scan_Samples_total'   : 0,
+        'scan_Samples_have'    : 0,
         'scan_Samples_missing' : 0,
 
         # --- Filed in by the SL ROM/CHD scanner ---
-        'scan_software_archives_ROM_total'   : 0,
-        'scan_software_archives_ROM_have'    : 0,
-        'scan_software_archives_ROM_missing' : 0,
-        'scan_software_archives_CHD_total'   : 0,
-        'scan_software_archives_CHD_have'    : 0,
-        'scan_software_archives_CHD_missing' : 0,
+        'scan_SL_archives_ROM_total'   : 0,
+        'scan_SL_archives_ROM_have'    : 0,
+        'scan_SL_archives_ROM_missing' : 0,
+        'scan_SL_archives_CHD_total'   : 0,
+        'scan_SL_archives_CHD_have'    : 0,
+        'scan_SL_archives_CHD_missing' : 0,
 
         # --- Filed in by the MAME asset scanner ---
         'assets_num_MAME_machines'    : 0,

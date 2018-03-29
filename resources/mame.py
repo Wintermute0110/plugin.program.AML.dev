@@ -4073,10 +4073,11 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     # log_info('mame_properties_dic has {0} items'.format(len(mame_properties_dic)))
 
     # --- SL statistics and save control_dic ---
-    control_dic['stats_SL_XML_files'] = total_SL_XML_files
-    control_dic['stats_SL_software_items'] = total_SL_software_items
-    control_dic['stats_SL_machine_archives_ROM'] = num_SL_with_ROMs
-    control_dic['stats_SL_machine_archives_CHD'] = num_SL_with_CHDs
+    control_dic['stats_SL_XML_files']       = total_SL_XML_files
+    control_dic['stats_SL_software_items']  = total_SL_software_items
+    control_dic['stats_SL_items_with_ROMs'] = num_SL_with_ROMs
+    control_dic['stats_SL_items_with_CHDs'] = num_SL_with_CHDs
+    
     control_dic['t_SL_DB_build'] = time.time()
 
 # -------------------------------------------------------------------------------------------------
@@ -4332,21 +4333,21 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
         file.write('\n'.join(r_miss_list).encode('utf-8'))
 
     # --- Update statistics ---
-    control_dic['scan_ROM_ZIP_files']                = scan_ZIP_files_total
+    control_dic['scan_ROM_ZIP_files_total']          = scan_ZIP_files_total
     control_dic['scan_ROM_ZIP_files_have']           = scan_ZIP_files_have
     control_dic['scan_ROM_ZIP_files_missing']        = scan_ZIP_files_missing
-    control_dic['scan_CHD_files']                    = scan_CHD_files_total
+    control_dic['scan_CHD_files_total']              = scan_CHD_files_total
     control_dic['scan_CHD_files_have']               = scan_CHD_files_have
     control_dic['scan_CHD_files_missing']            = scan_CHD_files_missing
-    control_dic['scan_machine_archives_ROM']         = scan_ROM_machines_total
+    control_dic['scan_machine_archives_ROM_total']   = scan_ROM_machines_total
     control_dic['scan_machine_archives_ROM_have']    = scan_ROM_machines_have
     control_dic['scan_machine_archives_ROM_missing'] = scan_ROM_machines_missing
-    control_dic['scan_machine_archives_CHD']         = scan_CHD_machines_total
+    control_dic['scan_machine_archives_CHD_total']   = scan_CHD_machines_total
     control_dic['scan_machine_archives_CHD_have']    = scan_CHD_machines_have
     control_dic['scan_machine_archives_CHD_missing'] = scan_CHD_machines_missing
+    control_dic['scan_Samples_total']                = scan_Samples_total
     control_dic['scan_Samples_have']                 = scan_Samples_have
     control_dic['scan_Samples_missing']              = scan_Samples_missing
-    control_dic['scan_Samples_total']                = scan_Samples_total
     control_dic['t_MAME_ROMs_scan'] = time.time()
 
 # -------------------------------------------------------------------------------------------------
@@ -4484,12 +4485,12 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     #     file.write('\n'.join(report_list).encode('utf-8'))
 
     # >> Update statistics
-    control_dic['scan_software_archives_ROM_total']   = SL_ROMs_have
-    control_dic['scan_software_archives_ROM_have']    = SL_ROMs_missing
-    control_dic['scan_software_archives_ROM_missing'] = SL_ROMs_total
-    control_dic['scan_software_archives_CHD_total']   = SL_CHDs_have
-    control_dic['scan_software_archives_CHD_have']    = SL_CHDs_missing
-    control_dic['scan_software_archives_CHD_missing'] = SL_CHDs_total
+    control_dic['scan_SL_archives_ROM_total']   = SL_ROMs_total
+    control_dic['scan_SL_archives_ROM_have']    = SL_ROMs_have
+    control_dic['scan_SL_archives_ROM_missing'] = SL_ROMs_missing
+    control_dic['scan_SL_archives_CHD_total']   = SL_CHDs_total
+    control_dic['scan_SL_archives_CHD_have']    = SL_CHDs_have
+    control_dic['scan_SL_archives_CHD_missing'] = SL_CHDs_missing
     control_dic['t_SL_ROMs_scan'] = time.time()
 
 #
