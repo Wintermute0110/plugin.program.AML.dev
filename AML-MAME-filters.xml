@@ -1,12 +1,7 @@
-<!--
-    Example Advanced MAME Launcher custom filters
--->
+<!-- Example Advanced MAME Launcher custom filters -->
 <Advanced_MAME_Launcher_custom_filters>
 <DEFINE name="ATARI_DRIVERS"></DEFINE>
 
-<!--
-    Capcom
--->
 <DEFINE name="CAPCOM_DRIVERS">cps1.cpp or cps2.cpp or cps3.cpp</DEFINE>
 
 <DEFINE name="KONAMI_DRIVERS">konamigx.cpp or konamim2.cpp</DEFINE>
@@ -17,17 +12,14 @@
 
 <DEFINE name="NEOGEO_DRIVERS">neogeo.cpp</DEFINE>
 
-<!--
-    In the following SEGA drivers most machines do not work, so do not include them in the filter.
-    
+<!-- In the following SEGA drivers most machines do not work, so do not include them in 
+     the filter:
 -->
 <DEFINE name="SEGA_DRIVERS">zaxxon.cpp or system1.cpp or segac2.cpp or segae.cpp or segas16a.cpp or segas16b.cpp or segas24.cpp or segas18.cpp or kyugo.cpp or segahang.cpp or segaorun.cpp or segaxbd.cpp or segaybd.cpp or segas32.cpp or model1.cpp or model2.cpp or model3.cpp or stv.cpp or naomi.cpp or segasp.cpp or chihiro.cpp or triforce.cpp or lindbergh.cpp</DEFINE>
 
 <DEFINE name="TAITO_DRIVERS">taito_b.cpp or taito_l.cpp or taito_f2.cpp or taito_f3.cpp</DEFINE>
 
-<!--
-    Filter definitions
--->
+<!-- Filter definitions -->
 <MAMEFilter>
     <Name>Capcom</Name>
     <Options></Options>
