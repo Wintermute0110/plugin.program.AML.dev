@@ -629,7 +629,7 @@ class Main:
         if self.settings['display_SL_favs']:
             self._render_root_list_row_standard('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
         if self.settings['display_custom_filters']:
-            self._render_custom_filter_row('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+            self._render_root_custom_filter_row('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         # self._render_root_list_row_standard('{Most played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         # self._render_root_list_row_standard('{Recently played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
         # self._render_root_list_row_standard('{Most played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
@@ -760,7 +760,7 @@ class Main:
         # --- Add row ---
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = root_URL, listitem = listitem, isFolder = True)
 
-    def _render_custom_filter_row(self, root_name, root_URL):
+    def _render_root_custom_filter_row(self, root_name, root_URL):
         # --- Create listitem row ---
         ICON_OVERLAY = 6
         listitem = xbmcgui.ListItem(root_name)
