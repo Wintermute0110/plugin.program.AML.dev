@@ -1,4 +1,4 @@
-[B]Planned features[/B]
+[B]AML planned features[/B]
 
 WIP      Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
