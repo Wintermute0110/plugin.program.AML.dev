@@ -1,4 +1,4 @@
-[B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
+[B]Planned features[/B]
 
 WIP      Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
@@ -14,6 +14,11 @@ WIP      Implement "Recently played MAME machines"
 WIP      Implement "Most played SL ROMs"
 
 WIP      Implement "Recently played SL ROMs"
+
+
+[B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
+
+FEATURE  Move driver aristmk5.cpp (Aristocrat gambling machines) from Standard to Unusual.
 
 
 [B]Advanced Emulator Launcher | version 0.9.4 | 29 March 2018[/B]

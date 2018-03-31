@@ -404,17 +404,15 @@ def misc_add_file_cache(dir_str, verbose = True):
 
     # >> Create a set with all the files in the directory
     if not dir_str:
-        log_warn('misc_add_file_cache() Empty dir_str. Exiting')
+        log_warning('misc_add_file_cache() Empty dir_str. Exiting')
         return
     dir_FN = FileName(dir_str)
     if not dir_FN.exists():
-        log_debug('misc_add_file_cache() dir_str = "{0}"'.format(dir_str))
-        log_debug('misc_add_file_cache() Does not exist.')
+        log_debug('misc_add_file_cache() Does not exist "{0}"'.format(dir_str))
         file_cache[dir_str] = set()
         return
     if not dir_FN.isdir():
-        log_warning('misc_add_file_cache() dir_str = "{0}"'.format(dir_str))
-        log_warning('misc_add_file_cache() Not a directory. Exiting')
+        log_warning('misc_add_file_cache() Not a directory "{0}"'.format(dir_str))
         return
     if verbose:
         # log_debug('misc_add_file_cache() Scanning OP "{0}"'.format(dir_FN.getOriginalPath()))

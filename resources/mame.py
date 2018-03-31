@@ -3026,8 +3026,9 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         # --- Determinte if machine is Normal or Unusual ----
         # >> Add parent to parent list and parents and clonse to all list
         # >> Unusual machine: control_type has "only_buttons" or "gambling" or "hanafuda" or "mahjong"
-        # >> Unusual machine exceptions (must be Normal and not Unusual):
-        # >>  A) sourcefile ""
+        #
+        # >> Unusual machine driver exceptions (must be Normal and not Unusual):
+        #
         if machine_main['sourcefile'] == '88games.cpp' or \
            machine_main['sourcefile'] == 'cball.cpp' or \
            machine_main['sourcefile'] == 'asteroid.cpp':
@@ -3035,14 +3036,20 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
             normal_all_dic[parent_name] = machine_render['description']
             for clone_name in main_pclone_dic[parent_name]:
                 normal_all_dic[clone_name] = machines_render[clone_name]['description']
+        # >> Unusual machines. Most of them you don't wanna play.
+        # >> Unusual drivers:
+        #    aristmk5.cpp --> Gambling machines
+        #
         elif 'only_buttons' in machine_main['control_type'] or \
              'gambling' in machine_main['control_type'] or \
              'hanafuda' in machine_main['control_type'] or \
-             'mahjong' in machine_main['control_type']:
+             'mahjong' in machine_main['control_type'] or \
+             machine_main['sourcefile'] == 'aristmk5.cpp':
             unusual_parent_dic[parent_name] = machine_render['description']
             unusual_all_dic[parent_name] = machine_render['description']
             for clone_name in main_pclone_dic[parent_name]:
                 normal_all_dic[clone_name] = machines_render[clone_name]['description']
+        # >> What remains go to the Standard list.
         else:
             normal_parent_dic[parent_name] = machine_render['description']
             normal_all_dic[parent_name] = machine_render['description']
@@ -4143,14 +4150,14 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     ROM_path_str = ROM_path_FN.getPath()
     CHD_path_str = CHD_path_FN.getPath()
     Samples_path_str = Samples_path_FN.getPath()
-    ASSET_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_path_str]
+    STUFF_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_path_str]
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Scanning files in ROM/CHD/Samples directories ...')
-    for i, asset_dir in enumerate(ASSET_PATH_LIST):
+    pDialog.update(0)
+    for i, asset_dir in enumerate(STUFF_PATH_LIST):
         misc_add_file_cache(asset_dir)
-        pDialog.update((100*(i+1))/len(ASSET_PATH_LIST))
-    pDialog.update(100)
+        pDialog.update((100*(i+1))/len(STUFF_PATH_LIST))
     pDialog.close()
 
     # --- Scan ROMs ---
@@ -4166,6 +4173,8 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     r_have_list = []
     r_miss_list = []
     for key in sorted(machines_render):
+        pDialog.update((processed_machines*100) // total_machines)
+
         # --- Initialise machine ---
         # log_info('_command_setup_plugin() Checking machine {0}'.format(key))
         if machines_render[key]['isDevice']: continue # Skip Devices
@@ -4253,7 +4262,6 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
 
         # >> Progress dialog
         processed_machines += 1
-        pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
 
     # >> Write reports
