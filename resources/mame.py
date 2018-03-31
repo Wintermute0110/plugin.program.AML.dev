@@ -4582,6 +4582,7 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
 
     # --- Create a cache of assets ---
     pDialog.create('Advanced MAME Launcher', 'Scanning files in asset directories ...')
+    pDialog.update(0)
     num_assets = len(ASSET_MAME_T_LIST)
     asset_dirs = [''] * num_assets
     for i, asset_tuple in enumerate(ASSET_MAME_T_LIST):
