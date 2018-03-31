@@ -20,6 +20,9 @@ WIP      Implement "Recently played SL ROMs"
 
 FEATURE  Move driver aristmk5.cpp (Aristocrat gambling machines) from Standard to Unusual.
 
+FIX      Software List ROM size was stored as string and not as int. This made the SL Audit to
+         completely fail.
+
 
 [B]Advanced Emulator Launcher | version 0.9.4 | 29 March 2018[/B]
 

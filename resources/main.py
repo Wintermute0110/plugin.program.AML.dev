@@ -2254,10 +2254,6 @@ class Main:
                     info_text += "MAME Catalog built on   {0}\n".format(time.ctime(control_dic['t_MAME_Catalog_build']))
                 else:
                     info_text += "MAME Catalog never built\n"
-                if control_dic['t_SL_DB_build']:
-                    info_text += "SL DB built on          {0}\n".format(time.ctime(control_dic['t_SL_DB_build']))
-                else:
-                    info_text += "SL DB never built\n"
                 if control_dic['t_MAME_ROMs_scan']:
                     info_text += "MAME ROMs scaned on     {0}\n".format(time.ctime(control_dic['t_MAME_ROMs_scan']))
                 else:
@@ -2266,6 +2262,16 @@ class Main:
                     info_text += "MAME assets scaned on   {0}\n".format(time.ctime(control_dic['t_MAME_assets_scan']))
                 else:
                     info_text += "MAME assets never scaned\n"
+                if control_dic['t_Custom_Filter_build']:
+                    info_text += "Custom filters built on {0}\n".format(time.ctime(control_dic['t_Custom_Filter_build']))
+                else:
+                    info_text += "Custom filters never built\n"
+
+                # >> Software Lists stuff
+                if control_dic['t_SL_DB_build']:
+                    info_text += "SL DB built on          {0}\n".format(time.ctime(control_dic['t_SL_DB_build']))
+                else:
+                    info_text += "SL DB never built\n"
                 if control_dic['t_SL_ROMs_scan']:
                     info_text += "SL ROMs scaned on       {0}\n".format(time.ctime(control_dic['t_SL_ROMs_scan']))
                 else:
@@ -2274,10 +2280,9 @@ class Main:
                     info_text += "SL assets scaned on     {0}\n".format(time.ctime(control_dic['t_SL_assets_scan']))
                 else:
                     info_text += "SL assets never scaned\n"
-                if control_dic['t_Custom_Filter_build']:
-                    info_text += "Custom filters built on {0}\n".format(time.ctime(control_dic['t_Custom_Filter_build']))
-                else:
-                    info_text += "Custom filters never built\n"
+
+                # >> Audit stuff
+                
 
                 # >> 5,d prints the comma separator but does not pad to 5 spaces.
                 info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
@@ -2684,7 +2689,7 @@ class Main:
                         for rom_dic in dataarea_dic['roms']:
                             table_row = [part_name, part_interface,
                                          'dataarea', dataarea_name,
-                                         rom_dic['name'], rom_dic['size'], rom_dic['crc']]
+                                         rom_dic['name'], str(rom_dic['size']), rom_dic['crc']]
                             table_str.append(table_row)
                 if 'diskarea' in part_dic:
                     # >> Iterate Diskareas
@@ -2731,7 +2736,7 @@ class Main:
                     table_str.append(table_row)
                 else:
                     table_row = [rom_dic['type'], # rom_dic['name'],
-                                 rom_dic['size'], rom_dic['crc'], rom_dic['location']]
+                                 str(rom_dic['size']), rom_dic['crc'], rom_dic['location']]
                     table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)
             info_text.extend(table_str_list)
@@ -2833,7 +2838,7 @@ class Main:
             rom_db_list = roms_audit_db[SL_ROM]
 
             # --- Open ZIP file and check CRC32 ---
-            mame_SL_audit_machine(self.settings, rom_db_list)
+            mame_audit_SL_machine(self.settings, rom_db_list)
 
             info_text = []
             info_text.append('[COLOR violet]SL_name[/COLOR] {0}'.format(SL_name))
@@ -2855,7 +2860,7 @@ class Main:
                     table_str.append(table_row)
                 else:
                     table_row = [m_rom['type'], # m_rom['name'],
-                                 m_rom['size'], m_rom['crc'], m_rom['location'],
+                                 str(m_rom['size']), m_rom['crc'], m_rom['location'],
                                  m_rom['status_colour']]
                     table_str.append(table_row)
             table_str_list = text_render_table_str(table_str)

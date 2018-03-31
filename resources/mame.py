@@ -1053,8 +1053,8 @@ def mame_audit_SL_machine(settings, rom_list):
             SL_name   = m_rom['location'].split('/')[0]
             rom_name  = m_rom['location'].split('/')[1]
             disk_name = m_rom['location'].split('/')[2]
-            # log_debug('Testing CHD {0}'.format(m_rom['name']))
-            # log_debug('location {0}'.format(m_rom['location']))
+            # log_debug('Testing CHD "{0}"'.format(m_rom['name']))
+            # log_debug('location "{0}"'.format(m_rom['location']))
             # log_debug('SL_name   "{0}"'.format(SL_name))
             # log_debug('rom_name  "{0}"'.format(rom_name))
             # log_debug('disk_name "{0}"'.format(disk_name))
@@ -1080,8 +1080,8 @@ def mame_audit_SL_machine(settings, rom_list):
             SL_name  = m_rom['location'].split('/')[0]
             zip_name = m_rom['location'].split('/')[1] + '.zip'
             rom_name = m_rom['location'].split('/')[2]
-            # log_debug('Testing ROM {0}'.format(m_rom['name']))
-            # log_debug('location {0}'.format(m_rom['location']))
+            # log_debug('Testing ROM "{0}"'.format(m_rom['name']))
+            # log_debug('location "{0}"'.format(m_rom['location']))
             # log_debug('SL_name  "{0}"'.format(SL_name))
             # log_debug('zip_name "{0}"'.format(zip_name))
             # log_debug('rom_name "{0}"'.format(rom_name))
@@ -1122,20 +1122,23 @@ def mame_audit_SL_machine(settings, rom_list):
             z_info_file_size = z_info.file_size
             z_info_crc_hex_str = '{0:08x}'.format(z_info.CRC)
             zip_f.close()
-            # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
-            # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
+            # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_info_crc_hex_str, z_info_file_size))
+            # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], m_rom['size']))
             if z_info_crc_hex_str != m_rom['crc']:
                 m_rom['status'] = AUDIT_STATUS_ROM_BAD_CRC
                 m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                # log_debug('{0}'.format(AUDIT_STATUS_ROM_BAD_CRC))
                 continue
             if z_info_file_size != m_rom['size']:
                 m_rom['status'] = AUDIT_STATUS_ROM_BAD_SIZE
                 m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                # log_debug('{0}'.format(AUDIT_STATUS_ROM_BAD_SIZE))
                 continue
 
             # >> ROM is OK
             m_rom['status'] = AUDIT_STATUS_OK
             m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+            # log_debug('{0}'.format(AUDIT_STATUS_OK))
 
 def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machines_render, audit_roms_dic):
     log_debug('mame_audit_MAME_all() Initialising ...')
@@ -1315,6 +1318,16 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
     CHD_report_good_list.extend(h_list)
     CHD_report_error_list.extend(h_list)
 
+    # >> DEBUG code
+    # SL_catalog_dic = {
+    #     "32x" : {
+    #         "display_name" : "Sega 32X cartridges",
+    #         "num_with_CHDs" : 0,
+    #         "num_with_ROMs" : 203,
+    #         "rom_DB_noext" : "32x"
+    #     }
+    # }
+
     # >> Iterate all SL databases and audit ROMs.
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
@@ -1369,7 +1382,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
                     table_row = [m_rom['type'], '',
                                  m_rom['sha1'][0:8], m_rom['location'], m_rom['status']]
                 else:
-                    table_row = [m_rom['type'], m_rom['size'],
+                    table_row = [m_rom['type'], str(m_rom['size']),
                                  m_rom['crc'], m_rom['location'], m_rom['status']]
                 table_str.append(table_row)
             local_str_list = text_render_table_str_NO_HEADER(table_str)
@@ -3786,8 +3799,13 @@ def mame_load_SL_XML(xml_filename):
                             dataarea_num_roms = 0
                             for dataarea_child in part_child:
                                 rom_dic = { 'name' : '', 'size' : '', 'crc'  : '' }
+                                # >> Force Python to guess the base of the conversion looking at
+                                # >> 0x prefixes.
+                                size_int = 0
+                                if 'size' in dataarea_child.attrib:
+                                    size_int = int(dataarea_child.attrib['size'], 0)
                                 rom_dic['name'] = dataarea_child.attrib['name'] if 'name' in dataarea_child.attrib else ''
-                                rom_dic['size'] = dataarea_child.attrib['size'] if 'size' in dataarea_child.attrib else ''
+                                rom_dic['size'] = size_int
                                 rom_dic['crc'] = dataarea_child.attrib['crc'] if 'crc' in dataarea_child.attrib else ''
                                 dataarea_dic['roms'].append(rom_dic)
                                 dataarea_num_roms += 1
