@@ -374,12 +374,18 @@ def fs_new_control_dic():
         'stats_audit_archive_less_clones'  : 0,
 
         # --- Filed in when auditing the MAME machines ---
-        'audit_machine_archives_ROM_total'   : 0,
-        'audit_machine_archives_ROM_have'    : 0,
-        'audit_machine_archives_ROM_missing' : 0,
-        'audit_machine_archives_CHD_total'   : 0,
-        'audit_machine_archives_CHD_have'    : 0,
-        'audit_machine_archives_CHD_missing' : 0,
+        # >> Machines with ROMs/CHDs that are OK or not
+        'audit_MAME_machines_total'             : 0,
+        'audit_MAME_machines_have'              : 0,
+        'audit_MAME_machines_missing'           : 0,
+        # >> Machines with ROMs that are OK or not
+        'audit_MAME_machines_with_ROMs_total'   : 0,
+        'audit_MAME_machines_with_ROMs_have'    : 0,
+        'audit_MAME_machines_with_ROMs_missing' : 0,
+        # >> Machines with CHDs that are OK or not
+        'audit_MAME_machines_with_CHDs_total'   : 0,
+        'audit_MAME_machines_with_CHDs_have'    : 0,
+        'audit_MAME_machines_with_CHDs_missing' : 0,
 
         # --- Filed in when building the SL databases ---
         # Number of SL databases (equal to the number of XML files).
