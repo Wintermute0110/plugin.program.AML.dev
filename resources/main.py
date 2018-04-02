@@ -2964,11 +2964,11 @@ class Main:
 
             # --- View MAME Samples missing report ---
             elif type_sub == 5:
-                if not PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.exists():
+                if not PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.exists():
                     kodi_dialog_OK('MAME Missing Samples scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
                     return
-                with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
+                with open(PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
                     self._display_text_window('MAME Missing Samples scanner report', info_text)
 
