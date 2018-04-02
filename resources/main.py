@@ -2783,7 +2783,7 @@ class Main:
             log_debug('_command_context_view() romof   {0}\n'.format(romof))
 
             # --- Open ZIP file, check CRC32 and also CHDs ---
-            mame_audit_machine(self.settings, rom_list)
+            mame_audit_MAME_machine(self.settings, rom_list)
 
             # --- Generate report ---
             info_text = []
