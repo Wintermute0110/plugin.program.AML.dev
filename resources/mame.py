@@ -1295,6 +1295,9 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
     pDialog.update(100)
     pDialog.close()
 
+    # >> Update timestamp
+    control_dic['t_MAME_audit'] = time.time()
+
 def mame_audit_SL_all(PATHS, settings, control_dic):
     log_debug('mame_audit_SL_all() Initialising ...')
 
@@ -1446,6 +1449,9 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
         file.write(out_str.encode('utf-8'))
     pDialog.update(100)
     pDialog.close()
+
+    # >> Update timestamp
+    control_dic['t_SL_audit'] = time.time()
 
 # -------------------------------------------------------------------------------------------------
 # Fanart generation
@@ -3041,7 +3047,9 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         # >> Unusual machine: control_type has "only_buttons" or "gambling" or "hanafuda" or "mahjong"
         #
         # >> Unusual machine driver exceptions (must be Normal and not Unusual):
-        #
+        #    88games.cpp
+        #    cball.cpp
+        #    asteroid.cpp
         if machine_main['sourcefile'] == '88games.cpp' or \
            machine_main['sourcefile'] == 'cball.cpp' or \
            machine_main['sourcefile'] == 'asteroid.cpp':
@@ -3052,12 +3060,22 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         # >> Unusual machines. Most of them you don't wanna play.
         # >> Unusual drivers:
         #    aristmk5.cpp --> Gambling machines
-        #
-        elif 'only_buttons' in machine_main['control_type'] or \
+        #    adp.cpp
+        #    mpu4vid.cpp
+        #    cubo.cpp
+        #    sfbonus.cpp
+        #    peplus.cpp
+        elif not machine_main['control_type'] or \
+             'only_buttons' in machine_main['control_type'] or \
              'gambling' in machine_main['control_type'] or \
              'hanafuda' in machine_main['control_type'] or \
              'mahjong' in machine_main['control_type'] or \
-             machine_main['sourcefile'] == 'aristmk5.cpp':
+             machine_main['sourcefile'] == 'aristmk5.cpp' or \
+             machine_main['sourcefile'] == 'adp.cpp' or \
+             machine_main['sourcefile'] == 'mpu4vid.cpp' or \
+             machine_main['sourcefile'] == 'cubo.cpp' or \
+             machine_main['sourcefile'] == 'sfbonus.cpp' or \
+             machine_main['sourcefile'] == 'peplus.cpp':
             unusual_parent_dic[parent_name] = machine_render['description']
             unusual_all_dic[parent_name] = machine_render['description']
             for clone_name in main_pclone_dic[parent_name]:
