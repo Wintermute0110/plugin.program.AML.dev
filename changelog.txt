@@ -18,10 +18,14 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
-WIP      Added audit timestamps (MAME machines and Software Lists).
+WIP      MAME audit statistics.
+
+WIP      SL audit statistics.
+
+FEATURE  Added audit timestamps (MAME machines and Software Lists).
 
 FEATURE  Move driver aristmk5.cpp (Aristocrat gambling machines) from Standard to Unusual.
-         Also, adp.cpp, 
+         Also, adp.cpp, mpu4vid.cpp, cubo.cpp, sfbonus.cpp, peplus.cpp.
 
 FIX      Software List ROM size was stored as string and not as int. This made the SL Audit to
          completely fail.

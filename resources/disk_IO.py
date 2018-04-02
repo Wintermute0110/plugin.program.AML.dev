@@ -298,12 +298,14 @@ def fs_new_control_dic():
         't_MAME_DB_build'       : 0,
         't_MAME_Audit_DB_build' : 0,
         't_MAME_Catalog_build'  : 0,
-        't_SL_DB_build'         : 0,
         't_MAME_ROMs_scan'      : 0,
         't_MAME_assets_scan'    : 0,
+        't_Custom_Filter_build' : 0,
+        't_SL_DB_build'         : 0,
         't_SL_ROMs_scan'        : 0,
         't_SL_assets_scan'      : 0,
-        't_Custom_Filter_build' : 0,
+        't_MAME_audit'          : 0,
+        't_SL_audit'            : 0,
 
         # --- Filed in when building main MAME database ---
         # >> Numerical MAME version. Allows for comparisons like ver_mame >= MAME_VERSION_0190

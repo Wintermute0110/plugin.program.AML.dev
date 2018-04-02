@@ -2282,7 +2282,14 @@ class Main:
                     info_text += "SL assets never scaned\n"
 
                 # >> Audit stuff
-                
+                if control_dic['t_MAME_audit']:
+                    info_text += "MAME ROMs audited on    {0}\n".format(time.ctime(control_dic['t_MAME_audit']))
+                else:
+                    info_text += "MAME ROMs never audited\n"
+                if control_dic['t_SL_audit']:
+                    info_text += "SL ROMs audited on      {0}\n".format(time.ctime(control_dic['t_SL_audit']))
+                else:
+                    info_text += "SL ROMs never audited\n"
 
                 # >> 5,d prints the comma separator but does not pad to 5 spaces.
                 info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
@@ -4585,7 +4592,7 @@ class Main:
             pDialog.close()
 
             # --- Audit all MAME machines ---
-            # 1) Updates control_dic statistics.
+            # 1) Updates control_dic statistics and timestamp.
             mame_audit_MAME_all(PATHS, pDialog, self.settings, control_dic,
                                 machines, machines_render, audit_roms_dic)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
@@ -4599,7 +4606,7 @@ class Main:
             control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
 
             # --- Audit all Software List items ---
-            # 1) Updates control_dic statistics.
+            # 1) Updates control_dic statistics and timestamps.
             mame_audit_SL_all(PATHS, self.settings, control_dic)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_notify('Software Lists audit finished')
