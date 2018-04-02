@@ -18,7 +18,7 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
-WIP      MAME audit statistics.
+FEATURE  MAME audit statistics.
 
 WIP      SL audit statistics.
 

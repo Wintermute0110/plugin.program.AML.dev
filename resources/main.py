@@ -2352,7 +2352,7 @@ class Main:
                 # --- Print stuff ---
                 rom_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_rom_set']]
                 chd_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_chd_set']]
-                info_text = '[COLOR orange]MAME ROM audit statistics[/COLOR]\n'
+                info_text = '[COLOR orange]MAME ROM audit database statistics[/COLOR]\n'
                 info_text += "There are {0:5d} ROM ZIP archives in the {1} set\n".format(control_dic['audit_MAME_ZIP_files'], rom_set)
                 info_text += "There are {0:5d}     CHD archives in the {1} set\n".format(control_dic['audit_MAME_CHD_files'], chd_set)
                 t = "{0:5d} machines require ROM ZIPs, parents {1:5d}, clones {2:5d}\n"
@@ -2369,14 +2369,32 @@ class Main:
                                       control_dic['audit_archive_less_clones'])
 
                 # >> Not coded yet.
-                info_text += '\n[COLOR orange]SL audit statistics[/COLOR]\n'
+                info_text += '\n[COLOR orange]SL audit database statistics[/COLOR]\n'
                 info_text += '[COLOR orchid]Not coded yet, sorry.[/COLOR]\n'
 
-                # >> Not coded yet.
+                # --- MAME audit info ---
                 info_text += '\n[COLOR orange]MAME ROM audit information[/COLOR]\n'
-                info_text += '[COLOR orchid]Not coded yet, sorry.[/COLOR]\n'
+                info_text += '{0:5d} runnable MAME machines\n'.format(control_dic['audit_MAME_machines_runnable'])
+                # >> all
+                info_text += '{0:5d} machines with ROMs and/or CHDs\n'.format(control_dic['audit_MAME_machines_with_arch'])
+                info_text += '{0:5d} machines with no ROMs and/or CHDs\n'.format(control_dic['audit_MAME_machines_without'])
+                t = "{0:5d} good, {1:5d} bad machines\n"
+                info_text += t.format(control_dic['audit_MAME_machines_with_arch_OK'],
+                                      control_dic['audit_MAME_machines_with_arch_BAD'])
+                # >> ROMs
+                info_text += '{0:5d} machines with ROMs\n'.format(control_dic['audit_MAME_machines_with_ROMs'])
+                info_text += '{0:5d} machines with no ROMs\n'.format(control_dic['audit_MAME_machines_without_ROMs'])
+                t = "{0:5d} good, {1:5d} bad machines\n"
+                info_text += t.format(control_dic['audit_MAME_machines_with_ROMs_OK'],
+                                      control_dic['audit_MAME_machines_with_ROMs_BAD'])
+                # >> Disks
+                info_text += '{0:5d} machines with CHDs\n'.format(control_dic['audit_MAME_machines_with_CHDs'])
+                info_text += '{0:5d} machines with no CHDs\n'.format(control_dic['audit_MAME_machines_without_CHDs'])
+                t = "{0:5d} good, {1:5d} bad machines\n"
+                info_text += t.format(control_dic['audit_MAME_machines_with_CHDs_OK'],
+                                      control_dic['audit_MAME_machines_with_CHDs_BAD'])
 
-                # >> Not coded yet.
+                # --- SL audit info ---
                 info_text += '\n[COLOR orange]SL audit information[/COLOR]\n'
                 info_text += '[COLOR orchid]Not coded yet, sorry.[/COLOR]\n'
 
@@ -2790,7 +2808,8 @@ class Main:
             log_debug('_command_context_view() romof   {0}\n'.format(romof))
 
             # --- Open ZIP file, check CRC32 and also CHDs ---
-            mame_audit_MAME_machine(self.settings, rom_list)
+            audit_dic = fs_new_audit_dic()
+            mame_audit_MAME_machine(self.settings, rom_list, audit_dic)
 
             # --- Generate report ---
             info_text = []

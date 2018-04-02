@@ -176,6 +176,16 @@ def fs_new_rom_dic():
         'crc'   : '', # crc allows to know if ROM is valid or not
     }
 
+def fs_new_audit_dic():
+    return {
+        'machine_has_ROMs_or_CHDs' : False,
+        'machine_has_ROMs'         : False,
+        'machine_has_CHDs'         : False,
+        'machine_is_OK'            : True,
+        'machine_ROMs_are_OK'      : True,
+        'machine_CHDs_are_OK'      : True,
+    }
+
 #
 # Object used in MAME_assets.json, ordered alphabetically.
 #
@@ -374,18 +384,22 @@ def fs_new_control_dic():
         'stats_audit_archive_less_clones'  : 0,
 
         # --- Filed in when auditing the MAME machines ---
+        'audit_MAME_machines_runnable'      : 0,
         # >> Machines with ROMs/CHDs that are OK or not
-        'audit_MAME_machines_total'             : 0,
-        'audit_MAME_machines_have'              : 0,
-        'audit_MAME_machines_missing'           : 0,
+        'audit_MAME_machines_with_arch'     : 0,
+        'audit_MAME_machines_with_arch_OK'  : 0,
+        'audit_MAME_machines_with_arch_BAD' : 0,
+        'audit_MAME_machines_without'       : 0,
         # >> Machines with ROMs that are OK or not
-        'audit_MAME_machines_with_ROMs_total'   : 0,
-        'audit_MAME_machines_with_ROMs_have'    : 0,
-        'audit_MAME_machines_with_ROMs_missing' : 0,
+        'audit_MAME_machines_with_ROMs'     : 0,
+        'audit_MAME_machines_with_ROMs_OK'  : 0,
+        'audit_MAME_machines_with_ROMs_BAD' : 0,
+        'audit_MAME_machines_without_ROMs'  : 0,
         # >> Machines with CHDs that are OK or not
-        'audit_MAME_machines_with_CHDs_total'   : 0,
-        'audit_MAME_machines_with_CHDs_have'    : 0,
-        'audit_MAME_machines_with_CHDs_missing' : 0,
+        'audit_MAME_machines_with_CHDs'     : 0,
+        'audit_MAME_machines_with_CHDs_OK'  : 0,
+        'audit_MAME_machines_with_CHDs_BAD' : 0,
+        'audit_MAME_machines_without_CHDs'  : 0,
 
         # --- Filed in when building the SL databases ---
         # Number of SL databases (equal to the number of XML files).
