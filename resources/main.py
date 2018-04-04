@@ -224,6 +224,8 @@ class Main:
         log_debug('Python version ' + sys.version.replace('\n', ''))
         log_debug('__addon_version__ {0}'.format(__addon_version__))
         for i in range(len(sys.argv)): log_debug('sys.argv[{0}] = "{1}"'.format(i, sys.argv[i]))
+        for i in range(len(sys.path)):
+            log_debug('sys.path[{0}] = "{1}"'.format(i, sys.path[i]))
 
         # --- Addon data paths creation ---
         if not PLUGIN_DATA_DIR.exists(): PLUGIN_DATA_DIR.makedirs()
@@ -235,10 +237,10 @@ class Main:
         if not PATHS.REPORTS_DIR.exists(): PATHS.REPORTS_DIR.makedirs()
 
         # --- Process URL ---
-        self.base_url     = sys.argv[0]
+        self.base_url = sys.argv[0]
         self.addon_handle = int(sys.argv[1])
-        args              = urlparse.parse_qs(sys.argv[2][1:])
-        log_debug('args = {0}'.format(args))
+        args = urlparse.parse_qs(sys.argv[2][1:])
+        # log_debug('args = {0}'.format(args))
         # Interestingly, if plugin is called as type executable then args is empty.
         # However, if plugin is called as type video then Kodi adds the following
         # even for the first call: 'content_type': ['video']
@@ -1827,26 +1829,49 @@ class Main:
                 kodi_dialog_OK('PDF file {0} not found.'.format(PDF_file_FN.getPath()))
                 return
 
-            # >> Progress dialog
-            pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Extracting images from PDF file ...')
-            pDialog.update(0)
+            USE_PDFReader_LIB = True
+            if USE_PDFReader_LIB:
+                # >> Progress dialog
+                pDialog = xbmcgui.DialogProgress()
+                pDialog.create('Advanced MAME Launcher', 'Extracting images from PDF file ...')
+                pDialog.update(0)
 
-            # >> Extract images from PDF
-            reader = PDFReader(PDF_file_FN.getPath(), img_dir_FN.getPath())
-            log_debug('reader.info() = {0}'.format(unicode(reader.info())))
-            images = reader.convert_to_images()
-            # log_debug(unicode(images))
-            pDialog.update(100)
-            pDialog.close()
+                # >> Extract images from PDF
+                reader = PDFReader(PDF_file_FN.getPath(), img_dir_FN.getPath())
+                log_debug('reader.info() = {0}'.format(unicode(reader.info())))
+                images = reader.convert_to_images()
+                # log_debug(unicode(images))
+                pDialog.update(100)
+                pDialog.close()
 
-            # >> Show images
-            if not images:
-                kodi_dialog_OK('Cannot find images inside the PDF file.')
-                return
-            # kodi_dialog_OK('PDF contains {0} images. Showing them ...'.format(len(images)))
-            log_debug('Rendering images in "{0}"'.format(img_dir_FN.getPath()))
-            xbmc.executebuiltin('SlideShow("{0}",pause)'.format(img_dir_FN.getPath()))
+                # >> Show images
+                if not images:
+                    kodi_dialog_OK('Cannot find images inside the PDF file.')
+                    return
+                # kodi_dialog_OK('PDF contains {0} images. Showing them ...'.format(len(images)))
+                log_debug('Rendering images in "{0}"'.format(img_dir_FN.getPath()))
+                xbmc.executebuiltin('SlideShow("{0}",pause)'.format(img_dir_FN.getPath()))
+
+            else:
+                # WARNING This code still not finished.
+                pdfrw_FN = AML_ADDON_DIR.pjoin('pdfrw')
+                log_debug('Add module path "{0}"'.format(pdfrw_FN.getPath()))
+                sys.path.insert(0, pdfrw_FN.getPath())
+                from pdfrw import PdfReader
+
+                # --- Load and parse PDF ---
+                reader = PdfReader(PDF_file_FN.getPath()) 
+                log_info('PDF has {0} pages'.format(reader.numPages))
+                for i, page in enumerate(reader.pages):
+                    log_debug('--- Processing page {0} ---'.format(i))
+                    log_debug('{0} resources'.format(len(page['/Resources'])))
+                    log_debug('type(page) = {0}'.format(type(page)))
+                    for resource_name in page['/Resources']:
+                        log_debug('Resource name "{0}"'.format(unicode(resource_name)))
+                        # Images are stored as /XObject (external object)
+                        if resource_name == '/XObject':
+                            xobject = page['/Resources'][resource_name]
+                            log_debug('Processing /XObject "{0}"'.format(unicode(resource_name)))
 
         # --- Display brother machines (same driver) ---
         elif action == ACTION_VIEW_BROTHERS:
