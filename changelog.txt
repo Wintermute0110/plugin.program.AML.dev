@@ -18,6 +18,8 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
+WIP      Improve PDF manual rendering. Use the library pdfrw for image extraction.
+
 FEATURE  MAME audit statistics.
 
 WIP      SL audit statistics.
