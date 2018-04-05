@@ -3317,23 +3317,6 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     binary_catalog_parents = {}
     binary_catalog_all = {}
 
-    # --- No-ROM machines ---
-    log_info('Making No-ROMs Machines index ...')
-    parent_dic = {}
-    all_dic = {}
-    for parent_name in main_pclone_dic:
-        machine = machines[parent_name]
-        machine_render = machines_render[parent_name]
-        m_roms = machine_roms[parent_name]
-        if machine_render['isDevice']: continue # >> Skip device machines
-        if m_roms['roms']: continue
-        parent_dic[parent_name] = machine_render['description']
-        all_dic[parent_name] = machine_render['description']
-        for clone_name in main_pclone_dic[parent_name]:
-            all_dic[clone_name] = machines_render[clone_name]['description']
-    binary_catalog_parents['NoROM'] = parent_dic
-    binary_catalog_all['NoROM'] = all_dic
-
     # --- CHD machines ---
     log_info('Making CHD Machines index ...')
     parent_dic = {}
@@ -3365,6 +3348,22 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
             all_dic[clone_name] = machines_render[clone_name]['description']
     binary_catalog_parents['Samples'] = parent_dic
     binary_catalog_all['Samples'] = all_dic
+
+    # --- Software List machines ---
+    log_info('Making Software List Machines index ...')
+    parent_dic = {}
+    all_dic = {}
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
+        machine_render = machines_render[parent_name]
+        if machine_render['isDevice']: continue # >> Skip device machines
+        if not machine['softwarelists']: continue
+        parent_dic[parent_name] = machine_render['description']
+        all_dic[parent_name] = machine_render['description']
+        for clone_name in main_pclone_dic[parent_name]:
+            all_dic[clone_name] = machines_render[clone_name]['description']
+    binary_catalog_parents['SoftwareLists'] = parent_dic
+    binary_catalog_all['SoftwareLists'] = all_dic
 
     # --- BIOS ---
     log_info('Making BIOS Machines index ...')

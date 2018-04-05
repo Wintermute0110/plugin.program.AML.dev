@@ -495,11 +495,10 @@ class Main:
         devices_str    = 'Device machines'
 
         # >> Binary filters
-        bios_str       = 'Machines [BIOS]'
-        norom_str      = 'Machines [ROMless]'
         chd_str        = 'Machines [with CHDs]'
         samples_str    = 'Machines [with Samples]'
         softlists_str  = 'Machines [with Software Lists]'
+        bios_str       = 'Machines [BIOS]'
 
         # >> Cataloged filters (optional)
         catver_str       = 'Machines by Category (Catver)'
@@ -531,9 +530,9 @@ class Main:
             mecha_str      += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Mechanical']['num_machines'])
             dead_str       += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Dead']['num_machines'])
             devices_str    += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Devices']['num_machines'])
-            norom_str      += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['NoROM']['num_machines'])
             chd_str        += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['CHD']['num_machines'])
             samples_str    += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['Samples']['num_machines'])
+            softlists_str  += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['SoftwareLists']['num_machines'])
             bios_str       += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['BIOS']['num_machines'])
 
         elif cache_index_dic and mame_view_mode == VIEW_MODE_PCLONE:
@@ -543,9 +542,9 @@ class Main:
             mecha_str      += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Mechanical']['num_parents'])
             dead_str       += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Dead']['num_parents'])
             devices_str    += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Devices']['num_parents'])
-            norom_str      += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['NoROM']['num_parents'])
             chd_str        += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['CHD']['num_parents'])
             samples_str    += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['Samples']['num_parents'])
+            softlists_str  += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['SoftwareLists']['num_parents'])
             bios_str       += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['BIOS']['num_parents'])
 
         if cache_index_dic:
@@ -587,9 +586,9 @@ class Main:
 
         # >> Binary filters (Virtual catalog 'Binary')
         if self.settings['display_binary_filters']:
-            self._render_root_list_row_catalog(norom_str, 'Binary', 'NoROM')
             self._render_root_list_row_catalog(chd_str, 'Binary', 'CHD')
             self._render_root_list_row_catalog(samples_str, 'Binary', 'Samples')
+            self._render_root_list_row_catalog(softlists_str, 'Binary', 'SoftwareLists')
             self._render_root_list_row_catalog(bios_str, 'Binary', 'BIOS')
 
         if self.settings['display_catalog_filters']:
@@ -663,14 +662,14 @@ class Main:
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_skin_binary_filters(self):
-        norom_str = 'Machines [with no ROMs]'
         chd_str = 'Machines [with CHDs]'
         samples_str = 'Machines [with Samples]'
+        softlists_str  = 'Machines [with Software Lists]'
         bios_str = 'Machines [BIOS]'
 
-        self._render_root_list_row_standard(norom_str,      self._misc_url_2_arg('catalog', 'Binary', 'category', 'NoROM'))
         self._render_root_list_row_standard(chd_str,        self._misc_url_2_arg('catalog', 'Binary', 'category', 'CHD'))
         self._render_root_list_row_standard(samples_str,    self._misc_url_2_arg('catalog', 'Binary', 'category', 'Samples'))
+        self._render_root_list_row_standard(softlists_str,  self._misc_url_2_arg('catalog', 'Binary', 'category', 'SoftwareLists'))
         self._render_root_list_row_standard(bios_str,       self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
@@ -688,14 +687,14 @@ class Main:
         if self.settings['series_path']:
             self._render_root_list_row_standard('Machines by Series',             self._misc_url_1_arg('catalog', 'Series'))
 
-        self._render_root_list_row_standard('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
-        self._render_root_list_row_standard('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
-        self._render_root_list_row_standard('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
-        self._render_root_list_row_standard('Machines by Control Type',        self._misc_url_1_arg('catalog', 'Controls'))
-        self._render_root_list_row_standard('Machines by Display Type',        self._misc_url_1_arg('catalog', 'Display_Type'))
-        self._render_root_list_row_standard('Machines by Display Rotation',    self._misc_url_1_arg('catalog', 'Display_Rotate'))
-        self._render_root_list_row_standard('Machines by Device',              self._misc_url_1_arg('catalog', 'Devices'))
-        self._render_root_list_row_standard('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
+        self._render_root_list_row_standard('Machines by Manufacturer',     self._misc_url_1_arg('catalog', 'Manufacturer'))
+        self._render_root_list_row_standard('Machines by Year',             self._misc_url_1_arg('catalog', 'Year'))
+        self._render_root_list_row_standard('Machines by Driver',           self._misc_url_1_arg('catalog', 'Driver'))
+        self._render_root_list_row_standard('Machines by Control Type',     self._misc_url_1_arg('catalog', 'Controls'))
+        self._render_root_list_row_standard('Machines by Display Type',     self._misc_url_1_arg('catalog', 'Display_Type'))
+        self._render_root_list_row_standard('Machines by Display Rotation', self._misc_url_1_arg('catalog', 'Display_Rotate'))
+        self._render_root_list_row_standard('Machines by Device',           self._misc_url_1_arg('catalog', 'Devices'))
+        self._render_root_list_row_standard('Machines by Software List',    self._misc_url_1_arg('catalog', 'BySL'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_skin_dat_slots(self):
