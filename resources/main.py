@@ -4062,6 +4062,23 @@ class Main:
                     'sourcefile' : machine_main_dic[m_name]['sourcefile']
                 }
 
+            # >> Clean 'filters' directory JSON files.
+            log_info('Cleaning dir "{0}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
+            pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
+            pDialog.update(0)
+            file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
+            num_files = len(file_list)
+            log_info('Found {0} files'.format(num_files))
+            processed_items = 0
+            for file in file_list:
+                pDialog.update((processed_items*100) // num_files)
+                if file.endswith('.json'):
+                    full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
+                    log_info('UNLINK "{0}"'.format(full_path))
+                    os.unlink(full_path)
+                processed_items += 1
+            pDialog.close()
+
             # >> Traverse list of filters, build filter index and compute filter list.
             pdialog_line1 = 'Building custom MAME filters'
             pDialog.create('Advanced MAME Launcher', pdialog_line1)

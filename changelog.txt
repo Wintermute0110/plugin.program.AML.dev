@@ -20,6 +20,12 @@ WIP      Implement "Recently played SL ROMs"
 
 WIP      Improve PDF manual rendering. Use the library pdfrw for image extraction.
 
+WIP      Clean ROM cache before rebuilding cache.
+
+WIP      Clean asset cache before rebuilding cache.
+
+FEATURE  Clean filters directory before rebuilding custom filters.
+
 FEATURE  MAME audit statistics.
 
 FEATURE  SL audit statistics.
