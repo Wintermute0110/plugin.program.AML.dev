@@ -2811,7 +2811,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             m_disks = machine_roms[m_name]['disks']
 
             # --- CHDs ------------------------------------------------------------
-            split_chds = []
+            merged_chds = []
             for disk in m_disks:
                 if not cloneof:
                     # --- Parent machine ---
@@ -2830,10 +2830,10 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
                 disk_t['type'] = ROM_TYPE_DISK
                 disk_t['location'] = location
                 disk_t.pop('merge')
-                split_chds.append(disk_t)
-            # >> Apend CHDs at the end of the ROM list.
-            if m_name in audit_roms_dic: audit_roms_dic[m_name].extend(split_chds)
-            else:                        audit_roms_dic[m_name] = split_chds
+                merged_chds.append(disk_t)
+            # >> Extend CHDs at the end of the ROM list.
+            if m_name in audit_roms_dic: audit_roms_dic[m_name].extend(merged_chds)
+            else:                        audit_roms_dic[m_name] = merged_chds
 
             # --- Update dialog ---
             item_count += 1
@@ -2908,7 +2908,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             pDialog.update((item_count*100)//num_items)
     pDialog.close()
 
-    # --- ROM/CHD machine index ---
+    # --- Machine archives and ROM/CHD sets ---
     # NOTE roms_dic and chds_dic may have invalid ROMs/CHDs. However, machine_archives_dic must
     #      have only valid ROM archives (ZIP/7Z).
     # For every machine, it goes ROM by ROM and makes a list of ZIP archive locations. Then, it
@@ -2935,7 +2935,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         rom_list = audit_roms_dic[m_name]
         machine_rom_archive_set = set()
         machine_chd_archive_set = set()
-        # --- ROM list ---
+        # --- Iterate ROMs/CHDs ---
         for rom in rom_list:
             if rom['type'] == ROM_TYPE_DISK:
                 # >> Skip invalid CHDs
@@ -3984,10 +3984,10 @@ def mame_load_SL_XML(xml_filename):
 # SL_INDEX_PATH,
 # SL_MACHINES_PATH,
 # SL_PCLONE_DIC_PATH,
-# per-SL database                          (32x.json)
-# per-SL database                          (32x_ROMs.json)
-# per-SL ROM audit database                (32x_ROM_audit.json)
-# per-SL software archies (ROMs and CHDs)  (32x_software_archives.json)
+# per-SL database                       (32x.json)
+# per-SL database                       (32x_ROMs.json)
+# per-SL ROM audit database             (32x_ROM_audit.json)
+# per-SL item archives (ROMs and CHDs)  (32x_ROM_archives.json)
 #
 def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, machines_render):
     SL_dir_FN = FileName(settings['SL_hash_path'])
@@ -4000,7 +4000,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     pdialog_line1 = 'Building Sofware Lists ROM databases ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
-    # >> DEBUG code for development, only process first SL file.
+    # >> DEBUG code for development, only process first SL file (32x).
     # SL_file_list = [ sorted(SL_file_list)[0] ]
     total_SL_files = len(SL_file_list)
     num_SL_with_ROMs = 0
@@ -4054,26 +4054,30 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
 
         # >> Filenames of the databases
         # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
+        SL_Items_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json')        
         SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
         SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_audit.json')
-        SL_Soft_Archives_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_software_archives.json')
+        SL_Soft_Archives_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_archives.json')
 
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
-        SL_roms = fs_load_JSON_file(SL_ROMs_DB_FN.getPath(), verbose = False)
+        SL_Items = fs_load_JSON_file(SL_Items_DB_FN.getPath(), verbose = False)
+        SL_ROMs = fs_load_JSON_file(SL_ROMs_DB_FN.getPath(), verbose = False)
 
-        # >> Traverse all ROMs and build ROM audit and ROM/CHD list databases.
-        SL_Audit_ROMs = {}
-        SL_Software_Archives = {}
-        for SL_rom in SL_roms:
-            # --- Build ROM audit databases ---
-            SL_Audit_ROMs[SL_rom] = []
-
-            # >> In the SL MERGED set all ROMs are stored in the parent ZIP file.
-            # >> CURRENTLY MERGED SET IS NOT IMPLEMENTED!!!
-            soft_item_has_ROMs = False
-            if rom_set == 'MERGED':
+        # --- First add the SL item ROMs to the audit database ---
+        # >> In the SL ROM MERGED set all ROMs are stored in the parent ZIP file.
+        #
+        # PATH/32x/chaotix.zip/knuckles' chaotix (europe).bin
+        # PATH/32x/chaotix.zip/chaotixju/chaotix ~ knuckles' chaotix (japan, usa).bin
+        # PATH/32x/chaotix.zip/chaotixjup/knuckles' chaotix (prototype 214 - feb 14, 1995, 06.46).bin
+        # ...
+        #
+        SL_Audit_ROMs_dic = {}
+        if rom_set == 'MERGED':
+            for SL_item_name in SL_ROMs:
+                nonmerged_roms = []
+                cloneof = SL_Items[SL_item_name]['cloneof']
                 # >> Iterate Parts in a SL Software item.
-                for part_dic in SL_roms[SL_rom]:
+                for part_dic in SL_ROMs[SL_item_name]:
                     # part_name = part_dic['part_name']
                     # part_interface = part_dic['part_interface']
                     if 'dataarea' in part_dic:
@@ -4082,82 +4086,130 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
                             # dataarea_name = dataarea_dic['name']
                             # >> Interate ROMs in dataarea
                             for rom_dic in dataarea_dic['roms']:
+                                if not cloneof:
+                                    # Parent
+                                    location = SL_name + '/' + SL_item_name + '/' + rom_dic['name']
+                                else:
+                                    # Clone
+                                    location = SL_name + '/' + cloneof + '/' + SL_item_name + '/' + rom_dic['name']
                                 rom_audit_dic = fs_new_SL_ROM_audit_dic()
                                 rom_audit_dic['type']     = ROM_TYPE_ROM
                                 rom_audit_dic['name']     = rom_dic['name']
                                 rom_audit_dic['size']     = rom_dic['size']
                                 rom_audit_dic['crc']      = rom_dic['crc']
-                                rom_audit_dic['location'] = SL_name + '/' + SL_rom + '/' + rom_dic['name']
-                                SL_Audit_ROMs[SL_rom].append(rom_audit_dic)
-                                soft_item_has_ROMs = True
-            # >> In the SL SPLIT set ...
-            elif rom_set == 'SPLIT':
-                # >> Iterate Parts in a SL Software item.
-                for part_dic in SL_roms[SL_rom]:
-                    # part_name = part_dic['part_name']
-                    # part_interface = part_dic['part_interface']
+                                rom_audit_dic['location'] = location
+                                nonmerged_roms.append(rom_audit_dic)
+                SL_Audit_ROMs_dic[SL_item_name] = nonmerged_roms
+
+        # >> In the SL ROM SPLIT set each item ROMs are in their own file
+        #
+        # PATH/32x/chaotix.zip/knuckles' chaotix (europe).bin
+        # PATH/32x/chaotixju.zip/chaotix ~ knuckles' chaotix (japan, usa).bin
+        # PATH/32x/chaotixjup.zip/knuckles' chaotix (prototype 214 - feb 14, 1995, 06.46).bin
+        # ...
+        #
+        elif rom_set == 'SPLIT':
+            for SL_item_name in SL_ROMs:
+                split_roms = []
+                for part_dic in SL_ROMs[SL_item_name]:
                     if 'dataarea' in part_dic:
-                        # >> Iterate Dataareas
                         for dataarea_dic in part_dic['dataarea']:
-                            # dataarea_name = dataarea_dic['name']
-                            # >> Interate ROMs in dataarea
                             for rom_dic in dataarea_dic['roms']:
+                                location = SL_name + '/' + SL_item_name + '/' + rom_dic['name']
                                 rom_audit_dic = fs_new_SL_ROM_audit_dic()
                                 rom_audit_dic['type']     = ROM_TYPE_ROM
                                 rom_audit_dic['name']     = rom_dic['name']
                                 rom_audit_dic['size']     = rom_dic['size']
                                 rom_audit_dic['crc']      = rom_dic['crc']
-                                rom_audit_dic['location'] = SL_name + '/' + SL_rom + '/' + rom_dic['name']
-                                SL_Audit_ROMs[SL_rom].append(rom_audit_dic)
-                                soft_item_has_ROMs = True
+                                rom_audit_dic['location'] = location
+                                split_roms.append(rom_audit_dic)
+                SL_Audit_ROMs_dic[SL_item_name] = split_roms
 
-            # --- Build CHD audit databases ---
-            # >> CURRENTLY MERGED SET IS NOT IMPLEMENTED!!!
-            soft_item_disk_list = []
-            if chd_set == 'MERGED':
+        # --- Second add the SL item CHDs to the audit database ---
+        # >> In the SL CHD MERGED set all CHDs are in the directory of the parent
+        #
+        # ffant9  --> parent with 4 DISKS (v1.1)
+        # ffant9a --> parent with 4 DISKS (v1.0)
+        #
+        # [parent traid]   PATH/psx/traid/tomb raider (usa) (v1.6).chd
+        # [clone  traida]  PATH/psx/traid/tomb raider (usa) (v1.5).chd
+        # [clone  traiddm] PATH/psx/traid/tr1.chd
+        #
+        if chd_set == 'MERGED':
+            for SL_item_name in SL_ROMs:
+                merged_chds = []
+                cloneof = SL_Items[SL_item_name]['cloneof']
+                for part_dic in SL_ROMs[SL_item_name]:
+                    if 'diskarea' in part_dic:
+                        for diskarea_dic in part_dic['diskarea']:
+                            for disk_dic in diskarea_dic['disks']:
+                                parent_name = cloneof if cloneof else SL_item_name
+                                location = SL_name + '/' + parent_name + '/' + disk_dic['name']
+                                disk_audit_dic = fs_new_SL_DISK_audit_dic()
+                                disk_audit_dic['type']     = ROM_TYPE_DISK
+                                disk_audit_dic['name']     = disk_dic['name']
+                                disk_audit_dic['sha1']     = disk_dic['sha1']
+                                disk_audit_dic['location'] = location
+                                merged_chds.append(disk_audit_dic)
+                # >> Extend CHDs at the end of the ROM list.
+                if SL_item_name in SL_Audit_ROMs_dic: SL_Audit_ROMs_dic[SL_item_name].extend(merged_chds)
+                else:                                 SL_Audit_ROMs_dic[SL_item_name] =  merged_chds
+
+        # >> In the SL CHD SPLIT set CHD of each machine are in their own directory.
+        # >> This is not confirmed since I do not have the PD DAT file for the SL CHD SPLIT set.
+        #
+        # [parent traid]   PATH/psx/traid/tomb raider (usa) (v1.6).chd
+        # [clone  traida]  PATH/psx/traida/tomb raider (usa) (v1.5).chd
+        # [clone  traiddm] PATH/psx/traiddm/tr1.chd
+        #
+        elif chd_set == 'SPLIT':
+            for SL_item_name in SL_ROMs:
+                split_chds = []
                 # >> Iterate Parts in a SL Software item.
-                for part_dic in SL_roms[SL_rom]:
+                for part_dic in SL_ROMs[SL_item_name]:
                     if 'diskarea' in part_dic:
                         # >> Iterate Diskareas
                         for diskarea_dic in part_dic['diskarea']:
                             # diskarea_name = diskarea_dic['name']
                             # >> Iterate DISKs in diskarea
                             for disk_dic in diskarea_dic['disks']:
+                                location = SL_name + '/' + SL_rom + '/' + disk_dic['name']
                                 disk_audit_dic = fs_new_SL_DISK_audit_dic()
                                 disk_audit_dic['type']     = ROM_TYPE_DISK
                                 disk_audit_dic['name']     = disk_dic['name']
                                 disk_audit_dic['sha1']     = disk_dic['sha1']
-                                disk_audit_dic['location'] = SL_name + '/' + SL_rom + '/' + disk_dic['name']
-                                SL_Audit_ROMs[SL_rom].append(disk_audit_dic)
-                                soft_item_disk_list.append(disk_dic['name'])
-            # >> In the SL SPLIT set ...
-            elif chd_set == 'SPLIT':
-                # >> Iterate Parts in a SL Software item.
-                for part_dic in SL_roms[SL_rom]:
-                    if 'diskarea' in part_dic:
-                        # >> Iterate Diskareas
-                        for diskarea_dic in part_dic['diskarea']:
-                            # diskarea_name = diskarea_dic['name']
-                            # >> Iterate DISKs in diskarea
-                            for disk_dic in diskarea_dic['disks']:
-                                disk_audit_dic = fs_new_SL_DISK_audit_dic()
-                                disk_audit_dic['type']     = ROM_TYPE_DISK
-                                disk_audit_dic['name']     = disk_dic['name']
-                                disk_audit_dic['sha1']     = disk_dic['sha1']
-                                disk_audit_dic['location'] = SL_name + '/' + SL_rom + '/' + disk_dic['name']
-                                SL_Audit_ROMs[SL_rom].append(disk_audit_dic)
-                                soft_item_disk_list.append(disk_dic['name'])
+                                disk_audit_dic['location'] = location
+                                split_chds.append(disk_audit_dic)
+                # >> Extend CHDs at the end of the ROM list.
+                if SL_item_name in SL_Audit_ROMs_dic: SL_Audit_ROMs_dic[SL_item_name].extend(split_chds)
+                else:                                 SL_Audit_ROMs_dic[SL_item_name] =  split_chds
 
-            # --- Compute Software List Item archives ---
-            SL_Software_Archives[SL_rom] = { 'ROMs' : [], 'CHDs' : [] }
-            if soft_item_has_ROMs:
-                SL_Software_Archives[SL_rom]['ROMs'].append(SL_rom)
-            if soft_item_disk_list:
-                SL_Software_Archives[SL_rom]['CHDs'].extend(soft_item_disk_list)
+        # --- Machine archives ---
+        # >> There is not ROMs and CHDs sets for Software List Items (not necessary).
+        SL_Item_Archives_dic = {}
+        for SL_item_name in SL_Audit_ROMs_dic:
+            rom_list = SL_Audit_ROMs_dic[SL_item_name]
+            machine_rom_archive_set = set()
+            machine_chd_archive_set = set()
+            # --- Iterate ROMs/CHDs ---
+            for rom in rom_list:
+                if rom['type'] == ROM_TYPE_DISK:
+                    # >> Skip invalid CHDs
+                    if not rom['sha1']: continue
+                    chd_name = rom['location']
+                    machine_chd_archive_set.add(chd_name)
+                else:
+                    # >> Skip invalid ROMs
+                    if not rom['crc']: continue
+                    rom_str_list = rom['location'].split('/')
+                    zip_name = rom_str_list[0]
+                    machine_rom_archive_set.add(zip_name)
+            SL_Item_Archives_dic[SL_item_name] = {'ROMs' : list(machine_rom_archive_set),
+                                                  'CHDs' : list(machine_chd_archive_set)}
 
-        # >> Save databases
-        fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs, verbose = False)
-        fs_write_JSON_file(SL_Soft_Archives_DB_FN.getPath(), SL_Software_Archives, verbose = False)
+        # --- Save databases ---
+        fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs_dic, verbose = False)
+        fs_write_JSON_file(SL_Soft_Archives_DB_FN.getPath(), SL_Item_Archives_dic, verbose = False)
         # >> Update progress
         processed_files += 1
     pDialog.update((processed_files*100) // total_files, pdialog_line1, ' ')
@@ -4215,6 +4267,37 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # >> Update progress
         processed_SL += 1
     fs_write_JSON_file(PATHS.SL_MACHINES_PATH.getPath(), SL_machines_dic)
+    pDialog.update((processed_SL*100) // total_SL, pdialog_line1, ' ')
+    pDialog.close()
+
+    # --- Empty SL asset DB ---
+    log_info('Making Software List (empty) asset databases ...')
+    pdialog_line1 = 'Building Software List (empty) asset databases ...'
+    pDialog.update(0, pdialog_line1)
+    total_SL = len(SL_catalog_dic)
+    processed_SL = 0
+    SL_machines_dic = {}
+    for SL_name in sorted(SL_catalog_dic):
+        # --- Update progress ---
+        pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'Software List {0}'.format(SL_name))
+        
+        # --- Load SL databases ---
+        file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
+        assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+
+        # --- Second pass: substitute artwork ---
+        SL_assets_dic = {}
+        for rom_key in sorted(SL_roms):
+            SL_assets_dic[rom_key] = fs_new_SL_asset()
+
+        # --- Write SL asset JSON ---
+        fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
+
+        # >> Update progress
+        processed_SL += 1
     pDialog.update((processed_SL*100) // total_SL, pdialog_line1, ' ')
     pDialog.close()
 
@@ -4887,7 +4970,7 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
         pDialog.update(update_number, pdialog_line1, 'Software List {0}'.format(SL_name))
 
         # --- Load SL databases ---
-        file_name =  SL_index_dic[SL_name]['rom_DB_noext'] + '.json'
+        file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         SL_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
 

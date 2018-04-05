@@ -24,6 +24,8 @@ FEATURE  MAME audit statistics.
 
 WIP      SL audit statistics.
 
+FEATURE  Support for SL Merged ROM/CHD sets (currently only Split).
+
 FEATURE  Added audit timestamps (MAME machines and Software Lists).
 
 FEATURE  Move driver aristmk5.cpp (Aristocrat gambling machines) from Standard to Unusual.
