@@ -4074,7 +4074,7 @@ class Main:
                 pDialog.update((processed_items*100) // num_files)
                 if file.endswith('.json'):
                     full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
-                    log_info('UNLINK "{0}"'.format(full_path))
+                    # log_debug('UNLINK "{0}"'.format(full_path))
                     os.unlink(full_path)
                 processed_items += 1
             pDialog.close()

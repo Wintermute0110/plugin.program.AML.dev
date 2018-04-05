@@ -889,6 +889,25 @@ def fs_rom_cache_get_hash(catalog_name, category_name):
 def fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog):
     log_info('fs_build_ROM_cache() Building ROM cache ...')
 
+    # --- Clean 'cache' directory JSON ROM files ---
+    log_info('Cleaning dir "{0}"'.format(PATHS.CACHE_DIR.getPath()))
+    pdialog_line1 = 'Cleaning old cache JSON files ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1, ' ')
+    pDialog.update(0, pdialog_line1)
+    file_list = os.listdir(PATHS.CACHE_DIR.getPath())
+    num_files = len(file_list)
+    log_info('Found {0} files'.format(num_files))
+    processed_items = 0
+    for file in file_list:
+        pDialog.update((processed_items*100) // num_files, pdialog_line1)
+        if file.endswith('_ROMs.json'):
+            full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
+            # log_debug('UNLINK "{0}"'.format(full_path))
+            os.unlink(full_path)
+        processed_items += 1
+    pDialog.close()
+
+    # --- Build ROM cache ---
     pDialog.create('Advanced MAME Launcher', ' ', ' ')
     num_catalogs = len(cache_index_dic)
     catalog_count = 1
@@ -902,6 +921,7 @@ def fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialo
         total_items = len(catalog_index_dic)
         item_count = 0
         for catalog_key in catalog_index_dic:
+            pDialog.update((item_count*100) // total_items, pdialog_line1)
             hash_str = catalog_index_dic[catalog_key]['hash']
             # log_verb('fs_build_ROM_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
             # log_verb('fs_build_ROM_cache() hash {0}'.format(hash_str))
@@ -915,7 +935,6 @@ def fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialo
 
             # >> Progress dialog
             item_count += 1
-            pDialog.update((item_count*100) // total_items, pdialog_line1)
         # >> Progress dialog
         catalog_count += 1
     pDialog.close()
@@ -932,6 +951,25 @@ def fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name):
 def fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog):
     log_info('fs_build_asset_cache() Building Asset cache ...')
 
+    # --- Clean 'cache' directory JSON Asset files ---
+    log_info('Cleaning dir "{0}"'.format(PATHS.CACHE_DIR.getPath()))
+    pdialog_line1 = 'Cleaning old cache JSON files ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1, ' ')
+    pDialog.update(0, pdialog_line1)
+    file_list = os.listdir(PATHS.CACHE_DIR.getPath())
+    num_files = len(file_list)
+    log_info('Found {0} files'.format(num_files))
+    processed_items = 0
+    for file in file_list:
+        pDialog.update((processed_items*100) // num_files, pdialog_line1)
+        if file.endswith('_assets.json'):
+            full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
+            # log_debug('UNLINK "{0}"'.format(full_path))
+            os.unlink(full_path)
+        processed_items += 1
+    pDialog.close()
+
+    # --- Build cache ---
     pDialog.create('Advanced MAME Launcher', ' ', ' ')
     num_catalogs = len(cache_index_dic)
     catalog_count = 1
@@ -945,6 +983,7 @@ def fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog):
         total_items = len(catalog_index_dic)
         item_count = 0
         for catalog_key in catalog_index_dic:
+            pDialog.update((item_count*100) // total_items, pdialog_line1)
             hash_str = catalog_index_dic[catalog_key]['hash']
             # log_verb('fs_build_asset_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
             # log_verb('fs_build_asset_cache() hash {0}'.format(hash_str))
@@ -958,7 +997,6 @@ def fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog):
 
             # >> Progress dialog
             item_count += 1
-            pDialog.update((item_count*100) // total_items, pdialog_line1)
         # >> Progress dialog
         catalog_count += 1
     pDialog.close()
