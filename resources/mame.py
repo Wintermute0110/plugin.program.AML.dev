@@ -1457,7 +1457,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
     # >> Iterate all SL databases and audit ROMs.
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pdialog_line1 = 'Auditing Sofware Lists ROMs ...'
+    pdialog_line1 = 'Auditing Sofware Lists ROMs and CHDs ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     total_files = len(SL_catalog_dic)
     processed_files = 0
@@ -1957,6 +1957,7 @@ def mame_build_SL_names(PATHS, settings):
                         # log_debug('mame_build_SL_names() SL "{0}" -> "{1}"'.format(sl_name, sl_desc))
                         SL_names_dic[sl_name] = sl_desc
     # >> Save database
+    log_debug('mame_build_SL_names() Extracted {0} Software List names'.format(len(SL_names_dic)))
     fs_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
 
 # -------------------------------------------------------------------------------------------------
@@ -3167,7 +3168,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # ---------------------------------------------------------------------------------------------
     # Main filters (None catalog) -----------------------------------------------------------------
     # ---------------------------------------------------------------------------------------------
-    pDialog.update(update_number, pDialog_line1, 'Building Main Catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Main Catalog')
     main_catalog_parents = {}
     main_catalog_all = {}
 
@@ -3313,7 +3314,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # ---------------------------------------------------------------------------------------------
     # Binary filters ------------------------------------------------------------------------------
     # ---------------------------------------------------------------------------------------------
-    pDialog.update(update_number, pDialog_line1, 'Building Binary Catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Binary Catalog')
     binary_catalog_parents = {}
     binary_catalog_all = {}
 
@@ -3392,7 +3393,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # ---------------------------------------------------------------------------------------------
     # --- Catver catalog ---
     log_info('Making Catver catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Catver catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Catver Catalog')
     catalog_parents = {}
     catalog_all = {}
     _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'catver')
@@ -3404,7 +3405,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Catlist catalog ---
     log_info('Making Catlist catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Catlist catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Catlist Catalog')
     catalog_parents = {}
     catalog_all = {}
     _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'catlist')
@@ -3416,7 +3417,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Genre catalog ---
     log_info('Making Genre catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Genre catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Genre Catalog')
     catalog_parents = {}
     catalog_all = {}
     _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'genre')
@@ -3428,7 +3429,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Nplayers catalog ---
     log_info('Making Nplayers catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Nplayers catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Nplayers Catalog')
     catalog_parents = {}
     catalog_all = {}
     _build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'nplayers')
@@ -3440,7 +3441,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Bestgames catalog ---
     log_info('Making Bestgames catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Bestgames catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Bestgames Catalog')
     catalog_parents = {}
     catalog_all = {}
     _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'bestgames')
@@ -3452,7 +3453,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Series catalog ---
     log_info('Making Series catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Series catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Series Catalog')
     catalog_parents = {}
     catalog_all = {}
     _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, 'series')
@@ -3464,7 +3465,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Manufacturer catalog ---
     log_info('Making Manufacturer catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Manufacturer catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Manufacturer Catalog')
     catalog_parents = {}
     catalog_all = {}
     _build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'manufacturer')
@@ -3476,7 +3477,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Year catalog ---
     log_info('Making Year catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Year catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Year Catalog')
     catalog_parents = {}
     catalog_all = {}
     _build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'year')
@@ -3488,7 +3489,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Driver catalog ---
     log_info('Making Driver catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Driver catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Driver Catalog')
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
@@ -3513,7 +3514,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Control catalog ---
     log_info('Making Control catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Control catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Control Catalog')
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
@@ -3545,7 +3546,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Display type catalog ---
     log_info('Making Display Type catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Display type catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Display type Catalog')
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
@@ -3571,7 +3572,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Display rotate catalog ---
     log_info('Making Display Rotate catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Display rotate catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Display rotate Catalog')
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
@@ -3597,7 +3598,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- <device> catalog ---
     log_info('Making <device> tag catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making <device> catalog ...')
+    pDialog.update(update_number, pDialog_line1, '<device> Catalog')
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
@@ -3630,7 +3631,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Software List catalog ---
     log_info('Making Software List catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making Software List catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Software List Catalog')
     # >> Load proper Software List proper names, if available
     SL_names_dic = fs_load_JSON_file(PATHS.SL_NAMES_PATH.getPath())
     catalog_parents = {}
@@ -3660,7 +3661,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- MAME short name catalog ---
     log_info('Making MAME short name catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making short name catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Short name Catalog')
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
@@ -3686,7 +3687,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- MAME long name catalog ---
     log_info('Making MAME long name catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Making MAME long name catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Long name Catalog')
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
@@ -4299,7 +4300,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     total_SL_XML_files = 0
     total_SL_software_items = 0
     for sl_name in sorted(SL_catalog_dic):
-        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0}'.format(sl_name))
+        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'Software List {0}'.format(sl_name))
         total_SL_XML_files += 1
         pclone_dic = {}
         SL_database_FN = PATHS.SL_DB_DIR.pjoin(sl_name + '.json')
@@ -4343,7 +4344,6 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         processed_SL += 1
     fs_write_JSON_file(PATHS.SL_MACHINES_PATH.getPath(), SL_machines_dic)
     pDialog.update((processed_SL*100) // total_SL, pdialog_line1, ' ')
-    pDialog.close()
 
     # --- Empty SL asset DB ---
     log_info('Making Software List (empty) asset databases ...')
@@ -4713,7 +4713,7 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
 
         # >> Load SL databases
         SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
-        SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_software_archives.json')
+        SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_ROM_archives.json')
         sl_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
         soft_archives = fs_load_JSON_file(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
 

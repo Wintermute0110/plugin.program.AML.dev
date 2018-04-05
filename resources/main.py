@@ -4682,16 +4682,16 @@ class Main:
         # --- Build Step by Step ---
         elif menu_item == 7:
             submenu = dialog.select('Setup plugin (step by step)',
-                                   ['Build MAME databases ...',
-                                    'Build Audit/Scanner databases ...',
-                                    'Build MAME catalogs ...',
-                                    'Build Software Lists databases ...',
-                                    'Scan MAME ROMs/CHDs/Samples ...',
-                                    'Scan MAME assets/artwork ...',
-                                    'Scan Software Lists ROMs/CHDs ...',
-                                    'Scan Software Lists assets/artwork ...',
-                                    'Build MAME machines plot',
-                                    'Buils Software List items plot'])
+                                   ['Build MAME databases',
+                                    'Build Audit/Scanner databases',
+                                    'Build MAME catalogs',
+                                    'Build Software Lists databases',
+                                    'Scan MAME ROMs/CHDs/Samples',
+                                    'Scan MAME assets/artwork',
+                                    'Scan Software Lists ROMs/CHDs',
+                                    'Scan Software Lists assets/artwork',
+                                    'Build MAME machines plots',
+                                    'Buils Software List items plots'])
             if submenu < 0: return
 
             # --- Build main MAME database, PClone list and hashed database ---
