@@ -622,8 +622,8 @@ class Main:
         # >> Software lists
         if self.settings['display_SL_browser']:
             self._render_root_list_row_standard('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
-            self._render_root_list_row_standard('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
             self._render_root_list_row_standard('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
+            self._render_root_list_row_standard('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
 
         # >> Special launchers
         if self.settings['display_MAME_favs']:
@@ -708,8 +708,8 @@ class Main:
     def _render_skin_SL_filters(self):
         if self.settings['SL_hash_path']:
             self._render_root_list_row_standard('Software Lists (with ROMs)', self._misc_url_1_arg('catalog', 'SL_ROM'))
-            self._render_root_list_row_standard('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
             self._render_root_list_row_standard('Software Lists (with ROMs and CHDs)', self._misc_url_1_arg('catalog', 'SL_ROM_CHD'))
+            self._render_root_list_row_standard('Software Lists (with CHDs)', self._misc_url_1_arg('catalog', 'SL_CHD'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_root_list_row_catalog(self, display_name, catalog_name, catalog_key):
