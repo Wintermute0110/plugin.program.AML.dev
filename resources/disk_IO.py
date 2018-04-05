@@ -385,12 +385,12 @@ def fs_new_control_dic():
 
         # --- Filed in when auditing the MAME machines ---
         'audit_MAME_machines_runnable'      : 0,
-        # >> Machines with ROMs/CHDs that are OK or not
+        # >> Machines with ROMs/CHDs archives that are OK or not
         'audit_MAME_machines_with_arch'     : 0,
         'audit_MAME_machines_with_arch_OK'  : 0,
         'audit_MAME_machines_with_arch_BAD' : 0,
         'audit_MAME_machines_without'       : 0,
-        # >> Machines with ROMs that are OK or not
+        # >> Machines with ROM archives that are OK or not
         'audit_MAME_machines_with_ROMs'     : 0,
         'audit_MAME_machines_with_ROMs_OK'  : 0,
         'audit_MAME_machines_with_ROMs_BAD' : 0,
@@ -401,7 +401,7 @@ def fs_new_control_dic():
         'audit_MAME_machines_with_CHDs_BAD' : 0,
         'audit_MAME_machines_without_CHDs'  : 0,
 
-        # --- Filed in when building the SL databases ---
+        # --- Filed in when building the SL item databases ---
         # Number of SL databases (equal to the number of XML files).
         'stats_SL_XML_files' : 0,
         'stats_SL_software_items' : 0,
@@ -411,10 +411,25 @@ def fs_new_control_dic():
         'stats_SL_items_with_CHDs' : 0,
 
         # --- Filed in when building the SL audit databases ---
-        
+        'stats_audit_SL_items_runnable'      : 0,
+        'stats_audit_SL_items_with_arch'     : 0, # ROM ZIP or CHD or both
+        'stats_audit_SL_items_with_arch_ROM' : 0, # At least ROM ZIP (and maybe CHD)
+        'stats_audit_SL_items_with_CHD'      : 0, # At least CHD (and maybe ROM ZIP)
 
         # --- Filed in when auditing the SL items ---
-        
+        'audit_SL_items_runnable'          : 0,
+        'audit_SL_items_with_arch'         : 0,
+        'audit_SL_items_with_arch_OK'      : 0,
+        'audit_SL_items_with_arch_BAD'     : 0,
+        'audit_SL_items_without_arch'      : 0,
+        'audit_SL_items_with_arch_ROM'     : 0,
+        'audit_SL_items_with_arch_ROM_OK'  : 0,
+        'audit_SL_items_with_arch_ROM_BAD' : 0,
+        'audit_SL_items_without_arch_ROM'  : 0,
+        'audit_SL_items_with_CHD'          : 0,
+        'audit_SL_items_with_CHD_OK'       : 0,
+        'audit_SL_items_with_CHD_BAD'      : 0,
+        'audit_SL_items_without_CHD'       : 0,
 
         # --- Filed in by the MAME ROM/CHD/Samples scanner ---
         # >> ROM_Set_ROM_archives.json database

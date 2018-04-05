@@ -1071,7 +1071,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
 # -------------------------------------------------------------------------------------------------
 # SL ROM/CHD audit code
 # -------------------------------------------------------------------------------------------------
-def mame_audit_SL_machine(settings, rom_list):
+def mame_audit_SL_machine(settings, rom_list, audit_dic):
     # >> Audit ROM by ROM
     for m_rom in rom_list:
         if m_rom['type'] == ROM_TYPE_DISK:
@@ -1165,6 +1165,34 @@ def mame_audit_SL_machine(settings, rom_list):
             m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
             # log_debug('{0}'.format(AUDIT_STATUS_OK))
 
+    # >> Currently exactly same code as in mame_audit_MAME_machine()
+    # >> Audit results
+    # >> Naive and slow code, but better safe than sorry.
+    ROM_OK_status_list = []
+    CHD_OK_status_list = []
+    audit_dic['machine_has_ROMs_or_CHDs'] = False
+    audit_dic['machine_has_ROMs']         = False
+    audit_dic['machine_has_CHDs']         = False
+    for m_rom in rom_list:
+        audit_dic['machine_has_ROMs_or_CHDs'] = True
+        if m_rom['type'] == ROM_TYPE_DISK:
+            audit_dic['machine_has_CHDs'] = True
+            if m_rom['status'] == AUDIT_STATUS_OK or \
+               m_rom['status'] == AUDIT_STATUS_OK_INVALID_CHD:
+                CHD_OK_status_list.append(True)
+            else:
+                CHD_OK_status_list.append(False)
+        else:
+            audit_dic['machine_has_ROMs'] = True
+            if m_rom['status'] == AUDIT_STATUS_OK or \
+               m_rom['status'] == AUDIT_STATUS_OK_INVALID_ROM:
+                ROM_OK_status_list.append(True)
+            else:
+                ROM_OK_status_list.append(False)
+    audit_dic['machine_ROMs_are_OK'] = all(ROM_OK_status_list) if audit_dic['machine_has_ROMs'] else True
+    audit_dic['machine_CHDs_are_OK'] = all(CHD_OK_status_list) if audit_dic['machine_has_CHDs'] else True
+    audit_dic['machine_is_OK'] = audit_dic['machine_ROMs_are_OK'] and audit_dic['machine_CHDs_are_OK']
+
 def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machines_render, audit_roms_dic):
     log_debug('mame_audit_MAME_all() Initialising ...')
 
@@ -1176,8 +1204,8 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
     machine_audit_dic = {}
     for m_name in sorted(machines_render):
         pDialog.update((processed_machines * 100) // total_machines)
-        audit_dic = fs_new_audit_dic()
         # >> Machine has ROMs
+        audit_dic = fs_new_audit_dic()
         if m_name in audit_roms_dic:
             # >> roms_dic is mutable and edited inside the function
             rom_list = audit_roms_dic[m_name]
@@ -1411,6 +1439,21 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
     #     }
     # }
 
+    # >> SL audit statistics.
+    audit_SL_items_runnable          = 0
+    audit_SL_items_with_arch         = 0
+    audit_SL_items_with_arch_OK      = 0
+    audit_SL_items_with_arch_BAD     = 0
+    audit_SL_items_without_arch      = 0
+    audit_SL_items_with_arch_ROM     = 0
+    audit_SL_items_with_arch_ROM_OK  = 0
+    audit_SL_items_with_arch_ROM_BAD = 0
+    audit_SL_items_without_arch_ROM  = 0
+    audit_SL_items_with_CHD          = 0
+    audit_SL_items_with_CHD_OK       = 0
+    audit_SL_items_with_CHD_BAD      = 0
+    audit_SL_items_without_CHD       = 0
+
     # >> Iterate all SL databases and audit ROMs.
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
@@ -1428,35 +1471,44 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
 
         # >> Iterate SL ROMs
         for rom_key in sorted(roms):
-            # >> audit_roms_list is mutable and edited inside the function()
+            # >> audit_roms_list and audit_dic are mutable and edited inside the function()
             audit_rom_list = audit_roms[rom_key]
-            mame_audit_SL_machine(settings, audit_rom_list)
+            audit_dic = fs_new_audit_dic()
+            mame_audit_SL_machine(settings, audit_rom_list, audit_dic)
 
-            # >> Check if machine has ROM and/or CHD errors.
-            machine_has_ROMs = False
-            machine_has_CHDs = False
-            machine_has_ROM_errors = False
-            machine_has_CHD_errors = False
-            for m_rom in audit_rom_list:
-                if m_rom['type'] == ROM_TYPE_DISK:
-                    machine_has_CHDs = True
-                    if not(m_rom['status'] == AUDIT_STATUS_OK or m_rom['status'] == AUDIT_STATUS_OK_INVALID_CHD):
-                        machine_has_CHD_errors = True
-                else:
-                    machine_has_ROMs = True
-                    if not(m_rom['status'] == AUDIT_STATUS_OK or m_rom['status'] == AUDIT_STATUS_OK_INVALID_ROM):
-                        machine_has_ROM_errors = True
+            # >> Audit statistics
+            audit_SL_items_runnable += 1
+            if audit_dic['machine_has_ROMs_or_CHDs']:
+                audit_SL_items_with_arch += 1
+                if audit_dic['machine_is_OK']: audit_SL_items_with_arch_OK += 1
+                else:                          audit_SL_items_with_arch_BAD += 1
+            else:
+                audit_SL_items_without_arch += 1
+
+            if audit_dic['machine_has_ROMs']:
+                audit_SL_items_with_arch_ROM += 1
+                if audit_dic['machine_ROMs_are_OK']: audit_SL_items_with_arch_ROM_OK += 1
+                else:                                audit_SL_items_with_arch_ROM_BAD += 1
+            else:
+                audit_SL_items_without_arch_ROM += 1
+
+            if audit_dic['machine_has_CHDs']:
+                audit_SL_items_with_CHD += 1
+                if audit_dic['machine_CHDs_are_OK']: audit_SL_items_with_CHD_OK += 1
+                else:                                audit_SL_items_with_CHD_BAD += 1
+            else:
+                audit_SL_items_without_CHD += 1
 
             # >> Software/machine header.
             # WARNING: Kodi crashes with a 22 MB text file with colours. No problem
             # if file has not colours.
             rom = roms[rom_key]
             cloneof = rom['cloneof']
-            t_list = []
+            head_list = []
             if cloneof:
-                t_list.append('SL {0} ROM {1} (cloneof {2})'.format(SL_name, rom_key, cloneof))
+                head_list.append('SL {0} ROM {1} (cloneof {2})'.format(SL_name, rom_key, cloneof))
             else:
-                t_list.append('SL {0} ROM {1}'.format(SL_name, rom_key))
+                head_list.append('SL {0} ROM {1}'.format(SL_name, rom_key))
 
             # >> ROM/CHD report.
             table_str = [ ['right', 'left', 'left', 'left', 'left'] ]
@@ -1472,28 +1524,25 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
             local_str_list.append('')
 
             # >> ROMs and CHDs report.
-            if machine_has_ROM_errors or machine_has_CHD_errors:
-                report_error_list.extend(t_list)
-                report_error_list.extend(local_str_list)
-            elif machine_has_ROMs or machine_has_CHDs:
-                report_good_list.extend(t_list)
-                report_good_list.extend(local_str_list)
+            if audit_dic['machine_is_OK']:
+                report_good_list.extend(head_list + local_str_list)
+            else:
+                report_error_list.extend(head_list + local_str_list)
 
             # >> ROM report
-            if machine_has_ROMs and machine_has_ROM_errors:
-                ROM_report_error_list.extend(t_list)
-                ROM_report_error_list.extend(local_str_list)
-            elif machine_has_ROMs:
-                ROM_report_good_list.extend(t_list)
-                ROM_report_good_list.extend(local_str_list)
+            if audit_dic['machine_has_ROMs']:
+                if audit_dic['machine_ROMs_are_OK']:
+                    ROM_report_good_list.extend(head_list + local_str_list)
+                else:
+                    ROM_report_error_list.extend(head_list + local_str_list)
 
             # >> CHD report.
-            if machine_has_CHDs and machine_has_CHD_errors:
-                CHD_report_error_list.extend(t_list)
-                CHD_report_error_list.extend(local_str_list)
-            elif machine_has_CHDs:
-                CHD_report_good_list.extend(t_list)
-                CHD_report_good_list.extend(local_str_list)
+            if audit_dic['machine_has_CHDs']:
+                if audit_dic['machine_CHDs_are_OK']:
+                    CHD_report_good_list.extend(head_list + local_str_list)
+                else:
+                    CHD_report_error_list.extend(head_list + local_str_list)
+
         # >> Update progress
         processed_files += 1
     else:
@@ -1529,6 +1578,21 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
         file.write(out_str.encode('utf-8'))
     pDialog.update(100)
     pDialog.close()
+
+    # >> Update SL audit statistics.
+    control_dic['audit_SL_items_runnable']          = audit_SL_items_runnable
+    control_dic['audit_SL_items_with_arch']         = audit_SL_items_with_arch
+    control_dic['audit_SL_items_with_arch_OK']      = audit_SL_items_with_arch_OK
+    control_dic['audit_SL_items_with_arch_BAD']     = audit_SL_items_with_arch_BAD
+    control_dic['audit_SL_items_without_arch']      = audit_SL_items_without_arch
+    control_dic['audit_SL_items_with_arch_ROM']     = audit_SL_items_with_arch_ROM
+    control_dic['audit_SL_items_with_arch_ROM_OK']  = audit_SL_items_with_arch_ROM_OK
+    control_dic['audit_SL_items_with_arch_ROM_BAD'] = audit_SL_items_with_arch_ROM_BAD
+    control_dic['audit_SL_items_without_arch_ROM']  = audit_SL_items_without_arch_ROM
+    control_dic['audit_SL_items_with_CHD']          = audit_SL_items_with_CHD
+    control_dic['audit_SL_items_with_CHD_OK']       = audit_SL_items_with_CHD_OK
+    control_dic['audit_SL_items_with_CHD_BAD']      = audit_SL_items_with_CHD_BAD
+    control_dic['audit_SL_items_without_CHD']       = audit_SL_items_without_CHD
 
     # >> Update timestamp
     control_dic['t_SL_audit'] = time.time()
@@ -4046,6 +4110,10 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     pDialog.update(0, pdialog_line1)
     total_files = len(SL_file_list)
     processed_files = 0
+    stats_audit_SL_items_runnable = 0
+    stats_audit_SL_items_with_arch = 0
+    stats_audit_SL_items_with_arch_ROM = 0
+    stats_audit_SL_items_with_CHD = 0
     for file in sorted(SL_file_list):
         # >> Update progress
         FN = FileName(file)
@@ -4204,8 +4272,16 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
                     rom_str_list = rom['location'].split('/')
                     zip_name = rom_str_list[0]
                     machine_rom_archive_set.add(zip_name)
-            SL_Item_Archives_dic[SL_item_name] = {'ROMs' : list(machine_rom_archive_set),
-                                                  'CHDs' : list(machine_chd_archive_set)}
+            SL_Item_Archives_dic[SL_item_name] = {
+                'ROMs' : list(machine_rom_archive_set),
+                'CHDs' : list(machine_chd_archive_set)
+            }
+            # --- SL Audit database statistics ---
+            stats_audit_SL_items_runnable += 1
+            if SL_Item_Archives_dic[SL_item_name]['ROMs'] or SL_Item_Archives_dic[SL_item_name]['CHDs']:
+                stats_audit_SL_items_with_arch += 1
+            if SL_Item_Archives_dic[SL_item_name]['ROMs']: stats_audit_SL_items_with_arch_ROM += 1
+            if SL_Item_Archives_dic[SL_item_name]['CHDs']: stats_audit_SL_items_with_CHD += 1
 
         # --- Save databases ---
         fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs_dic, verbose = False)
@@ -4280,7 +4356,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     for SL_name in sorted(SL_catalog_dic):
         # --- Update progress ---
         pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'Software List {0}'.format(SL_name))
-        
+
         # --- Load SL databases ---
         file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
@@ -4324,12 +4400,22 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
     # log_info('mame_properties_dic has {0} items'.format(len(mame_properties_dic)))
 
-    # --- SL statistics and save control_dic ---
+    # -----------------------------------------------------------------------------
+    # Update MAME control dictionary
+    # -----------------------------------------------------------------------------
+    # --- SL item database ---
     control_dic['stats_SL_XML_files']       = total_SL_XML_files
     control_dic['stats_SL_software_items']  = total_SL_software_items
     control_dic['stats_SL_items_with_ROMs'] = num_SL_with_ROMs
     control_dic['stats_SL_items_with_CHDs'] = num_SL_with_CHDs
-    
+
+    # --- SL audit database statistics ---
+    control_dic['stats_audit_SL_items_runnable']      = stats_audit_SL_items_runnable
+    control_dic['stats_audit_SL_items_with_arch']     = stats_audit_SL_items_with_arch
+    control_dic['stats_audit_SL_items_with_arch_ROM'] = stats_audit_SL_items_with_arch_ROM
+    control_dic['stats_audit_SL_items_with_CHD']      = stats_audit_SL_items_with_CHD
+
+    # --- SL build timestamp ---
     control_dic['t_SL_DB_build'] = time.time()
 
 # -------------------------------------------------------------------------------------------------

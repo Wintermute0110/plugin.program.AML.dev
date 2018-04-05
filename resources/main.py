@@ -2233,8 +2233,8 @@ class Main:
             d = xbmcgui.Dialog()
             type_sub = d.select('View scanner reports',
                                 ['View main statistics',
-                                 'View audit statistics',
-                                 'View scanner statistics'])
+                                 'View scanner statistics',
+                                 'View audit statistics'])
             if type_sub < 0: return
 
             # --- Main stats ---
@@ -2364,69 +2364,8 @@ class Main:
 
                 self._display_text_window(window_title, info_text)
 
-            # --- Audit statistics ---
-            elif type_sub == 1:
-                # --- Warn user if error ---
-                if not PATHS.MAIN_CONTROL_PATH.exists():
-                    kodi_dialog_OK('MAME database not found. Please setup the addon first.')
-                    return
-                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-
-                window_title = 'Database information and statistics'
-
-                # --- Print stuff ---
-                rom_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_rom_set']]
-                chd_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_chd_set']]
-                info_text = '[COLOR orange]MAME ROM audit database statistics[/COLOR]\n'
-                info_text += "There are {0:5d} ROM ZIP archives in the {1} set\n".format(control_dic['audit_MAME_ZIP_files'], rom_set)
-                info_text += "There are {0:5d}     CHD archives in the {1} set\n".format(control_dic['audit_MAME_CHD_files'], chd_set)
-                t = "{0:5d} machines require ROM ZIPs, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['audit_machine_archives_ROM'],
-                                      control_dic['audit_machine_archives_ROM_parents'],
-                                      control_dic['audit_machine_archives_ROM_clones'])
-                t = "{0:5d} machines require CHDs    , parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['audit_machine_archives_CHD'],
-                                      control_dic['audit_machine_archives_CHD_parents'],
-                                      control_dic['audit_machine_archives_CHD_clones'])
-                t = "{0:5d} machines require nothing , parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['audit_archive_less'],
-                                      control_dic['audit_archive_less_parents'],
-                                      control_dic['audit_archive_less_clones'])
-
-                # >> Not coded yet.
-                info_text += '\n[COLOR orange]SL audit database statistics[/COLOR]\n'
-                info_text += '[COLOR orchid]Not coded yet, sorry.[/COLOR]\n'
-
-                # --- MAME audit info ---
-                info_text += '\n[COLOR orange]MAME ROM audit information[/COLOR]\n'
-                info_text += '{0:5d} runnable MAME machines\n'.format(control_dic['audit_MAME_machines_runnable'])
-                # >> all
-                info_text += '{0:5d} machines with ROMs and/or CHDs\n'.format(control_dic['audit_MAME_machines_with_arch'])
-                info_text += '{0:5d} machines with no ROMs and/or CHDs\n'.format(control_dic['audit_MAME_machines_without'])
-                t = "{0:5d} good, {1:5d} bad machines\n"
-                info_text += t.format(control_dic['audit_MAME_machines_with_arch_OK'],
-                                      control_dic['audit_MAME_machines_with_arch_BAD'])
-                # >> ROMs
-                info_text += '{0:5d} machines with ROMs\n'.format(control_dic['audit_MAME_machines_with_ROMs'])
-                info_text += '{0:5d} machines with no ROMs\n'.format(control_dic['audit_MAME_machines_without_ROMs'])
-                t = "{0:5d} good, {1:5d} bad machines\n"
-                info_text += t.format(control_dic['audit_MAME_machines_with_ROMs_OK'],
-                                      control_dic['audit_MAME_machines_with_ROMs_BAD'])
-                # >> Disks
-                info_text += '{0:5d} machines with CHDs\n'.format(control_dic['audit_MAME_machines_with_CHDs'])
-                info_text += '{0:5d} machines with no CHDs\n'.format(control_dic['audit_MAME_machines_without_CHDs'])
-                t = "{0:5d} good, {1:5d} bad machines\n"
-                info_text += t.format(control_dic['audit_MAME_machines_with_CHDs_OK'],
-                                      control_dic['audit_MAME_machines_with_CHDs_BAD'])
-
-                # --- SL audit info ---
-                info_text += '\n[COLOR orange]SL audit information[/COLOR]\n'
-                info_text += '[COLOR orchid]Not coded yet, sorry.[/COLOR]\n'
-
-                self._display_text_window(window_title, info_text)
-
             # --- Scanner statistics ---
-            elif type_sub == 2:
+            elif type_sub == 1:
                 # --- Warn user if error ---
                 if not PATHS.MAIN_CONTROL_PATH.exists():
                     kodi_dialog_OK('MAME database not found. Please setup the addon first.')
@@ -2545,6 +2484,92 @@ class Main:
                                   control_dic['assets_SL_manuals_missing'])
 
                 self._display_text_window(window_title, i_tex)
+
+            # --- Audit statistics ---
+            elif type_sub == 2:
+                # --- Warn user if error ---
+                if not PATHS.MAIN_CONTROL_PATH.exists():
+                    kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+                    return
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+
+                window_title = 'Database information and statistics'
+
+                # --- Print stuff ---
+                rom_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_rom_set']]
+                chd_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_chd_set']]
+                info_text = '[COLOR orange]MAME ROM audit database statistics[/COLOR]\n'
+                info_text += "There are {0:5d} ROM ZIP archives in the {1} set\n".format(control_dic['audit_MAME_ZIP_files'], rom_set)
+                info_text += "There are {0:5d}     CHD archives in the {1} set\n".format(control_dic['audit_MAME_CHD_files'], chd_set)
+                t = "{0:5d} machines require ROM ZIPs, parents {1:5d}, clones {2:5d}\n"
+                info_text += t.format(control_dic['audit_machine_archives_ROM'],
+                                      control_dic['audit_machine_archives_ROM_parents'],
+                                      control_dic['audit_machine_archives_ROM_clones'])
+                t = "{0:5d} machines require CHDs    , parents {1:5d}, clones {2:5d}\n"
+                info_text += t.format(control_dic['audit_machine_archives_CHD'],
+                                      control_dic['audit_machine_archives_CHD_parents'],
+                                      control_dic['audit_machine_archives_CHD_clones'])
+                t = "{0:5d} machines require nothing , parents {1:5d}, clones {2:5d}\n"
+                info_text += t.format(control_dic['audit_archive_less'],
+                                      control_dic['audit_archive_less_parents'],
+                                      control_dic['audit_archive_less_clones'])
+
+                # --- SL item audit database statistics ---
+                info_text += '\n[COLOR orange]SL audit database statistics[/COLOR]\n'
+                t = "There are {0:5d} runnable Software List items\n"
+                info_text += t.format(control_dic['stats_audit_SL_items_runnable'])
+                t = "{0:5d} SL items require ROM ZIPs and/or CHDs\n"
+                info_text += t.format(control_dic['stats_audit_SL_items_with_arch'])
+                t = "{0:5d} SL items require ROM ZIPs\n"
+                info_text += t.format(control_dic['stats_audit_SL_items_with_arch_ROM'])
+                t = "{0:5d} SL items require CHDs\n"
+                info_text += t.format(control_dic['stats_audit_SL_items_with_CHD'])
+
+                # --- MAME audit info ---
+                info_text += '\n[COLOR orange]MAME ROM audit information[/COLOR]\n'
+                info_text += '{0:5d} runnable MAME machines\n'.format(control_dic['audit_MAME_machines_runnable'])
+                # >> All
+                info_text += '{0:5d} machines with ROMs and/or CHDs\n'.format(control_dic['audit_MAME_machines_with_arch'])
+                info_text += '{0:5d} machines with no ROMs and/or CHDs\n'.format(control_dic['audit_MAME_machines_without'])
+                t = "{0:5d} good, {1:5d} bad machines\n"
+                info_text += t.format(control_dic['audit_MAME_machines_with_arch_OK'],
+                                      control_dic['audit_MAME_machines_with_arch_BAD'])
+                # >> ROMs
+                info_text += '{0:5d} machines with ROMs\n'.format(control_dic['audit_MAME_machines_with_ROMs'])
+                info_text += '{0:5d} machines with no ROMs\n'.format(control_dic['audit_MAME_machines_without_ROMs'])
+                t = "{0:5d} good, {1:5d} bad machines\n"
+                info_text += t.format(control_dic['audit_MAME_machines_with_ROMs_OK'],
+                                      control_dic['audit_MAME_machines_with_ROMs_BAD'])
+                # >> Disks
+                info_text += '{0:5d} machines with CHDs\n'.format(control_dic['audit_MAME_machines_with_CHDs'])
+                info_text += '{0:5d} machines with no CHDs\n'.format(control_dic['audit_MAME_machines_without_CHDs'])
+                t = "{0:5d} good, {1:5d} bad machines\n"
+                info_text += t.format(control_dic['audit_MAME_machines_with_CHDs_OK'],
+                                      control_dic['audit_MAME_machines_with_CHDs_BAD'])
+
+                # --- SL audit info ---
+                info_text += '\n[COLOR orange]SL audit information[/COLOR]\n'
+                info_text += '{0:5d} runnable SL items\n'.format(control_dic['audit_SL_items_runnable'])
+                # >> All
+                info_text += '{0:5d} SL items with ROMs and/or CHDs\n'.format(control_dic['audit_SL_items_with_arch'])
+                info_text += '{0:5d} SL items with no ROMs and/or CHDs\n'.format(control_dic['audit_SL_items_without_arch'])
+                t = "{0:5d} good, {1:5d} bad SL items\n"
+                info_text += t.format(control_dic['audit_SL_items_with_arch_OK'],
+                                      control_dic['audit_SL_items_with_arch_BAD'])
+                # >> ROMs
+                info_text += '{0:5d} SL items with ROMs\n'.format(control_dic['audit_SL_items_with_arch_ROM'])
+                info_text += '{0:5d} SL items with no ROMs\n'.format(control_dic['audit_SL_items_without_arch_ROM'])
+                t = "{0:5d} good, {1:5d} bad SL items\n"
+                info_text += t.format(control_dic['audit_SL_items_with_arch_ROM_OK'],
+                                      control_dic['audit_SL_items_with_arch_ROM_BAD'])
+                # >> Disks
+                info_text += '{0:5d} SL items with CHDs\n'.format(control_dic['audit_SL_items_with_CHD'])
+                info_text += '{0:5d} SL items with no CHDs\n'.format(control_dic['audit_SL_items_without_CHD'])
+                t = "{0:5d} good, {1:5d} bad SL items\n"
+                info_text += t.format(control_dic['audit_SL_items_with_CHD_OK'],
+                                      control_dic['audit_SL_items_with_CHD_BAD'])
+
+                self._display_text_window(window_title, info_text)
 
         # --- View MAME machine ROMs (ROMs database) ---
         elif action == ACTION_VIEW_MACHINE_ROMS:
