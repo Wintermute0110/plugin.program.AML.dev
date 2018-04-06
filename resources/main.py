@@ -1824,9 +1824,16 @@ class Main:
                 img_dir_FN = FileName(self.settings['assets_path']).pjoin('manuals_SL').pjoin(SL_name).pjoin(SL_ROM + '.pages')
             log_debug('man_file_FN P "{0}"'.format(man_file_FN.getPath()))
             log_debug('img_dir_FN P  "{0}"'.format(img_dir_FN.getPath()))
+
+            # --- Check for errors ---
             if not man_file_FN.exists():
                 kodi_dialog_OK('Manual "{0}" not found.'.format(man_file_FN.getPath()))
                 return
+
+            # --- If output directory does not exist create it ---
+            if not img_dir_FN.exists():
+                log_info('Creating DIR "{0}"'.format(img_dir_FN.getPath()))
+                img_dir_FN.makedirs()
 
             # --- Extract images of manual ---
             pDialog = xbmcgui.DialogProgress()
@@ -1842,9 +1849,12 @@ class Main:
 
             # --- Display page images ---
             if status_dic['numImages'] < 1:
-                kodi_dialog_OK('Cannot find images inside the {0} file.'.format(status_dic['manFormat']))
+                str_list = [
+                    'Cannot find images inside the {0} file. '.format(status_dic['manFormat']),
+                    'Check log for more details.'
+                ]
+                kodi_dialog_OK(''.join(str_list))
                 return
-            # kodi_dialog_OK('PDF contains {0} images. Showing them ...'.format(status_dic['numImages']))
             log_debug('Rendering images in "{0}"'.format(img_dir_FN.getPath()))
             xbmc.executebuiltin('SlideShow("{0}",pause)'.format(img_dir_FN.getPath()))
 
