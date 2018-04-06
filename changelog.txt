@@ -7,6 +7,8 @@ WIP      Check out the ListItem constructor offscreen parameter in Leia. It can 
          See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
          and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
 
+WIP      Support for CBZ/CBR manuals.
+
 WIP      Implement "Most played MAME machines"
 
 WIP      Implement "Recently played MAME machines"
@@ -18,7 +20,7 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
-WIP      Improve PDF manual rendering. Use the library pdfrw for image extraction.
+FEATURE  Improve PDF manual rendering. Use the library pdfrw for image extraction.
 
 FEATURE  Clean ROM cache before rebuilding cache.
 

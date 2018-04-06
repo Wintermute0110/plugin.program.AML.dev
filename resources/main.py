@@ -31,14 +31,15 @@ import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 #   main <-- mame <-- disk_IO <-- assets, utils, utils_kodi, constants
 #   ReaderPDF <-- utils, utils_kodi
 #   filters <- utils, utils_kodi
+#   manuals <- utils, utils_kodi
 from constants import *
 from assets import *
 from utils import *
 from utils_kodi import *
 from disk_IO import *
 from mame import *
-from ReaderPDF import *
 from filters import *
+from manuals import *
 
 # --- Addon object (used to access settings) ---
 __addon__         = xbmcaddon.Addon()
@@ -224,8 +225,7 @@ class Main:
         log_debug('Python version ' + sys.version.replace('\n', ''))
         log_debug('__addon_version__ {0}'.format(__addon_version__))
         for i in range(len(sys.argv)): log_debug('sys.argv[{0}] = "{1}"'.format(i, sys.argv[i]))
-        for i in range(len(sys.path)):
-            log_debug('sys.path[{0}] = "{1}"'.format(i, sys.path[i]))
+        # for i in range(len(sys.path)): log_debug('sys.path[{0}] = "{1}"'.format(i, sys.path[i]))
 
         # --- Addon data paths creation ---
         if not PLUGIN_DATA_DIR.exists(): PLUGIN_DATA_DIR.makedirs()
@@ -1809,7 +1809,7 @@ class Main:
                 if not assets_dic[machine_name]['manual']:
                     kodi_dialog_OK('Manual not found in database.')
                     return
-                PDF_file_FN = FileName(assets_dic[machine_name]['manual'])
+                man_file_FN = FileName(assets_dic[machine_name]['manual'])
                 img_dir_FN = FileName(self.settings['assets_path']).pjoin('manuals').pjoin(machine_name + '.pages')
             elif view_type == VIEW_SL_ROM:
                 log_debug('Displaying Manual for SL {0} item {1} ...'.format(SL_name, SL_ROM))
@@ -1820,57 +1820,33 @@ class Main:
                 if not SL_asset_dic[SL_ROM]['manual']:
                     kodi_dialog_OK('Manual not found in database.')
                     return
-                PDF_file_FN = FileName(SL_asset_dic[SL_ROM]['manual'])
+                man_file_FN = FileName(SL_asset_dic[SL_ROM]['manual'])
                 img_dir_FN = FileName(self.settings['assets_path']).pjoin('manuals_SL').pjoin(SL_name).pjoin(SL_ROM + '.pages')
-            log_debug('PDF_file_FN P "{0}"'.format(PDF_file_FN.getPath()))
+            log_debug('man_file_FN P "{0}"'.format(man_file_FN.getPath()))
             log_debug('img_dir_FN P  "{0}"'.format(img_dir_FN.getPath()))
-            if not PDF_file_FN.exists():
-                kodi_dialog_OK('PDF file {0} not found.'.format(PDF_file_FN.getPath()))
+            if not man_file_FN.exists():
+                kodi_dialog_OK('Manual "{0}" not found.'.format(man_file_FN.getPath()))
                 return
 
-            USE_PDFReader_LIB = True
-            if USE_PDFReader_LIB:
-                # >> Progress dialog
-                pDialog = xbmcgui.DialogProgress()
-                pDialog.create('Advanced MAME Launcher', 'Extracting images from PDF file ...')
-                pDialog.update(0)
+            # --- Extract images of manual ---
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Extracting manual images')
+            pDialog.update(0)
+            status_dic = {
+                'manFormat' : '', # PDF, CBZ, CBR, ...
+                'numImages' : 0,
+            }
+            manuals_extract_pages(status_dic, man_file_FN, img_dir_FN)
+            pDialog.update(100)
+            pDialog.close()
 
-                # >> Extract images from PDF
-                reader = PDFReader(PDF_file_FN.getPath(), img_dir_FN.getPath())
-                log_debug('reader.info() = {0}'.format(unicode(reader.info())))
-                images = reader.convert_to_images()
-                # log_debug(unicode(images))
-                pDialog.update(100)
-                pDialog.close()
-
-                # >> Show images
-                if not images:
-                    kodi_dialog_OK('Cannot find images inside the PDF file.')
-                    return
-                # kodi_dialog_OK('PDF contains {0} images. Showing them ...'.format(len(images)))
-                log_debug('Rendering images in "{0}"'.format(img_dir_FN.getPath()))
-                xbmc.executebuiltin('SlideShow("{0}",pause)'.format(img_dir_FN.getPath()))
-
-            else:
-                # WARNING This code still not finished.
-                pdfrw_FN = AML_ADDON_DIR.pjoin('pdfrw')
-                log_debug('Add module path "{0}"'.format(pdfrw_FN.getPath()))
-                sys.path.insert(0, pdfrw_FN.getPath())
-                from pdfrw import PdfReader
-
-                # --- Load and parse PDF ---
-                reader = PdfReader(PDF_file_FN.getPath()) 
-                log_info('PDF has {0} pages'.format(reader.numPages))
-                for i, page in enumerate(reader.pages):
-                    log_debug('--- Processing page {0} ---'.format(i))
-                    log_debug('{0} resources'.format(len(page['/Resources'])))
-                    log_debug('type(page) = {0}'.format(type(page)))
-                    for resource_name in page['/Resources']:
-                        log_debug('Resource name "{0}"'.format(unicode(resource_name)))
-                        # Images are stored as /XObject (external object)
-                        if resource_name == '/XObject':
-                            xobject = page['/Resources'][resource_name]
-                            log_debug('Processing /XObject "{0}"'.format(unicode(resource_name)))
+            # --- Display page images ---
+            if status_dic['numImages'] < 1:
+                kodi_dialog_OK('Cannot find images inside the {0} file.'.format(status_dic['manFormat']))
+                return
+            # kodi_dialog_OK('PDF contains {0} images. Showing them ...'.format(status_dic['numImages']))
+            log_debug('Rendering images in "{0}"'.format(img_dir_FN.getPath()))
+            xbmc.executebuiltin('SlideShow("{0}",pause)'.format(img_dir_FN.getPath()))
 
         # --- Display brother machines (same driver) ---
         elif action == ACTION_VIEW_BROTHERS:
