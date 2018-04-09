@@ -21,6 +21,7 @@ import zlib
 import pprint
 import types
 import StringIO
+import struct
 
 # --- Kodi stuff ---
 import xbmcgui, xbmcaddon
