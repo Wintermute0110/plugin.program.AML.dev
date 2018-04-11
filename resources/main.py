@@ -2969,21 +2969,21 @@ class Main:
 
             # --- View MAME ROM archive scanner report ---
             elif type_sub == 2:
-                if not PATHS.REPORT_MAME_SCAN_ROM_LIST_PATH.exists():
+                if not PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.exists():
                     kodi_dialog_OK('MAME missing ROM list scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
                     return
-                with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_PATH.getPath(), 'r') as myfile:
+                with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
                     self._display_text_window('MAME missing ROM list scanner report', info_text)
 
             # --- View MAME machine CHD scanner report ---
             elif type_sub == 3:
-                if not PATHS.REPORT_MAME_SCAN_CHD_LIST_PATH.exists():
+                if not PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.exists():
                     kodi_dialog_OK('MAME missing CHD list scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
                     return
-                with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_PATH.getPath(), 'r') as myfile:
+                with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
                     info_text = myfile.read()
                     self._display_text_window('MAME missing CHD list scanner report', info_text)
 
