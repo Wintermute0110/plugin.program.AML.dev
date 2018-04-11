@@ -16,12 +16,18 @@
 # --- Python standard library ---
 # NOTE String literals are needed in this file so unicode_literals cannot be defined.
 # from __future__ import unicode_literals
-from PIL import Image
 import zlib
 import pprint
 import types
 import StringIO
 import struct
+
+try:
+    from PIL import Image
+    PYTHON_PIL_AVAILABLE = True
+except:
+    print('Exception importing PIL')
+    PYTHON_PIL_AVAILABLE = False
 
 # --- Kodi stuff ---
 import xbmcgui, xbmcaddon
