@@ -2876,21 +2876,40 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             m_disks = machine_roms[m_name]['disks']
 
             # --- CHDs ------------------------------------------------------------
+            # >> In the MERGED set CHDs are always in the directory of the parent machine.
             merged_chds = []
             for disk in m_disks:
                 if not cloneof:
                     # --- Parent machine ---
                     if disk['merge']:
-                        location = romof + '/' + disk['name']
+                        location = romof + '/' + disk['merge']
                     else:
                         location = m_name + '/' + disk['name']
                 else:
                     # --- Clone machine ---
-                    parent_romof = machines[cloneof]['romof']
                     if disk['merge']:
-                        location = romof + '/' + disk['name']
+                        # >> Get merged ROM from parent
+                        parent_name = cloneof
+                        parent_romof = machines[parent_name]['romof']
+                        parent_disks =  machine_roms[parent_name]['disks']
+                        clone_disk_merged_name = disk['merge']
+                        # >> Pick ROMs with same name and choose the first one.
+                        parent_merged_disk_l = filter(lambda r: r['name'] == clone_disk_merged_name, parent_disks)
+                        parent_merged_disk = parent_merged_disk_l[0]
+                        # >> Check if clone merged ROM is also merged in parent
+                        if parent_merged_disk['merge']:
+                            # >> ROM is in the 'romof' archive of the parent ROM
+                            super_parent_name = parent_romof
+                            super_parent_disks =  machine_roms[super_parent_name]['disks']
+                            parent_disk_merged_name = parent_merged_disk['merge']
+                            # >> Pick ROMs with same name and choose the first one.
+                            super_parent_merged_disk_l = filter(lambda r: r['name'] == parent_disk_merged_name, super_parent_disks)
+                            super_parent_merged_disk = super_parent_merged_disk_l[0]
+                            location = super_parent_name + '/' + super_parent_merged_disk['name']
+                        else:
+                            location = parent_name + '/' + parent_merged_disk['name']
                     else:
-                        location = m_name + '/' + disk['name']
+                        location = cloneof + '/' + disk['name']
                 disk_t = copy.deepcopy(disk)
                 disk_t['type'] = ROM_TYPE_DISK
                 disk_t['location'] = location
