@@ -972,7 +972,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 continue
 
             # >> Test if DISK file exists
-            chd_FN = FileName(settings['chd_path']).pjoin(machine_name).pjoin(disk_name)
+            chd_FN = FileName(settings['chd_path']).pjoin(machine_name).pjoin(disk_name + '.chd')
             # log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
             if not chd_FN.exists():
                 m_rom['status'] = AUDIT_STATUS_CHD_NO_FOUND
@@ -1091,7 +1091,7 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
                 continue
 
             # >> Test if DISK file exists
-            chd_FN = FileName(settings['SL_chd_path']).pjoin(SL_name).pjoin(rom_name).pjoin(disk_name)
+            chd_FN = FileName(settings['SL_chd_path']).pjoin(SL_name).pjoin(rom_name).pjoin(disk_name + '.chd')
             # log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
             if not chd_FN.exists():
                 m_rom['status'] = AUDIT_STATUS_CHD_NO_FOUND
