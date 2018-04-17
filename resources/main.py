@@ -2899,7 +2899,8 @@ class Main:
             rom_db_list = roms_audit_db[SL_ROM]
 
             # --- Open ZIP file and check CRC32 ---
-            mame_audit_SL_machine(self.settings, rom_db_list)
+            audit_dic = fs_new_audit_dic()
+            mame_audit_SL_machine(self.settings, rom_db_list, audit_dic)
 
             info_text = []
             info_text.append('[COLOR violet]SL_name[/COLOR] {0}'.format(SL_name))
