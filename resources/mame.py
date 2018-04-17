@@ -3920,7 +3920,7 @@ class SLDataObj:
         self.num_with_ROMs = 0
         self.num_with_CHDs = 0
 
-def mame_load_SL_XML(xml_filename):
+def _mame_load_SL_XML(xml_filename):
     __debug_xml_parser = False
     SLData = SLDataObj()
 
@@ -4098,7 +4098,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # >> Open software list XML and parse it. Then, save data fields we want in JSON.
         # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
         SL_path_FN = FileName(file)
-        SLData = mame_load_SL_XML(SL_path_FN.getPath())
+        SLData = _mame_load_SL_XML(SL_path_FN.getPath())
         fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json').getPath(),
                            SLData.roms, verbose = False)
         fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(),
@@ -4289,7 +4289,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
                     # >> Skip invalid ROMs
                     if not rom['crc']: continue
                     rom_str_list = rom['location'].split('/')
-                    zip_name = rom_str_list[0]
+                    zip_name = rom_str_list[0] + '/' + rom_str_list[1]
                     machine_rom_archive_set.add(zip_name)
             SL_Item_Archives_dic[SL_item_name] = {
                 'ROMs' : list(machine_rom_archive_set),
@@ -4742,8 +4742,8 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
 
         # >> Cache files
         misc_clear_file_cache(verbose = False)
-        SL_ROM_path_str = SL_ROM_dir_FN.pjoin(SL_name).getPath()
-        SL_CHD_path_str = SL_CHD_path_FN.pjoin(SL_name).getPath()
+        SL_ROM_path_str = SL_ROM_dir_FN.getPath()
+        SL_CHD_path_str = SL_CHD_path_FN.getPath()
         misc_add_file_cache(SL_ROM_path_str, verbose = False)
         misc_add_file_cache(SL_CHD_path_str, verbose = False)
 
@@ -4757,14 +4757,15 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
             rom_list = soft_archives[rom_key]['ROMs']
             if rom_list:
                 have_rom_list = [False] * len(rom_list)
-                for i, rom_archive in enumerate(rom_list):
+                for i, rom_file in enumerate(rom_list):
                     SL_ROMs_total += 1
-                    SL_ROM_FN = misc_search_file_cache(SL_ROM_path_str, rom_archive, SL_ROM_EXTS)
+                    SL_ROM_FN = misc_search_file_cache(SL_ROM_path_str, rom_file, SL_ROM_EXTS)
+                    ROM_path = SL_ROM_path_str + '/' + rom_file
                     if SL_ROM_FN:
                         have_rom_list[i] = True
-                        m_have_str_list.append('Have SL ROM {0}'.format(SL_name + '/' + rom_archive))
+                        m_have_str_list.append('Have SL ROM {0}'.format(ROM_path))
                     else:
-                        m_miss_str_list.append('Missing SL ROM {0}'.format(SL_name + '/' + rom_archive))
+                        m_miss_str_list.append('Missing SL ROM {0}'.format(ROM_path))
                 if all(have_rom_list):
                     rom['status_ROM'] = 'R'
                     SL_ROMs_have += 1
@@ -4780,15 +4781,14 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
                 if scan_SL_CHDs:
                     SL_CHDs_total += 1
                     has_chd_list = [False] * len(chd_list)
-                    for idx, chd_name in enumerate(chd_list):
-                        chd_file = rom_key + '/' + chd_name
-                        # log_debug('Scanning CHD "{0}"'.format(chd_file))
+                    for idx, chd_file in enumerate(chd_list):
                         SL_CHD_FN = misc_search_file_cache(SL_CHD_path_str, chd_file, SL_CHD_EXTS)
+                        CHD_path = SL_CHD_path_str + '/' + chd_file
                         if SL_CHD_FN:
                             has_chd_list[idx] = True
-                            m_have_str_list.append('Have SL CHD {0}'.format(chd_file))
+                            m_have_str_list.append('Have SL CHD {0}'.format(CHD_path))
                         else:
-                            m_miss_str_list.append('Missing SL CHD {0}'.format(chd_file))
+                            m_miss_str_list.append('Missing SL CHD {0}'.format(CHD_path))
                     if all(has_chd_list):
                         rom['status_CHD'] = 'C'
                         SL_CHDs_have += 1
