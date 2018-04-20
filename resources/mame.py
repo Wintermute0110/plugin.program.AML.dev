@@ -803,6 +803,138 @@ def mame_load_Command_DAT(filename):
     return (proper_idx_list, proper_data_dic, version_str)
 
 # -------------------------------------------------------------------------------------------------
+# Statistic printing
+# -------------------------------------------------------------------------------------------------
+# slist is a list of strings that will be joined like '\n'.join(slist)
+# slist is a list, so it is mutable and can be changed by reference.
+#
+def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
+    slist.append('[COLOR orange]Main information[/COLOR]')
+    slist.append("AML version            {0}".format(AML_version_str))
+    slist.append("MAME version string    {0}".format(control_dic['ver_mame_str']))
+    slist.append("MAME version numerical {0}".format(control_dic['ver_mame']))
+    slist.append("catver.ini version     {0}".format(control_dic['ver_catver']))
+    slist.append("catlist.ini version    {0}".format(control_dic['ver_catlist']))
+    slist.append("genre.ini version      {0}".format(control_dic['ver_genre']))
+    slist.append("nplayers.ini version   {0}".format(control_dic['ver_nplayers']))
+    slist.append("bestgames.ini version  {0}".format(control_dic['ver_bestgames']))
+    slist.append("series.ini version     {0}".format(control_dic['ver_series']))
+    slist.append("History.dat version    {0}".format(control_dic['ver_history']))
+    slist.append("MAMEinfo.dat version   {0}".format(control_dic['ver_mameinfo']))
+    slist.append("Gameinit.dat version   {0}".format(control_dic['ver_gameinit']))
+    slist.append("Command.dat version    {0}".format(control_dic['ver_command']))
+
+    slist.append('')
+    slist.append('[COLOR orange]Timestamps[/COLOR]')
+    if control_dic['t_XML_extraction']:
+        slist.append("MAME XML extracted on   {0}".format(time.ctime(control_dic['t_XML_extraction'])))
+    else:
+        slist.append("MAME XML never extracted")
+    if control_dic['t_MAME_DB_build']:
+        slist.append("MAME DB built on        {0}".format(time.ctime(control_dic['t_MAME_DB_build'])))
+    else:
+        slist.append("MAME DB never built\n")
+    if control_dic['t_MAME_Audit_DB_build']:
+        slist.append("MAME Audit DB built on  {0}".format(time.ctime(control_dic['t_MAME_Audit_DB_build'])))
+    else:
+        slist.append("MAME Audit DB never built")
+    if control_dic['t_MAME_Catalog_build']:
+        slist.append("MAME Catalog built on   {0}".format(time.ctime(control_dic['t_MAME_Catalog_build'])))
+    else:
+        slist.append("MAME Catalog never built")
+    if control_dic['t_MAME_ROMs_scan']:
+        slist.append("MAME ROMs scaned on     {0}".format(time.ctime(control_dic['t_MAME_ROMs_scan'])))
+    else:
+        slist.append("MAME ROMs never scaned\n")
+    if control_dic['t_MAME_assets_scan']:
+        slist.append("MAME assets scaned on   {0}".format(time.ctime(control_dic['t_MAME_assets_scan'])))
+    else:
+        slist.append("MAME assets never scaned")
+    if control_dic['t_Custom_Filter_build']:
+        slist.append("Custom filters built on {0}".format(time.ctime(control_dic['t_Custom_Filter_build'])))
+    else:
+        slist.append("Custom filters never built")
+
+    # >> Software Lists stuff
+    if control_dic['t_SL_DB_build']:
+        slist.append("SL DB built on          {0}".format(time.ctime(control_dic['t_SL_DB_build'])))
+    else:
+        slist.append("SL DB never built")
+    if control_dic['t_SL_ROMs_scan']:
+        slist.append("SL ROMs scaned on       {0}".format(time.ctime(control_dic['t_SL_ROMs_scan'])))
+    else:
+        slist.append("SL ROMs never scaned")
+    if control_dic['t_SL_assets_scan']:
+        slist.append("SL assets scaned on     {0}".format(time.ctime(control_dic['t_SL_assets_scan'])))
+    else:
+        slist.append("SL assets never scaned")
+
+    # >> Audit stuff
+    if control_dic['t_MAME_audit']:
+        slist.append("MAME ROMs audited on    {0}".format(time.ctime(control_dic['t_MAME_audit'])))
+    else:
+        slist.append("MAME ROMs never audited")
+    if control_dic['t_SL_audit']:
+        slist.append("SL ROMs audited on      {0}".format(time.ctime(control_dic['t_SL_audit'])))
+    else:
+        slist.append("SL ROMs never audited")
+
+    # >> 5,d prints the comma separator but does not pad to 5 spaces.
+    slist.append('')
+    slist.append('[COLOR orange]MAME machine count[/COLOR]')
+    t = "Machines   {0:5d}, parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['stats_processed_machines'],
+                          control_dic['stats_parents'], 
+                          control_dic['stats_clones']))
+    t = "Runnable   {0:5d}, parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['stats_runnable'],
+                          control_dic['stats_runnable_parents'], 
+                          control_dic['stats_runnable_clones']))
+    t = "Coin       {0:5d}, parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['stats_coin'],
+                          control_dic['stats_coin_parents'], 
+                          control_dic['stats_coin_clones']))
+    t = "Nocoin     {0:5d}, parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['stats_nocoin'],
+                          control_dic['stats_nocoin_parents'],
+                          control_dic['stats_nocoin_clones']))
+    t = "Mechanical {0:5d}, parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['stats_mechanical'],
+                          control_dic['stats_mechanical_parents'],
+                          control_dic['stats_mechanical_clones']))
+    t = "Dead       {0:5d}, parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['stats_dead'],
+                          control_dic['stats_dead_parents'], 
+                          control_dic['stats_dead_clones']))
+    t = "Devices    {0:5d}, parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['stats_devices'],
+                          control_dic['stats_devices_parents'], 
+                          control_dic['stats_devices_clones']))
+    # >> Binary filters
+    t = "BIOS       {0:5d}, parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['stats_BIOS'],
+                          control_dic['stats_BIOS_parents'], 
+                          control_dic['stats_BIOS_clones']))
+    t = "Samples    {0:5d}, parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['stats_samples'],
+                          control_dic['stats_samples_parents'], 
+                          control_dic['stats_samples_clones']))
+
+    slist.append('')
+    slist.append('[COLOR orange]Software Lists item count[/COLOR]')
+    slist.append("SL files           {0:6d}".format(control_dic['stats_SL_XML_files']))
+    slist.append("SL software items  {0:6d}".format(control_dic['stats_SL_software_items']))
+    slist.append("SL items with ROMs {0:6d}".format(control_dic['stats_SL_items_with_ROMs']))
+    slist.append("SL items with CHDs {0:6d}".format(control_dic['stats_SL_items_with_CHDs']))
+
+
+def mame_stats_scanner_print_slist(info_text, control_dic):
+    pass
+
+def mame_stats_audit_print_slist(info_text, control_dic, settings_dic):
+    pass
+
+# -------------------------------------------------------------------------------------------------
 # Build MAME and SL plots
 # -------------------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------------

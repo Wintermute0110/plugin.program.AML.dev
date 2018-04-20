@@ -2219,7 +2219,9 @@ class Main:
             type_sub = d.select('View scanner reports',
                                 ['View main statistics',
                                  'View scanner statistics',
-                                 'View audit statistics'])
+                                 'View audit statistics',
+                                 'View all statistics',
+                                 'Write all statistics to file'])
             if type_sub < 0: return
 
             # --- Main stats ---
@@ -2229,125 +2231,9 @@ class Main:
                     kodi_dialog_OK('MAME database not found. Please setup the addon first.')
                     return
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-                window_title = 'Database information and statistics'
-
-                # --- Main stuff ---
-                info_text  = '[COLOR orange]Main information[/COLOR]\n'
-                info_text += "AML version            {0}\n".format(__addon_version__)
-                info_text += "MAME version string    {0}\n".format(control_dic['ver_mame_str'])
-                info_text += "MAME version numerical {0}\n".format(control_dic['ver_mame'])
-                info_text += "catver.ini version     {0}\n".format(control_dic['ver_catver'])
-                info_text += "catlist.ini version    {0}\n".format(control_dic['ver_catlist'])
-                info_text += "genre.ini version      {0}\n".format(control_dic['ver_genre'])
-                info_text += "nplayers.ini version   {0}\n".format(control_dic['ver_nplayers'])
-                info_text += "bestgames.ini version  {0}\n".format(control_dic['ver_bestgames'])
-                info_text += "series.ini version     {0}\n".format(control_dic['ver_series'])
-                info_text += "History.dat version    {0}\n".format(control_dic['ver_history'])
-                info_text += "MAMEinfo.dat version   {0}\n".format(control_dic['ver_mameinfo'])
-                info_text += "Gameinit.dat version   {0}\n".format(control_dic['ver_gameinit'])
-                info_text += "Command.dat version    {0}\n".format(control_dic['ver_command'])
-
-                info_text += '\n[COLOR orange]Timestamps[/COLOR]\n'
-                if control_dic['t_XML_extraction']:
-                    info_text += "MAME XML extracted on   {0}\n".format(time.ctime(control_dic['t_XML_extraction']))
-                else:
-                    info_text += "MAME XML never extracted\n"
-                if control_dic['t_MAME_DB_build']:
-                    info_text += "MAME DB built on        {0}\n".format(time.ctime(control_dic['t_MAME_DB_build']))
-                else:
-                    info_text += "MAME DB never built\n"
-                if control_dic['t_MAME_Audit_DB_build']:
-                    info_text += "MAME Audit DB built on  {0}\n".format(time.ctime(control_dic['t_MAME_Audit_DB_build']))
-                else:
-                    info_text += "MAME Audit DB never built\n"
-                if control_dic['t_MAME_Catalog_build']:
-                    info_text += "MAME Catalog built on   {0}\n".format(time.ctime(control_dic['t_MAME_Catalog_build']))
-                else:
-                    info_text += "MAME Catalog never built\n"
-                if control_dic['t_MAME_ROMs_scan']:
-                    info_text += "MAME ROMs scaned on     {0}\n".format(time.ctime(control_dic['t_MAME_ROMs_scan']))
-                else:
-                    info_text += "MAME ROMs never scaned\n"
-                if control_dic['t_MAME_assets_scan']:
-                    info_text += "MAME assets scaned on   {0}\n".format(time.ctime(control_dic['t_MAME_assets_scan']))
-                else:
-                    info_text += "MAME assets never scaned\n"
-                if control_dic['t_Custom_Filter_build']:
-                    info_text += "Custom filters built on {0}\n".format(time.ctime(control_dic['t_Custom_Filter_build']))
-                else:
-                    info_text += "Custom filters never built\n"
-
-                # >> Software Lists stuff
-                if control_dic['t_SL_DB_build']:
-                    info_text += "SL DB built on          {0}\n".format(time.ctime(control_dic['t_SL_DB_build']))
-                else:
-                    info_text += "SL DB never built\n"
-                if control_dic['t_SL_ROMs_scan']:
-                    info_text += "SL ROMs scaned on       {0}\n".format(time.ctime(control_dic['t_SL_ROMs_scan']))
-                else:
-                    info_text += "SL ROMs never scaned\n"
-                if control_dic['t_SL_assets_scan']:
-                    info_text += "SL assets scaned on     {0}\n".format(time.ctime(control_dic['t_SL_assets_scan']))
-                else:
-                    info_text += "SL assets never scaned\n"
-
-                # >> Audit stuff
-                if control_dic['t_MAME_audit']:
-                    info_text += "MAME ROMs audited on    {0}\n".format(time.ctime(control_dic['t_MAME_audit']))
-                else:
-                    info_text += "MAME ROMs never audited\n"
-                if control_dic['t_SL_audit']:
-                    info_text += "SL ROMs audited on      {0}\n".format(time.ctime(control_dic['t_SL_audit']))
-                else:
-                    info_text += "SL ROMs never audited\n"
-
-                # >> 5,d prints the comma separator but does not pad to 5 spaces.
-                info_text += '\n[COLOR orange]MAME machine count[/COLOR]\n'
-                t = "Machines   {0:5d}, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['stats_processed_machines'],
-                                      control_dic['stats_parents'], 
-                                      control_dic['stats_clones'])
-                t = "Runnable   {0:5d}, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['stats_runnable'],
-                                      control_dic['stats_runnable_parents'], 
-                                      control_dic['stats_runnable_clones'])
-                t = "Coin       {0:5d}, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['stats_coin'],
-                                      control_dic['stats_coin_parents'], 
-                                      control_dic['stats_coin_clones'])
-                t = "Nocoin     {0:5d}, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['stats_nocoin'],
-                                      control_dic['stats_nocoin_parents'],
-                                      control_dic['stats_nocoin_clones'])
-                t = "Mechanical {0:5d}, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['stats_mechanical'],
-                                      control_dic['stats_mechanical_parents'],
-                                      control_dic['stats_mechanical_clones'])
-                t = "Dead       {0:5d}, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['stats_dead'],
-                                      control_dic['stats_dead_parents'], 
-                                      control_dic['stats_dead_clones'])
-                t = "Devices    {0:5d}, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['stats_devices'],
-                                      control_dic['stats_devices_parents'], 
-                                      control_dic['stats_devices_clones'])
-                # >> Binary filters
-                t = "BIOS       {0:5d}, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['stats_BIOS'],
-                                      control_dic['stats_BIOS_parents'], 
-                                      control_dic['stats_BIOS_clones'])
-                t = "Samples    {0:5d}, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['stats_samples'],
-                                      control_dic['stats_samples_parents'], 
-                                      control_dic['stats_samples_clones'])
-
-                info_text += '\n[COLOR orange]Software Lists item count[/COLOR]\n'
-                info_text += "SL files           {0:6d}\n".format(control_dic['stats_SL_XML_files'])
-                info_text += "SL software items  {0:6d}\n".format(control_dic['stats_SL_software_items'])
-                info_text += "SL items with ROMs {0:6d}\n".format(control_dic['stats_SL_items_with_ROMs'])
-                info_text += "SL items with CHDs {0:6d}\n".format(control_dic['stats_SL_items_with_CHDs'])
-
-                self._display_text_window(window_title, info_text)
+                info_text = []
+                mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
+                self._display_text_window('Database main statistics', '\n'.join(info_text))
 
             # --- Scanner statistics ---
             elif type_sub == 1:
@@ -2356,7 +2242,8 @@ class Main:
                     kodi_dialog_OK('MAME database not found. Please setup the addon first.')
                     return
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-                window_title = 'Scanner statistics'
+                info_text = []
+                mame_stats_scanner_print_slist(info_text, control_dic)
 
                 i_tex = '[COLOR orange]ROM scanner information[/COLOR]\n'
                 t = "You have {0:5d} ROM ZIP files out of {1:5d}, missing {2:5d}\n"
@@ -2468,7 +2355,7 @@ class Main:
                 i_tex += t.format(control_dic['assets_SL_manuals_have'],
                                   control_dic['assets_SL_manuals_missing'])
 
-                self._display_text_window(window_title, i_tex)
+                self._display_text_window('Scanner statistics', i_tex)
 
             # --- Audit statistics ---
             elif type_sub == 2:
@@ -2477,10 +2364,10 @@ class Main:
                     kodi_dialog_OK('MAME database not found. Please setup the addon first.')
                     return
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                info_text = []
+                mame_stats_audit_print_slist(info_text, control_dic, self.settings)
 
-                window_title = 'Database information and statistics'
-
-                # --- Print stuff ---
+                # --- Print audit statistics ---
                 rom_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_rom_set']]
                 chd_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_chd_set']]
                 info_text = '[COLOR orange]MAME ROM audit database statistics[/COLOR]\n'
@@ -2554,7 +2441,34 @@ class Main:
                 info_text += t.format(control_dic['audit_SL_items_with_CHD_OK'],
                                       control_dic['audit_SL_items_with_CHD_BAD'])
 
-                self._display_text_window(window_title, info_text)
+                self._display_text_window('Database information and statistics', info_text)
+
+            # --- All statistics ---
+            elif type_sub == 3:
+                # --- Warn user if error ---
+                if not PATHS.MAIN_CONTROL_PATH.exists():
+                    kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+                    return
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                info_text = []
+                mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
+                mame_stats_scanner_print_slist(info_text, control_dic)
+                mame_stats_audit_print_slist(info_text, control_dic, self.settings)
+                self._display_text_window('Database full statistics', '\n'.join(info_text))
+
+            # --- Write statistics to disk ---
+            elif type_sub == 4:
+                # --- Warn user if error ---
+                if not PATHS.MAIN_CONTROL_PATH.exists():
+                    kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+                    return
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+
+                # --- Generate stats string and remove Kodi colours ---
+                
+
+                # --- Write file to disk and inform user ---
+                kodi_dialog_OK('Not finished yet. Sorry')
 
         # --- View MAME machine ROMs (ROMs database) ---
         elif action == ACTION_VIEW_MACHINE_ROMS:
