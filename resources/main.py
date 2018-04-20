@@ -186,6 +186,9 @@ class AML_Paths:
         self.REPORT_MAME_ASSETS_PATH = self.REPORTS_DIR.pjoin('Assets_MAME.txt')
         self.REPORT_SL_ASSETS_PATH   = self.REPORTS_DIR.pjoin('Assets_SL.txt')
 
+        # >> Statistics report
+        self.REPORT_STATS_PATH = self.REPORTS_DIR.pjoin('Statistics.txt')
+
         # >> Audit report
         self.REPORT_MAME_AUDIT_GOOD_PATH       = self.REPORTS_DIR.pjoin('Audit_MAME_good.txt')
         self.REPORT_MAME_AUDIT_ERRORS_PATH     = self.REPORTS_DIR.pjoin('Audit_MAME_errors.txt')
@@ -2244,118 +2247,7 @@ class Main:
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 info_text = []
                 mame_stats_scanner_print_slist(info_text, control_dic)
-
-                i_tex = '[COLOR orange]ROM scanner information[/COLOR]\n'
-                t = "You have {0:5d} ROM ZIP files out of {1:5d}, missing {2:5d}\n"
-                i_tex += t.format(control_dic['scan_ROM_ZIP_files_have'],
-                                  control_dic['scan_ROM_ZIP_files_total'],
-                                  control_dic['scan_ROM_ZIP_files_missing'])
-                t = "You have {0:5d} CHDs out of          {1:5d}, missing {2:5d}\n"
-                i_tex += t.format(control_dic['scan_CHD_files_have'],
-                                  control_dic['scan_CHD_files_total'],
-                                  control_dic['scan_CHD_files_missing'])
-                t = "Can run  {0:5d} ROM machines out of  {1:5d}, unrunnable machines {2:5d}\n"
-                i_tex += t.format(control_dic['scan_machine_archives_ROM_have'],
-                                  control_dic['scan_machine_archives_ROM_total'],
-                                  control_dic['scan_machine_archives_ROM_missing'])
-                t = "Can run  {0:5d} CHD machines out of  {1:5d}, unrunnable machines {2:5d}\n"
-                i_tex += t.format(control_dic['scan_machine_archives_CHD_have'],
-                                  control_dic['scan_machine_archives_CHD_total'],
-                                  control_dic['scan_machine_archives_CHD_missing'])
-                # >> Samples
-                t = "You have {0:5d} Samples out of       {1:5d}, missing {2:5d}\n"
-                i_tex += t.format(control_dic['scan_Samples_have'],
-                                  control_dic['scan_Samples_total'],
-                                  control_dic['scan_Samples_missing'])
-
-                # >> SL scanner
-                t = "You have {0:5d} SL ROMs out of       {1:5d}, missing {2:5d}\n"
-                i_tex += t.format(control_dic['scan_SL_archives_ROM_have'],
-                                  control_dic['scan_SL_archives_ROM_total'],
-                                  control_dic['scan_SL_archives_ROM_missing'])
-                t = "You have {0:5d} SL CHDs out of       {1:5d}, missing {2:5d}\n"
-                i_tex += t.format(control_dic['scan_SL_archives_CHD_have'],
-                                  control_dic['scan_SL_archives_CHD_total'],
-                                  control_dic['scan_SL_archives_CHD_missing'])
-
-                # >> MAME assets.
-                i_tex += '\n[COLOR orange]Asset scanner information[/COLOR]\n'
-                i_tex += 'Total number of MAME machines {0:,d}\n'.format(control_dic['assets_num_MAME_machines'])
-                t = "You have {0:6d} MAME PCBs       , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_PCBs_have'],
-                                  control_dic['assets_PCBs_missing'],
-                                  control_dic['assets_PCBs_alternate'])
-                t = "You have {0:6d} MAME Artpreviews, missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_artpreview_have'],
-                                  control_dic['assets_artpreview_missing'],
-                                  control_dic['assets_artpreview_alternate'])
-                t = "You have {0:6d} MAME Artwork    , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_artwork_have'],
-                                  control_dic['assets_artwork_missing'],
-                                  control_dic['assets_artwork_alternate'])
-                t = "You have {0:6d} MAME Cabinets   , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_cabinets_have'],
-                                  control_dic['assets_cabinets_missing'],
-                                  control_dic['assets_cabinets_alternate'])
-                t = "You have {0:6d} MAME Clearlogos , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_clearlogos_have'],
-                                  control_dic['assets_clearlogos_missing'],
-                                  control_dic['assets_clearlogos_alternate'])
-                t = "You have {0:6d} MAME CPanels    , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_cpanels_have'],
-                                  control_dic['assets_cpanels_missing'],
-                                  control_dic['assets_cpanels_alternate'])
-                t = "You have {0:6d} MAME Fanart     , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_fanarts_have'],
-                                  control_dic['assets_fanarts_missing'],
-                                  control_dic['assets_fanarts_alternate'])
-                t = "You have {0:6d} MAME Flyers     , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_flyers_have'],
-                                  control_dic['assets_flyers_missing'],
-                                  control_dic['assets_flyers_alternate'])
-                t = "You have {0:6d} MAME Manuals    , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_manuals_have'],
-                                  control_dic['assets_manuals_missing'],
-                                  control_dic['assets_manuals_alternate'])
-                t = "You have {0:6d} MAME Marquees   , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_marquees_have'],
-                                  control_dic['assets_marquees_missing'],
-                                  control_dic['assets_marquees_alternate'])
-                t = "You have {0:6d} MAME Snaps      , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_snaps_have'],
-                                  control_dic['assets_snaps_missing'],
-                                  control_dic['assets_snaps_alternate'])
-                t = "You have {0:6d} MAME Titles     , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_titles_have'],
-                                  control_dic['assets_titles_missing'],
-                                  control_dic['assets_titles_alternate'])
-                t = "You have {0:6d} MAME Trailers   , missing {1:6d}, alternate {2:6d}\n"
-                i_tex += t.format(control_dic['assets_trailers_have'],
-                                  control_dic['assets_trailers_missing'],
-                                  control_dic['assets_trailers_alternate'])
-
-                # >> Software Lists
-                i_tex += '\nTotal number of SL items {0:,d}\n'.format(control_dic['assets_SL_num_items'])
-                t = "You have {0:6d} SL Titles   , missing {1:6d}\n"
-                i_tex += t.format(control_dic['assets_SL_titles_have'],
-                                  control_dic['assets_SL_titles_missing'])
-                t = "You have {0:6d} SL Snaps    , missing {1:6d}\n"
-                i_tex += t.format(control_dic['assets_SL_snaps_have'],
-                                  control_dic['assets_SL_snaps_missing'])
-                t = "You have {0:6d} SL Boxfronts, missing {1:6d}\n"
-                i_tex += t.format(control_dic['assets_SL_boxfronts_have'],
-                                  control_dic['assets_SL_boxfronts_missing'])
-                t = "You have {0:6d} SL Fanarts  , missing {1:6d}\n"
-                i_tex += t.format(control_dic['assets_SL_fanarts_have'],
-                                  control_dic['assets_SL_fanarts_missing'])
-                t = "You have {0:6d} SL Trailers , missing {1:6d}\n"
-                i_tex += t.format(control_dic['assets_SL_trailers_have'],
-                                  control_dic['assets_SL_trailers_missing'])
-                t = "You have {0:6d} SL Manuals  , missing {1:6d}\n"
-                i_tex += t.format(control_dic['assets_SL_manuals_have'],
-                                  control_dic['assets_SL_manuals_missing'])
-
-                self._display_text_window('Scanner statistics', i_tex)
+                self._display_text_window('Scanner statistics', '\n'.join(info_text))
 
             # --- Audit statistics ---
             elif type_sub == 2:
@@ -2366,82 +2258,7 @@ class Main:
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 info_text = []
                 mame_stats_audit_print_slist(info_text, control_dic, self.settings)
-
-                # --- Print audit statistics ---
-                rom_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_rom_set']]
-                chd_set = ['Merged', 'Split', 'Non-merged'][self.settings['mame_chd_set']]
-                info_text = '[COLOR orange]MAME ROM audit database statistics[/COLOR]\n'
-                info_text += "There are {0:5d} ROM ZIP archives in the {1} set\n".format(control_dic['audit_MAME_ZIP_files'], rom_set)
-                info_text += "There are {0:5d}     CHD archives in the {1} set\n".format(control_dic['audit_MAME_CHD_files'], chd_set)
-                t = "{0:5d} machines require ROM ZIPs, parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['audit_machine_archives_ROM'],
-                                      control_dic['audit_machine_archives_ROM_parents'],
-                                      control_dic['audit_machine_archives_ROM_clones'])
-                t = "{0:5d} machines require CHDs    , parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['audit_machine_archives_CHD'],
-                                      control_dic['audit_machine_archives_CHD_parents'],
-                                      control_dic['audit_machine_archives_CHD_clones'])
-                t = "{0:5d} machines require nothing , parents {1:5d}, clones {2:5d}\n"
-                info_text += t.format(control_dic['audit_archive_less'],
-                                      control_dic['audit_archive_less_parents'],
-                                      control_dic['audit_archive_less_clones'])
-
-                # --- SL item audit database statistics ---
-                info_text += '\n[COLOR orange]SL audit database statistics[/COLOR]\n'
-                t = "There are {0:5d} runnable Software List items\n"
-                info_text += t.format(control_dic['stats_audit_SL_items_runnable'])
-                t = "{0:5d} SL items require ROM ZIPs and/or CHDs\n"
-                info_text += t.format(control_dic['stats_audit_SL_items_with_arch'])
-                t = "{0:5d} SL items require ROM ZIPs\n"
-                info_text += t.format(control_dic['stats_audit_SL_items_with_arch_ROM'])
-                t = "{0:5d} SL items require CHDs\n"
-                info_text += t.format(control_dic['stats_audit_SL_items_with_CHD'])
-
-                # --- MAME audit info ---
-                info_text += '\n[COLOR orange]MAME ROM audit information[/COLOR]\n'
-                info_text += '{0:5d} runnable MAME machines\n'.format(control_dic['audit_MAME_machines_runnable'])
-                # >> All
-                info_text += '{0:5d} machines with ROMs and/or CHDs\n'.format(control_dic['audit_MAME_machines_with_arch'])
-                info_text += '{0:5d} machines with no ROMs and/or CHDs\n'.format(control_dic['audit_MAME_machines_without'])
-                t = "{0:5d} good, {1:5d} bad machines\n"
-                info_text += t.format(control_dic['audit_MAME_machines_with_arch_OK'],
-                                      control_dic['audit_MAME_machines_with_arch_BAD'])
-                # >> ROMs
-                info_text += '{0:5d} machines with ROMs\n'.format(control_dic['audit_MAME_machines_with_ROMs'])
-                info_text += '{0:5d} machines with no ROMs\n'.format(control_dic['audit_MAME_machines_without_ROMs'])
-                t = "{0:5d} good, {1:5d} bad machines\n"
-                info_text += t.format(control_dic['audit_MAME_machines_with_ROMs_OK'],
-                                      control_dic['audit_MAME_machines_with_ROMs_BAD'])
-                # >> Disks
-                info_text += '{0:5d} machines with CHDs\n'.format(control_dic['audit_MAME_machines_with_CHDs'])
-                info_text += '{0:5d} machines with no CHDs\n'.format(control_dic['audit_MAME_machines_without_CHDs'])
-                t = "{0:5d} good, {1:5d} bad machines\n"
-                info_text += t.format(control_dic['audit_MAME_machines_with_CHDs_OK'],
-                                      control_dic['audit_MAME_machines_with_CHDs_BAD'])
-
-                # --- SL audit info ---
-                info_text += '\n[COLOR orange]SL audit information[/COLOR]\n'
-                info_text += '{0:5d} runnable SL items\n'.format(control_dic['audit_SL_items_runnable'])
-                # >> All
-                info_text += '{0:5d} SL items with ROMs and/or CHDs\n'.format(control_dic['audit_SL_items_with_arch'])
-                info_text += '{0:5d} SL items with no ROMs and/or CHDs\n'.format(control_dic['audit_SL_items_without_arch'])
-                t = "{0:5d} good, {1:5d} bad SL items\n"
-                info_text += t.format(control_dic['audit_SL_items_with_arch_OK'],
-                                      control_dic['audit_SL_items_with_arch_BAD'])
-                # >> ROMs
-                info_text += '{0:5d} SL items with ROMs\n'.format(control_dic['audit_SL_items_with_arch_ROM'])
-                info_text += '{0:5d} SL items with no ROMs\n'.format(control_dic['audit_SL_items_without_arch_ROM'])
-                t = "{0:5d} good, {1:5d} bad SL items\n"
-                info_text += t.format(control_dic['audit_SL_items_with_arch_ROM_OK'],
-                                      control_dic['audit_SL_items_with_arch_ROM_BAD'])
-                # >> Disks
-                info_text += '{0:5d} SL items with CHDs\n'.format(control_dic['audit_SL_items_with_CHD'])
-                info_text += '{0:5d} SL items with no CHDs\n'.format(control_dic['audit_SL_items_without_CHD'])
-                t = "{0:5d} good, {1:5d} bad SL items\n"
-                info_text += t.format(control_dic['audit_SL_items_with_CHD_OK'],
-                                      control_dic['audit_SL_items_with_CHD_BAD'])
-
-                self._display_text_window('Database information and statistics', info_text)
+                self._display_text_window('Database information and statistics', '\n'.join(info_text))
 
             # --- All statistics ---
             elif type_sub == 3:
@@ -2452,7 +2269,9 @@ class Main:
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
                 info_text = []
                 mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
+                info_text.append('')
                 mame_stats_scanner_print_slist(info_text, control_dic)
+                info_text.append('')
                 mame_stats_audit_print_slist(info_text, control_dic, self.settings)
                 self._display_text_window('Database full statistics', '\n'.join(info_text))
 
@@ -2465,10 +2284,20 @@ class Main:
                 control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
 
                 # --- Generate stats string and remove Kodi colours ---
-                
+                info_text = []
+                mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
+                info_text.append('')
+                mame_stats_scanner_print_slist(info_text, control_dic)
+                info_text.append('')
+                mame_stats_audit_print_slist(info_text, control_dic, self.settings)
+                # text_remove_slist_colours(info_text)
 
                 # --- Write file to disk and inform user ---
-                kodi_dialog_OK('Not finished yet. Sorry')
+                log_info('Writing AML statistics report ...')
+                log_info('File "{0}"'.format(PATHS.REPORT_STATS_PATH.getPath()))
+                with open(PATHS.REPORT_STATS_PATH.getPath(), 'w') as f:
+                    f.write('\n'.join(info_text).encode('utf-8'))
+                kodi_notify('Exported AML statistic')
 
         # --- View MAME machine ROMs (ROMs database) ---
         elif action == ACTION_VIEW_MACHINE_ROMS:

@@ -805,6 +805,12 @@ def mame_load_Command_DAT(filename):
 # -------------------------------------------------------------------------------------------------
 # Statistic printing
 # -------------------------------------------------------------------------------------------------
+# >> See https://docs.python.org/2/library/time.html
+def _str_time(secs):
+    t_struct = time.localtime(secs)
+
+    return time.strftime('%a  %d %b %Y  %H:%M:%S', t_struct)
+
 # slist is a list of strings that will be joined like '\n'.join(slist)
 # slist is a list, so it is mutable and can be changed by reference.
 #
@@ -827,55 +833,55 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     slist.append('')
     slist.append('[COLOR orange]Timestamps[/COLOR]')
     if control_dic['t_XML_extraction']:
-        slist.append("MAME XML extracted on   {0}".format(time.ctime(control_dic['t_XML_extraction'])))
+        slist.append("MAME XML extracted on   {0}".format(_str_time(control_dic['t_XML_extraction'])))
     else:
         slist.append("MAME XML never extracted")
     if control_dic['t_MAME_DB_build']:
-        slist.append("MAME DB built on        {0}".format(time.ctime(control_dic['t_MAME_DB_build'])))
+        slist.append("MAME DB built on        {0}".format(_str_time(control_dic['t_MAME_DB_build'])))
     else:
         slist.append("MAME DB never built\n")
     if control_dic['t_MAME_Audit_DB_build']:
-        slist.append("MAME Audit DB built on  {0}".format(time.ctime(control_dic['t_MAME_Audit_DB_build'])))
+        slist.append("MAME Audit DB built on  {0}".format(_str_time(control_dic['t_MAME_Audit_DB_build'])))
     else:
         slist.append("MAME Audit DB never built")
     if control_dic['t_MAME_Catalog_build']:
-        slist.append("MAME Catalog built on   {0}".format(time.ctime(control_dic['t_MAME_Catalog_build'])))
+        slist.append("MAME Catalog built on   {0}".format(_str_time(control_dic['t_MAME_Catalog_build'])))
     else:
         slist.append("MAME Catalog never built")
     if control_dic['t_MAME_ROMs_scan']:
-        slist.append("MAME ROMs scaned on     {0}".format(time.ctime(control_dic['t_MAME_ROMs_scan'])))
+        slist.append("MAME ROMs scaned on     {0}".format(_str_time(control_dic['t_MAME_ROMs_scan'])))
     else:
         slist.append("MAME ROMs never scaned\n")
     if control_dic['t_MAME_assets_scan']:
-        slist.append("MAME assets scaned on   {0}".format(time.ctime(control_dic['t_MAME_assets_scan'])))
+        slist.append("MAME assets scaned on   {0}".format(_str_time(control_dic['t_MAME_assets_scan'])))
     else:
         slist.append("MAME assets never scaned")
     if control_dic['t_Custom_Filter_build']:
-        slist.append("Custom filters built on {0}".format(time.ctime(control_dic['t_Custom_Filter_build'])))
+        slist.append("Custom filters built on {0}".format(_str_time(control_dic['t_Custom_Filter_build'])))
     else:
         slist.append("Custom filters never built")
 
     # >> Software Lists stuff
     if control_dic['t_SL_DB_build']:
-        slist.append("SL DB built on          {0}".format(time.ctime(control_dic['t_SL_DB_build'])))
+        slist.append("SL DB built on          {0}".format(_str_time(control_dic['t_SL_DB_build'])))
     else:
         slist.append("SL DB never built")
     if control_dic['t_SL_ROMs_scan']:
-        slist.append("SL ROMs scaned on       {0}".format(time.ctime(control_dic['t_SL_ROMs_scan'])))
+        slist.append("SL ROMs scaned on       {0}".format(_str_time(control_dic['t_SL_ROMs_scan'])))
     else:
         slist.append("SL ROMs never scaned")
     if control_dic['t_SL_assets_scan']:
-        slist.append("SL assets scaned on     {0}".format(time.ctime(control_dic['t_SL_assets_scan'])))
+        slist.append("SL assets scaned on     {0}".format(_str_time(control_dic['t_SL_assets_scan'])))
     else:
         slist.append("SL assets never scaned")
 
     # >> Audit stuff
     if control_dic['t_MAME_audit']:
-        slist.append("MAME ROMs audited on    {0}".format(time.ctime(control_dic['t_MAME_audit'])))
+        slist.append("MAME ROMs audited on    {0}".format(_str_time(control_dic['t_MAME_audit'])))
     else:
         slist.append("MAME ROMs never audited")
     if control_dic['t_SL_audit']:
-        slist.append("SL ROMs audited on      {0}".format(time.ctime(control_dic['t_SL_audit'])))
+        slist.append("SL ROMs audited on      {0}".format(_str_time(control_dic['t_SL_audit'])))
     else:
         slist.append("SL ROMs never audited")
 
@@ -927,12 +933,198 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     slist.append("SL items with ROMs {0:6d}".format(control_dic['stats_SL_items_with_ROMs']))
     slist.append("SL items with CHDs {0:6d}".format(control_dic['stats_SL_items_with_CHDs']))
 
+def mame_stats_scanner_print_slist(slist, control_dic):
+    slist.append('[COLOR orange]ROM scanner information[/COLOR]')
+    ta = "You have {0:5d} ROM ZIP files out of {1:5d}, missing {2:5d}"
+    tb = "You have {0:5d} CHDs out of          {1:5d}, missing {2:5d}"
+    tc = "Can run  {0:5d} ROM machines out of  {1:5d}, unrunnable machines {2:5d}"
+    td = "Can run  {0:5d} CHD machines out of  {1:5d}, unrunnable machines {2:5d}"
+    te = "You have {0:5d} Samples out of       {1:5d}, missing {2:5d}"
+    slist.append(ta.format(control_dic['scan_ROM_ZIP_files_have'],
+                           control_dic['scan_ROM_ZIP_files_total'],
+                           control_dic['scan_ROM_ZIP_files_missing']))
+    slist.append(tb.format(control_dic['scan_CHD_files_have'],
+                           control_dic['scan_CHD_files_total'],
+                           control_dic['scan_CHD_files_missing']))
+    slist.append(tc.format(control_dic['scan_machine_archives_ROM_have'],
+                           control_dic['scan_machine_archives_ROM_total'],
+                           control_dic['scan_machine_archives_ROM_missing']))
+    slist.append(td.format(control_dic['scan_machine_archives_CHD_have'],
+                           control_dic['scan_machine_archives_CHD_total'],
+                           control_dic['scan_machine_archives_CHD_missing']))
+    slist.append(te.format(control_dic['scan_Samples_have'],
+                           control_dic['scan_Samples_total'],
+                           control_dic['scan_Samples_missing']))
 
-def mame_stats_scanner_print_slist(info_text, control_dic):
-    pass
+    # >> SL scanner
+    t = "You have {0:5d} SL ROMs out of       {1:5d}, missing {2:5d}"
+    slist.append(t.format(control_dic['scan_SL_archives_ROM_have'],
+                      control_dic['scan_SL_archives_ROM_total'],
+                      control_dic['scan_SL_archives_ROM_missing']))
+    t = "You have {0:5d} SL CHDs out of       {1:5d}, missing {2:5d}"
+    slist.append(t.format(control_dic['scan_SL_archives_CHD_have'],
+                      control_dic['scan_SL_archives_CHD_total'],
+                      control_dic['scan_SL_archives_CHD_missing']))
 
-def mame_stats_audit_print_slist(info_text, control_dic, settings_dic):
-    pass
+    # >> MAME assets.
+    slist.append('')
+    slist.append('[COLOR orange]Asset scanner information[/COLOR]')
+    t = 'Total number of MAME machines {0:,d}'
+    slist.append(t.format(control_dic['assets_num_MAME_machines']))
+    t = "You have {0:6d} MAME PCBs       , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_PCBs_have'],
+                          control_dic['assets_PCBs_missing'],
+                          control_dic['assets_PCBs_alternate']))
+    t = "You have {0:6d} MAME Artpreviews, missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_artpreview_have'],
+                          control_dic['assets_artpreview_missing'],
+                          control_dic['assets_artpreview_alternate']))
+    t = "You have {0:6d} MAME Artwork    , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_artwork_have'],
+                          control_dic['assets_artwork_missing'],
+                          control_dic['assets_artwork_alternate']))
+    t = "You have {0:6d} MAME Cabinets   , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_cabinets_have'],
+                          control_dic['assets_cabinets_missing'],
+                          control_dic['assets_cabinets_alternate']))
+    t = "You have {0:6d} MAME Clearlogos , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_clearlogos_have'],
+                          control_dic['assets_clearlogos_missing'],
+                          control_dic['assets_clearlogos_alternate']))
+    t = "You have {0:6d} MAME CPanels    , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_cpanels_have'],
+                          control_dic['assets_cpanels_missing'],
+                          control_dic['assets_cpanels_alternate']))
+    t = "You have {0:6d} MAME Fanart     , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_fanarts_have'],
+                          control_dic['assets_fanarts_missing'],
+                          control_dic['assets_fanarts_alternate']))
+    t = "You have {0:6d} MAME Flyers     , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_flyers_have'],
+                          control_dic['assets_flyers_missing'],
+                          control_dic['assets_flyers_alternate']))
+    t = "You have {0:6d} MAME Manuals    , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_manuals_have'],
+                          control_dic['assets_manuals_missing'],
+                          control_dic['assets_manuals_alternate']))
+    t = "You have {0:6d} MAME Marquees   , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_marquees_have'],
+                          control_dic['assets_marquees_missing'],
+                          control_dic['assets_marquees_alternate']))
+    t = "You have {0:6d} MAME Snaps      , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_snaps_have'],
+                          control_dic['assets_snaps_missing'],
+                          control_dic['assets_snaps_alternate']))
+    t = "You have {0:6d} MAME Titles     , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_titles_have'],
+                          control_dic['assets_titles_missing'],
+                          control_dic['assets_titles_alternate']))
+    t = "You have {0:6d} MAME Trailers   , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_trailers_have'],
+                          control_dic['assets_trailers_missing'],
+                          control_dic['assets_trailers_alternate']))
+
+    # >> Software Lists
+    slist.append('')
+    slist.append('Total number of SL items {0:,d}'.format(control_dic['assets_SL_num_items']))
+    t = "You have {0:6d} SL Titles   , missing {1:6d}"
+    slist.append(t.format(control_dic['assets_SL_titles_have'],
+                          control_dic['assets_SL_titles_missing']))
+    t = "You have {0:6d} SL Snaps    , missing {1:6d}"
+    slist.append(t.format(control_dic['assets_SL_snaps_have'],
+                          control_dic['assets_SL_snaps_missing']))
+    t = "You have {0:6d} SL Boxfronts, missing {1:6d}"
+    slist.append(t.format(control_dic['assets_SL_boxfronts_have'],
+                          control_dic['assets_SL_boxfronts_missing']))
+    t = "You have {0:6d} SL Fanarts  , missing {1:6d}"
+    slist.append(t.format(control_dic['assets_SL_fanarts_have'],
+                          control_dic['assets_SL_fanarts_missing']))
+    t = "You have {0:6d} SL Trailers , missing {1:6d}"
+    slist.append(t.format(control_dic['assets_SL_trailers_have'],
+                          control_dic['assets_SL_trailers_missing']))
+    t = "You have {0:6d} SL Manuals  , missing {1:6d}"
+    slist.append(t.format(control_dic['assets_SL_manuals_have'],
+                          control_dic['assets_SL_manuals_missing']))
+
+def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
+    rom_set = ['Merged', 'Split', 'Non-merged'][settings_dic['mame_rom_set']]
+    chd_set = ['Merged', 'Split', 'Non-merged'][settings_dic['mame_chd_set']]
+
+    slist.append('[COLOR orange]MAME ROM audit database statistics[/COLOR]')
+    t = "There are {0:5d} ROM ZIP archives in the {1} set"
+    slist.append(t.format(control_dic['audit_MAME_ZIP_files'], rom_set))
+    t = "There are {0:5d}     CHD archives in the {1} set"
+    slist.append(t.format(control_dic['audit_MAME_CHD_files'], chd_set))
+    t = "{0:5d} machines require ROM ZIPs, parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['audit_machine_archives_ROM'],
+                          control_dic['audit_machine_archives_ROM_parents'],
+                          control_dic['audit_machine_archives_ROM_clones']))
+    t = "{0:5d} machines require CHDs    , parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['audit_machine_archives_CHD'],
+                          control_dic['audit_machine_archives_CHD_parents'],
+                          control_dic['audit_machine_archives_CHD_clones']))
+    t = "{0:5d} machines require nothing , parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['audit_archive_less'],
+                          control_dic['audit_archive_less_parents'],
+                          control_dic['audit_archive_less_clones']))
+
+    # --- SL item audit database statistics ---
+    slist.append('')
+    slist.append('[COLOR orange]SL audit database statistics[/COLOR]')
+    t = "There are {0:5d} runnable Software List items"
+    slist.append(t.format(control_dic['stats_audit_SL_items_runnable']))
+    t = "{0:5d} SL items require ROM ZIPs and/or CHDs"
+    slist.append(t.format(control_dic['stats_audit_SL_items_with_arch']))
+    t = "{0:5d} SL items require ROM ZIPs"
+    slist.append(t.format(control_dic['stats_audit_SL_items_with_arch_ROM']))
+    t = "{0:5d} SL items require CHDs"
+    slist.append(t.format(control_dic['stats_audit_SL_items_with_CHD']))
+
+    # --- MAME audit info ---
+    slist.append('')
+    slist.append('[COLOR orange]MAME ROM audit information[/COLOR]')
+    slist.append('{0:5d} runnable MAME machines'.format(control_dic['audit_MAME_machines_runnable']))
+    # >> All
+    slist.append('{0:5d} machines with ROMs and/or CHDs'.format(control_dic['audit_MAME_machines_with_arch']))
+    slist.append('{0:5d} machines with no ROMs and/or CHDs'.format(control_dic['audit_MAME_machines_without']))
+    t = "{0:5d} good, {1:5d} bad machines"
+    slist.append(t.format(control_dic['audit_MAME_machines_with_arch_OK'],
+                          control_dic['audit_MAME_machines_with_arch_BAD']))
+    # >> ROMs
+    slist.append('{0:5d} machines with ROMs'.format(control_dic['audit_MAME_machines_with_ROMs']))
+    slist.append('{0:5d} machines with no ROMs'.format(control_dic['audit_MAME_machines_without_ROMs']))
+    t = "{0:5d} good, {1:5d} bad machines"
+    slist.append(t.format(control_dic['audit_MAME_machines_with_ROMs_OK'],
+                          control_dic['audit_MAME_machines_with_ROMs_BAD']))
+    # >> Disks
+    slist.append('{0:5d} machines with CHDs'.format(control_dic['audit_MAME_machines_with_CHDs']))
+    slist.append('{0:5d} machines with no CHDs'.format(control_dic['audit_MAME_machines_without_CHDs']))
+    t = "{0:5d} good, {1:5d} bad machines"
+    slist.append(t.format(control_dic['audit_MAME_machines_with_CHDs_OK'],
+                          control_dic['audit_MAME_machines_with_CHDs_BAD']))
+
+    # --- SL audit info ---
+    slist.append('')
+    slist.append('[COLOR orange]SL audit information[/COLOR]')
+    slist.append('{0:5d} runnable SL items'.format(control_dic['audit_SL_items_runnable']))
+    # >> All
+    slist.append('{0:5d} SL items with ROMs and/or CHDs'.format(control_dic['audit_SL_items_with_arch']))
+    slist.append('{0:5d} SL items with no ROMs and/or CHDs'.format(control_dic['audit_SL_items_without_arch']))
+    t = "{0:5d} good, {1:5d} bad SL items"
+    slist.append(t.format(control_dic['audit_SL_items_with_arch_OK'],
+                          control_dic['audit_SL_items_with_arch_BAD']))
+    # >> ROMs
+    slist.append('{0:5d} SL items with ROMs'.format(control_dic['audit_SL_items_with_arch_ROM']))
+    slist.append('{0:5d} SL items with no ROMs'.format(control_dic['audit_SL_items_without_arch_ROM']))
+    t = "{0:5d} good, {1:5d} bad SL items"
+    slist.append(t.format(control_dic['audit_SL_items_with_arch_ROM_OK'],
+                          control_dic['audit_SL_items_with_arch_ROM_BAD']))
+    # >> Disks
+    slist.append('{0:5d} SL items with CHDs'.format(control_dic['audit_SL_items_with_CHD']))
+    slist.append('{0:5d} SL items with no CHDs'.format(control_dic['audit_SL_items_without_CHD']))
+    t = "{0:5d} good, {1:5d} bad SL items"
+    slist.append(t.format(control_dic['audit_SL_items_with_CHD_OK'],
+                          control_dic['audit_SL_items_with_CHD_BAD']))
 
 # -------------------------------------------------------------------------------------------------
 # Build MAME and SL plots
