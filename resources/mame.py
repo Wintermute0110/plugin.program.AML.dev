@@ -934,12 +934,13 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     slist.append("SL items with CHDs {0:6d}".format(control_dic['stats_SL_items_with_CHDs']))
 
 def mame_stats_scanner_print_slist(slist, control_dic):
-    slist.append('[COLOR orange]ROM scanner information[/COLOR]')
-    ta = "You have {0:5d} ROM ZIP files out of {1:5d}, missing {2:5d}"
-    tb = "You have {0:5d} CHDs out of          {1:5d}, missing {2:5d}"
-    tc = "Can run  {0:5d} ROM machines out of  {1:5d}, unrunnable machines {2:5d}"
-    td = "Can run  {0:5d} CHD machines out of  {1:5d}, unrunnable machines {2:5d}"
-    te = "You have {0:5d} Samples out of       {1:5d}, missing {2:5d}"
+    # >> MAME statistics
+    slist.append('[COLOR orange]MAME scanner information[/COLOR]')
+    ta = "You have {0:5d} ROM ZIP files out of {1:5d}, missing    {2:5d}"
+    tb = "You have {0:5d} CHDs out of          {1:5d}, missing    {2:5d}"
+    tc = "Can run  {0:5d} ROM machines out of  {1:5d}, unrunnable {2:5d}"
+    td = "Can run  {0:5d} CHD machines out of  {1:5d}, unrunnable {2:5d}"
+    te = "You have {0:5d} Samples out of       {1:5d}, missing    {2:5d}"
     slist.append(ta.format(control_dic['scan_ROM_ZIP_files_have'],
                            control_dic['scan_ROM_ZIP_files_total'],
                            control_dic['scan_ROM_ZIP_files_missing']))
@@ -956,21 +957,22 @@ def mame_stats_scanner_print_slist(slist, control_dic):
                            control_dic['scan_Samples_total'],
                            control_dic['scan_Samples_missing']))
 
-    # >> SL scanner
-    t = "You have {0:5d} SL ROMs out of       {1:5d}, missing {2:5d}"
-    slist.append(t.format(control_dic['scan_SL_archives_ROM_have'],
-                      control_dic['scan_SL_archives_ROM_total'],
-                      control_dic['scan_SL_archives_ROM_missing']))
-    t = "You have {0:5d} SL CHDs out of       {1:5d}, missing {2:5d}"
-    slist.append(t.format(control_dic['scan_SL_archives_CHD_have'],
-                      control_dic['scan_SL_archives_CHD_total'],
-                      control_dic['scan_SL_archives_CHD_missing']))
-
-    # >> MAME assets.
+    # >> SL statistics
     slist.append('')
-    slist.append('[COLOR orange]Asset scanner information[/COLOR]')
-    t = 'Total number of MAME machines {0:,d}'
-    slist.append(t.format(control_dic['assets_num_MAME_machines']))
+    slist.append('[COLOR orange]Software List scanner information[/COLOR]')
+    ta = "You have {0:5d} SL ROMs out of {1:5d}, missing {2:5d}"
+    tb = "You have {0:5d} SL CHDs out of {1:5d}, missing {2:5d}"
+    slist.append(ta.format(control_dic['scan_SL_archives_ROM_have'],
+                           control_dic['scan_SL_archives_ROM_total'],
+                           control_dic['scan_SL_archives_ROM_missing']))
+    slist.append(tb.format(control_dic['scan_SL_archives_CHD_have'],
+                           control_dic['scan_SL_archives_CHD_total'],
+                           control_dic['scan_SL_archives_CHD_missing']))
+
+    # >> MAME asset scanner.
+    slist.append('')
+    slist.append('[COLOR orange]MAME asset scanner information[/COLOR]')
+    # slist.append('Total number of MAME machines {0:,d}'.format(control_dic['assets_num_MAME_machines']))
     t = "You have {0:6d} MAME PCBs       , missing {1:6d}, alternate {2:6d}"
     slist.append(t.format(control_dic['assets_PCBs_have'],
                           control_dic['assets_PCBs_missing'],
@@ -1024,9 +1026,10 @@ def mame_stats_scanner_print_slist(slist, control_dic):
                           control_dic['assets_trailers_missing'],
                           control_dic['assets_trailers_alternate']))
 
-    # >> Software Lists
+    # >> Software List scanner
     slist.append('')
-    slist.append('Total number of SL items {0:,d}'.format(control_dic['assets_SL_num_items']))
+    slist.append('[COLOR orange]Software List asset scanner information[/COLOR]')
+    # slist.append('Total number of SL items {0:,d}'.format(control_dic['assets_SL_num_items']))
     t = "You have {0:6d} SL Titles   , missing {1:6d}"
     slist.append(t.format(control_dic['assets_SL_titles_have'],
                           control_dic['assets_SL_titles_missing']))
