@@ -2931,6 +2931,8 @@ def _get_ROM_type(rom):
 
 def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_roms):
     if rom_set == 'MERGED':
+        cloneof = machines_render[m_name]['cloneof']
+
         # In the Merged set all Parent and Clone ROMs are in the parent archive.
         # However, according to the Pleasuredome DATs, ROMs are organised like
         # this:
@@ -2938,8 +2940,11 @@ def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_r
         #   clone_name/clone_rom_2
         #   parent_rom_1
         #   parent_rom_2
-        location = m_name + '/' + rom['name']
-    
+        if cloneof:
+            location = cloneof + '/' + m_name + '/' + rom['name']
+        else:
+            location = m_name + '/' + rom['name']
+
     elif rom_set == 'SPLIT':
         machine = machines[m_name]
         cloneof = machines_render[m_name]['cloneof']
@@ -3007,7 +3012,8 @@ def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_r
                 location = m_name + '/' + rom['name']
 
     elif rom_set == 'NONMERGED':
-        # >> In the NonMerged set all ROMs are in the machine archive, including BIOSes.
+        # >> In the NonMerged set all ROMs are in the machine archive, including BIOSes and
+        # >> device ROMs.
         location = m_name + '/' + rom['name']
 
     else:
