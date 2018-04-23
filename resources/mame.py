@@ -5026,10 +5026,10 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
 
             # --- Build report ---
             description = sl_roms[rom_key]['description']
+            clone_name = sl_roms[rom_key]['cloneof']
             r_all_list.append('SL {0} Software item {1} "{2}"'.format(SL_name, rom_key, description))
-            if sl_roms[rom_key]['cloneof']:
-                clone_name = sl_roms[rom_key]['cloneof']
-                clone_description = sl_roms[cloneof]['description']
+            if clone_name:
+                clone_description = sl_roms[clone_name]['description']
                 r_all_list.append('cloneof {0} "{1}"'.format(clone_name, clone_description))
             if m_have_str_list:
                 r_all_list.extend(m_have_str_list)
