@@ -1030,24 +1030,30 @@ def mame_stats_scanner_print_slist(slist, control_dic):
     slist.append('')
     slist.append('[COLOR orange]Software List asset scanner information[/COLOR]')
     # slist.append('Total number of SL items {0:,d}'.format(control_dic['assets_SL_num_items']))
-    t = "You have {0:6d} SL Titles   , missing {1:6d}"
+    t = "You have {0:6d} SL Titles   , missing {1:6d}, alternate {2:6d}"
     slist.append(t.format(control_dic['assets_SL_titles_have'],
-                          control_dic['assets_SL_titles_missing']))
-    t = "You have {0:6d} SL Snaps    , missing {1:6d}"
+                          control_dic['assets_SL_titles_missing'],
+                          control_dic['assets_SL_titles_alternate']))
+    t = "You have {0:6d} SL Snaps    , missing {1:6d}, alternate {2:6d}"
     slist.append(t.format(control_dic['assets_SL_snaps_have'],
-                          control_dic['assets_SL_snaps_missing']))
-    t = "You have {0:6d} SL Boxfronts, missing {1:6d}"
+                          control_dic['assets_SL_snaps_missing'],
+                          control_dic['assets_SL_snaps_alternate']))
+    t = "You have {0:6d} SL Boxfronts, missing {1:6d}, alternate {2:6d}"
     slist.append(t.format(control_dic['assets_SL_boxfronts_have'],
-                          control_dic['assets_SL_boxfronts_missing']))
-    t = "You have {0:6d} SL Fanarts  , missing {1:6d}"
+                          control_dic['assets_SL_boxfronts_missing'],
+                          control_dic['assets_SL_boxfronts_alternate']))
+    t = "You have {0:6d} SL Fanarts  , missing {1:6d}, alternate {2:6d}"
     slist.append(t.format(control_dic['assets_SL_fanarts_have'],
-                          control_dic['assets_SL_fanarts_missing']))
-    t = "You have {0:6d} SL Trailers , missing {1:6d}"
+                          control_dic['assets_SL_fanarts_missing'],
+                          control_dic['assets_SL_fanarts_alternate']))
+    t = "You have {0:6d} SL Trailers , missing {1:6d}, alternate {2:6d}"
     slist.append(t.format(control_dic['assets_SL_trailers_have'],
-                          control_dic['assets_SL_trailers_missing']))
-    t = "You have {0:6d} SL Manuals  , missing {1:6d}"
+                          control_dic['assets_SL_trailers_missing'],
+                          control_dic['assets_SL_trailers_alternate']))
+    t = "You have {0:6d} SL Manuals  , missing {1:6d}, alternate {2:6d}"
     slist.append(t.format(control_dic['assets_SL_manuals_have'],
-                          control_dic['assets_SL_manuals_missing']))
+                          control_dic['assets_SL_manuals_missing'],
+                          control_dic['assets_SL_manuals_alternate']))
 
 def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     rom_set = ['Merged', 'Split', 'Non-merged'][settings_dic['mame_rom_set']]
