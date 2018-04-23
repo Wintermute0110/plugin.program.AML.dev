@@ -4786,7 +4786,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
         processed_machines += 1
     pDialog.close()
 
-    # >> Write reports
+    # >> Write MAME scanner reports
     have_path = PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()
     log_info('Writing report "{0}"'.format(have_path))
     with open(have_path, 'w') as file:
@@ -4796,7 +4796,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     with open(miss_path, 'w') as file:
         file.write('\n'.join(r_miss_list).encode('utf-8'))
 
-    # --- ROM list ---
+    # --- ROM ZIP file list ---
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME archive ROMs ...')
@@ -4825,7 +4825,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
             r_list = [ 'Congratulations!!! You have no missing ROM ZIPs.' ]
         file.write('\n'.join(r_list).encode('utf-8'))
 
-    # --- CHD list ---
+    # --- CHD file list ---
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME CHDs ...')
     total_machines = len(machines_render)
     processed_machines = 0
@@ -4933,7 +4933,10 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
 # -------------------------------------------------------------------------------------------------
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
 def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN):
-    # >> SL ROMs: Traverse Software List, check if ROM exists, update and save database
+
+    # --- SL ROM ZIP archives and CHDs ---
+    # Traverse the Software Lists, check if ROMs ZIPs and CHDs exists for every SL item, 
+    # update and save database.
     pDialog = xbmcgui.DialogProgress()
     pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
@@ -4946,6 +4949,7 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     SL_CHDs_have = 0
     SL_CHDs_missing = 0
     SL_CHDs_total = 0
+    r_all_list = []
     r_have_list = []
     r_miss_list = []
     for SL_name in sorted(SL_catalog_dic):
@@ -5021,19 +5025,30 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
                 rom['status_CHD'] = '-'
 
             # --- Build report ---
+            description = sl_roms[rom_key]['description']
+            r_all_list.append('SL {0} Software item {1} "{2}"'.format(SL_name, rom_key, description))
+            if sl_roms[rom_key]['cloneof']:
+                clone_name = sl_roms[rom_key]['cloneof']
+                clone_description = sl_roms[cloneof]['description']
+                r_all_list.append('cloneof {0} "{1}"'.format(clone_name, clone_description))
             if m_have_str_list:
-                r_have_list.append('SL {0} Software item {1} "{2}"'.format(SL_name, rom_key, sl_roms[rom_key]['description']))
-                if sl_roms[rom_key]['cloneof']:
-                    cloneof = sl_roms[rom_key]['cloneof']
-                    r_have_list.append('cloneof {0} "{1}"'.format(cloneof, sl_roms[cloneof]['description']))
+                r_all_list.extend(m_have_str_list)
+            if m_miss_str_list:
+                r_all_list.extend(m_miss_str_list)
+            r_all_list.append('')
+
+            if m_have_str_list:
+                r_have_list.append('SL {0} Software item {1} "{2}"'.format(SL_name, rom_key, description))
+                if clone_name:
+                    r_have_list.append('cloneof {0} "{1}"'.format(clone_name, clone_description))
                 r_have_list.extend(m_have_str_list)
                 if m_miss_str_list: r_have_list.extend(m_miss_str_list)
                 r_have_list.append('')
+
             if m_miss_str_list:
-                r_miss_list.append('SL {0} Software item {1} "{2}"'.format(SL_name, rom_key, sl_roms[rom_key]['description']))
-                if sl_roms[rom_key]['cloneof']:
-                    cloneof = sl_roms[rom_key]['cloneof']
-                    r_miss_list.append('cloneof {0} "{1}"'.format(cloneof, sl_roms[cloneof]['description']))
+                r_miss_list.append('SL {0} Software item {1} "{2}"'.format(SL_name, rom_key, description))
+                if clone_name:
+                    r_miss_list.append('cloneof {0} "{1}"'.format(clone_name, clone_description))
                 r_miss_list.extend(m_miss_str_list)
                 if m_have_str_list: r_miss_list.extend(m_have_str_list)
                 r_miss_list.append('')
@@ -5045,24 +5060,53 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     pDialog.update(update_number, pdialog_line1, ' ')
     pDialog.close()
 
-    # >> Write report
-    log_info('Opening SL ROMs HAVE report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
+    # >> Write SL scanner reports
+    log_info('Writing SL ROM ZIPs/CHDs FULL report')
+    log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
+    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'w') as file:
+        file.write('This is the SL ROM ZIPs/CHDs FULL report\n'.encode('utf-8'))
+        file.write('\n'.encode('utf-8'))
+        if r_all_list:
+            file.write('\n'.join(r_all_list).encode('utf-8'))
+        else:
+            raise TypeError
+
+    log_info('Writing SL ROM ZIPs/CHDs HAVE report')
+    log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
     with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(r_have_list).encode('utf-8'))
+        file.write('This is the SL ROM ZIPs/CHDs HAVE report\n'.encode('utf-8'))
+        file.write('\n'.encode('utf-8'))
+        if r_have_list:
+            file.write('\n'.join(r_have_list).encode('utf-8'))
+        else:
+            file.write('You do not have any ROM ZIP or CHD files!\n'.encode('utf-8'))
 
-    log_info('Opening SL ROMs MISS report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
+    log_info('Writing SL ROM ZIPs/CHDs MISS report')
+    log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
     with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(r_miss_list).encode('utf-8'))
+        file.write('This is the SL ROM ZIPs/CHDs MISS report\n'.encode('utf-8'))
+        file.write('\n'.encode('utf-8'))
+        if r_miss_list:
+            file.write('\n'.join(r_miss_list).encode('utf-8'))
+        else:
+            file.write('Congratulations! No missing SL ROM ZIP or CHD files.')
+
+    # --- SL ROM ZIP and CHD file list ---
+    # >> Not coded yet
+    log_info('Opening SL ROM list missing report')
+    log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.getPath()))
+    with open(PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.getPath(), 'w') as file:
+        file.write('This is the SL ROM list missing report\n'.encode('utf-8'))
+        file.write('\nSL ROM list missing report not coded yet. Sorry.\n'.encode('utf-8'))
+        # file.write('\n'.join(report_list).encode('utf-8'))
 
     # >> Not coded yet
-    # log_info('Opening SL ROMs report file "{0}"'.format(PATHS.REPORT_SL_SCAN_ROM_LIST_PATH.getPath()))
-    # with open(PATHS.REPORT_SL_SCAN_ROM_LIST_PATH.getPath(), 'w') as file:
-    #     file.write('\n'.join(report_list).encode('utf-8'))
-
-    # >> Not coded yet
-    # log_info('Opening SL ROMs report file "{0}"'.format(PATHS.REPORT_SL_SCAN_CHD_LIST_PATH.getPath()))
-    # with open(PATHS.REPORT_SL_SCAN_CHD_LIST_PATH.getPath(), 'w') as file:
-    #     file.write('\n'.join(report_list).encode('utf-8'))
+    log_info('Opening SL CHD list missing report')
+    log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.getPath()))
+    with open(PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.getPath(), 'w') as file:
+        file.write('This is the SL CHD list missing report\n'.encode('utf-8'))
+        file.write('\nSL CHD list missing report not coded yet. Sorry.\n'.encode('utf-8'))
+        # file.write('\n'.join(report_list).encode('utf-8'))
 
     # >> Update statistics
     control_dic['scan_SL_archives_ROM_total']   = SL_ROMs_total

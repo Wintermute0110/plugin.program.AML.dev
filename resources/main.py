@@ -171,16 +171,23 @@ class AML_Paths:
 
         # >> ROM/CHD scanner reports. These reports show missing ROM/CHDs only.
         self.REPORTS_DIR                             = PLUGIN_DATA_DIR.pjoin('reports')
+        self.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH = self.REPORTS_DIR.pjoin('Scanner_MAME_machine_archives_full.txt')
         self.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH = self.REPORTS_DIR.pjoin('Scanner_MAME_machine_archives_have.txt')
         self.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH = self.REPORTS_DIR.pjoin('Scanner_MAME_machine_archives_miss.txt')
+
         self.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH     = self.REPORTS_DIR.pjoin('Scanner_MAME_ROM_list_miss.txt')
         self.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH     = self.REPORTS_DIR.pjoin('Scanner_MAME_CHD_list_miss.txt')
+
+        self.REPORT_MAME_SCAN_SAMP_FULL_PATH         = self.REPORTS_DIR.pjoin('Scanner_Samples_full.txt')
         self.REPORT_MAME_SCAN_SAMP_HAVE_PATH         = self.REPORTS_DIR.pjoin('Scanner_Samples_have.txt')
         self.REPORT_MAME_SCAN_SAMP_MISS_PATH         = self.REPORTS_DIR.pjoin('Scanner_Samples_miss.txt')
+        
+        self.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH   = self.REPORTS_DIR.pjoin('Scanner_SL_item_archives_full.txt')
         self.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH   = self.REPORTS_DIR.pjoin('Scanner_SL_item_archives_have.txt')
         self.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH   = self.REPORTS_DIR.pjoin('Scanner_SL_item_archives_miss.txt')
-        self.REPORT_SL_SCAN_ROM_LIST_PATH            = self.REPORTS_DIR.pjoin('Scanner_SL_ROM_list.txt')
-        self.REPORT_SL_SCAN_CHD_LIST_PATH            = self.REPORTS_DIR.pjoin('Scanner_SL_CHD_list.txt')
+
+        self.REPORT_SL_SCAN_ROM_LIST_MISS_PATH       = self.REPORTS_DIR.pjoin('Scanner_SL_ROM_list_miss.txt')
+        self.REPORT_SL_SCAN_CHD_LIST_MISS_PATH       = self.REPORTS_DIR.pjoin('Scanner_SL_CHD_list_miss.txt')
 
         # >> Asset scanner reports. These reports show have and missing assets.
         self.REPORT_MAME_ASSETS_PATH = self.REPORTS_DIR.pjoin('Assets_MAME.txt')
@@ -2677,144 +2684,160 @@ class Main:
         elif action == ACTION_VIEW_REPORT_SCANNER:
             d = xbmcgui.Dialog()
             type_sub = d.select('View scanner reports',
-                                ['View Have MAME machines archives',
+                                ['View Full MAME machines archives',
+                                 'View Have MAME machines archives',
                                  'View Missing MAME machines archives',
-                                 'View MAME missing ROM list',
-                                 'View MAME missing CHD list',
-                                 'View Have MAME Samples',
-                                 'View Missing MAME Samples',
+                                 'View Missing MAME ROM list',
+                                 'View Missing MAME CHD list',
+                                 'View Full MAME Samples report',
+                                 'View Have MAME Samples report',
+                                 'View Missing MAME Samples report',
+                                 'View Full Software Lists item archives',
                                  'View Have Software Lists item archives',
                                  'View Missing Software Lists item archives',
-                                 'View Software Lists missing ROM list',
-                                 'View Software Lists missing CHD list',
+                                 'View Missing Software Lists ROM list',
+                                 'View Missing Software Lists CHD list',
                                  'View MAME asset report',
                                  'View Software Lists asset report'])
             if type_sub < 0: return
 
-            # --- View MAME machines have archives ---
+            # >> Kodi BUG: if size of file is 0 then previous text in window is rendered.
+            # >> Solution: report files are never empty. Always print a text header in the report.
+
+            # --- View Full MAME machines archives ---
             if type_sub == 0:
+                if not PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.exists():
+                    kodi_dialog_OK('Full MAME machines archives scanner report not found. '
+                                   'Please scan MAME ROMs and try again.')
+                    return
+                with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
+                    self._display_text_window('Full MAME machines archives scanner report', myfile.read())
+
+            # --- View Have MAME machines archives ---
+            elif type_sub == 1:
                 if not PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
-                    kodi_dialog_OK('MAME machines have archives scanner report not found. '
+                    kodi_dialog_OK('Have MAME machines archives scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME machines have archives scanner report', info_text)
+                    self._display_text_window('Have MAME machines archives scanner report', myfile.read())
 
-            # --- View MAME machines missing archives ---
-            elif type_sub == 1:
+            # --- View Missing MAME machines archives ---
+            elif type_sub == 2:
                 if not PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.exists():
-                    kodi_dialog_OK('MAME machines missing archives scanner report not found. '
+                    kodi_dialog_OK('Missing MAME machines archives scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME machines missing archives scanner report', info_text)
+                    self._display_text_window('Missing MAME machines archives scanner report', myfile.read())
 
-            # --- View MAME ROM archive scanner report ---
-            elif type_sub == 2:
+            # --- View Missing MAME ROM list ---
+            elif type_sub == 3:
                 if not PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.exists():
-                    kodi_dialog_OK('MAME missing ROM list scanner report not found. '
+                    kodi_dialog_OK('Missing MAME ROM list scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME missing ROM list scanner report', info_text)
+                    self._display_text_window('Missing MAME ROM list scanner report', myfile.read())
 
-            # --- View MAME machine CHD scanner report ---
-            elif type_sub == 3:
+            # --- View Missing MAME CHD list ---
+            elif type_sub == 4:
                 if not PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.exists():
-                    kodi_dialog_OK('MAME missing CHD list scanner report not found. '
+                    kodi_dialog_OK('Missing MAME CHD list scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME missing CHD list scanner report', info_text)
+                    self._display_text_window('Missing MAME CHD list scanner report', myfile.read())
 
-            # --- View MAME Samples have report ---
-            elif type_sub == 4:
+            # --- View Full MAME Samples report ---
+            elif type_sub == 5:
+                if not PATHS.REPORT_MAME_SCAN_SAMP_FULL_PATH.exists():
+                    kodi_dialog_OK('Full MAME Samples report scanner report not found. '
+                                   'Please scan MAME ROMs and try again.')
+                    return
+                with open(PATHS.REPORT_MAME_SCAN_SAMP_FULL_PATH.getPath(), 'r') as myfile:
+                    self._display_text_window('Full MAME Samples report scanner report', myfile.read())
+
+            # --- View Have MAME Samples report ---
+            elif type_sub == 6:
                 if not PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.exists():
-                    kodi_dialog_OK('MAME Have Samples scanner report not found. '
+                    kodi_dialog_OK('Have MAME Samples scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME Have Samples scanner report', info_text)
+                    self._display_text_window('Have MAME Samples scanner report', myfile.read())
 
-            # --- View MAME Samples missing report ---
-            elif type_sub == 5:
+            # --- View Missing MAME Samples report ---
+            elif type_sub == 7:
                 if not PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.exists():
-                    kodi_dialog_OK('MAME Missing Samples scanner report not found. '
+                    kodi_dialog_OK('Missing MAME Samples scanner report not found. '
                                    'Please scan MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME Missing Samples scanner report', info_text)
+                    self._display_text_window('Missing MAME Samples scanner report', myfile.read())
 
-            # --- View Software Lists have archives ---
-            elif type_sub == 6:
+            # --- View Full Software Lists item archives ---
+            elif type_sub == 8:
+                if not PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.exists():
+                    kodi_dialog_OK('Full Software Lists item archives scanner report not found. '
+                                   'Please scan SL ROMs and try again.')
+                    return
+                with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
+                    self._display_text_window('Full Software Lists item archives scanner report', myfile.read())
+
+            # --- View Have Software Lists item archives ---
+            elif type_sub == 9:
                 if not PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
-                    kodi_dialog_OK('Software Lists have archives scanner report not found. '
+                    kodi_dialog_OK('Have Software Lists item archives scanner report not found. '
                                    'Please scan SL ROMs and try again.')
                     return
                 with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    # >> Kodi BUG: if size of file is 0 then previous text in window is rendered.
-                    # log_debug('len(info_text) = {0}'.format(len(info_text)))
-                    if len(info_text) == 0:
-                        kodi_notify('Report is empty')
-                        return
-                    self._display_text_window('Software Lists have archives scanner report', info_text)
+                    self._display_text_window('Have Software Lists item archives scanner report', myfile.read())
 
-            # --- View Software Lists miss archives ---
-            elif type_sub == 7:
+            # --- View Missing Software Lists item archives ---
+            elif type_sub == 10:
                 if not PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.exists():
-                    kodi_dialog_OK('Software Lists missing archives scanner report not found. '
+                    kodi_dialog_OK('Missing Software Lists item archives scanner report not found. '
                                    'Please scan SL ROMs and try again.')
                     return
                 with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('Software Lists missing archives scanner report', info_text)
+                    self._display_text_window('Missing Software Lists item archives scanner report', myfile.read())
 
-            # --- View Software Lists ROM scanner report ---
-            elif type_sub == 8:
-                if not PATHS.REPORT_SL_SCAN_ROM_LIST_PATH.exists():
-                    kodi_dialog_OK('Software Lists missing ROM list scanner report not found. '
+            # --- View Missing Software Lists ROM list ---
+            elif type_sub == 11:
+                if not PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.exists():
+                    kodi_dialog_OK('Missing Software Lists ROM list scanner report not found. '
                                    'Please scan SL ROMs and try again.')
                     return
-                with open(PATHS.REPORT_SL_SCAN_ROM_LIST_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('Software Lists missing ROM list scanner report', info_text)
+                with open(PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
+                    self._display_text_window('Missing Software Lists ROM list scanner report', myfile.read())
 
-            # --- View Software Lists CHD scanner report ---
-            elif type_sub == 9:
-                if not PATHS.REPORT_SL_SCAN_CHD_LIST_PATH.exists():
-                    kodi_dialog_OK('Software Lists missing CHD list scanner report not found. '
+            # --- View Missing Software Lists CHD list ---
+            elif type_sub == 12:
+                if not PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.exists():
+                    kodi_dialog_OK('Missing Software Lists CHD list scanner report not found. '
                                    'Please scan SL ROMs and try again.')
                     return
-                with open(PATHS.REPORT_SL_SCAN_CHD_LIST_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('Software Lists missing CHD list scanner report', info_text)
+                with open(PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
+                    self._display_text_window('Missing Software Lists CHD list scanner report', myfile.read())
 
             # --- View MAME asset report ---
-            elif type_sub == 10:
+            elif type_sub == 13:
                 if not PATHS.REPORT_MAME_ASSETS_PATH.exists():
                     kodi_dialog_OK('MAME asset report report not found. '
                                    'Please scan MAME assets and try again.')
                     return
                 with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME asset report', info_text)
+                    self._display_text_window('MAME asset report', myfile.read())
 
             # --- View Software Lists asset report ---
-            elif type_sub == 11:
+            elif type_sub == 14:
                 if not PATHS.REPORT_SL_ASSETS_PATH.exists():
                     kodi_dialog_OK('Software Lists asset report not found. '
                                    'Please scan Software List assets and try again.')
                     return
                 with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('Software Lists asset report', info_text)
+                    self._display_text_window('Software Lists asset report', myfile.read())
 
         # --- View audit reports ---
         elif action == ACTION_VIEW_REPORT_AUDIT:
