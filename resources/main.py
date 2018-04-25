@@ -210,6 +210,11 @@ class AML_Paths:
         self.REPORT_SL_AUDIT_ROMS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Audit_SL_ROMs_errors.txt')
         self.REPORT_SL_AUDIT_CHDS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Audit_SL_CHDs_good.txt')
         self.REPORT_SL_AUDIT_CHDS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Audit_SL_CHDs_errors.txt')
+
+        # >> DEBUG data
+        self.REPORT_DEBUG_SL_ITEM_DATA_PATH       = self.REPORTS_DIR.pjoin('SL_item_data.txt')
+        self.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH   = self.REPORTS_DIR.pjoin('SL_item_ROM_DB_data.txt')
+        self.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH = self.REPORTS_DIR.pjoin('SL_item_Audit_DB_data.txt')
 PATHS = AML_Paths()
 
 class Main:
@@ -473,7 +478,10 @@ class Main:
         self.settings['display_hide_trailers'] = True if __addon__.getSetting('display_hide_trailers') == 'true' else False
 
         # --- Advanced ---
-        self.settings['log_level'] = int(__addon__.getSetting('log_level'))
+        self.settings['debug_SL_item_data']     = True if __addon__.getSetting('debug_SL_item_data') == 'true' else False
+        self.settings['debug_SL_ROM_DB_data']   = True if __addon__.getSetting('debug_SL_ROM_DB_data') == 'true' else False
+        self.settings['debug_SL_Audit_DB_data'] = True if __addon__.getSetting('debug_SL_Audit_DB_data') == 'true' else False
+        self.settings['log_level']              = int(__addon__.getSetting('log_level'))
 
         # --- Transform settings data ---
         self.mame_icon   = assets_get_asset_key_MAME_icon(self.settings['artwork_mame_icon'])
@@ -2223,6 +2231,12 @@ class Main:
                 info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(rom['assets']['manual'])
             self._display_text_window(window_title, info_text)
 
+            # --- Write DEBUG TXT file ---
+            if self.settings['debug_SL_item_data']:
+                log_info('Writing file "{0}"'.format(PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath()))
+                with open(PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath(), 'w') as file:
+                    file.write(info_text.encode('utf-8'))
+
         # --- View database information and statistics stored in control dictionary ---
         elif action == ACTION_VIEW_DB_STATS:
             d = xbmcgui.Dialog()
@@ -2516,6 +2530,12 @@ class Main:
             window_title = 'Software List ROM List (ROMs DB)'
             self._display_text_window(window_title, '\n'.join(info_text))
 
+            # --- Write DEBUG TXT file ---
+            if self.settings['debug_SL_ROM_DB_data']:
+                log_info('Writing file "{0}"'.format(PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath()))
+                with open(PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath(), 'w') as file:
+                    file.write('\n'.join(info_text).encode('utf-8'))
+
         # --- View SL ROM Audit ROMs ---
         elif action == ACTION_VIEW_SL_ROM_AUDIT_ROMS:
             SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
@@ -2552,6 +2572,12 @@ class Main:
             info_text.extend(table_str_list)
             window_title = 'Software List ROM List (Audit DB)'
             self._display_text_window(window_title, '\n'.join(info_text))
+
+            # --- Write DEBUG TXT file ---
+            if self.settings['debug_SL_Audit_DB_data']:
+                log_info('Writing file "{0}"'.format(PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath()))
+                with open(PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath(), 'w') as file:
+                    file.write('\n'.join(info_text).encode('utf-8'))
 
         # --- View MAME stdout/stderr ---
         elif action == ACTION_VIEW_EXEC_OUTPUT:
