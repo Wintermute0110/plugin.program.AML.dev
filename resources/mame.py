@@ -4940,10 +4940,22 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
 def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN):
 
+    # --- Add files to cache ---
+    SL_ROM_path_str = SL_ROM_dir_FN.getPath()
+    SL_CHD_path_str = SL_CHD_path_FN.getPath()
+    pDialog = xbmcgui.DialogProgress()
+    pdialog_line1 = 'Caching Sofware Lists ROMs/CHDs ...'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    pDialog.update(0, pdialog_line1, 'Scanning SL ROM path')
+    misc_add_file_cache(SL_ROM_path_str, verbose = True)
+    pDialog.update(75, pdialog_line1, 'Scanning SL CHD path')
+    misc_add_file_cache(SL_CHD_path_str, verbose = True)
+    pDialog.update(100, pdialog_line1, ' ')
+    pDialog.close()
+
     # --- SL ROM ZIP archives and CHDs ---
     # Traverse the Software Lists, check if ROMs ZIPs and CHDs exists for every SL item, 
     # update and save database.
-    pDialog = xbmcgui.DialogProgress()
     pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(0)
@@ -4968,13 +4980,6 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
         SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_ROM_archives.json')
         sl_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
         soft_archives = fs_load_JSON_file(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
-
-        # >> Cache files
-        misc_clear_file_cache(verbose = False)
-        SL_ROM_path_str = SL_ROM_dir_FN.getPath()
-        SL_CHD_path_str = SL_CHD_path_FN.getPath()
-        misc_add_file_cache(SL_ROM_path_str, verbose = False)
-        misc_add_file_cache(SL_CHD_path_str, verbose = False)
 
         # >> Scan
         for rom_key in sorted(sl_roms):
