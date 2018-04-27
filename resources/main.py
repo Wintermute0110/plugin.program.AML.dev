@@ -2235,6 +2235,8 @@ class Main:
             if self.settings['debug_SL_item_data']:
                 log_info('Writing file "{0}"'.format(PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath()))
                 with open(PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath(), 'w') as file:
+                    # info_text must be a list of strings!!!
+                    # text_remove_color_tags_slist(info_text)
                     file.write(info_text.encode('utf-8'))
 
         # --- View database information and statistics stored in control dictionary ---
@@ -2317,6 +2319,7 @@ class Main:
                 log_info('Writing AML statistics report ...')
                 log_info('File "{0}"'.format(PATHS.REPORT_STATS_PATH.getPath()))
                 with open(PATHS.REPORT_STATS_PATH.getPath(), 'w') as f:
+                    text_remove_color_tags_slist(info_text)
                     f.write('\n'.join(info_text).encode('utf-8'))
                 kodi_notify('Exported AML statistic')
 
@@ -2534,6 +2537,7 @@ class Main:
             if self.settings['debug_SL_ROM_DB_data']:
                 log_info('Writing file "{0}"'.format(PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath()))
                 with open(PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath(), 'w') as file:
+                    text_remove_color_tags_slist(info_text)
                     file.write('\n'.join(info_text).encode('utf-8'))
 
         # --- View SL ROM Audit ROMs ---
@@ -2577,6 +2581,7 @@ class Main:
             if self.settings['debug_SL_Audit_DB_data']:
                 log_info('Writing file "{0}"'.format(PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath()))
                 with open(PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath(), 'w') as file:
+                    text_remove_color_tags_slist(info_text)
                     file.write('\n'.join(info_text).encode('utf-8'))
 
         # --- View MAME stdout/stderr ---

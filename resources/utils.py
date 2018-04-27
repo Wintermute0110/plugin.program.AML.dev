@@ -196,6 +196,32 @@ def text_print_padded_right(str, str_max_size):
 
     return padded_str
 
+def text_remove_color_tags_slist(slist):
+    # Iterate list of strings and remove the following tags
+    # 1) [COLOR colorname]
+    # 2) [/COLOR]
+    #
+    # Modifying list already seen is OK when iterating the list. Do not change the size of the
+    # list when iterating.
+    for i, s in enumerate(slist):
+        modified = False
+        s_temp = s
+
+        # >> Remove [COLOR colorname]
+        m = re.search('(\[COLOR \w+?\])', s_temp)
+        if m:
+            s_temp = s_temp.replace(m.group(1), '')
+            modified = True
+
+        # >> Remove [/COLOR]
+        if s_temp.find('[/COLOR]') >= 0:
+            s_temp = s_temp.replace('[/COLOR]', '')
+            modified = True
+
+        # >> Update list
+        if modified:
+            slist[i] = s_temp
+
 # Some XML encoding of special characters:
 #   {'\n': '&#10;', '\r': '&#13;', '\t':'&#9;'}
 #
