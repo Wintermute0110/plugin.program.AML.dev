@@ -1060,10 +1060,8 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     chd_set = ['Merged', 'Split', 'Non-merged'][settings_dic['mame_chd_set']]
 
     slist.append('[COLOR orange]MAME ROM audit database statistics[/COLOR]')
-    t = "There are {0:5d} ROM ZIP archives in the {1} set"
-    slist.append(t.format(control_dic['audit_MAME_ZIP_files'], rom_set))
-    t = "There are {0:5d}     CHD archives in the {1} set"
-    slist.append(t.format(control_dic['audit_MAME_CHD_files'], chd_set))
+    t = "{0:5d} runnable MAME machines"
+    slist.append(t.format(control_dic['audit_MAME_machines_runnable']))
     t = "{0:5d} machines require ROM ZIPs, parents {1:5d}, clones {2:5d}"
     slist.append(t.format(control_dic['audit_machine_archives_ROM'],
                           control_dic['audit_machine_archives_ROM_parents'],
@@ -1076,64 +1074,80 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     slist.append(t.format(control_dic['audit_archive_less'],
                           control_dic['audit_archive_less_parents'],
                           control_dic['audit_archive_less_clones']))
+    t = "{0:5d} ROM ZIPs in the {1} set"
+    slist.append(t.format(control_dic['audit_MAME_ZIP_files'], rom_set))
+    t = "{0:5d}     CHDs in the {1} set"
+    slist.append(t.format(control_dic['audit_MAME_CHD_files'], chd_set))
 
     # --- SL item audit database statistics ---
     slist.append('')
     slist.append('[COLOR orange]SL audit database statistics[/COLOR]')
-    t = "There are {0:5d} runnable Software List items"
+    t = "{0:6d} runnable Software List items"
     slist.append(t.format(control_dic['stats_audit_SL_items_runnable']))
-    t = "{0:5d} SL items require ROM ZIPs and/or CHDs"
+    t = "{0:6d} SL items require ROM ZIPs and/or CHDs"
     slist.append(t.format(control_dic['stats_audit_SL_items_with_arch']))
-    t = "{0:5d} SL items require ROM ZIPs"
+    t = "{0:6d} SL items require ROM ZIPs"
     slist.append(t.format(control_dic['stats_audit_SL_items_with_arch_ROM']))
-    t = "{0:5d} SL items require CHDs"
+    t = "{0:6d} SL items require CHDs"
     slist.append(t.format(control_dic['stats_audit_SL_items_with_CHD']))
 
     # --- MAME audit info ---
-    slist.append('')
-    slist.append('[COLOR orange]MAME ROM audit information[/COLOR]')
-    slist.append('{0:5d} runnable MAME machines'.format(control_dic['audit_MAME_machines_runnable']))
-    # >> All
-    slist.append('{0:5d} machines with ROMs and/or CHDs'.format(control_dic['audit_MAME_machines_with_arch']))
-    slist.append('{0:5d} machines with no ROMs and/or CHDs'.format(control_dic['audit_MAME_machines_without']))
-    t = "{0:5d} good, {1:5d} bad machines"
-    slist.append(t.format(control_dic['audit_MAME_machines_with_arch_OK'],
-                          control_dic['audit_MAME_machines_with_arch_BAD']))
-    # >> ROMs
-    slist.append('{0:5d} machines with ROMs'.format(control_dic['audit_MAME_machines_with_ROMs']))
-    slist.append('{0:5d} machines with no ROMs'.format(control_dic['audit_MAME_machines_without_ROMs']))
-    t = "{0:5d} good, {1:5d} bad machines"
-    slist.append(t.format(control_dic['audit_MAME_machines_with_ROMs_OK'],
-                          control_dic['audit_MAME_machines_with_ROMs_BAD']))
-    # >> Disks
-    slist.append('{0:5d} machines with CHDs'.format(control_dic['audit_MAME_machines_with_CHDs']))
-    slist.append('{0:5d} machines with no CHDs'.format(control_dic['audit_MAME_machines_without_CHDs']))
-    t = "{0:5d} good, {1:5d} bad machines"
-    slist.append(t.format(control_dic['audit_MAME_machines_with_CHDs_OK'],
-                          control_dic['audit_MAME_machines_with_CHDs_BAD']))
+    slist.append('\n[COLOR orange]MAME ROM audit information[/COLOR]\n')
+    table_str = []
+    table_str.append(['left', 'right', 'right',  'right'])
+    table_str.append(['Type', 'Total', 'Good',   'Bad'])
+    table_row = [
+        'Machines with ROMs and/or CHDs',
+        str(control_dic['audit_MAME_machines_with_arch']),
+        str(control_dic['audit_MAME_machines_with_arch_OK']),
+        str(control_dic['audit_MAME_machines_with_arch_BAD']),
+    ]
+    table_str.append(table_row)
+    table_row = [
+        'Machines with ROMs',
+        str(control_dic['audit_MAME_machines_with_ROMs']),
+        str(control_dic['audit_MAME_machines_with_ROMs_OK']),
+        str(control_dic['audit_MAME_machines_with_ROMs_BAD']),
+    ]
+    table_str.append(table_row)
+    table_row = [
+        'Machines with CHDs',
+        str(control_dic['audit_MAME_machines_with_CHDs']),
+        str(control_dic['audit_MAME_machines_with_CHDs_OK']),
+        str(control_dic['audit_MAME_machines_with_CHDs_BAD']),
+    ]
+    table_str.append(table_row)
+    table_str_list = text_render_table_str(table_str)
+    slist.extend(table_str_list)
 
     # --- SL audit info ---
-    slist.append('')
-    slist.append('[COLOR orange]SL audit information[/COLOR]')
-    slist.append('{0:5d} runnable SL items'.format(control_dic['audit_SL_items_runnable']))
-    # >> All
-    slist.append('{0:5d} SL items with ROMs and/or CHDs'.format(control_dic['audit_SL_items_with_arch']))
-    slist.append('{0:5d} SL items with no ROMs and/or CHDs'.format(control_dic['audit_SL_items_without_arch']))
-    t = "{0:5d} good, {1:5d} bad SL items"
-    slist.append(t.format(control_dic['audit_SL_items_with_arch_OK'],
-                          control_dic['audit_SL_items_with_arch_BAD']))
-    # >> ROMs
-    slist.append('{0:5d} SL items with ROMs'.format(control_dic['audit_SL_items_with_arch_ROM']))
-    slist.append('{0:5d} SL items with no ROMs'.format(control_dic['audit_SL_items_without_arch_ROM']))
-    t = "{0:5d} good, {1:5d} bad SL items"
-    slist.append(t.format(control_dic['audit_SL_items_with_arch_ROM_OK'],
-                          control_dic['audit_SL_items_with_arch_ROM_BAD']))
-    # >> Disks
-    slist.append('{0:5d} SL items with CHDs'.format(control_dic['audit_SL_items_with_CHD']))
-    slist.append('{0:5d} SL items with no CHDs'.format(control_dic['audit_SL_items_without_CHD']))
-    t = "{0:5d} good, {1:5d} bad SL items"
-    slist.append(t.format(control_dic['audit_SL_items_with_CHD_OK'],
-                          control_dic['audit_SL_items_with_CHD_BAD']))
+    slist.append('\n[COLOR orange]SL audit information[/COLOR]\n')
+    table_str = []
+    table_str.append(['left', 'right', 'right',  'right'])
+    table_str.append(['Type', 'Total', 'Good',   'Bad'])
+    table_row = [
+        'SL items with ROMs and/or CHDs',
+        str(control_dic['audit_SL_items_with_arch']),
+        str(control_dic['audit_SL_items_with_arch_OK']),
+        str(control_dic['audit_SL_items_with_arch_BAD']),
+    ]
+    table_str.append(table_row)
+    table_row = [
+        'SL items with ROMs',
+        str(control_dic['audit_SL_items_with_arch_ROM']),
+        str(control_dic['audit_SL_items_with_arch_ROM_OK']),
+        str(control_dic['audit_SL_items_with_arch_ROM_BAD']),
+    ]
+    table_str.append(table_row)
+    table_row = [
+        'SL items with CHDs',
+        str(control_dic['audit_SL_items_with_CHD']),
+        str(control_dic['audit_SL_items_with_CHD_OK']),
+        str(control_dic['audit_SL_items_with_CHD_BAD']),
+    ]
+    table_str.append(table_row)
+    table_str_list = text_render_table_str(table_str)
+    slist.extend(table_str_list)
 
 # -------------------------------------------------------------------------------------------------
 # Build MAME and SL plots
