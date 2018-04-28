@@ -3003,29 +3003,33 @@ def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_r
                 # >> Get merged ROM from parent
                 parent_name = cloneof
                 parent_romof = machines[parent_name]['romof']
-                parent_roms =  machine_roms[parent_name]['roms']
+                parent_roms = machine_roms[parent_name]['roms']
                 clone_rom_merged_name = rom['merge']
-                # >> Pick ROMs with same name and choose the first one.
-                parent_merged_rom_l = filter(lambda r: r['name'] == clone_rom_merged_name, parent_roms)
-                # if len(parent_merged_rom_l) != 1:
+                # >> Pick ROMs with same name and choose the first one in the list.
+                parent_merged_rom_list = filter(lambda r: r['name'] == clone_rom_merged_name, parent_roms)
+                # if len(parent_merged_rom_list) != 1:
                 #     log_error('Machine "{0}" / ROM "{1}"\n'.format(m_name, rom['name']))
-                #     log_error('len(parent_merged_rom_l) = {0}'.format(len(parent_merged_rom_l)))
+                #     log_error('len(parent_merged_rom_list) = {0}'.format(len(parent_merged_rom_list)))
                 #     raise CriticalError('CriticalError')
-                parent_merged_rom = parent_merged_rom_l[0]
-                # >> Check if clone merged ROM is also merged in parent
+                parent_merged_rom = parent_merged_rom_list[0]
+                # >> Check if clone merged ROM is also merged in parent (BIOS ROM)
                 if parent_merged_rom['merge']:
-                    # >> ROM is in the 'romof' archive of the parent ROM
-                    super_parent_name = parent_romof
-                    super_parent_roms =  machine_roms[super_parent_name]['roms']
-                    parent_rom_merged_name = parent_merged_rom['merge']
-                    # >> Pick ROMs with same name and choose the first one.
-                    super_parent_merged_rom_l = filter(lambda r: r['name'] == parent_rom_merged_name, super_parent_roms)
-                    # if len(super_parent_merged_rom_l) > 1:
-                    #     log_error('Machine "{0}" / ROM "{1}"\n'.format(m_name, rom['name']))
-                    #     log_error('len(super_parent_merged_rom_l) = {0}\n'.format(len(super_parent_merged_rom_l)))
-                    #     raise CriticalError('CriticalError')
-                    super_parent_merged_rom = super_parent_merged_rom_l[0]
-                    location = super_parent_name + '/' + super_parent_merged_rom['name']
+                    bios_name = parent_romof
+                    bios_romof = machines[bios_name]['romof']
+                    bios_roms = machine_roms[bios_name]['roms']
+                    bios_rom_merged_name = parent_merged_rom['merge']
+                    bios_merged_rom_list = filter(lambda r: r['name'] == bios_rom_merged_name, bios_roms)
+                    bios_merged_rom = bios_merged_rom_list[0]
+                    # >> At least in one machine (0.196) BIOS roms can be merged in another BIOS.
+                    if bios_merged_rom['merge']:
+                        parent_bios_name = bios_romof
+                        parent_bios_roms = machine_roms[parent_bios_name]['roms']
+                        parent_bios_rom_merged_name = bios_merged_rom['merge']
+                        parent_bios_merged_rom_list = filter(lambda r: r['name'] == parent_bios_rom_merged_name, parent_bios_roms)
+                        parent_bios_merged_rom = parent_bios_merged_rom_list[0]
+                        location = parent_bios_name + '/' + parent_bios_merged_rom['name']
+                    else:
+                        location = bios_name + '/' + bios_merged_rom['name']
                 else:
                     location = parent_name + '/' + parent_merged_rom['name']
             else:
