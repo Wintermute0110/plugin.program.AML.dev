@@ -212,9 +212,12 @@ class AML_Paths:
         self.REPORT_SL_AUDIT_CHDS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Audit_SL_CHDs_errors.txt')
 
         # >> DEBUG data
-        self.REPORT_DEBUG_SL_ITEM_DATA_PATH       = self.REPORTS_DIR.pjoin('SL_item_data.txt')
-        self.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH   = self.REPORTS_DIR.pjoin('SL_item_ROM_DB_data.txt')
-        self.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH = self.REPORTS_DIR.pjoin('SL_item_Audit_DB_data.txt')
+        self.REPORT_DEBUG_MAME_ITEM_DATA_PATH       = self.REPORTS_DIR.pjoin('MAME_item_data.txt')
+        self.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH   = self.REPORTS_DIR.pjoin('MAME_item_ROM_DB_data.txt')
+        self.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH = self.REPORTS_DIR.pjoin('MAME_item_Audit_DB_data.txt')
+        self.REPORT_DEBUG_SL_ITEM_DATA_PATH         = self.REPORTS_DIR.pjoin('SL_item_data.txt')
+        self.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH     = self.REPORTS_DIR.pjoin('SL_item_ROM_DB_data.txt')
+        self.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH   = self.REPORTS_DIR.pjoin('SL_item_Audit_DB_data.txt')
 PATHS = AML_Paths()
 
 class Main:
@@ -478,10 +481,13 @@ class Main:
         self.settings['display_hide_trailers'] = True if __addon__.getSetting('display_hide_trailers') == 'true' else False
 
         # --- Advanced ---
-        self.settings['debug_SL_item_data']     = True if __addon__.getSetting('debug_SL_item_data') == 'true' else False
-        self.settings['debug_SL_ROM_DB_data']   = True if __addon__.getSetting('debug_SL_ROM_DB_data') == 'true' else False
-        self.settings['debug_SL_Audit_DB_data'] = True if __addon__.getSetting('debug_SL_Audit_DB_data') == 'true' else False
-        self.settings['log_level']              = int(__addon__.getSetting('log_level'))
+        self.settings['debug_MAME_item_data']     = True if __addon__.getSetting('debug_MAME_item_data') == 'true' else False
+        self.settings['debug_MAME_ROM_DB_data']   = True if __addon__.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
+        self.settings['debug_MAME_Audit_DB_data'] = True if __addon__.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
+        self.settings['debug_SL_item_data']       = True if __addon__.getSetting('debug_SL_item_data') == 'true' else False
+        self.settings['debug_SL_ROM_DB_data']     = True if __addon__.getSetting('debug_SL_ROM_DB_data') == 'true' else False
+        self.settings['debug_SL_Audit_DB_data']   = True if __addon__.getSetting('debug_SL_Audit_DB_data') == 'true' else False
+        self.settings['log_level']                = int(__addon__.getSetting('log_level'))
 
         # --- Transform settings data ---
         self.mame_icon   = assets_get_asset_key_MAME_icon(self.settings['artwork_mame_icon'])
@@ -2046,7 +2052,7 @@ class Main:
                 assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
                 pDialog.update(100, pdialog_line1)
                 pDialog.close()
-                assets  = assets_dic[machine_name]
+                assets = assets_dic[machine_name]
                 window_title = 'MAME Machine Information'
             elif location == LOCATION_MAME_FAVS:
                 pdialog_line1 = 'Loading databases ...'
@@ -2060,75 +2066,83 @@ class Main:
                 window_title = 'Favourite MAME Machine Information'
 
             # --- Make information string ---
-            info_text  = '[COLOR orange]Machine {0} / Render data[/COLOR]\n'.format(machine_name)
+            slist = []
+            slist.append('[COLOR orange]Machine {0} / Render data[/COLOR]'.format(machine_name))
             # >> Print MAME Favourites special fields
             if location == LOCATION_MAME_FAVS:
                 if 'ver_mame' in machine:
-                    info_text += "[COLOR slateblue]ver_mame[/COLOR]: {0}\n".format(machine['ver_mame'])
+                    slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(machine['ver_mame']))
                 else:
-                    info_text += "[COLOR slateblue]ver_mame[/COLOR]: not available\n"
+                    slist.append("[COLOR slateblue]ver_mame[/COLOR]: not available")
                 if 'ver_mame_str' in machine:
-                    info_text += "[COLOR slateblue]ver_mame_str[/COLOR]: {0}\n".format(machine['ver_mame_str'])
+                    slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(machine['ver_mame_str']))
                 else:
-                    info_text += "[COLOR slateblue]ver_mame_str[/COLOR]: not available\n"
-            info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(machine['cloneof'])
-            info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(machine['description'])
-            info_text += "[COLOR violet]driver_status[/COLOR]: '{0}'\n".format(machine['driver_status'])
-            info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
-            info_text += "[COLOR skyblue]isBIOS[/COLOR]: {0}\n".format(machine['isBIOS'])
-            info_text += "[COLOR skyblue]isDevice[/COLOR]: {0}\n".format(machine['isDevice'])
-            info_text += "[COLOR violet]manufacturer[/COLOR]: '{0}'\n".format(machine['manufacturer'])
-            info_text += "[COLOR violet]nplayers[/COLOR]: '{0}'\n".format(machine['nplayers'])
-            info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(machine['year'])
+                    slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: not available")
+            slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(machine['cloneof']))
+            slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(machine['description']))
+            slist.append("[COLOR violet]driver_status[/COLOR]: '{0}'".format(machine['driver_status']))
+            slist.append("[COLOR violet]genre[/COLOR]: '{0}'".format(machine['genre']))
+            slist.append("[COLOR skyblue]isBIOS[/COLOR]: {0}".format(machine['isBIOS']))
+            slist.append("[COLOR skyblue]isDevice[/COLOR]: {0}".format(machine['isDevice']))
+            slist.append("[COLOR violet]manufacturer[/COLOR]: '{0}'".format(machine['manufacturer']))
+            slist.append("[COLOR violet]nplayers[/COLOR]: '{0}'".format(machine['nplayers']))
+            slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(machine['year']))
 
-            info_text += '\n[COLOR orange]Machine data[/COLOR]\n'.format(machine_name)
-            info_text += "[COLOR violet]bestgames[/COLOR]: '{0}'\n".format(machine['bestgames'])
-            info_text += "[COLOR violet]catlist[/COLOR]: '{0}'\n".format(machine['catlist'])
-            info_text += "[COLOR violet]catver[/COLOR]: '{0}'\n".format(machine['catver'])
-            info_text += "[COLOR skyblue]coins[/COLOR]: {0}\n".format(machine['coins'])
-            info_text += "[COLOR skyblue]control_type[/COLOR]: {0}\n".format(unicode(machine['control_type']))
+            slist.append('\n[COLOR orange]Machine data[/COLOR]'.format(machine_name))
+            slist.append("[COLOR violet]bestgames[/COLOR]: '{0}'".format(machine['bestgames']))
+            slist.append("[COLOR violet]catlist[/COLOR]: '{0}'".format(machine['catlist']))
+            slist.append("[COLOR violet]catver[/COLOR]: '{0}'".format(machine['catver']))
+            slist.append("[COLOR skyblue]coins[/COLOR]: {0}".format(machine['coins']))
+            slist.append("[COLOR skyblue]control_type[/COLOR]: {0}".format(unicode(machine['control_type'])))
             # Devices list is a special case.
             if machine['devices']:
                 for i, device in enumerate(machine['devices']):
-                    info_text += "[COLOR lime]devices[/COLOR][{0}]:\n".format(i)
-                    info_text += "  [COLOR violet]att_type[/COLOR]: {0}\n".format(device['att_type'])
-                    info_text += "  [COLOR violet]att_tag[/COLOR]: {0}\n".format(device['att_tag'])
-                    info_text += "  [COLOR skyblue]att_mandatory[/COLOR]: {0}\n".format(unicode(device['att_mandatory']))
-                    info_text += "  [COLOR violet]att_interface[/COLOR]: {0}\n".format(device['att_interface'])
-                    info_text += "  [COLOR skyblue]instance[/COLOR]: {0}\n".format(unicode(device['instance']))
-                    info_text += "  [COLOR skyblue]ext_names[/COLOR]: {0}\n".format(unicode(device['ext_names']))
+                    slist.append("[COLOR lime]devices[/COLOR][{0}]:".format(i))
+                    slist.append("  [COLOR violet]att_type[/COLOR]: {0}".format(device['att_type']))
+                    slist.append("  [COLOR violet]att_tag[/COLOR]: {0}".format(device['att_tag']))
+                    slist.append("  [COLOR skyblue]att_mandatory[/COLOR]: {0}".format(unicode(device['att_mandatory'])))
+                    slist.append("  [COLOR violet]att_interface[/COLOR]: {0}".format(device['att_interface']))
+                    slist.append("  [COLOR skyblue]instance[/COLOR]: {0}".format(unicode(device['instance'])))
+                    slist.append("  [COLOR skyblue]ext_names[/COLOR]: {0}".format(unicode(device['ext_names'])))
             else:
-                info_text += "[COLOR lime]devices[/COLOR]: []\n"
-            info_text += "[COLOR skyblue]display_rotate[/COLOR]: {0}\n".format(unicode(machine['display_rotate']))
-            info_text += "[COLOR skyblue]display_type[/COLOR]: {0}\n".format(unicode(machine['display_type']))
-            info_text += "[COLOR violet]genre[/COLOR]: '{0}'\n".format(machine['genre'])
-            info_text += "[COLOR skyblue]isDead[/COLOR]: {0}\n".format(unicode(machine['isDead']))
-            info_text += "[COLOR skyblue]isMechanical[/COLOR]: {0}\n".format(unicode(machine['isMechanical']))
-            info_text += "[COLOR violet]romof[/COLOR]: '{0}'\n".format(machine['romof'])
-            info_text += "[COLOR violet]sampleof[/COLOR]: '{0}'\n".format(machine['sampleof'])
-            info_text += "[COLOR violet]series[/COLOR]: '{0}'\n".format(machine['series'])
-            info_text += "[COLOR skyblue]softwarelists[/COLOR]: {0}\n".format(unicode(machine['softwarelists']))
-            info_text += "[COLOR violet]sourcefile[/COLOR]: '{0}'\n".format(machine['sourcefile'])
+                slist.append("[COLOR lime]devices[/COLOR]: []")
+            slist.append("[COLOR skyblue]display_rotate[/COLOR]: {0}".format(unicode(machine['display_rotate'])))
+            slist.append("[COLOR skyblue]display_type[/COLOR]: {0}".format(unicode(machine['display_type'])))
+            slist.append("[COLOR violet]genre[/COLOR]: '{0}'".format(machine['genre']))
+            slist.append("[COLOR skyblue]isDead[/COLOR]: {0}".format(unicode(machine['isDead'])))
+            slist.append("[COLOR skyblue]isMechanical[/COLOR]: {0}".format(unicode(machine['isMechanical'])))
+            slist.append("[COLOR violet]romof[/COLOR]: '{0}'".format(machine['romof']))
+            slist.append("[COLOR violet]sampleof[/COLOR]: '{0}'".format(machine['sampleof']))
+            slist.append("[COLOR violet]series[/COLOR]: '{0}'".format(machine['series']))
+            slist.append("[COLOR skyblue]softwarelists[/COLOR]: {0}".format(unicode(machine['softwarelists'])))
+            slist.append("[COLOR violet]sourcefile[/COLOR]: '{0}'".format(machine['sourcefile']))
 
-            info_text += '\n[COLOR orange]Asset/artwork data[/COLOR]\n'
-            info_text += "[COLOR violet]PCB[/COLOR]: '{0}'\n".format(assets['PCB'])
-            info_text += "[COLOR violet]artpreview[/COLOR]: '{0}'\n".format(assets['artpreview'])
-            info_text += "[COLOR violet]artwork[/COLOR]: '{0}'\n".format(assets['artwork'])
-            info_text += "[COLOR violet]cabinet[/COLOR]: '{0}'\n".format(assets['cabinet'])
-            info_text += "[COLOR violet]clearlogo[/COLOR]: '{0}'\n".format(assets['clearlogo'])
-            info_text += "[COLOR violet]cpanel[/COLOR]: '{0}'\n".format(assets['cpanel'])
-            info_text += "[COLOR violet]fanart[/COLOR]: '{0}'\n".format(assets['fanart'])
-            info_text += "[COLOR violet]flags[/COLOR]: '{0}'\n".format(assets['flags'])
-            info_text += "[COLOR violet]flyer[/COLOR]: '{0}'\n".format(assets['flyer'])
-            info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
-            info_text += "[COLOR violet]marquee[/COLOR]: '{0}'\n".format(assets['marquee'])
-            info_text += "[COLOR violet]plot[/COLOR]: '{0}'\n".format(assets['plot'])
-            info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
-            info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
-            info_text += "[COLOR violet]trailer[/COLOR]: '{0}'\n".format(assets['trailer'])
+            slist.append('\n[COLOR orange]Asset/artwork data[/COLOR]')
+            slist.append("[COLOR violet]PCB[/COLOR]: '{0}'".format(assets['PCB']))
+            slist.append("[COLOR violet]artpreview[/COLOR]: '{0}'".format(assets['artpreview']))
+            slist.append("[COLOR violet]artwork[/COLOR]: '{0}'".format(assets['artwork']))
+            slist.append("[COLOR violet]cabinet[/COLOR]: '{0}'".format(assets['cabinet']))
+            slist.append("[COLOR violet]clearlogo[/COLOR]: '{0}'".format(assets['clearlogo']))
+            slist.append("[COLOR violet]cpanel[/COLOR]: '{0}'".format(assets['cpanel']))
+            slist.append("[COLOR violet]fanart[/COLOR]: '{0}'".format(assets['fanart']))
+            slist.append("[COLOR violet]flags[/COLOR]: '{0}'".format(assets['flags']))
+            slist.append("[COLOR violet]flyer[/COLOR]: '{0}'".format(assets['flyer']))
+            slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(assets['manual']))
+            slist.append("[COLOR violet]marquee[/COLOR]: '{0}'".format(assets['marquee']))
+            slist.append("[COLOR violet]plot[/COLOR]: '{0}'".format(assets['plot']))
+            slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(assets['snap']))
+            slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(assets['title']))
+            slist.append("[COLOR violet]trailer[/COLOR]: '{0}'".format(assets['trailer']))
 
             # --- Show information window ---
-            self._display_text_window(window_title, info_text)
+            self._display_text_window(window_title, '\n'.join(slist))
+
+            # --- Write DEBUG TXT file ---
+            if self.settings['debug_MAME_item_data']:
+                log_info('Writing file "{0}"'.format(PATHS.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath()))
+                with open(PATHS.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath(), 'w') as file:
+                    text_remove_color_tags_slist(slist)
+                    file.write('\n'.join(slist).encode('utf-8'))
 
         # --- View Software List ROM Machine data ---
         elif action == ACTION_VIEW_SL_ROM_DATA:
@@ -2149,42 +2163,43 @@ class Main:
                 window_title = 'Software List ROM Information'
 
                 # >> Build information string
-                info_text  = '[COLOR orange]ROM {0}[/COLOR]\n'.format(SL_ROM)
-                info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
-                info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
-                info_text += "[COLOR skyblue]hasCHDs[/COLOR]: {0}\n".format(unicode(rom['hasCHDs']))
-                info_text += "[COLOR skyblue]hasROMs[/COLOR]: {0}\n".format(unicode(rom['hasROMs']))
+                slist = []
+                slist.append('[COLOR orange]ROM {0}[/COLOR]'.format(SL_ROM))
+                slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(rom['cloneof']))
+                slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(rom['description']))
+                slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {0}".format(unicode(rom['hasCHDs'])))
+                slist.append("[COLOR skyblue]hasROMs[/COLOR]: {0}".format(unicode(rom['hasROMs'])))
                 if rom['parts']:
                     for i, part in enumerate(rom['parts']):
-                        info_text += "[COLOR lime]parts[/COLOR][{0}]:\n".format(i)
-                        info_text += "  [COLOR violet]interface[/COLOR]: '{0}'\n".format(part['interface'])
-                        info_text += "  [COLOR violet]name[/COLOR]: '{0}'\n".format(part['name'])
+                        slist.append("[COLOR lime]parts[/COLOR][{0}]:".format(i))
+                        slist.append("  [COLOR violet]interface[/COLOR]: '{0}'".format(part['interface']))
+                        slist.append("  [COLOR violet]name[/COLOR]: '{0}'".format(part['name']))
                 else:
-                    info_text += '[COLOR lime]parts[/COLOR]: []\n'
-                info_text += "[COLOR violet]plot[/COLOR]: '{0}'\n".format(rom['plot'])
-                info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
-                info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
-                info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
-                info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
+                    slist.append('[COLOR lime]parts[/COLOR]: []')
+                slist.append("[COLOR violet]plot[/COLOR]: '{0}'".format(rom['plot']))
+                slist.append("[COLOR violet]publisher[/COLOR]: '{0}'".format(rom['publisher']))
+                slist.append("[COLOR violet]status_CHD[/COLOR]: '{0}'".format(rom['status_CHD']))
+                slist.append("[COLOR violet]status_ROM[/COLOR]: '{0}'".format(rom['status_ROM']))
+                slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(rom['year']))
 
-                info_text += '\n[COLOR orange]Software List assets[/COLOR]\n'
-                info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(assets['title'])
-                info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(assets['snap'])
-                info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(assets['boxfront'])
-                info_text += "[COLOR violet]fanart[/COLOR]: '{0}'\n".format(assets['fanart'])
-                info_text += "[COLOR violet]trailer[/COLOR]: '{0}'\n".format(assets['trailer'])
-                info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(assets['manual'])
+                slist.append('\n[COLOR orange]Software List assets[/COLOR]')
+                slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(assets['title']))
+                slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(assets['snap']))
+                slist.append("[COLOR violet]boxfront[/COLOR]: '{0}'".format(assets['boxfront']))
+                slist.append("[COLOR violet]fanart[/COLOR]: '{0}'".format(assets['fanart']))
+                slist.append("[COLOR violet]trailer[/COLOR]: '{0}'".format(assets['trailer']))
+                slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(assets['manual']))
 
-                info_text += '\n[COLOR orange]Software List {0}[/COLOR]\n'.format(SL_name)
-                info_text += "[COLOR violet]display_name[/COLOR]: '{0}'\n".format(SL_dic['display_name'])
-                info_text += "[COLOR skyblue]num_with_CHDs[/COLOR]: {0}\n".format(unicode(SL_dic['num_with_CHDs']))
-                info_text += "[COLOR skyblue]num_with_ROMs[/COLOR]: {0}\n".format(unicode(SL_dic['num_with_ROMs']))
-                info_text += "[COLOR violet]rom_DB_noext[/COLOR]: '{0}'\n".format(SL_dic['rom_DB_noext'])
+                slist.append('\n[COLOR orange]Software List {0}[/COLOR]'.format(SL_name))
+                slist.append("[COLOR violet]display_name[/COLOR]: '{0}'".format(SL_dic['display_name']))
+                slist.append("[COLOR skyblue]num_with_CHDs[/COLOR]: {0}".format(unicode(SL_dic['num_with_CHDs'])))
+                slist.append("[COLOR skyblue]num_with_ROMs[/COLOR]: {0}".format(unicode(SL_dic['num_with_ROMs'])))
+                slist.append("[COLOR violet]rom_DB_noext[/COLOR]: '{0}'".format(SL_dic['rom_DB_noext']))
 
-                info_text += '\n[COLOR orange]Runnable by[/COLOR]\n'
+                slist.append('\n[COLOR orange]Runnable by[/COLOR]')
                 for machine_dic in sorted(SL_machine_list):
-                    t = "[COLOR violet]machine[/COLOR]: '{0}' [COLOR slateblue]({1})[/COLOR]\n"
-                    info_text += t.format(machine_dic['description'], machine_dic['machine'])
+                    t = "[COLOR violet]machine[/COLOR]: '{0}' [COLOR slateblue]({1})[/COLOR]"
+                    slist.append(t.format(machine_dic['description'], machine_dic['machine']))
 
             elif location == LOCATION_SL_FAVS:
                 fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
@@ -2193,51 +2208,51 @@ class Main:
                 window_title = 'Favourite Software List ROM Information'
 
                 # >> Build information string
-                info_text = '[COLOR orange]ROM {0}[/COLOR]\n'.format(fav_key)
+                slist = []
+                slist.append('[COLOR orange]ROM {0}[/COLOR]'.format(fav_key))
                 if 'ver_mame' in rom:
-                    info_text += "[COLOR slateblue]ver_mame[/COLOR]: {0}\n".format(rom['ver_mame'])
+                    slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(rom['ver_mame']))
                 else:
-                    info_text += "[COLOR slateblue]ver_mame[/COLOR]: not available\n"
+                    slist.append("[COLOR slateblue]ver_mame[/COLOR]: not available")
                 if 'ver_mame_str' in rom:
-                    info_text += "[COLOR slateblue]ver_mame_str[/COLOR]: {0}\n".format(rom['ver_mame_str'])
+                    slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(rom['ver_mame_str']))
                 else:
-                    info_text += "[COLOR slateblue]ver_mame_str[/COLOR]: not available\n"
-                info_text += "[COLOR violet]ROM_name[/COLOR]: '{0}'\n".format(rom['ROM_name'])
-                info_text += "[COLOR violet]SL_name[/COLOR]: '{0}'\n".format(rom['SL_name'])
-                info_text += "[COLOR violet]cloneof[/COLOR]: '{0}'\n".format(rom['cloneof'])
-                info_text += "[COLOR violet]description[/COLOR]: '{0}'\n".format(rom['description'])
-                info_text += "[COLOR skyblue]hasCHDs[/COLOR]: {0}\n".format(unicode(rom['hasCHDs']))
-                info_text += "[COLOR skyblue]hasROMs[/COLOR]: {0}\n".format(unicode(rom['hasROMs']))
-                info_text += "[COLOR violet]launch_machine[/COLOR]: '{0}'\n".format(rom['launch_machine'])
+                    slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: not available")
+                slist.append("[COLOR violet]ROM_name[/COLOR]: '{0}'".format(rom['ROM_name']))
+                slist.append("[COLOR violet]SL_name[/COLOR]: '{0}'".format(rom['SL_name']))
+                slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(rom['cloneof']))
+                slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(rom['description']))
+                slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {0}".format(unicode(rom['hasCHDs'])))
+                slist.append("[COLOR skyblue]hasROMs[/COLOR]: {0}".format(unicode(rom['hasROMs'])))
+                slist.append("[COLOR violet]launch_machine[/COLOR]: '{0}'".format(rom['launch_machine']))
                 if rom['parts']:
                     for i, part in enumerate(rom['parts']):
-                        info_text += "[COLOR lime]parts[/COLOR][{0}]:\n".format(i)
-                        info_text += "  [COLOR violet]interface[/COLOR]: '{0}'\n".format(part['interface'])
-                        info_text += "  [COLOR violet]name[/COLOR]: '{0}'\n".format(part['name'])
+                        slist.append("[COLOR lime]parts[/COLOR][{0}]:".format(i))
+                        slist.append("  [COLOR violet]interface[/COLOR]: '{0}'".format(part['interface']))
+                        slist.append("  [COLOR violet]name[/COLOR]: '{0}'".format(part['name']))
                 else:
-                    info_text += '[COLOR lime]parts[/COLOR]: []\n'
-                info_text += "[COLOR violet]plot[/COLOR]: '{0}'\n".format(rom['plot'])
-                info_text += "[COLOR violet]publisher[/COLOR]: '{0}'\n".format(rom['publisher'])
-                info_text += "[COLOR violet]status_CHD[/COLOR]: '{0}'\n".format(rom['status_CHD'])
-                info_text += "[COLOR violet]status_ROM[/COLOR]: '{0}'\n".format(rom['status_ROM'])
-                info_text += "[COLOR violet]year[/COLOR]: '{0}'\n".format(rom['year'])
+                    slist.append('[COLOR lime]parts[/COLOR]: []')
+                slist.append("[COLOR violet]plot[/COLOR]: '{0}'".format(rom['plot']))
+                slist.append("[COLOR violet]publisher[/COLOR]: '{0}'".format(rom['publisher']))
+                slist.append("[COLOR violet]status_CHD[/COLOR]: '{0}'".format(rom['status_CHD']))
+                slist.append("[COLOR violet]status_ROM[/COLOR]: '{0}'".format(rom['status_ROM']))
+                slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(rom['year']))
 
-                info_text += '\n[COLOR orange]Software List assets[/COLOR]\n'
-                info_text += "[COLOR violet]title[/COLOR]: '{0}'\n".format(rom['assets']['title'])
-                info_text += "[COLOR violet]snap[/COLOR]: '{0}'\n".format(rom['assets']['snap'])
-                info_text += "[COLOR violet]boxfront[/COLOR]: '{0}'\n".format(rom['assets']['boxfront'])
-                info_text += "[COLOR violet]fanart[/COLOR]: '{0}'\n".format(rom['assets']['fanart'])
-                info_text += "[COLOR violet]trailer[/COLOR]: '{0}'\n".format(rom['assets']['trailer'])
-                info_text += "[COLOR violet]manual[/COLOR]: '{0}'\n".format(rom['assets']['manual'])
-            self._display_text_window(window_title, info_text)
+                slist.append('\n[COLOR orange]Software List assets[/COLOR]')
+                slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(rom['assets']['title']))
+                slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(rom['assets']['snap']))
+                slist.append("[COLOR violet]boxfront[/COLOR]: '{0}'".format(rom['assets']['boxfront']))
+                slist.append("[COLOR violet]fanart[/COLOR]: '{0}'".format(rom['assets']['fanart']))
+                slist.append("[COLOR violet]trailer[/COLOR]: '{0}'".format(rom['assets']['trailer']))
+                slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(rom['assets']['manual']))
+            self._display_text_window(window_title, '\n'.join(slist))
 
             # --- Write DEBUG TXT file ---
             if self.settings['debug_SL_item_data']:
                 log_info('Writing file "{0}"'.format(PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath()))
                 with open(PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath(), 'w') as file:
-                    # info_text must be a list of strings!!!
-                    # text_remove_color_tags_slist(info_text)
-                    file.write(info_text.encode('utf-8'))
+                    text_remove_color_tags_slist(slist)
+                    file.write('\n'.join(slist).encode('utf-8'))
 
         # --- View database information and statistics stored in control dictionary ---
         elif action == ACTION_VIEW_DB_STATS:
@@ -2413,6 +2428,13 @@ class Main:
             window_title = 'Machine {0} ROMs'.format(machine_name)
             self._display_text_window(window_title, '\n'.join(info_text))
 
+            # --- Write DEBUG TXT file ---
+            if self.settings['debug_MAME_ROM_DB_data']:
+                log_info('Writing file "{0}"'.format(PATHS.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath()))
+                with open(PATHS.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath(), 'w') as file:
+                    text_remove_color_tags_slist(info_text)
+                    file.write('\n'.join(info_text).encode('utf-8'))
+
         # --- View MAME machine ROMs (Audit ROM database) ---
         elif action == ACTION_VIEW_MACHINE_AUDIT_ROMS:
             # --- Load machine dictionary and ROM database ---
@@ -2473,6 +2495,13 @@ class Main:
             info_text.extend(table_str_list)
             window_title = 'Machine {0} ROM audit'.format(machine_name)
             self._display_text_window(window_title, '\n'.join(info_text))
+
+            # --- Write DEBUG TXT file ---
+            if self.settings['debug_MAME_Audit_DB_data']:
+                log_info('Writing file "{0}"'.format(PATHS.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath()))
+                with open(PATHS.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath(), 'w') as file:
+                    text_remove_color_tags_slist(info_text)
+                    file.write('\n'.join(info_text).encode('utf-8'))
 
         # --- View SL ROMs ---
         elif action == ACTION_VIEW_SL_ROM_ROMS:
