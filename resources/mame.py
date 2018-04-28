@@ -4917,7 +4917,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'w') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
-            'This report shows all the scanned MAME machines',
+            'This report shows all the scanned MAME machines.\n',
+            'MAME ROM path = "{0}"'.format(ROM_path_str),
+            'MAME CHD path = "{0}"'.format(CHD_path_str),
             '',
         ]
         report_slist.extend(r_full_list)
@@ -4927,11 +4929,13 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
-            'This reports shows MAME machines with ROM ZIPs and/or CHDs with HAVE status',
+            'This reports shows HAVE MAME machines with ROM ZIPs and/or CHDs.\n',
+            'MAME ROM path = "{0}"'.format(ROM_path_str),
+            'MAME CHD path = "{0}"'.format(CHD_path_str),
             '',
         ]
         if not r_have_list:
-            r_have_list.append('Ouch!!! You do not have any ROM ZIP files.')
+            r_have_list.append('Ouch!!! You do not have any ROM ZIP files and/or CHDs.')
         report_slist.extend(r_have_list)
         file.write('\n'.join(report_slist).encode('utf-8'))
 
@@ -4939,7 +4943,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
-            'This reports shows MAME machines with ROM ZIPs and/or CHDs with MISSING status',
+            'This reports shows MISSING MAME machines with ROM ZIPs and/or CHDs.\n',
+            'MAME ROM path = "{0}"'.format(ROM_path_str),
+            'MAME CHD path = "{0}"'.format(CHD_path_str),
             '',
         ]
         if not r_miss_list:
@@ -4959,7 +4965,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     r_list = [
         '*** Advanced MAME Launcher MAME machines scanner report ***',
         'This report shows all missing MAME machine ROM ZIPs',
-        'Each missing ROM ZIP appears only once, but more than one machine may be unrunnable',
+        'Each missing ROM ZIP appears only once, but more than one machine may be unrunnable.\n',
+        'MAME ROM path = "{0}"'.format(ROM_path_str),
+        'MAME CHD path = "{0}"'.format(CHD_path_str),
         '',
     ]
     for rom_name in ROM_archive_list:
@@ -4991,7 +4999,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     r_list = [
         '*** Advanced MAME Launcher MAME machines scanner report ***',
         'This report shows all missing MAME machine CHDs',
-        'Each missing CHD appears only once, but more than one machine may be unrunnable',
+        'Each missing CHD appears only once, but more than one machine may be unrunnable.\n',
+        'MAME ROM path = "{0}"'.format(ROM_path_str),
+        'MAME CHD path = "{0}"'.format(CHD_path_str),
         '',
     ]
     for chd_name in CHD_archive_list:
