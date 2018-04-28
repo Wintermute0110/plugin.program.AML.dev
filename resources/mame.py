@@ -1604,42 +1604,69 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
             audit_MAME_machines_without_CHDs += 1
 
     # --- Report header and statistics ---
-    report_good_list      = ['This report shows machines with good ROMs and/or CHDs']
-    report_error_list     = ['This report shows machines with bad/missing ROMs and/or CHDs']
-    ROM_report_good_list  = ['This report shows machines with good ROMs']
-    ROM_report_error_list = ['This report shows machines with bad/missing ROMs']
-    CHD_report_good_list  = ['This report shows machines with good CHDs']
-    CHD_report_error_list = ['This report shows machines with bad/missing CHDs']
-    a = 'There are {0} machines in total'.format(total_machines)
-    b = 'Of those, {0} are runnable machines'.format(audit_MAME_machines_runnable)
-    report_good_list.extend([a, b])
-    report_error_list.extend([a, b])
-    ROM_report_good_list.extend([a, b])
-    ROM_report_error_list.extend([a, b])
-    CHD_report_good_list.extend([a, b])
-    CHD_report_error_list.extend([a, b])
-    a = 'Of those, {0} require ROMs and or CHDSs'.format(audit_MAME_machines_with_arch)
-    b = 'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
-        audit_MAME_machines_with_arch_OK, audit_MAME_machines_with_arch_BAD )
-    report_good_list.extend([a, b])
-    report_error_list.extend([a, b])
-    a = 'Of those, {0} require ROMs'.format(audit_MAME_machines_with_ROMs)
-    b = 'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
-        audit_MAME_machines_with_ROMs_OK, audit_MAME_machines_with_ROMs_BAD )
-    ROM_report_good_list.extend([a, b])
-    ROM_report_error_list.extend([a, b])
-    a = 'Of those, {0} require ROMs and or CHDSs'.format(audit_MAME_machines_with_CHDs)
-    b = 'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
-        audit_MAME_machines_with_CHDs_OK, audit_MAME_machines_with_CHDs_BAD )
-    CHD_report_good_list.extend([a, b])
-    CHD_report_error_list.extend([a, b])
-    # >> Header trail
-    report_good_list.append('')
-    report_error_list.append('')
-    ROM_report_good_list.append('')
-    ROM_report_error_list.append('')
-    CHD_report_good_list.append('')
-    CHD_report_error_list.append('')
+    report_full_list = [
+        '*** Advanced MAME Launcher MAME audit report ***',
+        'This report shows full audit report',
+    ]
+    report_good_list = [
+        '*** Advanced MAME Launcher MAME audit report ***',
+        'This report shows machines with good ROMs and/or CHDs',
+    ]
+    report_error_list = [
+        '*** Advanced MAME Launcher MAME audit report ***',
+        'This report shows machines with bad/missing ROMs and/or CHDs',
+    ]
+    ROM_report_good_list = [
+        '*** Advanced MAME Launcher MAME audit report ***',
+        'This report shows machines with good ROMs',
+    ]
+    ROM_report_error_list = [
+        '*** Advanced MAME Launcher MAME audit report ***',
+        'This report shows machines with bad/missing ROMs',
+    ]
+    CHD_report_good_list = [
+        '*** Advanced MAME Launcher MAME audit report ***',
+        'This report shows machines with good CHDs',
+    ]
+    CHD_report_error_list = [
+        '*** Advanced MAME Launcher MAME audit report ***',
+        'This report shows machines with bad/missing CHDs',
+    ]
+    h_list = [
+        'There are {0} machines in total'.format(total_machines),
+        'Of those, {0} are runnable machines'.format(audit_MAME_machines_runnable),
+    ]
+    report_full_list.extend(h_list)
+    report_good_list.extend(h_list)
+    report_error_list.extend(h_list)
+    ROM_report_good_list.extend(h_list)
+    ROM_report_error_list.extend(h_list)
+    CHD_report_good_list.extend(h_list)
+    CHD_report_error_list.extend(h_list)
+    h_list = [
+        'Of those, {0} require ROMs and or CHDSs'.format(audit_MAME_machines_with_arch),
+        'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
+            audit_MAME_machines_with_arch_OK, audit_MAME_machines_with_arch_BAD ),
+        '',
+    ]
+    report_good_list.extend(h_list)
+    report_error_list.extend(h_list)
+    h_list = [
+        'Of those, {0} require ROMs'.format(audit_MAME_machines_with_ROMs),
+        'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
+            audit_MAME_machines_with_ROMs_OK, audit_MAME_machines_with_ROMs_BAD ),
+        '',
+    ]
+    ROM_report_good_list.extend(h_list)
+    ROM_report_error_list.extend(h_list)
+    h_list = [
+        'Of those, {0} require ROMs and or CHDSs'.format(audit_MAME_machines_with_CHDs),
+        'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
+            audit_MAME_machines_with_CHDs_OK, audit_MAME_machines_with_CHDs_BAD ),
+        '',
+    ]
+    CHD_report_good_list.extend(h_list)
+    CHD_report_error_list.extend(h_list)
 
     # >> Generate report.
     pDialog.create('Advanced MAME Launcher', 'Generating audit reports ... ')
@@ -1649,8 +1676,16 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
         # >> Update progress dialog
         pDialog.update((processed_machines * 100) // total_machines)
 
-        # >> Skip ROMless, CHDless machines from reports
-        if m_name not in audit_roms_dic: continue
+        # >> Skip ROMless and/or CHDless machines from reports, except the full report
+        if m_name not in audit_roms_dic:
+            head_list = []
+            head_list.append('Machine {0} "{1}"'.format(m_name, description))
+            if cloneof:
+                clone_desc = machines_render[cloneof]['description']
+                head_list.append('Cloneof {0} "{1}"'.format(cloneof, clone_desc))
+            head_list.append('This machine has no ROMs and/or CHDs')
+            report_full_list.extend(head_list)
+            continue
         rom_list = audit_roms_dic[m_name]
         if not rom_list: continue
 
@@ -1684,9 +1719,10 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
         local_str_list = text_render_table_str_NO_HEADER(table_str)
         local_str_list.append('')
 
-        # >> At this point all machines have ROMs and/or CHDs
+        # --- At this point all machines have ROMs and/or CHDs ---
+        # >> Full, ROMs and/or CHDs report.
         audit_dic = machine_audit_dic[m_name]
-        # >> ROMs and CHDs report.
+        report_full_list.extend(head_list + local_str_list)
         if audit_dic['machine_is_OK']:
             report_good_list.extend(head_list + local_str_list)
         else:
@@ -1709,30 +1745,41 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
         # >> Update progress dialog. Check if user run out of patience.
         processed_machines += 1
     else:
-        report_good_list.append('MAME audit finished')
+        a = '*** MAME audit finished ***'
+        report_full_list.append(a)
+        report_good_list.append(a)
+        report_error_list.append(a)
+        ROM_report_good_list.append(a)
+        ROM_report_error_list.append(a)
+        CHD_report_good_list.append(a)
+        CHD_report_error_list.append(a)
     pDialog.close()
 
-    # >> Write reports
+    # --- Write reports ---
     pDialog.create('Advanced MAME Launcher', 'Writing report files ... ')
-    pDialog.update(0)
+    num_items = 7
+    pDialog.update(int((0*100) / num_items))
+    with open(PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(report_full_list).encode('utf-8'))
+    pDialog.update(int((1*100) / num_items))
     with open(PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), 'w') as file:
         file.write('\n'.join(report_good_list).encode('utf-8'))
-    pDialog.update(16)
+    pDialog.update(int((2*100) / num_items))
     with open(PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(report_error_list).encode('utf-8'))
-    pDialog.update(33)
+    pDialog.update(int((3*100) / num_items))
     with open(PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), 'w') as file:
         file.write('\n'.join(ROM_report_good_list).encode('utf-8'))
-    pDialog.update(50)
+    pDialog.update(int((4*100) / num_items))
     with open(PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(ROM_report_error_list).encode('utf-8'))
-    pDialog.update(66)
+    pDialog.update(int((5*100) / num_items))
     with open(PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), 'w') as file:
         file.write('\n'.join(CHD_report_good_list).encode('utf-8'))
-    pDialog.update(83)
+    pDialog.update(int((6*100) / num_items))
     with open(PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(CHD_report_error_list).encode('utf-8'))
-    pDialog.update(100)
+    pDialog.update(int((7*100) / num_items))
     pDialog.close()
 
     # >> Update MAME audit statistics.
@@ -1760,15 +1807,39 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
     SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
 
     # >> Report header and statistics
-    report_good_list      = ['This report shows machines with good ROMs and/or CHDs']
-    report_error_list     = ['This report shows machines with errors in ROMs and/or CHDs']
-    ROM_report_good_list  = ['This report shows machines with good ROMs']
-    ROM_report_error_list = ['This report shows machines with errors in ROMs']
-    CHD_report_good_list  = ['This report shows machines with good CHDs']
-    CHD_report_error_list = ['This report shows machines with errors in CHDs']
-    h_list = []
-    h_list.append('There are {0} software lists'.format(len(SL_catalog_dic)))
-    h_list.append('')
+    report_full_list = [
+        '*** Advanced MAME Launcher Software Lists audit report ***',
+        'This report shows full Software Lists audit report',
+    ]
+    report_good_list = [
+        '*** Advanced MAME Launcher Software Lists audit report ***',
+        'This report shows SL items with good ROMs and/or CHDs',
+    ]
+    report_error_list = [
+        '*** Advanced MAME Launcher Software Lists audit report ***',
+        'This report shows SL items with errors in ROMs and/or CHDs',
+    ]
+    ROM_report_good_list = [
+        '*** Advanced MAME Launcher Software Lists audit report ***',
+        'This report shows SL items with good ROMs',
+    ]
+    ROM_report_error_list = [
+        '*** Advanced MAME Launcher Software Lists audit report ***',
+        'This report shows SL items with errors in ROMs',
+    ]
+    CHD_report_good_list  = [
+        '*** Advanced MAME Launcher Software Lists audit report ***',
+        'This report shows SL items with good CHDs',
+    ]
+    CHD_report_error_list = [
+        '*** Advanced MAME Launcher Software Lists audit report ***',
+        'This report shows SL items with errors in CHDs',
+    ]
+    h_list = [
+        'There are {0} software lists'.format(len(SL_catalog_dic)),
+        '',
+    ]
+    report_full_list.extend(h_list)
     report_good_list.extend(h_list)
     report_error_list.extend(h_list)
     ROM_report_good_list.extend(h_list)
@@ -1848,7 +1919,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
 
             # >> Software/machine header.
             # WARNING: Kodi crashes with a 22 MB text file with colours. No problem
-            # if file has not colours.
+            # if TXT file has not colours.
             rom = roms[rom_key]
             cloneof = rom['cloneof']
             head_list = []
@@ -1870,7 +1941,8 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
             local_str_list = text_render_table_str_NO_HEADER(table_str)
             local_str_list.append('')
 
-            # >> ROMs and CHDs report.
+            # >> Full, ROMs and CHDs report.
+            report_full_list.extend(head_list + local_str_list)
             if audit_dic['machine_is_OK']:
                 report_good_list.extend(head_list + local_str_list)
             else:
@@ -1893,37 +1965,42 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
         # >> Update progress
         processed_files += 1
     else:
-        report_good_list.append('Software Lists audit finished')
+        a = '*** Software Lists audit finished ***'
+        report_full_list.append(a)
+        report_good_list.append(a)
+        report_error_list.append(a)
+        ROM_report_good_list.append(a)
+        ROM_report_error_list.append(a)
+        CHD_report_good_list.append(a)
+        CHD_report_error_list.append(a)
     pDialog.close()
 
     # >> Write report.
     pdialog_line1 = 'Writing SL audit reports ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(0)
+    num_items = 7
+    pDialog.update(int((0*100) / num_items))
+    with open(PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(report_full_list).encode('utf-8'))
+    pDialog.update(int((1*100) / num_items))
     with open(PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'w') as file:
-        out_str = '\n'.join(report_good_list)
-        file.write(out_str.encode('utf-8'))
-    pDialog.update(16)
+        file.write('\n'.join(report_good_list).encode('utf-8'))
+    pDialog.update(int((2*100) / num_items))
     with open(PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'w') as file:
-        out_str = '\n'.join(report_error_list)
-        file.write(out_str.encode('utf-8'))
-    pDialog.update(33)
+        file.write('\n'.join(report_error_list).encode('utf-8'))
+    pDialog.update(int((3*100) / num_items))
     with open(PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'w') as file:
-        out_str = '\n'.join(ROM_report_good_list)
-        file.write(out_str.encode('utf-8'))
-    pDialog.update(50)
+        file.write('\n'.join(ROM_report_good_list).encode('utf-8'))
+    pDialog.update(int((4*100) / num_items))
     with open(PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'w') as file:
-        out_str = '\n'.join(ROM_report_error_list)
-        file.write(out_str.encode('utf-8'))
-    pDialog.update(66)
+        file.write('\n'.join(ROM_report_error_list).encode('utf-8'))
+    pDialog.update(int((5*100) / num_items))
     with open(PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'w') as file:
-        out_str = '\n'.join(CHD_report_good_list)
-        file.write(out_str.encode('utf-8'))
-    pDialog.update(83)
+        file.write('\n'.join(CHD_report_good_list).encode('utf-8'))
+    pDialog.update(int((6*100) / num_items))
     with open(PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'w') as file:
-        out_str = '\n'.join(CHD_report_error_list)
-        file.write(out_str.encode('utf-8'))
-    pDialog.update(100)
+        file.write('\n'.join(CHD_report_error_list).encode('utf-8'))
+    pDialog.update(int((7*100) / num_items))
     pDialog.close()
 
     # >> Update SL audit statistics.
@@ -2956,8 +3033,8 @@ def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_r
         # In the Merged set all Parent and Clone ROMs are in the parent archive.
         # However, according to the Pleasuredome DATs, ROMs are organised like
         # this:
-        #   clone_name/clone_rom_1
-        #   clone_name/clone_rom_2
+        #   clone_name_a/clone_rom_1
+        #   clone_name_b/clone_rom_1
         #   parent_rom_1
         #   parent_rom_2
         if cloneof:
@@ -4716,8 +4793,21 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     scan_CHD_machines_total = 0
     scan_CHD_machines_have = 0
     scan_CHD_machines_missing = 0
-    r_have_list = []
-    r_miss_list = []
+    r_full_list = [
+        '*** Advanced MAME Launcher MAME machines scanner report ***',
+        'This report shows all the scanned MAME machines',
+        '',
+    ]
+    r_have_list = [
+        '*** Advanced MAME Launcher MAME machines scanner report ***',
+        'This reports shows MAME machines with ROM ZIPs and/or CHDs with HAVE status',
+        '',
+    ]
+    r_miss_list = [
+        '*** Advanced MAME Launcher MAME machines scanner report ***',
+        'This reports shows MAME machines with ROM ZIPs and/or CHDs with MISSING status',
+        '',
+    ]
     for key in sorted(machines_render):
         pDialog.update((processed_machines*100) // total_machines)
 
@@ -4740,9 +4830,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
                 ROM_FN = misc_search_file_cache(ROM_path_str, rom, MAME_ROM_EXTS)
                 if ROM_FN:
                     have_rom_list[i] = True
-                    m_have_str_list.append('Have ROM {0}'.format(rom))
+                    m_have_str_list.append('HAVE ROM {0}'.format(rom))
                 else:
-                    m_miss_str_list.append('Missing ROM {0}'.format(rom))
+                    m_miss_str_list.append('MISS ROM {0}'.format(rom))
             scan_ROM_machines_total += 1
             if all(have_rom_list):
                 # --- All ZIP files required to run this machine exist ---
@@ -4770,9 +4860,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
                 CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
                 if CHD_FN:
                     has_chd_list[idx] = True
-                    m_have_str_list.append('Have CHD {0}'.format(chd_name))
+                    m_have_str_list.append('HAVE CHD {0}'.format(chd_name))
                 else:
-                    m_miss_str_list.append('Missing CHD {0}'.format(chd_name))
+                    m_miss_str_list.append('MISS CHD {0}'.format(chd_name))
             if all(has_chd_list):
                 CHD_flag = 'C'
                 scan_CHD_machines_have += 1
@@ -4787,22 +4877,37 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
             CHD_flag = '-'
         fs_set_CHD_flag(assets_dic[key], CHD_flag)
 
-        # >> Build HAVE and MISSING reports.
+        # >> Build FULL, HAVE and MISSING reports.
+        r_full_list.append('Machine {0} -- "{1}"'.format(key, machines_render[key]['description']))
+        if machines_render[key]['cloneof']:
+            cloneof = machines_render[key]['cloneof']
+            r_full_list.append('cloneof {0} ({1})'.format(cloneof, machines_render[cloneof]['description']))
+        if not rom_list and not chd_list:
+            r_full_list.append('Machine has no ROMs and/or CHDs')
+        else:
+            r_full_list.extend(m_have_str_list)
+            r_full_list.extend(m_miss_str_list)
+        r_full_list.append('')
+
+        # >> Also including missing ROMs/CHDs if any.
         if m_have_str_list:
             r_have_list.append('Machine {0} -- "{1}"'.format(key, machines_render[key]['description']))
             if machines_render[key]['cloneof']:
                 cloneof = machines_render[key]['cloneof']
                 r_have_list.append('cloneof {0} ({1})'.format(cloneof, machines_render[cloneof]['description']))
             r_have_list.extend(m_have_str_list)
-            # >> Also including missing ROMs if any.
-            if m_miss_str_list: r_have_list.extend(m_miss_str_list)
+            # if m_miss_str_list: r_have_list.extend(m_miss_str_list)
+            r_have_list.extend(m_miss_str_list)
             r_have_list.append('')
+
+        # >> Also including have ROMs/CHDs if any.
         if m_miss_str_list:
             r_miss_list.append('Machine {0} -- "{1}"'.format(key, machines_render[key]['description']))
             if machines_render[key]['cloneof']:
                 cloneof = machines_render[key]['cloneof']
                 r_miss_list.append('cloneof {0} ({1})'.format(cloneof, machines_render[cloneof]['description']))
-            if m_have_str_list: r_miss_list.extend(m_have_str_list)
+            # if m_have_str_list: r_miss_list.extend(m_have_str_list)
+            r_miss_list.extend(m_have_str_list)
             r_miss_list.extend(m_miss_str_list)
             r_miss_list.append('')
 
@@ -4811,13 +4916,14 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     pDialog.close()
 
     # >> Write MAME scanner reports
-    have_path = PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()
-    log_info('Writing report "{0}"'.format(have_path))
-    with open(have_path, 'w') as file:
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'w') as file:
+        file.write('\n'.join(r_full_list).encode('utf-8'))
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w') as file:
         file.write('\n'.join(r_have_list).encode('utf-8'))
-    miss_path = PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()
-    log_info('Writing report "{0}"'.format(miss_path))
-    with open(miss_path, 'w') as file:
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(r_miss_list).encode('utf-8'))
 
     # --- ROM ZIP file list ---
@@ -4829,7 +4935,12 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     scan_ZIP_files_total = 0
     scan_ZIP_files_have = 0
     scan_ZIP_files_missing = 0
-    r_list = []
+    r_list = [
+        '*** Advanced MAME Launcher MAME machines scanner report ***',
+        'This report shows all missing MAME machine ROM ZIPs',
+        'Each missing ROM ZIP appears only once, but more than one machine may be unrunnable',
+        '',
+    ]
     for rom_name in ROM_archive_list:
         scan_ZIP_files_total += 1
         ROM_FN = misc_search_file_cache(ROM_path_str, rom_name, MAME_ROM_EXTS)
@@ -4856,7 +4967,12 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     scan_CHD_files_total = 0
     scan_CHD_files_have = 0
     scan_CHD_files_missing = 0
-    r_list = []
+    r_list = [
+        '*** Advanced MAME Launcher MAME machines scanner report ***',
+        'This report shows all missing MAME machine CHDs',
+        'Each missing CHD appears only once, but more than one machine may be unrunnable',
+        '',
+    ]
     for chd_name in CHD_archive_list:
         scan_CHD_files_total += 1
         CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
@@ -5093,17 +5209,19 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     log_info('Writing SL ROM ZIPs/CHDs FULL report')
     log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
     with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'w') as file:
-        file.write('This is the SL ROM ZIPs/CHDs FULL report\n'.encode('utf-8'))
+        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n'.encode('utf-8'))
+        file.write('This report shows all the scanned SL items\n'.encode('utf-8'))
         file.write('\n'.encode('utf-8'))
         if r_all_list:
             file.write('\n'.join(r_all_list).encode('utf-8'))
         else:
             raise TypeError
 
-    log_info('Writing SL ROM ZIPs/CHDs HAVE report')
+    log_info('Writing SL ROM ZIPs and/or CHDs HAVE report')
     log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
     with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w') as file:
-        file.write('This is the SL ROM ZIPs/CHDs HAVE report\n'.encode('utf-8'))
+        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n'.encode('utf-8'))
+        file.write('This reports shows the SL items with ROM ZIPs and/or CHDs with HAVE status\n'.encode('utf-8'))
         file.write('\n'.encode('utf-8'))
         if r_have_list:
             file.write('\n'.join(r_have_list).encode('utf-8'))
@@ -5113,7 +5231,8 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     log_info('Writing SL ROM ZIPs/CHDs MISS report')
     log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
     with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w') as file:
-        file.write('This is the SL ROM ZIPs/CHDs MISS report\n'.encode('utf-8'))
+        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n'.encode('utf-8'))
+        file.write('This reports shows the SL items with ROM ZIPs and/or CHDs with MISSING status\n'.encode('utf-8'))
         file.write('\n'.encode('utf-8'))
         if r_miss_list:
             file.write('\n'.join(r_miss_list).encode('utf-8'))
@@ -5125,7 +5244,8 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     log_info('Opening SL ROM list missing report')
     log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.getPath()))
     with open(PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.getPath(), 'w') as file:
-        file.write('This is the SL ROM list missing report\n'.encode('utf-8'))
+        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n'.encode('utf-8'))
+        file.write('This report shows all missing SL item ROM ZIPs\n'.encode('utf-8'))
         file.write('\nSL ROM list missing report not coded yet. Sorry.\n'.encode('utf-8'))
         # file.write('\n'.join(report_list).encode('utf-8'))
 
@@ -5133,7 +5253,8 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     log_info('Opening SL CHD list missing report')
     log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.getPath()))
     with open(PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.getPath(), 'w') as file:
-        file.write('This is the SL CHD list missing report\n'.encode('utf-8'))
+        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n'.encode('utf-8'))
+        file.write('This report shows all missing SL item CHDs\n'.encode('utf-8'))
         file.write('\nSL CHD list missing report not coded yet. Sorry.\n'.encode('utf-8'))
         # file.write('\n'.join(report_list).encode('utf-8'))
 
@@ -5277,27 +5398,28 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
     Tra  = (have_count_list[12], total_machines - have_count_list[12], alternate_count_list[12])
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Creating MAME asset report ...')
-    report_str_list = []
-    report_str_list.append('Number of MAME machines {0}'.format(total_machines))
-    report_str_list.append('Have PCBs       {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*PCB))
-    report_str_list.append('Have Artpreview {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Artp))
-    report_str_list.append('Have Artwork    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Art))
-    report_str_list.append('Have Cabinets   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Cab))
-    report_str_list.append('Have Clearlogos {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Clr))
-    report_str_list.append('Have CPanels    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*CPan))
-    report_str_list.append('Have Fanarts    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Fan))
-    report_str_list.append('Have Flyers     {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Fly))
-    report_str_list.append('Have Manuals    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Man))
-    report_str_list.append('Have Marquees   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Mar))
-    report_str_list.append('Have Snaps      {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Snap))
-    report_str_list.append('Have Titles     {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Tit))
-    report_str_list.append('Have Trailers   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Tra))
-    report_str_list.append('')
+    report_slist = []
+    report_slist.append('*** Advanced MAME Launcher MAME machines asset scanner report ***')
+    report_slist.append('Total MAME machines {0}'.format(total_machines))
+    report_slist.append('Have PCBs       {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*PCB))
+    report_slist.append('Have Artpreview {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Artp))
+    report_slist.append('Have Artwork    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Art))
+    report_slist.append('Have Cabinets   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Cab))
+    report_slist.append('Have Clearlogos {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Clr))
+    report_slist.append('Have CPanels    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*CPan))
+    report_slist.append('Have Fanarts    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Fan))
+    report_slist.append('Have Flyers     {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Fly))
+    report_slist.append('Have Manuals    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Man))
+    report_slist.append('Have Marquees   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Mar))
+    report_slist.append('Have Snaps      {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Snap))
+    report_slist.append('Have Titles     {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Tit))
+    report_slist.append('Have Trailers   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Tra))
+    report_slist.append('')
     table_str_list = text_render_table_str(table_str)
-    report_str_list.extend(table_str_list)
+    report_slist.extend(table_str_list)
     log_info('Opening MAME asset report file "{0}"'.format(PATHS.REPORT_MAME_ASSETS_PATH.getPath()))
     with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_str_list).encode('utf-8'))
+        file.write('\n'.join(report_slist).encode('utf-8'))
     pDialog.update(100)
 
     # >> Update control_dic by assigment (will be saved in caller)
@@ -5472,20 +5594,21 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
     Man  = (have_count_list[5], SL_item_count - have_count_list[5], alternate_count_list[5])
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Creating SL asset report ...')
-    report_str_list = []
-    report_str_list.append('Number of SL items {0}'.format(SL_item_count))
-    report_str_list.append('Have Titles    {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Tit))
-    report_str_list.append('Have Snaps     {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Snap))
-    report_str_list.append('Have Boxfronts {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Boxf))
-    report_str_list.append('Have Fanarts   {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Fan))
-    report_str_list.append('Have Trailers  {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Tra))
-    report_str_list.append('Have Manuals   {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Man))
-    report_str_list.append('')
+    report_slist = []
+    report_slist.append('*** Advanced MAME Launcher Software List asset scanner report ***')
+    report_slist.append('Total SL items {0}'.format(SL_item_count))
+    report_slist.append('Have Titles    {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Tit))
+    report_slist.append('Have Snaps     {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Snap))
+    report_slist.append('Have Boxfronts {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Boxf))
+    report_slist.append('Have Fanarts   {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Fan))
+    report_slist.append('Have Trailers  {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Tra))
+    report_slist.append('Have Manuals   {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Man))
+    report_slist.append('')
     table_str_list = text_render_table_str(table_str)
-    report_str_list.extend(table_str_list)
+    report_slist.extend(table_str_list)
     log_info('Opening SL asset report file "{0}"'.format(PATHS.REPORT_SL_ASSETS_PATH.getPath()))
     with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_str_list).encode('utf-8'))
+        file.write('\n'.join(report_slist).encode('utf-8'))
     pDialog.update(100)
     pDialog.close()
 

@@ -22,7 +22,7 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
-FEATURE  Improve PDF manual rendering. Use the library pdfrw for image extraction.
+FEATURE  Improved PDF manual rendering. Use the library pdfrw for image extraction.
 
 FEATURE  Clean ROM cache before rebuilding cache.
 

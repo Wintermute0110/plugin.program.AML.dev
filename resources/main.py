@@ -197,6 +197,7 @@ class AML_Paths:
         self.REPORT_STATS_PATH = self.REPORTS_DIR.pjoin('Statistics.txt')
 
         # >> Audit report
+        self.REPORT_MAME_AUDIT_FULL_PATH       = self.REPORTS_DIR.pjoin('Audit_MAME_full.txt')
         self.REPORT_MAME_AUDIT_GOOD_PATH       = self.REPORTS_DIR.pjoin('Audit_MAME_good.txt')
         self.REPORT_MAME_AUDIT_ERRORS_PATH     = self.REPORTS_DIR.pjoin('Audit_MAME_errors.txt')
         self.REPORT_MAME_AUDIT_ROM_GOOD_PATH   = self.REPORTS_DIR.pjoin('Audit_MAME_ROMs_good.txt')
@@ -204,6 +205,7 @@ class AML_Paths:
         self.REPORT_MAME_AUDIT_CHD_GOOD_PATH   = self.REPORTS_DIR.pjoin('Audit_MAME_CHDs_good.txt')
         self.REPORT_MAME_AUDIT_CHD_ERRORS_PATH = self.REPORTS_DIR.pjoin('Audit_MAME_CHDs_errors.txt')
 
+        self.REPORT_SL_AUDIT_FULL_PATH         = self.REPORTS_DIR.pjoin('Audit_SL_full.txt')
         self.REPORT_SL_AUDIT_GOOD_PATH         = self.REPORTS_DIR.pjoin('Audit_SL_good.txt')
         self.REPORT_SL_AUDIT_ERRORS_PATH       = self.REPORTS_DIR.pjoin('Audit_SL_errors.txt')
         self.REPORT_SL_AUDIT_ROMS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Audit_SL_ROMs_good.txt')
@@ -2903,12 +2905,14 @@ class Main:
         elif action == ACTION_VIEW_REPORT_AUDIT:
             d = xbmcgui.Dialog()
             type_sub = d.select('View audit reports',
-                                ['View MAME audit report (Good)',
+                                ['View MAME audit report (Full)',
+                                 'View MAME audit report (Good)',
                                  'View MAME audit report (Errors)',
                                  'View MAME audit report (ROM Good)',
                                  'View MAME audit report (ROM Errors)',
                                  'View MAME audit report (CHD Good)',
                                  'View MAME audit report (CHD Errors)',
+                                 'View SL audit report (Full)',
                                  'View SL audit report (Good)',
                                  'View SL audit report (Errors)',
                                  'View SL audit report (ROM Good)',
@@ -2920,113 +2924,117 @@ class Main:
 
             # >> MAME audit reports
             if type_sub == 0:
+                if not PATHS.REPORT_MAME_AUDIT_FULL_PATH.exists():
+                    kodi_dialog_OK('MAME audit report (Full) not found. '
+                                   'Please audit your MAME ROMs and try again.')
+                    return
+                with open(PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
+                    self._display_text_window('MAME audit report (Full)', myfile.read())
+
+            elif type_sub == 1:
                 if not PATHS.REPORT_MAME_AUDIT_GOOD_PATH.exists():
                     kodi_dialog_OK('MAME audit report (Good) not found. '
                                    'Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME audit report (Good)', info_text)
+                    self._display_text_window('MAME audit report (Good)', myfile.read())
 
-            elif type_sub == 1:
+            elif type_sub == 2:
                 if not PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.exists():
                     kodi_dialog_OK('MAME audit report (Errors) not found. '
                                    'Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME audit report (Errors)', info_text)
+                    self._display_text_window('MAME audit report (Errors)', myfile.read())
 
-            elif type_sub == 2:
+            elif type_sub == 3:
                 if not PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.exists():
                     kodi_dialog_OK('MAME audit report (ROM Good) not found. '
                                    'Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME audit report (ROM Good)', info_text)
+                    self._display_text_window('MAME audit report (ROM Good)', myfile.read())
 
-            elif type_sub == 3:
+            elif type_sub == 4:
                 if not PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.exists():
                     kodi_dialog_OK('MAME audit report (ROM Errors) not found. '
                                    'Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME audit report (ROM Errors)', info_text)
+                    self._display_text_window('MAME audit report (ROM Errors)', myfile.read())
 
-            elif type_sub == 4:
+            elif type_sub == 5:
                 if not PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.exists():
                     kodi_dialog_OK('MAME audit report (CHD Good) not found. '
                                    'Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME audit report (CHD Good)', info_text)
+                    self._display_text_window('MAME audit report (CHD Good)', myfile.read())
 
-            elif type_sub == 5:
+            elif type_sub == 6:
                 if not PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.exists():
                     kodi_dialog_OK('MAME audit report (CHD Errors) not found. '
                                    'Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME audit report (CHD Errors)', info_text)
+                    self._display_text_window('MAME audit report (CHD Errors)', myfile.read())
 
             # >> SL audit reports
-            elif type_sub == 6:
+            elif type_sub == 7:
+                if not PATHS.REPORT_SL_AUDIT_FULL_PATH.exists():
+                    kodi_dialog_OK('SL audit report (Full) not found. '
+                                   'Please audit your SL ROMs and try again.')
+                    return
+                with open(PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
+                    self._display_text_window('SL audit report (Full)', myfile.read())
+
+            elif type_sub == 8:
                 if not PATHS.REPORT_SL_AUDIT_GOOD_PATH.exists():
                     kodi_dialog_OK('SL audit report (Good) not found. '
                                    'Please audit your SL ROMs and try again.')
                     return
                 with open(PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('SL audit report (Good)', info_text)
+                    self._display_text_window('SL audit report (Good)', myfile.read())
 
-            elif type_sub == 7:
+            elif type_sub == 9:
                 if not PATHS.REPORT_SL_AUDIT_ERRORS_PATH.exists():
                     kodi_dialog_OK('SL audit report (Errors) not found. '
                                    'Please audit your SL ROMs and try again.')
                     return
                 with open(PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('SL audit report (Errors)', info_text)
+                    self._display_text_window('SL audit report (Errors)', myfile.read())
 
-            elif type_sub == 8:
+            elif type_sub == 10:
                 if not PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.exists():
                     kodi_dialog_OK('MAME audit report (ROM Good) not found. '
                                    'Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME audit report (ROM Good)', info_text)
+                    self._display_text_window('MAME audit report (ROM Good)', myfile.read())
 
-            elif type_sub == 9:
+            elif type_sub == 11:
                 if not PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.exists():
                     kodi_dialog_OK('MAME audit report (ROM Errors) not found. '
                                    'Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME audit report (ROM Errors)', info_text)
+                    self._display_text_window('MAME audit report (ROM Errors)', myfile.read())
 
-            elif type_sub == 10:
+            elif type_sub == 12:
                 if not PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.exists():
                     kodi_dialog_OK('MAME audit report (CHD Good) not found. '
                                    'Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME audit report (CHD Good)', info_text)
+                    self._display_text_window('MAME audit report (CHD Good)', myfile.read())
 
-            elif type_sub == 11:
+            elif type_sub == 13:
                 if not PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.exists():
                     kodi_dialog_OK('MAME audit report (CHD Errors) not found. '
                                    'Please audit your MAME ROMs and try again.')
                     return
                 with open(PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'r') as myfile:
-                    info_text = myfile.read()
-                    self._display_text_window('MAME audit report (CHD Errors)', info_text)
+                    self._display_text_window('MAME audit report (CHD Errors)', myfile.read())
 
         else:
             kodi_dialog_OK('Wrong action == {0}. This is a bug, please report it.'.format(action))
