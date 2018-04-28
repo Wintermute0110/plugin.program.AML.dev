@@ -1607,6 +1607,7 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
     report_full_list = [
         '*** Advanced MAME Launcher MAME audit report ***',
         'This report shows full audit report',
+        '',
     ]
     report_good_list = [
         '*** Advanced MAME Launcher MAME audit report ***',
