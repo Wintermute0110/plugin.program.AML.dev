@@ -4802,21 +4802,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     scan_CHD_machines_total = 0
     scan_CHD_machines_have = 0
     scan_CHD_machines_missing = 0
-    r_full_list = [
-        '*** Advanced MAME Launcher MAME machines scanner report ***',
-        'This report shows all the scanned MAME machines',
-        '',
-    ]
-    r_have_list = [
-        '*** Advanced MAME Launcher MAME machines scanner report ***',
-        'This reports shows MAME machines with ROM ZIPs and/or CHDs with HAVE status',
-        '',
-    ]
-    r_miss_list = [
-        '*** Advanced MAME Launcher MAME machines scanner report ***',
-        'This reports shows MAME machines with ROM ZIPs and/or CHDs with MISSING status',
-        '',
-    ]
+    r_full_list = []
+    r_have_list = []
+    r_miss_list = []
     for key in sorted(machines_render):
         pDialog.update((processed_machines*100) // total_machines)
 
@@ -4927,13 +4915,37 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     # >> Write MAME scanner reports
     log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(r_full_list).encode('utf-8'))
+        report_slist = [
+            '*** Advanced MAME Launcher MAME machines scanner report ***',
+            'This report shows all the scanned MAME machines',
+            '',
+        ]
+        report_slist.extend(r_full_list)
+        file.write('\n'.join(report_slist).encode('utf-8'))
+
     log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(r_have_list).encode('utf-8'))
+        report_slist = [
+            '*** Advanced MAME Launcher MAME machines scanner report ***',
+            'This reports shows MAME machines with ROM ZIPs and/or CHDs with HAVE status',
+            '',
+        ]
+        if not r_have_list:
+            r_have_list.append('Ouch!!! You do not have any ROM ZIP files.')
+        report_slist.extend(r_have_list)
+        file.write('\n'.join(report_slist).encode('utf-8'))
+
     log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(r_miss_list).encode('utf-8'))
+        report_slist = [
+            '*** Advanced MAME Launcher MAME machines scanner report ***',
+            'This reports shows MAME machines with ROM ZIPs and/or CHDs with MISSING status',
+            '',
+        ]
+        if not r_miss_list:
+            r_miss_list.append('Congratulations!!! You have no missing ROM ZIP and/or CHDs files.')
+        report_slist.extend(r_miss_list)
+        file.write('\n'.join(report_slist).encode('utf-8'))
 
     # --- ROM ZIP file list ---
     pDialog = xbmcgui.DialogProgress()
