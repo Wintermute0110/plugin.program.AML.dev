@@ -4956,8 +4956,8 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     # >> Write report
     log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'w') as file:
-        if not r_list:
-            r_list = [ 'Congratulations!!! You have no missing ROM ZIPs.' ]
+        if scan_ZIP_files_missing == 0:
+            r_list.append('Congratulations!!! You have no missing ROM ZIP files.')
         file.write('\n'.join(r_list).encode('utf-8'))
 
     # --- CHD file list ---
@@ -4988,8 +4988,8 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     # >> Write report
     log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'w') as file:
-        if not r_list:
-            r_list = [ 'Congratulations!!! You have no missing CHDs.' ]
+        if scan_CHD_files_missing == 0:
+            r_list.append('Congratulations!!! You have no missing CHDs.')
         file.write('\n'.join(r_list).encode('utf-8'))
 
     # --- Scan Samples ---
