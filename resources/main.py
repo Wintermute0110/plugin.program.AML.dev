@@ -1306,7 +1306,6 @@ class Main:
             ROM = SL_roms[clone_name]
             assets = SL_asset_dic[clone_name] if clone_name in SL_asset_dic else fs_new_SL_asset()
             ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
-            log_debug(unicode(ROM))
             self._render_SL_ROM_row(SL_name, clone_name, ROM, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 

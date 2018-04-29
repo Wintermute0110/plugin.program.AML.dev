@@ -4399,6 +4399,10 @@ def _get_SL_parent_ROM_dic(parent_name, SL_ROMs):
     return parent_rom_dic
 
 def _get_SL_ROM_location(rom_set, SL_name, SL_item_name, rom_dic, SL_Items, parent_rom_dic):
+    # Some SL invalid ROMs do not have name attribute (and not CRC and SHA1).
+    # For those, set the location to empty.
+    if not rom_dic['name']: return ''
+
     # In the SL ROM MERGED set all ROMs are stored in the parent ZIP file:
     #
     # PATH/32x/chaotix.zip/knuckles' chaotix (europe).bin
