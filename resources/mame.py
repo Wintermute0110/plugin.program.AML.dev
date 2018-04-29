@@ -4388,6 +4388,89 @@ def _mame_load_SL_XML(xml_filename):
 
     return SLData
 
+def _get_SL_parent_ROM_dic(parent_name, SL_ROMs):
+    parent_rom_dic = {}
+    for part_dic in SL_ROMs[parent_name]:
+        if not 'dataarea' in part_dic: continue
+        for dataarea_dic in part_dic['dataarea']:
+            for rom_dic in dataarea_dic['roms']:
+                parent_rom_dic[rom_dic['crc']] = rom_dic['name']
+
+    return parent_rom_dic
+
+def _get_SL_ROM_location(rom_set, SL_name, SL_item_name, rom_dic, SL_Items, parent_rom_dic):
+    # In the SL ROM MERGED set all ROMs are stored in the parent ZIP file:
+    #
+    # PATH/32x/chaotix.zip/knuckles' chaotix (europe).bin
+    # PATH/32x/chaotix.zip/chaotixju/chaotix ~ knuckles' chaotix (japan, usa).bin
+    # PATH/32x/chaotix.zip/chaotixjup/knuckles' chaotix (prototype 214 - feb 14, 1995, 06.46).bin
+    #
+    if rom_set == 'MERGED':
+        cloneof = SL_Items[SL_item_name]['cloneof']
+        if cloneof:
+            location = SL_name + '/' + cloneof + '/' + SL_item_name + '/' + rom_dic['name']
+        else:
+            location = SL_name + '/' + SL_item_name + '/' + rom_dic['name']
+
+    # In the SL ROM SPLIT set each item ROMs are in their own file:
+    #
+    # PATH/32x/chaotix.zip/knuckles' chaotix (europe).bin
+    # PATH/32x/chaotixju.zip/chaotix ~ knuckles' chaotix (japan, usa).bin
+    # PATH/32x/chaotixjup.zip/knuckles' chaotix (prototype 214 - feb 14, 1995, 06.46).bin
+    #
+    # NOTE that ClrMAME Pro (and hence PD torrents) do implicit ROM merging. SL XMLs do not have
+    #      the merge attribute. However, an implicit ROM merge is done if a ROM with the same
+    #      CRC is found in the parent. Implicit merging only affects clones. A dictionary
+    #      of the parent ROMs with key the CRC hash and value the ROM name is required.
+    #
+    elif rom_set == 'SPLIT':
+        cloneof = SL_Items[SL_item_name]['cloneof']
+        if cloneof:
+            if rom_dic['crc'] in parent_rom_dic:
+                location = SL_name + '/' + cloneof + '/' + parent_rom_dic[rom_dic['crc']]
+            else:
+                location = SL_name + '/' + SL_item_name + '/' + rom_dic['name']
+        else:
+            location = SL_name + '/' + SL_item_name + '/' + rom_dic['name']
+
+    elif rom_set == 'NONMERGED':
+        location = SL_name + '/' + SL_item_name + '/' + rom_dic['name']
+
+    else:
+        raise TypeError
+
+    return location
+
+def _get_SL_CHD_location(chd_set, SL_name, SL_item_name, disk_dic, SL_Items):
+    # In the SL CHD MERGED set all CHDs are in the directory of the parent:
+    #
+    # ffant9  --> parent with 4 DISKS (v1.1)
+    # ffant9a --> parent with 4 DISKS (v1.0)
+    #
+    # [parent traid]   PATH/psx/traid/tomb raider (usa) (v1.6).chd
+    # [clone  traida]  PATH/psx/traid/tomb raider (usa) (v1.5).chd
+    # [clone  traiddm] PATH/psx/traid/tr1.chd
+    #
+    if chd_set == 'MERGED':
+        cloneof = SL_Items[SL_item_name]['cloneof']
+        archive_name = cloneof if cloneof else SL_item_name
+        location = SL_name + '/' + archive_name + '/' + disk_dic['name']
+
+    # In the SL CHD SPLIT set CHD of each machine are in their own directory.
+    # This is not confirmed since I do not have the PD DAT file for the SL CHD SPLIT set.
+    #
+    # [parent traid]   PATH/psx/traid/tomb raider (usa) (v1.6).chd
+    # [clone  traida]  PATH/psx/traida/tomb raider (usa) (v1.5).chd
+    # [clone  traiddm] PATH/psx/traiddm/tr1.chd
+    #
+    elif chd_set == 'SPLIT':
+        location = SL_name + '/' + SL_rom + '/' + disk_dic['name']
+
+    else:
+        raise TypeError
+
+    return location
+
 # -------------------------------------------------------------------------------------------------
 # SL_catalog = { 'name' : {
 #     'display_name': u'', 'num_with_CHDs' : int, 'num_with_ROMs' : int, 'rom_DB_noext' : u'' }, ...
@@ -4451,8 +4534,8 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
 
     # --- Make the SL ROM/CHD unified Audit databases ---
     log_info('Building Software List ROM Audit database ...')
-    rom_set = ['MERGED', 'SPLIT'][settings['SL_rom_set']]
-    chd_set = ['MERGED', 'SPLIT'][settings['SL_chd_set']]
+    rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['SL_rom_set']]
+    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['SL_chd_set']]
     log_info('mame_build_SoftwareLists_databases() SL ROM set is {0}'.format(rom_set))
     log_info('mame_build_SoftwareLists_databases() SL CHD set is {0}'.format(chd_set))
     pdialog_line1 = 'Building Software List ROM Audit database ...'
@@ -4475,131 +4558,57 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
         SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_audit.json')
         SL_Soft_Archives_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_archives.json')
-
-        # >> Open software list XML and parse it. Then, save data fields we want in JSON.
         SL_Items = fs_load_JSON_file(SL_Items_DB_FN.getPath(), verbose = False)
         SL_ROMs = fs_load_JSON_file(SL_ROMs_DB_FN.getPath(), verbose = False)
 
         # --- First add the SL item ROMs to the audit database ---
-        # >> In the SL ROM MERGED set all ROMs are stored in the parent ZIP file.
-        #
-        # PATH/32x/chaotix.zip/knuckles' chaotix (europe).bin
-        # PATH/32x/chaotix.zip/chaotixju/chaotix ~ knuckles' chaotix (japan, usa).bin
-        # PATH/32x/chaotix.zip/chaotixjup/knuckles' chaotix (prototype 214 - feb 14, 1995, 06.46).bin
-        # ...
-        #
-        SL_Audit_ROMs_dic = {}
-        if rom_set == 'MERGED':
-            for SL_item_name in SL_ROMs:
-                nonmerged_roms = []
-                cloneof = SL_Items[SL_item_name]['cloneof']
-                # >> Iterate Parts in a SL Software item.
-                for part_dic in SL_ROMs[SL_item_name]:
-                    # part_name = part_dic['part_name']
-                    # part_interface = part_dic['part_interface']
-                    if 'dataarea' in part_dic:
-                        # >> Iterate Dataareas
-                        for dataarea_dic in part_dic['dataarea']:
-                            # dataarea_name = dataarea_dic['name']
-                            # >> Interate ROMs in dataarea
-                            for rom_dic in dataarea_dic['roms']:
-                                if not cloneof:
-                                    # Parent
-                                    location = SL_name + '/' + SL_item_name + '/' + rom_dic['name']
-                                else:
-                                    # Clone
-                                    location = SL_name + '/' + cloneof + '/' + SL_item_name + '/' + rom_dic['name']
-                                rom_audit_dic = fs_new_SL_ROM_audit_dic()
-                                rom_audit_dic['type']     = ROM_TYPE_ROM
-                                rom_audit_dic['name']     = rom_dic['name']
-                                rom_audit_dic['size']     = rom_dic['size']
-                                rom_audit_dic['crc']      = rom_dic['crc']
-                                rom_audit_dic['location'] = location
-                                nonmerged_roms.append(rom_audit_dic)
-                SL_Audit_ROMs_dic[SL_item_name] = nonmerged_roms
+        SL_Audit_ROMs_dic = {}        
+        for SL_item_name in SL_ROMs:
+            # >> If SL item is a clone then create parent_rom_dic. This is only needed in the
+            # >> SPLIT set, so current code is a bit inefficient for other sets.
+            # >> key : CRC -> value : rom name
+            cloneof = SL_Items[SL_item_name]['cloneof']
+            if cloneof:
+                parent_rom_dic = _get_SL_parent_ROM_dic(cloneof, SL_ROMs)
+            else:
+                parent_rom_dic = {}
 
-        # >> In the SL ROM SPLIT set each item ROMs are in their own file
-        #
-        # PATH/32x/chaotix.zip/knuckles' chaotix (europe).bin
-        # PATH/32x/chaotixju.zip/chaotix ~ knuckles' chaotix (japan, usa).bin
-        # PATH/32x/chaotixjup.zip/knuckles' chaotix (prototype 214 - feb 14, 1995, 06.46).bin
-        # ...
-        #
-        elif rom_set == 'SPLIT':
-            for SL_item_name in SL_ROMs:
-                split_roms = []
-                for part_dic in SL_ROMs[SL_item_name]:
-                    if 'dataarea' in part_dic:
-                        for dataarea_dic in part_dic['dataarea']:
-                            for rom_dic in dataarea_dic['roms']:
-                                location = SL_name + '/' + SL_item_name + '/' + rom_dic['name']
-                                rom_audit_dic = fs_new_SL_ROM_audit_dic()
-                                rom_audit_dic['type']     = ROM_TYPE_ROM
-                                rom_audit_dic['name']     = rom_dic['name']
-                                rom_audit_dic['size']     = rom_dic['size']
-                                rom_audit_dic['crc']      = rom_dic['crc']
-                                rom_audit_dic['location'] = location
-                                split_roms.append(rom_audit_dic)
-                SL_Audit_ROMs_dic[SL_item_name] = split_roms
+            # >> Iterate Parts in a SL Software item. Then iterate dataareas on each part.
+            # >> Finally, iterate ROM on each dataarea.
+            set_roms = []
+            for part_dic in SL_ROMs[SL_item_name]:
+                if not 'dataarea' in part_dic: continue
+                for dataarea_dic in part_dic['dataarea']:
+                    for rom_dic in dataarea_dic['roms']:
+                        location = _get_SL_ROM_location(rom_set, SL_name, SL_item_name, rom_dic, SL_Items, parent_rom_dic)
+                        rom_audit_dic = fs_new_SL_ROM_audit_dic()
+                        rom_audit_dic['type']     = ROM_TYPE_ROM
+                        rom_audit_dic['name']     = rom_dic['name']
+                        rom_audit_dic['size']     = rom_dic['size']
+                        rom_audit_dic['crc']      = rom_dic['crc']
+                        rom_audit_dic['location'] = location
+                        set_roms.append(rom_audit_dic)
+            SL_Audit_ROMs_dic[SL_item_name] = set_roms
 
         # --- Second add the SL item CHDs to the audit database ---
-        # >> In the SL CHD MERGED set all CHDs are in the directory of the parent
-        #
-        # ffant9  --> parent with 4 DISKS (v1.1)
-        # ffant9a --> parent with 4 DISKS (v1.0)
-        #
-        # [parent traid]   PATH/psx/traid/tomb raider (usa) (v1.6).chd
-        # [clone  traida]  PATH/psx/traid/tomb raider (usa) (v1.5).chd
-        # [clone  traiddm] PATH/psx/traid/tr1.chd
-        #
-        if chd_set == 'MERGED':
-            for SL_item_name in SL_ROMs:
-                merged_chds = []
-                cloneof = SL_Items[SL_item_name]['cloneof']
-                for part_dic in SL_ROMs[SL_item_name]:
-                    if 'diskarea' in part_dic:
-                        for diskarea_dic in part_dic['diskarea']:
-                            for disk_dic in diskarea_dic['disks']:
-                                parent_name = cloneof if cloneof else SL_item_name
-                                location = SL_name + '/' + parent_name + '/' + disk_dic['name']
-                                disk_audit_dic = fs_new_SL_DISK_audit_dic()
-                                disk_audit_dic['type']     = ROM_TYPE_DISK
-                                disk_audit_dic['name']     = disk_dic['name']
-                                disk_audit_dic['sha1']     = disk_dic['sha1']
-                                disk_audit_dic['location'] = location
-                                merged_chds.append(disk_audit_dic)
-                # >> Extend CHDs at the end of the ROM list.
-                if SL_item_name in SL_Audit_ROMs_dic: SL_Audit_ROMs_dic[SL_item_name].extend(merged_chds)
-                else:                                 SL_Audit_ROMs_dic[SL_item_name] =  merged_chds
-
-        # >> In the SL CHD SPLIT set CHD of each machine are in their own directory.
-        # >> This is not confirmed since I do not have the PD DAT file for the SL CHD SPLIT set.
-        #
-        # [parent traid]   PATH/psx/traid/tomb raider (usa) (v1.6).chd
-        # [clone  traida]  PATH/psx/traida/tomb raider (usa) (v1.5).chd
-        # [clone  traiddm] PATH/psx/traiddm/tr1.chd
-        #
-        elif chd_set == 'SPLIT':
-            for SL_item_name in SL_ROMs:
-                split_chds = []
-                # >> Iterate Parts in a SL Software item.
-                for part_dic in SL_ROMs[SL_item_name]:
-                    if 'diskarea' in part_dic:
-                        # >> Iterate Diskareas
-                        for diskarea_dic in part_dic['diskarea']:
-                            # diskarea_name = diskarea_dic['name']
-                            # >> Iterate DISKs in diskarea
-                            for disk_dic in diskarea_dic['disks']:
-                                location = SL_name + '/' + SL_rom + '/' + disk_dic['name']
-                                disk_audit_dic = fs_new_SL_DISK_audit_dic()
-                                disk_audit_dic['type']     = ROM_TYPE_DISK
-                                disk_audit_dic['name']     = disk_dic['name']
-                                disk_audit_dic['sha1']     = disk_dic['sha1']
-                                disk_audit_dic['location'] = location
-                                split_chds.append(disk_audit_dic)
-                # >> Extend CHDs at the end of the ROM list.
-                if SL_item_name in SL_Audit_ROMs_dic: SL_Audit_ROMs_dic[SL_item_name].extend(split_chds)
-                else:                                 SL_Audit_ROMs_dic[SL_item_name] =  split_chds
+        for SL_item_name in SL_ROMs:
+            set_chds = []
+            for part_dic in SL_ROMs[SL_item_name]:
+                if not 'diskarea' in part_dic: continue
+                for diskarea_dic in part_dic['diskarea']:
+                    for disk_dic in diskarea_dic['disks']:
+                        location = _get_SL_CHD_location(chd_set, SL_name, SL_item_name, disk_dic, SL_Items)
+                        disk_audit_dic = fs_new_SL_DISK_audit_dic()
+                        disk_audit_dic['type']     = ROM_TYPE_DISK
+                        disk_audit_dic['name']     = disk_dic['name']
+                        disk_audit_dic['sha1']     = disk_dic['sha1']
+                        disk_audit_dic['location'] = location
+                        set_chds.append(disk_audit_dic)
+            # >> Extend ROM list with CHDs.
+            if SL_item_name in SL_Audit_ROMs_dic:
+                SL_Audit_ROMs_dic[SL_item_name].extend(set_chds)
+            else:
+                SL_Audit_ROMs_dic[SL_item_name] =  set_chds
 
         # --- Machine archives ---
         # >> There is not ROMs and CHDs sets for Software List Items (not necessary).
