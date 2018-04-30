@@ -64,6 +64,8 @@
     <setting label="Do not render trailers" type="bool" default="false" id="display_hide_trailers" />
 </category>
 <category label="Advanced">
+    <setting label="Enable MAME machine cache" type="bool" default="false" id="debug_enable_MAME_machine_cache" />
+    <setting label="Enable MAME asset cache" type="bool" default="false" id="debug_enable_MAME_asset_cache" />
     <setting label="Write MAME item data" type="bool" default="false" id="debug_MAME_item_data" />
     <setting label="Write MAME ROMs DB data" type="bool" default="false" id="debug_MAME_ROM_DB_data" />
     <setting label="Write MAME Audit DB data" type="bool" default="false" id="debug_MAME_Audit_DB_data" />

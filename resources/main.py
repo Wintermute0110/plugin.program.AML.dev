@@ -483,13 +483,15 @@ class Main:
         self.settings['display_hide_trailers'] = True if __addon__.getSetting('display_hide_trailers') == 'true' else False
 
         # --- Advanced ---
-        self.settings['debug_MAME_item_data']     = True if __addon__.getSetting('debug_MAME_item_data') == 'true' else False
-        self.settings['debug_MAME_ROM_DB_data']   = True if __addon__.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
-        self.settings['debug_MAME_Audit_DB_data'] = True if __addon__.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
-        self.settings['debug_SL_item_data']       = True if __addon__.getSetting('debug_SL_item_data') == 'true' else False
-        self.settings['debug_SL_ROM_DB_data']     = True if __addon__.getSetting('debug_SL_ROM_DB_data') == 'true' else False
-        self.settings['debug_SL_Audit_DB_data']   = True if __addon__.getSetting('debug_SL_Audit_DB_data') == 'true' else False
-        self.settings['log_level']                = int(__addon__.getSetting('log_level'))
+        self.settings['debug_enable_MAME_machine_cache'] = True if __addon__.getSetting('debug_enable_MAME_machine_cache') == 'true' else False
+        self.settings['debug_enable_MAME_asset_cache']   = True if __addon__.getSetting('debug_enable_MAME_asset_cache') == 'true' else False
+        self.settings['debug_MAME_item_data']            = True if __addon__.getSetting('debug_MAME_item_data') == 'true' else False
+        self.settings['debug_MAME_ROM_DB_data']          = True if __addon__.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
+        self.settings['debug_MAME_Audit_DB_data']        = True if __addon__.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
+        self.settings['debug_SL_item_data']              = True if __addon__.getSetting('debug_SL_item_data') == 'true' else False
+        self.settings['debug_SL_ROM_DB_data']            = True if __addon__.getSetting('debug_SL_ROM_DB_data') == 'true' else False
+        self.settings['debug_SL_Audit_DB_data']          = True if __addon__.getSetting('debug_SL_Audit_DB_data') == 'true' else False
+        self.settings['log_level']                       = int(__addon__.getSetting('log_level'))
 
         # --- Transform settings data ---
         self.mame_icon   = assets_get_asset_key_MAME_icon(self.settings['artwork_mame_icon'])
@@ -922,21 +924,23 @@ class Main:
                            'This is a bug, please report it.')
             return
         l_cataloged_dic_end = time.time()
-        if USE_ROM_CACHE:
-            l_render_db_start = time.time()
+        l_render_db_start = time.time()
+        if self.settings['debug_enable_MAME_machine_cache']:
             cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
             MAME_render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
-            l_render_db_end = time.time()
-            l_assets_db_start = time.time()
-            MAME_assets_dic = fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name)
-            l_assets_db_end = time.time()
         else:
-            l_render_db_start = time.time()
+            log_debug('MAME machine cache disabled.')
             MAME_render_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
-            l_render_db_end = time.time()
-            l_assets_db_start = time.time()
+        l_render_db_end = time.time()
+        l_assets_db_start = time.time()
+        if self.settings['debug_enable_MAME_asset_cache']:
+            if 'cache_index_dic' not in locals():
+                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+            MAME_assets_dic = fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name)
+        else:
+            log_debug('MAME asset cache disabled.')
             MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            l_assets_db_end = time.time()
+        l_assets_db_end = time.time()
         l_pclone_dic_start = time.time()
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         l_pclone_dic_end = time.time()
@@ -1010,12 +1014,18 @@ class Main:
         # >> Load main MAME info DB
         loading_ticks_start = time.time()
         catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
-        if USE_ROM_CACHE:
+        if self.settings['debug_enable_MAME_machine_cache']:
             cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
             MAME_render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
+        else:
+            log_debug('MAME machine cache disabled.')
+            MAME_render_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+        if self.settings['debug_enable_MAME_asset_cache']:
+            if 'cache_index_dic' not in locals():
+                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
             MAME_assets_dic = fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name)
         else:
-            MAME_render_db_dic = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            log_debug('MAME asset cache disabled.')
             MAME_assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
         main_pclone_dic = fs_load_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         machine_dic = catalog_dic[category_name]
@@ -1978,7 +1988,7 @@ class Main:
               'View MAME machine ROMs (Audit DB)',
               'Audit MAME machine ROMs',
               'View database statistics ...',
-              'View asset/artwork reports ...',
+              'View scanner reports ...',
               'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
             ]
@@ -1989,7 +1999,7 @@ class Main:
               'View Software List ROMs (Audit DB)',
               'Audit Software List ROMs',
               'View database statistics ...',
-              'View asset/artwork reports ...',
+              'View scanner reports ...',
               'View audit reports ...',
               'View MAME last execution output ({0})'.format(STD_status),
             ]
@@ -4040,9 +4050,13 @@ class Main:
                                      DB.machines, DB.machines_render, DB.machine_roms,
                                      DB.main_pclone_dic, DB.assets_dic)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-            cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
-            fs_build_ROM_cache(PATHS, DB.machines, DB.machines_render, cache_index_dic, pDialog)
-            fs_build_asset_cache(PATHS, DB.assets_dic, cache_index_dic, pDialog)
+            if self.settings['debug_enable_MAME_machine_cache']:
+                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                fs_build_ROM_cache(PATHS, DB.machines, DB.machines_render, cache_index_dic, pDialog)
+            if self.settings['debug_enable_MAME_asset_cache']:
+                if 'cache_index_dic' not in locals():
+                    cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                fs_build_asset_cache(PATHS, DB.assets_dic, cache_index_dic, pDialog)
 
             # 1) Updates control_dic and the t_SL_DB_build timestamp.
             mame_build_SoftwareLists_databases(PATHS, self.settings, control_dic,
@@ -4157,9 +4171,10 @@ class Main:
             pDialog.update(int((2*100) / num_items))
             pDialog.close()
 
-            # >> Regenerate asset cache.
-            cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
-            fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+            # --- Regenerate asset cache ---
+            if self.settings['debug_enable_MAME_asset_cache']:
+                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
 
             # --- Software Lists ------------------------------------------------------------------
             # >> Abort if SL hash path not configured.
@@ -4518,17 +4533,19 @@ class Main:
 
         # --- Build Step by Step ---
         elif menu_item == 7:
-            submenu = dialog.select('Setup plugin (step by step)',
-                                   ['Build MAME databases',
-                                    'Build Audit/Scanner databases',
-                                    'Build MAME catalogs',
-                                    'Build Software Lists databases',
-                                    'Scan MAME ROMs/CHDs/Samples',
-                                    'Scan MAME assets/artwork',
-                                    'Scan Software Lists ROMs/CHDs',
-                                    'Scan Software Lists assets/artwork',
-                                    'Build MAME machines plots',
-                                    'Buils Software List items plots'])
+            submenu = dialog.select('Setup plugin (step by step)', [
+                                        'Build MAME databases',
+                                        'Build Audit/Scanner databases',
+                                        'Build MAME catalogs',
+                                        'Build Software Lists databases',
+                                        'Scan MAME ROMs/CHDs/Samples',
+                                        'Scan MAME assets/artwork',
+                                        'Scan Software Lists ROMs/CHDs',
+                                        'Scan Software Lists assets/artwork',
+                                        'Build MAME machines plots',
+                                        'Build SL items plots',
+                                        'Rebuild MAME machine and asset cache',
+                                    ])
             if submenu < 0: return
 
             # --- Build main MAME database, PClone list and hashed database ---
@@ -4627,9 +4644,13 @@ class Main:
                                          machines, machines_render, machine_roms,
                                          main_pclone_dic, assets_dic)
                 fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
-                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+                if self.settings['debug_enable_MAME_machine_cache']:
+                    cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                    fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+                if self.settings['debug_enable_MAME_asset_cache']:
+                    if 'cache_index_dic' not in locals():
+                        cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                    fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
                 kodi_notify('MAME Catalogs built')
 
             # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
@@ -4737,9 +4758,10 @@ class Main:
                 pDialog.update(int((2*100) / num_items), ' ', ' ')
                 pDialog.close()
 
-                # >> assets_dic has changed. Update asset cache.
-                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+                # --- assets_dic has changed. Update asset cache ---
+                if self.settings['debug_enable_MAME_asset_cache']:
+                    cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                    fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
                 kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
             # --- Scans MAME assets/artwork ---
@@ -4788,9 +4810,10 @@ class Main:
                 pDialog.update(int((2*100) / num_items), ' ', ' ')
                 pDialog.close()
 
-                # >> Asset cache must be regenerated.
-                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+                # --- Asset cache must be regenerated ---
+                if self.settings['debug_enable_MAME_asset_cache']:
+                    cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                    fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
                 kodi_notify('Scanning of assets/artwork finished')
 
             # --- Scan SL ROMs/CHDs ---
@@ -4879,6 +4902,8 @@ class Main:
 
             # --- Build MAME machines plot ---
             elif submenu == 8:
+                log_debug('Rebuilding MAME machine plots ...')
+
                 # >> Load machine database and control_dic
                 pDialog = xbmcgui.DialogProgress()
                 pdialog_line1 = 'Loading databases ...'
@@ -4920,13 +4945,16 @@ class Main:
                 pDialog.update(int((1*100) / num_items), ' ', ' ')
                 pDialog.close()
 
-                # >> Asset cache must be regenerated.
-                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+                # --- Asset cache must be regenerated ---
+                if self.settings['debug_enable_MAME_asset_cache']:
+                    cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                    fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
                 kodi_notify('MAME machines plot generation finished')
 
             # --- Buils Software List items plot ---
             elif submenu == 9:
+                log_debug('Rebuilding Software List items plots ...')
+
                 # >> Load SL index and SL machine index.
                 pDialog = xbmcgui.DialogProgress()
                 pdialog_line1 = 'Loading databases ...'
@@ -4943,6 +4971,32 @@ class Main:
 
                 mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, pDialog)
                 kodi_notify('SL item plot generation finished')
+
+            # --- Regenerate MAME machine and assets cache ---
+            elif submenu == 10:
+                log_debug('Rebuilding MAME machine and assets cache ...')
+
+                # --- Load databases ---
+                pDialog = xbmcgui.DialogProgress()
+                pdialog_line1 = 'Loading databases ...'
+                num_items = 4
+                pDialog.create('Advanced MAME Launcher')
+                pDialog.update(int((0*100) / num_items), pdialog_line1, 'Control dic')
+                control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+                pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Main')
+                machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+                pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machines Render')
+                machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+                pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME machine Assets')
+                assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                pDialog.update(int((4*100) / num_items), pdialog_line1, 'MAME Parent/Clone')
+                pDialog.close()
+
+                # --- Regenerate caches ---
+                cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
+                fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+                kodi_notify('MAME machine and asset caches rebuilt')
 
     #
     # Launch MAME machine. Syntax: $ mame <machine_name> [options]
