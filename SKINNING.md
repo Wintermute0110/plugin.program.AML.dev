@@ -1,4 +1,4 @@
-# Advanced MAME Launcher metadata and artwork data model #
+# Advanced MAME Launcher metadata and artwork model #
 
 AML metadata/assets model is as much compatible with [Advanced Emulator Launcher] as possible.
 
