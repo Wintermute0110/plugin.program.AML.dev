@@ -4320,6 +4320,8 @@ def _mame_load_SL_XML(xml_filename):
                             rom_dic['size'] = size_int
                             rom_dic['name'] = dataarea_child.attrib['name'] if 'name' in dataarea_child.attrib else ''
                             rom_dic['crc'] = dataarea_child.attrib['crc'] if 'crc' in dataarea_child.attrib else ''
+                            # >> Some CRCs are in upper case. Store always lower case in AML DB.
+                            if rom_dic['crc']: rom_dic['crc'] = rom_dic['crc'].lower()
                             # >> Fix "fake" SL ROMs with loadflag="continue".
                             # >> For example, SL neogeo, SL item aof
                             if 'loadflag' in dataarea_child.attrib:
@@ -4327,26 +4329,26 @@ def _mame_load_SL_XML(xml_filename):
                                 if loadflag == 'continue':
                                     # This ROM is not valid (not a valid ROM file).
                                     # Size must be added to previous ROM.
-                                    log_error('SL {0} / Item {1}'.format(SL_name, rom_name))
-                                    log_debug('loadflag="continue" case. Adding size {0} to previous ROM'.format(rom_dic['size']))
+                                    log_debug('SL {0} / Item {1} / '.format(SL_name, rom_name) +
+                                              'loadflag="continue" case. Adding size {0} to previous ROM'.format(rom_dic['size']))
                                     previous_rom = dataarea_dic['roms'][-1]
                                     previous_rom['size'] += rom_dic['size']
                                     continue
                                 elif loadflag == 'reload':
-                                    log_error('SL {0} / Item {1}'.format(SL_name, rom_name))
-                                    log_debug('loadflag="reload" case. Skipping ROM')
+                                    log_debug('SL {0} / Item {1} / '.format(SL_name, rom_name) +
+                                              'loadflag="reload" case. Skipping ROM')
                                     continue
                                 elif loadflag == 'reload_plain':
-                                    log_error('SL {0} / Item {1}'.format(SL_name, rom_name))
-                                    log_debug('loadflag="reload_plain" case. Skipping ROM')
+                                    log_debug('SL {0} / Item {1} / '.format(SL_name, rom_name) +
+                                              'loadflag="reload_plain" case. Skipping ROM')
                                     continue
                                 elif loadflag == 'fill':
-                                    log_error('SL {0} / Item {1}'.format(SL_name, rom_name))
-                                    log_debug('loadflag="fill" case. Skipping ROM')
+                                    log_debug('SL {0} / Item {1} / '.format(SL_name, rom_name) +
+                                              'loadflag="fill" case. Skipping ROM')
                                     continue
                                 elif loadflag == 'ignore':
-                                    log_error('SL {0} / Item {1}'.format(SL_name, rom_name))
-                                    log_debug('loadflag="ignore" case. Skipping ROM')
+                                    log_debug('SL {0} / Item {1} / '.format(SL_name, rom_name) +
+                                              'loadflag="ignore" case. Skipping ROM')
                                     continue
                                 elif loadflag == 'load16_word_swap':
                                     pass
