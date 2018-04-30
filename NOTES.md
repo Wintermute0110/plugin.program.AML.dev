@@ -1,4 +1,4 @@
-## Boolean options ##
+## MAME machine boolean options ##
 
 A machine has the boolean option or not.
 
@@ -62,9 +62,9 @@ Most consoles have only one cartridge slot, for example `32x`.
 <machine name="32x" sourcefile="megadriv.cpp">
 ...
 <device type="cartridge" tag="cartslot" mandatory="1" interface="_32x_cart">
-	<instance name="cartridge" briefname="cart"/>
-	<extension name="32x"/>
-	<extension name="bin"/>
+    <instance name="cartridge" briefname="cart"/>
+    <extension name="32x"/>
+    <extension name="bin"/>
 </device>
 ```
 
@@ -112,195 +112,72 @@ Example of machines with SL: `32x`.
 <machine name="32x" sourcefile="megadriv.cpp">
 ...
     <device type="cartridge" tag="cartslot" mandatory="1" interface="_32x_cart">
-		<instance name="cartridge" briefname="cart"/>
-		<extension name="32x"/>
-		<extension name="bin"/>
-	</device>
-	<slot name="cartslot">
-	</slot>
-	<softwarelist name="32x" status="original" filter="NTSC-U" />
+        <instance name="cartridge" briefname="cart"/>
+        <extension name="32x"/>
+        <extension name="bin"/>
+    </device>
+    <slot name="cartslot">
+    </slot>
+    <softwarelist name="32x" status="original" filter="NTSC-U" />
 </machine>
 ```
 
+## Special SL items in Software Lists ##
 
-## Plugin URL schema ##
+### Implicit ROM merging ###
 
- Root menu                    | 1st sub          | 2nd     | 3rd    | URL                                                               |
-------------------------------|------------------|---------|--------|-------------------------------------------------------------------|
-Machines (with coin slot)     | Parents          | Clones  |        | ?catalog=None           &category=Machines       &parent=ROM_name |
-Machines (no coin slot)       | Parents          | Clones  |        | ?catalog=None           &category=NoCoin         &parent=ROM_name |
-Machines (mechanical)         | Parents          | Clones  |        | ?catalog=None           &category=Mechanical     &parent=ROM_name |
-Machines (dead)               | Parents          | Clones  |        | ?catalog=None           &category=Dead           &parent=ROM_name |
-Machines with CHDs            | Parents          | Clones  |        | ?catalog=None           &category=CHD            &parent=ROM_name |
-Machines with Samples         | Parents          | Clones  |        | ?catalog=None           &category=Samples        &parent=ROM_name |
-Machines by Category (Catver) | Category         | Parents | Clones | ?catalog=Catver         &category=Cat_name       &parent=ROM_name |
-Machines by Category (Catlist)| Category         | Parents | Clones | ?catalog=Catlist        &category=Cat_name       &parent=ROM_name |
-Machines by Category (Genre)  | Category         | Parents | Clones | ?catalog=Genre          &category=Cat_name       &parent=ROM_name |
-Machines by Manufacturer      | Manufacturer     | Parents | Clones | ?catalog=Manufacturer   &category=Man_name       &parent=ROM_name |
-Machines by Year              | Year             | Parents | Clones | ?catalog=Year           &category=Year_name      &parent=ROM_name |
-Machines by Driver            | Driver           | Parents | Clones | ?catalog=Driver         &category=Driver_name    &parent=ROM_name |
-Machines by Control Type      | Controls         | Parents | Clones | ?catalog=Controls       &category=Control_name   &parent=ROM_name |
-Machines by Display Tag       | Display Tag      | Parents | Clones | ?catalog=Display_Tag    &category=Display_tag    &parent=ROM_name |
-Machines by Display Type      | Display Type     | Parents | Clones | ?catalog=Display_Type   &category=Display_type   &parent=ROM_name |
-Machines by Display Rotation  | Display Rotation | Parents | Clones | ?catalog=Display_Rotate &category=Display_rotate &parent=ROM_name |
-Machines by Software List     | SoftList         | Parents | Clones | ?catalog=BySL           &category=SL_name        &parent=ROM_name |
-Software Lists                | SoftList         | Parents | Clones | ?catalog=SL             &SL=SL_name              &parent=ROM_name |
+Software List XMLs do not have the ROM `merge` attribute. However, ClrMAME Pro merges SL clone ROMs
+implicitely if a ROM with same CRC exists in the parent set.
 
-## Old Index file format ##
+SL `sms`, item `teddyboy` and `teddyboyc`.
 
-Parent/Clone list with number of clones.
+### SL ROMS with `loadflag` attribute ###
+
+MAME 0.196, SL `neogeo`, item `aof` "Art of Fighting / Ryuuko no Ken (NGM-044 ~ NGH-044)".
 
 ```
-{
-  "1942": {
-    "machines": [
-      "1942abl",
-      "1942a",
-      "1942b",
-      "1942h",
-      "1942p",
-      "1942w"
-    ],
-    "num_clones": 6
-  },
-"1943": {
-    "machines": [
-      "1943bj",
-      "1943ja",
-      "1943b",
-      "1943j",
-      "1943u",
-      "1943ua"
-    ],
-    "num_clones": 6
-  }
-}
+<software name="aof">
+    <description>Art of Fighting / Ryuuko no Ken (NGM-044 ~ NGH-044)</description>
+    <year>1992</year>
+    <publisher>SNK</publisher>
+    <info name="serial" value="NGM-044 (MVS), NGH-044 (AES)"/>
+    <info name="release" value="19920924 (MVS), 19921211 (AES)"/>
+    <info name="alt_title" value="龍虎の拳"/>
+    <sharedfeat name="release" value="MVS,AES" />
+    <sharedfeat name="compatibility" value="MVS,AES" />
+    <part name="cart" interface="neo_cart">
+        <dataarea name="maincpu" width="16" endianness="big" size="0x100000">
+            <!-- TC534200 -->
+            <rom loadflag="load16_word_swap" name="044-p1.p1" offset="0x000000" size="0x080000" crc="ca9f7a6d" sha1="4d28ef86696f7e832510a66d3e8eb6c93b5b91a1" />
+        </dataarea>
+        <dataarea name="fixed" size="0x040000">
+            <!-- TC531000 -->
+            <rom offset="0x000000" size="0x020000" name="044-s1.s1" crc="89903f39" sha1="a04a0c244a5d5c7a595fcf649107969635a6a8b6" />
+        </dataarea>
+        <dataarea name="audiocpu" size="0x020000">
+            <!-- TC531001 -->
+            <rom offset="0x000000" size="0x020000" name="044-m1.m1" crc="0987e4bb" sha1="8fae4b7fac09d46d4727928e609ed9d3711dbded" />
+        </dataarea>
+        <dataarea name="ymsnd" size="0x400000">
+            <!-- TC5316200 -->
+            <rom name="044-v2.v2" offset="0x000000" size="0x200000" crc="3ec632ea" sha1="e3f413f580b57f70d2dae16dbdacb797884d3fce" />
+            <!-- TC5316200 -->
+            <rom name="044-v4.v4" offset="0x200000" size="0x200000" crc="4b0f8e23" sha1="105da0cc5ba19869c7147fba8b177500758c232b" />
+        </dataarea>
+        <dataarea name="sprites" size="0x800000">
+            <!-- TC5316200 -->
+            <rom loadflag="load16_byte" name="044-c1.c1" offset="0x000000" size="0x100000" crc="ddab98a7" sha1="f20eb81ec431268798c142c482146c1545af1c24" />
+            <rom size="0x100000" offset="0x400000" loadflag="continue" />
+            <!-- TC5316200 -->
+            <rom loadflag="load16_byte" name="044-c2.c2" offset="0x000001" size="0x100000" crc="d8ccd575" sha1="f697263fe92164e274bf34c55327b3d4a158b332" />
+            <rom size="0x100000" offset="0x400001" loadflag="continue" />
+            <!-- TC5316200 -->
+            <rom loadflag="load16_byte" name="044-c3.c3" offset="0x200000" size="0x100000" crc="403e898a" sha1="dd5888f8b24a33b2c1f483316fe80c17849ccfc4" />
+            <rom size="0x100000" offset="0x600000" loadflag="continue" />
+            <!-- TC5316200 -->
+            <rom loadflag="load16_byte" name="044-c4.c4" offset="0x200001" size="0x100000" crc="6235fbaa" sha1="9090e337d7beed25ba81ae0708d0aeb57e6cf405" />
+            <rom size="0x100000" offset="0x600001" loadflag="continue" />
+        </dataarea>
+    </part>
+</software>
 ```
-
-## Old Catalog file format ##
-
-Parent only list.
-Clones are calculated on the fly: `for m_name in main_pclone_dic[parent_name]:`
-
-``` Catalog_driver.json
-{
-  "1942.cpp": {
-    "machines": [
-      "1942"
-    ],
-    "num_machines": 1
-  },
-  "1943.cpp": {
-    "machines": [
-      "1943kai",
-      "1943mii",
-      "1943"
-    ],
-    "num_machines": 3
-  }
-}
-```
-
-## New unified catalog format ###
-
-Supports Normal and PClone display modes.
-Supports hashed database to store machine information.
-Supports current big database to acces all the information.
-
-NOTE Iterating a list is faster than iterating a dictionary 
-See http://stackoverflow.com/questions/12543837/python-iterating-over-list-vs-over-dict-items-efficiency
-
-## Implementation steps ##
-
-1) Unify current index and catalog into just a catalog.
-2) Implement Normal and PClone display modes using big database.
-3) Implement `Machines hashed DB` for quick access to individual machine information on the View
-   context menu.
-5) Implement Normal and PClone display modes using a hashed database for maximum performance.
-
-### Catalog_driver_parents.json ###
-
-  1) Has a list of parents for every category and number of clones.
-  2) Clone list are obtained from the main PClone dictionary on the fly when rendering a 
-     Clones list.
-  3) Used to render list in PClone display mode.
-  4) Hashed database entry for each category that includes all parents data -> `Parents hashed DB`.
-  5) To reduce number of files the `PClone hashed DB` can also be used at a performance cost
-     (bigger DB, higher loading times).
-  6) All clones data in -> `Machines hashed DB`.
-  
-``` CatalogName_driver_parents.json
-{
-  "1942.cpp": {
-    "parents": [
-      "1942":  6, # parent_name : number_of_clones
-      "1946":  2
-    ],
-    "num_parents": 2
-  },
-...
-}
-```
-
-### Catalog_driver_all.json ###
-
-  1) For each category has a list of all parents and clones.
-  2) Used ro render list in Normal mode.
-  3) Hashed database entry for each category that includes all parents and clones 
-     data -> `PClone hashed DB`.
-
-``` CatalogName_driver_all.json
-{
-  "1942.cpp": {
-    "machines": [
-      "1942"      # Parent
-      "1942abl",  # Clone
-      "1942a",    # Clone
-      "1942b",
-      "1942h",
-      "1942p",
-      "1942w",
-      "1932"      # Parent
-    ],
-    "num_machines": 6
-  },
-...
-}
-```
-
-## Hashed machine database ###
-
-### Parents hashed DB ###
-
- 1) Make database name by merging catalog and category -> db_name = 'catalog' + '-' + 'category'
- 2) Make MD5 hash of db_name. JSON filename is MD5.json
- 3) Put all parent machine data belonging to catalog-category in JSON filename.
-
-### PClone hashed DB ###
-
- 1) Same as Parent hashed DB
- 2) In every JSON file put all parent plus clone machine data belonging to catalog-category.
-
-### Machines hashed DB ###
-
-Database generation
-
- 1) Traverse list of parents.
- 2) Get hash for parent name: 1942 --> 519c84155964659375821f7ca576f095
- 3) Get first two caracters of hash to compute DB filename --> 51.json
- 4) In 51.json filename include parent data and all clones data.
-
-To acess parent machine data:
- 
- 1) Follow same steps as in database generation.
- 
-To acess single clone machine data:
-
- 1) Get parent name of clone machine.
- 2) Follow same steps as in database generation.
-
-To acess all clones machine data:
-
- 1) Get parent name of clone machine.
- 2) Follow same steps as in database generation. All clones are guaranteed to be in same
-    database file as the parent.
