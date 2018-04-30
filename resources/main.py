@@ -408,6 +408,10 @@ class Main:
             elif command == 'SETUP_CUSTOM_FILTERS':
                 self._command_context_setup_custom_filters()
 
+            # >> Check AML config
+            elif command == 'CHECK_CONFIG':
+                self._command_check_AML_configuration()
+
             else:
                 u = 'Unknown command "{0}"'.format(command)
                 log_error(u)
@@ -482,7 +486,11 @@ class Main:
         self.settings['artwork_SL_fanart']     = int(__addon__.getSetting('artwork_SL_fanart'))
         self.settings['display_hide_trailers'] = True if __addon__.getSetting('display_hide_trailers') == 'true' else False
 
+        # --- I/O ---
+        
+
         # --- Advanced ---
+        self.settings['log_level']                       = int(__addon__.getSetting('log_level'))
         self.settings['debug_enable_MAME_machine_cache'] = True if __addon__.getSetting('debug_enable_MAME_machine_cache') == 'true' else False
         self.settings['debug_enable_MAME_asset_cache']   = True if __addon__.getSetting('debug_enable_MAME_asset_cache') == 'true' else False
         self.settings['debug_MAME_item_data']            = True if __addon__.getSetting('debug_MAME_item_data') == 'true' else False
@@ -491,7 +499,6 @@ class Main:
         self.settings['debug_SL_item_data']              = True if __addon__.getSetting('debug_SL_item_data') == 'true' else False
         self.settings['debug_SL_ROM_DB_data']            = True if __addon__.getSetting('debug_SL_ROM_DB_data') == 'true' else False
         self.settings['debug_SL_Audit_DB_data']          = True if __addon__.getSetting('debug_SL_Audit_DB_data') == 'true' else False
-        self.settings['log_level']                       = int(__addon__.getSetting('log_level'))
 
         # --- Transform settings data ---
         self.mame_icon   = assets_get_asset_key_MAME_icon(self.settings['artwork_mame_icon'])
@@ -4998,6 +5005,133 @@ class Main:
                 fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
                 fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
                 kodi_notify('MAME machine and asset caches rebuilt')
+
+    #
+    # Checks AML configuration and informs users of potential problems.
+    #
+    def _command_check_AML_configuration(self):
+        log_info('_command_check_AML_configuration() Checking AML configuration ...')
+        slist = []
+
+        # --- Check mandatory stuff ---
+        if self.settings['mame_prog']:
+            slist.append('MAME executable path "{0}"'.format(self.settings['mame_prog']))
+        else:
+            slist.append('[COLOR red]MAME executable path not configured[/COLOR]')
+        if self.settings['rom_path']:
+            slist.append('MAME ROM path "{0}"'.format(self.settings['rom_path']))
+        else:
+            slist.append('[COLOR red]MAME ROM path not configured[/COLOR]')
+
+        # --- MAME assets ---
+        if self.settings['assets_path']:
+            slist.append('MAME Asset path "{0}"'.format(self.settings['assets_path']))
+            # >> Check that artwork subdirectories exist
+            Asset_path_FN = FileName(self.settings['assets_path'])
+
+            PCB_FN = Asset_path_FN.pjoin('PCBs')
+            if PCB_FN.exists():
+                slist.append('Found PCB path "{0}"'.format(PCB_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]PCB path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(PCB_FN.getPath()))
+
+            artpreview_FN = Asset_path_FN.pjoin('artpreviews')
+            if artpreview_FN.exists():
+                slist.append('Found Artpreviews path "{0}"'.format(artpreview_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]Artpreviews path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(artpreview_FN.getPath()))
+
+            artwork_FN = Asset_path_FN.pjoin('artwork')
+            if artwork_FN.exists():
+                slist.append('Found Artwork path "{0}"'.format(artwork_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]Artwork path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(artwork_FN.getPath()))
+
+            cabinets_FN = Asset_path_FN.pjoin('cabinets')
+            if cabinets_FN.exists():
+                slist.append('Found Cabinets path "{0}"'.format(cabinets_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]Cabinets path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(cabinets_FN.getPath()))
+
+            clearlogos_FN = Asset_path_FN.pjoin('clearlogos')
+            if clearlogos_FN.exists():
+                slist.append('Found Clearlogos path "{0}"'.format(clearlogos_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]Clearlogos path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(clearlogos_FN.getPath()))
+
+            cpanels_FN = Asset_path_FN.pjoin('cpanels')
+            if clearlogos_FN.exists():
+                slist.append('Found CPanels path "{0}"'.format(cpanels_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]CPanels path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(cpanels_FN.getPath()))
+
+            flyers_FN = Asset_path_FN.pjoin('flyers')
+            if flyers_FN.exists():
+                slist.append('Found Flyers path "{0}"'.format(flyers_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]Flyers path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(flyers_FN.getPath()))
+
+            manuals_FN = Asset_path_FN.pjoin('manuals')
+            if manuals_FN.exists():
+                slist.append('Found Manuals path "{0}"'.format(manuals_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]Manuals path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(manuals_FN.getPath()))
+
+            marquees_FN = Asset_path_FN.pjoin('marquees')
+            if marquees_FN.exists():
+                slist.append('Found Marquees path "{0}"'.format(marquees_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]Marquees path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(marquees_FN.getPath()))
+
+            snaps_FN = Asset_path_FN.pjoin('snaps')
+            if snaps_FN.exists():
+                slist.append('Found Snaps path "{0}"'.format(snaps_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]Snaps path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(snaps_FN.getPath()))
+
+            titles_FN = Asset_path_FN.pjoin('titles')
+            if snaps_FN.exists():
+                slist.append('Found Titles path "{0}"'.format(titles_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]Titles path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(titles_FN.getPath()))
+
+            videosnaps_FN = Asset_path_FN.pjoin('videosnaps')
+            if snaps_FN.exists():
+                slist.append('Found Trailers path "{0}"'.format(videosnaps_FN.getPath()))
+            else:
+                slist.append('[COLOR yellow]Trailers path does not exist[/COLOR]')
+                slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(videosnaps_FN.getPath()))
+
+        else:
+            slist.append('[COLOR yellow]MAME Asset path not configured[/COLOR]')
+
+        # --- CHD path ---
+        
+        # --- Samples path ---
+
+        # --- Optional INI files ---
+        
+        # --- Optional DAT files ---
+        
+        # --- SL hash path ---
+        
+        # --- SL hash ROM and CHD paths ---
+        
+        # --- SL assets ---
+        
+        # --- Display info to the user ---
+        self._display_text_window('AML configuration check report', '\n'.join(slist))
 
     #
     # Launch MAME machine. Syntax: $ mame <machine_name> [options]

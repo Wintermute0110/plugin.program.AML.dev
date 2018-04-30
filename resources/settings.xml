@@ -29,8 +29,8 @@
 <category label="ROM sets">
     <setting label="MAME ROM set" type="enum" id="mame_rom_set"  default="1" values="Merged|Split|Non-merged" />
     <setting label="MAME CHD set" type="enum" id="mame_chd_set"  default="0" values="Merged|Split|Non-merged" />
-    <setting label="Software Lists ROM set" type="enum" id="SL_rom_set"  default="1" values="Merged|Split" />
-    <setting label="Software Lists CHD set" type="enum" id="SL_chd_set"  default="0" values="Merged|Split" />
+    <setting label="Software Lists ROM set" type="enum" id="SL_rom_set"  default="1" values="Merged|Split|Non-merged" />
+    <setting label="Software Lists CHD set" type="enum" id="SL_chd_set"  default="0" values="Merged|Split|Non-merged" />
 
     <setting id="separator" type="lsep" label="Misc" />
     <setting label="Custom filter XML path" type="file" id="filter_XML" default="special://home/addons/plugin.program.AML/AML-MAME-filters.xml" />
@@ -63,15 +63,23 @@
     <setting label="Software Lists Fanart" type="enum" id="artwork_SL_fanart"  default="0" values="Fanart|Snap|Title" />
     <setting label="Do not render trailers" type="bool" default="false" id="display_hide_trailers" />
 </category>
+<category label="I/O">
+    <setting id="separator" type="lsep" label="Utilities"/>
+    <setting label="Check AML configuration ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML/?command=CHECK_CONFIG)"/>
+</category>
 <category label="Advanced">
+    <setting label="Log level" type="enum" id="log_level" default="2" values="ERROR|WARNING|INFO|VERBOSE|DEBUG" />
+
+    <setting id="separator" type="lsep" label="MAME cache" />
     <setting label="Enable MAME machine cache" type="bool" default="false" id="debug_enable_MAME_machine_cache" />
     <setting label="Enable MAME asset cache" type="bool" default="false" id="debug_enable_MAME_asset_cache" />
+
+    <setting id="separator" type="lsep" label="Information dump" />
     <setting label="Write MAME item data" type="bool" default="false" id="debug_MAME_item_data" />
     <setting label="Write MAME ROMs DB data" type="bool" default="false" id="debug_MAME_ROM_DB_data" />
     <setting label="Write MAME Audit DB data" type="bool" default="false" id="debug_MAME_Audit_DB_data" />
     <setting label="Write SL item data" type="bool" default="false" id="debug_SL_item_data" />
     <setting label="Write SL ROMs DB data" type="bool" default="false" id="debug_SL_ROM_DB_data" />
     <setting label="Write SL Audit DB data" type="bool" default="false" id="debug_SL_Audit_DB_data" />
-    <setting label="Log level" type="enum" id="log_level" default="2" values="ERROR|WARNING|INFO|VERBOSE|DEBUG" />
 </category>
 </settings>

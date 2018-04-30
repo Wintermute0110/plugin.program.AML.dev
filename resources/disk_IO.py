@@ -196,7 +196,7 @@ ASSET_MAME_T_LIST  = [
     ('cabinet',    'cabinets'),
     ('clearlogo',  'clearlogos'),
     ('cpanel',     'cpanels'),
-    ('fanart',     'fanarts'),
+    ('fanart',     'fanarts'), # Created by AML automatically when building Fanarts.
     ('flyer',      'flyers'),
     ('manual',     'manuals'),
     ('marquee',    'marquees'),

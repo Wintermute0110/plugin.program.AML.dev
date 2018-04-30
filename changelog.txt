@@ -22,6 +22,12 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
+FEATURE  MAME ROM and asset cache disable by default. They may be enabled by user that want to
+         increase the loading speed. This will be very useful for develpment because
+         cache rebuilding takes a long time.
+
+FEATURE  Check if AML configuration is OK or not, and warn the user about warnings/errors.
+
 FEATURE  Improved PDF manual rendering. Use the library pdfrw for image extraction.
 
 FEATURE  Clean ROM cache before rebuilding cache.
@@ -45,6 +51,10 @@ FIX      Software List ROM size was stored as string and not as int. This made t
          completely fail.
 
 FIX      Fixed audit of MAME machine ROMs (wrong function name).
+
+FIX      Lots of fixes to MAME ROM audit engine.
+
+FIX      Lots of fixes to Software Lists audit engine.
 
 
 [B]Advanced Emulator Launcher | version 0.9.4 | 29 March 2018[/B]
