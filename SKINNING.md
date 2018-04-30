@@ -1,6 +1,6 @@
 # Advanced MAME Launcher metadata and artwork data model #
 
-AML metadata/assets model is as much compatible with [Advanced Emulator Launcher] as much as possible.
+AML metadata/assets model is as much compatible with [Advanced Emulator Launcher] as possible.
 
 [Advanced Emulator Launcher]: http://github.com/Wintermute0110/plugin.program.advanced.emulator.launcher/
 
