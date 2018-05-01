@@ -4274,6 +4274,19 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
         rom_dic['name'] = dataarea_child.attrib['name'] if 'name' in dataarea_child.attrib else ''
         rom_dic['crc'] = dataarea_child.attrib['crc'] if 'crc' in dataarea_child.attrib else ''
 
+        # In the nes.xml SL some ROM names have a trailing dot '.'. For example (MAME 0.196):
+        #
+        # ROM  131072  028bfc44  nes/kingey/0.prg              OK            
+        # ROM  131072  1aca7960  nes/kingey/king ver 1.3 vid.  ROM not in ZIP
+        #
+        # PD torrents do not have the trailing dot because this files cause trouble in Windows.
+        # To correctly audit PD torrents, remove the trailing dot from filenames.
+        # Have a look here http://forum.pleasuredome.org.uk/index.php?showtopic=32701&p=284925
+        # I will create a PR to MAME repo to fix these names (and then next couple of lines must
+        # be commented).
+        if len(rom_dic['name']) > 2 and rom_dic['name'][-1] == '.':
+            rom_dic['name'] = rom_dic['name'][:-1]
+
         # >> Some CRCs are in upper case. Store always lower case in AML DB.
         if rom_dic['crc']: rom_dic['crc'] = rom_dic['crc'].lower()
 
