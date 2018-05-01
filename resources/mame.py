@@ -138,6 +138,16 @@ mame_driver_name_dic = {
     'zn.cpp' : 'Sony ZN1/ZN2 (Arcade PSX)',
 }
 
+# >> Some Software Lists don't follow the convention of adding the company name at the beginning.
+# >> I will try to create pull requests to fix theses and if the PRs are not accepted then
+# >> SL names will be changed using the data here.
+SL_better_name_dic = {
+
+    # --- SEGA ---
+    'megacd'  : 'Sega Mega CD (Euro) CD-ROMs', # Mega CD (Euro) CD-ROMs
+    'megacdj' : 'Sega Mega CD (Jpn) CD-ROMs', # Mega CD (Jpn) CD-ROMs
+}
+
 #
 # Numerical MAME version. Allows for comparisons like ver_mame >= MAME_VERSION_0190
 # Support MAME versions higher than 0.53 August 12th 2001.
