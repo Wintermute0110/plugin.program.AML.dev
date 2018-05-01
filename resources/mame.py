@@ -4250,6 +4250,102 @@ class SLDataObj:
         self.num_with_ROMs = 0
         self.num_with_CHDs = 0
 
+def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
+    # >> Get ROMs in dataarea
+    dataarea_num_roms = 0
+    for dataarea_child in part_child:
+        rom_dic = { 'name' : '', 'size' : '', 'crc'  : '' }
+        # >> Force Python to guess the base of the conversion looking at
+        # >> 0x prefixes.
+        size_int = 0
+        if 'size' in dataarea_child.attrib:
+            size_int = int(dataarea_child.attrib['size'], 0)
+        rom_dic['size'] = size_int
+        rom_dic['name'] = dataarea_child.attrib['name'] if 'name' in dataarea_child.attrib else ''
+        rom_dic['crc'] = dataarea_child.attrib['crc'] if 'crc' in dataarea_child.attrib else ''
+
+        # >> Some CRCs are in upper case. Store always lower case in AML DB.
+        if rom_dic['crc']: rom_dic['crc'] = rom_dic['crc'].lower()
+
+        # >> If ROM has attribute status="nodump" then ignore this ROM.
+        if 'status' in dataarea_child.attrib:
+            status = dataarea_child.attrib['status']
+            if status == 'nodump':
+                log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
+                          'status="nodump". Skipping ROM.')
+                continue
+            elif status == 'baddump':
+                pass
+            else:
+                log_error('SL {0} / Item {1} / Unknown status = {2}'.format(SL_name, item_name, status))
+                raise CriticalError('DEBUG')
+
+        # >> Fix "fake" SL ROMs with loadflag="continue".
+        # >> For example, SL neogeo, SL item aof
+        if 'loadflag' in dataarea_child.attrib:
+            loadflag = dataarea_child.attrib['loadflag']
+            if loadflag == 'continue':
+                # This ROM is not valid (not a valid ROM file).
+                # Size must be added to previous ROM.
+                log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
+                          'loadflag="continue" case. Adding size {0} to previous ROM.'.format(rom_dic['size']))
+                previous_rom = dataarea_dic['roms'][-1]
+                previous_rom['size'] += rom_dic['size']
+                continue
+            elif loadflag == 'reload':
+                log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
+                          'loadflag="reload" case. Skipping ROM.')
+                continue
+            elif loadflag == 'reload_plain':
+                log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
+                          'loadflag="reload_plain" case. Skipping ROM.')
+                continue
+            elif loadflag == 'fill':
+                log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
+                          'loadflag="fill" case. Skipping ROM.')
+                continue
+            elif loadflag == 'ignore':
+                log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
+                          'loadflag="ignore" case. Skipping ROM.')
+                continue
+            elif loadflag == 'load16_word_swap':
+                pass
+            elif loadflag == 'load16_byte':
+                pass
+            elif loadflag == 'load32_word':
+                pass
+            elif loadflag == 'load32_byte':
+                pass
+            elif loadflag == 'load32_word_swap':
+                pass
+            else:
+                log_error('SL {0} / Item {1} / Unknown loadflag = {0}'.format(loadflag))
+                raise CriticalError('DEBUG')
+
+        # --- Add ROM to DB ---
+        dataarea_dic['roms'].append(rom_dic)
+        dataarea_num_roms += 1
+
+        # --- DEBUG: Error if rom has merge attribute ---
+        if 'merge' in dataarea_child.attrib:
+            log_error('SL {0} / Item {1} / '.format(SL_name, item_name))
+            log_error('ROM {0} has merge attribute'.format(dataarea_child.attrib['name']))
+            raise CriticalError('DEBUG')
+
+    return dataarea_num_roms
+
+def _get_SL_dataarea_CHDs(SL_name, item_name, part_child, diskarea_dic):
+    # >> Get CHDs in diskarea
+    da_num_disks = 0
+    for diskarea_child in part_child:
+        disk_dic = { 'name' : '', 'sha1' : '' }
+        disk_dic['name'] = diskarea_child.attrib['name'] if 'name' in diskarea_child.attrib else ''
+        disk_dic['sha1'] = diskarea_child.attrib['sha1'] if 'sha1' in diskarea_child.attrib else ''
+        diskarea_dic['disks'].append(disk_dic)
+        da_num_disks += 1
+
+    return da_num_disks
+
 def _mame_load_SL_XML(xml_filename):
     __debug_xml_parser = False
     SLData = SLDataObj()
@@ -4272,14 +4368,14 @@ def _mame_load_SL_XML(xml_filename):
 
         # >> Only process 'software' elements
         if root_element.tag != 'software': continue
-        rom = fs_new_SL_ROM()
+        SL_item = fs_new_SL_ROM()
         SL_rom_list = []
         num_roms = 0
         num_disks = 0
-        rom_name = root_element.attrib['name']
-        if 'cloneof' in root_element.attrib: rom['cloneof'] = root_element.attrib['cloneof']
+        item_name = root_element.attrib['name']
+        if 'cloneof' in root_element.attrib: SL_item['cloneof'] = root_element.attrib['cloneof']
         if 'romof' in root_element.attrib:
-            log_error('{0} -> "romof" in root_element.attrib'.format(rom_name))
+            log_error('{0} -> "romof" in root_element.attrib'.format(item_name))
             raise CriticalError('DEBUG')
 
         for rom_child in root_element:
@@ -4290,16 +4386,16 @@ def _mame_load_SL_XML(xml_filename):
 
             # --- Only pick tags we want ---
             if xml_tag == 'description' or xml_tag == 'year' or xml_tag == 'publisher':
-                rom[xml_tag] = xml_text
+                SL_item[xml_tag] = xml_text
 
             elif xml_tag == 'part':
                 # <part name="cart" interface="_32x_cart">
                 part_dic = fs_new_SL_ROM_part()
                 part_dic['name'] = rom_child.attrib['name']
                 part_dic['interface'] = rom_child.attrib['interface']
-                rom['parts'].append(part_dic)
+                SL_item['parts'].append(part_dic)
                 SL_roms_dic = {
-                    'part_name' : rom_child.attrib['name'],
+                    'part_name'      : rom_child.attrib['name'],
                     'part_interface' : rom_child.attrib['interface']
                 }
 
@@ -4309,85 +4405,20 @@ def _mame_load_SL_XML(xml_filename):
                 for part_child in rom_child:
                     if part_child.tag == 'dataarea':
                         dataarea_dic = { 'name' : part_child.attrib['name'], 'roms' : [] }
-                        dataarea_num_roms = 0
-                        for dataarea_child in part_child:
-                            rom_dic = { 'name' : '', 'size' : '', 'crc'  : '' }
-                            # >> Force Python to guess the base of the conversion looking at
-                            # >> 0x prefixes.
-                            size_int = 0
-                            if 'size' in dataarea_child.attrib:
-                                size_int = int(dataarea_child.attrib['size'], 0)
-                            rom_dic['size'] = size_int
-                            rom_dic['name'] = dataarea_child.attrib['name'] if 'name' in dataarea_child.attrib else ''
-                            rom_dic['crc'] = dataarea_child.attrib['crc'] if 'crc' in dataarea_child.attrib else ''
-                            # >> Some CRCs are in upper case. Store always lower case in AML DB.
-                            if rom_dic['crc']: rom_dic['crc'] = rom_dic['crc'].lower()
-                            # >> Fix "fake" SL ROMs with loadflag="continue".
-                            # >> For example, SL neogeo, SL item aof
-                            if 'loadflag' in dataarea_child.attrib:
-                                loadflag = dataarea_child.attrib['loadflag']
-                                if loadflag == 'continue':
-                                    # This ROM is not valid (not a valid ROM file).
-                                    # Size must be added to previous ROM.
-                                    log_debug('SL {0} / Item {1} / '.format(SL_name, rom_name) +
-                                              'loadflag="continue" case. Adding size {0} to previous ROM'.format(rom_dic['size']))
-                                    previous_rom = dataarea_dic['roms'][-1]
-                                    previous_rom['size'] += rom_dic['size']
-                                    continue
-                                elif loadflag == 'reload':
-                                    log_debug('SL {0} / Item {1} / '.format(SL_name, rom_name) +
-                                              'loadflag="reload" case. Skipping ROM')
-                                    continue
-                                elif loadflag == 'reload_plain':
-                                    log_debug('SL {0} / Item {1} / '.format(SL_name, rom_name) +
-                                              'loadflag="reload_plain" case. Skipping ROM')
-                                    continue
-                                elif loadflag == 'fill':
-                                    log_debug('SL {0} / Item {1} / '.format(SL_name, rom_name) +
-                                              'loadflag="fill" case. Skipping ROM')
-                                    continue
-                                elif loadflag == 'ignore':
-                                    log_debug('SL {0} / Item {1} / '.format(SL_name, rom_name) +
-                                              'loadflag="ignore" case. Skipping ROM')
-                                    continue
-                                elif loadflag == 'load16_word_swap':
-                                    pass
-                                elif loadflag == 'load16_byte':
-                                    pass
-                                elif loadflag == 'load32_word':
-                                    pass
-                                elif loadflag == 'load32_byte':
-                                    pass
-                                elif loadflag == 'load32_word_swap':
-                                    pass
-                                else:
-                                    log_error('SL {0} / Item {1}'.format(SL_name, rom_name))
-                                    log_error('Unknown loadflag = {0}'.format(loadflag))
-                                    raise CriticalError('DEBUG')
-                            dataarea_dic['roms'].append(rom_dic)
-                            dataarea_num_roms += 1
-                            num_roms += 1
-                            # --- DEBUG: Error if rom has merge attribute ---
-                            if 'merge' in dataarea_child.attrib:
-                                log_error('software {0}'.format(rom_name))
-                                log_error('rom {0} has merge attribute'.format(dataarea_child.attrib['name']))
-                                raise CriticalError('DEBUG')
-                        # >> Dataarea is valid ONLY if it contains valid ROMs
-                        if dataarea_num_roms > 0: num_dataarea += 1
+                        da_num_roms = _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic)
+                        if da_num_roms > 0:
+                            # >> dataarea is valid ONLY if it contains valid ROMs
+                            num_dataarea += 1
+                            num_roms += da_num_roms
                         if 'dataarea' not in SL_roms_dic: SL_roms_dic['dataarea'] = []
                         SL_roms_dic['dataarea'].append(dataarea_dic)
                     elif part_child.tag == 'diskarea':
                         diskarea_dic = { 'name' : part_child.attrib['name'], 'disks' : [] }
-                        diskarea_num_disks = 0
-                        for diskarea_child in part_child:
-                            disk_dic = { 'name' : '', 'sha1' : '' }
-                            disk_dic['name'] = diskarea_child.attrib['name'] if 'name' in diskarea_child.attrib else ''
-                            disk_dic['sha1'] = diskarea_child.attrib['sha1'] if 'sha1' in diskarea_child.attrib else ''
-                            diskarea_dic['disks'].append(disk_dic)
-                            diskarea_num_disks += 1
-                            num_disks += 1
-                        # >> diskarea is valid ONLY if it contains valid CHDs
-                        if diskarea_num_disks > 0: num_diskarea += 1
+                        da_num_disks = _get_SL_dataarea_CHDs(SL_name, item_name, part_child, diskarea_dic)
+                        if da_num_disks > 0:
+                            # >> diskarea is valid ONLY if it contains valid CHDs
+                            num_diskarea += 1
+                            num_disks += da_num_disks
                         if 'diskarea' not in SL_roms_dic: SL_roms_dic['diskarea'] = []
                         SL_roms_dic['diskarea'].append(diskarea_dic)
                     elif part_child.tag == 'feature':
@@ -4395,42 +4426,42 @@ def _mame_load_SL_XML(xml_filename):
                     elif part_child.tag == 'dipswitch':
                         pass
                     else:
-                        log_error('{0} -> Inside <part>, unrecognised tag <{0}>'.format(rom_name, part_child.tag))
+                        log_error('{0} -> Inside <part>, unrecognised tag <{0}>'.format(item_name, part_child.tag))
                         raise CriticalError('DEBUG')
                 # --- Add ROMs/disks ---
                 SL_rom_list.append(SL_roms_dic)
 
                 # --- DEBUG/Research code ---
                 # if num_dataarea > 1:
-                #     log_error('{0} -> num_dataarea = {1}'.format(rom_name, num_dataarea))
+                #     log_error('{0} -> num_dataarea = {1}'.format(item_name, num_dataarea))
                 #     raise CriticalError('DEBUG')
                 # if num_diskarea > 1:
-                #     log_error('{0} -> num_diskarea = {1}'.format(rom_name, num_diskarea))
+                #     log_error('{0} -> num_diskarea = {1}'.format(item_name, num_diskarea))
                 #     raise CriticalError('DEBUG')
                 # if num_dataarea and num_diskarea:
-                #     log_error('{0} -> num_dataarea = {1}'.format(rom_name, num_dataarea))
-                #     log_error('{0} -> num_diskarea = {1}'.format(rom_name, num_diskarea))
+                #     log_error('{0} -> num_dataarea = {1}'.format(item_name, num_dataarea))
+                #     log_error('{0} -> num_diskarea = {1}'.format(item_name, num_diskarea))
                 #     raise CriticalError('DEBUG')
 
         # --- Finished processing of <software> element ---
         if num_roms:
-            rom['hasROMs'] = True
-            rom['status_ROM'] = '?'
+            SL_item['hasROMs'] = True
+            SL_item['status_ROM'] = '?'
             SLData.num_with_ROMs += 1
         else:
-            rom['hasROMs'] = False
-            rom['status_ROM'] = '-'
+            SL_item['hasROMs'] = False
+            SL_item['status_ROM'] = '-'
         if num_disks:
-            rom['hasCHDs'] = True
-            rom['status_CHD'] = '?'
+            SL_item['hasCHDs'] = True
+            SL_item['status_CHD'] = '?'
             SLData.num_with_CHDs += 1
         else:
-            rom['hasCHDs'] = False
-            rom['status_CHD'] = '-'
+            SL_item['hasCHDs'] = False
+            SL_item['status_CHD'] = '-'
 
-        # >> Add <software> element (SL ROM) to database and software ROM/CHDs to database
-        SLData.roms[rom_name] = rom
-        SLData.SL_roms[rom_name] = SL_rom_list
+        # >> Add <software> item (SL_item) to database and software ROM/CHDs to database
+        SLData.roms[item_name] = SL_item
+        SLData.SL_roms[item_name] = SL_rom_list
 
     return SLData
 
