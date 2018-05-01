@@ -4302,6 +4302,16 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
                 previous_rom = dataarea_dic['roms'][-1]
                 previous_rom['size'] += rom_dic['size']
                 continue
+            elif loadflag == 'ignore':
+                if rom_dic['size'] > 0:
+                    log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
+                            'loadflag="ignore" case. Adding size {0} to previous ROM.'.format(rom_dic['size']))
+                    previous_rom = dataarea_dic['roms'][-1]
+                    previous_rom['size'] += rom_dic['size']
+                else:
+                    log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
+                              'loadflag="ignore" case and size = 0. Skipping ROM.')
+                continue
             elif loadflag == 'reload':
                 log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
                           'loadflag="reload" case. Skipping ROM.')
@@ -4313,10 +4323,6 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
             elif loadflag == 'fill':
                 log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
                           'loadflag="fill" case. Skipping ROM.')
-                continue
-            elif loadflag == 'ignore':
-                log_debug('SL {0} / Item {1} / '.format(SL_name, item_name) +
-                          'loadflag="ignore" case. Skipping ROM.')
                 continue
             elif loadflag == 'load16_word_swap':
                 pass
