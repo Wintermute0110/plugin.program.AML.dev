@@ -2401,6 +2401,16 @@ def mame_build_SL_names(PATHS, settings):
 # -------------------------------------------------------------------------------------------------
 # Reads and processes MAME.xml
 #
+# The ROM location in the non-merged set is unique and can be used as a unique dictionary key.
+# Include only ROMs and not CHDs.
+#
+# roms_sha1_dic = {
+#     rom_nonmerged_location_1 : sha1_hash,
+#     rom_nonmerged_location_2 : sha1_hash,
+#     ...
+#
+# }
+#
 # Saves:
 #   MAIN_DB_PATH
 #   RENDER_DB_PATH
@@ -2408,7 +2418,7 @@ def mame_build_SL_names(PATHS, settings):
 #   MAIN_ASSETS_DB_PATH  (empty JSON file)
 #   MAIN_PCLONE_DIC_PATH
 #   MAIN_CONTROL_PATH    (updated and then JSON file saved)
-#   ROM_SETS_PATH
+#   ROM_SHA1_HASH_DB_PATH
 #
 STOP_AFTER_MACHINES = 100000
 class DB_obj:
@@ -2489,6 +2499,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     machines_render = {}
     machines_roms = {}
     machines_devices = {}
+    roms_sha1_dic = {}
     stats_processed_machines = 0
     stats_parents            = 0
     stats_clones             = 0
@@ -2648,6 +2659,13 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
             rom['size']  = int(elem.attrib['size']) if 'size' in elem.attrib else 0
             rom['crc']   = unicode(elem.attrib['crc']) if 'crc' in elem.attrib else ''
             m_roms['roms'].append(rom)
+
+            # --- ROMs SHA1 database ---
+            sha1 = unicode(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
+            # >> Only add valid ROMs, ignore invalid.
+            if sha1:
+                rom_nonmerged_location = m_name + '/' + rom['name']
+                roms_sha1_dic[rom_nonmerged_location] = sha1
 
         # >> Machine devices
         elif event == 'start' and elem.tag == 'device_ref':
@@ -2979,7 +2997,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # -----------------------------------------------------------------------------
     log_info('Saving database JSON files ...')
     pdialog_line1 = 'Saving databases ...'
-    num_items = 14
+    num_items = 15
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machines Main')
     fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
@@ -2993,25 +3011,27 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     pDialog.update(int((5*100) / num_items), pdialog_line1, 'MAME PClone dictionary')
     fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
+    pDialog.update(int((6*100) / num_items), pdialog_line1, 'MAME ROMs SHA1 dictionary')
+    fs_write_JSON_file(PATHS.ROM_SHA1_HASH_DB_PATH.getPath(), roms_sha1_dic)
 
     # >> DAT files
-    pDialog.update(int((6*100) / num_items), pdialog_line1, 'History DAT index')
+    pDialog.update(int((7*100) / num_items), pdialog_line1, 'History DAT index')
     fs_write_JSON_file(PATHS.HISTORY_IDX_PATH.getPath(), history_idx_dic)
-    pDialog.update(int((7*100) / num_items), pdialog_line1, 'History DAT database')
+    pDialog.update(int((8*100) / num_items), pdialog_line1, 'History DAT database')
     fs_write_JSON_file(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
-    pDialog.update(int((8*100) / num_items), pdialog_line1, 'MAMEInfo DAT index')
+    pDialog.update(int((9*100) / num_items), pdialog_line1, 'MAMEInfo DAT index')
     fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
-    pDialog.update(int((9*100) / num_items), pdialog_line1, 'MAMEInfo DAT database')
+    pDialog.update(int((10*100) / num_items), pdialog_line1, 'MAMEInfo DAT database')
     fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
-    pDialog.update(int((10*100) / num_items), pdialog_line1, 'Gameinit DAT index')
+    pDialog.update(int((11*100) / num_items), pdialog_line1, 'Gameinit DAT index')
     fs_write_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath(), gameinit_idx_dic)
-    pDialog.update(int((11*100) / num_items), pdialog_line1, 'Gameinit DAT database')
+    pDialog.update(int((12*100) / num_items), pdialog_line1, 'Gameinit DAT database')
     fs_write_JSON_file(PATHS.GAMEINIT_DB_PATH.getPath(), gameinit_dic)
-    pDialog.update(int((12*100) / num_items), pdialog_line1, 'Command DAT index')
+    pDialog.update(int((13*100) / num_items), pdialog_line1, 'Command DAT index')
     fs_write_JSON_file(PATHS.COMMAND_IDX_PATH.getPath(), command_idx_dic)
-    pDialog.update(int((13*100) / num_items), pdialog_line1, 'Command DAT database')
+    pDialog.update(int((14*100) / num_items), pdialog_line1, 'Command DAT database')
     fs_write_JSON_file(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
-    pDialog.update(int((14*100) / num_items), ' ', ' ')
+    pDialog.update(int((15*100) / num_items), ' ', ' ')
     pDialog.close()
 
     # Return an object with reference to the objects just in case they are needed after

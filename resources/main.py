@@ -88,6 +88,7 @@ class AML_Paths:
         self.ROM_SET_MACHINE_ARCHIVES_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_machine_archives.json')
         self.ROM_SET_ROM_ARCHIVES_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Set_ROM_archives.json')
         self.ROM_SET_CHD_ARCHIVES_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Set_CHD_archives.json')
+        self.ROM_SHA1_HASH_DB_PATH            = PLUGIN_DATA_DIR.pjoin('ROM_SHA1_hash_DB.json')
 
         # >> DAT indices and databases.
         self.HISTORY_IDX_PATH  = PLUGIN_DATA_DIR.pjoin('DAT_History_index.json')
