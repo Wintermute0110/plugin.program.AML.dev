@@ -5190,8 +5190,8 @@ class Main:
                         coliding_name = crc_roms_dic[rom['crc']]
                         coliding_crc = rom['crc']
                         coliding_sha1 = roms_sha1_dic[coliding_name]
-                        table_str.append(['Original', rom_nonmerged_location, str(rom['size']), rom['crc'], sha1])
-                        table_str.append(['-->', coliding_name, ' ', coliding_crc, coliding_sha1])
+                        table_str.append(['Collision', rom_nonmerged_location, str(rom['size']), rom['crc'], sha1])
+                        table_str.append(['with', coliding_name, ' ', coliding_crc, coliding_sha1])
                     else:
                         crc_roms_dic[rom['crc']] = rom_nonmerged_location
             processed_machines += 1
