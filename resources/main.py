@@ -88,7 +88,7 @@ class AML_Paths:
         self.ROM_SET_MACHINE_ARCHIVES_DB_PATH = PLUGIN_DATA_DIR.pjoin('ROM_Set_machine_archives.json')
         self.ROM_SET_ROM_ARCHIVES_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Set_ROM_archives.json')
         self.ROM_SET_CHD_ARCHIVES_DB_PATH     = PLUGIN_DATA_DIR.pjoin('ROM_Set_CHD_archives.json')
-        self.ROM_SHA1_HASH_DB_PATH            = PLUGIN_DATA_DIR.pjoin('ROM_SHA1_hash_DB.json')
+        self.ROM_SHA1_HASH_DB_PATH            = PLUGIN_DATA_DIR.pjoin('ROM_SHA1_hashes.json')
 
         # >> DAT indices and databases.
         self.HISTORY_IDX_PATH  = PLUGIN_DATA_DIR.pjoin('DAT_History_index.json')
@@ -221,6 +221,8 @@ class AML_Paths:
         self.REPORT_DEBUG_SL_ITEM_DATA_PATH         = self.REPORTS_DIR.pjoin('debug_SL_item_data.txt')
         self.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH     = self.REPORTS_DIR.pjoin('debug_SL_item_ROM_DB_data.txt')
         self.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH   = self.REPORTS_DIR.pjoin('debug_SL_item_Audit_DB_data.txt')
+        self.REPORT_DEBUG_MAME_COLLISIONS_PATH      = self.REPORTS_DIR.pjoin('debug_MAME_collisions.txt')
+        self.REPORT_DEBUG_SL_COLLISIONS_PATH        = self.REPORTS_DIR.pjoin('debug_SL_collisions.txt')
 PATHS = AML_Paths()
 
 class Main:
@@ -5168,6 +5170,7 @@ class Main:
         processed_machines = 0
         crc_roms_dic = {}
         sha1_roms_dic = {}
+        num_collisions = 0
         table_str = []
         table_str.append(['right',  'left',     'left', 'left', 'left'])
         table_str.append(['Status', 'ROM name', 'Size', 'CRC',  'SHA1'])
@@ -5187,6 +5190,7 @@ class Main:
                     # >> No ROM implicit mergin. Check CRC32 collision
                     sha1_roms_dic[sha1] = rom_nonmerged_location
                     if rom['crc'] in crc_roms_dic:
+                        num_collisions += 1
                         coliding_name = crc_roms_dic[rom['crc']]
                         coliding_crc = rom['crc']
                         coliding_sha1 = roms_sha1_dic[coliding_name]
@@ -5197,19 +5201,119 @@ class Main:
             processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines, pdialog_line1, ' ')
         pDialog.close()
+        log_debug('MAME has {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
+        log_debug('There are {0} CRC32 collisions'.format(num_collisions))
 
-        # >> Write report
+        # >> Write report and debug file
         slist = []
-        slist.append('*** AML MAME ROMs CRC32 hash collision report ***\n')
+        slist.append('*** AML MAME ROMs CRC32 hash collision report ***')
+        slist.append('MAME has {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
+        slist.append('There are {0} CRC32 collisions'.format(num_collisions))
+        slist.append('')
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
         self._display_text_window('AML MAME CRC32 hash collision report', '\n'.join(slist))
+        log_info('Writing "{0}"'.format(PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath()))
+        with open(PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath(), 'w') as file:
+            file.write('\n'.join(slist).encode('utf-8'))
 
     def _command_check_SL_CRC_collisions(self):
         log_info('_command_check_SL_CRC_collisions() Initialising ...')
+
+        # >> Load SL catalog and check for errors.
+        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+
+        # >> Process all SLs
+        pDialog = xbmcgui.DialogProgress()
+        pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
+        pDialog.create('Advanced MAME Launcher', pdialog_line1)
+        total_files = len(SL_catalog_dic)
+        processed_files = 0
+        pDialog.update(0)
+        roms_sha1_dic = {}
+        crc_roms_dic = {}
+        sha1_roms_dic = {}
+        num_collisions = 0
+        table_str = []
+        table_str.append(['right',  'left',     'left', 'left', 'left'])
+        table_str.append(['Status', 'ROM name', 'Size', 'CRC',  'SHA1'])
+        for SL_name in sorted(SL_catalog_dic):
+            # >> Progress dialog
+            update_number = (processed_files*100) // total_files
+            pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+
+            # >> Load SL databases
+            # SL_SETS_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
+            # sl_sets = fs_load_JSON_file(SL_SETS_DB_FN.getPath(), verbose = False)
+            SL_ROMS_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
+            sl_roms = fs_load_JSON_file(SL_ROMS_DB_FN.getPath(), verbose = False)
+
+            # >> First step: make a SHA1 dictionary of all SL item hashes
+            for set_name in sorted(sl_roms):
+                set_rom_list = sl_roms[set_name]
+                for area in set_rom_list:
+                    if 'dataarea' not in area: continue
+                    for da_dict in area['dataarea']:
+                        for rom in da_dict['roms']:
+                            sha1 = rom['sha1']
+                            if sha1:
+                                rom_nonmerged_location = SL_name + '/' + set_name + '/' + rom['name']
+                                roms_sha1_dic[rom_nonmerged_location] = sha1
+            
+            # >> Second step: make
+            for set_name in sorted(sl_roms):
+                set_rom_list = sl_roms[set_name]
+                for area in set_rom_list:
+                    if 'dataarea' not in area: continue
+                    for da_dict in area['dataarea']:
+                        for rom in da_dict['roms']:
+                            rom_nonmerged_location = SL_name + '/' + set_name + '/' + rom['name']
+                            # >> Skip invalid ROMs (no CRC, no SHA1
+                            if rom_nonmerged_location not in roms_sha1_dic:
+                                continue
+                            sha1 = roms_sha1_dic[rom_nonmerged_location]
+                            if sha1 in sha1_roms_dic:
+                                # >> ROM implicit merging (using SHA1). No check of CRC32 collision.
+                                pass
+                            else:
+                                # >> No ROM implicit mergin. Check CRC32 collision
+                                sha1_roms_dic[sha1] = rom_nonmerged_location
+                                if rom['crc'] in crc_roms_dic:
+                                    num_collisions += 1
+                                    coliding_name = crc_roms_dic[rom['crc']]
+                                    coliding_crc = rom['crc']
+                                    coliding_sha1 = roms_sha1_dic[coliding_name]
+                                    table_str.append([
+                                        'Collision', rom_nonmerged_location,
+                                        str(rom['size']), rom['crc'], sha1
+                                    ])
+                                    table_str.append([
+                                        'with', coliding_name, ' ',
+                                        coliding_crc, coliding_sha1
+                                    ])
+                                else:
+                                    crc_roms_dic[rom['crc']] = rom_nonmerged_location
+
+            # >> Increment file count
+            processed_files += 1
+        update_number = (processed_files*100) // total_files
+        pDialog.update(update_number, pdialog_line1, ' ')
+        pDialog.close()
+        log_debug('The SL have {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
+        log_debug('There are {0} CRC32 collisions'.format(num_collisions))
+
+        # >> Write report
         slist = []
-        slist.append('Not implemented yet, sorry!')
+        slist.append('*** AML SL ROMs CRC32 hash collision report ***')
+        slist.append('The Software Lists have {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
+        slist.append('There are {0} CRC32 collisions'.format(num_collisions))
+        slist.append('')
+        table_str_list = text_render_table_str(table_str)
+        slist.extend(table_str_list)
         self._display_text_window('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
+        log_info('Writing "{0}"'.format(PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
+        with open(PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'w') as file:
+            file.write('\n'.join(slist).encode('utf-8'))
 
     #
     # Launch MAME machine. Syntax: $ mame <machine_name> [options]

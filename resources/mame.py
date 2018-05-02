@@ -145,7 +145,7 @@ SL_better_name_dic = {
 
     # --- SEGA ---
     'megacd'  : 'Sega Mega CD (Euro) CD-ROMs', # Mega CD (Euro) CD-ROMs
-    'megacdj' : 'Sega Mega CD (Jpn) CD-ROMs', # Mega CD (Jpn) CD-ROMs
+    'megacdj' : 'Sega Mega CD (Jpn) CD-ROMs',  # Mega CD (Jpn) CD-ROMs
 }
 
 #
@@ -4284,7 +4284,7 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
     # >> Get ROMs in dataarea
     dataarea_num_roms = 0
     for dataarea_child in part_child:
-        rom_dic = { 'name' : '', 'size' : '', 'crc'  : '' }
+        rom_dic = { 'name' : '', 'size' : '', 'crc'  : '', 'sha1' : '' }
         # >> Force Python to guess the base of the conversion looking at
         # >> 0x prefixes.
         size_int = 0
@@ -4292,7 +4292,8 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
             size_int = int(dataarea_child.attrib['size'], 0)
         rom_dic['size'] = size_int
         rom_dic['name'] = dataarea_child.attrib['name'] if 'name' in dataarea_child.attrib else ''
-        rom_dic['crc'] = dataarea_child.attrib['crc'] if 'crc' in dataarea_child.attrib else ''
+        rom_dic['crc']  = dataarea_child.attrib['crc'] if 'crc' in dataarea_child.attrib else ''
+        rom_dic['sha1'] = dataarea_child.attrib['sha1'] if 'sha1' in dataarea_child.attrib else ''
 
         # In the nes.xml SL some ROM names have a trailing dot '.'. For example (MAME 0.196):
         #
@@ -4309,6 +4310,9 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
 
         # >> Some CRCs are in upper case. Store always lower case in AML DB.
         if rom_dic['crc']: rom_dic['crc'] = rom_dic['crc'].lower()
+
+        # >> Just in case there are SHA1 hashes in upper case (not verified).
+        if rom_dic['sha1']: rom_dic['sha1'] = rom_dic['sha1'].lower()
 
         # >> If ROM has attribute status="nodump" then ignore this ROM.
         if 'status' in dataarea_child.attrib:
