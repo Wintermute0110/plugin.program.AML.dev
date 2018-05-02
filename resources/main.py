@@ -5142,12 +5142,67 @@ class Main:
 
     #
     # Check MAME and SL CRC 32 hash collisions.
-    # The SHA1 database is required for this. The assumption is that there is no SHA1 collisions.
+    # The assumption in this function is that there is not SHA1 hash collisions.
+    # Implicit ROM merging must not be confused with a collision.
     #
     def _command_check_MAME_CRC_collisions(self):
         log_info('_command_check_MAME_CRC_collisions() Initialising ...')
+
+        # >> Open ROMs database.
+        pDialog = xbmcgui.DialogProgress()
+        line1_str = 'Loading databases ...'
+        num_items = 2
+        pDialog.create('Advanced MAME Launcher')
+        pDialog.update(int((0*100) / num_items), line1_str, 'MAME machine ROMs')
+        machines_roms = fs_load_JSON_file(PATHS.ROMS_DB_PATH.getPath())
+        pDialog.update(int((1*100) / num_items), line1_str, 'MAME ROMs SHA1 dictionary')
+        roms_sha1_dic = fs_load_JSON_file(PATHS.ROM_SHA1_HASH_DB_PATH.getPath())
+        pDialog.update(int((2*100) / num_items), ' ', ' ')
+        pDialog.close()
+
+        # >> Detect implicit ROM merging using the SHA1 hash and check for CRC32 collisions for
+        # >> non-implicit merged ROMs.
+        pdialog_line1 = 'Checking for MAME CRC32 hash collisions ...'
+        pDialog.create('Advanced MAME Launcher', pdialog_line1)
+        total_machines = len(machines_roms)
+        processed_machines = 0
+        crc_roms_dic = {}
+        sha1_roms_dic = {}
+        table_str = []
+        table_str.append(['right',  'left',     'left', 'left', 'left'])
+        table_str.append(['Status', 'ROM name', 'Size', 'CRC',  'SHA1'])
+        for m_name in sorted(machines_roms):
+            pDialog.update((processed_machines*100) // total_machines, pdialog_line1)
+            m_roms = machines_roms[m_name]
+            for rom in m_roms['roms']:
+                rom_nonmerged_location = m_name + '/' + rom['name']
+                # >> Skip invalid ROMs (no CRC, no SHA1
+                if rom_nonmerged_location not in roms_sha1_dic:
+                    continue
+                sha1 = roms_sha1_dic[rom_nonmerged_location]
+                if sha1 in sha1_roms_dic:
+                    # >> ROM implicit merging (using SHA1). No check of CRC32 collision.
+                    pass
+                else:
+                    # >> No ROM implicit mergin. Check CRC32 collision
+                    sha1_roms_dic[sha1] = rom_nonmerged_location
+                    if rom['crc'] in crc_roms_dic:
+                        coliding_name = crc_roms_dic[rom['crc']]
+                        coliding_crc = rom['crc']
+                        coliding_sha1 = roms_sha1_dic[coliding_name]
+                        table_str.append(['Original', rom_nonmerged_location, str(rom['size']), rom['crc'], sha1])
+                        table_str.append(['-->', coliding_name, ' ', coliding_crc, coliding_sha1])
+                    else:
+                        crc_roms_dic[rom['crc']] = rom_nonmerged_location
+            processed_machines += 1
+        pDialog.update((processed_machines*100) // total_machines, pdialog_line1, ' ')
+        pDialog.close()
+
+        # >> Write report
         slist = []
-        slist.append('Not implemented yet, sorry!')
+        slist.append('*** AML MAME ROMs CRC32 hash collision report ***\n')
+        table_str_list = text_render_table_str(table_str)
+        slist.extend(table_str_list)
         self._display_text_window('AML MAME CRC32 hash collision report', '\n'.join(slist))
 
     def _command_check_SL_CRC_collisions(self):
