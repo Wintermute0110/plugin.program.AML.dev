@@ -412,6 +412,12 @@ class Main:
             elif command == 'CHECK_CONFIG':
                 self._command_check_AML_configuration()
 
+            # >> Utilities to check CRC hash collisions.
+            elif command == 'CHECK_MAME_COLLISIONS':
+                self._command_check_MAME_CRC_collisions()
+            elif command == 'CHECK_SL_COLLISIONS':
+                self._command_check_SL_CRC_collisions()
+
             else:
                 u = 'Unknown command "{0}"'.format(command)
                 log_error(u)
@@ -5132,6 +5138,22 @@ class Main:
         
         # --- Display info to the user ---
         self._display_text_window('AML configuration check report', '\n'.join(slist))
+
+    #
+    # Check MAME and SL CRC 32 hash collisions.
+    # The SHA1 database is required for this. The assumption is that there is no SHA1 collisions.
+    #
+    def _command_check_MAME_CRC_collisions(self):
+        log_info('_command_check_MAME_CRC_collisions() Initialising ...')
+        slist = []
+        slist.append('Not implemented yet, sorry!')
+        self._display_text_window('AML MAME CRC32 hash collision report', '\n'.join(slist))
+
+    def _command_check_SL_CRC_collisions(self):
+        log_info('_command_check_SL_CRC_collisions() Initialising ...')
+        slist = []
+        slist.append('Not implemented yet, sorry!')
+        self._display_text_window('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
 
     #
     # Launch MAME machine. Syntax: $ mame <machine_name> [options]
