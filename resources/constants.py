@@ -95,17 +95,18 @@ ROM_TYPE_DROM  = 'DROM' # Device ROM
 ROM_TYPE_ERROR = 'ERR'
 
 # --- ROM audit status ---
-AUDIT_STATUS_OK             = 'OK'
-AUDIT_STATUS_OK_INVALID_ROM = 'OK (invalid ROM)'
-AUDIT_STATUS_OK_INVALID_CHD = 'OK (invalid CHD)'
-AUDIT_STATUS_ZIP_NO_FOUND   = 'ZIP not found'
-AUDIT_STATUS_CHD_NO_FOUND   = 'CHD not found'
-AUDIT_STATUS_BAD_ZIP_FILE   = 'Bad ZIP file'
-AUDIT_STATUS_BAD_CHD_FILE   = 'Bad CHD file'
-AUDIT_STATUS_ROM_NOT_IN_ZIP = 'ROM not in ZIP'
-AUDIT_STATUS_ROM_BAD_CRC    = 'ROM bad CRC'
-AUDIT_STATUS_CHD_BAD_CRC    = 'CHD bad CRC'
-AUDIT_STATUS_ROM_BAD_SIZE   = 'ROM bad size'
+AUDIT_STATUS_OK                = 'OK'
+AUDIT_STATUS_OK_INVALID_ROM    = 'OK (invalid ROM)'
+AUDIT_STATUS_OK_INVALID_CHD    = 'OK (invalid CHD)'
+AUDIT_STATUS_OK_WRONG_NAME_ROM = 'OK (wrong named ROM)'
+AUDIT_STATUS_ZIP_NO_FOUND      = 'ZIP not found'
+AUDIT_STATUS_CHD_NO_FOUND      = 'CHD not found'
+AUDIT_STATUS_BAD_ZIP_FILE      = 'Bad ZIP file'
+AUDIT_STATUS_BAD_CHD_FILE      = 'Bad CHD file'
+AUDIT_STATUS_ROM_NOT_IN_ZIP    = 'ROM not in ZIP'
+AUDIT_STATUS_ROM_BAD_CRC       = 'ROM bad CRC'
+AUDIT_STATUS_CHD_BAD_CRC       = 'CHD bad CRC'
+AUDIT_STATUS_ROM_BAD_SIZE      = 'ROM bad size'
 
 # --- File name extensions ---
 MAME_ROM_EXTS      = ['zip']
