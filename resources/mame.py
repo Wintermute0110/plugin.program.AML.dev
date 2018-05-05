@@ -3605,33 +3605,26 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         if machine_render['isDevice']: continue
 
         # --- Determinte if machine is Normal or Unusual ----
-        # >> Add parent to parent list and parents and clonse to all list
-        # >> Unusual machine: control_type has "only_buttons" or "gambling" or "hanafuda" or "mahjong"
+        # Add parent to parent list and parents and clonse to all list
+        # Unusual machine: no controls or control_type has "only_buttons" or "gambling"
+        # or "hanafuda" or "mahjong"
         #
-        # >> Unusual machine driver exceptions (must be Normal and not Unusual):
-        #    88games.cpp
-        #    cball.cpp
-        #    asteroid.cpp
-        if machine_main['sourcefile'] == '88games.cpp' or \
+        # Unusual machine driver exceptions (must be Normal and not Unusual):
+        #
+        ctrl_list = machine_main['control_type']
+        if ('only_buttons' in ctrl_list and len(ctrl_list) > 1) or \
+           machine_main['sourcefile'] == '88games.cpp' or \
            machine_main['sourcefile'] == 'cball.cpp' or \
            machine_main['sourcefile'] == 'asteroid.cpp':
             normal_parent_dic[parent_name] = machine_render['description']
             normal_all_dic[parent_name] = machine_render['description']
             for clone_name in main_pclone_dic[parent_name]:
                 normal_all_dic[clone_name] = machines_render[clone_name]['description']
-        # >> Unusual machines. Most of them you don't wanna play.
-        # >> Unusual drivers:
-        #    aristmk5.cpp --> Gambling machines
-        #    adp.cpp
-        #    mpu4vid.cpp
-        #    cubo.cpp
-        #    sfbonus.cpp
-        #    peplus.cpp
-        elif not machine_main['control_type'] or \
-             'only_buttons' in machine_main['control_type'] or \
-             'gambling' in machine_main['control_type'] or \
-             'hanafuda' in machine_main['control_type'] or \
-             'mahjong' in machine_main['control_type'] or \
+        #
+        # Unusual machines. Most of them you don't wanna play.
+        #
+        elif not ctrl_list or 'only_buttons' in ctrl_list or 'gambling' in ctrl_list or \
+             'hanafuda' in ctrl_list or 'mahjong' in ctrl_list or \
              machine_main['sourcefile'] == 'aristmk5.cpp' or \
              machine_main['sourcefile'] == 'adp.cpp' or \
              machine_main['sourcefile'] == 'mpu4vid.cpp' or \
@@ -3642,7 +3635,9 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
             unusual_all_dic[parent_name] = machine_render['description']
             for clone_name in main_pclone_dic[parent_name]:
                 normal_all_dic[clone_name] = machines_render[clone_name]['description']
-        # >> What remains go to the Standard list.
+        #
+        # What remains go to the Standard list.
+        #
         else:
             normal_parent_dic[parent_name] = machine_render['description']
             normal_all_dic[parent_name] = machine_render['description']
