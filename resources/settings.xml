@@ -1,17 +1,17 @@
 <settings>
 <category label="Paths">
     <setting id="separator" type="lsep" label="Mandatory paths" />
-    <setting label="MAME executable" type="file"   id="mame_prog" />
-    <setting label="MAME ROMs path"  type="folder" id="rom_path" source="auto" option="" />
+    <setting label="MAME executable" type="file" id="mame_prog" />
+    <setting label="MAME ROMs path" type="folder" id="rom_path" source="auto" option="" />
     
     <setting id="separator" type="lsep" label="Optional paths" />
-    <setting label="MAME assets path"         type="folder" id="assets_path" source="auto" option="" />
-    <setting label="MAME CHDs path"           type="folder" id="chd_path" source="auto" option="" />
+    <setting label="MAME assets path" type="folder" id="assets_path" source="auto" option="" />
+    <setting label="MAME CHDs path" type="folder" id="chd_path" source="auto" option="" />
+    <setting label="MAME Samples path" type="folder" id="samples_path" source="auto" option="" />
+    <setting label="MAME Artwork path" type="folder" id="artwork_path" source="auto" option="" />
     <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="auto" option="" />
     <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="auto" option="" />
     <setting label="Software Lists CHDs path" type="folder" id="SL_chd_path" source="auto" option="" />
-    <setting label="Samples path"             type="folder" id="samples_path" source="auto" option="" />
-    <setting label="Artwork path"             type="folder" id="artwork_path" source="auto" option="" />
 </category>
 <category label="DAT paths">
     <setting id="separator" type="lsep" label="Optional DATs" />
