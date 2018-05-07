@@ -22,6 +22,10 @@ WIP      Implement "Recently played SL ROMs"
 
 [B]Advanced Emulator Launcher | version 0.9.5 | xx May 2018[/B]
 
+FEATURE  Function to check AML configuration for errors.
+
+FEATURE  Option to disable the ROM and asset caches.
+
 FEATURE  CRC32 hash collision detector for MAME and SL ROMs.
 
 FEATURE  MAME ROM and asset cache disable by default. They may be enabled by user that want to
