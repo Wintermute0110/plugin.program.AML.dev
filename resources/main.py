@@ -446,7 +446,6 @@ class Main:
         self.settings['assets_path']  = __addon__.getSetting('assets_path').decode('utf-8')
         self.settings['chd_path']     = __addon__.getSetting('chd_path').decode('utf-8')
         self.settings['samples_path'] = __addon__.getSetting('samples_path').decode('utf-8')
-        self.settings['artwork_path'] = __addon__.getSetting('artwork_path').decode('utf-8')
         self.settings['SL_hash_path'] = __addon__.getSetting('SL_hash_path').decode('utf-8')
         self.settings['SL_rom_path']  = __addon__.getSetting('SL_rom_path').decode('utf-8')
         self.settings['SL_chd_path']  = __addon__.getSetting('SL_chd_path').decode('utf-8')
@@ -5164,15 +5163,6 @@ class Main:
                 slist.append('{0} MAME Samples path not found'.format(WARN))
         else:
             slist.append('{0} MAME Samples path not set'.format(WARN))
-
-        # --- Artwork path ---
-        if self.settings['artwork_path']:
-            if FileName(self.settings['artwork_path']).exists():
-                slist.append('{0} MAME Artwork path "{1}"'.format(OK, self.settings['artwork_path']))
-            else:
-                slist.append('{0} MAME Artwork path not found'.format(WARN))
-        else:
-            slist.append('{0} MAME Artwork path not set'.format(WARN))
         slist.append('')
 
         # --- Software Lists paths ---

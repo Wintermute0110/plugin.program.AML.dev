@@ -8,13 +8,12 @@
     <setting label="MAME assets path" type="folder" id="assets_path" source="auto" option="" />
     <setting label="MAME CHDs path" type="folder" id="chd_path" source="auto" option="" />
     <setting label="MAME Samples path" type="folder" id="samples_path" source="auto" option="" />
-    <setting label="MAME Artwork path" type="folder" id="artwork_path" source="auto" option="" />
     <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="auto" option="" />
     <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="auto" option="" />
     <setting label="Software Lists CHDs path" type="folder" id="SL_chd_path" source="auto" option="" />
 </category>
 <category label="DAT paths">
-    <setting id="separator" type="lsep" label="Optional DATs" />
+    <!-- <setting id="separator" type="lsep" label="Optional DATs" /> -->
     <setting label="Catver.ini path"    type="file"   id="catver_path" />
     <setting label="Catlist.ini path"   type="file"   id="catlist_path" />
     <setting label="Genre.ini path"     type="file"   id="genre_path" />
