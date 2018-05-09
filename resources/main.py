@@ -5026,27 +5026,27 @@ class Main:
                 if FileName(dir_str).exists():
                     slist.append('{0} {1} "{2}"'.format(OK, msg, dir_str))
                 else:
-                    slist.append('{0} {1} not found'.format(ERR))
+                    slist.append('{0} {1} not found'.format(ERR, msg))
             else:
-                slist.append('{0} {1} not set'.format(ERR))
+                slist.append('{0} {1} not set'.format(ERR, msg))
 
         def check_dir_WARN(slist, dir_str, msg):
             if dir_str:
                 if FileName(dir_str).exists():
                     slist.append('{0} {1} "{2}"'.format(OK, msg, dir_str))
                 else:
-                    slist.append('{0} {1} not found'.format(WARN))
+                    slist.append('{0} {1} not found'.format(WARN, msg))
             else:
-                slist.append('{0} {1} not set'.format(WARN))
+                slist.append('{0} {1} not set'.format(WARN, msg))
 
         def check_file_WARN(slist, file_str, msg):
             if file_str:
                 if FileName(file_str).exists():
                     slist.append('{0} {1} "{2}"'.format(OK, msg, file_str))
                 else:
-                    slist.append('{0} {1} not found'.format(WARN))
+                    slist.append('{0} {1} not found'.format(WARN, msg))
             else:
-                slist.append('{0} {1} not set'.format(WARN))
+                slist.append('{0} {1} not set'.format(WARN, msg))
 
         def check_asset_dir(slist, dir_FN, msg):
             if dir_FN.exists():
@@ -5057,7 +5057,7 @@ class Main:
 
         log_info('_command_check_AML_configuration() Checking AML configuration ...')
         OK   = '[COLOR green]OK  [/COLOR]'
-        WARN = '[COLOR orange]WARN[/COLOR]'
+        WARN = '[COLOR yellow]WARN[/COLOR]'
         ERR  = '[COLOR red]ERR [/COLOR]'
         slist = []
 
