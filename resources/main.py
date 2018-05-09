@@ -5021,6 +5021,40 @@ class Main:
     # ERR
     #
     def _command_check_AML_configuration(self):
+        def check_dir_ERR(slist, dir_str, msg):
+            if dir_str:
+                if FileName(dir_str).exists():
+                    slist.append('{0} {1} "{2}"'.format(OK, msg, dir_str))
+                else:
+                    slist.append('{0} {1} not found'.format(ERR))
+            else:
+                slist.append('{0} {1} not set'.format(ERR))
+
+        def check_dir_WARN(slist, dir_str, msg):
+            if dir_str:
+                if FileName(dir_str).exists():
+                    slist.append('{0} {1} "{2}"'.format(OK, msg, dir_str))
+                else:
+                    slist.append('{0} {1} not found'.format(WARN))
+            else:
+                slist.append('{0} {1} not set'.format(WARN))
+
+        def check_file_WARN(slist, file_str, msg):
+            if file_str:
+                if FileName(file_str).exists():
+                    slist.append('{0} {1} "{2}"'.format(OK, msg, file_str))
+                else:
+                    slist.append('{0} {1} not found'.format(WARN))
+            else:
+                slist.append('{0} {1} not set'.format(WARN))
+
+        def check_asset_dir(slist, dir_FN, msg):
+            if dir_FN.exists():
+                slist.append('{0} Found {1} path "{2}"'.format(OK, msg, dir_FN.getPath()))
+            else:
+                slist.append('{0} {1} path does not exist'.format(WARN, msg))
+                slist.append('     Tried "{0}"'.format(dir_FN.getPath()))
+
         log_info('_command_check_AML_configuration() Checking AML configuration ...')
         OK   = '[COLOR green]OK  [/COLOR]'
         WARN = '[COLOR orange]WARN[/COLOR]'
@@ -5038,13 +5072,7 @@ class Main:
         else:
             slist.append('{0} MAME executable not set'.format(ERR))
         # ROM path
-        if self.settings['rom_path']:
-            if FileName(self.settings['rom_path']).exists():
-                slist.append('{0} MAME ROM path "{1}"'.format(OK, self.settings['rom_path']))
-            else:
-                slist.append('{0} MAME ROM path not found'.format(ERR))
-        else:
-            slist.append('{0} MAME ROM path not set'.format(ERR))
+        check_dir_ERR(slist, self.settings['rom_path'], 'MAME ROM path')
         slist.append('')
 
         # --- MAME assets ---
@@ -5057,88 +5085,30 @@ class Main:
                 Asset_path_FN = FileName(self.settings['assets_path'])
 
                 PCB_FN = Asset_path_FN.pjoin('PCBs')
-                if PCB_FN.exists():
-                    slist.append('{0} Found PCB path "{1}"'.format(OK, PCB_FN.getPath()))
-                else:
-                    slist.append('{0} PCBs path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(PCB_FN.getPath()))
-
                 artpreview_FN = Asset_path_FN.pjoin('artpreviews')
-                if artpreview_FN.exists():
-                    slist.append('{0} Found Artpreviews path "{1}"'.format(OK, artpreview_FN.getPath()))
-                else:
-                    slist.append('{0} Artpreviews path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(artpreview_FN.getPath()))
-
                 artwork_FN = Asset_path_FN.pjoin('artwork')
-                if artwork_FN.exists():
-                    slist.append('{0} Found Artwork path "{1}"'.format(OK, artwork_FN.getPath()))
-                else:
-                    slist.append('{0} Artwork path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(artwork_FN.getPath()))
-
                 cabinets_FN = Asset_path_FN.pjoin('cabinets')
-                if cabinets_FN.exists():
-                    slist.append('{0} Found Cabinets path "{1}"'.format(OK, cabinets_FN.getPath()))
-                else:
-                    slist.append('{0} Cabinets path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(cabinets_FN.getPath()))
-
                 clearlogos_FN = Asset_path_FN.pjoin('clearlogos')
-                if clearlogos_FN.exists():
-                    slist.append('{0} Found Clearlogos path "{1}"'.format(OK, clearlogos_FN.getPath()))
-                else:
-                    slist.append('{0} Clearlogos path does not exist[/COLOR]'.format(WARN))
-                    slist.append('[COLOR yellow]Tried "{0}"[/COLOR]'.format(clearlogos_FN.getPath()))
-
                 cpanels_FN = Asset_path_FN.pjoin('cpanels')
-                if clearlogos_FN.exists():
-                    slist.append('{0} Found CPanels path "{1}"'.format(OK, cpanels_FN.getPath()))
-                else:
-                    slist.append('{0} CPanels path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(cpanels_FN.getPath()))
-
                 flyers_FN = Asset_path_FN.pjoin('flyers')
-                if flyers_FN.exists():
-                    slist.append('{0} Found Flyers path "{1}"'.format(OK, flyers_FN.getPath()))
-                else:
-                    slist.append('{0} Flyers path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(flyers_FN.getPath()))
-
                 manuals_FN = Asset_path_FN.pjoin('manuals')
-                if manuals_FN.exists():
-                    slist.append('{0} Found Manuals path "{1}"'.format(OK, manuals_FN.getPath()))
-                else:
-                    slist.append('{0} Manuals path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(manuals_FN.getPath()))
-
                 marquees_FN = Asset_path_FN.pjoin('marquees')
-                if marquees_FN.exists():
-                    slist.append('{0} Found Marquees path "{1}"'.format(OK, marquees_FN.getPath()))
-                else:
-                    slist.append('{0} Marquees path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(marquees_FN.getPath()))
-
                 snaps_FN = Asset_path_FN.pjoin('snaps')
-                if snaps_FN.exists():
-                    slist.append('{0} Found Snaps path "{1}"'.format(OK, snaps_FN.getPath()))
-                else:
-                    slist.append('{0} Snaps path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(snaps_FN.getPath()))
-
                 titles_FN = Asset_path_FN.pjoin('titles')
-                if snaps_FN.exists():
-                    slist.append('{0} Found Titles path "{1}"'.format(OK, titles_FN.getPath()))
-                else:
-                    slist.append('{0} Titles path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(titles_FN.getPath()))
-
                 videosnaps_FN = Asset_path_FN.pjoin('videosnaps')
-                if snaps_FN.exists():
-                    slist.append('{0} Found Trailers path "{1}"'.format(OK, videosnaps_FN.getPath()))
-                else:
-                    slist.append('{0} Trailers path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(videosnaps_FN.getPath()))
+
+                check_asset_dir(slist, PCB_FN, 'PCB')
+                check_asset_dir(slist, artpreview_FN, 'Artpreviews')
+                check_asset_dir(slist, artwork_FN, 'Artwork')
+                check_asset_dir(slist, cabinets_FN, 'Cabinets')
+                check_asset_dir(slist, clearlogos_FN, 'Clearlogos')
+                check_asset_dir(slist, cpanels_FN, 'CPanels')
+                check_asset_dir(slist, flyers_FN, 'Flyers')
+                check_asset_dir(slist, manuals_FN, 'Manuals')
+                check_asset_dir(slist, marquees_FN, 'Marquees')
+                check_asset_dir(slist, snaps_FN, 'Snaps')
+                check_asset_dir(slist, titles_FN, 'Titles')
+                check_asset_dir(slist, videosnaps_FN, 'Trailers')
             else:
                 slist.append('{0} MAME Asset path not found'.format(ERR))
         else:
@@ -5147,47 +5117,17 @@ class Main:
 
         # --- CHD path ---
         slist.append('[COLOR orange]MAME optional paths[/COLOR]')
-        if self.settings['chd_path']:
-            if FileName(self.settings['chd_path']).exists():
-                slist.append('{0} MAME CHD path "{1}"'.format(OK, self.settings['chd_path']))
-            else:
-                slist.append('{0} MAME CHD path not found'.format(WARN))
-        else:
-            slist.append('{0} MAME CHD path not set'.format(WARN))
+        check_dir_WARN(slist, self.settings['chd_path'], 'MAME CHD path')
 
         # --- Samples path ---
-        if self.settings['samples_path']:
-            if FileName(self.settings['samples_path']).exists():
-                slist.append('{0} MAME Samples path "{1}"'.format(OK, self.settings['samples_path']))
-            else:
-                slist.append('{0} MAME Samples path not found'.format(WARN))
-        else:
-            slist.append('{0} MAME Samples path not set'.format(WARN))
+        check_dir_WARN(slist, self.settings['samples_path'], 'MAME Samples path')
         slist.append('')
 
         # --- Software Lists paths ---
         slist.append('[COLOR orange]Software List paths[/COLOR]')
-        if self.settings['SL_hash_path']:
-            if FileName(self.settings['SL_hash_path']).exists():
-                slist.append('{0} SL hash path "{1}"'.format(OK, self.settings['SL_hash_path']))
-            else:
-                slist.append('{0} SL hash path not found'.format(WARN))
-        else:
-            slist.append('{0} SL hash path not set'.format(WARN))
-        if self.settings['SL_rom_path']:
-            if FileName(self.settings['SL_rom_path']).exists():
-                slist.append('{0} SL ROM path "{1}"'.format(OK, self.settings['SL_rom_path']))
-            else:
-                slist.append('{0} SL ROM path not found'.format(WARN))
-        else:
-            slist.append('{0} SL ROM path not set'.format(WARN))
-        if self.settings['SL_chd_path']:
-            if FileName(self.settings['SL_chd_path']).exists():
-                slist.append('{0} SL CHD path "{1}"'.format(OK, self.settings['SL_chd_path']))
-            else:
-                slist.append('{0} SL CHD path not found'.format(WARN))
-        else:
-            slist.append('{0} SL CHD path not set'.format(WARN))
+        check_dir_WARN(slist, self.settings['SL_hash_path'], 'SL hash path')
+        check_dir_WARN(slist, self.settings['SL_rom_path'], 'SL ROM path')
+        check_dir_WARN(slist, self.settings['SL_chd_path'], 'SL CHD path')
         slist.append('')
 
         slist.append('[COLOR orange]Software Lists assets[/COLOR]')
@@ -5198,40 +5138,17 @@ class Main:
                 # >> Check that artwork subdirectories exist
                 Asset_path_FN = FileName(self.settings['assets_path'])
 
-                path_FN = Asset_path_FN.pjoin('covers_SL')
-                if path_FN.exists():
-                    slist.append('{0} Found SL Covers path "{1}"'.format(OK, path_FN.getPath()))
-                else:
-                    slist.append('{0} SL Covers path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(path_FN.getPath()))
+                covers_FN = Asset_path_FN.pjoin('covers_SL')
+                manuals_FN = Asset_path_FN.pjoin('manuals_SL')
+                snaps_FN = Asset_path_FN.pjoin('snaps_SL')
+                titles_FN = Asset_path_FN.pjoin('titles_SL')
+                videosnaps_FN = Asset_path_FN.pjoin('videosnaps_SL')
 
-                path_FN = Asset_path_FN.pjoin('manuals_SL')
-                if path_FN.exists():
-                    slist.append('{0} Found SL Manuals path "{1}"'.format(OK, path_FN.getPath()))
-                else:
-                    slist.append('{0} SL Manuals path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(path_FN.getPath()))
-
-                path_FN = Asset_path_FN.pjoin('snaps_SL')
-                if path_FN.exists():
-                    slist.append('{0} Found SL Snaps path "{1}"'.format(OK, path_FN.getPath()))
-                else:
-                    slist.append('{0} SL Snaps path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(path_FN.getPath()))
-
-                path_FN = Asset_path_FN.pjoin('titles_SL')
-                if path_FN.exists():
-                    slist.append('{0} Found SL Titles path "{1}"'.format(OK, path_FN.getPath()))
-                else:
-                    slist.append('{0} SL Titles path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(path_FN.getPath()))
-
-                path_FN = Asset_path_FN.pjoin('videosnaps_SL')
-                if path_FN.exists():
-                    slist.append('{0} Found SL Trailers path "{1}"'.format(OK, path_FN.getPath()))
-                else:
-                    slist.append('{0} SL Trailers path does not exist'.format(WARN))
-                    slist.append('     Tried "{0}"'.format(path_FN.getPath()))
+                check_asset_dir(slist, covers_FN, 'SL Covers')
+                check_asset_dir(slist, manuals_FN, 'SL Manuals')
+                check_asset_dir(slist, snaps_FN, 'SL Snaps')
+                check_asset_dir(slist, titles_FN, 'SL Titles')
+                check_asset_dir(slist, videosnaps_FN, 'SL Trailers')
             else:
                 slist.append('{0} MAME Asset path not found'.format(ERR))
         else:
@@ -5240,80 +5157,20 @@ class Main:
 
         # --- Optional INI files ---
         slist.append('[COLOR orange]INI files[/COLOR]')
-        if self.settings['catver_path']:
-            if FileName(self.settings['catver_path']).exists():
-                slist.append('{0} Catver.ini path "{1}"'.format(OK, self.settings['catver_path']))
-            else:
-                slist.append('{0} Catver.ini not found'.format(WARN))
-        else:
-            slist.append('{0} Catver.ini path not set'.format(WARN))
-        if self.settings['catlist_path']:
-            if FileName(self.settings['catlist_path']).exists():
-                slist.append('{0} Catlist.ini path "{1}"'.format(OK, self.settings['catlist_path']))
-            else:
-                slist.append('{0} Catlist.ini not found'.format(WARN))
-        else:
-            slist.append('{0} Catlist.ini path not set'.format(WARN))
-        if self.settings['genre_path']:
-            if FileName(self.settings['genre_path']).exists():
-                slist.append('{0} Genre.ini path "{1}"'.format(OK, self.settings['genre_path']))
-            else:
-                slist.append('{0} Genre.ini not found'.format(WARN))
-        else:
-            slist.append('{0} Genre.ini path not set'.format(WARN))
-        if self.settings['nplayers_path']:
-            if FileName(self.settings['nplayers_path']).exists():
-                slist.append('{0} NPlayers.ini path "{1}"'.format(OK, self.settings['nplayers_path']))
-            else:
-                slist.append('{0} NPlayers.ini not found'.format(WARN))
-        else:
-            slist.append('{0} NPlayers.ini path not set'.format(WARN))
-        if self.settings['bestgames_path']:
-            if FileName(self.settings['bestgames_path']).exists():
-                slist.append('{0} bestgames.ini path "{1}"'.format(OK, self.settings['bestgames_path']))
-            else:
-                slist.append('{0} bestgames.ini not found'.format(WARN))
-        else:
-            slist.append('{0} bestgames.ini path not set'.format(WARN))
-        if self.settings['series_path']:
-            if FileName(self.settings['series_path']).exists():
-                slist.append('{0} series.ini path "{1}"'.format(OK, self.settings['series_path']))
-            else:
-                slist.append('{0} series.ini not found'.format(WARN))
-        else:
-            slist.append('{0} series.ini path not set'.format(WARN))
+        check_file_WARN(slist, self.settings['catver_path'], 'Catver.ini file')
+        check_file_WARN(slist, self.settings['catlist_path'], 'Catlist.ini file')
+        check_file_WARN(slist, self.settings['genre_path'], 'Genre.ini file')
+        check_file_WARN(slist, self.settings['nplayers_path'], 'NPlayers.ini file')
+        check_file_WARN(slist, self.settings['bestgames_path'], 'bestgames.ini file')
+        check_file_WARN(slist, self.settings['series_path'], 'series.ini file')
         slist.append('')
 
         # --- Optional DAT files ---
         slist.append('[COLOR orange]DAT files[/COLOR]')
-        if self.settings['history_path']:
-            if FileName(self.settings['history_path']).exists():
-                slist.append('{0} History.dat path "{1}"'.format(OK, self.settings['history_path']))
-            else:
-                slist.append('{0} History.dat not found'.format(WARN))
-        else:
-            slist.append('{0} History.dat path not set'.format(WARN))
-        if self.settings['mameinfo_path']:
-            if FileName(self.settings['mameinfo_path']).exists():
-                slist.append('{0} MameINFO.dat path "{1}"'.format(OK, self.settings['mameinfo_path']))
-            else:
-                slist.append('{0} MameINFO.dat not found'.format(WARN))
-        else:
-            slist.append('{0} MameINFO.dat path not set'.format(WARN))
-        if self.settings['gameinit_path']:
-            if FileName(self.settings['gameinit_path']).exists():
-                slist.append('{0} Gameinit.dat path "{1}"'.format(OK, self.settings['gameinit_path']))
-            else:
-                slist.append('{0} Gameinit.dat not found'.format(WARN))
-        else:
-            slist.append('{0} Gameinit.dat path not set'.format(WARN))
-        if self.settings['command_path']:
-            if FileName(self.settings['command_path']).exists():
-                slist.append('{0} Command.dat path "{1}"'.format(OK, self.settings['command_path']))
-            else:
-                slist.append('{0} Command.dat not found'.format(WARN))
-        else:
-            slist.append('{0} Command.dat path not set'.format(WARN))
+        check_file_WARN(slist, self.settings['history_path'], 'History.dat file')
+        check_file_WARN(slist, self.settings['mameinfo_path'], 'MameINFO.dat file')
+        check_file_WARN(slist, self.settings['gameinit_path'], 'Gameinit.dat file')
+        check_file_WARN(slist, self.settings['command_path'], 'Command.dat file')
 
         # --- Display info to the user ---
         self._display_text_window('AML configuration check report', '\n'.join(slist))
