@@ -1450,8 +1450,8 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
         if m_rom['type'] == ROM_TYPE_DISK: continue
 
         # >> Process ROM ZIP files
-        zip_name = m_rom['location'].split('/')[0]
-        zip_FN = FileName(settings['rom_path']).pjoin(zip_name + '.zip')
+        set_name = m_rom['location'].split('/')[0]
+        zip_FN = FileName(settings['rom_path']).pjoin(set_name + '.zip')
         zip_path = zip_FN.getPath()
 
         # >> ZIP file encountered for the first time. Skip ZIP files already in the cache.
@@ -1485,12 +1485,13 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
     # --- Audit ROM by ROM ---
     for m_rom in rom_list:
         if m_rom['type'] == ROM_TYPE_DISK:
-            machine_name = m_rom['location'].split('/')[0]
-            disk_name    = m_rom['location'].split('/')[1]
+            split_list = m_rom['location'].split('/')
+            set_name  = split_list[0]
+            disk_name = split_list[1]
             # log_debug('Testing CHD {0}'.format(m_rom['name']))
             # log_debug('location {0}'.format(m_rom['location']))
-            # log_debug('machine_name "{0}"'.format(machine_name))
-            # log_debug('disk_name    "{0}"'.format(disk_name))
+            # log_debug('set_name  "{0}"'.format(set_name))
+            # log_debug('disk_name "{0}"'.format(disk_name))
 
             # >> Invalid CHDs
             if not m_rom['sha1']:
@@ -1499,7 +1500,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 continue
 
             # >> Test if DISK file exists
-            chd_FN = FileName(settings['chd_path']).pjoin(machine_name).pjoin(disk_name + '.chd')
+            chd_FN = FileName(settings['chd_path']).pjoin(set_name).pjoin(disk_name + '.chd')
             # log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
             if not chd_FN.exists():
                 m_rom['status'] = AUDIT_STATUS_CHD_NO_FOUND
@@ -1525,11 +1526,12 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
             m_rom['status'] = AUDIT_STATUS_OK
             m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
         else:
-            zip_name = m_rom['location'].split('/')[0]
-            rom_name = m_rom['location'].split('/')[1]
+            split_list = m_rom['location'].split('/')
+            set_name = split_list[0]
+            rom_name = split_list[1]
             # log_debug('Testing ROM {0}'.format(m_rom['name']))
             # log_debug('location {0}'.format(m_rom['location']))
-            # log_debug('zip_name {0}'.format(zip_name))
+            # log_debug('set_name {0}'.format(set_name))
             # log_debug('rom_name {0}'.format(rom_name))
 
             # >> Invalid ROMs are not in the ZIP file
@@ -1540,7 +1542,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
 
             # >> Test if ZIP file exists (use cached data). ZIP file must be in the cache always
             # >> at this point.
-            zip_FN = FileName(settings['rom_path']).pjoin(zip_name + '.zip')
+            zip_FN = FileName(settings['rom_path']).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('ZIP {0}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
@@ -1665,13 +1667,14 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
     # >> Audit ROM by ROM
     for m_rom in rom_list:
         if m_rom['type'] == ROM_TYPE_DISK:
-            SL_name   = m_rom['location'].split('/')[0]
-            rom_name  = m_rom['location'].split('/')[1]
-            disk_name = m_rom['location'].split('/')[2]
+            split_list = m_rom['location'].split('/')
+            SL_name   = split_list[0]
+            item_name = split_list[1]
+            disk_name = split_list[2]
             # log_debug('Testing CHD "{0}"'.format(m_rom['name']))
             # log_debug('location "{0}"'.format(m_rom['location']))
             # log_debug('SL_name   "{0}"'.format(SL_name))
-            # log_debug('rom_name  "{0}"'.format(rom_name))
+            # log_debug('item_name "{0}"'.format(item_name))
             # log_debug('disk_name "{0}"'.format(disk_name))
 
             # >> Invalid CHDs
@@ -1681,10 +1684,25 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
                 continue
 
             # >> Test if DISK file exists
-            chd_FN = FileName(settings['SL_chd_path']).pjoin(SL_name).pjoin(rom_name).pjoin(disk_name + '.chd')
+            chd_FN = FileName(settings['SL_chd_path']).pjoin(SL_name).pjoin(item_name).pjoin(disk_name + '.chd')
             # log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
             if not chd_FN.exists():
                 m_rom['status'] = AUDIT_STATUS_CHD_NO_FOUND
+                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                continue
+
+            # >> Open CHD file and check SHA1 hash.
+            chd_info = _mame_stat_chd(chd_FN.getPath())
+            if chd_info['status'] == CHD_BAD_CHD:
+                m_rom['status'] = AUDIT_STATUS_BAD_CHD_FILE
+                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                continue
+            if chd_info['status'] == CHD_BAD_VERSION:
+                m_rom['status'] = AUDIT_STATUS_CHD_BAD_VERSION
+                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                continue
+            if chd_info['sha1'] != m_rom['sha1']:
+                m_rom['status'] = AUDIT_STATUS_CHD_BAD_SHA1
                 m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
                 continue
 
@@ -1693,14 +1711,14 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
             m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
         else:
             split_list = m_rom['location'].split('/')
-            SL_name  = split_list[0]
-            zip_name = split_list[1] + '.zip'
-            rom_name = split_list[2]
+            SL_name   = split_list[0]
+            item_name = split_list[1]
+            rom_name  = split_list[2]
             # log_debug('Testing ROM "{0}"'.format(m_rom['name']))
             # log_debug('location "{0}"'.format(m_rom['location']))
-            # log_debug('SL_name  "{0}"'.format(SL_name))
-            # log_debug('zip_name "{0}"'.format(zip_name))
-            # log_debug('rom_name "{0}"'.format(rom_name))
+            # log_debug('SL_name   "{0}"'.format(SL_name))
+            # log_debug('item_name "{0}"'.format(item_name))
+            # log_debug('rom_name  "{0}"'.format(rom_name))
 
             # >> Invalid ROMs are not in the ZIP file
             if not m_rom['crc']:
@@ -1709,7 +1727,7 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
                 continue
 
             # >> Test if ZIP file exists
-            zip_FN = FileName(settings['SL_rom_path']).pjoin(SL_name).pjoin(zip_name)
+            zip_FN = FileName(settings['SL_rom_path']).pjoin(SL_name).pjoin(item_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('zip_FN P {0}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
