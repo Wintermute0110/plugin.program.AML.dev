@@ -7,7 +7,11 @@ WIP      Check out the ListItem constructor offscreen parameter in Leia. It can 
          See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
          and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
 
-WIP      Improve the Custom Filters (add more filtering options).
+WIP      Improve the Custom Filters (add more filtering options). Have
+
+WIP      Import the number of supported PDF filters.
+
+WIP      When displaying manuals use cached extracted images if they exist.
 
 WIP      Support for CBZ/CBR manuals.
 

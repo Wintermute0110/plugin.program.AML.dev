@@ -1,0 +1,56 @@
+<!--
+    AML XML MAME filter reference
+    Currently only the <Driver> filter is implemented.
+-->
+<Advanced_MAME_Launcher_custom_filters>
+<MAMEFilter>
+    <Name>Example filter</Name>
+
+    <!-- Separate multiple options with , -->
+    <Options>NoMature, NoSamples, NoMechanical, NoImperfect, NoNonworking</Options>
+
+    <!--
+        As shown in "Machines by Driver" filter.
+        If multiple tags only last one is used.
+        Operators: and, or, not, '(', ')'
+    -->
+    <Driver>cps1.cpp or cps2.cpp</Driver>
+
+    <!--
+        As shown in "Machines by Category (Genre)" filter.
+        If multiple tags only last one is used.
+        Operators: and, or, not, '(', ')'
+    -->
+    <Genre>Driving and "Board Game"</Genre>
+
+    <!--
+        As shown in "Machines by Control Type (Compact)" filter.
+        If multiple tags only last one is used.
+        Operators: and, or, not, '(', ')'
+    -->
+    <Controls>not Mahjong and not Gambling and not Hanafuda and not "Only Buttons"</Controls>
+
+    <!--
+        As shown in "Machines by Device (Compact)" filter.
+        If multiple tags only last one is used.
+        Operators: and, or, not, '(', ')'
+    -->
+    <Devices>Cartridge and Harddisk</Devices>
+
+    <!--
+        As shown in "Machines by Year" filter.
+        If multiple tags only last one is used.
+        Operators: ==, >, <, >=, <=, and, or, not, '(', ')'
+    -->
+    <Year>year >= 1990 and year &lt; 2000</Year>
+
+    <!-- Separate multiple machines with ','. Multiple <Include> tags allowed -->
+    <Include>005, 100lions, 10yard</Include>
+
+    <!-- Separate multiple machines with ','. Multiple <Include> tags allowed -->
+    <Exclude>005, 100lions, 10yard</Exclude>
+
+    <!-- Only 1 machine per <Change> tag. There may be multiple <Change> tags -->
+    <Change>xxxxx with yyyyy</Change>
+</MAMEFilter>
+</Advanced_MAME_Launcher_custom_filters>

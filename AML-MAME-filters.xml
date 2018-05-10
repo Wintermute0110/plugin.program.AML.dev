@@ -17,32 +17,6 @@
 <DEFINE name="SONY_DRIVERS">zn.cpp</DEFINE>
 
 <!--
-    Complete filter example
-    Currently only the <Driver> filter is implemented.
--->
-<MAMEFilter>
-    <Name>Example filter</Name>
-    <!-- Separate multiple options with , -->
-    <Options>NoMature, NoSamples, NoMechanical, NoImperfect, NoNonworking</Options>
-    <!-- As shown in "Machines by Driver" filter -->
-    <Driver>cps1.cpp or cps2.cpp</Driver>
-    <!-- As shown in "Machines by Category (Genre)" filter -->
-    <Genre>Driving and "Board Game"</Genre>
-    <!-- As shown in "Machines by Control Type (Compact)" filter -->
-    <Controls>not Mahjong and not Gambling and not Hanafuda and not "Only Buttons"</Controls>
-    <!-- As shown in "Machines by Device (Compact)" filter -->
-    <Devices>Cartridge and Harddisk</Devices>
-    <!-- As shown in "Machines by Year" filter -->
-    <Year>year >= 1990 and year &lt; 2000</Year>
-    <!-- Separate multiple machines with , -->
-    <Include>005, 100lions, 10yard</Include>
-    <!-- Separate multiple machines with , -->
-    <Exclude>005, 100lions, 10yard</Exclude>
-    <!-- Only 1 machine per <Change> tag -->
-    <Change>xxxxx with yyyyy</Change>
-</MAMEFilter>
-
-<!--
     Filter definitions
 -->
 <MAMEFilter>
