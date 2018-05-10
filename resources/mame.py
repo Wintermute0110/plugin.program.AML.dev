@@ -910,14 +910,20 @@ def _mame_stat_chd(chd_path):
             log_debug('tag           "{0}"'.format(tag))
             log_debug('length        {0}'.format(length))
             log_debug('version       {0}'.format(version))
+            log_debug('flags         {0}'.format(flags))
+            log_debug('compression   {0}'.format(compression))
+            log_debug('totalhunks    {0}'.format(totalhunks))
+            log_debug('logicalbytes  {0}'.format(logicalbytes))
+            log_debug('metaoffset    {0}'.format(metaoffset))
+            log_debug('hunkbytes     {0}'.format(hunkbytes))
             log_debug('rawsha1       "{0}"'.format(rawsha1))
             log_debug('sha1          "{0}"'.format(sha1))
             log_debug('parentsha1    "{0}"'.format(parentsha1))
 
-        # >> The CHD SHA1 string storet in MAME -listxml is the sha1 field (combined raw+meta SHA1).
+        # >> The CHD SHA1 string storet in MAME -listxml is the rawsha1 field in V4 CHDs.
         chd_info['status']  = CHD_OK
         chd_info['version'] = version
-        chd_info['sha1']    = sha1
+        chd_info['sha1']    = rawsha1
     elif version == 5:
         if __debug_this_function: log_debug('Reading V5 CHD header')
         chd_header_v5_str = '>8sII16sQQQII20s20s20s'
