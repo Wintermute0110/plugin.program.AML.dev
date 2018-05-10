@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 #
 # Clean uneeded files to pack addon ZIP for release.
 #
