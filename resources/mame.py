@@ -41,7 +41,25 @@ from disk_IO import *
 # >> Drivers are located in https://github.com/mamedev/mame/blob/master/src/mame/drivers/<driver_name>.cpp
 mame_driver_name_dic = {
     # --- Atari ---
-    'atetris.cpp' : 'Atari Tetris hardware',
+    'atari_s1.cpp' : 'Atari Generation/System 1',
+    'atari_s2.cpp' : 'Atari Generation/System 2 and 3',
+    'atarifb.cpp'  : 'Atari Football hardware',
+    'atarittl.cpp' : 'Atari / Kee Games Driver',
+    'asteroid.cpp' : 'Atari Asteroids hardware',
+    'atetris.cpp'  : 'Atari Tetris hardware',
+    # 'avalnche.cpp' : 'Atari XXXXX',
+    # 'bzone.cpp'    : 'Atari XXXXX',
+    # 'bwidow.cpp'   : 'Atari XXXXX',
+    # 'boxer.cpp'    : 'Atari XXXXX',
+    # 'canyon.cpp'   : 'Atari XXXXX',
+    # 'cball.cpp'    : 'Atari XXXXX',
+    # 'ccastles.cpp' : 'Atari XXXXX',
+    'centiped.cpp' : 'Atari Centipede hardware',
+    # 'cloak.cpp'    : 'Atari XXXXX',
+    # 'destroyr.cpp' : 'Atari XXXXX',
+    # 'mhavoc.cpp'   : 'Atari XXXXX',
+    # 'mgolf.cpp'    : 'Atari XXXXX',
+    'pong.cpp'     : 'Atari Pong hardware',
 
     # --- Capcom ---
     '1942.cpp'   : 'Capcom 1942',

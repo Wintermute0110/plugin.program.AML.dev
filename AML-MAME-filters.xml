@@ -2,7 +2,7 @@
     Example Advanced MAME Launcher custom filters
 -->
 <Advanced_MAME_Launcher_custom_filters>
-<DEFINE name="ATARI_DRIVERS">atetris.cpp</DEFINE>
+<DEFINE name="ATARI_DRIVERS">atari_s1.cpp or atari_s2.cpp or atarifb.cpp or atarittl.cpp or asteroid.cpp or atetris.cpp or avalnche.cpp or bzone.cpp or bwidow.cpp or boxer.cpp or canyon.cpp or cball.cpp or ccastles.cpp or centiped.cpp or cloak.cpp or destroyr.cpp or mhavoc.cpp or mgolf.cpp or pong.cpp</DEFINE>
 <DEFINE name="CAPCOM_DRIVERS">1942.cpp or 1943.cpp or capcom.cpp or gng.cpp or cps1.cpp or cps2.cpp or cps3.cpp</DEFINE>
 <DEFINE name="KONAMI_DRIVERS">88games.cpp or ajax.cpp or aliens.cpp or asterix.cpp or konamigv.cpp or konblands.cpp or konamigx.cpp or konamim2.cpp</DEFINE>
 <DEFINE name="MIDWAY_DRIVERS">midtunit.cpp or midvunit.cpp or midwunit.cpp or midxunit.cpp or midyunit.cpp or midzeus.cpp</DEFINE>
