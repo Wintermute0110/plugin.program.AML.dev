@@ -1344,6 +1344,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
         zip_name = m_rom['location'].split('/')[0]
         zip_FN = FileName(settings['rom_path']).pjoin(zip_name + '.zip')
         zip_path = zip_FN.getPath()
+
         # >> ZIP file encountered for the first time. Skip ZIP files already in the cache.
         if zip_path not in z_cache_status:
             if zip_FN.exists():
@@ -1494,6 +1495,49 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
 # SL ROM/CHD audit code
 # -------------------------------------------------------------------------------------------------
 def mame_audit_SL_machine(settings, rom_list, audit_dic):
+    # --- Cache the ROM set ZIP files and detect wrong named files by CRC ---
+    # >> Look at mame_audit_MAME_machine() for comments.
+    z_cache = {}
+    z_cache_status = {}
+    for m_rom in rom_list:
+        # >> Skip CHDs
+        if m_rom['type'] == ROM_TYPE_DISK: continue
+
+        # >> Process ROM ZIP files
+        split_list = m_rom['location'].split('/')
+        SL_name  = split_list[0]
+        zip_name = split_list[1] + '.zip'
+        zip_FN = FileName(settings['SL_rom_path']).pjoin(SL_name).pjoin(zip_name)
+        zip_path = zip_FN.getPath()
+
+        # >> ZIP file encountered for the first time. Skip ZIP files already in the cache.
+        if zip_path not in z_cache_status:
+            if zip_FN.exists():
+                # >> Scan files in ZIP file and put them in the cache
+                # log_debug('Caching ZIP file {0}'.format(zip_path))
+                try:
+                    zip_f = z.ZipFile(zip_path, 'r')
+                except z.BadZipfile as e:
+                    z_cache_status[zip_path] = BAD_ZIP_FILE
+                    continue
+                # log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
+                zip_file_dic = {}
+                for zfile in zip_f.namelist():
+                    # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
+                    # >> However, MAME encodes it as an hexadecimal number: CRC32 0123abcd
+                    z_info = zip_f.getinfo(zfile)
+                    z_info_file_size = z_info.file_size
+                    z_info_crc_hex_str = '{0:08x}'.format(z_info.CRC)
+                    zip_file_dic[zfile] = {'size' : z_info_file_size, 'crc' : z_info_crc_hex_str}
+                    # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
+                    # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
+                zip_f.close()
+                z_cache[zip_path] = zip_file_dic
+                z_cache_status[zip_path] = ZIP_FILE_OK
+            else:
+                # >> Mark ZIP file as not found
+                z_cache_status[zip_path] = ZIP_NOT_FOUND
+
     # >> Audit ROM by ROM
     for m_rom in rom_list:
         if m_rom['type'] == ROM_TYPE_DISK:
@@ -1524,9 +1568,10 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
             m_rom['status'] = AUDIT_STATUS_OK
             m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
         else:
-            SL_name  = m_rom['location'].split('/')[0]
-            zip_name = m_rom['location'].split('/')[1] + '.zip'
-            rom_name = m_rom['location'].split('/')[2]
+            split_list = m_rom['location'].split('/')
+            SL_name  = split_list[0]
+            zip_name = split_list[1] + '.zip'
+            rom_name = split_list[2]
             # log_debug('Testing ROM "{0}"'.format(m_rom['name']))
             # log_debug('location "{0}"'.format(m_rom['location']))
             # log_debug('SL_name  "{0}"'.format(SL_name))
@@ -1541,46 +1586,47 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
 
             # >> Test if ZIP file exists
             zip_FN = FileName(settings['SL_rom_path']).pjoin(SL_name).pjoin(zip_name)
+            zip_path = zip_FN.getPath()
             # log_debug('zip_FN P {0}'.format(zip_FN.getPath()))
-            if not zip_FN.exists():
+            if z_cache_status[zip_path] == ZIP_NOT_FOUND:
                 m_rom['status'] = AUDIT_STATUS_ZIP_NO_FOUND
                 m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
                 continue
-
-            # >> Open ZIP file and get list of files
-            try:
-                zip_f = z.ZipFile(zip_FN.getPath(), 'r')
-            except z.BadZipfile as e:
+            elif z_cache_status[zip_path] == BAD_ZIP_FILE:
                 m_rom['status'] = AUDIT_STATUS_BAD_ZIP_FILE
                 m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
                 continue
-            z_file_list = zip_f.namelist()
-            # log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
-            if not rom_name in z_file_list:
-                zip_f.close()
-                m_rom['status'] = AUDIT_STATUS_ROM_NOT_IN_ZIP
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-                continue
+            # >> ZIP file is good and data was cached.
+            zip_file_dic = z_cache[zip_path]
 
-            # >> Get ZIP file object and test size and CRC
-            # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
-            # >> However, MAME encodes it as an hexadecimal number: CRC32 0123abcd
-            z_info = zip_f.getinfo(rom_name)
-            z_info_file_size = z_info.file_size
-            z_info_crc_hex_str = '{0:08x}'.format(z_info.CRC)
-            zip_f.close()
-            # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_info_crc_hex_str, z_info_file_size))
-            # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], m_rom['size']))
-            if z_info_crc_hex_str != m_rom['crc']:
-                m_rom['status'] = AUDIT_STATUS_ROM_BAD_CRC
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-                # log_debug('{0}'.format(AUDIT_STATUS_ROM_BAD_CRC))
-                continue
-            if z_info_file_size != m_rom['size']:
-                m_rom['status'] = AUDIT_STATUS_ROM_BAD_SIZE
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-                # log_debug('{0}'.format(AUDIT_STATUS_ROM_BAD_SIZE))
-                continue
+            # >> At this point the ZIP file is in the cache (if it was open)
+            if rom_name in zip_file_dic:
+                # >> File has correct name
+                if zip_file_dic[rom_name]['size'] != m_rom['size']:
+                    m_rom['status'] = AUDIT_STATUS_ROM_BAD_SIZE
+                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                    continue
+                if zip_file_dic[rom_name]['crc'] != m_rom['crc']:
+                    m_rom['status'] = AUDIT_STATUS_ROM_BAD_CRC
+                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                    continue
+            else:
+                # >> File not found by filename. Check if it has renamed by looking at CRC.
+                rom_OK_name = ''
+                for fn in zip_file_dic:
+                    if m_rom['crc'] == zip_file_dic[fn]['crc']:
+                        rom_OK_name = fn
+                        break
+                if rom_OK_name:
+                    # >> File found by CRC
+                    m_rom['status'] = AUDIT_STATUS_OK_WRONG_NAME_ROM
+                    m_rom['status_colour'] = '[COLOR orange]OK (named {0})[/COLOR]'.format(rom_OK_name)
+                    continue
+                else:
+                    # >> ROM not in ZIP (not even under other filename)
+                    m_rom['status'] = AUDIT_STATUS_ROM_NOT_IN_ZIP
+                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                    continue
 
             # >> ROM is OK
             m_rom['status'] = AUDIT_STATUS_OK
@@ -1607,7 +1653,8 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
         else:
             audit_dic['machine_has_ROMs'] = True
             if m_rom['status'] == AUDIT_STATUS_OK or \
-               m_rom['status'] == AUDIT_STATUS_OK_INVALID_ROM:
+               m_rom['status'] == AUDIT_STATUS_OK_INVALID_ROM or \
+               m_rom['status'] == AUDIT_STATUS_OK_WRONG_NAME_ROM:
                 ROM_OK_status_list.append(True)
             else:
                 ROM_OK_status_list.append(False)
