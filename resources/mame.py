@@ -836,7 +836,7 @@ def mame_load_Command_DAT(filename):
 # CHD manipulation functions
 # -------------------------------------------------------------------------------------------------
 # Reference in https://github.com/rtissera/libchdr/blob/master/src/chd.h
-# Reference in MAME source code.
+# Reference in https://github.com/mamedev/mame/blob/master/src/lib/util/chd.h
 #
 # Open CHD and return stat information.
 #
@@ -867,11 +867,10 @@ def _mame_stat_chd(chd_path):
         chd_info['status'] = CHD_BAD_CHD
 
         return chd_info
-    chd_common_data = chd_data_str[0:16]
 
     # --- Parse CHD header ---
     # >> All values in the CHD header are stored in big endian!
-    h_tuple = struct.unpack('>8sII', chd_common_data)
+    h_tuple = struct.unpack('>8sII', chd_data_str[0:16])
     tag     = h_tuple[0]
     length  = h_tuple[1]
     version = h_tuple[2]
@@ -881,22 +880,44 @@ def _mame_stat_chd(chd_path):
         log_debug('_mame_stat_chd() Version {0}'.format(version))
 
     # >> Discard very old CHD that don't have SHA1 hash. Older version used MD5.
-    if version == 1 or version == 2:
+    if version == 1 or version == 2 or version == 3:
         chd_info['status'] = CHD_BAD_VERSION
         chd_info['version'] = version
         return chd_info
 
     # >> Read the whole header (must consider V3, V4 and V5)
-    if version == 3:
-        if __debug_this_function: log_debug('Reading V3 CHD header')
-
-        raise TypeError('Unsuported version = {0}'.format(version))
-
-    elif version == 4:
+    # >> NOTE In MAME 0.196 some CHDs have version 4, most have version 5, version 3 is obsolete
+    if version == 4:
         if __debug_this_function: log_debug('Reading V4 CHD header')
+        chd_header_v4_str = '>8sIIIIIQQI20s20s20s'
+        header_size = struct.calcsize(chd_header_v4_str)
+        t = struct.unpack(chd_header_v4_str, chd_data_str[0:108])
+        tag          = t[0]
+        length       = t[1]
+        version      = t[2]
+        flags        = t[3]
+        compression  = t[4]
+        totalhunks   = t[5]
+        logicalbytes = t[6]
+        metaoffset   = t[7]
+        hunkbytes    = t[8]
+        rawsha1      = binascii.b2a_hex(t[9])
+        sha1         = binascii.b2a_hex(t[10])
+        parentsha1   = binascii.b2a_hex(t[11])
 
-        raise TypeError('Unsuported version = {0}'.format(version))
+        if __debug_this_function:
+            log_debug('V4 header size = {0}'.format(header_size))
+            log_debug('tag           "{0}"'.format(tag))
+            log_debug('length        {0}'.format(length))
+            log_debug('version       {0}'.format(version))
+            log_debug('rawsha1       "{0}"'.format(rawsha1))
+            log_debug('sha1          "{0}"'.format(sha1))
+            log_debug('parentsha1    "{0}"'.format(parentsha1))
 
+        # >> The CHD SHA1 string storet in MAME -listxml is the sha1 field (combined raw+meta SHA1).
+        chd_info['status']  = CHD_OK
+        chd_info['version'] = version
+        chd_info['sha1']    = sha1
     elif version == 5:
         if __debug_this_function: log_debug('Reading V5 CHD header')
         chd_header_v5_str = '>8sII16sQQQII20s20s20s'
