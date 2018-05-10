@@ -1314,16 +1314,63 @@ def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, p
 # header and verify it. See:
 # http://www.mameworld.info/ubbthreads/showflat.php?Cat=&Number=342940&page=0&view=expanded&sb=5&o=&vc=1
 #
+ZIP_NOT_FOUND = 0
+BAD_ZIP_FILE  = 1
+ZIP_FILE_OK   = 2
 def mame_audit_MAME_machine(settings, rom_list, audit_dic):
-    # --- Cache the opened ZIP files and detect wrong named files by CRC ---
+    # --- Cache the ROM set ZIP files and detect wrong named files by CRC ---
+    # 1) Traverse ROMs, determine the set ZIP files, open ZIP files and put ZIPs in the cache.
+    # 2) If a ZIP file is not in the cache is because the ZIP file was not found 
+    # 3) z_cache_exists is used to check if the ZIP file has been found the first time or not.
+    #
     # z_cache = {
-    #     zip_filename : {
+    #     'zip_filename' : {
     #         'fname' : {'size' : int, 'crc' : str},
     #         'fname' : {'size' : int, 'crc' : str}, ...
     #     }
     # }
     #
+    # z_cache_status = {
+    #      'zip_filename' : ZIP_NOT_FOUND, BAD_ZIP_FILE, ZIP_FILE_OK
+    # }
+    #
     z_cache = {}
+    z_cache_status = {}
+    for m_rom in rom_list:
+        # >> Skip CHDs
+        if m_rom['type'] == ROM_TYPE_DISK: continue
+
+        # >> Process ROM ZIP files
+        zip_name = m_rom['location'].split('/')[0]
+        zip_FN = FileName(settings['rom_path']).pjoin(zip_name + '.zip')
+        zip_path = zip_FN.getPath()
+        # >> ZIP file encountered for the first time. Skip ZIP files already in the cache.
+        if zip_path not in z_cache_status:
+            if zip_FN.exists():
+                # >> Scan files in ZIP file and put them in the cache
+                # log_debug('Caching ZIP file {0}'.format(zip_path))
+                try:
+                    zip_f = z.ZipFile(zip_path, 'r')
+                except z.BadZipfile as e:
+                    z_cache_status[zip_path] = BAD_ZIP_FILE
+                    continue
+                # log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
+                zip_file_dic = {}
+                for zfile in zip_f.namelist():
+                    # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
+                    # >> However, MAME encodes it as an hexadecimal number: CRC32 0123abcd
+                    z_info = zip_f.getinfo(zfile)
+                    z_info_file_size = z_info.file_size
+                    z_info_crc_hex_str = '{0:08x}'.format(z_info.CRC)
+                    zip_file_dic[zfile] = {'size' : z_info_file_size, 'crc' : z_info_crc_hex_str}
+                    # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
+                    # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
+                zip_f.close()
+                z_cache[zip_path] = zip_file_dic
+                z_cache_status[zip_path] = ZIP_FILE_OK
+            else:
+                # >> Mark ZIP file as not found
+                z_cache_status[zip_path] = ZIP_NOT_FOUND
 
     # --- Audit ROM by ROM ---
     for m_rom in rom_list:
@@ -1366,41 +1413,21 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
                 continue
 
-            # >> Test if ZIP file exists
+            # >> Test if ZIP file exists (use cached data). ZIP file must be in the cache always
+            # >> at this point.
             zip_FN = FileName(settings['rom_path']).pjoin(zip_name + '.zip')
+            zip_path = zip_FN.getPath()
             # log_debug('ZIP {0}'.format(zip_FN.getPath()))
-            if not zip_FN.exists():
+            if z_cache_status[zip_path] == ZIP_NOT_FOUND:
                 m_rom['status'] = AUDIT_STATUS_ZIP_NO_FOUND
                 m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
                 continue
-
-            # --- Open ZIP file, get list of files and put in the cache ---
-            # Once the ZIP file is openen it will be in the cache for the rest of the function
-            # life time.
-            zip_path = zip_FN.getPath()
-            if zip_path not in z_cache:
-                # log_debug('Caching ZIP file {0}'.format(zip_path))
-                try:
-                    zip_f = z.ZipFile(zip_path, 'r')
-                except z.BadZipfile as e:
-                    m_rom['status'] = AUDIT_STATUS_BAD_ZIP_FILE
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-                    continue
-                # log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
-                zip_file_dic = {}
-                for zfile in zip_f.namelist():
-                    # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
-                    # >> However, MAME encodes it as an hexadecimal number: CRC32 0123abcd
-                    z_info = zip_f.getinfo(zfile)
-                    z_info_file_size = z_info.file_size
-                    z_info_crc_hex_str = '{0:08x}'.format(z_info.CRC)
-                    zip_file_dic[zfile] = {'size' : z_info_file_size, 'crc' : z_info_crc_hex_str}
-                    # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
-                    # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
-                zip_f.close()
-                z_cache[zip_path] = zip_file_dic
-            else:
-                zip_file_dic = z_cache[zip_path]
+            elif z_cache_status[zip_path] == BAD_ZIP_FILE:
+                m_rom['status'] = AUDIT_STATUS_BAD_ZIP_FILE
+                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                continue
+            # >> ZIP file is good and data was cached.
+            zip_file_dic = z_cache[zip_path]
 
             # >> At this point the ZIP file is in the cache (if it was open)
             if rom_name in zip_file_dic:
