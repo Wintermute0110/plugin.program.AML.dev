@@ -17,6 +17,7 @@
 from __future__ import unicode_literals
 import zipfile as z
 import struct
+import binascii
 import xml.etree.ElementTree as ET
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -827,35 +828,39 @@ def mame_load_Command_DAT(filename):
 #     'sha1'    : string,
 # }
 #
-CHD_OK = 0
-CHD_BAD = 1
+CHD_OK          = 0
+CHD_BAD_CHD     = 1
 CHD_BAD_VERSION = 2
 def _mame_stat_chd(chd_path):
+    __debug_this_function = False
     chd_info = {
-        'status'  : CHD_BAD,
+        'status'  : CHD_OK,
         'version' : 0,
         'sha1'    : '',
     }
 
-    # --- Open CHD file and read first 1024 bytes ---
-    log_debug('_mame_stat_chd() Opening "{0}"'.format(chd_path))
+    # --- Open CHD file and read first 124 bytes ---
+    if __debug_this_function: log_debug('_mame_stat_chd() Opening "{0}"'.format(chd_path))
     try:
         f = open(chd_path, 'rb')
-        chd_data_str = f.read(1024)
+        chd_data_str = f.read(124)
         f.close()
     except IOError as E:
+        chd_info['status'] = CHD_BAD_CHD
+
         return chd_info
+    chd_common_data = chd_data_str[0:16]
 
     # --- Parse CHD header ---
     # >> All values in the CHD header are stored in big endian!
-    tag = chd_data_str[0:8]
-    chd_h_str = '>II'
-    h_tuple = struct.unpack(chd_h_str, chd_data_str[8:15])
-    length = h_tuple[0]
-    version = h_tuple[1]
-    log_debug('_mame_stat_chd() Tag     "{0}"'.format(tag))
-    log_debug('_mame_stat_chd() Length  {0}'.format(length))
-    log_debug('_mame_stat_chd() Version {0}'.format(version))
+    h_tuple = struct.unpack('>8sII', chd_common_data)
+    tag     = h_tuple[0]
+    length  = h_tuple[1]
+    version = h_tuple[2]
+    if __debug_this_function:
+        log_debug('_mame_stat_chd() Tag     "{0}"'.format(tag))
+        log_debug('_mame_stat_chd() Length  {0}'.format(length))
+        log_debug('_mame_stat_chd() Version {0}'.format(version))
 
     # >> Discard very old CHD that don't have SHA1 hash. Older version used MD5.
     if version == 1 or version == 2:
@@ -864,7 +869,55 @@ def _mame_stat_chd(chd_path):
         return chd_info
 
     # >> Read the whole header (must consider V3, V4 and V5)
-    
+    if version == 3:
+        if __debug_this_function: log_debug('Reading V3 CHD header')
+
+        raise TypeError('Unsuported version = {0}'.format(version))
+
+    elif version == 4:
+        if __debug_this_function: log_debug('Reading V4 CHD header')
+
+        raise TypeError('Unsuported version = {0}'.format(version))
+
+    elif version == 5:
+        if __debug_this_function: log_debug('Reading V5 CHD header')
+        chd_header_v5_str = '>8sII16sQQQII20s20s20s'
+        header_size = struct.calcsize(chd_header_v5_str)
+        t = struct.unpack(chd_header_v5_str, chd_data_str)
+        tag           = t[0]
+        length        = t[1]
+        version       = t[2]
+        compressors   = t[3]
+        logicalbytes  = t[4]
+        mapoffset     = t[5]
+        metaoffset    = t[6]
+        hunkbytes     = t[7]
+        unitbytes     = t[8]
+        rawsha1       = binascii.b2a_hex(t[9])
+        sha1          = binascii.b2a_hex(t[10])
+        parentsha1    = binascii.b2a_hex(t[11])
+
+        if __debug_this_function:
+            log_debug('V5 header size = {0}'.format(header_size))
+            log_debug('tag           "{0}"'.format(tag))
+            log_debug('length        {0}'.format(length))
+            log_debug('version       {0}'.format(version))
+            log_debug('compressors   "{0}"'.format(compressors))
+            log_debug('logicalbytes  {0}'.format(logicalbytes))
+            log_debug('mapoffset     {0}'.format(mapoffset))
+            log_debug('metaoffset    {0}'.format(metaoffset))
+            log_debug('hunkbytes     {0}'.format(hunkbytes))
+            log_debug('unitbytes     {0}'.format(unitbytes))
+            log_debug('rawsha1       "{0}"'.format(rawsha1))
+            log_debug('sha1          "{0}"'.format(sha1))
+            log_debug('parentsha1    "{0}"'.format(parentsha1))
+
+        # >> The CHD SHA1 string storet in MAME -listxml is the sha1 field (combined raw+meta SHA1).
+        chd_info['status']  = CHD_OK
+        chd_info['version'] = version
+        chd_info['sha1']    = sha1
+    else:
+        raise TypeError('Unsuported version = {0}'.format(version))
 
     return chd_info
 
@@ -1454,20 +1507,19 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 continue
 
             # >> Open CHD file and check SHA1 hash.
-            # _mame_stat_chd() not ready yet. 
-            # chd_info = _mame_stat_chd(chd_FN.getPath())
-            # if chd_info['status'] == CHD_BAD:
-            #     m_rom['status'] = AUDIT_STATUS_BAD_CHD_FILE
-            #     m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-            #     continue
-            # if chd_info['status'] == CHD_BAD_VERSION:
-            #     m_rom['status'] = AUDIT_STATUS_CHD_BAD_VERSION
-            #     m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-            #     continue
-            # if chd_info['sha1'] != m_rom['sha1']:
-            #     m_rom['status'] = AUDIT_STATUS_CHD_BAD_SHA1
-            #     m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
-            #     continue
+            chd_info = _mame_stat_chd(chd_FN.getPath())
+            if chd_info['status'] == CHD_BAD_CHD:
+                m_rom['status'] = AUDIT_STATUS_BAD_CHD_FILE
+                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                continue
+            if chd_info['status'] == CHD_BAD_VERSION:
+                m_rom['status'] = AUDIT_STATUS_CHD_BAD_VERSION
+                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                continue
+            if chd_info['sha1'] != m_rom['sha1']:
+                m_rom['status'] = AUDIT_STATUS_CHD_BAD_SHA1
+                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                continue
 
             # >> DISK is OK
             m_rom['status'] = AUDIT_STATUS_OK
