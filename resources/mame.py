@@ -16,6 +16,7 @@
 # --- Python standard library ---
 from __future__ import unicode_literals
 import zipfile as z
+import struct
 import xml.etree.ElementTree as ET
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -813,6 +814,61 @@ def mame_load_Command_DAT(filename):
     return (proper_idx_list, proper_data_dic, version_str)
 
 # -------------------------------------------------------------------------------------------------
+# CHD manipulation functions
+# -------------------------------------------------------------------------------------------------
+# Reference in https://github.com/rtissera/libchdr/blob/master/src/chd.h
+# Reference in MAME source code.
+#
+# Open CHD and return stat information.
+#
+# chd_info = {
+#     'status'  : CHD_OK or CHD_BAD,
+#     'version' : int,
+#     'sha1'    : string,
+# }
+#
+CHD_OK = 0
+CHD_BAD = 1
+CHD_BAD_VERSION = 2
+def _mame_stat_chd(chd_path):
+    chd_info = {
+        'status'  : CHD_BAD,
+        'version' : 0,
+        'sha1'    : '',
+    }
+
+    # --- Open CHD file and read first 1024 bytes ---
+    log_debug('_mame_stat_chd() Opening "{0}"'.format(chd_path))
+    try:
+        f = open(chd_path, 'rb')
+        chd_data_str = f.read(1024)
+        f.close()
+    except IOError as E:
+        return chd_info
+
+    # --- Parse CHD header ---
+    # >> All values in the CHD header are stored in big endian!
+    tag = chd_data_str[0:8]
+    chd_h_str = '>II'
+    h_tuple = struct.unpack(chd_h_str, chd_data_str[8:15])
+    length = h_tuple[0]
+    version = h_tuple[1]
+    log_debug('_mame_stat_chd() Tag     "{0}"'.format(tag))
+    log_debug('_mame_stat_chd() Length  {0}'.format(length))
+    log_debug('_mame_stat_chd() Version {0}'.format(version))
+
+    # >> Discard very old CHD that don't have SHA1 hash. Older version used MD5.
+    if version == 1 or version == 2:
+        chd_info['status'] = CHD_BAD_VERSION
+        chd_info['version'] = version
+        return chd_info
+
+    # >> Read the whole header (must consider V3, V4 and V5)
+    
+
+    return chd_info
+
+# -------------------------------------------------------------------------------------------------
 # Statistic printing
 # -------------------------------------------------------------------------------------------------
 # >> See https://docs.python.org/2/library/time.html
@@ -1396,6 +1452,22 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 m_rom['status'] = AUDIT_STATUS_CHD_NO_FOUND
                 m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
                 continue
+
+            # >> Open CHD file and check SHA1 hash.
+            # _mame_stat_chd() not ready yet. 
+            # chd_info = _mame_stat_chd(chd_FN.getPath())
+            # if chd_info['status'] == CHD_BAD:
+            #     m_rom['status'] = AUDIT_STATUS_BAD_CHD_FILE
+            #     m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+            #     continue
+            # if chd_info['status'] == CHD_BAD_VERSION:
+            #     m_rom['status'] = AUDIT_STATUS_CHD_BAD_VERSION
+            #     m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+            #     continue
+            # if chd_info['sha1'] != m_rom['sha1']:
+            #     m_rom['status'] = AUDIT_STATUS_CHD_BAD_SHA1
+            #     m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+            #     continue
 
             # >> DISK is OK
             m_rom['status'] = AUDIT_STATUS_OK
