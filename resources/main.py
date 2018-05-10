@@ -108,45 +108,49 @@ class AML_Paths:
         self.CACHE_INDEX_PATH = PLUGIN_DATA_DIR.pjoin('MAME_cache_index.json')
 
         # >> Catalogs
-        self.CATALOG_DIR                        = PLUGIN_DATA_DIR.pjoin('catalogs')
-        self.CATALOG_MAIN_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_main_parents.json')
-        self.CATALOG_MAIN_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_main_all.json')
-        self.CATALOG_BINARY_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_binary_parents.json')
-        self.CATALOG_BINARY_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_binary_all.json')
-        self.CATALOG_CATVER_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_catver_parents.json')
-        self.CATALOG_CATVER_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_catver_all.json')
-        self.CATALOG_CATLIST_PARENT_PATH        = self.CATALOG_DIR.pjoin('catalog_catlist_parents.json')
-        self.CATALOG_CATLIST_ALL_PATH           = self.CATALOG_DIR.pjoin('catalog_catlist_all.json')
-        self.CATALOG_GENRE_PARENT_PATH          = self.CATALOG_DIR.pjoin('catalog_genre_parents.json')
-        self.CATALOG_GENRE_ALL_PATH             = self.CATALOG_DIR.pjoin('catalog_genre_all.json')
-        self.CATALOG_NPLAYERS_PARENT_PATH       = self.CATALOG_DIR.pjoin('catalog_nplayers_parents.json')
-        self.CATALOG_NPLAYERS_ALL_PATH          = self.CATALOG_DIR.pjoin('catalog_nplayers_all.json')
-        self.CATALOG_BESTGAMES_PARENT_PATH      = self.CATALOG_DIR.pjoin('catalog_bestgames_parents.json')
-        self.CATALOG_BESTGAMES_ALL_PATH         = self.CATALOG_DIR.pjoin('catalog_bestgames_all.json')
-        self.CATALOG_SERIES_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_series_parents.json')
-        self.CATALOG_SERIES_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_series_all.json')
-        self.CATALOG_MANUFACTURER_PARENT_PATH   = self.CATALOG_DIR.pjoin('catalog_manufacturer_parents.json')
-        self.CATALOG_MANUFACTURER_ALL_PATH      = self.CATALOG_DIR.pjoin('catalog_manufacturer_all.json')
-        self.CATALOG_YEAR_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_year_parents.json')
-        self.CATALOG_YEAR_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_year_all.json')
-        self.CATALOG_DRIVER_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_driver_parents.json')
-        self.CATALOG_DRIVER_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_driver_all.json')
-        self.CATALOG_CONTROL_PARENT_PATH        = self.CATALOG_DIR.pjoin('catalog_control_parents.json')
-        self.CATALOG_CONTROL_ALL_PATH           = self.CATALOG_DIR.pjoin('catalog_control_all.json')
-        self.CATALOG_DISPLAY_TAG_PARENT_PATH    = self.CATALOG_DIR.pjoin('catalog_display_tag_parents.json')
-        self.CATALOG_DISPLAY_TAG_ALL_PATH       = self.CATALOG_DIR.pjoin('catalog_display_tag_all.json')
-        self.CATALOG_DISPLAY_TYPE_PARENT_PATH   = self.CATALOG_DIR.pjoin('catalog_display_type_parents.json')
-        self.CATALOG_DISPLAY_TYPE_ALL_PATH      = self.CATALOG_DIR.pjoin('catalog_display_type_all.json')
-        self.CATALOG_DISPLAY_ROTATE_PARENT_PATH = self.CATALOG_DIR.pjoin('catalog_display_rotate_parents.json')
-        self.CATALOG_DISPLAY_ROTATE_ALL_PATH    = self.CATALOG_DIR.pjoin('catalog_display_rotate_all.json')
-        self.CATALOG_DEVICE_LIST_PARENT_PATH    = self.CATALOG_DIR.pjoin('catalog_device_list_parents.json')
-        self.CATALOG_DEVICE_LIST_ALL_PATH       = self.CATALOG_DIR.pjoin('catalog_device_list_all.json')
-        self.CATALOG_SL_PARENT_PATH             = self.CATALOG_DIR.pjoin('catalog_SL_parents.json')
-        self.CATALOG_SL_ALL_PATH                = self.CATALOG_DIR.pjoin('catalog_SL_all.json')
-        self.CATALOG_SHORTNAME_PARENT_PATH      = self.CATALOG_DIR.pjoin('catalog_shortname_parents.json')
-        self.CATALOG_SHORTNAME_ALL_PATH         = self.CATALOG_DIR.pjoin('catalog_shortname_all.json')
-        self.CATALOG_LONGNAME_PARENT_PATH       = self.CATALOG_DIR.pjoin('catalog_longname_parents.json')
-        self.CATALOG_LONGNAME_ALL_PATH          = self.CATALOG_DIR.pjoin('catalog_longname_all.json')
+        self.CATALOG_DIR                          = PLUGIN_DATA_DIR.pjoin('catalogs')
+        self.CATALOG_MAIN_PARENT_PATH             = self.CATALOG_DIR.pjoin('catalog_main_parents.json')
+        self.CATALOG_MAIN_ALL_PATH                = self.CATALOG_DIR.pjoin('catalog_main_all.json')
+        self.CATALOG_BINARY_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_binary_parents.json')
+        self.CATALOG_BINARY_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_binary_all.json')
+        self.CATALOG_CATVER_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_catver_parents.json')
+        self.CATALOG_CATVER_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_catver_all.json')
+        self.CATALOG_CATLIST_PARENT_PATH          = self.CATALOG_DIR.pjoin('catalog_catlist_parents.json')
+        self.CATALOG_CATLIST_ALL_PATH             = self.CATALOG_DIR.pjoin('catalog_catlist_all.json')
+        self.CATALOG_GENRE_PARENT_PATH            = self.CATALOG_DIR.pjoin('catalog_genre_parents.json')
+        self.CATALOG_GENRE_ALL_PATH               = self.CATALOG_DIR.pjoin('catalog_genre_all.json')
+        self.CATALOG_NPLAYERS_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_nplayers_parents.json')
+        self.CATALOG_NPLAYERS_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_nplayers_all.json')
+        self.CATALOG_BESTGAMES_PARENT_PATH        = self.CATALOG_DIR.pjoin('catalog_bestgames_parents.json')
+        self.CATALOG_BESTGAMES_ALL_PATH           = self.CATALOG_DIR.pjoin('catalog_bestgames_all.json')
+        self.CATALOG_SERIES_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_series_parents.json')
+        self.CATALOG_SERIES_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_series_all.json')
+        self.CATALOG_MANUFACTURER_PARENT_PATH     = self.CATALOG_DIR.pjoin('catalog_manufacturer_parents.json')
+        self.CATALOG_MANUFACTURER_ALL_PATH        = self.CATALOG_DIR.pjoin('catalog_manufacturer_all.json')
+        self.CATALOG_YEAR_PARENT_PATH             = self.CATALOG_DIR.pjoin('catalog_year_parents.json')
+        self.CATALOG_YEAR_ALL_PATH                = self.CATALOG_DIR.pjoin('catalog_year_all.json')
+        self.CATALOG_DRIVER_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_driver_parents.json')
+        self.CATALOG_DRIVER_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_driver_all.json')
+        self.CATALOG_CONTROL_EXPANDED_PARENT_PATH = self.CATALOG_DIR.pjoin('catalog_control_expanded_parents.json')
+        self.CATALOG_CONTROL_EXPANDED_ALL_PATH    = self.CATALOG_DIR.pjoin('catalog_control_expanded_all.json')
+        self.CATALOG_CONTROL_COMPACT_PARENT_PATH  = self.CATALOG_DIR.pjoin('catalog_control_compact_parents.json')
+        self.CATALOG_CONTROL_COMPACT_ALL_PATH     = self.CATALOG_DIR.pjoin('catalog_control_compact_all.json')
+        self.CATALOG_DISPLAY_TAG_PARENT_PATH      = self.CATALOG_DIR.pjoin('catalog_display_tag_parents.json')
+        self.CATALOG_DISPLAY_TAG_ALL_PATH         = self.CATALOG_DIR.pjoin('catalog_display_tag_all.json')
+        self.CATALOG_DISPLAY_TYPE_PARENT_PATH     = self.CATALOG_DIR.pjoin('catalog_display_type_parents.json')
+        self.CATALOG_DISPLAY_TYPE_ALL_PATH        = self.CATALOG_DIR.pjoin('catalog_display_type_all.json')
+        self.CATALOG_DISPLAY_ROTATE_PARENT_PATH   = self.CATALOG_DIR.pjoin('catalog_display_rotate_parents.json')
+        self.CATALOG_DISPLAY_ROTATE_ALL_PATH      = self.CATALOG_DIR.pjoin('catalog_display_rotate_all.json')
+        self.CATALOG_DEVICE_EXPANDED_PARENT_PATH  = self.CATALOG_DIR.pjoin('catalog_device_expanded_parents.json')
+        self.CATALOG_DEVICE_EXPANDED_ALL_PATH     = self.CATALOG_DIR.pjoin('catalog_device_expanded_all.json')
+        self.CATALOG_DEVICE_COMPACT_PARENT_PATH   = self.CATALOG_DIR.pjoin('catalog_device_compact_parents.json')
+        self.CATALOG_DEVICE_COMPACT_ALL_PATH      = self.CATALOG_DIR.pjoin('catalog_device_compact_all.json')
+        self.CATALOG_SL_PARENT_PATH               = self.CATALOG_DIR.pjoin('catalog_SL_parents.json')
+        self.CATALOG_SL_ALL_PATH                  = self.CATALOG_DIR.pjoin('catalog_SL_all.json')
+        self.CATALOG_SHORTNAME_PARENT_PATH        = self.CATALOG_DIR.pjoin('catalog_shortname_parents.json')
+        self.CATALOG_SHORTNAME_ALL_PATH           = self.CATALOG_DIR.pjoin('catalog_shortname_all.json')
+        self.CATALOG_LONGNAME_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_longname_parents.json')
+        self.CATALOG_LONGNAME_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_longname_all.json')
 
         # >> Distributed hashed database
         self.MAIN_DB_HASH_DIR      = PLUGIN_DATA_DIR.pjoin('hash')
@@ -544,27 +548,30 @@ class Main:
         bios_str       = 'Machines [BIOS]'
 
         # >> Cataloged filters (optional)
-        catver_str       = 'Machines by Category (Catver)'
-        catlist_str      = 'Machines by Category (Catlist)'
-        genre_str        = 'Machines by Category (Genre)'
-        NPLayers_str     = 'Machines by Number of players'
-        score_str        = 'Machines by Score'
-        series_str       = 'Machines by Series'
+        catver_str   = 'Machines by Category (Catver)'
+        catlist_str  = 'Machines by Category (Catlist)'
+        genre_str    = 'Machines by Category (Genre)'
+        NPLayers_str = 'Machines by Number of players'
+        score_str    = 'Machines by Score'
+        series_str   = 'Machines by Series'
+
         # >> Cataloged filters (always there)
         # NOTE: use the same names as MAME executable
-        # -listdevices         list available devices
-        # -listslots           list available slots and slot devices
-        # -listmedia           list available media for the system
-        ctype_str        = 'Machines by Control Type'
-        drotation_str    = 'Machines by Display Rotation'
-        dtype_str        = 'Machines by Display Type'
-        device_str       = 'Machines by Device'
-        driver_str       = 'Machines by Driver'
-        shortname_str    = 'Machines by MAME short name'
-        longname_str     = 'Machines by MAME long name'
-        manufacturer_str = 'Machines by Manufacturer'
-        SL_str           = 'Machines by Software List'
-        year_str         = 'Machines by Year'
+        # -listdevices   list available devices                  XML tag <device_ref>
+        # -listslots     list available slots and slot devices   XML tag <slot>
+        # -listmedia     list available media for the system     XML tag <device>
+        ctype_expanded_str  = 'Machines by Controls (Expanded)'
+        ctype_compact_str   = 'Machines by Controls (Compact)'
+        drotation_str       = 'Machines by Display Rotation'
+        dtype_str           = 'Machines by Display Type'
+        device_expanded_str = 'Machines by Device (Expanded)'
+        device_compact_str  = 'Machines by Device (Compact)'
+        driver_str          = 'Machines by Driver'
+        shortname_str       = 'Machines by MAME short name'
+        longname_str        = 'Machines by MAME long name'
+        manufacturer_str    = 'Machines by Manufacturer'
+        SL_str              = 'Machines by Software List'
+        year_str            = 'Machines by Year'
 
         if cache_index_dic and mame_view_mode == VIEW_MODE_FLAT:
             machines_n_str += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Normal']['num_machines'])
@@ -599,16 +606,18 @@ class Main:
             score_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Bestgames']))
             series_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Series']))
             # >> Always there
-            ctype_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Controls']))
-            drotation_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Rotate']))
-            dtype_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Type']))
-            device_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Devices']))
-            driver_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Driver']))
-            manufacturer_str += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Manufacturer']))
-            shortname_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['ShortName']))
-            longname_str     += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['LongName']))
-            SL_str           += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['BySL']))
-            year_str         += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Year']))
+            ctype_expanded_str  += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Controls_Expanded']))
+            ctype_compact_str   += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Controls_Compact']))
+            drotation_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Rotate']))
+            dtype_str           += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Type']))
+            device_expanded_str += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Devices_Expanded']))
+            device_compact_str  += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Devices_Compact']))
+            driver_str          += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Driver']))
+            manufacturer_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Manufacturer']))
+            shortname_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['ShortName']))
+            longname_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['LongName']))
+            SL_str              += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['BySL']))
+            year_str            += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Year']))
 
         # >> If everything deactivated render the main filters so user has access to the context menu.
         big_OR = self.settings['display_main_filters'] or self.settings['display_binary_filters'] or \
@@ -643,10 +652,12 @@ class Main:
             self._render_root_list_row_standard(score_str, self._misc_url_1_arg('catalog', 'Bestgames'))
             self._render_root_list_row_standard(series_str, self._misc_url_1_arg('catalog', 'Series'))
             # >> Cataloged filters (always there)
-            self._render_root_list_row_standard(ctype_str, self._misc_url_1_arg('catalog', 'Controls'))
+            self._render_root_list_row_standard(ctype_expanded_str, self._misc_url_1_arg('catalog', 'Controls_Expanded'))
+            self._render_root_list_row_standard(ctype_compact_str, self._misc_url_1_arg('catalog', 'Controls_Compact'))
             self._render_root_list_row_standard(drotation_str, self._misc_url_1_arg('catalog', 'Display_Rotate'))
             self._render_root_list_row_standard(dtype_str, self._misc_url_1_arg('catalog', 'Display_Type'))
-            self._render_root_list_row_standard(device_str, self._misc_url_1_arg('catalog', 'Devices'))
+            self._render_root_list_row_standard(device_expanded_str, self._misc_url_1_arg('catalog', 'Devices_Expanded'))
+            self._render_root_list_row_standard(device_compact_str, self._misc_url_1_arg('catalog', 'Devices_Compact'))
             self._render_root_list_row_standard(driver_str, self._misc_url_1_arg('catalog', 'Driver'))
             self._render_root_list_row_standard(manufacturer_str, self._misc_url_1_arg('catalog', 'Manufacturer'))
             self._render_root_list_row_standard(shortname_str, self._misc_url_1_arg('catalog', 'ShortName'))
@@ -730,14 +741,16 @@ class Main:
         if self.settings['series_path']:
             self._render_root_list_row_standard('Machines by Series',             self._misc_url_1_arg('catalog', 'Series'))
 
-        self._render_root_list_row_standard('Machines by Manufacturer',     self._misc_url_1_arg('catalog', 'Manufacturer'))
-        self._render_root_list_row_standard('Machines by Year',             self._misc_url_1_arg('catalog', 'Year'))
-        self._render_root_list_row_standard('Machines by Driver',           self._misc_url_1_arg('catalog', 'Driver'))
-        self._render_root_list_row_standard('Machines by Control Type',     self._misc_url_1_arg('catalog', 'Controls'))
-        self._render_root_list_row_standard('Machines by Display Type',     self._misc_url_1_arg('catalog', 'Display_Type'))
-        self._render_root_list_row_standard('Machines by Display Rotation', self._misc_url_1_arg('catalog', 'Display_Rotate'))
-        self._render_root_list_row_standard('Machines by Device',           self._misc_url_1_arg('catalog', 'Devices'))
-        self._render_root_list_row_standard('Machines by Software List',    self._misc_url_1_arg('catalog', 'BySL'))
+        self._render_root_list_row_standard('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
+        self._render_root_list_row_standard('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
+        self._render_root_list_row_standard('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
+        self._render_root_list_row_standard('Machines by Controls (Expanded)', self._misc_url_1_arg('catalog', 'Controls_Expanded'))
+        self._render_root_list_row_standard('Machines by Controls (Compact)',  self._misc_url_1_arg('catalog', 'Controls_Compact'))
+        self._render_root_list_row_standard('Machines by Display Type',        self._misc_url_1_arg('catalog', 'Display_Type'))
+        self._render_root_list_row_standard('Machines by Display Rotation',    self._misc_url_1_arg('catalog', 'Display_Rotate'))
+        self._render_root_list_row_standard('Machines by Device (Expanded)',   self._misc_url_1_arg('catalog', 'Devices_Expanded'))
+        self._render_root_list_row_standard('Machines by Device (Compact)',    self._misc_url_1_arg('catalog', 'Devices_Compact'))
+        self._render_root_list_row_standard('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_skin_dat_slots(self):
