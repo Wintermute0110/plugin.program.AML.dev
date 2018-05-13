@@ -409,6 +409,16 @@ class Main:
             elif command == 'SHOW_SL_FAVS':
                 self._command_show_sl_fav()
 
+            # >> Most and Recently played
+            elif command == 'SHOW_MAME_MOST_PLAYED':
+                self._command_show_mame_most_played()
+            elif command == 'SHOW_MAME_RECENTLY_PLAYED':
+                self._command_show_mame_recently_played()
+            elif command == 'SHOW_SL_MOST_PLAYED':
+                self._command_show_sl_most_played()
+            elif command == 'SHOW_SL_RECENTLY_PLAYED':
+                self._command_show_sl_recently_played()
+
             # >> Custom filters
             elif command == 'SHOW_CUSTOM_FILTERS':
                 self._command_show_custom_filters()
@@ -687,10 +697,10 @@ class Main:
             self._render_root_list_row_standard('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
         if self.settings['display_custom_filters']:
             self._render_root_custom_filter_row('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
-        # self._render_root_list_row_standard('{Most played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
-        # self._render_root_list_row_standard('{Recently played MAME machines}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
-        # self._render_root_list_row_standard('{Most played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
-        # self._render_root_list_row_standard('{Recently played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+        self._render_root_list_row_standard('{Most played MAME machines}', self._misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'))
+        self._render_root_list_row_standard('{Recently played MAME machines}', self._misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'))
+        self._render_root_list_row_standard('{Most played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'))
+        self._render_root_list_row_standard('{Recently played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     #
@@ -3622,6 +3632,25 @@ class Main:
         # --- Add row ---
         URL = self._misc_url_4_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', ROM_name, 'location', LOCATION_SL_FAVS)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
+
+    # ---------------------------------------------------------------------------------------------
+    # Most/Recently Played MAME/SL machines/SL items
+    # ---------------------------------------------------------------------------------------------
+    def _command_show_mame_most_played(self):
+        kodi_dialog_OK('Not implemented yet, sorry.')
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _command_show_mame_recently_played(self):
+        kodi_dialog_OK('Not implemented yet, sorry.')
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _command_show_sl_most_played(self):
+        kodi_dialog_OK('Not implemented yet, sorry.')
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _command_show_sl_recently_played(self):
+        kodi_dialog_OK('Not implemented yet, sorry.')
+        xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     # ---------------------------------------------------------------------------------------------
     # Custom MAME filters
