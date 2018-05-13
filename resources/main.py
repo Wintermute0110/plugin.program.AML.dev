@@ -542,10 +542,10 @@ class Main:
         devices_str    = 'Device machines'
 
         # >> Binary filters
+        bios_str       = 'Machines [BIOS]'
         chd_str        = 'Machines [with CHDs]'
         samples_str    = 'Machines [with Samples]'
         softlists_str  = 'Machines [with Software Lists]'
-        bios_str       = 'Machines [BIOS]'
 
         # >> Cataloged filters (optional)
         catver_str   = 'Machines by Category (Catver)'
@@ -562,62 +562,64 @@ class Main:
         # -listmedia     list available media for the system     XML tag <device>
         ctype_expanded_str  = 'Machines by Controls (Expanded)'
         ctype_compact_str   = 'Machines by Controls (Compact)'
-        drotation_str       = 'Machines by Display Rotation'
-        dtype_str           = 'Machines by Display Type'
         device_expanded_str = 'Machines by Device (Expanded)'
         device_compact_str  = 'Machines by Device (Compact)'
+        drotation_str       = 'Machines by Display Rotation'
+        dtype_str           = 'Machines by Display Type'
         driver_str          = 'Machines by Driver'
+        manufacturer_str    = 'Machines by Manufacturer'
         shortname_str       = 'Machines by MAME short name'
         longname_str        = 'Machines by MAME long name'
-        manufacturer_str    = 'Machines by Manufacturer'
         SL_str              = 'Machines by Software List'
         year_str            = 'Machines by Year'
 
         if cache_index_dic and mame_view_mode == VIEW_MODE_FLAT:
-            machines_n_str += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Normal']['num_machines'])
-            machines_u_str += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Unusual']['num_machines'])
-            nocoin_str     += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['NoCoin']['num_machines'])
-            mecha_str      += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Mechanical']['num_machines'])
-            dead_str       += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Dead']['num_machines'])
-            devices_str    += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Main']['Devices']['num_machines'])
-            chd_str        += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['CHD']['num_machines'])
-            samples_str    += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['Samples']['num_machines'])
-            softlists_str  += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['SoftwareLists']['num_machines'])
-            bios_str       += ' [COLOR orange]({0} machines)[/COLOR]'.format(cache_index_dic['Binary']['BIOS']['num_machines'])
-
+            a = ' [COLOR orange]({0} machines)[/COLOR]'
+            machines_n_str += a.format(cache_index_dic['Main']['Normal']['num_machines'])
+            machines_u_str += a.format(cache_index_dic['Main']['Unusual']['num_machines'])
+            nocoin_str     += a.format(cache_index_dic['Main']['NoCoin']['num_machines'])
+            mecha_str      += a.format(cache_index_dic['Main']['Mechanical']['num_machines'])
+            dead_str       += a.format(cache_index_dic['Main']['Dead']['num_machines'])
+            devices_str    += a.format(cache_index_dic['Main']['Devices']['num_machines'])
+            bios_str       += a.format(cache_index_dic['Binary']['BIOS']['num_machines'])
+            chd_str        += a.format(cache_index_dic['Binary']['CHD']['num_machines'])
+            samples_str    += a.format(cache_index_dic['Binary']['Samples']['num_machines'])
+            softlists_str  += a.format(cache_index_dic['Binary']['SoftwareLists']['num_machines'])
         elif cache_index_dic and mame_view_mode == VIEW_MODE_PCLONE:
-            machines_n_str += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Normal']['num_parents'])
-            machines_u_str += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Unusual']['num_parents'])
-            nocoin_str     += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['NoCoin']['num_parents'])
-            mecha_str      += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Mechanical']['num_parents'])
-            dead_str       += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Dead']['num_parents'])
-            devices_str    += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Main']['Devices']['num_parents'])
-            chd_str        += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['CHD']['num_parents'])
-            samples_str    += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['Samples']['num_parents'])
-            softlists_str  += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['SoftwareLists']['num_parents'])
-            bios_str       += ' [COLOR orange]({0} parents)[/COLOR]'.format(cache_index_dic['Binary']['BIOS']['num_parents'])
+            a = ' [COLOR orange]({0} parents)[/COLOR]'
+            machines_n_str += a.format(cache_index_dic['Main']['Normal']['num_parents'])
+            machines_u_str += a.format(cache_index_dic['Main']['Unusual']['num_parents'])
+            nocoin_str     += a.format(cache_index_dic['Main']['NoCoin']['num_parents'])
+            mecha_str      += a.format(cache_index_dic['Main']['Mechanical']['num_parents'])
+            dead_str       += a.format(cache_index_dic['Main']['Dead']['num_parents'])
+            devices_str    += a.format(cache_index_dic['Main']['Devices']['num_parents'])
+            bios_str       += a.format(cache_index_dic['Binary']['BIOS']['num_parents'])
+            chd_str        += a.format(cache_index_dic['Binary']['CHD']['num_parents'])
+            samples_str    += a.format(cache_index_dic['Binary']['Samples']['num_parents'])
+            softlists_str  += a.format(cache_index_dic['Binary']['SoftwareLists']['num_parents'])
 
         if cache_index_dic:
+            a = ' [COLOR gold]({0} items)[/COLOR]'
             # >> Optional
-            catver_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Catver']))
-            catlist_str      += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Catlist']))
-            genre_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Genre']))
-            NPLayers_str     += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['NPlayers']))
-            score_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Bestgames']))
-            series_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Series']))
+            catver_str          += a.format(len(cache_index_dic['Catver']))
+            catlist_str         += a.format(len(cache_index_dic['Catlist']))
+            genre_str           += a.format(len(cache_index_dic['Genre']))
+            NPLayers_str        += a.format(len(cache_index_dic['NPlayers']))
+            score_str           += a.format(len(cache_index_dic['Bestgames']))
+            series_str          += a.format(len(cache_index_dic['Series']))
             # >> Always there
-            ctype_expanded_str  += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Controls_Expanded']))
-            ctype_compact_str   += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Controls_Compact']))
-            drotation_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Rotate']))
-            dtype_str           += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Display_Type']))
-            device_expanded_str += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Devices_Expanded']))
-            device_compact_str  += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Devices_Compact']))
-            driver_str          += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Driver']))
-            manufacturer_str    += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Manufacturer']))
-            shortname_str       += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['ShortName']))
-            longname_str        += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['LongName']))
-            SL_str              += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['BySL']))
-            year_str            += ' [COLOR gold]({0} items)[/COLOR]'.format(len(cache_index_dic['Year']))
+            ctype_expanded_str  += a.format(len(cache_index_dic['Controls_Expanded']))
+            ctype_compact_str   += a.format(len(cache_index_dic['Controls_Compact']))
+            device_expanded_str += a.format(len(cache_index_dic['Devices_Expanded']))
+            device_compact_str  += a.format(len(cache_index_dic['Devices_Compact']))
+            drotation_str       += a.format(len(cache_index_dic['Display_Rotate']))
+            dtype_str           += a.format(len(cache_index_dic['Display_Type']))
+            driver_str          += a.format(len(cache_index_dic['Driver']))
+            manufacturer_str    += a.format(len(cache_index_dic['Manufacturer']))
+            shortname_str       += a.format(len(cache_index_dic['ShortName']))
+            longname_str        += a.format(len(cache_index_dic['LongName']))
+            SL_str              += a.format(len(cache_index_dic['BySL']))
+            year_str            += a.format(len(cache_index_dic['Year']))
 
         # >> If everything deactivated render the main filters so user has access to the context menu.
         big_OR = self.settings['display_main_filters'] or self.settings['display_binary_filters'] or \
@@ -638,10 +640,10 @@ class Main:
 
         # >> Binary filters (Virtual catalog 'Binary')
         if self.settings['display_binary_filters']:
+            self._render_root_list_row_catalog(bios_str, 'Binary', 'BIOS')
             self._render_root_list_row_catalog(chd_str, 'Binary', 'CHD')
             self._render_root_list_row_catalog(samples_str, 'Binary', 'Samples')
             self._render_root_list_row_catalog(softlists_str, 'Binary', 'SoftwareLists')
-            self._render_root_list_row_catalog(bios_str, 'Binary', 'BIOS')
 
         if self.settings['display_catalog_filters']:
             # >> Optional cataloged filters (depend on a INI file)
@@ -654,10 +656,10 @@ class Main:
             # >> Cataloged filters (always there)
             self._render_root_list_row_standard(ctype_expanded_str, self._misc_url_1_arg('catalog', 'Controls_Expanded'))
             self._render_root_list_row_standard(ctype_compact_str, self._misc_url_1_arg('catalog', 'Controls_Compact'))
-            self._render_root_list_row_standard(drotation_str, self._misc_url_1_arg('catalog', 'Display_Rotate'))
-            self._render_root_list_row_standard(dtype_str, self._misc_url_1_arg('catalog', 'Display_Type'))
             self._render_root_list_row_standard(device_expanded_str, self._misc_url_1_arg('catalog', 'Devices_Expanded'))
             self._render_root_list_row_standard(device_compact_str, self._misc_url_1_arg('catalog', 'Devices_Compact'))
+            self._render_root_list_row_standard(drotation_str, self._misc_url_1_arg('catalog', 'Display_Rotate'))
+            self._render_root_list_row_standard(dtype_str, self._misc_url_1_arg('catalog', 'Display_Type'))
             self._render_root_list_row_standard(driver_str, self._misc_url_1_arg('catalog', 'Driver'))
             self._render_root_list_row_standard(manufacturer_str, self._misc_url_1_arg('catalog', 'Manufacturer'))
             self._render_root_list_row_standard(shortname_str, self._misc_url_1_arg('catalog', 'ShortName'))
@@ -721,10 +723,10 @@ class Main:
         softlists_str  = 'Machines [with Software Lists]'
         bios_str = 'Machines [BIOS]'
 
+        self._render_root_list_row_standard(bios_str,       self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
         self._render_root_list_row_standard(chd_str,        self._misc_url_2_arg('catalog', 'Binary', 'category', 'CHD'))
         self._render_root_list_row_standard(samples_str,    self._misc_url_2_arg('catalog', 'Binary', 'category', 'Samples'))
         self._render_root_list_row_standard(softlists_str,  self._misc_url_2_arg('catalog', 'Binary', 'category', 'SoftwareLists'))
-        self._render_root_list_row_standard(bios_str,       self._misc_url_2_arg('catalog', 'Binary', 'category', 'BIOS'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_skin_catalog_filters(self):
@@ -741,16 +743,18 @@ class Main:
         if self.settings['series_path']:
             self._render_root_list_row_standard('Machines by Series',             self._misc_url_1_arg('catalog', 'Series'))
 
-        self._render_root_list_row_standard('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
-        self._render_root_list_row_standard('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
-        self._render_root_list_row_standard('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
         self._render_root_list_row_standard('Machines by Controls (Expanded)', self._misc_url_1_arg('catalog', 'Controls_Expanded'))
         self._render_root_list_row_standard('Machines by Controls (Compact)',  self._misc_url_1_arg('catalog', 'Controls_Compact'))
-        self._render_root_list_row_standard('Machines by Display Type',        self._misc_url_1_arg('catalog', 'Display_Type'))
-        self._render_root_list_row_standard('Machines by Display Rotation',    self._misc_url_1_arg('catalog', 'Display_Rotate'))
         self._render_root_list_row_standard('Machines by Device (Expanded)',   self._misc_url_1_arg('catalog', 'Devices_Expanded'))
         self._render_root_list_row_standard('Machines by Device (Compact)',    self._misc_url_1_arg('catalog', 'Devices_Compact'))
+        self._render_root_list_row_standard('Machines by Display Rotation',    self._misc_url_1_arg('catalog', 'Display_Rotate'))
+        self._render_root_list_row_standard('Machines by Display Type',        self._misc_url_1_arg('catalog', 'Display_Type'))
+        self._render_root_list_row_standard('Machines by Driver',              self._misc_url_1_arg('catalog', 'Driver'))
+        self._render_root_list_row_standard('Machines by Manufacturer',        self._misc_url_1_arg('catalog', 'Manufacturer'))
+        self._render_root_list_row_standard('Machines by MAME short name',     self._misc_url_1_arg('catalog', 'ShortName'))
+        self._render_root_list_row_standard('Machines by MAME long name',      self._misc_url_1_arg('catalog', 'LongName'))
         self._render_root_list_row_standard('Machines by Software List',       self._misc_url_1_arg('catalog', 'BySL'))
+        self._render_root_list_row_standard('Machines by Year',                self._misc_url_1_arg('catalog', 'Year'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _render_skin_dat_slots(self):
