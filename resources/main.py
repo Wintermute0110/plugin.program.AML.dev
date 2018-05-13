@@ -1068,14 +1068,14 @@ class Main:
         self._render_catalog_machine_row(parent_name, render_name, machine, assets)
 
         # >> Render clones belonging to parent in this category
-        for p_name in main_pclone_dic[parent_name]:
-            render_name = machine_dic[p_name]
-            machine = MAME_render_db_dic[p_name]
-            assets  = MAME_assets_dic[p_name]
+        for clone_name in main_pclone_dic[parent_name]:
+            render_name = machine_dic[clone_name]
+            machine = MAME_render_db_dic[clone_name]
+            assets  = MAME_assets_dic[clone_name]
             if display_hide_BIOS and machine['isBIOS']: continue
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            self._render_catalog_machine_row(p_name, render_name, machine, assets)
+            self._render_catalog_machine_row(clone_name, render_name, machine, assets)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
         rendering_ticks_end = time.time()
 
