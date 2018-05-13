@@ -4176,7 +4176,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         else:
             catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
             catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     _cache_index_builder('Driver', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
@@ -4207,7 +4207,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         else:
             catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
             catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     _cache_index_builder('Controls_Expanded', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
@@ -4229,24 +4229,15 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         pretty_control_type_list = mame_improve_control_type_list(machine['control_type'])
         sorted_control_type_list = sorted(pretty_control_type_list)
         compressed_control_type_list = mame_compress_item_list_compact(sorted_control_type_list)
-        if not compressed_control_type_list:
-            catalog_key = '[ No controls ]'
+        if not compressed_control_type_list: compressed_control_type_list = [ '[ No controls ]' ]
+        for catalog_key in compressed_control_type_list:
             if catalog_key in catalog_parents:
                 catalog_parents[catalog_key][parent_name] = machine_render['description']
                 catalog_all[catalog_key][parent_name] = machine_render['description']
             else:
                 catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
                 catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-            _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
-        else:
-            for catalog_key in compressed_control_type_list:
-                if catalog_key in catalog_parents:
-                    catalog_parents[catalog_key][parent_name] = machine_render['description']
-                    catalog_all[catalog_key][parent_name] = machine_render['description']
-                else:
-                    catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
-                    catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-                _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
+            _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     _cache_index_builder('Controls_Compact', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath(), catalog_parents)
@@ -4271,7 +4262,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         else:
             catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
             catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     _cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
@@ -4296,7 +4287,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         else:
             catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
             catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     _cache_index_builder('Display_Rotate', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PARENT_PATH.getPath(), catalog_parents)
@@ -4328,7 +4319,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         else:
             catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
             catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     _cache_index_builder('Devices_Expanded', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
@@ -4349,24 +4340,15 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         pretty_device_list = mame_improve_device_list(device_list)
         sorted_device_list = sorted(pretty_device_list)
         compressed_device_list = mame_compress_item_list_compact(sorted_device_list)
-        if not compressed_device_list:
-            catalog_key = '[ No devices ]'
+        if not compressed_device_list: compressed_device_list = [ '[ No devices ]' ]
+        for catalog_key in compressed_device_list:
             if catalog_key in catalog_parents:
                 catalog_parents[catalog_key][parent_name] = machine_render['description']
                 catalog_all[catalog_key][parent_name] = machine_render['description']
             else:
                 catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
                 catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-            _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
-        else:
-            for catalog_key in compressed_device_list:
-                if catalog_key in catalog_parents:
-                    catalog_parents[catalog_key][parent_name] = machine_render['description']
-                    catalog_all[catalog_key][parent_name] = machine_render['description']
-                else:
-                    catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
-                    catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-                _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
+            _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     _cache_index_builder('Devices_Compact', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath(), catalog_parents)
@@ -4395,7 +4377,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
             else:
                 catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
                 catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-            _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
+            _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     _cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
@@ -4444,7 +4426,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         else:
             catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
             catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all)
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     _cache_index_builder('LongName', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath(), catalog_parents)
