@@ -357,9 +357,10 @@ class Main:
                 url = self._misc_url_3_arg('catalog', 'SL', 'category', category_name, 'parent', machine_name)
                 xbmc.executebuiltin('Container.Update({0})'.format(url))
 
+            # >> If location is not present in the URL default to standard.
             elif command == 'LAUNCH':
                 machine  = args['machine'][0]
-                location = args['location'][0] if 'location' in args else ''
+                location = args['location'][0] if 'location' in args else LOCATION_STANDARD
                 log_info('Launching MAME machine "{0}"'.format(machine, location))
                 self._run_machine(machine, location)
             elif command == 'LAUNCH_SL':
@@ -3349,7 +3350,7 @@ class Main:
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
 
         # --- Create context menu ---
-        URL_view_DAT = self._misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', m_name)
+        URL_view_DAT = self._misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'machine', m_name, 'location', LOCATION_MAME_FAVS)
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', m_name, 'location', LOCATION_MAME_FAVS)
         URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', m_name)
         commands = [
@@ -3362,7 +3363,7 @@ class Main:
         listitem.addContextMenuItems(commands)
 
         # --- Add row ---
-        URL = self._misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', 'MAME_FAV')
+        URL = self._misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', LOCATION_MAME_FAVS)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     def _command_context_add_sl_fav(self, SL_name, ROM_name):
@@ -5407,16 +5408,21 @@ class Main:
 
         # >> If launching from Favourites read ROM from Fav database
         control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
-        if location and location == LOCATION_STANDARD:
+        if location == LOCATION_STANDARD:
+            log_debug('Reading info from hashed DBs')
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
             # WARNING This is slow! An asset hashed database is required
             assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
             assets = assets_dic[machine_name]
             # assets = fs_get_machine_asset_db_hash(PATHS, machine_name)
-        elif location and location == LOCATION_MAME_FAVS:
+        elif location == LOCATION_MAME_FAVS:
+            log_debug('Reading info from MAME favourites')
             fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
             machine = fav_machines[machine_name]
             assets = machine['assets']
+        else:
+            kodi_dialog_OK('Unknown location = "{0}". This is a bug, please report it.'.format(location))
+            return
 
         # >> Get paths
         mame_prog_FN = FileName(self.settings['mame_prog'])
@@ -5458,7 +5464,7 @@ class Main:
         MAX_RECENT_PLAYED_ROMS = 100
         recent_rom = fs_get_MAME_Favourite(machine_name, machine, assets, control_dic)
         recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
-        recent_roms_list = [machine for machine in recent_roms_list if machine['name'] != machine['name']]
+        recent_roms_list = [machine for machine in recent_roms_list if recent_rom['name'] != machine['name']]
         recent_roms_list.insert(0, recent_rom)
         if len(recent_roms_list) > MAX_RECENT_PLAYED_ROMS:
             log_debug('_run_machine() len(recent_roms_list) = {0}'.format(len(recent_roms_list)))
@@ -5476,7 +5482,7 @@ class Main:
             # >> Add field launch_count to recent_rom to count how many times have been launched.
             recent_rom['launch_count'] = 1
             most_played_roms_dic[recent_rom['name']] = recent_rom
-        fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+        fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
 
         # >> Prevent a console window to be shown in Windows. Not working yet!
         if sys.platform == 'win32':
