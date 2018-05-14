@@ -3291,10 +3291,10 @@ class Main:
         for m_name in fav_machines:
             machine = fav_machines[m_name]
             assets  = machine['assets']
-            self._render_fav_machine_row(m_name, machine, assets)
+            self._render_fav_machine_row(m_name, machine, assets, LOCATION_MAME_FAVS)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
-    def _render_fav_machine_row(self, m_name, machine, m_assets):
+    def _render_fav_machine_row(self, m_name, machine, m_assets, location):
         # --- Default values for flags ---
         AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
 
@@ -3306,6 +3306,12 @@ class Main:
         if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
         if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
         elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+        # >> Render number of number the ROM has been launched
+        if location == LOCATION_MAME_MOST_PLAYED:
+            if machine['launch_count'] == 1:
+                display_name = '{0} [COLOR orange][{1} time][/COLOR]'.format(display_name, machine['launch_count'])
+            else:
+                display_name = '{0} [COLOR orange][{1} times][/COLOR]'.format(display_name, machine['launch_count'])
 
         # --- Skin flags ---
         if machine['cloneof']: AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE
@@ -3350,8 +3356,8 @@ class Main:
         listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
 
         # --- Create context menu ---
-        URL_view_DAT = self._misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'machine', m_name, 'location', LOCATION_MAME_FAVS)
-        URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', m_name, 'location', LOCATION_MAME_FAVS)
+        URL_view_DAT = self._misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'machine', m_name, 'location', location)
+        URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', m_name, 'location', location)
         URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', m_name)
         commands = [
             ('Info / Utils',  URL_view_DAT),
@@ -3363,7 +3369,7 @@ class Main:
         listitem.addContextMenuItems(commands)
 
         # --- Add row ---
-        URL = self._misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', LOCATION_MAME_FAVS)
+        URL = self._misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', location)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = URL, listitem = listitem, isFolder = False)
 
     def _command_context_add_sl_fav(self, SL_name, ROM_name):
@@ -3641,11 +3647,28 @@ class Main:
     # Most/Recently Played MAME/SL machines/SL items
     # ---------------------------------------------------------------------------------------------
     def _command_show_mame_most_played(self):
-        kodi_dialog_OK('Not implemented yet, sorry.')
+        m_p_roms_dic = fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+        if not m_p_roms_dic:
+            kodi_dialog_OK('No Most Played MAME machines. Play a bit and try later.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+
+        self._set_Kodi_all_sorting_methods()
+        for machine_name in sorted(m_p_roms_dic, key = lambda x : m_p_roms_dic[x]['launch_count'], reverse = True):
+            machine = m_p_roms_dic[machine_name]
+            self._render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_MOST_PLAYED)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _command_show_mame_recently_played(self):
-        kodi_dialog_OK('Not implemented yet, sorry.')
+        recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+        if not recent_roms_list:
+            kodi_dialog_OK('No Recently Played MAME machines. Play a bit and try later.')
+            xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+            return
+
+        self._set_Kodi_all_sorting_methods()
+        for machine in recent_roms_list:
+            self._render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_RECENT_PLAYED)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
     def _command_show_sl_most_played(self):
@@ -5464,7 +5487,7 @@ class Main:
         MAX_RECENT_PLAYED_ROMS = 100
         recent_rom = fs_get_MAME_Favourite(machine_name, machine, assets, control_dic)
         recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
-        recent_roms_list = [machine for machine in recent_roms_list if recent_rom['name'] != machine['name']]
+        recent_roms_list = [machine for machine in recent_roms_list if machine_name != machine['name']]
         recent_roms_list.insert(0, recent_rom)
         if len(recent_roms_list) > MAX_RECENT_PLAYED_ROMS:
             log_debug('_run_machine() len(recent_roms_list) = {0}'.format(len(recent_roms_list)))

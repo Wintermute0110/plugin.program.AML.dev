@@ -64,9 +64,11 @@ ROMSET_SL_MERGED       = 0 # 'Merged'
 ROMSET_SL_SPLIT        = 1 # 'Split'
 
 # --- Used in the addon URLs so mark the location of machines/ROMs ---
-LOCATION_STANDARD  = 'STANDARD'
-LOCATION_MAME_FAVS = 'MAME_FAVS'
-LOCATION_SL_FAVS   = 'SL_FAVS'
+LOCATION_STANDARD           = 'STANDARD'
+LOCATION_MAME_FAVS          = 'MAME_FAVS'
+LOCATION_MAME_MOST_PLAYED   = 'MAME_MOST_PLAYED'
+LOCATION_MAME_RECENT_PLAYED = 'MAME_RECENT_PLAYED'
+LOCATION_SL_FAVS            = 'SL_FAVS'
 
 # --- ROM flags used by skins to display status icons ---
 AEL_INFAV_BOOL_LABEL  = 'AEL_InFav'
