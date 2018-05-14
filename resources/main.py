@@ -3653,7 +3653,7 @@ class Main:
             xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
             return
 
-        self._set_Kodi_all_sorting_methods()
+        self._set_Kodi_unsorted_method()
         for machine_name in sorted(m_p_roms_dic, key = lambda x : m_p_roms_dic[x]['launch_count'], reverse = True):
             machine = m_p_roms_dic[machine_name]
             self._render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_MOST_PLAYED)
@@ -3666,7 +3666,7 @@ class Main:
             xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
             return
 
-        self._set_Kodi_all_sorting_methods()
+        self._set_Kodi_unsorted_method()
         for machine in recent_roms_list:
             self._render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_RECENT_PLAYED)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
@@ -5796,6 +5796,10 @@ class Main:
         xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
 
     # List of sorting methods here http://mirrors.xbmc.org/docs/python-docs/16.x-jarvis/xbmcplugin.html#-setSetting
+    def _set_Kodi_unsorted_method(self):
+        if self.addon_handle < 0: return
+        xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_UNSORTED)
+
     def _set_Kodi_all_sorting_methods(self):
         if self.addon_handle < 0: return
         xbmcplugin.addSortMethod(handle=self.addon_handle, sortMethod=xbmcplugin.SORT_METHOD_LABEL_IGNORE_FOLDERS)
