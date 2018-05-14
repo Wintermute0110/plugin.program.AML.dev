@@ -13,11 +13,19 @@ WIP      Import the number of supported PDF filters.
 
 WIP      When displaying manuals use cached extracted images if they exist.
 
-WIP      Support for CBZ/CBR manuals.
+WIP      Support for CBZ/CBR manuals. Wait until this is implemented in AEL and then port it
+         from AEL into AML?
 
-WIP      Implement "Most played MAME machines"
 
-WIP      Implement "Recently played MAME machines"
+[B]Advanced Emulator Launcher | version 0.9.6 | xx May 2018[/B]
+
+WIP      Add the Samples of each machine to the ROM database.
+
+WIP      Audit the ROM samples inside ZIP files.
+
+WORKING  Implement "Most played MAME machines"
+
+WORKING  Implement "Recently played MAME machines"
 
 WIP      Implement "Most played SL ROMs"
 

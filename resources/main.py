@@ -100,6 +100,12 @@ class AML_Paths:
         self.COMMAND_IDX_PATH  = PLUGIN_DATA_DIR.pjoin('DAT_Command_index.json')
         self.COMMAND_DB_PATH   = PLUGIN_DATA_DIR.pjoin('DAT_Command_DB.json')
 
+        # >> Most played and Recently played
+        self.MAME_RECENT_PLAYED_FILE_PATH = PLUGIN_DATA_DIR.pjoin('history_MAME.json')
+        self.MAME_MOST_PLAYED_FILE_PATH   = PLUGIN_DATA_DIR.pjoin('most_played_MAME.json')
+        self.SL_RECENT_PLAYED_FILE_PATH   = PLUGIN_DATA_DIR.pjoin('history_SL.json')
+        self.SL_MOST_PLAYED_FILE_PATH     = PLUGIN_DATA_DIR.pjoin('most_played_SL.json')
+
         # >> Disabled. Now there are global properties for this.
         # self.MAIN_PROPERTIES_PATH = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
 
@@ -3167,16 +3173,13 @@ class Main:
 
         # >> Add machine. Add database version to Favourite.
         assets = assets_dic[machine_name]
-        machine['assets'] = assets
-        machine['ver_mame'] = control_dic['ver_mame']
-        machine['ver_mame_str'] = control_dic['ver_mame_str']
-        fav_machines[machine_name] = machine
+        fav_machine = fs_get_MAME_Favourite(machine_name, machine, assets, control_dic)
+        fav_machines[machine_name] = fav_machine
         log_info('_command_add_mame_fav() Added machine "{0}"'.format(machine_name))
 
         # >> Save Favourites
         fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
         kodi_notify('Machine {0} added to MAME Favourites'.format(machine_name))
-
 
     #
     # Context menu "Manage Favourite machines"
@@ -5403,10 +5406,17 @@ class Main:
         log_info('_run_machine() Launching MAME location "{0}"'.format(location))
 
         # >> If launching from Favourites read ROM from Fav database
-        if location and location == 'MAME_FAV':
+        control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+        if location and location == LOCATION_STANDARD:
+            machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+            # WARNING This is slow! An asset hashed database is required
+            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            assets = assets_dic[machine_name]
+            # assets = fs_get_machine_asset_db_hash(PATHS, machine_name)
+        elif location and location == LOCATION_MAME_FAVS:
             fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
             machine = fav_machines[machine_name]
-            assets  = machine['assets']
+            assets = machine['assets']
 
         # >> Get paths
         mame_prog_FN = FileName(self.settings['mame_prog'])
@@ -5437,11 +5447,36 @@ class Main:
 
         # >> Launch machine using subprocess module
         (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
-        log_info('_run_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
+        log_info('_run_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
         log_info('_run_machine() mame_dir     "{0}"'.format(mame_dir))
         log_info('_run_machine() mame_exec    "{0}"'.format(mame_exec))
         log_info('_run_machine() machine_name "{0}"'.format(machine_name))
         log_info('_run_machine() BIOS_name    "{0}"'.format(BIOS_name))
+
+        # --- Compute ROM recently played list ---
+        # >> If the machine is already in the list remove it and place it on the first position.
+        MAX_RECENT_PLAYED_ROMS = 100
+        recent_rom = fs_get_MAME_Favourite(machine_name, machine, assets, control_dic)
+        recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+        recent_roms_list = [machine for machine in recent_roms_list if machine['name'] != machine['name']]
+        recent_roms_list.insert(0, recent_rom)
+        if len(recent_roms_list) > MAX_RECENT_PLAYED_ROMS:
+            log_debug('_run_machine() len(recent_roms_list) = {0}'.format(len(recent_roms_list)))
+            log_debug('_run_machine() Trimming list to {0} ROMs'.format(MAX_RECENT_PLAYED_ROMS))
+            temp_list = recent_roms_list[:MAX_RECENT_PLAYED_ROMS]
+            recent_roms_list = temp_list
+        fs_write_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+
+        # --- Compute most played ROM statistics ---
+        most_played_roms_dic = fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+        if recent_rom['name'] in most_played_roms_dic:
+            rom_name = recent_rom['name']
+            most_played_roms_dic[rom_name]['launch_count'] += 1
+        else:
+            # >> Add field launch_count to recent_rom to count how many times have been launched.
+            recent_rom['launch_count'] = 1
+            most_played_roms_dic[recent_rom['name']] = recent_rom
+        fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
 
         # >> Prevent a console window to be shown in Windows. Not working yet!
         if sys.platform == 'win32':

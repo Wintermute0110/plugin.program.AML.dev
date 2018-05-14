@@ -536,6 +536,31 @@ def fs_new_control_dic():
         'assets_SL_manuals_alternate'   : 0,
     }
 
+#
+# Favourite object creation
+#
+# Changes introduced in 0.9.6
+# 1) fav_machine['name'] = machine_name
+#
+def fs_get_MAME_Favourite(machine_name, machine, assets, control_dic):
+    fav_machine = {}
+
+    fav_machine = copy.deepcopy(machine)
+    fav_machine['name']         = machine_name
+    fav_machine['assets']       = assets
+    fav_machine['ver_mame']     = control_dic['ver_mame']
+    fav_machine['ver_mame_str'] = control_dic['ver_mame_str']
+
+    return fav_machine
+
+def fs_get_SL_Favourite(machine_name, machine, assets, control_dic):
+    fav_SL_item = {}
+
+    return fav_SL_item
+
+#
+# Get Catalog databases
+#
 def fs_get_cataloged_dic_parents(PATHS, catalog_name):
     if catalog_name == 'Main':
         catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MAIN_PARENT_PATH.getPath())
@@ -654,6 +679,33 @@ def fs_write_JSON_file(json_filename, json_data, verbose = True):
                 file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, separators = (',', ':'))))
             else:
                 file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))))
+    except OSError:
+        kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(json_filename))
+    except IOError:
+        kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (IOError)'.format(json_filename))
+
+def fs_load_JSON_file_list(json_filename, verbose = True):
+    # --- If file does not exist return empty dictionary ---
+    data_list = []
+    if not os.path.isfile(json_filename):
+        log_warning('fs_load_JSON_file_list() File not found "{0}"'.format(json_filename))
+        return data_list
+    if verbose:
+        log_debug('fs_load_JSON_file_list() "{0}"'.format(json_filename))
+    with open(json_filename) as file:
+        data_list = json.load(file)
+
+    return data_list
+
+def fs_write_JSON_file_list(json_filename, data_list, verbose = True):
+    if verbose:
+        log_debug('fs_write_JSON_file_list() "{0}"'.format(json_filename))
+    try:
+        with io.open(json_filename, 'wt', encoding='utf-8') as file:
+            if COMPACT_JSON:
+                file.write(unicode(json.dumps(data_list, ensure_ascii = False, sort_keys = True, separators = (',', ':'))))
+            else:
+                file.write(unicode(json.dumps(data_list, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))))
     except OSError:
         kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(json_filename))
     except IOError:
