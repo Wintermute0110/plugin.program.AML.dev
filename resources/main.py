@@ -404,7 +404,8 @@ class Main:
             elif command == 'ADD_MAME_FAV':
                 self._command_context_add_mame_fav(args['machine'][0])
             elif command == 'MANAGE_MAME_FAV':
-                self._command_context_manage_mame_fav(args['machine'][0])
+                machine = args['machine'][0] if 'machine' in args else ''
+                self._command_context_manage_mame_fav(machine)
             elif command == 'SHOW_MAME_FAVS':
                 self._command_show_mame_fav()
 
@@ -419,8 +420,16 @@ class Main:
             # >> Most and Recently played
             elif command == 'SHOW_MAME_MOST_PLAYED':
                 self._command_show_mame_most_played()
+            elif command == 'MANAGE_MAME_MOST_PLAYED':
+                machine = args['machine'][0] if 'machine' in args else ''
+                self._command_context_manage_mame_most_played(machine)
+
             elif command == 'SHOW_MAME_RECENTLY_PLAYED':
                 self._command_show_mame_recently_played()
+            elif command == 'MANAGE_MAME_RECENT_PLAYED':
+                machine = args['machine'][0] if 'machine' in args else ''
+                self._command_context_manage_mame_recent_played(machine)
+
             elif command == 'SHOW_SL_MOST_PLAYED':
                 self._command_show_sl_most_played()
             elif command == 'SHOW_SL_RECENTLY_PLAYED':
@@ -699,13 +708,30 @@ class Main:
 
         # >> Special launchers
         if self.settings['display_MAME_favs']:
-            self._render_root_list_row_standard('<Favourite MAME machines>', self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
+            CM_title = 'Manage Favourite machines'
+            CM_URL = URL_manage = self._misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV')
+            self._render_root_list_row_custom_CM('<Favourite MAME machines>', 
+                                                 self._misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
+                                                 CM_title, CM_URL)
         if self.settings['display_SL_favs']:
-            self._render_root_list_row_standard('<Favourite Software Lists ROMs>', self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
+            self._render_root_list_row_standard('<Favourite Software Lists ROMs>',
+                                                self._misc_url_1_arg('command', 'SHOW_SL_FAVS'))
         if self.settings['display_custom_filters']:
-            self._render_root_custom_filter_row('[Custom MAME filters]', self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
-        self._render_root_list_row_standard('{Most played MAME machines}', self._misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'))
-        self._render_root_list_row_standard('{Recently played MAME machines}', self._misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'))
+            self._render_root_custom_filter_row('[Custom MAME filters]',
+                                                self._misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+
+        CM_title = 'Manage Most Played machines'
+        CM_URL = URL_manage = self._misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED')
+        self._render_root_list_row_custom_CM('{Most played MAME machines}',
+                                             self._misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
+                                             CM_title, CM_URL)
+
+        CM_title = 'Manage Recently Played machines'
+        CM_URL = URL_manage = self._misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED')
+        self._render_root_list_row_custom_CM('{Recently played MAME machines}',
+                                             self._misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
+                                             CM_title, CM_URL)
+
         self._render_root_list_row_standard('{Most played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'))
         self._render_root_list_row_standard('{Recently played SL ROMs}', self._misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'))
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
@@ -834,8 +860,28 @@ class Main:
             ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
         ]
         listitem.addContextMenuItems(commands)
+        xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = root_URL, listitem = listitem, isFolder = True)
 
-        # --- Add row ---
+    def _render_root_list_row_custom_CM(self, root_name, root_URL, CM_title, CM_URL):
+        # --- Create listitem row ---
+        ICON_OVERLAY = 6
+        listitem = xbmcgui.ListItem(root_name)
+        listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY})
+
+        # --- Artwork ---
+        icon_path   = AML_ICON_FILE_PATH.getPath()
+        fanart_path = AML_FANART_FILE_PATH.getPath()
+        listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
+
+        # --- Create context menu ---
+        commands = [
+            ('View', self._misc_url_1_arg_RunPlugin('command', 'VIEW')),
+            (CM_title, CM_URL),
+            ('Setup plugin', self._misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ]
+        listitem.addContextMenuItems(commands)
         xbmcplugin.addDirectoryItem(handle = self.addon_handle, url = root_URL, listitem = listitem, isFolder = True)
 
     def _render_root_custom_filter_row(self, root_name, root_URL):
@@ -3202,9 +3248,13 @@ class Main:
     #
     def _command_context_manage_mame_fav(self, machine_name):
         dialog = xbmcgui.Dialog()
-        idx = dialog.select('Manage MAME Favourites', 
-                           ['Check/Update all MAME Favourites',
-                            'Delete machine from MAME Favourites'])
+        if machine_name:
+            idx = dialog.select('Manage MAME Favourites', 
+                               ['Check/Update all MAME Favourites',
+                                'Delete machine from MAME Favourites'])
+        else:
+            idx = dialog.select('Manage MAME Favourites', 
+                               ['Check/Update all MAME Favourites'])
         if idx < 0: return
 
         # --- Check/Update all MAME Favourites ---
@@ -3358,14 +3408,33 @@ class Main:
         # --- Create context menu ---
         URL_view_DAT = self._misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'machine', m_name, 'location', location)
         URL_view = self._misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', m_name, 'location', location)
-        URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', m_name)
-        commands = [
-            ('Info / Utils',  URL_view_DAT),
-            ('View / Audit',  URL_view),
-            ('Manage Favourite machines', URL_manage),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-        ]
+        if location == LOCATION_MAME_FAVS:
+            URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', m_name)
+            commands = [
+                ('Info / Utils',  URL_view_DAT),
+                ('View / Audit',  URL_view),
+                ('Manage Favourite machines', URL_manage),
+                ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+                ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ]
+        elif location == LOCATION_MAME_MOST_PLAYED:
+            URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED', 'machine', m_name)
+            commands = [
+                ('Info / Utils',  URL_view_DAT),
+                ('View / Audit',  URL_view),
+                ('Manage Most Played machines', URL_manage),
+                ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+                ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ]
+        elif location == LOCATION_MAME_RECENT_PLAYED:
+            URL_manage = self._misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED', 'machine', m_name)
+            commands = [
+                ('Info / Utils',  URL_view_DAT),
+                ('View / Audit',  URL_view),
+                ('Manage Recently Played machines', URL_manage),
+                ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+                ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ]
         listitem.addContextMenuItems(commands)
 
         # --- Add row ---
@@ -3659,6 +3728,89 @@ class Main:
             self._render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_MOST_PLAYED)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
 
+    def _command_context_manage_mame_most_played(self, machine):
+        kodi_dialog_OK('Not finished yet.')
+        return
+
+        dialog = xbmcgui.Dialog()
+        if machine_name:
+            idx = dialog.select('Manage MAME Favourites', 
+                               ['Check/Update all MAME Favourites',
+                                'Delete machine from MAME Favourites'])
+        else:
+            idx = dialog.select('Manage MAME Favourites', 
+                               ['Check/Update all MAME Favourites'])
+        if idx < 0: return
+
+        # --- Check/Update all MAME Favourites ---
+        # >> Check if Favourites can be found in current MAME main database. It may happen that
+        # >> a machine is renamed between MAME version although I think this is very unlikely.
+        # >> MAME Favs can not be relinked. If the machine is not found in current database it must
+        # >> be deleted by the user and a new Favourite created.
+        # >> If the machine is found in the main database, then update the Favourite database
+        # >> with data from the main database.
+        if idx == 0:
+            # >> Load databases.
+            pDialog = xbmcgui.DialogProgress()
+            line1_str = 'Loading databases ...'
+            num_items = 5
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            pDialog.update(int((1*100) / num_items), line1_str, 'MAME Favourites')
+            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+            pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Main')
+            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            pDialog.update(int((3*100) / num_items), line1_str, 'MAME machines Render')
+            machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            pDialog.update(int((4*100) / num_items), line1_str, 'MAME machine Assets')
+            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            pDialog.update(int((5*100) / num_items), ' ', ' ')
+            pDialog.close()
+
+            # >> Check/Update MAME Favourite machines.
+            for fav_key in sorted(fav_machines):
+                log_debug('Checking Favourite "{0}"'.format(fav_key))
+                if fav_key in machines:
+                    # >> Update Favourite database (info + assets)
+                    new_fav = machines[fav_key].copy()
+                    new_fav.update(machines_render[fav_key])
+                    new_fav['assets'] = assets_dic[fav_key]
+                    new_fav['ver_mame'] = control_dic['ver_mame']
+                    new_fav['ver_mame_str'] = control_dic['ver_mame_str']
+                    fav_machines[fav_key] = new_fav
+                    log_debug('Updated machine "{0}"'.format(fav_key))
+                else:
+                    log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
+                    t = 'Favourite machine "{0}" not found in database'.format(fav_key)
+                    kodi_dialog_OK(t)
+
+            # >> Save MAME Favourites DB
+            fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+            kodi_refresh_container()
+            kodi_notify('MAME Favourite checked and updated')
+
+        # --- Delete machine from MAME Favourites ---
+        elif idx == 1:
+            log_debug('_command_context_manage_mame_fav() Delete MAME Favourite machine')
+            log_debug('_command_context_manage_mame_fav() Machine_name "{0}"'.format(machine_name))
+
+            # >> Open Favourite Machines dictionary
+            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+            
+            # >> Ask user for confirmation.
+            ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(fav_machines[machine_name]['description'], machine_name))
+            if ret < 1: return
+            
+            # >> Delete machine
+            del fav_machines[machine_name]
+            log_info('_command_context_manage_mame_fav() Deleted machine "{0}"'.format(machine_name))
+
+            # >> Save Favourites
+            fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+            kodi_refresh_container()
+            kodi_notify('Machine {0} deleted from MAME Favourites'.format(machine_name))
+
     def _command_show_mame_recently_played(self):
         recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
         if not recent_roms_list:
@@ -3670,6 +3822,89 @@ class Main:
         for machine in recent_roms_list:
             self._render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_RECENT_PLAYED)
         xbmcplugin.endOfDirectory(handle = self.addon_handle, succeeded = True, cacheToDisc = False)
+
+    def _command_context_manage_mame_recent_played(self, machine):
+        kodi_dialog_OK('Not finished yet.')
+        return
+
+        dialog = xbmcgui.Dialog()
+        if machine_name:
+            idx = dialog.select('Manage MAME Favourites', 
+                               ['Check/Update all MAME Favourites',
+                                'Delete machine from MAME Favourites'])
+        else:
+            idx = dialog.select('Manage MAME Favourites', 
+                               ['Check/Update all MAME Favourites'])
+        if idx < 0: return
+
+        # --- Check/Update all MAME Favourites ---
+        # >> Check if Favourites can be found in current MAME main database. It may happen that
+        # >> a machine is renamed between MAME version although I think this is very unlikely.
+        # >> MAME Favs can not be relinked. If the machine is not found in current database it must
+        # >> be deleted by the user and a new Favourite created.
+        # >> If the machine is found in the main database, then update the Favourite database
+        # >> with data from the main database.
+        if idx == 0:
+            # >> Load databases.
+            pDialog = xbmcgui.DialogProgress()
+            line1_str = 'Loading databases ...'
+            num_items = 5
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
+            control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+            pDialog.update(int((1*100) / num_items), line1_str, 'MAME Favourites')
+            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+            pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Main')
+            machines = fs_load_JSON_file(PATHS.MAIN_DB_PATH.getPath())
+            pDialog.update(int((3*100) / num_items), line1_str, 'MAME machines Render')
+            machines_render = fs_load_JSON_file(PATHS.RENDER_DB_PATH.getPath())
+            pDialog.update(int((4*100) / num_items), line1_str, 'MAME machine Assets')
+            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            pDialog.update(int((5*100) / num_items), ' ', ' ')
+            pDialog.close()
+
+            # >> Check/Update MAME Favourite machines.
+            for fav_key in sorted(fav_machines):
+                log_debug('Checking Favourite "{0}"'.format(fav_key))
+                if fav_key in machines:
+                    # >> Update Favourite database (info + assets)
+                    new_fav = machines[fav_key].copy()
+                    new_fav.update(machines_render[fav_key])
+                    new_fav['assets'] = assets_dic[fav_key]
+                    new_fav['ver_mame'] = control_dic['ver_mame']
+                    new_fav['ver_mame_str'] = control_dic['ver_mame_str']
+                    fav_machines[fav_key] = new_fav
+                    log_debug('Updated machine "{0}"'.format(fav_key))
+                else:
+                    log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
+                    t = 'Favourite machine "{0}" not found in database'.format(fav_key)
+                    kodi_dialog_OK(t)
+
+            # >> Save MAME Favourites DB
+            fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+            kodi_refresh_container()
+            kodi_notify('MAME Favourite checked and updated')
+
+        # --- Delete machine from MAME Favourites ---
+        elif idx == 1:
+            log_debug('_command_context_manage_mame_fav() Delete MAME Favourite machine')
+            log_debug('_command_context_manage_mame_fav() Machine_name "{0}"'.format(machine_name))
+
+            # >> Open Favourite Machines dictionary
+            fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
+            
+            # >> Ask user for confirmation.
+            ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(fav_machines[machine_name]['description'], machine_name))
+            if ret < 1: return
+            
+            # >> Delete machine
+            del fav_machines[machine_name]
+            log_info('_command_context_manage_mame_fav() Deleted machine "{0}"'.format(machine_name))
+
+            # >> Save Favourites
+            fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+            kodi_refresh_container()
+            kodi_notify('Machine {0} deleted from MAME Favourites'.format(machine_name))
 
     def _command_show_sl_most_played(self):
         kodi_dialog_OK('Not implemented yet, sorry.')
