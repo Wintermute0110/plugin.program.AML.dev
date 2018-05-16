@@ -19,6 +19,12 @@ WIP      Support for CBZ/CBR manuals. Wait until this is implemented in AEL and 
 
 [B]Advanced Emulator Launcher | version 0.9.6 | xx May 2018[/B]
 
+WIP      Add Upright/Cocktail filter.
+
+WIP      Prettify the "Display rotation" filter (use Horizontal/Vertical instead of numbers).
+
+WIP      Include number of buttons in controls.
+
 WIP      Add the Samples of each machine to the ROM database.
 
 WIP      Audit the ROM samples inside ZIP files.
