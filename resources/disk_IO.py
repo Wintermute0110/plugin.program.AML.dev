@@ -149,9 +149,10 @@ def fs_new_machine_render_dic():
 #
 def fs_new_roms_object():
     return {
-        'bios'  : [],
-        'roms'  : [],
-        'disks' : [],
+        'bios'    : [],
+        'roms'    : [],
+        'disks'   : [],
+        'samples' : [],
     }
 
 def fs_new_bios_dic():
@@ -384,22 +385,27 @@ def fs_new_control_dic():
         'stats_audit_archive_less_clones'  : 0,
 
         # --- Filed in when auditing the MAME machines ---
-        'audit_MAME_machines_runnable'      : 0,
+        'audit_MAME_machines_runnable'         : 0,
         # >> Machines with ROMs/CHDs archives that are OK or not
-        'audit_MAME_machines_with_arch'     : 0,
-        'audit_MAME_machines_with_arch_OK'  : 0,
-        'audit_MAME_machines_with_arch_BAD' : 0,
-        'audit_MAME_machines_without'       : 0,
+        'audit_MAME_machines_with_arch'        : 0,
+        'audit_MAME_machines_with_arch_OK'     : 0,
+        'audit_MAME_machines_with_arch_BAD'    : 0,
+        'audit_MAME_machines_without'          : 0,
         # >> Machines with ROM archives that are OK or not
-        'audit_MAME_machines_with_ROMs'     : 0,
-        'audit_MAME_machines_with_ROMs_OK'  : 0,
-        'audit_MAME_machines_with_ROMs_BAD' : 0,
-        'audit_MAME_machines_without_ROMs'  : 0,
+        'audit_MAME_machines_with_ROMs'        : 0,
+        'audit_MAME_machines_with_ROMs_OK'     : 0,
+        'audit_MAME_machines_with_ROMs_BAD'    : 0,
+        'audit_MAME_machines_without_ROMs'     : 0,
+        # >> Machines with Samples archives that are OK or not
+        'audit_MAME_machines_with_SAMPLES'     : 0,
+        'audit_MAME_machines_with_SAMPLES_OK'  : 0,
+        'audit_MAME_machines_with_SAMPLES_BAD' : 0,
+        'audit_MAME_machines_without_SAMPLES'  : 0,
         # >> Machines with CHDs that are OK or not
-        'audit_MAME_machines_with_CHDs'     : 0,
-        'audit_MAME_machines_with_CHDs_OK'  : 0,
-        'audit_MAME_machines_with_CHDs_BAD' : 0,
-        'audit_MAME_machines_without_CHDs'  : 0,
+        'audit_MAME_machines_with_CHDs'        : 0,
+        'audit_MAME_machines_with_CHDs_OK'     : 0,
+        'audit_MAME_machines_with_CHDs_BAD'    : 0,
+        'audit_MAME_machines_without_CHDs'     : 0,
 
         # --- Filed in when building the SL item databases ---
         # Number of SL databases (equal to the number of XML files).

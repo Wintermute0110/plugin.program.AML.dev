@@ -208,13 +208,15 @@ class AML_Paths:
         self.REPORT_STATS_PATH = self.REPORTS_DIR.pjoin('Statistics.txt')
 
         # >> Audit report
-        self.REPORT_MAME_AUDIT_FULL_PATH       = self.REPORTS_DIR.pjoin('Audit_MAME_full.txt')
-        self.REPORT_MAME_AUDIT_GOOD_PATH       = self.REPORTS_DIR.pjoin('Audit_MAME_good.txt')
-        self.REPORT_MAME_AUDIT_ERRORS_PATH     = self.REPORTS_DIR.pjoin('Audit_MAME_errors.txt')
-        self.REPORT_MAME_AUDIT_ROM_GOOD_PATH   = self.REPORTS_DIR.pjoin('Audit_MAME_ROMs_good.txt')
-        self.REPORT_MAME_AUDIT_ROM_ERRORS_PATH = self.REPORTS_DIR.pjoin('Audit_MAME_ROMs_errors.txt')
-        self.REPORT_MAME_AUDIT_CHD_GOOD_PATH   = self.REPORTS_DIR.pjoin('Audit_MAME_CHDs_good.txt')
-        self.REPORT_MAME_AUDIT_CHD_ERRORS_PATH = self.REPORTS_DIR.pjoin('Audit_MAME_CHDs_errors.txt')
+        self.REPORT_MAME_AUDIT_FULL_PATH           = self.REPORTS_DIR.pjoin('Audit_MAME_full.txt')
+        self.REPORT_MAME_AUDIT_GOOD_PATH           = self.REPORTS_DIR.pjoin('Audit_MAME_good.txt')
+        self.REPORT_MAME_AUDIT_ERRORS_PATH         = self.REPORTS_DIR.pjoin('Audit_MAME_errors.txt')
+        self.REPORT_MAME_AUDIT_ROM_GOOD_PATH       = self.REPORTS_DIR.pjoin('Audit_MAME_ROMs_good.txt')
+        self.REPORT_MAME_AUDIT_ROM_ERRORS_PATH     = self.REPORTS_DIR.pjoin('Audit_MAME_ROMs_errors.txt')
+        self.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH   = self.REPORTS_DIR.pjoin('Audit_MAME_SAMPLES_good.txt')
+        self.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH = self.REPORTS_DIR.pjoin('Audit_MAME_SAMPLES_errors.txt')
+        self.REPORT_MAME_AUDIT_CHD_GOOD_PATH       = self.REPORTS_DIR.pjoin('Audit_MAME_CHDs_good.txt')
+        self.REPORT_MAME_AUDIT_CHD_ERRORS_PATH     = self.REPORTS_DIR.pjoin('Audit_MAME_CHDs_errors.txt')
 
         self.REPORT_SL_AUDIT_FULL_PATH         = self.REPORTS_DIR.pjoin('Audit_SL_full.txt')
         self.REPORT_SL_AUDIT_GOOD_PATH         = self.REPORTS_DIR.pjoin('Audit_SL_good.txt')
@@ -2532,6 +2534,12 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                              str(disk['sha1'])[0:8], str(disk['merge']), '']
                 table_str.append(table_row)
 
+        # --- Table: machine Samples ---
+        if roms_dic['samples']:
+            for sample in roms_dic['samples']:
+                table_row = ['SAM', str(sample['name']), '', '', '', '']
+                table_str.append(table_row)
+
         # --- Table: BIOSes ---
         if roms_dic['bios']:
             bios_table_str = []
@@ -2606,10 +2614,11 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
 
         # --- Table rows ---
         for m_rom in rom_list:
-            if m_rom['type'] == 'DISK':
+            if m_rom['type'] == ROM_TYPE_DISK:
                 sha1_str = str(m_rom['sha1'])[0:8]
-                table_row = [str(m_rom['type']), str(m_rom['name']), '',
-                             sha1_str, m_rom['location']]
+                table_row = [str(m_rom['type']), str(m_rom['name']), '', sha1_str, m_rom['location']]
+            elif m_rom['type'] == ROM_TYPE_SAMPLE:
+                table_row = [str(m_rom['type']), str(m_rom['name']), '', '', str(m_rom['location'])]
             else:
                 table_row = [str(m_rom['type']), str(m_rom['name']), str(m_rom['size']),
                              str(m_rom['crc']), str(m_rom['location'])]
@@ -2801,10 +2810,12 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
 
         # --- Table rows ---
         for m_rom in rom_list:
-            if m_rom['type'] == 'DISK':
+            if m_rom['type'] == ROM_TYPE_DISK:
                 sha1_srt = m_rom['sha1'][0:8]
-                table_row = [m_rom['type'], m_rom['name'],
-                             '', sha1_srt,
+                table_row = [m_rom['type'], m_rom['name'], '', sha1_srt,
+                             m_rom['location'], m_rom['status_colour']]
+            elif m_rom['type'] == ROM_TYPE_SAMPLE:
+                table_row = [str(m_rom['type']), str(m_rom['name']), '', '',
                              m_rom['location'], m_rom['status_colour']]
             else:
                 table_row = [str(m_rom['type']), str(m_rom['name']),

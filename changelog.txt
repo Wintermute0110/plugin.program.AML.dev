@@ -19,19 +19,22 @@ WIP      Support for CBZ/CBR manuals. Wait until this is implemented in AEL and 
 
 [B]Advanced Emulator Launcher | version 0.9.6 | xx May 2018[/B]
 
-WIP      Add Upright/Cocktail filter.
+WIP      Option in settings to update all MAME and SL Favourite ROMs. Useful for plugin upgrades.
+
+WIP      Asset hashed database. This will speed up launching MAME machines. Note that the asset
+         DB must be opened for the Most Played and Recently Played DBs.
 
 WIP      Prettify the "Display rotation" filter (use Horizontal/Vertical instead of numbers).
 
-WIP      Include number of buttons in controls.
+WIP      Include number of buttons in controls and some other control information.
 
-WIP      Add the Samples of each machine to the ROM database.
+FEATURE  Add the Samples of each machine to the ROM database.
 
-WIP      Audit the ROM samples inside ZIP files.
+FEATURE  Audit the ROM samples inside ZIP files.
 
-WORKING  Implement "Most played MAME machines"
+FEATURE  Implement "Most played MAME machines"
 
-WORKING  Implement "Recently played MAME machines"
+FEATURE  Implement "Recently played MAME machines"
 
 WIP      Implement "Most played SL ROMs"
 

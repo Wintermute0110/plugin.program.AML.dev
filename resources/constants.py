@@ -88,13 +88,14 @@ SL_LAUNCH_CASE_D     = 'Case D'
 SL_LAUNCH_CASE_ERROR = 'Case ERROR!'
 
 # --- ROM types ---
-ROM_TYPE_ROM   = 'ROM'  # Normal ROM (no merged, no BIOS)
-ROM_TYPE_DISK  = 'DISK'
-ROM_TYPE_BROM  = 'BROM' # BIOS merged ROM
-ROM_TYPE_XROM  = 'XROM' # BIOS non-merged
-ROM_TYPE_MROM  = 'MROM' # non-BIOS merged ROM
-ROM_TYPE_DROM  = 'DROM' # Device ROM
-ROM_TYPE_ERROR = 'ERR'
+ROM_TYPE_ROM    = 'ROM'  # Normal ROM (no merged, no BIOS)
+ROM_TYPE_BROM   = 'BROM' # BIOS merged ROM
+ROM_TYPE_XROM   = 'XROM' # BIOS non-merged
+ROM_TYPE_MROM   = 'MROM' # non-BIOS merged ROM
+ROM_TYPE_DROM   = 'DROM' # Device ROM
+ROM_TYPE_DISK   = 'DISK'
+ROM_TYPE_SAMPLE = 'SAM'
+ROM_TYPE_ERROR  = 'ERR'
 
 # --- ROM audit status ---
 AUDIT_STATUS_OK                = 'OK'
@@ -110,6 +111,7 @@ AUDIT_STATUS_ROM_BAD_CRC       = 'ROM bad CRC'
 AUDIT_STATUS_ROM_BAD_SIZE      = 'ROM bad size'
 AUDIT_STATUS_CHD_BAD_VERSION   = 'CHD bad version'
 AUDIT_STATUS_CHD_BAD_SHA1      = 'CHD bad SHA1'
+AUDIT_STATUS_SAMPLE_NOT_IN_ZIP = 'SAMPLE not in ZIP'
 
 # --- File name extensions ---
 MAME_ROM_EXTS      = ['zip']
