@@ -982,6 +982,7 @@ def mame_info_main_print(slist, location, machine_name, machine, assets):
     slist.append('[COLOR orange]Machine {0} / Render data[/COLOR]'.format(machine_name))
     # >> Print MAME Favourites special fields
     if location == LOCATION_MAME_FAVS:
+        slist.append("[COLOR slateblue]name[/COLOR]: {0}".format(machine['name']))
         if 'ver_mame' in machine:
             slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(machine['ver_mame']))
         else:
