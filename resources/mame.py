@@ -865,7 +865,12 @@ def _mame_stat_chd(chd_path):
         f.close()
     except IOError as E:
         chd_info['status'] = CHD_BAD_CHD
+        return chd_info
 
+    # --- Check CHD magic string to skip fake files ---
+    if chd_data_str[0:8] != 'MComprHD':
+        if __debug_this_function: log_debug('_mame_stat_chd() Magic string not found!')
+        chd_info['status'] = CHD_BAD_CHD
         return chd_info
 
     # --- Parse CHD header ---
