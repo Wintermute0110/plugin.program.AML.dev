@@ -1235,6 +1235,10 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     slist.append(t.format(control_dic['audit_machine_archives_ROM'],
                           control_dic['audit_machine_archives_ROM_parents'],
                           control_dic['audit_machine_archives_ROM_clones']))
+    t = "{0:5d} machines require Samples , parents {1:5d}, clones {2:5d}"
+    slist.append(t.format(control_dic['audit_machine_archives_Samples'],
+                          control_dic['audit_machine_archives_Samples_parents'],
+                          control_dic['audit_machine_archives_Samples_clones']))
     t = "{0:5d} machines require CHDs    , parents {1:5d}, clones {2:5d}"
     slist.append(t.format(control_dic['audit_machine_archives_CHD'],
                           control_dic['audit_machine_archives_CHD_parents'],
@@ -1243,10 +1247,26 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     slist.append(t.format(control_dic['audit_archive_less'],
                           control_dic['audit_archive_less_parents'],
                           control_dic['audit_archive_less_clones']))
-    t = "{0:5d} ROM ZIPs in the {1} set"
-    slist.append(t.format(control_dic['audit_MAME_ZIP_files'], rom_set))
-    t = "{0:5d}     CHDs in the {1} set"
+
+    t = "{0:5d} ROM ZIPs    in the {1} set"
+    slist.append(t.format(control_dic['audit_MAME_ROM_ZIP_files'], rom_set))
+    t = "{0:5d} Sample ZIPs in the {1} set"
+    slist.append(t.format(control_dic['audit_MAME_Sample_ZIP_files'], rom_set))
+    t = "{0:5d} CHDs        in the {1} set"
     slist.append(t.format(control_dic['audit_MAME_CHD_files'], chd_set))
+
+    t = "{0:6d} total ROMs ({1:6d} valid / {2:6d} invalid)"
+    slist.append(t.format(
+        control_dic['stats_audit_ROMs_total'],
+        control_dic['stats_audit_ROMs_valid'],
+        control_dic['stats_audit_ROMs_invalid'],
+    ))
+    t = "{0:6d} total CHDs ({1:6d} valid / {2:6d} invalid)"
+    slist.append(t.format(
+        control_dic['stats_audit_CHDs_total'],
+        control_dic['stats_audit_CHDs_valid'],
+        control_dic['stats_audit_CHDs_invalid'],
+    ))
 
     # --- SL item audit database statistics ---
     slist.append('')
@@ -1277,6 +1297,13 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
         str(control_dic['audit_MAME_machines_with_ROMs']),
         str(control_dic['audit_MAME_machines_with_ROMs_OK']),
         str(control_dic['audit_MAME_machines_with_ROMs_BAD']),
+    ]
+    table_str.append(table_row)
+    table_row = [
+        'Machines with Samples',
+        str(control_dic['audit_MAME_machines_with_SAMPLES']),
+        str(control_dic['audit_MAME_machines_with_SAMPLES_OK']),
+        str(control_dic['audit_MAME_machines_with_SAMPLES_BAD']),
     ]
     table_str.append(table_row)
     table_row = [
@@ -1983,7 +2010,6 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
     report_full_list = [
         '*** Advanced MAME Launcher MAME audit report ***',
         'This report shows full audit report',
-        '',
     ]
     report_good_list = [
         '*** Advanced MAME Launcher MAME audit report ***',
@@ -2030,11 +2056,11 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
     SAMPLES_report_error_list.extend(h_list)
     CHD_report_good_list.extend(h_list)
     CHD_report_error_list.extend(h_list)
+
     h_list = [
         'Of those, {0} require ROMs and or CHDSs'.format(audit_MAME_machines_with_arch),
         'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
             audit_MAME_machines_with_arch_OK, audit_MAME_machines_with_arch_BAD ),
-        '',
     ]
     report_good_list.extend(h_list)
     report_error_list.extend(h_list)
@@ -2042,7 +2068,6 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
         'Of those, {0} require ROMs'.format(audit_MAME_machines_with_ROMs),
         'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
             audit_MAME_machines_with_ROMs_OK, audit_MAME_machines_with_ROMs_BAD ),
-        '',
     ]
     ROM_report_good_list.extend(h_list)
     ROM_report_error_list.extend(h_list)
@@ -2050,10 +2075,19 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
         'Of those, {0} require ROMs and or CHDSs'.format(audit_MAME_machines_with_CHDs),
         'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
             audit_MAME_machines_with_CHDs_OK, audit_MAME_machines_with_CHDs_BAD ),
-        '',
     ]
     CHD_report_good_list.extend(h_list)
     CHD_report_error_list.extend(h_list)
+
+    report_full_list.append('')
+    report_good_list.append('')
+    report_error_list.append('')
+    ROM_report_good_list.append('')
+    ROM_report_error_list.append('')
+    SAMPLES_report_good_list.append('')
+    SAMPLES_report_error_list.append('')
+    CHD_report_good_list.append('')
+    CHD_report_error_list.append('')
 
     # >> Generate report.
     pDialog.create('Advanced MAME Launcher', 'Generating audit reports ... ')
@@ -3767,7 +3801,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         pDialog.update((item_count*100)//num_items)
     pDialog.close()
 
-    # --- Machine archives and ROM/CHD sets ---
+    # --- Machine archives and ROM/Sample/CHD sets ---
     # NOTE roms_dic and chds_dic may have invalid ROMs/CHDs. However, machine_archives_dic must
     #      have only valid ROM archives (ZIP/7Z).
     # For every machine, it goes ROM by ROM and makes a list of ZIP archive locations. Then, it
@@ -3775,6 +3809,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # roms_dic/chds_dic have invalid ROMs. Skip invalid ROMs.
     machine_archives_dic = {}
     full_ROM_archive_set = set()
+    full_Sample_archive_set = set()
     full_CHD_archive_set = set()
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Building ROM and CHD archive lists ...')
@@ -3783,38 +3818,64 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     machine_archives_ROM = 0
     machine_archives_ROM_parents = 0
     machine_archives_ROM_clones = 0
+    machine_archives_Samples = 0
+    machine_archives_Samples_parents = 0
+    machine_archives_Samples_clones = 0
     machine_archives_CHD = 0
     machine_archives_CHD_parents = 0
     machine_archives_CHD_clones = 0
     archive_less = 0
     archive_less_parents = 0
     archive_less_clones = 0
+    ROMs_total = 0
+    ROMs_valid = 0
+    ROMs_invalid = 0
+    CHDs_total = 0
+    CHDs_valid = 0
+    CHDs_invalid = 0
     for m_name in audit_roms_dic:
         isClone = True if machines_render[m_name]['cloneof'] else False
         rom_list = audit_roms_dic[m_name]
         machine_rom_archive_set = set()
+        machine_sample_archive_set = set()
         machine_chd_archive_set = set()
         # --- Iterate ROMs/CHDs ---
         for rom in rom_list:
             if rom['type'] == ROM_TYPE_DISK:
+                CHDs_total += 1
                 # >> Skip invalid CHDs
-                if not rom['sha1']: continue
+                if not rom['sha1']:
+                    CHDs_invalid += 1
+                    continue
+                CHDs_valid += 1
                 chd_name = rom['location']
                 machine_chd_archive_set.add(chd_name)
                 full_CHD_archive_set.add(rom['location'])
             elif rom['type'] == ROM_TYPE_SAMPLE:
-                pass
+                sample_str_list = rom['location'].split('/')
+                zip_name = sample_str_list[0]
+                machine_sample_archive_set.add(zip_name)
+                archive_str = rom['location'].split('/')[0]
+                full_Sample_archive_set.add(archive_str)
             else:
+                ROMs_total += 1
                 # >> Skip invalid ROMs
-                if not rom['crc']: continue
+                if not rom['crc']:
+                    ROMs_invalid += 1
+                    continue
+                ROMs_valid += 1
                 rom_str_list = rom['location'].split('/')
                 zip_name = rom_str_list[0]
                 machine_rom_archive_set.add(zip_name)
                 archive_str = rom['location'].split('/')[0]
                 # if not archive_str: continue
                 full_ROM_archive_set.add(archive_str)
-        machine_archives_dic[m_name] = {'ROMs' : list(machine_rom_archive_set),
-                                        'CHDs' : list(machine_chd_archive_set)}
+        machine_archives_dic[m_name] = {
+            'ROMs'    : list(machine_rom_archive_set),
+            'Samples' : list(machine_sample_archive_set),
+            'CHDs'    : list(machine_chd_archive_set),
+        }
+
         # --- Statistics ---
         if machine_rom_archive_set:
             machine_archives_ROM += 1
@@ -3822,13 +3883,19 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
                 machine_archives_ROM_clones += 1
             else:
                 machine_archives_ROM_parents += 1
+        if machine_sample_archive_set:
+            machine_archives_Samples += 1
+            if isClone:
+                machine_archives_Samples_clones += 1
+            else:
+                machine_archives_Samples_parents += 1
         if machine_chd_archive_set:
             machine_archives_CHD += 1
             if isClone:
                 machine_archives_CHD_clones += 1
             else:
                 machine_archives_CHD_parents += 1
-        if not (machine_rom_archive_set or machine_chd_archive_set):
+        if not (machine_rom_archive_set or machine_sample_archive_set or machine_chd_archive_set):
             archive_less += 1
             if isClone:
                 archive_less_clones += 1
@@ -3840,22 +3907,33 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         pDialog.update((item_count*100)//num_items)
     pDialog.close()
     ROM_archive_list = list(sorted(full_ROM_archive_set))
+    Sample_archive_list = list(sorted(full_Sample_archive_set))
     CHD_archive_list = list(sorted(full_CHD_archive_set))
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
-    control_dic['audit_MAME_ZIP_files']               = len(ROM_archive_list)
-    control_dic['audit_MAME_CHD_files']               = len(CHD_archive_list)
-    control_dic['audit_machine_archives_ROM']         = machine_archives_ROM
-    control_dic['audit_machine_archives_ROM_parents'] = machine_archives_ROM_parents
-    control_dic['audit_machine_archives_ROM_clones']  = machine_archives_ROM_clones
-    control_dic['audit_machine_archives_CHD']         = machine_archives_CHD
-    control_dic['audit_machine_archives_CHD_parents'] = machine_archives_CHD_parents
-    control_dic['audit_machine_archives_CHD_clones']  = machine_archives_CHD_clones
-    control_dic['audit_archive_less']                 = archive_less
-    control_dic['audit_archive_less_parents']         = archive_less_parents
-    control_dic['audit_archive_less_clones']          = archive_less_clones
+    control_dic['audit_MAME_ROM_ZIP_files']               = len(ROM_archive_list)
+    control_dic['audit_MAME_Sample_ZIP_files']            = len(Sample_archive_list)
+    control_dic['audit_MAME_CHD_files']                   = len(CHD_archive_list)
+    control_dic['audit_machine_archives_ROM']             = machine_archives_ROM
+    control_dic['audit_machine_archives_ROM_parents']     = machine_archives_ROM_parents
+    control_dic['audit_machine_archives_ROM_clones']      = machine_archives_ROM_clones
+    control_dic['audit_machine_archives_Samples']         = machine_archives_Samples
+    control_dic['audit_machine_archives_Samples_parents'] = machine_archives_Samples_parents
+    control_dic['audit_machine_archives_Samples_clones']  = machine_archives_Samples_clones
+    control_dic['audit_machine_archives_CHD']             = machine_archives_CHD
+    control_dic['audit_machine_archives_CHD_parents']     = machine_archives_CHD_parents
+    control_dic['audit_machine_archives_CHD_clones']      = machine_archives_CHD_clones
+    control_dic['audit_archive_less']                     = archive_less
+    control_dic['audit_archive_less_parents']             = archive_less_parents
+    control_dic['audit_archive_less_clones']              = archive_less_clones
+    control_dic['stats_audit_ROMs_total']                 = ROMs_total
+    control_dic['stats_audit_ROMs_valid']                 = ROMs_valid
+    control_dic['stats_audit_ROMs_invalid']               = ROMs_invalid
+    control_dic['stats_audit_CHDs_total']                 = CHDs_total
+    control_dic['stats_audit_CHDs_valid']                 = CHDs_valid
+    control_dic['stats_audit_CHDs_invalid']               = CHDs_invalid
     control_dic['t_MAME_Audit_DB_build'] = time.time()
 
     # --- Save databases ---
