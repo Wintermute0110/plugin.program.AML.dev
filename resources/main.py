@@ -454,6 +454,10 @@ def run_plugin():
         elif command == 'SETUP_CUSTOM_FILTERS':
             _command_context_setup_custom_filters()
 
+        # >> Check and update all MAME and SL Favourite objects
+        elif command == 'CHECK_ALL_OBJECTS':
+            _command_check_all_Favourite_objects()
+
         # >> Check AML config
         elif command == 'CHECK_CONFIG':
             _command_check_AML_configuration()
@@ -5349,6 +5353,13 @@ def _command_context_setup_plugin():
             fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
             fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
             kodi_notify('MAME machine and asset caches rebuilt')
+
+#
+# Checks and updates all MAME and SL Favourite object. This function is useful for plugin
+# upgrades.
+#
+def _command_check_all_Favourite_objects():
+    kodi_dialog_OK('Not implemented yet, sorry.')
 
 #
 # Checks AML configuration and informs users of potential problems.

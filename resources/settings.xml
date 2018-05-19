@@ -64,6 +64,7 @@
 </category>
 <category label="I/O">
     <setting id="separator" type="lsep" label="Utilities"/>
+    <setting label="Check/Update all objects ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML/?command=CHECK_ALL_OBJECTS)"/>
     <setting label="Check AML configuration ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML/?command=CHECK_CONFIG)"/>
     <setting label="Check MAME CRC hash collisions ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML/?command=CHECK_MAME_COLLISIONS)"/>
     <setting label="Check SL CRC hash collisions ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML/?command=CHECK_SL_COLLISIONS)"/>
