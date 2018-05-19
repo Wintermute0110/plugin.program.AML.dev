@@ -976,9 +976,7 @@ def _mame_stat_chd(chd_path):
 # -------------------------------------------------------------------------------------------------
 # >> See https://docs.python.org/2/library/time.html
 def _str_time(secs):
-    t_struct = time.localtime(secs)
-
-    return time.strftime('%a  %d %b %Y  %H:%M:%S', t_struct)
+    return time.strftime('%a  %d %b %Y  %H:%M:%S', time.localtime(secs))
 
 # slist is a list of strings that will be joined like '\n'.join(slist)
 # slist is a list, so it is mutable and can be changed by reference.
@@ -3136,15 +3134,74 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
             num_displays += 1
 
         # Some machines have no controls at all.
+        # 1) <control> reqbuttons attribute, pang uses it (has 2 buttons but only 1 is required
+        # 2) <control> reqbuttons ways2, bcclimbr uses it. Sometimes ways attribute is a string!
+        #
+        # machine['input'] = {
+        #     'att_players' CDATA #REQUIRED
+        #     'att_coins'   CDATA #IMPLIED
+        #     'att_service' (yes|no) "no"
+        #     'att_tilt'    (yes|no) "no"
+        #     'control_list' : [
+        #         {
+        #         'type'       : string, CDATA #REQUIRED
+        #         'player'     : int, CDATA #IMPLIED
+        #         'buttons'    : int, CDATA #IMPLIED
+        #         'reqbuttons' : int, CDATA #IMPLIED
+        #         'ways'       : [ ways string, ways2 string, ways3 string ] CDATA #IMPLIED
+        #         }, ...
+        #     ]
+        # }
         elif event == 'start' and elem.tag == 'input':
-            # coins is #IMPLIED attribute
+            # --- Keep this as is it now for compatibility ---
             if 'coins' in elem.attrib:
                 machine['coins'] = int(elem.attrib['coins'])
 
+            # --- Keep this as it is now for compatibility ---
             # >> Iterate children of <input> and search for <control> tags
             for control_child in elem:
                 if control_child.tag == 'control':
                     machine['control_type'].append(control_child.attrib['type'])
+
+            # --- New 'input' field in 0.9.6 ---
+            # --- <input> attributes ---
+            att_players = int(elem.attrib['players']) if 'players' in elem.attrib else 0
+            att_coins = int(elem.attrib['coins']) if 'coins' in elem.attrib else 0
+            if 'service' in elem.attrib: att_service = True if elem.attrib['service'] == 'yes' else False
+            else:                        att_service = False
+            if 'tilt' in elem.attrib: att_tilt = True if elem.attrib['tilt'] == 'yes' else False
+            else:                     att_tilt = False
+
+            # --- <input> child tags ---
+            control_list = []
+            for control_child in elem:
+                attrib = control_child.attrib
+                # >> Skip non <control> tags
+                if control_child.tag != 'control': continue
+                # >> Process <control> tags
+                control_dic = {}
+                if 'type' in attrib:
+                    control_dic['type'] = attrib['type']
+                else:
+                    control_dic['type'] = ''
+                    raise TypeError('<input> -> <control> has not type attribute')
+                control_dic['player'] = int(attrib['player']) if 'player' in attrib else -1
+                control_dic['buttons'] = int(attrib['buttons']) if 'buttons' in attrib else -1
+                control_dic['reqbuttons'] = int(attrib['reqbuttons']) if 'reqbuttons' in attrib else -1
+                ways_list = []
+                if 'ways'  in attrib: ways_list.append(attrib['ways'])
+                if 'ways2' in attrib: ways_list.append(attrib['ways2'])
+                if 'ways3' in attrib: ways_list.append(attrib['ways3'])
+                control_dic['ways'] = ways_list
+                control_list.append(control_dic)
+            input_dic = {
+                'att_players'  : att_players,
+                'att_coins'    : att_coins,
+                'att_service'  : att_service,
+                'att_tilt'     : att_tilt,
+                'control_list' : control_list,
+            }
+            machine['input'] = input_dic
 
         elif event == 'start' and elem.tag == 'driver':
             # status is #REQUIRED attribute

@@ -105,8 +105,9 @@ def fs_new_machine_dic():
         # >> Other <machine> tags from MAME XML
         'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
         'display_rotate' : [], # (0|90|180|270) #REQUIRED>
-        'control_type'   : [],
-        'coins'          : 0,
+        'input'          : {},
+        'coins'          : 0,  # Deprecated field 0.9.6
+        'control_type'   : [], # Deprecated field 0.9.6
         'softwarelists'  : [],
         'devices'        : [], # List of dictionaries. See comments avobe.
         # >> Custom AML data (from INI files or generated)
