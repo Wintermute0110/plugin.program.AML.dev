@@ -978,7 +978,7 @@ def _mame_stat_chd(chd_path):
 def _str_time(secs):
     return time.strftime('%a  %d %b %Y  %H:%M:%S', time.localtime(secs))
 
-def mame_info_main_print(slist, location, machine_name, machine, assets):
+def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append('[COLOR orange]Machine {0} / Render data[/COLOR]'.format(machine_name))
     # >> Print MAME Favourites special fields
     if location == LOCATION_MAME_FAVS:
@@ -1066,6 +1066,55 @@ def mame_info_main_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(assets['snap']))
     slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(assets['title']))
     slist.append("[COLOR violet]trailer[/COLOR]: '{0}'".format(assets['trailer']))
+
+def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL_machine_list):
+    # --- ROM stuff ---
+    slist.append('[COLOR orange]ROM {0}[/COLOR]'.format(SL_ROM))
+    if 'ROM_name' in rom:
+        slist.append("[COLOR violet]ROM_name[/COLOR]: '{0}'".format(rom['ROM_name']))
+    if 'SL_name' in rom:
+        slist.append("[COLOR violet]SL_name[/COLOR]: '{0}'".format(rom['SL_name']))
+    if 'ver_mame' in rom:
+        slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(rom['ver_mame']))
+    if 'ver_mame_str' in rom:
+        slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(rom['ver_mame_str']))
+    slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(rom['cloneof']))
+    slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(rom['description']))
+    slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {0}".format(unicode(rom['hasCHDs'])))
+    slist.append("[COLOR skyblue]hasROMs[/COLOR]: {0}".format(unicode(rom['hasROMs'])))
+    if 'launch_machine' in rom:
+        slist.append("[COLOR violet]launch_machine[/COLOR]: '{0}'".format(rom['launch_machine']))
+    if rom['parts']:
+        for i, part in enumerate(rom['parts']):
+            slist.append("[COLOR lime]parts[/COLOR][{0}]:".format(i))
+            slist.append("  [COLOR violet]interface[/COLOR]: '{0}'".format(part['interface']))
+            slist.append("  [COLOR violet]name[/COLOR]: '{0}'".format(part['name']))
+    else:
+        slist.append('[COLOR lime]parts[/COLOR]: []')
+    slist.append("[COLOR violet]plot[/COLOR]: '{0}'".format(rom['plot']))
+    slist.append("[COLOR violet]publisher[/COLOR]: '{0}'".format(rom['publisher']))
+    slist.append("[COLOR violet]status_CHD[/COLOR]: '{0}'".format(rom['status_CHD']))
+    slist.append("[COLOR violet]status_ROM[/COLOR]: '{0}'".format(rom['status_ROM']))
+    slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(rom['year']))
+
+    slist.append('\n[COLOR orange]Software List assets[/COLOR]')
+    slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(assets['title']))
+    slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(assets['snap']))
+    slist.append("[COLOR violet]boxfront[/COLOR]: '{0}'".format(assets['boxfront']))
+    slist.append("[COLOR violet]fanart[/COLOR]: '{0}'".format(assets['fanart']))
+    slist.append("[COLOR violet]trailer[/COLOR]: '{0}'".format(assets['trailer']))
+    slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(assets['manual']))
+
+    slist.append('\n[COLOR orange]Software List {0}[/COLOR]'.format(SL_name))
+    slist.append("[COLOR violet]display_name[/COLOR]: '{0}'".format(SL_dic['display_name']))
+    slist.append("[COLOR skyblue]num_with_CHDs[/COLOR]: {0}".format(unicode(SL_dic['num_with_CHDs'])))
+    slist.append("[COLOR skyblue]num_with_ROMs[/COLOR]: {0}".format(unicode(SL_dic['num_with_ROMs'])))
+    slist.append("[COLOR violet]rom_DB_noext[/COLOR]: '{0}'".format(SL_dic['rom_DB_noext']))
+
+    slist.append('\n[COLOR orange]Runnable by[/COLOR]')
+    for machine_dic in sorted(SL_machine_list):
+        t = "[COLOR violet]machine[/COLOR]: '{0}' [COLOR slateblue]({1})[/COLOR]"
+        slist.append(t.format(machine_dic['description'], machine_dic['machine']))
 
 #
 # slist is a list of strings that will be joined like '\n'.join(slist)

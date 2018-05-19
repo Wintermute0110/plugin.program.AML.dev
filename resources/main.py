@@ -2195,7 +2195,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
 
         # --- Make information string and display text window ---
         slist = []
-        mame_info_main_print(slist, location, machine_name, machine, assets)
+        mame_info_MAME_print(slist, location, machine_name, machine, assets)
         _display_text_window(window_title, '\n'.join(slist))
 
         # --- Write DEBUG TXT file ---
@@ -2208,6 +2208,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
     # --- View Software List ROM Machine data ---
     elif action == ACTION_VIEW_SL_ROM_DATA:
         if location == LOCATION_STANDARD:
+            # --- Load databases ---
             kodi_busydialog_ON()
             SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
             SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
@@ -2217,95 +2218,33 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
             roms = fs_load_JSON_file(SL_DB_FN.getPath())
             kodi_busydialog_OFF()
-            SL_machine_list = SL_machines_dic[SL_name]
-            SL_dic = SL_catalog_dic[SL_name]
+
+            # --- Prepare data ---
             rom = roms[SL_ROM]
             assets = SL_asset_dic[SL_ROM]
+            SL_dic = SL_catalog_dic[SL_name]
+            SL_machine_list = SL_machines_dic[SL_name]
             window_title = 'Software List ROM Information'
 
-            # >> Build information string
-            slist = []
-            slist.append('[COLOR orange]ROM {0}[/COLOR]'.format(SL_ROM))
-            slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(rom['cloneof']))
-            slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(rom['description']))
-            slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {0}".format(unicode(rom['hasCHDs'])))
-            slist.append("[COLOR skyblue]hasROMs[/COLOR]: {0}".format(unicode(rom['hasROMs'])))
-            if rom['parts']:
-                for i, part in enumerate(rom['parts']):
-                    slist.append("[COLOR lime]parts[/COLOR][{0}]:".format(i))
-                    slist.append("  [COLOR violet]interface[/COLOR]: '{0}'".format(part['interface']))
-                    slist.append("  [COLOR violet]name[/COLOR]: '{0}'".format(part['name']))
-            else:
-                slist.append('[COLOR lime]parts[/COLOR]: []')
-            slist.append("[COLOR violet]plot[/COLOR]: '{0}'".format(rom['plot']))
-            slist.append("[COLOR violet]publisher[/COLOR]: '{0}'".format(rom['publisher']))
-            slist.append("[COLOR violet]status_CHD[/COLOR]: '{0}'".format(rom['status_CHD']))
-            slist.append("[COLOR violet]status_ROM[/COLOR]: '{0}'".format(rom['status_ROM']))
-            slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(rom['year']))
-
-            slist.append('\n[COLOR orange]Software List assets[/COLOR]')
-            slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(assets['title']))
-            slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(assets['snap']))
-            slist.append("[COLOR violet]boxfront[/COLOR]: '{0}'".format(assets['boxfront']))
-            slist.append("[COLOR violet]fanart[/COLOR]: '{0}'".format(assets['fanart']))
-            slist.append("[COLOR violet]trailer[/COLOR]: '{0}'".format(assets['trailer']))
-            slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(assets['manual']))
-
-            slist.append('\n[COLOR orange]Software List {0}[/COLOR]'.format(SL_name))
-            slist.append("[COLOR violet]display_name[/COLOR]: '{0}'".format(SL_dic['display_name']))
-            slist.append("[COLOR skyblue]num_with_CHDs[/COLOR]: {0}".format(unicode(SL_dic['num_with_CHDs'])))
-            slist.append("[COLOR skyblue]num_with_ROMs[/COLOR]: {0}".format(unicode(SL_dic['num_with_ROMs'])))
-            slist.append("[COLOR violet]rom_DB_noext[/COLOR]: '{0}'".format(SL_dic['rom_DB_noext']))
-
-            slist.append('\n[COLOR orange]Runnable by[/COLOR]')
-            for machine_dic in sorted(SL_machine_list):
-                t = "[COLOR violet]machine[/COLOR]: '{0}' [COLOR slateblue]({1})[/COLOR]"
-                slist.append(t.format(machine_dic['description'], machine_dic['machine']))
-
         elif location == LOCATION_SL_FAVS:
+            # --- Load databases ---
+            kodi_busydialog_ON()
+            SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
+            SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
             fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
+            kodi_busydialog_OFF()
+
+            # --- Prepare data ---
             fav_key = SL_name + '-' + SL_ROM
             rom = fav_SL_roms[fav_key]
+            assets = rom['assets']
+            SL_dic = SL_catalog_dic[SL_name]
+            SL_machine_list = SL_machines_dic[SL_name]
             window_title = 'Favourite Software List ROM Information'
 
-            # >> Build information string
-            slist = []
-            slist.append('[COLOR orange]ROM {0}[/COLOR]'.format(fav_key))
-            if 'ver_mame' in rom:
-                slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(rom['ver_mame']))
-            else:
-                slist.append("[COLOR slateblue]ver_mame[/COLOR]: not available")
-            if 'ver_mame_str' in rom:
-                slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(rom['ver_mame_str']))
-            else:
-                slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: not available")
-            slist.append("[COLOR violet]ROM_name[/COLOR]: '{0}'".format(rom['ROM_name']))
-            slist.append("[COLOR violet]SL_name[/COLOR]: '{0}'".format(rom['SL_name']))
-            slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(rom['cloneof']))
-            slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(rom['description']))
-            slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {0}".format(unicode(rom['hasCHDs'])))
-            slist.append("[COLOR skyblue]hasROMs[/COLOR]: {0}".format(unicode(rom['hasROMs'])))
-            slist.append("[COLOR violet]launch_machine[/COLOR]: '{0}'".format(rom['launch_machine']))
-            if rom['parts']:
-                for i, part in enumerate(rom['parts']):
-                    slist.append("[COLOR lime]parts[/COLOR][{0}]:".format(i))
-                    slist.append("  [COLOR violet]interface[/COLOR]: '{0}'".format(part['interface']))
-                    slist.append("  [COLOR violet]name[/COLOR]: '{0}'".format(part['name']))
-            else:
-                slist.append('[COLOR lime]parts[/COLOR]: []')
-            slist.append("[COLOR violet]plot[/COLOR]: '{0}'".format(rom['plot']))
-            slist.append("[COLOR violet]publisher[/COLOR]: '{0}'".format(rom['publisher']))
-            slist.append("[COLOR violet]status_CHD[/COLOR]: '{0}'".format(rom['status_CHD']))
-            slist.append("[COLOR violet]status_ROM[/COLOR]: '{0}'".format(rom['status_ROM']))
-            slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(rom['year']))
-
-            slist.append('\n[COLOR orange]Software List assets[/COLOR]')
-            slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(rom['assets']['title']))
-            slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(rom['assets']['snap']))
-            slist.append("[COLOR violet]boxfront[/COLOR]: '{0}'".format(rom['assets']['boxfront']))
-            slist.append("[COLOR violet]fanart[/COLOR]: '{0}'".format(rom['assets']['fanart']))
-            slist.append("[COLOR violet]trailer[/COLOR]: '{0}'".format(rom['assets']['trailer']))
-            slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(rom['assets']['manual']))
+        # >> Build information string
+        slist = []
+        mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL_machine_list)
         _display_text_window(window_title, '\n'.join(slist))
 
         # --- Write DEBUG TXT file ---
