@@ -2194,76 +2194,9 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             assets = machine['assets']
             window_title = 'Favourite MAME Machine Information'
 
-        # --- Make information string ---
+        # --- Make information string and display text window ---
         slist = []
-        slist.append('[COLOR orange]Machine {0} / Render data[/COLOR]'.format(machine_name))
-        # >> Print MAME Favourites special fields
-        if location == LOCATION_MAME_FAVS:
-            if 'ver_mame' in machine:
-                slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(machine['ver_mame']))
-            else:
-                slist.append("[COLOR slateblue]ver_mame[/COLOR]: not available")
-            if 'ver_mame_str' in machine:
-                slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(machine['ver_mame_str']))
-            else:
-                slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: not available")
-        slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(machine['cloneof']))
-        slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(machine['description']))
-        slist.append("[COLOR violet]driver_status[/COLOR]: '{0}'".format(machine['driver_status']))
-        slist.append("[COLOR violet]genre[/COLOR]: '{0}'".format(machine['genre']))
-        slist.append("[COLOR skyblue]isBIOS[/COLOR]: {0}".format(machine['isBIOS']))
-        slist.append("[COLOR skyblue]isDevice[/COLOR]: {0}".format(machine['isDevice']))
-        slist.append("[COLOR violet]manufacturer[/COLOR]: '{0}'".format(machine['manufacturer']))
-        slist.append("[COLOR violet]nplayers[/COLOR]: '{0}'".format(machine['nplayers']))
-        slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(machine['year']))
-
-        slist.append('\n[COLOR orange]Machine data[/COLOR]'.format(machine_name))
-        slist.append("[COLOR violet]bestgames[/COLOR]: '{0}'".format(machine['bestgames']))
-        slist.append("[COLOR violet]catlist[/COLOR]: '{0}'".format(machine['catlist']))
-        slist.append("[COLOR violet]catver[/COLOR]: '{0}'".format(machine['catver']))
-        slist.append("[COLOR skyblue]coins[/COLOR]: {0}".format(machine['coins']))
-        slist.append("[COLOR skyblue]control_type[/COLOR]: {0}".format(unicode(machine['control_type'])))
-        # Devices list is a special case.
-        if machine['devices']:
-            for i, device in enumerate(machine['devices']):
-                slist.append("[COLOR lime]devices[/COLOR][{0}]:".format(i))
-                slist.append("  [COLOR violet]att_type[/COLOR]: {0}".format(device['att_type']))
-                slist.append("  [COLOR violet]att_tag[/COLOR]: {0}".format(device['att_tag']))
-                slist.append("  [COLOR skyblue]att_mandatory[/COLOR]: {0}".format(unicode(device['att_mandatory'])))
-                slist.append("  [COLOR violet]att_interface[/COLOR]: {0}".format(device['att_interface']))
-                slist.append("  [COLOR skyblue]instance[/COLOR]: {0}".format(unicode(device['instance'])))
-                slist.append("  [COLOR skyblue]ext_names[/COLOR]: {0}".format(unicode(device['ext_names'])))
-        else:
-            slist.append("[COLOR lime]devices[/COLOR]: []")
-        slist.append("[COLOR skyblue]display_rotate[/COLOR]: {0}".format(unicode(machine['display_rotate'])))
-        slist.append("[COLOR skyblue]display_type[/COLOR]: {0}".format(unicode(machine['display_type'])))
-        slist.append("[COLOR violet]genre[/COLOR]: '{0}'".format(machine['genre']))
-        slist.append("[COLOR skyblue]isDead[/COLOR]: {0}".format(unicode(machine['isDead'])))
-        slist.append("[COLOR skyblue]isMechanical[/COLOR]: {0}".format(unicode(machine['isMechanical'])))
-        slist.append("[COLOR violet]romof[/COLOR]: '{0}'".format(machine['romof']))
-        slist.append("[COLOR violet]sampleof[/COLOR]: '{0}'".format(machine['sampleof']))
-        slist.append("[COLOR violet]series[/COLOR]: '{0}'".format(machine['series']))
-        slist.append("[COLOR skyblue]softwarelists[/COLOR]: {0}".format(unicode(machine['softwarelists'])))
-        slist.append("[COLOR violet]sourcefile[/COLOR]: '{0}'".format(machine['sourcefile']))
-
-        slist.append('\n[COLOR orange]Asset/artwork data[/COLOR]')
-        slist.append("[COLOR violet]PCB[/COLOR]: '{0}'".format(assets['PCB']))
-        slist.append("[COLOR violet]artpreview[/COLOR]: '{0}'".format(assets['artpreview']))
-        slist.append("[COLOR violet]artwork[/COLOR]: '{0}'".format(assets['artwork']))
-        slist.append("[COLOR violet]cabinet[/COLOR]: '{0}'".format(assets['cabinet']))
-        slist.append("[COLOR violet]clearlogo[/COLOR]: '{0}'".format(assets['clearlogo']))
-        slist.append("[COLOR violet]cpanel[/COLOR]: '{0}'".format(assets['cpanel']))
-        slist.append("[COLOR violet]fanart[/COLOR]: '{0}'".format(assets['fanart']))
-        slist.append("[COLOR violet]flags[/COLOR]: '{0}'".format(assets['flags']))
-        slist.append("[COLOR violet]flyer[/COLOR]: '{0}'".format(assets['flyer']))
-        slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(assets['manual']))
-        slist.append("[COLOR violet]marquee[/COLOR]: '{0}'".format(assets['marquee']))
-        slist.append("[COLOR violet]plot[/COLOR]: '{0}'".format(assets['plot']))
-        slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(assets['snap']))
-        slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(assets['title']))
-        slist.append("[COLOR violet]trailer[/COLOR]: '{0}'".format(assets['trailer']))
-
-        # --- Show information window ---
+        mame_info_main_print(slist, location, machine_name, machine, assets)
         _display_text_window(window_title, '\n'.join(slist))
 
         # --- Write DEBUG TXT file ---

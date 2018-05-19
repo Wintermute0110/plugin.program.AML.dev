@@ -26,7 +26,7 @@ WIP      Asset hashed database. This will speed up launching MAME machines. Note
 
 WIP      Prettify the "Display rotation" filter (use Horizontal/Vertical instead of numbers).
 
-WIP      Include number of buttons in controls and some other control information.
+FEATURE  Include number of buttons in controls and some other control information.
 
 FEATURE  Add the Samples of each machine to the ROM database.
 
