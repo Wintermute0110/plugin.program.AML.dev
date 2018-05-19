@@ -3523,6 +3523,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # ---------------------------------------------------------------------------------------------
     # >> This saves the hashs files in the database directory.
     fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
+    fs_build_asset_hashed_db(PATHS, assets_dic, pDialog)
 
     # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary

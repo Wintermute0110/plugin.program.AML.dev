@@ -2177,11 +2177,10 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             pDialog.create('Advanced MAME Launcher')
             pDialog.update(0, pdialog_line1, 'ROM hashed database')
             machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-            pDialog.update(50, pdialog_line1, 'Assets database')
-            assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            pDialog.update(50, pdialog_line1, 'Assets hashed database')
+            assets = fs_get_machine_assets_db_hash(PATHS, machine_name)
             pDialog.update(100, pdialog_line1)
             pDialog.close()
-            assets = assets_dic[machine_name]
             window_title = 'MAME Machine Information'
         elif location == LOCATION_MAME_FAVS:
             pdialog_line1 = 'Loading databases ...'
@@ -5047,6 +5046,9 @@ def _command_context_setup_plugin():
             pDialog.update(int((2*100) / num_items), ' ', ' ')
             pDialog.close()
 
+            # --- assets have changed. Rebuild hashed database ---
+            fs_build_asset_hashed_db(PATHS, assets_dic, pDialog)
+
             # --- assets_dic has changed. Update asset cache ---
             if g_settings['debug_enable_MAME_asset_cache']:
                 cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
@@ -5098,6 +5100,9 @@ def _command_context_setup_plugin():
             fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
             pDialog.update(int((2*100) / num_items), ' ', ' ')
             pDialog.close()
+
+            # --- assets have changed. Rebuild hashed database ---
+            fs_build_asset_hashed_db(PATHS, assets_dic, pDialog)
 
             # --- Asset cache must be regenerated ---
             if g_settings['debug_enable_MAME_asset_cache']:
@@ -5233,6 +5238,9 @@ def _command_context_setup_plugin():
             fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
             pDialog.update(int((1*100) / num_items), ' ', ' ')
             pDialog.close()
+
+            # --- assets have changed. Rebuild hashed database ---
+            fs_build_asset_hashed_db(PATHS, assets_dic, pDialog)
 
             # --- Asset cache must be regenerated ---
             if g_settings['debug_enable_MAME_asset_cache']:
@@ -5641,10 +5649,7 @@ def _run_machine(machine_name, location):
     if location == LOCATION_STANDARD:
         log_debug('Reading info from hashed DBs')
         machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-        # WARNING This is slow! An asset hashed database is required
-        assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        assets = assets_dic[machine_name]
-        # assets = fs_get_machine_asset_db_hash(PATHS, machine_name)
+        assets = fs_get_machine_assets_db_hash(PATHS, machine_name)
     elif location == LOCATION_MAME_FAVS:
         log_debug('Reading info from MAME favourites')
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())

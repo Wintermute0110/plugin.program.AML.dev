@@ -19,9 +19,9 @@ WIP      Support for CBZ/CBR manuals. Wait until this is implemented in AEL and 
 
 [B]Advanced Emulator Launcher | version 0.9.6 | xx May 2018[/B]
 
-WIP      Option in settings to update all MAME and SL Favourite ROMs. Useful for plugin upgrades.
+WORKING  Option in settings to update all MAME and SL Favourite ROMs. Useful for plugin upgrades.
 
-WIP      Asset hashed database. This will speed up launching MAME machines. Note that the asset
+FEATURE  Asset hashed database. This will speed up launching MAME machines. Note that the asset
          DB must be opened for the Most Played and Recently Played DBs.
 
 FEATURE  Prettify the "Display rotation" filter (use Horizontal/Vertical instead of numbers).

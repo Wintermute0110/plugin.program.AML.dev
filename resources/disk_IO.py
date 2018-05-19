@@ -997,6 +997,54 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
 
     return hashed_db_dic[machine_name]
 
+# Hash database with 256 elements (2 hex digits)
+def fs_build_asset_hashed_db(PATHS, assets_dic, pDialog):
+    log_info('fs_build_asset_hashed_db() Building assets hashed database ...')
+
+    # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
+    pDialog.create('Advanced MAME Launcher', 'Building asset hashed database ...')
+    db_main_hash_idx = {}
+    for key in assets_dic:
+        md5_str = hashlib.md5(key).hexdigest()
+        db_name = md5_str[0:2] # WARNING Python slicing does not work like in C/C++!
+        db_main_hash_idx[key] = db_name
+        # log_debug('Machine {0:20s} / hash {1} / db file {2}'.format(key, md5_str, db_name))
+    pDialog.update(100)
+    pDialog.close()
+
+    log_info('Building asset hashed database JSON files ...')
+    hex_digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+    distributed_db_files = []
+    for u in range(len(hex_digits)):
+        for v in range(len(hex_digits)):
+            db_str = '{0}{1}'.format(hex_digits[u], hex_digits[v])
+            distributed_db_files.append(db_str)
+    pDialog.create('Advanced MAME Launcher', 'Building asset hashed database JSON files ...')
+    num_items = len(distributed_db_files)
+    item_count = 0
+    for db_prefix in distributed_db_files:
+        hashed_db_dic = {}
+        for key in db_main_hash_idx:
+            if db_main_hash_idx[key] == db_prefix:
+                hashed_db_dic[key] = assets_dic[key]
+        hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '_assets.json')
+        fs_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic, verbose = False)
+        item_count += 1
+        pDialog.update(int((item_count*100) / num_items))
+    pDialog.close()
+
+#
+# Retrieves machine from distributed database.
+# This is very quick for retrieving individual machines, very slow for multiple machines.
+#
+def fs_get_machine_assets_db_hash(PATHS, machine_name):
+    log_debug('fs_get_machine_assets_db_hash() machine {0}'.format(machine_name))
+    md5_str = hashlib.md5(machine_name).hexdigest()
+    hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_assets.json')
+    hashed_db_dic = fs_load_JSON_file(hash_DB_FN.getPath())
+
+    return hashed_db_dic[machine_name]
+
 # -------------------------------------------------------------------------------------------------
 # ROM cache
 # -------------------------------------------------------------------------------------------------
