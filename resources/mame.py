@@ -4620,7 +4620,16 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
-        catalog_key = " / ".join(machine['display_rotate'])
+        # >> machine['display_rotate'] is a list of strings
+        fixed_d_rotate_list = []
+        for d_str in machine['display_rotate']:
+            if d_str == '0' or d_str == '180':
+                fixed_d_rotate_list.append('Horizontal')
+            elif d_str == '90' or d_str == '270':
+                fixed_d_rotate_list.append('Vertical')
+            else:
+                raise TypeError('Machine {0} wrong display rotate "{1}"'.format(parent_name, d_str))
+        catalog_key = " / ".join(fixed_d_rotate_list)
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
         if catalog_key in catalog_parents:

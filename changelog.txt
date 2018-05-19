@@ -24,7 +24,7 @@ WIP      Option in settings to update all MAME and SL Favourite ROMs. Useful for
 WIP      Asset hashed database. This will speed up launching MAME machines. Note that the asset
          DB must be opened for the Most Played and Recently Played DBs.
 
-WIP      Prettify the "Display rotation" filter (use Horizontal/Vertical instead of numbers).
+FEATURE  Prettify the "Display rotation" filter (use Horizontal/Vertical instead of numbers).
 
 FEATURE  Include number of buttons in controls and some other control information.
 
