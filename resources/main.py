@@ -5884,18 +5884,18 @@ def _run_SL_machine(SL_name, ROM_name, location):
 
     # >> Display some DEBUG information.
     kodi_dialog_OK('Launch case {0}. '.format(launch_case) +
-                   'Machine has {0} device interfaces and '.format(num_machine_interfaces) +
-                   'SL ROM has {0} parts. '.format(num_SL_ROM_parts) + 
+                   'Machine has {0} device interface/s and '.format(num_machine_interfaces) +
+                   'SL ROM has {0} part/s. '.format(num_SL_ROM_parts) + 
                    'Media name is "{0}"'.format(media_name))
 
     # >> Launch machine using subprocess module
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
-    log_info('_run_SL_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
-    log_info('_run_SL_machine() mame_dir     "{0}"'.format(mame_dir))
-    log_info('_run_SL_machine() mame_exec    "{0}"'.format(mame_exec))
-    log_info('_run_SL_machine() machine_name "{0}"'.format(machine_name))
-    log_info('_run_SL_machine() machine_desc "{0}"'.format(machine_desc))
-    log_info('_run_SL_machine() media_name   "{0}"'.format(media_name))
+    log_debug('_run_SL_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
+    log_debug('_run_SL_machine() mame_dir     "{0}"'.format(mame_dir))
+    log_debug('_run_SL_machine() mame_exec    "{0}"'.format(mame_exec))
+    log_debug('_run_SL_machine() machine_name "{0}"'.format(machine_name))
+    log_debug('_run_SL_machine() machine_desc "{0}"'.format(machine_desc))
+    log_debug('_run_SL_machine() media_name   "{0}"'.format(media_name))
 
     # >> Build MAME arguments
     if sl_launch_mode == SL_LAUNCH_WITH_MEDIA:
