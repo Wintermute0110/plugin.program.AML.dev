@@ -565,10 +565,22 @@ def fs_new_control_dic():
 # Changes introduced in 0.9.6
 # 1) fav_machine['name'] = machine_name
 #
-def fs_get_MAME_Favourite(machine_name, machine, assets, control_dic):
+def fs_get_MAME_Favourite_simple(machine_name, machine, assets, control_dic):
     fav_machine = {}
 
     fav_machine = copy.deepcopy(machine)
+    fav_machine['name']         = machine_name
+    fav_machine['assets']       = assets
+    fav_machine['ver_mame']     = control_dic['ver_mame']
+    fav_machine['ver_mame_str'] = control_dic['ver_mame_str']
+
+    return fav_machine
+
+def fs_get_MAME_Favourite_full(machine_name, machine, machine_render, assets, control_dic):
+    fav_machine = {}
+
+    fav_machine = copy.deepcopy(machine)
+    fav_machine.update(machine_render)
     fav_machine['name']         = machine_name
     fav_machine['assets']       = assets
     fav_machine['ver_mame']     = control_dic['ver_mame']
