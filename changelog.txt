@@ -36,7 +36,7 @@ FEATURE  Implement "Most played MAME machines"
 
 FEATURE  Implement "Recently played MAME machines"
 
-WIP      Option in settings to update all MAME and SL Favourite ROMs. Useful for plugin upgrades.
+WORKING  Option in settings to update all MAME and SL Favourite ROMs. Useful for plugin upgrades.
 
 WIP      Implement "Most played SL ROMs"
 

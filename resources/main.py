@@ -2182,6 +2182,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             pDialog.update(100, pdialog_line1)
             pDialog.close()
             window_title = 'MAME Machine Information'
+
         elif location == LOCATION_MAME_FAVS:
             pdialog_line1 = 'Loading databases ...'
             pDialog.create('Advanced MAME Launcher')
@@ -2192,6 +2193,36 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             machine = machines[machine_name]
             assets = machine['assets']
             window_title = 'Favourite MAME Machine Information'
+
+        elif location == LOCATION_MAME_MOST_PLAYED:
+            pdialog_line1 = 'Loading databases ...'
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(0, pdialog_line1, 'MAME Most Played database')
+            most_played_roms_dic = fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+            pDialog.update(100, pdialog_line1)
+            pDialog.close()
+            machine = most_played_roms_dic[machine_name]
+            assets = machine['assets']
+            window_title = 'Most Played MAME Machine Information'
+
+        elif location == LOCATION_MAME_RECENT_PLAYED:
+            pdialog_line1 = 'Loading databases ...'
+            pDialog.create('Advanced MAME Launcher')
+            pDialog.update(0, pdialog_line1, 'MAME Recently Played database')
+            recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+            pDialog.update(100, pdialog_line1)
+            pDialog.close()
+            machine_index = -1
+            for i, recent_rom in enumerate(recent_roms_list):
+                if machine_name == recent_rom['name']:
+                    machine_index = i
+                    break
+            if machine_index < 0:
+                kodi_dialog_OK('machine_index < 0. Please report this bug.')
+                return
+            machine = recent_roms_list[machine_index]
+            assets = machine['assets']
+            window_title = 'Recently Played MAME Machine Information'
 
         # --- Make information string and display text window ---
         slist = []
