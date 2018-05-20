@@ -4422,6 +4422,9 @@ def _command_context_setup_plugin():
         pDialog.update(int((2*100) / num_items))
         pDialog.close()
 
+        # --- assets_dic has changed. Rebuild hashed database ---
+        fs_build_asset_hashed_db(PATHS, assets_dic, pDialog)
+
         # --- Regenerate asset cache ---
         if g_settings['debug_enable_MAME_asset_cache']:
             cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
@@ -4644,18 +4647,22 @@ def _command_context_setup_plugin():
             pDialog.update(100)
             pDialog.close()
 
-            # >> Save assets DB
+            # --- Save assets DB ---
             pDialog.create('Advanced MAME Launcher', 'Saving asset database ... ')
             pDialog.update(0)
             fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
             pDialog.update(100)
             pDialog.close()
-            # >> Rebuild asset cache
+            
+            # --- assets_dic has changed. Rebuild hashed database ---
+            fs_build_asset_hashed_db(PATHS, assets_dic, pDialog)
+
+            # --- Rebuild asset cache ---
             if g_settings['debug_enable_MAME_asset_cache']:
                 cache_index_dic = fs_load_JSON_file(PATHS.CACHE_INDEX_PATH.getPath())
                 fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
-            if pDialog_canceled: kodi_notify('Fanart building stopped. Partial progress saved.')
-            else:                kodi_notify('Fanart building finished')
+            if pDialog_canceled: kodi_notify('MAME fanarts building stopped. Partial progress saved.')
+            else:                kodi_notify('MAME fanarts building finished')
 
         # --- 4 -> Missing SL Fanarts ---
         # --- 5 -> Rebuild all SL Fanarts ---

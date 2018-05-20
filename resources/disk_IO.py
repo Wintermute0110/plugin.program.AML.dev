@@ -843,7 +843,7 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
     filesize = statinfo.st_size
 
     # --- Count number of machines. Useful for progress dialogs ---
-    log_info('fs_extract_MAME_XML() Counting number of machines...')
+    log_info('fs_extract_MAME_XML() Counting number of machines ...')
     total_machines = fs_count_MAME_Machines(PATHS)
     log_info('fs_extract_MAME_XML() Found {0} machines.'.format(total_machines))
     # kodi_dialog_OK('Found {0} machines in MAME.xml.'.format(total_machines))
@@ -861,7 +861,7 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
 def fs_count_MAME_Machines(PATHS):
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Counting number of MAME machines...')
+    pDialog.create('Advanced MAME Launcher', 'Counting number of MAME machines ...')
     pDialog.update(0)
     num_machines = 0
     with open(PATHS.MAME_XML_PATH.getPath(), 'rt') as f:
