@@ -981,16 +981,17 @@ def _str_time(secs):
 def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append('[COLOR orange]Machine {0} / Render data[/COLOR]'.format(machine_name))
     # >> Print MAME Favourites special fields
-    if location == LOCATION_MAME_FAVS:
+    if 'ver_mame' in machine:
         slist.append("[COLOR slateblue]name[/COLOR]: {0}".format(machine['name']))
-        if 'ver_mame' in machine:
-            slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(machine['ver_mame']))
-        else:
-            slist.append("[COLOR slateblue]ver_mame[/COLOR]: not available")
-        if 'ver_mame_str' in machine:
-            slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(machine['ver_mame_str']))
-        else:
-            slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: not available")
+    if 'ver_mame' in machine:
+        slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(machine['ver_mame']))
+    if 'ver_mame_str' in machine:
+        slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(machine['ver_mame_str']))
+    # >> Most Played Favourites special fields
+    if 'launch_count' in machine:
+        slist.append("[COLOR slateblue]launch_count[/COLOR]: {0}".format(unicode(machine['launch_count'])))
+
+    # >> Standard fields in Render database
     slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(machine['cloneof']))
     slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(machine['description']))
     slist.append("[COLOR violet]driver_status[/COLOR]: '{0}'".format(machine['driver_status']))
@@ -1001,7 +1002,8 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR violet]nplayers[/COLOR]: '{0}'".format(machine['nplayers']))
     slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(machine['year']))
 
-    slist.append('\n[COLOR orange]Machine data[/COLOR]'.format(machine_name))
+    # >> Standard fields in Main database
+    slist.append('\n[COLOR orange]Machine Main data[/COLOR]'.format(machine_name))
     slist.append("[COLOR violet]bestgames[/COLOR]: '{0}'".format(machine['bestgames']))
     slist.append("[COLOR violet]catlist[/COLOR]: '{0}'".format(machine['catlist']))
     slist.append("[COLOR violet]catver[/COLOR]: '{0}'".format(machine['catver']))
@@ -1038,7 +1040,6 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
             slist.append("  [COLOR violet]type[/COLOR]: {0}".format(control['type']))
             slist.append("  [COLOR skyblue]player[/COLOR]: {0}".format(unicode(control['player'])))
             slist.append("  [COLOR skyblue]buttons[/COLOR]: {0}".format(unicode(control['buttons'])))
-            slist.append("  [COLOR skyblue]reqbuttons[/COLOR]: {0}".format(unicode(control['reqbuttons'])))
             slist.append("  [COLOR skyblue]ways[/COLOR]: {0}".format(unicode(control['ways'])))
     else:
         slist.append("[COLOR lime]input[/COLOR]: []")
@@ -1050,7 +1051,7 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR skyblue]softwarelists[/COLOR]: {0}".format(unicode(machine['softwarelists'])))
     slist.append("[COLOR violet]sourcefile[/COLOR]: '{0}'".format(machine['sourcefile']))
 
-    slist.append('\n[COLOR orange]Asset/artwork data[/COLOR]')
+    slist.append('\n[COLOR orange]Machine assets/artwork[/COLOR]')
     slist.append("[COLOR violet]PCB[/COLOR]: '{0}'".format(assets['PCB']))
     slist.append("[COLOR violet]artpreview[/COLOR]: '{0}'".format(assets['artpreview']))
     slist.append("[COLOR violet]artwork[/COLOR]: '{0}'".format(assets['artwork']))
@@ -1069,15 +1070,11 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
 
 def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL_machine_list):
     # --- ROM stuff ---
-    slist.append('[COLOR orange]ROM {0}[/COLOR]'.format(SL_ROM))
+    slist.append('[COLOR orange]Software List {0} Item {0}[/COLOR]'.format(SL_name, SL_ROM))
     if 'ROM_name' in rom:
-        slist.append("[COLOR violet]ROM_name[/COLOR]: '{0}'".format(rom['ROM_name']))
+        slist.append("[COLOR slateblue]ROM_name[/COLOR]: '{0}'".format(rom['ROM_name']))
     if 'SL_name' in rom:
-        slist.append("[COLOR violet]SL_name[/COLOR]: '{0}'".format(rom['SL_name']))
-    if 'ver_mame' in rom:
-        slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(rom['ver_mame']))
-    if 'ver_mame_str' in rom:
-        slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(rom['ver_mame_str']))
+        slist.append("[COLOR slateblue]SL_name[/COLOR]: '{0}'".format(rom['SL_name']))
     slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(rom['cloneof']))
     slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(rom['description']))
     slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {0}".format(unicode(rom['hasCHDs'])))
@@ -1095,6 +1092,10 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
     slist.append("[COLOR violet]publisher[/COLOR]: '{0}'".format(rom['publisher']))
     slist.append("[COLOR violet]status_CHD[/COLOR]: '{0}'".format(rom['status_CHD']))
     slist.append("[COLOR violet]status_ROM[/COLOR]: '{0}'".format(rom['status_ROM']))
+    if 'ver_mame' in rom:
+        slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(rom['ver_mame']))
+    if 'ver_mame_str' in rom:
+        slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(rom['ver_mame_str']))
     slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(rom['year']))
 
     slist.append('\n[COLOR orange]Software List assets[/COLOR]')
@@ -3286,7 +3287,6 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
         #         'type'       : string, CDATA #REQUIRED
         #         'player'     : int, CDATA #IMPLIED
         #         'buttons'    : int, CDATA #IMPLIED
-        #         'reqbuttons' : int, CDATA #IMPLIED
         #         'ways'       : [ ways string, ways2 string, ways3 string ] CDATA #IMPLIED
         #         }, ...
         #     ]
@@ -3326,13 +3326,16 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
                     raise TypeError('<input> -> <control> has not type attribute')
                 control_dic['player'] = int(attrib['player']) if 'player' in attrib else -1
                 control_dic['buttons'] = int(attrib['buttons']) if 'buttons' in attrib else -1
-                control_dic['reqbuttons'] = int(attrib['reqbuttons']) if 'reqbuttons' in attrib else -1
                 ways_list = []
                 if 'ways'  in attrib: ways_list.append(attrib['ways'])
                 if 'ways2' in attrib: ways_list.append(attrib['ways2'])
                 if 'ways3' in attrib: ways_list.append(attrib['ways3'])
                 control_dic['ways'] = ways_list
                 control_list.append(control_dic)
+            # >> Fix player field when implied
+            if att_players == 1:
+                for control in control_list:
+                    control['player'] = 1
             input_dic = {
                 'att_players'  : att_players,
                 'att_coins'    : att_coins,
