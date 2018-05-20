@@ -3695,10 +3695,15 @@ def _command_context_manage_mame_most_played(machine_name):
         for fav_key in sorted(most_played_roms_dic):
             log_debug('Checking Most Played "{0}"'.format(fav_key))
             if fav_key in machines:
+                if 'launch_count' in most_played_roms_dic[fav_key]:
+                    launch_count = most_played_roms_dic[fav_key]['launch_count']
+                else:
+                    launch_count = 1
                 machine = machines[fav_key]
                 m_render = machines_render[fav_key]
                 assets = assets_dic[fav_key]
                 new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
+                new_fav['launch_count'] = launch_count
                 most_played_roms_dic[fav_key] = new_fav
                 log_debug('Updated machine "{0}"'.format(fav_key))
             else:
