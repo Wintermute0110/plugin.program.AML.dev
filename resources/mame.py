@@ -1367,39 +1367,39 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     chd_set = ['Merged', 'Split', 'Non-merged'][settings_dic['mame_chd_set']]
 
     slist.append('[COLOR orange]MAME ROM audit database statistics[/COLOR]')
-    t = "{0:5d} runnable MAME machines"
+    t = "{0:6d} runnable MAME machines"
     slist.append(t.format(control_dic['audit_MAME_machines_runnable']))
-    t = "{0:5d} machines require ROM ZIPs, parents {1:5d}, clones {2:5d}"
+    t = "{0:6d} machines require ROM ZIPs, {1:5d} parents and {2:5d} clones"
     slist.append(t.format(control_dic['audit_machine_archives_ROM'],
                           control_dic['audit_machine_archives_ROM_parents'],
                           control_dic['audit_machine_archives_ROM_clones']))
-    t = "{0:5d} machines require Samples , parents {1:5d}, clones {2:5d}"
+    t = "{0:6d} machines require Samples , {1:5d} parents and {2:5d} clones"
     slist.append(t.format(control_dic['audit_machine_archives_Samples'],
                           control_dic['audit_machine_archives_Samples_parents'],
                           control_dic['audit_machine_archives_Samples_clones']))
-    t = "{0:5d} machines require CHDs    , parents {1:5d}, clones {2:5d}"
+    t = "{0:6d} machines require CHDs    , {1:5d} parents and {2:5d} clones"
     slist.append(t.format(control_dic['audit_machine_archives_CHD'],
                           control_dic['audit_machine_archives_CHD_parents'],
                           control_dic['audit_machine_archives_CHD_clones']))
-    t = "{0:5d} machines require nothing , parents {1:5d}, clones {2:5d}"
+    t = "{0:6d} machines require nothing , {1:5d} parents and {2:5d} clones"
     slist.append(t.format(control_dic['audit_archive_less'],
                           control_dic['audit_archive_less_parents'],
                           control_dic['audit_archive_less_clones']))
 
-    t = "{0:5d} ROM ZIPs    in the {1} set"
+    t = "{0:6d} ROM ZIPs    in the {1} set"
     slist.append(t.format(control_dic['audit_MAME_ROM_ZIP_files'], rom_set))
-    t = "{0:5d} Sample ZIPs in the {1} set"
+    t = "{0:6d} Sample ZIPs in the {1} set"
     slist.append(t.format(control_dic['audit_MAME_Sample_ZIP_files'], rom_set))
-    t = "{0:5d} CHDs        in the {1} set"
+    t = "{0:6d} CHDs        in the {1} set"
     slist.append(t.format(control_dic['audit_MAME_CHD_files'], chd_set))
 
-    t = "{0:6d} total ROMs ({1:6d} valid / {2:6d} invalid)"
+    t = "{0:6d} total ROMs, {1:6d} valid and {2:6d} invalid"
     slist.append(t.format(
         control_dic['stats_audit_ROMs_total'],
         control_dic['stats_audit_ROMs_valid'],
         control_dic['stats_audit_ROMs_invalid'],
     ))
-    t = "{0:6d} total CHDs ({1:6d} valid / {2:6d} invalid)"
+    t = "{0:6d} total CHDs, {1:6d} valid and {2:6d} invalid"
     slist.append(t.format(
         control_dic['stats_audit_CHDs_total'],
         control_dic['stats_audit_CHDs_valid'],
@@ -1438,21 +1438,20 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     ]
     table_str.append(table_row)
     table_row = [
-        'Machines with Samples',
-        str(control_dic['audit_MAME_machines_with_SAMPLES']),
-        str(control_dic['audit_MAME_machines_with_SAMPLES_OK']),
-        str(control_dic['audit_MAME_machines_with_SAMPLES_BAD']),
-    ]
-    table_str.append(table_row)
-    table_row = [
         'Machines with CHDs',
         str(control_dic['audit_MAME_machines_with_CHDs']),
         str(control_dic['audit_MAME_machines_with_CHDs_OK']),
         str(control_dic['audit_MAME_machines_with_CHDs_BAD']),
     ]
     table_str.append(table_row)
-    table_str_list = text_render_table_str(table_str)
-    slist.extend(table_str_list)
+    table_row = [
+        'Machines with Samples',
+        str(control_dic['audit_MAME_machines_with_SAMPLES']),
+        str(control_dic['audit_MAME_machines_with_SAMPLES_OK']),
+        str(control_dic['audit_MAME_machines_with_SAMPLES_BAD']),
+    ]
+    table_str.append(table_row)
+    slist.extend(text_render_table_str(table_str))
 
     # --- SL audit info ---
     slist.append('\n[COLOR orange]SL audit information[/COLOR]\n')
@@ -1480,8 +1479,7 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
         str(control_dic['audit_SL_items_with_CHD_BAD']),
     ]
     table_str.append(table_row)
-    table_str_list = text_render_table_str(table_str)
-    slist.extend(table_str_list)
+    slist.extend(text_render_table_str(table_str))
 
 # -------------------------------------------------------------------------------------------------
 # Build MAME and SL plots
