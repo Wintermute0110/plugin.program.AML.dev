@@ -3140,7 +3140,7 @@ def _command_context_add_mame_fav(machine_name):
     kodi_busydialog_ON()
     control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
     machine = fs_get_machine_main_db_hash(PATHS, machine_name)
-    assets_dic = fs_load_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+    assets = fs_get_machine_assets_db_hash(PATHS, machine_name)
     kodi_busydialog_OFF()
 
     # >> Open Favourite Machines dictionary
@@ -3153,8 +3153,7 @@ def _command_context_add_mame_fav(machine_name):
         if ret < 1: return
 
     # >> Add machine. Add database version to Favourite.
-    assets = assets_dic[machine_name]
-    fav_machine = fs_get_MAME_Favourite(machine_name, machine, assets, control_dic)
+    fav_machine = fs_get_MAME_Favourite_simple(machine_name, machine, assets, control_dic)
     fav_machines[machine_name] = fav_machine
     log_info('_command_add_mame_fav() Added machine "{0}"'.format(machine_name))
 
