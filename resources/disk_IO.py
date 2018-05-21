@@ -570,9 +570,9 @@ def fs_get_MAME_Favourite_simple(machine_name, machine, assets, control_dic):
 
     fav_machine = copy.deepcopy(machine)
     fav_machine['name']         = machine_name
-    fav_machine['assets']       = assets
     fav_machine['ver_mame']     = control_dic['ver_mame']
     fav_machine['ver_mame_str'] = control_dic['ver_mame_str']
+    fav_machine['assets']       = copy.deepcopy(assets)
 
     return fav_machine
 
@@ -582,14 +582,22 @@ def fs_get_MAME_Favourite_full(machine_name, machine, machine_render, assets, co
     fav_machine = copy.deepcopy(machine)
     fav_machine.update(machine_render)
     fav_machine['name']         = machine_name
-    fav_machine['assets']       = assets
     fav_machine['ver_mame']     = control_dic['ver_mame']
     fav_machine['ver_mame_str'] = control_dic['ver_mame_str']
+    fav_machine['assets']       = copy.deepcopy(assets)
 
     return fav_machine
 
-def fs_get_SL_Favourite(machine_name, machine, assets, control_dic):
+def fs_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic):
     fav_SL_item = {}
+
+    fav_SL_item = copy.deepcopy(ROM)
+    ROM['SL_name']        = SL_name
+    ROM['ROM_name']       = ROM_name
+    ROM['ver_mame']       = control_dic['ver_mame']
+    ROM['ver_mame_str']   = control_dic['ver_mame_str']
+    ROM['launch_machine'] = ''
+    ROM['assets']         = copy.deepcopy(assets)
 
     return fav_SL_item
 

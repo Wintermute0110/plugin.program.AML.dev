@@ -101,10 +101,10 @@ class AML_Paths:
         self.COMMAND_DB_PATH   = PLUGIN_DATA_DIR.pjoin('DAT_Command_DB.json')
 
         # >> Most played and Recently played
-        self.MAME_RECENT_PLAYED_FILE_PATH = PLUGIN_DATA_DIR.pjoin('history_MAME.json')
         self.MAME_MOST_PLAYED_FILE_PATH   = PLUGIN_DATA_DIR.pjoin('most_played_MAME.json')
-        self.SL_RECENT_PLAYED_FILE_PATH   = PLUGIN_DATA_DIR.pjoin('history_SL.json')
+        self.MAME_RECENT_PLAYED_FILE_PATH = PLUGIN_DATA_DIR.pjoin('history_MAME.json')
         self.SL_MOST_PLAYED_FILE_PATH     = PLUGIN_DATA_DIR.pjoin('most_played_SL.json')
+        self.SL_RECENT_PLAYED_FILE_PATH   = PLUGIN_DATA_DIR.pjoin('history_SL.json')
 
         # >> Disabled. Now there are global properties for this.
         # self.MAIN_PROPERTIES_PATH = PLUGIN_DATA_DIR.pjoin('MAME_properties.json')
@@ -434,19 +434,28 @@ def run_plugin():
         elif command == 'SHOW_MAME_MOST_PLAYED':
             _command_show_mame_most_played()
         elif command == 'MANAGE_MAME_MOST_PLAYED':
-            machine = args['machine'][0] if 'machine' in args else ''
-            _command_context_manage_mame_most_played(machine)
+            m_name = args['machine'][0] if 'machine' in args else ''
+            _command_context_manage_mame_most_played(m_name)
 
         elif command == 'SHOW_MAME_RECENTLY_PLAYED':
             _command_show_mame_recently_played()
         elif command == 'MANAGE_MAME_RECENT_PLAYED':
-            machine = args['machine'][0] if 'machine' in args else ''
-            _command_context_manage_mame_recent_played(machine)
+            m_name = args['machine'][0] if 'machine' in args else ''
+            _command_context_manage_mame_recent_played(m_name)
 
         elif command == 'SHOW_SL_MOST_PLAYED':
             _command_show_sl_most_played()
+        elif command == 'MANAGE_SL_MOST_PLAYED':
+            SL_name = args['SL'][0] if 'SL' in args else ''
+            ROM_name = args['ROM'][0] if 'ROM' in args else ''
+            _command_context_manage_mame_most_played(SL_name, ROM_name)
+
         elif command == 'SHOW_SL_RECENTLY_PLAYED':
             _command_show_sl_recently_played()
+        elif command == 'MANAGE_SL_RECENT_PLAYED':
+            SL_name = args['SL'][0] if 'SL' in args else ''
+            ROM_name = args['ROM'][0] if 'ROM' in args else ''
+            _command_context_manage_mame_recent_played(SL_name, ROM_name)
 
         # >> Custom filters
         elif command == 'SHOW_CUSTOM_FILTERS':
@@ -3395,15 +3404,13 @@ def _command_context_add_sl_fav(SL_name, ROM_name):
     log_debug('_command_add_sl_fav() SL_name  "{0}"'.format(SL_name))
     log_debug('_command_add_sl_fav() ROM_name "{0}"'.format(ROM_name))
 
-    # >> Get Machine database entry
+    # --- Load databases ---
     kodi_busydialog_ON()
     control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
     SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-    # >> Load SL ROMs
     file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
     SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
     SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
-    # >> Load SL assets
     assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
     SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
     SL_assets_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
@@ -3413,7 +3420,7 @@ def _command_context_add_sl_fav(SL_name, ROM_name):
     fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
     SL_fav_key = SL_name + '-' + ROM_name
     log_debug('_command_add_sl_fav() SL_fav_key "{0}"'.format(SL_fav_key))
-    
+
     # >> If machine already in Favourites ask user if overwrite.
     if SL_fav_key in fav_SL_roms:
         ret = kodi_dialog_yesno('Machine {0} ({1}) '.format(ROM_name, SL_name) +
@@ -3422,14 +3429,10 @@ def _command_context_add_sl_fav(SL_name, ROM_name):
 
     # >> Add machine to SL Favourites
     ROM = SL_roms[ROM_name]
-    assets = SL_assets_dic[ROM_name] if ROM_name in SL_assets_dic else fs_new_SL_asset()
-    ROM['ROM_name']       = ROM_name
-    ROM['SL_name']        = SL_name
-    ROM['ver_mame']       = control_dic['ver_mame']
-    ROM['ver_mame_str']   = control_dic['ver_mame_str']
-    ROM['launch_machine'] = ''
-    ROM['assets']         = assets
-    fav_SL_roms[SL_fav_key] = ROM
+    # assets = SL_assets_dic[ROM_name] if ROM_name in SL_assets_dic else fs_new_SL_asset()
+    assets = SL_assets_dic[ROM_name]
+    fav_ROM = fs_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic)
+    fav_SL_roms[SL_fav_key] = fav_ROM
     log_info('_command_add_sl_fav() Added machine "{0}" ("{1}")'.format(ROM_name, SL_name))
 
     # >> Save Favourites
@@ -3666,15 +3669,16 @@ def _render_sl_fav_machine_row(SL_fav_key, ROM, assets):
 # Most/Recently Played MAME/SL machines/SL items
 # ---------------------------------------------------------------------------------------------
 def _command_show_mame_most_played():
-    m_p_roms_dic = fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
-    if not m_p_roms_dic:
+    most_played_roms_dic = fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+    if not most_played_roms_dic:
         kodi_dialog_OK('No Most Played MAME machines. Play a bit and try later.')
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
     _set_Kodi_unsorted_method()
-    for machine_name in sorted(m_p_roms_dic, key = lambda x : m_p_roms_dic[x]['launch_count'], reverse = True):
-        machine = m_p_roms_dic[machine_name]
+    sorted_dic = sorted(most_played_roms_dic, key = lambda x : most_played_roms_dic[x]['launch_count'], reverse = True)
+    for machine_name in sorted_dic:
+        machine = most_played_roms_dic[machine_name]
         _render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_MOST_PLAYED)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
@@ -3853,10 +3857,36 @@ def _command_context_manage_mame_recent_played(machine_name):
         kodi_notify('Machine {0} deleted from MAME Recently Played'.format(machine_name))
 
 def _command_show_sl_most_played():
+    most_played_roms_dic = fs_load_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+    if not most_played_roms_dic:
+        kodi_dialog_OK('No Most Played SL machines. Play a bit and try later.')
+        xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+        return
+
+    _set_Kodi_unsorted_method()
+    sorted_dic = sorted(most_played_roms_dic, key = lambda x : most_played_roms_dic[x]['launch_count'], reverse = True)
+    for machine_name in sorted_dic:
+        machine = most_played_roms_dic[machine_name]
+        _render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_MOST_PLAYED)
+    xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+
+def _command_context_manage_sl_most_played(machine_name):    
     kodi_dialog_OK('Not implemented yet, sorry.')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def _command_show_sl_recently_played():
+    recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
+    if not recent_roms_list:
+        kodi_dialog_OK('No Recently Played SL machines. Play a bit and try later.')
+        xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+        return
+
+    _set_Kodi_unsorted_method()
+    for machine in recent_roms_list:
+        _render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_RECENT_PLAYED)
+    xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+
+def _command_context_manage_SL_recent_played(machine_name):
     kodi_dialog_OK('Not implemented yet, sorry.')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
