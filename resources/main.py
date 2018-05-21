@@ -3540,7 +3540,12 @@ def _command_context_manage_sl_fav(SL_name, ROM_name):
         pDialog = xbmcgui.DialogProgress()
         pDialog.create('Advanced MAME Launcher')
         for fav_SL_key in sorted(fav_SL_roms):
-            fav_ROM_name = fav_SL_roms[fav_SL_key]['SL_ROM_name']
+            if 'ROM_name' in fav_SL_roms[fav_SL_key]:
+                fav_ROM_name = fav_SL_roms[fav_SL_key]['ROM_name']
+            elif 'SL_ROM_name' in fav_SL_roms[fav_SL_key]:
+                fav_ROM_name = fav_SL_roms[fav_SL_key]['SL_ROM_name']
+            else:
+                raise TypeError('Cannot find SL ROM name')
             fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
             log_debug('Checking Favourite "{0}" / "{1}"'.format(fav_ROM_name, fav_SL_name))
 
@@ -5645,7 +5650,12 @@ def _command_check_all_Favourite_objects():
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher')
     for fav_SL_key in sorted(fav_SL_roms):
-        fav_ROM_name = fav_SL_roms[fav_SL_key]['SL_ROM_name']
+        if 'ROM_name' in fav_SL_roms[fav_SL_key]:
+            fav_ROM_name = fav_SL_roms[fav_SL_key]['ROM_name']
+        elif 'SL_ROM_name' in fav_SL_roms[fav_SL_key]:
+            fav_ROM_name = fav_SL_roms[fav_SL_key]['SL_ROM_name']
+        else:
+            raise TypeError('Cannot find SL ROM name')
         fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
         log_debug('Checking Favourite "{0}" / "{1}"'.format(fav_ROM_name, fav_SL_name))
 
