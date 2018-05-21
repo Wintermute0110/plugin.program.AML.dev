@@ -3428,10 +3428,10 @@ def _command_context_add_sl_fav(SL_name, ROM_name):
         if ret < 1: return
 
     # >> Add machine to SL Favourites
-    ROM = SL_roms[ROM_name]
-    # assets = SL_assets_dic[ROM_name] if ROM_name in SL_assets_dic else fs_new_SL_asset()
-    assets = SL_assets_dic[ROM_name]
-    fav_ROM = fs_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic)
+    SL_ROM = SL_roms[ROM_name]
+    # SL_assets = SL_assets_dic[ROM_name] if ROM_name in SL_assets_dic else fs_new_SL_asset()
+    SL_assets = SL_assets_dic[ROM_name]
+    fav_ROM = fs_get_SL_Favourite(SL_name, ROM_name, SL_ROM, SL_assets, control_dic)
     fav_SL_roms[SL_fav_key] = fav_ROM
     log_info('_command_add_sl_fav() Added machine "{0}" ("{1}")'.format(ROM_name, SL_name))
 
@@ -3685,11 +3685,11 @@ def _command_show_mame_most_played():
 def _command_context_manage_mame_most_played(machine_name):
     dialog = xbmcgui.Dialog()
     if machine_name:
-        idx = dialog.select('Manage MAME Favourites', 
+        idx = dialog.select('Manage MAME Most Played', 
                            ['Check/Update all MAME Most Played machines',
                             'Delete machine from MAME Most Played machines'])
     else:
-        idx = dialog.select('Manage MAME Favourites', 
+        idx = dialog.select('Manage MAME Most Played', 
                            ['Check/Update all MAME Most Played machines'])
     if idx < 0: return
 
@@ -3774,11 +3774,11 @@ def _command_show_mame_recently_played():
 def _command_context_manage_mame_recent_played(machine_name):
     dialog = xbmcgui.Dialog()
     if machine_name:
-        idx = dialog.select('Manage MAME Favourites', 
+        idx = dialog.select('Manage MAME Recently Played', 
                            ['Check/Update all MAME Recently Played machines',
                             'Delete machine from MAME Recently Played machines'])
     else:
-        idx = dialog.select('Manage MAME Favourites', 
+        idx = dialog.select('Manage MAME Recently Played', 
                            ['Check/Update all MAME Recently Played machines'])
     if idx < 0: return
 
@@ -3815,7 +3815,7 @@ def _command_context_manage_mame_recent_played(machine_name):
                 log_debug('Updated machine "{0}"'.format(fav_key))
             else:
                 log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-                t = 'Favourite machine "{0}" not found in database'.format(fav_key)
+                t = 'Recently Played machine "{0}" not found in MAME main database'.format(fav_key)
                 kodi_dialog_OK(t)
 
         # --- Save MAME Favourites DB ---
@@ -3825,7 +3825,7 @@ def _command_context_manage_mame_recent_played(machine_name):
 
     # --- Delete machine from MAME Recently Played machine list ---
     elif idx == 1:
-        log_debug('_command_context_manage_mame_recent_played() Delete MAME Favourite machine')
+        log_debug('_command_context_manage_mame_recent_played() Delete MAME Recently Played machine')
         log_debug('_command_context_manage_mame_recent_played() Machine_name "{0}"'.format(machine_name))
 
         # >> Load Recently Played machine list
@@ -3865,14 +3865,89 @@ def _command_show_sl_most_played():
 
     _set_Kodi_unsorted_method()
     sorted_dic = sorted(most_played_roms_dic, key = lambda x : most_played_roms_dic[x]['launch_count'], reverse = True)
-    for machine_name in sorted_dic:
-        machine = most_played_roms_dic[machine_name]
-        _render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_MOST_PLAYED)
+    for SL_fav_key in sorted_dic:
+        SL_fav_ROM = fav_SL_roms[SL_fav_key]
+        assets = SL_fav_ROM['assets']
+        # >> Add the SL name as 'genre'
+        SL_name = SL_fav_ROM['SL_name']
+        SL_fav_ROM['genre'] = SL_catalog_dic[SL_name]['display_name']
+        _render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM, assets)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def _command_context_manage_sl_most_played(machine_name):    
-    kodi_dialog_OK('Not implemented yet, sorry.')
-    xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+    dialog = xbmcgui.Dialog()
+    if machine_name:
+        idx = dialog.select('Manage SL Most Played machines', 
+                           ['Check/Update all SL Most Played machines',
+                            'Delete machine from SL Most Played machines'])
+    else:
+        idx = dialog.select('Manage SL Most Played machines', 
+                           ['Check/Update all SL Most Played machines'])
+    if idx < 0: return
+
+    # --- Check/Update all SL Most Played machines ---
+    if idx == 0:
+        pDialog = xbmcgui.DialogProgress()
+        line1_str = 'Loading databases ...'
+        num_items = 2
+        pDialog.create('Advanced MAME Launcher')
+        pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
+        control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+        pDialog.update(int((1*100) / num_items), line1_str, 'MAME Most Played')
+        most_played_roms_dic = fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+        pDialog.update(int((2*100) / num_items), ' ', ' ')
+        pDialog.close()
+
+        # --- Check/Update MAME Most Played machines ---
+        for fav_key in sorted(most_played_roms_dic):
+            # --- Load SL ROM and assets DB ---
+            
+
+            # -- Fix/update most played SL item ---
+            log_debug('Checking SL Most Played machine "{0}"'.format(fav_key))
+            if fav_key in machines:
+                if 'launch_count' in most_played_roms_dic[fav_key]:
+                    launch_count = most_played_roms_dic[fav_key]['launch_count']
+                else:
+                    launch_count = 1
+                machine = machines[fav_key]
+                m_render = machines_render[fav_key]
+                assets = assets_dic[fav_key]
+                new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
+                new_fav['launch_count'] = launch_count
+                most_played_roms_dic[fav_key] = new_fav
+                log_debug('Updated machine "{0}"'.format(fav_key))
+            else:
+                log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
+                t = 'Favourite machine "{0}" not found in database'.format(fav_key)
+                kodi_dialog_OK(t)
+
+        # --- Save MAME Most Played machines DB ---
+        fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+        kodi_refresh_container()
+        kodi_notify('MAME Favourite checked and updated')
+
+    # --- Delete machine from MAME Most Played machines ---
+    elif idx == 1:
+        log_debug('_command_context_manage_sl_most_played() Delete MAME machine')
+        log_debug('_command_context_manage_sl_most_played() Machine_name "{0}"'.format(machine_name))
+
+        # >> Load Most Played machines dictionary
+        most_played_roms_dic = fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+
+        # >> Ask user for confirmation.
+        desc = most_played_roms_dic[machine_name]['description']
+        ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
+        if ret < 1: return
+
+        # >> Delete machine
+        del most_played_roms_dic[machine_name]
+        log_info('_command_context_manage_sl_most_played() Deleted machine "{0}"'.format(machine_name))
+
+        # >> Save Favourites
+        fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+        kodi_refresh_container()
+        kodi_notify('Machine {0} deleted from MAME Most Played'.format(machine_name))
 
 def _command_show_sl_recently_played():
     recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
@@ -3882,13 +3957,96 @@ def _command_show_sl_recently_played():
         return
 
     _set_Kodi_unsorted_method()
-    for machine in recent_roms_list:
-        _render_fav_machine_row(machine['name'], machine, machine['assets'], LOCATION_MAME_RECENT_PLAYED)
+    for SL_fav_ROM in recent_roms_list:
+        SL_fav_key = SL_fav_ROM['SL_DB_key']
+        assets = SL_fav_ROM['assets']
+        # >> Add the SL name as 'genre'
+        SL_name = SL_fav_ROM['SL_name']
+        SL_fav_ROM['genre'] = SL_catalog_dic[SL_name]['display_name']
+        _render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM, assets)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def _command_context_manage_SL_recent_played(machine_name):
-    kodi_dialog_OK('Not implemented yet, sorry.')
-    xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+    dialog = xbmcgui.Dialog()
+    if machine_name:
+        idx = dialog.select('Manage SL Recently Played', 
+                           ['Check/Update all SL Recently Played machines',
+                            'Delete machine from SL Recently Played machines'])
+    else:
+        idx = dialog.select('Manage SL Recently Played', 
+                           ['Check/Update all MAME Recently Played machines'])
+    if idx < 0: return
+
+    # --- Check/Update all MAME Recently Played machines ---
+    if idx == 0:
+        # --- Load databases ---
+        pDialog = xbmcgui.DialogProgress()
+        line1_str = 'Loading databases ...'
+        num_items = 2
+        pDialog.create('Advanced MAME Launcher')
+        pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
+        control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
+        pDialog.update(int((1*100) / num_items), line1_str, 'SL Recently Played')
+        recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+        pDialog.update(int((2*100) / num_items), ' ', ' ')
+        pDialog.close()
+
+        # --- Check/Update MAME Recently Played machines ---
+        for i, recent_rom in enumerate(recent_roms_list):
+            # --- Load SL databases ---
+            
+            # --- Fix/update item ---
+            fav_key = recent_rom['name']
+            log_debug('Checking SL item "{0}"'.format(fav_key))
+            if fav_key in machines:
+                machine = machines[fav_key]
+                m_render = machines_render[fav_key]
+                assets = assets_dic[fav_key]
+                new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
+                recent_roms_list[i] = new_fav
+                log_debug('Updated machine "{0}"'.format(fav_key))
+            else:
+                log_debug('Machine "{0}" not found in SL database'.format(fav_key))
+                t = 'SL machine "{0}" not found in database'.format(fav_key)
+                kodi_dialog_OK(t)
+
+        # --- Save MAME Favourites DB ---
+        fs_write_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+        kodi_refresh_container()
+        kodi_notify('SL Recently Played machines checked and updated')
+
+    # --- Delete machine from MAME Recently Played machine list ---
+    elif idx == 1:
+        log_debug('_command_context_manage_SL_recent_played() Delete SL Recently Played machine')
+        log_debug('_command_context_manage_SL_recent_played() Machine_name "{0}"'.format(machine_name))
+
+        # >> Load Recently Played machine list
+        recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
+
+        # >> Search index of this machine in the list
+        machine_index = -1
+        for i, machine in enumerate(recent_roms_list):
+            if machine_name == machine['name']:
+                machine_index = i
+                break
+        if machine_index < 0:
+            a = 'Machine {0} cannot be located in Recently Played list. This is a bug.'
+            kodi_dialog_OK(a.format(machine_name))
+            return
+
+        # >> Ask user for confirmation.
+        desc = recent_roms_list[machine_index]['description']
+        ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
+        if ret < 1: return
+
+        # >> Delete machine
+        recent_roms_list.pop(machine_index)
+        log_info('_command_context_manage_SL_recent_played() Deleted machine "{0}"'.format(machine_name))
+
+        # >> Save Recently Played machine list
+        fs_write_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+        kodi_refresh_container()
+        kodi_notify('Machine {0} deleted from SL Recently Played'.format(machine_name))
 
 # ---------------------------------------------------------------------------------------------
 # Custom MAME filters
@@ -5744,7 +5902,10 @@ def _run_machine(machine_name, location):
     log_info('_run_machine() Launching MAME machine  "{0}"'.format(machine_name))
     log_info('_run_machine() Launching MAME location "{0}"'.format(location))
 
-    # >> If launching from Favourites read ROM from Fav database
+    # --- Get paths ---
+    mame_prog_FN = FileName(g_settings['mame_prog'])
+
+    # --- Load databases ---
     control_dic = fs_load_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath())
     if location == LOCATION_STANDARD:
         log_debug('Reading info from hashed DBs')
@@ -5773,14 +5934,11 @@ def _run_machine(machine_name, location):
             a = 'Machine {0} cannot be located in Recently Played list. This is a bug.'
             kodi_dialog_OK(a.format(machine_name))
             return
-        machine = recent_roms_list[machine_name]
+        machine = recent_roms_list[machine_index]
         assets = machine['assets']
     else:
         kodi_dialog_OK('Unknown location = "{0}". This is a bug, please report it.'.format(location))
         return
-
-    # >> Get paths
-    mame_prog_FN = FileName(g_settings['mame_prog'])
 
     # >> Check if ROM exist
     if not g_settings['rom_path']:
@@ -5930,32 +6088,85 @@ def _run_machine(machine_name, location):
 #
 # Most common cases are A) and C).
 #
-def _run_SL_machine(SL_name, ROM_name, location):
+def _run_SL_machine(SL_name, SL_ROM_name, location):
     SL_LAUNCH_WITH_MEDIA = 100
     SL_LAUNCH_NO_MEDIA   = 200
     log_info('_run_SL_machine() Launching SL machine (location = {0}) ...'.format(location))
-    log_info('_run_SL_machine() SL_name  "{0}"'.format(SL_name))
-    log_info('_run_SL_machine() ROM_name "{0}"'.format(ROM_name))
+    log_info('_run_SL_machine() SL_name     "{0}"'.format(SL_name))
+    log_info('_run_SL_machine() SL_ROM_name "{0}"'.format(SL_ROM_name))
 
     # --- Get paths ---
     mame_prog_FN = FileName(g_settings['mame_prog'])
 
-    # --- Get a list of machine <devices> and SL ROM <parts>
-    if location == LOCATION_SL_FAVS:
+    # --- Get a list of launch machine <devices> and SL ROM <parts> ---
+    # --- Load SL ROMs and SL assets databases ---
+    if location == LOCATION_STANDARD:
+        # >> Load DBs
+        log_info('_run_SL_machine() SL ROM is in Standard Location')
+        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json')
+        log_info('_run_SL_machine() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        SL_ROMs = fs_load_JSON_file(SL_DB_FN.getPath())
+        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json')
+        SL_asset_dic = fs_load_JSON_file(SL_asset_DB_FN.getPath())
+        # >> Get ROM and assets
+        SL_DB_key = SL_name + '-' + ROM_name
+        SL_ROM = SL_ROMs[SL_ROM_name]
+        SL_assets = SL_asset_dic[SL_ROM_name]
+        part_list = SL_ROM['parts']
+        # >> Launch machine
+        launch_machine_name = ''
+        launch_machine_desc = ''
+    elif location == LOCATION_SL_FAVS:
+        # >> Load DBs
         log_info('_run_SL_machine() SL ROM is in Favourites')
         fav_SL_roms = fs_load_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath())
-        SL_fav_key = SL_name + '-' + ROM_name
-        machine_name = fav_SL_roms[SL_fav_key]['launch_machine']
-        machine_desc = '[ Not available ]'
-        log_info('_run_SL_machine() launch_machine = "{0}"'.format(machine_name))
+        # >> Get ROM and assets
+        SL_DB_key = SL_name + '-' + ROM_name
+        SL_ROM = fav_SL_roms[SL_ROM_name]
+        SL_assets = SL_ROM['assets']
+        part_list = fav_SL_roms[SL_fav_key]['parts']
+        # >> Launch machine
+        launch_machine_name = fav_SL_roms[SL_DB_key]['launch_machine']
+        launch_machine_desc = '[ Not available ]'
+    elif location == LOCATION_SL_MOST_PLAYED:
+        log_debug('Reading info from MAME Most Played DB')
+        most_played_roms_dic = fs_load_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+        SL_DB_key = SL_name + '-' + ROM_name
+        machine = most_played_roms_dic[machine_name]
+        assets = machine['assets']
+        part_list = most_played_roms_dic[SL_fav_key]['parts']
+        launch_machine_name = most_played_roms_dic[SL_DB_key]['launch_machine']
+        launch_machine_desc = '[ Not available ]'
+    elif location == LOCATION_SL_RECENT_PLAYED:
+        log_debug('Reading info from MAME Recently Played DB')
+        recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
+        # >> Locate ROM in list by SL_DB_key
+        SL_DB_key = SL_name + '-' + ROM_name
+        machine_index = -1
+        for i, machine in enumerate(recent_roms_list):
+            if SL_DB_key == machine['SL_DB_key']:
+                machine_index = i
+                break
+        if machine_index < 0:
+            a = 'Machine {0} cannot be located in Recently Played list. This is a bug.'
+            kodi_dialog_OK(a.format(machine_name))
+            return
+        machine = recent_roms_list[machine_index]
+        assets = machine['assets']
+        part_list = recent_roms_list[machine_index]['parts']
+        launch_machine_name = recent_roms_list[machine_index]['launch_machine']
+        launch_machine_desc = '[ Not available ]'
     else:
-        machine_name = ''
-        machine_desc = ''
+        kodi_dialog_OK('Unknown location = "{0}". This is a bug, please report it.'.format(location))
+        return
+    log_info('_run_SL_machine() launch_machine_name = "{0}"'.format(launch_machine_name))
+    log_info('_run_SL_machine() launch_machine_desc = "{0}"'.format(launch_machine_desc))
 
     # --- Load SL machines ---
     SL_machines_dic = fs_load_JSON_file(PATHS.SL_MACHINES_PATH.getPath())
     SL_machine_list = SL_machines_dic[SL_name]
-    if not machine_name:
+    if not launch_machine_name:
         # >> Get a list of machines that can launch this SL ROM. User chooses in a select dialog
         log_info('_run_SL_machine() User selecting SL run machine ...')
         SL_machine_names_list = []
@@ -5967,45 +6178,32 @@ def _run_SL_machine(SL_name, ROM_name, location):
             SL_machine_devices.append(SL_machine['devices'])
         m_index = xbmcgui.Dialog().select('Select machine', SL_machine_desc_list)
         if m_index < 0: return
-        machine_name    = SL_machine_names_list[m_index]
-        machine_desc    = SL_machine_desc_list[m_index]
-        machine_devices = SL_machine_devices[m_index]
-        log_info('_run_SL_machine() User chose machine "{0}" ({1})'.format(machine_name, machine_desc))
+        launch_machine_name    = SL_machine_names_list[m_index]
+        launch_machine_desc    = SL_machine_desc_list[m_index]
+        launch_machine_devices = SL_machine_devices[m_index]
+        log_info('_run_SL_machine() User chose machine "{0}" ({1})'.format(launch_machine_name, launch_machine_desc))
     else:
         # >> User configured a machine to launch this SL item. Find the machine in the machine list.
         log_info('_run_SL_machine() Searching configured SL item running machine ...')
         machine_found = False
         for SL_machine in SL_machine_list:
-            if SL_machine['machine'] == machine_name:
+            if SL_machine['machine'] == launch_machine_name:
                 selected_SL_machine = SL_machine
                 machine_found = True
                 break
         if machine_found:
-            log_info('_run_SL_machine() Found machine "{0}"'.format(machine_name))
+            log_info('_run_SL_machine() Found machine "{0}"'.format(launch_machine_name))
             machine_desc    = SL_machine['description']
             machine_devices = SL_machine['devices']
         else:
-            log_error('_run_SL_machine() Machine "{0}" not found'.format(machine_name))
+            log_error('_run_SL_machine() Machine "{0}" not found'.format(launch_machine_name))
             log_error('_run_SL_machine() Aborting launch')
-            kodi_dialog_OK('Machine "{0}" not found. Aborting launch.'.format(machine_name))
+            kodi_dialog_OK('Machine "{0}" not found. Aborting launch.'.format(launch_machine_name))
             return
 
-    # --- Get SL ROM list of <part> tags ---
-    if location == LOCATION_SL_FAVS:
-        part_list = fav_SL_roms[SL_fav_key]['parts']
-    else:
-        # >> Open SL ROM database and get information
-        SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
-        file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
-        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        log_info('_run_SL_machine() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
-        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath())
-        SL_rom = SL_roms[ROM_name]
-        part_list = SL_rom['parts']
-
     # --- DEBUG ---
-    log_info('_run_SL_machine() Machine "{0}" has {1} interfaces'.format(machine_name, len(machine_devices)))
-    log_info('_run_SL_machine() SL ROM  "{0}" has {1} parts'.format(ROM_name, len(part_list)))
+    log_info('_run_SL_machine() Machine "{0}" has {1} interfaces'.format(launch_machine_name, len(machine_devices)))
+    log_info('_run_SL_machine() SL ROM  "{0}" has {1} parts'.format(SL_ROM_name, len(part_list)))
     for device_dic in machine_devices:
         u = '<device type="{1}" interface="{0}">'.format(device_dic['att_type'], device_dic['att_interface'])
         log_info(u)
@@ -6079,7 +6277,7 @@ def _run_SL_machine(SL_name, ROM_name, location):
                    'SL ROM has {0} part/s. '.format(num_SL_ROM_parts) + 
                    'Media name is "{0}"'.format(media_name))
 
-    # >> Launch machine using subprocess module
+    # --- Launch machine using subprocess module ---
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
     log_debug('_run_SL_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))    
     log_debug('_run_SL_machine() mame_dir     "{0}"'.format(mame_dir))
@@ -6088,17 +6286,32 @@ def _run_SL_machine(SL_name, ROM_name, location):
     log_debug('_run_SL_machine() machine_desc "{0}"'.format(machine_desc))
     log_debug('_run_SL_machine() media_name   "{0}"'.format(media_name))
 
-    # >> Build MAME arguments
-    if sl_launch_mode == SL_LAUNCH_WITH_MEDIA:
-        arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
-    elif sl_launch_mode == SL_LAUNCH_NO_MEDIA:
-        arg_list = [mame_prog_FN.getPath(), machine_name, '{0}:{1}'.format(SL_name, ROM_name)]
-    else:
-        kodi_dialog_OK('Unknown sl_launch_mode = {0}. This is a bug, please report it.'.format(sl_launch_mode))
-        return
-    log_info('arg_list = {0}'.format(arg_list))
+    # --- Compute ROM recently played list ---
+    # >> If the machine is already in the list remove it and place it on the first position.
+    MAX_RECENT_PLAYED_ROMS = 100
+    recent_ROM = fs_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic)
+    recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
+    # >> Machine names are unique in this list
+    recent_roms_list = [machine for machine in recent_roms_list if machine_name != machine['name']]
+    recent_roms_list.insert(0, recent_ROM)
+    if len(recent_roms_list) > MAX_RECENT_PLAYED_ROMS:
+        log_debug('_run_SL_machine() len(recent_roms_list) = {0}'.format(len(recent_roms_list)))
+        log_debug('_run_SL_machine() Trimming list to {0} ROMs'.format(MAX_RECENT_PLAYED_ROMS))
+        temp_list = recent_roms_list[:MAX_RECENT_PLAYED_ROMS]
+        recent_roms_list = temp_list
+    fs_write_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
 
-    # >> Prevent a console window to be shown in Windows. Not working yet!
+    # --- Compute most played ROM statistics ---
+    most_played_roms_dic = fs_load_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+    if SL_DB_key in most_played_roms_dic:
+        most_played_roms_dic[SL_DB_key]['launch_count'] += 1
+    else:
+        # >> Add field launch_count to recent_ROM to count how many times have been launched.
+        recent_ROM['launch_count'] = 1
+        most_played_roms_dic[SL_DB_key] = recent_ROM
+    fs_write_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+
+    # --- Prevent a console window to be shown in Windows. Not working yet! ---
     if sys.platform == 'win32':
         log_info('_run_SL_machine() Platform is win32. Creating _info structure')
         _info = subprocess.STARTUPINFO()
@@ -6111,6 +6324,16 @@ def _run_SL_machine(SL_name, ROM_name, location):
     # --- User notification ---
     if g_settings['display_launcher_notify']:
         kodi_notify('Launching MAME SL item "{0}"'.format(ROM_name))
+
+    # --- Build MAME arguments ---
+    if sl_launch_mode == SL_LAUNCH_WITH_MEDIA:
+        arg_list = [mame_prog_FN.getPath(), machine_name, '-{0}'.format(media_name), ROM_name]
+    elif sl_launch_mode == SL_LAUNCH_NO_MEDIA:
+        arg_list = [mame_prog_FN.getPath(), machine_name, '{0}:{1}'.format(SL_name, ROM_name)]
+    else:
+        kodi_dialog_OK('Unknown sl_launch_mode = {0}. This is a bug, please report it.'.format(sl_launch_mode))
+        return
+    log_info('arg_list = {0}'.format(arg_list))
 
     # --- Launch MAME ---
     log_info('_run_SL_machine() Calling subprocess.Popen()...')

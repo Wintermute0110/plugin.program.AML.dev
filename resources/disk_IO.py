@@ -591,9 +591,11 @@ def fs_get_MAME_Favourite_full(machine_name, machine, machine_render, assets, co
 def fs_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic):
     fav_SL_item = {}
 
+    SL_DB_key = SL_name + '-' + ROM_name
     fav_SL_item = copy.deepcopy(ROM)
     ROM['SL_name']        = SL_name
-    ROM['ROM_name']       = ROM_name
+    ROM['SL_ROM_name']    = ROM_name
+    ROM['SL_DB_key']      = SL_DB_key
     ROM['ver_mame']       = control_dic['ver_mame']
     ROM['ver_mame_str']   = control_dic['ver_mame_str']
     ROM['launch_machine'] = ''

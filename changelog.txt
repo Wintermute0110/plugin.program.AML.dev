@@ -7,19 +7,25 @@ WIP      Check out the ListItem constructor offscreen parameter in Leia. It can 
          See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
          and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
 
-WIP      Improve the Custom Filters (add more filtering options).
+WIP      MAME FILTERING: Improve the Custom Filters (add more filtering options as defined
+         in the reference filter file `AML-MAME-filters-reference.xml`).
 
-WIP      Import the number of supported PDF filters.
+WIP      MANUALS: Import the number of supported PDF filters.
 
-WIP      When displaying manuals use cached extracted images if they exist.
+WIP      MANUALS: When displaying manuals use cached extracted images if they exist.
 
-WIP      Progress bar when extracting PDF pages.
+WIP      MANUALS: Progress bar when extracting PDF pages.
 
-WIP      Support for CBZ/CBR manuals. Wait until this is implemented in AEL and then port it
-         from AEL into AML?
+WIP      MANUALS: Support for CBZ/CBR manuals.
+         Wait until this is implemented in AEL and then port it from AEL into AML?
 
 
 [B]Advanced Emulator Launcher | version 0.9.6 | xx May 2018[/B]
+
+WIP      Add a isMature field to MAME DB. I'm not sure yet from where to get this info
+         (Catver.ini, Catlist.ini, Mature.ini, ???)
+
+WIP      Option in settings to completely hide Mature machines and or filter categories.
 
 FEATURE  Asset hashed database. This will speed up launching MAME machines. Note that the asset
          DB must be opened for the Most Played and Recently Played DBs.
@@ -38,9 +44,9 @@ FEATURE  Implement "Recently played MAME machines"
 
 FEATURE  Option in settings to update all MAME and SL Favourite ROMs. Useful for plugin upgrades.
 
-WIP      Implement "Most played SL ROMs"
+WORKING  Implement "Most played SL ROMs"
 
-WIP      Implement "Recently played SL ROMs"
+WORKING  Implement "Recently played SL ROMs"
 
 
 [B]Advanced Emulator Launcher | version 0.9.5 | 11 May 2018[/B]
