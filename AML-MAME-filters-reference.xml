@@ -4,10 +4,10 @@
 -->
 <Advanced_MAME_Launcher_custom_filters>
 <MAMEFilter>
-    <Name>Example filter</Name>
+    <Name>Example filter name</Name>
 
     <!-- Separate multiple options with , -->
-    <Options>NoMature, NoSamples, NoMechanical, NoImperfect, NoNonworking</Options>
+    <Options>NoMature, NoCHD, NoSamples, NoMechanical, NoImperfect, NoNonworking</Options>
 
     <!--
         As shown in "Machines by Driver" filter.
@@ -19,6 +19,7 @@
     <!--
         As shown in "Machines by Category (Genre)" filter.
         If multiple tags only last one is used.
+        Literals with spaces must be enclosed in quotes ' or double quotes ".
         Operators: and, or, not, '(', ')'
     -->
     <Genre>Driving and "Board Game"</Genre>
@@ -47,7 +48,7 @@
     <!-- Separate multiple machines with ','. Multiple <Include> tags allowed -->
     <Include>005, 100lions, 10yard</Include>
 
-    <!-- Separate multiple machines with ','. Multiple <Include> tags allowed -->
+    <!-- Separate multiple machines with ','. Multiple <Exclude> tags allowed -->
     <Exclude>005, 100lions, 10yard</Exclude>
 
     <!-- Only 1 machine per <Change> tag. There may be multiple <Change> tags -->
