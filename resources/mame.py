@@ -1071,16 +1071,20 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
 def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL_machine_list):
     # --- ROM stuff ---
     slist.append('[COLOR orange]Software List {0} Item {0}[/COLOR]'.format(SL_name, SL_ROM))
-    if 'ROM_name' in rom:
-        slist.append("[COLOR slateblue]ROM_name[/COLOR]: '{0}'".format(rom['ROM_name']))
+    if 'SL_DB_key' in rom:
+        slist.append("[COLOR slateblue]SL_DB_key[/COLOR]: '{0}'".format(rom['SL_DB_key']))
+    if 'SL_ROM_name' in rom:
+        slist.append("[COLOR slateblue]SL_ROM_name[/COLOR]: '{0}'".format(rom['SL_ROM_name']))
     if 'SL_name' in rom:
         slist.append("[COLOR slateblue]SL_name[/COLOR]: '{0}'".format(rom['SL_name']))
     slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(rom['cloneof']))
     slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(rom['description']))
     slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {0}".format(unicode(rom['hasCHDs'])))
     slist.append("[COLOR skyblue]hasROMs[/COLOR]: {0}".format(unicode(rom['hasROMs'])))
+    if 'launch_count' in rom:
+        slist.append("[COLOR slateblue]launch_count[/COLOR]: '{0}'".format(unicode(rom['launch_count'])))
     if 'launch_machine' in rom:
-        slist.append("[COLOR violet]launch_machine[/COLOR]: '{0}'".format(rom['launch_machine']))
+        slist.append("[COLOR slateblue]launch_machine[/COLOR]: '{0}'".format(rom['launch_machine']))
     if rom['parts']:
         for i, part in enumerate(rom['parts']):
             slist.append("[COLOR lime]parts[/COLOR][{0}]:".format(i))

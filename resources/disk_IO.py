@@ -593,13 +593,13 @@ def fs_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic):
 
     SL_DB_key = SL_name + '-' + ROM_name
     fav_SL_item = copy.deepcopy(ROM)
-    ROM['SL_name']        = SL_name
-    ROM['SL_ROM_name']    = ROM_name
-    ROM['SL_DB_key']      = SL_DB_key
-    ROM['ver_mame']       = control_dic['ver_mame']
-    ROM['ver_mame_str']   = control_dic['ver_mame_str']
-    ROM['launch_machine'] = ''
-    ROM['assets']         = copy.deepcopy(assets)
+    fav_SL_item['SL_name']        = SL_name
+    fav_SL_item['SL_ROM_name']    = ROM_name
+    fav_SL_item['SL_DB_key']      = SL_DB_key
+    fav_SL_item['ver_mame']       = control_dic['ver_mame']
+    fav_SL_item['ver_mame_str']   = control_dic['ver_mame_str']
+    fav_SL_item['launch_machine'] = ''
+    fav_SL_item['assets']         = copy.deepcopy(assets)
 
     return fav_SL_item
 
