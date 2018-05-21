@@ -3689,7 +3689,7 @@ def _command_context_manage_mame_most_played(machine_name):
                            ['Check/Update all MAME Most Played machines'])
     if idx < 0: return
 
-    # --- Check/Update all MAME Favourites ---
+    # --- Check/Update all MAME Most Played machines ---
     if idx == 0:
         pDialog = xbmcgui.DialogProgress()
         line1_str = 'Loading databases ...'
@@ -3728,17 +3728,17 @@ def _command_context_manage_mame_most_played(machine_name):
                 t = 'Favourite machine "{0}" not found in database'.format(fav_key)
                 kodi_dialog_OK(t)
 
-        # --- Save MAME Favourites DB ---
+        # --- Save MAME Most Played machines DB ---
         fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
         kodi_refresh_container()
         kodi_notify('MAME Favourite checked and updated')
 
-    # --- Delete machine from MAME Favourites ---
+    # --- Delete machine from MAME Most Played machines ---
     elif idx == 1:
         log_debug('_command_context_manage_mame_most_played() Delete MAME machine')
         log_debug('_command_context_manage_mame_most_played() Machine_name "{0}"'.format(machine_name))
 
-        # >> Open Favourite Machines dictionary
+        # >> Load Most Played machines dictionary
         most_played_roms_dic = fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
 
         # >> Ask user for confirmation.
@@ -3819,12 +3819,12 @@ def _command_context_manage_mame_recent_played(machine_name):
         kodi_refresh_container()
         kodi_notify('MAME Recently Played machines checked and updated')
 
-    # --- Delete machine from MAME Favourites ---
+    # --- Delete machine from MAME Recently Played machine list ---
     elif idx == 1:
         log_debug('_command_context_manage_mame_recent_played() Delete MAME Favourite machine')
         log_debug('_command_context_manage_mame_recent_played() Machine_name "{0}"'.format(machine_name))
 
-        # >> Open Favourite Machines dictionary
+        # >> Load Recently Played machine list
         recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
 
         # >> Search index of this machine in the list
@@ -3839,7 +3839,7 @@ def _command_context_manage_mame_recent_played(machine_name):
             return
 
         # >> Ask user for confirmation.
-        desc = most_played_roms_dic[machine_index]['description']
+        desc = recent_roms_list[machine_index]['description']
         ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
         if ret < 1: return
 
@@ -3847,7 +3847,7 @@ def _command_context_manage_mame_recent_played(machine_name):
         recent_roms_list.pop(machine_index)
         log_info('_command_context_manage_mame_recent_played() Deleted machine "{0}"'.format(machine_name))
 
-        # >> Save Favourites
+        # >> Save Recently Played machine list
         fs_write_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
         kodi_refresh_container()
         kodi_notify('Machine {0} deleted from MAME Recently Played'.format(machine_name))
@@ -5721,9 +5721,29 @@ def _run_machine(machine_name, location):
         machine = fs_get_machine_main_db_hash(PATHS, machine_name)
         assets = fs_get_machine_assets_db_hash(PATHS, machine_name)
     elif location == LOCATION_MAME_FAVS:
-        log_debug('Reading info from MAME favourites')
+        log_debug('Reading info from MAME Favourites')
         fav_machines = fs_load_JSON_file(PATHS.FAV_MACHINES_PATH.getPath())
         machine = fav_machines[machine_name]
+        assets = machine['assets']
+    elif location == LOCATION_MAME_MOST_PLAYED:
+        log_debug('Reading info from MAME Most Played DB')
+        most_played_roms_dic = fs_load_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+        machine = most_played_roms_dic[machine_name]
+        assets = machine['assets']
+    elif location == LOCATION_MAME_RECENT_PLAYED:
+        log_debug('Reading info from MAME Recently Played DB')
+        recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+        # >> Locate ROM in list by name
+        machine_index = -1
+        for i, machine in enumerate(recent_roms_list):
+            if machine_name == machine['name']:
+                machine_index = i
+                break
+        if machine_index < 0:
+            a = 'Machine {0} cannot be located in Recently Played list. This is a bug.'
+            kodi_dialog_OK(a.format(machine_name))
+            return
+        machine = recent_roms_list[machine_name]
         assets = machine['assets']
     else:
         kodi_dialog_OK('Unknown location = "{0}". This is a bug, please report it.'.format(location))
@@ -5790,7 +5810,7 @@ def _run_machine(machine_name, location):
         most_played_roms_dic[recent_rom['name']] = recent_rom
     fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
 
-    # >> Prevent a console window to be shown in Windows. Not working yet!
+    # --- Prevent a console window to be shown in Windows. Not working yet! ---
     if sys.platform == 'win32':
         log_info('_run_machine() Platform is win32. Creating _info structure')
         _info = subprocess.STARTUPINFO()
