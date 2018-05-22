@@ -22,6 +22,12 @@ from __future__ import unicode_literals
 # -------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------
+# DEBUG/TEST settings
+# -------------------------------------------------------------------------------------------------
+# If True MAME is not launched. Useful to test the Recently Played and Most Played code.
+DISABLE_MAME_LAUNCHING = True
+
+# -------------------------------------------------------------------------------------------------
 # A universal Addon error reporting exception
 # This exception is raised to report errors in the GUI.
 # Unhandled exceptions must not raise AEL_Error() so the addon crashes and the traceback is printed

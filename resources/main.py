@@ -3680,6 +3680,12 @@ def _render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
     status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
     display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
     if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+    # >> Render number of number the ROM has been launched
+    if location == LOCATION_SL_MOST_PLAYED:
+        if ROM['launch_count'] == 1:
+            display_name = '{0} [COLOR orange][{1} time][/COLOR]'.format(display_name, ROM['launch_count'])
+        else:
+            display_name = '{0} [COLOR orange][{1} times][/COLOR]'.format(display_name, ROM['launch_count'])
 
     # --- Assets/artwork ---
     icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
@@ -6168,10 +6174,13 @@ def _run_machine(machine_name, location):
     else:         arg_list = [mame_prog_FN.getPath(), machine_name]
     log_info('arg_list = {0}'.format(arg_list))
     log_info('_run_machine() Calling subprocess.Popen()...')
+    if DISABLE_MAME_LAUNCHING:
+        log_info('_run_machine() MAME launching disabled. Exiting function.')
+        return
     with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
         p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info, stdout = f, stderr = subprocess.STDOUT)
     p.wait()
-    log_info('_run_machine() Exiting function')
+    log_info('_run_machine() Exiting function.')
 
 #
 # Launch a SL machine. See http://docs.mamedev.org/usingmame/usingmame.html
@@ -6476,6 +6485,9 @@ def _run_SL_machine(SL_name, SL_ROM_name, location):
     log_info('arg_list = {0}'.format(arg_list))
 
     # --- Launch MAME ---
+    if DISABLE_MAME_LAUNCHING:
+        log_info('_run_machine() MAME launching disabled. Exiting function.')
+        return
     log_info('_run_SL_machine() Calling subprocess.Popen()...')
     with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
         p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info, stdout = f, stderr = subprocess.STDOUT)
