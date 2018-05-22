@@ -42,11 +42,11 @@ FEATURE  Implement "Most played MAME machines"
 
 FEATURE  Implement "Recently played MAME machines"
 
-WORKING  Option in settings to update all MAME and SL Favourite ROMs. Useful for plugin upgrades.
+FEATURE  Option in settings to update all MAME and SL Favourite ROMs. Useful for plugin upgrades.
 
-WORKING  Implement "Most played SL ROMs"
+FEATURE  Implement "Most played SL ROMs"
 
-WORKING  Implement "Recently played SL ROMs"
+FEATURE  Implement "Recently played SL ROMs"
 
 
 [B]Advanced Emulator Launcher | version 0.9.5 | 11 May 2018[/B]

@@ -608,45 +608,45 @@ def fs_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic):
 #
 def fs_get_cataloged_dic_parents(PATHS, catalog_name):
     if catalog_name == 'Main':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MAIN_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MAIN_PARENT_PATH.getPath())
     elif catalog_name == 'Binary':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_BINARY_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BINARY_PARENT_PATH.getPath())
     elif catalog_name == 'Catver':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATVER_PARENT_PATH.getPath())
     elif catalog_name == 'Catlist':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath())
     elif catalog_name == 'Genre':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_GENRE_PARENT_PATH.getPath())
     elif catalog_name == 'NPlayers':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath())
     elif catalog_name == 'Bestgames':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath())
     elif catalog_name == 'Series':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SERIES_PARENT_PATH.getPath())
     elif catalog_name == 'Manufacturer':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath())
     elif catalog_name == 'Year':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_YEAR_PARENT_PATH.getPath())
     elif catalog_name == 'Driver':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Compact':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath())
     elif catalog_name == 'Display_Type':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath())
     elif catalog_name == 'Display_Rotate':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_ROTATE_PARENT_PATH.getPath())
     elif catalog_name == 'Devices_Expanded':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath())
     elif catalog_name == 'Devices_Compact':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath())
     elif catalog_name == 'BySL':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SL_PARENT_PATH.getPath())
     elif catalog_name == 'ShortName':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath())
     elif catalog_name == 'LongName':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath())
     else:
         log_error('fs_get_cataloged_dic_parents() Unknown catalog_name = "{0}"'.format(catalog_name))
 
@@ -654,45 +654,45 @@ def fs_get_cataloged_dic_parents(PATHS, catalog_name):
 
 def fs_get_cataloged_dic_all(PATHS, catalog_name):
     if catalog_name == 'Main':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MAIN_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MAIN_ALL_PATH.getPath())
     elif catalog_name == 'Binary':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_BINARY_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BINARY_ALL_PATH.getPath())
     elif catalog_name == 'Catver':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATVER_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATVER_ALL_PATH.getPath())
     elif catalog_name == 'Catlist':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CATLIST_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATLIST_ALL_PATH.getPath())
     elif catalog_name == 'Genre':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_GENRE_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_GENRE_ALL_PATH.getPath())
     elif catalog_name == 'NPlayers':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath())
     elif catalog_name == 'Bestgames':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath())
     elif catalog_name == 'Series':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SERIES_ALL_PATH.getPath())
     elif catalog_name == 'Manufacturer':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath())
     elif catalog_name == 'Year':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_YEAR_ALL_PATH.getPath())
     elif catalog_name == 'Driver':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DRIVER_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Compact':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath())
     elif catalog_name == 'Display_Type':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath())
     elif catalog_name == 'Display_Rotate':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_ROTATE_ALL_PATH.getPath())
     elif catalog_name == 'Devices_Expanded':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath())
     elif catalog_name == 'Devices_Compact':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath())
     elif catalog_name == 'BySL':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SL_ALL_PATH.getPath())
     elif catalog_name == 'ShortName':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath())
     elif catalog_name == 'LongName':
-        catalog_dic = fs_load_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath())
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath())
     else:
         log_error('fs_get_cataloged_dic_all() Unknown catalog_name = "{0}"'.format(catalog_name))
 
@@ -702,32 +702,18 @@ def fs_get_cataloged_dic_all(PATHS, catalog_name):
 # JSON write/load
 # -------------------------------------------------------------------------------------------------
 COMPACT_JSON = False
-def fs_load_JSON_file(json_filename, verbose = True):
+def fs_load_JSON_file_dic(json_filename, verbose = True):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
     if not os.path.isfile(json_filename):
-        log_warning('fs_load_ROMs_JSON() File not found "{0}"'.format(json_filename))
+        log_warning('fs_load_JSON_file_dic() File not found "{0}"'.format(json_filename))
         return data_dic
     if verbose:
-        log_debug('fs_load_ROMs_JSON() "{0}"'.format(json_filename))
+        log_debug('fs_load_JSON_file_dic() "{0}"'.format(json_filename))
     with open(json_filename) as file:
         data_dic = json.load(file)
 
     return data_dic
-
-def fs_write_JSON_file(json_filename, json_data, verbose = True):
-    if verbose:
-        log_debug('fs_write_JSON_file() "{0}"'.format(json_filename))
-    try:
-        with io.open(json_filename, 'wt', encoding='utf-8') as file:
-            if COMPACT_JSON:
-                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, separators = (',', ':'))))
-            else:
-                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))))
-    except OSError:
-        kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(json_filename))
-    except IOError:
-        kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (IOError)'.format(json_filename))
 
 def fs_load_JSON_file_list(json_filename, verbose = True):
     # --- If file does not exist return empty dictionary ---
@@ -742,15 +728,15 @@ def fs_load_JSON_file_list(json_filename, verbose = True):
 
     return data_list
 
-def fs_write_JSON_file_list(json_filename, data_list, verbose = True):
+def fs_write_JSON_file(json_filename, json_data, verbose = True):
     if verbose:
-        log_debug('fs_write_JSON_file_list() "{0}"'.format(json_filename))
+        log_debug('fs_write_JSON_file() "{0}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
             if COMPACT_JSON:
-                file.write(unicode(json.dumps(data_list, ensure_ascii = False, sort_keys = True, separators = (',', ':'))))
+                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, separators = (',', ':'))))
             else:
-                file.write(unicode(json.dumps(data_list, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))))
+                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))))
     except OSError:
         kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(json_filename))
     except IOError:
@@ -796,7 +782,7 @@ class Threaded_Load_JSON(threading.Thread):
         self.json_filename = json_filename
  
     def run(self): 
-        self.output_dic = fs_load_JSON_file(self.json_filename)
+        self.output_dic = fs_load_JSON_file_dic(self.json_filename)
 
 # -------------------------------------------------------------------------------------------------
 def fs_extract_MAME_version(PATHS, mame_prog_FN):
@@ -1015,7 +1001,7 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
     md5_str = hashlib.md5(machine_name).hexdigest()
     # WARNING Python slicing does not work like in C/C++!
     hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '.json')
-    hashed_db_dic = fs_load_JSON_file(hash_DB_FN.getPath())
+    hashed_db_dic = fs_load_JSON_file_dic(hash_DB_FN.getPath())
 
     return hashed_db_dic[machine_name]
 
@@ -1063,7 +1049,7 @@ def fs_get_machine_assets_db_hash(PATHS, machine_name):
     log_debug('fs_get_machine_assets_db_hash() machine {0}'.format(machine_name))
     md5_str = hashlib.md5(machine_name).hexdigest()
     hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_assets.json')
-    hashed_db_dic = fs_load_JSON_file(hash_DB_FN.getPath())
+    hashed_db_dic = fs_load_JSON_file_dic(hash_DB_FN.getPath())
 
     return hashed_db_dic[machine_name]
 
@@ -1132,7 +1118,7 @@ def fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
     ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_ROMs.json')
 
-    return fs_load_JSON_file(ROMs_all_FN.getPath())
+    return fs_load_JSON_file_dic(ROMs_all_FN.getPath())
 
 # -------------------------------------------------------------------------------------------------
 # Asset cache
@@ -1194,7 +1180,7 @@ def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
     ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
 
-    return fs_load_JSON_file(ROMs_all_FN.getPath())
+    return fs_load_JSON_file_dic(ROMs_all_FN.getPath())
 
 # -------------------------------------------------------------------------------------------------
 # Export stuff
