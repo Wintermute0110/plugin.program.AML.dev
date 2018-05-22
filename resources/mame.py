@@ -1486,6 +1486,91 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     slist.extend(text_render_table_str(table_str))
 
 # -------------------------------------------------------------------------------------------------
+# Check/Update/Repair Favourite ROM objects
+# -------------------------------------------------------------------------------------------------
+def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog):
+    line1_str = 'Checking/Updating MAME Favourites ...'
+    pDialog.create('Advanced MAME Launcher', line1_str)
+    fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
+    num_iteration = len(fav_machines)
+    iteration = 0
+    for fav_key in sorted(fav_machines):
+        pDialog.update((iteration*100) // num_iteration, line1_str)
+        log_debug('Checking Favourite "{0}"'.format(fav_key))
+        if fav_key in machines:
+            machine = machines[fav_key]
+            m_render = machines_render[fav_key]
+            assets = assets_dic[fav_key]
+            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
+            fav_machines[fav_key] = new_fav
+            log_debug('Updated machine    "{0}"'.format(fav_key))
+        else:
+            log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
+            t = 'Favourite machine "{0}" not found in database'.format(fav_key)
+            kodi_dialog_OK(t)
+        iteration += 1
+    fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+    pDialog.update((iteration*100) // num_iteration, line1_str)
+    pDialog.close()
+
+def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog):
+    line1_str = 'Checking/Updating MAME Most Played machines ...'
+    pDialog.create('Advanced MAME Launcher', line1_str)
+    most_played_roms_dic = fs_load_JSON_file_dic(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+    num_iteration = len(most_played_roms_dic)
+    iteration = 0
+    for fav_key in sorted(most_played_roms_dic):
+        pDialog.update((iteration*100) // num_iteration, line1_str)
+        log_debug('Checking Most Played machine "{0}"'.format(fav_key))
+        if fav_key in machines:
+            if 'launch_count' in most_played_roms_dic[fav_key]:
+                launch_count = most_played_roms_dic[fav_key]['launch_count']
+            else:
+                launch_count = 1
+            machine = machines[fav_key]
+            m_render = machines_render[fav_key]
+            assets = assets_dic[fav_key]
+            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
+            new_fav['launch_count'] = launch_count
+            most_played_roms_dic[fav_key] = new_fav
+            log_debug('Updated machine              "{0}"'.format(fav_key))
+        else:
+            log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
+            t = 'Favourite machine "{0}" not found in database'.format(fav_key)
+            kodi_dialog_OK(t)
+        iteration += 1
+    fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+    pDialog.update((iteration*100) // num_iteration, line1_str)
+    pDialog.close()
+
+def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog):
+    line1_str = 'Checking/Updating MAME Recently Played machines ...'
+    pDialog.create('Advanced MAME Launcher', line1_str)
+    recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+    num_iteration = len(recent_roms_list)
+    iteration = 0
+    for i, recent_rom in enumerate(recent_roms_list):
+        pDialog.update((iteration*100) // num_iteration, line1_str)
+        fav_key = recent_rom['name']
+        log_debug('Checking Recently Played "{0}"'.format(fav_key))
+        if fav_key in machines:
+            machine = machines[fav_key]
+            m_render = machines_render[fav_key]
+            assets = assets_dic[fav_key]
+            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
+            recent_roms_list[i] = new_fav
+            log_debug('Updated machine          "{0}"'.format(fav_key))
+        else:
+            log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
+            t = 'Favourite machine "{0}" not found in database'.format(fav_key)
+            kodi_dialog_OK(t)
+        iteration += 1
+    fs_write_JSON_file(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+    pDialog.update((iteration*100) // num_iteration, line1_str)
+    pDialog.close()
+
+
+# -------------------------------------------------------------------------------------------------
 # Build MAME and SL plots
 # -------------------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------------

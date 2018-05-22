@@ -3283,7 +3283,7 @@ def _command_context_manage_mame_fav(machine_name):
     if idx == 0:
         # --- Load databases ---
         pDialog = xbmcgui.DialogProgress()
-        num_items = 5
+        num_items = 4
         pDialog.create('Advanced MAME Launcher')
         line1_str = 'Loading databases ...'
         pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
@@ -3294,28 +3294,13 @@ def _command_context_manage_mame_fav(machine_name):
         machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
         pDialog.update(int((3*100) / num_items), line1_str, 'MAME machine Assets')
         assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        pDialog.update(int((4*100) / num_items), line1_str, 'MAME Favourites')
-        fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
-        pDialog.update(int((5*100) / num_items), ' ', ' ')
+        pDialog.update(int((4*100) / num_items), ' ', ' ')
         pDialog.close()
 
         # --- Check/Update MAME Favourite machines ---
-        for fav_key in sorted(fav_machines):
-            log_debug('Checking Favourite "{0}"'.format(fav_key))
-            if fav_key in machines:
-                machine = machines[fav_key]
-                m_render = machines_render[fav_key]
-                assets = assets_dic[fav_key]
-                new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
-                fav_machines[fav_key] = new_fav
-                log_debug('Updated machine "{0}"'.format(fav_key))
-            else:
-                log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-                t = 'Favourite machine "{0}" not found in database'.format(fav_key)
-                kodi_dialog_OK(t)
+        mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
 
         # >> Save MAME Favourites DB
-        fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
         kodi_refresh_container()
         kodi_notify('MAME Favourite checked and updated')
 
@@ -3780,7 +3765,7 @@ def _command_context_manage_mame_most_played(machine_name):
     if idx == 0:
         pDialog = xbmcgui.DialogProgress()
         line1_str = 'Loading databases ...'
-        num_items = 5
+        num_items = 4
         pDialog.create('Advanced MAME Launcher')
         pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
         control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
@@ -3790,33 +3775,13 @@ def _command_context_manage_mame_most_played(machine_name):
         machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
         pDialog.update(int((3*100) / num_items), line1_str, 'MAME machine Assets')
         assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        pDialog.update(int((4*100) / num_items), line1_str, 'MAME Most Played')
-        most_played_roms_dic = fs_load_JSON_file_dic(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
-        pDialog.update(int((5*100) / num_items), ' ', ' ')
+        pDialog.update(int((4*100) / num_items), ' ', ' ')
         pDialog.close()
 
         # --- Check/Update MAME Most Played machines ---
-        for fav_key in sorted(most_played_roms_dic):
-            log_debug('Checking Most Played machine "{0}"'.format(fav_key))
-            if fav_key in machines:
-                if 'launch_count' in most_played_roms_dic[fav_key]:
-                    launch_count = most_played_roms_dic[fav_key]['launch_count']
-                else:
-                    launch_count = 1
-                machine = machines[fav_key]
-                m_render = machines_render[fav_key]
-                assets = assets_dic[fav_key]
-                new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
-                new_fav['launch_count'] = launch_count
-                most_played_roms_dic[fav_key] = new_fav
-                log_debug('Updated machine "{0}"'.format(fav_key))
-            else:
-                log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-                t = 'Favourite machine "{0}" not found in database'.format(fav_key)
-                kodi_dialog_OK(t)
+        mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
 
         # --- Save MAME Most Played machines DB ---
-        fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
         kodi_refresh_container()
         kodi_notify('MAME Favourite checked and updated')
 
@@ -3870,7 +3835,7 @@ def _command_context_manage_mame_recent_played(machine_name):
         # --- Load databases ---
         pDialog = xbmcgui.DialogProgress()
         line1_str = 'Loading databases ...'
-        num_items = 5
+        num_items = 4
         pDialog.create('Advanced MAME Launcher')
         pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
         control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
@@ -3880,29 +3845,13 @@ def _command_context_manage_mame_recent_played(machine_name):
         machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
         pDialog.update(int((3*100) / num_items), line1_str, 'MAME machine Assets')
         assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        pDialog.update(int((4*100) / num_items), line1_str, 'MAME Recently Played')
-        recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
-        pDialog.update(int((5*100) / num_items), ' ', ' ')
+        pDialog.update(int((4*100) / num_items), ' ', ' ')
         pDialog.close()
 
         # --- Check/Update MAME Recently Played machines ---
-        for i, recent_rom in enumerate(recent_roms_list):
-            fav_key = recent_rom['name']
-            log_debug('Checking Favourite "{0}"'.format(fav_key))
-            if fav_key in machines:
-                machine = machines[fav_key]
-                m_render = machines_render[fav_key]
-                assets = assets_dic[fav_key]
-                new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
-                recent_roms_list[i] = new_fav
-                log_debug('Updated machine "{0}"'.format(fav_key))
-            else:
-                log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-                t = 'Recently Played machine "{0}" not found in MAME main database'.format(fav_key)
-                kodi_dialog_OK(t)
+        mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
 
         # --- Save MAME Favourites DB ---
-        fs_write_JSON_file(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
         kodi_refresh_container()
         kodi_notify('MAME Recently Played machines checked and updated')
 
@@ -5584,69 +5533,15 @@ def _command_check_all_Favourite_objects():
     pDialog.close()
 
     # --- Check/Update MAME Favourite machines ---
-    pDialog.create('Advanced MAME Launcher')
-    num_items = 6
-    pDialog.update(int((0*100) / num_items), 'Checking/Updating MAME Favourites ...')
-    fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
-    for fav_key in sorted(fav_machines):
-        log_debug('Checking Favourite "{0}"'.format(fav_key))
-        if fav_key in machines:
-            machine = machines[fav_key]
-            m_render = machines_render[fav_key]
-            assets = assets_dic[fav_key]
-            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
-            fav_machines[fav_key] = new_fav
-            log_debug('Updated machine    "{0}"'.format(fav_key))
-        else:
-            log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-            t = 'Favourite machine "{0}" not found in database'.format(fav_key)
-            kodi_dialog_OK(t)
-    fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+    mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
 
     # --- Check/Update MAME Most Played machines ---
-    pDialog.update(int((1*100) / num_items), 'Checking/Updating MAME Most Played machines ...')
-    most_played_roms_dic = fs_load_JSON_file_dic(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
-    for fav_key in sorted(most_played_roms_dic):
-        log_debug('Checking Most Played machine "{0}"'.format(fav_key))
-        if fav_key in machines:
-            if 'launch_count' in most_played_roms_dic[fav_key]:
-                launch_count = most_played_roms_dic[fav_key]['launch_count']
-            else:
-                launch_count = 1
-            machine = machines[fav_key]
-            m_render = machines_render[fav_key]
-            assets = assets_dic[fav_key]
-            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
-            new_fav['launch_count'] = launch_count
-            most_played_roms_dic[fav_key] = new_fav
-            log_debug('Updated machine              "{0}"'.format(fav_key))
-        else:
-            log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-            t = 'Favourite machine "{0}" not found in database'.format(fav_key)
-            kodi_dialog_OK(t)
-    fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+    mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
 
     # --- Check/Update MAME Recently Played machines ---
-    pDialog.update(int((2*100) / num_items), 'Checking/Updating MAME Recently Played machines ...')
-    recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
-    for i, recent_rom in enumerate(recent_roms_list):
-        fav_key = recent_rom['name']
-        log_debug('Checking Recently Played "{0}"'.format(fav_key))
-        if fav_key in machines:
-            machine = machines[fav_key]
-            m_render = machines_render[fav_key]
-            assets = assets_dic[fav_key]
-            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
-            recent_roms_list[i] = new_fav
-            log_debug('Updated machine          "{0}"'.format(fav_key))
-        else:
-            log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-            t = 'Favourite machine "{0}" not found in database'.format(fav_key)
-            kodi_dialog_OK(t)
-    fs_write_JSON_file(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+    mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
 
     # --- Check/Update SL Favourite ROMs ---
-    pDialog.update(int((3*100) / num_items), 'Checking/Updating SL Favourite ROMs ...')
     SL_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
     fav_SL_roms = fs_load_JSON_file_dic(PATHS.FAV_SL_ROMS_PATH.getPath())
     num_SL_favs = len(fav_SL_roms)
@@ -5691,9 +5586,10 @@ def _command_check_all_Favourite_objects():
         # >> Update progress dialog (END)
         num_iteration += 1
     fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+    pDialog.update(100)
+    pDialog.close()
 
     # --- Check/Update SL Most Played machines ---
-    pDialog.update(int((4*100) / num_items), 'Checking/Updating SL Most Played ROMs ...')
     most_played_roms_dic = fs_load_JSON_file_dic(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
     num_SL_favs = len(most_played_roms_dic)
     num_iteration = 0
@@ -5741,9 +5637,10 @@ def _command_check_all_Favourite_objects():
         # >> Update progress dialog (END)
         num_iteration += 1
     fs_write_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+    pDialog.update(100)
+    pDialog.close()
 
     # --- Check/Update SL Recently Played machines ---
-    pDialog.update(int((5*100) / num_items), 'Checking/Updating SL Recently Played ROMs ...')
     recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
     num_SL_favs = len(recent_roms_list)
     num_iteration = 0
@@ -5786,7 +5683,7 @@ def _command_check_all_Favourite_objects():
         # >> Update progress dialog (END)
         num_iteration += 1
     fs_write_JSON_file(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
-    pDialog.update(int((6*100) / num_items), ' ')
+    pDialog.update(100)
     pDialog.close()
 
     # --- Notify the user ---
