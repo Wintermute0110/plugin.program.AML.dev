@@ -998,6 +998,7 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR violet]genre[/COLOR]: '{0}'".format(machine['genre']))
     slist.append("[COLOR skyblue]isBIOS[/COLOR]: {0}".format(machine['isBIOS']))
     slist.append("[COLOR skyblue]isDevice[/COLOR]: {0}".format(machine['isDevice']))
+    slist.append("[COLOR skyblue]isMature[/COLOR]: {0}".format(machine['isMature']))
     slist.append("[COLOR violet]manufacturer[/COLOR]: '{0}'".format(machine['manufacturer']))
     slist.append("[COLOR violet]nplayers[/COLOR]: '{0}'".format(machine['nplayers']))
     slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(machine['year']))

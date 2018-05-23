@@ -134,6 +134,7 @@ def fs_new_machine_render_dic():
         'manufacturer'   : '',
         'driver_status'  : '',
         # >> Custom AML data
+        'isMature'       : False,
         'genre'          : '',      # Taken from Genre.ini, Catver.ini or Catlist.ini
         'nplayers'       : '',      # Taken from NPlayers.ini
     }
@@ -246,7 +247,7 @@ def fs_new_MAME_asset():
 #   R  Have ROM
 def fs_new_SL_ROM_part():
     return {
-        'name' : '',
+        'name'      : '',
         'interface' : ''
     }
 
