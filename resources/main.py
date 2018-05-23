@@ -514,17 +514,18 @@ def _get_settings():
     g_settings['SL_rom_path']  = __addon__.getSetting('SL_rom_path').decode('utf-8')
     g_settings['SL_chd_path']  = __addon__.getSetting('SL_chd_path').decode('utf-8')
 
-    # --- DAT paths ---
-    g_settings['catver_path']    = __addon__.getSetting('catver_path').decode('utf-8')
-    g_settings['catlist_path']   = __addon__.getSetting('catlist_path').decode('utf-8')
-    g_settings['genre_path']     = __addon__.getSetting('genre_path').decode('utf-8')
-    g_settings['nplayers_path']  = __addon__.getSetting('nplayers_path').decode('utf-8')
+    # --- DAT paths (order alpahbetically) ---
     g_settings['bestgames_path'] = __addon__.getSetting('bestgames_path').decode('utf-8')
-    g_settings['series_path']    = __addon__.getSetting('series_path').decode('utf-8')
+    g_settings['catlist_path']   = __addon__.getSetting('catlist_path').decode('utf-8')
+    g_settings['catver_path']    = __addon__.getSetting('catver_path').decode('utf-8')
+    g_settings['command_path']   = __addon__.getSetting('command_path').decode('utf-8')
+    g_settings['gameinit_path']  = __addon__.getSetting('gameinit_path').decode('utf-8')
+    g_settings['genre_path']     = __addon__.getSetting('genre_path').decode('utf-8')
     g_settings['history_path']   = __addon__.getSetting('history_path').decode('utf-8')
     g_settings['mameinfo_path']  = __addon__.getSetting('mameinfo_path').decode('utf-8')
-    g_settings['gameinit_path']  = __addon__.getSetting('gameinit_path').decode('utf-8')
-    g_settings['command_path']   = __addon__.getSetting('command_path').decode('utf-8')
+    g_settings['mature_path']    = __addon__.getSetting('mature_path').decode('utf-8')
+    g_settings['nplayers_path']  = __addon__.getSetting('nplayers_path').decode('utf-8')
+    g_settings['series_path']    = __addon__.getSetting('series_path').decode('utf-8')
 
     # --- ROM sets ---
     g_settings['mame_rom_set'] = int(__addon__.getSetting('mame_rom_set'))

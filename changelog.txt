@@ -22,10 +22,10 @@ WIP      MANUALS: Support for CBZ/CBR manuals.
 
 [B]Advanced Emulator Launcher | version 0.9.6 | xx May 2018[/B]
 
-WIP      Add a isMature field to MAME DB. I'm not sure yet from where to get this info
-         (Catver.ini, Catlist.ini, Mature.ini, ???)
+WIP      Add a isMature field to MAME DB. Take the mature information from mature.ini included
+         in the Catver.ini ZIP file.
 
-WIP      Option in settings to completely hide Mature machines and or filter categories.
+WIP      Option in settings to completely hide Mature machines and filter categories.
          Depends on the previous feature.
 
 FEATURE  Asset hashed database. This will speed up launching MAME machines. Note that the asset
