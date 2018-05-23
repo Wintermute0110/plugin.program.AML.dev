@@ -699,6 +699,32 @@ def fs_get_cataloged_dic_all(PATHS, catalog_name):
 
     return catalog_dic
 
+#
+# Locates object index in a list of dictionaries by 'name' field.
+# Returns -1 if object cannot be found. Uses a linear search (slow!).
+#
+def fs_locate_idx_by_MAME_name(object_list, object_name)
+    object_index = -1
+    for i, machine in enumerate(object_list):
+        if object_name == machine['name']:
+            object_index = i
+            break
+
+    return object_index
+
+#
+# Same as previous function but on a list of Software List items
+#
+def fs_locate_idx_by_SL_item_name(object_list, SL_name, SL_ROM_name)
+    SL_fav_DB_key = SL_name + '-' + SL_ROM_name
+    object_index = -1
+    for i, machine in enumerate(object_list):
+        if SL_fav_DB_key == machine['SL_DB_key']:
+            object_index = i
+            break
+
+    return object_index
+
 # -------------------------------------------------------------------------------------------------
 # JSON write/load
 # -------------------------------------------------------------------------------------------------

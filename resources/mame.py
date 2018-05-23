@@ -1570,6 +1570,148 @@ def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_r
     pDialog.update((iteration*100) // num_iteration, line1_str)
     pDialog.close()
 
+def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
+    fav_SL_roms = fs_load_JSON_file_dic(PATHS.FAV_SL_ROMS_PATH.getPath())
+    num_SL_favs = len(fav_SL_roms)
+    num_iteration = 0
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher')
+    for fav_SL_key in sorted(fav_SL_roms):
+        if 'ROM_name' in fav_SL_roms[fav_SL_key]:
+            fav_ROM_name = fav_SL_roms[fav_SL_key]['ROM_name']
+        elif 'SL_ROM_name' in fav_SL_roms[fav_SL_key]:
+            fav_ROM_name = fav_SL_roms[fav_SL_key]['SL_ROM_name']
+        else:
+            raise TypeError('Cannot find SL ROM name')
+        fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
+        log_debug('Checking SL Favourite "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+
+        # >> Update progress dialog (BEGIN)
+        update_number = (num_iteration * 100) // num_SL_favs
+        pDialog.update(update_number, 'Checking SL Favourites (ROM "{0}") ...'.format(fav_ROM_name))
+
+        # >> Load SL ROMs DB and assets
+        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '.json'
+        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+        assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+        SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
+
+        # >> Check
+        if fav_ROM_name in SL_roms:
+            SL_ROM = SL_roms[fav_ROM_name]
+            SL_assets = SL_assets_dic[fav_ROM_name]
+            new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
+            fav_SL_roms[fav_SL_key] = new_fav_ROM
+            log_debug('Updated SL Favourite  "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+        else:
+            # >> Delete not found Favourites???
+            log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
+            t = 'Favourite machine "{0}" in SL "{1}" not found in database'.format(fav_ROM_name, fav_SL_name)
+            kodi_dialog_OK(t)
+
+        # >> Update progress dialog (END)
+        num_iteration += 1
+    fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+    pDialog.update(100)
+    pDialog.close()
+
+def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
+    most_played_roms_dic = fs_load_JSON_file_dic(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+    num_SL_favs = len(most_played_roms_dic)
+    num_iteration = 0
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher')
+    for fav_SL_key in sorted(most_played_roms_dic):
+        if 'ROM_name' in most_played_roms_dic[fav_SL_key]:
+            fav_ROM_name = most_played_roms_dic[fav_SL_key]['ROM_name']
+        elif 'SL_ROM_name' in most_played_roms_dic[fav_SL_key]:
+            fav_ROM_name = most_played_roms_dic[fav_SL_key]['SL_ROM_name']
+        else:
+            raise TypeError('Cannot find SL ROM name')
+        if 'launch_count' in most_played_roms_dic[fav_SL_key]:
+            launch_count = most_played_roms_dic[fav_SL_key]['launch_count']
+        else:
+            launch_count = 1
+        fav_SL_name = most_played_roms_dic[fav_SL_key]['SL_name']
+        log_debug('Checking SL Most Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+
+        # >> Update progress dialog (BEGIN)
+        update_number = (num_iteration * 100) // num_SL_favs
+        pDialog.update(update_number, 'Checking SL Most Played (ROM "{0}") ...'.format(fav_ROM_name))
+
+        # >> Load SL ROMs DB and assets
+        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '.json'
+        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+        assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+        SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
+
+        if fav_ROM_name in SL_roms:
+            SL_ROM = SL_roms[fav_ROM_name]
+            SL_assets = SL_assets_dic[fav_ROM_name]
+            new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
+            new_fav_ROM['launch_count'] = launch_count
+            most_played_roms_dic[fav_SL_key] = new_fav_ROM
+            log_debug('Updated SL Most Played  "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+        else:
+            # >> Delete Favourite ROM from Favourite DB
+            log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_SL_name, fav_ROM_name))
+            t = 'Favourite machine "{0}" in SL "{1}" not found in SL database'.format(fav_SL_name, fav_ROM_name)
+            kodi_dialog_OK(t)
+
+        # >> Update progress dialog (END)
+        num_iteration += 1
+    fs_write_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+    pDialog.update(100)
+    pDialog.close()
+
+def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
+    recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
+    num_SL_favs = len(recent_roms_list)
+    num_iteration = 0
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher')
+    for i, recent_rom in enumerate(recent_roms_list):
+        if 'ROM_name' in recent_rom:
+            fav_ROM_name = recent_rom['ROM_name']
+        elif 'SL_ROM_name' in recent_rom:
+            fav_ROM_name = recent_rom['SL_ROM_name']
+        else:
+            raise TypeError('Cannot find SL ROM name')
+        fav_SL_name = recent_rom['SL_name']
+        log_debug('Checking SL Recently Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+
+        # >> Update progress dialog (BEGIN)
+        update_number = (num_iteration * 100) // num_SL_favs
+        pDialog.update(update_number, 'Checking SL Recently Played (ROM "{0}") ...'.format(fav_ROM_name))
+
+        # >> Load SL ROMs DB and assets
+        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '.json'
+        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
+        assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
+        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+        SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
+
+        if fav_ROM_name in SL_roms:
+            SL_ROM = SL_roms[fav_ROM_name]
+            SL_assets = SL_assets_dic[fav_ROM_name]
+            new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
+            recent_roms_list[i] = new_fav_ROM
+            log_debug('Updated SL Recently Played  "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+        else:
+            # >> Delete Favourite ROM from Favourite DB
+            log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_SL_name, fav_ROM_name))
+            t = 'Favourite machine "{0}" in SL "{1}" not found in SL database'.format(fav_SL_name, fav_ROM_name)
+            kodi_dialog_OK(t)
+        # >> Update progress dialog (END)
+        num_iteration += 1
+    fs_write_JSON_file(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+    pDialog.update(100)
+    pDialog.close()
 
 # -------------------------------------------------------------------------------------------------
 # Build MAME and SL plots
