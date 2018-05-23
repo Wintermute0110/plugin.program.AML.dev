@@ -1841,9 +1841,9 @@ def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, p
         SL_ROMs_FN      = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '.json')
         SL_assets_FN    = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_assets.json')
         SL_ROM_audit_FN = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_ROM_audit.json')
-        SL_roms          = fs_load_JSON_file(SL_ROMs_FN.getPath(), verbose = False)
-        SL_assets_dic    = fs_load_JSON_file(SL_assets_FN.getPath(), verbose = False)
-        SL_ROM_audit_dic = fs_load_JSON_file(SL_ROM_audit_FN.getPath(), verbose = False)
+        SL_roms          = fs_load_JSON_file_dic(SL_ROMs_FN.getPath(), verbose = False)
+        SL_assets_dic    = fs_load_JSON_file_dic(SL_assets_FN.getPath(), verbose = False)
+        SL_ROM_audit_dic = fs_load_JSON_file_dic(SL_ROM_audit_FN.getPath(), verbose = False)
         # >> Python Set Comprehension
         if SL_name in History_idx_dic:
             History_SL_set = { machine[0] for machine in History_idx_dic[SL_name]['machines'] }
@@ -2656,7 +2656,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
     log_debug('mame_audit_SL_all() Initialising ...')
 
     # >> Load SL catalog.
-    SL_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+    SL_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
 
     # >> Report header and statistics
     report_full_list = [
@@ -2736,8 +2736,8 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
         SL_dic = SL_catalog_dic[SL_name]
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '.json')
         SL_AUDIT_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_ROM_audit.json')
-        roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
-        audit_roms = fs_load_JSON_file(SL_AUDIT_ROMs_DB_FN.getPath(), verbose = False)
+        roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+        audit_roms = fs_load_JSON_file_dic(SL_AUDIT_ROMs_DB_FN.getPath(), verbose = False)
 
         # >> Iterate SL ROMs
         for rom_key in sorted(roms):
@@ -3814,7 +3814,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     if history_idx_dic:
         log_debug('Updating History DAT cateogories and machine names ...')
         # >> Open Software List index if it exists.
-        SL_main_catalog_dic = fs_load_JSON_file(PATHS.SL_INDEX_PATH.getPath())
+        SL_main_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
         # >> Update category names.
         for cat_name in history_idx_dic:
             if cat_name == 'mame':
@@ -5044,7 +5044,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     log_info('Making Software List catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Software List catalog')
     # >> Load proper Software List proper names, if available
-    SL_names_dic = fs_load_JSON_file(PATHS.SL_NAMES_PATH.getPath())
+    SL_names_dic = fs_load_JSON_file_dic(PATHS.SL_NAMES_PATH.getPath())
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
@@ -5722,8 +5722,8 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
         SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_audit.json')
         SL_Soft_Archives_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_archives.json')
-        SL_Items = fs_load_JSON_file(SL_Items_DB_FN.getPath(), verbose = False)
-        SL_ROMs = fs_load_JSON_file(SL_ROMs_DB_FN.getPath(), verbose = False)
+        SL_Items = fs_load_JSON_file_dic(SL_Items_DB_FN.getPath(), verbose = False)
+        SL_ROMs = fs_load_JSON_file_dic(SL_ROMs_DB_FN.getPath(), verbose = False)
 
         # --- First add the SL item ROMs to the audit database ---
         SL_Audit_ROMs_dic = {}        
@@ -5826,7 +5826,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         total_SL_XML_files += 1
         pclone_dic = {}
         SL_database_FN = PATHS.SL_DB_DIR.pjoin(sl_name + '.json')
-        ROMs = fs_load_JSON_file(SL_database_FN.getPath(), verbose = False)
+        ROMs = fs_load_JSON_file_dic(SL_database_FN.getPath(), verbose = False)
         for rom_name in ROMs:
             total_SL_software_items += 1
             ROM = ROMs[rom_name]
@@ -5881,7 +5881,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # --- Load SL databases ---
         file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
+        SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
 
@@ -6317,8 +6317,8 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
         # >> Load SL databases
         SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
         SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_ROM_archives.json')
-        sl_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
-        soft_archives = fs_load_JSON_file(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
+        sl_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+        soft_archives = fs_load_JSON_file_dic(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
 
         # >> Scan
         for rom_key in sorted(sl_roms):
@@ -6699,7 +6699,7 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
         # --- Load SL databases ---
         file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-        SL_roms = fs_load_JSON_file(SL_DB_FN.getPath(), verbose = False)
+        SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
 
         # --- Cache files ---
         misc_clear_file_cache(verbose = False)
