@@ -25,7 +25,7 @@ from __future__ import unicode_literals
 # DEBUG/TEST settings
 # -------------------------------------------------------------------------------------------------
 # If True MAME is not launched. Useful to test the Recently Played and Most Played code.
-DISABLE_MAME_LAUNCHING = True
+DISABLE_MAME_LAUNCHING = False
 
 # -------------------------------------------------------------------------------------------------
 # A universal Addon error reporting exception
