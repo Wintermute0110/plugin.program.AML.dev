@@ -448,6 +448,47 @@ def mame_load_nplayers_ini(filename):
     return (categories_dic, nplayers_version)
 
 #
+# Load mature.ini file.
+# Returns a tuple consisting of:
+# 1) ini_set = {machine1, machine2, ...}
+# 2) ini_version
+#
+def mame_load_Mature_ini(filename):
+    log_info('mame_load_Mature_ini() Parsing "{0}"'.format(filename))
+    ini_version = 'Not found'
+    ini_set = set()
+    try:
+        f = open(filename, 'rt')
+    except IOError:
+        log_info('mame_load_Mature_ini() (IOError) opening "{0}"'.format(filename))
+        return (ini_set, ini_version)
+    # FSM statuses
+    # 0 -> Reading the file header
+    # 1 -> '[ROOT_FOLDER]' found. Read machines (one per line).
+    fsm_status = 0
+    for file_line in f:
+        stripped_line = file_line.strip()
+        if fsm_status == 0:
+            # >> Skip comments: lines starting with ';;'
+            # >> Look for version string in comments
+            if re.search(r'^;;', stripped_line):
+                m = re.search(r';; (\w+)\.ini ([0-9\.]+) / ', stripped_line)
+                if m: ini_version = m.group(2)
+                continue
+            if stripped_line == '[ROOT_FOLDER]':
+                fsm_status = 1
+                continue
+        elif fsm_status == 1:
+            if stripped_line == '': continue
+            machine_name = stripped_line
+            ini_set.add(machine_name)
+    f.close()
+    log_info('mame_load_Mature_ini() Version "{0}"'.format(ini_version))
+    log_info('mame_load_Mature_ini() Number of machines {0:6d}'.format(len(ini_set)))
+
+    return (ini_set, ini_version)
+
+#
 # Generic MAME INI file loader.
 # Supports Catlist.ini, Genre.ini, Bestgames.ini and Series.ini
 #
@@ -1131,16 +1172,17 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     slist.append("AML version            {0}".format(AML_version_str))
     slist.append("MAME version string    {0}".format(control_dic['ver_mame_str']))
     slist.append("MAME version numerical {0}".format(control_dic['ver_mame']))
-    slist.append("catver.ini version     {0}".format(control_dic['ver_catver']))
-    slist.append("catlist.ini version    {0}".format(control_dic['ver_catlist']))
-    slist.append("genre.ini version      {0}".format(control_dic['ver_genre']))
-    slist.append("nplayers.ini version   {0}".format(control_dic['ver_nplayers']))
     slist.append("bestgames.ini version  {0}".format(control_dic['ver_bestgames']))
+    slist.append("catlist.ini version    {0}".format(control_dic['ver_catlist']))
+    slist.append("catver.ini version     {0}".format(control_dic['ver_catver']))
+    slist.append("command.dat version    {0}".format(control_dic['ver_command']))
+    slist.append("gameinit.dat version   {0}".format(control_dic['ver_gameinit']))
+    slist.append("genre.ini version      {0}".format(control_dic['ver_genre']))
+    slist.append("history.dat version    {0}".format(control_dic['ver_history']))
+    slist.append("mameinfo.dat version   {0}".format(control_dic['ver_mameinfo']))
+    slist.append("mature.ini version     {0}".format(control_dic['ver_mature']))
+    slist.append("nplayers.ini version   {0}".format(control_dic['ver_nplayers']))
     slist.append("series.ini version     {0}".format(control_dic['ver_series']))
-    slist.append("History.dat version    {0}".format(control_dic['ver_history']))
-    slist.append("MAMEinfo.dat version   {0}".format(control_dic['ver_mameinfo']))
-    slist.append("Gameinit.dat version   {0}".format(control_dic['ver_gameinit']))
-    slist.append("Command.dat version    {0}".format(control_dic['ver_command']))
 
     slist.append('')
     slist.append('[COLOR orange]Timestamps[/COLOR]')
@@ -3244,34 +3286,38 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
 
     # --- Load INI files to include category information ---
     pdialog_line1 = 'Processing INI files ...'
+    num_items = 7
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(0, pdialog_line1, 'catver.ini')
+    pDialog.update(int((0*100) / num_items), pdialog_line1, 'catver.ini')
     (categories_dic, catver_version) = mame_load_Catver_ini(settings['catver_path'])
-    pDialog.update(16, pdialog_line1, 'catlist.ini')
+    pDialog.update(int((1*100) / num_items), pdialog_line1, 'catlist.ini')
     (catlist_dic, catlist_version) = mame_load_INI_datfile(settings['catlist_path'])
-    pDialog.update(32, pdialog_line1, 'genre.ini')
+    pDialog.update(int((2*100) / num_items), pdialog_line1, 'genre.ini')
     (genre_dic, genre_version) = mame_load_INI_datfile(settings['genre_path'])
-    pDialog.update(48, pdialog_line1, 'nplayers.ini')
+    pDialog.update(int((3*100) / num_items), pdialog_line1, 'nplayers.ini')
     (nplayers_dic, nplayers_version) = mame_load_nplayers_ini(settings['nplayers_path'])
-    pDialog.update(64, pdialog_line1, 'bestgames.ini')
+    pDialog.update(int((4*100) / num_items), pdialog_line1, 'bestgames.ini')
     (bestgames_dic, bestgames_version) = mame_load_INI_datfile(settings['bestgames_path'])
-    pDialog.update(80, pdialog_line1, 'series.ini')
+    pDialog.update(int((5*100) / num_items), pdialog_line1, 'series.ini')
     (series_dic, series_version) = mame_load_INI_datfile(settings['series_path'])
-    pDialog.update(100, ' ', ' ')
+    pDialog.update(int((6*100) / num_items), pdialog_line1, 'mature.ini')
+    (mature_set, mature_version) = mame_load_Mature_ini(settings['mature_path'])
+    pDialog.update(int((7*100) / num_items), ' ', ' ')
     pDialog.close()
 
     # --- Load DAT files to include category information ---
     pdialog_line1 = 'Processing DAT files ...'
+    num_items = 4
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(0, pdialog_line1, 'history.dat')
+    pDialog.update(int((0*100) / num_items), pdialog_line1, 'history.dat')
     (history_idx_dic, history_dic, history_version) = mame_load_History_DAT(settings['history_path'])
-    pDialog.update(25, pdialog_line1, 'mameinfo.dat')
+    pDialog.update(int((1*100) / num_items), pdialog_line1, 'mameinfo.dat')
     (mameinfo_idx_dic, mameinfo_dic, mameinfo_version) = mame_load_MameInfo_DAT(settings['mameinfo_path'])
-    pDialog.update(50, pdialog_line1, 'gameinit.dat')
+    pDialog.update(int((2*100) / num_items), pdialog_line1, 'gameinit.dat')
     (gameinit_idx_dic, gameinit_dic, gameinit_version) = mame_load_GameInit_DAT(settings['gameinit_path'])
-    pDialog.update(75, pdialog_line1, 'command.dat')
+    pDialog.update(int((3*100) / num_items), pdialog_line1, 'command.dat')
     (command_idx_dic, command_dic, command_version) = mame_load_Command_DAT(settings['command_path'])
-    pDialog.update(100, ' ', ' ')
+    pDialog.update(int((4*100) / num_items), ' ', ' ')
     pDialog.close()
 
     # ---------------------------------------------------------------------------------------------
@@ -3741,12 +3787,15 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # ---------------------------------------------------------------------------------------------
     assets_dic = {key : fs_new_MAME_asset() for key in machines}
     for m_name, asset in assets_dic.iteritems():
-        asset['flags'] = fs_initial_flags(machines[m_name],
-                                          machines_render[m_name], machines_roms[m_name])
+        asset['flags'] = fs_initial_flags(machines[m_name], machines_render[m_name], machines_roms[m_name])
 
     # ---------------------------------------------------------------------------------------------
-    # Improve information fields in RENDER_DB_PATH
+    # Improve information fields in Main Render database
     # ---------------------------------------------------------------------------------------------
+    if mature_set:
+        for machine_name in machines_render:
+            machines_render[machine_name]['isMature'] = True if machine_name in mature_set else False
+
     # >> Add genre infolabel into render database
     if genre_dic:
         for machine_name in machines_render:
@@ -3816,16 +3865,17 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # >> Versions
     control_dic['ver_mame']      = mame_version_int
     control_dic['ver_mame_str']  = mame_version_raw
-    control_dic['ver_catver']    = catver_version
-    control_dic['ver_catlist']   = catlist_version
-    control_dic['ver_genre']     = genre_version
-    control_dic['ver_nplayers']  = nplayers_version
     control_dic['ver_bestgames'] = bestgames_version
-    control_dic['ver_series']    = series_version
+    control_dic['ver_catlist']   = catlist_version
+    control_dic['ver_catver']    = catver_version
+    control_dic['ver_command']   = command_version
+    control_dic['ver_gameinit']  = gameinit_version
+    control_dic['ver_genre']     = genre_version
     control_dic['ver_history']   = history_version
     control_dic['ver_mameinfo']  = mameinfo_version
-    control_dic['ver_gameinit']  = gameinit_version
-    control_dic['ver_command']   = command_version
+    control_dic['ver_mature']    = mature_version
+    control_dic['ver_nplayers']  = nplayers_version
+    control_dic['ver_series']    = series_version
 
     # >> Statistics
     control_dic['stats_processed_machines'] = stats_processed_machines
