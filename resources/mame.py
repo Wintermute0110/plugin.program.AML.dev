@@ -1193,7 +1193,7 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     if control_dic['t_MAME_DB_build']:
         slist.append("MAME DB built on        {0}".format(_str_time(control_dic['t_MAME_DB_build'])))
     else:
-        slist.append("MAME DB never built\n")
+        slist.append("MAME DB never built")
     if control_dic['t_MAME_Audit_DB_build']:
         slist.append("MAME Audit DB built on  {0}".format(_str_time(control_dic['t_MAME_Audit_DB_build'])))
     else:
@@ -1205,7 +1205,7 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     if control_dic['t_MAME_ROMs_scan']:
         slist.append("MAME ROMs scaned on     {0}".format(_str_time(control_dic['t_MAME_ROMs_scan'])))
     else:
-        slist.append("MAME ROMs never scaned\n")
+        slist.append("MAME ROMs never scaned")
     if control_dic['t_MAME_assets_scan']:
         slist.append("MAME assets scaned on   {0}".format(_str_time(control_dic['t_MAME_assets_scan'])))
     else:
