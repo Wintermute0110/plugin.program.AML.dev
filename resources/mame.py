@@ -390,7 +390,7 @@ def mame_load_Catver_ini(filename):
             raise CriticalError('Unknown read_status FSM value')
     f.close()
     log_info('mame_load_Catver_ini() Version "{0}"'.format(catver_version))
-    log_info('mame_load_Catver_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
+    log_info('mame_load_Catver_ini() Number of machines {0:6d}'.format(len(categories_dic)))
     log_info('mame_load_Catver_ini() Number of categories {0:6d}'.format(len(categories_set)))
 
     return (categories_dic, catver_version)
@@ -442,7 +442,7 @@ def mame_load_nplayers_ini(filename):
             raise CriticalError('Unknown read_status FSM value')
     f.close()
     log_info('mame_load_nplayers_ini() Version "{0}"'.format(nplayers_version))
-    log_info('mame_load_nplayers_ini() Number of machines   {0:6d}'.format(len(categories_dic)))
+    log_info('mame_load_nplayers_ini() Number of machines {0:6d}'.format(len(categories_dic)))
     log_info('mame_load_nplayers_ini() Number of categories {0:6d}'.format(len(categories_set)))
 
     return (categories_dic, nplayers_version)
@@ -522,7 +522,7 @@ def mame_load_INI_datfile(filename):
             ini_dic[machine_name] = current_category
     f.close()
     log_info('mame_load_INI_datfile() Version "{0}"'.format(ini_version))
-    log_info('mame_load_INI_datfile() Number of machines   {0:6d}'.format(len(ini_dic)))
+    log_info('mame_load_INI_datfile() Number of machines {0:6d}'.format(len(ini_dic)))
     log_info('mame_load_INI_datfile() Number of categories {0:6d}'.format(len(ini_set)))
 
     return (ini_dic, ini_version)
@@ -616,7 +616,7 @@ def mame_load_History_DAT(filename):
     f.close()
     log_info('mame_load_History_DAT() Version "{0}"'.format(version_str))
     log_info('mame_load_History_DAT() Number of rows in history_idx_dic {0:6d}'.format(len(history_idx_dic)))
-    log_info('mame_load_History_DAT() Number of rows in history_dic     {0:6d}'.format(len(history_dic)))
+    log_info('mame_load_History_DAT() Number of rows in history_dic {0:6d}'.format(len(history_dic)))
 
     return (history_idx_dic, history_dic, version_str)
 
@@ -708,7 +708,7 @@ def mame_load_MameInfo_DAT(filename):
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
     log_info('mame_load_MameInfo_DAT() Version "{0}"'.format(version_str))
-    log_info('mame_load_MameInfo_DAT() Number of rows in idx_dic  {0:6d}'.format(len(idx_dic)))
+    log_info('mame_load_MameInfo_DAT() Number of rows in idx_dic {0:6d}'.format(len(idx_dic)))
     log_info('mame_load_MameInfo_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
 
     return (idx_dic, data_dic, version_str)
@@ -3340,7 +3340,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     log_info('mame_build_MAME_main_database() MAME numerical version {0}'.format(mame_version_int))
 
     # --- Process MAME XML ---
-    total_machines = control_dic['total_machines']
+    total_machines = control_dic['stats_total_machines']
     machines = {}
     machines_render = {}
     machines_roms = {}
@@ -4397,21 +4397,21 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
-    change_control_dic(control_dic, 'audit_MAME_ROM_ZIP_files', len(ROM_archive_list))
-    change_control_dic(control_dic, 'audit_MAME_Sample_ZIP_files', len(Sample_archive_list))
-    change_control_dic(control_dic, 'audit_MAME_CHD_files', len(CHD_archive_list))
-    change_control_dic(control_dic, 'audit_machine_archives_ROM', machine_archives_ROM)
-    change_control_dic(control_dic, 'audit_machine_archives_ROM_parents', machine_archives_ROM_parents)
-    change_control_dic(control_dic, 'audit_machine_archives_ROM_clones', machine_archives_ROM_clones)
-    change_control_dic(control_dic, 'audit_machine_archives_Samples', machine_archives_Samples)
-    change_control_dic(control_dic, 'audit_machine_archives_Samples_parents', machine_archives_Samples_parents)
-    change_control_dic(control_dic, 'audit_machine_archives_Samples_clones', machine_archives_Samples_clones)
-    change_control_dic(control_dic, 'audit_machine_archives_CHD', machine_archives_CHD)
-    change_control_dic(control_dic, 'audit_machine_archives_CHD_parents', machine_archives_CHD_parents)
-    change_control_dic(control_dic, 'audit_machine_archives_CHD_clones', machine_archives_CHD_clones)
-    change_control_dic(control_dic, 'audit_archive_less', archive_less)
-    change_control_dic(control_dic, 'audit_archive_less_parents', archive_less_parents)
-    change_control_dic(control_dic, 'audit_archive_less_clones', archive_less_clones)
+    change_control_dic(control_dic, 'stats_audit_MAME_ROM_ZIP_files', len(ROM_archive_list))
+    change_control_dic(control_dic, 'stats_audit_MAME_Sample_ZIP_files', len(Sample_archive_list))
+    change_control_dic(control_dic, 'stats_audit_MAME_CHD_files', len(CHD_archive_list))
+    change_control_dic(control_dic, 'stats_audit_machine_archives_ROM', machine_archives_ROM)
+    change_control_dic(control_dic, 'stats_audit_machine_archives_ROM_parents', machine_archives_ROM_parents)
+    change_control_dic(control_dic, 'stats_audit_machine_archives_ROM_clones', machine_archives_ROM_clones)
+    change_control_dic(control_dic, 'stats_audit_machine_archives_CHD', machine_archives_CHD)
+    change_control_dic(control_dic, 'stats_audit_machine_archives_CHD_parents', machine_archives_CHD_parents)
+    change_control_dic(control_dic, 'stats_audit_machine_archives_CHD_clones', machine_archives_CHD_clones)
+    change_control_dic(control_dic, 'stats_audit_machine_archives_Samples', machine_archives_Samples)
+    change_control_dic(control_dic, 'stats_audit_machine_archives_Samples_parents', machine_archives_Samples_parents)
+    change_control_dic(control_dic, 'stats_audit_machine_archives_Samples_clones', machine_archives_Samples_clones)
+    change_control_dic(control_dic, 'stats_audit_archive_less', archive_less)
+    change_control_dic(control_dic, 'stats_audit_archive_less_parents', archive_less_parents)
+    change_control_dic(control_dic, 'stats_audit_archive_less_clones', archive_less_clones)
     change_control_dic(control_dic, 'stats_audit_ROMs_total', ROMs_total)
     change_control_dic(control_dic, 'stats_audit_ROMs_valid', ROMs_valid)
     change_control_dic(control_dic, 'stats_audit_ROMs_invalid', ROMs_invalid)
