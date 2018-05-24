@@ -594,6 +594,56 @@ def _render_root_list():
     # ----- Machine count -----
     cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
 
+    # >> Do not crash if cache_index_dic is corrupted or has missing fields (may happen in
+    # >> upgrades). This function must never crash because the user must have always access to
+    # >> the setup menu.
+    try:
+        num_m_Main_Normal = cache_index_dic['Main']['Normal']['num_machines']
+        num_m_Main_Unusual = cache_index_dic['Main']['Unusual']['num_machines']
+        num_m_Main_NoCoin = cache_index_dic['Main']['NoCoin']['num_machines']
+        num_m_Main_Mechanical = cache_index_dic['Main']['Mechanical']['num_machines']
+        num_m_Main_Dead = cache_index_dic['Main']['Dead']['num_machines']
+        num_m_Main_Devices = cache_index_dic['Main']['Devices']['num_machines']
+        num_m_Binary_BIOS = cache_index_dic['Binary']['BIOS']['num_machines']
+        num_m_Binary_CHD = cache_index_dic['Binary']['CHD']['num_machines']
+        num_m_Binary_Samples = cache_index_dic['Binary']['Samples']['num_machines']
+        num_m_Binary_SoftwareLists = cache_index_dic['Binary']['SoftwareLists']['num_machines']
+
+        num_p_Main_Normal = cache_index_dic['Main']['Normal']['num_parents']
+        num_p_Main_Unusual = cache_index_dic['Main']['Unusual']['num_parents']
+        num_p_Main_NoCoin = cache_index_dic['Main']['NoCoin']['num_parents']
+        num_p_Main_Mechanical = cache_index_dic['Main']['Mechanical']['num_parents']
+        num_p_Main_Dead = cache_index_dic['Main']['Dead']['num_parents']
+        num_p_Main_Devices = cache_index_dic['Main']['Devices']['num_parents']
+        num_p_Binary_BIOS = cache_index_dic['Binary']['BIOS']['num_parents']
+        num_p_Binary_CHD = cache_index_dic['Binary']['CHD']['num_parents']
+        num_p_Binary_Samples = cache_index_dic['Binary']['Samples']['num_parents']
+        num_p_Binary_SoftwareLists = cache_index_dic['Binary']['SoftwareLists']['num_parents']
+
+        num_cat_Catver = len(cache_index_dic['Catver'])
+        num_cat_Catlist = len(cache_index_dic['Catlist'])
+        num_cat_Genre = len(cache_index_dic['Genre'])
+        num_cat_NPlayers = len(cache_index_dic['NPlayers'])
+        num_cat_Bestgames = len(cache_index_dic['Bestgames'])
+        num_cat_Series = len(cache_index_dic['Series'])
+        num_cat_Controls_Expanded = len(cache_index_dic['Controls_Expanded'])
+        num_cat_Controls_Compact = len(cache_index_dic['Controls_Compact'])
+        num_cat_Devices_Expanded = len(cache_index_dic['Devices_Expanded'])
+        num_cat_Devices_Compact = len(cache_index_dic['Devices_Compact'])
+        num_cat_Display_Rotate = len(cache_index_dic['Display_Rotate'])
+        num_cat_Display_Type = len(cache_index_dic['Display_Type'])
+        num_cat_Driver = len(cache_index_dic['Driver'])
+        num_cat_Manufacturer = len(cache_index_dic['Manufacturer'])
+        num_cat_ShortName = len(cache_index_dic['ShortName'])
+        num_cat_LongName = len(cache_index_dic['LongName'])
+        num_cat_BySL = len(cache_index_dic['BySL'])
+        num_cat_Year = len(cache_index_dic['Year'])
+
+        counters_available = True
+
+    except TypeError as E:
+        counters_available = False
+
     # >> Main filter
     machines_n_str = 'Machines with coin slot (Normal)'
     machines_u_str = 'Machines with coin slot (Unusual)'
@@ -634,53 +684,53 @@ def _render_root_list():
     SL_str              = 'Machines by Software List'
     year_str            = 'Machines by Year'
 
-    if cache_index_dic and mame_view_mode == VIEW_MODE_FLAT:
+    if counters_available and mame_view_mode == VIEW_MODE_FLAT:
         a = ' [COLOR orange]({0} machines)[/COLOR]'
-        machines_n_str += a.format(cache_index_dic['Main']['Normal']['num_machines'])
-        machines_u_str += a.format(cache_index_dic['Main']['Unusual']['num_machines'])
-        nocoin_str     += a.format(cache_index_dic['Main']['NoCoin']['num_machines'])
-        mecha_str      += a.format(cache_index_dic['Main']['Mechanical']['num_machines'])
-        dead_str       += a.format(cache_index_dic['Main']['Dead']['num_machines'])
-        devices_str    += a.format(cache_index_dic['Main']['Devices']['num_machines'])
-        bios_str       += a.format(cache_index_dic['Binary']['BIOS']['num_machines'])
-        chd_str        += a.format(cache_index_dic['Binary']['CHD']['num_machines'])
-        samples_str    += a.format(cache_index_dic['Binary']['Samples']['num_machines'])
-        softlists_str  += a.format(cache_index_dic['Binary']['SoftwareLists']['num_machines'])
-    elif cache_index_dic and mame_view_mode == VIEW_MODE_PCLONE:
+        machines_n_str += a.format(num_m_Main_Normal)
+        machines_u_str += a.format(num_m_Main_Unusual)
+        nocoin_str     += a.format(num_m_Main_NoCoin)
+        mecha_str      += a.format(num_m_Main_Mechanical)
+        dead_str       += a.format(num_m_Main_Dead)
+        devices_str    += a.format(num_m_Main_Devices)
+        bios_str       += a.format(num_m_Binary_BIOS)
+        chd_str        += a.format(num_m_Binary_CHD)
+        samples_str    += a.format(num_m_Binary_Samples)
+        softlists_str  += a.format(num_m_Binary_SoftwareLists)
+    elif counters_available and mame_view_mode == VIEW_MODE_PCLONE:
         a = ' [COLOR orange]({0} parents)[/COLOR]'
-        machines_n_str += a.format(cache_index_dic['Main']['Normal']['num_parents'])
-        machines_u_str += a.format(cache_index_dic['Main']['Unusual']['num_parents'])
-        nocoin_str     += a.format(cache_index_dic['Main']['NoCoin']['num_parents'])
-        mecha_str      += a.format(cache_index_dic['Main']['Mechanical']['num_parents'])
-        dead_str       += a.format(cache_index_dic['Main']['Dead']['num_parents'])
-        devices_str    += a.format(cache_index_dic['Main']['Devices']['num_parents'])
-        bios_str       += a.format(cache_index_dic['Binary']['BIOS']['num_parents'])
-        chd_str        += a.format(cache_index_dic['Binary']['CHD']['num_parents'])
-        samples_str    += a.format(cache_index_dic['Binary']['Samples']['num_parents'])
-        softlists_str  += a.format(cache_index_dic['Binary']['SoftwareLists']['num_parents'])
+        machines_n_str += a.format(num_p_Main_Normal)
+        machines_u_str += a.format(num_p_Main_Unusual)
+        nocoin_str     += a.format(num_p_Main_NoCoin)
+        mecha_str      += a.format(num_p_Main_Mechanical)
+        dead_str       += a.format(num_p_Main_Dead)
+        devices_str    += a.format(num_p_Main_Devices)
+        bios_str       += a.format(num_p_Binary_BIOS)
+        chd_str        += a.format(num_p_Binary_CHD)
+        samples_str    += a.format(num_p_Binary_Samples)
+        softlists_str  += a.format(num_p_Binary_SoftwareLists)
 
-    if cache_index_dic:
+    if counters_available:
         a = ' [COLOR gold]({0} items)[/COLOR]'
         # >> Optional
-        catver_str          += a.format(len(cache_index_dic['Catver']))
-        catlist_str         += a.format(len(cache_index_dic['Catlist']))
-        genre_str           += a.format(len(cache_index_dic['Genre']))
-        NPLayers_str        += a.format(len(cache_index_dic['NPlayers']))
-        score_str           += a.format(len(cache_index_dic['Bestgames']))
-        series_str          += a.format(len(cache_index_dic['Series']))
+        catver_str          += a.format(num_cat_Catver)
+        catlist_str         += a.format(num_cat_Catlist)
+        genre_str           += a.format(num_cat_Genre)
+        NPLayers_str        += a.format(num_cat_NPlayers)
+        score_str           += a.format(num_cat_Bestgames)
+        series_str          += a.format(num_cat_Series)
         # >> Always there
-        ctype_expanded_str  += a.format(len(cache_index_dic['Controls_Expanded']))
-        ctype_compact_str   += a.format(len(cache_index_dic['Controls_Compact']))
-        device_expanded_str += a.format(len(cache_index_dic['Devices_Expanded']))
-        device_compact_str  += a.format(len(cache_index_dic['Devices_Compact']))
-        drotation_str       += a.format(len(cache_index_dic['Display_Rotate']))
-        dtype_str           += a.format(len(cache_index_dic['Display_Type']))
-        driver_str          += a.format(len(cache_index_dic['Driver']))
-        manufacturer_str    += a.format(len(cache_index_dic['Manufacturer']))
-        shortname_str       += a.format(len(cache_index_dic['ShortName']))
-        longname_str        += a.format(len(cache_index_dic['LongName']))
-        SL_str              += a.format(len(cache_index_dic['BySL']))
-        year_str            += a.format(len(cache_index_dic['Year']))
+        ctype_expanded_str  += a.format(num_cat_Controls_Expanded)
+        ctype_compact_str   += a.format(num_cat_Controls_Compact)
+        device_expanded_str += a.format(num_cat_Devices_Expanded)
+        device_compact_str  += a.format(num_cat_Devices_Compact)
+        drotation_str       += a.format(num_cat_Display_Rotate)
+        dtype_str           += a.format(num_cat_Display_Type)
+        driver_str          += a.format(num_cat_Driver)
+        manufacturer_str    += a.format(num_cat_Manufacturer)
+        shortname_str       += a.format(num_cat_ShortName)
+        longname_str        += a.format(num_cat_LongName)
+        SL_str              += a.format(num_cat_BySL)
+        year_str            += a.format(num_cat_Year)
 
     # >> If everything deactivated render the main filters so user has access to the context menu.
     big_OR = g_settings['display_main_filters'] or g_settings['display_binary_filters'] or \
@@ -730,10 +780,10 @@ def _render_root_list():
 
     # >> history.dat, mameinfo.dat, gameinit.dat, command.dat
     if g_settings['display_DAT_browser']:
-        _render_root_list_row_standard('History DAT',  _misc_url_1_arg('catalog', 'History'))
+        _render_root_list_row_standard('History DAT', _misc_url_1_arg('catalog', 'History'))
         _render_root_list_row_standard('MAMEINFO DAT', _misc_url_1_arg('catalog', 'MAMEINFO'))
         _render_root_list_row_standard('Gameinit DAT', _misc_url_1_arg('catalog', 'Gameinit'))
-        _render_root_list_row_standard('Command DAT',  _misc_url_1_arg('catalog', 'Command'))
+        _render_root_list_row_standard('Command DAT', _misc_url_1_arg('catalog', 'Command'))
 
     # >> Software lists
     if g_settings['display_SL_browser']:
