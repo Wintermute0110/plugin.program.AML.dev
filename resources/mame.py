@@ -2631,26 +2631,26 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
     pDialog.close()
 
     # >> Update MAME audit statistics.
-    control_dic['audit_MAME_machines_runnable']         = audit_MAME_machines_runnable
-    control_dic['audit_MAME_machines_with_arch']        = audit_MAME_machines_with_arch
-    control_dic['audit_MAME_machines_with_arch_OK']     = audit_MAME_machines_with_arch_OK
-    control_dic['audit_MAME_machines_with_arch_BAD']    = audit_MAME_machines_with_arch_BAD
-    control_dic['audit_MAME_machines_without']          = audit_MAME_machines_without
-    control_dic['audit_MAME_machines_with_ROMs']        = audit_MAME_machines_with_ROMs
-    control_dic['audit_MAME_machines_with_ROMs_OK']     = audit_MAME_machines_with_ROMs_OK
-    control_dic['audit_MAME_machines_with_ROMs_BAD']    = audit_MAME_machines_with_ROMs_BAD
-    control_dic['audit_MAME_machines_without_ROMs']     = audit_MAME_machines_without_ROMs
-    control_dic['audit_MAME_machines_with_SAMPLES']     = audit_MAME_machines_with_SAMPLES
-    control_dic['audit_MAME_machines_with_SAMPLES_OK']  = audit_MAME_machines_with_SAMPLES_OK
-    control_dic['audit_MAME_machines_with_SAMPLES_BAD'] = audit_MAME_machines_with_SAMPLES_BAD
-    control_dic['audit_MAME_machines_without_SAMPLES']  = audit_MAME_machines_without_SAMPLES
-    control_dic['audit_MAME_machines_with_CHDs']        = audit_MAME_machines_with_CHDs
-    control_dic['audit_MAME_machines_with_CHDs_OK']     = audit_MAME_machines_with_CHDs_OK
-    control_dic['audit_MAME_machines_with_CHDs_BAD']    = audit_MAME_machines_with_CHDs_BAD
-    control_dic['audit_MAME_machines_without_CHDs']     = audit_MAME_machines_without_CHDs
+    change_control_dic(control_dic, 'audit_MAME_machines_runnable', audit_MAME_machines_runnable)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_arch', audit_MAME_machines_with_arch)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_arch_OK', audit_MAME_machines_with_arch_OK)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_arch_BAD', audit_MAME_machines_with_arch_BAD)
+    change_control_dic(control_dic, 'audit_MAME_machines_without', audit_MAME_machines_without)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_ROMs', audit_MAME_machines_with_ROMs)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_ROMs_OK', audit_MAME_machines_with_ROMs_OK)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_ROMs_BAD', audit_MAME_machines_with_ROMs_BAD)
+    change_control_dic(control_dic, 'audit_MAME_machines_without_ROMs', audit_MAME_machines_without_ROMs)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_SAMPLES', audit_MAME_machines_with_SAMPLES)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_SAMPLES_OK', audit_MAME_machines_with_SAMPLES_OK)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_SAMPLES_BAD', audit_MAME_machines_with_SAMPLES_BAD)
+    change_control_dic(control_dic, 'audit_MAME_machines_without_SAMPLES', audit_MAME_machines_without_SAMPLES)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_CHDs', audit_MAME_machines_with_CHDs)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_CHDs_OK', audit_MAME_machines_with_CHDs_OK)
+    change_control_dic(control_dic, 'audit_MAME_machines_with_CHDs_BAD', audit_MAME_machines_with_CHDs_BAD)
+    change_control_dic(control_dic, 'audit_MAME_machines_without_CHDs', audit_MAME_machines_without_CHDs)
 
     # >> Update timestamp
-    control_dic['t_MAME_audit'] = time.time()
+    change_control_dic(control_dic, 't_MAME_audit', time.time())
 
 def mame_audit_SL_all(PATHS, settings, control_dic):
     log_debug('mame_audit_SL_all() Initialising ...')
@@ -2856,22 +2856,23 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
     pDialog.close()
 
     # >> Update SL audit statistics.
-    control_dic['audit_SL_items_runnable']          = audit_SL_items_runnable
-    control_dic['audit_SL_items_with_arch']         = audit_SL_items_with_arch
-    control_dic['audit_SL_items_with_arch_OK']      = audit_SL_items_with_arch_OK
-    control_dic['audit_SL_items_with_arch_BAD']     = audit_SL_items_with_arch_BAD
-    control_dic['audit_SL_items_without_arch']      = audit_SL_items_without_arch
-    control_dic['audit_SL_items_with_arch_ROM']     = audit_SL_items_with_arch_ROM
-    control_dic['audit_SL_items_with_arch_ROM_OK']  = audit_SL_items_with_arch_ROM_OK
-    control_dic['audit_SL_items_with_arch_ROM_BAD'] = audit_SL_items_with_arch_ROM_BAD
-    control_dic['audit_SL_items_without_arch_ROM']  = audit_SL_items_without_arch_ROM
-    control_dic['audit_SL_items_with_CHD']          = audit_SL_items_with_CHD
-    control_dic['audit_SL_items_with_CHD_OK']       = audit_SL_items_with_CHD_OK
-    control_dic['audit_SL_items_with_CHD_BAD']      = audit_SL_items_with_CHD_BAD
-    control_dic['audit_SL_items_without_CHD']       = audit_SL_items_without_CHD
+    change_control_dic(control_dic, 'audit_SL_items_runnable', audit_SL_items_runnable)
+    
+    change_control_dic(control_dic, 'audit_SL_items_with_arch', audit_SL_items_with_arch)
+    change_control_dic(control_dic, 'audit_SL_items_with_arch_OK', audit_SL_items_with_arch_OK)
+    change_control_dic(control_dic, 'audit_SL_items_with_arch_BAD', audit_SL_items_with_arch_BAD)
+    change_control_dic(control_dic, 'audit_SL_items_without_arch', audit_SL_items_without_arch)
+    change_control_dic(control_dic, 'audit_SL_items_with_arch_ROM', audit_SL_items_with_arch_ROM)
+    change_control_dic(control_dic, 'audit_SL_items_with_arch_ROM_OK', audit_SL_items_with_arch_ROM_OK)
+    change_control_dic(control_dic, 'audit_SL_items_with_arch_ROM_BAD', audit_SL_items_with_arch_ROM_BAD)
+    change_control_dic(control_dic, 'audit_SL_items_without_arch_ROM', audit_SL_items_without_arch_ROM)
+    change_control_dic(control_dic, 'audit_SL_items_with_CHD', audit_SL_items_with_CHD)
+    change_control_dic(control_dic, 'audit_SL_items_with_CHD_OK', audit_SL_items_with_CHD_OK)
+    change_control_dic(control_dic, 'audit_SL_items_with_CHD_BAD', audit_SL_items_with_CHD_BAD)
+    change_control_dic(control_dic, 'audit_SL_items_without_CHD', audit_SL_items_without_CHD)
 
     # >> Update timestamp
-    control_dic['t_SL_audit'] = time.time()
+    change_control_dic(control_dic, 't_SL_audit', time.time())
 
 # -------------------------------------------------------------------------------------------------
 # Fanart generation
@@ -3594,20 +3595,20 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
                 # >> Skip non <control> tags
                 if control_child.tag != 'control': continue
                 # >> Process <control> tags
-                control_dic = {}
+                t_ctrl_dic = {}
                 if 'type' in attrib:
-                    control_dic['type'] = attrib['type']
+                    t_ctrl_dic['type'] = attrib['type']
                 else:
-                    control_dic['type'] = ''
+                    t_ctrl_dic['type'] = ''
                     raise TypeError('<input> -> <control> has not type attribute')
-                control_dic['player'] = int(attrib['player']) if 'player' in attrib else -1
-                control_dic['buttons'] = int(attrib['buttons']) if 'buttons' in attrib else -1
+                t_ctrl_dic['player'] = int(attrib['player']) if 'player' in attrib else -1
+                t_ctrl_dic['buttons'] = int(attrib['buttons']) if 'buttons' in attrib else -1
                 ways_list = []
                 if 'ways'  in attrib: ways_list.append(attrib['ways'])
                 if 'ways2' in attrib: ways_list.append(attrib['ways2'])
                 if 'ways3' in attrib: ways_list.append(attrib['ways3'])
-                control_dic['ways'] = ways_list
-                control_list.append(control_dic)
+                t_ctrl_dic['ways'] = ways_list
+                control_list.append(t_ctrl_dic)
             # >> Fix player field when implied
             if att_players == 1:
                 for control in control_list:
@@ -3860,53 +3861,56 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary
     # ---------------------------------------------------------------------------------------------
-    control_dic['t_MAME_DB_build'] = time.time()
-
     # >> Versions
-    control_dic['ver_mame']      = mame_version_int
-    control_dic['ver_mame_str']  = mame_version_raw
-    control_dic['ver_bestgames'] = bestgames_version
-    control_dic['ver_catlist']   = catlist_version
-    control_dic['ver_catver']    = catver_version
-    control_dic['ver_command']   = command_version
-    control_dic['ver_gameinit']  = gameinit_version
-    control_dic['ver_genre']     = genre_version
-    control_dic['ver_history']   = history_version
-    control_dic['ver_mameinfo']  = mameinfo_version
-    control_dic['ver_mature']    = mature_version
-    control_dic['ver_nplayers']  = nplayers_version
-    control_dic['ver_series']    = series_version
+    change_control_dic(control_dic, 'ver_mame', mame_version_int)
+    change_control_dic(control_dic, 'ver_mame_str', mame_version_raw)
+    change_control_dic(control_dic, 'ver_bestgames', bestgames_version)
+    change_control_dic(control_dic, 'ver_catlist', catlist_version)
+    change_control_dic(control_dic, 'ver_catver', catver_version)
+    change_control_dic(control_dic, 'ver_command', command_version)
+    change_control_dic(control_dic, 'ver_gameinit', gameinit_version)
+    change_control_dic(control_dic, 'ver_genre', genre_version)
+    change_control_dic(control_dic, 'ver_history', history_version)
+    change_control_dic(control_dic, 'ver_mameinfo', mameinfo_version)
+    change_control_dic(control_dic, 'ver_mature', mature_version)
+    change_control_dic(control_dic, 'ver_nplayers', nplayers_version)
+    change_control_dic(control_dic, 'ver_series', series_version)
 
     # >> Statistics
-    control_dic['stats_processed_machines'] = stats_processed_machines
-    control_dic['stats_parents']            = stats_parents
-    control_dic['stats_clones']             = stats_clones
-    control_dic['stats_runnable']           = stats_runnable
-    control_dic['stats_runnable_parents']   = stats_runnable_parents
-    control_dic['stats_runnable_clones']    = stats_runnable_clones
+    change_control_dic(control_dic, 'stats_processed_machines', stats_processed_machines)
+    change_control_dic(control_dic, 'stats_parents', stats_parents)
+    change_control_dic(control_dic, 'stats_clones', stats_clones)
+    change_control_dic(control_dic, 'stats_runnable', stats_runnable)
+    change_control_dic(control_dic, 'stats_runnable_parents', stats_runnable_parents)
+    change_control_dic(control_dic, 'stats_runnable_clones', stats_runnable_clones)
+
     # >> Main filters
-    control_dic['stats_coin']               = stats_coin
-    control_dic['stats_coin_parents']       = stats_coin_parents
-    control_dic['stats_coin_clones']        = stats_coin_clones
-    control_dic['stats_nocoin']             = stats_nocoin
-    control_dic['stats_nocoin_parents']     = stats_nocoin_parents
-    control_dic['stats_nocoin_clones']      = stats_nocoin_clones
-    control_dic['stats_mechanical']         = stats_mechanical
-    control_dic['stats_mechanical_parents'] = stats_mechanical_parents
-    control_dic['stats_mechanical_clones']  = stats_mechanical_clones
-    control_dic['stats_dead']               = stats_dead
-    control_dic['stats_dead_parents']       = stats_dead_parents
-    control_dic['stats_dead_clones']        = stats_dead_clones
-    control_dic['stats_devices']            = stats_devices
-    control_dic['stats_devices_parents']    = stats_devices_parents
-    control_dic['stats_devices_clones']     = stats_devices_clones
+    change_control_dic(control_dic, 'stats_coin', stats_coin)
+    change_control_dic(control_dic, 'stats_coin_parents', stats_coin_parents)
+    change_control_dic(control_dic, 'stats_coin_clones', stats_coin_clones)
+    change_control_dic(control_dic, 'stats_nocoin', stats_nocoin)
+    change_control_dic(control_dic, 'stats_nocoin_parents', stats_nocoin_parents)
+    change_control_dic(control_dic, 'stats_nocoin_clones', stats_nocoin_clones)
+    change_control_dic(control_dic, 'stats_mechanical', stats_mechanical)
+    change_control_dic(control_dic, 'stats_mechanical_parents', stats_mechanical_parents)
+    change_control_dic(control_dic, 'stats_mechanical_clones', stats_mechanical_clones)
+    change_control_dic(control_dic, 'stats_dead', stats_dead)
+    change_control_dic(control_dic, 'stats_dead_parents', stats_dead_parents)
+    change_control_dic(control_dic, 'stats_dead_clones', stats_dead_clones)
+    change_control_dic(control_dic, 'stats_devices', stats_devices)
+    change_control_dic(control_dic, 'stats_devices_parents', stats_devices_parents)
+    change_control_dic(control_dic, 'stats_devices_clones', stats_devices_clones)
+
     # >> Binary filters
-    control_dic['stats_BIOS']               = stats_BIOS
-    control_dic['stats_BIOS_parents']       = stats_BIOS_parents
-    control_dic['stats_BIOS_clones']        = stats_BIOS_clones
-    control_dic['stats_samples']            = stats_samples
-    control_dic['stats_samples_parents']    = stats_samples_parents
-    control_dic['stats_samples_clones']     = stats_samples_clones
+    change_control_dic(control_dic, 'stats_BIOS', stats_BIOS)
+    change_control_dic(control_dic, 'stats_BIOS_parents', stats_BIOS_parents)
+    change_control_dic(control_dic, 'stats_BIOS_clones', stats_BIOS_clones)
+    change_control_dic(control_dic, 'stats_samples', stats_samples)
+    change_control_dic(control_dic, 'stats_samples_parents', stats_samples_parents)
+    change_control_dic(control_dic, 'stats_samples_clones', stats_samples_clones)
+
+    # >> Timestamp
+    change_control_dic(control_dic, 't_MAME_DB_build', time.time())
 
     # -----------------------------------------------------------------------------
     # Write JSON databases
@@ -4393,28 +4397,28 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
-    control_dic['audit_MAME_ROM_ZIP_files']               = len(ROM_archive_list)
-    control_dic['audit_MAME_Sample_ZIP_files']            = len(Sample_archive_list)
-    control_dic['audit_MAME_CHD_files']                   = len(CHD_archive_list)
-    control_dic['audit_machine_archives_ROM']             = machine_archives_ROM
-    control_dic['audit_machine_archives_ROM_parents']     = machine_archives_ROM_parents
-    control_dic['audit_machine_archives_ROM_clones']      = machine_archives_ROM_clones
-    control_dic['audit_machine_archives_Samples']         = machine_archives_Samples
-    control_dic['audit_machine_archives_Samples_parents'] = machine_archives_Samples_parents
-    control_dic['audit_machine_archives_Samples_clones']  = machine_archives_Samples_clones
-    control_dic['audit_machine_archives_CHD']             = machine_archives_CHD
-    control_dic['audit_machine_archives_CHD_parents']     = machine_archives_CHD_parents
-    control_dic['audit_machine_archives_CHD_clones']      = machine_archives_CHD_clones
-    control_dic['audit_archive_less']                     = archive_less
-    control_dic['audit_archive_less_parents']             = archive_less_parents
-    control_dic['audit_archive_less_clones']              = archive_less_clones
-    control_dic['stats_audit_ROMs_total']                 = ROMs_total
-    control_dic['stats_audit_ROMs_valid']                 = ROMs_valid
-    control_dic['stats_audit_ROMs_invalid']               = ROMs_invalid
-    control_dic['stats_audit_CHDs_total']                 = CHDs_total
-    control_dic['stats_audit_CHDs_valid']                 = CHDs_valid
-    control_dic['stats_audit_CHDs_invalid']               = CHDs_invalid
-    control_dic['t_MAME_Audit_DB_build'] = time.time()
+    change_control_dic(control_dic, 'audit_MAME_ROM_ZIP_files', len(ROM_archive_list))
+    change_control_dic(control_dic, 'audit_MAME_Sample_ZIP_files', len(Sample_archive_list))
+    change_control_dic(control_dic, 'audit_MAME_CHD_files', len(CHD_archive_list))
+    change_control_dic(control_dic, 'audit_machine_archives_ROM', machine_archives_ROM)
+    change_control_dic(control_dic, 'audit_machine_archives_ROM_parents', machine_archives_ROM_parents)
+    change_control_dic(control_dic, 'audit_machine_archives_ROM_clones', machine_archives_ROM_clones)
+    change_control_dic(control_dic, 'audit_machine_archives_Samples', machine_archives_Samples)
+    change_control_dic(control_dic, 'audit_machine_archives_Samples_parents', machine_archives_Samples_parents)
+    change_control_dic(control_dic, 'audit_machine_archives_Samples_clones', machine_archives_Samples_clones)
+    change_control_dic(control_dic, 'audit_machine_archives_CHD', machine_archives_CHD)
+    change_control_dic(control_dic, 'audit_machine_archives_CHD_parents', machine_archives_CHD_parents)
+    change_control_dic(control_dic, 'audit_machine_archives_CHD_clones', machine_archives_CHD_clones)
+    change_control_dic(control_dic, 'audit_archive_less', archive_less)
+    change_control_dic(control_dic, 'audit_archive_less_parents', archive_less_parents)
+    change_control_dic(control_dic, 'audit_archive_less_clones', archive_less_clones)
+    change_control_dic(control_dic, 'stats_audit_ROMs_total', ROMs_total)
+    change_control_dic(control_dic, 'stats_audit_ROMs_valid', ROMs_valid)
+    change_control_dic(control_dic, 'stats_audit_ROMs_invalid', ROMs_invalid)
+    change_control_dic(control_dic, 'stats_audit_CHDs_total', CHDs_total)
+    change_control_dic(control_dic, 'stats_audit_CHDs_valid', CHDs_valid)
+    change_control_dic(control_dic, 'stats_audit_CHDs_invalid', CHDs_invalid)
+    change_control_dic(control_dic, 't_MAME_Audit_DB_build', time.time())
 
     # --- Save databases ---
     line1_str = 'Saving audit/scanner databases ...'
@@ -5137,7 +5141,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CACHE_INDEX_PATH.getPath(), cache_index_dic)
 
     # --- Update timestamp ---
-    control_dic['t_MAME_Catalog_build'] = time.time()
+    change_control_dic(control_dic, 't_MAME_Catalog_build', time.time())
 
 # -------------------------------------------------------------------------------------------------
 # Software Lists and ROM audit database building function
@@ -5925,19 +5929,19 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     # Update MAME control dictionary
     # -----------------------------------------------------------------------------
     # --- SL item database ---
-    control_dic['stats_SL_XML_files']       = total_SL_XML_files
-    control_dic['stats_SL_software_items']  = total_SL_software_items
-    control_dic['stats_SL_items_with_ROMs'] = num_SL_with_ROMs
-    control_dic['stats_SL_items_with_CHDs'] = num_SL_with_CHDs
+    change_control_dic(control_dic, 'stats_SL_XML_files', total_SL_XML_files)
+    change_control_dic(control_dic, 'stats_SL_software_items', total_SL_software_items)
+    change_control_dic(control_dic, 'stats_SL_items_with_ROMs', num_SL_with_ROMs)
+    change_control_dic(control_dic, 'stats_SL_items_with_CHDs', num_SL_with_CHDs)
 
     # --- SL audit database statistics ---
-    control_dic['stats_audit_SL_items_runnable']      = stats_audit_SL_items_runnable
-    control_dic['stats_audit_SL_items_with_arch']     = stats_audit_SL_items_with_arch
-    control_dic['stats_audit_SL_items_with_arch_ROM'] = stats_audit_SL_items_with_arch_ROM
-    control_dic['stats_audit_SL_items_with_CHD']      = stats_audit_SL_items_with_CHD
+    change_control_dic(control_dic, 'stats_audit_SL_items_runnable', stats_audit_SL_items_runnable)
+    change_control_dic(control_dic, 'stats_audit_SL_items_with_arch', stats_audit_SL_items_with_arch)
+    change_control_dic(control_dic, 'stats_audit_SL_items_with_arch_ROM', stats_audit_SL_items_with_arch_ROM)
+    change_control_dic(control_dic, 'stats_audit_SL_items_with_CHD', stats_audit_SL_items_with_CHD)
 
     # --- SL build timestamp ---
-    control_dic['t_SL_DB_build'] = time.time()
+    change_control_dic(control_dic, 't_SL_DB_build', time.time())
 
 # -------------------------------------------------------------------------------------------------
 # ROM/CHD and asset scanner
@@ -6258,22 +6262,22 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
         file.write('\n'.join(r_miss_list).encode('utf-8'))
 
     # --- Update statistics ---
-    control_dic['scan_ROM_ZIP_files_total']          = scan_ZIP_files_total
-    control_dic['scan_ROM_ZIP_files_have']           = scan_ZIP_files_have
-    control_dic['scan_ROM_ZIP_files_missing']        = scan_ZIP_files_missing
-    control_dic['scan_CHD_files_total']              = scan_CHD_files_total
-    control_dic['scan_CHD_files_have']               = scan_CHD_files_have
-    control_dic['scan_CHD_files_missing']            = scan_CHD_files_missing
-    control_dic['scan_machine_archives_ROM_total']   = scan_ROM_machines_total
-    control_dic['scan_machine_archives_ROM_have']    = scan_ROM_machines_have
-    control_dic['scan_machine_archives_ROM_missing'] = scan_ROM_machines_missing
-    control_dic['scan_machine_archives_CHD_total']   = scan_CHD_machines_total
-    control_dic['scan_machine_archives_CHD_have']    = scan_CHD_machines_have
-    control_dic['scan_machine_archives_CHD_missing'] = scan_CHD_machines_missing
-    control_dic['scan_Samples_total']                = scan_Samples_total
-    control_dic['scan_Samples_have']                 = scan_Samples_have
-    control_dic['scan_Samples_missing']              = scan_Samples_missing
-    control_dic['t_MAME_ROMs_scan'] = time.time()
+    change_control_dic(control_dic, 'scan_ROM_ZIP_files_total', scan_ZIP_files_total)
+    change_control_dic(control_dic, 'scan_ROM_ZIP_files_have', scan_ZIP_files_have)
+    change_control_dic(control_dic, 'scan_ROM_ZIP_files_missing', scan_ZIP_files_missing)
+    change_control_dic(control_dic, 'scan_CHD_files_total', scan_CHD_files_total)
+    change_control_dic(control_dic, 'scan_CHD_files_have', scan_CHD_files_have)
+    change_control_dic(control_dic, 'scan_CHD_files_missing', scan_CHD_files_missing)
+    change_control_dic(control_dic, 'scan_machine_archives_ROM_total', scan_ROM_machines_total)
+    change_control_dic(control_dic, 'scan_machine_archives_ROM_have', scan_ROM_machines_have)
+    change_control_dic(control_dic, 'scan_machine_archives_ROM_missing', scan_ROM_machines_missing)
+    change_control_dic(control_dic, 'scan_machine_archives_CHD_total', scan_CHD_machines_total)
+    change_control_dic(control_dic, 'scan_machine_archives_CHD_have', scan_CHD_machines_have)
+    change_control_dic(control_dic, 'scan_machine_archives_CHD_missing', scan_CHD_machines_missing)
+    change_control_dic(control_dic, 'scan_Samples_total', scan_Samples_total)
+    change_control_dic(control_dic, 'scan_Samples_have', scan_Samples_have)
+    change_control_dic(control_dic, 'scan_Samples_missing', scan_Samples_missing)
+    change_control_dic(control_dic, 't_MAME_ROMs_scan', time.time())
 
 # -------------------------------------------------------------------------------------------------
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
@@ -6464,13 +6468,13 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
         # file.write('\n'.join(report_list).encode('utf-8'))
 
     # >> Update statistics
-    control_dic['scan_SL_archives_ROM_total']   = SL_ROMs_total
-    control_dic['scan_SL_archives_ROM_have']    = SL_ROMs_have
-    control_dic['scan_SL_archives_ROM_missing'] = SL_ROMs_missing
-    control_dic['scan_SL_archives_CHD_total']   = SL_CHDs_total
-    control_dic['scan_SL_archives_CHD_have']    = SL_CHDs_have
-    control_dic['scan_SL_archives_CHD_missing'] = SL_CHDs_missing
-    control_dic['t_SL_ROMs_scan'] = time.time()
+    change_control_dic(control_dic, 'scan_SL_archives_ROM_total', SL_ROMs_total)
+    change_control_dic(control_dic, 'scan_SL_archives_ROM_have', SL_ROMs_have)
+    change_control_dic(control_dic, 'scan_SL_archives_ROM_missing', SL_ROMs_missing)
+    change_control_dic(control_dic, 'scan_SL_archives_CHD_total', SL_CHDs_total)
+    change_control_dic(control_dic, 'scan_SL_archives_CHD_have', SL_CHDs_have)
+    change_control_dic(control_dic, 'scan_SL_archives_CHD_missing', SL_CHDs_missing)
+    change_control_dic(control_dic, 't_SL_ROMs_scan', time.time())
 
 #
 # Note that MAME is able to use clone artwork from parent machines. Mr. Do's Artwork ZIP files
@@ -6628,47 +6632,47 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
     pDialog.update(100)
 
     # >> Update control_dic by assigment (will be saved in caller)
-    control_dic['assets_num_MAME_machines']    = total_machines
-    control_dic['assets_PCBs_have']            = PCB[0]
-    control_dic['assets_PCBs_missing']         = PCB[1]
-    control_dic['assets_PCBs_alternate']       = PCB[2]
-    control_dic['assets_artpreview_have']      = Artp[0]
-    control_dic['assets_artpreview_missing']   = Artp[1]
-    control_dic['assets_artpreview_alternate'] = Artp[2]
-    control_dic['assets_artwork_have']         = Art[0]
-    control_dic['assets_artwork_missing']      = Art[1]
-    control_dic['assets_artwork_alternate']    = Art[2]
-    control_dic['assets_cabinets_have']        = Cab[0]
-    control_dic['assets_cabinets_missing']     = Cab[1]
-    control_dic['assets_cabinets_alternate']   = Cab[2]
-    control_dic['assets_clearlogos_have']      = Clr[0]
-    control_dic['assets_clearlogos_missing']   = Clr[1]
-    control_dic['assets_clearlogos_alternate'] = Clr[2]
-    control_dic['assets_cpanels_have']         = CPan[0]
-    control_dic['assets_cpanels_missing']      = CPan[1]
-    control_dic['assets_cpanels_alternate']    = CPan[2]
-    control_dic['assets_fanarts_have']         = Fan[0]
-    control_dic['assets_fanarts_missing']      = Fan[1]
-    control_dic['assets_fanarts_alternate']    = Fan[2]
-    control_dic['assets_flyers_have']          = Fly[0]
-    control_dic['assets_flyers_missing']       = Fly[1]
-    control_dic['assets_flyers_alternate']     = Fly[2]
-    control_dic['assets_manuals_have']         = Man[0]
-    control_dic['assets_manuals_missing']      = Man[1]
-    control_dic['assets_manuals_alternate']    = Man[2]
-    control_dic['assets_marquees_have']        = Mar[0]
-    control_dic['assets_marquees_missing']     = Mar[1]
-    control_dic['assets_marquees_alternate']   = Mar[2]
-    control_dic['assets_snaps_have']           = Snap[0]
-    control_dic['assets_snaps_missing']        = Snap[1]
-    control_dic['assets_snaps_alternate']      = Snap[2]
-    control_dic['assets_titles_have']          = Tit[0]
-    control_dic['assets_titles_missing']       = Tit[1]
-    control_dic['assets_titles_alternate']     = Tit[2]
-    control_dic['assets_trailers_have']        = Tra[0]
-    control_dic['assets_trailers_missing']     = Tra[1]
-    control_dic['assets_trailers_alternate']   = Tra[2]
-    control_dic['t_MAME_assets_scan'] = time.time()
+    change_control_dic(control_dic, 'assets_num_MAME_machines', total_machines)
+    change_control_dic(control_dic, 'assets_PCBs_have', PCB[0])
+    change_control_dic(control_dic, 'assets_PCBs_missing', PCB[1])
+    change_control_dic(control_dic, 'assets_PCBs_alternate', PCB[2])
+    change_control_dic(control_dic, 'assets_artpreview_have', Artp[0])
+    change_control_dic(control_dic, 'assets_artpreview_missing', Artp[1])
+    change_control_dic(control_dic, 'assets_artpreview_alternate', Artp[2])
+    change_control_dic(control_dic, 'assets_artwork_have', Art[0])
+    change_control_dic(control_dic, 'assets_artwork_missing', Art[1])
+    change_control_dic(control_dic, 'assets_artwork_alternate', Art[2])
+    change_control_dic(control_dic, 'assets_cabinets_have', Cab[0])
+    change_control_dic(control_dic, 'assets_cabinets_missing', Cab[1])
+    change_control_dic(control_dic, 'assets_cabinets_alternate', Cab[2])
+    change_control_dic(control_dic, 'assets_clearlogos_have', Clr[0])
+    change_control_dic(control_dic, 'assets_clearlogos_missing', Clr[1])
+    change_control_dic(control_dic, 'assets_clearlogos_alternate', Clr[2])
+    change_control_dic(control_dic, 'assets_cpanels_have', CPan[0])
+    change_control_dic(control_dic, 'assets_cpanels_missing', CPan[1])
+    change_control_dic(control_dic, 'assets_cpanels_alternate', CPan[2])
+    change_control_dic(control_dic, 'assets_fanarts_have', Fan[0])
+    change_control_dic(control_dic, 'assets_fanarts_missing', Fan[1])
+    change_control_dic(control_dic, 'assets_fanarts_alternate', Fan[2])
+    change_control_dic(control_dic, 'assets_flyers_have', Fly[0])
+    change_control_dic(control_dic, 'assets_flyers_missing', Fly[1])
+    change_control_dic(control_dic, 'assets_flyers_alternate', Fly[2])
+    change_control_dic(control_dic, 'assets_manuals_have', Man[0])
+    change_control_dic(control_dic, 'assets_manuals_missing', Man[1])
+    change_control_dic(control_dic, 'assets_manuals_alternate', Man[2])
+    change_control_dic(control_dic, 'assets_marquees_have', Mar[0])
+    change_control_dic(control_dic, 'assets_marquees_missing', Mar[1])
+    change_control_dic(control_dic, 'assets_marquees_alternate', Mar[2])
+    change_control_dic(control_dic, 'assets_snaps_have', Snap[0])
+    change_control_dic(control_dic, 'assets_snaps_missing', Snap[1])
+    change_control_dic(control_dic, 'assets_snaps_alternate', Snap[2])
+    change_control_dic(control_dic, 'assets_titles_have', Tit[0])
+    change_control_dic(control_dic, 'assets_titles_missing', Tit[1])
+    change_control_dic(control_dic, 'assets_titles_alternate', Tit[2])
+    change_control_dic(control_dic, 'assets_trailers_have', Tra[0])
+    change_control_dic(control_dic, 'assets_trailers_missing', Tra[1])
+    change_control_dic(control_dic, 'assets_trailers_alternate', Tra[2])
+    change_control_dic(control_dic, 't_MAME_assets_scan', time.time())
 
 def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN):
     log_debug('mame_scan_SL_assets() Starting ...')
@@ -6818,23 +6822,23 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
     pDialog.close()
 
     # >> Update control_dic by assigment (will be saved in caller)
-    control_dic['assets_SL_num_items']           = SL_item_count
-    control_dic['assets_SL_titles_have']         = Tit[0]
-    control_dic['assets_SL_titles_missing']      = Tit[1]
-    control_dic['assets_SL_titles_alternate']    = Tit[2]
-    control_dic['assets_SL_snaps_have']          = Snap[0]
-    control_dic['assets_SL_snaps_missing']       = Snap[1]
-    control_dic['assets_SL_snaps_alternate']     = Snap[2]
-    control_dic['assets_SL_boxfronts_have']      = Boxf[0]
-    control_dic['assets_SL_boxfronts_missing']   = Boxf[1]
-    control_dic['assets_SL_boxfronts_alternate'] = Boxf[2]
-    control_dic['assets_SL_fanarts_have']        = Fan[0]
-    control_dic['assets_SL_fanarts_missing']     = Fan[1]
-    control_dic['assets_SL_fanarts_alternate']   = Fan[2]
-    control_dic['assets_SL_trailers_have']       = Tra[0]
-    control_dic['assets_SL_trailers_missing']    = Tra[1]
-    control_dic['assets_SL_trailers_alternate']  = Tra[2]
-    control_dic['assets_SL_manuals_have']        = Man[0]
-    control_dic['assets_SL_manuals_missing']     = Man[1]
-    control_dic['assets_SL_manuals_alternate']   = Man[2]
-    control_dic['t_SL_assets_scan'] = time.time()
+    change_control_dic(control_dic, 'assets_SL_num_items', SL_item_count)
+    change_control_dic(control_dic, 'assets_SL_titles_have', Tit[0])
+    change_control_dic(control_dic, 'assets_SL_titles_missing', Tit[1])
+    change_control_dic(control_dic, 'assets_SL_titles_alternate', Tit[2])
+    change_control_dic(control_dic, 'assets_SL_snaps_have', Snap[0])
+    change_control_dic(control_dic, 'assets_SL_snaps_missing', Snap[1])
+    change_control_dic(control_dic, 'assets_SL_snaps_alternate', Snap[2])
+    change_control_dic(control_dic, 'assets_SL_boxfronts_have', Boxf[0])
+    change_control_dic(control_dic, 'assets_SL_boxfronts_missing', Boxf[1])
+    change_control_dic(control_dic, 'assets_SL_boxfronts_alternate', Boxf[2])
+    change_control_dic(control_dic, 'assets_SL_fanarts_have', Fan[0])
+    change_control_dic(control_dic, 'assets_SL_fanarts_missing', Fan[1])
+    change_control_dic(control_dic, 'assets_SL_fanarts_alternate', Fan[2])
+    change_control_dic(control_dic, 'assets_SL_trailers_have', Tra[0])
+    change_control_dic(control_dic, 'assets_SL_trailers_missing', Tra[1])
+    change_control_dic(control_dic, 'assets_SL_trailers_alternate', Tra[2])
+    change_control_dic(control_dic, 'assets_SL_manuals_have', Man[0])
+    change_control_dic(control_dic, 'assets_SL_manuals_missing', Man[1])
+    change_control_dic(control_dic, 'assets_SL_manuals_alternate', Man[2])
+    change_control_dic(control_dic, 't_SL_assets_scan', time.time())

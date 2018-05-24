@@ -882,8 +882,8 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
     # Create MAME control dictionary
     # -----------------------------------------------------------------------------
     control_dic = fs_new_control_dic()
-    control_dic['total_machines'] = total_machines
-    control_dic['t_XML_extraction'] = time.time()
+    change_control_dic(control_dic, 'stats_total_machines', total_machines)
+    change_control_dic(control_dic, 't_XML_extraction', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     return (filesize, total_machines)
