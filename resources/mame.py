@@ -1417,28 +1417,28 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     t = "{0:6d} runnable MAME machines"
     slist.append(t.format(control_dic['audit_MAME_machines_runnable']))
     t = "{0:6d} machines require ROM ZIPs, {1:5d} parents and {2:5d} clones"
-    slist.append(t.format(control_dic['audit_machine_archives_ROM'],
-                          control_dic['audit_machine_archives_ROM_parents'],
-                          control_dic['audit_machine_archives_ROM_clones']))
-    t = "{0:6d} machines require Samples , {1:5d} parents and {2:5d} clones"
-    slist.append(t.format(control_dic['audit_machine_archives_Samples'],
-                          control_dic['audit_machine_archives_Samples_parents'],
-                          control_dic['audit_machine_archives_Samples_clones']))
+    slist.append(t.format(control_dic['stats_audit_machine_archives_ROM'],
+                          control_dic['stats_audit_machine_archives_ROM_parents'],
+                          control_dic['stats_audit_machine_archives_ROM_clones']))
     t = "{0:6d} machines require CHDs    , {1:5d} parents and {2:5d} clones"
-    slist.append(t.format(control_dic['audit_machine_archives_CHD'],
-                          control_dic['audit_machine_archives_CHD_parents'],
-                          control_dic['audit_machine_archives_CHD_clones']))
+    slist.append(t.format(control_dic['stats_audit_machine_archives_CHD'],
+                          control_dic['stats_audit_machine_archives_CHD_parents'],
+                          control_dic['stats_audit_machine_archives_CHD_clones']))
+    t = "{0:6d} machines require Samples , {1:5d} parents and {2:5d} clones"
+    slist.append(t.format(control_dic['stats_audit_machine_archives_Samples'],
+                          control_dic['stats_audit_machine_archives_Samples_parents'],
+                          control_dic['stats_audit_machine_archives_Samples_clones']))
     t = "{0:6d} machines require nothing , {1:5d} parents and {2:5d} clones"
-    slist.append(t.format(control_dic['audit_archive_less'],
-                          control_dic['audit_archive_less_parents'],
-                          control_dic['audit_archive_less_clones']))
+    slist.append(t.format(control_dic['stats_audit_archive_less'],
+                          control_dic['stats_audit_archive_less_parents'],
+                          control_dic['stats_audit_archive_less_clones']))
 
     t = "{0:6d} ROM ZIPs    in the {1} set"
-    slist.append(t.format(control_dic['audit_MAME_ROM_ZIP_files'], rom_set))
-    t = "{0:6d} Sample ZIPs in the {1} set"
-    slist.append(t.format(control_dic['audit_MAME_Sample_ZIP_files'], rom_set))
+    slist.append(t.format(control_dic['stats_audit_MAME_ROM_ZIP_files'], rom_set))
     t = "{0:6d} CHDs        in the {1} set"
-    slist.append(t.format(control_dic['audit_MAME_CHD_files'], chd_set))
+    slist.append(t.format(control_dic['stats_audit_MAME_CHD_files'], chd_set))
+    t = "{0:6d} Sample ZIPs in the {1} set"
+    slist.append(t.format(control_dic['stats_audit_MAME_Sample_ZIP_files'], rom_set))
 
     t = "{0:6d} total ROMs, {1:6d} valid and {2:6d} invalid"
     slist.append(t.format(

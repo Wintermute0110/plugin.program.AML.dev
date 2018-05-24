@@ -370,9 +370,9 @@ def fs_new_control_dic():
 
         # --- Filed in when building the ROM audit databases ---
         # Number of ROM ZIP files in the Merged, Split or Non-merged sets.
-        'audit_MAME_ROM_ZIP_files' : 0,
+        'stats_audit_MAME_ROM_ZIP_files' : 0,
         # Number of Sample ZIP files.
-        'audit_MAME_Sample_ZIP_files' : 0,
+        'stats_audit_MAME_Sample_ZIP_files' : 0,
         # Number of CHD files in the Merged, Split or Non-merged sets.
         'stats_audit_MAME_CHD_files' : 0,
 
@@ -380,14 +380,14 @@ def fs_new_control_dic():
         'stats_audit_machine_archives_ROM'         : 0,
         'stats_audit_machine_archives_ROM_parents' : 0,
         'stats_audit_machine_archives_ROM_clones'  : 0,
-        # Number of machines that require Sample ZIPs
-        'stats_audit_machine_archives_Samples'         : 0,
-        'stats_audit_machine_archives_Samples_parents' : 0,
-        'stats_audit_machine_archives_Samples_clones'  : 0,
         # Number of machines that require one or more CHDs to run
         'stats_audit_machine_archives_CHD'         : 0,
         'stats_audit_machine_archives_CHD_parents' : 0,
         'stats_audit_machine_archives_CHD_clones'  : 0,
+        # Number of machines that require Sample ZIPs
+        'stats_audit_machine_archives_Samples'         : 0,
+        'stats_audit_machine_archives_Samples_parents' : 0,
+        'stats_audit_machine_archives_Samples_clones'  : 0,
         # ROM less machines do not need any ZIP archive or CHD to run
         'stats_audit_archive_less'         : 0,
         'stats_audit_archive_less_parents' : 0,
@@ -560,6 +560,12 @@ def fs_new_control_dic():
         'assets_SL_manuals_missing'     : 0,
         'assets_SL_manuals_alternate'   : 0,
     }
+
+def change_control_dic(control_dic, field, value):
+    if field in control_dic:
+        control_dic[field] = value
+    else:
+        raise TypeError('Field {0} not in control_dic'.format(field))
 
 #
 # Favourite object creation

@@ -7,16 +7,16 @@ WIP      Check out the ListItem constructor offscreen parameter in Leia. It can 
          See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
          and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
 
-WIP      MAME FILTERING: Improve the Custom Filters (add more filtering options as defined
+WIP      [MAME FILTERING] Improve the Custom Filters (add more filtering options as defined
          in the reference filter file `AML-MAME-filters-reference.xml`).
 
-WIP      MANUALS: Import the number of supported PDF filters.
+WIP      [MANUALS] Import the number of supported PDF filters.
 
-WIP      MANUALS: When displaying manuals use cached extracted images if they exist.
+WIP      [MANUALS] When displaying manuals use cached extracted images if they exist.
 
-WIP      MANUALS: Progress bar when extracting PDF pages.
+WIP      [MANUALS] Progress bar when extracting PDF pages.
 
-WIP      MANUALS: Support for CBZ/CBR manuals.
+WIP      [MANUALS] Support for CBZ/CBR manuals.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
 
