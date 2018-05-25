@@ -20,7 +20,7 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
 
-[B]Advanced Emulator Launcher | version 0.9.6 | xx May 2018[/B]
+[B]Advanced Emulator Launcher | version 0.9.6 | 25 May 2018[/B]
 
 FEATURE  Improve the user experience when the addon is just installed. Check if databases
          have been built, check for errors, etc.
