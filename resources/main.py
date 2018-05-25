@@ -282,6 +282,10 @@ def run_plugin():
     if not PATHS.SL_DB_DIR.exists(): PATHS.SL_DB_DIR.makedirs()
     if not PATHS.REPORTS_DIR.exists(): PATHS.REPORTS_DIR.makedirs()
 
+    # --- If control_dic does not exists create an empty one ---
+    # >> control_dic will be used for database built checks, etc.
+    if not PATHS.MAIN_CONTROL_PATH.exists(): fs_create_empty_control_dic(PATHS)
+
     # --- Process URL ---
     g_base_url = sys.argv[0]
     g_addon_handle = int(sys.argv[1])
@@ -505,8 +509,8 @@ def _get_settings():
 
     # --- Paths ---
     g_settings['mame_prog']    = __addon__.getSetting('mame_prog').decode('utf-8')
-    g_settings['rom_path']     = __addon__.getSetting('rom_path').decode('utf-8')
 
+    g_settings['rom_path']     = __addon__.getSetting('rom_path').decode('utf-8')
     g_settings['assets_path']  = __addon__.getSetting('assets_path').decode('utf-8')
     g_settings['chd_path']     = __addon__.getSetting('chd_path').decode('utf-8')
     g_settings['samples_path'] = __addon__.getSetting('samples_path').decode('utf-8')
@@ -645,9 +649,11 @@ def _render_root_list():
         num_cat_Year = len(cache_index_dic['Year'])
 
         counters_available = True
+        log_debug('_render_root_list() counters_available = True')
 
-    except TypeError as E:
+    except KeyError as E:
         counters_available = False
+        log_debug('_render_root_list() counters_available = False')
 
     # >> Main filter
     machines_n_str = 'Machines with coin slot (Normal)'
@@ -939,7 +945,7 @@ def _render_root_list_row_catalog(display_name, catalog_name, catalog_key):
 
     # --- Create context menu ---
     URL_utils = _misc_url_3_arg_RunPlugin('command', 'UTILITIES',
-                                               'catalog', catalog_name, 'category', catalog_key)
+                                          'catalog', catalog_name, 'category', catalog_key)
     commands = [
         ('View', _misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Setup plugin', _misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
@@ -1028,6 +1034,14 @@ def _render_catalog_list(catalog_name):
     log_debug('_render_catalog_list() Starting ...')
     log_debug('_render_catalog_list() catalog_name = "{0}"'.format(catalog_name))
 
+    # --- General AML plugin check ---
+    # >> Check if databases have been built, print warning messages, etc. This function returns
+    # >> False if no issues, True if there is issues and a dialog has been printed.
+    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+    if not _check_AML_MAME_status(PATHS, g_settings, control_dic):
+        xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+        return
+
     # >> Render categories in catalog index
     _set_Kodi_all_sorting_methods_and_size()
     mame_view_mode = g_settings['mame_view_mode']
@@ -1038,7 +1052,7 @@ def _render_catalog_list(catalog_name):
     elif mame_view_mode == VIEW_MODE_PCLONE:
         catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
     if not catalog_dic:
-        kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
+        kodi_dialog_OK('Catalog is empty. Rebuild the MAME databases.')
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -1077,7 +1091,7 @@ def _render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_st
 
     # --- Create context menu ---
     URL_utils = _misc_url_3_arg_RunPlugin('command', 'UTILITIES',
-                                               'catalog', catalog_name, 'category', catalog_key)
+                                          'catalog', catalog_name, 'category', catalog_key)
     commands = [
         ('View', _misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Utilities', URL_utils),
@@ -1115,9 +1129,11 @@ def _render_catalog_parent_list(catalog_name, category_name):
     view_mode_property = g_settings['mame_view_mode']
     log_debug('_render_catalog_parent_list() view_mode_property = {0}'.format(view_mode_property))
 
-    # >> Check id main DB exists
-    if not PATHS.RENDER_DB_PATH.exists():
-        kodi_dialog_OK('MAME database not found. Check out "Setup plugin" context menu.')
+    # --- General AML plugin check ---
+    # >> Check if databases have been built, print warning messages, etc. This function returns
+    # >> False if no issues, True if there is issues and a dialog has been printed.
+    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+    if not _check_AML_MAME_status(PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -1415,12 +1431,15 @@ def _command_context_display_settings(catalog_name, category_name):
 #----------------------------------------------------------------------------------------------
 def _render_SL_list(catalog_name):
     log_debug('_render_SL_list() catalog_name = {0}\n'.format(catalog_name))
-    # >> Load Software List catalog
-    SL_main_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
-    if not SL_main_catalog_dic:
-        kodi_dialog_OK('Software Lists database not found. Check out "Setup plugin" context menu.')
+
+    # --- General AML plugin check ---
+    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+    if not _check_AML_SL_status(PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
+
+    # >> Load Software List catalog
+    SL_main_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
 
     # >> Build SL
     SL_catalog_dic = {}
@@ -1450,6 +1469,12 @@ def _render_SL_list(catalog_name):
 def _render_SL_ROMs(SL_name):
     log_debug('_render_SL_ROMs() SL_name "{0}"'.format(SL_name))
 
+    # --- General AML plugin check ---
+    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+    if not _check_AML_SL_status(PATHS, g_settings, control_dic):
+        xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+        return
+
     # >> Load ListItem properties (Not used at the moment)
     # SL_properties_dic = fs_load_JSON_file_dic(PATHS.SL_MACHINES_PROP_PATH.getPath()) 
     # prop_dic = SL_properties_dic[SL_name]
@@ -1462,11 +1487,9 @@ def _render_SL_ROMs(SL_name):
     SL_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
     file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
     SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
-    # log_debug('_render_SL_ROMs() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
-    SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
-
     assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
     SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
+    SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
     SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
 
     _set_Kodi_all_sorting_methods()
@@ -4424,9 +4447,116 @@ def _command_context_setup_custom_filters():
         fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
         kodi_notify('Custom filter database built')
 
-# ---------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
+# Check AML status
+# -------------------------------------------------------------------------------------------------
+# This function checks if the database is OK and machines inside a Category can be rendered.
+# This function is called before rendering machines.
+# This function does not affect MAME Favourites, Recently Played, etc. Those can always be rendered.
+# This function relies in the timestamps in control_dic.
+#
+# Returns True if everything is OK and machines inside a Category can be rendered.
+# Returns False and prints warning message if machines inside a category cannot be rendered.
+#
+def _check_AML_MAME_status(PATHS, settings, control_dic):
+    # >> Check if MAME executable path has been configured.
+    if not g_settings['mame_prog']:
+        t = 'MAME executable not configured. ' \
+            'Open AML addon settings and configure the location of the MAME executable in the ' \
+            '"Paths" tab.'
+        kodi_dialog_OK(t)
+        return False
+
+    # >> Check if MAME executable exists.
+    mame_prog_FN = FileName(g_settings['mame_prog'])
+    if not mame_prog_FN.exists():
+        t = 'MAME executable configured but not found. ' \
+            'Open AML addon settings and configure the location of the MAME executable in the ' \
+            '"Paths" tab.'
+        kodi_dialog_OK(t)
+        return False
+
+    # >> Check if MAME XML has been extracted.
+    if control_dic['t_XML_extraction'] == 0:
+        t = 'MAME.XML has not been extracted. ' \
+            'In AML root window open the context menu, select "Setup plugin" and then ' \
+            'click on "Extract MAME.xml".'
+        kodi_dialog_OK(t)
+        return False
+
+    # >> Check if MAME Main DB has been built and is more recent than the XML.
+    if control_dic['t_MAME_DB_build'] < control_dic['t_XML_extraction']:
+        t = 'MAME Main database needs to be built. ' \
+            'In AML root window open the context menu, select "Setup plugin" and then ' \
+            'click on "Build all databases".'
+        kodi_dialog_OK(t)
+        return False
+
+    # >> Check if MAME Audit DB has been built and is more recent than the Main DB.
+    if control_dic['t_MAME_Audit_DB_build'] < control_dic['t_MAME_DB_build']:
+        t = 'MAME Audit database needs to be built. ' \
+            'In AML root window open the context menu, select "Setup plugin" and then ' \
+            'click on "Build all databases".'
+        kodi_dialog_OK(t)
+        return False
+
+    # >> Check if MAME Catalog DB has been built and is more recent than the Main DB.
+    if control_dic['t_MAME_Catalog_build'] < control_dic['t_MAME_Audit_DB_build']:
+        t = 'MAME Catalog database needs to be built.' \
+            'In AML root window open the context menu, select "Setup plugin" and then ' \
+            'click on "Build all databases".'
+        kodi_dialog_OK(t)
+        return False
+
+    # >> All good!
+    log_debug('_check_AML_MAME_status() All good!')
+    return True
+
+#
+# Same function for Software Lists. Called before rendering SL Items inside a Software List.
+#
+def _check_AML_SL_status(PATHS, g_settings, control_dic):
+    # >> Check if MAME executable path has been configured.
+    if not g_settings['mame_prog']:
+        t = 'MAME executable not configured. ' \
+            'Open AML addon settings and configure the location of the MAME executable in the ' \
+            '"Paths" tab.'
+        kodi_dialog_OK(t)
+        return False
+
+    # >> Check if MAME executable exists.
+    mame_prog_FN = FileName(g_settings['mame_prog'])
+    if not mame_prog_FN.exists():
+        t = 'MAME executable configured but not found. ' \
+            'Open AML addon settings and configure the location of the MAME executable in the ' \
+            '"Paths" tab.'
+        kodi_dialog_OK(t)
+        return False
+
+    # >> Check if MAME Main DB has been built and is more recent than the XML.
+    # >> The SL DB relies on the MAME Main DB (verify this).
+    if control_dic['t_MAME_DB_build'] < control_dic['t_XML_extraction']:
+        t = 'MAME Main database needs to be built. ' \
+            'In AML root window open the context menu, select "Setup plugin" and then ' \
+            'click on "Build all databases".'
+        kodi_dialog_OK(t)
+        return False
+
+    # >> Check if SL Main DB has been built and is more recent than the MAME database.
+    if control_dic['t_SL_DB_build'] < control_dic['t_MAME_DB_build']:
+        t = 'Software List database needs to be built. ' \
+            'In AML root window open the context menu, select "Setup plugin" and then ' \
+            'click on "Build all databases".'
+        kodi_dialog_OK(t)
+        return False
+
+    # >> All good!
+    log_debug('_check_AML_SL_status() All good!')
+    return True
+
+# -------------------------------------------------------------------------------------------------
 # Setup plugin databases
-# ---------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
 def _command_context_setup_plugin():
     dialog = xbmcgui.Dialog()
     menu_item = dialog.select('Setup plugin',
@@ -4994,7 +5124,7 @@ def _command_context_setup_plugin():
     elif menu_item == 7:
         submenu = dialog.select('Setup plugin (step by step)', [
                                     'Build MAME databases',
-                                    'Build Audit/Scanner databases',
+                                    'Build MAME Audit/Scanner databases',
                                     'Build MAME catalogs',
                                     'Build Software Lists databases',
                                     'Scan MAME ROMs/CHDs/Samples',
@@ -5116,8 +5246,17 @@ def _command_context_setup_plugin():
         elif submenu == 3:
             # --- Error checks ---
             if not g_settings['SL_hash_path']:
-                kodi_dialog_OK('Software Lists hash path not set.')
+                t = 'Software Lists hash path not set. ' \
+                    'Open AML addon settings and configure the location of the MAME hash path in the ' \
+                    '"Paths" tab.'
+                kodi_dialog_OK(t)
                 return
+            if not PATHS.MAIN_DB_PATH.exists():
+                t = 'MAME Main database not found. ' \
+                    'Open AML addon settings and configure the location of the MAME executable in the ' \
+                    '"Paths" tab.'
+                kodi_dialog_OK(t)
+                return False
 
             # --- Read main database and control dic ---
             pDialog = xbmcgui.DialogProgress()

@@ -22,6 +22,9 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
 
 [B]Advanced Emulator Launcher | version 0.9.6 | xx May 2018[/B]
 
+FEATURE  Improve the user experience when the addon is just installed. Check if databases
+         have been built, check for errors, etc.
+
 FEATURE  Add a isMature field to MAME DB. Take the mature information from mature.ini included
          in the Catver.ini ZIP file.
 

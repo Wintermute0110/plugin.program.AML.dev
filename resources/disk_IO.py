@@ -561,11 +561,44 @@ def fs_new_control_dic():
         'assets_SL_manuals_alternate'   : 0,
     }
 
+#
+# This function must be called concurrently, for example when skins call AML to show the widgets.
+# Use Kodi properties to lock the file creation.
+#
 def change_control_dic(control_dic, field, value):
     if field in control_dic:
         control_dic[field] = value
     else:
         raise TypeError('Field {0} not in control_dic'.format(field))
+
+def fs_create_empty_control_dic(PATHS):
+    log_info('fs_create_empty_control_dic() Creating control_dic')
+    main_window = xbmcgui.Window(10000)
+    AML_LOCK_PROPNAME = 'AML_instance_lock'
+    AML_LOCK_VALUE_LOCKED = 'True'
+    AML_LOCK_VALUE_RELEASED = ''
+
+    # Is AML locked?
+    infinite_loop = True
+    while infinite_loop:
+        if main_window.getProperty(AML_LOCK_PROPNAME) == AML_LOCK_VALUE_LOCKED:
+            log_debug('fs_create_empty_control_dic() AML is locked')
+            # Wait some time
+            time.sleep(0.1)
+        else:
+            log_debug('fs_create_empty_control_dic() AML not locked. Writing control_dic')
+            # Get the lock
+            main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_LOCKED)
+
+            # Write control_dic
+            control_dic = fs_new_control_dic()
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+            # Release lock and exit
+            log_debug('fs_create_empty_control_dic() Releasing lock')
+            main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_RELEASED)
+            infinite_loop = False
+    log_debug('fs_create_empty_control_dic() Exiting function')
 
 #
 # Favourite object creation
@@ -879,7 +912,7 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN):
     # kodi_dialog_OK('Found {0} machines in MAME.xml.'.format(total_machines))
 
     # -----------------------------------------------------------------------------
-    # Create MAME control dictionary
+    # Reset MAME control dictionary completely
     # -----------------------------------------------------------------------------
     control_dic = fs_new_control_dic()
     change_control_dic(control_dic, 'stats_total_machines', total_machines)

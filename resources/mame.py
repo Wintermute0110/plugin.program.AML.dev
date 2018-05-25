@@ -1292,24 +1292,25 @@ def mame_stats_scanner_print_slist(slist, control_dic):
     slist.append('[COLOR orange]MAME scanner information[/COLOR]')
     ta = "You have {0:5d} ROM ZIP files out of {1:5d}, missing    {2:5d}"
     tb = "You have {0:5d} CHDs out of          {1:5d}, missing    {2:5d}"
-    tc = "Can run  {0:5d} ROM machines out of  {1:5d}, unrunnable {2:5d}"
-    td = "Can run  {0:5d} CHD machines out of  {1:5d}, unrunnable {2:5d}"
-    te = "You have {0:5d} Samples out of       {1:5d}, missing    {2:5d}"
+    tc = "You have {0:5d} Samples out of       {1:5d}, missing    {2:5d}"
     slist.append(ta.format(control_dic['scan_ROM_ZIP_files_have'],
                            control_dic['scan_ROM_ZIP_files_total'],
                            control_dic['scan_ROM_ZIP_files_missing']))
     slist.append(tb.format(control_dic['scan_CHD_files_have'],
                            control_dic['scan_CHD_files_total'],
                            control_dic['scan_CHD_files_missing']))
-    slist.append(tc.format(control_dic['scan_machine_archives_ROM_have'],
-                           control_dic['scan_machine_archives_ROM_total'],
-                           control_dic['scan_machine_archives_ROM_missing']))
-    slist.append(td.format(control_dic['scan_machine_archives_CHD_have'],
-                           control_dic['scan_machine_archives_CHD_total'],
-                           control_dic['scan_machine_archives_CHD_missing']))
-    slist.append(te.format(control_dic['scan_Samples_have'],
+    slist.append(tc.format(control_dic['scan_Samples_have'],
                            control_dic['scan_Samples_total'],
                            control_dic['scan_Samples_missing']))
+
+    ta = "Can run  {0:5d} ROM machines out of  {1:5d}, unrunnable {2:5d}"
+    tb = "Can run  {0:5d} CHD machines out of  {1:5d}, unrunnable {2:5d}"
+    slist.append(ta.format(control_dic['scan_machine_archives_ROM_have'],
+                           control_dic['scan_machine_archives_ROM_total'],
+                           control_dic['scan_machine_archives_ROM_missing']))
+    slist.append(tb.format(control_dic['scan_machine_archives_CHD_have'],
+                           control_dic['scan_machine_archives_CHD_total'],
+                           control_dic['scan_machine_archives_CHD_missing']))
 
     # >> SL statistics
     slist.append('')

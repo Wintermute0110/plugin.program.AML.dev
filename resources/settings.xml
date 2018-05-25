@@ -2,9 +2,9 @@
 <category label="Paths">
     <setting id="separator" type="lsep" label="Mandatory paths" />
     <setting label="MAME executable" type="file" id="mame_prog" />
-    <setting label="MAME ROMs path" type="folder" id="rom_path" source="auto" option="" />
-    
+
     <setting id="separator" type="lsep" label="Optional paths" />
+    <setting label="MAME ROMs path" type="folder" id="rom_path" source="auto" option="" />
     <setting label="MAME assets path" type="folder" id="assets_path" source="auto" option="" />
     <setting label="MAME CHDs path" type="folder" id="chd_path" source="auto" option="" />
     <setting label="MAME Samples path" type="folder" id="samples_path" source="auto" option="" />

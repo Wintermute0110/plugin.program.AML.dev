@@ -476,6 +476,8 @@ def misc_add_file_cache(dir_str, verbose = True):
 # See misc_look_for_file() documentation below.
 #
 def misc_search_file_cache(dir_str, filename_noext, file_exts):
+    # Check for empty, unconfigured dirs
+    if not dir_str: return None
     current_cache_set = file_cache[dir_str]
     # if filename_noext == '005':
     #     log_debug('misc_search_file_cache() Searching in "{0}"'.format(dir_str))
