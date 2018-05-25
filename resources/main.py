@@ -538,6 +538,7 @@ def _get_settings():
     g_settings['display_launcher_notify'] = True if __addon__.getSetting('display_launcher_notify') == 'true' else False
     g_settings['mame_view_mode']          = int(__addon__.getSetting('mame_view_mode'))
     g_settings['sl_view_mode']            = int(__addon__.getSetting('sl_view_mode'))
+    g_settings['display_hide_Mature']     = True if __addon__.getSetting('display_hide_Mature') == 'true' else False
     g_settings['display_hide_BIOS']       = True if __addon__.getSetting('display_hide_BIOS') == 'true' else False
     g_settings['display_hide_nonworking'] = True if __addon__.getSetting('display_hide_nonworking') == 'true' else False
     g_settings['display_hide_imperfect']  = True if __addon__.getSetting('display_hide_imperfect') == 'true' else False
@@ -552,6 +553,10 @@ def _get_settings():
     g_settings['display_MAME_favs']       = True if __addon__.getSetting('display_MAME_favs') == 'true' else False
     g_settings['display_SL_favs']         = True if __addon__.getSetting('display_SL_favs') == 'true' else False
     g_settings['display_custom_filters']  = True if __addon__.getSetting('display_custom_filters') == 'true' else False
+    g_settings['display_MAME_most']       = True if __addon__.getSetting('display_MAME_most') == 'true' else False
+    g_settings['display_MAME_recent']     = True if __addon__.getSetting('display_MAME_recent') == 'true' else False
+    g_settings['display_SL_most']         = True if __addon__.getSetting('display_SL_most') == 'true' else False
+    g_settings['display_SL_recent']       = True if __addon__.getSetting('display_SL_recent') == 'true' else False
 
     # --- Display ---
     g_settings['artwork_mame_icon']     = int(__addon__.getSetting('artwork_mame_icon'))
@@ -812,29 +817,35 @@ def _render_root_list():
         _render_root_custom_filter_row('[Custom MAME filters]',
                                        _misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
 
-    CM_title = 'Manage Most Played'
-    CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED')
-    _render_root_list_row_custom_CM('{Most Played MAME machines}',
-                                    _misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
-                                    CM_title, CM_URL)
+    if g_settings['display_MAME_most']:
+        CM_title = 'Manage Most Played'
+        CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED')
+        _render_root_list_row_custom_CM('{Most Played MAME machines}',
+                                        _misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
+                                        CM_title, CM_URL)
 
-    CM_title = 'Manage Recently Played'
-    CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED')
-    _render_root_list_row_custom_CM('{Recently Played MAME machines}',
-                                    _misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
-                                    CM_title, CM_URL)
+    if g_settings['display_MAME_recent']:
+        CM_title = 'Manage Recently Played'
+        CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED')
+        _render_root_list_row_custom_CM('{Recently Played MAME machines}',
+                                        _misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
+                                        CM_title, CM_URL)
 
-    CM_title = 'Manage SL Most Played'
-    CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED')
-    _render_root_list_row_custom_CM('{Most Played SL ROMs}',
-                                    _misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
-                                    CM_title, CM_URL)
+    if g_settings['display_SL_most']:
+        CM_title = 'Manage SL Most Played'
+        CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED')
+        _render_root_list_row_custom_CM('{Most Played SL ROMs}',
+                                        _misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
+                                        CM_title, CM_URL)
 
-    CM_title = 'Manage SL Recently Played'
-    CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED')
-    _render_root_list_row_custom_CM('{Recently Played SL ROMs}',
-                                    _misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
-                                    CM_title, CM_URL)
+    if g_settings['display_SL_recent']:
+        CM_title = 'Manage SL Recently Played'
+        CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED')
+        _render_root_list_row_custom_CM('{Recently Played SL ROMs}',
+                                        _misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
+                                        CM_title, CM_URL)
+
+    # --- End of directory ---
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 #
@@ -1088,6 +1099,7 @@ def _render_catalog_parent_list(catalog_name, category_name):
     # It's not worth it.
     log_debug('_render_catalog_parent_list() catalog_name  = {0}'.format(catalog_name))
     log_debug('_render_catalog_parent_list() category_name = {0}'.format(category_name))
+    display_hide_Mature = g_settings['display_hide_Mature']
     display_hide_BIOS = g_settings['display_hide_BIOS']
     if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
     display_hide_nonworking = g_settings['display_hide_nonworking']
@@ -1156,27 +1168,28 @@ def _render_catalog_parent_list(catalog_name, category_name):
     # >> Render parent main list
     rendering_ticks_start = time.time()
     _set_Kodi_all_sorting_methods()
-    machine_dic = catalog_dic[category_name]
     if view_mode_property == VIEW_MODE_PCLONE:
         # >> Parent/Clone mode render parents only
-        for machine_name, render_name in machine_dic.iteritems():
+        for machine_name, render_name in catalog_dic[category_name].iteritems():
             machine = MAME_render_db_dic[machine_name]
+            if display_hide_Mature and machine['isMature']: continue
             if display_hide_BIOS and machine['isBIOS']: continue
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
             _render_catalog_machine_row(machine_name, render_name, machine,
-                                             MAME_assets_dic[machine_name],
-                                             True, len(main_pclone_dic[machine_name]),
-                                             catalog_name, category_name)
+                                        MAME_assets_dic[machine_name],
+                                        True, len(main_pclone_dic[machine_name]),
+                                        catalog_name, category_name)
     else:
         # >> Flat mode renders all machines
-        for machine_name, render_name in machine_dic.iteritems():
+        for machine_name, render_name in catalog_dic[category_name].iteritems():
             machine = MAME_render_db_dic[machine_name]
+            if display_hide_Mature and machine['isMature']: continue
             if display_hide_BIOS and machine['isBIOS']: continue
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
             _render_catalog_machine_row(machine_name, render_name, machine,
-                                             MAME_assets_dic[machine_name])
+                                        MAME_assets_dic[machine_name])
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
     rendering_time = rendering_ticks_end - rendering_ticks_start
@@ -1200,6 +1213,7 @@ def _render_catalog_clone_list(catalog_name, category_name, parent_name):
     log_debug('_render_catalog_clone_list() catalog_name  = {0}'.format(catalog_name))
     log_debug('_render_catalog_clone_list() category_name = {0}'.format(category_name))
     log_debug('_render_catalog_clone_list() parent_name   = {0}'.format(parent_name))
+    display_hide_Mature = g_settings['display_hide_Mature']
     display_hide_BIOS = g_settings['display_hide_BIOS']
     if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
     display_hide_nonworking = g_settings['display_hide_nonworking']
@@ -1232,18 +1246,17 @@ def _render_catalog_clone_list(catalog_name, category_name, parent_name):
     _set_Kodi_all_sorting_methods()
     render_name = machine_dic[parent_name]
     machine = MAME_render_db_dic[parent_name]
-    assets  = MAME_assets_dic[parent_name]
-    _render_catalog_machine_row(parent_name, render_name, machine, assets)
+    _render_catalog_machine_row(parent_name, render_name, machine, MAME_assets_dic[parent_name])
 
     # >> Render clones belonging to parent in this category
     for clone_name in main_pclone_dic[parent_name]:
         render_name = machine_dic[clone_name]
         machine = MAME_render_db_dic[clone_name]
-        assets  = MAME_assets_dic[clone_name]
+        if display_hide_Mature and machine['isMature']: continue
         if display_hide_BIOS and machine['isBIOS']: continue
         if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
         if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-        _render_catalog_machine_row(clone_name, render_name, machine, assets)
+        _render_catalog_machine_row(clone_name, render_name, machine, MAME_assets_dic[clone_name])
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
 

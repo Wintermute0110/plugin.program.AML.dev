@@ -25,8 +25,7 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
 FEATURE  Add a isMature field to MAME DB. Take the mature information from mature.ini included
          in the Catver.ini ZIP file.
 
-WIP      Option in settings to completely hide Mature machines and filter categories.
-         Depends on the previous feature.
+FEATURE  Option in settings to completely hide Mature machines and filter categories.
 
 FEATURE  Asset hashed database. This will speed up launching MAME machines. Note that the asset
          DB must be opened for the Most Played and Recently Played DBs.
