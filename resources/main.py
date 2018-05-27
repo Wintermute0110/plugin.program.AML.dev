@@ -4502,7 +4502,7 @@ def _check_AML_MAME_status(PATHS, settings, control_dic):
 
     # >> Check if MAME Catalog DB has been built and is more recent than the Main DB.
     if control_dic['t_MAME_Catalog_build'] < control_dic['t_MAME_Audit_DB_build']:
-        t = 'MAME Catalog database needs to be built.' \
+        t = 'MAME Catalog database needs to be built. ' \
             'In AML root window open the context menu, select "Setup plugin" and then ' \
             'click on "Build all databases".'
         kodi_dialog_OK(t)
@@ -4616,7 +4616,7 @@ def _command_context_setup_plugin():
 
         # --- Build and save everything ---
         # 1) Updates control_dic and t_MAME_Audit_DB_build timestamp.
-        # 2) 
+        # 2) machine_roms is mutated to save memory!!! Do not save it after this point.
         mame_build_ROM_audit_databases(PATHS, g_settings, control_dic,
                                        DB.machines, DB.machines_render, DB.devices_db_dic, DB.machine_roms)
         fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)

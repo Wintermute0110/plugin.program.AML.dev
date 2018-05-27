@@ -4237,33 +4237,27 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     num_items = len(machines)
     item_count = 0
     for m_name in sorted(machines):
+        # --- Update dialog ---
+        pDialog.update((item_count*100)//num_items)
+        
         # --- ROMs ---
         # >> Skip Devices
         if machines_render[m_name]['isDevice']: continue
         m_roms = machine_roms[m_name]['roms']
         machine_rom_set = []
         for rom in m_roms:
-            r_type   = _get_ROM_type(rom)
-            location = _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_roms)
-            rom_t = copy.deepcopy(rom)
-            rom_t['type'] = r_type
-            rom_t['location'] = location
-            # >> Remove unused fields to save space in JSON database, but remove from the copy!
-            rom_t.pop('merge')
-            rom_t.pop('bios')
-            machine_rom_set.append(rom_t)
+            rom['type'] = _get_ROM_type(rom)
+            rom['location'] = _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_roms)
+            machine_rom_set.append(rom)
 
         # --- Device ROMs ---
         device_roms_list = []
         for device in devices_db_dic[m_name]:
             device_roms_dic = machine_roms[device]
             for rom in device_roms_dic['roms']:
-                rom_t = copy.deepcopy(rom)
-                rom_t['type'] = ROM_TYPE_DROM
-                rom_t['location'] = device + '/' + rom['name']
-                rom_t.pop('merge')
-                rom_t.pop('bios')
-                device_roms_list.append(rom_t)
+                rom['type'] = ROM_TYPE_DROM
+                rom['location'] = device + '/' + rom['name']
+                device_roms_list.append(rom)
         if device_roms_list: machine_rom_set.extend(device_roms_list)
 
         # --- Samples ---
@@ -4271,10 +4265,9 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         m_samples = machine_roms[m_name]['samples']
         samples_list = []
         for sample in m_samples:
-            sample_t = copy.deepcopy(sample)
-            sample_t['type'] = ROM_TYPE_SAMPLE
-            sample_t['location'] = sampleof + '/' + sample['name']
-            samples_list.append(sample_t)
+            sample['type'] = ROM_TYPE_SAMPLE
+            sample['location'] = sampleof + '/' + sample['name']
+            samples_list.append(sample)
         if samples_list: machine_rom_set.extend(samples_list)
 
         # >> Add ROMs to main DB
@@ -4282,7 +4275,6 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
 
         # --- Update dialog ---
         item_count += 1
-        pDialog.update((item_count*100)//num_items)
     pDialog.close()
 
     # --- CHD set (refactored code) ---------------------------------------------------------------
@@ -4292,18 +4284,18 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     num_items = len(machines)
     item_count = 0
     for m_name in sorted(machines):
+        # --- Update dialog ---
+        pDialog.update((item_count*100)//num_items)
+
         # --- CHDs ---
         # >> Skip Devices
         if machines_render[m_name]['isDevice']: continue
         m_disks = machine_roms[m_name]['disks']
         machine_chd_set = []
         for disk in m_disks:
-            location = _get_CHD_location(chd_set, disk, m_name, machines, machines_render, machine_roms)
-            disk_t = copy.deepcopy(disk)
-            disk_t['type'] = ROM_TYPE_DISK
-            disk_t['location'] = location
-            disk_t.pop('merge')
-            machine_chd_set.append(disk_t)
+            disk['type'] = ROM_TYPE_DISK
+            disk['location'] = _get_CHD_location(chd_set, disk, m_name, machines, machines_render, machine_roms)
+            machine_chd_set.append(disk)
         if m_name in audit_roms_dic:
             audit_roms_dic[m_name].extend(machine_chd_set)
         else:
@@ -4311,7 +4303,6 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
 
         # --- Update dialog ---
         item_count += 1
-        pDialog.update((item_count*100)//num_items)
     pDialog.close()
 
     # --- Machine archives and ROM/Sample/CHD sets ---
@@ -4347,6 +4338,9 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     CHDs_valid = 0
     CHDs_invalid = 0
     for m_name in audit_roms_dic:
+        # --- Update dialog ---
+        pDialog.update((item_count*100)//num_items)
+
         isClone = True if machines_render[m_name]['cloneof'] else False
         rom_list = audit_roms_dic[m_name]
         machine_rom_archive_set = set()
@@ -4417,15 +4411,41 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
 
         # --- Update dialog ---
         item_count += 1
-        pDialog.update((item_count*100)//num_items)
     pDialog.close()
     ROM_archive_list = list(sorted(full_ROM_archive_set))
     Sample_archive_list = list(sorted(full_Sample_archive_set))
     CHD_archive_list = list(sorted(full_CHD_archive_set))
 
-    # -----------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
+    # Remove unused fiels to save memory before saving the JSON file.
+    # Do not remove earlier because 'merge' is used in the _get_XXX_location() functions.
+    # ---------------------------------------------------------------------------------------------
+    pDialog.create('Advanced MAME Launcher')
+    log_info('mame_build_ROM_audit_databases() Building {0} ROM set ...'.format(rom_set_str))
+    pDialog.update(0, 'Building {0} ROM set ...'.format(rom_set_str))
+    num_items = len(machines)
+    item_count = 0
+    for m_name in sorted(machines):
+        # --- Update dialog ---
+        pDialog.update((item_count*100)//num_items)
+
+        # --- Skip devices and process ROMs and CHDs ---
+        if machines_render[m_name]['isDevice']: continue
+        for rom in machine_roms[m_name]['roms']:
+            # >> Remove unused fields to save space in JSON database, but remove from the copy!
+            rom.pop('merge')
+            rom.pop('bios')
+        for disk in machine_roms[m_name]['disks']:
+            disk.pop('merge')
+
+        # --- Update dialog ---
+        item_count += 1
+    pDialog.close()
+
+
+    # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary
-    # -----------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
     change_control_dic(control_dic, 'stats_audit_MAME_ROM_ZIP_files', len(ROM_archive_list))
     change_control_dic(control_dic, 'stats_audit_MAME_Sample_ZIP_files', len(Sample_archive_list))
     change_control_dic(control_dic, 'stats_audit_MAME_CHD_files', len(CHD_archive_list))
