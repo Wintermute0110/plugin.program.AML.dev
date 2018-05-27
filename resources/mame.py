@@ -357,7 +357,7 @@ def mame_load_Catver_ini(filename):
     try:
         f = open(filename, 'rt')
     except IOError:
-        log_info('mame_load_Catver_ini() (IOError) opening "{0}"'.format(filename))
+        log_error('mame_load_Catver_ini() (IOError) opening "{0}"'.format(filename))
         return (categories_dic, catver_version)
     for cat_line in f:
         stripped_line = cat_line.strip()
@@ -384,7 +384,7 @@ def mame_load_Catver_ini(filename):
                     categories_dic[machine_name] = category
                 categories_set.add(category)
         elif read_status == 2:
-            log_info('mame_load_Catver_ini() Reached end of categories parsing.')
+            log_debug('mame_load_Catver_ini() Reached end of categories parsing.')
             break
         else:
             raise CriticalError('Unknown read_status FSM value')
@@ -3187,6 +3187,8 @@ def mame_build_SL_fanart(PATHS, layout_SL, SL_name, m_name, assets_dic, Fanart_F
 #
 XML_READ_LINES = 600
 def mame_build_SL_names(PATHS, settings):
+    log_debug('mame_build_SL_names() Starting ...')
+
     # >> If MAME hash path is not configured then create and empty file
     SL_names_dic = {}
     hash_dir_FN = FileName(settings['SL_hash_path'])
@@ -3275,6 +3277,31 @@ class DB_obj:
         self.assets_dic      = assets_dic
 
 def mame_build_MAME_main_database(PATHS, settings, control_dic):
+    # --- Print user configuration for debug ---
+    log_info('mame_build_MAME_main_database() Starting ...')
+    log_info('--- Paths ---')
+    log_info('mame_prog      = "{0}"'.format(settings['mame_prog']))
+    log_info('rom_path       = "{0}"'.format(settings['rom_path']))
+    log_info('assets_path    = "{0}"'.format(settings['assets_path']))
+    log_info('chd_path       = "{0}"'.format(settings['chd_path']))
+    log_info('samples_path   = "{0}"'.format(settings['samples_path']))
+    log_info('SL_hash_path   = "{0}"'.format(settings['SL_hash_path']))    
+    log_info('SL_rom_path    = "{0}"'.format(settings['SL_rom_path']))
+    log_info('SL_chd_path    = "{0}"'.format(settings['SL_chd_path']))
+    log_info('--- INI paths ---')   
+    log_info('catver_path    = "{0}"'.format(settings['catver_path']))
+    log_info('catlist_path   = "{0}"'.format(settings['catlist_path']))
+    log_info('genre_path     = "{0}"'.format(settings['genre_path']))
+    log_info('nplayers_path  = "{0}"'.format(settings['nplayers_path']))
+    log_info('bestgames_path = "{0}"'.format(settings['bestgames_path']))
+    log_info('series_path    = "{0}"'.format(settings['series_path']))
+    log_info('mature_path    = "{0}"'.format(settings['mature_path']))
+    log_info('--- DAT paths ---')
+    log_info('history_path   = "{0}"'.format(settings['history_path']))
+    log_info('mameinfo_path  = "{0}"'.format(settings['mameinfo_path']))
+    log_info('gameinit_path  = "{0}"'.format(settings['gameinit_path']))
+    log_info('command_path   = "{0}"'.format(settings['command_path']))
+
     # --- Progress dialog ---
     pDialog_canceled = False
     pDialog = xbmcgui.DialogProgress()
@@ -3342,6 +3369,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
 
     # --- Process MAME XML ---
     total_machines = control_dic['stats_total_machines']
+    log_info('mame_build_MAME_main_database() total_machines {0}'.format(total_machines))
     machines = {}
     machines_render = {}
     machines_roms = {}

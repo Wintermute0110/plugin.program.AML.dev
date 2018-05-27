@@ -1032,7 +1032,6 @@ def fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog):
     pDialog.update(100)
     pDialog.close()
 
-    log_info('Building main hashed database JSON files ...')
     hex_digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
     distributed_db_files = []
     for u in range(len(hex_digits)):
@@ -1087,7 +1086,6 @@ def fs_build_asset_hashed_db(PATHS, assets_dic, pDialog):
     pDialog.update(100)
     pDialog.close()
 
-    log_info('Building asset hashed database JSON files ...')
     hex_digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
     distributed_db_files = []
     for u in range(len(hex_digits)):

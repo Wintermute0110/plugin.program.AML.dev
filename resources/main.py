@@ -4616,6 +4616,7 @@ def _command_context_setup_plugin():
 
         # --- Build and save everything ---
         # 1) Updates control_dic and t_MAME_Audit_DB_build timestamp.
+        # 2) 
         mame_build_ROM_audit_databases(PATHS, g_settings, control_dic,
                                        DB.machines, DB.machines_render, DB.devices_db_dic, DB.machine_roms)
         fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
