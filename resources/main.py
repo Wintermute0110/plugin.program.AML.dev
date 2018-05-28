@@ -4618,7 +4618,8 @@ def _command_context_setup_plugin():
         # 1) Updates control_dic and t_MAME_Audit_DB_build timestamp.
         # 2) machine_roms is mutated to save memory!!! Do not save it after this point.
         mame_build_ROM_audit_databases(PATHS, g_settings, control_dic,
-                                       DB.machines, DB.machines_render, DB.devices_db_dic, DB.machine_roms)
+                                       DB.machines, DB.machines_render,
+                                       DB.devices_db_dic, DB.machine_roms)
         fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
         # --- Build MAME catalog ---

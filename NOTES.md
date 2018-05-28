@@ -181,3 +181,18 @@ MAME 0.196, SL `neogeo`, item `aof` "Art of Fighting / Ryuuko no Ken (NGM-044 ~ 
     </part>
 </software>
 ```
+
+## Memory consumption ##
+
+Windows 7 Ultimate version 6.1 64 bit, Kodi Krypton 17.6. MAME 0.197, Peak Working Set (Memory)
+Kodi is restarted before each test.
+Options: no ROM/Asset cache, with SLs.
+
+Build all databases, no INIs/DATs                                              -> 863 MB
+Build all databases, with INIs/DATs, with ROM/Asset cache, OPTION_COMPACT_JSON -> 866 MB
+Build all databases, with INIs/DATs, with ROM/Asset cache                      -> 914 MB
+Build all databases, with INIs/DATs                                            -> 916 MB
+Build MAME database, with INIs/DATs                                            -> 916 MB
+Build MAME Audit database, with INIs/DATs                                      -> 938 MB
+Build MAME database, with INIs/DATs, OPTION_COMPACT_JSON                       -> 870 MB
+Build MAME Audit database, with INIs/DATs, OPTION_COMPACT_JSON                 -> 905 MB

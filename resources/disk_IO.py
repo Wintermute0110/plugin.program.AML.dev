@@ -768,7 +768,6 @@ def fs_locate_idx_by_SL_item_name(object_list, SL_name, SL_ROM_name):
 # -------------------------------------------------------------------------------------------------
 # JSON write/load
 # -------------------------------------------------------------------------------------------------
-COMPACT_JSON = False
 def fs_load_JSON_file_dic(json_filename, verbose = True):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
@@ -800,7 +799,7 @@ def fs_write_JSON_file(json_filename, json_data, verbose = True):
         log_debug('fs_write_JSON_file() "{0}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
-            if COMPACT_JSON:
+            if OPTION_COMPACT_JSON:
                 file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, separators = (',', ':'))))
             else:
                 file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))))
