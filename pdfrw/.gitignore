@@ -1,0 +1,67 @@
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+
+# Development artifacts
+diffs.txt
+examples/*.pdf
+examples/rl*/*.pdf
+tests/*.pdf
+examples/pdfrw
+examples/rl*/pdfrw
+tests/pdfrw
+tests/static_pdfs
+tests/ramdisk
+tests/saved_results
+tests/tmp_results
+wiki/
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Distribution / packaging
+.Python
+env/
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+lib64
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+pyvenv.cfg
+pip-selfcheck.json
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Sphinx documentation
+docs/_build/
