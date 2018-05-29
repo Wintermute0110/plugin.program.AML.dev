@@ -6,8 +6,11 @@
 <MAMEFilter>
     <Name>Example filter name</Name>
 
-    <!-- Separate multiple options with , -->
-    <Options>NoMature, NoCHD, NoSamples, NoMechanical, NoImperfect, NoNonworking</Options>
+    <!-- Separate multiple options with ','
+         Multiple <Options> tags allowed.
+      -->
+    <Options>NoCoin, NoCoinLess, NoROMs, NoCHDs, NoSamples</Options>
+    <Options>NoMature, NoMechanical, NoImperfect, NoNonworking</Options>
 
     <!--
         As shown in "Machines by Driver" filter.
