@@ -4622,6 +4622,9 @@ def _command_context_setup_plugin():
                                        DB.devices_db_dic, DB.machine_roms)
         fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
+        # --- Release some memory ---
+        DB.devices_db_dic  = None
+
         # --- Build MAME catalog ---
         # >> At this time the asset database will be empty (scanner has not been run). However, 
         # >> the asset cache with an empty database is required to render the machines in the catalogs.
@@ -4630,8 +4633,8 @@ def _command_context_setup_plugin():
         # 3) Requires rebuilding of the asset cache.
         # 4) Updates control_dic and t_MAME_Catalog_build timestamp.
         mame_build_MAME_catalogs(PATHS, g_settings, control_dic,
-                                 DB.machines, DB.machines_render, DB.machine_roms,
-                                 DB.main_pclone_dic, DB.assets_dic)
+                                 DB.machines, DB.machines_render,
+                                 DB.machine_roms, DB.main_pclone_dic, DB.assets_dic)
         fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
         if g_settings['debug_enable_MAME_machine_cache']:
             cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
@@ -4640,6 +4643,11 @@ def _command_context_setup_plugin():
             if 'cache_index_dic' not in locals():
                 cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
             fs_build_asset_cache(PATHS, DB.assets_dic, cache_index_dic, pDialog)
+
+        # --- Release some memory before building the SLs ---
+        DB.machine_roms    = None
+        DB.main_pclone_dic = None
+        DB.assets_dic      = None
 
         # 1) Updates control_dic and the t_SL_DB_build timestamp.
         mame_build_SoftwareLists_databases(PATHS, g_settings, control_dic,
