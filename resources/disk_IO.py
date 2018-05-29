@@ -794,19 +794,56 @@ def fs_load_JSON_file_list(json_filename, verbose = True):
 
     return data_list
 
+#
+# This consumes a lot of memory but it is fast.
+# See https://stackoverflow.com/questions/24239613/memoryerror-using-json-dumps
+#
 def fs_write_JSON_file(json_filename, json_data, verbose = True):
+    l_start = time.time()
     if verbose:
         log_debug('fs_write_JSON_file() "{0}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
             if OPTION_COMPACT_JSON:
-                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, separators = (',', ':'))))
+                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True)))
             else:
-                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (',', ':'))))
+                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
+                                              indent = 1, separators = (',', ':'))))
     except OSError:
-        kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (OSError)'.format(json_filename))
+        kodi_notify('Advanced MAME Launcher',
+                    'Cannot write {0} file (OSError)'.format(json_filename))
     except IOError:
-        kodi_notify('Advanced MAME Launcher - Error', 'Cannot write {0} file (IOError)'.format(json_filename))
+        kodi_notify('Advanced MAME Launcher',
+                    'Cannot write {0} file (IOError)'.format(json_filename))
+    l_end = time.time()
+    if verbose:
+        write_time_s = l_end - l_start
+        log_debug('fs_write_JSON_file() Writing time {0:f} s'.format(write_time_s))
+
+def fs_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
+    l_start = time.time()
+    if verbose:
+        log_debug('fs_write_JSON_file_lowmem() "{0}"'.format(json_filename))
+    try:
+        if OPTION_COMPACT_JSON:
+            jobj = json.JSONEncoder(ensure_ascii = False, sort_keys = True)
+        else:
+            jobj = json.JSONEncoder(ensure_ascii = False, sort_keys = True,
+                                    indent = 1, separators = (',', ':'))
+        # --- Chunk by chunk JSON writer ---
+        with io.open(json_filename, 'wt', encoding='utf-8') as file:
+            for chunk in jobj.iterencode(json_data):
+                file.write(unicode(chunk))
+    except OSError:
+        kodi_notify('Advanced MAME Launcher',
+                    'Cannot write {0} file (OSError)'.format(json_filename))
+    except IOError:
+        kodi_notify('Advanced MAME Launcher',
+                    'Cannot write {0} file (IOError)'.format(json_filename))
+    l_end = time.time()
+    if verbose:
+        write_time_s = l_end - l_start
+        log_debug('fs_write_JSON_file_lowmem() Writing time {0:f} s'.format(write_time_s))
 
 # -------------------------------------------------------------------------------------------------
 # Generic file writer

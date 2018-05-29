@@ -196,3 +196,32 @@ Build MAME database, with INIs/DATs                                            -
 Build MAME Audit database, with INIs/DATs                                      -> 938 MB
 Build MAME database, with INIs/DATs, OPTION_COMPACT_JSON                       -> 870 MB
 Build MAME Audit database, with INIs/DATs, OPTION_COMPACT_JSON                 -> 905 MB
+
+I coded an interative JSON writer. See https://stackoverflow.com/questions/24239613/memoryerror-using-json-dumps
+Options: no ROM/Asset cache, with SLs, with INIs/DATs.
+
+Build all databases, older fast writer, OPTION_COMPACT_JSON -> 867 MB
+```
+fs_write_JSON_file() "C:\Kodi\userdata\addon_data\plugin.program.AML\MAME_DB_main.json"
+fs_write_JSON_file() Writing time 8.258000 s
+fs_write_JSON_file() "C:\Kodi\userdata\addon_data\plugin.program.AML\MAME_DB_render.json"
+fs_write_JSON_file() Writing time 2.981000 s
+fs_write_JSON_file() "C:\Kodi\userdata\addon_data\plugin.program.AML\MAME_DB_roms.json"
+fs_write_JSON_file() Writing time 13.724000 s
+fs_write_JSON_file() "C:\Kodi\userdata\addon_data\plugin.program.AML\ROM_Audit_DB.json"
+fs_write_JSON_file() Writing time 12.347000 s
+```
+
+Build all databases, newer slow writer, OPTION_COMPACT_JSON -> 621 MB
+```
+fs_write_JSON_file_lowmem() "C:\Kodi\userdata\addon_data\plugin.program.AML\MAME_DB_main.json"
+fs_write_JSON_file_lowmem() Writing time 13.526000 s
+fs_write_JSON_file_lowmem() "C:\Kodi\userdata\addon_data\plugin.program.AML\MAME_DB_render.json"
+fs_write_JSON_file_lowmem() Writing time 4.979000 s
+fs_write_JSON_file_lowmem() "C:\Kodi\userdata\addon_data\plugin.program.AML\MAME_DB_roms.json"
+fs_write_JSON_file_lowmem() Writing time 22.240000 s
+fs_write_JSON_file_lowmem() "C:\Kodi\userdata\addon_data\plugin.program.AML\ROM_Audit_DB.json"
+fs_write_JSON_file_lowmem() Writing time 20.663000 s
+```
+
+The iterative JSON encoder consumes much less memory and is about twice as slow.

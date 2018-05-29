@@ -20,13 +20,16 @@ from __future__ import unicode_literals
 # -------------------------------------------------------------------------------------------------
 # Addon configuration options
 # -------------------------------------------------------------------------------------------------
-# Compat, smaller size, non-human readable JSON
-OPTION_COMPACT_JSON = False
+# >> Compat, smaller size, non-human readable JSON.
+OPTION_COMPACT_JSON = True
+
+# >> Use less memory when writing big JSON files, but writing is slower.
+OPTION_LOWMEM_WRITE_JSON = True
 
 # -------------------------------------------------------------------------------------------------
 # DEBUG/TEST settings
 # -------------------------------------------------------------------------------------------------
-# If True MAME is not launched. Useful to test the Recently Played and Most Played code.
+# >> If True MAME is not launched. Useful to test the Recently Played and Most Played code.
 DISABLE_MAME_LAUNCHING = False
 
 # -------------------------------------------------------------------------------------------------

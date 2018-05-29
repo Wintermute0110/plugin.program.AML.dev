@@ -3945,41 +3945,48 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     # Write JSON databases
     # -----------------------------------------------------------------------------
     log_info('Saving database JSON files ...')
+    if OPTION_LOWMEM_WRITE_JSON:
+        json_write_func = fs_write_JSON_file_lowmem
+        log_debug('Using fs_write_JSON_file_lowmem() JSON writer')
+    else:
+        json_write_func = fs_write_JSON_file
+        log_debug('Using fs_write_JSON_file() JSON writer')
     pdialog_line1 = 'Saving databases ...'
     num_items = 15
+
+    # --- Databases ---
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machines Main')
-    fs_write_JSON_file(PATHS.MAIN_DB_PATH.getPath(), machines)
+    json_write_func(PATHS.MAIN_DB_PATH.getPath(), machines)
     pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Render')
-    fs_write_JSON_file(PATHS.RENDER_DB_PATH.getPath(), machines_render)
+    json_write_func(PATHS.RENDER_DB_PATH.getPath(), machines_render)
     pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machine ROMs')
-    fs_write_JSON_file(PATHS.ROMS_DB_PATH.getPath(), machines_roms)
+    json_write_func(PATHS.ROMS_DB_PATH.getPath(), machines_roms)
     pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME machine Devices')
-    fs_write_JSON_file(PATHS.DEVICES_DB_PATH.getPath(), machines_devices)
+    json_write_func(PATHS.DEVICES_DB_PATH.getPath(), machines_devices)
     pDialog.update(int((4*100) / num_items), pdialog_line1, 'MAME machine Assets')
-    fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
+    json_write_func(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
     pDialog.update(int((5*100) / num_items), pdialog_line1, 'MAME PClone dictionary')
-    fs_write_JSON_file(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
+    json_write_func(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
     pDialog.update(int((6*100) / num_items), pdialog_line1, 'MAME ROMs SHA1 dictionary')
-    fs_write_JSON_file(PATHS.ROM_SHA1_HASH_DB_PATH.getPath(), roms_sha1_dic)
-
-    # >> DAT files
+    json_write_func(PATHS.ROM_SHA1_HASH_DB_PATH.getPath(), roms_sha1_dic)
+    # --- DAT files ---
     pDialog.update(int((7*100) / num_items), pdialog_line1, 'History DAT index')
-    fs_write_JSON_file(PATHS.HISTORY_IDX_PATH.getPath(), history_idx_dic)
+    json_write_func(PATHS.HISTORY_IDX_PATH.getPath(), history_idx_dic)
     pDialog.update(int((8*100) / num_items), pdialog_line1, 'History DAT database')
-    fs_write_JSON_file(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
+    json_write_func(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
     pDialog.update(int((9*100) / num_items), pdialog_line1, 'MAMEInfo DAT index')
-    fs_write_JSON_file(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
+    json_write_func(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
     pDialog.update(int((10*100) / num_items), pdialog_line1, 'MAMEInfo DAT database')
-    fs_write_JSON_file(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
+    json_write_func(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
     pDialog.update(int((11*100) / num_items), pdialog_line1, 'Gameinit DAT index')
-    fs_write_JSON_file(PATHS.GAMEINIT_IDX_PATH.getPath(), gameinit_idx_dic)
+    json_write_func(PATHS.GAMEINIT_IDX_PATH.getPath(), gameinit_idx_dic)
     pDialog.update(int((12*100) / num_items), pdialog_line1, 'Gameinit DAT database')
-    fs_write_JSON_file(PATHS.GAMEINIT_DB_PATH.getPath(), gameinit_dic)
+    json_write_func(PATHS.GAMEINIT_DB_PATH.getPath(), gameinit_dic)
     pDialog.update(int((13*100) / num_items), pdialog_line1, 'Command DAT index')
-    fs_write_JSON_file(PATHS.COMMAND_IDX_PATH.getPath(), command_idx_dic)
+    json_write_func(PATHS.COMMAND_IDX_PATH.getPath(), command_idx_dic)
     pDialog.update(int((14*100) / num_items), pdialog_line1, 'Command DAT database')
-    fs_write_JSON_file(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
+    json_write_func(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
     pDialog.update(int((15*100) / num_items), ' ', ' ')
     pDialog.close()
 
@@ -4470,17 +4477,23 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     change_control_dic(control_dic, 't_MAME_Audit_DB_build', time.time())
 
     # --- Save databases ---
+    if OPTION_LOWMEM_WRITE_JSON:
+        json_write_func = fs_write_JSON_file_lowmem
+        log_debug('Using fs_write_JSON_file_lowmem() JSON writer')
+    else:
+        json_write_func = fs_write_JSON_file
+        log_debug('Using fs_write_JSON_file() JSON writer')
     line1_str = 'Saving audit/scanner databases ...'
     pDialog.create('Advanced MAME Launcher')
     num_items = 4
     pDialog.update(int((0*100) / num_items), line1_str, 'MAME ROM Audit')
-    fs_write_JSON_file(PATHS.ROM_AUDIT_DB_PATH.getPath(), audit_roms_dic)
+    json_write_func(PATHS.ROM_AUDIT_DB_PATH.getPath(), audit_roms_dic)
     pDialog.update(int((1*100) / num_items), line1_str, 'Machine archives list')
-    fs_write_JSON_file(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath(), machine_archives_dic)
+    json_write_func(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath(), machine_archives_dic)
     pDialog.update(int((2*100) / num_items), line1_str, 'ROM List index')
-    fs_write_JSON_file(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath(), ROM_archive_list)
+    json_write_func(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath(), ROM_archive_list)
     pDialog.update(int((3*100) / num_items), line1_str, 'CHD list index')
-    fs_write_JSON_file(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath(), CHD_archive_list)
+    json_write_func(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath(), CHD_archive_list)
     pDialog.update(int((4*100) / num_items), ' ', ' ')
     pDialog.close()
 
