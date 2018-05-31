@@ -1176,12 +1176,17 @@ def _render_catalog_parent_list(catalog_name, category_name):
     l_pclone_dic_start = time.time()
     main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
     l_pclone_dic_end = time.time()
+    l_favs_start = time.time()
+    fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
+    l_favs_end = time.time()
+
     # >> Compute loading times.
     catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
     render_t = l_render_db_end - l_render_db_start
     assets_t = l_assets_db_end - l_assets_db_start
     pclone_t = l_pclone_dic_end - l_pclone_dic_start
-    loading_time = catalog_t + render_t + assets_t + pclone_t
+    favs_t   = l_favs_end - l_favs_start
+    loading_time = catalog_t + render_t + assets_t + pclone_t + favs_t
 
     # >> Check if catalog is empty
     if not catalog_dic:
@@ -1192,7 +1197,8 @@ def _render_catalog_parent_list(catalog_name, category_name):
     # --- Process ROMs ---
     processing_ticks_start = time.time()
     r_obj = _render_process_machines(catalog_dic, catalog_name, category_name,
-                                     MAME_render_db_dic, MAME_assets_dic, main_pclone_dic)
+                                     MAME_render_db_dic, MAME_assets_dic,
+                                     main_pclone_dic, fav_machines)
     processing_ticks_end = time.time()
     processing_time = processing_ticks_end - processing_ticks_start
 
@@ -1211,6 +1217,7 @@ def _render_catalog_parent_list(catalog_name, category_name):
                                     listitem = listitem, isFolder = False)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
+    rendering_time = rendering_ticks_end - rendering_ticks_start
 
     # --- Render parent main list ---
     # rendering_ticks_start = time.time()
@@ -1239,18 +1246,19 @@ def _render_catalog_parent_list(catalog_name, category_name):
     #                                     MAME_assets_dic[machine_name])
     # xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
     # rendering_ticks_end = time.time()
+    # rendering_time = rendering_ticks_end - rendering_ticks_start
 
     # --- DEBUG Data loading/rendering statistics ---
-    rendering_time = rendering_ticks_end - rendering_ticks_start
     total_time = loading_time + processing_time + rendering_time
     # log_debug('Loading catalog dic {0:.4f} s'.format(catalog_t))
-    log_debug('Loading render db   {0:.4f} s'.format(render_t))
-    log_debug('Loading assets db   {0:.4f} s'.format(assets_t))
-    # log_debug('Loading pclone dic  {0:.4f} s'.format(pclone_t))
-    log_debug('Loading             {0:.4f} s'.format(loading_time))
-    log_debug('Processing          {0:.4f} s'.format(processing_time))
-    log_debug('Rendering           {0:.4f} s'.format(rendering_time))
-    log_debug('Total               {0:.4f} s'.format(total_time))
+    log_debug('Loading render db     {0:.4f} s'.format(render_t))
+    log_debug('Loading assets db     {0:.4f} s'.format(assets_t))
+    # log_debug('Loading pclone dic    {0:.4f} s'.format(pclone_t))
+    log_debug('Loading MAME favs dic {0:.4f} s'.format(favs_t))
+    log_debug('Loading               {0:.4f} s'.format(loading_time))
+    log_debug('Processing            {0:.4f} s'.format(processing_time))
+    log_debug('Rendering             {0:.4f} s'.format(rendering_time))
+    log_debug('Total                 {0:.4f} s'.format(total_time))
 
 #
 # Renders a list of MAME Clone machines (including parent).
@@ -1418,7 +1426,7 @@ def _render_catalog_machine_row(m_name, display_name, machine, m_assets,
 # "Premature optimization is the root of all evil." DK
 #
 def _render_process_machines(catalog_dic, catalog_name, category_name,
-                             MAME_render_db_dic, MAME_assets_dic, main_pclone_dic):
+                             MAME_render_db_dic, MAME_assets_dic, main_pclone_dic, fav_machines):
     # --- Prepare for processing ---
     display_hide_Mature = g_settings['display_hide_Mature']
     display_hide_BIOS = g_settings['display_hide_BIOS']
@@ -1438,6 +1446,7 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
 
         # --- Add machine to list, set default values ---
         r_obj.key_list.append(machine_name)
+        AEL_InFav_bool_value = AEL_INFAV_BOOL_VALUE_FALSE
         AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
         num_clones = len(main_pclone_dic[machine_name])
         view_mode_property = g_settings['mame_view_mode']
@@ -1459,6 +1468,9 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
             elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
             # --- Skin flags ---
+            if machine_name in fav_machines:
+                display_name += ' [COLOR violet][Fav][/COLOR]'
+                AEL_InFav_bool_value = AEL_INFAV_BOOL_VALUE_TRUE
             AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
         else:
             # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
@@ -1470,8 +1482,13 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
             elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
             # --- Skin flags ---
-            if machine['cloneof']: AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE
-            else:                  AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
+            if machine_name in fav_machines:
+                display_name += ' [COLOR violet][Fav][/COLOR]'
+                AEL_InFav_bool_value = AEL_INFAV_BOOL_VALUE_TRUE
+            if machine['cloneof']:
+                AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE
+            else:
+                AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
 
         # --- Assets/artwork ---
         icon_path      = m_assets[g_mame_icon] if m_assets[g_mame_icon] else 'DefaultProgram.png'
@@ -1502,6 +1519,7 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
             'nplayers' : machine['nplayers'],
             'platform' : 'MAME',
             AEL_PCLONE_STAT_LABEL : AEL_PClone_stat_value,
+            AEL_INFAV_BOOL_LABEL : AEL_InFav_bool_value,
         }
 
         # --- Assets ---
