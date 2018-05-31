@@ -10,10 +10,6 @@ WIP      [CORE] [LEIA] Check out the ListItem constructor offscreen parameter in
 WIP      [CORE] [LEIA] Use the new API function ListItem.setProperties()
          See https://forum.kodi.tv/showthread.php?tid=332283
 
-WIP      [CORE] Optimize the rendering of ROMs in 3 steps: a) Loading, b) Processing and c) Rendering.
-         Processing computes all data to render ROMs and Rendering calls Kodi functions. This will
-         allow to measure how long does it take to call the Kodi functions for ListItem generation.
-
 WIP      [MAME FILTERING] Improve the Custom Filters (add more filtering options as defined
          in the reference filter file `AML-MAME-filters-reference.xml`).
 
@@ -27,6 +23,11 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
 [B]Advanced Emulator Launcher | version 0.9.7 | xx June 2018[/B]
+
+FEATURE  [CORE] Optimize the rendering of ROMs in 3 steps: a) Loading, b) Processing and c) Rendering.
+         Processing computes all data to render ROMs and Rendering calls Kodi functions. This will
+         allow to measure how long does it take to call the Kodi functions for ListItem generation.
+
 
 FEATURE  Reduce the memory consumption during the database generation.
          By default use the options OPTION_COMPACT_JSON = True and OPTION_LOWMEM_WRITE_JSON = True
