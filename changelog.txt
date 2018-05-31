@@ -1,11 +1,18 @@
 [B]AML planned features / TODO[/B]
 
-WIP      Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
+WIP      [DOCS] Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
-WIP      Check out the ListItem constructor offscreen parameter in Leia. It can dramatically speed
-         up ListItem creation and population.
+WIP      [CORE] [LEIA] Check out the ListItem constructor offscreen parameter in Leia. It can
+         dramatically speed up ListItem creation and population.
          See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
          and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
+
+WIP      [CORE] [LEIA] Use the new API function ListItem.setProperties()
+         See https://forum.kodi.tv/showthread.php?tid=332283
+
+WIP      [CORE] Optimize the rendering of ROMs in 3 steps: a) Loading, b) Processing and c) Rendering.
+         Processing computes all data to render ROMs and Rendering calls Kodi functions. This will
+         allow to measure how long does it take to call the Kodi functions for ListItem generation.
 
 WIP      [MAME FILTERING] Improve the Custom Filters (add more filtering options as defined
          in the reference filter file `AML-MAME-filters-reference.xml`).
