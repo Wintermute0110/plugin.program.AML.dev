@@ -2,22 +2,27 @@
     Example Advanced MAME Launcher custom filters
 -->
 <Advanced_MAME_Launcher_custom_filters>
+
+<!--
+    Driver definitions
+-->
 <DEFINE name="ATARI_DRIVERS">atari_s1.cpp or atari_s2.cpp or atarifb.cpp or atarittl.cpp or asteroid.cpp or atetris.cpp or avalnche.cpp or bzone.cpp or bwidow.cpp or boxer.cpp or canyon.cpp or cball.cpp or ccastles.cpp or centiped.cpp or cloak.cpp or destroyr.cpp or mhavoc.cpp or mgolf.cpp or pong.cpp</DEFINE>
 <DEFINE name="CAPCOM_DRIVERS">1942.cpp or 1943.cpp or capcom.cpp or gng.cpp or cps1.cpp or cps2.cpp or cps3.cpp</DEFINE>
 <DEFINE name="KONAMI_DRIVERS">88games.cpp or ajax.cpp or aliens.cpp or asterix.cpp or konamigv.cpp or konblands.cpp or konamigx.cpp or konamim2.cpp</DEFINE>
 <DEFINE name="MIDWAY_DRIVERS">midtunit.cpp or midvunit.cpp or midwunit.cpp or midxunit.cpp or midyunit.cpp or midzeus.cpp</DEFINE>
 <DEFINE name="NAMCO_DRIVERS">galaxian.cpp or namcops2.cpp</DEFINE>
 <DEFINE name="NEOGEO_DRIVERS">neogeo.cpp</DEFINE>
-<!--
-    In the following SEGA drivers most machines do not work, so do not include them in 
-    the filter:
--->
 <DEFINE name="SEGA_DRIVERS">segajw.cpp or segam1.cpp or segaufo.cpp or vicdual.cpp or segag80r.cpp or segag80v.cpp or zaxxon.cpp or segald.cpp or system1.cpp or segac2.cpp or segae.cpp or segas16a.cpp or segas16b.cpp or system16.cpp or segas24.cpp or segas18.cpp or kyugo.cpp or segahang.cpp or segaorun.cpp or segaxbd.cpp or segaybd.cpp or segas32.cpp or model1.cpp or model2.cpp or model3.cpp or stv.cpp or naomi.cpp or segasp.cpp or chihiro.cpp or triforce.cpp or lindbergh.cpp</DEFINE>
 <DEFINE name="TAITO_DRIVERS">taito_b.cpp or taito_f2.cpp or taito_f3.cpp or taito_h.cpp or taito_l.cpp or taito_o.cpp or taito_x.cpp or taito_z.cpp or taitoair.cpp or taitogn.cpp or taitojc.cpp or taitopjc.cpp or taitosj.cpp or taitottl.cpp or taitotz.cpp or taitowlf.cpp</DEFINE>
 <DEFINE name="SONY_DRIVERS">zn.cpp</DEFINE>
 
 <!--
-    Filter definitions
+    Control definitions
+-->
+<DEFINE name="COMMON_CONTROLS">Joy</DEFINE>
+
+<!--
+    Manufacturer filters
 -->
 <MAMEFilter>
     <Name>Atari</Name>
@@ -64,4 +69,61 @@
     <Options></Options>
     <Driver>SONY_DRIVERS</Driver>
 </MAMEFilter>
+
+<!--
+    Family game definitions
+-->
+<MAMEFilter>
+    <Name>Familiy games from the 70'</Name>
+    <Plot>Plot test 70'</Plot>
+    <Options>NoCoinLess, NoMature, NoMechanical</Options>
+    <Driver>SONY_DRIVERS</Driver>
+    <Genre></Genre>
+    <Controls>COMMON_CONTROLS</Controls>
+    <Devices></Devices>
+    <Year>year &lt; 1980</Year>
+    <Include></Include>
+    <Exclude></Exclude>
+    <Change></Change>
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Familiy games from the 80'</Name>
+    <Plot>Plot test 80'</Plot>
+    <Options>NoCoinLess, NoMature, NoMechanical</Options>
+    <Driver>SONY_DRIVERS</Driver>
+    <Genre></Genre>
+    <Controls>COMMON_CONTROLS</Controls>
+    <Devices></Devices>
+    <Year>year >= 1980 and year &lt; 1990</Year>
+    <Include></Include>
+    <Exclude></Exclude>
+    <Change></Change>
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Familiy games from the 90'</Name>
+    <Plot>Plot test 90'</Plot>
+    <Options>NoCoinLess, NoMature, NoMechanical</Options>
+    <Driver>SONY_DRIVERS</Driver>
+    <Genre></Genre>
+    <Controls>COMMON_CONTROLS</Controls>
+    <Devices></Devices>
+    <Year>year >= 1990 and year &lt; 2000</Year>
+    <Include></Include>
+    <Exclude></Exclude>
+    <Change></Change>
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Familiy games from the 00'</Name>
+    <Plot>Plot test 00'</Plot>
+    <Options>NoCoinLess, NoMature, NoMechanical</Options>
+    <Driver>SONY_DRIVERS</Driver>
+    <Genre></Genre>
+    <Controls>COMMON_CONTROLS</Controls>
+    <Devices></Devices>
+    <Year>year >= 2000</Year>
+    <Include></Include>
+    <Exclude></Exclude>
+    <Change></Change>
+</MAMEFilter>
+
 </Advanced_MAME_Launcher_custom_filters>

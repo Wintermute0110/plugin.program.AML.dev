@@ -35,8 +35,8 @@ DISABLE_MAME_LAUNCHING = False
 # -------------------------------------------------------------------------------------------------
 # A universal Addon error reporting exception
 # This exception is raised to report errors in the GUI.
-# Unhandled exceptions must not raise AEL_Error() so the addon crashes and the traceback is printed
-# in the Kodi log file.
+# Unhandled exceptions must not raise Addon_Error() so the addon crashes and the traceback 
+# is printed in the Kodi log file.
 # -------------------------------------------------------------------------------------------------
 # >> Top-level GUI code looks like this
 # try:
@@ -53,7 +53,7 @@ DISABLE_MAME_LAUNCHING = False
 #     except OSError:
 #         log_error('(OSError) Cannot write {0} file'.format(export_FN.getBase()))
 #         # >> Message to be printed in the GUI
-#         raise AEL_Error('Error writing file (OSError)')
+#         raise Addon_Error('Error writing file (OSError)')
 #
 class Addon_Error(Exception):
     def __init__(self, err_str):

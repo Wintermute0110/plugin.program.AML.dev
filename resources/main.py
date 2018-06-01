@@ -4484,48 +4484,21 @@ def _command_context_setup_custom_filters():
     # AML_DATA_DIR/filters/'rom_DB_noext'_assets.json -> asset_dic = {}
     #
     elif menu_item == 1:
-        __debug_xml_parser = False
-
-        # >> Open custom filter XML and parse it
-        # If XML has errors (invalid characters, etc.) this will rais exception 'err'
-        XML_FN = FileName(g_settings['filter_XML'])
-        if not XML_FN.exists():
-            kodi_dialog_OK('Custom filter XML file not found.')
-            return
-        log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
-        log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+        # --- Open custom filter XML and parse it ---
         try:
-            xml_tree = ET.parse(XML_FN.getPath())
-        except:
-            return SLData
-        xml_root = xml_tree.getroot()
-        define_dic = {}
-        filters_dic = {}
-        for root_element in xml_root:
-            if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
+            filters_list = filter_parse_XML(g_settings['filter_XML'])
+        except Addon_Error as ex:
+            kodi_notify_warn('{0}'.format(ex))
+            return
+        else:
+            log_debug('Filter XML read succesfully.')
 
-            if root_element.tag == 'DEFINE':
-                name_str = root_element.attrib['name']
-                define_str = root_element.text if root_element.text else ''
-                log_debug('DEFINE "{0}" := "{1}"'.format(name_str, define_str))
-                define_dic[name_str] = define_str
-            elif root_element.tag == 'MAMEFilter':
-                this_filter_dic = {'name' : '', 'options' : '', 'driver' : ''}
-                for filter_element in root_element:
-                    text_t = filter_element.text if filter_element.text else ''
-                    if filter_element.tag == 'Name': this_filter_dic['name'] = text_t
-                    elif filter_element.tag == 'Options': this_filter_dic['options'] = text_t
-                    elif filter_element.tag == 'Driver': this_filter_dic['driver'] = text_t
-                log_debug('Adding filter "{0}"'.format(this_filter_dic['name']))
-                filters_dic[this_filter_dic['name']] = this_filter_dic
+        # --- If no filters sayonara ---
+        if len(filters_list) < 1:
+            kodi_notify_warn('Filter XML has 0 filter definitions')
+            return
 
-        # >> Resolve DEFINE tags (substitute by the defined value)
-        for filter_key in filters_dic:
-            f_definition = filters_dic[filter_key]
-            for replace_initial_str, replace_final_str in define_dic.iteritems():
-                f_definition['driver'] = f_definition['driver'].replace(replace_initial_str, replace_final_str)
-
-        # >> Open main ROM databases
+        # --- Open main ROM databases ---
         pDialog = xbmcgui.DialogProgress()
         pDialog_canceled = False
         pdialog_line1 = 'Loading databases ...'
@@ -4541,46 +4514,47 @@ def _command_context_setup_custom_filters():
         pDialog.update(100, pdialog_line1, ' ')
         pDialog.close()
 
-        # >> Make a dictionary of objects to be filtered
+        # --- Make a dictionary of objects to be filtered ---
         main_filter_dic = {}
         for m_name in main_pclone_dic:
             main_filter_dic[m_name] = {
                 'sourcefile' : machine_main_dic[m_name]['sourcefile']
             }
 
-        # >> Clean 'filters' directory JSON files.
+        # --- Clean 'filters' directory JSON files ---
         log_info('Cleaning dir "{0}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
         pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
         pDialog.update(0)
         file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
         num_files = len(file_list)
-        log_info('Found {0} files'.format(num_files))
-        processed_items = 0
-        for file in file_list:
-            pDialog.update((processed_items*100) // num_files)
-            if file.endswith('.json'):
-                full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
-                # log_debug('UNLINK "{0}"'.format(full_path))
-                os.unlink(full_path)
-            processed_items += 1
+        if num_files < 1:
+            log_info('Found {0} files'.format(num_files))
+            processed_items = 0
+            for file in file_list:
+                pDialog.update((processed_items*100) // num_files)
+                if file.endswith('.json'):
+                    full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
+                    # log_debug('UNLINK "{0}"'.format(full_path))
+                    os.unlink(full_path)
+                processed_items += 1
+        pDialog.update(100)
         pDialog.close()
 
-        # >> Traverse list of filters, build filter index and compute filter list.
+        # --- Traverse list of filters, build filter index and compute filter list ---
         pdialog_line1 = 'Building custom MAME filters'
         pDialog.create('Advanced MAME Launcher', pdialog_line1)
         Filters_index_dic = {}
-        total_items = len(filters_dic)
+        total_items = len(filters_list)
         processed_items = 0
-        for filter_key in filters_dic:
-            # >> Initialise
-            f_definition = filters_dic[filter_key]
+        for f_definition in filters_list:
+            # --- Initialise ---
             f_name = f_definition['name']
             # log_debug('f_definition = {0}'.format(unicode(f_definition)))
 
-            # >> Initial progress
+            # --- Initial progress ---
             pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{0}" ...'.format(f_name))
 
-            # >> Driver filter
+            # --- Driver filter ---
             filtered_machine_dic = mame_filter_Driver_tag(main_filter_dic, f_definition['driver'])
 
             # >> Make indexed catalog
@@ -4608,7 +4582,7 @@ def _command_context_setup_custom_filters():
             }
             Filters_index_dic[f_name] = this_filter_idx_dic
 
-            # >> Save filter database
+            # --- Save filter database ---
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
             fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_dic)
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
@@ -4617,7 +4591,8 @@ def _command_context_setup_custom_filters():
             fs_write_JSON_file(output_FN.getPath(), filtered_render_ROMs)
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
             fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic)
-            # >> Final progress
+
+            # --- Final progress ---
             processed_items += 1
         pDialog.update((processed_items*100) // total_items, pdialog_line1, ' ')
         pDialog.close()

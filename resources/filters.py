@@ -19,10 +19,127 @@
 from __future__ import unicode_literals
 from __future__ import division
 
+import xml.etree.ElementTree as ET
+
 # --- Modules/packages in this plugin ---
 from constants import *
 from utils import *
 from utils_kodi import *
+
+# -------------------------------------------------------------------------------------------------
+# Parse filter XML definition
+# -------------------------------------------------------------------------------------------------
+def strip_str_list(t_list):
+    for i, s_t in enumerate(t_list): t_list[i] = s_t.strip()
+
+    return t_list
+
+def _get_comma_separated_list(text_t):
+    return strip_str_list(text_t.split(','))
+
+#
+# Parse a string 'XXXXXX with YYYYYY'
+#
+def _get_change_tuple(text_t):
+    if not text_t:
+        return ''
+    tuple_list = re.findall(r'(\w+) with (\w+)', text_t)
+    if tuple_list:
+        return tuple_list
+    else:
+        log_error('_get_change_tuple() text_t = "{0}"'.format(text_t))
+        m = '(Exception) Cannot parse <Change> "{0}"'.format(text_t)
+        log_error(m)
+        raise Addon_Error(m)
+
+#
+# Returns a list of dictionaries, each dictionary has the filer definition.
+#
+def filter_parse_XML(fname_str):
+    __debug_xml_parser = False
+
+    # If XML has errors (invalid characters, etc.) this will rais exception 'err'
+    XML_FN = FileName(fname_str)
+    if not XML_FN.exists():
+        kodi_dialog_OK('Custom filter XML file not found.')
+        return
+    log_debug('filter_parse_XML() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+    log_debug('filter_parse_XML() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+    try:
+        xml_tree = ET.parse(XML_FN.getPath())
+    except IOError as ex:
+        log_error('(Exception) {0}'.format(ex))
+        log_error('(Exception) Syntax error in the XML file definition')
+        raise Addon_Error('(Exception) ET.parse(XML_FN.getPath()) failed.')
+    xml_root = xml_tree.getroot()
+    define_dic = {}
+    filters_list = []
+    for root_element in xml_root:
+        if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
+
+        if root_element.tag == 'DEFINE':
+            name_str = root_element.attrib['name']
+            define_str = root_element.text if root_element.text else ''
+            log_debug('DEFINE "{0}" := "{1}"'.format(name_str, define_str))
+            define_dic[name_str] = define_str
+        elif root_element.tag == 'MAMEFilter':
+            this_filter_dic = {
+                'name'     : '',
+                'plot'     : '',
+                'options'  : [], # List of strings
+                'driver'   : '',
+                'genre'    : '',
+                'controls' : '',
+                'devices'  : '',
+                'year'     : '',
+                'include'  : [], # List of strings
+                'exclude'  : [], # List of strings
+                'change'   : [], # List of tuples (change_orig, change_dest)
+            }
+            for filter_element in root_element:
+                text_t = filter_element.text if filter_element.text else ''
+                if filter_element.tag == 'Name':
+                    this_filter_dic['name'] = text_t
+                elif filter_element.tag == 'Plot':
+                    this_filter_dic['plot'] = text_t
+                elif filter_element.tag == 'Options':
+                    t_list = _get_comma_separated_list(text_t)
+                    if t_list:
+                        this_filter_dic['options'].extend(t_list)
+                elif filter_element.tag == 'Driver':
+                    this_filter_dic['driver'] = text_t
+                elif filter_element.tag == 'Genre':
+                    this_filter_dic['genre'] = text_t
+                elif filter_element.tag == 'Controls':
+                    this_filter_dic['controls'] = text_t
+                elif filter_element.tag == 'Devices':
+                    this_filter_dic['devices'] = text_t
+                elif filter_element.tag == 'Year':
+                    this_filter_dic['year'] = text_t
+                elif filter_element.tag == 'Include':
+                    t_list = _get_comma_separated_list(text_t)
+                    if t_list:
+                        this_filter_dic['include'].extend(t_list)
+                elif filter_element.tag == 'Exclude':
+                    t_list = _get_comma_separated_list(text_t)
+                    if t_list:
+                        this_filter_dic['exclude'].extend(t_list)
+                elif filter_element.tag == 'Change':
+                    tuple_t = _get_change_tuple(text_t)
+                    if tuple_t: this_filter_dic['change'].append(tuple_t)
+                else:
+                    m = '(Exception) Unrecognised tag <{0}>'.format(filter_element.tag)
+                    log_debug(m)
+                    raise Addon_Error(m)
+            log_debug('Adding filter "{0}"'.format(this_filter_dic['name']))
+            filters_list.append(this_filter_dic)
+
+    # >> Resolve DEFINE tags (substitute by the defined value)
+    for f_definition in filters_list:
+        for initial_str, final_str in define_dic.iteritems():
+            f_definition['driver'] = f_definition['driver'].replace(initial_str, final_str)
+
+    return filters_list
 
 # -------------------------------------------------------------------------------------------------
 # Filter parser engine (copied from NARS)

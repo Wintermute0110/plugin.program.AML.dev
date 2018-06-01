@@ -10,9 +10,6 @@ WIP      [CORE] [LEIA] Check out the ListItem constructor offscreen parameter in
 WIP      [CORE] [LEIA] Use the new API function ListItem.setProperties()
          See https://forum.kodi.tv/showthread.php?tid=332283
 
-WIP      [MAME FILTERING] Improve the Custom Filters (add more filtering options as defined
-         in the reference filter file `AML-MAME-filters-reference.xml`).
-
 WIP      [MANUALS] Import the number of supported PDF filters.
 
 WIP      [MANUALS] When displaying manuals use cached extracted images if they exist.
@@ -23,6 +20,9 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
 [B]Advanced Emulator Launcher | version 0.9.7 | xx June 2018[/B]
+
+WIP      [MAME FILTERING] Improve the Custom Filters (add more filtering options as defined
+         in the reference filter file `AML-MAME-filters-reference.xml`).
 
 FEATURE  Render the `In Favourites` flag for MAME machines.
 
