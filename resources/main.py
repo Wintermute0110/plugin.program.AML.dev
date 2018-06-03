@@ -317,14 +317,14 @@ def run_plugin():
                 _render_SL_ROMs(SL_name)
             else:
                 _render_SL_list(catalog_name)
-        # --- Custom filter ---
+        # --- Custom filters ---
         elif catalog_name == 'Custom':
             filter_name = args['category'][0] if 'category' in args else ''
             parent_name = args['parent'][0] if 'parent' in args else ''
             if filter_name and parent_name:
-                _render_custom_filter_clones(filter_name, parent_name)
+                _render_custom_filter_machines_clones(filter_name, parent_name)
             else:
-                _render_custom_filter_ROMs(filter_name)
+                _render_custom_filter_machines_flat(filter_name)
         # --- DAT browsing ---
         elif catalog_name == 'History' or catalog_name == 'MAMEINFO' or \
              catalog_name == 'Gameinit' or catalog_name == 'Command':
@@ -1146,19 +1146,19 @@ def _render_catalog_parent_list(catalog_name, category_name):
     l_render_db_start = time.time()
     if g_settings['debug_enable_MAME_machine_cache']:
         cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-        MAME_render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
+        render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME machine cache disabled.')
-        MAME_render_db_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
+        render_db_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
     l_render_db_end = time.time()
     l_assets_db_start = time.time()
     if g_settings['debug_enable_MAME_asset_cache']:
         if 'cache_index_dic' not in locals():
             cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-        MAME_assets_dic = fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name)
+        assets_db_dic = fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME asset cache disabled.')
-        MAME_assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        assets_db_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
     l_assets_db_end = time.time()
     l_pclone_dic_start = time.time()
     main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
@@ -1184,7 +1184,7 @@ def _render_catalog_parent_list(catalog_name, category_name):
     # --- Process ROMs ---
     processing_ticks_start = time.time()
     r_list = _render_process_machines(catalog_dic, catalog_name, category_name,
-                                     MAME_render_db_dic, MAME_assets_dic,
+                                     render_db_dic, assets_db_dic,
                                      main_pclone_dic, fav_machines)
     processing_ticks_end = time.time()
     processing_time = processing_ticks_end - processing_ticks_start
@@ -3397,6 +3397,7 @@ def _command_context_add_mame_fav(machine_name):
     # >> Save Favourites
     fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
     kodi_notify('Machine {0} added to MAME Favourites'.format(machine_name))
+    kodi_refresh_container()
 
 #
 # Context menu "Manage Favourite machines"
@@ -4197,7 +4198,7 @@ def _render_custom_filter_item_row(f_name, num_machines, machine_str):
 #
 # Renders a Parent or Flat machine list
 #
-def _render_custom_filter_ROMs(filter_name):
+def _render_custom_filter_machines_flat(filter_name):
     log_debug('_render_custom_filter_ROMs() filter_name  = {0}'.format(filter_name))
     display_hide_BIOS = g_settings['display_hide_BIOS']
     display_hide_nonworking = g_settings['display_hide_nonworking']
@@ -4219,78 +4220,75 @@ def _render_custom_filter_ROMs(filter_name):
     rom_DB_noext = Filters_index_dic[filter_name]['rom_DB_noext']
     if view_mode_property == VIEW_MODE_PCLONE:
         DB_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
-        machine_list = fs_load_JSON_file_dic(DB_FN.getPath())
+        machines_dic = fs_load_JSON_file_dic(DB_FN.getPath())
     elif view_mode_property == VIEW_MODE_FLAT:
         DB_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
-        machine_list = fs_load_JSON_file_dic(DB_FN.getPath())
+        machines_dic = fs_load_JSON_file_dic(DB_FN.getPath())
     else:
         kodi_dialog_OK('Wrong view_mode_property = "{0}". '.format(view_mode_property) +
                        'This is a bug, please report it.')
         return
     l_cataloged_dic_end = time.time()
     l_render_db_start = time.time()
-    # machine_render_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-    machine_render_dic = fs_load_JSON_file_dic(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json').getPath())
+    render_db_dic = fs_load_JSON_file_dic(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json').getPath())
     l_render_db_end = time.time()
     l_assets_db_start = time.time()
-    # MAME_assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-    MAME_assets_dic = fs_load_JSON_file_dic(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json').getPath())
+    assets_db_dic = fs_load_JSON_file_dic(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json').getPath())
     l_assets_db_end = time.time()
     l_pclone_dic_start = time.time()
     main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
     l_pclone_dic_end = time.time()
+    l_favs_start = time.time()
+    fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
+    l_favs_end = time.time()
 
+    # >> Compute loading times.
     catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
     render_t = l_render_db_end - l_render_db_start
     assets_t = l_assets_db_end - l_assets_db_start
     pclone_t = l_pclone_dic_end - l_pclone_dic_start
-    loading_time = catalog_t + render_t + assets_t + pclone_t
+    favs_t   = l_favs_end - l_favs_start
+    loading_time = catalog_t + render_t + assets_t + pclone_t + favs_t
 
     # >> Check if catalog is empty
-    if not machine_list:
+    if not machines_dic:
         kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
-    # >> Render parent main list
+    # --- Process ROMs ---
+    processing_ticks_start = time.time()
+    catalog_name = 'Custom'
+    category_name = filter_name
+    catalog_dic = {category_name : machines_dic}
+    r_list = _render_process_machines(catalog_dic, catalog_name, category_name,
+                                     render_db_dic, assets_db_dic,
+                                     main_pclone_dic, fav_machines)
+    processing_ticks_end = time.time()
+    processing_time = processing_ticks_end - processing_ticks_start
+
+    # --- Commit ROMs ---
     rendering_ticks_start = time.time()
     _set_Kodi_all_sorting_methods()
-    if view_mode_property == VIEW_MODE_PCLONE:
-        # >> Parent/Clone mode render parents only
-        for machine_name, render_name in machine_list.iteritems():
-            machine = machine_render_dic[machine_name]
-            if display_hide_BIOS and machine['isBIOS']: continue
-            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            assets = MAME_assets_dic[machine_name]
-            num_clones = len(main_pclone_dic[machine_name])
-            _render_catalog_machine_row(machine_name, render_name, machine, assets,
-                                             True, num_clones, 'Custom', filter_name)
-    else:
-        # >> Flat mode renders all machines
-        for machine_name, render_name in machine_list.iteritems():
-            machine = machine_render_dic[machine_name]
-            if display_hide_BIOS and machine['isBIOS']: continue
-            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-            assets = MAME_assets_dic[machine_name]
-            _render_catalog_machine_row(machine_name, render_name, machine, assets)
+    _render_commit_machines(r_list)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
+    rendering_time = rendering_ticks_end - rendering_ticks_start
 
     # --- DEBUG Data loading/rendering statistics ---
-    log_debug('Loading render db     {0:.4f} s'.format(render_t))
-    log_debug('Loading assets db     {0:.4f} s'.format(assets_t))
-    log_debug('Loading pclone dic    {0:.4f} s'.format(pclone_t))
-    log_debug('Loading cataloged dic {0:.4f} s'.format(catalog_t))
-    log_debug('Loading               {0:.4f} s'.format(loading_time))
-    log_debug('Rendering             {0:.4f} s'.format(rendering_ticks_end - rendering_ticks_start))
+    # log_debug('Loading catalog     {0:.4f} s'.format(catalog_t))
+    log_debug('Loading render db   {0:.4f} s'.format(render_t))
+    log_debug('Loading assets db   {0:.4f} s'.format(assets_t))
+    # log_debug('Loading pclone dic  {0:.4f} s'.format(pclone_t))
+    # log_debug('Loading MAME favs  {0:.4f} s'.format(favs_t))    
+    log_debug('Loading             {0:.4f} s'.format(loading_time))
+    log_debug('Rendering           {0:.4f} s'.format(rendering_ticks_end - rendering_ticks_start))
 
 #
 # No need to check for DB existance here. If this function is called is because parents and
 # hence all ROMs databases exist.
 #
-def _render_custom_filter_clones(filter_name, parent_name):
+def _render_custom_filter_machines_clones(filter_name, parent_name):
     log_debug('_render_custom_filter_clones() Starting ...')
     display_hide_nonworking = g_settings['display_hide_nonworking']
     display_hide_imperfect  = g_settings['display_hide_imperfect']
@@ -4299,34 +4297,52 @@ def _render_custom_filter_clones(filter_name, parent_name):
     loading_ticks_start = time.time()
     Filters_index_dic = fs_load_JSON_file_dic(PATHS.FILTERS_INDEX_PATH.getPath())
     rom_DB_noext = Filters_index_dic[filter_name]['rom_DB_noext']
-    # machine_render_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-    machine_render_dic = fs_load_JSON_file_dic(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json').getPath())
-    # MAME_assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-    MAME_assets_dic = fs_load_JSON_file_dic(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json').getPath())
+    catalog_dic = fs_load_JSON_file_dic(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json').getPath())
+    render_db_dic = fs_load_JSON_file_dic(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json').getPath())
+    assets_db_dic = fs_load_JSON_file_dic(PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json').getPath())
     main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+    fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
     view_mode_property = g_settings['mame_view_mode']
     log_debug('_render_custom_filter_clones() view_mode_property = {0}'.format(view_mode_property))
     loading_ticks_end = time.time()
+    loading_time = loading_ticks_end - loading_ticks_start
 
+    # --- Process ROMs ---
+    processing_ticks_start = time.time()
+    catalog_name = 'Custom'
+    machines_dic = catalog_dic
+    t_catalog_dic = {}
+    t_render_dic = {}
+    t_assets_dic = {}
     # >> Render parent first
+    t_catalog_dic[filter_name] = {parent_name : machines_dic[parent_name]}
+    t_render_dic[parent_name] = render_db_dic[parent_name]
+    t_assets_dic[parent_name] = assets_db_dic[parent_name]
+    # >> Then clones
+    for clone_name in main_pclone_dic[parent_name]:
+        t_catalog_dic[filter_name][clone_name] = machines_dic[clone_name]
+        t_render_dic[clone_name] = render_db_dic[clone_name]
+        t_assets_dic[clone_name] = assets_db_dic[clone_name]
+    r_list = _render_process_machines(t_catalog_dic, catalog_name, filter_name,
+                                     t_render_dic, t_assets_dic, main_pclone_dic,
+                                     fav_machines, False)
+    processing_ticks_end = time.time()
+    processing_time = processing_ticks_end - processing_ticks_start
+
+    # --- Commit ROMs ---
     rendering_ticks_start = time.time()
     _set_Kodi_all_sorting_methods()
-    machine = machine_render_dic[parent_name]
-    assets  = MAME_assets_dic[parent_name]
-    _render_catalog_machine_row(parent_name, machine, assets)
-    # >> and clones next.
-    for p_name in main_pclone_dic[parent_name]:
-        machine = machine_render_dic[p_name]
-        assets  = MAME_assets_dic[p_name]
-        if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-        if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-        _render_catalog_machine_row(p_name, machine, assets)
+    _render_commit_machines(r_list)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
+    rendering_time = rendering_ticks_end - rendering_ticks_start
 
     # --- DEBUG Data loading/rendering statistics ---
-    log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
-    log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
+    total_time = loading_time + processing_time + rendering_time
+    log_debug('Loading     {0:.4f} s'.format(loading_time))
+    log_debug('Processing  {0:.4f} s'.format(processing_time))
+    log_debug('Rendering   {0:.4f} s'.format(rendering_time))
+    log_debug('Total       {0:.4f} s'.format(total_time))
 
 def _command_context_setup_custom_filters():
     dialog = xbmcgui.Dialog()
