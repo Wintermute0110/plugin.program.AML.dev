@@ -4497,7 +4497,7 @@ def _command_context_setup_custom_filters():
             filtered_machine_dic = mame_filter_Default(main_filter_dic)
             filtered_machine_dic = mame_filter_Options_tag(filtered_machine_dic, f_definition)
             filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition)
-            # filtered_machine_dic = mame_filter_Genre_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Genre_tag(filtered_machine_dic, f_definition)
             # filtered_machine_dic = mame_filter_Controls_tag(filtered_machine_dic, f_definition)
             # filtered_machine_dic = mame_filter_Devices_tag(filtered_machine_dic, f_definition)
             # filtered_machine_dic = mame_filter_Year_tag(filtered_machine_dic, f_definition)

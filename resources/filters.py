@@ -252,11 +252,14 @@ def tokenize(program):
     # (?:...) -> A non-capturing version of regular parentheses.
     # \b -> Matches the empty string, but only at the beginning or end of a word.
     # \w -> Matches [a-zA-Z0-9_]
-    for operator, string in re.findall("\s*(?:(and|or|not|\(|\))|([\.\w_\-\&]+))", program):
-        # print 'Tokenize >> Program -> "' + program + \
-        #       '", String -> "' + string + '", Operator -> "' + operator + '"\n';
+    reg = "\s*(?:(and|or|not|\(|\))|(\"[ \.\w_\-\&]+\")|([\.\w_\-\&]+))"
+    for operator, q_string, string in re.findall(reg, program):
         if string:
             yield literal_token(string)
+        elif q_string:
+            if q_string[0] == '"': q_string = q_string[1:]
+            if q_string[-1] == '"': q_string = q_string[:-1]
+            yield literal_token(q_string)
         elif operator == "and":
             yield operator_and_token()
         elif operator == "or":
