@@ -299,9 +299,28 @@ def parse_exec(program):
 # -------------------------------------------------------------------------------------------------
 # MAME machine filters
 # -------------------------------------------------------------------------------------------------
+#
+# Default filter removes device machines
+#
+def mame_filter_Default(mame_xml_dic):
+    # log_debug('mame_filter_Default() Starting ...')
+    initial_num_games = len(mame_xml_dic)
+    filtered_out_games = 0
+    machines_filtered_dic = {}
+    for m_name in sorted(mame_xml_dic):
+        if mame_xml_dic[m_name]['isDevice']:
+            filtered_out_games += 1
+        else:
+            machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+    log_debug('mame_filter_Default() Initial {0} | '.format(initial_num_games) + \
+              'Removed {0} | '.format(filtered_out_games) + \
+              'Remaining {0}'.format(len(machines_filtered_dic)))
+
+    return machines_filtered_dic
+
 def mame_filter_Driver_tag(mame_xml_dic, driver_filter_expression):
-    log_debug('mame_filter_Driver_tag() <Driver filter>')
-  
+    # log_debug('mame_filter_Driver_tag() Starting ...')
+
     if not driver_filter_expression:
         log_debug('mame_filter_Driver_tag() User wants all drivers')
         return mame_xml_dic
@@ -310,20 +329,20 @@ def mame_filter_Driver_tag(mame_xml_dic, driver_filter_expression):
     filtered_out_games = 0
     machines_filtered_dic = {}
     log_debug('Expression "{0}"'.format(driver_filter_expression))
-    for key in sorted(mame_xml_dic):
-        driver_str = mame_xml_dic[key]['sourcefile']
+    for m_name in sorted(mame_xml_dic):
+        driver_str = mame_xml_dic[m_name]['sourcefile']
         driver_name_list = [ driver_str ]
 
-        # --- Update search variable and call parser to evaluate expression
+        # --- Update search variable and call parser to evaluate expression ---
         set_parser_search_list(driver_name_list)
         boolean_result = parse_exec(driver_filter_expression)
 
-        # --- Filter ROM or not
+        # --- Filter ROM or not ---
         if not boolean_result:
             filtered_out_games += 1
         else:
-            machines_filtered_dic[key] = mame_xml_dic[key]
-    log_debug('mame_filter_Driver_tag() Intial {0} | '.format(initial_num_games) + \
+            machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+    log_debug('mame_filter_Driver_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 

@@ -4368,7 +4368,8 @@ def _command_context_setup_custom_filters():
     #     'name' : {
     #         'display_name' : str,
     #         'num_machines' : int,
-    #         'rom_DB_noext' : 
+    #         'order' : int,
+    #         'rom_DB_noext' : str,
     #     }
     # }
     #
@@ -4419,6 +4420,7 @@ def _command_context_setup_custom_filters():
         main_filter_dic = {}
         for m_name in main_pclone_dic:
             main_filter_dic[m_name] = {
+                'isDevice' : machine_render_dic[m_name]['isDevice'],
                 'sourcefile' : machine_main_dic[m_name]['sourcefile']
             }
 
@@ -4450,13 +4452,16 @@ def _command_context_setup_custom_filters():
         for f_definition in filters_list:
             # --- Initialise ---
             f_name = f_definition['name']
+            log_debug('_command_context_setup_custom_filters() Processing filter "{0}"'.format(f_name))
             # log_debug('f_definition = {0}'.format(unicode(f_definition)))
 
             # --- Initial progress ---
             pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{0}" ...'.format(f_name))
 
-            # --- Driver filter ---
-            filtered_machine_dic = mame_filter_Driver_tag(main_filter_dic, f_definition['driver'])
+            # --- Do filtering ---
+            filtered_machine_dic = mame_filter_Default(main_filter_dic)
+            # filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition['driver'])
+            filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition['driver'])
 
             # >> Make indexed catalog
             filtered_machine_parents_dic = {}
@@ -4485,13 +4490,13 @@ def _command_context_setup_custom_filters():
 
             # --- Save filter database ---
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_dic)
+            fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_dic, verbose = False)
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_machine_all_dic)
+            fs_write_JSON_file(output_FN.getPath(), filtered_machine_all_dic, verbose = True)
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_render_ROMs)
+            fs_write_JSON_file(output_FN.getPath(), filtered_render_ROMs, verbose = False)
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic)
+            fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
 
             # --- Final progress ---
             processed_items += 1
