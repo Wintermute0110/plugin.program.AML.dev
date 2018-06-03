@@ -4159,7 +4159,7 @@ def _command_show_custom_filters():
     # >> Render Custom Filters
     mame_view_mode = g_settings['mame_view_mode']
     _set_Kodi_all_sorting_methods()
-    for f_name in filter_index_dic:
+    for f_name in sorted(filter_index_dic, key = lambda x: filter_index_dic[x]['order'], reverse = False):
         if mame_view_mode == VIEW_MODE_FLAT:
             num_machines = filter_index_dic[f_name]['num_machines']
             if num_machines == 1: machine_str = 'machine'
@@ -4168,15 +4168,15 @@ def _command_show_custom_filters():
             num_machines = filter_index_dic[f_name]['num_parents']
             if num_machines == 1: machine_str = 'parent'
             else:                 machine_str = 'parents'
-        _render_custom_filter_item_row(f_name, num_machines, machine_str)
+        _render_custom_filter_item_row(f_name, num_machines, machine_str, filter_index_dic[f_name]['plot'])
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
-def _render_custom_filter_item_row(f_name, num_machines, machine_str):
+def _render_custom_filter_item_row(f_name, num_machines, machine_str, plot):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     title_str = '{0} [COLOR orange]({1} {2})[/COLOR]'.format(f_name, num_machines, machine_str)
     listitem = xbmcgui.ListItem(title_str)
-    listitem.setInfo('video', {'title' : title_str, 'overlay' : ICON_OVERLAY})
+    listitem.setInfo('video', {'title' : title_str, 'plot' : plot, 'overlay' : ICON_OVERLAY})
 
     # --- Artwork ---
     icon_path   = AML_ICON_FILE_PATH.getPath()
@@ -4368,7 +4368,9 @@ def _command_context_setup_custom_filters():
     #     'name' : {
     #         'display_name' : str,
     #         'num_machines' : int,
+    #         'num_parents' : int,
     #         'order' : int,
+    #         'plot' : str,
     #         'rom_DB_noext' : str,
     #     }
     # }
@@ -4404,24 +4406,57 @@ def _command_context_setup_custom_filters():
         pDialog = xbmcgui.DialogProgress()
         pDialog_canceled = False
         pdialog_line1 = 'Loading databases ...'
+        num_items = 5
         pDialog.create('Advanced MAME Launcher')
-        pDialog.update(0, pdialog_line1, 'Parent/Clone')
+        pDialog.update(int((0*100) / num_items), pdialog_line1, 'Parent/Clone')
         main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-        pDialog.update(25, pdialog_line1, 'Machines Main')
+        pDialog.update(int((1*100) / num_items), pdialog_line1, 'Machines Main')
         machine_main_dic = fs_load_JSON_file_dic(PATHS.MAIN_DB_PATH.getPath())
-        pDialog.update(50, pdialog_line1, 'Machines Render')
+        pDialog.update(int((2*100) / num_items), pdialog_line1, 'Machines Render')
         machine_render_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-        pDialog.update(75, pdialog_line1, 'Machine assets')
+        pDialog.update(int((3*100) / num_items), pdialog_line1, 'Machine assets')
         assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        pDialog.update(100, pdialog_line1, ' ')
+        pDialog.update(int((4*100) / num_items), pdialog_line1, 'Machine archives')
+        machine_archives_dic = fs_load_JSON_file_dic(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
+        pDialog.update(int((5*100) / num_items), pdialog_line1, ' ')
         pDialog.close()
 
         # --- Make a dictionary of objects to be filtered ---
         main_filter_dic = {}
         for m_name in main_pclone_dic:
+            if 'att_coins' in machine_main_dic[m_name]['input']:
+                coins = machine_main_dic[m_name]['input']['att_coins']
+            else:
+                coins = 0
+            if m_name in machine_archives_dic:
+                hasROMs = True if machine_archives_dic[m_name]['ROMs'] else False
+            else:
+                hasROMs = False
+            if m_name in machine_archives_dic:
+                hasCHDs = True if machine_archives_dic[m_name]['CHDs'] else False
+            else:
+                hasCHDs = False
+            if m_name in machine_archives_dic:
+                hasSamples = True if machine_archives_dic[m_name]['Samples'] else False
+            else:
+                hasSamples = False
+            control_list = []
             main_filter_dic[m_name] = {
                 'isDevice' : machine_render_dic[m_name]['isDevice'],
-                'sourcefile' : machine_main_dic[m_name]['sourcefile']
+                # --- <Option> filters ---
+                'coins' : coins,
+                'hasROMs' : hasROMs,
+                'hasCHDs' : hasCHDs,
+                'hasSamples' : hasSamples,
+                'isMature' : machine_render_dic[m_name]['isMature'],
+                'isBIOS' : machine_render_dic[m_name]['isBIOS'],
+                'isMechanical' : machine_main_dic[m_name]['isMechanical'],
+                'isImperfect' : True if machine_render_dic[m_name]['driver_status'] == 'imperfect' else False,
+                'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
+                # --- Other filters ---
+                'sourcefile' : machine_main_dic[m_name]['sourcefile'],
+                'genre' : machine_render_dic[m_name]['genre'],
+                'controls' : control_list,
             }
 
         # --- Clean 'filters' directory JSON files ---
@@ -4460,10 +4495,17 @@ def _command_context_setup_custom_filters():
 
             # --- Do filtering ---
             filtered_machine_dic = mame_filter_Default(main_filter_dic)
-            # filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition['driver'])
-            filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition['driver'])
+            filtered_machine_dic = mame_filter_Options_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition)
+            # filtered_machine_dic = mame_filter_Genre_tag(filtered_machine_dic, f_definition)
+            # filtered_machine_dic = mame_filter_Controls_tag(filtered_machine_dic, f_definition)
+            # filtered_machine_dic = mame_filter_Devices_tag(filtered_machine_dic, f_definition)
+            # filtered_machine_dic = mame_filter_Year_tag(filtered_machine_dic, f_definition)
+            # >> filtered_machine_dic = mame_filter_Include_tag(filtered_machine_dic, f_definition)
+            # >> filtered_machine_dic = mame_filter_Exclude_tag(filtered_machine_dic, f_definition)
+            # >> filtered_machine_dic = mame_filter_Change_tag(filtered_machine_dic, f_definition)
 
-            # >> Make indexed catalog
+            # --- Make indexed catalog ---
             filtered_machine_parents_dic = {}
             filtered_machine_all_dic = {}
             filtered_render_ROMs = {}
@@ -4484,19 +4526,25 @@ def _command_context_setup_custom_filters():
                 'display_name' : f_definition['name'],
                 'num_parents'  : len(filtered_machine_parents_dic),
                 'num_machines' : len(filtered_machine_all_dic),
+                'order'        : processed_items,
+                'plot'         : f_definition['plot'],
                 'rom_DB_noext' : rom_DB_noext
             }
             Filters_index_dic[f_name] = this_filter_idx_dic
 
             # --- Save filter database ---
+            writing_ticks_start = time.time()
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
             fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_dic, verbose = False)
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_machine_all_dic, verbose = True)
+            fs_write_JSON_file(output_FN.getPath(), filtered_machine_all_dic, verbose = False)
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json')
             fs_write_JSON_file(output_FN.getPath(), filtered_render_ROMs, verbose = False)
             output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
             fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
+            writing_ticks_end = time.time()
+            writing_time = writing_ticks_end - writing_ticks_start
+            log_debug('JSON writing time {0:.4f} s'.format(writing_time))
 
             # --- Final progress ---
             processed_items += 1

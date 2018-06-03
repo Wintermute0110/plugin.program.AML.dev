@@ -17,56 +17,70 @@
 <DEFINE name="SONY_DRIVERS">zn.cpp</DEFINE>
 
 <!--
+    Genre definitions
+-->
+<DEFINE name="STANDARD_GENRES">"Ball &amp; Paddle" or Climbing or Driving or Fighter or Maze or MultiGame or Platform or Puzzle or Shooter or Sports or Whac-A-Mole</DEFINE>
+
+<!--
     Control definitions
 -->
-<DEFINE name="COMMON_CONTROLS">Joy</DEFINE>
+<DEFINE name="STANDARD_CONTROLS">Dial or Doublejoy or Joy or Lightgun or "Only Buttons" or Paddle or Pedal or Positional or Stick or Trackball or Triplejoy</DEFINE>
 
 <!--
     Manufacturer filters
 -->
 <MAMEFilter>
     <Name>Atari</Name>
-    <Options></Options>
+    <Plot>Machines in Atari arcade boards</Plot>
+    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>ATARI_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
     <Name>Capcom</Name>
-    <Options></Options>
+    <Plot>Machines in Capcom arcade boards</Plot>
+    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>CAPCOM_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
     <Name>Konami</Name>
-    <Options></Options>
+    <Plot>Machines in Konami arcade boards</Plot>
+    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>KONAMI_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
     <Name>Midway</Name>
-    <Options></Options>
+    <Plot>Machines in Midway arcade boards</Plot>
+    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>MIDWAY_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
     <Name>Namco</Name>
-    <Options></Options>
+    <Plot>Machines in Namco arcade boards</Plot>
+    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>NAMCO_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
     <Name>NeoGeo MVS</Name>
-    <Options></Options>
+    <Plot>Machines in SNK Neo Geo MVS arcade board</Plot>
+    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>NEOGEO_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
     <Name>SEGA</Name>
-    <Options></Options>
+    <Plot>Machines in SEGA arcade boards</Plot>
+    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>SEGA_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
     <Name>Taito</Name>
-    <Options></Options>
+    <Plot>Machines in Taito arcade boards</Plot>
+    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>TAITO_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
     <Name>SONY</Name>
-    <Options></Options>
+    <Plot>Machines in SONY arcade boards</Plot>
+    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>SONY_DRIVERS</Driver>
 </MAMEFilter>
 
@@ -75,11 +89,11 @@
 -->
 <MAMEFilter>
     <Name>Familiy games from the 70'</Name>
-    <Plot>Plot test 70'</Plot>
-    <Options>NoCoinLess, NoMature, NoMechanical</Options>
-    <Driver>SONY_DRIVERS</Driver>
-    <Genre></Genre>
-    <Controls>COMMON_CONTROLS</Controls>
+    <Plot>Arcade machines from the 60' and 70' with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Driver></Driver>
+    <Genre>STANDARD_GENRES</Genre>
+    <Controls>STANDARD_CONTROLS</Controls>
     <Devices></Devices>
     <Year>year &lt; 1980</Year>
     <Include></Include>
@@ -88,11 +102,11 @@
 </MAMEFilter>
 <MAMEFilter>
     <Name>Familiy games from the 80'</Name>
-    <Plot>Plot test 80'</Plot>
-    <Options>NoCoinLess, NoMature, NoMechanical</Options>
-    <Driver>SONY_DRIVERS</Driver>
-    <Genre></Genre>
-    <Controls>COMMON_CONTROLS</Controls>
+    <Plot>Arcade machines from the 80' with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Driver></Driver>
+    <Genre>STANDARD_GENRES</Genre>
+    <Controls>STANDARD_CONTROLS</Controls>
     <Devices></Devices>
     <Year>year >= 1980 and year &lt; 1990</Year>
     <Include></Include>
@@ -101,11 +115,11 @@
 </MAMEFilter>
 <MAMEFilter>
     <Name>Familiy games from the 90'</Name>
-    <Plot>Plot test 90'</Plot>
-    <Options>NoCoinLess, NoMature, NoMechanical</Options>
-    <Driver>SONY_DRIVERS</Driver>
-    <Genre></Genre>
-    <Controls>COMMON_CONTROLS</Controls>
+    <Plot>Arcade machines from the 90' with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Driver></Driver>
+    <Genre>STANDARD_GENRES</Genre>
+    <Controls>STANDARD_CONTROLS</Controls>
     <Devices></Devices>
     <Year>year >= 1990 and year &lt; 2000</Year>
     <Include></Include>
@@ -114,11 +128,11 @@
 </MAMEFilter>
 <MAMEFilter>
     <Name>Familiy games from the 00'</Name>
-    <Plot>Plot test 00'</Plot>
-    <Options>NoCoinLess, NoMature, NoMechanical</Options>
-    <Driver>SONY_DRIVERS</Driver>
-    <Genre></Genre>
-    <Controls>COMMON_CONTROLS</Controls>
+    <Plot>Arcade machines from the XXI century with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Driver></Driver>
+    <Genre>STANDARD_GENRES</Genre>
+    <Controls>STANDARD_CONTROLS</Controls>
     <Devices></Devices>
     <Year>year >= 2000</Year>
     <Include></Include>

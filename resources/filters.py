@@ -35,7 +35,10 @@ def strip_str_list(t_list):
     return t_list
 
 def _get_comma_separated_list(text_t):
-    return strip_str_list(text_t.split(','))
+    if not text_t:
+        return []
+    else:
+        return strip_str_list(text_t.split(','))
 
 #
 # Parse a string 'XXXXXX with YYYYYY'
@@ -137,8 +140,13 @@ def filter_parse_XML(fname_str):
     # >> Resolve DEFINE tags (substitute by the defined value)
     for f_definition in filters_list:
         for initial_str, final_str in define_dic.iteritems():
-            f_definition['driver'] = f_definition['driver'].replace(initial_str, final_str)
-
+            f_definition['driver']   = f_definition['driver'].replace(initial_str, final_str)
+            f_definition['genre']    = f_definition['genre'].replace(initial_str, final_str)
+            f_definition['controls'] = f_definition['controls'].replace(initial_str, final_str)
+            f_definition['devices']  = f_definition['devices'].replace(initial_str, final_str)
+            # f_definition['include']  = f_definition['include'].replace(initial_str, final_str)
+            # f_definition['exclude']  = f_definition['exclude'].replace(initial_str, final_str)
+            # f_definition['change']   = f_definition['change'].replace(initial_str, final_str)
     return filters_list
 
 # -------------------------------------------------------------------------------------------------
@@ -244,7 +252,7 @@ def tokenize(program):
     # (?:...) -> A non-capturing version of regular parentheses.
     # \b -> Matches the empty string, but only at the beginning or end of a word.
     # \w -> Matches [a-zA-Z0-9_]
-    for operator, string in re.findall("\s*(?:(and|or|not|\(|\))|([\.\w_]+))", program):
+    for operator, string in re.findall("\s*(?:(and|or|not|\(|\))|([\.\w_\-\&]+))", program):
         # print 'Tokenize >> Program -> "' + program + \
         #       '", String -> "' + string + '", Operator -> "' + operator + '"\n';
         if string:
@@ -303,7 +311,7 @@ def parse_exec(program):
 # Default filter removes device machines
 #
 def mame_filter_Default(mame_xml_dic):
-    # log_debug('mame_filter_Default() Starting ...')
+    log_debug('mame_filter_Default() Starting ...')
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
     machines_filtered_dic = {}
@@ -318,8 +326,123 @@ def mame_filter_Default(mame_xml_dic):
 
     return machines_filtered_dic
 
-def mame_filter_Driver_tag(mame_xml_dic, driver_filter_expression):
-    # log_debug('mame_filter_Driver_tag() Starting ...')
+def mame_filter_Options_tag(mame_xml_dic, f_definition):
+    log_debug('mame_filter_Options_tag() Starting ...')
+    options_list = f_definition['options']
+    log_debug('Option list "{0}"'.format(options_list))
+
+    if not options_list:
+        log_debug('mame_filter_Options_tag() Option list is empty.')
+        return mame_xml_dic
+
+    # --- Compute bool variables ---
+    NoCoin_bool       = True if 'NoCoin' in options_list else False
+    NoCoinLess_bool   = True if 'NoCoinLess' in options_list else False
+    NoROMs_bool       = True if 'NoROMs' in options_list else False
+    NoCHDs_bool       = True if 'NoCHDs' in options_list else False
+    NoSamples_bool    = True if 'NoSamples' in options_list else False
+    NoMature_bool     = True if 'NoMature' in options_list else False
+    NoBIOS_bool       = True if 'NoBIOS' in options_list else False
+    NoMechanical_bool = True if 'NoMechanical' in options_list else False
+    NoImperfect_bool  = True if 'NoImperfect' in options_list else False
+    NoNonWorking_bool = True if 'NoNonworking' in options_list else False
+    log_debug('NoCoin_bool       {0}'.format(NoCoin_bool))
+    log_debug('NoCoinLess_bool   {0}'.format(NoCoinLess_bool))
+    log_debug('NoROMs_bool       {0}'.format(NoROMs_bool))
+    log_debug('NoCHDs_bool       {0}'.format(NoCHDs_bool))
+    log_debug('NoSamples_bool    {0}'.format(NoSamples_bool))
+    log_debug('NoMature_bool     {0}'.format(NoMature_bool))
+    log_debug('NoBIOS_bool       {0}'.format(NoBIOS_bool))
+    log_debug('NoMechanical_bool {0}'.format(NoMechanical_bool))
+    log_debug('NoImperfect_bool  {0}'.format(NoImperfect_bool))
+    log_debug('NoNonWorking_bool {0}'.format(NoNonWorking_bool))
+
+    initial_num_games = len(mame_xml_dic)
+    filtered_out_games = 0
+    machines_filtered_dic = {}
+    for m_name in sorted(mame_xml_dic):
+        # >> Remove Coin machines
+        if NoCoin_bool:
+            if mame_xml_dic[m_name]['coins'] > 0:
+                filtered_out_games += 1
+                continue
+            else:
+                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        # >> Remove CoinLess machines
+        if NoCoinLess_bool:
+            if mame_xml_dic[m_name]['coins'] == 0:
+                filtered_out_games += 1
+                continue
+            else:
+                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        # >> Remove ROM machines
+        if NoROMs_bool:
+            if mame_xml_dic[m_name]['hasROMs']:
+                filtered_out_games += 1
+                continue
+            else:
+                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        # >> Remove CHD machines
+        if NoCHDs_bool:
+            if mame_xml_dic[m_name]['hasCHDs']:
+                filtered_out_games += 1
+                continue
+            else:
+                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        # >> Remove Samples machines
+        if NoSamples_bool:
+            if mame_xml_dic[m_name]['hasSamples']:
+                filtered_out_games += 1
+                continue
+            else:
+                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        # >> Remove Mature machines
+        if NoMature_bool:
+            if mame_xml_dic[m_name]['isMature']:
+                filtered_out_games += 1
+                continue
+            else:
+                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        # >> Remove BIOS machines
+        if NoBIOS_bool:
+            if mame_xml_dic[m_name]['isBIOS']:
+                filtered_out_games += 1
+                continue
+            else:
+                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        # >> Remove Mechanical machines
+        if NoMechanical_bool:
+            if mame_xml_dic[m_name]['isMechanical']:
+                filtered_out_games += 1
+                continue
+            else:
+                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        # >> Remove Imperfect machines
+        if NoImperfect_bool:
+            if mame_xml_dic[m_name]['isImperfect']:
+                filtered_out_games += 1
+                continue
+            else:
+                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        # >> Remove NonWorking machines
+        if NoNonWorking_bool:
+            if mame_xml_dic[m_name]['isNonWorking']:
+                filtered_out_games += 1
+                continue
+            else:
+                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        # >> If machine was not removed then add it
+        machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+    log_debug('mame_filter_Options_tag() Initial {0} | '.format(initial_num_games) + \
+              'Removed {0} | '.format(filtered_out_games) + \
+              'Remaining {0}'.format(len(machines_filtered_dic)))
+
+    return machines_filtered_dic
+
+def mame_filter_Driver_tag(mame_xml_dic, f_definition):
+    log_debug('mame_filter_Driver_tag() Starting ...')
+    driver_filter_expression = f_definition['driver']
+    log_debug('Expression "{0}"'.format(driver_filter_expression))
 
     if not driver_filter_expression:
         log_debug('mame_filter_Driver_tag() User wants all drivers')
@@ -328,7 +451,6 @@ def mame_filter_Driver_tag(mame_xml_dic, driver_filter_expression):
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
     machines_filtered_dic = {}
-    log_debug('Expression "{0}"'.format(driver_filter_expression))
     for m_name in sorted(mame_xml_dic):
         driver_str = mame_xml_dic[m_name]['sourcefile']
         driver_name_list = [ driver_str ]
@@ -343,6 +465,66 @@ def mame_filter_Driver_tag(mame_xml_dic, driver_filter_expression):
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
     log_debug('mame_filter_Driver_tag() Initial {0} | '.format(initial_num_games) + \
+              'Removed {0} | '.format(filtered_out_games) + \
+              'Remaining {0}'.format(len(machines_filtered_dic)))
+
+    return machines_filtered_dic
+
+def mame_filter_Genre_tag(mame_xml_dic, f_definition):
+    log_debug('mame_filter_Genre_tag() Starting ...')
+    filter_expression = f_definition['genre']
+    log_debug('Expression "{0}"'.format(filter_expression))
+
+    if not filter_expression:
+        log_debug('mame_filter_Genre_tag() User wants all genres')
+        return mame_xml_dic
+
+    initial_num_games = len(mame_xml_dic)
+    filtered_out_games = 0
+    machines_filtered_dic = {}
+    for m_name in sorted(mame_xml_dic):
+        item_str_list = [ mame_xml_dic[m_name]['genre'] ]
+
+        # --- Update search variable and call parser to evaluate expression ---
+        set_parser_search_list(item_str_list)
+        boolean_result = parse_exec(filter_expression)
+
+        # --- Filter ROM or not ---
+        if not boolean_result:
+            filtered_out_games += 1
+        else:
+            machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+    log_debug('mame_filter_Genre_tag() Initial {0} | '.format(initial_num_games) + \
+              'Removed {0} | '.format(filtered_out_games) + \
+              'Remaining {0}'.format(len(machines_filtered_dic)))
+
+    return machines_filtered_dic
+
+def mame_filter_Controls_tag(mame_xml_dic, f_definition):
+    log_debug('mame_filter_Controls_tag() Starting ...')
+    filter_expression = f_definition['controls']
+    log_debug('Expression "{0}"'.format(filter_expression))
+
+    if not filter_expression:
+        log_debug('mame_filter_Controls_tag() User wants all genres')
+        return mame_xml_dic
+
+    initial_num_games = len(mame_xml_dic)
+    filtered_out_games = 0
+    machines_filtered_dic = {}
+    for m_name in sorted(mame_xml_dic):
+        item_str_list = [ mame_xml_dic[m_name]['controls'] ]
+
+        # --- Update search variable and call parser to evaluate expression ---
+        set_parser_search_list(item_str_list)
+        boolean_result = parse_exec(filter_expression)
+
+        # --- Filter ROM or not ---
+        if not boolean_result:
+            filtered_out_games += 1
+        else:
+            machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+    log_debug('mame_filter_Controls_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 

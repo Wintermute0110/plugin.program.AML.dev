@@ -10,7 +10,7 @@
          Multiple <Options> tags allowed.
       -->
     <Options>NoCoin, NoCoinLess, NoROMs, NoCHDs, NoSamples</Options>
-    <Options>NoMature, NoMechanical, NoImperfect, NoNonworking</Options>
+    <Options>NoMature, NoBIOS, NoMechanical, NoImperfect, NoNonworking</Options>
 
     <!--
         As shown in "Machines by Driver" filter.
