@@ -62,19 +62,6 @@ AML_ADDON_DIR        = ADDONS_DIR.pjoin(__addon_id__)
 AML_ICON_FILE_PATH   = AML_ADDON_DIR.pjoin('media/icon.png')
 AML_FANART_FILE_PATH = AML_ADDON_DIR.pjoin('media/fanart.jpg')
 
-# --- Class to store ListItem rendering stuff ---
-class LIRender:
-    # Is it faster to index a list by index or a dictionary by key???
-    # Maybe an optimization is to base this on a list instead of dictionaries.
-    def __init__(self):
-        self.key_list = []
-        self.li_name = {}
-        self.li_info = {}
-        self.li_props = {}
-        self.li_art = {}
-        self.li_context = {}
-        self.li_URL = {}
-
 # --- Plugin database indices ---
 class AML_Paths:
     def __init__(self):
@@ -1196,69 +1183,31 @@ def _render_catalog_parent_list(catalog_name, category_name):
 
     # --- Process ROMs ---
     processing_ticks_start = time.time()
-    r_obj = _render_process_machines(catalog_dic, catalog_name, category_name,
+    r_list = _render_process_machines(catalog_dic, catalog_name, category_name,
                                      MAME_render_db_dic, MAME_assets_dic,
                                      main_pclone_dic, fav_machines)
     processing_ticks_end = time.time()
     processing_time = processing_ticks_end - processing_ticks_start
 
-    # --- Render ROMs ---
+    # --- Commit ROMs ---
     rendering_ticks_start = time.time()
     _set_Kodi_all_sorting_methods()
-    for key in r_obj.key_list:
-        listitem = xbmcgui.ListItem(r_obj.li_name[key])
-        listitem.setInfo('video', r_obj.li_info[key])
-        # >> In Kodi Leia use setProperties()
-        for prop_name, prop_value in r_obj.li_props[key].iteritems():
-            listitem.setProperty(prop_name, prop_value)
-        listitem.setArt(r_obj.li_art[key])
-        listitem.addContextMenuItems(r_obj.li_context[key])
-        xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = r_obj.li_URL[key],
-                                    listitem = listitem, isFolder = False)
+    _render_commit_machines(r_list)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
     rendering_time = rendering_ticks_end - rendering_ticks_start
 
-    # --- Render parent main list ---
-    # rendering_ticks_start = time.time()
-    # _set_Kodi_all_sorting_methods()
-    # if view_mode_property == VIEW_MODE_PCLONE:
-    #     # >> Parent/Clone mode render parents only
-    #     for machine_name, render_name in catalog_dic[category_name].iteritems():
-    #         machine = MAME_render_db_dic[machine_name]
-    #         if display_hide_Mature and machine['isMature']: continue
-    #         if display_hide_BIOS and machine['isBIOS']: continue
-    #         if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-    #         if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-    #         _render_catalog_machine_row(machine_name, render_name, machine,
-    #                                     MAME_assets_dic[machine_name],
-    #                                     True, len(main_pclone_dic[machine_name]),
-    #                                     catalog_name, category_name)
-    # else:
-    #     # >> Flat mode renders all machines
-    #     for machine_name, render_name in catalog_dic[category_name].iteritems():
-    #         machine = MAME_render_db_dic[machine_name]
-    #         if display_hide_Mature and machine['isMature']: continue
-    #         if display_hide_BIOS and machine['isBIOS']: continue
-    #         if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-    #         if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-    #         _render_catalog_machine_row(machine_name, render_name, machine,
-    #                                     MAME_assets_dic[machine_name])
-    # xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
-    # rendering_ticks_end = time.time()
-    # rendering_time = rendering_ticks_end - rendering_ticks_start
-
     # --- DEBUG Data loading/rendering statistics ---
     total_time = loading_time + processing_time + rendering_time
-    # log_debug('Loading catalog dic {0:.4f} s'.format(catalog_t))
-    log_debug('Loading render db     {0:.4f} s'.format(render_t))
-    log_debug('Loading assets db     {0:.4f} s'.format(assets_t))
-    # log_debug('Loading pclone dic    {0:.4f} s'.format(pclone_t))
-    log_debug('Loading MAME favs dic {0:.4f} s'.format(favs_t))
-    log_debug('Loading               {0:.4f} s'.format(loading_time))
-    log_debug('Processing            {0:.4f} s'.format(processing_time))
-    log_debug('Rendering             {0:.4f} s'.format(rendering_time))
-    log_debug('Total                 {0:.4f} s'.format(total_time))
+    # log_debug('Loading catalog    {0:.4f} s'.format(catalog_t))
+    log_debug('Loading render db  {0:.4f} s'.format(render_t))
+    log_debug('Loading assets db  {0:.4f} s'.format(assets_t))
+    # log_debug('Loading pclone dic {0:.4f} s'.format(pclone_t))
+    # log_debug('Loading MAME favs  {0:.4f} s'.format(favs_t))
+    log_debug('Loading            {0:.4f} s'.format(loading_time))
+    log_debug('Processing         {0:.4f} s'.format(processing_time))
+    log_debug('Rendering          {0:.4f} s'.format(rendering_time))
+    log_debug('Total              {0:.4f} s'.format(total_time))
 
 #
 # Renders a list of MAME Clone machines (including parent).
@@ -1282,151 +1231,73 @@ def _render_catalog_clone_list(catalog_name, category_name, parent_name):
     catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
     if g_settings['debug_enable_MAME_machine_cache']:
         cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-        MAME_render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
+        render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME machine cache disabled.')
-        MAME_render_db_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
+        render_db_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
     if g_settings['debug_enable_MAME_asset_cache']:
         if 'cache_index_dic' not in locals():
             cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-        MAME_assets_dic = fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name)
+        assets_db_dic = fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME asset cache disabled.')
-        MAME_assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        assets_db_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
     main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-    machine_dic = catalog_dic[category_name]
+    fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
     loading_ticks_end = time.time()
+    loading_time = loading_ticks_end - loading_ticks_start
 
+    # --- Process ROMs ---
+    processing_ticks_start = time.time()
+    machine_dic = catalog_dic[category_name]
+    t_catalog_dic = {}
+    t_render_dic = {}
+    t_assets_dic = {}
     # >> Render parent first
+    t_catalog_dic[category_name] = {parent_name : machine_dic[parent_name]}
+    t_render_dic[parent_name] = render_db_dic[parent_name]
+    t_assets_dic[parent_name] = assets_db_dic[parent_name]
+    # >> Then clones
+    for clone_name in main_pclone_dic[parent_name]:
+        t_catalog_dic[category_name][clone_name] = machine_dic[clone_name]
+        t_render_dic[clone_name] = render_db_dic[clone_name]
+        t_assets_dic[clone_name] = assets_db_dic[clone_name]
+    r_list = _render_process_machines(t_catalog_dic, catalog_name, category_name,
+                                     t_render_dic, t_assets_dic, main_pclone_dic,
+                                     fav_machines, False)
+    processing_ticks_end = time.time()
+    processing_time = processing_ticks_end - processing_ticks_start
+
+    # --- Commit ROMs ---
     rendering_ticks_start = time.time()
     _set_Kodi_all_sorting_methods()
-    render_name = machine_dic[parent_name]
-    machine = MAME_render_db_dic[parent_name]
-    _render_catalog_machine_row(parent_name, render_name, machine, MAME_assets_dic[parent_name])
-
-    # >> Render clones belonging to parent in this category
-    for clone_name in main_pclone_dic[parent_name]:
-        render_name = machine_dic[clone_name]
-        machine = MAME_render_db_dic[clone_name]
-        if display_hide_Mature and machine['isMature']: continue
-        if display_hide_BIOS and machine['isBIOS']: continue
-        if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-        if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-        _render_catalog_machine_row(clone_name, render_name, machine, MAME_assets_dic[clone_name])
+    _render_commit_machines(r_list)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
+    rendering_time = rendering_ticks_end - rendering_ticks_start
 
     # --- DEBUG Data loading/rendering statistics ---
-    log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
-    log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
-
-def _render_catalog_machine_row(m_name, display_name, machine, m_assets,
-                                flag_parent_list = False, num_clones = 0,
-                                catalog_name = '', category_name = ''):
-    # --- Default values for flags ---
-    AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
-
-    # --- Render a Parent only list ---
-    if flag_parent_list and num_clones > 0:
-        # NOTE all machines here are parents
-        # --- Mark number of clones ---
-        display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
-
-        # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
-        if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-        if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-        if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-        elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
-
-        # --- Skin flags ---
-        AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
-    else:
-        # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
-        if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-        if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-        if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-        if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-        elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
-
-        # --- Skin flags ---
-        if machine['cloneof']: AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE
-        else:                  AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
-
-    # --- Assets/artwork ---
-    icon_path      = m_assets[g_mame_icon] if m_assets[g_mame_icon] else 'DefaultProgram.png'
-    fanart_path    = m_assets[g_mame_fanart]
-    banner_path    = m_assets['marquee']
-    clearlogo_path = m_assets['clearlogo']
-    poster_path    = m_assets['flyer']
-
-    # --- Create listitem row ---
-    ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(display_name)
-    # >> Make all the infolabels compatible with Advanced Emulator Launcher
-    if g_settings['display_hide_trailers']:
-        listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
-                                   'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                   'plot'    : m_assets['plot'],
-                                   'overlay' : ICON_OVERLAY})
-    else:
-        listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
-                                   'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                   'plot'    : m_assets['plot'], 'trailer' : m_assets['trailer'],
-                                   'overlay' : ICON_OVERLAY})
-    listitem.setProperty('nplayers', machine['nplayers'])
-    listitem.setProperty('platform', 'MAME')
-
-    # --- Assets ---
-    # >> AEL/AML custom artwork fields
-    listitem.setArt({
-        'title'     : m_assets['title'],   'snap'      : m_assets['snap'],
-        'boxfront'  : m_assets['cabinet'], 'boxback'   : m_assets['cpanel'],
-        'cartridge' : m_assets['PCB'],     'flyer'     : m_assets['flyer'],
-        'icon'      : icon_path,           'fanart'    : fanart_path,
-        'banner'    : banner_path,         'clearlogo' : clearlogo_path, 'poster' : poster_path
-    })
-
-    # --- ROM flags (Skins will use these flags to render icons) ---
-    listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
-
-    # --- Create context menu ---
-    URL_view_DAT = _misc_url_2_arg_RunPlugin('command', 'VIEW_DAT', 'machine', m_name)
-    URL_view = _misc_url_2_arg_RunPlugin('command', 'VIEW', 'machine', m_name)
-    URL_fav = _misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', m_name)
-    if flag_parent_list and num_clones > 0:
-        URL_clones = _misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_MAME_CLONES', 
-                                               'catalog', catalog_name,
-                                               'category', category_name, 'parent', m_name)
-        commands = [
-            ('Info / Utils', URL_view_DAT),
-            ('View / Audit', URL_view),
-            ('Show clones', URL_clones),
-            ('Add to MAME Favourites', URL_fav),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
-        ]
-    else:
-        commands = [
-            ('Info / Utils', URL_view_DAT),
-            ('View / Audit', URL_view),
-            ('Add to MAME Favourites', URL_fav),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
-        ]
-    listitem.addContextMenuItems(commands)
-
-    # --- Add row ---
-    URL = _misc_url_2_arg('command', 'LAUNCH', 'machine', m_name)
-    xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = URL, listitem = listitem, isFolder = False)
+    total_time = loading_time + processing_time + rendering_time
+    log_debug('Loading     {0:.4f} s'.format(loading_time))
+    log_debug('Processing  {0:.4f} s'.format(processing_time))
+    log_debug('Rendering   {0:.4f} s'.format(rendering_time))
+    log_debug('Total       {0:.4f} s'.format(total_time))
 
 #
 # First make this function work OK, then try to optimize it.
 # "Premature optimization is the root of all evil." DK
+# Returns a list of dictionaries
+# r_list = [
+#   {
+#     'm_name' : str, 'render_name' : str,
+#     'info' : {}, 'props' : {}, 'art' : {},
+#     'context' : [], 'URL' ; str
+#   }, ...
+# ]
 #
 def _render_process_machines(catalog_dic, catalog_name, category_name,
-                             MAME_render_db_dic, MAME_assets_dic, main_pclone_dic, fav_machines):
+                             render_db_dic, assets_dic, main_pclone_dic,
+                             fav_machines, flag_parent_list = True):
     # --- Prepare for processing ---
     display_hide_Mature = g_settings['display_hide_Mature']
     display_hide_BIOS = g_settings['display_hide_BIOS']
@@ -1435,23 +1306,24 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
     display_hide_imperfect  = g_settings['display_hide_imperfect']
 
     # --- Traverse machines ---
-    r_obj = LIRender()
+    r_list = []
     for machine_name, render_name in catalog_dic[category_name].iteritems():
-        machine = MAME_render_db_dic[machine_name]
+        machine = render_db_dic[machine_name]
         if display_hide_Mature and machine['isMature']: continue
         if display_hide_BIOS and machine['isBIOS']: continue
         if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
         if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
-        m_assets = MAME_assets_dic[machine_name]
+        m_assets = assets_dic[machine_name]
 
         # --- Add machine to list, set default values ---
-        r_obj.key_list.append(machine_name)
+        r_dict = {}
+        r_dict['m_name'] = machine_name
         AEL_InFav_bool_value = AEL_INFAV_BOOL_VALUE_FALSE
         AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
-        num_clones = len(main_pclone_dic[machine_name])
-        view_mode_property = g_settings['mame_view_mode']
-        if view_mode_property == VIEW_MODE_PCLONE: flag_parent_list = True
-        else:                                      flag_parent_list = False
+        if machine_name in main_pclone_dic:
+            num_clones = len(main_pclone_dic[machine_name])
+        else:
+            num_clones = 0
 
         # --- Render a Parent only list ---
         display_name = render_name
@@ -1500,22 +1372,22 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
         # --- Create listitem row ---
         # >> Make all the infolabels compatible with Advanced Emulator Launcher
         ICON_OVERLAY = 6
-        r_obj.li_name[machine_name] = display_name
+        r_dict['render_name'] = display_name
         if g_settings['display_hide_trailers']:
-            r_obj.li_info[machine_name] = {
+            r_dict['info'] = {
                 'title'   : display_name,     'year'    : machine['year'],
                 'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
                 'plot'    : m_assets['plot'],
                 'overlay' : ICON_OVERLAY
             }
         else:
-            r_obj.li_info[machine_name] = {
+            r_dict['info'] = {
                 'title'   : display_name,     'year'    : machine['year'],
                 'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
                 'plot'    : m_assets['plot'], 'trailer' : m_assets['trailer'],
                 'overlay' : ICON_OVERLAY
             }
-        r_obj.li_props[machine_name] = {
+        r_dict['props'] = {
             'nplayers' : machine['nplayers'],
             'platform' : 'MAME',
             AEL_PCLONE_STAT_LABEL : AEL_PClone_stat_value,
@@ -1523,7 +1395,7 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
         }
 
         # --- Assets ---
-        r_obj.li_art[machine_name] = {
+        r_dict['art'] = {
             'title'     : m_assets['title'],   'snap'      : m_assets['snap'],
             'boxfront'  : m_assets['cabinet'], 'boxback'   : m_assets['cpanel'],
             'cartridge' : m_assets['PCB'],     'flyer'     : m_assets['flyer'],
@@ -1556,12 +1428,25 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
                 ('Kodi File Manager', 'ActivateWindow(filemanager)'),
                 ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
             ]
-        r_obj.li_context[machine_name] = commands
+        r_dict['context'] = commands
 
         # --- Add row ---
-        r_obj.li_URL[machine_name] = _misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
+        r_dict['URL'] = _misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
+        r_list.append(r_dict)
 
-    return r_obj
+    return r_list
+
+def _render_commit_machines(r_list):
+    for r_dict in r_list:
+        listitem = xbmcgui.ListItem(r_dict['render_name'])
+        listitem.setInfo('video', r_dict['info'])
+        # >> In Kodi Leia use setProperties()
+        for prop_name, prop_value in r_dict['props'].iteritems():
+            listitem.setProperty(prop_name, prop_value)
+        listitem.setArt(r_dict['art'])
+        listitem.addContextMenuItems(r_dict['context'])
+        xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = r_dict['URL'],
+                                    listitem = listitem, isFolder = False)
 
 #
 # Not used at the moment -> There are global display settings.
