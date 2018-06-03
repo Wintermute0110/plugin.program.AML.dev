@@ -457,12 +457,8 @@ def mame_filter_Driver_tag(mame_xml_dic, f_definition):
     for m_name in sorted(mame_xml_dic):
         driver_str = mame_xml_dic[m_name]['sourcefile']
         driver_name_list = [ driver_str ]
-
-        # --- Update search variable and call parser to evaluate expression ---
         set_parser_search_list(driver_name_list)
         boolean_result = parse_exec(driver_filter_expression)
-
-        # --- Filter ROM or not ---
         if not boolean_result:
             filtered_out_games += 1
         else:
@@ -487,12 +483,8 @@ def mame_filter_Genre_tag(mame_xml_dic, f_definition):
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
         item_str_list = [ mame_xml_dic[m_name]['genre'] ]
-
-        # --- Update search variable and call parser to evaluate expression ---
         set_parser_search_list(item_str_list)
         boolean_result = parse_exec(filter_expression)
-
-        # --- Filter ROM or not ---
         if not boolean_result:
             filtered_out_games += 1
         else:
@@ -517,17 +509,67 @@ def mame_filter_Controls_tag(mame_xml_dic, f_definition):
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
         item_str_list = [ mame_xml_dic[m_name]['controls'] ]
-
-        # --- Update search variable and call parser to evaluate expression ---
         set_parser_search_list(item_str_list)
         boolean_result = parse_exec(filter_expression)
-
-        # --- Filter ROM or not ---
         if not boolean_result:
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
     log_debug('mame_filter_Controls_tag() Initial {0} | '.format(initial_num_games) + \
+              'Removed {0} | '.format(filtered_out_games) + \
+              'Remaining {0}'.format(len(machines_filtered_dic)))
+
+    return machines_filtered_dic
+
+def mame_filter_Devices_tag(mame_xml_dic, f_definition):
+    log_debug('mame_filter_Devices_tag() Starting ...')
+    filter_expression = f_definition['devices']
+    log_debug('Expression "{0}"'.format(filter_expression))
+
+    if not filter_expression:
+        log_debug('mame_filter_Devices_tag() User wants all genres')
+        return mame_xml_dic
+
+    initial_num_games = len(mame_xml_dic)
+    filtered_out_games = 0
+    machines_filtered_dic = {}
+    for m_name in sorted(mame_xml_dic):
+        # --- Update search list variable and call parser to evaluate expression ---
+        item_str_list = [ mame_xml_dic[m_name]['devices'] ]
+        set_parser_search_list(item_str_list)
+        boolean_result = parse_exec(filter_expression)
+        if not boolean_result:
+            filtered_out_games += 1
+        else:
+            machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+    log_debug('mame_filter_Devices_tag() Initial {0} | '.format(initial_num_games) + \
+              'Removed {0} | '.format(filtered_out_games) + \
+              'Remaining {0}'.format(len(machines_filtered_dic)))
+
+    return machines_filtered_dic
+
+def mame_filter_Year_tag(mame_xml_dic, f_definition):
+    log_debug('mame_filter_Year_tag() Starting ...')
+    filter_expression = f_definition['year']
+    log_debug('Expression "{0}"'.format(filter_expression))
+
+    if not filter_expression:
+        log_debug('mame_filter_Year_tag() User wants all genres')
+        return mame_xml_dic
+
+    initial_num_games = len(mame_xml_dic)
+    filtered_out_games = 0
+    machines_filtered_dic = {}
+    for m_name in sorted(mame_xml_dic):
+        # --- Update search int variable and call parser to evaluate expression ---
+        item_str_list = mame_xml_dic[m_name]['year']
+        set_parser_search_list(item_str_list)
+        boolean_result = parse_exec(filter_expression)
+        if not boolean_result:
+            filtered_out_games += 1
+        else:
+            machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+    log_debug('mame_filter_Year_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 

@@ -4440,7 +4440,10 @@ def _command_context_setup_custom_filters():
                 hasSamples = True if machine_archives_dic[m_name]['Samples'] else False
             else:
                 hasSamples = False
+            # >> Complete this variables.
             control_list = []
+            device_list = []
+            year = 0
             main_filter_dic[m_name] = {
                 'isDevice' : machine_render_dic[m_name]['isDevice'],
                 # --- <Option> filters ---
@@ -4457,6 +4460,8 @@ def _command_context_setup_custom_filters():
                 'sourcefile' : machine_main_dic[m_name]['sourcefile'],
                 'genre' : machine_render_dic[m_name]['genre'],
                 'controls' : control_list,
+                'devices' : device_list,
+                'year' : year,
             }
 
         # --- Clean 'filters' directory JSON files ---
