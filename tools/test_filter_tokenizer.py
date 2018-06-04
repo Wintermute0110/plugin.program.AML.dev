@@ -1,6 +1,5 @@
 #!/usr/bin/python
 #
-#
 import re
 
 def tokenize(program):
@@ -33,7 +32,8 @@ def tokenize(program):
     yield 'END Token'
 
 # --- main code ---
-t_str = '"Ball & Paddle" or Climbing or Driving or Fighter or Platform or Puzzle or Shooter or Sports or Whac-A-Mole'
+# t_str = '"Ball & Paddle" or "Whac A Mole" or Climbing or Driving or Fighter or Platform or Puzzle or Shooter or Sports'
+t_str = 'contains(Konami)'
 print("String '{0}'".format(t_str))
 t_counter = 0
 for token in tokenize(t_str):
