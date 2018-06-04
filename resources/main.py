@@ -4458,6 +4458,7 @@ def _command_context_setup_custom_filters():
                 'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
                 # --- Other filters ---
                 'sourcefile' : machine_main_dic[m_name]['sourcefile'],
+                # 'manufacturer' : machine_main_dic[m_name]['sourcefile'],
                 'genre' : machine_render_dic[m_name]['genre'],
                 'controls' : control_list,
                 'devices' : device_list,
@@ -4502,6 +4503,7 @@ def _command_context_setup_custom_filters():
             filtered_machine_dic = mame_filter_Default(main_filter_dic)
             filtered_machine_dic = mame_filter_Options_tag(filtered_machine_dic, f_definition)
             filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition)
+            # filtered_machine_dic = mame_filter_Manufacturer_tag(filtered_machine_dic, f_definition)
             filtered_machine_dic = mame_filter_Genre_tag(filtered_machine_dic, f_definition)
             # filtered_machine_dic = mame_filter_Controls_tag(filtered_machine_dic, f_definition)
             # filtered_machine_dic = mame_filter_Devices_tag(filtered_machine_dic, f_definition)

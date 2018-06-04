@@ -20,6 +20,13 @@
     <Driver>cps1.cpp or cps2.cpp</Driver>
 
     <!--
+        As shown in "Manufacturer" filter.
+        If multiple tags only last one is used.
+        Operators: and, or, not, function call with literal
+    -->
+    <Manufacturer>contains(Konami) or contains(Namco)</Manufacturer>
+
+    <!--
         As shown in "Machines by Category (Genre)" filter.
         If multiple tags only last one is used.
         Literals with spaces must be enclosed in quotes ' or double quotes ".

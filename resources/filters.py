@@ -87,17 +87,18 @@ def filter_parse_XML(fname_str):
             define_dic[name_str] = define_str
         elif root_element.tag == 'MAMEFilter':
             this_filter_dic = {
-                'name'     : '',
-                'plot'     : '',
-                'options'  : [], # List of strings
-                'driver'   : '',
-                'genre'    : '',
-                'controls' : '',
-                'devices'  : '',
-                'year'     : '',
-                'include'  : [], # List of strings
-                'exclude'  : [], # List of strings
-                'change'   : [], # List of tuples (change_orig, change_dest)
+                'name'         : '',
+                'plot'         : '',
+                'options'      : [], # List of strings
+                'driver'       : '',
+                'manufacturer' : '',
+                'genre'        : '',
+                'controls'     : '',
+                'devices'      : '',
+                'year'         : '',
+                'include'      : [], # List of strings
+                'exclude'      : [], # List of strings
+                'change'       : [], # List of tuples (change_orig, change_dest)
             }
             for filter_element in root_element:
                 text_t = filter_element.text if filter_element.text else ''
@@ -111,6 +112,8 @@ def filter_parse_XML(fname_str):
                         this_filter_dic['options'].extend(t_list)
                 elif filter_element.tag == 'Driver':
                     this_filter_dic['driver'] = text_t
+                elif filter_element.tag == 'Manufacturer':
+                    this_filter_dic['manufacturer'] = text_t
                 elif filter_element.tag == 'Genre':
                     this_filter_dic['genre'] = text_t
                 elif filter_element.tag == 'Controls':
@@ -140,47 +143,42 @@ def filter_parse_XML(fname_str):
     # >> Resolve DEFINE tags (substitute by the defined value)
     for f_definition in filters_list:
         for initial_str, final_str in define_dic.iteritems():
-            f_definition['driver']   = f_definition['driver'].replace(initial_str, final_str)
-            f_definition['genre']    = f_definition['genre'].replace(initial_str, final_str)
-            f_definition['controls'] = f_definition['controls'].replace(initial_str, final_str)
-            f_definition['devices']  = f_definition['devices'].replace(initial_str, final_str)
-            # f_definition['include']  = f_definition['include'].replace(initial_str, final_str)
-            # f_definition['exclude']  = f_definition['exclude'].replace(initial_str, final_str)
-            # f_definition['change']   = f_definition['change'].replace(initial_str, final_str)
+            f_definition['driver']       = f_definition['driver'].replace(initial_str, final_str)
+            f_definition['manufacturer'] = f_definition['manufacturer'].replace(initial_str, final_str)
+            f_definition['genre']        = f_definition['genre'].replace(initial_str, final_str)
+            f_definition['controls']     = f_definition['controls'].replace(initial_str, final_str)
+            f_definition['devices']      = f_definition['devices'].replace(initial_str, final_str)
+            # f_definition['include']      = f_definition['include'].replace(initial_str, final_str)
+            # f_definition['exclude']      = f_definition['exclude'].replace(initial_str, final_str)
+            # f_definition['change']       = f_definition['change'].replace(initial_str, final_str)
     return filters_list
 
 # -------------------------------------------------------------------------------------------------
-# Filter parser engine (copied from NARS)
+# List of String Parser (LSP) engine (copied from NARS)
+# Grammar token objects.
+# Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 # -------------------------------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-# Search engine and parser
-# -----------------------------------------------------------------------------
-# --- Global variables for parser ---
-def set_parser_search_list(search_list):
-    global parser_search_list
-  
-    parser_search_list = search_list
-
 # --- Token objects ---
-class literal_token:
+class LSP_literal_token:
     def __init__(self, value):
         self.value = value
         self.id = "STRING"
     def nud(self):
         return self
-    # --- Actual implementation
+    # --- Actual implementation ---
     def exec_token(self):
         global parser_search_list
 
         return self.value in parser_search_list
 
-def advance(id = None):
-    global token
-    if id and token.id != id:
-        raise SyntaxError("Expected %r" % id)
-    token = next()
+def LSP_advance(id = None):
+    global LSP_token
 
-class operator_open_par_token:
+    if id and LSP_token.id != id:
+        raise SyntaxError("Expected {0}".format(id))
+    LSP_token = LSP_next()
+
+class LSP_operator_open_par_token:
     lbp = 0
     def __init__(self):
         self.id = "OP ("
@@ -189,23 +187,23 @@ class operator_open_par_token:
         advance("OP )")
         return expr
 
-class operator_close_par_token:
+class LSP_operator_close_par_token:
     lbp = 0
     def __init__(self):
         self.id = "OP )"
 
-class operator_not_token:
+class LSP_operator_not_token:
     lbp = 50
     def __init__(self):
         self.id = "OP NOT"
     def nud(self):
         self.first = expression(50)
         return self
-    # --- Actual implementation
+    # --- Actual implementation ---
     def exec_token(self):
         return not self.first.exec_token()
 
-class operator_and_token:
+class LSP_operator_and_token:
     lbp = 10
     def __init__(self):
         self.id = "OP AND"
@@ -213,11 +211,11 @@ class operator_and_token:
         self.first = left
         self.second = expression(10)
         return self
-    # --- Actual implementation
+    # --- Actual implementation ---
     def exec_token(self):
         return self.first.exec_token() and self.second.exec_token()
 
-class operator_or_token:
+class LSP_operator_or_token:
     lbp = 10
     def __init__(self):
         self.id = "OP OR"
@@ -225,29 +223,29 @@ class operator_or_token:
         self.first = left
         self.second = expression(10)
         return self
-    # --- Actual implementation
+    # --- Actual implementation ---
     def exec_token(self):
         return self.first.exec_token() or self.second.exec_token()
 
-class end_token:
+class LSP_end_token:
     lbp = 0
     def __init__(self):
         self.id = "END TOKEN"
 
-# ----------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
 # Tokenizer
-# ----------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
 # jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 #
-# - If the body of the function contains a 'yield', then the function becames
-#   a generator function. Generator functions create generator iterators, also
-#   named "generators". Just remember that a generator is a special type of 
-#   iterator.
-#   To be considered an iterator, generators must define a few methods, one of 
-#   which is __next__(). To get the next value from a generator, we use the 
-#   same built-in function as for iterators: next().
+# If the body of the function contains a 'yield', then the function becames
+# a generator function. Generator functions create generator iterators, also
+# named "generators". Just remember that a generator is a special type of iterator.
 #
-def tokenize(program):
+# To be considered an iterator, generators must define a few methods, one of 
+# which is __next__(). To get the next value from a generator, we use the 
+# same built-in function as for iterators: next().
+#
+def LSP_tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
     # (?:...) -> A non-capturing version of regular parentheses.
     # \b -> Matches the empty string, but only at the beginning or end of a word.
@@ -255,57 +253,60 @@ def tokenize(program):
     reg = "\s*(?:(and|or|not|\(|\))|(\"[ \.\w_\-\&]+\")|([\.\w_\-\&]+))"
     for operator, q_string, string in re.findall(reg, program):
         if string:
-            yield literal_token(string)
+            yield LSP_literal_token(string)
         elif q_string:
             if q_string[0] == '"': q_string = q_string[1:]
             if q_string[-1] == '"': q_string = q_string[:-1]
-            yield literal_token(q_string)
+            yield LSP_literal_token(q_string)
         elif operator == "and":
-            yield operator_and_token()
+            yield LSP_operator_and_token()
         elif operator == "or":
-            yield operator_or_token()
+            yield LSP_operator_or_token()
         elif operator == "not":
-            yield operator_not_token()
+            yield LSP_operator_not_token()
         elif operator == "(":
-            yield operator_open_par_token()
+            yield LSP_operator_open_par_token()
         elif operator == ")":
-            yield operator_close_par_token()
+            yield LSP_operator_close_par_token()
         else:
             raise SyntaxError("Unknown operator: %r".format(operator))
-    yield end_token()
+    yield LSP_end_token()
 
-# ----------------------------------------------------------------------------
-# Parser
-# Inspired by http://effbot.org/zone/simple-top-down-parsing.htm
-# ----------------------------------------------------------------------------
-def expression(rbp = 0):
-    global token
-    t = token
-    token = next()
+# -------------------------------------------------------------------------------------------------
+# List of String Parser (LSP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+# -------------------------------------------------------------------------------------------------
+def LSP_expression(rbp = 0):
+    global LSP_token
+
+    t = LSP_token
+    LSP_token = LSP_next()
     left = t.nud()
-    while rbp < token.lbp:
-        t = token
-        token = next()
+    while rbp < LSP_token.lbp:
+        t = LSP_token
+        LSP_token = LSP_next()
         left = t.led(left)
     return left
 
-def expression_exec(rbp = 0):
-    global token
-    t = token
-    token = next()
+def LSP_expression_exec(rbp = 0):
+    global LSP_token
+
+    t = LSP_token
+    LSP_token = LSP_next()
     left = t.nud()
-    while rbp < token.lbp:
-        t = token
-        token = next()
+    while rbp < LSP_token.lbp:
+        t = LSP_token
+        LSP_token = LSP_next()
         left = t.led(left)
     return left.exec_token()
 
-def parse_exec(program):
-    global token, next
-    next = tokenize(program).next
-    token = next()
+def LSP_parse_exec(program, search_list):
+    global LSP_token, LSP_next, LSP_parser_search_list
 
-    return expression_exec()
+    LSP_parser_search_list = search_list
+    LSP_next = LSP_tokenize(program).next
+    LSP_token = LSP_next()
+
+    return LSP_expression_exec()
 
 # -------------------------------------------------------------------------------------------------
 # MAME machine filters
@@ -457,13 +458,36 @@ def mame_filter_Driver_tag(mame_xml_dic, f_definition):
     for m_name in sorted(mame_xml_dic):
         driver_str = mame_xml_dic[m_name]['sourcefile']
         driver_name_list = [ driver_str ]
-        set_parser_search_list(driver_name_list)
-        boolean_result = parse_exec(driver_filter_expression)
+        boolean_result = LSP_parse_exec(driver_filter_expression, driver_name_list)
         if not boolean_result:
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
     log_debug('mame_filter_Driver_tag() Initial {0} | '.format(initial_num_games) + \
+              'Removed {0} | '.format(filtered_out_games) + \
+              'Remaining {0}'.format(len(machines_filtered_dic)))
+
+    return machines_filtered_dic
+
+def mame_filter_Manufacturer_tag(mame_xml_dic, f_definition):
+    log_debug('mame_filter_Manufacturer_tag() Starting ...')
+    driver_filter_expression = f_definition['manufacturer']
+    log_debug('Expression "{0}"'.format(driver_filter_expression))
+
+    if not driver_filter_expression:
+        log_debug('mame_filter_Manufacturer_tag() User wants all manufacturers')
+        return mame_xml_dic
+
+    initial_num_games = len(mame_xml_dic)
+    filtered_out_games = 0
+    machines_filtered_dic = {}
+    for m_name in sorted(mame_xml_dic):
+        bool_result = MP_parse_exec(driver_filter_expression, mame_xml_dic[m_name]['manufacturer'])
+        if not bool_result:
+            filtered_out_games += 1
+        else:
+            machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+    log_debug('mame_filter_Manufacturer_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
