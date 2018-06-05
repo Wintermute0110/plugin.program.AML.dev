@@ -813,13 +813,13 @@ def mame_filter_Default(mame_xml_dic):
     return machines_filtered_dic
 
 def mame_filter_Options_tag(mame_xml_dic, f_definition):
-    log_debug('mame_filter_Options_tag() Starting ...')
+    # log_debug('mame_filter_Options_tag() Starting ...')
     options_list = f_definition['options']
-    log_debug('Option list "{0}"'.format(options_list))
 
     if not options_list:
         log_debug('mame_filter_Options_tag() Option list is empty.')
         return mame_xml_dic
+    log_debug('Option list "{0}"'.format(options_list))
 
     # --- Compute bool variables ---
     NoCoin_bool       = True if 'NoCoin' in options_list else False
@@ -848,75 +848,45 @@ def mame_filter_Options_tag(mame_xml_dic, f_definition):
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
         # >> Remove Coin machines
-        if NoCoin_bool:
-            if mame_xml_dic[m_name]['coins'] > 0:
-                filtered_out_games += 1
-                continue
-            else:
-                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        if NoCoin_bool and mame_xml_dic[m_name]['coins'] > 0:
+            filtered_out_games += 1
+            continue
         # >> Remove CoinLess machines
-        if NoCoinLess_bool:
-            if mame_xml_dic[m_name]['coins'] == 0:
-                filtered_out_games += 1
-                continue
-            else:
-                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        if NoCoinLess_bool and mame_xml_dic[m_name]['coins'] == 0:
+            filtered_out_games += 1
+            continue
         # >> Remove ROM machines
-        if NoROMs_bool:
-            if mame_xml_dic[m_name]['hasROMs']:
-                filtered_out_games += 1
-                continue
-            else:
-                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        if NoROMs_bool and mame_xml_dic[m_name]['hasROMs']:
+            filtered_out_games += 1
+            continue
         # >> Remove CHD machines
-        if NoCHDs_bool:
-            if mame_xml_dic[m_name]['hasCHDs']:
-                filtered_out_games += 1
-                continue
-            else:
-                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        if NoCHDs_bool and mame_xml_dic[m_name]['hasCHDs']:
+            filtered_out_games += 1
+            continue
         # >> Remove Samples machines
-        if NoSamples_bool:
-            if mame_xml_dic[m_name]['hasSamples']:
-                filtered_out_games += 1
-                continue
-            else:
-                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        if NoSamples_bool and mame_xml_dic[m_name]['hasSamples']:
+            filtered_out_games += 1
+            continue
         # >> Remove Mature machines
-        if NoMature_bool:
-            if mame_xml_dic[m_name]['isMature']:
-                filtered_out_games += 1
-                continue
-            else:
-                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        if NoMature_bool and mame_xml_dic[m_name]['isMature']:
+            filtered_out_games += 1
+            continue
         # >> Remove BIOS machines
-        if NoBIOS_bool:
-            if mame_xml_dic[m_name]['isBIOS']:
-                filtered_out_games += 1
-                continue
-            else:
-                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        if NoBIOS_bool and mame_xml_dic[m_name]['isBIOS']:
+            filtered_out_games += 1
+            continue
         # >> Remove Mechanical machines
-        if NoMechanical_bool:
-            if mame_xml_dic[m_name]['isMechanical']:
-                filtered_out_games += 1
-                continue
-            else:
-                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        if NoMechanical_bool and mame_xml_dic[m_name]['isMechanical']:
+            filtered_out_games += 1
+            continue
         # >> Remove Imperfect machines
-        if NoImperfect_bool:
-            if mame_xml_dic[m_name]['isImperfect']:
-                filtered_out_games += 1
-                continue
-            else:
-                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        if NoImperfect_bool and mame_xml_dic[m_name]['isImperfect']:
+            filtered_out_games += 1
+            continue
         # >> Remove NonWorking machines
-        if NoNonWorking_bool:
-            if mame_xml_dic[m_name]['isNonWorking']:
-                filtered_out_games += 1
-                continue
-            else:
-                machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        if NoNonWorking_bool and mame_xml_dic[m_name]['isNonWorking']:
+            filtered_out_games += 1
+            continue
         # >> If machine was not removed then add it
         machines_filtered_dic[m_name] = mame_xml_dic[m_name]
     log_debug('mame_filter_Options_tag() Initial {0} | '.format(initial_num_games) + \
@@ -926,13 +896,13 @@ def mame_filter_Options_tag(mame_xml_dic, f_definition):
     return machines_filtered_dic
 
 def mame_filter_Driver_tag(mame_xml_dic, f_definition):
-    log_debug('mame_filter_Driver_tag() Starting ...')
+    # log_debug('mame_filter_Driver_tag() Starting ...')
     filter_expression = f_definition['driver']
-    log_debug('Expression "{0}"'.format(filter_expression))
 
     if not filter_expression:
         log_debug('mame_filter_Driver_tag() User wants all drivers')
         return mame_xml_dic
+    log_debug('Expression "{0}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -951,13 +921,13 @@ def mame_filter_Driver_tag(mame_xml_dic, f_definition):
     return machines_filtered_dic
 
 def mame_filter_Manufacturer_tag(mame_xml_dic, f_definition):
-    log_debug('mame_filter_Manufacturer_tag() Starting ...')
+    # log_debug('mame_filter_Manufacturer_tag() Starting ...')
     filter_expression = f_definition['manufacturer']
-    log_debug('Expression "{0}"'.format(filter_expression))
 
     if not filter_expression:
         log_debug('mame_filter_Manufacturer_tag() User wants all manufacturers')
         return mame_xml_dic
+    log_debug('Expression "{0}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -975,13 +945,13 @@ def mame_filter_Manufacturer_tag(mame_xml_dic, f_definition):
     return machines_filtered_dic
 
 def mame_filter_Genre_tag(mame_xml_dic, f_definition):
-    log_debug('mame_filter_Genre_tag() Starting ...')
+    # log_debug('mame_filter_Genre_tag() Starting ...')
     filter_expression = f_definition['genre']
-    log_debug('Expression "{0}"'.format(filter_expression))
 
     if not filter_expression:
         log_debug('mame_filter_Genre_tag() User wants all genres')
         return mame_xml_dic
+    log_debug('Expression "{0}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -1000,13 +970,13 @@ def mame_filter_Genre_tag(mame_xml_dic, f_definition):
     return machines_filtered_dic
 
 def mame_filter_Controls_tag(mame_xml_dic, f_definition):
-    log_debug('mame_filter_Controls_tag() Starting ...')
+    # log_debug('mame_filter_Controls_tag() Starting ...')
     filter_expression = f_definition['controls']
-    log_debug('Expression "{0}"'.format(filter_expression))
 
     if not filter_expression:
         log_debug('mame_filter_Controls_tag() User wants all genres')
         return mame_xml_dic
+    log_debug('Expression "{0}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -1024,13 +994,13 @@ def mame_filter_Controls_tag(mame_xml_dic, f_definition):
     return machines_filtered_dic
 
 def mame_filter_Devices_tag(mame_xml_dic, f_definition):
-    log_debug('mame_filter_Devices_tag() Starting ...')
+    # log_debug('mame_filter_Devices_tag() Starting ...')
     filter_expression = f_definition['devices']
-    log_debug('Expression "{0}"'.format(filter_expression))
 
     if not filter_expression:
         log_debug('mame_filter_Devices_tag() User wants all genres')
         return mame_xml_dic
+    log_debug('Expression "{0}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -1049,13 +1019,13 @@ def mame_filter_Devices_tag(mame_xml_dic, f_definition):
     return machines_filtered_dic
 
 def mame_filter_Year_tag(mame_xml_dic, f_definition):
-    log_debug('mame_filter_Year_tag() Starting ...')
+    # log_debug('mame_filter_Year_tag() Starting ...')
     filter_expression = f_definition['year']
-    log_debug('Expression "{0}"'.format(filter_expression))
 
     if not filter_expression:
         log_debug('mame_filter_Year_tag() User wants all genres')
         return mame_xml_dic
+    log_debug('Expression "{0}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0

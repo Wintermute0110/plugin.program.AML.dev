@@ -23,69 +23,69 @@
     Manufacturer/board filters
 -->
 <MAMEFilter>
-    <Name>Atari</Name>
+    <Name>Atari arcade games</Name>
     <Plot>Machines in Atari arcade boards</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Atari</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
-    <Name>Capcom</Name>
+    <Name>Capcom arcade games</Name>
     <Plot>Machines in Capcom arcade boards</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Capcom</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
     <Name>Capcom CPS board</Name>
     <Plot>Machines in Capcom arcade boards</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>CAPCOM_CPS_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
-    <Name>Konami</Name>
+    <Name>Konami arcade games</Name>
     <Plot>Machines in Konami arcade boards</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Konami</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
-    <Name>Midway</Name>
+    <Name>Midway arcade games</Name>
     <Plot>Machines in Midway arcade boards</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Midway</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
-    <Name>Namco</Name>
+    <Name>Namco arcade games</Name>
     <Plot>Machines in Namco arcade boards</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Namco</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
-    <Name>SEGA</Name>
+    <Name>SEGA arcade games</Name>
     <Plot>Machines in SEGA arcade boards</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Sega or has SEGA</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
-    <Name>SNK</Name>
+    <Name>SNK arcade games</Name>
     <Plot>Machines in SNK Neo Geo MVS arcade board</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has SNK or has Snk</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
     <Name>SNK NeoGeo MVS board</Name>
     <Plot>Machines in SNK Neo Geo MVS arcade board</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>NEOGEO_MVS_DRIVER</Driver>
 </MAMEFilter>
 <MAMEFilter>
-    <Name>Taito</Name>
+    <Name>Taito arcade games</Name>
     <Plot>Machines in Taito arcade boards</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Taito</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
-    <Name>SONY</Name>
+    <Name>SONY arcade games</Name>
     <Plot>Machines in SONY arcade boards</Plot>
-    <Options>NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Sony or has SONY</Manufacturer> 
 </MAMEFilter>
 
