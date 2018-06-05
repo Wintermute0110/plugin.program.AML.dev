@@ -3,98 +3,102 @@
 import re
 
 # -------------------------------------------------------------------------------------------------
-# Manufacturer Parser (MP) engine. Grammar token objects.
+# String Parser (SP) engine. Grammar token objects.
 # Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+#
+# Operators: and, or, not, has, literal. has operator is similar to not operator.
 # -------------------------------------------------------------------------------------------------
+debug_SP_parser = False
+
 # --- Token objects ---
-class MP_literal_token:
+class SP_literal_token:
     def __init__(self, value):
         self.value = value
         self.id = "STRING"
     def nud(self):
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        print('Executing literal token {0}'.format(self.value))
+        if debug_SP_parser:
+            print('Executing LITERAL token value "{0}"'.format(self.value))
+            print('LITERAL token returns {0} "{1}"'.format(type(self.value), unicode(self.value)))
         return self.value
     def __repr__(self):
-        return "<literal {0}>".format(self.value)
+        return '<LITERAL "{0}">'.format(self.value)
 
-def MP_advance(id = None):
-    global MP_token
-
-    if id and MP_token.id != id:
-        raise SyntaxError("Expected {0}".format(id))
-    MP_token = MP_next()
-
-class MP_operator_open_par_token:
-    lbp = 10
+class SP_operator_has_token:
+    lbp = 50
     def __init__(self):
-        self.id = "OP ("
-    # >> By treating the left parentesis as a binary operator, parsing this is straight-forward.
-    def led(self, left):
-        self.first = left
-        self.second = MP_expression(10)
-        MP_advance("OP )")
+        self.id = "OP HAS"
+    def nud(self):
+        self.first = SP_expression(50)
         return self
     def exec_token(self):
-        print('Executing function {0} argument {1}'.format(self.first, self.second))
-        return True
+        # >> self.first.exec_token() must return a string literal
+        if debug_SP_parser:
+            print('Executing HAS token')
+        ret = True if SP_parser_search_string.find(self.first.exec_token()) >= 0 else False
+        if debug_SP_parser:
+            print('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
     def __repr__(self):
-        return "<OP (>"
+        return "<OP has>"
 
-class MP_operator_close_par_token:
-    lbp = 0
-    def __init__(self):
-        self.id = "OP )"
-    def __repr__(self):
-        return "<OP )>"
-
-class MP_operator_not_token:
+class SP_operator_not_token:
     lbp = 50
     def __init__(self):
         self.id = "OP NOT"
     def nud(self):
-        self.first = MP_expression(50)
+        self.first = SP_expression(50)
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        print('Executing NOT token')
-        return not self.first.exec_token()
+        if debug_SP_parser:
+            print('Executing NOT token')
+        ret = not self.first.exec_token()
+        if debug_SP_parser:
+            print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
     def __repr__(self):
         return "<OP not>"
 
-class MP_operator_and_token:
+class SP_operator_and_token:
     lbp = 10
     def __init__(self):
         self.id = "OP AND"
     def led(self, left):
-        print('Executing AND token')
+        if debug_SP_parser:
+            print('Executing AND token')
         self.first = left
-        self.second = MP_expression(10)
+        self.second = SP_expression(10)
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        return self.first.exec_token() and self.second.exec_token()
+        if debug_SP_parser:
+            print('Executing AND token')
+        ret = self.first.exec_token() and self.second.exec_token()
+        if debug_SP_parser:
+            print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
     def __repr__(self):
         return "<OP and>"
 
-class MP_operator_or_token:
+class SP_operator_or_token:
     lbp = 10
     def __init__(self):
         self.id = "OP OR"
     def led(self, left):
         self.first = left
-        self.second = MP_expression(10)
+        self.second = SP_expression(10)
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        print('Executing OR token')
-        return self.first.exec_token() or self.second.exec_token()
+        if debug_SP_parser:
+            print('Executing OR token')
+        ret = self.first.exec_token() or self.second.exec_token()
+        if debug_SP_parser:
+            print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
     def __repr__(self):
         return "<OP or>"
 
-class MP_end_token:
+class SP_end_token:
     lbp = 0
     def __init__(self):
         self.id = "END TOKEN"
@@ -103,91 +107,88 @@ class MP_end_token:
 
 # -------------------------------------------------------------------------------------------------
 # Tokenizer
+# See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
-# jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
-#
-# If the body of the function contains a 'yield', then the function becames
-# a generator function. Generator functions create generator iterators, also
-# named "generators". Just remember that a generator is a special type of iterator.
-#
-# To be considered an iterator, generators must define a few methods, one of 
-# which is __next__(). To get the next value from a generator, we use the 
-# same built-in function as for iterators: next().
-#
-def MP_tokenize(program):
+def SP_tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
     # (?:...) -> A non-capturing version of regular parentheses.
-    # \b -> Matches the empty string, but only at the beginning or end of a word.
     # \w -> Matches [a-zA-Z0-9_]
-    reg = "\s*(?:(and|or|not|\(|\))|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))"
+    reg = "\s*(?:(and|or|not|has)|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))"
     for operator, q_string, string in re.findall(reg, program):
         if string:
-            yield MP_literal_token(string)
+            yield SP_literal_token(string)
         elif q_string:
             if q_string[0] == '"': q_string = q_string[1:]
             if q_string[-1] == '"': q_string = q_string[:-1]
-            yield MP_literal_token(q_string)
+            yield SP_literal_token(q_string)
         elif operator == "and":
-            yield MP_operator_and_token()
+            yield SP_operator_and_token()
         elif operator == "or":
-            yield MP_operator_or_token()
+            yield SP_operator_or_token()
         elif operator == "not":
-            yield MP_operator_not_token()
-        elif operator == "(":
-            yield MP_operator_open_par_token()
-        elif operator == ")":
-            yield MP_operator_close_par_token()
+            yield SP_operator_not_token()
+        elif operator == "has":
+            yield SP_operator_has_token()
         else:
             raise SyntaxError("Unknown operator: %r".format(operator))
-    yield MP_end_token()
+    yield SP_end_token()
 
 # -------------------------------------------------------------------------------------------------
-# Manufacturer Parser (MP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+# Manufacturer Parser (SP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 # -------------------------------------------------------------------------------------------------
-def MP_expression(rbp = 0):
-    global MP_token
+def SP_expression(rbp = 0):
+    global SP_token
 
-    t = MP_token
-    MP_token = MP_next()
+    t = SP_token
+    SP_token = SP_next()
     left = t.nud()
-    while rbp < MP_token.lbp:
-        t = MP_token
-        MP_token = MP_next()
+    while rbp < SP_token.lbp:
+        t = SP_token
+        SP_token = SP_next()
         left = t.led(left)
     return left
 
-def MP_expression_exec(rbp = 0):
-    global MP_token
+def SP_parse_exec(program, search_string):
+    global SP_token, SP_next, SP_parser_search_string
 
-    t = MP_token
-    MP_token = MP_next()
+    print('SP_parse_exec() Initialising program execution')
+    print('SP_parse_exec() Search string "{0}"'.format(search_string))
+    print('SP_parse_exec() Program       "{0}"'.format(program))
+    SP_parser_search_string = search_string
+    SP_next = SP_tokenize(program).next
+    SP_token = SP_next()
+
+    # --- Old function parse_exec() ---
+    rbp = 0
+    t = SP_token
+    SP_token = SP_next()
     left = t.nud()
-    while rbp < MP_token.lbp:
-        t = MP_token
-        MP_token = MP_next()
+    while rbp < SP_token.lbp:
+        t = SP_token
+        SP_token = SP_next()
         left = t.led(left)
-    print('MP_expression_exec() Init exec program in token {0}'.format(left))
+    print('SP_parse_exec() Init exec program in token {0}'.format(left))
+
     return left.exec_token()
 
-def MP_parse_exec(program, search_list):
-    global MP_token, MP_next, MP_parser_search_list
+# --- main code -----------------------------------------------------------------------------------
+# --- Input strings ---
+i_str = 'Konami'
 
-    print('MP_parse_exec() Initialising program execution')
-    print('Search string "{0}"'.format(search_list))
-    print('Program       "{0}"'.format(program))
-    MP_parser_search_list = search_list
-    MP_next = MP_tokenize(program).next
-    MP_token = MP_next()
+# --- Programs ---
+# p_str = 'has Konami'
+# p_str = 'not has Konami'
+# p_str = 'has Konami or has Namco'
+# p_str = 'has Namco or has Konami'
+# p_str = 'has Konami or not has Namco'
+p_str = 'has Konami or has Namco or has "Capcom / Kaneko"'
 
-    return MP_expression_exec()
-
-# --- main code ---
-# p_str = 'contains(Konami)'
-p_str = 'contains(Konami) or contains(Namco)'
-# p_str = 'contains(Konami) or contains(Namco) or contains("Konami / Kaneko")'
-print("String '{0}'".format(p_str))
+# --- Test ---
+print("String  '{0}'".format(i_str))
+print("Program '{0}'".format(p_str))
 t_counter = 0
-for token in MP_tokenize(p_str):
+for token in SP_tokenize(p_str):
     print("Token {0:02d} '{1}'".format(t_counter, token))
     t_counter += 1
-MP_parse_exec(p_str, 'Konami')
+result = SP_parse_exec(p_str, i_str)
+print('Program result {0}'.format(result))
