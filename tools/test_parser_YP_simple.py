@@ -11,7 +11,6 @@ import re
 # -------------------------------------------------------------------------------------------------
 debug_YP_parser = True
 
-# --- Token objects ---
 class YP_literal_token:
     def __init__(self, value):
         self.value = value

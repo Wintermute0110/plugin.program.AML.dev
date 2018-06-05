@@ -10,7 +10,6 @@ import re
 # -------------------------------------------------------------------------------------------------
 debug_LSP_parser = True
 
-# --- Token objects ---
 class LSP_literal_token:
     def __init__(self, value):
         self.value = value

@@ -10,7 +10,6 @@ import re
 # -------------------------------------------------------------------------------------------------
 debug_SP_parser = True
 
-# --- Token objects ---
 class SP_literal_token:
     def __init__(self, value):
         self.value = value
