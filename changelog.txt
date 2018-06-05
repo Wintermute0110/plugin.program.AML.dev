@@ -21,7 +21,7 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
 
 [B]Advanced Emulator Launcher | version 0.9.7 | xx June 2018[/B]
 
-WIP      [MAME FILTERING] Improve the Custom Filters (add more filtering options as defined
+FEATURE  [MAME FILTERING] Improve the Custom Filters (add more filtering options as defined
          in the reference filter file `AML-MAME-filters-reference.xml`).
 
 FEATURE  Render the `In Favourites` flag for MAME machines.

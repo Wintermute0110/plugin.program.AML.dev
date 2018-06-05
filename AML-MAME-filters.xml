@@ -24,49 +24,85 @@
 -->
 <MAMEFilter>
     <Name>Atari arcade games</Name>
-    <Plot>Machines in Atari arcade boards</Plot>
+    <Plot>Arcade games by Atari</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Atari</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
     <Name>Capcom arcade games</Name>
-    <Plot>Machines in Capcom arcade boards</Plot>
+    <Plot>Arcade games by Capcom</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Capcom</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
     <Name>Capcom CPS board</Name>
-    <Plot>Machines in Capcom arcade boards</Plot>
+    <Plot>Machines in Capcom CPS arcade boards</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>CAPCOM_CPS_DRIVERS</Driver>
 </MAMEFilter>
 <MAMEFilter>
+    <Name>Data East arcade games</Name>
+    <Plot>Arcade games by Data East</Plot>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Manufacturer>has "Data East"</Manufacturer> 
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Gaelco arcade games</Name>
+    <Plot>Arcade games by Gaelco</Plot>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Manufacturer>has Gaelco</Manufacturer> 
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Irem arcade games</Name>
+    <Plot>Arcade games by Irem</Plot>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Manufacturer>has Irem</Manufacturer> 
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Jaleco arcade games</Name>
+    <Plot>Arcade games by Jaleco</Plot>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Manufacturer>has Jaleco</Manufacturer> 
+</MAMEFilter>
+<MAMEFilter>
+    <Name>Kaneko arcade games</Name>
+    <Plot>Arcade games by Kaneko</Plot>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Manufacturer>has Kaneko</Manufacturer> 
+</MAMEFilter>
+<MAMEFilter>
     <Name>Konami arcade games</Name>
-    <Plot>Machines in Konami arcade boards</Plot>
+    <Plot>Arcade games by Konami</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Konami</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
     <Name>Midway arcade games</Name>
-    <Plot>Machines in Midway arcade boards</Plot>
+    <Plot>Arcade games by Midway</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Midway</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
     <Name>Namco arcade games</Name>
-    <Plot>Machines in Namco arcade boards</Plot>
+    <Plot>Arcade games by Namco</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Namco</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
+    <Name>Nintendo arcade games</Name>
+    <Plot>Arcade games by Nintendo</Plot>
+    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Manufacturer>has Nintendo</Manufacturer> 
+</MAMEFilter>
+<MAMEFilter>
     <Name>SEGA arcade games</Name>
-    <Plot>Machines in SEGA arcade boards</Plot>
+    <Plot>Arcade games by SEGA</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Sega or has SEGA</Manufacturer> 
 </MAMEFilter>
 <MAMEFilter>
     <Name>SNK arcade games</Name>
-    <Plot>Machines in SNK Neo Geo MVS arcade board</Plot>
+    <Plot>Arcade games by SNK</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has SNK or has Snk</Manufacturer> 
 </MAMEFilter>
@@ -78,15 +114,9 @@
 </MAMEFilter>
 <MAMEFilter>
     <Name>Taito arcade games</Name>
-    <Plot>Machines in Taito arcade boards</Plot>
+    <Plot>Arcade games by Taito</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Taito</Manufacturer> 
-</MAMEFilter>
-<MAMEFilter>
-    <Name>SONY arcade games</Name>
-    <Plot>Machines in SONY arcade boards</Plot>
-    <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
-    <Manufacturer>has Sony or has SONY</Manufacturer> 
 </MAMEFilter>
 
 <!--
