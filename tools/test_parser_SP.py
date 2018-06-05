@@ -6,9 +6,9 @@ import re
 # String Parser (SP) engine. Grammar token objects.
 # Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 #
-# Operators: and, or, not, has, literal. has operator is similar to not operator.
+# SP operators: and, or, not, has, literal. has operator is similar to not operator.
 # -------------------------------------------------------------------------------------------------
-debug_SP_parser = False
+debug_SP_parser = True
 
 # --- Token objects ---
 class SP_literal_token:
@@ -20,8 +20,9 @@ class SP_literal_token:
     def exec_token(self):
         if debug_SP_parser:
             print('Executing LITERAL token value "{0}"'.format(self.value))
-            print('LITERAL token returns {0} "{1}"'.format(type(self.value), unicode(self.value)))
-        return self.value
+            ret = self.value
+            print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
     def __repr__(self):
         return '<LITERAL "{0}">'.format(self.value)
 

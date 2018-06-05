@@ -1,14 +1,15 @@
 #!/usr/bin/python
 #
-# A simple List of Strings Parser (LSP) test file.
-# Operators: literal, or.
-#
 import re
 
 # -------------------------------------------------------------------------------------------------
-# LSP engine. Grammar token objects.
+# List of String Parser (LSP) engine. Grammar token objects.
 # Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+#
+# LSP operators: and, or, not, '(', ')', literal.
 # -------------------------------------------------------------------------------------------------
+debug_LSP_parser = True
+
 # --- Token objects ---
 class LSP_literal_token:
     def __init__(self, value):
@@ -16,12 +17,14 @@ class LSP_literal_token:
         self.id = "STRING"
     def nud(self):
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        print('Executing literal token {0}'.format(self.value))
-        return self.value
+        if debug_LSP_parser:
+            print('Executing LITERAL token value "{0}"'.format(self.value))
+            ret = self.value in LSP_parser_search_list
+            print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
     def __repr__(self):
-        return "[literal {0}]".format(self.value)
+        return '<LITERAL "{0}">'.format(self.value)
 
 def LSP_advance(id = None):
     global LSP_token
@@ -34,28 +37,19 @@ class LSP_operator_open_par_token:
     lbp = 0
     def __init__(self):
         self.id = "OP ("
-    # def nud(self):
-    #     expr = LSP_expression()
-    #     advance("OP )")
-    #     return expr
-    # >> By treating the left parentesis as a binary operator, parsing this is straight-forward.
-    def led(self, left):
-        self.first = left
-        self.second = LSP_expression(10)
-        advance("OP )")
-        return self
-    def exec_token(self):
-        print('Executing function token "{0}" argument {1}'.format(self.first, self.second))
-        return True
+    def nud(self):
+        expr = LSP_expression()
+        LSP_advance("OP )")
+        return expr
     def __repr__(self):
-        return "[OP (]"
+        return "<OP (>"
 
 class LSP_operator_close_par_token:
     lbp = 0
     def __init__(self):
         self.id = "OP )"
     def __repr__(self):
-        return "[OP )]"
+        return "<OP )>"
 
 class LSP_operator_not_token:
     lbp = 50
@@ -64,27 +58,35 @@ class LSP_operator_not_token:
     def nud(self):
         self.first = LSP_expression(50)
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        print('Executing NOT token')
-        return not self.first.exec_token()
+        if debug_LSP_parser:
+            print('Executing NOT token')
+        ret = not self.first.exec_token()
+        if debug_LSP_parser:
+            print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
     def __repr__(self):
-        return "[OP not]"
+        return "<OP not>"
 
 class LSP_operator_and_token:
     lbp = 10
     def __init__(self):
         self.id = "OP AND"
     def led(self, left):
-        print('Executing AND token')
+        if debug_LSP_parser:
+            print('Executing AND token')
         self.first = left
         self.second = LSP_expression(10)
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        return self.first.exec_token() and self.second.exec_token()
+        if debug_LSP_parser:
+            print('Executing AND token')
+        ret = self.first.exec_token() and self.second.exec_token()
+        if debug_LSP_parser:
+            print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
     def __repr__(self):
-        return "[OP and]"
+        return "<OP and>"
 
 class LSP_operator_or_token:
     lbp = 10
@@ -94,39 +96,33 @@ class LSP_operator_or_token:
         self.first = left
         self.second = LSP_expression(10)
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        print('Executing OR token')
-        return self.first.exec_token() or self.second.exec_token()
+        if debug_LSP_parser:
+            print('Executing OR token')
+        ret = self.first.exec_token() or self.second.exec_token()
+        if debug_LSP_parser:
+            print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
     def __repr__(self):
-        return "[OP or]"
+        return "<OP or>"
 
 class LSP_end_token:
     lbp = 0
     def __init__(self):
         self.id = "END TOKEN"
     def __repr__(self):
-        return "[END token]"
+        return "<END token>"
 
 # -------------------------------------------------------------------------------------------------
 # Tokenizer
+# See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
-# jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
-#
-# If the body of the function contains a 'yield', then the function becames
-# a generator function. Generator functions create generator iterators, also
-# named "generators". Just remember that a generator is a special type of iterator.
-#
-# To be considered an iterator, generators must define a few methods, one of 
-# which is __next__(). To get the next value from a generator, we use the 
-# same built-in function as for iterators: next().
-#
 def LSP_tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
     # (?:...) -> A non-capturing version of regular parentheses.
     # \b -> Matches the empty string, but only at the beginning or end of a word.
     # \w -> Matches [a-zA-Z0-9_]
-    reg = "\s*(?:(and|or|not|\(|\))|(\"[ \.\w_\-\&]+\")|([\.\w_\-\&]+))"
+    reg = "\s*(?:(and|or|not|\(|\))|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))"
     for operator, q_string, string in re.findall(reg, program):
         if string:
             yield LSP_literal_token(string)
@@ -163,9 +159,18 @@ def LSP_expression(rbp = 0):
         left = t.led(left)
     return left
 
-def LSP_expression_exec(rbp = 0):
-    global LSP_token
+def LSP_parse_exec(program, search_list):
+    global LSP_token, LSP_next, LSP_parser_search_list
 
+    print('LSP_parse_exec() Initialising program execution')
+    print('LSP_parse_exec() Search string "{0}"'.format(unicode(search_list)))
+    print('LSP_parse_exec() Program       "{0}"'.format(program))
+    LSP_parser_search_list = search_list
+    LSP_next = LSP_tokenize(program).next
+    LSP_token = LSP_next()
+
+    # --- Old function parse_exec() ---
+    rbp = 0
     t = LSP_token
     LSP_token = LSP_next()
     left = t.nud()
@@ -173,26 +178,31 @@ def LSP_expression_exec(rbp = 0):
         t = LSP_token
         LSP_token = LSP_next()
         left = t.led(left)
-    print('Init exec program in token {0}'.format(left))
+    print('LSP_parse_exec() Init exec program in token {0}'.format(left))
+
     return left.exec_token()
 
-def LSP_parse_exec(program, search_list):
-    global LSP_token, LSP_next, LSP_parser_search_list
-
-    print('LSP_parse_exec() Initialising program execution')
-    print('Search string "{0}"'.format(search_list))
-    print('Program       "{0}"'.format(program))
-    LSP_parser_search_list = search_list
-    LSP_next = LSP_tokenize(program).next
-    LSP_token = LSP_next()
-
-    return LSP_expression_exec()
-
 # --- main code ---
-s_str = 'Konami or Namco or Sega'
-print("String '{0}'".format(s_str))
+# --- Input strings ---
+i_list = ['Konami', 'Capcom']
+
+# --- Programs ---
+# p_str = 'Konami'
+# p_str = 'not Konami'
+# p_str = 'Konami or Namco'
+# p_str = 'Konami and Namco'
+# p_str = 'Namco or (Konami or Capcom)'
+# p_str = 'Namco or (Konami or not Capcom)'
+# p_str = 'Namco or (Konami or not (Capcom and Kaneko))'
+# p_str = '"Capcom / Kaneko"'
+p_str = '"Capcom / Kaneko" or Namco'
+
+# --- Test ---
+print("String  '{0}'".format(unicode(i_list)))
+print("Program '{0}'".format(p_str))
 t_counter = 0
-for token in LSP_tokenize(s_str):
+for token in LSP_tokenize(p_str):
     print("Token {0:02d} '{1}'".format(t_counter, token))
     t_counter += 1
-LSP_parse_exec(s_str, 'Konami')
+result = LSP_parse_exec(p_str, i_list)
+print('Program result {0}'.format(result))
