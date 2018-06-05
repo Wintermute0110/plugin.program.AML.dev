@@ -154,22 +154,197 @@ def filter_parse_XML(fname_str):
     return filters_list
 
 # -------------------------------------------------------------------------------------------------
-# List of String Parser (LSP) engine (copied from NARS)
-# Grammar token objects.
+# String Parser (SP) engine. Grammar token objects.
 # Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+#
+# SP operators: and, or, not, has, literal. has operator is similar to not operator.
 # -------------------------------------------------------------------------------------------------
-# --- Token objects ---
+debug_SP_parser = True
+
+class SP_literal_token:
+    def __init__(self, value):
+        self.value = value
+        self.id = "STRING"
+    def nud(self):
+        return self
+    def exec_token(self):
+        if debug_SP_parser:
+            print('Executing LITERAL token value "{0}"'.format(self.value))
+            ret = self.value
+            print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return '<LITERAL "{0}">'.format(self.value)
+
+class SP_operator_has_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP HAS"
+    def nud(self):
+        self.first = SP_expression(50)
+        return self
+    def exec_token(self):
+        # >> self.first.exec_token() must return a string literal
+        if debug_SP_parser:
+            print('Executing HAS token')
+        ret = True if SP_parser_search_string.find(self.first.exec_token()) >= 0 else False
+        if debug_SP_parser:
+            print('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP has>"
+
+class SP_operator_not_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP NOT"
+    def nud(self):
+        self.first = SP_expression(50)
+        return self
+    def exec_token(self):
+        if debug_SP_parser:
+            print('Executing NOT token')
+        ret = not self.first.exec_token()
+        if debug_SP_parser:
+            print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP not>"
+
+class SP_operator_and_token:
+    lbp = 10
+    def __init__(self):
+        self.id = "OP AND"
+    def led(self, left):
+        if debug_SP_parser:
+            print('Executing AND token')
+        self.first = left
+        self.second = SP_expression(10)
+        return self
+    def exec_token(self):
+        if debug_SP_parser:
+            print('Executing AND token')
+        ret = self.first.exec_token() and self.second.exec_token()
+        if debug_SP_parser:
+            print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP and>"
+
+class SP_operator_or_token:
+    lbp = 10
+    def __init__(self):
+        self.id = "OP OR"
+    def led(self, left):
+        self.first = left
+        self.second = SP_expression(10)
+        return self
+    def exec_token(self):
+        if debug_SP_parser:
+            print('Executing OR token')
+        ret = self.first.exec_token() or self.second.exec_token()
+        if debug_SP_parser:
+            print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP or>"
+
+class SP_end_token:
+    lbp = 0
+    def __init__(self):
+        self.id = "END TOKEN"
+    def __repr__(self):
+        return "<END token>"
+
+# -------------------------------------------------------------------------------------------------
+# Tokenizer
+# See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
+# -------------------------------------------------------------------------------------------------
+SP_token_pat = re.compile("\s*(?:(and|or|not|has)|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
+
+def SP_tokenize(program):
+    # \s* -> Matches any number of blanks [ \t\n\r\f\v].
+    # (?:...) -> A non-capturing version of regular parentheses.
+    # \w -> Matches [a-zA-Z0-9_]
+    for operator, q_string, string in SP_token_pat.findall(program):
+        if string:
+            yield SP_literal_token(string)
+        elif q_string:
+            if q_string[0] == '"': q_string = q_string[1:]
+            if q_string[-1] == '"': q_string = q_string[:-1]
+            yield SP_literal_token(q_string)
+        elif operator == "and":
+            yield SP_operator_and_token()
+        elif operator == "or":
+            yield SP_operator_or_token()
+        elif operator == "not":
+            yield SP_operator_not_token()
+        elif operator == "has":
+            yield SP_operator_has_token()
+        else:
+            raise SyntaxError("Unknown operator: '{0}'".format(operator))
+    yield SP_end_token()
+
+# -------------------------------------------------------------------------------------------------
+# Manufacturer Parser (SP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+# -------------------------------------------------------------------------------------------------
+def SP_expression(rbp = 0):
+    global SP_token
+
+    t = SP_token
+    SP_token = SP_next()
+    left = t.nud()
+    while rbp < SP_token.lbp:
+        t = SP_token
+        SP_token = SP_next()
+        left = t.led(left)
+    return left
+
+def SP_parse_exec(program, search_string):
+    global SP_token, SP_next, SP_parser_search_string
+
+    # print('SP_parse_exec() Initialising program execution')
+    # print('SP_parse_exec() Search string "{0}"'.format(search_string))
+    # print('SP_parse_exec() Program       "{0}"'.format(program))
+    SP_parser_search_string = search_string
+    SP_next = SP_tokenize(program).next
+    SP_token = SP_next()
+
+    # --- Old function parse_exec() ---
+    rbp = 0
+    t = SP_token
+    SP_token = SP_next()
+    left = t.nud()
+    while rbp < SP_token.lbp:
+        t = SP_token
+        SP_token = SP_next()
+        left = t.led(left)
+    # print('SP_parse_exec() Init exec program in token {0}'.format(left))
+
+    return left.exec_token()
+
+# -------------------------------------------------------------------------------------------------
+# List of String Parser (LSP) engine. Grammar token objects.
+# Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+#
+# LSP operators: and, or, not, '(', ')', literal.
+# -------------------------------------------------------------------------------------------------
+debug_LSP_parser = True
+
 class LSP_literal_token:
     def __init__(self, value):
         self.value = value
         self.id = "STRING"
     def nud(self):
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        global parser_search_list
-
-        return self.value in parser_search_list
+        if debug_LSP_parser:
+            print('Executing LITERAL token value "{0}"'.format(self.value))
+            ret = self.value in LSP_parser_search_list
+            print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return '<LITERAL "{0}">'.format(self.value)
 
 def LSP_advance(id = None):
     global LSP_token
@@ -183,37 +358,55 @@ class LSP_operator_open_par_token:
     def __init__(self):
         self.id = "OP ("
     def nud(self):
-        expr = expression()
-        advance("OP )")
+        expr = LSP_expression()
+        LSP_advance("OP )")
         return expr
+    def __repr__(self):
+        return "<OP (>"
 
 class LSP_operator_close_par_token:
     lbp = 0
     def __init__(self):
         self.id = "OP )"
+    def __repr__(self):
+        return "<OP )>"
 
 class LSP_operator_not_token:
     lbp = 50
     def __init__(self):
         self.id = "OP NOT"
     def nud(self):
-        self.first = expression(50)
+        self.first = LSP_expression(50)
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        return not self.first.exec_token()
+        if debug_LSP_parser:
+            print('Executing NOT token')
+        ret = not self.first.exec_token()
+        if debug_LSP_parser:
+            print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP not>"
 
 class LSP_operator_and_token:
     lbp = 10
     def __init__(self):
         self.id = "OP AND"
     def led(self, left):
+        if debug_LSP_parser:
+            print('Executing AND token')
         self.first = left
-        self.second = expression(10)
+        self.second = LSP_expression(10)
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        return self.first.exec_token() and self.second.exec_token()
+        if debug_LSP_parser:
+            print('Executing AND token')
+        ret = self.first.exec_token() and self.second.exec_token()
+        if debug_LSP_parser:
+            print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP and>"
 
 class LSP_operator_or_token:
     lbp = 10
@@ -221,37 +414,36 @@ class LSP_operator_or_token:
         self.id = "OP OR"
     def led(self, left):
         self.first = left
-        self.second = expression(10)
+        self.second = LSP_expression(10)
         return self
-    # --- Actual implementation ---
     def exec_token(self):
-        return self.first.exec_token() or self.second.exec_token()
+        if debug_LSP_parser:
+            print('Executing OR token')
+        ret = self.first.exec_token() or self.second.exec_token()
+        if debug_LSP_parser:
+            print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP or>"
 
 class LSP_end_token:
     lbp = 0
     def __init__(self):
         self.id = "END TOKEN"
+    def __repr__(self):
+        return "<END token>"
 
 # -------------------------------------------------------------------------------------------------
 # Tokenizer
+# See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
-# jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
-#
-# If the body of the function contains a 'yield', then the function becames
-# a generator function. Generator functions create generator iterators, also
-# named "generators". Just remember that a generator is a special type of iterator.
-#
-# To be considered an iterator, generators must define a few methods, one of 
-# which is __next__(). To get the next value from a generator, we use the 
-# same built-in function as for iterators: next().
-#
+LSP_token_pat = re.compile("\s*(?:(and|or|not|\(|\))|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
+
 def LSP_tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
     # (?:...) -> A non-capturing version of regular parentheses.
-    # \b -> Matches the empty string, but only at the beginning or end of a word.
     # \w -> Matches [a-zA-Z0-9_]
-    reg = "\s*(?:(and|or|not|\(|\))|(\"[ \.\w_\-\&]+\")|([\.\w_\-\&]+))"
-    for operator, q_string, string in re.findall(reg, program):
+    for operator, q_string, string in LSP_token_pat.findall(program):
         if string:
             yield LSP_literal_token(string)
         elif q_string:
@@ -269,11 +461,11 @@ def LSP_tokenize(program):
         elif operator == ")":
             yield LSP_operator_close_par_token()
         else:
-            raise SyntaxError("Unknown operator: %r".format(operator))
+            raise SyntaxError("Unknown operator: '{0}'".format(operator))
     yield LSP_end_token()
 
 # -------------------------------------------------------------------------------------------------
-# List of String Parser (LSP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+# Manufacturer Parser (LSP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 # -------------------------------------------------------------------------------------------------
 def LSP_expression(rbp = 0):
     global LSP_token
@@ -287,9 +479,18 @@ def LSP_expression(rbp = 0):
         left = t.led(left)
     return left
 
-def LSP_expression_exec(rbp = 0):
-    global LSP_token
+def LSP_parse_exec(program, search_list):
+    global LSP_token, LSP_next, LSP_parser_search_list
 
+    # print('LSP_parse_exec() Initialising program execution')
+    # print('LSP_parse_exec() Search string "{0}"'.format(unicode(search_list)))
+    # print('LSP_parse_exec() Program       "{0}"'.format(program))
+    LSP_parser_search_list = search_list
+    LSP_next = LSP_tokenize(program).next
+    LSP_token = LSP_next()
+
+    # --- Old function parse_exec() ---
+    rbp = 0
     t = LSP_token
     LSP_token = LSP_next()
     left = t.nud()
@@ -297,16 +498,297 @@ def LSP_expression_exec(rbp = 0):
         t = LSP_token
         LSP_token = LSP_next()
         left = t.led(left)
+    # print('LSP_parse_exec() Init exec program in token {0}'.format(left))
+
     return left.exec_token()
 
-def LSP_parse_exec(program, search_list):
-    global LSP_token, LSP_next, LSP_parser_search_list
+# -------------------------------------------------------------------------------------------------
+# Year Parser (YP) engine. Grammar token objects.
+# Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+#
+# YP operators: ==, <>, >, <, >=, <=, and, or, not, '(', ')', literal.
+# literal may be the special variable 'year' or a MAME number.
+# -------------------------------------------------------------------------------------------------
+debug_YP_parser = True
 
-    LSP_parser_search_list = search_list
-    LSP_next = LSP_tokenize(program).next
-    LSP_token = LSP_next()
+class YP_literal_token:
+    def __init__(self, value):
+        self.value = value
+        self.id = "STRING"
+    def nud(self):
+        return self
+    def exec_token(self):
+        if debug_YP_parser: print('Executing LITERAL token value "{0}"'.format(self.value))
+        if self.value == 'year':
+            ret = YP_year
+        else:
+            ret = int(self.value)
+        if debug_YP_parser: print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return '<LITERAL "{0}">'.format(self.value)
 
-    return LSP_expression_exec()
+def YP_advance(id = None):
+    global YP_token
+
+    if id and YP_token.id != id:
+        raise SyntaxError("Expected {0}".format(id))
+    YP_token = YP_next()
+
+class YP_operator_open_par_token:
+    lbp = 0
+    def __init__(self):
+        self.id = "OP ("
+    def nud(self):
+        expr = YP_expression()
+        YP_advance("OP )")
+        return expr
+    def __repr__(self):
+        return "<OP (>"
+
+class YP_operator_close_par_token:
+    lbp = 0
+    def __init__(self):
+        self.id = "OP )"
+    def __repr__(self):
+        return "<OP )>"
+
+class YP_operator_not_token:
+    lbp = 60
+    def __init__(self):
+        self.id = "OP NOT"
+    def nud(self):
+        self.first = YP_expression(50)
+        return self
+    def exec_token(self):
+        if debug_YP_parser: print('Executing NOT token')
+        ret = not self.first.exec_token()
+        if debug_YP_parser: print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP not>"
+
+class YP_operator_and_token:
+    lbp = 10
+    def __init__(self):
+        self.id = "OP AND"
+    def led(self, left):
+        if debug_YP_parser:
+            print('Executing AND token')
+        self.first = left
+        self.second = YP_expression(10)
+        return self
+    def exec_token(self):
+        if debug_YP_parser: print('Executing AND token')
+        ret = self.first.exec_token() and self.second.exec_token()
+        if debug_YP_parser: print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP and>"
+
+class YP_operator_or_token:
+    lbp = 10
+    def __init__(self):
+        self.id = "OP OR"
+    def led(self, left):
+        self.first = left
+        self.second = YP_expression(10)
+        return self
+    def exec_token(self):
+        if debug_YP_parser: print('Executing OR token')
+        ret = self.first.exec_token() or self.second.exec_token()
+        if debug_YP_parser: print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP or>"
+
+class YP_operator_equal_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP =="
+    def led(self, left):
+        self.first = left
+        self.second = YP_expression(10)
+        return self
+    def exec_token(self):
+        if debug_YP_parser: print('Executing == token')
+        ret = self.first.exec_token() == self.second.exec_token()
+        if debug_YP_parser: print('== token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP ==>"
+
+class YP_operator_not_equal_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP <>"
+    def led(self, left):
+        self.first = left
+        self.second = YP_expression(10)
+        return self
+    def exec_token(self):
+        if debug_YP_parser: print('Executing <> token')
+        ret = self.first.exec_token() <> self.second.exec_token()
+        if debug_YP_parser: print('<> token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP <>>"
+
+class YP_operator_great_than_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP >"
+    def led(self, left):
+        self.first = left
+        self.second = YP_expression(10)
+        return self
+    def exec_token(self):
+        if debug_YP_parser: print('Executing > token')
+        ret = self.first.exec_token() > self.second.exec_token()
+        if debug_YP_parser: print('> token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP >>"
+
+class YP_operator_less_than_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP <"
+    def led(self, left):
+        self.first = left
+        self.second = YP_expression(10)
+        return self
+    def exec_token(self):
+        if debug_YP_parser: print('Executing < token')
+        ret = self.first.exec_token() < self.second.exec_token()
+        if debug_YP_parser: print('< token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP <>"
+
+class YP_operator_great_or_equal_than_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP >="
+    def led(self, left):
+        self.first = left
+        self.second = YP_expression(10)
+        return self
+    def exec_token(self):
+        if debug_YP_parser: print('Executing >= token')
+        ret = self.first.exec_token() >= self.second.exec_token()
+        if debug_YP_parser: print('>= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP >=>"
+
+class YP_operator_less_or_equal_than_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP <="
+    def led(self, left):
+        self.first = left
+        self.second = YP_expression(10)
+        return self
+    def exec_token(self):
+        if debug_YP_parser: print('Executing <= token')
+        ret = self.first.exec_token() <= self.second.exec_token()
+        if debug_YP_parser: print('<= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP <=>"
+
+class YP_end_token:
+    lbp = 0
+    def __init__(self):
+        self.id = "END TOKEN"
+    def __repr__(self):
+        return "<END token>"
+
+# -------------------------------------------------------------------------------------------------
+# Tokenizer
+# See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
+# -------------------------------------------------------------------------------------------------
+YP_token_pat = re.compile("\s*(?:(==|<>|>=|<=|>|<|and|or|not|\(|\))|([\w]+))")
+
+def YP_tokenize(program):
+    # \s* -> Matches any number of blanks [ \t\n\r\f\v].
+    # (?:...) -> A non-capturing version of regular parentheses.
+    # \w -> Matches [a-zA-Z0-9_]
+    for operator, n_string in YP_token_pat.findall(program):
+        if n_string:
+            yield YP_literal_token(n_string)
+        elif operator == "==":
+            yield YP_operator_equal_token()
+        elif operator == "<>":
+            yield YP_operator_not_equal_token()
+        elif operator == ">":
+            yield YP_operator_great_than_token()
+        elif operator == "<":
+            yield YP_operator_less_than_token()
+        elif operator == ">=":
+            yield YP_operator_great_or_equal_than_token()
+        elif operator == "<=":
+            yield YP_operator_less_or_equal_than_token()
+        elif operator == "and":
+            yield YP_operator_and_token()
+        elif operator == "or":
+            yield YP_operator_or_token()
+        elif operator == "not":
+            yield YP_operator_not_token()
+        elif operator == "(":
+            yield YP_operator_open_par_token()
+        elif operator == ")":
+            yield YP_operator_close_par_token()
+        else:
+            raise SyntaxError("Unknown operator: '{0}'".format(operator))
+    yield YP_end_token()
+
+# -------------------------------------------------------------------------------------------------
+# Manufacturer Parser (YP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+# -------------------------------------------------------------------------------------------------
+def YP_expression(rbp = 0):
+    global YP_token
+
+    t = YP_token
+    YP_token = YP_next()
+    left = t.nud()
+    while rbp < YP_token.lbp:
+        t = YP_token
+        YP_token = YP_next()
+        left = t.led(left)
+    return left
+
+def YP_parse_exec(program, year_str):
+    global YP_token, YP_next, YP_year
+
+    # --- Transform year_str to an integer. year_str may be ill formed ---
+    if re.findall(r'^[0-9]{4}$', year_str):
+        year = int(year_str)
+    elif re.findall(r'^[0-9]{4}\?$', year_str):
+        year = int(year_str[0:4])
+    else:
+        year = 0
+
+    # print('YP_parse_exec() Initialising program execution')
+    # print('YP_parse_exec() year     {0}'.format(year))
+    # print('YP_parse_exec() Program  "{0}"'.format(program))
+    YP_year = year
+    YP_next = YP_tokenize(program).next
+    YP_token = YP_next()
+
+    # --- Old function parse_exec() ---
+    rbp = 0
+    t = YP_token
+    YP_token = YP_next()
+    left = t.nud()
+    while rbp < YP_token.lbp:
+        t = YP_token
+        YP_token = YP_next()
+        left = t.led(left)
+    # print('YP_parse_exec() Init exec program in token {0}'.format(left))
+
+    return left.exec_token()
 
 # -------------------------------------------------------------------------------------------------
 # MAME machine filters
@@ -445,10 +927,10 @@ def mame_filter_Options_tag(mame_xml_dic, f_definition):
 
 def mame_filter_Driver_tag(mame_xml_dic, f_definition):
     log_debug('mame_filter_Driver_tag() Starting ...')
-    driver_filter_expression = f_definition['driver']
-    log_debug('Expression "{0}"'.format(driver_filter_expression))
+    filter_expression = f_definition['driver']
+    log_debug('Expression "{0}"'.format(filter_expression))
 
-    if not driver_filter_expression:
+    if not filter_expression:
         log_debug('mame_filter_Driver_tag() User wants all drivers')
         return mame_xml_dic
 
@@ -456,10 +938,9 @@ def mame_filter_Driver_tag(mame_xml_dic, f_definition):
     filtered_out_games = 0
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
-        driver_str = mame_xml_dic[m_name]['sourcefile']
-        driver_name_list = [ driver_str ]
-        boolean_result = LSP_parse_exec(driver_filter_expression, driver_name_list)
-        if not boolean_result:
+        search_list = [ mame_xml_dic[m_name]['driver'] ]
+        bool_result = LSP_parse_exec(filter_expression, search_list)
+        if not bool_result:
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
@@ -471,10 +952,10 @@ def mame_filter_Driver_tag(mame_xml_dic, f_definition):
 
 def mame_filter_Manufacturer_tag(mame_xml_dic, f_definition):
     log_debug('mame_filter_Manufacturer_tag() Starting ...')
-    driver_filter_expression = f_definition['manufacturer']
-    log_debug('Expression "{0}"'.format(driver_filter_expression))
+    filter_expression = f_definition['manufacturer']
+    log_debug('Expression "{0}"'.format(filter_expression))
 
-    if not driver_filter_expression:
+    if not filter_expression:
         log_debug('mame_filter_Manufacturer_tag() User wants all manufacturers')
         return mame_xml_dic
 
@@ -482,7 +963,7 @@ def mame_filter_Manufacturer_tag(mame_xml_dic, f_definition):
     filtered_out_games = 0
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
-        bool_result = MP_parse_exec(driver_filter_expression, mame_xml_dic[m_name]['manufacturer'])
+        bool_result = SP_parse_exec(filter_expression, mame_xml_dic[m_name]['manufacturer'])
         if not bool_result:
             filtered_out_games += 1
         else:
@@ -506,10 +987,9 @@ def mame_filter_Genre_tag(mame_xml_dic, f_definition):
     filtered_out_games = 0
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
-        item_str_list = [ mame_xml_dic[m_name]['genre'] ]
-        set_parser_search_list(item_str_list)
-        boolean_result = parse_exec(filter_expression)
-        if not boolean_result:
+        search_list = [ mame_xml_dic[m_name]['genre'] ]
+        bool_result = LSP_parse_exec(filter_expression, search_list)
+        if not bool_result:
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
@@ -532,10 +1012,8 @@ def mame_filter_Controls_tag(mame_xml_dic, f_definition):
     filtered_out_games = 0
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
-        item_str_list = [ mame_xml_dic[m_name]['controls'] ]
-        set_parser_search_list(item_str_list)
-        boolean_result = parse_exec(filter_expression)
-        if not boolean_result:
+        bool_result = LSP_parse_exec(filter_expression, mame_xml_dic[m_name]['control_list'])
+        if not bool_result:
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
@@ -559,10 +1037,8 @@ def mame_filter_Devices_tag(mame_xml_dic, f_definition):
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
         # --- Update search list variable and call parser to evaluate expression ---
-        item_str_list = [ mame_xml_dic[m_name]['devices'] ]
-        set_parser_search_list(item_str_list)
-        boolean_result = parse_exec(filter_expression)
-        if not boolean_result:
+        bool_result = LSP_parse_exec(filter_expression, mame_xml_dic[m_name]['device_list'])
+        if not bool_result:
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
@@ -586,10 +1062,8 @@ def mame_filter_Year_tag(mame_xml_dic, f_definition):
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
         # --- Update search int variable and call parser to evaluate expression ---
-        item_str_list = mame_xml_dic[m_name]['year']
-        set_parser_search_list(item_str_list)
-        boolean_result = parse_exec(filter_expression)
-        if not boolean_result:
+        bool_result = YP_parse_exec(filter_expression, mame_xml_dic[m_name]['year'])
+        if not bool_result:
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]

@@ -4440,10 +4440,20 @@ def _command_context_setup_custom_filters():
                 hasSamples = True if machine_archives_dic[m_name]['Samples'] else False
             else:
                 hasSamples = False
-            # >> Complete this variables.
-            control_list = []
-            device_list = []
-            year = 0
+
+            # >> Fix this to match "Controls (Compact)" filter
+            raw_control_list = machine_main_dic[m_name]['control_type']
+            pretty_control_type_list = mame_improve_control_type_list(raw_control_list)
+            control_list = mame_compress_item_list_compact(pretty_control_type_list)
+            if not control_list: control_list = [ '[ No controls ]' ]
+
+            # >> Fix this to match "Device (Compact)" filter
+            raw_device_list = [ device['att_type'] for device in machine_main_dic[m_name]['devices'] ]
+            pretty_device_list = mame_improve_device_list(raw_device_list)
+            device_list = mame_compress_item_list_compact(pretty_device_list)
+            if not device_list: device_list = [ '[ No devices ]' ]
+
+            # --- Build filtering dictionary ---
             main_filter_dic[m_name] = {
                 'isDevice' : machine_render_dic[m_name]['isDevice'],
                 # --- <Option> filters ---
@@ -4457,12 +4467,12 @@ def _command_context_setup_custom_filters():
                 'isImperfect' : True if machine_render_dic[m_name]['driver_status'] == 'imperfect' else False,
                 'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
                 # --- Other filters ---
-                'sourcefile' : machine_main_dic[m_name]['sourcefile'],
-                # 'manufacturer' : machine_main_dic[m_name]['sourcefile'],
+                'driver' : machine_main_dic[m_name]['sourcefile'],
+                'manufacturer' : machine_render_dic[m_name]['manufacturer'],
                 'genre' : machine_render_dic[m_name]['genre'],
-                'controls' : control_list,
-                'devices' : device_list,
-                'year' : year,
+                'control_list' : control_list,
+                'device_list' : device_list,
+                'year' : machine_render_dic[m_name]['year'],
             }
 
         # --- Clean 'filters' directory JSON files ---
@@ -4503,11 +4513,11 @@ def _command_context_setup_custom_filters():
             filtered_machine_dic = mame_filter_Default(main_filter_dic)
             filtered_machine_dic = mame_filter_Options_tag(filtered_machine_dic, f_definition)
             filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition)
-            # filtered_machine_dic = mame_filter_Manufacturer_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Manufacturer_tag(filtered_machine_dic, f_definition)
             filtered_machine_dic = mame_filter_Genre_tag(filtered_machine_dic, f_definition)
-            # filtered_machine_dic = mame_filter_Controls_tag(filtered_machine_dic, f_definition)
-            # filtered_machine_dic = mame_filter_Devices_tag(filtered_machine_dic, f_definition)
-            # filtered_machine_dic = mame_filter_Year_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Controls_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Devices_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Year_tag(filtered_machine_dic, f_definition)
             # >> filtered_machine_dic = mame_filter_Include_tag(filtered_machine_dic, f_definition)
             # >> filtered_machine_dic = mame_filter_Exclude_tag(filtered_machine_dic, f_definition)
             # >> filtered_machine_dic = mame_filter_Change_tag(filtered_machine_dic, f_definition)

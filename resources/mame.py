@@ -5094,7 +5094,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         # >> Order alphabetically the list
-        device_list = [device['att_type'] for device in machine['devices']]
+        device_list = [ device['att_type'] for device in machine['devices'] ]
         pretty_device_list = mame_improve_device_list(device_list)
         sorted_device_list = sorted(pretty_device_list)
         compressed_device_list = mame_compress_item_list_compact(sorted_device_list)
