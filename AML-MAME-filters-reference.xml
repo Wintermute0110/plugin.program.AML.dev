@@ -15,17 +15,15 @@
     <!--
         As shown in "Machines by Driver" filter.
         If multiple tags only last one is used.
-        Parser: List String Parser (LSP).
-        Operators: and, or, not, '(', ')', literal.
+        Literals with spaces must be enclosed in quotes ' or double quotes ".
+        LSP parser operators: and, or, not, '(', ')', literal.
     -->
     <Driver>cps1.cpp or cps2.cpp</Driver>
 
     <!--
         As shown in "Manufacturer" filter.
         If multiple tags only last one is used.
-        contains operator is similar to not operator.
-        Parser: String Parser (SP).
-        Operators: and, or, not, has, literal.
+        SP operators: and, or, not, has, literal.
     -->
     <Manufacturer>has Konami or has Namco</Manufacturer>
 
@@ -33,32 +31,30 @@
         As shown in "Machines by Category (Genre)" filter.
         If multiple tags only last one is used.
         Literals with spaces must be enclosed in quotes ' or double quotes ".
-        Parser: List String Parser (LSP).
-        Operators: and, or, not, '(', ')', literal.
+        LSP parser operators: and, or, not, '(', ')', literal.
     -->
     <Genre>Driving and "Board Game"</Genre>
 
     <!--
         As shown in "Machines by Control Type (Compact)" filter.
         If multiple tags only last one is used.
-        Parser: List String Parser (LSP).
-        Operators: and, or, not, '(', ')', literal.
+        Literals with spaces must be enclosed in quotes ' or double quotes ".
+        LSP parser operators: and, or, not, '(', ')', literal.
     -->
     <Controls>not Mahjong and not Gambling and not Hanafuda and not "Only Buttons"</Controls>
 
     <!--
         As shown in "Machines by Device (Compact)" filter.
         If multiple tags only last one is used.
-        Parser: List String Parser (LSP).
-        Operators: and, or, not, '(', ')', literal.
+        Literals with spaces must be enclosed in quotes ' or double quotes ".
+        LSP parser operators: and, or, not, '(', ')', literal.
     -->
     <Devices>Cartridge and Harddisk</Devices>
 
     <!--
         As shown in "Machines by Year" filter.
         If multiple tags only last one is used.
-        Parser: Year Parser (YP).
-        Operators: ==, >, <, >=, <=, and, or, not, '(', ')', literal.
+        YP operators: ==, >, <, >=, <=, and, or, not, '(', ')', literal.
     -->
     <Year>year >= 1990 and year &lt; 2000</Year>
 
