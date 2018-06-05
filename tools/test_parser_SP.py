@@ -110,12 +110,13 @@ class SP_end_token:
 # Tokenizer
 # See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
+SP_token_pat = re.compile("\s*(?:(and|or|not|has)|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
+
 def SP_tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
     # (?:...) -> A non-capturing version of regular parentheses.
     # \w -> Matches [a-zA-Z0-9_]
-    reg = "\s*(?:(and|or|not|has)|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))"
-    for operator, q_string, string in re.findall(reg, program):
+    for operator, q_string, string in SP_token_pat.findall(program):
         if string:
             yield SP_literal_token(string)
         elif q_string:
@@ -131,7 +132,7 @@ def SP_tokenize(program):
         elif operator == "has":
             yield SP_operator_has_token()
         else:
-            raise SyntaxError("Unknown operator: %r".format(operator))
+            raise SyntaxError("Unknown operator: '{0}'".format(operator))
     yield SP_end_token()
 
 # -------------------------------------------------------------------------------------------------

@@ -117,13 +117,13 @@ class LSP_end_token:
 # Tokenizer
 # See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
+LSP_token_pat = re.compile("\s*(?:(and|or|not|\(|\))|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
+
 def LSP_tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
     # (?:...) -> A non-capturing version of regular parentheses.
-    # \b -> Matches the empty string, but only at the beginning or end of a word.
     # \w -> Matches [a-zA-Z0-9_]
-    reg = "\s*(?:(and|or|not|\(|\))|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))"
-    for operator, q_string, string in re.findall(reg, program):
+    for operator, q_string, string in LSP_token_pat.findall(program):
         if string:
             yield LSP_literal_token(string)
         elif q_string:
@@ -141,7 +141,7 @@ def LSP_tokenize(program):
         elif operator == ")":
             yield LSP_operator_close_par_token()
         else:
-            raise SyntaxError("Unknown operator: %r".format(operator))
+            raise SyntaxError("Unknown operator: '{0}'".format(operator))
     yield LSP_end_token()
 
 # -------------------------------------------------------------------------------------------------
@@ -182,7 +182,7 @@ def LSP_parse_exec(program, search_list):
 
     return left.exec_token()
 
-# --- main code ---
+# --- main code -----------------------------------------------------------------------------------
 # --- Input strings ---
 i_list = ['Konami', 'Capcom']
 
