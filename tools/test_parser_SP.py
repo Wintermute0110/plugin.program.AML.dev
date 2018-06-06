@@ -6,9 +6,10 @@ import re
 # String Parser (SP) engine. Grammar token objects.
 # Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 #
-# SP operators: and, or, not, has, literal. has operator is similar to not operator.
+# SP operators: and, or, not, has, lacks, literal.
 # -------------------------------------------------------------------------------------------------
-debug_SP_parser = True
+debug_SP_parser = False
+debug_SP_parse_exec = False
 
 class SP_literal_token:
     def __init__(self, value):
@@ -17,10 +18,9 @@ class SP_literal_token:
     def nud(self):
         return self
     def exec_token(self):
-        if debug_SP_parser:
-            print('Executing LITERAL token value "{0}"'.format(self.value))
-            ret = self.value
-            print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: print('Executing LITERAL token value "{0}"'.format(self.value))
+        ret = self.value
+        if debug_SP_parser: print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return '<LITERAL "{0}">'.format(self.value)
@@ -33,15 +33,27 @@ class SP_operator_has_token:
         self.first = SP_expression(50)
         return self
     def exec_token(self):
-        # >> self.first.exec_token() must return a string literal
-        if debug_SP_parser:
-            print('Executing HAS token')
+        if debug_SP_parser: print('Executing HAS token')
         ret = True if SP_parser_search_string.find(self.first.exec_token()) >= 0 else False
-        if debug_SP_parser:
-            print('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: print('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP has>"
+
+class SP_operator_lacks_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP LACKS"
+    def nud(self):
+        self.first = SP_expression(50)
+        return self
+    def exec_token(self):
+        if debug_SP_parser: print('Executing LACKS token')
+        ret = False if SP_parser_search_string.find(self.first.exec_token()) >= 0 else True
+        if debug_SP_parser: print('LACKS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP lacks>"
 
 class SP_operator_not_token:
     lbp = 50
@@ -51,11 +63,9 @@ class SP_operator_not_token:
         self.first = SP_expression(50)
         return self
     def exec_token(self):
-        if debug_SP_parser:
-            print('Executing NOT token')
+        if debug_SP_parser: print('Executing NOT token')
         ret = not self.first.exec_token()
-        if debug_SP_parser:
-            print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP not>"
@@ -65,17 +75,14 @@ class SP_operator_and_token:
     def __init__(self):
         self.id = "OP AND"
     def led(self, left):
-        if debug_SP_parser:
-            print('Executing AND token')
+        if debug_SP_parser: print('Executing AND token')
         self.first = left
         self.second = SP_expression(10)
         return self
     def exec_token(self):
-        if debug_SP_parser:
-            print('Executing AND token')
+        if debug_SP_parser: print('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_SP_parser:
-            print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP and>"
@@ -89,11 +96,9 @@ class SP_operator_or_token:
         self.second = SP_expression(10)
         return self
     def exec_token(self):
-        if debug_SP_parser:
-            print('Executing OR token')
+        if debug_SP_parser: print('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_SP_parser:
-            print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP or>"
@@ -109,7 +114,7 @@ class SP_end_token:
 # Tokenizer
 # See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
-SP_token_pat = re.compile("\s*(?:(and|or|not|has)|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
+SP_token_pat = re.compile("\s*(?:(and|or|not|has|lacks)|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
 
 def SP_tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
@@ -130,6 +135,8 @@ def SP_tokenize(program):
             yield SP_operator_not_token()
         elif operator == "has":
             yield SP_operator_has_token()
+        elif operator == "lacks":
+            yield SP_operator_lacks_token()
         else:
             raise SyntaxError("Unknown operator: '{0}'".format(operator))
     yield SP_end_token()
@@ -152,9 +159,10 @@ def SP_expression(rbp = 0):
 def SP_parse_exec(program, search_string):
     global SP_token, SP_next, SP_parser_search_string
 
-    print('SP_parse_exec() Initialising program execution')
-    print('SP_parse_exec() Search string "{0}"'.format(search_string))
-    print('SP_parse_exec() Program       "{0}"'.format(program))
+    if debug_SP_parse_exec:
+        print('SP_parse_exec() Initialising program execution')
+        print('SP_parse_exec() Search string "{0}"'.format(search_string))
+        print('SP_parse_exec() Program       "{0}"'.format(program))
     SP_parser_search_string = search_string
     SP_next = SP_tokenize(program).next
     SP_token = SP_next()
@@ -168,7 +176,8 @@ def SP_parse_exec(program, search_string):
         t = SP_token
         SP_token = SP_next()
         left = t.led(left)
-    print('SP_parse_exec() Init exec program in token {0}'.format(left))
+    if debug_SP_parse_exec:
+        print('SP_parse_exec() Init exec program in token {0}'.format(left))
 
     return left.exec_token()
 
@@ -178,11 +187,15 @@ i_str = 'Konami'
 
 # --- Programs ---
 # p_str = 'has Konami'
+# p_str = 'lacks Konami'
 # p_str = 'not has Konami'
 # p_str = 'has Konami or has Namco'
 # p_str = 'has Namco or has Konami'
 # p_str = 'has Konami or not has Namco'
-p_str = 'has Konami or has Namco or has "Capcom / Kaneko"'
+# p_str = 'has Konami or has Namco or has "Capcom / Kaneko"'
+# p_str = 'nothas Konami or nothas Namco or nothas "Capcom / Kaneko"'
+# p_str = 'lacks Konami and lacks Namco and lacks "Capcom / Kaneko"'
+p_str = 'lacks Konami or lacks Namco or lacks "Capcom / Kaneko"'
 
 # --- Test ---
 print("String  '{0}'".format(i_str))

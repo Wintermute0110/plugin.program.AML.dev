@@ -157,9 +157,10 @@ def filter_parse_XML(fname_str):
 # String Parser (SP) engine. Grammar token objects.
 # Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 #
-# SP operators: and, or, not, has, literal. has operator is similar to not operator.
+# SP operators: and, or, not, has, lacks, literal.
 # -------------------------------------------------------------------------------------------------
-debug_SP_parser = True
+debug_SP_parser = False
+debug_SP_parse_exec = False
 
 class SP_literal_token:
     def __init__(self, value):
@@ -168,10 +169,9 @@ class SP_literal_token:
     def nud(self):
         return self
     def exec_token(self):
-        if debug_SP_parser:
-            print('Executing LITERAL token value "{0}"'.format(self.value))
-            ret = self.value
-            print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: print('Executing LITERAL token value "{0}"'.format(self.value))
+        ret = self.value
+        if debug_SP_parser: print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return '<LITERAL "{0}">'.format(self.value)
@@ -184,15 +184,27 @@ class SP_operator_has_token:
         self.first = SP_expression(50)
         return self
     def exec_token(self):
-        # >> self.first.exec_token() must return a string literal
-        if debug_SP_parser:
-            print('Executing HAS token')
+        if debug_SP_parser: print('Executing HAS token')
         ret = True if SP_parser_search_string.find(self.first.exec_token()) >= 0 else False
-        if debug_SP_parser:
-            print('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: print('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP has>"
+
+class SP_operator_lacks_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP LACKS"
+    def nud(self):
+        self.first = SP_expression(50)
+        return self
+    def exec_token(self):
+        if debug_SP_parser: print('Executing LACKS token')
+        ret = False if SP_parser_search_string.find(self.first.exec_token()) >= 0 else True
+        if debug_SP_parser: print('LACKS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP lacks>"
 
 class SP_operator_not_token:
     lbp = 50
@@ -202,11 +214,9 @@ class SP_operator_not_token:
         self.first = SP_expression(50)
         return self
     def exec_token(self):
-        if debug_SP_parser:
-            print('Executing NOT token')
+        if debug_SP_parser: print('Executing NOT token')
         ret = not self.first.exec_token()
-        if debug_SP_parser:
-            print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP not>"
@@ -216,17 +226,14 @@ class SP_operator_and_token:
     def __init__(self):
         self.id = "OP AND"
     def led(self, left):
-        if debug_SP_parser:
-            print('Executing AND token')
+        if debug_SP_parser: print('Executing AND token')
         self.first = left
         self.second = SP_expression(10)
         return self
     def exec_token(self):
-        if debug_SP_parser:
-            print('Executing AND token')
+        if debug_SP_parser: print('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_SP_parser:
-            print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP and>"
@@ -240,11 +247,9 @@ class SP_operator_or_token:
         self.second = SP_expression(10)
         return self
     def exec_token(self):
-        if debug_SP_parser:
-            print('Executing OR token')
+        if debug_SP_parser: print('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_SP_parser:
-            print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP or>"
@@ -260,7 +265,7 @@ class SP_end_token:
 # Tokenizer
 # See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
-SP_token_pat = re.compile("\s*(?:(and|or|not|has)|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
+SP_token_pat = re.compile("\s*(?:(and|or|not|has|lacks)|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
 
 def SP_tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
@@ -281,6 +286,8 @@ def SP_tokenize(program):
             yield SP_operator_not_token()
         elif operator == "has":
             yield SP_operator_has_token()
+        elif operator == "lacks":
+            yield SP_operator_lacks_token()
         else:
             raise SyntaxError("Unknown operator: '{0}'".format(operator))
     yield SP_end_token()
@@ -303,9 +310,10 @@ def SP_expression(rbp = 0):
 def SP_parse_exec(program, search_string):
     global SP_token, SP_next, SP_parser_search_string
 
-    # print('SP_parse_exec() Initialising program execution')
-    # print('SP_parse_exec() Search string "{0}"'.format(search_string))
-    # print('SP_parse_exec() Program       "{0}"'.format(program))
+    if debug_SP_parse_exec:
+        print('SP_parse_exec() Initialising program execution')
+        print('SP_parse_exec() Search string "{0}"'.format(search_string))
+        print('SP_parse_exec() Program       "{0}"'.format(program))
     SP_parser_search_string = search_string
     SP_next = SP_tokenize(program).next
     SP_token = SP_next()
@@ -319,7 +327,8 @@ def SP_parse_exec(program, search_string):
         t = SP_token
         SP_token = SP_next()
         left = t.led(left)
-    # print('SP_parse_exec() Init exec program in token {0}'.format(left))
+    if debug_SP_parse_exec:
+        print('SP_parse_exec() Init exec program in token {0}'.format(left))
 
     return left.exec_token()
 
@@ -329,7 +338,8 @@ def SP_parse_exec(program, search_string):
 #
 # LSP operators: and, or, not, '(', ')', literal.
 # -------------------------------------------------------------------------------------------------
-debug_LSP_parser = True
+debug_LSP_parser = False
+debug_LSP_parse_exec = False
 
 class LSP_literal_token:
     def __init__(self, value):
@@ -338,10 +348,9 @@ class LSP_literal_token:
     def nud(self):
         return self
     def exec_token(self):
-        if debug_LSP_parser:
-            print('Executing LITERAL token value "{0}"'.format(self.value))
-            ret = self.value in LSP_parser_search_list
-            print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: print('Executing LITERAL token value "{0}"'.format(self.value))
+        ret = self.value
+        if debug_LSP_parser: print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return '<LITERAL "{0}">'.format(self.value)
@@ -371,6 +380,36 @@ class LSP_operator_close_par_token:
     def __repr__(self):
         return "<OP )>"
 
+class LSP_operator_has_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP HAS"
+    def nud(self):
+        self.first = LSP_expression(50)
+        return self
+    def exec_token(self):
+        if debug_LSP_parser: print('Executing HAS token')
+        ret = self.first.exec_token() in LSP_parser_search_list
+        if debug_LSP_parser: print('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP has>"
+
+class LSP_operator_lacks_token:
+    lbp = 50
+    def __init__(self):
+        self.id = "OP LACKS"
+    def nud(self):
+        self.first = LSP_expression(50)
+        return self
+    def exec_token(self):
+        if debug_LSP_parser: print('Executing LACKS token')
+        ret = self.first.exec_token() not in LSP_parser_search_list
+        if debug_LSP_parser: print('LACKS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        return ret
+    def __repr__(self):
+        return "<OP lacks>"
+
 class LSP_operator_not_token:
     lbp = 50
     def __init__(self):
@@ -379,11 +418,9 @@ class LSP_operator_not_token:
         self.first = LSP_expression(50)
         return self
     def exec_token(self):
-        if debug_LSP_parser:
-            print('Executing NOT token')
+        if debug_LSP_parser: print('Executing NOT token')
         ret = not self.first.exec_token()
-        if debug_LSP_parser:
-            print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP not>"
@@ -393,17 +430,14 @@ class LSP_operator_and_token:
     def __init__(self):
         self.id = "OP AND"
     def led(self, left):
-        if debug_LSP_parser:
-            print('Executing AND token')
+        if debug_LSP_parser: print('Executing AND token')
         self.first = left
         self.second = LSP_expression(10)
         return self
     def exec_token(self):
-        if debug_LSP_parser:
-            print('Executing AND token')
+        if debug_LSP_parser: print('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_LSP_parser:
-            print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP and>"
@@ -417,11 +451,9 @@ class LSP_operator_or_token:
         self.second = LSP_expression(10)
         return self
     def exec_token(self):
-        if debug_LSP_parser:
-            print('Executing OR token')
+        if debug_LSP_parser: print('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_LSP_parser:
-            print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP or>"
@@ -437,7 +469,7 @@ class LSP_end_token:
 # Tokenizer
 # See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
-LSP_token_pat = re.compile("\s*(?:(and|or|not|\(|\))|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
+LSP_token_pat = re.compile("\s*(?:(and|or|not|has|lacks|\(|\))|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
 
 def LSP_tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
@@ -456,6 +488,10 @@ def LSP_tokenize(program):
             yield LSP_operator_or_token()
         elif operator == "not":
             yield LSP_operator_not_token()
+        elif operator == "has":
+            yield LSP_operator_has_token()
+        elif operator == "lacks":
+            yield LSP_operator_lacks_token()
         elif operator == "(":
             yield LSP_operator_open_par_token()
         elif operator == ")":
@@ -482,9 +518,10 @@ def LSP_expression(rbp = 0):
 def LSP_parse_exec(program, search_list):
     global LSP_token, LSP_next, LSP_parser_search_list
 
-    # print('LSP_parse_exec() Initialising program execution')
-    # print('LSP_parse_exec() Search string "{0}"'.format(unicode(search_list)))
-    # print('LSP_parse_exec() Program       "{0}"'.format(program))
+    if debug_LSP_parse_exec:
+        print('LSP_parse_exec() Initialising program execution')
+        print('LSP_parse_exec() Search string "{0}"'.format(unicode(search_list)))
+        print('LSP_parse_exec() Program       "{0}"'.format(program))
     LSP_parser_search_list = search_list
     LSP_next = LSP_tokenize(program).next
     LSP_token = LSP_next()
@@ -498,7 +535,8 @@ def LSP_parse_exec(program, search_list):
         t = LSP_token
         LSP_token = LSP_next()
         left = t.led(left)
-    # print('LSP_parse_exec() Init exec program in token {0}'.format(left))
+    if debug_LSP_parse_exec:
+        print('LSP_parse_exec() Init exec program in token {0}'.format(left))
 
     return left.exec_token()
 
@@ -509,7 +547,8 @@ def LSP_parse_exec(program, search_list):
 # YP operators: ==, <>, >, <, >=, <=, and, or, not, '(', ')', literal.
 # literal may be the special variable 'year' or a MAME number.
 # -------------------------------------------------------------------------------------------------
-debug_YP_parser = True
+debug_YP_parser = False
+debug_YP_parse_exec = False
 
 class YP_literal_token:
     def __init__(self, value):
@@ -573,8 +612,7 @@ class YP_operator_and_token:
     def __init__(self):
         self.id = "OP AND"
     def led(self, left):
-        if debug_YP_parser:
-            print('Executing AND token')
+        if debug_YP_parser: print('Executing AND token')
         self.first = left
         self.second = YP_expression(10)
         return self
@@ -770,9 +808,10 @@ def YP_parse_exec(program, year_str):
     else:
         year = 0
 
-    # print('YP_parse_exec() Initialising program execution')
-    # print('YP_parse_exec() year     {0}'.format(year))
-    # print('YP_parse_exec() Program  "{0}"'.format(program))
+    if debug_YP_parse_exec:
+        print('YP_parse_exec() Initialising program execution')
+        print('YP_parse_exec() year     {0}'.format(year))
+        print('YP_parse_exec() Program  "{0}"'.format(program))
     YP_year = year
     YP_next = YP_tokenize(program).next
     YP_token = YP_next()
@@ -786,7 +825,8 @@ def YP_parse_exec(program, year_str):
         t = YP_token
         YP_token = YP_next()
         left = t.led(left)
-    # print('YP_parse_exec() Init exec program in token {0}'.format(left))
+    if debug_YP_parse_exec:
+        print('YP_parse_exec() Init exec program in token {0}'.format(left))
 
     return left.exec_token()
 

@@ -16,14 +16,14 @@
         As shown in "Machines by Driver" filter.
         If multiple tags only last one is used.
         Literals with spaces must be enclosed in quotes ' or double quotes ".
-        LSP parser operators: and, or, not, '(', ')', literal.
+        LSP parser operators: and, or, not, has, lacks, '(', ')', literal.
     -->
-    <Driver>cps1.cpp or cps2.cpp</Driver>
+    <Driver>has cps1.cpp or has cps2.cpp</Driver>
 
     <!--
         As shown in "Manufacturer" filter.
         If multiple tags only last one is used.
-        SP operators: and, or, not, has, literal.
+        SP operators: and, or, not, has, lacks, literal.
     -->
     <Manufacturer>has Konami or has Namco</Manufacturer>
 
@@ -31,25 +31,25 @@
         As shown in "Machines by Category (Genre)" filter.
         If multiple tags only last one is used.
         Literals with spaces must be enclosed in quotes ' or double quotes ".
-        LSP parser operators: and, or, not, '(', ')', literal.
+        LSP parser operators: and, or, not, has, lacks, '(', ')', literal.
     -->
-    <Genre>Driving and "Board Game"</Genre>
+    <Genre>has Driving and has "Board Game"</Genre>
 
     <!--
         As shown in "Machines by Control Type (Compact)" filter.
         If multiple tags only last one is used.
         Literals with spaces must be enclosed in quotes ' or double quotes ".
-        LSP parser operators: and, or, not, '(', ')', literal.
+        LSP parser operators: and, or, not, has, lacks, '(', ')', literal.
     -->
-    <Controls>not Mahjong and not Gambling and not Hanafuda and not "Only Buttons"</Controls>
+    <Controls>lacks Mahjong and lacks Gambling and lacks Hanafuda and lacks "Only Buttons"</Controls>
 
     <!--
         As shown in "Machines by Device (Compact)" filter.
         If multiple tags only last one is used.
         Literals with spaces must be enclosed in quotes ' or double quotes ".
-        LSP parser operators: and, or, not, '(', ')', literal.
+        LSP parser operators: and, or, not, has, lacks, '(', ')', literal.
     -->
-    <Devices>Cartridge and Harddisk</Devices>
+    <Devices>has Cartridge and has Harddisk</Devices>
 
     <!--
         As shown in "Machines by Year" filter.
@@ -65,6 +65,6 @@
     <Exclude>005, 100lions, 10yard</Exclude>
 
     <!-- Only 1 machine per <Change> tag. There may be multiple <Change> tags -->
-    <Change>xxxxx with yyyyy</Change>
+    <Change>dino with dinoj</Change>
 </MAMEFilter>
 </Advanced_MAME_Launcher_custom_filters>

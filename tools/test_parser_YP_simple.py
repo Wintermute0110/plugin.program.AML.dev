@@ -9,7 +9,8 @@ import re
 # YP operators: ==, <>, >, <, >=, <=, and, or, not, '(', ')', literal.
 # literal may be the special variable 'year' or a MAME number.
 # -------------------------------------------------------------------------------------------------
-debug_YP_parser = True
+debug_YP_parser = False
+debug_YP_parse_exec = False
 
 class YP_literal_token:
     def __init__(self, value):
@@ -73,8 +74,7 @@ class YP_operator_and_token:
     def __init__(self):
         self.id = "OP AND"
     def led(self, left):
-        if debug_YP_parser:
-            print('Executing AND token')
+        if debug_YP_parser: print('Executing AND token')
         self.first = left
         self.second = YP_expression(10)
         return self
@@ -270,9 +270,10 @@ def YP_parse_exec(program, year_str):
     else:
         year = 0
 
-    print('YP_parse_exec() Initialising program execution')
-    print('YP_parse_exec() year     {0}'.format(year))
-    print('YP_parse_exec() Program  "{0}"'.format(program))
+    if debug_YP_parse_exec:
+        print('YP_parse_exec() Initialising program execution')
+        print('YP_parse_exec() year     {0}'.format(year))
+        print('YP_parse_exec() Program  "{0}"'.format(program))
     YP_year = year
     YP_next = YP_tokenize(program).next
     YP_token = YP_next()
@@ -286,7 +287,8 @@ def YP_parse_exec(program, year_str):
         t = YP_token
         YP_token = YP_next()
         left = t.led(left)
-    print('YP_parse_exec() Init exec program in token {0}'.format(left))
+    if debug_YP_parse_exec:
+        print('YP_parse_exec() Init exec program in token {0}'.format(left))
 
     return left.exec_token()
 
