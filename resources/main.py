@@ -4346,21 +4346,16 @@ def _render_custom_filter_machines_clones(filter_name, parent_name):
 def _command_context_setup_custom_filters():
     dialog = xbmcgui.Dialog()
     menu_item = dialog.select('Setup AML custom filters',
-                             ['View custom filter XML',
-                              'Build custom filter databases'])
+                             ['Build custom filter databases',
+                              'View custom filter XML',
+                              'View Drivers histogram',
+                              'View Manufacturer histogram',
+                              'View Genres histogram',
+                              'View Controls histogram',
+                              'View Devices histogram',
+                              'View Year histogram',
+                              ])
     if menu_item < 0: return
-
-    # --- View custom filter XML ---
-    if menu_item == 0:
-        XML_FN = FileName(g_settings['filter_XML'])
-        log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
-        log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
-        if not XML_FN.exists():
-            kodi_dialog_OK('Custom filter XML file not found.')
-            return
-        with open(XML_FN.getPath(), 'r') as myfile:
-            info_text = myfile.read().decode('utf-8')
-            _display_text_window('Custom filter XML', info_text)
 
     # --- Update custom filters ---
     # filter_index_dic = {
@@ -4386,7 +4381,7 @@ def _command_context_setup_custom_filters():
     #
     # AML_DATA_DIR/filters/'rom_DB_noext'_assets.json -> asset_dic = {}
     #
-    elif menu_item == 1:
+    if menu_item == 0:
         # --- Open custom filter XML and parse it ---
         try:
             filters_list = filter_parse_XML(g_settings['filter_XML'])
@@ -4573,6 +4568,42 @@ def _command_context_setup_custom_filters():
         change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
         fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
         kodi_notify('Custom filter database built')
+
+    # --- View custom filter XML ---
+    elif menu_item == 1:
+        XML_FN = FileName(g_settings['filter_XML'])
+        log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+        if not XML_FN.exists():
+            kodi_dialog_OK('Custom filter XML file not found.')
+            return
+        with open(XML_FN.getPath(), 'r') as myfile:
+            info_text = myfile.read().decode('utf-8')
+            _display_text_window('Custom filter XML', info_text)
+
+    # --- View Drivers histogram ---
+    elif menu_item == 2:
+        kodi_dialog_OK('View Drivers histogram')
+
+    # --- View Manufacturer histogram ---
+    elif menu_item == 3:
+        kodi_dialog_OK('View Manufacturer histogram')
+
+    # --- View Genres histogram ---
+    elif menu_item == 4:
+        kodi_dialog_OK('View Genres histogram')
+
+    # --- View Controls histogram ---
+    elif menu_item == 5:
+        kodi_dialog_OK('View Controls histogram')
+
+    # --- View Devices histogram ---
+    elif menu_item == 6:
+        kodi_dialog_OK('View Devices histogram')
+
+    # --- View Year histogram ---
+    elif menu_item == 7:
+        kodi_dialog_OK('View Year histogram')
 
 # -------------------------------------------------------------------------------------------------
 # Check AML status
