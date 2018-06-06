@@ -324,7 +324,7 @@ def run_plugin():
             if filter_name and parent_name:
                 _render_custom_filter_machines_clones(filter_name, parent_name)
             else:
-                _render_custom_filter_machines_flat(filter_name)
+                _render_custom_filter_machines_parents(filter_name)
         # --- DAT browsing ---
         elif catalog_name == 'History' or catalog_name == 'MAMEINFO' or \
              catalog_name == 'Gameinit' or catalog_name == 'Command':
@@ -1296,24 +1296,28 @@ def _render_catalog_clone_list(catalog_name, category_name, parent_name):
 # ]
 #
 def _render_process_machines(catalog_dic, catalog_name, category_name,
-                             render_db_dic, assets_dic, main_pclone_dic,
-                             fav_machines, flag_parent_list = True):
+                             render_db_dic, assets_dic, main_pclone_dic, fav_machines,
+                             flag_parent_list = True, flag_ignore_filters = False):
     # --- Prepare for processing ---
     display_hide_Mature = g_settings['display_hide_Mature']
     display_hide_BIOS = g_settings['display_hide_BIOS']
     if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
     display_hide_nonworking = g_settings['display_hide_nonworking']
     display_hide_imperfect  = g_settings['display_hide_imperfect']
+    # >> Think about how to implement this settings ...
+    display_rom_available = g_settings['display_rom_available']
+    display_chd_available  = g_settings['display_chd_available']
 
     # --- Traverse machines ---
     r_list = []
     for machine_name, render_name in catalog_dic[category_name].iteritems():
         machine = render_db_dic[machine_name]
-        if display_hide_Mature and machine['isMature']: continue
-        if display_hide_BIOS and machine['isBIOS']: continue
-        if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
-        if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
         m_assets = assets_dic[machine_name]
+        if not flag_ignore_filters:
+            if display_hide_Mature and machine['isMature']: continue
+            if display_hide_BIOS and machine['isBIOS']: continue
+            if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
+            if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
 
         # --- Add machine to list, set default values ---
         r_dict = {}
@@ -4198,11 +4202,8 @@ def _render_custom_filter_item_row(f_name, num_machines, machine_str, plot):
 #
 # Renders a Parent or Flat machine list
 #
-def _render_custom_filter_machines_flat(filter_name):
+def _render_custom_filter_machines_parents(filter_name):
     log_debug('_render_custom_filter_ROMs() filter_name  = {0}'.format(filter_name))
-    display_hide_BIOS = g_settings['display_hide_BIOS']
-    display_hide_nonworking = g_settings['display_hide_nonworking']
-    display_hide_imperfect  = g_settings['display_hide_imperfect']
 
     # >> Global properties
     view_mode_property = g_settings['mame_view_mode']
@@ -4262,8 +4263,8 @@ def _render_custom_filter_machines_flat(filter_name):
     category_name = filter_name
     catalog_dic = {category_name : machines_dic}
     r_list = _render_process_machines(catalog_dic, catalog_name, category_name,
-                                     render_db_dic, assets_db_dic,
-                                     main_pclone_dic, fav_machines)
+                                      render_db_dic, assets_db_dic, main_pclone_dic, fav_machines,
+                                      True, True)
     processing_ticks_end = time.time()
     processing_time = processing_ticks_end - processing_ticks_start
 
@@ -4290,8 +4291,6 @@ def _render_custom_filter_machines_flat(filter_name):
 #
 def _render_custom_filter_machines_clones(filter_name, parent_name):
     log_debug('_render_custom_filter_clones() Starting ...')
-    display_hide_nonworking = g_settings['display_hide_nonworking']
-    display_hide_imperfect  = g_settings['display_hide_imperfect']
 
     # >> Load main MAME info DB
     loading_ticks_start = time.time()
@@ -4324,8 +4323,8 @@ def _render_custom_filter_machines_clones(filter_name, parent_name):
         t_render_dic[clone_name] = render_db_dic[clone_name]
         t_assets_dic[clone_name] = assets_db_dic[clone_name]
     r_list = _render_process_machines(t_catalog_dic, catalog_name, filter_name,
-                                     t_render_dic, t_assets_dic, main_pclone_dic,
-                                     fav_machines, False)
+                                      t_render_dic, t_assets_dic, main_pclone_dic, fav_machines,
+                                      False, True)
     processing_ticks_end = time.time()
     processing_time = processing_ticks_end - processing_ticks_start
 
