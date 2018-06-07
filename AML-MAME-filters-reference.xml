@@ -65,13 +65,25 @@
     -->
     <Year>year >= 1990 and year &lt; 2000</Year>
 
-    <!-- Separate multiple machines with ','. Multiple <Include> tags allowed -->
+    <!--
+        NOT IMPLEMENTED YET.
+        Separate multiple machines with ','.
+        Multiple <Include> tags allowed
+    -->
     <Include>005, 100lions, 10yard</Include>
 
-    <!-- Separate multiple machines with ','. Multiple <Exclude> tags allowed -->
+    <!--
+        NOT IMPLEMENTED YET.
+        Separate multiple machines with ','.
+        Multiple <Exclude> tags allowed
+    -->
     <Exclude>005, 100lions, 10yard</Exclude>
 
-    <!-- Only 1 machine per <Change> tag. There may be multiple <Change> tags -->
+    <!--
+        NOT IMPLEMENTED YET.
+        Only 1 machine per <Change> tag.
+        There may be multiple <Change> tags
+    -->
     <Change>dino with dinoj</Change>
 </MAMEFilter>
 </Advanced_MAME_Launcher_custom_filters>
