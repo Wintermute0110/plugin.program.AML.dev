@@ -25,6 +25,7 @@ import xml.etree.ElementTree as ET
 from constants import *
 from utils import *
 from utils_kodi import *
+from mame import *
 
 # -------------------------------------------------------------------------------------------------
 # Parse filter XML definition
@@ -56,7 +57,7 @@ def _get_change_tuple(text_t):
         raise Addon_Error(m)
 
 #
-# Returns a list of dictionaries, each dictionary has the filer definition.
+# Returns a list of dictionaries, each dictionary has the filter definition.
 #
 def filter_parse_XML(fname_str):
     __debug_xml_parser = False
@@ -152,6 +153,74 @@ def filter_parse_XML(fname_str):
             # f_definition['exclude']      = f_definition['exclude'].replace(initial_str, final_str)
             # f_definition['change']       = f_definition['change'].replace(initial_str, final_str)
     return filters_list
+
+#
+# Returns a dictionary of dictionaries.
+#
+def filter_get_filter_DB(machine_main_dic, machine_render_dic,
+                         assets_dic, main_pclone_dic, machine_archives_dic, pDialog):
+    pDialog.create('Advanced MAME Launcher', 'Building filter database ...')
+    total_items = len(main_pclone_dic)
+    item_count = 0
+    main_filter_dic = {}
+    for m_name in main_pclone_dic:
+        pDialog.update(int((item_count*100) / total_items), ' ', ' ')
+        if 'att_coins' in machine_main_dic[m_name]['input']:
+            coins = machine_main_dic[m_name]['input']['att_coins']
+        else:
+            coins = 0
+        if m_name in machine_archives_dic:
+            hasROMs = True if machine_archives_dic[m_name]['ROMs'] else False
+        else:
+            hasROMs = False
+        if m_name in machine_archives_dic:
+            hasCHDs = True if machine_archives_dic[m_name]['CHDs'] else False
+        else:
+            hasCHDs = False
+        if m_name in machine_archives_dic:
+            hasSamples = True if machine_archives_dic[m_name]['Samples'] else False
+        else:
+            hasSamples = False
+
+        # >> Fix this to match "Controls (Compact)" filter
+        raw_control_list = machine_main_dic[m_name]['control_type']
+        pretty_control_type_list = mame_improve_control_type_list(raw_control_list)
+        control_list = mame_compress_item_list_compact(pretty_control_type_list)
+        if not control_list: control_list = [ '[ No controls ]' ]
+
+        # >> Fix this to match "Device (Compact)" filter
+        raw_device_list = [ device['att_type'] for device in machine_main_dic[m_name]['devices'] ]
+        pretty_device_list = mame_improve_device_list(raw_device_list)
+        device_list = mame_compress_item_list_compact(pretty_device_list)
+        if not device_list: device_list = [ '[ No devices ]' ]
+
+        # --- Build filtering dictionary ---
+        main_filter_dic[m_name] = {
+            # --- Default filters ---
+            'isDevice' : machine_render_dic[m_name]['isDevice'],
+            # --- <Option> filters ---
+            'coins' : coins,
+            'hasROMs' : hasROMs,
+            'hasCHDs' : hasCHDs,
+            'hasSamples' : hasSamples,
+            'isMature' : machine_render_dic[m_name]['isMature'],
+            'isBIOS' : machine_render_dic[m_name]['isBIOS'],
+            'isMechanical' : machine_main_dic[m_name]['isMechanical'],
+            'isImperfect' : True if machine_render_dic[m_name]['driver_status'] == 'imperfect' else False,
+            'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
+            # --- Other filters ---
+            'driver' : machine_main_dic[m_name]['sourcefile'],
+            'manufacturer' : machine_render_dic[m_name]['manufacturer'],
+            'genre' : machine_render_dic[m_name]['genre'],
+            'control_list' : control_list,
+            'device_list' : device_list,
+            'year' : machine_render_dic[m_name]['year'],
+        }
+        item_count += 1
+    pDialog.update(100, ' ', ' ')
+    pDialog.close()
+
+    return main_filter_dic
 
 # -------------------------------------------------------------------------------------------------
 # String Parser (SP) engine. Grammar token objects.

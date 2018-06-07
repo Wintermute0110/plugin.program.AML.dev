@@ -30,7 +30,7 @@ import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 # Addon module dependencies:
 #   main <-- mame <-- disk_IO <-- assets, utils, utils_kodi, constants
 #   ReaderPDF <-- utils, utils_kodi
-#   filters <- utils, utils_kodi
+#   filters <- mame <-- utils, utils_kodi
 #   manuals <- utils, utils_kodi
 from constants import *
 from assets import *
@@ -4347,14 +4347,7 @@ def _command_context_setup_custom_filters():
     dialog = xbmcgui.Dialog()
     menu_item = dialog.select('Setup AML custom filters',
                              ['Build custom filter databases',
-                              'View custom filter XML',
-                              'View Drivers histogram',
-                              'View Manufacturer histogram',
-                              'View Genres histogram',
-                              'View Controls histogram',
-                              'View Devices histogram',
-                              'View Year histogram',
-                              ])
+                              'View custom filter XML'])
     if menu_item < 0: return
 
     # --- Update custom filters ---
@@ -4402,72 +4395,23 @@ def _command_context_setup_custom_filters():
         pdialog_line1 = 'Loading databases ...'
         num_items = 5
         pDialog.create('Advanced MAME Launcher')
-        pDialog.update(int((0*100) / num_items), pdialog_line1, 'Parent/Clone')
-        main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-        pDialog.update(int((1*100) / num_items), pdialog_line1, 'Machines Main')
+        pDialog.update(int((0*100) / num_items), pdialog_line1, 'Machines Main')
         machine_main_dic = fs_load_JSON_file_dic(PATHS.MAIN_DB_PATH.getPath())
-        pDialog.update(int((2*100) / num_items), pdialog_line1, 'Machines Render')
+        pDialog.update(int((1*100) / num_items), pdialog_line1, 'Machines Render')
         machine_render_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-        pDialog.update(int((3*100) / num_items), pdialog_line1, 'Machine assets')
+        pDialog.update(int((2*100) / num_items), pdialog_line1, 'Machine assets')
         assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        pDialog.update(int((3*100) / num_items), pdialog_line1, 'Parent/Clone')
+        main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
         pDialog.update(int((4*100) / num_items), pdialog_line1, 'Machine archives')
         machine_archives_dic = fs_load_JSON_file_dic(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
         pDialog.update(int((5*100) / num_items), pdialog_line1, ' ')
         pDialog.close()
 
         # --- Make a dictionary of objects to be filtered ---
-        main_filter_dic = {}
-        for m_name in main_pclone_dic:
-            if 'att_coins' in machine_main_dic[m_name]['input']:
-                coins = machine_main_dic[m_name]['input']['att_coins']
-            else:
-                coins = 0
-            if m_name in machine_archives_dic:
-                hasROMs = True if machine_archives_dic[m_name]['ROMs'] else False
-            else:
-                hasROMs = False
-            if m_name in machine_archives_dic:
-                hasCHDs = True if machine_archives_dic[m_name]['CHDs'] else False
-            else:
-                hasCHDs = False
-            if m_name in machine_archives_dic:
-                hasSamples = True if machine_archives_dic[m_name]['Samples'] else False
-            else:
-                hasSamples = False
-
-            # >> Fix this to match "Controls (Compact)" filter
-            raw_control_list = machine_main_dic[m_name]['control_type']
-            pretty_control_type_list = mame_improve_control_type_list(raw_control_list)
-            control_list = mame_compress_item_list_compact(pretty_control_type_list)
-            if not control_list: control_list = [ '[ No controls ]' ]
-
-            # >> Fix this to match "Device (Compact)" filter
-            raw_device_list = [ device['att_type'] for device in machine_main_dic[m_name]['devices'] ]
-            pretty_device_list = mame_improve_device_list(raw_device_list)
-            device_list = mame_compress_item_list_compact(pretty_device_list)
-            if not device_list: device_list = [ '[ No devices ]' ]
-
-            # --- Build filtering dictionary ---
-            main_filter_dic[m_name] = {
-                'isDevice' : machine_render_dic[m_name]['isDevice'],
-                # --- <Option> filters ---
-                'coins' : coins,
-                'hasROMs' : hasROMs,
-                'hasCHDs' : hasCHDs,
-                'hasSamples' : hasSamples,
-                'isMature' : machine_render_dic[m_name]['isMature'],
-                'isBIOS' : machine_render_dic[m_name]['isBIOS'],
-                'isMechanical' : machine_main_dic[m_name]['isMechanical'],
-                'isImperfect' : True if machine_render_dic[m_name]['driver_status'] == 'imperfect' else False,
-                'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
-                # --- Other filters ---
-                'driver' : machine_main_dic[m_name]['sourcefile'],
-                'manufacturer' : machine_render_dic[m_name]['manufacturer'],
-                'genre' : machine_render_dic[m_name]['genre'],
-                'control_list' : control_list,
-                'device_list' : device_list,
-                'year' : machine_render_dic[m_name]['year'],
-            }
+        main_filter_dic = filter_get_filter_DB(machine_main_dic, machine_render_dic,
+                                               assets_dic, main_pclone_dic, machine_archives_dic,
+                                               pDialog)
 
         # --- Clean 'filters' directory JSON files ---
         log_info('Cleaning dir "{0}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
@@ -4559,7 +4503,7 @@ def _command_context_setup_custom_filters():
 
             # --- Final progress ---
             processed_items += 1
-        pDialog.update((processed_items*100) // total_items, pdialog_line1, ' ')
+        pDialog.update(100, pdialog_line1, ' ')
         pDialog.close()
         # >> Save custom filter index.
         fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
@@ -4580,30 +4524,6 @@ def _command_context_setup_custom_filters():
         with open(XML_FN.getPath(), 'r') as myfile:
             info_text = myfile.read().decode('utf-8')
             _display_text_window('Custom filter XML', info_text)
-
-    # --- View Drivers histogram ---
-    elif menu_item == 2:
-        kodi_dialog_OK('View Drivers histogram')
-
-    # --- View Manufacturer histogram ---
-    elif menu_item == 3:
-        kodi_dialog_OK('View Manufacturer histogram')
-
-    # --- View Genres histogram ---
-    elif menu_item == 4:
-        kodi_dialog_OK('View Genres histogram')
-
-    # --- View Controls histogram ---
-    elif menu_item == 5:
-        kodi_dialog_OK('View Controls histogram')
-
-    # --- View Devices histogram ---
-    elif menu_item == 6:
-        kodi_dialog_OK('View Devices histogram')
-
-    # --- View Year histogram ---
-    elif menu_item == 7:
-        kodi_dialog_OK('View Year histogram')
 
 # -------------------------------------------------------------------------------------------------
 # Check AML status
