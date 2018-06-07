@@ -10,6 +10,8 @@ WIP      [CORE] [LEIA] Check out the ListItem constructor offscreen parameter in
 WIP      [CORE] [LEIA] Use the new API function ListItem.setProperties()
          See https://forum.kodi.tv/showthread.php?tid=332283
 
+WIP      [MAME FILTERING] Implement <Include>, <Exclude> and <Change> tags.
+
 WIP      [MANUALS] Import the number of supported PDF filters.
 
 WIP      [MANUALS] When displaying manuals use cached extracted images if they exist.
@@ -21,16 +23,20 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
 
 [B]Advanced Emulator Launcher | version 0.9.7 | xx June 2018[/B]
 
+WIP      [LAUNCH] Implement "Action on Kodi playing media", "After/before launch delay (ms)", and
+         "Suspend/resume Kodi audio engine".
+         See https://github.com/Wintermute0110/plugin.program.AML/issues/3
+
 FEATURE  [MAME FILTERING] Improve the Custom Filters (add more filtering options as defined
          in the reference filter file `AML-MAME-filters-reference.xml`).
 
-FEATURE  Render the `In Favourites` flag for MAME machines.
+FEATURE  [CORE] Render the `In Favourites` flag for MAME machines.
 
 FEATURE  [CORE] Optimize the rendering of ROMs in 3 steps: a) Loading, b) Processing and c) Rendering.
          Processing computes all data to render ROMs and Rendering calls Kodi functions. This will
          allow to measure how long does it take to call the Kodi functions for ListItem generation.
 
-FEATURE  Reduce the memory consumption during the database generation.
+FEATURE  [CORE] Reduce the memory consumption during the database generation.
          By default use the options OPTION_COMPACT_JSON = True and OPTION_LOWMEM_WRITE_JSON = True
          See https://stackoverflow.com/questions/24239613/memoryerror-using-json-dumps
 
