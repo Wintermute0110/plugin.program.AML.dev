@@ -5,7 +5,7 @@
 
 <!--  Driver definitions  -->
 <DEFINE name="CAPCOM_CPS_DRIVERS">has cps1.cpp or has cps2.cpp or has cps3.cpp</DEFINE>
-<DEFINE name="NEOGEO_MVS_DRIVER">neogeo.cpp</DEFINE>
+<DEFINE name="NEOGEO_MVS_DRIVER">has neogeo.cpp</DEFINE>
 
 <!--  Genre definitions  -->
 <DEFINE name="STANDARD_GENRES">has "Ball &amp; Paddle" or has Climbing or has Driving or has Fighter or has Maze or has MultiGame or has Multiplay or has Platform or has Puzzle or has Shooter or has Sports or has Whac-A-Mole</DEFINE>
@@ -113,40 +113,40 @@
 
 <!--  Family game definitions  -->
 <MAMEFilter>
-    <Name>Familiy games from the 70'</Name>
-    <Plot>Arcade machines from the 60' and 70' with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Name>Familiy games from the 70s</Name>
+    <Plot>Arcade machines from the 70s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
     <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
     <Year>year > 1000 and year &lt; 1980</Year>
 </MAMEFilter>
 <MAMEFilter>
-    <Name>Familiy games from the 80'</Name>
-    <Plot>Arcade machines from the 80' with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Name>Familiy games from the 80s</Name>
+    <Plot>Arcade machines from the 80s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
     <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
     <Year>year >= 1980 and year &lt; 1990</Year>
 </MAMEFilter>
 <MAMEFilter>
-    <Name>Familiy games from the 90'</Name>
-    <Plot>Arcade machines from the 90' with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Name>Familiy games from the 90s</Name>
+    <Plot>Arcade machines from the 90s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
     <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
     <Year>year >= 1990 and year &lt; 2000</Year>
 </MAMEFilter>
 <MAMEFilter>
-    <Name>Familiy games from the 00'</Name>
-    <Plot>Arcade machines from the 00' with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Name>Familiy games from the 00s</Name>
+    <Plot>Arcade machines from the 00s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
     <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
     <Year>year >= 2000 and year &lt; 2010</Year>
 </MAMEFilter>
 <MAMEFilter>
-    <Name>Familiy games from the 10'</Name>
-    <Plot>Arcade machines from the 10' century with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Name>Familiy games from the 10s</Name>
+    <Plot>Arcade machines from the 10s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
     <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
