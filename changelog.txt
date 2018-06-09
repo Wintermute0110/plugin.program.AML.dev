@@ -21,7 +21,7 @@ WIP      [MANUALS] Progress bar when extracting PDF pages.
 WIP      [MANUALS] Support for CBZ/CBR manuals.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
-[B]Advanced Emulator Launcher | version 0.9.7 | xx June 2018[/B]
+[B]Advanced Emulator Launcher | version 0.9.7 | 09 June 2018[/B]
 
 FEATURE  Implemented settings "display_rom_available" and "display_chd_available".
 
@@ -42,7 +42,7 @@ FEATURE  [CORE] Reduce the memory consumption during the database generation.
          By default use the options OPTION_COMPACT_JSON = True and OPTION_LOWMEM_WRITE_JSON = True
          See https://stackoverflow.com/questions/24239613/memoryerror-using-json-dumps
 
-FIX      Fix crash when executing "Check/Update all object" if Favourites are empty.
+FIX      Fix crash when executing "Check/Update all objects" if Favourites are empty.
 
 
 [B]Advanced Emulator Launcher | version 0.9.6 | 25 May 2018[/B]

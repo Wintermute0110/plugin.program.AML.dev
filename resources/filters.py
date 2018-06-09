@@ -164,7 +164,7 @@ def filter_get_filter_DB(machine_main_dic, machine_render_dic,
     item_count = 0
     main_filter_dic = {}
     for m_name in main_pclone_dic:
-        pDialog.update(int((item_count*100) / total_items), ' ', ' ')
+        pDialog.update(int((item_count*100) / total_items))
         if 'att_coins' in machine_main_dic[m_name]['input']:
             coins = machine_main_dic[m_name]['input']['att_coins']
         else:
@@ -217,7 +217,7 @@ def filter_get_filter_DB(machine_main_dic, machine_render_dic,
             'year' : machine_render_dic[m_name]['year'],
         }
         item_count += 1
-    pDialog.update(100, ' ', ' ')
+    pDialog.update(100)
     pDialog.close()
 
     return main_filter_dic
