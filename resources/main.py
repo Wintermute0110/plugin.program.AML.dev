@@ -506,81 +506,86 @@ def _get_settings():
     global g_mame_fanart
     global g_SL_icon
     global g_SL_fanart
+    o = __addon__
 
     # --- Paths ---
-    g_settings['mame_prog']    = __addon__.getSetting('mame_prog').decode('utf-8')
+    g_settings['mame_prog']    = o.getSetting('mame_prog').decode('utf-8')
 
-    g_settings['rom_path']     = __addon__.getSetting('rom_path').decode('utf-8')
-    g_settings['assets_path']  = __addon__.getSetting('assets_path').decode('utf-8')
-    g_settings['chd_path']     = __addon__.getSetting('chd_path').decode('utf-8')
-    g_settings['samples_path'] = __addon__.getSetting('samples_path').decode('utf-8')
-    g_settings['SL_hash_path'] = __addon__.getSetting('SL_hash_path').decode('utf-8')
-    g_settings['SL_rom_path']  = __addon__.getSetting('SL_rom_path').decode('utf-8')
-    g_settings['SL_chd_path']  = __addon__.getSetting('SL_chd_path').decode('utf-8')
+    g_settings['rom_path']     = o.getSetting('rom_path').decode('utf-8')
+    g_settings['assets_path']  = o.getSetting('assets_path').decode('utf-8')
+    g_settings['chd_path']     = o.getSetting('chd_path').decode('utf-8')
+    g_settings['samples_path'] = o.getSetting('samples_path').decode('utf-8')
+    g_settings['SL_hash_path'] = o.getSetting('SL_hash_path').decode('utf-8')
+    g_settings['SL_rom_path']  = o.getSetting('SL_rom_path').decode('utf-8')
+    g_settings['SL_chd_path']  = o.getSetting('SL_chd_path').decode('utf-8')
 
     # --- DAT paths (order alpahbetically) ---
-    g_settings['bestgames_path'] = __addon__.getSetting('bestgames_path').decode('utf-8')
-    g_settings['catlist_path']   = __addon__.getSetting('catlist_path').decode('utf-8')
-    g_settings['catver_path']    = __addon__.getSetting('catver_path').decode('utf-8')
-    g_settings['command_path']   = __addon__.getSetting('command_path').decode('utf-8')
-    g_settings['gameinit_path']  = __addon__.getSetting('gameinit_path').decode('utf-8')
-    g_settings['genre_path']     = __addon__.getSetting('genre_path').decode('utf-8')
-    g_settings['history_path']   = __addon__.getSetting('history_path').decode('utf-8')
-    g_settings['mameinfo_path']  = __addon__.getSetting('mameinfo_path').decode('utf-8')
-    g_settings['mature_path']    = __addon__.getSetting('mature_path').decode('utf-8')
-    g_settings['nplayers_path']  = __addon__.getSetting('nplayers_path').decode('utf-8')
-    g_settings['series_path']    = __addon__.getSetting('series_path').decode('utf-8')
+    g_settings['bestgames_path'] = o.getSetting('bestgames_path').decode('utf-8')
+    g_settings['catlist_path']   = o.getSetting('catlist_path').decode('utf-8')
+    g_settings['catver_path']    = o.getSetting('catver_path').decode('utf-8')
+    g_settings['command_path']   = o.getSetting('command_path').decode('utf-8')
+    g_settings['gameinit_path']  = o.getSetting('gameinit_path').decode('utf-8')
+    g_settings['genre_path']     = o.getSetting('genre_path').decode('utf-8')
+    g_settings['history_path']   = o.getSetting('history_path').decode('utf-8')
+    g_settings['mameinfo_path']  = o.getSetting('mameinfo_path').decode('utf-8')
+    g_settings['mature_path']    = o.getSetting('mature_path').decode('utf-8')
+    g_settings['nplayers_path']  = o.getSetting('nplayers_path').decode('utf-8')
+    g_settings['series_path']    = o.getSetting('series_path').decode('utf-8')
 
     # --- ROM sets ---
-    g_settings['mame_rom_set'] = int(__addon__.getSetting('mame_rom_set'))
-    g_settings['mame_chd_set'] = int(__addon__.getSetting('mame_chd_set'))
-    g_settings['SL_rom_set']   = int(__addon__.getSetting('SL_rom_set'))
-    g_settings['SL_chd_set']   = int(__addon__.getSetting('SL_chd_set'))
-    g_settings['filter_XML']   = __addon__.getSetting('filter_XML').decode('utf-8')
+    g_settings['mame_rom_set'] = int(o.getSetting('mame_rom_set'))
+    g_settings['mame_chd_set'] = int(o.getSetting('mame_chd_set'))
+    g_settings['SL_rom_set']   = int(o.getSetting('SL_rom_set'))
+    g_settings['SL_chd_set']   = int(o.getSetting('SL_chd_set'))
+    g_settings['filter_XML']   = o.getSetting('filter_XML').decode('utf-8')
 
     # --- Display ---
-    g_settings['display_launcher_notify'] = True if __addon__.getSetting('display_launcher_notify') == 'true' else False
-    g_settings['mame_view_mode']          = int(__addon__.getSetting('mame_view_mode'))
-    g_settings['sl_view_mode']            = int(__addon__.getSetting('sl_view_mode'))
-    g_settings['display_hide_Mature']     = True if __addon__.getSetting('display_hide_Mature') == 'true' else False
-    g_settings['display_hide_BIOS']       = True if __addon__.getSetting('display_hide_BIOS') == 'true' else False
-    g_settings['display_hide_nonworking'] = True if __addon__.getSetting('display_hide_nonworking') == 'true' else False
-    g_settings['display_hide_imperfect']  = True if __addon__.getSetting('display_hide_imperfect') == 'true' else False
-    g_settings['display_rom_available']   = True if __addon__.getSetting('display_rom_available') == 'true' else False
-    g_settings['display_chd_available']   = True if __addon__.getSetting('display_chd_available') == 'true' else False
+    g_settings['display_launcher_notify'] = True if o.getSetting('display_launcher_notify') == 'true' else False
+    g_settings['mame_view_mode']          = int(o.getSetting('mame_view_mode'))
+    g_settings['sl_view_mode']            = int(o.getSetting('sl_view_mode'))
+    g_settings['display_hide_Mature']     = True if o.getSetting('display_hide_Mature') == 'true' else False
+    g_settings['display_hide_BIOS']       = True if o.getSetting('display_hide_BIOS') == 'true' else False
+    g_settings['display_hide_nonworking'] = True if o.getSetting('display_hide_nonworking') == 'true' else False
+    g_settings['display_hide_imperfect']  = True if o.getSetting('display_hide_imperfect') == 'true' else False
+    g_settings['display_rom_available']   = True if o.getSetting('display_rom_available') == 'true' else False
+    g_settings['display_chd_available']   = True if o.getSetting('display_chd_available') == 'true' else False
 
-    g_settings['display_main_filters']    = True if __addon__.getSetting('display_main_filters') == 'true' else False
-    g_settings['display_binary_filters']  = True if __addon__.getSetting('display_binary_filters') == 'true' else False
-    g_settings['display_catalog_filters'] = True if __addon__.getSetting('display_catalog_filters') == 'true' else False
-    g_settings['display_DAT_browser']     = True if __addon__.getSetting('display_DAT_browser') == 'true' else False
-    g_settings['display_SL_browser']      = True if __addon__.getSetting('display_SL_browser') == 'true' else False
-    g_settings['display_MAME_favs']       = True if __addon__.getSetting('display_MAME_favs') == 'true' else False
-    g_settings['display_SL_favs']         = True if __addon__.getSetting('display_SL_favs') == 'true' else False
-    g_settings['display_custom_filters']  = True if __addon__.getSetting('display_custom_filters') == 'true' else False
-    g_settings['display_MAME_most']       = True if __addon__.getSetting('display_MAME_most') == 'true' else False
-    g_settings['display_MAME_recent']     = True if __addon__.getSetting('display_MAME_recent') == 'true' else False
-    g_settings['display_SL_most']         = True if __addon__.getSetting('display_SL_most') == 'true' else False
-    g_settings['display_SL_recent']       = True if __addon__.getSetting('display_SL_recent') == 'true' else False
+    g_settings['display_main_filters']    = True if o.getSetting('display_main_filters') == 'true' else False
+    g_settings['display_binary_filters']  = True if o.getSetting('display_binary_filters') == 'true' else False
+    g_settings['display_catalog_filters'] = True if o.getSetting('display_catalog_filters') == 'true' else False
+    g_settings['display_DAT_browser']     = True if o.getSetting('display_DAT_browser') == 'true' else False
+    g_settings['display_SL_browser']      = True if o.getSetting('display_SL_browser') == 'true' else False
+    g_settings['display_MAME_favs']       = True if o.getSetting('display_MAME_favs') == 'true' else False
+    g_settings['display_SL_favs']         = True if o.getSetting('display_SL_favs') == 'true' else False
+    g_settings['display_custom_filters']  = True if o.getSetting('display_custom_filters') == 'true' else False
+    g_settings['display_MAME_most']       = True if o.getSetting('display_MAME_most') == 'true' else False
+    g_settings['display_MAME_recent']     = True if o.getSetting('display_MAME_recent') == 'true' else False
+    g_settings['display_SL_most']         = True if o.getSetting('display_SL_most') == 'true' else False
+    g_settings['display_SL_recent']       = True if o.getSetting('display_SL_recent') == 'true' else False
 
     # --- Display ---
-    g_settings['artwork_mame_icon']     = int(__addon__.getSetting('artwork_mame_icon'))
-    g_settings['artwork_mame_fanart']   = int(__addon__.getSetting('artwork_mame_fanart'))
-    g_settings['artwork_SL_icon']       = int(__addon__.getSetting('artwork_SL_icon'))
-    g_settings['artwork_SL_fanart']     = int(__addon__.getSetting('artwork_SL_fanart'))
-    g_settings['display_hide_trailers'] = True if __addon__.getSetting('display_hide_trailers') == 'true' else False
+    g_settings['artwork_mame_icon']     = int(o.getSetting('artwork_mame_icon'))
+    g_settings['artwork_mame_fanart']   = int(o.getSetting('artwork_mame_fanart'))
+    g_settings['artwork_SL_icon']       = int(o.getSetting('artwork_SL_icon'))
+    g_settings['artwork_SL_fanart']     = int(o.getSetting('artwork_SL_fanart'))
+    g_settings['display_hide_trailers'] = True if o.getSetting('display_hide_trailers') == 'true' else False
 
-    # --- I/O ---
+    # --- Utilities ---
 
     # --- Advanced ---
-    g_settings['log_level']                       = int(__addon__.getSetting('log_level'))
-    g_settings['debug_enable_MAME_machine_cache'] = True if __addon__.getSetting('debug_enable_MAME_machine_cache') == 'true' else False
-    g_settings['debug_enable_MAME_asset_cache']   = True if __addon__.getSetting('debug_enable_MAME_asset_cache') == 'true' else False
-    g_settings['debug_MAME_item_data']            = True if __addon__.getSetting('debug_MAME_item_data') == 'true' else False
-    g_settings['debug_MAME_ROM_DB_data']          = True if __addon__.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
-    g_settings['debug_MAME_Audit_DB_data']        = True if __addon__.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
-    g_settings['debug_SL_item_data']              = True if __addon__.getSetting('debug_SL_item_data') == 'true' else False
-    g_settings['debug_SL_ROM_DB_data']            = True if __addon__.getSetting('debug_SL_ROM_DB_data') == 'true' else False
-    g_settings['debug_SL_Audit_DB_data']          = True if __addon__.getSetting('debug_SL_Audit_DB_data') == 'true' else False
+    g_settings['media_state_action']              = int(o.getSetting('media_state_action'))
+    g_settings['delay_tempo']                     = int(round(float(o.getSetting('delay_tempo'))))
+    g_settings['suspend_audio_engine']            = True if o.getSetting('suspend_audio_engine') == 'true' else False
+    g_settings['toggle_window']                   = True if o.getSetting('toggle_window') == 'true' else False
+    g_settings['log_level']                       = int(o.getSetting('log_level'))
+    g_settings['debug_enable_MAME_machine_cache'] = True if o.getSetting('debug_enable_MAME_machine_cache') == 'true' else False
+    g_settings['debug_enable_MAME_asset_cache']   = True if o.getSetting('debug_enable_MAME_asset_cache') == 'true' else False
+    g_settings['debug_MAME_item_data']            = True if o.getSetting('debug_MAME_item_data') == 'true' else False
+    g_settings['debug_MAME_ROM_DB_data']          = True if o.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
+    g_settings['debug_MAME_Audit_DB_data']        = True if o.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
+    g_settings['debug_SL_item_data']              = True if o.getSetting('debug_SL_item_data') == 'true' else False
+    g_settings['debug_SL_ROM_DB_data']            = True if o.getSetting('debug_SL_ROM_DB_data') == 'true' else False
+    g_settings['debug_SL_Audit_DB_data']          = True if o.getSetting('debug_SL_Audit_DB_data') == 'true' else False
 
     # --- Transform settings data ---
     g_mame_icon   = assets_get_asset_key_MAME_icon(g_settings['artwork_mame_icon'])
@@ -6172,43 +6177,24 @@ def _run_machine(machine_name, location):
         most_played_roms_dic[recent_rom['name']] = recent_rom
     fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
 
-    # --- Prevent a console window to be shown in Windows. Not working yet! ---
-    if sys.platform == 'win32':
-        log_info('_run_machine() Platform is win32. Creating _info structure')
-        _info = subprocess.STARTUPINFO()
-        _info.dwFlags = subprocess.STARTF_USESHOWWINDOW
-        # See https://msdn.microsoft.com/en-us/library/ms633548(v=vs.85).aspx
-        # See https://docs.python.org/2/library/subprocess.html#subprocess.STARTUPINFO
-        # >> SW_HIDE = 0
-        # >> Does not work: MAME console window is not shown, graphical window not shonw either,
-        # >> process run in background.
-        # _info.wShowWindow = subprocess.SW_HIDE
-        # >> SW_SHOWMINIMIZED = 2
-        # >> Both MAME console and graphical window minimized.
-        # _info.wShowWindow = 2
-        # >> SW_SHOWNORMAL = 1
-        # >> MAME console window is shown, MAME graphical window on top, Kodi on bottom.
-        _info.wShowWindow = 1
-    else:
-        log_info('_run_machine() _info is None')
-        _info = None
+    # --- Build final arguments to launch MAME ---
+    # arg_list = [mame_prog_FN.getPath(), '-window', machine_name]
+    arg_list = [mame_prog_FN.getPath(), machine_name]
+    if BIOS_name:
+        arg_list.extend(['-bios', BIOS_name])
+    log_info('arg_list = {0}'.format(arg_list))
 
     # --- User notification ---
     if g_settings['display_launcher_notify']:
         kodi_notify('Launching MAME machine "{0}"'.format(machine_name))
-
-    # --- Launch MAME and run machine ---
-    # arg_list = [mame_prog_FN.getPath(), '-window', machine_name]
-    if BIOS_name: arg_list = [mame_prog_FN.getPath(), machine_name, '-bios', BIOS_name]
-    else:         arg_list = [mame_prog_FN.getPath(), machine_name]
-    log_info('arg_list = {0}'.format(arg_list))
-    log_info('_run_machine() Calling subprocess.Popen()...')
     if DISABLE_MAME_LAUNCHING:
         log_info('_run_machine() MAME launching disabled. Exiting function.')
         return
-    with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
-        p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info, stdout = f, stderr = subprocess.STDOUT)
-    p.wait()
+
+    # --- Run MAME ---
+    _run_before_execution()
+    _run_process(PATHS, arg_list, mame_dir)
+    _run_after_execution()
     log_info('_run_machine() Exiting function.')
 
 #
@@ -6484,20 +6470,6 @@ def _run_SL_machine(SL_name, SL_ROM_name, location):
         most_played_roms_dic[SL_fav_DB_key] = recent_ROM
     fs_write_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
 
-    # --- Prevent a console window to be shown in Windows. Not working yet! ---
-    if sys.platform == 'win32':
-        log_info('_run_SL_machine() Platform is win32. Creating _info structure')
-        _info = subprocess.STARTUPINFO()
-        _info.dwFlags = subprocess.STARTF_USESHOWWINDOW
-        _info.wShowWindow = 1
-    else:
-        log_info('_run_SL_machine() _info is None')
-        _info = None
-
-    # --- User notification ---
-    if g_settings['display_launcher_notify']:
-        kodi_notify('Launching MAME SL item "{0}"'.format(SL_ROM_name))
-
     # --- Build MAME arguments ---
     if sl_launch_mode == SL_LAUNCH_WITH_MEDIA:
         arg_list = [mame_prog_FN.getPath(), launch_machine_name, '-{0}'.format(media_name), SL_ROM_name]
@@ -6508,15 +6480,150 @@ def _run_SL_machine(SL_name, SL_ROM_name, location):
         return
     log_info('arg_list = {0}'.format(arg_list))
 
-    # --- Launch MAME ---
+    # --- User notification ---
+    if g_settings['display_launcher_notify']:
+        kodi_notify('Launching MAME SL item "{0}"'.format(SL_ROM_name))
     if DISABLE_MAME_LAUNCHING:
         log_info('_run_machine() MAME launching disabled. Exiting function.')
         return
-    log_info('_run_SL_machine() Calling subprocess.Popen()...')
+
+    # --- Run MAME ---
+    _run_before_execution()
+    _run_process(PATHS, arg_list, mame_dir)
+    _run_after_execution()
+    log_info('_run_SL_machine() Exiting function.')
+
+def _run_before_execution():
+    global g_flag_kodi_was_playing
+    global g_flag_kodi_audio_suspended
+    global g_flag_kodi_toggle_fullscreen
+    log_info('_run_before_execution() Function BEGIN ...')
+
+    # --- Stop/Pause Kodi mediaplayer if requested in settings ---
+    # >> id="media_state_action" default="0" values="Stop|Pause|Keep playing"
+    g_flag_kodi_was_playing = False
+    media_state_action = g_settings['media_state_action']
+    media_state_str = ['Stop', 'Pause', 'Keep playing'][media_state_action]
+    a = '_run_before_execution() media_state_action is "{0}" ({1})'
+    log_verb(a.format(media_state_str, media_state_action))
+    if media_state_action == 0 and xbmc.Player().isPlaying():
+        log_verb('_run_before_execution() Calling xbmc.Player().stop()')
+        xbmc.Player().stop()
+        xbmc.sleep(100)
+        g_flag_kodi_was_playing = True
+    elif media_state_action == 1 and xbmc.Player().isPlaying():
+        log_verb('_run_before_execution() Calling xbmc.Player().pause()')
+        xbmc.Player().pause()
+        xbmc.sleep(100)
+        g_flag_kodi_was_playing = True
+
+    # --- Force audio suspend if requested in "Settings" --> "Advanced"
+    # >> See http://forum.kodi.tv/showthread.php?tid=164522
+    g_flag_kodi_audio_suspended = False
+    if self.settings['suspend_audio_engine']:
+        log_verb('_run_before_execution() Suspending Kodi audio engine')
+        xbmc.audioSuspend()
+        xbmc.enableNavSounds(False)
+        xbmc.sleep(100)
+        g_flag_kodi_audio_suspended = True
+    else:
+        log_verb('_run_before_execution() DO NOT suspend Kodi audio engine')
+
+    # --- Force joystick suspend if requested in "Settings" --> "Advanced"
+    # NOT IMPLEMENTED YET.
+    # >> See https://forum.kodi.tv/showthread.php?tid=287826&pid=2627128#pid2627128
+    # >> See https://forum.kodi.tv/showthread.php?tid=157499&pid=1722549&highlight=input.enablejoystick#pid1722549
+    # >> See https://forum.kodi.tv/showthread.php?tid=313615
+
+    # --- Toggle Kodi windowed/fullscreen if requested ---
+    g_flag_kodi_toggle_fullscreen = False
+    if g_settings['toggle_window']:
+        log_verb('_run_before_execution() Toggling Kodi from fullscreen to window')
+        kodi_toogle_fullscreen()
+        g_flag_kodi_toggle_fullscreen = True
+    else:
+        log_verb('_run_before_execution() Toggling Kodi fullscreen/windowed DISABLED')
+
+    # --- Pause Kodi execution some time ---
+    delay_tempo_ms = g_settings['delay_tempo']
+    log_verb('_run_before_execution() Pausing {0} ms'.format(delay_tempo_ms))
+    xbmc.sleep(delay_tempo_ms)
+    log_debug('_run_before_execution() function ENDS')
+
+def _run_process(PATHS, arg_list, mame_dir):
+    log_info('_run_process() Function BEGIN ...')
+
+    # --- Prevent a console window to be shown in Windows. Not working yet! ---
+    if sys.platform == 'win32':
+        log_info('_run_process() Platform is win32. Creating _info structure')
+        _info = subprocess.STARTUPINFO()
+        _info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+        # See https://msdn.microsoft.com/en-us/library/ms633548(v=vs.85).aspx
+        # See https://docs.python.org/2/library/subprocess.html#subprocess.STARTUPINFO
+        # >> SW_HIDE = 0
+        # >> Does not work: MAME console window is not shown, graphical window not shonw either,
+        # >> process run in background.
+        # _info.wShowWindow = subprocess.SW_HIDE
+        # >> SW_SHOWMINIMIZED = 2
+        # >> Both MAME console and graphical window minimized.
+        # _info.wShowWindow = 2
+        # >> SW_SHOWNORMAL = 1
+        # >> MAME console window is shown, MAME graphical window on top, Kodi on bottom.
+        _info.wShowWindow = 1
+    else:
+        log_info('_run_process() _info is None')
+        _info = None
+
+    # --- Run MAME ---
     with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
-        p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info, stdout = f, stderr = subprocess.STDOUT)
+        p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info,
+                             stdout = f, stderr = subprocess.STDOUT)
     p.wait()
-    log_info('_run_SL_machine() Exiting function')
+    log_debug('_run_process() function ENDS')
+
+def _run_after_execution():
+    log_info('_run_after_execution() Function BEGIN ...')
+
+    # --- Stop Kodi some time ---
+    delay_tempo_ms = g_settings['delay_tempo']
+    log_verb('_run_after_execution() Pausing {0} ms'.format(delay_tempo_ms))
+    xbmc.sleep(delay_tempo_ms)
+
+    # --- Toggle Kodi windowed/fullscreen if requested ---
+    if g_flag_kodi_toggle_fullscreen:
+        log_verb('_run_after_execution() Toggling Kodi fullscreen')
+        kodi_toogle_fullscreen()
+    else:
+        log_verb('_run_after_execution() Toggling Kodi fullscreen DISABLED')
+
+    # --- Resume joystick engine if it was suspended ---
+    # NOT IMPLEMENTED
+
+    # --- Resume audio engine if it was suspended ---
+    # Calling xmbc.audioResume() takes a loong time (2/4 secs) if audio was not properly suspended!
+    # Also produces this in Kodi's log:
+    # WARNING: CActiveAE::StateMachine - signal: 0 from port: OutputControlPort not handled for state: 7
+    #   ERROR: ActiveAE::Resume - failed to init
+    if g_flag_kodi_audio_suspended:
+        log_verb('_run_after_execution() Kodi audio engine was suspended before launching')
+        log_verb('_run_after_execution() Resuming Kodi audio engine')
+        xbmc.audioResume()
+        xbmc.enableNavSounds(True)
+        xbmc.sleep(100)
+    else:
+        log_verb('_run_after_execution() DO NOT resume Kodi audio engine')
+
+    # --- Resume Kodi playing if it was paused. If it was stopped, keep it stopped. ---
+    # >> id="media_state_action" default="0" values="Stop|Pause|Keep playing"
+    media_state_action = g_settings['media_state_action']
+    media_state_str = ['Stop', 'Pause', 'Keep playing'][media_state_action]
+    a = '_run_after_execution() media_state_action is "{0}" ({1})'
+    log_verb(a.format(media_state_str, media_state_action))
+    log_verb('_run_after_execution() g_flag_kodi_was_playing is {0}'.format(g_flag_kodi_was_playing))
+    if g_flag_kodi_was_playing and media_state_action == 1:
+        log_verb('_run_after_execution() Calling xbmc.Player().play()')
+        xbmc.Player().play()
+    log_debug('_run_after_execution() Function ENDS')
 
 # ---------------------------------------------------------------------------------------------
 # Misc functions

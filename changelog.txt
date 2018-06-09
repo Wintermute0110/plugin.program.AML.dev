@@ -7,7 +7,7 @@ WIP      [CORE] [LEIA] Check out the ListItem constructor offscreen parameter in
          See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
          and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
 
-WIP      [CORE] [LEIA] Use the new API function ListItem.setProperties()
+WIP      [CORE] [LEIA] Use the new API function ListItem.setProperties({p1:v1, p2:v2, ...})
          See https://forum.kodi.tv/showthread.php?tid=332283
 
 WIP      [MAME FILTERING] Implement <Include>, <Exclude> and <Change> tags.
@@ -23,7 +23,9 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
 
 [B]Advanced Emulator Launcher | version 0.9.7 | xx June 2018[/B]
 
-WIP      [LAUNCH] Implement "Action on Kodi playing media", "After/before launch delay (ms)", and
+WIP      Implement settings "display_rom_available" and "display_chd_available".
+
+FEATURE  [LAUNCH] Implement "Action on Kodi playing media", "After/before launch delay (ms)", and
          "Suspend/resume Kodi audio engine".
          See https://github.com/Wintermute0110/plugin.program.AML/issues/3
 
