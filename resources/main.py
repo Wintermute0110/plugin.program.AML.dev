@@ -6522,7 +6522,7 @@ def _run_before_execution():
     # --- Force audio suspend if requested in "Settings" --> "Advanced"
     # >> See http://forum.kodi.tv/showthread.php?tid=164522
     g_flag_kodi_audio_suspended = False
-    if self.settings['suspend_audio_engine']:
+    if g_settings['suspend_audio_engine']:
         log_verb('_run_before_execution() Suspending Kodi audio engine')
         xbmc.audioSuspend()
         xbmc.enableNavSounds(False)
