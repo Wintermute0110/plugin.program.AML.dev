@@ -23,7 +23,7 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
 
 [B]Advanced Emulator Launcher | version 0.9.7 | xx June 2018[/B]
 
-WIP      Implement settings "display_rom_available" and "display_chd_available".
+FEATURE  Implemented settings "display_rom_available" and "display_chd_available".
 
 FEATURE  [LAUNCH] Implement "Action on Kodi playing media", "After/before launch delay (ms)", and
          "Suspend/resume Kodi audio engine".

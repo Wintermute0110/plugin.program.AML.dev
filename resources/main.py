@@ -1323,6 +1323,8 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
             if display_hide_BIOS and machine['isBIOS']: continue
             if display_hide_nonworking and machine['driver_status'] == 'preliminary': continue
             if display_hide_imperfect and machine['driver_status'] == 'imperfect': continue
+            if display_rom_available and m_assets['flags'][0] == 'r': continue
+            if display_chd_available and m_assets['flags'][1] == 'c': continue
 
         # --- Add machine to list, set default values ---
         r_dict = {}
