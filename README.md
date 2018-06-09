@@ -1,15 +1,21 @@
 # Advanced MAME Launcher #
 
-Advance MAME Launcher is a MAME front end for Kodi. AML has support for both MAME archade machines
-and Software Lists.
+*Advance MAME Launcher( is an advanced MAME front end for Kodi. AML has support for both MAME archade
+machines and Software Lists. AML supports `Merged`, `Split` and `Non-merged` ROM sets and has the
+ability to fully audit your ROM and CHD collection.
 
-## Kodi forum thread ##
+## Getting Started Guide and Documentation ##
 
 A *Getting Started* guide with installation instructions and more information about AML can be 
 found in the [Advanced MAME Launcher thread] in the Kodi forum. Feel free to ask there any 
 AML-related question you may have.
 
+You may also find some docs is in the [Advanced MAME Launcher wiki] in Github. Note that currently
+this guide is far from complete.
+
 [Advanced MAME Launcher thread]: https://forum.kodi.tv/showthread.php?tid=304186
+
+[Advanced MAME Launcher wiki]: https://github.com/Wintermute0110/plugin.program.AML/wiki
 
 ## Installing the latest released version ##
 
@@ -24,7 +30,7 @@ is disabled.` then click on `Settings` button and then activate the option `Unkn
 Note that this instructions are for the default Kodi skin Estuary. In other skins menu names could
 be slightly different.
 
-[AML ZIP repository]: https://github.com/Wintermute0110/repository.wintermute0110/tree/master/plugin.program.advanced.MAME.launcher
+[AML ZIP repository]: https://github.com/Wintermute0110/repository.wintermute0110/tree/master/plugin.program.AML
 
 ## Installing the latest development version ##
 
