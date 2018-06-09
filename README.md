@@ -19,7 +19,7 @@ this guide is far from complete and I will try to improve it soon.
 
 ## Screenshot gallery ##
 
-All these screenshot have been taken using the Kodi skin [Estuary AEL MOD].
+All the screenshots have been taken using the Kodi skin [Estuary AEL MOD].
 
 [Estuary AEL MOD]: https://forum.kodi.tv/showthread.php?tid=287826&pid=2398922#pid2398922
 
