@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.program.AML" name="Advanced MAME Launcher" version="0.9.7-alpha" provider-name="Wintermute0110">
+<addon id="plugin.program.AML" name="Advanced MAME Launcher" version="0.9.7" provider-name="Wintermute0110">
   <requires>
     <!--
         Check addon versions in https://github.com/xbmc/xbmc/tree/master/addons
@@ -14,7 +14,7 @@
   </extension>
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Kodi meets MAME!</summary>
-    <description lang="en">MAME front-end for Kodi. Supports both MAME machines and MAME Software Lists.</description>
+    <description lang="en">MAME front-end for Kodi that supports both MAME machines and Software Lists. For help look at the Advanced MAME Launcher thread in the Kodi forum.</description>
     <platform>all</platform>
     <license>GNU General Public License version 2</license>
     <email>wintermute0110@gmail.com</email>
