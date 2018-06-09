@@ -17,6 +17,20 @@ this guide is far from complete and I will try to improve it soon.
 
 [Advanced MAME Launcher wiki]: https://github.com/Wintermute0110/plugin.program.AML/wiki
 
+## Screenshot gallery ##
+
+All these screenshot have been taken using the Kodi skin [Estuary AEL MOD].
+
+[Estuary AEL MOD]: https://forum.kodi.tv/showthread.php?tid=287826&pid=2398922#pid2398922
+
+![Estuary AEL mod 1](https://raw.githubusercontent.com/wiki/Wintermute0110/plugin.program.AML/shots/shot_root.png)
+
+![Estuary AEL mod 2](https://raw.githubusercontent.com/wiki/Wintermute0110/plugin.program.AML/shots/shot_MAME_pclone_list.png)
+
+![Estuary AEL mod 3](https://raw.githubusercontent.com/wiki/Wintermute0110/plugin.program.AML/shots/shot_SL_pclone_list.png)
+
+![Estuary AEL mod 4](https://raw.githubusercontent.com/wiki/Wintermute0110/plugin.program.AML/shots/aml_machine_Audit_machine.png)
+
 ## Installing the latest released version ##
 
 Go to the [AML ZIP repository] and download the ZIP file of the AML version you want to install.
