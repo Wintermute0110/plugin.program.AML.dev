@@ -21,6 +21,15 @@ WIP      [MANUALS] Progress bar when extracting PDF pages.
 WIP      [MANUALS] Support for CBZ/CBR manuals.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
+
+[B]Advanced MAME Launcher | version 0.9.8 | 11 June 2018[/B]
+
+FEATURE  Documentation in README.md improved.
+
+FIX      Changed source code files to remove BOM. This is necessary to pass Travis tests of
+         Kodi official repo.
+
+
 [B]Advanced MAME Launcher | version 0.9.7 | 09 June 2018[/B]
 
 FEATURE  Implemented settings "display_rom_available" and "display_chd_available".
