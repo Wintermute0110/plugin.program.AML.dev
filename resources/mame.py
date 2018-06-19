@@ -2824,15 +2824,14 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
 
         # >> Update progress
         processed_files += 1
-    else:
-        a = '*** Software Lists audit finished ***'
-        report_full_list.append(a)
-        report_good_list.append(a)
-        report_error_list.append(a)
-        ROM_report_good_list.append(a)
-        ROM_report_error_list.append(a)
-        CHD_report_good_list.append(a)
-        CHD_report_error_list.append(a)
+    a = '*** Software Lists audit finished ***'
+    report_full_list.append(a)
+    report_good_list.append(a)
+    report_error_list.append(a)
+    ROM_report_good_list.append(a)
+    ROM_report_error_list.append(a)
+    CHD_report_good_list.append(a)
+    CHD_report_error_list.append(a)
     pDialog.close()
 
     # >> Write report.
