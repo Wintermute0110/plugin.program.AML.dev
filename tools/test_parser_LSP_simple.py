@@ -3,6 +3,15 @@
 import re
 
 # -------------------------------------------------------------------------------------------------
+# Fake functions when running outisde the Kodi Python runtime
+# -------------------------------------------------------------------------------------------------
+def log_debug(str):
+    print(str)
+
+def log_info(str):
+    print(str)
+
+# -------------------------------------------------------------------------------------------------
 # List of String Parser (LSP) engine. Grammar token objects.
 # Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 #
@@ -18,9 +27,9 @@ class LSP_literal_token:
     def nud(self):
         return self
     def exec_token(self):
-        if debug_LSP_parser: print('Executing LITERAL token value "{0}"'.format(self.value))
+        if debug_LSP_parser: log_debug('Executing LITERAL token value "{0}"'.format(self.value))
         ret = self.value
-        if debug_LSP_parser: print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return '<LITERAL "{0}">'.format(self.value)
@@ -58,9 +67,9 @@ class LSP_operator_has_token:
         self.first = LSP_expression(50)
         return self
     def exec_token(self):
-        if debug_LSP_parser: print('Executing HAS token')
+        if debug_LSP_parser: log_debug('Executing HAS token')
         ret = self.first.exec_token() in LSP_parser_search_list
-        if debug_LSP_parser: print('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP has>"
@@ -73,9 +82,9 @@ class LSP_operator_lacks_token:
         self.first = LSP_expression(50)
         return self
     def exec_token(self):
-        if debug_LSP_parser: print('Executing LACKS token')
+        if debug_LSP_parser: log_debug('Executing LACKS token')
         ret = self.first.exec_token() not in LSP_parser_search_list
-        if debug_LSP_parser: print('LACKS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('LACKS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP lacks>"
@@ -88,9 +97,9 @@ class LSP_operator_not_token:
         self.first = LSP_expression(50)
         return self
     def exec_token(self):
-        if debug_LSP_parser: print('Executing NOT token')
+        if debug_LSP_parser: log_debug('Executing NOT token')
         ret = not self.first.exec_token()
-        if debug_LSP_parser: print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP not>"
@@ -100,14 +109,14 @@ class LSP_operator_and_token:
     def __init__(self):
         self.id = "OP AND"
     def led(self, left):
-        if debug_LSP_parser: print('Executing AND token')
+        if debug_LSP_parser: log_debug('Executing AND token')
         self.first = left
         self.second = LSP_expression(10)
         return self
     def exec_token(self):
-        if debug_LSP_parser: print('Executing AND token')
+        if debug_LSP_parser: log_debug('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_LSP_parser: print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP and>"
@@ -121,9 +130,9 @@ class LSP_operator_or_token:
         self.second = LSP_expression(10)
         return self
     def exec_token(self):
-        if debug_LSP_parser: print('Executing OR token')
+        if debug_LSP_parser: log_debug('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_LSP_parser: print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP or>"
@@ -189,9 +198,9 @@ def LSP_parse_exec(program, search_list):
     global LSP_token, LSP_next, LSP_parser_search_list
 
     if debug_LSP_parse_exec:
-        print('LSP_parse_exec() Initialising program execution')
-        print('LSP_parse_exec() Search string "{0}"'.format(unicode(search_list)))
-        print('LSP_parse_exec() Program       "{0}"'.format(program))
+        log_debug('LSP_parse_exec() Initialising program execution')
+        log_debug('LSP_parse_exec() Search string "{0}"'.format(unicode(search_list)))
+        log_debug('LSP_parse_exec() Program       "{0}"'.format(program))
     LSP_parser_search_list = search_list
     LSP_next = LSP_tokenize(program).next
     LSP_token = LSP_next()
@@ -206,7 +215,7 @@ def LSP_parse_exec(program, search_list):
         LSP_token = LSP_next()
         left = t.led(left)
     if debug_LSP_parse_exec:
-        print('LSP_parse_exec() Init exec program in token {0}'.format(left))
+        log_debug('LSP_parse_exec() Init exec program in token {0}'.format(left))
 
     return left.exec_token()
 
@@ -228,11 +237,11 @@ p_str = 'lacks Capcom and lacks Kaneko and lacks Namco'
 # p_str = 'lacks Capcom or lacks Kaneko or lacks Namco'
 
 # --- Test ---
-print("String  '{0}'".format(unicode(i_list)))
-print("Program '{0}'".format(p_str))
+log_info("String  '{0}'".format(unicode(i_list)))
+log_info("Program '{0}'".format(p_str))
 t_counter = 0
 for token in LSP_tokenize(p_str):
-    print("Token {0:02d} '{1}'".format(t_counter, token))
+    log_info("Token {0:02d} '{1}'".format(t_counter, token))
     t_counter += 1
 result = LSP_parse_exec(p_str, i_list)
-print('Program result {0}'.format(result))
+log_info('Program result {0}'.format(result))

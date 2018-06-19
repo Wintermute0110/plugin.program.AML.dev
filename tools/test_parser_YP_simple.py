@@ -3,6 +3,15 @@
 import re
 
 # -------------------------------------------------------------------------------------------------
+# Fake functions when running outisde the Kodi Python runtime
+# -------------------------------------------------------------------------------------------------
+def log_debug(str):
+    print(str)
+
+def log_info(str):
+    print(str)
+
+# -------------------------------------------------------------------------------------------------
 # Year Parser (YP) engine. Grammar token objects.
 # Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 #
@@ -19,12 +28,12 @@ class YP_literal_token:
     def nud(self):
         return self
     def exec_token(self):
-        if debug_YP_parser: print('Executing LITERAL token value "{0}"'.format(self.value))
+        if debug_YP_parser: log_debug('Executing LITERAL token value "{0}"'.format(self.value))
         if self.value == 'year':
             ret = YP_year
         else:
             ret = int(self.value)
-        if debug_YP_parser: print('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return '<LITERAL "{0}">'.format(self.value)
@@ -62,9 +71,9 @@ class YP_operator_not_token:
         self.first = YP_expression(50)
         return self
     def exec_token(self):
-        if debug_YP_parser: print('Executing NOT token')
+        if debug_YP_parser: log_debug('Executing NOT token')
         ret = not self.first.exec_token()
-        if debug_YP_parser: print('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP not>"
@@ -74,14 +83,14 @@ class YP_operator_and_token:
     def __init__(self):
         self.id = "OP AND"
     def led(self, left):
-        if debug_YP_parser: print('Executing AND token')
+        if debug_YP_parser: log_debug('Executing AND token')
         self.first = left
         self.second = YP_expression(10)
         return self
     def exec_token(self):
-        if debug_YP_parser: print('Executing AND token')
+        if debug_YP_parser: log_debug('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_YP_parser: print('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP and>"
@@ -95,9 +104,9 @@ class YP_operator_or_token:
         self.second = YP_expression(10)
         return self
     def exec_token(self):
-        if debug_YP_parser: print('Executing OR token')
+        if debug_YP_parser: log_debug('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_YP_parser: print('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP or>"
@@ -111,9 +120,9 @@ class YP_operator_equal_token:
         self.second = YP_expression(10)
         return self
     def exec_token(self):
-        if debug_YP_parser: print('Executing == token')
+        if debug_YP_parser: log_debug('Executing == token')
         ret = self.first.exec_token() == self.second.exec_token()
-        if debug_YP_parser: print('== token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('== token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP ==>"
@@ -127,9 +136,9 @@ class YP_operator_not_equal_token:
         self.second = YP_expression(10)
         return self
     def exec_token(self):
-        if debug_YP_parser: print('Executing <> token')
+        if debug_YP_parser: log_debug('Executing <> token')
         ret = self.first.exec_token() <> self.second.exec_token()
-        if debug_YP_parser: print('<> token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('<> token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP <>>"
@@ -143,9 +152,9 @@ class YP_operator_great_than_token:
         self.second = YP_expression(10)
         return self
     def exec_token(self):
-        if debug_YP_parser: print('Executing > token')
+        if debug_YP_parser: log_debug('Executing > token')
         ret = self.first.exec_token() > self.second.exec_token()
-        if debug_YP_parser: print('> token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('> token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP >>"
@@ -159,9 +168,9 @@ class YP_operator_less_than_token:
         self.second = YP_expression(10)
         return self
     def exec_token(self):
-        if debug_YP_parser: print('Executing < token')
+        if debug_YP_parser: log_debug('Executing < token')
         ret = self.first.exec_token() < self.second.exec_token()
-        if debug_YP_parser: print('< token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('< token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP <>"
@@ -175,9 +184,9 @@ class YP_operator_great_or_equal_than_token:
         self.second = YP_expression(10)
         return self
     def exec_token(self):
-        if debug_YP_parser: print('Executing >= token')
+        if debug_YP_parser: log_debug('Executing >= token')
         ret = self.first.exec_token() >= self.second.exec_token()
-        if debug_YP_parser: print('>= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('>= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP >=>"
@@ -191,9 +200,9 @@ class YP_operator_less_or_equal_than_token:
         self.second = YP_expression(10)
         return self
     def exec_token(self):
-        if debug_YP_parser: print('Executing <= token')
+        if debug_YP_parser: log_debug('Executing <= token')
         ret = self.first.exec_token() <= self.second.exec_token()
-        if debug_YP_parser: print('<= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('<= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
         return "<OP <=>"
@@ -271,9 +280,9 @@ def YP_parse_exec(program, year_str):
         year = 0
 
     if debug_YP_parse_exec:
-        print('YP_parse_exec() Initialising program execution')
-        print('YP_parse_exec() year     {0}'.format(year))
-        print('YP_parse_exec() Program  "{0}"'.format(program))
+        log_debug('YP_parse_exec() Initialising program execution')
+        log_debug('YP_parse_exec() year     {0}'.format(year))
+        log_debug('YP_parse_exec() Program  "{0}"'.format(program))
     YP_year = year
     YP_next = YP_tokenize(program).next
     YP_token = YP_next()
@@ -288,7 +297,7 @@ def YP_parse_exec(program, year_str):
         YP_token = YP_next()
         left = t.led(left)
     if debug_YP_parse_exec:
-        print('YP_parse_exec() Init exec program in token {0}'.format(left))
+        log_debug('YP_parse_exec() Init exec program in token {0}'.format(left))
 
     return left.exec_token()
 
@@ -326,11 +335,11 @@ p_str = 'year >= 1980 and year < 1990'
 # p_str = 'year >= 2000'
 
 # --- Test ---
-print("year_str '{0}'".format(year_str))
-print("Program  '{0}'".format(p_str))
+log_info("year_str '{0}'".format(year_str))
+log_info("Program  '{0}'".format(p_str))
 t_counter = 0
 for token in YP_tokenize(p_str):
-    print("Token {0:02d} '{1}'".format(t_counter, token))
+    log_info("Token {0:02d} '{1}'".format(t_counter, token))
     t_counter += 1
 result = YP_parse_exec(p_str, year_str)
-print('Program result {0}'.format(result))
+log_info('Program result {0}'.format(result))
