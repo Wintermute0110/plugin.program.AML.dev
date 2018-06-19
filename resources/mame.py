@@ -2884,6 +2884,12 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
 # -------------------------------------------------------------------------------------------------
 # Fanart generation
 # -------------------------------------------------------------------------------------------------
+# >> Cache font objects in global variables.
+# >> Used in mame.py, mame_build_fanart() and mame_build_SL_fanart()
+font_mono = None
+font_mono_SL = None
+font_mono_item = None
+
 #
 # Scales and centers img into a box of size (box_x_size, box_y_size).
 # Scaling keeps original img aspect ratio.
