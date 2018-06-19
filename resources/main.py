@@ -4953,7 +4953,7 @@ def _command_context_setup_plugin():
 
         # --- Test MAME Fanart ---
         if submenu == 0:
-            Template_FN = AML_ADDON_DIR.pjoin('AML-MAME-Fanart-template.xml')
+            Template_FN = AML_ADDON_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
             Asset_path_FN = AML_ADDON_DIR.pjoin('media/MAME_assets')
             Fanart_FN = PLUGIN_DATA_DIR.pjoin('Fanart_MAME.png')
             log_debug('Testing MAME Fanart generation ...')
@@ -4991,7 +4991,7 @@ def _command_context_setup_plugin():
 
         # --- Test SL Fanart ---
         elif submenu == 1:
-            Template_FN = AML_ADDON_DIR.pjoin('AML-SL-Fanart-template.xml')
+            Template_FN = AML_ADDON_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
             Fanart_FN = PLUGIN_DATA_DIR.pjoin('Fanart_SL.png')
             Asset_path_FN = AML_ADDON_DIR.pjoin('media/SL_assets')
             log_debug('Testing Software List Fanart generation ...')
@@ -5036,7 +5036,7 @@ def _command_context_setup_plugin():
                 return
 
             # >> If fanart directory doesn't exist create it.
-            Template_FN = AML_ADDON_DIR.pjoin('AML-MAME-Fanart-template.xml')
+            Template_FN = AML_ADDON_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
             Asset_path_FN = FileName(g_settings['assets_path'])
             Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
             if not Fanart_path_FN.isdir():
@@ -5113,7 +5113,7 @@ def _command_context_setup_plugin():
                 return
 
             # >> Load Fanart template from XML file
-            Template_FN = AML_ADDON_DIR.pjoin('AML-SL-Fanart-template.xml')
+            Template_FN = AML_ADDON_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
             layout = mame_load_SL_Fanart_template(Template_FN)
             # log_debug(unicode(layout))
             if not layout:
