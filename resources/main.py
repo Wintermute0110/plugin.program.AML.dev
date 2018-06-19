@@ -2442,7 +2442,6 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
     elif action == ACTION_VIEW_SL_ROM_DATA:
         if location == LOCATION_STANDARD:
             # --- Load databases ---
-            kodi_busydialog_ON()
             SL_machines_dic = fs_load_JSON_file_dic(PATHS.SL_MACHINES_PATH.getPath())
             SL_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
             assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -2450,7 +2449,6 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
             SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
             roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
-            kodi_busydialog_OFF()
 
             # --- Prepare data ---
             rom = roms[SL_ROM]
@@ -2461,11 +2459,9 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
 
         elif location == LOCATION_SL_FAVS:
             # --- Load databases ---
-            kodi_busydialog_ON()
             SL_machines_dic = fs_load_JSON_file_dic(PATHS.SL_MACHINES_PATH.getPath())
             SL_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
             fav_SL_roms = fs_load_JSON_file_dic(PATHS.FAV_SL_ROMS_PATH.getPath())
-            kodi_busydialog_OFF()
 
             # --- Prepare data ---
             fav_key = SL_name + '-' + SL_ROM
@@ -2476,11 +2472,9 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             window_title = 'Favourite Software List Item Information'
 
         elif location == LOCATION_SL_MOST_PLAYED:
-            kodi_busydialog_ON()
             SL_machines_dic = fs_load_JSON_file_dic(PATHS.SL_MACHINES_PATH.getPath())
             SL_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
             most_played_roms_dic = fs_load_JSON_file_dic(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
-            kodi_busydialog_OFF()
 
             # --- Prepare data ---
             fav_key = SL_name + '-' + SL_ROM
@@ -2491,11 +2485,9 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             window_title = 'Most Played SL Item Information'
 
         elif location == LOCATION_SL_RECENT_PLAYED:
-            kodi_busydialog_ON()
             SL_machines_dic = fs_load_JSON_file_dic(PATHS.SL_MACHINES_PATH.getPath())
             SL_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
             recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
-            kodi_busydialog_OFF()
 
             # --- Prepare data ---
             fav_key = SL_name + '-' + SL_ROM
@@ -2785,13 +2777,11 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
     elif action == ACTION_VIEW_SL_ROM_ROMS:
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
         SL_ROMS_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
-        # kodi_busydialog_ON()
         # SL_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
         # SL_machines_dic = fs_load_JSON_file_dic(PATHS.SL_MACHINES_PATH.getPath())
         # assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
         # SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
         # SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
-        # kodi_busydialog_OFF()
         # SL_dic = SL_catalog_dic[SL_name]
         # SL_machine_list = SL_machines_dic[SL_name]
         # assets = SL_asset_dic[SL_ROM] if SL_ROM in SL_asset_dic else fs_new_SL_asset()
@@ -3395,11 +3385,9 @@ def _command_context_add_mame_fav(machine_name):
     log_debug('_command_add_mame_fav() Machine_name "{0}"'.format(machine_name))
 
     # >> Get Machine database entry
-    kodi_busydialog_ON()
     control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
     machine = fs_get_machine_main_db_hash(PATHS, machine_name)
     assets = fs_get_machine_assets_db_hash(PATHS, machine_name)
-    kodi_busydialog_OFF()
 
     # >> Open Favourite Machines dictionary
     fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
@@ -3622,7 +3610,6 @@ def _command_context_add_sl_fav(SL_name, ROM_name):
     log_debug('_command_add_sl_fav() ROM_name "{0}"'.format(ROM_name))
 
     # --- Load databases ---
-    kodi_busydialog_ON()
     control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
     SL_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
     file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
@@ -3631,7 +3618,6 @@ def _command_context_add_sl_fav(SL_name, ROM_name):
     assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
     SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
     SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
-    kodi_busydialog_OFF()
 
     # >> Open Favourite Machines dictionary
     fav_SL_roms = fs_load_JSON_file_dic(PATHS.FAV_SL_ROMS_PATH.getPath())
