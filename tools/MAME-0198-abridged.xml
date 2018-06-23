@@ -1,0 +1,2733 @@
+<?xml version="1.0"?>
+<!DOCTYPE mame [
+<!ELEMENT mame (machine+)>
+	<!ATTLIST mame build CDATA #IMPLIED>
+	<!ATTLIST mame debug (yes|no) "no">
+	<!ATTLIST mame mameconfig CDATA #REQUIRED>
+	<!ELEMENT machine (description, year?, manufacturer?, biosset*, rom*, disk*, device_ref*, sample*, chip*, display*, sound?, input?, dipswitch*, configuration*, port*, adjuster*, driver?, feature*, device*, slot*, softwarelist*, ramoption*)>
+		<!ATTLIST machine name CDATA #REQUIRED>
+		<!ATTLIST machine sourcefile CDATA #IMPLIED>
+		<!ATTLIST machine isbios (yes|no) "no">
+		<!ATTLIST machine isdevice (yes|no) "no">
+		<!ATTLIST machine ismechanical (yes|no) "no">
+		<!ATTLIST machine runnable (yes|no) "yes">
+		<!ATTLIST machine cloneof CDATA #IMPLIED>
+		<!ATTLIST machine romof CDATA #IMPLIED>
+		<!ATTLIST machine sampleof CDATA #IMPLIED>
+		<!ELEMENT description (#PCDATA)>
+		<!ELEMENT year (#PCDATA)>
+		<!ELEMENT manufacturer (#PCDATA)>
+		<!ELEMENT biosset EMPTY>
+			<!ATTLIST biosset name CDATA #REQUIRED>
+			<!ATTLIST biosset description CDATA #REQUIRED>
+			<!ATTLIST biosset default (yes|no) "no">
+		<!ELEMENT rom EMPTY>
+			<!ATTLIST rom name CDATA #REQUIRED>
+			<!ATTLIST rom bios CDATA #IMPLIED>
+			<!ATTLIST rom size CDATA #REQUIRED>
+			<!ATTLIST rom crc CDATA #IMPLIED>
+			<!ATTLIST rom sha1 CDATA #IMPLIED>
+			<!ATTLIST rom merge CDATA #IMPLIED>
+			<!ATTLIST rom region CDATA #IMPLIED>
+			<!ATTLIST rom offset CDATA #IMPLIED>
+			<!ATTLIST rom status (baddump|nodump|good) "good">
+			<!ATTLIST rom optional (yes|no) "no">
+		<!ELEMENT disk EMPTY>
+			<!ATTLIST disk name CDATA #REQUIRED>
+			<!ATTLIST disk sha1 CDATA #IMPLIED>
+			<!ATTLIST disk merge CDATA #IMPLIED>
+			<!ATTLIST disk region CDATA #IMPLIED>
+			<!ATTLIST disk index CDATA #IMPLIED>
+			<!ATTLIST disk writable (yes|no) "no">
+			<!ATTLIST disk status (baddump|nodump|good) "good">
+			<!ATTLIST disk optional (yes|no) "no">
+		<!ELEMENT device_ref EMPTY>
+			<!ATTLIST device_ref name CDATA #REQUIRED>
+		<!ELEMENT sample EMPTY>
+			<!ATTLIST sample name CDATA #REQUIRED>
+		<!ELEMENT chip EMPTY>
+			<!ATTLIST chip name CDATA #REQUIRED>
+			<!ATTLIST chip tag CDATA #IMPLIED>
+			<!ATTLIST chip type (cpu|audio) #REQUIRED>
+			<!ATTLIST chip clock CDATA #IMPLIED>
+		<!ELEMENT display EMPTY>
+			<!ATTLIST display tag CDATA #IMPLIED>
+			<!ATTLIST display type (raster|vector|lcd|svg|unknown) #REQUIRED>
+			<!ATTLIST display rotate (0|90|180|270) #IMPLIED>
+			<!ATTLIST display flipx (yes|no) "no">
+			<!ATTLIST display width CDATA #IMPLIED>
+			<!ATTLIST display height CDATA #IMPLIED>
+			<!ATTLIST display refresh CDATA #REQUIRED>
+			<!ATTLIST display pixclock CDATA #IMPLIED>
+			<!ATTLIST display htotal CDATA #IMPLIED>
+			<!ATTLIST display hbend CDATA #IMPLIED>
+			<!ATTLIST display hbstart CDATA #IMPLIED>
+			<!ATTLIST display vtotal CDATA #IMPLIED>
+			<!ATTLIST display vbend CDATA #IMPLIED>
+			<!ATTLIST display vbstart CDATA #IMPLIED>
+		<!ELEMENT sound EMPTY>
+			<!ATTLIST sound channels CDATA #REQUIRED>
+			<!ELEMENT condition EMPTY>
+			<!ATTLIST condition tag CDATA #REQUIRED>
+			<!ATTLIST condition mask CDATA #REQUIRED>
+			<!ATTLIST condition relation (eq|ne|gt|le|lt|ge) #REQUIRED>
+			<!ATTLIST condition value CDATA #REQUIRED>
+		<!ELEMENT input (control*)>
+			<!ATTLIST input service (yes|no) "no">
+			<!ATTLIST input tilt (yes|no) "no">
+			<!ATTLIST input players CDATA #REQUIRED>
+			<!ATTLIST input coins CDATA #IMPLIED>
+			<!ELEMENT control EMPTY>
+				<!ATTLIST control type CDATA #REQUIRED>
+				<!ATTLIST control player CDATA #IMPLIED>
+				<!ATTLIST control buttons CDATA #IMPLIED>
+				<!ATTLIST control reqbuttons CDATA #IMPLIED>
+				<!ATTLIST control minimum CDATA #IMPLIED>
+				<!ATTLIST control maximum CDATA #IMPLIED>
+				<!ATTLIST control sensitivity CDATA #IMPLIED>
+				<!ATTLIST control keydelta CDATA #IMPLIED>
+				<!ATTLIST control reverse (yes|no) "no">
+				<!ATTLIST control ways CDATA #IMPLIED>
+				<!ATTLIST control ways2 CDATA #IMPLIED>
+				<!ATTLIST control ways3 CDATA #IMPLIED>
+		<!ELEMENT dipswitch (condition?, diplocation*, dipvalue*)>
+			<!ATTLIST dipswitch name CDATA #REQUIRED>
+			<!ATTLIST dipswitch tag CDATA #REQUIRED>
+			<!ATTLIST dipswitch mask CDATA #REQUIRED>
+			<!ELEMENT diplocation EMPTY>
+				<!ATTLIST diplocation name CDATA #REQUIRED>
+				<!ATTLIST diplocation number CDATA #REQUIRED>
+				<!ATTLIST diplocation inverted (yes|no) "no">
+			<!ELEMENT dipvalue (condition?)>
+				<!ATTLIST dipvalue name CDATA #REQUIRED>
+				<!ATTLIST dipvalue value CDATA #REQUIRED>
+				<!ATTLIST dipvalue default (yes|no) "no">
+		<!ELEMENT configuration (condition?, conflocation*, confsetting*)>
+			<!ATTLIST configuration name CDATA #REQUIRED>
+			<!ATTLIST configuration tag CDATA #REQUIRED>
+			<!ATTLIST configuration mask CDATA #REQUIRED>
+			<!ELEMENT conflocation EMPTY>
+				<!ATTLIST conflocation name CDATA #REQUIRED>
+				<!ATTLIST conflocation number CDATA #REQUIRED>
+				<!ATTLIST conflocation inverted (yes|no) "no">
+			<!ELEMENT confsetting (condition?)>
+				<!ATTLIST confsetting name CDATA #REQUIRED>
+				<!ATTLIST confsetting value CDATA #REQUIRED>
+				<!ATTLIST confsetting default (yes|no) "no">
+		<!ELEMENT port (analog*)>
+			<!ATTLIST port tag CDATA #REQUIRED>
+			<!ELEMENT analog EMPTY>
+				<!ATTLIST analog mask CDATA #REQUIRED>
+		<!ELEMENT adjuster (condition?)>
+			<!ATTLIST adjuster name CDATA #REQUIRED>
+			<!ATTLIST adjuster default CDATA #REQUIRED>
+		<!ELEMENT driver EMPTY>
+			<!ATTLIST driver status (good|imperfect|preliminary) #REQUIRED>
+			<!ATTLIST driver emulation (good|imperfect|preliminary) #REQUIRED>
+			<!ATTLIST driver cocktail (good|imperfect|preliminary) #IMPLIED>
+			<!ATTLIST driver savestate (supported|unsupported) #REQUIRED>
+		<!ELEMENT feature EMPTY>
+			<!ATTLIST feature type (protection|palette|graphics|sound|controls|keyboard|mouse|microphone|camera|disk|printer|lan|wan|timing) #REQUIRED>
+			<!ATTLIST feature status (unemulated|imperfect) #IMPLIED>
+			<!ATTLIST feature overall (unemulated|imperfect) #IMPLIED>
+		<!ELEMENT device (instance?, extension*)>
+			<!ATTLIST device type CDATA #REQUIRED>
+			<!ATTLIST device tag CDATA #IMPLIED>
+			<!ATTLIST device fixed_image CDATA #IMPLIED>
+			<!ATTLIST device mandatory CDATA #IMPLIED>
+			<!ATTLIST device interface CDATA #IMPLIED>
+			<!ELEMENT instance EMPTY>
+				<!ATTLIST instance name CDATA #REQUIRED>
+				<!ATTLIST instance briefname CDATA #REQUIRED>
+			<!ELEMENT extension EMPTY>
+				<!ATTLIST extension name CDATA #REQUIRED>
+		<!ELEMENT slot (slotoption*)>
+			<!ATTLIST slot name CDATA #REQUIRED>
+			<!ELEMENT slotoption EMPTY>
+				<!ATTLIST slotoption name CDATA #REQUIRED>
+				<!ATTLIST slotoption devname CDATA #REQUIRED>
+				<!ATTLIST slotoption default (yes|no) "no">
+		<!ELEMENT softwarelist EMPTY>
+			<!ATTLIST softwarelist name CDATA #REQUIRED>
+			<!ATTLIST softwarelist status (original|compatible) #REQUIRED>
+			<!ATTLIST softwarelist filter CDATA #IMPLIED>
+		<!ELEMENT ramoption (#PCDATA)>
+			<!ATTLIST ramoption name CDATA #REQUIRED>
+			<!ATTLIST ramoption default CDATA #IMPLIED>
+]>
+
+<mame build="0.198 (mame0198)" debug="no" mameconfig="10">
+	<machine name="dino" sourcefile="cps1.cpp">
+		<description>Cadillacs and Dinosaurs (World 930201)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="cde_23a.8f" size="524288" crc="8f4e585e" sha1="55ecba3652066cdafad140c4524b1fc81228e69b" region="maincpu" offset="0"/>
+		<rom name="cde_22a.7f" size="524288" crc="9278aa12" sha1="58cbbd53a98abe640ccb233f8dbd8ca6d63475e7" region="maincpu" offset="80000"/>
+		<rom name="cde_21a.6f" size="524288" crc="66d23de2" sha1="19b8a365f630411d524d055459020f4c8cf930f1" region="maincpu" offset="100000"/>
+		<rom name="cd-1m.3a" size="524288" crc="8da4f917" sha1="4f7b2304b7d9b545d6707d7ec921d3e28200699d" region="gfx" offset="0"/>
+		<rom name="cd-3m.5a" size="524288" crc="6c40f603" sha1="cdbd11dfcec08e87355d7e21e9fd39f7eacab016" region="gfx" offset="2"/>
+		<rom name="cd-2m.4a" size="524288" crc="09c8fc2d" sha1="d0c0a1258ec5dd484ab6ec1c5663425431f929ee" region="gfx" offset="4"/>
+		<rom name="cd-4m.6a" size="524288" crc="637ff38f" sha1="859926b33b9955b3ed67471c61faa442d42b9696" region="gfx" offset="6"/>
+		<rom name="cd-5m.7a" size="524288" crc="470befee" sha1="a42e38319e9b7424381352512f11bd8edf0bbb96" region="gfx" offset="200000"/>
+		<rom name="cd-7m.9a" size="524288" crc="22bfb7a3" sha1="c44959bd3d42b9fc8ecb482dfaf63fbd469d2c3e" region="gfx" offset="200002"/>
+		<rom name="cd-6m.8a" size="524288" crc="e7599ac4" sha1="0e788a38547a8701115d01190ddeaca64388db4d" region="gfx" offset="200004"/>
+		<rom name="cd-8m.10a" size="524288" crc="211b4b15" sha1="374f6b185faa0f14f5c45b9b1d60d0772d93fb17" region="gfx" offset="200006"/>
+		<rom name="cd_q.5k" size="131072" crc="605fdb0b" sha1="9da90ddc6513aaaf2260f0c69719c6b0e585ba8c" region="audiocpu" offset="0"/>
+		<rom name="cd-q1.1k" size="524288" crc="60927775" sha1="f8599bc84c38573ebbe8685822c58b6a38b50462" region="qsound" offset="0"/>
+		<rom name="cd-q2.2k" size="524288" crc="770f4c47" sha1="fec8ef00a6669d4d5e37787ecc7b58ee46709326" region="qsound" offset="80000"/>
+		<rom name="cd-q3.3k" size="524288" crc="2f273ffc" sha1="f0de462f6c4d251911258e0ebd886152c14d1586" region="qsound" offset="100000"/>
+		<rom name="cd-q4.4k" size="524288" crc="2c67821d" sha1="6e2528d0b22508300a6a142a796dd3bf53a66946" region="qsound" offset="180000"/>
+		<rom name="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="cd63b.1a" size="279" crc="ef72e902" sha1="82fea3f63869c245d0dce2809085208fe719b57a" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="3" coins="3" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+			<control type="joy" player="3" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="dinoa" sourcefile="cps1.cpp" cloneof="dino" romof="dino">
+		<description>Cadillacs and Dinosaurs (Asia TW 930223)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="cdt_23.8f" size="524288" crc="f477f7a0" sha1="bad4979093ced8ae09273454c80de704b798e590" region="maincpu" offset="0"/>
+		<rom name="cdt_22.7f" size="524288" crc="1e534ca5" sha1="8233a1a5de2a1fdd2b1c2b8616eda29db4be725a" region="maincpu" offset="80000"/>
+		<rom name="cdt_21.6f" merge="cde_21a.6f" size="524288" crc="66d23de2" sha1="19b8a365f630411d524d055459020f4c8cf930f1" region="maincpu" offset="100000"/>
+		<rom name="cd-1m.3a" merge="cd-1m.3a" size="524288" crc="8da4f917" sha1="4f7b2304b7d9b545d6707d7ec921d3e28200699d" region="gfx" offset="0"/>
+		<rom name="cd-3m.5a" merge="cd-3m.5a" size="524288" crc="6c40f603" sha1="cdbd11dfcec08e87355d7e21e9fd39f7eacab016" region="gfx" offset="2"/>
+		<rom name="cd-2m.4a" merge="cd-2m.4a" size="524288" crc="09c8fc2d" sha1="d0c0a1258ec5dd484ab6ec1c5663425431f929ee" region="gfx" offset="4"/>
+		<rom name="cd-4m.6a" merge="cd-4m.6a" size="524288" crc="637ff38f" sha1="859926b33b9955b3ed67471c61faa442d42b9696" region="gfx" offset="6"/>
+		<rom name="cd-5m.7a" merge="cd-5m.7a" size="524288" crc="470befee" sha1="a42e38319e9b7424381352512f11bd8edf0bbb96" region="gfx" offset="200000"/>
+		<rom name="cd-7m.9a" merge="cd-7m.9a" size="524288" crc="22bfb7a3" sha1="c44959bd3d42b9fc8ecb482dfaf63fbd469d2c3e" region="gfx" offset="200002"/>
+		<rom name="cd-6m.8a" merge="cd-6m.8a" size="524288" crc="e7599ac4" sha1="0e788a38547a8701115d01190ddeaca64388db4d" region="gfx" offset="200004"/>
+		<rom name="cd-8m.10a" merge="cd-8m.10a" size="524288" crc="211b4b15" sha1="374f6b185faa0f14f5c45b9b1d60d0772d93fb17" region="gfx" offset="200006"/>
+		<rom name="cd_q.5k" merge="cd_q.5k" size="131072" crc="605fdb0b" sha1="9da90ddc6513aaaf2260f0c69719c6b0e585ba8c" region="audiocpu" offset="0"/>
+		<rom name="cd-q1.1k" merge="cd-q1.1k" size="524288" crc="60927775" sha1="f8599bc84c38573ebbe8685822c58b6a38b50462" region="qsound" offset="0"/>
+		<rom name="cd-q2.2k" merge="cd-q2.2k" size="524288" crc="770f4c47" sha1="fec8ef00a6669d4d5e37787ecc7b58ee46709326" region="qsound" offset="80000"/>
+		<rom name="cd-q3.3k" merge="cd-q3.3k" size="524288" crc="2f273ffc" sha1="f0de462f6c4d251911258e0ebd886152c14d1586" region="qsound" offset="100000"/>
+		<rom name="cd-q4.4k" merge="cd-q4.4k" size="524288" crc="2c67821d" sha1="6e2528d0b22508300a6a142a796dd3bf53a66946" region="qsound" offset="180000"/>
+		<rom name="buf1" merge="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" merge="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" merge="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" merge="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="cd63b.1a" merge="cd63b.1a" size="279" crc="ef72e902" sha1="82fea3f63869c245d0dce2809085208fe719b57a" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" merge="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" merge="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" merge="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" merge="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" merge="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" merge="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" merge="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="3" coins="3" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+			<control type="joy" player="3" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="dinohunt" sourcefile="cps1.cpp" cloneof="dino" romof="dino">
+		<description>Dinosaur Hunter (Chinese bootleg of Cadillacs and Dinosaurs)</description>
+		<year>1993</year>
+		<manufacturer>bootleg</manufacturer>
+		<rom name="u23" size="524288" crc="8d5ddc5d" sha1="3ed1da71d73425308d0c3ac1a01a7242e60b6677" region="maincpu" offset="0"/>
+		<rom name="u22" size="524288" crc="f72cd219" sha1="a3f580bd328b54d2546ae7e94262c1a706d27172" region="maincpu" offset="80000"/>
+		<rom name="u21" size="524288" crc="bc275b76" sha1="1f7f7533b4ccb511dc479f531d9d6740d3ca6712" region="maincpu" offset="100000"/>
+		<rom name="u20" size="524288" crc="8987c975" sha1="3fd856805d627f855f72acc7aacc2e8ecf0f12bd" region="maincpu" offset="180000"/>
+		<rom name="u1" size="524288" crc="a01a9fb5" sha1="d1ab4c7ead04932c60923363a0a661d0d1472aaa" region="gfx" offset="0"/>
+		<rom name="u2" size="524288" crc="bdf02c17" sha1="046ba4c589a22a7ac65c86baaae18eff0bff6ecb" region="gfx" offset="2"/>
+		<rom name="u3" size="524288" crc="058beefa" sha1="0d09ab5a200643b5a16e0313228f7ea243752bd0" region="gfx" offset="4"/>
+		<rom name="u4" size="524288" crc="5028a9f1" sha1="ff3a988153860e76beb79918ad896e702c3ecd3d" region="gfx" offset="6"/>
+		<rom name="u5" size="524288" crc="d77f89ea" sha1="1dd8c2a18742fd8483ecade31aed384c686ed244" region="gfx" offset="200000"/>
+		<rom name="u6" size="524288" crc="bfbcb034" sha1="c1eb4d420b10ffa05197d9a82c7adac4d265c546" region="gfx" offset="200002"/>
+		<rom name="u7" size="524288" crc="a2544d4e" sha1="def704055e041bc7c3b8cf7977249b69aa7924a8" region="gfx" offset="200004"/>
+		<rom name="u8" size="524288" crc="8869bbb1" sha1="e53f77baffb913bf3ef5396d84fbfbaec6a90ca2" region="gfx" offset="200006"/>
+		<rom name="u9" size="65536" crc="2eb16a83" sha1="067ea0bfc2c1e73520d6b836c72fbb9da9998311" region="audiocpu" offset="0"/>
+		<rom name="u18" size="131072" crc="8d2899ba" sha1="0b3ac6cf2ce0323e3bfc9da3ebfcb0fd14bc405b" region="oki" offset="0"/>
+		<rom name="u19" size="131072" crc="b34a4b42" sha1="3eeb9e33bb911359e03d44949ac58439a3d3d54b" region="oki" offset="20000"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="speaker"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2151"/>
+		<device_ref name="okim6295"/>
+		<device_ref name="93c46_8"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="3579545"/>
+		<chip type="audio" tag="mono" name="Speaker"/>
+		<chip type="audio" tag="2151" name="Yamaha YM2151 OPM" clock="3579545"/>
+		<chip type="audio" tag="oki" name="OKI MSM6295 ADPCM" clock="1000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="1"/>
+		<input players="3" coins="3" service="yes">
+			<control type="joy" player="1" buttons="3" ways="8"/>
+			<control type="joy" player="2" buttons="3" ways="8"/>
+			<control type="joy" player="3" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Coinage" tag="DSWA" mask="7">
+			<diplocation name="SW(A)" number="1"/>
+			<diplocation name="SW(A)" number="2"/>
+			<diplocation name="SW(A)" number="3"/>
+			<dipvalue name="4 Coins/1 Credit" value="0"/>
+			<dipvalue name="3 Coins/1 Credit" value="1"/>
+			<dipvalue name="2 Coins/1 Credit" value="2"/>
+			<dipvalue name="1 Coin/1 Credit" value="7" default="yes"/>
+			<dipvalue name="1 Coin/2 Credits" value="6"/>
+			<dipvalue name="1 Coin/3 Credits" value="5"/>
+			<dipvalue name="1 Coin/4 Credits" value="4"/>
+			<dipvalue name="1 Coin/6 Credits" value="3"/>
+		</dipswitch>
+		<dipswitch name="Coin Slots" tag="DSWA" mask="8">
+			<diplocation name="SW(B)" number="4"/>
+			<dipvalue name="1" value="0"/>
+			<dipvalue name="3" value="8" default="yes"/>
+		</dipswitch>
+		<dipswitch name="Play Mode" tag="DSWA" mask="16">
+			<diplocation name="SW(B)" number="5"/>
+			<dipvalue name="2 Players" value="0"/>
+			<dipvalue name="3 Players" value="16" default="yes"/>
+		</dipswitch>
+		<dipswitch name="Unused" tag="DSWA" mask="32">
+			<diplocation name="SW(A)" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="2 Coins to Start, 1 to Continue" tag="DSWA" mask="64">
+			<diplocation name="SW(A)" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Unused" tag="DSWA" mask="128">
+			<diplocation name="SW(A)" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Difficulty Level 1" tag="DSWB" mask="7">
+			<diplocation name="SW(B)" number="1"/>
+			<diplocation name="SW(B)" number="2"/>
+			<diplocation name="SW(B)" number="3"/>
+			<dipvalue name="Easiest" value="7"/>
+			<dipvalue name="Easier" value="6"/>
+			<dipvalue name="Easy" value="5"/>
+			<dipvalue name="Normal" value="4" default="yes"/>
+			<dipvalue name="Medium" value="3"/>
+			<dipvalue name="Hard" value="2"/>
+			<dipvalue name="Harder" value="1"/>
+			<dipvalue name="Hardest" value="0"/>
+		</dipswitch>
+		<dipswitch name="Difficulty Level 2" tag="DSWB" mask="24">
+			<diplocation name="SW(B)" number="4"/>
+			<diplocation name="SW(B)" number="5"/>
+			<dipvalue name="Easy" value="24"/>
+			<dipvalue name="Normal" value="16" default="yes"/>
+			<dipvalue name="Hard" value="8"/>
+			<dipvalue name="Hardest" value="0"/>
+		</dipswitch>
+		<dipswitch name="Bonus Life" tag="DSWB" mask="96">
+			<diplocation name="SW(B)" number="6"/>
+			<diplocation name="SW(B)" number="7"/>
+			<dipvalue name="300k and 700k" value="96"/>
+			<dipvalue name="500k and 1000k" value="64" default="yes"/>
+			<dipvalue name="1000k" value="32"/>
+			<dipvalue name="None" value="0"/>
+		</dipswitch>
+		<dipswitch name="Unused" tag="DSWB" mask="128">
+			<diplocation name="SW(B)" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Lives" tag="DSWC" mask="3">
+			<diplocation name="SW(C)" number="1"/>
+			<diplocation name="SW(C)" number="2"/>
+			<dipvalue name="4" value="0"/>
+			<dipvalue name="3" value="1"/>
+			<dipvalue name="2" value="2" default="yes"/>
+			<dipvalue name="1" value="3"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSWC" mask="4">
+			<diplocation name="SW(C)" number="3"/>
+			<dipvalue name="Off" value="4" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<diplocation name="SW(C)" number="4"/>
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Flip Screen" tag="DSWC" mask="16">
+			<diplocation name="SW(C)" number="5"/>
+			<dipvalue name="Off" value="16" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Demo Sounds" tag="DSWC" mask="32">
+			<diplocation name="SW(C)" number="6"/>
+			<dipvalue name="Off" value="32"/>
+			<dipvalue name="On" value="0" default="yes"/>
+		</dipswitch>
+		<dipswitch name="Allow Continue" tag="DSWC" mask="64">
+			<diplocation name="SW(C)" number="7"/>
+			<dipvalue name="No" value="64"/>
+			<dipvalue name="Yes" value="0" default="yes"/>
+		</dipswitch>
+		<dipswitch name="Game Mode" tag="DSWC" mask="128">
+			<diplocation name="SW(C)" number="8"/>
+			<dipvalue name="Game" value="128" default="yes"/>
+			<dipvalue name="Test" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="dinoj" sourcefile="cps1.cpp" cloneof="dino" romof="dino">
+		<description>Cadillacs: Kyouryuu Shin Seiki (Japan 930201)</description>
+		<year>1993</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="cdj_23a.8f" size="524288" crc="5f3ece96" sha1="33ffb08ff8c5d3bfb2fa17fa00f254da2fc61f44" region="maincpu" offset="0"/>
+		<rom name="cdj_22a.7f" size="524288" crc="a0d8de29" sha1="79d916f181804b6176581efe2a1b7f210ec79c07" region="maincpu" offset="80000"/>
+		<rom name="cdj_21a.6f" merge="cde_21a.6f" size="524288" crc="66d23de2" sha1="19b8a365f630411d524d055459020f4c8cf930f1" region="maincpu" offset="100000"/>
+		<rom name="cd_01.3a" merge="cd-1m.3a" size="524288" crc="8da4f917" sha1="4f7b2304b7d9b545d6707d7ec921d3e28200699d" region="gfx" offset="0"/>
+		<rom name="cd_02.4a" merge="cd-3m.5a" size="524288" crc="6c40f603" sha1="cdbd11dfcec08e87355d7e21e9fd39f7eacab016" region="gfx" offset="2"/>
+		<rom name="cd_03.5a" merge="cd-2m.4a" size="524288" crc="09c8fc2d" sha1="d0c0a1258ec5dd484ab6ec1c5663425431f929ee" region="gfx" offset="4"/>
+		<rom name="cd_04.6a" merge="cd-4m.6a" size="524288" crc="637ff38f" sha1="859926b33b9955b3ed67471c61faa442d42b9696" region="gfx" offset="6"/>
+		<rom name="cd_05.7a" merge="cd-5m.7a" size="524288" crc="470befee" sha1="a42e38319e9b7424381352512f11bd8edf0bbb96" region="gfx" offset="200000"/>
+		<rom name="cd_06.8a" merge="cd-7m.9a" size="524288" crc="22bfb7a3" sha1="c44959bd3d42b9fc8ecb482dfaf63fbd469d2c3e" region="gfx" offset="200002"/>
+		<rom name="cd_07.9a" merge="cd-6m.8a" size="524288" crc="e7599ac4" sha1="0e788a38547a8701115d01190ddeaca64388db4d" region="gfx" offset="200004"/>
+		<rom name="cd_08.10a" merge="cd-8m.10a" size="524288" crc="211b4b15" sha1="374f6b185faa0f14f5c45b9b1d60d0772d93fb17" region="gfx" offset="200006"/>
+		<rom name="cd_q.5k" merge="cd_q.5k" size="131072" crc="605fdb0b" sha1="9da90ddc6513aaaf2260f0c69719c6b0e585ba8c" region="audiocpu" offset="0"/>
+		<rom name="cd-q1.1k" merge="cd-q1.1k" size="524288" crc="60927775" sha1="f8599bc84c38573ebbe8685822c58b6a38b50462" region="qsound" offset="0"/>
+		<rom name="cd-q2.2k" merge="cd-q2.2k" size="524288" crc="770f4c47" sha1="fec8ef00a6669d4d5e37787ecc7b58ee46709326" region="qsound" offset="80000"/>
+		<rom name="cd-q3.3k" merge="cd-q3.3k" size="524288" crc="2f273ffc" sha1="f0de462f6c4d251911258e0ebd886152c14d1586" region="qsound" offset="100000"/>
+		<rom name="cd-q4.4k" merge="cd-q4.4k" size="524288" crc="2c67821d" sha1="6e2528d0b22508300a6a142a796dd3bf53a66946" region="qsound" offset="180000"/>
+		<rom name="buf1" merge="buf1" size="279" crc="eb122de7" sha1="b26b5bfe258e3e184f069719f9fd008d6b8f6b9b" region="aboardplds" offset="0"/>
+		<rom name="ioa1" merge="ioa1" size="279" crc="59c7ee3b" sha1="fbb887c5b4f5cb8df77cec710eaac2985bc482a6" region="aboardplds" offset="0"/>
+		<rom name="prg2" merge="prg2" size="279" crc="4386879a" sha1="c36896d169d8c78393609acbbe4397931292a033" region="aboardplds" offset="0"/>
+		<rom name="rom1" merge="rom1" size="279" crc="41dc73b9" sha1="7d4c9f1693c821fbf84e32dd6ef62ddf14967845" region="aboardplds" offset="0"/>
+		<rom name="cd63b.1a" merge="cd63b.1a" size="279" crc="ef72e902" sha1="82fea3f63869c245d0dce2809085208fe719b57a" region="bboardplds" offset="0"/>
+		<rom name="iob1.12d" merge="iob1.12d" size="279" crc="3abc0700" sha1="973043aa46ec6d5d1db20dc9d5937005a0f9f6ae" region="bboardplds" offset="0"/>
+		<rom name="bprg1.11d" merge="bprg1.11d" size="279" crc="31793da7" sha1="400fa7ac517421c978c1ee7773c30b9ed0c5d3f3" region="bboardplds" offset="0"/>
+		<rom name="ioc1.ic1" merge="ioc1.ic1" size="260" crc="a399772d" sha1="55471189db573dd61e3087d12c55564291672c77" region="cboardplds" offset="0"/>
+		<rom name="d7l1.7l" merge="d7l1.7l" size="279" crc="27b7410d" sha1="06d0cba0226850f100ff1f539bd7d5db0f90c730" region="dboardplds" offset="0"/>
+		<rom name="d8l1.8l" merge="d8l1.8l" size="279" crc="539fc7da" sha1="cad5c91629c6247e49ccbbcbfe6b08229eafae07" region="dboardplds" offset="0"/>
+		<rom name="d9k2.9k" merge="d9k2.9k" size="279" crc="cd85a156" sha1="a88f8939c5d93e65d7bcc0eb3ee5b6f4f1114e3a" region="dboardplds" offset="0"/>
+		<rom name="d10f1.10f" merge="d10f1.10f" size="279" crc="6619c494" sha1="3aef656c07182a2186f810f30e0d854dd5bd8d18" region="dboardplds" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="screen"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="palette"/>
+		<device_ref name="93c46_8"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="qsound_hle"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="qsound" name="QSound (HLE)" clock="60000000"/>
+		<display tag="screen" type="raster" rotate="0" width="384" height="224" refresh="59.637405" pixclock="8000000" htotal="512" hbend="64" hbstart="448" vtotal="262" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="3" coins="3" service="yes">
+			<control type="joy" player="1" buttons="2" ways="8"/>
+			<control type="joy" player="2" buttons="2" ways="8"/>
+			<control type="joy" player="3" buttons="2" ways="8"/>
+		</input>
+		<dipswitch name="Freeze" tag="DSWC" mask="8">
+			<dipvalue name="Off" value="8" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":DSWA">
+		</port>
+		<port tag=":DSWB">
+		</port>
+		<port tag=":DSWC">
+		</port>
+		<port tag=":EEPROMIN">
+		</port>
+		<port tag=":EEPROMOUT">
+		</port>
+		<port tag=":IN0">
+		</port>
+		<port tag=":IN1">
+		</port>
+		<port tag=":IN2">
+		</port>
+		<port tag=":IN3">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+	</machine>
+	<machine name="mslug" sourcefile="neogeo.cpp" romof="neogeo">
+		<description>Metal Slug - Super Vehicle-001</description>
+		<year>1996</year>
+		<manufacturer>Nazca</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="201-p1.p1" size="2097152" crc="08d8daa5" sha1="b888993dbb7e9f0a28a01d7d2e1da00ef9cf6f38" region="cslot1:maincpu" offset="100000"/>
+		<rom name="201-s1.s1" size="131072" crc="2f55958d" sha1="550b53628daec9f1e1e11a398854092d90f9505a" region="cslot1:fixed" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="201-m1.m1" size="131072" crc="c28b3253" sha1="fd75bd15aed30266a8b3775f276f997af57d1c06" region="cslot1:audiocpu" offset="0"/>
+		<rom name="201-v1.v1" size="4194304" crc="23d22ed1" sha1="cd076928468ad6bcc5f19f88cb843ecb5e660681" region="cslot1:ymsnd" offset="0"/>
+		<rom name="201-v2.v2" size="4194304" crc="472cf9db" sha1="5f79ea9286d22ed208128f9c31ca75552ce08b57" region="cslot1:ymsnd" offset="400000"/>
+		<rom name="201-c1.c1" size="4194304" crc="72813676" sha1="7b045d1a48980cb1a140699011cb1a3d4acdc4d1" region="cslot1:sprites" offset="0"/>
+		<rom name="201-c2.c2" size="4194304" crc="96f62574" sha1="cb7254b885989223bba597b8ff0972dfa5957816" region="cslot1:sprites" offset="1"/>
+		<rom name="201-c3.c3" size="4194304" crc="5121456a" sha1="0a7a27d603d1bb2520b5570ebf5b34a106e255a6" region="cslot1:sprites" offset="800000"/>
+		<rom name="201-c4.c4" size="4194304" crc="f4ad59a3" sha1="4e94fda8ee63abf0f92afe08060a488546e5c280" region="cslot1:sprites" offset="800001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_rom"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="mslug2" sourcefile="neogeo.cpp" romof="neogeo">
+		<description>Metal Slug 2 - Super Vehicle-001/II (NGM-2410 ~ NGH-2410)</description>
+		<year>1998</year>
+		<manufacturer>SNK</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="241-p1.p1" size="1048576" crc="2a53c5da" sha1="5a6aba482cac588a6c2c51179c95b487c6e11899" region="cslot1:maincpu" offset="0"/>
+		<rom name="241-p2.sp2" size="2097152" crc="38883f44" sha1="fcf34b8c6e37774741542393b963635412484a27" region="cslot1:maincpu" offset="100000"/>
+		<rom name="241-s1.s1" size="131072" crc="f3d32f0f" sha1="2dc38b7dfd3ff14f64d5c0733c510b6bb8c692d0" region="cslot1:fixed" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="241-m1.m1" size="131072" crc="94520ebd" sha1="f8a1551cebcb91e416f30f50581feed7f72899e9" region="cslot1:audiocpu" offset="0"/>
+		<rom name="241-v1.v1" size="4194304" crc="99ec20e8" sha1="80597707f1fe115eed1941bb0701fc00790ad504" region="cslot1:ymsnd" offset="0"/>
+		<rom name="241-v2.v2" size="4194304" crc="ecb16799" sha1="b4b4ddc680836ed55942c66d7dfe756314e02211" region="cslot1:ymsnd" offset="400000"/>
+		<rom name="241-c1.c1" size="8388608" crc="394b5e0d" sha1="4549926f5054ee6aa7689cf920be0327e3908a50" region="cslot1:sprites" offset="0"/>
+		<rom name="241-c2.c2" size="8388608" crc="e5806221" sha1="1e5475cfab129c77acc610f09369ca42ba5aafa5" region="cslot1:sprites" offset="1"/>
+		<rom name="241-c3.c3" size="8388608" crc="9f6bfa6f" sha1="a4319b48004e723f81a980887678e3e296049a53" region="cslot1:sprites" offset="1000000"/>
+		<rom name="241-c4.c4" size="8388608" crc="7d3e306f" sha1="1499316fb381775218d897b81a6a0c3465d1a37c" region="cslot1:sprites" offset="1000001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_rom"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="mslug2t" sourcefile="neogeo.cpp" cloneof="mslug2" romof="mslug2">
+		<description>Metal Slug 2 Turbo (NGM-9410) (hack)</description>
+		<year>2015</year>
+		<manufacturer>hack (trap15)</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="941-p1.p1" size="1048576" crc="df5d6fbc" sha1="b9cc3e29afc12dc98daac9afb4f94e2cdd8b455c" region="cslot1:maincpu" offset="0"/>
+		<rom name="241-p2.sp2" merge="241-p2.sp2" size="2097152" crc="38883f44" sha1="fcf34b8c6e37774741542393b963635412484a27" region="cslot1:maincpu" offset="100000"/>
+		<rom name="241-s1.s1" merge="241-s1.s1" size="131072" crc="f3d32f0f" sha1="2dc38b7dfd3ff14f64d5c0733c510b6bb8c692d0" region="cslot1:fixed" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="241-m1.m1" merge="241-m1.m1" size="131072" crc="94520ebd" sha1="f8a1551cebcb91e416f30f50581feed7f72899e9" region="cslot1:audiocpu" offset="0"/>
+		<rom name="241-v1.v1" merge="241-v1.v1" size="4194304" crc="99ec20e8" sha1="80597707f1fe115eed1941bb0701fc00790ad504" region="cslot1:ymsnd" offset="0"/>
+		<rom name="241-v2.v2" merge="241-v2.v2" size="4194304" crc="ecb16799" sha1="b4b4ddc680836ed55942c66d7dfe756314e02211" region="cslot1:ymsnd" offset="400000"/>
+		<rom name="241-c1.c1" merge="241-c1.c1" size="8388608" crc="394b5e0d" sha1="4549926f5054ee6aa7689cf920be0327e3908a50" region="cslot1:sprites" offset="0"/>
+		<rom name="241-c2.c2" merge="241-c2.c2" size="8388608" crc="e5806221" sha1="1e5475cfab129c77acc610f09369ca42ba5aafa5" region="cslot1:sprites" offset="1"/>
+		<rom name="241-c3.c3" merge="241-c3.c3" size="8388608" crc="9f6bfa6f" sha1="a4319b48004e723f81a980887678e3e296049a53" region="cslot1:sprites" offset="1000000"/>
+		<rom name="241-c4.c4" merge="241-c4.c4" size="8388608" crc="7d3e306f" sha1="1499316fb381775218d897b81a6a0c3465d1a37c" region="cslot1:sprites" offset="1000001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_rom"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="mslug3" sourcefile="neogeo.cpp" romof="neogeo">
+		<description>Metal Slug 3 (NGM-2560)</description>
+		<year>2000</year>
+		<manufacturer>SNK</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="neo-sma" size="262144" crc="9cd55736" sha1="d6efb2b313127c2911d47d9324626b3f1e7c6ccb" region="cslot1:maincpu" offset="c0000"/>
+		<rom name="256-pg1.p1" size="4194304" crc="b07edfd5" sha1="dcbd9e500bfae98d754e55cdbbbbf9401013f8ee" region="cslot1:maincpu" offset="100000"/>
+		<rom name="256-pg2.p2" size="4194304" crc="6097c26b" sha1="248ec29d21216f29dc6f5f3f0e1ad1601b3501b6" region="cslot1:maincpu" offset="500000"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="256-m1.m1" size="524288" crc="eaeec116" sha1="54419dbb21edc8c4b37eaac2e7ad9496d2de037a" region="cslot1:audiocpu" offset="0"/>
+		<rom name="256-v1.v1" size="4194304" crc="f2690241" sha1="fd56babc1934d10e0d27c32f032f9edda7ca8ce9" region="cslot1:ymsnd" offset="0"/>
+		<rom name="256-v2.v2" size="4194304" crc="7e2a10bd" sha1="0d587fb9f64cba0315ce2d8a03e2b8fe34936dff" region="cslot1:ymsnd" offset="400000"/>
+		<rom name="256-v3.v3" size="4194304" crc="0eaec17c" sha1="c3ed613cc6993edd6fc0d62a90bcd85de8e21915" region="cslot1:ymsnd" offset="800000"/>
+		<rom name="256-v4.v4" size="4194304" crc="9b4b22d4" sha1="9764fbf8453e52f80aa97a46fb9cf5937ef15a31" region="cslot1:ymsnd" offset="c00000"/>
+		<rom name="256-c1.c1" size="8388608" crc="5a79c34e" sha1="b8aa51fa50935cae62ab3d125b723ab888691e60" region="cslot1:sprites" offset="0"/>
+		<rom name="256-c2.c2" size="8388608" crc="944c362c" sha1="3843ab300f956280475469caee70135658f67089" region="cslot1:sprites" offset="1"/>
+		<rom name="256-c3.c3" size="8388608" crc="6e69d36f" sha1="94e8cf42e999114b4bd8b30e0aa2f365578c4c9a" region="cslot1:sprites" offset="1000000"/>
+		<rom name="256-c4.c4" size="8388608" crc="b755b4eb" sha1="804700a0966a48f130c434ede3f970792ea74fa5" region="cslot1:sprites" offset="1000001"/>
+		<rom name="256-c5.c5" size="8388608" crc="7aacab47" sha1="312c1c9846175fe1a3cad51d5ae230cf674fc93d" region="cslot1:sprites" offset="2000000"/>
+		<rom name="256-c6.c6" size="8388608" crc="c698fd5d" sha1="16818883b06849ba2f8d61bdd5e21aaf99bd8408" region="cslot1:sprites" offset="2000001"/>
+		<rom name="256-c7.c7" size="8388608" crc="cfceddd2" sha1="7def666adf8bd1703f40c61f182fc040b6362dc9" region="cslot1:sprites" offset="3000000"/>
+		<rom name="256-c8.c8" size="8388608" crc="4d9be34c" sha1="a737bdfa2b815aea7067e7af2636e83a9409c414" region="cslot1:sprites" offset="3000001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_mslug3"/>
+		<device_ref name="ng_sma_prot"/>
+		<device_ref name="ng_cmc_prot"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="mslug3b6" sourcefile="neogeo.cpp" cloneof="mslug3" romof="mslug3">
+		<description>Metal Slug 6 (Metal Slug 3 bootleg)</description>
+		<year>2000</year>
+		<manufacturer>bootleg</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="299-p1.bin" size="2097152" crc="5f2fe228" sha1="747775a2dfc0da87ad2ddd4f57ce5b2522f23fa5" region="cslot1:maincpu" offset="0"/>
+		<rom name="299-p2.bin" size="4194304" crc="193fa835" sha1="fb1f26db7998b0bb6b1c8b92500c1596ec5dfc71" region="cslot1:maincpu" offset="100000"/>
+		<rom name="299-s1.bin" size="131072" crc="6f8b9635" sha1="86b0c8c0ccac913c6192ed6a96c35d4e1a5e8061" region="cslot1:fixed" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="256-m1.m1" merge="256-m1.m1" size="524288" crc="eaeec116" sha1="54419dbb21edc8c4b37eaac2e7ad9496d2de037a" region="cslot1:audiocpu" offset="0"/>
+		<rom name="256-v1.v1" merge="256-v1.v1" size="4194304" crc="f2690241" sha1="fd56babc1934d10e0d27c32f032f9edda7ca8ce9" region="cslot1:ymsnd" offset="0"/>
+		<rom name="256-v2.v2" merge="256-v2.v2" size="4194304" crc="7e2a10bd" sha1="0d587fb9f64cba0315ce2d8a03e2b8fe34936dff" region="cslot1:ymsnd" offset="400000"/>
+		<rom name="256-v3.v3" merge="256-v3.v3" size="4194304" crc="0eaec17c" sha1="c3ed613cc6993edd6fc0d62a90bcd85de8e21915" region="cslot1:ymsnd" offset="800000"/>
+		<rom name="256-v4.v4" merge="256-v4.v4" size="4194304" crc="9b4b22d4" sha1="9764fbf8453e52f80aa97a46fb9cf5937ef15a31" region="cslot1:ymsnd" offset="c00000"/>
+		<rom name="256-c1.c1" merge="256-c1.c1" size="8388608" crc="5a79c34e" sha1="b8aa51fa50935cae62ab3d125b723ab888691e60" region="cslot1:sprites" offset="0"/>
+		<rom name="256-c2.c2" merge="256-c2.c2" size="8388608" crc="944c362c" sha1="3843ab300f956280475469caee70135658f67089" region="cslot1:sprites" offset="1"/>
+		<rom name="256-c3.c3" merge="256-c3.c3" size="8388608" crc="6e69d36f" sha1="94e8cf42e999114b4bd8b30e0aa2f365578c4c9a" region="cslot1:sprites" offset="1000000"/>
+		<rom name="256-c4.c4" merge="256-c4.c4" size="8388608" crc="b755b4eb" sha1="804700a0966a48f130c434ede3f970792ea74fa5" region="cslot1:sprites" offset="1000001"/>
+		<rom name="256-c5.c5" merge="256-c5.c5" size="8388608" crc="7aacab47" sha1="312c1c9846175fe1a3cad51d5ae230cf674fc93d" region="cslot1:sprites" offset="2000000"/>
+		<rom name="256-c6.c6" merge="256-c6.c6" size="8388608" crc="c698fd5d" sha1="16818883b06849ba2f8d61bdd5e21aaf99bd8408" region="cslot1:sprites" offset="2000001"/>
+		<rom name="256-c7.c7" merge="256-c7.c7" size="8388608" crc="cfceddd2" sha1="7def666adf8bd1703f40c61f182fc040b6362dc9" region="cslot1:sprites" offset="3000000"/>
+		<rom name="256-c8.c8" merge="256-c8.c8" size="8388608" crc="4d9be34c" sha1="a737bdfa2b815aea7067e7af2636e83a9409c414" region="cslot1:sprites" offset="3000001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_mslug3b6"/>
+		<device_ref name="ng_cmc_prot"/>
+		<device_ref name="ngboot_prot"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="mslug3h" sourcefile="neogeo.cpp" cloneof="mslug3" romof="mslug3">
+		<description>Metal Slug 3 (NGH-2560)</description>
+		<year>2000</year>
+		<manufacturer>SNK</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="256-ph1.p1" size="1048576" crc="9c42ca85" sha1="7a8f77a89867b889295ae9b9dfd4ba28f02d234d" region="cslot1:maincpu" offset="0"/>
+		<rom name="256-ph2.sp2" size="4194304" crc="1f3d8ce8" sha1="08b05a8abfb86ec09a5e758d6273acf1489961f9" region="cslot1:maincpu" offset="100000"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="256-m1.m1" merge="256-m1.m1" size="524288" crc="eaeec116" sha1="54419dbb21edc8c4b37eaac2e7ad9496d2de037a" region="cslot1:audiocpu" offset="0"/>
+		<rom name="256-v1.v1" merge="256-v1.v1" size="4194304" crc="f2690241" sha1="fd56babc1934d10e0d27c32f032f9edda7ca8ce9" region="cslot1:ymsnd" offset="0"/>
+		<rom name="256-v2.v2" merge="256-v2.v2" size="4194304" crc="7e2a10bd" sha1="0d587fb9f64cba0315ce2d8a03e2b8fe34936dff" region="cslot1:ymsnd" offset="400000"/>
+		<rom name="256-v3.v3" merge="256-v3.v3" size="4194304" crc="0eaec17c" sha1="c3ed613cc6993edd6fc0d62a90bcd85de8e21915" region="cslot1:ymsnd" offset="800000"/>
+		<rom name="256-v4.v4" merge="256-v4.v4" size="4194304" crc="9b4b22d4" sha1="9764fbf8453e52f80aa97a46fb9cf5937ef15a31" region="cslot1:ymsnd" offset="c00000"/>
+		<rom name="256-c1.c1" merge="256-c1.c1" size="8388608" crc="5a79c34e" sha1="b8aa51fa50935cae62ab3d125b723ab888691e60" region="cslot1:sprites" offset="0"/>
+		<rom name="256-c2.c2" merge="256-c2.c2" size="8388608" crc="944c362c" sha1="3843ab300f956280475469caee70135658f67089" region="cslot1:sprites" offset="1"/>
+		<rom name="256-c3.c3" merge="256-c3.c3" size="8388608" crc="6e69d36f" sha1="94e8cf42e999114b4bd8b30e0aa2f365578c4c9a" region="cslot1:sprites" offset="1000000"/>
+		<rom name="256-c4.c4" merge="256-c4.c4" size="8388608" crc="b755b4eb" sha1="804700a0966a48f130c434ede3f970792ea74fa5" region="cslot1:sprites" offset="1000001"/>
+		<rom name="256-c5.c5" merge="256-c5.c5" size="8388608" crc="7aacab47" sha1="312c1c9846175fe1a3cad51d5ae230cf674fc93d" region="cslot1:sprites" offset="2000000"/>
+		<rom name="256-c6.c6" merge="256-c6.c6" size="8388608" crc="c698fd5d" sha1="16818883b06849ba2f8d61bdd5e21aaf99bd8408" region="cslot1:sprites" offset="2000001"/>
+		<rom name="256-c7.c7" merge="256-c7.c7" size="8388608" crc="cfceddd2" sha1="7def666adf8bd1703f40c61f182fc040b6362dc9" region="cslot1:sprites" offset="3000000"/>
+		<rom name="256-c8.c8" merge="256-c8.c8" size="8388608" crc="4d9be34c" sha1="a737bdfa2b815aea7067e7af2636e83a9409c414" region="cslot1:sprites" offset="3000001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_mslug3h"/>
+		<device_ref name="ng_cmc_prot"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="mslug4" sourcefile="neogeo.cpp" romof="neogeo">
+		<description>Metal Slug 4 (NGM-2630)</description>
+		<year>2002</year>
+		<manufacturer>Mega / Playmore</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="263-p1.p1" size="1048576" crc="27e4def3" sha1="a08785e8145981bb6b5332a3b2df7eb321253cca" region="cslot1:maincpu" offset="0"/>
+		<rom name="263-p2.sp2" size="4194304" crc="fdb7aed8" sha1="dbeaec38f44e58ffedba99e70fa1439c2bf0dfa3" region="cslot1:maincpu" offset="100000"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="263-m1.m1" size="131072" crc="46ac8228" sha1="5aeea221050c98e4bb0f16489ce772bf1c80f787" region="cslot1:audiocrypt" offset="0"/>
+		<rom name="263-v1.v1" size="8388608" crc="01e9b9cd" sha1="0b045c2999449f7dab5ae8a42e957d5b6650431e" region="cslot1:ymsnd" offset="0"/>
+		<rom name="263-v2.v2" size="8388608" crc="4ab2bf81" sha1="77ccfa48f7e3daddef5fe5229a0093eb2f803742" region="cslot1:ymsnd" offset="800000"/>
+		<rom name="263-c1.c1" size="8388608" crc="84865f8a" sha1="34467ada896eb7c7ca58658bf2a932936d8b632c" region="cslot1:sprites" offset="0"/>
+		<rom name="263-c2.c2" size="8388608" crc="81df97f2" sha1="2b74493b8ec8fd49216a627aeb3db493f76124e3" region="cslot1:sprites" offset="1"/>
+		<rom name="263-c3.c3" size="8388608" crc="1a343323" sha1="bbbb5232bba538c277ce2ee02e2956ca2243b787" region="cslot1:sprites" offset="1000000"/>
+		<rom name="263-c4.c4" size="8388608" crc="942cfb44" sha1="d9b46c71726383c4581fb042e63897e5a3c92d1b" region="cslot1:sprites" offset="1000001"/>
+		<rom name="263-c5.c5" size="8388608" crc="a748854f" sha1="2611bbedf9b5d8e82c6b2c99b88f842c46434d41" region="cslot1:sprites" offset="2000000"/>
+		<rom name="263-c6.c6" size="8388608" crc="5c8ba116" sha1="6034db09c8706d4ddbcefc053efbc47a0953eb92" region="cslot1:sprites" offset="2000001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_mslug4"/>
+		<device_ref name="ng_cmc_prot"/>
+		<device_ref name="ng_pcm2_prot"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="mslug4h" sourcefile="neogeo.cpp" cloneof="mslug4" romof="mslug4">
+		<description>Metal Slug 4 (NGH-2630)</description>
+		<year>2002</year>
+		<manufacturer>Mega / Playmore</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="263-ph1.p1" size="1048576" crc="c67f5c8d" sha1="12af74964843f103520d9f0825069ea2f67eeb2f" region="cslot1:maincpu" offset="0"/>
+		<rom name="263-ph2.sp2" size="4194304" crc="bc3ec89e" sha1="2cb0626bc4fa57e1d25f208e04532b570d87b3fb" region="cslot1:maincpu" offset="100000"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="263-m1.m1" merge="263-m1.m1" size="131072" crc="46ac8228" sha1="5aeea221050c98e4bb0f16489ce772bf1c80f787" region="cslot1:audiocrypt" offset="0"/>
+		<rom name="263-v1.v1" merge="263-v1.v1" size="8388608" crc="01e9b9cd" sha1="0b045c2999449f7dab5ae8a42e957d5b6650431e" region="cslot1:ymsnd" offset="0"/>
+		<rom name="263-v2.v2" merge="263-v2.v2" size="8388608" crc="4ab2bf81" sha1="77ccfa48f7e3daddef5fe5229a0093eb2f803742" region="cslot1:ymsnd" offset="800000"/>
+		<rom name="263-c1.c1" merge="263-c1.c1" size="8388608" crc="84865f8a" sha1="34467ada896eb7c7ca58658bf2a932936d8b632c" region="cslot1:sprites" offset="0"/>
+		<rom name="263-c2.c2" merge="263-c2.c2" size="8388608" crc="81df97f2" sha1="2b74493b8ec8fd49216a627aeb3db493f76124e3" region="cslot1:sprites" offset="1"/>
+		<rom name="263-c3.c3" merge="263-c3.c3" size="8388608" crc="1a343323" sha1="bbbb5232bba538c277ce2ee02e2956ca2243b787" region="cslot1:sprites" offset="1000000"/>
+		<rom name="263-c4.c4" merge="263-c4.c4" size="8388608" crc="942cfb44" sha1="d9b46c71726383c4581fb042e63897e5a3c92d1b" region="cslot1:sprites" offset="1000001"/>
+		<rom name="263-c5.c5" merge="263-c5.c5" size="8388608" crc="a748854f" sha1="2611bbedf9b5d8e82c6b2c99b88f842c46434d41" region="cslot1:sprites" offset="2000000"/>
+		<rom name="263-c6.c6" merge="263-c6.c6" size="8388608" crc="5c8ba116" sha1="6034db09c8706d4ddbcefc053efbc47a0953eb92" region="cslot1:sprites" offset="2000001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_mslug4"/>
+		<device_ref name="ng_cmc_prot"/>
+		<device_ref name="ng_pcm2_prot"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="mslug5" sourcefile="neogeo.cpp" romof="neogeo">
+		<description>Metal Slug 5 (NGM-2680)</description>
+		<year>2003</year>
+		<manufacturer>SNK Playmore</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="268-p1cr.p1" size="4194304" crc="d0466792" sha1="880819933d997fab398f91061e9dbccb959ae8a1" region="cslot1:maincpu" offset="0"/>
+		<rom name="268-p2cr.p2" size="4194304" crc="fbf6b61e" sha1="9ec743d5988b5e3183f37f8edf45c72a8c0c893e" region="cslot1:maincpu" offset="2"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="268-m1.m1" size="524288" crc="4a5a6e0e" sha1="df0f660f2465e1db7be5adfcaf5e88ad61a74a42" region="cslot1:audiocrypt" offset="0"/>
+		<rom name="268-v1c.v1" size="8388608" crc="ae31d60c" sha1="c42285cf4e52fea74247860813e826df5aa7600a" region="cslot1:ymsnd" offset="0"/>
+		<rom name="268-v2c.v2" size="8388608" crc="c40613ed" sha1="af889570304e2867d7dfea1e94e388c06249fb67" region="cslot1:ymsnd" offset="800000"/>
+		<rom name="268-c1c.c1" size="8388608" crc="ab7c389a" sha1="025a188de589500bf7637fa8e7a37ab24bf4312e" region="cslot1:sprites" offset="0"/>
+		<rom name="268-c2c.c2" size="8388608" crc="3560881b" sha1="493d218c92290b4770024d6ee2917c4022753b07" region="cslot1:sprites" offset="1"/>
+		<rom name="268-c3c.c3" size="8388608" crc="3af955ea" sha1="cf36b6ae9b0d12744b17cb7a928399214de894be" region="cslot1:sprites" offset="1000000"/>
+		<rom name="268-c4c.c4" size="8388608" crc="c329c373" sha1="5073d4079958a0ef5426885af2c9e3178f37d5e0" region="cslot1:sprites" offset="1000001"/>
+		<rom name="268-c5c.c5" size="8388608" crc="959c8177" sha1="889bda7c65d71172e7d89194d1269561888fe789" region="cslot1:sprites" offset="2000000"/>
+		<rom name="268-c6c.c6" size="8388608" crc="010a831b" sha1="aec140661e3ae35d264df416478ba15188544d91" region="cslot1:sprites" offset="2000001"/>
+		<rom name="268-c7c.c7" size="8388608" crc="6d72a969" sha1="968dd9a4d1209b770b9b85ea6532fa24d262a262" region="cslot1:sprites" offset="3000000"/>
+		<rom name="268-c8c.c8" size="8388608" crc="551d720e" sha1="ebf69e334fcaba0fda6fd432fd0970283a365d12" region="cslot1:sprites" offset="3000001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_mslug5"/>
+		<device_ref name="ng_cmc_prot"/>
+		<device_ref name="ng_pcm2_prot"/>
+		<device_ref name="ng_pvc_prot"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="mslug5h" sourcefile="neogeo.cpp" cloneof="mslug5" romof="mslug5">
+		<description>Metal Slug 5 (NGH-2680)</description>
+		<year>2003</year>
+		<manufacturer>SNK Playmore</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="268-p1c.p1" size="4194304" crc="3636690a" sha1="e0da714b4bdc6efffe1250ded02ebddb3ab6d7b3" region="cslot1:maincpu" offset="0"/>
+		<rom name="268-p2c.p2" size="4194304" crc="8dfc47a2" sha1="27d618cfbd0107a4d2a836797e967b39d2eb4851" region="cslot1:maincpu" offset="2"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="268-m1.m1" merge="268-m1.m1" size="524288" crc="4a5a6e0e" sha1="df0f660f2465e1db7be5adfcaf5e88ad61a74a42" region="cslot1:audiocrypt" offset="0"/>
+		<rom name="268-v1c.v1" merge="268-v1c.v1" size="8388608" crc="ae31d60c" sha1="c42285cf4e52fea74247860813e826df5aa7600a" region="cslot1:ymsnd" offset="0"/>
+		<rom name="268-v2c.v2" merge="268-v2c.v2" size="8388608" crc="c40613ed" sha1="af889570304e2867d7dfea1e94e388c06249fb67" region="cslot1:ymsnd" offset="800000"/>
+		<rom name="268-c1c.c1" merge="268-c1c.c1" size="8388608" crc="ab7c389a" sha1="025a188de589500bf7637fa8e7a37ab24bf4312e" region="cslot1:sprites" offset="0"/>
+		<rom name="268-c2c.c2" merge="268-c2c.c2" size="8388608" crc="3560881b" sha1="493d218c92290b4770024d6ee2917c4022753b07" region="cslot1:sprites" offset="1"/>
+		<rom name="268-c3c.c3" merge="268-c3c.c3" size="8388608" crc="3af955ea" sha1="cf36b6ae9b0d12744b17cb7a928399214de894be" region="cslot1:sprites" offset="1000000"/>
+		<rom name="268-c4c.c4" merge="268-c4c.c4" size="8388608" crc="c329c373" sha1="5073d4079958a0ef5426885af2c9e3178f37d5e0" region="cslot1:sprites" offset="1000001"/>
+		<rom name="268-c5c.c5" merge="268-c5c.c5" size="8388608" crc="959c8177" sha1="889bda7c65d71172e7d89194d1269561888fe789" region="cslot1:sprites" offset="2000000"/>
+		<rom name="268-c6c.c6" merge="268-c6c.c6" size="8388608" crc="010a831b" sha1="aec140661e3ae35d264df416478ba15188544d91" region="cslot1:sprites" offset="2000001"/>
+		<rom name="268-c7c.c7" merge="268-c7c.c7" size="8388608" crc="6d72a969" sha1="968dd9a4d1209b770b9b85ea6532fa24d262a262" region="cslot1:sprites" offset="3000000"/>
+		<rom name="268-c8c.c8" merge="268-c8c.c8" size="8388608" crc="551d720e" sha1="ebf69e334fcaba0fda6fd432fd0970283a365d12" region="cslot1:sprites" offset="3000001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_mslug5"/>
+		<device_ref name="ng_cmc_prot"/>
+		<device_ref name="ng_pcm2_prot"/>
+		<device_ref name="ng_pvc_prot"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="mslug6" sourcefile="naomi.cpp" romof="awbios">
+		<description>Metal Slug 6</description>
+		<year>2006</year>
+		<manufacturer>Sega / SNK Playmore</manufacturer>
+		<biosset name="bios0" description="Atomiswave BIOS"/>
+		<rom name="bios0.ic23" merge="bios0.ic23" bios="bios0" size="131072" crc="719b2b0b" sha1="b4c1a26bc8906d5275eb28c701dff2b9365bcdfa" region="awflash" offset="0"/>
+		<rom name="bios1.ic23" merge="bios1.ic23" bios="bios0" size="131072" crc="d3e80a9f" sha1="33024f9d51c04884c2b44ce146f340e7a857b959" region="awflash" offset="0"/>
+		<rom name="ax3001p01.fmem1" size="8388608" crc="af67dbce" sha1="5aba108caf3e4ced6994bc26e752d4e225c231e8" region="rom_board" offset="0"/>
+		<rom name="ax3001m01.mrom1" size="33554432" crc="e56417ee" sha1="27692ad5c1093aff0973d2aafd01a5e30c7bfbbe" region="rom_board" offset="2000000"/>
+		<rom name="ax3002m01.mrom2" size="33554432" crc="1be3bbc1" sha1="d75ce5c855c9c4eeacdbf84d440c73a94de060fe" region="rom_board" offset="4000000"/>
+		<rom name="ax3003m01.mrom3" size="33554432" crc="4fe37370" sha1="85d51db94c3e34265e37b636d6545ed2801ba5a6" region="rom_board" offset="6000000"/>
+		<rom name="ax3004m01.mrom4" size="33554432" crc="2f4c4c6f" sha1="5815c28fdaf0429003986e725c0015fe4c08721f" region="rom_board" offset="a000000"/>
+		<rom name="ax3001f01.bin" size="4" crc="0b9939e9" sha1="4ca1225c7c9993542a67035a054ac579ed021de5" region="rom_key" offset="0"/>
+		<device_ref name="sh4le"/>
+		<device_ref name="timer"/>
+		<device_ref name="arm7_le"/>
+		<device_ref name="maple_dc"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="powervr2"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="aica"/>
+		<device_ref name="aicartc"/>
+		<device_ref name="macronix_29l001mc"/>
+		<device_ref name="aw_rom_board"/>
+		<device_ref name="nvram"/>
+		<device_ref name="dcctrl"/>
+		<device_ref name="dcctrl"/>
+		<chip type="cpu" tag="maincpu" name="Hitachi SH-4 (little)" clock="200000000"/>
+		<chip type="cpu" tag="soundcpu" name="ARM7 (little)" clock="2822400"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<chip type="audio" tag="aica" name="AICA"/>
+		<display tag="screen" type="raster" rotate="0" width="640" height="480" refresh="61.702586" pixclock="26917136" htotal="820" hbend="0" hbstart="640" vtotal="532" vbend="0" vbstart="480" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="6" ways="8"/>
+			<control type="joy" player="2" buttons="6" ways="8"/>
+		</input>
+		<configuration name="Bilinear Filtering" tag="MAMEDEBUG" mask="1">
+			<confsetting name="No" value="0" default="yes"/>
+			<confsetting name="Yes" value="1"/>
+		</configuration>
+		<configuration name="Disable Render Calls" tag="MAMEDEBUG" mask="2">
+			<confsetting name="No" value="0" default="yes"/>
+			<confsetting name="Yes" value="2"/>
+		</configuration>
+		<port tag=":COINS">
+		</port>
+		<port tag=":MAMEDEBUG">
+		</port>
+		<port tag=":P1.0">
+		</port>
+		<port tag=":P1.1">
+		</port>
+		<port tag=":P2.0">
+		</port>
+		<port tag=":P2.1">
+		</port>
+		<driver status="preliminary" emulation="preliminary" savestate="unsupported"/>
+		<feature type="graphics" status="imperfect"/>
+		<feature type="sound" status="imperfect"/>
+	</machine>
+	<machine name="mslugx" sourcefile="neogeo.cpp" romof="neogeo">
+		<description>Metal Slug X - Super Vehicle-001 (NGM-2500 ~ NGH-2500)</description>
+		<year>1999</year>
+		<manufacturer>SNK</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" merge="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" merge="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" merge="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" merge="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" merge="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" merge="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" merge="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" merge="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" merge="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" merge="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" merge="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" merge="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" merge="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" merge="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" merge="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" merge="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" merge="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" merge="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" merge="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" merge="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" merge="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" merge="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" merge="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" merge="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" merge="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" merge="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" merge="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" merge="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="250-p1.p1" size="1048576" crc="81f1f60b" sha1="4c19f2e9824e606178ac1c9d4b0516fbaa625035" region="cslot1:maincpu" offset="0"/>
+		<rom name="250-p2.ep1" size="4194304" crc="1fda2e12" sha1="18aaa7a3ba8da99f78c430e9be69ccde04bc04d9" region="cslot1:maincpu" offset="100000"/>
+		<rom name="250-s1.s1" size="131072" crc="fb6f441d" sha1="2cc392ecde5d5afb28ddbaa1030552b48571dcfb" region="cslot1:fixed" offset="0"/>
+		<rom name="sfix.sfix" merge="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<rom name="000-lo.lo" merge="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sm1.sm1" merge="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="250-m1.m1" size="131072" crc="fd42a842" sha1="55769bad4860f64ef53a333e0da9e073db483d6a" region="cslot1:audiocpu" offset="0"/>
+		<rom name="250-v1.v1" size="4194304" crc="c79ede73" sha1="ebfcc67204ff9677cf7972fd5b6b7faabf07280c" region="cslot1:ymsnd" offset="0"/>
+		<rom name="250-v2.v2" size="4194304" crc="ea9aabe1" sha1="526c42ca9a388f7435569400e2f132e2724c71ff" region="cslot1:ymsnd" offset="400000"/>
+		<rom name="250-v3.v3" size="2097152" crc="2ca65102" sha1="45979d1edb1fc774a415d9386f98d7cb252a2043" region="cslot1:ymsnd" offset="800000"/>
+		<rom name="250-c1.c1" size="8388608" crc="09a52c6f" sha1="c3e8a8ccdac0f8bddc4c3413277626532405fae2" region="cslot1:sprites" offset="0"/>
+		<rom name="250-c2.c2" size="8388608" crc="31679821" sha1="554f600a3aa09c16c13c625299b087a79d0d15c5" region="cslot1:sprites" offset="1"/>
+		<rom name="250-c3.c3" size="8388608" crc="fd602019" sha1="c56646c62387bc1439d46610258c755beb8d7dd8" region="cslot1:sprites" offset="1000000"/>
+		<rom name="250-c4.c4" size="8388608" crc="31354513" sha1="31be8ea2498001f68ce4b06b8b90acbf2dcab6af" region="cslot1:sprites" offset="1000001"/>
+		<rom name="250-c5.c5" size="8388608" crc="a4b56124" sha1="d41069856df990a1a99d39fb263c8303389d5475" region="cslot1:sprites" offset="2000000"/>
+		<rom name="250-c6.c6" size="8388608" crc="83e3e69d" sha1="39be66287696829d243fb71b3fb8b7dc2bc3298f" region="cslot1:sprites" offset="2000001"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neocart_mslugx"/>
+		<device_ref name="ng_mslugx_prot"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="2" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" fixed_image="1" interface="neo_cart">
+		</device>
+		<slot name="cslot1">
+		</slot>
+	</machine>
+	<machine name="neogeo" sourcefile="neogeo.cpp" isbios="yes">
+		<description>Neo-Geo MV-6F</description>
+		<year>1990</year>
+		<manufacturer>SNK</manufacturer>
+		<biosset name="euro" description="Europe MVS (Ver. 2)"/>
+		<biosset name="euro-s1" description="Europe MVS (Ver. 1)"/>
+		<biosset name="us" description="US MVS (Ver. 2?)"/>
+		<biosset name="us-e" description="US MVS (Ver. 1)"/>
+		<biosset name="us-v2" description="US MVS (4 slot, Ver 2)"/>
+		<biosset name="us-u3" description="US MVS (U3)"/>
+		<biosset name="asia" description="Asia MVS (Ver. 3)"/>
+		<biosset name="japan" description="Japan MVS (Ver. 3)"/>
+		<biosset name="japan-s2" description="Japan MVS (Ver. 2)"/>
+		<biosset name="japan-s1" description="Japan MVS (Ver. 1)"/>
+		<biosset name="mv1c" description="NEO-MVH MV1C"/>
+		<biosset name="japan-j3" description="Japan MVS (J3)"/>
+		<biosset name="japan-hotel" description="Custom Japanese Hotel"/>
+		<biosset name="japan-j3a" description="Japan MVS (J3, alt)"/>
+		<biosset name="unibios33" description="Universe Bios (Hack, Ver. 3.3)"/>
+		<biosset name="unibios32" description="Universe Bios (Hack, Ver. 3.2)"/>
+		<biosset name="unibios31" description="Universe Bios (Hack, Ver. 3.1)"/>
+		<biosset name="unibios30" description="Universe Bios (Hack, Ver. 3.0)"/>
+		<biosset name="unibios23" description="Universe Bios (Hack, Ver. 2.3)"/>
+		<biosset name="unibios23o" description="Universe Bios (Hack, Ver. 2.3, older?)"/>
+		<biosset name="unibios22" description="Universe Bios (Hack, Ver. 2.2)"/>
+		<biosset name="unibios21" description="Universe Bios (Hack, Ver. 2.1)"/>
+		<biosset name="unibios20" description="Universe Bios (Hack, Ver. 2.0)"/>
+		<biosset name="unibios13" description="Universe Bios (Hack, Ver. 1.3)"/>
+		<biosset name="unibios12" description="Universe Bios (Hack, Ver. 1.2)"/>
+		<biosset name="unibios12o" description="Universe Bios (Hack, Ver. 1.2, older)"/>
+		<biosset name="unibios11" description="Universe Bios (Hack, Ver. 1.1)"/>
+		<biosset name="unibios10" description="Universe Bios (Hack, Ver. 1.0)"/>
+		<rom name="sp-s2.sp1" bios="euro" size="131072" crc="9036d879" sha1="4f5ed7105b7128794654ce82b51723e16e389543" region="mainbios" offset="0"/>
+		<rom name="sp-s.sp1" bios="euro-s1" size="131072" crc="c7f2fa45" sha1="09576ff20b4d6b365e78e6a5698ea450262697cd" region="mainbios" offset="0"/>
+		<rom name="sp-u2.sp1" bios="us" size="131072" crc="e72943de" sha1="5c6bba07d2ec8ac95776aa3511109f5e1e2e92eb" region="mainbios" offset="0"/>
+		<rom name="sp-e.sp1" bios="us-e" size="131072" crc="2723a5b5" sha1="5dbff7531cf04886cde3ef022fb5ca687573dcb8" region="mainbios" offset="0"/>
+		<rom name="v2.bin" bios="us-v2" size="131072" crc="62f021f4" sha1="62d372269e1b3161c64ae21123655a0a22ffd1bb" region="mainbios" offset="0"/>
+		<rom name="sp1-u3.bin" bios="us-u3" size="131072" crc="2025b7a2" sha1="73d774746196f377111cd7aa051cc8bb5dd948b3" region="mainbios" offset="0"/>
+		<rom name="asia-s3.rom" bios="asia" size="131072" crc="91b64be3" sha1="720a3e20d26818632aedf2c2fd16c54f213543e1" region="mainbios" offset="0"/>
+		<rom name="vs-bios.rom" bios="japan" size="131072" crc="f0e8f27d" sha1="ecf01eda815909f1facec62abf3594eaa8d11075" region="mainbios" offset="0"/>
+		<rom name="sp-j2.sp1" bios="japan-s2" size="131072" crc="acede59c" sha1="b6f97acd282fd7e94d9426078a90f059b5e9dd91" region="mainbios" offset="0"/>
+		<rom name="sp1.jipan.1024" bios="japan-s1" size="131072" crc="9fb0abe4" sha1="18a987ce2229df79a8cf6a84f968f0e42ce4e59d" region="mainbios" offset="0"/>
+		<rom name="sp-45.sp1" bios="mv1c" size="524288" crc="03cc9f6a" sha1="cdf1f49e3ff2bac528c21ed28449cf35b7957dc1" region="mainbios" offset="0"/>
+		<rom name="japan-j3.bin" bios="japan-j3" size="131072" crc="dff6d41f" sha1="e92910e20092577a4523a6b39d578a71d4de7085" region="mainbios" offset="0"/>
+		<rom name="sp-1v1_3db8c.bin" bios="japan-hotel" size="131072" crc="162f0ebe" sha1="fe1c6dd3dfcf97d960065b1bb46c1e11cb7bf271" region="mainbios" offset="0"/>
+		<rom name="sp1-j3.bin" bios="japan-j3a" size="131072" crc="fbc6d469" sha1="46b2b409b5b68869e367b40c846373623edb632a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_3.rom" bios="unibios33" size="131072" crc="24858466" sha1="0ad92efb0c2338426635e0159d1f60b4473d0785" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_2.rom" bios="unibios32" size="131072" crc="a4e8b9b3" sha1="c92f18c3f1edda543d264ecd0ea915240e7c8258" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_1.rom" bios="unibios31" size="131072" crc="0c58093f" sha1="29329a3448c2505e1ff45ffa75e61e9693165153" region="mainbios" offset="0"/>
+		<rom name="uni-bios_3_0.rom" bios="unibios30" size="131072" crc="a97c89a9" sha1="97a5eff3b119062f10e31ad6f04fe4b90d366e7f" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3.rom" bios="unibios23" size="131072" crc="27664eb5" sha1="5b02900a3ccf3df168bdcfc98458136fd2b92ac0" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_3o.rom" bios="unibios23o" size="131072" crc="601720ae" sha1="1b8a72c720cdb5ee3f1d735bbcf447b09204b8d9" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_2.rom" bios="unibios22" size="131072" crc="2d50996a" sha1="5241a4fb0c63b1a23fd1da8efa9c9a9bd3b4279c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_1.rom" bios="unibios21" size="131072" crc="8dabf76b" sha1="c23732c4491d966cf0373c65c83c7a4e88f0082c" region="mainbios" offset="0"/>
+		<rom name="uni-bios_2_0.rom" bios="unibios20" size="131072" crc="0c12c2ad" sha1="37bcd4d30f3892078b46841d895a6eff16dc921e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_3.rom" bios="unibios13" size="131072" crc="b24b44a0" sha1="eca8851d30557b97c309a0d9f4a9d20e5b14af4e" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2.rom" bios="unibios12" size="131072" crc="4fa698e9" sha1="682e13ec1c42beaa2d04473967840c88fd52c75a" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_2o.rom" bios="unibios12o" size="131072" crc="e19d3ce9" sha1="af88ef837f44a3af2d7144bb46a37c8512b67770" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_1.rom" bios="unibios11" size="131072" crc="5dda0d84" sha1="4153d533c02926a2577e49c32657214781ff29b7" region="mainbios" offset="0"/>
+		<rom name="uni-bios_1_0.rom" bios="unibios10" size="131072" crc="0ce453a0" sha1="3b4c0cd26c176fc6b26c3a2f95143dd478f6abf9" region="mainbios" offset="0"/>
+		<rom name="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiobios" offset="0"/>
+		<rom name="sm1.sm1" size="131072" crc="94416d67" sha1="42f9d7ddd6c0931fd64226a60dc73602b2819dcf" region="audiocpu" offset="0"/>
+		<rom name="000-lo.lo" size="131072" crc="5a86cff2" sha1="5992277debadeb64d1c1c64b0a92d9293eaf7e4a" region="zoomy" offset="0"/>
+		<rom name="sfix.sfix" size="131072" crc="c2ea0cfd" sha1="fd4a618cdcdbf849374f0a50dd8efe9dbab706c3" region="fixedbios" offset="0"/>
+		<device_ref name="m68000"/>
+		<device_ref name="z80"/>
+		<device_ref name="hc259"/>
+		<device_ref name="screen"/>
+		<device_ref name="palette"/>
+		<device_ref name="neosprite_opt"/>
+		<device_ref name="ipt_merge_all_hi"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="generic_latch_8"/>
+		<device_ref name="ym2610"/>
+		<device_ref name="watchdog"/>
+		<device_ref name="upd4990a"/>
+		<device_ref name="nvram"/>
+		<device_ref name="speaker"/>
+		<device_ref name="speaker"/>
+		<device_ref name="ng_memcard"/>
+		<device_ref name="neogeo_ctrl_edge"/>
+		<device_ref name="neogeo_joyac"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_control_port"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="neogeo_cart_slot"/>
+		<device_ref name="software_list"/>
+		<chip type="cpu" tag="maincpu" name="Motorola MC68000" clock="12000000"/>
+		<chip type="cpu" tag="audiocpu" name="Zilog Z80" clock="4000000"/>
+		<chip type="audio" tag="ymsnd" name="YM2610 OPNB" clock="8000000"/>
+		<chip type="audio" tag="lspeaker" name="Speaker"/>
+		<chip type="audio" tag="rspeaker" name="Speaker"/>
+		<display tag="screen" type="raster" rotate="0" width="320" height="224" refresh="59.185606" pixclock="6000000" htotal="384" hbend="30" hbstart="350" vtotal="264" vbend="16" vbstart="240" />
+		<sound channels="2"/>
+		<input players="2" coins="4" service="yes">
+			<control type="joy" player="1" buttons="4" ways="8"/>
+			<control type="joy" player="2" buttons="4" ways="8"/>
+		</input>
+		<dipswitch name="Setting Mode" tag="DSW" mask="1">
+			<diplocation name="SW" number="1"/>
+			<dipvalue name="Off" value="1" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Cabinet" tag="DSW" mask="2">
+			<diplocation name="SW" number="2"/>
+			<dipvalue name="Normal" value="2" default="yes"/>
+			<dipvalue name="VS Mode" value="0"/>
+		</dipswitch>
+		<dipswitch name="Controller" tag="DSW" mask="4">
+			<diplocation name="SW" number="3"/>
+			<dipvalue name="Joystick" value="4" default="yes"/>
+			<dipvalue name="Mahjong Panel" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Cabinet No.)" tag="DSW" mask="24">
+			<diplocation name="SW" number="4"/>
+			<diplocation name="SW" number="5"/>
+			<dipvalue name="1" value="24" default="yes"/>
+			<dipvalue name="2" value="16"/>
+			<dipvalue name="3" value="8"/>
+			<dipvalue name="4" value="0"/>
+		</dipswitch>
+		<dipswitch name="COMM Setting (Link Enable)" tag="DSW" mask="32">
+			<diplocation name="SW" number="6"/>
+			<dipvalue name="Off" value="32" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Free Play" tag="DSW" mask="64">
+			<diplocation name="SW" number="7"/>
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Freeze" tag="DSW" mask="128">
+			<diplocation name="SW" number="8"/>
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<port tag=":AUDIO/COIN">
+		</port>
+		<port tag=":DSW">
+		</port>
+		<port tag=":SYSTEM">
+		</port>
+		<port tag=":TEST">
+		</port>
+		<port tag=":edge:joy:JOY1">
+		</port>
+		<port tag=":edge:joy:JOY2">
+		</port>
+		<port tag=":edge:joy:START">
+		</port>
+		<driver status="good" emulation="good" savestate="supported"/>
+		<device type="memcard" tag="memcard">
+			<instance name="memcard" briefname="memc"/>
+			<extension name="neo"/>
+		</device>
+		<device type="cartridge" tag="cslot1" interface="neo_cart">
+			<instance name="cartridge1" briefname="cart1"/>
+			<extension name="bin"/>
+		</device>
+		<device type="cartridge" tag="cslot2" interface="neo_cart">
+			<instance name="cartridge2" briefname="cart2"/>
+			<extension name="bin"/>
+		</device>
+		<device type="cartridge" tag="cslot3" interface="neo_cart">
+			<instance name="cartridge3" briefname="cart3"/>
+			<extension name="bin"/>
+		</device>
+		<device type="cartridge" tag="cslot4" interface="neo_cart">
+			<instance name="cartridge4" briefname="cart4"/>
+			<extension name="bin"/>
+		</device>
+		<device type="cartridge" tag="cslot5" interface="neo_cart">
+			<instance name="cartridge5" briefname="cart5"/>
+			<extension name="bin"/>
+		</device>
+		<device type="cartridge" tag="cslot6" interface="neo_cart">
+			<instance name="cartridge6" briefname="cart6"/>
+			<extension name="bin"/>
+		</device>
+		<slot name="edge">
+			<slotoption name="joy" devname="neogeo_joyac" default="yes"/>
+		</slot>
+		<slot name="ctrl1">
+			<slotoption name="joy" devname="neogeo_joy"/>
+			<slotoption name="mahjong" devname="neogeo_mj_ac"/>
+		</slot>
+		<slot name="ctrl2">
+			<slotoption name="joy" devname="neogeo_joy"/>
+			<slotoption name="mahjong" devname="neogeo_mj_ac"/>
+		</slot>
+		<slot name="cslot1">
+		</slot>
+		<slot name="cslot2">
+		</slot>
+		<slot name="cslot3">
+		</slot>
+		<slot name="cslot4">
+		</slot>
+		<slot name="cslot5">
+		</slot>
+		<slot name="cslot6">
+		</slot>
+		<softwarelist name="neogeo" status="original"/>
+	</machine>
+	<machine name="qsound" sourcefile="src/devices/sound/qsound.cpp" isdevice="yes" runnable="no">
+		<description>QSound</description>
+		<rom name="dl-1425.bin" size="24576" crc="d6cf5ef5" sha1="555f50fe5cdf127619da7d854c03f4a244a0c501" region="dsp" offset="0"/>
+		<device_ref name="dsp16a"/>
+		<chip type="cpu" tag=":dsp" name="WE|AT&amp;T DSP16A" clock="0"/>
+		<sound channels="0"/>
+	</machine>
+</mame>
