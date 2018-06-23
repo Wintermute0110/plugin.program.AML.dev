@@ -2000,6 +2000,14 @@ def _command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             else:                                Command_str = 'Not found'
         else:
             Command_str = 'Not configured'
+
+        # >> Check Fanart and Manual. Load hashed databases.
+        # NOTE A ROM loading factory need to be coded to deal with the different ROM
+        #      locations to avoid duplicate code. Have a look at ACTION_VIEW_MACHINE_DATA
+        #      in function _command_context_view()
+        # Fanart_str = 
+        # Manual_str = 
+
     elif view_type == VIEW_SL_ROM:
         History_idx_dic   = fs_load_JSON_file_dic(PATHS.HISTORY_IDX_PATH.getPath())
         if History_idx_dic:
@@ -2011,6 +2019,10 @@ def _command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 History_str = 'SL not found'
         else:
             History_str = 'Not configured'
+
+        # >> Check Fanart and Manual.
+        # Fanart_str =
+        # Manual_str =
 
     # --- Build menu base on view_type ---
     if view_type == VIEW_MAME_MACHINE:
