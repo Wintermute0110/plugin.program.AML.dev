@@ -17,6 +17,9 @@ WIP      [CORE] JSON database files (specially MAME_DB_main.json, MAME_DB_render
          MAME_assets.json) could be compressed with DEFLATE to reduce the size on disk. They
          will decompressed on the fly. I have to test if this is faster than no compression at all.
 
+WIP      [CORE] Remove redundant fields from MAME DB like 'coins' and 'control_type'. Use new
+         'input' data structure to replace them.
+
 WIP      [MAME FILTERING] Implement <Include>, <Exclude> and <Change> tags.
 
 WIP      [MANUALS] Import the number of supported PDF filters.
