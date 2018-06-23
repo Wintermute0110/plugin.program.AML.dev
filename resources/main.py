@@ -6509,14 +6509,15 @@ def _run_before_execution():
     media_state_str = ['Stop', 'Pause', 'Keep playing'][media_state_action]
     a = '_run_before_execution() media_state_action is "{0}" ({1})'
     log_verb(a.format(media_state_str, media_state_action))
-    if media_state_action == 0 and xbmc.Player().isPlaying():
-        log_verb('_run_before_execution() Calling xbmc.Player().stop()')
-        xbmc.Player().stop()
+    kodi_is_playing = xbmc.getCondVisibility('Player.HasMedia')
+    if media_state_action == 0 and kodi_is_playing:
+        log_verb('_run_before_execution() Executing built-in PlayerControl(stop)')
+        xbmc.executebuiltin('PlayerControl(stop)')
         xbmc.sleep(100)
         g_flag_kodi_was_playing = True
-    elif media_state_action == 1 and xbmc.Player().isPlaying():
-        log_verb('_run_before_execution() Calling xbmc.Player().pause()')
-        xbmc.Player().pause()
+    elif media_state_action == 1 and kodi_is_playing:
+        log_verb('_run_before_execution() Executing built-in PlayerControl(pause)')
+        xbmc.executebuiltin('PlayerControl(pause)')
         xbmc.sleep(100)
         g_flag_kodi_was_playing = True
 
@@ -6624,8 +6625,8 @@ def _run_after_execution():
     log_verb(a.format(media_state_str, media_state_action))
     log_verb('_run_after_execution() g_flag_kodi_was_playing is {0}'.format(g_flag_kodi_was_playing))
     if g_flag_kodi_was_playing and media_state_action == 1:
-        log_verb('_run_after_execution() Calling xbmc.Player().play()')
-        xbmc.Player().play()
+        log_verb('_run_after_execution() Executing built-in PlayerControl(play)')
+        xbmc.executebuiltin('PlayerControl(play)')
     log_debug('_run_after_execution() Function ENDS')
 
 # ---------------------------------------------------------------------------------------------
