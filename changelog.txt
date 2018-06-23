@@ -10,6 +10,13 @@ WIP      [CORE] [LEIA] Check out the ListItem constructor offscreen parameter in
 WIP      [CORE] [LEIA] Use the new API function ListItem.setProperties({p1:v1, p2:v2, ...})
          See https://forum.kodi.tv/showthread.php?tid=332283
 
+WIP      [CORE] Configuring every DAT and INI file one by one is tedious. Instead, define
+         a directory where the DATs must be placed and pick the files from there.
+
+WIP      [CORE] JSON database files (specially MAME_DB_main.json, MAME_DB_render.json and 
+         MAME_assets.json) could be compressed with DEFLATE to reduce the size on disk. They
+         will decompressed on the fly. I have to test if this is faster than no compression at all.
+
 WIP      [MAME FILTERING] Implement <Include>, <Exclude> and <Change> tags.
 
 WIP      [MANUALS] Import the number of supported PDF filters.
@@ -22,7 +29,7 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
 
-[B]Advanced MAME Launcher | version 0.9.8 | 11 June 2018[/B]
+[B]Advanced MAME Launcher | version 0.9.8 | xx June 2018[/B]
 
 FEATURE  Documentation in README.md improved.
 

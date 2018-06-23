@@ -805,6 +805,8 @@ def _render_root_list():
 
     # >> Software lists
     if g_settings['display_SL_browser']:
+        _render_root_list_row_standard('Software Lists (all)',
+                                       _misc_url_1_arg('catalog', 'SL'))
         _render_root_list_row_standard('Software Lists (with ROMs)',
                                        _misc_url_1_arg('catalog', 'SL_ROM'))
         _render_root_list_row_standard('Software Lists (with ROMs and CHDs)',
@@ -1531,7 +1533,10 @@ def _render_SL_list(catalog_name):
 
     # >> Build SL
     SL_catalog_dic = {}
-    if catalog_name == 'SL_ROM':
+    if catalog_name == 'SL':
+        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+            SL_catalog_dic[SL_name] = SL_dic
+    elif catalog_name == 'SL_ROM':
         for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
             if SL_dic['num_with_ROMs'] > 0 and SL_dic['num_with_CHDs'] == 0:
                 SL_catalog_dic[SL_name] = SL_dic
