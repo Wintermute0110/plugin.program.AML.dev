@@ -511,9 +511,11 @@ def _get_settings():
     o = __addon__
 
     # --- Paths ---
+    # >> Mandatory
     g_settings['mame_prog']    = o.getSetting('mame_prog').decode('utf-8')
-
     g_settings['rom_path']     = o.getSetting('rom_path').decode('utf-8')
+
+    # >> Optional
     g_settings['assets_path']  = o.getSetting('assets_path').decode('utf-8')
     g_settings['chd_path']     = o.getSetting('chd_path').decode('utf-8')
     g_settings['samples_path'] = o.getSetting('samples_path').decode('utf-8')
@@ -547,8 +549,8 @@ def _get_settings():
     g_settings['sl_view_mode']            = int(o.getSetting('sl_view_mode'))
     g_settings['display_hide_Mature']     = True if o.getSetting('display_hide_Mature') == 'true' else False
     g_settings['display_hide_BIOS']       = True if o.getSetting('display_hide_BIOS') == 'true' else False
-    g_settings['display_hide_nonworking'] = True if o.getSetting('display_hide_nonworking') == 'true' else False
     g_settings['display_hide_imperfect']  = True if o.getSetting('display_hide_imperfect') == 'true' else False
+    g_settings['display_hide_nonworking'] = True if o.getSetting('display_hide_nonworking') == 'true' else False
     g_settings['display_rom_available']   = True if o.getSetting('display_rom_available') == 'true' else False
     g_settings['display_chd_available']   = True if o.getSetting('display_chd_available') == 'true' else False
 
