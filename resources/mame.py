@@ -390,8 +390,8 @@ def mame_load_Catver_ini(filename):
             raise CriticalError('Unknown read_status FSM value')
     f.close()
     log_info('mame_load_Catver_ini() Version "{0}"'.format(catver_version))
-    log_info('mame_load_Catver_ini() Number of machines {0:6d}'.format(len(categories_dic)))
-    log_info('mame_load_Catver_ini() Number of categories {0:6d}'.format(len(categories_set)))
+    log_info('mame_load_Catver_ini() Machines {0}'.format(len(categories_dic)))
+    log_info('mame_load_Catver_ini() Categories {0}'.format(len(categories_set)))
 
     return (categories_dic, catver_version)
 
@@ -442,8 +442,8 @@ def mame_load_nplayers_ini(filename):
             raise CriticalError('Unknown read_status FSM value')
     f.close()
     log_info('mame_load_nplayers_ini() Version "{0}"'.format(nplayers_version))
-    log_info('mame_load_nplayers_ini() Number of machines {0:6d}'.format(len(categories_dic)))
-    log_info('mame_load_nplayers_ini() Number of categories {0:6d}'.format(len(categories_set)))
+    log_info('mame_load_nplayers_ini() Machines {0}'.format(len(categories_dic)))
+    log_info('mame_load_nplayers_ini() Categories {0}'.format(len(categories_set)))
 
     return (categories_dic, nplayers_version)
 
@@ -484,7 +484,7 @@ def mame_load_Mature_ini(filename):
             ini_set.add(machine_name)
     f.close()
     log_info('mame_load_Mature_ini() Version "{0}"'.format(ini_version))
-    log_info('mame_load_Mature_ini() Number of machines {0:6d}'.format(len(ini_set)))
+    log_info('mame_load_Mature_ini() Machines {0}'.format(len(ini_set)))
 
     return (ini_set, ini_version)
 
@@ -522,8 +522,8 @@ def mame_load_INI_datfile(filename):
             ini_dic[machine_name] = current_category
     f.close()
     log_info('mame_load_INI_datfile() Version "{0}"'.format(ini_version))
-    log_info('mame_load_INI_datfile() Number of machines {0:6d}'.format(len(ini_dic)))
-    log_info('mame_load_INI_datfile() Number of categories {0:6d}'.format(len(ini_set)))
+    log_info('mame_load_INI_datfile() Machines {0:6d}'.format(len(ini_dic)))
+    log_info('mame_load_INI_datfile() Categories {0:6d}'.format(len(ini_set)))
 
     return (ini_dic, ini_version)
 
@@ -615,8 +615,8 @@ def mame_load_History_DAT(filename):
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
     log_info('mame_load_History_DAT() Version "{0}"'.format(version_str))
-    log_info('mame_load_History_DAT() Number of rows in history_idx_dic {0:6d}'.format(len(history_idx_dic)))
-    log_info('mame_load_History_DAT() Number of rows in history_dic {0:6d}'.format(len(history_dic)))
+    log_info('mame_load_History_DAT() Rows in history_idx_dic {0}'.format(len(history_idx_dic)))
+    log_info('mame_load_History_DAT() Rows in history_dic {0}'.format(len(history_dic)))
 
     return (history_idx_dic, history_dic, version_str)
 
@@ -708,8 +708,8 @@ def mame_load_MameInfo_DAT(filename):
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
     log_info('mame_load_MameInfo_DAT() Version "{0}"'.format(version_str))
-    log_info('mame_load_MameInfo_DAT() Number of rows in idx_dic {0:6d}'.format(len(idx_dic)))
-    log_info('mame_load_MameInfo_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
+    log_info('mame_load_MameInfo_DAT() Rows in idx_dic {0}'.format(len(idx_dic)))
+    log_info('mame_load_MameInfo_DAT() Rows in data_dic {0}'.format(len(data_dic)))
 
     return (idx_dic, data_dic, version_str)
 
@@ -784,8 +784,8 @@ def mame_load_GameInit_DAT(filename):
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
     log_info('mame_load_GameInit_DAT() Version "{0}"'.format(version_str))
-    log_info('mame_load_GameInit_DAT() Number of rows in idx_list {0:6d}'.format(len(idx_list)))
-    log_info('mame_load_GameInit_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
+    log_info('mame_load_GameInit_DAT() Rows in idx_list {0}'.format(len(idx_list)))
+    log_info('mame_load_GameInit_DAT() Rows in data_dic {0}'.format(len(data_dic)))
 
     return (idx_list, data_dic, version_str)
 
@@ -856,8 +856,8 @@ def mame_load_Command_DAT(filename):
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
     log_info('mame_load_Command_DAT() Version "{0}"'.format(version_str))
-    log_info('mame_load_Command_DAT() Number of rows in idx_list {0:6d}'.format(len(idx_list)))
-    log_info('mame_load_Command_DAT() Number of rows in data_dic {0:6d}'.format(len(data_dic)))
+    log_info('mame_load_Command_DAT() Rows in idx_list {0}'.format(len(idx_list)))
+    log_info('mame_load_Command_DAT() Rows in data_dic {0}'.format(len(data_dic)))
 
     # >> Expand database. Many machines share the same entry. Expand the database.
     for original_name in idx_list:
@@ -868,8 +868,8 @@ def mame_load_Command_DAT(filename):
             expanded_name = expanded_name.strip()
             proper_idx_list.append([expanded_name, expanded_name])
             proper_data_dic[expanded_name] = data_dic[original_name]
-    log_info('mame_load_Command_DAT() Number of entries on proper_idx_list {0:6d}'.format(len(proper_idx_list)))
-    log_info('mame_load_Command_DAT() Number of entries on proper_data_dic {0:6d}'.format(len(proper_data_dic)))
+    log_info('mame_load_Command_DAT() Entries in proper_idx_list {0}'.format(len(proper_idx_list)))
+    log_info('mame_load_Command_DAT() Entries in proper_data_dic {0}'.format(len(proper_data_dic)))
 
     return (proper_idx_list, proper_data_dic, version_str)
 
