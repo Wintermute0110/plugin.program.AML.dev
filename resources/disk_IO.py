@@ -371,6 +371,7 @@ def fs_new_control_dic():
         'stats_samples_clones'     : 0,
 
         # --- Filed in when building the ROM audit databases ---
+        'stats_audit_MAME_machines_runnable' : 0,
         # Number of ROM ZIP files in the Merged, Split or Non-merged sets.
         'stats_audit_MAME_ROM_ZIP_files' : 0,
         # Number of Sample ZIP files.
@@ -406,7 +407,6 @@ def fs_new_control_dic():
         'stats_audit_CHDs_invalid'    : 0,
 
         # --- Filed in when auditing the MAME machines ---
-        'audit_MAME_machines_runnable'         : 0,
         # >> Machines with ROMs/CHDs archives that are OK or not
         'audit_MAME_machines_with_arch'        : 0,
         'audit_MAME_machines_with_arch_OK'     : 0,

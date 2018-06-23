@@ -1418,7 +1418,7 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
 
     slist.append('[COLOR orange]MAME ROM audit database statistics[/COLOR]')
     t = "{0:6d} runnable MAME machines"
-    slist.append(t.format(control_dic['audit_MAME_machines_runnable']))
+    slist.append(t.format(control_dic['stats_audit_MAME_machines_runnable']))
     t = "{0:6d} machines require ROM ZIPs, {1:5d} parents and {2:5d} clones"
     slist.append(t.format(control_dic['stats_audit_machine_archives_ROM'],
                           control_dic['stats_audit_machine_archives_ROM_parents'],
@@ -2375,7 +2375,6 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
     pDialog.close()
 
     # >> Audit statistics.
-    audit_MAME_machines_runnable         = 0
     audit_MAME_machines_with_arch        = 0
     audit_MAME_machines_with_arch_OK     = 0
     audit_MAME_machines_with_arch_BAD    = 0
@@ -2397,7 +2396,6 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
         audit_dic = machine_audit_dic[m_name]
         # >> Skip unrunnable (device) machines
         if render_dic['isDevice']: continue
-        audit_MAME_machines_runnable += 1
         if audit_dic['machine_has_ROMs_or_CHDs']:
             audit_MAME_machines_with_arch += 1
             if audit_dic['machine_is_OK']: audit_MAME_machines_with_arch_OK += 1
@@ -2465,7 +2463,7 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
     ]
     h_list = [
         'There are {0} machines in total'.format(total_machines),
-        'Of those, {0} are runnable machines'.format(audit_MAME_machines_runnable),
+        'Of those, {0} are runnable machines'.format(control_dic['stats_audit_MAME_machines_runnable']),
     ]
     report_full_list.extend(h_list)
     report_good_list.extend(h_list)
@@ -2641,7 +2639,6 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
     pDialog.close()
 
     # >> Update MAME audit statistics.
-    change_control_dic(control_dic, 'audit_MAME_machines_runnable', audit_MAME_machines_runnable)
     change_control_dic(control_dic, 'audit_MAME_machines_with_arch', audit_MAME_machines_with_arch)
     change_control_dic(control_dic, 'audit_MAME_machines_with_arch_OK', audit_MAME_machines_with_arch_OK)
     change_control_dic(control_dic, 'audit_MAME_machines_with_arch_BAD', audit_MAME_machines_with_arch_BAD)
@@ -4277,13 +4274,15 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     pDialog.update(0, 'Building {0} ROM set ...'.format(rom_set_str))
     num_items = len(machines)
     item_count = 0
+    stats_audit_MAME_machines_runnable = 0
     for m_name in sorted(machines):
         # --- Update dialog ---
         pDialog.update((item_count*100)//num_items)
-        
+
         # --- ROMs ---
         # >> Skip Devices
         if machines_render[m_name]['isDevice']: continue
+        stats_audit_MAME_machines_runnable += 1
         m_roms = machine_roms[m_name]['roms']
         machine_rom_set = []
         for rom in m_roms:
@@ -4483,10 +4482,10 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         item_count += 1
     pDialog.close()
 
-
     # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary
     # ---------------------------------------------------------------------------------------------
+    change_control_dic(control_dic, 'stats_audit_MAME_machines_runnable', stats_audit_MAME_machines_runnable)
     change_control_dic(control_dic, 'stats_audit_MAME_ROM_ZIP_files', len(ROM_archive_list))
     change_control_dic(control_dic, 'stats_audit_MAME_Sample_ZIP_files', len(Sample_archive_list))
     change_control_dic(control_dic, 'stats_audit_MAME_CHD_files', len(CHD_archive_list))
