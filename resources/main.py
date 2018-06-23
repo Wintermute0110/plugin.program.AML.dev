@@ -286,7 +286,7 @@ def run_plugin(addon_argv):
 
     # --- If control_dic does not exists create an empty one ---
     # >> control_dic will be used for database built checks, etc.
-    if not PATHS.MAIN_CONTROL_PATH.exists(): fs_create_empty_control_dic(PATHS)
+    if not PATHS.MAIN_CONTROL_PATH.exists(): fs_create_empty_control_dic(PATHS, __addon_version__)
 
     # --- Process URL ---
     g_base_url = addon_argv[0]
@@ -4676,7 +4676,7 @@ def _command_context_setup_plugin():
         mame_prog_FN = FileName(g_settings['mame_prog'])
 
         # --- Extract MAME XML ---
-        (filesize, total_machines) = fs_extract_MAME_XML(PATHS, mame_prog_FN)
+        (filesize, total_machines) = fs_extract_MAME_XML(PATHS, mame_prog_FN, __addon_version__)
         kodi_dialog_OK('Extracted MAME XML database. '
                        'Size is {0} MB and there are {1} machines.'.format(filesize / 1000000, total_machines))
 
@@ -4699,7 +4699,7 @@ def _command_context_setup_plugin():
         # 1) Creates the ROM hashed database.
         # 2) Creates the (empty) Asset cache.
         # 3) Updates control_dic and t_MAME_DB_build timestamp.
-        DB = mame_build_MAME_main_database(PATHS, g_settings, control_dic)
+        DB = mame_build_MAME_main_database(PATHS, g_settings, control_dic, __addon_version__)
         fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
         # --- Build and save everything ---

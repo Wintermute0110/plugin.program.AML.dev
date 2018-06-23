@@ -1169,20 +1169,22 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
 #
 def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     slist.append('[COLOR orange]Main information[/COLOR]')
-    slist.append("AML version            {0}".format(AML_version_str))
-    slist.append("MAME version string    {0}".format(control_dic['ver_mame_str']))
-    slist.append("MAME version numerical {0}".format(control_dic['ver_mame']))
-    slist.append("bestgames.ini version  {0}".format(control_dic['ver_bestgames']))
-    slist.append("catlist.ini version    {0}".format(control_dic['ver_catlist']))
-    slist.append("catver.ini version     {0}".format(control_dic['ver_catver']))
-    slist.append("command.dat version    {0}".format(control_dic['ver_command']))
-    slist.append("gameinit.dat version   {0}".format(control_dic['ver_gameinit']))
-    slist.append("genre.ini version      {0}".format(control_dic['ver_genre']))
-    slist.append("history.dat version    {0}".format(control_dic['ver_history']))
-    slist.append("mameinfo.dat version   {0}".format(control_dic['ver_mameinfo']))
-    slist.append("mature.ini version     {0}".format(control_dic['ver_mature']))
-    slist.append("nplayers.ini version   {0}".format(control_dic['ver_nplayers']))
-    slist.append("series.ini version     {0}".format(control_dic['ver_series']))
+    slist.append("AML version              {0}".format(AML_version_str))
+    slist.append("Database version string  {0}".format(control_dic['ver_AML_str']))
+    slist.append("Database version num     {0:,}".format(control_dic['ver_AML']))
+    slist.append("MAME version string      {0}".format(control_dic['ver_mame_str']))
+    slist.append("MAME version num         {0:,}".format(control_dic['ver_mame']))
+    slist.append("bestgames.ini version    {0}".format(control_dic['ver_bestgames']))
+    slist.append("catlist.ini version      {0}".format(control_dic['ver_catlist']))
+    slist.append("catver.ini version       {0}".format(control_dic['ver_catver']))
+    slist.append("command.dat version      {0}".format(control_dic['ver_command']))
+    slist.append("gameinit.dat version     {0}".format(control_dic['ver_gameinit']))
+    slist.append("genre.ini version        {0}".format(control_dic['ver_genre']))
+    slist.append("history.dat version      {0}".format(control_dic['ver_history']))
+    slist.append("mameinfo.dat version     {0}".format(control_dic['ver_mameinfo']))
+    slist.append("mature.ini version       {0}".format(control_dic['ver_mature']))
+    slist.append("nplayers.ini version     {0}".format(control_dic['ver_nplayers']))
+    slist.append("series.ini version       {0}".format(control_dic['ver_series']))
 
     slist.append('')
     slist.append('[COLOR orange]Timestamps[/COLOR]')
@@ -3288,7 +3290,7 @@ class DB_obj:
         self.main_pclone_dic = main_pclone_dic
         self.assets_dic      = assets_dic
 
-def mame_build_MAME_main_database(PATHS, settings, control_dic):
+def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str):
     # --- Print user configuration for debug ---
     log_info('mame_build_MAME_main_database() Starting ...')
     log_info('--- Paths ---')
@@ -3297,7 +3299,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     log_info('assets_path    = "{0}"'.format(settings['assets_path']))
     log_info('chd_path       = "{0}"'.format(settings['chd_path']))
     log_info('samples_path   = "{0}"'.format(settings['samples_path']))
-    log_info('SL_hash_path   = "{0}"'.format(settings['SL_hash_path']))    
+    log_info('SL_hash_path   = "{0}"'.format(settings['SL_hash_path']))
     log_info('SL_rom_path    = "{0}"'.format(settings['SL_rom_path']))
     log_info('SL_chd_path    = "{0}"'.format(settings['SL_chd_path']))
     log_info('--- INI paths ---')   
@@ -3313,6 +3315,26 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic):
     log_info('mameinfo_path  = "{0}"'.format(settings['mameinfo_path']))
     log_info('gameinit_path  = "{0}"'.format(settings['gameinit_path']))
     log_info('command_path   = "{0}"'.format(settings['command_path']))
+
+    # >> If the user did not extract MAME.xml (maybe he decided to use a custom one) then
+    # >> fields ver_AML, ver_AML_str, stats_total_machines and t_XML_extraction must be
+    # >> updated in the control_dic. Check fs_extract_MAME_XML()
+    if control_dic['stats_total_machines'] < 1:
+        log_info('control_dic does not have a machine count. Updating it ...')
+        # --- Count MAME machines ---
+        log_info('mame_build_MAME_main_database() Counting number of machines ...')
+        stats_total_machines = fs_count_MAME_Machines(PATHS)
+        log_info('mame_build_MAME_main_database() Found {0} machines.'.format(stats_total_machines))
+        # --- Bring control_dic up to date ---
+        AML_version_int = fs_AML_version_str_to_int(AML_version_str)
+        log_info('mame_build_MAME_main_database() AML version str "{0}"'.format(AML_version_str))
+        log_info('mame_build_MAME_main_database() AML version int {0}'.format(AML_version_int))
+        change_control_dic(control_dic, 'ver_AML', AML_version_int)
+        change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
+        change_control_dic(control_dic, 'stats_total_machines', stats_total_machines)
+        change_control_dic(control_dic, 't_XML_extraction', time.time())
+    else:
+        log_info('control_dic has stats_total_machines. User used fs_extract_MAME_XML()')
 
     # --- Progress dialog ---
     pDialog_canceled = False
