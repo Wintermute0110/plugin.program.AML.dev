@@ -32,9 +32,13 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
 
+[B]Advanced MAME Launcher | version 0.9.9 | XX September 2018[/B]
+
+
+
 [B]Advanced MAME Launcher | version 0.9.8 | 23 June 2018[/B]
 
-FEATURE  Documentation in README.md improved.
+FEATURE  [DOCS] Documentation in README.md improved.
 
 FEATURE  [LEIA] Kodi Leia will cache the Python interpreter which means submodules will only
          be executed once and cached. sys.argv must be propagated from the entry point code
