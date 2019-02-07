@@ -75,6 +75,7 @@ class AML_Paths:
         self.MAME_STDERR_VER_PATH = PLUGIN_DATA_DIR.pjoin('log_version_stderr.log')
         self.MAME_OUTPUT_PATH     = PLUGIN_DATA_DIR.pjoin('log_output.log')
         self.MONO_FONT_PATH       = AML_ADDON_DIR.pjoin('fonts/Inconsolata.otf')
+        self.CUSTOM_FILTER_PATH   = AML_ADDON_DIR.pjoin('filters/AML-MAME-filters.xml')
 
         # >> MAME XML, main database and main PClone list.
         self.MAME_XML_PATH        = PLUGIN_DATA_DIR.pjoin('MAME.xml')
@@ -4403,8 +4404,18 @@ def _command_context_setup_custom_filters():
     #
     if menu_item == 0:
         # --- Open custom filter XML and parse it ---
+        cf_XML_path_str = g_settings['filter_XML']
+        log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
+        if not cf_XML_path_str:
+            log_debug('Using default XML custom filter.')
+            XML_FN = PATHS.CUSTOM_FILTER_PATH
+        else:
+            log_debug('Using user-defined in addon settings XML custom filter.')
+            XML_FN = FileName(cf_XML_path_str)
+        log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
         try:
-            filters_list = filter_parse_XML(g_settings['filter_XML'])
+            filters_list = filter_parse_XML(XML_FN.getPath())
         except Addon_Error as ex:
             kodi_notify_warn('{0}'.format(ex))
             return
@@ -4542,7 +4553,14 @@ def _command_context_setup_custom_filters():
 
     # --- View custom filter XML ---
     elif menu_item == 1:
-        XML_FN = FileName(g_settings['filter_XML'])
+        cf_XML_path_str = g_settings['filter_XML']
+        log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
+        if not cf_XML_path_str:
+            log_debug('Using default XML custom filter.')
+            XML_FN = PATHS.CUSTOM_FILTER_PATH
+        else:
+            log_debug('Using user-defined in addon settings XML custom filter.')
+            XML_FN = FileName(cf_XML_path_str)
         log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
         log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
         if not XML_FN.exists():
