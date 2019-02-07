@@ -18,14 +18,17 @@
 # Division operator: https://www.python.org/dev/peps/pep-0238/
 from __future__ import unicode_literals
 from __future__ import division
-import os
-import urlparse
-import subprocess
 import copy
-from datetime import datetime
+import datetime
+import os
+import subprocess
+import urlparse
 
 # --- Kodi stuff ---
-import xbmc, xbmcgui, xbmcplugin, xbmcaddon
+import xbmc
+import xbmcgui
+import xbmcplugin
+import xbmcaddon
 
 # --- Modules/packages in this plugin ---
 # Addon module dependencies:
