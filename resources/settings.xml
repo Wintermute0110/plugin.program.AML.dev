@@ -68,10 +68,10 @@
     <setting label="Do not render trailers" type="bool" default="false" id="display_hide_trailers" />
 </category>
 <category label="Utilities">
-    <setting label="Check/Update all objects ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML/?command=CHECK_ALL_OBJECTS)"/>
-    <setting label="Check AML configuration ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML/?command=CHECK_CONFIG)"/>
-    <setting label="Check MAME CRC hash collisions ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML/?command=CHECK_MAME_COLLISIONS)"/>
-    <setting label="Check SL CRC hash collisions ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML/?command=CHECK_SL_COLLISIONS)"/>
+    <setting label="Check/Update all objects ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML.dev/?command=CHECK_ALL_OBJECTS)"/>
+    <setting label="Check AML configuration ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML.dev/?command=CHECK_CONFIG)"/>
+    <setting label="Check MAME CRC hash collisions ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML.dev/?command=CHECK_MAME_COLLISIONS)"/>
+    <setting label="Check SL CRC hash collisions ..." type="action" option="close" action="RunPlugin(plugin://plugin.program.AML.dev/?command=CHECK_SL_COLLISIONS)"/>
 </category>
 <category label="Advanced">
     <setting label="Action on Kodi playing media" type="enum" id="media_state_action" default="0" values="Stop|Pause|Keep playing" />

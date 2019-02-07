@@ -9,6 +9,9 @@
 #   3) Create file version.txt, which contains current git version.
 #
 #   4) Edit addon.xml to change plugin id, name and version.
+#
+#   5) Edit resources/settings.xml to change instances of 'plugin.program.AML.dev' to
+#      'plugin.program.AML.dev'.
 
 # Copyright (c) 2016-2019 Wintermute0110 <wintermute0110@gmail.com>
 #
