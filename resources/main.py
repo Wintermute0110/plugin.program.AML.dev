@@ -245,7 +245,7 @@ g_settings = {}
 g_base_url = ''
 g_addon_handle = 0
 g_content_type = ''
-g_time_str = unicode(datetime.now())
+g_time_str = unicode(datetime.datetime.now())
 
 g_mame_icon = ''
 g_mame_fanart = ''
