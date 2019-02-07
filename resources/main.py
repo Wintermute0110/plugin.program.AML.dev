@@ -271,9 +271,11 @@ def run_plugin(addon_argv):
 
     # --- Some debug stuff for development ---
     log_debug('---------- Called AML Main::run_plugin() constructor ----------')
-    log_debug('sys.platform {0}'.format(sys.platform))
-    log_debug('Python version ' + sys.version.replace('\n', ''))
-    log_debug('__addon_version__ {0}'.format(__addon_version__))
+    log_debug('sys.platform    {0}'.format(sys.platform))
+    log_debug('Python version  ' + sys.version.replace('\n', ''))
+    log_debug('__a_id__        {0}'.format(__addon_id__))
+    log_debug('__a_version__   {0}'.format(__addon_version__))
+    log_debug('PLUGIN_DATA_DIR {0}'.format(PLUGIN_DATA_DIR.getPath()))
     for i in range(len(addon_argv)): log_debug('addon_argv[{0}] = "{1}"'.format(i, addon_argv[i]))
     # >> Timestamp to see if this submodule is reinterpreted or not.
     log_debug('submodule global timestamp {0}'.format(g_time_str))

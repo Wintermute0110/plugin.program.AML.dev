@@ -970,6 +970,7 @@ def fs_extract_MAME_version(PATHS, mame_prog_FN):
 def fs_extract_MAME_XML(PATHS, mame_prog_FN, AML_version_str):
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
     log_info('fs_extract_MAME_XML() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
+    log_info('fs_extract_MAME_XML() Saving XML   "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
     log_debug('fs_extract_MAME_XML() mame_dir     "{0}"'.format(mame_dir))
     log_debug('fs_extract_MAME_XML() mame_exec    "{0}"'.format(mame_exec))
     pDialog = xbmcgui.DialogProgress()
@@ -1006,7 +1007,7 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN, AML_version_str):
     change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
     change_control_dic(control_dic, 'stats_total_machines', stats_total_machines)
     change_control_dic(control_dic, 't_XML_extraction', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
 
     return (filesize, stats_total_machines)
 
