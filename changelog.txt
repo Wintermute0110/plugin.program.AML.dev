@@ -10,9 +10,6 @@ WIP      [CORE] [LEIA] Check out the ListItem constructor offscreen parameter in
 WIP      [CORE] [LEIA] Use the new API function ListItem.setProperties({p1:v1, p2:v2, ...})
          See https://forum.kodi.tv/showthread.php?tid=332283
 
-WIP      [CORE] Configuring every DAT and INI file one by one is tedious. Instead, define
-         a directory where the DATs must be placed and pick the files from there.
-
 WIP      [CORE] JSON database files (specially MAME_DB_main.json, MAME_DB_render.json and 
          MAME_assets.json) could be compressed with DEFLATE to reduce the size on disk. They
          will decompressed on the fly. I have to test if this is faster than no compression at all.
@@ -34,6 +31,18 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
 
 [B]Advanced MAME Launcher | version 0.9.9 | XX September 2018[/B]
 
+WIP      [CORE] Configuring every DAT and INI file one by one is tedious. Instead, define
+         a directory where the DATs must be placed and pick the files from there.
+
+WIP      [CORE] At least two directories for samples are needed. MAME includes a default samples
+         directory with some samples used by some machines. Both directories must be configured
+         in mame.ini in order to get all the samples working.
+
+WIP      [CORE] Implement the "Read-only launchers". ROL are XML files that include the
+         launcher information as well as the ROMs information. ROLs are generated with AML,
+         can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
+         (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
+         and then imported again into AML.
 
 
 [B]Advanced MAME Launcher | version 0.9.8 | 23 June 2018[/B]
@@ -50,6 +59,7 @@ FIX      Changed source code files to remove BOM. This is necessary to pass Trav
          Kodi official repo.
 
 FIX      ActivateWindow(busydialog) and Dialog.Close(busydialog) have been deprecated.
+         Use DialogProgress() for all operations.
          See https://github.com/xbmc/xbmc/pull/13958
          and https://github.com/xbmc/xbmc/pull/13954
          and https://github.com/xbmc/xbmc/pull/10699
