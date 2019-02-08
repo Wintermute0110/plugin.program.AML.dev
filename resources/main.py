@@ -4707,7 +4707,7 @@ def _command_context_setup_plugin():
 
     # --- All in one step (Extract, Build and Scan) ---
     elif menu_item == 1:
-        kodi_dialog_OK('MAME executable is not set.')
+        kodi_dialog_OK('Not implemented yet, sorry.')
         return
 
     # --- Extract MAME.xml ---
