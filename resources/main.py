@@ -523,6 +523,7 @@ def _get_settings():
 
     # >> Optional
     g_settings['assets_path']  = o.getSetting('assets_path').decode('utf-8')
+    g_settings['dats_path']    = o.getSetting('dats_path').decode('utf-8')
     g_settings['chd_path']     = o.getSetting('chd_path').decode('utf-8')
     g_settings['samples_path'] = o.getSetting('samples_path').decode('utf-8')
     g_settings['SL_hash_path'] = o.getSetting('SL_hash_path').decode('utf-8')
@@ -530,17 +531,17 @@ def _get_settings():
     g_settings['SL_chd_path']  = o.getSetting('SL_chd_path').decode('utf-8')
 
     # --- DAT paths (order alpahbetically) ---
-    g_settings['bestgames_path'] = o.getSetting('bestgames_path').decode('utf-8')
-    g_settings['catlist_path']   = o.getSetting('catlist_path').decode('utf-8')
-    g_settings['catver_path']    = o.getSetting('catver_path').decode('utf-8')
-    g_settings['command_path']   = o.getSetting('command_path').decode('utf-8')
-    g_settings['gameinit_path']  = o.getSetting('gameinit_path').decode('utf-8')
-    g_settings['genre_path']     = o.getSetting('genre_path').decode('utf-8')
-    g_settings['history_path']   = o.getSetting('history_path').decode('utf-8')
-    g_settings['mameinfo_path']  = o.getSetting('mameinfo_path').decode('utf-8')
-    g_settings['mature_path']    = o.getSetting('mature_path').decode('utf-8')
-    g_settings['nplayers_path']  = o.getSetting('nplayers_path').decode('utf-8')
-    g_settings['series_path']    = o.getSetting('series_path').decode('utf-8')
+    # g_settings['bestgames_path'] = o.getSetting('bestgames_path').decode('utf-8')
+    # g_settings['catlist_path']   = o.getSetting('catlist_path').decode('utf-8')
+    # g_settings['catver_path']    = o.getSetting('catver_path').decode('utf-8')
+    # g_settings['command_path']   = o.getSetting('command_path').decode('utf-8')
+    # g_settings['gameinit_path']  = o.getSetting('gameinit_path').decode('utf-8')
+    # g_settings['genre_path']     = o.getSetting('genre_path').decode('utf-8')
+    # g_settings['history_path']   = o.getSetting('history_path').decode('utf-8')
+    # g_settings['mameinfo_path']  = o.getSetting('mameinfo_path').decode('utf-8')
+    # g_settings['mature_path']    = o.getSetting('mature_path').decode('utf-8')
+    # g_settings['nplayers_path']  = o.getSetting('nplayers_path').decode('utf-8')
+    # g_settings['series_path']    = o.getSetting('series_path').decode('utf-8')
 
     # --- ROM sets ---
     g_settings['mame_rom_set'] = int(o.getSetting('mame_rom_set'))
@@ -5925,21 +5926,39 @@ def _command_check_AML_configuration():
     slist.append('')
 
     # --- Optional INI files ---
-    slist.append('[COLOR orange]INI files[/COLOR]')
-    check_file_WARN(slist, g_settings['catver_path'], 'Catver.ini file')
-    check_file_WARN(slist, g_settings['catlist_path'], 'Catlist.ini file')
-    check_file_WARN(slist, g_settings['genre_path'], 'Genre.ini file')
-    check_file_WARN(slist, g_settings['nplayers_path'], 'NPlayers.ini file')
-    check_file_WARN(slist, g_settings['bestgames_path'], 'bestgames.ini file')
-    check_file_WARN(slist, g_settings['series_path'], 'series.ini file')
-    slist.append('')
+    slist.append('[COLOR orange]INI/DAT files[/COLOR]')
+    if g_settings['dats_path']:
+        if FileName(g_settings['dats_path']).exists():
+            slist.append('{0} MAME INI/DAT path "{1}"'.format(OK, g_settings['dats_path']))
 
-    # --- Optional DAT files ---
-    slist.append('[COLOR orange]DAT files[/COLOR]')
-    check_file_WARN(slist, g_settings['history_path'], 'History.dat file')
-    check_file_WARN(slist, g_settings['mameinfo_path'], 'MameINFO.dat file')
-    check_file_WARN(slist, g_settings['gameinit_path'], 'Gameinit.dat file')
-    check_file_WARN(slist, g_settings['command_path'], 'Command.dat file')
+            DATS_dir_FN = FileName(g_settings['dats_path'])
+            BESTGAMES_FN = DATS_dir_FN.pjoin(BESTGAMES_INI)
+            CATLIST_FN = DATS_dir_FN.pjoin(CATLIST_INI)
+            CATVER_FN = DATS_dir_FN.pjoin(CATVER_INI)
+            GENRE_FN = DATS_dir_FN.pjoin(GENRE_INI)
+            MATURE_FN = DATS_dir_FN.pjoin(MATURE_INI)
+            NPLAYERS_FN = DATS_dir_FN.pjoin(NPLAYERS_INI)
+            SERIES_FN = DATS_dir_FN.pjoin(SERIES_INI)
+            COMMAND_FN = DATS_dir_FN.pjoin(COMMAND_DAT)
+            GAMEINIT_FN = DATS_dir_FN.pjoin(GAMEINIT_DAT)
+            HISTORY_FN = DATS_dir_FN.pjoin(HISTORY_DAT)
+            MAMEINFO_FN = DATS_dir_FN.pjoin(MAMEINFO_DAT)
+
+            check_file_WARN(slist, BESTGAMES_FN.getPATH(), BESTGAMES_INI + ' file')
+            check_file_WARN(slist, CATLIST_FN.getPATH(), CATLIST_INI + ' file')
+            check_file_WARN(slist, CATVER_FN.getPATH(), CATVER_INI + ' file')
+            check_file_WARN(slist, GENRE_FN.getPATH(), GENRE_INI + ' file')
+            check_file_WARN(slist, MATURE_FN.getPATH(), MATURE_INI + ' file')
+            check_file_WARN(slist, NPLAYERS_FN.getPATH(), NPLAYERS_INI + ' file')
+            check_file_WARN(slist, SERIES_FN.getPATH(), SERIES_INI + ' file')
+            check_file_WARN(slist, COMMAND_FN.getPATH(), COMMAND_DAT + ' file')
+            check_file_WARN(slist, GAMEINIT_FN.getPATH(), GAMEINIT_DAT + ' file')
+            check_file_WARN(slist, HISTORY_FN.getPATH(), HISTORY_DAT + ' file')
+            check_file_WARN(slist, MAMEINFO_FN.getPATH(), MAMEINFO_DAT + ' file')
+        else:
+            slist.append('{0} MAME INI/DAT path not found'.format(ERR))
+    else:
+        slist.append('{0} MAME INI/DAT path not set'.format(WARN))
 
     # --- Display info to the user ---
     _display_text_window('AML configuration check report', '\n'.join(slist))

@@ -68,6 +68,19 @@ class Addon_Error(Exception):
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher constants
 # -------------------------------------------------------------------------------------------------
+# >> INI and DAT files default names.
+BESTGAMES_INI = 'bestgames.ini'
+CATLIST_INI   = 'catlist.ini'
+CATVER_INI    = 'catver.ini'
+GENRE_INI     = 'genre.ini'
+MATURE_INI    = 'mature.ini'
+NPLAYERS_INI  = 'nplayers.ini'
+SERIES_INI    = 'series.ini'
+COMMAND_DAT   = 'command.dat'
+GAMEINIT_DAT  = 'gameinit.dat'
+HISTORY_DAT   = 'history.dat'
+MAMEINFO_DAT  = 'mameinfo.dat'
+
 # >> Make sure these strings are equal to the ones in settings.xml
 VIEW_MODE_FLAT         = 0 # 'Flat'
 VIEW_MODE_PCLONE       = 1 # 'Parent/Clone'

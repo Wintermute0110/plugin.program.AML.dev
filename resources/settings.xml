@@ -6,12 +6,14 @@
 
     <setting id="separator" type="lsep" label="Optional paths" />
     <setting label="MAME Assets path" type="folder" id="assets_path" source="auto" option="" />
+    <setting label="MAME INI/DAT path" type="folder" id="dats_path" source="auto" option="" />
     <setting label="MAME CHDs path" type="folder" id="chd_path" source="auto" option="" />
     <setting label="MAME Samples path" type="folder" id="samples_path" source="auto" option="" />
     <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="auto" option="" />
     <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="auto" option="" />
     <setting label="Software Lists CHDs path" type="folder" id="SL_chd_path" source="auto" option="" />
 </category>
+<!--
 <category label="DAT paths">
     <setting label="bestgames.ini path" type="file"   id="bestgames_path" />
     <setting label="catlist.ini path"   type="file"   id="catlist_path" />
@@ -25,6 +27,7 @@
     <setting label="nplayers.ini path"  type="file"   id="nplayers_path" />
     <setting label="series.ini path"    type="file"   id="series_path" />
 </category>
+-->
 <category label="ROM sets">
     <setting label="MAME ROM set" type="enum" id="mame_rom_set"  default="1" values="Merged|Split|Non-merged" />
     <setting label="MAME CHD set" type="enum" id="mame_chd_set"  default="0" values="Merged|Split|Non-merged" />
