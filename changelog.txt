@@ -31,6 +31,8 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
 
 [B]Advanced MAME Launcher | version 0.9.9 | XX February 2019[/B]
 
+WIP      [CORE] Implement context menu "All in one (Extract, Build and Scan)"
+
 FEATURE  [CORE] Configuring every DAT and INI file one by one is tedious. Instead, define
          a directory where the DATs must be placed and pick the files from there automatically.
 

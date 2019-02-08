@@ -4685,6 +4685,7 @@ def _command_context_setup_plugin():
     dialog = xbmcgui.Dialog()
     menu_item = dialog.select('Setup plugin',
                              ['Check MAME version',
+                              'All in one step (Extract, Build and Scan)',
                               'Extract MAME.xml',
                               'Build all databases',
                               'Scan everything and build plots',
@@ -4704,8 +4705,13 @@ def _command_context_setup_plugin():
         mame_version_str = fs_extract_MAME_version(PATHS, mame_prog_FN)
         kodi_dialog_OK('MAME version is {0}'.format(mame_version_str))
 
-    # --- Extract MAME.xml ---
+    # --- All in one step (Extract, Build and Scan) ---
     elif menu_item == 1:
+        kodi_dialog_OK('MAME executable is not set.')
+        return
+
+    # --- Extract MAME.xml ---
+    elif menu_item == 2:
         if not g_settings['mame_prog']:
             kodi_dialog_OK('MAME executable is not set.')
             return
@@ -4717,7 +4723,7 @@ def _command_context_setup_plugin():
                        'Size is {0} MB and there are {1} machines.'.format(filesize / 1000000, total_machines))
 
     # --- Build everything ---
-    elif menu_item == 2:
+    elif menu_item == 3:
         if not PATHS.MAME_XML_PATH.exists():
             kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
             return
@@ -4780,7 +4786,7 @@ def _command_context_setup_plugin():
         kodi_notify('All databases built')
 
     # --- Scan everything ---
-    elif menu_item == 3:
+    elif menu_item == 4:
         log_info('_command_setup_plugin() Scanning everything ...')
 
         # --- MAME Machines -------------------------------------------------------------------
@@ -4964,7 +4970,7 @@ def _command_context_setup_plugin():
         kodi_notify('All ROM/asset scanning finished')
 
     # --- Build Fanarts ---
-    elif menu_item == 4:
+    elif menu_item == 5:
         submenu = dialog.select('Build Fanarts',
                                ['Test MAME Fanart',
                                 'Test Software List item Fanart',
@@ -5215,7 +5221,7 @@ def _command_context_setup_plugin():
     # --- Audit MAME machine ROMs/CHDs ---
     # NOTE It is likekely that this function will take a looong time. It is important that the
     #      audit process can be canceled and a partial report is written.
-    elif menu_item == 5:
+    elif menu_item == 6:
         log_info('_command_setup_plugin() Audit MAME machines ROMs/CHDs ...')
 
         # --- Load machines, ROMs and CHDs databases ---
@@ -5242,7 +5248,7 @@ def _command_context_setup_plugin():
         kodi_notify('ROM and CHD audit finished')
 
     # --- Audit SL ROMs/CHDs ---
-    elif menu_item == 6:
+    elif menu_item == 7:
         log_info('_command_setup_plugin() Audit SL ROMs/CHDs ...')
 
         # --- Load stuff ---
@@ -5255,7 +5261,7 @@ def _command_context_setup_plugin():
         kodi_notify('Software Lists audit finished')
 
     # --- Build Step by Step ---
-    elif menu_item == 7:
+    elif menu_item == 8:
         submenu = dialog.select('Setup plugin (step by step)', [
                                     'Build MAME databases',
                                     'Build MAME Audit/Scanner databases',
