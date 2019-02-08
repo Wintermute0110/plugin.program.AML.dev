@@ -29,10 +29,10 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
 
-[B]Advanced MAME Launcher | version 0.9.9 | XX September 2018[/B]
+[B]Advanced MAME Launcher | version 0.9.9 | XX February 2019[/B]
 
-WIP      [CORE] Configuring every DAT and INI file one by one is tedious. Instead, define
-         a directory where the DATs must be placed and pick the files from there.
+FEATURE  [CORE] Configuring every DAT and INI file one by one is tedious. Instead, define
+         a directory where the DATs must be placed and pick the files from there automatically.
 
 WIP      [CORE] At least two directories for samples are needed. MAME includes a default samples
          directory with some samples used by some machines. Both directories must be configured
