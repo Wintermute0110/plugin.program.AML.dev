@@ -9,7 +9,7 @@
     <import addon="script.module.pil" version="1.1.7" />
   </requires>
   <extension point="xbmc.python.pluginsource" library="addon.py">
-    <provides>executable</provides>
+    <provides>executable game</provides>
   </extension>
   <extension point="xbmc.addon.metadata">
     <!-- This must be commented when releasing the addon.

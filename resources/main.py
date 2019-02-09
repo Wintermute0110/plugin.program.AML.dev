@@ -300,18 +300,20 @@ def run_plugin(addon_argv):
     args = urlparse.parse_qs(addon_argv[2][1:])
     # log_debug('args = {0}'.format(args))
     # Interestingly, if plugin is called as type executable then args is empty.
-    # However, if plugin is called as type video then Kodi adds the following
-    # even for the first call: 'content_type': ['video']
+    # However, if plugin is called as type game then Kodi adds the following
+    # even for the first call: 'content_type': ['game']
     g_content_type = args['content_type'] if 'content_type' in args else None
     log_debug('content_type = {0}'.format(g_content_type))
 
     # --- URL routing -------------------------------------------------------------------------
+    # Show addon root window.
     args_size = len(args)
-    if args_size == 0:
+    if not 'catalog' in args and not 'command' in args:
         _render_root_list()
         log_debug('Advanced MAME Launcher exit (addon root)')
         return
 
+    # Render a list of something.
     elif 'catalog' in args and not 'command' in args:
         catalog_name = args['catalog'][0]
         # --- Software list is a special case ---
@@ -354,6 +356,7 @@ def run_plugin(addon_argv):
             else:
                 _render_catalog_list(catalog_name)
 
+    # Execute a command.
     elif 'command' in args:
         command = args['command'][0]
 
