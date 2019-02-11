@@ -4058,11 +4058,23 @@ def _get_ROM_type(rom):
 
     return r_type
 
+#
+# Finds merged ROM merged_name in the parent ROM set roms (list of dictionaries).
+# Returns a dictionary (first item of the returned list) or None if the merged ROM cannot
+# be found in the ROMs of the parent.
+#
 def _get_merged_rom(roms, merged_name):
+    # filter() returns an iterator that passed the check in the iterable.
     merged_rom_list = filter(lambda r: r['name'] == merged_name, roms)
 
-    return merged_rom_list[0]
+    if len(merged_rom_list) > 0:
+        return merged_rom_list[0]
+    else:
+        return None
 
+#
+# Traverses the ROM hierarchy and returns the ROM location and name.
+#
 def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_roms):
     if rom_set == 'MERGED':
         cloneof = machines_render[m_name]['cloneof']
@@ -4125,20 +4137,46 @@ def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_r
             #    <rom name="cmos_riscos3.bin" merge="cmos_riscos3.bin" bios="311" size="256" crc="0da2d31d" />
             #    <rom name="cmos_riscos3.bin" merge="cmos_riscos3.bin" bios="319" size="256" crc="0da2d31d" />
             #
+            # 6. In MAME 0.206, clone machine adonisce has a merged ROM 'setchip v4.04.09.u7'
+            #    that is not found on the parent machine adoins ROMs.
+            #        AML WARN : Clone machine "adonisce"
+            #        AML WARN : ROM "setchip v4.04.09.u7" MERGE "setchip v4.04.09.u7"
+            #        AML WARN : Cannot be found on parent "adonis" ROMs
+            #    By looking to the XML, the ROM "setchip v4.04.09.u7" is on the BIOS aristmk5
+            #    More machines with same issue: adonisu, bootsctnu, bootsctnua, bootsctnub, ...
+            #    and a lot more machines related to BIOS aristmk5.
+            #
             if rom['merge']:
                 # >> Get merged ROM from parent
                 parent_name = cloneof
                 parent_roms = machine_roms[parent_name]['roms']
                 clone_rom_merged_name = rom['merge']
                 parent_merged_rom = _get_merged_rom(parent_roms, clone_rom_merged_name)
+                # >> Clone merged ROM cannot be found in parent ROM set. This is likely a MAME
+                # >> XML bug. In this case, treat the clone marged ROM as a non-merged ROM.
+                if parent_merged_rom is None:
+                    log_warning('Clone machine "{0}" parent_merged_rom is None'.format(m_name))
+                    log_warning('ROM "{0}" MERGE "{1}"'.format(rom['name'], rom['merge']))
+                    log_warning('Cannot be found on parent "{0}" ROMs'.format(parent_name))
+                    # >> Check if merged ROM is in the BIOS machine.
+                    bios_name = machines[parent_name]['romof']
+                    if bios_name:
+                        log_warning('Parent machine "{0}" has BIOS machine "{1}"'.format(parent_name, bios_name))
+                        log_warning('Searching for clone merged ROM "{0}" in BIOS ROMs'.format(clone_rom_merged_name))
+                        bios_roms = machine_roms[bios_name]['roms']
+                        bios_merged_rom = _get_merged_rom(bios_roms, clone_rom_merged_name)
+                        location = bios_name + '/' + bios_merged_rom['name']
+                    else:
+                        TypeError
                 # >> Check if clone merged ROM is also merged in parent (BIOS ROM)
-                if parent_merged_rom['merge']:
+                elif parent_merged_rom['merge']:
                     parent_romof = machines[parent_name]['romof']
                     bios_name = parent_romof
                     bios_roms = machine_roms[bios_name]['roms']
                     bios_rom_merged_name = parent_merged_rom['merge']
                     bios_merged_rom = _get_merged_rom(bios_roms, bios_rom_merged_name)
-                    # >> At least in one machine (0.196) BIOS roms can be merged in another BIOS.
+                    # At least in one machine (0.196) BIOS ROMs can be merged in another
+                    # BIOS ROMs (1 level of recursion in BIOS ROM merging).
                     if bios_merged_rom['merge']:
                         bios_romof = machines[bios_name]['romof']
                         parent_bios_name = bios_romof

@@ -46,6 +46,10 @@ WIP      [CORE] Implement the "Read-only launchers". ROL are XML files that incl
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
+FIX      In MAME 0.206, some clone merged ROMs are not present in the parent machine, only
+         in the BIOS. For example, in machine adonisce (clone of adonis). Before 0.206, such
+         ROMs were also present on the parent machine. This change in behaviour crashed AML.
+
 
 [B]Advanced MAME Launcher | version 0.9.8 | 23 June 2018[/B]
 
