@@ -692,8 +692,8 @@ def _render_root_list():
     catver_str   = 'Machines by Category (Catver)'
     catlist_str  = 'Machines by Category (Catlist)'
     genre_str    = 'Machines by Category (Genre)'
-    NPLayers_str = 'Machines by Number of players'
-    score_str    = 'Machines by Score'
+    NPlayers_str = 'Machines by Number of players'
+    rating_str   = 'Machines by Rating'
     series_str   = 'Machines by Series'
 
     # >> Cataloged filters (always there)
@@ -714,6 +714,85 @@ def _render_root_list():
     SL_str              = 'Machines by Software List'
     year_str            = 'Machines by Year'
 
+    # --- Root window plots ---
+    machines_n_plot = ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
+                       'slot[/COLOR] and normal controls. This list includes the machines you would '
+                       'typically find in Europe and USA amusement arcades some decades ago.')
+    machines_u_plot = ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
+                       'slot[/COLOR] and Only buttons, Gambling, Hanafuda and Mahjong controls. '
+                       'This corresponds to slot, gambling and Japanese card and mahjong machines.')
+    nocoin_plot = ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with no coin '
+                   'slot[/COLOR]. Here you will find the good old MESS machines, including computers, '
+                   'video game consoles, hand-held video game consoles, etc.')
+    mecha_plot = ('[COLOR orange]Main filter[/COLOR] of mechanical MAME machines. These machines '
+                  'have mechanical parts, for example pinballs, and currently do not work with MAME. '
+                  'They are here for preservation and historical reasons.')
+    dead_plot = ('[COLOR orange]Main filter[/COLOR] of dead MAME machines. Dead machines do not '
+                 'work and have no controls, so you cannot interact with them in any way.')
+    devices_plot = ('[COLOR orange]Main filter[/COLOR] of device MAME machines. Device machines '
+                    'are components used by other machines and cannot be run.')
+
+    bios_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that are BIOSes. Some BIOS '
+                 'machines can be run and usually will display a message like "Game not found".')
+    chd_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that need one or more CHDs '
+                'to run. They may also need ROMs and/or BIOS or not.')
+    samples_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that require samples. '
+                    'Samples are optional and will increase the quality of the emulated sound.')
+    softlists_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that have one or more '
+                      'Software List associated.')
+
+    catver_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
+                   'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].')
+    catlist_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
+                    'This filter requires that you configure [COLOR violet]catlist.ini[/COLOR].')
+    genre_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Genre. '
+                  'This filter requires that you configure [COLOR violet]genre.ini[/COLOR].')
+    NPlayers_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the number of '
+                     'players that can play simultaneously or alternatively. This filter requires '
+                     'that you configure [COLOR violet]nplayers.ini[/COLOR].')
+    rating_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by rating. The rating '
+                   'is subjective but is a good indicator about the quality of the games. '
+                   'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].')
+    series_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by series. '
+                   'This filter requires that you configure [COLOR violet]series.ini[/COLOR].')
+
+    ctype_expanded_plot = ('')
+    ctype_compact_plot = ('')
+    device_expanded_plot = ('')
+    device_compact_plot = ('')
+    drotation_plot = ('')
+    dtype_plot = ('')
+    driver_plot = ('')
+    manufacturer_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted by '
+                         'manufacturer.')
+    shortname_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
+                      'by the MAME short name. The short name originated during the old MS-DOS days '
+                      'where filenames were restricted to 8 ASCII characters.')
+    longname_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
+                     'by the machine description.')
+    SL_plot = ('[COLOR orange]Catalog filter[/COLOR] of the Software Lists and the machines '
+               'that can run items belonging to each Software List.')
+    year_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by release year.')
+
+    SL_all_plot = ('Display all [COLOR orange]Software Lists[/COLOR].')
+    SL_ROM_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only ROMs and not CHDs (disks).')
+    SL_ROM_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have both ROMs and CHDs.')
+    SL_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only CHDs and not ROMs.')
+
+    MAME_favs_plot = ('Display your favourite MAME machines.')
+    SL_favs_plot = ('Display your favourite Software List items.')
+    custom_filters_plot = ('Custom filters allows to generate machine listings configured to your whises. '
+                           'For example, you can define a filter of all the machines released in '
+                           'the 1980s that use a joystick. AML includes a fairly complete default XML '
+                           'set of filters and you can also generate your own filters.')
+    MAME_most_played_plot = ('Display the MAME machines that you play most, sorted by the number '
+                             'of times you have launched them.')
+    MAME_recent_played_plot = ('Display the MAME machines that you have launched recently.')
+    SL_most_played_plot = ('Display the Software List itmes that you play most, sorted by the number '
+                           'of times you have launched them.')
+    SL_recent_played_plot = ('Display the Software List items that you have launched recently.')
+
+    # --- Machine counters ---
     if counters_available and mame_view_mode == VIEW_MODE_FLAT:
         a = ' [COLOR orange]({0} machines)[/COLOR]'
         machines_n_str += a.format(num_m_Main_Normal)
@@ -745,8 +824,8 @@ def _render_root_list():
         catver_str          += a.format(num_cat_Catver)
         catlist_str         += a.format(num_cat_Catlist)
         genre_str           += a.format(num_cat_Genre)
-        NPLayers_str        += a.format(num_cat_NPlayers)
-        score_str           += a.format(num_cat_Bestgames)
+        NPlayers_str        += a.format(num_cat_NPlayers)
+        rating_str          += a.format(num_cat_Bestgames)
         series_str          += a.format(num_cat_Series)
         # >> Always there
         ctype_expanded_str  += a.format(num_cat_Controls_Expanded)
@@ -772,41 +851,41 @@ def _render_root_list():
 
     # >> Main filters (Virtual catalog 'Main')
     if g_settings['display_main_filters']:
-        _render_root_list_row_catalog(machines_n_str, 'Main', 'Normal')
-        _render_root_list_row_catalog(machines_u_str, 'Main', 'Unusual')
-        _render_root_list_row_catalog(nocoin_str, 'Main', 'NoCoin')
-        _render_root_list_row_catalog(mecha_str, 'Main', 'Mechanical')
-        _render_root_list_row_catalog(dead_str, 'Main', 'Dead')
-        _render_root_list_row_catalog(devices_str, 'Main', 'Devices')
+        _render_root_list_row_catalog(machines_n_str, 'Main', 'Normal', machines_n_plot)
+        _render_root_list_row_catalog(machines_u_str, 'Main', 'Unusual', machines_u_plot)
+        _render_root_list_row_catalog(nocoin_str, 'Main', 'NoCoin', nocoin_plot)
+        _render_root_list_row_catalog(mecha_str, 'Main', 'Mechanical', mecha_plot)
+        _render_root_list_row_catalog(dead_str, 'Main', 'Dead', dead_plot)
+        _render_root_list_row_catalog(devices_str, 'Main', 'Devices', devices_plot)
 
     # >> Binary filters (Virtual catalog 'Binary')
     if g_settings['display_binary_filters']:
-        _render_root_list_row_catalog(bios_str, 'Binary', 'BIOS')
-        _render_root_list_row_catalog(chd_str, 'Binary', 'CHD')
-        _render_root_list_row_catalog(samples_str, 'Binary', 'Samples')
-        _render_root_list_row_catalog(softlists_str, 'Binary', 'SoftwareLists')
+        _render_root_list_row_catalog(bios_str, 'Binary', 'BIOS', bios_plot)
+        _render_root_list_row_catalog(chd_str, 'Binary', 'CHD', chd_plot)
+        _render_root_list_row_catalog(samples_str, 'Binary', 'Samples', samples_plot)
+        _render_root_list_row_catalog(softlists_str, 'Binary', 'SoftwareLists', softlists_plot)
 
     if g_settings['display_catalog_filters']:
         # >> Optional cataloged filters (depend on a INI file)
-        _render_root_list_row_standard(catver_str, _misc_url_1_arg('catalog', 'Catver'))
-        _render_root_list_row_standard(catlist_str, _misc_url_1_arg('catalog', 'Catlist'))
-        _render_root_list_row_standard(genre_str, _misc_url_1_arg('catalog', 'Genre'))
-        _render_root_list_row_standard(NPLayers_str, _misc_url_1_arg('catalog', 'NPlayers'))
-        _render_root_list_row_standard(score_str, _misc_url_1_arg('catalog', 'Bestgames'))
-        _render_root_list_row_standard(series_str, _misc_url_1_arg('catalog', 'Series'))
+        _render_root_list_row_standard(catver_str, _misc_url_1_arg('catalog', 'Catver'), catver_plot)
+        _render_root_list_row_standard(catlist_str, _misc_url_1_arg('catalog', 'Catlist'), catlist_plot)
+        _render_root_list_row_standard(genre_str, _misc_url_1_arg('catalog', 'Genre'), genre_plot)
+        _render_root_list_row_standard(NPlayers_str, _misc_url_1_arg('catalog', 'NPlayers'), NPlayers_plot)
+        _render_root_list_row_standard(rating_str, _misc_url_1_arg('catalog', 'Bestgames'), rating_plot)
+        _render_root_list_row_standard(series_str, _misc_url_1_arg('catalog', 'Series'), series_plot)
         # >> Cataloged filters (always there)
-        _render_root_list_row_standard(ctype_expanded_str, _misc_url_1_arg('catalog', 'Controls_Expanded'))
-        _render_root_list_row_standard(ctype_compact_str, _misc_url_1_arg('catalog', 'Controls_Compact'))
-        _render_root_list_row_standard(device_expanded_str, _misc_url_1_arg('catalog', 'Devices_Expanded'))
-        _render_root_list_row_standard(device_compact_str, _misc_url_1_arg('catalog', 'Devices_Compact'))
-        _render_root_list_row_standard(drotation_str, _misc_url_1_arg('catalog', 'Display_Rotate'))
-        _render_root_list_row_standard(dtype_str, _misc_url_1_arg('catalog', 'Display_Type'))
-        _render_root_list_row_standard(driver_str, _misc_url_1_arg('catalog', 'Driver'))
-        _render_root_list_row_standard(manufacturer_str, _misc_url_1_arg('catalog', 'Manufacturer'))
-        _render_root_list_row_standard(shortname_str, _misc_url_1_arg('catalog', 'ShortName'))
-        _render_root_list_row_standard(longname_str, _misc_url_1_arg('catalog', 'LongName'))
-        _render_root_list_row_standard(SL_str, _misc_url_1_arg('catalog', 'BySL'))
-        _render_root_list_row_standard(year_str, _misc_url_1_arg('catalog', 'Year'))
+        _render_root_list_row_standard(ctype_expanded_str, _misc_url_1_arg('catalog', 'Controls_Expanded'), ctype_expanded_plot)
+        _render_root_list_row_standard(ctype_compact_str, _misc_url_1_arg('catalog', 'Controls_Compact'), ctype_compact_plot)
+        _render_root_list_row_standard(device_expanded_str, _misc_url_1_arg('catalog', 'Devices_Expanded'), device_expanded_plot)
+        _render_root_list_row_standard(device_compact_str, _misc_url_1_arg('catalog', 'Devices_Compact'), device_compact_plot)
+        _render_root_list_row_standard(drotation_str, _misc_url_1_arg('catalog', 'Display_Rotate'), drotation_plot)
+        _render_root_list_row_standard(dtype_str, _misc_url_1_arg('catalog', 'Display_Type'), dtype_plot)
+        _render_root_list_row_standard(driver_str, _misc_url_1_arg('catalog', 'Driver'), driver_plot)
+        _render_root_list_row_standard(manufacturer_str, _misc_url_1_arg('catalog', 'Manufacturer'), manufacturer_plot)
+        _render_root_list_row_standard(shortname_str, _misc_url_1_arg('catalog', 'ShortName'), shortname_plot)
+        _render_root_list_row_standard(longname_str, _misc_url_1_arg('catalog', 'LongName'), longname_plot)
+        _render_root_list_row_standard(SL_str, _misc_url_1_arg('catalog', 'BySL'), SL_plot)
+        _render_root_list_row_standard(year_str, _misc_url_1_arg('catalog', 'Year'), year_plot)
 
     # >> history.dat, mameinfo.dat, gameinit.dat, command.dat
     if g_settings['display_DAT_browser']:
@@ -817,14 +896,15 @@ def _render_root_list():
 
     # >> Software lists
     if g_settings['display_SL_browser']:
-        _render_root_list_row_standard('Software Lists (all)',
-                                       _misc_url_1_arg('catalog', 'SL'))
-        _render_root_list_row_standard('Software Lists (with ROMs)',
-                                       _misc_url_1_arg('catalog', 'SL_ROM'))
-        _render_root_list_row_standard('Software Lists (with ROMs and CHDs)',
-                                       _misc_url_1_arg('catalog', 'SL_ROM_CHD'))
-        _render_root_list_row_standard('Software Lists (with CHDs)',
-                                       _misc_url_1_arg('catalog', 'SL_CHD'))
+        _render_root_list_row_standard(
+            'Software Lists (all)', _misc_url_1_arg('catalog', 'SL'), SL_all_plot)
+        _render_root_list_row_standard(
+            'Software Lists (with ROMs)', _misc_url_1_arg('catalog', 'SL_ROM'), SL_ROM_plot)
+        _render_root_list_row_standard(
+            'Software Lists (with ROMs and CHDs)', _misc_url_1_arg('catalog', 'SL_ROM_CHD'),
+            SL_ROM_CHD_plot)
+        _render_root_list_row_standard(
+            'Software Lists (with CHDs)', _misc_url_1_arg('catalog', 'SL_CHD'), SL_CHD_plot)
 
     # >> Special launchers
     if g_settings['display_MAME_favs']:
@@ -832,45 +912,46 @@ def _render_root_list():
         CM_URL = _misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV')
         _render_root_list_row_custom_CM('<Favourite MAME machines>', 
                                         _misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
-                                        CM_title, CM_URL)
+                                        CM_title, CM_URL, MAME_favs_plot)
     if g_settings['display_SL_favs']:
         CM_title = 'Manage SL Favourites'
         CM_URL = _misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV')
         _render_root_list_row_custom_CM('<Favourite Software Lists ROMs>',
                                         _misc_url_1_arg('command', 'SHOW_SL_FAVS'),
-                                        CM_title, CM_URL)
+                                        CM_title, CM_URL, SL_favs_plot)
 
     if g_settings['display_custom_filters']:
         _render_root_custom_filter_row('[Custom MAME filters]',
-                                       _misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'))
+                                       _misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
+                                       custom_filters_plot)
 
     if g_settings['display_MAME_most']:
         CM_title = 'Manage Most Played'
         CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED')
         _render_root_list_row_custom_CM('{Most Played MAME machines}',
                                         _misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
-                                        CM_title, CM_URL)
+                                        CM_title, CM_URL, MAME_most_played_plot)
 
     if g_settings['display_MAME_recent']:
         CM_title = 'Manage Recently Played'
         CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED')
         _render_root_list_row_custom_CM('{Recently Played MAME machines}',
                                         _misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
-                                        CM_title, CM_URL)
+                                        CM_title, CM_URL, MAME_recent_played_plot)
 
     if g_settings['display_SL_most']:
         CM_title = 'Manage SL Most Played'
         CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED')
         _render_root_list_row_custom_CM('{Most Played SL ROMs}',
                                         _misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
-                                        CM_title, CM_URL)
+                                        CM_title, CM_URL, SL_most_played_plot)
 
     if g_settings['display_SL_recent']:
         CM_title = 'Manage SL Recently Played'
         CM_URL = URL_manage = _misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED')
         _render_root_list_row_custom_CM('{Recently Played SL ROMs}',
                                         _misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
-                                        CM_title, CM_URL)
+                                        CM_title, CM_URL, SL_recent_played_plot)
 
     # --- End of directory ---
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -953,11 +1034,11 @@ def _render_skin_SL_filters():
         _render_root_list_row_standard('Software Lists (with CHDs)', _misc_url_1_arg('catalog', 'SL_CHD'))
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
-def _render_root_list_row_catalog(display_name, catalog_name, catalog_key):
+def _render_root_list_row_catalog(display_name, catalog_name, catalog_key, plot_str = ''):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     listitem = xbmcgui.ListItem(display_name)
-    listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY})
+    listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
 
     # --- Artwork ---
     icon_path   = AML_ICON_FILE_PATH.getPath()
@@ -980,11 +1061,11 @@ def _render_root_list_row_catalog(display_name, catalog_name, catalog_key):
     URL = _misc_url_2_arg('catalog', catalog_name, 'category', catalog_key)
     xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = URL, listitem = listitem, isFolder = True)
 
-def _render_root_list_row_standard(root_name, root_URL):
+def _render_root_list_row_standard(root_name, root_URL, plot_str = ''):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     listitem = xbmcgui.ListItem(root_name)
-    listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY})
+    listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
 
     # --- Artwork ---
     icon_path   = AML_ICON_FILE_PATH.getPath()
@@ -1001,11 +1082,11 @@ def _render_root_list_row_standard(root_name, root_URL):
     listitem.addContextMenuItems(commands)
     xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = root_URL, listitem = listitem, isFolder = True)
 
-def _render_root_list_row_custom_CM(root_name, root_URL, CM_title, CM_URL):
+def _render_root_list_row_custom_CM(root_name, root_URL, CM_title, CM_URL, plot_str = ''):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     listitem = xbmcgui.ListItem(root_name)
-    listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY})
+    listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
 
     # --- Artwork ---
     icon_path   = AML_ICON_FILE_PATH.getPath()
@@ -1023,11 +1104,11 @@ def _render_root_list_row_custom_CM(root_name, root_URL, CM_title, CM_URL):
     listitem.addContextMenuItems(commands)
     xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = root_URL, listitem = listitem, isFolder = True)
 
-def _render_root_custom_filter_row(root_name, root_URL):
+def _render_root_custom_filter_row(root_name, root_URL, plot_str = ''):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     listitem = xbmcgui.ListItem(root_name)
-    listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY})
+    listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
 
     # --- Artwork ---
     icon_path   = AML_ICON_FILE_PATH.getPath()

@@ -1201,8 +1201,11 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
 # slist is a list, so it is mutable and can be changed by reference.
 #
 def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
+    AML_version_int = fs_AML_version_str_to_int(AML_version_str)
+
     slist.append('[COLOR orange]Main information[/COLOR]')
-    slist.append("AML version           {0}".format(AML_version_str))
+    slist.append("AML version           {0:,} (str [COLOR violet]{1}[/COLOR])".format(
+        AML_version_int, AML_version_str))
     slist.append("Database version      {0:,} (str [COLOR violet]{1}[/COLOR])".format(
         control_dic['ver_AML'], control_dic['ver_AML_str']))
     slist.append("MAME version          {0:,} (str [COLOR violet]{1}[/COLOR])".format(

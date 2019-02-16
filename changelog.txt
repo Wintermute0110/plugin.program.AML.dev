@@ -34,7 +34,7 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
 FEATURE  [CORE] Configuring every DAT and INI file one by one is tedious. Instead, define
          a directory where the DATs must be placed and pick the files from there automatically.
 
-WIP      [CORE] Add plots for entries in the root window.
+WORKING  [CORE] Add plots for entries in the root window.
 
 WIP      [CORE] Renamed the "Machines by Score" filter to "Machines by Rating", to avoid
          confusing with scores in games.
