@@ -172,13 +172,29 @@ SL_better_name_dic = {
 # Numerical MAME version. Allows for comparisons like ver_mame >= MAME_VERSION_0190
 # Support MAME versions higher than 0.53 August 12th 2001.
 # See header of MAMEINFO.dat for a list of all MAME versions.
-# a.bbb.ccc gets transformed into an uint a,bbb,ccc
+#
+# M.mmm.Xbb
+# | |   ||--> Beta flag 0, 1, ..., 99
+# | |   ||--> Release kind flag 
+# | |         5 for non-beta, non-alpha, non RC versions.
+# | |         2 for RC versions
+# | |         1 for beta versions
+# | |         0 for alpha versions
+# | |-------> Minor version 0, 1, ..., 999
+# |---------> Major version 0, ..., infinity
+#
+# See https://retropie.org.uk/docs/MAME/
+# See https://www.mamedev.org/oldrel.html
+#
 # Examples:
-#   '0.53'   ->  53000
-#   '0.70'   ->  70000
-#   '0.70u1' ->  70001
-#   '0.150'  -> 150000
-#   '0.190'  -> 190000
+#   '0.37b5'  ->  37105  (mame4all-pi, lr-mame2000 released 27 Jul 2000)
+#   '0.37b16' ->  37116  (Last unconsistent MAME version, released 02 Jul 2001)
+#   '0.53'    ->  53500  (MAME versioning is consistent from this release, released 12 Aug 2001)
+#   '0.78'    ->  78500  (lr-mame2003, lr-mame2003-plus)
+#   '0.139'   -> 139500  (lr-mame2010)
+#   '0.160'   -> 160500  (lr-mame2015)
+#   '0.174'   -> 174500  (lr-mame2016)
+#   '0.206'   -> 206500
 #
 # mame_version_raw examples:
 #   a) '0.194 (mame0194)' from '<mame build="0.194 (mame0194)" debug="no" mameconfig="10">'
@@ -187,13 +203,30 @@ SL_better_name_dic = {
 def mame_get_numerical_version(mame_version_str):
     log_verb('mame_get_numerical_version() mame_version_str = "{0}"'.format(mame_version_str))
     version_int = 0
-    m_obj = re.search('^(\d+?)\.(\d+?) \(', mame_version_str)
-    if m_obj:
-        major = int(m_obj.group(1))
-        minor = int(m_obj.group(2))
-        log_verb('mame_get_numerical_version() major = {0}'.format(major))
-        log_verb('mame_get_numerical_version() minor = {0}'.format(minor))
-        version_int = major * 100000 + minor * 1000
+    # Search for old version scheme x.yyybzz
+    m_obj_old = re.search('^(\d+)\.(\d+)b(\d+)', mame_version_str)
+    # Search for modern, consistent versioning system x.yyy
+    m_obj_modern = re.search('^(\d+)\.(\d+)', mame_version_str)
+
+    if m_obj_old:
+        major = int(m_obj_old.group(1))
+        minor = int(m_obj_old.group(2))
+        beta  = int(m_obj_old.group(3))
+        release_flag = 1
+        # log_verb('mame_get_numerical_version() major = {0}'.format(major))
+        # log_verb('mame_get_numerical_version() minor = {0}'.format(minor))
+        # log_verb('mame_get_numerical_version() beta  = {0}'.format(beta))
+        version_int = major * 1000000 + minor * 1000 + release_flag * 100 + beta
+    elif m_obj_modern:
+        major = int(m_obj_modern.group(1))
+        minor = int(m_obj_modern.group(2))
+        release_flag = 5
+        # log_verb('mame_get_numerical_version() major = {0}'.format(major))
+        # log_verb('mame_get_numerical_version() minor = {0}'.format(minor))
+        version_int = major * 1000000 + minor * 1000 + release_flag * 100
+    else:
+        log_error('MAME version "{0}" cannot be parsed.'.format(mame_version_str))
+        raise TypeError
     log_verb('mame_get_numerical_version() version_int = {0}'.format(version_int))
 
     return version_int
@@ -1169,22 +1202,22 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
 #
 def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     slist.append('[COLOR orange]Main information[/COLOR]')
-    slist.append("AML version              {0}".format(AML_version_str))
-    slist.append("Database version string  {0}".format(control_dic['ver_AML_str']))
-    slist.append("Database version num     {0:,}".format(control_dic['ver_AML']))
-    slist.append("MAME version string      {0}".format(control_dic['ver_mame_str']))
-    slist.append("MAME version num         {0:,}".format(control_dic['ver_mame']))
-    slist.append("bestgames.ini version    {0}".format(control_dic['ver_bestgames']))
-    slist.append("catlist.ini version      {0}".format(control_dic['ver_catlist']))
-    slist.append("catver.ini version       {0}".format(control_dic['ver_catver']))
-    slist.append("command.dat version      {0}".format(control_dic['ver_command']))
-    slist.append("gameinit.dat version     {0}".format(control_dic['ver_gameinit']))
-    slist.append("genre.ini version        {0}".format(control_dic['ver_genre']))
-    slist.append("history.dat version      {0}".format(control_dic['ver_history']))
-    slist.append("mameinfo.dat version     {0}".format(control_dic['ver_mameinfo']))
-    slist.append("mature.ini version       {0}".format(control_dic['ver_mature']))
-    slist.append("nplayers.ini version     {0}".format(control_dic['ver_nplayers']))
-    slist.append("series.ini version       {0}".format(control_dic['ver_series']))
+    slist.append("AML version           {0}".format(AML_version_str))
+    slist.append("Database version      {0:,} (str [COLOR violet]{1}[/COLOR])".format(
+        control_dic['ver_AML'], control_dic['ver_AML_str']))
+    slist.append("MAME version          {0:,} (str [COLOR violet]{1}[/COLOR])".format(
+        control_dic['ver_mame'], control_dic['ver_mame_str']))
+    slist.append("bestgames.ini version {0}".format(control_dic['ver_bestgames']))
+    slist.append("catlist.ini version   {0}".format(control_dic['ver_catlist']))
+    slist.append("catver.ini version    {0}".format(control_dic['ver_catver']))
+    slist.append("command.dat version   {0}".format(control_dic['ver_command']))
+    slist.append("gameinit.dat version  {0}".format(control_dic['ver_gameinit']))
+    slist.append("genre.ini version     {0}".format(control_dic['ver_genre']))
+    slist.append("history.dat version   {0}".format(control_dic['ver_history']))
+    slist.append("mameinfo.dat version  {0}".format(control_dic['ver_mameinfo']))
+    slist.append("mature.ini version    {0}".format(control_dic['ver_mature']))
+    slist.append("nplayers.ini version  {0}".format(control_dic['ver_nplayers']))
+    slist.append("series.ini version    {0}".format(control_dic['ver_series']))
 
     slist.append('')
     slist.append('[COLOR orange]Timestamps[/COLOR]')

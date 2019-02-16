@@ -1,4 +1,4 @@
-[B]AML planned features / TODO[/B]
+[B]AML ideas and planned features[/B]
 
 WIP      [DOCS] Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
@@ -31,10 +31,15 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
 
 [B]Advanced MAME Launcher | version 0.9.9 | XX February 2019[/B]
 
-WIP      [CORE] Implement context menu "All in one (Extract, Build and Scan)"
-
 FEATURE  [CORE] Configuring every DAT and INI file one by one is tedious. Instead, define
          a directory where the DATs must be placed and pick the files from there automatically.
+
+WIP      [CORE] Add plots for entries in the root window.
+
+WIP      [CORE] Renamed the "Machines by Score" filter to "Machines by Rating", to avoid
+         confusing with scores in games.
+
+WIP      [CORE] Implement context menu "All in one (Extract, Build and Scan)"
 
 WIP      [CORE] At least two directories for samples are needed. MAME includes a default samples
          directory with some samples used by some machines. Both directories must be configured
@@ -49,6 +54,11 @@ WIP      [CORE] Implement the "Read-only launchers". ROL are XML files that incl
 FIX      In MAME 0.206, some clone merged ROMs are not present in the parent machine, only
          in the BIOS. For example, in machine adonisce (clone of adonis). Before 0.206, such
          ROMs were also present on the parent machine. This change in behaviour crashed AML.
+
+FIX      Fixed the AML addon and MAME numerical versioning scheme.
+
+WIP      Fix crash in "Build MAME databases".
+         See https://forum.kodi.tv/showthread.php?tid=304186&pid=2822949#pid2822949
 
 
 [B]Advanced MAME Launcher | version 0.9.8 | 23 June 2018[/B]
