@@ -1135,13 +1135,14 @@ def fs_set_Sample_flag(m_render, new_Sample_flag):
 # Hashed databases. Useful when only one item in a big dictionary is required.
 # -------------------------------------------------------------------------------------------------
 # Hash database with 256 elements (2 hex digits)
-def fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog):
+def fs_build_main_hashed_db(PATHS, machines, machines_render):
     log_info('fs_build_main_hashed_db() Building main hashed database ...')
 
     # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
     # A) First create an index
     #    db_main_hash_idx = { 'machine_name' : 'aa', ... }
     # B) Then traverse a list [0, 1, ..., f] and write the machines in that sub database section.
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Building main hashed database ...')
     db_main_hash_idx = {}
     for key in machines:
@@ -1192,10 +1193,11 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
     return hashed_db_dic[machine_name]
 
 # Hash database with 256 elements (2 hex digits)
-def fs_build_asset_hashed_db(PATHS, assets_dic, pDialog):
+def fs_build_asset_hashed_db(PATHS, assets_dic):
     log_info('fs_build_asset_hashed_db() Building assets hashed database ...')
 
     # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Building asset hashed database ...')
     db_main_hash_idx = {}
     for key in assets_dic:
@@ -1240,32 +1242,38 @@ def fs_get_machine_assets_db_hash(PATHS, machine_name):
 
 # -------------------------------------------------------------------------------------------------
 # ROM cache
+# Creates a separate machines render and assets databases for each catalog to speed up
+# access of ListItems.
 # -------------------------------------------------------------------------------------------------
 def fs_rom_cache_get_hash(catalog_name, category_name):
     prop_key = '{0} - {1}'.format(catalog_name, category_name)
 
     return hashlib.md5(prop_key).hexdigest()
 
-def fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog):
-    log_info('fs_build_ROM_cache() Building ROM cache ...')
+def fs_build_render_cache(PATHS, cache_index_dic, machines_render):
+    log_info('fs_build_render_cache() Building ROM cache ...')
 
     # --- Clean 'cache' directory JSON ROM files ---
     log_info('Cleaning dir "{0}"'.format(PATHS.CACHE_DIR.getPath()))
     pdialog_line1 = 'Cleaning old cache JSON files ...'
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', pdialog_line1, ' ')
     pDialog.update(0, pdialog_line1)
     file_list = os.listdir(PATHS.CACHE_DIR.getPath())
     num_files = len(file_list)
     log_info('Found {0} files'.format(num_files))
     processed_items = 0
+    deleted_items = 0
     for file in file_list:
         pDialog.update((processed_items*100) // num_files, pdialog_line1)
-        if file.endswith('_ROMs.json'):
-            full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
-            # log_debug('UNLINK "{0}"'.format(full_path))
-            os.unlink(full_path)
         processed_items += 1
+        if not file.endswith('_render.json'): continue
+        full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
+        # log_debug('UNLINK "{0}"'.format(full_path))
+        os.unlink(full_path)
+        deleted_items += 1
     pDialog.close()
+    log_info('Deleted {0} files'.format(deleted_items))
 
     # --- Build ROM cache ---
     pDialog.create('Advanced MAME Launcher', ' ', ' ')
@@ -1290,7 +1298,7 @@ def fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialo
             m_render_all_dic = {}
             for machine_name in catalog_all[catalog_key]:
                 m_render_all_dic[machine_name] = machines_render[machine_name]
-            ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_ROMs.json')
+            ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_render.json')
             fs_write_JSON_file(ROMs_all_FN.getPath(), m_render_all_dic, verbose = False)
 
             # >> Progress dialog
@@ -1301,33 +1309,37 @@ def fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialo
 
 def fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
-    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_ROMs.json')
+    ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_render.json')
 
     return fs_load_JSON_file_dic(ROMs_all_FN.getPath())
 
 # -------------------------------------------------------------------------------------------------
 # Asset cache
 # -------------------------------------------------------------------------------------------------
-def fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog):
+def fs_build_asset_cache(PATHS, cache_index_dic, assets_dic):
     log_info('fs_build_asset_cache() Building Asset cache ...')
 
     # --- Clean 'cache' directory JSON Asset files ---
     log_info('Cleaning dir "{0}"'.format(PATHS.CACHE_DIR.getPath()))
     pdialog_line1 = 'Cleaning old cache JSON files ...'
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', pdialog_line1, ' ')
     pDialog.update(0, pdialog_line1)
     file_list = os.listdir(PATHS.CACHE_DIR.getPath())
     num_files = len(file_list)
     log_info('Found {0} files'.format(num_files))
     processed_items = 0
+    deleted_items = 0
     for file in file_list:
         pDialog.update((processed_items*100) // num_files, pdialog_line1)
-        if file.endswith('_assets.json'):
-            full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
-            # log_debug('UNLINK "{0}"'.format(full_path))
-            os.unlink(full_path)
         processed_items += 1
+        if not file.endswith('_assets.json'): continue
+        full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
+        # log_debug('UNLINK "{0}"'.format(full_path))
+        os.unlink(full_path)
+        deleted_items += 1
     pDialog.close()
+    log_info('Deleted {0} files'.format(deleted_items))
 
     # --- Build cache ---
     pDialog.create('Advanced MAME Launcher', ' ', ' ')
@@ -1366,6 +1378,54 @@ def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
     ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
 
     return fs_load_JSON_file_dic(ROMs_all_FN.getPath())
+
+# -------------------------------------------------------------------------------------------------
+# Load and save a bunch of JSON files
+# -------------------------------------------------------------------------------------------------
+#
+# Accepts a list of JSON files to be loaded. Displays a progress dialog.
+# Returns a dictionary with the context of the loaded files.
+#
+def fs_load_files(db_files):
+    log_debug('fs_load_files() Loading {0} JSON database files ...\n'.format(len(db_files)))
+    db_dic = {}
+    line1_str = 'Loading databases ...'
+    num_items = len(db_files)
+    item_count = 0
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher')
+    for f_item in db_files:
+        dict_key = f_item[0]
+        db_name  = f_item[1]
+        db_path  = f_item[2]
+        pDialog.update(int((item_count*100) / num_items), line1_str, db_name)
+        db_dic[dict_key] = fs_load_JSON_file_dic(db_path)
+        item_count += 1
+    # >> Kodi BUG: when the progress dialog is closed and reopened again, the
+    # >> second line of the previous dialog is not deleted (still printed).
+    pDialog.update(int((item_count*100) / num_items), ' ', ' ')
+    pDialog.close()
+
+    return db_dic
+
+def fs_save_files(db_files):
+    log_debug('fs_save_files() Saving {0} JSON database files ...\n'.format(len(db_files)))
+    line1_str = 'Saving databases ...'
+    num_items = len(db_files)
+    item_count = 0
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher')
+    for f_item in db_files:
+        dict_data = f_item[0]
+        db_name  = f_item[1]
+        db_path  = f_item[2]
+        pDialog.update(int((item_count*100) / num_items), line1_str, db_name)
+        fs_write_JSON_file(db_path, dict_data)
+        item_count += 1
+    # >> Kodi BUG: when the progress dialog is closed and reopened again, the
+    # >> second line of the previous dialog is not deleted (still printed).
+    pDialog.update(int((item_count*100) / num_items), ' ', ' ')
+    pDialog.close()
 
 # -------------------------------------------------------------------------------------------------
 # Export stuff

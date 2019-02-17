@@ -1813,7 +1813,7 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic, pDialo
 # Line 5) Artwork, Manual, History, Info, Gameinit, Command
 # Line 6) Machine [supports|does not support] a Software List.
 # ---------------------------------------------------------------------------------------------
-def mame_build_MAME_plots(machines, machines_render, assets_dic, pDialog,
+def mame_build_MAME_plots(PATHS, machines, machines_render, assets_dic,
                           history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic):
     log_info('mame_build_plots() Building machine plots/descriptions ...')
     # >> Do not crash if DAT files are not configured.
@@ -1828,7 +1828,8 @@ def mame_build_MAME_plots(machines, machines_render, assets_dic, pDialog,
     gameinit_info_set = {machine[0] for machine in gameinit_idx_dic}
     command_info_set  = {machine[0] for machine in command_idx_dic}
 
-    # >> Built machine plots
+    # --- Built machine plots ---
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Generating MAME machine plots ...')
     total_machines = len(machines)
@@ -1864,6 +1865,12 @@ def mame_build_MAME_plots(machines, machines_render, assets_dic, pDialog,
         pDialog.update((num_machines*100)//total_machines)
     pDialog.close()
 
+    # --- Save the MAME asset database ---
+    db_files = [
+        (assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()),
+    ]
+    fs_save_files(db_files)
+
 # ---------------------------------------------------------------------------------------------
 # Generate plot for Software Lists
 # Line 1) SL item has {0} parts
@@ -1871,8 +1878,9 @@ def mame_build_MAME_plots(machines, machines_render, assets_dic, pDialog,
 # Line 3) Manual, History
 # Line 4) Machines: machine list ...
 # ---------------------------------------------------------------------------------------------
-def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, pDialog):
+def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic):
     pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(0)
     total_files = len(SL_index_dic)
@@ -6129,12 +6137,63 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
 # -------------------------------------------------------------------------------------------------
 # ROM/CHD and asset scanner
 # -------------------------------------------------------------------------------------------------
+#
+# Checks for errors before scanning for SL ROMs.
+# Display a Kodi dialog if an error is found.
+# Returns a dictionary of settings:
+# options_dic['abort'] is always present.
+# 
+#
+def mame_check_before_scan_MAME_ROMs(PATHS, settings, control_dic):
+    options_dic = {}
+    options_dic['abort'] = False
+
+    # >> Get paths and check they exist
+    if not settings['rom_path']:
+        kodi_dialog_OK('ROM directory not configured. Aborting.')
+        options_dic['abort'] = True
+        return options_dic
+    ROM_path_FN = FileName(settings['rom_path'])
+    if not ROM_path_FN.isdir():
+        kodi_dialog_OK('ROM directory does not exist. Aborting.')
+        options_dic['abort'] = True
+        return options_dic
+
+    # Scanning of CHDs is optional.
+    if settings['chd_path']:
+        CHD_path_FN = FileName(settings['chd_path'])
+        if not CHD_path_FN.isdir():
+            options_dic['scan_CHDs'] = False
+            kodi_dialog_OK('CHD directory does not exist. CHD scanning disabled.')
+        else:
+            options_dic['scan_CHDs'] = True
+    else:
+        kodi_dialog_OK('CHD directory not configured. CHD scanning disabled.')
+        options_dic['scan_CHDs'] = False
+
+    # Scanning of Samples is optional.
+    # Remember Samples must have 2 paths.
+    if settings['samples_path']:
+        Samples_path_FN = FileName(settings['samples_path'])
+        if not Samples_path_FN.isdir():
+            options_dic['scan_Samples'] = False
+            kodi_dialog_OK('Samples directory does not exist. Samples scanning disabled.')
+        else:
+            options_dic['scan_Samples'] = True
+    else:
+        kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
+        options_dic['scan_Samples'] = False
+
+    return options_dic
+
 # Does not save any file. assets_dic and control_dic mutated by assigment.
 def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
                         machines, machines_render, assets_dic,
-                        machine_archives_dic, ROM_archive_list, CHD_archive_list,
-                        ROM_path_FN, CHD_path_FN, Samples_path_FN,
-                        scan_CHDs, scan_Samples):
+                        machine_archives_dic, ROM_archive_list):
+
+    # At this point paths have been verified and exists.
+    # COMPLETE ME!!! Look at mame_scan_SL_ROMs()
+    # SAVE DATABASES!!!
 
     # --- Create a cache of assets ---
     # >> misc_add_file_cache() creates a set with all files in a given directory.
@@ -6463,8 +6522,63 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     change_control_dic(control_dic, 't_MAME_ROMs_scan', time.time())
 
 # -------------------------------------------------------------------------------------------------
+#
+# Checks for errors before scanning for SL ROMs.
+# Display a Kodi dialog if an error is found.
+# Returns a dictionary of settings:
+# options_dic['abort'] is always present.
+# options_dic['scan_SL_CHDs'] scanning of CHDs is optional.
+#
+def mame_check_before_scan_SL_ROMs(PATHS, g_settings, control_dic):
+    options_dic = {}
+    options_dic['abort'] = False
+
+    # >> Abort if SL hash path not configured.
+    if not settings['SL_hash_path']:
+        kodi_dialog_OK('Software Lists hash path not set. Scanning aborted.')
+        options_dic['abort'] = True
+        return options_dic
+
+    # >> Abort if SL ROM dir not configured.
+    if not settings['SL_rom_path']:
+        kodi_dialog_OK('Software Lists ROM path not set. Scanning aborted.')
+        options_dic['abort'] = True
+        return options_dic
+
+    # >> SL CHDs scanning is optional
+    if settings['SL_chd_path']:
+        SL_CHD_path_FN = FileName(g_settings['SL_chd_path'])
+        if not SL_CHD_path_FN.isdir():
+            options_dic['scan_SL_CHDs'] = False
+            kodi_dialog_OK('SL CHD directory does not exist. SL CHD scanning disabled.')
+        else:
+            options_dic['scan_SL_CHDs'] = True
+    else:
+        kodi_dialog_OK('SL CHD directory not configured. SL CHD scanning disabled.')
+        options_dic['scan_SL_CHDs'] = False
+
+    return options_dic
+
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
-def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN):
+def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, options_dic):
+    log_info('mame_scan_SL_ROMs() Starting ...')
+
+    # Paths have been verified at this point
+    SL_hash_dir_FN = PATHS.SL_DB_DIR
+    log_info('mame_scan_SL_ROMs() SL hash dir OP {0}'.format(SL_hash_dir_FN.getOriginalPath()))
+    log_info('mame_scan_SL_ROMs() SL hash dir  P {0}'.format(SL_hash_dir_FN.getPath()))
+
+    SL_ROM_dir_FN = FileName(g_settings['SL_rom_path'])
+    log_info('mame_scan_SL_ROMs() SL ROM dir OP {0}'.format(SL_ROM_dir_FN.getOriginalPath()))
+    log_info('mame_scan_SL_ROMs() SL ROM dir  P {0}'.format(SL_ROM_dir_FN.getPath()))
+
+    if options_dic['scan_SL_CHDs']:
+        SL_CHD_path_FN = FileName(g_settings['SL_chd_path'])
+        log_info('mame_scan_SL_ROMs() SL CHD dir OP {0}'.format(SL_CHD_path_FN.getOriginalPath()))
+        log_info('mame_scan_SL_ROMs() SL CHD dir  P {0}'.format(SL_CHD_path_FN.getPath()))
+    else:
+        SL_CHD_path_FN = FileName('')
+        log_info('Scan of SL CHDs disabled.')
 
     # --- Add files to cache ---
     SL_ROM_path_str = SL_ROM_dir_FN.getPath()
@@ -6659,6 +6773,31 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
     change_control_dic(control_dic, 'scan_SL_archives_CHD_missing', SL_CHDs_missing)
     change_control_dic(control_dic, 't_SL_ROMs_scan', time.time())
 
+    # --- Save control_dic ---
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+#
+# Checks for errors before scanning for SL assets.
+# Display a Kodi dialog if an error is found and returns True if scanning must be aborted.
+# Returns False if no errors.
+#
+def mame_check_before_scan_MAME_assets(PATHS, settings, control_dic):
+    options_dic = {}
+    options_dic['abort'] = False
+
+    # >> Get assets directory. Abort if not configured/found.
+    if not g_settings['assets_path']:
+        kodi_dialog_OK('Asset directory not configured. Aborting.')
+        options_dic['abort'] = True
+        return options_dic
+    Asset_path_FN = FileName(g_settings['assets_path'])
+    if not Asset_path_FN.isdir():
+        kodi_dialog_OK('Asset directory does not exist. Aborting.')
+        options_dic['abort'] = True
+        return options_dic
+
+    return options_dic
+
 #
 # Note that MAME is able to use clone artwork from parent machines. Mr. Do's Artwork ZIP files
 # are provided only for parents.
@@ -6667,14 +6806,18 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, SL_hash_dir_FN, SL_ROM
 #   A) A clone may use assets from parent.
 #   B) A parent may use assets from a clone.
 #
-def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
-                          machines_render, main_pclone_dic, Asset_path_FN):
+def mame_scan_MAME_assets(PATHS, settings, control_dic,
+                          assets_dic, machines_render, main_pclone_dic):
+    Asset_path_FN = FileName(settings['assets_path'])
+    log_info('mame_scan_MAME_assets() Asset path {0}'.format(Asset_path_FN.getPath()))
+
     # >> Iterate machines, check if assets/artwork exist.
     table_str = []
     table_str.append(['left', 'left', 'left',  'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
     table_str.append(['Name', 'PCB',  'Artp',  'Art',  'Cab',  'Clr',  'CPan', 'Fan',  'Fly',  'Man',  'Mar',  'Snap', 'Tit',  'Tra'])
 
     # --- Create a cache of assets ---
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Scanning files in asset directories ...')
     pDialog.update(0)
     num_assets = len(ASSET_MAME_T_LIST)
@@ -6857,8 +7000,41 @@ def mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
     change_control_dic(control_dic, 'assets_trailers_alternate', Tra[2])
     change_control_dic(control_dic, 't_MAME_assets_scan', time.time())
 
-def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN):
+    # --- Save databases ---
+    db_files = [
+        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+        [assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+    ]
+    db_dic = fs_save_files(db_files)
+
+#
+# Checks for errors before scanning for SL assets.
+# Display a Kodi dialog if an error is found and returns True if scanning must be aborted.
+# Returns False if no errors.
+#
+def mame_check_before_scan_SL_assets(PATHS, settings, control_dic):
+    options_dic = {}
+    options_dic['abort'] = False
+
+    # >> Get assets directory. Abort if not configured/found.
+    if not settings['assets_path']:
+        kodi_dialog_OK('Asset directory not configured. Aborting.')
+        options_dic['abort'] = True
+        return options_dic
+    Asset_path_FN = FileName(settings['assets_path'])
+    if not Asset_path_FN.isdir():
+        kodi_dialog_OK('Asset directory does not exist. Aborting.')
+        options_dic['abort'] = True
+        return options_dic
+
+    return options_dic
+
+def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_dic):
     log_debug('mame_scan_SL_assets() Starting ...')
+
+    # At this point assets_path is configured and the directory exists.
+    Asset_path_FN = FileName(settings['assets_path'])
+    log_info('mame_scan_SL_assets() SL asset path {0}'.format(Asset_path_FN.getPath()))
 
     # --- Traverse Software List, check if ROM exists, update and save database ---
     pDialog = xbmcgui.DialogProgress()
@@ -7025,3 +7201,6 @@ def mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_p
     change_control_dic(control_dic, 'assets_SL_manuals_missing', Man[1])
     change_control_dic(control_dic, 'assets_SL_manuals_alternate', Man[2])
     change_control_dic(control_dic, 't_SL_assets_scan', time.time())
+
+    # --- Save control_dic ---
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)

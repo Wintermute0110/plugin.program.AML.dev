@@ -5379,29 +5379,31 @@ def _command_context_setup_plugin():
         submenu = dialog.select('Setup plugin (step by step)', [
                                     'Build MAME databases',
                                     'Build MAME Audit/Scanner databases',
-                                    'Build MAME catalogs',
-                                    'Build Software Lists databases',
+                                    'Build MAME Catalogs',
+                                    'Build Software List databases',
                                     'Scan MAME ROMs/CHDs/Samples',
                                     'Scan MAME assets/artwork',
-                                    'Scan Software Lists ROMs/CHDs',
-                                    'Scan Software Lists assets/artwork',
-                                    'Build MAME machines plots',
-                                    'Build SL items plots',
-                                    'Rebuild MAME machine and asset cache',
+                                    'Scan Software List ROMs/CHDs',
+                                    'Scan Software List assets/artwork',
+                                    'Build MAME machine plots',
+                                    'Build Software List item plots',
+                                    'Rebuild MAME machine and asset caches',
                                 ])
         if submenu < 0: return
 
         # --- Build main MAME database, PClone list and hashed database ---
         if submenu == 0:
+            log_info('_command_setup_plugin() Generating MAME main database and PClone list ...')
             # --- Error checks ---
             # >> Check that MAME_XML_PATH exists
             if not PATHS.MAME_XML_PATH.exists():
                 kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
                 return
 
-            # --- Parse MAME XML and generate main database and PClone list ---
-            log_info('_command_setup_plugin() Generating MAME main database and PClone list ...')
+            # --- Load databases ---
             control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+
+            # --- Parse MAME XML and generate main database and PClone list ---
             # 1) Builds the ROM hashed database.
             # 2) Updates control_dic stats and timestamp.
             # try:
@@ -5409,7 +5411,7 @@ def _command_context_setup_plugin():
             # except GeneralError as err:
             #     log_error(err.msg)
             #     raise SystemExit
-            DB = mame_build_MAME_main_database(PATHS, g_settings, control_dic)
+            DB = mame_build_MAME_main_database(PATHS, g_settings, control_dic, __addon_version__)
             fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
             kodi_notify('Main MAME databases built')
 
@@ -5423,31 +5425,22 @@ def _command_context_setup_plugin():
             #     return
 
             # --- Load databases ---
-            pDialog = xbmcgui.DialogProgress()
-            line1_str = 'Loading databases ...'
-            num_items = 5
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(int((1*100) / num_items), line1_str, 'MAME machines Main')
-            machines = fs_load_JSON_file_dic(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Render')
-            machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(int((3*100) / num_items), line1_str, 'MAME machine Devices')
-            devices_db_dic = fs_load_JSON_file_dic(PATHS.DEVICES_DB_PATH.getPath())
-            pDialog.update(int((4*100) / num_items), line1_str, 'MAME machine ROMs')
-            machine_roms = fs_load_JSON_file_dic(PATHS.ROMS_DB_PATH.getPath())
-            # >> Kodi BUG: when the progress dialog is closed and reopened again, the
-            # >> second line of the previous dialog is not deleted (still printed).
-            pDialog.update(int((5*100) / num_items), ' ', ' ')
-            pDialog.close()
+            db_files = [
+                ['control_dic', 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+                ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
+                ['machines_render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['devices_db_dic', 'MAME machine Devices', PATHS.DEVICES_DB_PATH.getPath()],
+                ['machine_roms', 'MAME machine ROMs', PATHS.ROMS_DB_PATH.getPath()],
+            ]
+            db_dic = _misc_load_files(db_files)
 
             # --- Generate ROM databases ---
             # 1) Updates control_dic and t_MAME_Audit_DB_build timestamp.
-            mame_build_ROM_audit_databases(PATHS, g_settings, control_dic,
-                                           machines, machines_render, devices_db_dic,
-                                           machine_roms)
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            mame_build_ROM_audit_databases(
+                PATHS, g_settings, db_dic['control_dic'],
+                db_dic['machines'], db_dic['machines_render'],
+                db_dic['devices_db_dic'], db_dic['machine_roms'])
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), db_dic['control_dic'])
             kodi_notify('ROM audit/scanner databases built')
 
         # --- Build MAME catalogs ---
@@ -5457,24 +5450,15 @@ def _command_context_setup_plugin():
             # >> Check that main MAME database exists
 
             # --- Load databases ---
-            pDialog = xbmcgui.DialogProgress()
-            line1_str = 'Loading databases ...'
-            num_items = 6
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(int((1*100) / num_items), line1_str, 'MAME machines Main')
-            machines = fs_load_JSON_file_dic(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Render')
-            machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(int((3*100) / num_items), line1_str, 'MAME machine ROMs')
-            machine_roms = fs_load_JSON_file_dic(PATHS.ROMS_DB_PATH.getPath())
-            pDialog.update(int((4*100) / num_items), line1_str, 'MAME PClone dictionary')
-            main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            pDialog.update(int((5*100) / num_items), line1_str, 'MAME machine Assets')
-            assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(int((6*100) / num_items), ' ', ' ')
-            pDialog.close()
+            db_files = [
+                ['control_dic', 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+                ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
+                ['machines_render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['machine_roms', 'MAME machine ROMs', PATHS.ROMS_DB_PATH.getPath()],
+                ['main_pclone_dic', 'MAME PClone dictionary', PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
+                ['assets_dic', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+            ]
+            db_dic = _misc_load_files(db_files)
 
             # --- Build MAME catalog ---
             # >> At this time the asset database will be empty (scanner has not been run). However, 
@@ -5483,13 +5467,16 @@ def _command_context_setup_plugin():
             # 2) Requires rebuilding of the ROM cache.
             # 3) Requires rebuilding of the asset cache.
             # 4) Updates control_dic and t_MAME_Catalog_build timestamp.
-            mame_build_MAME_catalogs(PATHS, g_settings, control_dic,
-                                     machines, machines_render, machine_roms,
-                                     main_pclone_dic, assets_dic)
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            mame_build_MAME_catalogs(
+                PATHS, g_settings, db_dic['control_dic'],
+                db_dic['machines'], db_dic['machines_render'], db_dic['machine_roms'],
+                db_dic['main_pclone_dic'], db_dic['assets_dic'])
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), db_dic['control_dic'])
+
             if g_settings['debug_enable_MAME_machine_cache']:
                 cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
                 fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+
             if g_settings['debug_enable_MAME_asset_cache']:
                 if 'cache_index_dic' not in locals():
                     cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
@@ -5510,96 +5497,56 @@ def _command_context_setup_plugin():
                     'Open AML addon settings and configure the location of the MAME executable in the ' \
                     '"Paths" tab.'
                 kodi_dialog_OK(t)
-                return False
+                return
 
             # --- Read main database and control dic ---
-            pDialog = xbmcgui.DialogProgress()
-            line1_str = 'Loading databases ...'
-            num_items = 3
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(int((1*100) / num_items), line1_str, 'MAME machines Main')
-            machines = fs_load_JSON_file_dic(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Render')
-            machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(int((3*100) / num_items), ' ', ' ')
-            pDialog.close()
+            db_files = [
+                ['control_dic', 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+                ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
+                ['machines_render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+            ]
+            db_dic = _misc_load_files(db_files)
 
             # --- Build SL databases ---
-            mame_build_SoftwareLists_databases(PATHS, g_settings, control_dic,
-                                               machines, machines_render)
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            mame_build_SoftwareLists_databases(
+                PATHS, g_settings, db_dic['control_dic'],
+                db_dic['machines'], db_dic['machines_render'])
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), db_dic['control_dic'])
             kodi_notify('Software Lists database built')
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
         elif submenu == 4:
             log_info('_command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
-
-            # >> Get paths and check they exist
-            if not g_settings['rom_path']:
-                kodi_dialog_OK('ROM directory not configured. Aborting.')
-                return
-            ROM_path_FN = FileName(g_settings['rom_path'])
-            if not ROM_path_FN.isdir():
-                kodi_dialog_OK('ROM directory does not exist. Aborting.')
-                return
-
-            scan_CHDs = False
-            if g_settings['chd_path']:
-                CHD_path_FN = FileName(g_settings['chd_path'])
-                if not CHD_path_FN.isdir():
-                    kodi_dialog_OK('CHD directory does not exist. CHD scanning disabled.')
-                else:
-                    scan_CHDs = True
-            else:
-                kodi_dialog_OK('CHD directory not configured. CHD scanning disabled.')
-                CHD_path_FN = FileName('')
-
-            scan_Samples = False
-            if g_settings['samples_path']:
-                Samples_path_FN = FileName(g_settings['samples_path'])
-                if not Samples_path_FN.isdir():
-                    kodi_dialog_OK('Samples directory does not exist. Samples scanning disabled.')
-                else:
-                    scan_Samples = True
-            else:
-                kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
-                Samples_path_FN = FileName('')
+            # --- Check for requirements/errors ---
+            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+            options_dic = mame_check_before_scan_MAME_ROMs(PATHS, g_settings, control_dic)
+            if options_dic['abort']: return
 
             # >> Load machine database and control_dic and scan
-            pDialog = xbmcgui.DialogProgress()
-            line1_str = 'Loading databases ...'
-            num_items = 7
-            pDialog.create('Advanced MAME Launcher', line1_str)
-            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(int((1*100) / num_items), line1_str, 'MAME machines Main')
-            machines = fs_load_JSON_file_dic(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Render')
-            machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(int((3*100) / num_items), line1_str, 'MAME machine Assets')
-            assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(int((4*100) / num_items), line1_str, 'Machine archives list')
-            machine_archives_dic = fs_load_JSON_file_dic(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(int((5*100) / num_items), line1_str, 'ROM List index')
-            ROM_archive_list = fs_load_JSON_file_dic(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(int((6*100) / num_items), line1_str, 'CHD list index')
-            CHD_archive_list = fs_load_JSON_file_dic(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath())
-            pDialog.update(int((7*100) / num_items), ' ', ' ')
-            pDialog.close()
+            db_files = [
+                ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
+                ['machines_render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['assets_dic', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+                ['machine_archives_dic', 'Machine archives list', PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
+                ['ROM_archive_list', 'ROM List index', PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath()],
+                ['CHD_archive_list', 'CHD list index', PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath()],
+            ]
+            db_dic = _misc_load_files(db_files)
 
             # --- Scan MAME ROMs/CHDs/Samples ---
             # 1) Updates 'flags' field in assets_dic
             # 2) Updates timestamp t_MAME_ROM_scan in control_dic
-            # 3) Requires rebuilding of the asset cache.
+            # 3) Saves control_dic and assets_dic
+            # 4) Requires rebuilding the asset hashed DB.
+            # 5) Requires rebuilding the asset cache.
             mame_scan_MAME_ROMs(PATHS, g_settings, control_dic,
-                                machines, machines_render, assets_dic,
-                                machine_archives_dic, ROM_archive_list, CHD_archive_list,
-                                ROM_path_FN, CHD_path_FN, Samples_path_FN,
-                                scan_CHDs, scan_Samples)
+                db_dic['machines'], db_dic['machines_render'], db_dic['assets_dic'],
+                db_dic['machine_archives_dic'], db_dic['ROM_archive_list'],
+                db_dic['CHD_archive_list'])
 
-            # >> Save databases
+            # --- Save databases ---
+            # NOTE The addon standard is that mame_* functions save the JSON databases.
+            # Should not these files saved in mame_scan_MAME_ROMs()?
             line1_str = 'Saving databases ...'
             num_items = 2
             pDialog.create('Advanced MAME Launcher', line1_str)
@@ -5622,106 +5569,53 @@ def _command_context_setup_plugin():
         # --- Scans MAME assets/artwork ---
         elif submenu == 5:
             log_info('_command_setup_plugin() Scanning MAME assets/artwork ...')
-
-            # >> Get assets directory. Abort if not configured/found.
-            if not g_settings['assets_path']:
-                kodi_dialog_OK('Asset directory not configured. Aborting.')
-                return
-            Asset_path_FN = FileName(g_settings['assets_path'])
-            if not Asset_path_FN.isdir():
-                kodi_dialog_OK('Asset directory does not exist. Aborting.')
-                return
+            # --- Check for requirements/errors ---
+            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+            options_dic = mame_check_before_scan_MAME_assets(PATHS, g_settings, control_dic)
+            if options_dic['abort']: return
 
             # >> Load machine database and scan
-            pDialog = xbmcgui.DialogProgress()
-            line1_str = 'Loading databases ... '
-            num_items = 4
-            pDialog.create('Advanced MAME Launcher', line1_str)
-            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(int((1*100) / num_items), line1_str, 'MAME machines Render')
-            machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(int((2*100) / num_items), line1_str, 'MAME machine Assets')
-            assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(int((3*100) / num_items), line1_str, 'MAME PClone dictionary')
-            main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-            pDialog.update(int((4*100) / num_items), ' ', ' ')
-            pDialog.close()
+            db_files = [
+                ['machines_render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['assets_dic', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+                ['main_pclone_dic', 'MAME PClone dictionary', PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
+                ['cache_index', 'MAME cache index', PATHS.CACHE_INDEX_PATH.getPath()],
+            ]
+            db_dic = fs_load_files(db_files)
 
             # --- Scan MAME assets ---
             # 1) Mutates assets_dic and control_dic (timestamp and stats)
-            # 2) Requires rebuilding of the asset cache.
-            mame_scan_MAME_assets(PATHS, assets_dic, control_dic, pDialog,
-                                  machines_render, main_pclone_dic, Asset_path_FN)
+            # 2) Saves assets_dic and control_dic.
+            # 2) Requires rebuilding of the asset hashed DB.
+            # 3) Requires rebuilding of the asset cache.
+            mame_scan_MAME_assets(PATHS, g_settings, control_dic,
+                db_dic['assets_dic'], db_dic['machines_render'], db_dic['main_pclone_dic'])
 
-            # >> Save asset DB and control dic
-            line1_str = 'Saving databases ...'
-            num_items = 2
-            pDialog.create('Advanced MAME Launcher', line1_str)
-            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-            pDialog.update(int((1*100) / num_items), line1_str, 'MAME machine Assets')
-            fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-            pDialog.update(int((2*100) / num_items), ' ', ' ')
-            pDialog.close()
-
-            # --- assets have changed. Rebuild hashed database ---
-            fs_build_asset_hashed_db(PATHS, assets_dic, pDialog)
+            # --- Assets have changed. Rebuild hashed database ---
+            fs_build_asset_hashed_db(PATHS, db_dic['assets_dic'])
 
             # --- Asset cache must be regenerated ---
             if g_settings['debug_enable_MAME_asset_cache']:
-                cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+                fs_build_asset_cache(PATHS, db_dic['assets_dic'], db_dic['cache_index'])
             kodi_notify('Scanning of assets/artwork finished')
 
         # --- Scan SL ROMs/CHDs ---
         elif submenu == 6:
             log_info('_command_setup_plugin() Scanning SL ROMs/CHDs ...')
-
-            # >> Abort if SL hash path not configured.
-            if not g_settings['SL_hash_path']:
-                kodi_dialog_OK('Software Lists hash path not set. Scanning aborted.')
-                return
-            SL_hash_dir_FN = PATHS.SL_DB_DIR
-            log_info('_command_setup_plugin() SL hash dir OP {0}'.format(SL_hash_dir_FN.getOriginalPath()))
-            log_info('_command_setup_plugin() SL hash dir  P {0}'.format(SL_hash_dir_FN.getPath()))
-
-            # >> Abort if SL ROM dir not configured.
-            if not g_settings['SL_rom_path']:
-                kodi_dialog_OK('Software Lists ROM path not set. Scanning aborted.')
-                return
-            SL_ROM_dir_FN = FileName(g_settings['SL_rom_path'])
-            log_info('_command_setup_plugin() SL ROM dir OP {0}'.format(SL_ROM_dir_FN.getOriginalPath()))
-            log_info('_command_setup_plugin() SL ROM dir  P {0}'.format(SL_ROM_dir_FN.getPath()))
-
-            # >> SL CHDs scanning is optional
-            scan_SL_CHDs = False
-            if g_settings['SL_chd_path']:
-                SL_CHD_path_FN = FileName(g_settings['SL_chd_path'])
-                if not SL_CHD_path_FN.isdir():
-                    kodi_dialog_OK('SL CHD directory does not exist. SL CHD scanning disabled.')
-                else:
-                    scan_SL_CHDs = True
-            else:
-                kodi_dialog_OK('SL CHD directory not configured. SL CHD scanning disabled.')
-                SL_CHD_path_FN = FileName('')
+            # --- Check for requirements/errors ---
+            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+            options_dic = mame_check_before_scan_SL_ROMs(PATHS, g_settings, control_dic)
+            if options_dic['abort']: return
 
             # >> Load SL and scan ROMs/CHDs. fs_scan_SL_ROMs() updates each SL database.
-            pDialog = xbmcgui.DialogProgress()
-            line1_str = 'Loading databases ...'
-            num_items = 2
-            pDialog.create('Advanced MAME Launcher', line1_str)
-            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(int((1*100) / num_items), line1_str, 'Software Lists index')
-            SL_index_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
-            pDialog.update(int((2*100) / num_items), ' ', ' ')
-            pDialog.close()
+            db_files = [
+                ['SL_index_dic', 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
+            ]
+            db_dic = _misc_load_files(db_files)
 
             # 1) Mutates control_dic (timestamp and statistics)
-            mame_scan_SL_ROMs(PATHS, control_dic, SL_index_dic, SL_hash_dir_FN,
-                              SL_ROM_dir_FN, scan_SL_CHDs, SL_CHD_path_FN)
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            # 2) Saves control_dic
+            mame_scan_SL_ROMs(PATHS, g_settings, control_dic, db_dic['SL_index_dic'])
             kodi_notify('Scanning of SL ROMs finished')
 
         # --- Scan SL assets/artwork ---
@@ -5729,108 +5623,77 @@ def _command_context_setup_plugin():
         # >> { 'ROM_name' : {'asset1' : 'path', 'asset2' : 'path', ... }, ... }
         elif submenu == 7:
             log_info('_command_setup_plugin() Scanning SL assets/artwork ...')
-
-            # >> Get assets directory. Abort if not configured/found.
-            if not g_settings['assets_path']:
-                kodi_dialog_OK('Asset directory not configured. Aborting.')
-                return
-            Asset_path_FN = FileName(g_settings['assets_path'])
-            if not Asset_path_FN.isdir():
-                kodi_dialog_OK('Asset directory does not exist. Aborting.')
-                return
-
-            # >> Load SL database and scan
-            pDialog = xbmcgui.DialogProgress()
-            line1_str = 'Loading databases ...'
-            num_items = 3
-            pDialog.create('Advanced MAME Launcher', line1_str)
-            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
+            # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(int((1*100) / num_items), line1_str, 'Software Lists index')
-            SL_index_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
-            pDialog.update(int((2*100) / num_items), line1_str, 'Software Lists Parent/Clone dictionary')
-            SL_pclone_dic = fs_load_JSON_file_dic(PATHS.SL_PCLONE_DIC_PATH.getPath())
-            pDialog.update(int((3*100) / num_items), ' ', ' ')
-            pDialog.close()
+            options_dic = mame_check_before_scan_SL_assets(PATHS, g_settings, control_dic)
+            if options_dic['abort']: return
 
+            # --- Load SL databases ---
+            db_files = [
+                ['SL_index_dic', 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
+                ['SL_pclone_dic', 'Software Lists Parent/Clone database', PATHS.SL_PCLONE_DIC_PATH.getPath()],
+            ]
+            db_dic = fs_load_files(db_files)
+
+            # --- Scan SL ---
             # 1) Mutates control_dic (timestamp and statistics)
-            mame_scan_SL_assets(PATHS, control_dic, SL_index_dic, SL_pclone_dic, Asset_path_FN)
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            # 2) Saves control_dic
+            mame_scan_SL_assets(PATHS, g_settings, control_dic,
+                db_dic['SL_index_dic'], db_dic['SL_pclone_dic'])
             kodi_notify('Scanning of SL assets finished')
 
         # --- Build MAME machines plot ---
         elif submenu == 8:
             log_debug('Rebuilding MAME machine plots ...')
+            # --- Check for requirements/errors ---
 
-            # >> Load machine database and control_dic
-            pDialog = xbmcgui.DialogProgress()
-            pdialog_line1 = 'Loading databases ...'
-            num_items = 8
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(int((0*100) / num_items), pdialog_line1, 'Control dic')
-            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Main')
-            machines = fs_load_JSON_file_dic(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machines Render')
-            machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME machine Assets')
-            assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(int((4*100) / num_items), pdialog_line1, 'History DAT')
-            history_idx_dic = fs_load_JSON_file_dic(PATHS.HISTORY_IDX_PATH.getPath())
-            pDialog.update(int((5*100) / num_items), pdialog_line1, 'Mameinfo DAT')
-            mameinfo_idx_dic = fs_load_JSON_file_dic(PATHS.MAMEINFO_IDX_PATH.getPath())
-            pDialog.update(int((6*100) / num_items), pdialog_line1, 'Gameinit DAT')
-            gameinit_idx_list = fs_load_JSON_file_dic(PATHS.GAMEINIT_IDX_PATH.getPath())
-            pDialog.update(int((7*100) / num_items), pdialog_line1, 'Command DAT')
-            command_idx_list = fs_load_JSON_file_dic(PATHS.COMMAND_IDX_PATH.getPath())
-            pDialog.update(int((8*100) / num_items), ' ', ' ')
-            pDialog.close()
+            # --- Load databases ---
+            db_files = [
+                ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
+                ['render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['assets', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+                ['cache_index', 'MAME cache index', PATHS.CACHE_INDEX_PATH.getPath()],
+                ['history_idx_dic', 'History DAT', PATHS.HISTORY_IDX_PATH.getPath()],
+                ['mameinfo_idx_dic', 'Mameinfo DAT', PATHS.MAMEINFO_IDX_PATH.getPath()],
+                ['gameinit_idx_list', 'Gameinit DAT', PATHS.GAMEINIT_IDX_PATH.getPath()],
+                ['command_idx_list', 'Command DAT', PATHS.COMMAND_IDX_PATH.getPath()],
+            ]
+            db_dic = fs_load_files(db_files)
 
             # --- Traverse MAME machines and build plot ---
-            # 1) Mutates assets_dic
-            # 2) Requires rebuilding of the asset cache.
-            mame_build_MAME_plots(machines, machines_render, assets_dic, pDialog,
-                                  history_idx_dic, mameinfo_idx_dic,
-                                  gameinit_idx_list, command_idx_list)
+            # 1) Mutates assets database
+            # 2) Internally saves assets database.
+            # 3) Requires rebuilding of the asset hashed DB with fs_build_asset_hashed_db()
+            # 4) Requires rebuilding if the asset cache with fs_build_asset_cache()
+            mame_build_MAME_plots(PATHS,
+                db_dic['machines'], db_dic['render'], db_dic['assets'],
+                db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
+                db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
 
-            # >> Update hashed DBs and save DBs
-            # >> cache_index_dic built in fs_build_MAME_catalogs()
-            pdialog_line1 = 'Saving databases ...'
-            num_items = 1
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machine Assets')
-            fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-            pDialog.update(int((1*100) / num_items), ' ', ' ')
-            pDialog.close()
-
-            # --- assets have changed. Rebuild hashed database ---
-            fs_build_asset_hashed_db(PATHS, assets_dic, pDialog)
+            # --- Asset hashed DB have changed. Rebuild hashed database ---
+            fs_build_asset_hashed_db(PATHS, db_dic['assets'])
 
             # --- Asset cache must be regenerated ---
+            # cache_index is built in fs_build_MAME_catalogs()
             if g_settings['debug_enable_MAME_asset_cache']:
-                cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+                fs_build_asset_cache(PATHS, db_dic['cache_index'], db_dic['assets'])
             kodi_notify('MAME machines plot generation finished')
 
         # --- Buils Software List items plot ---
         elif submenu == 9:
             log_debug('Rebuilding Software List items plots ...')
 
-            # >> Load SL index and SL machine index.
-            pDialog = xbmcgui.DialogProgress()
-            pdialog_line1 = 'Loading databases ...'
-            num_items = 3
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(int((0*100) / num_items), pdialog_line1, 'Software Lists index')
-            SL_index_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
-            pDialog.update(int((1*100) / num_items), pdialog_line1, 'Software Lists machines')
-            SL_machines_dic = fs_load_JSON_file_dic(PATHS.SL_MACHINES_PATH.getPath())
-            pDialog.update(int((2*100) / num_items), pdialog_line1, 'History DAT index')
-            History_idx_dic = fs_load_JSON_file_dic(PATHS.HISTORY_IDX_PATH.getPath())
-            pDialog.update(int((3*100) / num_items), ' ', ' ')
-            pDialog.close()
+            # --- Load databases ---
+            db_files = [
+                ['SL_index_dic', 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
+                ['SL_machines_dic', 'Software Lists machines', PATHS.SL_MACHINES_PATH.getPath()],
+                ['History_idx_dic', 'History DAT index', PATHS.HISTORY_IDX_PATH.getPath()],
+            ]
+            db_dic = fs_load_files(db_files)
 
-            mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic, pDialog)
+            # --- Build plots ---
+            mame_build_SL_plots(PATHS,
+                db_dic['SL_index_dic'], db_dic['SL_machines_dic'], db_dic['History_idx_dic'])
             kodi_notify('SL item plot generation finished')
 
         # --- Regenerate MAME machine and assets cache ---
@@ -5838,25 +5701,16 @@ def _command_context_setup_plugin():
             log_debug('Rebuilding MAME machine and assets cache ...')
 
             # --- Load databases ---
-            pDialog = xbmcgui.DialogProgress()
-            pdialog_line1 = 'Loading databases ...'
-            num_items = 4
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(int((0*100) / num_items), pdialog_line1, 'Control dic')
-            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-            pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Main')
-            machines = fs_load_JSON_file_dic(PATHS.MAIN_DB_PATH.getPath())
-            pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machines Render')
-            machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-            pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME machine Assets')
-            assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(int((4*100) / num_items), pdialog_line1, 'MAME Parent/Clone')
-            pDialog.close()
+            db_files = [
+                ['cache_index', 'Cache index', PATHS.CACHE_INDEX_PATH.getPath()],
+                ['render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['assets', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+            ]
+            db_dic = fs_load_files(db_files)
 
-            # --- Regenerate caches ---
-            cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-            fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
-            fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+            # --- Regenerate ROM and asset caches ---
+            fs_build_render_cache(PATHS, db_dic['cache_index'], db_dic['render'])
+            fs_build_asset_cache(PATHS, db_dic['cache_index'], db_dic['assets'])
             kodi_notify('MAME machine and asset caches rebuilt')
 
 #
@@ -6852,9 +6706,8 @@ def _misc_url_2_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2):
     arg_value_1_escaped = arg_value_1.replace('&', '%26')
     arg_value_2_escaped = arg_value_2.replace('&', '%26')
 
-    return '{0}?{1}={2}&{3}={4}'.format(g_base_url, 
-                                        arg_name_1, arg_value_1_escaped,
-                                        arg_name_2, arg_value_2_escaped)
+    return '{0}?{1}={2}&{3}={4}'.format(
+        g_base_url, arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped)
 
 def _misc_url_3_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2, 
                           arg_name_3, arg_value_3):
@@ -6862,10 +6715,10 @@ def _misc_url_3_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2,
     arg_value_2_escaped = arg_value_2.replace('&', '%26')
     arg_value_3_escaped = arg_value_3.replace('&', '%26')
 
-    return '{0}?{1}={2}&{3}={4}&{5}={6}'.format(g_base_url,
-                                                arg_name_1, arg_value_1_escaped,
-                                                arg_name_2, arg_value_2_escaped,
-                                                arg_name_3, arg_value_3_escaped)
+    return '{0}?{1}={2}&{3}={4}&{5}={6}'.format(
+        g_base_url,
+        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped,
+        arg_name_3, arg_value_3_escaped)
 
 def _misc_url_4_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2, 
                           arg_name_3, arg_value_3, arg_name_4, arg_value_4):
@@ -6874,11 +6727,10 @@ def _misc_url_4_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2,
     arg_value_3_escaped = arg_value_3.replace('&', '%26')
     arg_value_4_escaped = arg_value_4.replace('&', '%26')
 
-    return '{0}?{1}={2}&{3}={4}&{5}={6}&{7}={8}'.format(g_base_url,
-                                                        arg_name_1, arg_value_1_escaped,
-                                                        arg_name_2, arg_value_2_escaped,
-                                                        arg_name_3, arg_value_3_escaped,
-                                                        arg_name_4, arg_value_4_escaped)
+    return '{0}?{1}={2}&{3}={4}&{5}={6}&{7}={8}'.format(
+        g_base_url,
+        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped,
+        arg_name_3, arg_value_3_escaped,arg_name_4, arg_value_4_escaped)
 
 #
 # Used in context menus
@@ -6892,17 +6744,16 @@ def _misc_url_2_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2):
     arg_v_1_esc = arg_v_1.replace('&', '%26')
     arg_v_2_esc = arg_v_2.replace('&', '%26')
 
-    return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4})'.format(g_base_url, arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc)
+    return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4})'.format(
+        g_base_url, arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc)
 
 def _misc_url_3_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2, arg_n_3, arg_v_3):
     arg_v_1_esc = arg_v_1.replace('&', '%26')
     arg_v_2_esc = arg_v_2.replace('&', '%26')
     arg_v_3_esc = arg_v_3.replace('&', '%26')
 
-    return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4}&{5}={6})'.format(g_base_url,
-                                                                arg_n_1, arg_v_1_esc,
-                                                                arg_n_2, arg_v_2_esc,
-                                                                arg_n_3, arg_v_3_esc)
+    return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4}&{5}={6})'.format(
+        g_base_url, arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc, arg_n_3, arg_v_3_esc)
 
 def _misc_url_4_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2, 
                               arg_n_3, arg_v_3, arg_n_4, arg_v_4):
@@ -6911,8 +6762,6 @@ def _misc_url_4_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2,
     arg_v_3_esc = arg_v_3.replace('&', '%26')
     arg_v_4_esc = arg_v_4.replace('&', '%26')
 
-    return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4}&{5}={6}&{7}={8})'.format(g_base_url,
-                                                                        arg_n_1, arg_v_1_esc,
-                                                                        arg_n_2, arg_v_2_esc,
-                                                                        arg_n_3, arg_v_3_esc, 
-                                                                        arg_n_4, arg_v_4_esc)
+    return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4}&{5}={6}&{7}={8})'.format(
+        g_base_url,
+        arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc, arg_n_3, arg_v_3_esc, arg_n_4, arg_v_4_esc)
