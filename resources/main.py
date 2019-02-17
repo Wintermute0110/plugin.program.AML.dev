@@ -276,9 +276,9 @@ def run_plugin(addon_argv):
     log_debug('Python version  ' + sys.version.replace('\n', ''))
     log_debug('__a_id__        {0}'.format(__addon_id__))
     log_debug('__a_version__   {0}'.format(__addon_version__))
-    log_debug('PLUGIN_DATA_DIR {0}'.format(PLUGIN_DATA_DIR.getPath()))
+    # log_debug('PLUGIN_DATA_DIR {0}'.format(PLUGIN_DATA_DIR.getPath()))
     for i in range(len(addon_argv)): log_debug('addon_argv[{0}] = "{1}"'.format(i, addon_argv[i]))
-    # >> Timestamp to see if this submodule is reinterpreted or not.
+    # Timestamp to see if this submodule is reinterpreted or not (interpreter uses a cached instance).
     log_debug('submodule global timestamp {0}'.format(g_time_str))
 
     # --- Addon data paths creation ---

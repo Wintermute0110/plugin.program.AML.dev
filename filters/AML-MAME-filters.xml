@@ -16,141 +16,159 @@
 <!--  Manufacturer/board filters  -->
 <MAMEFilter>
     <Name>Atari arcade games</Name>
-    <Plot>Arcade games by Atari</Plot>
+    <Plot>Arcade games by [COLOR orange]Atari[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Atari</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Capcom arcade games</Name>
-    <Plot>Arcade games by Capcom</Plot>
+    <Plot>Arcade games by [COLOR orange]Capcom[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Capcom</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Capcom CPS board</Name>
-    <Plot>Machines in Capcom CPS arcade boards</Plot>
+    <Plot>Machines in [COLOR orange]Capcom CPS[/COLOR] arcade boards.</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>CAPCOM_CPS_DRIVERS</Driver>
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Data East arcade games</Name>
-    <Plot>Arcade games by Data East</Plot>
+    <Plot>Arcade games by [COLOR orange]Data East[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has "Data East"</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Gaelco arcade games</Name>
-    <Plot>Arcade games by Gaelco</Plot>
+    <Plot>Arcade games by [COLOR orange]Gaelco[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Gaelco</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Irem arcade games</Name>
-    <Plot>Arcade games by Irem</Plot>
+    <Plot>Arcade games by [COLOR orange]Irem[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Irem</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Jaleco arcade games</Name>
-    <Plot>Arcade games by Jaleco</Plot>
+    <Plot>Arcade games by [COLOR orange]Jaleco[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Jaleco</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Kaneko arcade games</Name>
-    <Plot>Arcade games by Kaneko</Plot>
+    <Plot>Arcade games by [COLOR orange]Kaneko[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Kaneko</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Konami arcade games</Name>
-    <Plot>Arcade games by Konami</Plot>
+    <Plot>Arcade games by [COLOR orange]Konami[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Konami</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Midway arcade games</Name>
-    <Plot>Arcade games by Midway</Plot>
+    <Plot>Arcade games by [COLOR orange]Midway[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Midway</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Namco arcade games</Name>
-    <Plot>Arcade games by Namco</Plot>
+    <Plot>Arcade games by [COLOR orange]Namco[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Namco</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Nintendo arcade games</Name>
-    <Plot>Arcade games by Nintendo</Plot>
+    <Plot>Arcade games by [COLOR orange]Nintendo[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Nintendo</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>SEGA arcade games</Name>
-    <Plot>Arcade games by SEGA</Plot>
+    <Plot>Arcade games by [COLOR orange]SEGA[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Sega or has SEGA</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>SNK arcade games</Name>
-    <Plot>Arcade games by SNK</Plot>
+    <Plot>Arcade games by [COLOR orange]SNK[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has SNK or has Snk</Manufacturer> 
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>SNK NeoGeo MVS board</Name>
-    <Plot>Machines in SNK Neo Geo MVS arcade board</Plot>
+    <Plot>Machines in [COLOR orange]SNK Neo Geo MVS[/COLOR] arcade board.</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Driver>NEOGEO_MVS_DRIVER</Driver>
 </MAMEFilter>
+
 <MAMEFilter>
     <Name>Taito arcade games</Name>
-    <Plot>Arcade games by Taito</Plot>
+    <Plot>Arcade games by [COLOR orange]Taito[/COLOR].</Plot>
     <Options>NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
     <Manufacturer>has Taito</Manufacturer> 
 </MAMEFilter>
 
 <!--  Family game definitions  -->
 <MAMEFilter>
-    <Name>Familiy games from the 70s</Name>
-    <Plot>Arcade machines from the 70s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Name>Familiy games from the 1970s</Name>
+    <Plot>Arcade machines from the 1970s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
     <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
     <Year>year > 1000 and year &lt; 1980</Year>
 </MAMEFilter>
+
 <MAMEFilter>
-    <Name>Familiy games from the 80s</Name>
-    <Plot>Arcade machines from the 80s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Name>Familiy games from the 1980s</Name>
+    <Plot>Arcade machines from the 1980s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
     <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
     <Year>year >= 1980 and year &lt; 1990</Year>
 </MAMEFilter>
+
 <MAMEFilter>
-    <Name>Familiy games from the 90s</Name>
-    <Plot>Arcade machines from the 90s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Name>Familiy games from the 1990s</Name>
+    <Plot>Arcade machines from the 1990s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
     <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
     <Year>year >= 1990 and year &lt; 2000</Year>
 </MAMEFilter>
+
 <MAMEFilter>
-    <Name>Familiy games from the 00s</Name>
-    <Plot>Arcade machines from the 00s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Name>Familiy games from the 2000s</Name>
+    <Plot>Arcade machines from the 2000s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
     <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
     <Year>year >= 2000 and year &lt; 2010</Year>
 </MAMEFilter>
+
 <MAMEFilter>
-    <Name>Familiy games from the 10s</Name>
-    <Plot>Arcade machines from the 10s with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines</Plot>
+    <Name>Familiy games from the 2010s an up</Name>
+    <Plot>Arcade machines from the 2010s an up with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
     <Options>NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
     <Year>year >= 2010</Year>
 </MAMEFilter>
-
 </Advanced_MAME_Launcher_custom_filters>
