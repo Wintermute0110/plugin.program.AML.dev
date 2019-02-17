@@ -755,14 +755,13 @@ def _render_root_list():
                    'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].')
     series_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by series. '
                    'This filter requires that you configure [COLOR violet]series.ini[/COLOR].')
-
-    ctype_expanded_plot = ('')
-    ctype_compact_plot = ('')
-    device_expanded_plot = ('')
-    device_compact_plot = ('')
-    drotation_plot = ('')
-    dtype_plot = ('')
-    driver_plot = ('')
+    ctype_expanded_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control.')
+    ctype_compact_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control.')
+    device_expanded_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by device.')
+    device_compact_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by device.')
+    drotation_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display rotation.')
+    dtype_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type.')
+    driver_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by driver.')
     manufacturer_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted by '
                          'manufacturer.')
     shortname_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
@@ -771,8 +770,17 @@ def _render_root_list():
     longname_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
                      'by the machine description.')
     SL_plot = ('[COLOR orange]Catalog filter[/COLOR] of the Software Lists and the machines '
-               'that can run items belonging to each Software List.')
+               'that run items belonging to that Software List.')
     year_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by release year.')
+
+    History_plot = ('Browse the contents of [COLOR orange]history.dat[/COLOR]. Note that '
+                    'history.dat is also available on the MAME machines and SL items context menu.')
+    MAMEInfo_plot = ('Browse the contents of [COLOR orange]mameinfo.dat[/COLOR]. Note that '
+                     'mameinfo.dat is also available on the MAME machines and SL items context menu.')
+    Gameinit_plot = ('Browse the contents of [COLOR orange]gameinit.dat[/COLOR]. Note that '
+                     'gameinit.dat is also available on the MAME machines and SL items context menu.')
+    Command_plot = ('Browse the contents of [COLOR orange]command.dat[/COLOR]. Note that '
+                    'command.dat is also available on the MAME machines and SL items context menu.')
 
     SL_all_plot = ('Display all [COLOR orange]Software Lists[/COLOR].')
     SL_ROM_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only ROMs and not CHDs (disks).')
@@ -867,32 +875,54 @@ def _render_root_list():
 
     if g_settings['display_catalog_filters']:
         # >> Optional cataloged filters (depend on a INI file)
-        _render_root_list_row_standard(catver_str, _misc_url_1_arg('catalog', 'Catver'), catver_plot)
-        _render_root_list_row_standard(catlist_str, _misc_url_1_arg('catalog', 'Catlist'), catlist_plot)
-        _render_root_list_row_standard(genre_str, _misc_url_1_arg('catalog', 'Genre'), genre_plot)
-        _render_root_list_row_standard(NPlayers_str, _misc_url_1_arg('catalog', 'NPlayers'), NPlayers_plot)
-        _render_root_list_row_standard(rating_str, _misc_url_1_arg('catalog', 'Bestgames'), rating_plot)
-        _render_root_list_row_standard(series_str, _misc_url_1_arg('catalog', 'Series'), series_plot)
+        _render_root_list_row_standard(
+            catver_str, _misc_url_1_arg('catalog', 'Catver'), catver_plot)
+        _render_root_list_row_standard(
+            catlist_str, _misc_url_1_arg('catalog', 'Catlist'), catlist_plot)
+        _render_root_list_row_standard(
+            genre_str, _misc_url_1_arg('catalog', 'Genre'), genre_plot)
+        _render_root_list_row_standard(
+            NPlayers_str, _misc_url_1_arg('catalog', 'NPlayers'), NPlayers_plot)
+        _render_root_list_row_standard(
+            rating_str, _misc_url_1_arg('catalog', 'Bestgames'), rating_plot)
+        _render_root_list_row_standard(
+            series_str, _misc_url_1_arg('catalog', 'Series'), series_plot)
         # >> Cataloged filters (always there)
-        _render_root_list_row_standard(ctype_expanded_str, _misc_url_1_arg('catalog', 'Controls_Expanded'), ctype_expanded_plot)
-        _render_root_list_row_standard(ctype_compact_str, _misc_url_1_arg('catalog', 'Controls_Compact'), ctype_compact_plot)
-        _render_root_list_row_standard(device_expanded_str, _misc_url_1_arg('catalog', 'Devices_Expanded'), device_expanded_plot)
-        _render_root_list_row_standard(device_compact_str, _misc_url_1_arg('catalog', 'Devices_Compact'), device_compact_plot)
-        _render_root_list_row_standard(drotation_str, _misc_url_1_arg('catalog', 'Display_Rotate'), drotation_plot)
-        _render_root_list_row_standard(dtype_str, _misc_url_1_arg('catalog', 'Display_Type'), dtype_plot)
-        _render_root_list_row_standard(driver_str, _misc_url_1_arg('catalog', 'Driver'), driver_plot)
-        _render_root_list_row_standard(manufacturer_str, _misc_url_1_arg('catalog', 'Manufacturer'), manufacturer_plot)
-        _render_root_list_row_standard(shortname_str, _misc_url_1_arg('catalog', 'ShortName'), shortname_plot)
-        _render_root_list_row_standard(longname_str, _misc_url_1_arg('catalog', 'LongName'), longname_plot)
-        _render_root_list_row_standard(SL_str, _misc_url_1_arg('catalog', 'BySL'), SL_plot)
-        _render_root_list_row_standard(year_str, _misc_url_1_arg('catalog', 'Year'), year_plot)
+        _render_root_list_row_standard(
+            ctype_expanded_str, _misc_url_1_arg('catalog', 'Controls_Expanded'), ctype_expanded_plot)
+        _render_root_list_row_standard(
+            ctype_compact_str, _misc_url_1_arg('catalog', 'Controls_Compact'), ctype_compact_plot)
+        _render_root_list_row_standard(
+            device_expanded_str, _misc_url_1_arg('catalog', 'Devices_Expanded'), device_expanded_plot)
+        _render_root_list_row_standard(
+            device_compact_str, _misc_url_1_arg('catalog', 'Devices_Compact'), device_compact_plot)
+        _render_root_list_row_standard(
+            drotation_str, _misc_url_1_arg('catalog', 'Display_Rotate'), drotation_plot)
+        _render_root_list_row_standard(
+            dtype_str, _misc_url_1_arg('catalog', 'Display_Type'), dtype_plot)
+        _render_root_list_row_standard(
+            driver_str, _misc_url_1_arg('catalog', 'Driver'), driver_plot)
+        _render_root_list_row_standard(
+            manufacturer_str, _misc_url_1_arg('catalog', 'Manufacturer'), manufacturer_plot)
+        _render_root_list_row_standard(
+            shortname_str, _misc_url_1_arg('catalog', 'ShortName'), shortname_plot)
+        _render_root_list_row_standard(
+            longname_str, _misc_url_1_arg('catalog', 'LongName'), longname_plot)
+        _render_root_list_row_standard(
+            SL_str, _misc_url_1_arg('catalog', 'BySL'), SL_plot)
+        _render_root_list_row_standard(
+            year_str, _misc_url_1_arg('catalog', 'Year'), year_plot)
 
     # >> history.dat, mameinfo.dat, gameinit.dat, command.dat
     if g_settings['display_DAT_browser']:
-        _render_root_list_row_standard('History DAT', _misc_url_1_arg('catalog', 'History'))
-        _render_root_list_row_standard('MAMEINFO DAT', _misc_url_1_arg('catalog', 'MAMEINFO'))
-        _render_root_list_row_standard('Gameinit DAT', _misc_url_1_arg('catalog', 'Gameinit'))
-        _render_root_list_row_standard('Command DAT', _misc_url_1_arg('catalog', 'Command'))
+        _render_root_list_row_standard(
+            'History DAT', _misc_url_1_arg('catalog', 'History'), History_plot)
+        _render_root_list_row_standard(
+            'MAMEINFO DAT', _misc_url_1_arg('catalog', 'MAMEINFO'), MAMEInfo_plot)
+        _render_root_list_row_standard(
+            'Gameinit DAT', _misc_url_1_arg('catalog', 'Gameinit'), Gameinit_plot)
+        _render_root_list_row_standard(
+            'Command DAT', _misc_url_1_arg('catalog', 'Command'), Command_plot)
 
     # >> Software lists
     if g_settings['display_SL_browser']:
