@@ -1241,11 +1241,11 @@ def fs_get_machine_assets_db_hash(PATHS, machine_name):
     return hashed_db_dic[machine_name]
 
 # -------------------------------------------------------------------------------------------------
-# ROM cache
+# Machine render cache
 # Creates a separate machines render and assets databases for each catalog to speed up
 # access of ListItems.
 # -------------------------------------------------------------------------------------------------
-def fs_rom_cache_get_hash(catalog_name, category_name):
+def fs_render_cache_get_hash(catalog_name, category_name):
     prop_key = '{0} - {1}'.format(catalog_name, category_name)
 
     return hashlib.md5(prop_key).hexdigest()
@@ -1307,7 +1307,7 @@ def fs_build_render_cache(PATHS, cache_index_dic, machines_render):
         catalog_count += 1
     pDialog.close()
 
-def fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name):
+def fs_load_render_dic_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
     ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_render.json')
 
@@ -1408,7 +1408,7 @@ def fs_load_files(db_files):
 
     return db_dic
 
-def fs_save_files(db_files):
+def fs_save_files(db_files, json_write_func = fs_write_JSON_file):
     log_debug('fs_save_files() Saving {0} JSON database files ...\n'.format(len(db_files)))
     line1_str = 'Saving databases ...'
     num_items = len(db_files)
@@ -1420,7 +1420,7 @@ def fs_save_files(db_files):
         db_name  = f_item[1]
         db_path  = f_item[2]
         pDialog.update(int((item_count*100) / num_items), line1_str, db_name)
-        fs_write_JSON_file(db_path, dict_data)
+        json_write_func(db_path, dict_data)
         item_count += 1
     # >> Kodi BUG: when the progress dialog is closed and reopened again, the
     # >> second line of the previous dialog is not deleted (still printed).

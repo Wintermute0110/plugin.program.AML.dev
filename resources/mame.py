@@ -2396,11 +2396,12 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
     audit_dic['machine_CHDs_are_OK'] = all(CHD_OK_status_list) if audit_dic['machine_has_CHDs'] else True
     audit_dic['machine_is_OK'] = audit_dic['machine_ROMs_are_OK'] and audit_dic['machine_CHDs_are_OK']
 
-def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machines_render, audit_roms_dic):
+def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render, audit_roms_dic):
     log_debug('mame_audit_MAME_all() Initialising ...')
 
     # >> Go machine by machine and audit ZIPs and CHDs.
     # >> Adds new column 'status' to each ROM.
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Auditing MAME ROMs and CHDs ... ')
     total_machines = len(machines_render)
     processed_machines = 0
@@ -2700,8 +2701,11 @@ def mame_audit_MAME_all(PATHS, pDialog, settings, control_dic, machines, machine
     change_control_dic(control_dic, 'audit_MAME_machines_with_CHDs_BAD', audit_MAME_machines_with_CHDs_BAD)
     change_control_dic(control_dic, 'audit_MAME_machines_without_CHDs', audit_MAME_machines_without_CHDs)
 
-    # >> Update timestamp
+    # --- Update timestamp ---
     change_control_dic(control_dic, 't_MAME_audit', time.time())
+
+    # --- Save control_dic ---
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 def mame_audit_SL_all(PATHS, settings, control_dic):
     log_debug('mame_audit_SL_all() Initialising ...')
@@ -2907,7 +2911,6 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
 
     # >> Update SL audit statistics.
     change_control_dic(control_dic, 'audit_SL_items_runnable', audit_SL_items_runnable)
-    
     change_control_dic(control_dic, 'audit_SL_items_with_arch', audit_SL_items_with_arch)
     change_control_dic(control_dic, 'audit_SL_items_with_arch_OK', audit_SL_items_with_arch_OK)
     change_control_dic(control_dic, 'audit_SL_items_with_arch_BAD', audit_SL_items_with_arch_BAD)
@@ -2921,8 +2924,11 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
     change_control_dic(control_dic, 'audit_SL_items_with_CHD_BAD', audit_SL_items_with_CHD_BAD)
     change_control_dic(control_dic, 'audit_SL_items_without_CHD', audit_SL_items_without_CHD)
 
-    # >> Update timestamp
+    # --- Update timestamp ---
     change_control_dic(control_dic, 't_SL_audit', time.time())
+
+    # --- Save control_dic ---
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
 # Fanart generation
@@ -3298,6 +3304,25 @@ def mame_build_SL_names(PATHS, settings):
 # -------------------------------------------------------------------------------------------------
 # MAME database building
 # -------------------------------------------------------------------------------------------------
+
+#
+# Checks for errors before scanning for SL ROMs.
+# Display a Kodi dialog if an error is found.
+# Returns a dictionary of settings:
+# options_dic['abort'] is always present.
+#
+def mame_check_before_build_MAME_main_database(PATHS, settings, control_dic):
+    options_dic = {}
+    options_dic['abort'] = False
+
+    # --- Check that MAME database have been built ---
+    # >> Check that MAME_XML_PATH exists
+    if not PATHS.MAME_XML_PATH.exists():
+        kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
+        return
+
+    return options_dic
+
 # -------------------------------------------------------------------------------------------------
 # Reads and processes MAME.xml
 #
@@ -3321,15 +3346,6 @@ def mame_build_SL_names(PATHS, settings):
 #   ROM_SHA1_HASH_DB_PATH
 #
 STOP_AFTER_MACHINES = 100000
-class DB_obj:
-    def __init__(self, machines, machines_render, devices_db_dic,
-                 machine_roms, main_pclone_dic, assets_dic):
-        self.machines        = machines
-        self.machines_render = machines_render
-        self.devices_db_dic  = devices_db_dic
-        self.machine_roms    = machine_roms
-        self.main_pclone_dic = main_pclone_dic
-        self.assets_dic      = assets_dic
 
 def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str):
     DATS_dir_FN = FileName(settings['dats_path'])
@@ -3972,9 +3988,9 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # ---------------------------------------------------------------------------------------------
     # Build main distributed hashed database
     # ---------------------------------------------------------------------------------------------
-    # >> This saves the hashs files in the database directory.
-    fs_build_main_hashed_db(PATHS, machines, machines_render, pDialog)
-    fs_build_asset_hashed_db(PATHS, assets_dic, pDialog)
+    # >> This saves the hash files in the database directory.
+    fs_build_main_hashed_db(PATHS, machines, machines_render)
+    fs_build_asset_hashed_db(PATHS, assets_dic)
 
     # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary
@@ -4030,9 +4046,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # >> Timestamp
     change_control_dic(control_dic, 't_MAME_DB_build', time.time())
 
-    # -----------------------------------------------------------------------------
-    # Write JSON databases
-    # -----------------------------------------------------------------------------
+    # --- Save databases ---
     log_info('Saving database JSON files ...')
     if OPTION_LOWMEM_WRITE_JSON:
         json_write_func = fs_write_JSON_file_lowmem
@@ -4040,52 +4054,41 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     else:
         json_write_func = fs_write_JSON_file
         log_debug('Using fs_write_JSON_file() JSON writer')
-    pdialog_line1 = 'Saving databases ...'
-    num_items = 15
+    db_files = [
+        [machines, 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
+        [machines_render, 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+        [machines_roms, 'MAME machine ROMs', PATHS.ROMS_DB_PATH.getPath()],
+        [machines_devices, 'MAME machine Devices', PATHS.DEVICES_DB_PATH.getPath()],
+        [assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+        [main_pclone_dic, 'MAME PClone dictionary', PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
+        [roms_sha1_dic, 'MAME ROMs SHA1 dictionary', PATHS.ROM_SHA1_HASH_DB_PATH.getPath()],
+        # --- DAT files ---
+        [history_idx_dic, 'History DAT index', PATHS.HISTORY_IDX_PATH.getPath()],
+        [history_dic, 'History DAT database', PATHS.HISTORY_DB_PATH.getPath()],
+        [mameinfo_idx_dic, 'MAMEInfo DAT index', PATHS.MAMEINFO_IDX_PATH.getPath()],
+        [mameinfo_dic, 'MAMEInfo DAT database', PATHS.MAMEINFO_DB_PATH.getPath()],
+        [gameinit_idx_dic, 'Gameinit DAT index', PATHS.GAMEINIT_IDX_PATH.getPath()],
+        [gameinit_dic, 'Gameinit DAT database', PATHS.GAMEINIT_DB_PATH.getPath()],
+        [command_idx_dic, 'Command DAT index', PATHS.COMMAND_IDX_PATH.getPath()],
+        [command_dic, 'Command DAT database', PATHS.COMMAND_DB_PATH.getPath()],
+        # --- Save control_dic after everything is saved ---
+        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+    ]
+    db_dic = fs_save_files(db_files, json_write_func)
 
-    # --- Databases ---
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machines Main')
-    json_write_func(PATHS.MAIN_DB_PATH.getPath(), machines)
-    pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Render')
-    json_write_func(PATHS.RENDER_DB_PATH.getPath(), machines_render)
-    pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machine ROMs')
-    json_write_func(PATHS.ROMS_DB_PATH.getPath(), machines_roms)
-    pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME machine Devices')
-    json_write_func(PATHS.DEVICES_DB_PATH.getPath(), machines_devices)
-    pDialog.update(int((4*100) / num_items), pdialog_line1, 'MAME machine Assets')
-    json_write_func(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-    pDialog.update(int((5*100) / num_items), pdialog_line1, 'MAME PClone dictionary')
-    json_write_func(PATHS.MAIN_PCLONE_DIC_PATH.getPath(), main_pclone_dic)
-    pDialog.update(int((6*100) / num_items), pdialog_line1, 'MAME ROMs SHA1 dictionary')
-    json_write_func(PATHS.ROM_SHA1_HASH_DB_PATH.getPath(), roms_sha1_dic)
-    # --- DAT files ---
-    pDialog.update(int((7*100) / num_items), pdialog_line1, 'History DAT index')
-    json_write_func(PATHS.HISTORY_IDX_PATH.getPath(), history_idx_dic)
-    pDialog.update(int((8*100) / num_items), pdialog_line1, 'History DAT database')
-    json_write_func(PATHS.HISTORY_DB_PATH.getPath(), history_dic)
-    pDialog.update(int((9*100) / num_items), pdialog_line1, 'MAMEInfo DAT index')
-    json_write_func(PATHS.MAMEINFO_IDX_PATH.getPath(), mameinfo_idx_dic)
-    pDialog.update(int((10*100) / num_items), pdialog_line1, 'MAMEInfo DAT database')
-    json_write_func(PATHS.MAMEINFO_DB_PATH.getPath(), mameinfo_dic)
-    pDialog.update(int((11*100) / num_items), pdialog_line1, 'Gameinit DAT index')
-    json_write_func(PATHS.GAMEINIT_IDX_PATH.getPath(), gameinit_idx_dic)
-    pDialog.update(int((12*100) / num_items), pdialog_line1, 'Gameinit DAT database')
-    json_write_func(PATHS.GAMEINIT_DB_PATH.getPath(), gameinit_dic)
-    pDialog.update(int((13*100) / num_items), pdialog_line1, 'Command DAT index')
-    json_write_func(PATHS.COMMAND_IDX_PATH.getPath(), command_idx_dic)
-    pDialog.update(int((14*100) / num_items), pdialog_line1, 'Command DAT database')
-    json_write_func(PATHS.COMMAND_DB_PATH.getPath(), command_dic)
-    pDialog.update(int((15*100) / num_items), ' ', ' ')
-    pDialog.close()
-
-    # Return an object with reference to the objects just in case they are needed after
+    # Return an dictionary with reference to the objects just in case they are needed after
     # this function (in "Build everything", for example. This saves time (databases do not
     # need to be reloaded) and apparently memory as well.
-    DB = DB_obj(machines, machines_render, machines_devices,
-                machines_roms, main_pclone_dic, assets_dic)
+    data_dic = {
+        'machines' : machines,
+        'render' : machines_render,
+        'devices' : machines_devices,
+        'roms' : machines_roms,
+        'main_pclone_dic' : main_pclone_dic,
+        'assets' : assets_dic,
+    }
 
-    return DB
+    return data_dic
 
 # -------------------------------------------------------------------------------------------------
 # Generates the ROM audit database. This database contains invalid ROMs also to display information
@@ -4304,6 +4307,21 @@ def _get_CHD_location(chd_set, disk, m_name, machines, machines_render, machine_
         raise TypeError
 
     return location
+
+#
+# Checks for errors before scanning for SL ROMs.
+# Display a Kodi dialog if an error is found.
+# Returns a dictionary of settings:
+# options_dic['abort'] is always present.
+# 
+#
+def mame_check_before_build_ROM_audit_databases(PATHS, settings, control_dic):
+    options_dic = {}
+    options_dic['abort'] = False
+
+    # --- Check that MAME database have been built ---
+
+    return options_dic
 
 # Audit database build main function.
 #
@@ -4612,19 +4630,15 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     else:
         json_write_func = fs_write_JSON_file
         log_debug('Using fs_write_JSON_file() JSON writer')
-    line1_str = 'Saving audit/scanner databases ...'
-    pDialog.create('Advanced MAME Launcher')
-    num_items = 4
-    pDialog.update(int((0*100) / num_items), line1_str, 'MAME ROM Audit')
-    json_write_func(PATHS.ROM_AUDIT_DB_PATH.getPath(), audit_roms_dic)
-    pDialog.update(int((1*100) / num_items), line1_str, 'Machine archives list')
-    json_write_func(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath(), machine_archives_dic)
-    pDialog.update(int((2*100) / num_items), line1_str, 'ROM List index')
-    json_write_func(PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath(), ROM_archive_list)
-    pDialog.update(int((3*100) / num_items), line1_str, 'CHD list index')
-    json_write_func(PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath(), CHD_archive_list)
-    pDialog.update(int((4*100) / num_items), ' ', ' ')
-    pDialog.close()
+    db_files = [
+        [audit_roms_dic, 'MAME ROM Audit', PATHS.ROM_AUDIT_DB_PATH.getPath()],
+        [machine_archives_dic, 'Machine archives list', PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
+        [ROM_archive_list, 'ROM List index', PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath()],
+        [CHD_archive_list, 'CHD list index', PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath()],
+        # --- Save control_dic after everything is saved ---
+        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+    ]
+    db_dic = fs_save_files(db_files, json_write_func)
 
 # -------------------------------------------------------------------------------------------------
 #
@@ -4644,7 +4658,7 @@ def _cache_index_builder(cat_name, cache_index_dic, catalog_all, catalog_parents
         cache_index_dic[cat_name][cat_key] = {
             'num_parents'  : len(catalog_parents[cat_key]),
             'num_machines' : len(catalog_all[cat_key]),
-            'hash'         : fs_rom_cache_get_hash(cat_name, cat_key)
+            'hash'         : fs_render_cache_get_hash(cat_name, cat_key)
         }
 
 def _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, db_field):
@@ -4660,6 +4674,21 @@ def _build_catalog_helper(catalog_parents, catalog_all, machines, machines_rende
             catalog_all[catalog_key] = { parent_name : machines_render[parent_name]['description'] }
         for clone_name in main_pclone_dic[parent_name]:
             catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
+
+#
+# Checks for errors before scanning for SL ROMs.
+# Display a Kodi dialog if an error is found.
+# Returns a dictionary of settings:
+# options_dic['abort'] is always present.
+# 
+#
+def mame_check_before_build_MAME_catalogs(PATHS, settings, control_dic):
+    options_dic = {}
+    options_dic['abort'] = False
+
+    # --- Check that database exists ---
+
+    return options_dic
 
 #
 # A) Builds the following catalog files
@@ -5328,11 +5357,15 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
     # log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
 
-    # --- Save Catalog index ----------------------------------------------------------------------
-    fs_write_JSON_file(PATHS.CACHE_INDEX_PATH.getPath(), cache_index_dic)
-
     # --- Update timestamp ---
     change_control_dic(control_dic, 't_MAME_Catalog_build', time.time())
+
+    # --- Save stuff ------------------------------------------------------------------------------
+    db_files = [
+        [cache_index_dic, 'MAME cache index', PATHS.CACHE_INDEX_PATH.getPath()],
+        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+    ]
+    db_dic = fs_save_files(db_files)
 
 # -------------------------------------------------------------------------------------------------
 # Software Lists and ROM audit database building function
@@ -5831,6 +5864,36 @@ def _get_SL_CHD_location(chd_set, SL_name, SL_item_name, disk_dic, SL_Items):
     return location
 
 # -------------------------------------------------------------------------------------------------
+#
+# Checks for errors before scanning for SL ROMs.
+# Display a Kodi dialog if an error is found.
+# Returns a dictionary of settings:
+# options_dic['abort'] is always present.
+# 
+#
+def mame_check_before_build_SL_databases(PATHS, settings, control_dic):
+    options_dic = {}
+    options_dic['abort'] = False
+
+    # --- Error checks ---
+    if not settings['SL_hash_path']:
+        t = ('Software Lists hash path not set. '
+             'Open AML addon settings and configure the location of the MAME hash path in the '
+             '"Paths" tab.')
+        kodi_dialog_OK(t)
+        options_dic['abort'] = True
+        return options_dic
+
+    if not PATHS.MAIN_DB_PATH.exists():
+        t = ('MAME Main database not found. '
+            'Open AML addon settings and configure the location of the MAME executable in the '
+            '"Paths" tab.')
+        kodi_dialog_OK(t)
+        options_dic['abort'] = True
+        return options_dic
+
+    return options_dic
+
 # SL_catalog = { 'name' : {
 #     'display_name': u'', 'num_with_CHDs' : int, 'num_with_ROMs' : int, 'rom_DB_noext' : u'' }, ...
 # }
@@ -6134,6 +6197,9 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     # --- SL build timestamp ---
     change_control_dic(control_dic, 't_SL_DB_build', time.time())
 
+    # --- Save modified stuff in this function ---
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
 # -------------------------------------------------------------------------------------------------
 # ROM/CHD and asset scanner
 # -------------------------------------------------------------------------------------------------
@@ -6187,13 +6253,30 @@ def mame_check_before_scan_MAME_ROMs(PATHS, settings, control_dic):
     return options_dic
 
 # Does not save any file. assets_dic and control_dic mutated by assigment.
-def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
-                        machines, machines_render, assets_dic,
-                        machine_archives_dic, ROM_archive_list):
+def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
+    machines, machines_render, assets_dic, machine_archives_dic,
+    ROM_archive_list, CHD_archive_list):
 
     # At this point paths have been verified and exists.
-    # COMPLETE ME!!! Look at mame_scan_SL_ROMs()
-    # SAVE DATABASES!!!
+    ROM_path_FN = FileName(settings['rom_path'])
+    log_info('mame_scan_MAME_ROMs() ROM dir OP {0}'.format(ROM_path_FN.getOriginalPath()))
+    log_info('mame_scan_MAME_ROMs() ROM dir  P {0}'.format(ROM_path_FN.getPath()))
+
+    if options_dic['scan_CHDs']:
+        CHD_path_FN = FileName(settings['chd_path'])
+        log_info('mame_scan_MAME_ROMs() CHD dir OP {0}'.format(CHD_path_FN.getOriginalPath()))
+        log_info('mame_scan_MAME_ROMs() CHD dir  P {0}'.format(CHD_path_FN.getPath()))
+    else:
+        CHD_path_FN = FileName('')
+        log_info('Scan of CHDs disabled.')
+
+    if options_dic['scan_Samples']:
+        Samples_path_FN = FileName(settings['samples_path'])
+        log_info('mame_scan_MAME_ROMs() Samples dir OP {0}'.format(Samples_path_FN.getOriginalPath()))
+        log_info('mame_scan_MAME_ROMs() Samples dir  P {0}'.format(Samples_path_FN.getPath()))
+    else:
+        Samples_path_FN = FileName('')
+        log_info('Scan of Samples disabled.')
 
     # --- Create a cache of assets ---
     # >> misc_add_file_cache() creates a set with all files in a given directory.
@@ -6265,7 +6348,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
         # --- Disks ---
         # >> Machines with CHDs: 2spicy, sfiii2
         chd_list = machine_archives_dic[key]['CHDs']
-        if chd_list and scan_CHDs:
+        if chd_list and options_dic['scan_CHDs']:
             scan_CHD_machines_total += 1
             has_chd_list = [False] * len(chd_list)
             for idx, chd_name in enumerate(chd_list):
@@ -6286,7 +6369,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
             else:
                 CHD_flag = 'c'
                 scan_CHD_machines_missing += 1
-        elif chd_list and not scan_CHDs:
+        elif chd_list and not options_dic['scan_CHDs']:
             scan_CHD_machines_total += 1
             CHD_flag = 'c'
             scan_CHD_machines_missing += 1
@@ -6457,7 +6540,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
         m_miss_str_list = []
         if machines[key]['sampleof']:
             scan_Samples_total += 1
-            if scan_Samples:
+            if options_dic['scan_Samples']:
                 sample = machines[key]['sampleof']
                 Sample_FN = misc_search_file_cache(Samples_path_str, sample, MAME_SAMPLE_EXTS)
                 if Sample_FN:
@@ -6521,6 +6604,13 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
     change_control_dic(control_dic, 'scan_Samples_missing', scan_Samples_missing)
     change_control_dic(control_dic, 't_MAME_ROMs_scan', time.time())
 
+    # --- Save databases ---
+    db_files = [
+        [assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+    ]
+    db_dic = fs_save_files(db_files)
+
 # -------------------------------------------------------------------------------------------------
 #
 # Checks for errors before scanning for SL ROMs.
@@ -6529,7 +6619,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic,
 # options_dic['abort'] is always present.
 # options_dic['scan_SL_CHDs'] scanning of CHDs is optional.
 #
-def mame_check_before_scan_SL_ROMs(PATHS, g_settings, control_dic):
+def mame_check_before_scan_SL_ROMs(PATHS, settings, control_dic):
     options_dic = {}
     options_dic['abort'] = False
 
@@ -6547,7 +6637,7 @@ def mame_check_before_scan_SL_ROMs(PATHS, g_settings, control_dic):
 
     # >> SL CHDs scanning is optional
     if settings['SL_chd_path']:
-        SL_CHD_path_FN = FileName(g_settings['SL_chd_path'])
+        SL_CHD_path_FN = FileName(settings['SL_chd_path'])
         if not SL_CHD_path_FN.isdir():
             options_dic['scan_SL_CHDs'] = False
             kodi_dialog_OK('SL CHD directory does not exist. SL CHD scanning disabled.')
@@ -6560,7 +6650,7 @@ def mame_check_before_scan_SL_ROMs(PATHS, g_settings, control_dic):
     return options_dic
 
 # Saves SL JSON databases, MAIN_CONTROL_PATH.
-def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, options_dic):
+def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic):
     log_info('mame_scan_SL_ROMs() Starting ...')
 
     # Paths have been verified at this point
@@ -6568,12 +6658,12 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, options_dic):
     log_info('mame_scan_SL_ROMs() SL hash dir OP {0}'.format(SL_hash_dir_FN.getOriginalPath()))
     log_info('mame_scan_SL_ROMs() SL hash dir  P {0}'.format(SL_hash_dir_FN.getPath()))
 
-    SL_ROM_dir_FN = FileName(g_settings['SL_rom_path'])
+    SL_ROM_dir_FN = FileName(settings['SL_rom_path'])
     log_info('mame_scan_SL_ROMs() SL ROM dir OP {0}'.format(SL_ROM_dir_FN.getOriginalPath()))
     log_info('mame_scan_SL_ROMs() SL ROM dir  P {0}'.format(SL_ROM_dir_FN.getPath()))
 
     if options_dic['scan_SL_CHDs']:
-        SL_CHD_path_FN = FileName(g_settings['SL_chd_path'])
+        SL_CHD_path_FN = FileName(settings['SL_chd_path'])
         log_info('mame_scan_SL_ROMs() SL CHD dir OP {0}'.format(SL_CHD_path_FN.getOriginalPath()))
         log_info('mame_scan_SL_ROMs() SL CHD dir  P {0}'.format(SL_CHD_path_FN.getPath()))
     else:
@@ -6652,7 +6742,7 @@ def mame_scan_SL_ROMs(PATHS, control_dic, SL_catalog_dic, options_dic):
             # --- Disks ---
             chd_list = soft_archives[rom_key]['CHDs']
             if chd_list:
-                if scan_SL_CHDs:
+                if options_dic['scan_SL_CHDs']:
                     SL_CHDs_total += 1
                     has_chd_list = [False] * len(chd_list)
                     for idx, chd_file in enumerate(chd_list):
@@ -6786,11 +6876,11 @@ def mame_check_before_scan_MAME_assets(PATHS, settings, control_dic):
     options_dic['abort'] = False
 
     # >> Get assets directory. Abort if not configured/found.
-    if not g_settings['assets_path']:
+    if not settings['assets_path']:
         kodi_dialog_OK('Asset directory not configured. Aborting.')
         options_dic['abort'] = True
         return options_dic
-    Asset_path_FN = FileName(g_settings['assets_path'])
+    Asset_path_FN = FileName(settings['assets_path'])
     if not Asset_path_FN.isdir():
         kodi_dialog_OK('Asset directory does not exist. Aborting.')
         options_dic['abort'] = True

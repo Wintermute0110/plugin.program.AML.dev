@@ -4821,11 +4821,22 @@ def _command_context_setup_plugin():
 
     # --- All in one step (Extract, Build and Scan) ---
     elif menu_item == 1:
-        kodi_dialog_OK('Not implemented yet, sorry.')
         return
+
+        # --- Check for errors ---
+        if not g_settings['mame_prog']:
+            kodi_dialog_OK('MAME executable is not set.')
+            return
+        mame_prog_FN = FileName(g_settings['mame_prog'])
+
+        # --- Extract MAME XML ---
+        # 1) Generates MAME.xml
+        # 2) Resets and saves control_dic
+        (filesize, total_machines) = fs_extract_MAME_XML(PATHS, mame_prog_FN, __addon_version__)
 
     # --- Extract MAME.xml ---
     elif menu_item == 2:
+        # --- Check for errors ---
         if not g_settings['mame_prog']:
             kodi_dialog_OK('MAME executable is not set.')
             return
@@ -5338,40 +5349,33 @@ def _command_context_setup_plugin():
     elif menu_item == 6:
         log_info('_command_setup_plugin() Audit MAME machines ROMs/CHDs ...')
 
-        # --- Load machines, ROMs and CHDs databases ---
-        pDialog = xbmcgui.DialogProgress()
-        pdialog_line1 = 'Loading databases ...'
-        num_items = 4
-        pDialog.create('Advanced MAME Launcher')
-        pDialog.update(int((0*100) / num_items), pdialog_line1, 'Control dic')
+        # --- Check for requirements/errors ---
         control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-        pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Main')
-        machines = fs_load_JSON_file_dic(PATHS.MAIN_DB_PATH.getPath())
-        pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machines Render')
-        machines_render = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-        pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME ROM Audit')
-        audit_roms_dic = fs_load_JSON_file_dic(PATHS.ROM_AUDIT_DB_PATH.getPath())
-        pDialog.update(int((4*100) / num_items), ' ', ' ')
-        pDialog.close()
+
+        # --- Load machines, ROMs and CHDs databases ---
+        db_files = [
+            ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
+            ['render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+            ['audit_roms', 'MAME ROM Audit', PATHS.ROM_AUDIT_DB_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
 
         # --- Audit all MAME machines ---
         # 1) Updates control_dic statistics and timestamp.
-        mame_audit_MAME_all(PATHS, pDialog, g_settings, control_dic,
-                            machines, machines_render, audit_roms_dic)
-        fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+        mame_audit_MAME_all(PATHS, g_settings, control_dic,
+            db_dic['machines'], db_dic['render'], db_dic['audit_roms'])
         kodi_notify('ROM and CHD audit finished')
 
     # --- Audit SL ROMs/CHDs ---
     elif menu_item == 7:
         log_info('_command_setup_plugin() Audit SL ROMs/CHDs ...')
 
-        # --- Load stuff ---
+        # --- Check for requirements/errors ---
         control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
 
         # --- Audit all Software List items ---
-        # 1) Updates control_dic statistics and timestamps.
+        # 1) Updates control_dic statistics and timestamps and saves it.
         mame_audit_SL_all(PATHS, g_settings, control_dic)
-        fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
         kodi_notify('Software Lists audit finished')
 
     # --- Build Step by Step ---
@@ -5394,129 +5398,114 @@ def _command_context_setup_plugin():
         # --- Build main MAME database, PClone list and hashed database ---
         if submenu == 0:
             log_info('_command_setup_plugin() Generating MAME main database and PClone list ...')
-            # --- Error checks ---
-            # >> Check that MAME_XML_PATH exists
-            if not PATHS.MAME_XML_PATH.exists():
-                kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
-                return
 
-            # --- Load databases ---
+            # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+            options_dic = mame_check_before_build_MAME_main_database(PATHS, g_settings, control_dic)
+            if options_dic['abort']: return
 
             # --- Parse MAME XML and generate main database and PClone list ---
-            # 1) Builds the ROM hashed database.
-            # 2) Updates control_dic stats and timestamp.
+            # 1) Builds many things
+            # 2) Updates control_dic stats and timestamp and saves it.
+            #
             # try:
             #     DB = mame_build_MAME_main_database(PATHS, g_settings, control_dic)
             # except GeneralError as err:
             #     log_error(err.msg)
             #     raise SystemExit
-            DB = mame_build_MAME_main_database(PATHS, g_settings, control_dic, __addon_version__)
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            #
+            data_dic = mame_build_MAME_main_database(PATHS, g_settings, control_dic, __addon_version__)
             kodi_notify('Main MAME databases built')
 
         # --- Build ROM audit/scanner databases ---
         elif submenu == 1:
             log_info('_command_setup_plugin() Generating ROM audit/scanner databases ...')
-            # --- Error checks ---
-            # >> Check that MAME_XML_PATH exists
-            # if not PATHS.MAME_XML_PATH.exists():
-            #     kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
-            #     return
+
+            # --- Check for requirements/errors ---
+            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+            options_dic = mame_check_before_build_ROM_audit_databases(PATHS, g_settings, control_dic)
+            if options_dic['abort']: return
 
             # --- Load databases ---
             db_files = [
-                ['control_dic', 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
                 ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
-                ['machines_render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
-                ['devices_db_dic', 'MAME machine Devices', PATHS.DEVICES_DB_PATH.getPath()],
-                ['machine_roms', 'MAME machine ROMs', PATHS.ROMS_DB_PATH.getPath()],
+                ['render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['devices', 'MAME machine Devices', PATHS.DEVICES_DB_PATH.getPath()],
+                ['roms', 'MAME machine ROMs', PATHS.ROMS_DB_PATH.getPath()],
             ]
-            db_dic = _misc_load_files(db_files)
+            db_dic = fs_load_files(db_files)
 
             # --- Generate ROM databases ---
-            # 1) Updates control_dic and t_MAME_Audit_DB_build timestamp.
-            mame_build_ROM_audit_databases(
-                PATHS, g_settings, db_dic['control_dic'],
-                db_dic['machines'], db_dic['machines_render'],
-                db_dic['devices_db_dic'], db_dic['machine_roms'])
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), db_dic['control_dic'])
+            # 1) Updates control_dic and t_MAME_Audit_DB_build timestamp and saves it.
+            mame_build_ROM_audit_databases(PATHS, g_settings, control_dic,
+                db_dic['machines'], db_dic['render'], db_dic['devices'], db_dic['roms'])
             kodi_notify('ROM audit/scanner databases built')
 
         # --- Build MAME catalogs ---
         elif submenu == 2:
             log_info('_command_setup_plugin() Building MAME catalogs ...')
-            # --- Error checks ---
-            # >> Check that main MAME database exists
+
+            # --- Check for requirements/errors ---
+            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+            options_dic = mame_check_before_build_MAME_catalogs(PATHS, g_settings, control_dic)
+            if options_dic['abort']: return
 
             # --- Load databases ---
             db_files = [
-                ['control_dic', 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
                 ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
-                ['machines_render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
-                ['machine_roms', 'MAME machine ROMs', PATHS.ROMS_DB_PATH.getPath()],
+                ['render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['roms', 'MAME machine ROMs', PATHS.ROMS_DB_PATH.getPath()],
                 ['main_pclone_dic', 'MAME PClone dictionary', PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
-                ['assets_dic', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+                ['assets', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+                ['cache_index', 'MAME cache index', PATHS.CACHE_INDEX_PATH.getPath()],
             ]
-            db_dic = _misc_load_files(db_files)
+            db_dic = fs_load_files(db_files)
 
             # --- Build MAME catalog ---
             # >> At this time the asset database will be empty (scanner has not been run). However, 
             # >> the asset cache with an empty database is required to render the machines in the catalogs.
-            # 1) Creates cache_index_dic and SAVES it.
-            # 2) Requires rebuilding of the ROM cache.
-            # 3) Requires rebuilding of the asset cache.
-            # 4) Updates control_dic and t_MAME_Catalog_build timestamp.
-            mame_build_MAME_catalogs(
-                PATHS, g_settings, db_dic['control_dic'],
-                db_dic['machines'], db_dic['machines_render'], db_dic['machine_roms'],
-                db_dic['main_pclone_dic'], db_dic['assets_dic'])
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), db_dic['control_dic'])
+            # 1) Creates cache_index_dic and saves it.
+            # 2) Updates control_dic and saves it.
+            # 3) Does not require to rebuils the render hashed DB.
+            # 4) Requires rebuilding of the render cache.
+            # 5) Requires rebuilding of the asset cache.
+            mame_build_MAME_catalogs(PATHS, g_settings, control_dic,
+                db_dic['machines'], db_dic['render'], db_dic['roms'],
+                db_dic['main_pclone_dic'], db_dic['assets'])
 
             if g_settings['debug_enable_MAME_machine_cache']:
-                cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_ROM_cache(PATHS, machines, machines_render, cache_index_dic, pDialog)
+                fs_build_ROM_cache(PATHS, db_dic['machines'], db_dic['render'], db_dic['cache_index'])
 
             if g_settings['debug_enable_MAME_asset_cache']:
-                if 'cache_index_dic' not in locals():
-                    cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+                fs_build_asset_cache(PATHS, db_dic['assets'], db_dic['cache_index'])
             kodi_notify('MAME Catalogs built')
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
         elif submenu == 3:
-            # --- Error checks ---
-            if not g_settings['SL_hash_path']:
-                t = 'Software Lists hash path not set. ' \
-                    'Open AML addon settings and configure the location of the MAME hash path in the ' \
-                    '"Paths" tab.'
-                kodi_dialog_OK(t)
-                return
-            if not PATHS.MAIN_DB_PATH.exists():
-                t = 'MAME Main database not found. ' \
-                    'Open AML addon settings and configure the location of the MAME executable in the ' \
-                    '"Paths" tab.'
-                kodi_dialog_OK(t)
-                return
+            log_info('_command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
+
+            # --- Check for requirements/errors ---
+            control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+            options_dic = mame_check_before_build_SL_databases(PATHS, g_settings, control_dic)
+            if options_dic['abort']: return
 
             # --- Read main database and control dic ---
             db_files = [
-                ['control_dic', 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
                 ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
-                ['machines_render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
             ]
-            db_dic = _misc_load_files(db_files)
+            db_dic = fs_load_files(db_files)
 
             # --- Build SL databases ---
-            mame_build_SoftwareLists_databases(
-                PATHS, g_settings, db_dic['control_dic'],
-                db_dic['machines'], db_dic['machines_render'])
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), db_dic['control_dic'])
+            # 1) Modifies and saves control_dic
+            mame_build_SoftwareLists_databases(PATHS, g_settings, control_dic,
+                db_dic['machines'], db_dic['render'])
             kodi_notify('Software Lists database built')
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
         elif submenu == 4:
             log_info('_command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
+
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_scan_MAME_ROMs(PATHS, g_settings, control_dic)
@@ -5525,50 +5514,37 @@ def _command_context_setup_plugin():
             # >> Load machine database and control_dic and scan
             db_files = [
                 ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
-                ['machines_render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
-                ['assets_dic', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-                ['machine_archives_dic', 'Machine archives list', PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
+                ['render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['assets', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+                ['m_archives', 'Machine archives list', PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
+                ['cache_index', 'MAME cache index', PATHS.CACHE_INDEX_PATH.getPath()],
                 ['ROM_archive_list', 'ROM List index', PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath()],
                 ['CHD_archive_list', 'CHD list index', PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath()],
             ]
-            db_dic = _misc_load_files(db_files)
+            db_dic = fs_load_files(db_files)
 
             # --- Scan MAME ROMs/CHDs/Samples ---
             # 1) Updates 'flags' field in assets_dic
-            # 2) Updates timestamp t_MAME_ROM_scan in control_dic
-            # 3) Saves control_dic and assets_dic
+            # 2) Updates timestamp t_MAME_ROM_scan and statistics in control_dic.
+            # 3) Saves control_dic and assets_dic.
             # 4) Requires rebuilding the asset hashed DB.
             # 5) Requires rebuilding the asset cache.
-            mame_scan_MAME_ROMs(PATHS, g_settings, control_dic,
-                db_dic['machines'], db_dic['machines_render'], db_dic['assets_dic'],
-                db_dic['machine_archives_dic'], db_dic['ROM_archive_list'],
-                db_dic['CHD_archive_list'])
-
-            # --- Save databases ---
-            # NOTE The addon standard is that mame_* functions save the JSON databases.
-            # Should not these files saved in mame_scan_MAME_ROMs()?
-            line1_str = 'Saving databases ...'
-            num_items = 2
-            pDialog.create('Advanced MAME Launcher', line1_str)
-            pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-            pDialog.update(int((1*100) / num_items), line1_str, 'MAME machine Assets')
-            fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-            pDialog.update(int((2*100) / num_items), ' ', ' ')
-            pDialog.close()
+            mame_scan_MAME_ROMs(PATHS, g_settings, control_dic, options_dic,
+                db_dic['machines'], db_dic['render'], db_dic['assets'],
+                db_dic['m_archives'], db_dic['ROM_archive_list'], db_dic['CHD_archive_list'])
 
             # --- assets have changed. Rebuild hashed database ---
-            fs_build_asset_hashed_db(PATHS, assets_dic, pDialog)
+            fs_build_asset_hashed_db(PATHS, db_dic['assets'])
 
             # --- assets_dic has changed. Update asset cache ---
             if g_settings['debug_enable_MAME_asset_cache']:
-                cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_asset_cache(PATHS, assets_dic, cache_index_dic, pDialog)
+                fs_build_asset_cache(PATHS, db_dic['assets'], db_dic['cache_index'])
             kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
         # --- Scans MAME assets/artwork ---
         elif submenu == 5:
             log_info('_command_setup_plugin() Scanning MAME assets/artwork ...')
+
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_scan_MAME_assets(PATHS, g_settings, control_dic)
@@ -5576,8 +5552,8 @@ def _command_context_setup_plugin():
 
             # >> Load machine database and scan
             db_files = [
-                ['machines_render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
-                ['assets_dic', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+                ['render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
+                ['assets', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
                 ['main_pclone_dic', 'MAME PClone dictionary', PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
                 ['cache_index', 'MAME cache index', PATHS.CACHE_INDEX_PATH.getPath()],
             ]
@@ -5589,19 +5565,20 @@ def _command_context_setup_plugin():
             # 2) Requires rebuilding of the asset hashed DB.
             # 3) Requires rebuilding of the asset cache.
             mame_scan_MAME_assets(PATHS, g_settings, control_dic,
-                db_dic['assets_dic'], db_dic['machines_render'], db_dic['main_pclone_dic'])
+                db_dic['assets'], db_dic['render'], db_dic['main_pclone_dic'])
 
             # --- Assets have changed. Rebuild hashed database ---
-            fs_build_asset_hashed_db(PATHS, db_dic['assets_dic'])
+            fs_build_asset_hashed_db(PATHS, db_dic['assets'])
 
             # --- Asset cache must be regenerated ---
             if g_settings['debug_enable_MAME_asset_cache']:
-                fs_build_asset_cache(PATHS, db_dic['assets_dic'], db_dic['cache_index'])
+                fs_build_asset_cache(PATHS, db_dic['assets'], db_dic['cache_index'])
             kodi_notify('Scanning of assets/artwork finished')
 
         # --- Scan SL ROMs/CHDs ---
         elif submenu == 6:
             log_info('_command_setup_plugin() Scanning SL ROMs/CHDs ...')
+
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_scan_SL_ROMs(PATHS, g_settings, control_dic)
@@ -5611,11 +5588,11 @@ def _command_context_setup_plugin():
             db_files = [
                 ['SL_index_dic', 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
             ]
-            db_dic = _misc_load_files(db_files)
+            db_dic = fs_load_files(db_files)
 
             # 1) Mutates control_dic (timestamp and statistics)
             # 2) Saves control_dic
-            mame_scan_SL_ROMs(PATHS, g_settings, control_dic, db_dic['SL_index_dic'])
+            mame_scan_SL_ROMs(PATHS, g_settings, control_dic, options_dic, db_dic['SL_index_dic'])
             kodi_notify('Scanning of SL ROMs finished')
 
         # --- Scan SL assets/artwork ---
@@ -5623,6 +5600,7 @@ def _command_context_setup_plugin():
         # >> { 'ROM_name' : {'asset1' : 'path', 'asset2' : 'path', ... }, ... }
         elif submenu == 7:
             log_info('_command_setup_plugin() Scanning SL assets/artwork ...')
+
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_scan_SL_assets(PATHS, g_settings, control_dic)
@@ -5636,8 +5614,7 @@ def _command_context_setup_plugin():
             db_dic = fs_load_files(db_files)
 
             # --- Scan SL ---
-            # 1) Mutates control_dic (timestamp and statistics)
-            # 2) Saves control_dic
+            # 1) Mutates control_dic (timestamp and statistics) and saves it.
             mame_scan_SL_assets(PATHS, g_settings, control_dic,
                 db_dic['SL_index_dic'], db_dic['SL_pclone_dic'])
             kodi_notify('Scanning of SL assets finished')
@@ -5645,6 +5622,7 @@ def _command_context_setup_plugin():
         # --- Build MAME machines plot ---
         elif submenu == 8:
             log_debug('Rebuilding MAME machine plots ...')
+
             # --- Check for requirements/errors ---
 
             # --- Load databases ---
@@ -5719,6 +5697,7 @@ def _command_context_setup_plugin():
 #
 def _command_check_all_Favourite_objects():
     # --- Load databases ---
+    # USE fs_load_files()
     pDialog = xbmcgui.DialogProgress()
     num_items = 5
     pDialog.create('Advanced MAME Launcher')
