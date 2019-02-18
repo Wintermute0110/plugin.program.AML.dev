@@ -4812,43 +4812,119 @@ def _command_context_setup_plugin():
     # --- Check MAME version ---
     # >> Run 'mame -?' and extract version from stdout
     if menu_item == 0:
+        log_info('_command_context_setup_plugin() Check MAME version starting ...')
+
+        # --- Check for errors ---
         if not g_settings['mame_prog']:
             kodi_dialog_OK('MAME executable is not set.')
             return
         mame_prog_FN = FileName(g_settings['mame_prog'])
+
+        # --- Check MAME version ---
         mame_version_str = fs_extract_MAME_version(PATHS, mame_prog_FN)
         kodi_dialog_OK('MAME version is {0}'.format(mame_version_str))
 
     # --- All in one step (Extract, Build and Scan) ---
     elif menu_item == 1:
-        return
+        log_info('_command_context_setup_plugin() All in one step starting ...')
 
-        # --- Check for errors ---
+        # --- Extract MAME.xml ---
         if not g_settings['mame_prog']:
             kodi_dialog_OK('MAME executable is not set.')
             return
         mame_prog_FN = FileName(g_settings['mame_prog'])
-
-        # --- Extract MAME XML ---
-        # 1) Generates MAME.xml
-        # 2) Resets and saves control_dic
         (filesize, total_machines) = fs_extract_MAME_XML(PATHS, mame_prog_FN, __addon_version__)
+
+        # --- Build main MAME database, PClone list and hashed database ---
+        control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+        options_dic = mame_check_before_build_MAME_main_database(PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        db_dic = mame_build_MAME_main_database(PATHS, g_settings, control_dic, __addon_version__)
+
+        # --- Build ROM audit/scanner databases ---
+        options_dic = mame_check_before_build_ROM_audit_databases(PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        mame_build_ROM_audit_databases(PATHS, g_settings, control_dic,
+            db_dic['machines'], db_dic['render'], db_dic['devices'], db_dic['roms'])
+
+        # --- Build MAME catalogs ---
+        options_dic = mame_check_before_build_MAME_catalogs(PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        mame_build_MAME_catalogs(PATHS, g_settings, control_dic,
+            db_dic['machines'], db_dic['render'], db_dic['roms'],
+            db_dic['main_pclone_dic'], db_dic['assets'])
+
+        # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
+        options_dic = mame_check_before_build_SL_databases(PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        mame_build_SoftwareLists_databases(PATHS, g_settings, control_dic,
+            db_dic['machines'], db_dic['render'])
+
+        # --- Scan ROMs/CHDs/Samples and updates ROM status ---
+        options_dic = mame_check_before_scan_MAME_ROMs(PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        mame_scan_MAME_ROMs(PATHS, g_settings, control_dic, options_dic,
+            db_dic['machines'], db_dic['render'], db_dic['assets'],
+            db_dic['m_archives'], db_dic['ROM_archive_list'], db_dic['CHD_archive_list'])
+
+        # --- Scans MAME assets/artwork ---
+        options_dic = mame_check_before_scan_MAME_assets(PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        mame_scan_MAME_assets(PATHS, g_settings, control_dic,
+            db_dic['assets'], db_dic['render'], db_dic['main_pclone_dic'])
+
+        # --- Scan SL ROMs/CHDs ---
+        options_dic = mame_check_before_scan_SL_ROMs(PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        mame_scan_SL_ROMs(PATHS, g_settings, control_dic, options_dic, db_dic['SL_index_dic'])
+
+        # --- Scan SL assets/artwork ---
+        options_dic = mame_check_before_scan_SL_assets(PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        mame_scan_SL_assets(PATHS, g_settings, control_dic,
+            db_dic['SL_index_dic'], db_dic['SL_pclone_dic'])
+
+        # --- Build MAME machines plot ---
+        mame_build_MAME_plots(PATHS,
+            db_dic['machines'], db_dic['render'], db_dic['assets'],
+            db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
+            db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
+
+        # --- Buils Software List items plot ---
+        mame_build_SL_plots(PATHS,
+            db_dic['SL_index_dic'], db_dic['SL_machines_dic'], db_dic['History_idx_dic'])
+
+        # --- Regenerate asset hashed database ---
+        fs_build_asset_hashed_db(PATHS, db_dic['assets'])
+
+        # --- Regenerate MAME machine render and assets cache ---
+        if g_settings['debug_enable_MAME_machine_cache']:
+            fs_build_render_cache(PATHS, db_dic['cache_index'], db_dic['render'])
+        if g_settings['debug_enable_MAME_asset_cache']:
+            fs_build_asset_cache(PATHS, db_dic['cache_index'], db_dic['assets'])
 
     # --- Extract MAME.xml ---
     elif menu_item == 2:
-        # --- Check for errors ---
+        log_info('_command_context_setup_plugin() Extract MAME.xml starting ...')
+
+        # --- Check for errors before extracting MAME XML ---
         if not g_settings['mame_prog']:
             kodi_dialog_OK('MAME executable is not set.')
             return
         mame_prog_FN = FileName(g_settings['mame_prog'])
 
         # --- Extract MAME XML ---
+        # 1) Creates MAME.xml
+        # 2) Counts the number of MAME machines.
+        # 3) Resets and saves control_dic.
         (filesize, total_machines) = fs_extract_MAME_XML(PATHS, mame_prog_FN, __addon_version__)
         kodi_dialog_OK('Extracted MAME XML database. '
                        'Size is {0} MB and there are {1} machines.'.format(filesize / 1000000, total_machines))
 
     # --- Build everything ---
     elif menu_item == 3:
+        log_info('_command_context_setup_plugin() Build everything starting ...')
+
         if not PATHS.MAME_XML_PATH.exists():
             kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
             return
@@ -4912,7 +4988,7 @@ def _command_context_setup_plugin():
 
     # --- Scan everything ---
     elif menu_item == 4:
-        log_info('_command_setup_plugin() Scanning everything ...')
+        log_info('_command_setup_plugin() Scanning everything starting ...')
 
         # --- MAME Machines -------------------------------------------------------------------
         # NOTE Here only check for abort conditions. Optinal conditions must be check
@@ -5472,12 +5548,10 @@ def _command_context_setup_plugin():
             mame_build_MAME_catalogs(PATHS, g_settings, control_dic,
                 db_dic['machines'], db_dic['render'], db_dic['roms'],
                 db_dic['main_pclone_dic'], db_dic['assets'])
-
             if g_settings['debug_enable_MAME_machine_cache']:
-                fs_build_ROM_cache(PATHS, db_dic['machines'], db_dic['render'], db_dic['cache_index'])
-
+                fs_build_render_cache(PATHS, db_dic['cache_index'], db_dic['render'])
             if g_settings['debug_enable_MAME_asset_cache']:
-                fs_build_asset_cache(PATHS, db_dic['assets'], db_dic['cache_index'])
+                fs_build_asset_cache(PATHS, db_dic['cache_index'], db_dic['assets'])
             kodi_notify('MAME Catalogs built')
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
@@ -5532,13 +5606,9 @@ def _command_context_setup_plugin():
             mame_scan_MAME_ROMs(PATHS, g_settings, control_dic, options_dic,
                 db_dic['machines'], db_dic['render'], db_dic['assets'],
                 db_dic['m_archives'], db_dic['ROM_archive_list'], db_dic['CHD_archive_list'])
-
-            # --- assets have changed. Rebuild hashed database ---
             fs_build_asset_hashed_db(PATHS, db_dic['assets'])
-
-            # --- assets_dic has changed. Update asset cache ---
             if g_settings['debug_enable_MAME_asset_cache']:
-                fs_build_asset_cache(PATHS, db_dic['assets'], db_dic['cache_index'])
+                fs_build_asset_cache(PATHS, db_dic['cache_index'], db_dic['assets'])
             kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
         # --- Scans MAME assets/artwork ---
@@ -5566,13 +5636,9 @@ def _command_context_setup_plugin():
             # 3) Requires rebuilding of the asset cache.
             mame_scan_MAME_assets(PATHS, g_settings, control_dic,
                 db_dic['assets'], db_dic['render'], db_dic['main_pclone_dic'])
-
-            # --- Assets have changed. Rebuild hashed database ---
             fs_build_asset_hashed_db(PATHS, db_dic['assets'])
-
-            # --- Asset cache must be regenerated ---
             if g_settings['debug_enable_MAME_asset_cache']:
-                fs_build_asset_cache(PATHS, db_dic['assets'], db_dic['cache_index'])
+                fs_build_asset_cache(PATHS, db_dic['cache_index'], db_dic['assets'])
             kodi_notify('Scanning of assets/artwork finished')
 
         # --- Scan SL ROMs/CHDs ---
@@ -5647,12 +5713,7 @@ def _command_context_setup_plugin():
                 db_dic['machines'], db_dic['render'], db_dic['assets'],
                 db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
                 db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
-
-            # --- Asset hashed DB have changed. Rebuild hashed database ---
             fs_build_asset_hashed_db(PATHS, db_dic['assets'])
-
-            # --- Asset cache must be regenerated ---
-            # cache_index is built in fs_build_MAME_catalogs()
             if g_settings['debug_enable_MAME_asset_cache']:
                 fs_build_asset_cache(PATHS, db_dic['cache_index'], db_dic['assets'])
             kodi_notify('MAME machines plot generation finished')
@@ -5674,7 +5735,7 @@ def _command_context_setup_plugin():
                 db_dic['SL_index_dic'], db_dic['SL_machines_dic'], db_dic['History_idx_dic'])
             kodi_notify('SL item plot generation finished')
 
-        # --- Regenerate MAME machine and assets cache ---
+        # --- Regenerate MAME machine render and assets cache ---
         elif submenu == 10:
             log_debug('Rebuilding MAME machine and assets cache ...')
 
