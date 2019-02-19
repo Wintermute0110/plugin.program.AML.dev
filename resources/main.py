@@ -587,19 +587,19 @@ def _get_settings():
     # --- Utilities ---
 
     # --- Advanced ---
-    g_settings['media_state_action']              = int(o.getSetting('media_state_action'))
-    g_settings['delay_tempo']                     = int(round(float(o.getSetting('delay_tempo'))))
-    g_settings['suspend_audio_engine']            = True if o.getSetting('suspend_audio_engine') == 'true' else False
-    g_settings['toggle_window']                   = True if o.getSetting('toggle_window') == 'true' else False
-    g_settings['log_level']                       = int(o.getSetting('log_level'))
-    g_settings['debug_enable_MAME_machine_cache'] = True if o.getSetting('debug_enable_MAME_machine_cache') == 'true' else False
-    g_settings['debug_enable_MAME_asset_cache']   = True if o.getSetting('debug_enable_MAME_asset_cache') == 'true' else False
-    g_settings['debug_MAME_item_data']            = True if o.getSetting('debug_MAME_item_data') == 'true' else False
-    g_settings['debug_MAME_ROM_DB_data']          = True if o.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
-    g_settings['debug_MAME_Audit_DB_data']        = True if o.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
-    g_settings['debug_SL_item_data']              = True if o.getSetting('debug_SL_item_data') == 'true' else False
-    g_settings['debug_SL_ROM_DB_data']            = True if o.getSetting('debug_SL_ROM_DB_data') == 'true' else False
-    g_settings['debug_SL_Audit_DB_data']          = True if o.getSetting('debug_SL_Audit_DB_data') == 'true' else False
+    g_settings['media_state_action']             = int(o.getSetting('media_state_action'))
+    g_settings['delay_tempo']                    = int(round(float(o.getSetting('delay_tempo'))))
+    g_settings['suspend_audio_engine']           = True if o.getSetting('suspend_audio_engine') == 'true' else False
+    g_settings['toggle_window']                  = True if o.getSetting('toggle_window') == 'true' else False
+    g_settings['log_level']                      = int(o.getSetting('log_level'))
+    g_settings['debug_enable_MAME_render_cache'] = True if o.getSetting('debug_enable_MAME_render_cache') == 'true' else False
+    g_settings['debug_enable_MAME_asset_cache']  = True if o.getSetting('debug_enable_MAME_asset_cache') == 'true' else False
+    g_settings['debug_MAME_item_data']           = True if o.getSetting('debug_MAME_item_data') == 'true' else False
+    g_settings['debug_MAME_ROM_DB_data']         = True if o.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
+    g_settings['debug_MAME_Audit_DB_data']       = True if o.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
+    g_settings['debug_SL_item_data']             = True if o.getSetting('debug_SL_item_data') == 'true' else False
+    g_settings['debug_SL_ROM_DB_data']           = True if o.getSetting('debug_SL_ROM_DB_data') == 'true' else False
+    g_settings['debug_SL_Audit_DB_data']         = True if o.getSetting('debug_SL_Audit_DB_data') == 'true' else False
 
     # --- Transform settings data ---
     g_mame_icon   = assets_get_asset_key_MAME_icon(g_settings['artwork_mame_icon'])
@@ -4844,7 +4844,7 @@ def _command_context_setup_plugin():
         # --- Build ROM audit/scanner databases ---
         options_dic = mame_check_before_build_ROM_audit_databases(PATHS, g_settings, control_dic)
         if options_dic['abort']: return
-        mame_build_ROM_audit_databases(PATHS, g_settings, control_dic,
+        audit_dic = mame_build_ROM_audit_databases(PATHS, g_settings, control_dic,
             db_dic['machines'], db_dic['render'], db_dic['devices'], db_dic['roms'])
 
         # --- Build MAME catalogs ---
@@ -4857,7 +4857,7 @@ def _command_context_setup_plugin():
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
         options_dic = mame_check_before_build_SL_databases(PATHS, g_settings, control_dic)
         if options_dic['abort']: return
-        mame_build_SoftwareLists_databases(PATHS, g_settings, control_dic,
+        SL_dic = mame_build_SoftwareLists_databases(PATHS, g_settings, control_dic,
             db_dic['machines'], db_dic['render'])
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
@@ -4865,7 +4865,7 @@ def _command_context_setup_plugin():
         if options_dic['abort']: return
         mame_scan_MAME_ROMs(PATHS, g_settings, control_dic, options_dic,
             db_dic['machines'], db_dic['render'], db_dic['assets'],
-            db_dic['m_archives'], db_dic['ROM_archive_list'], db_dic['CHD_archive_list'])
+            audit_dic['machine_archives'], audit_dic['ROM_archive_list'], audit_dic['CHD_archive_list'])
 
         # --- Scans MAME assets/artwork ---
         options_dic = mame_check_before_scan_MAME_assets(PATHS, g_settings, control_dic)
@@ -4876,13 +4876,12 @@ def _command_context_setup_plugin():
         # --- Scan SL ROMs/CHDs ---
         options_dic = mame_check_before_scan_SL_ROMs(PATHS, g_settings, control_dic)
         if options_dic['abort']: return
-        mame_scan_SL_ROMs(PATHS, g_settings, control_dic, options_dic, db_dic['SL_index_dic'])
+        mame_scan_SL_ROMs(PATHS, g_settings, control_dic, options_dic, SL_dic['SL_index'])
 
         # --- Scan SL assets/artwork ---
         options_dic = mame_check_before_scan_SL_assets(PATHS, g_settings, control_dic)
         if options_dic['abort']: return
-        mame_scan_SL_assets(PATHS, g_settings, control_dic,
-            db_dic['SL_index_dic'], db_dic['SL_pclone_dic'])
+        mame_scan_SL_assets(PATHS, g_settings, control_dic, SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
 
         # --- Build MAME machines plot ---
         mame_build_MAME_plots(PATHS,
@@ -4891,14 +4890,13 @@ def _command_context_setup_plugin():
             db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
 
         # --- Buils Software List items plot ---
-        mame_build_SL_plots(PATHS,
-            db_dic['SL_index_dic'], db_dic['SL_machines_dic'], db_dic['History_idx_dic'])
+        mame_build_SL_plots(PATHS, SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
 
-        # --- Regenerate asset hashed database ---
+        # --- Regenerate asset hashed database one last time ---
         fs_build_asset_hashed_db(PATHS, db_dic['assets'])
 
         # --- Regenerate MAME machine render and assets cache ---
-        if g_settings['debug_enable_MAME_machine_cache']:
+        if g_settings['debug_enable_MAME_render_cache']:
             fs_build_render_cache(PATHS, db_dic['cache_index'], db_dic['render'])
         if g_settings['debug_enable_MAME_asset_cache']:
             fs_build_asset_cache(PATHS, db_dic['cache_index'], db_dic['assets'])
@@ -5542,13 +5540,13 @@ def _command_context_setup_plugin():
             # >> the asset cache with an empty database is required to render the machines in the catalogs.
             # 1) Creates cache_index_dic and saves it.
             # 2) Updates control_dic and saves it.
-            # 3) Does not require to rebuils the render hashed DB.
+            # 3) Does not require to rebuils the render hashed database.
             # 4) Requires rebuilding of the render cache.
             # 5) Requires rebuilding of the asset cache.
             mame_build_MAME_catalogs(PATHS, g_settings, control_dic,
                 db_dic['machines'], db_dic['render'], db_dic['roms'],
                 db_dic['main_pclone_dic'], db_dic['assets'])
-            if g_settings['debug_enable_MAME_machine_cache']:
+            if g_settings['debug_enable_MAME_render_cache']:
                 fs_build_render_cache(PATHS, db_dic['cache_index'], db_dic['render'])
             if g_settings['debug_enable_MAME_asset_cache']:
                 fs_build_asset_cache(PATHS, db_dic['cache_index'], db_dic['assets'])
@@ -5590,12 +5588,18 @@ def _command_context_setup_plugin():
                 ['machines', 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
                 ['render', 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
                 ['assets', 'MAME machine Assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-                ['m_archives', 'Machine archives list', PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
+                ['machine_archives', 'Machine archives list', PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
                 ['cache_index', 'MAME cache index', PATHS.CACHE_INDEX_PATH.getPath()],
                 ['ROM_archive_list', 'ROM List index', PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath()],
                 ['CHD_archive_list', 'CHD list index', PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath()],
             ]
             db_dic = fs_load_files(db_files)
+            # For compatibility with "All in one step" menu option
+            audit_dic = {
+                'machine_archives' : db_dic['machine_archives'],
+                'ROM_archive_list' : db_dic['ROM_archive_list'],
+                'CHD_archive_list' : db_dic['CHD_archive_list'],
+            }
 
             # --- Scan MAME ROMs/CHDs/Samples ---
             # 1) Updates 'flags' field in assets_dic
@@ -5605,7 +5609,7 @@ def _command_context_setup_plugin():
             # 5) Requires rebuilding the asset cache.
             mame_scan_MAME_ROMs(PATHS, g_settings, control_dic, options_dic,
                 db_dic['machines'], db_dic['render'], db_dic['assets'],
-                db_dic['m_archives'], db_dic['ROM_archive_list'], db_dic['CHD_archive_list'])
+                audit_dic['machine_archives'], audit_dic['ROM_archive_list'], audit_dic['CHD_archive_list'])
             fs_build_asset_hashed_db(PATHS, db_dic['assets'])
             if g_settings['debug_enable_MAME_asset_cache']:
                 fs_build_asset_cache(PATHS, db_dic['cache_index'], db_dic['assets'])
@@ -5650,15 +5654,15 @@ def _command_context_setup_plugin():
             options_dic = mame_check_before_scan_SL_ROMs(PATHS, g_settings, control_dic)
             if options_dic['abort']: return
 
-            # >> Load SL and scan ROMs/CHDs. fs_scan_SL_ROMs() updates each SL database.
+            # --- Load SL and scan ROMs/CHDs ---
             db_files = [
-                ['SL_index_dic', 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
+                ['SL_index', 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
             ]
-            db_dic = fs_load_files(db_files)
+            SL_dic = fs_load_files(db_files)
 
             # 1) Mutates control_dic (timestamp and statistics)
             # 2) Saves control_dic
-            mame_scan_SL_ROMs(PATHS, g_settings, control_dic, options_dic, db_dic['SL_index_dic'])
+            mame_scan_SL_ROMs(PATHS, g_settings, control_dic, options_dic, SL_dic['SL_index'])
             kodi_notify('Scanning of SL ROMs finished')
 
         # --- Scan SL assets/artwork ---
@@ -5674,15 +5678,14 @@ def _command_context_setup_plugin():
 
             # --- Load SL databases ---
             db_files = [
-                ['SL_index_dic', 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
-                ['SL_pclone_dic', 'Software Lists Parent/Clone database', PATHS.SL_PCLONE_DIC_PATH.getPath()],
+                ['SL_index', 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
+                ['SL_PClone_dic', 'Software Lists Parent/Clone database', PATHS.SL_PCLONE_DIC_PATH.getPath()],
             ]
-            db_dic = fs_load_files(db_files)
+            SL_dic = fs_load_files(db_files)
 
             # --- Scan SL ---
             # 1) Mutates control_dic (timestamp and statistics) and saves it.
-            mame_scan_SL_assets(PATHS, g_settings, control_dic,
-                db_dic['SL_index_dic'], db_dic['SL_pclone_dic'])
+            mame_scan_SL_assets(PATHS, g_settings, control_dic, SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
             kodi_notify('Scanning of SL assets finished')
 
         # --- Build MAME machines plot ---
@@ -5705,10 +5708,9 @@ def _command_context_setup_plugin():
             db_dic = fs_load_files(db_files)
 
             # --- Traverse MAME machines and build plot ---
-            # 1) Mutates assets database
-            # 2) Internally saves assets database.
-            # 3) Requires rebuilding of the asset hashed DB with fs_build_asset_hashed_db()
-            # 4) Requires rebuilding if the asset cache with fs_build_asset_cache()
+            # 1) Mutates and saves the assets database
+            # 2) Requires rebuilding of the asset hashed DB with fs_build_asset_hashed_db()
+            # 3) Requires rebuilding if the asset cache with fs_build_asset_cache()
             mame_build_MAME_plots(PATHS,
                 db_dic['machines'], db_dic['render'], db_dic['assets'],
                 db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
@@ -5724,15 +5726,19 @@ def _command_context_setup_plugin():
 
             # --- Load databases ---
             db_files = [
-                ['SL_index_dic', 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
-                ['SL_machines_dic', 'Software Lists machines', PATHS.SL_MACHINES_PATH.getPath()],
-                ['History_idx_dic', 'History DAT index', PATHS.HISTORY_IDX_PATH.getPath()],
+                ['SL_index', 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
+                ['SL_machines', 'Software Lists machines', PATHS.SL_MACHINES_PATH.getPath()],
+                ['history_idx_dic', 'History DAT index', PATHS.HISTORY_IDX_PATH.getPath()],
             ]
             db_dic = fs_load_files(db_files)
+            # For compatibility with "All in one step" menu option
+            SL_dic = {
+                'SL_index' : db_dic['SL_index'],
+                'SL_machines' : db_dic['SL_machines'],
+            }
 
             # --- Build plots ---
-            mame_build_SL_plots(PATHS,
-                db_dic['SL_index_dic'], db_dic['SL_machines_dic'], db_dic['History_idx_dic'])
+            mame_build_SL_plots(PATHS, SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
             kodi_notify('SL item plot generation finished')
 
         # --- Regenerate MAME machine render and assets cache ---

@@ -15,10 +15,10 @@
 
 # --- Python standard library ---
 from __future__ import unicode_literals
-import zipfile as z
-import struct
 import binascii
+import struct
 import xml.etree.ElementTree as ET
+import zipfile as z
 try:
     from PIL import Image, ImageDraw, ImageFont
     PILLOW_AVAILABLE = True
@@ -4086,6 +4086,10 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         'roms' : machines_roms,
         'main_pclone_dic' : main_pclone_dic,
         'assets' : assets_dic,
+        'history_idx_dic' : history_idx_dic,
+        'mameinfo_idx_dic' : mameinfo_idx_dic,
+        'gameinit_idx_list' : gameinit_idx_dic,
+        'command_idx_list' : command_idx_dic,
     }
 
     return data_dic
@@ -4639,6 +4643,17 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
     ]
     db_dic = fs_save_files(db_files, json_write_func)
+
+    # Return an dictionary with reference to the objects just in case they are needed after
+    # this function (in "Build everything", for example.
+    audit_dic = {
+        'audit_roms' : audit_roms_dic,
+        'machine_archives' : machine_archives_dic,
+        'ROM_archive_list' : ROM_archive_list,
+        'CHD_archive_list' : CHD_archive_list,
+    }
+
+    return audit_dic
 
 # -------------------------------------------------------------------------------------------------
 #
@@ -5911,7 +5926,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     SL_dir_FN = FileName(settings['SL_hash_path'])
     log_debug('mame_build_SoftwareLists_databases() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
 
-    # --- Scan all XML files in Software Lists directory and save SL and SL ROMs databases ---
+    # --- Scan all XML files in Software Lists directory and save SL catalog and SL databases ---
     log_info('Processing Software List XML files ...')
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
@@ -5942,16 +5957,16 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # >> Add software list to catalog
         num_SL_with_ROMs += SLData.num_with_ROMs
         num_SL_with_CHDs += SLData.num_with_CHDs
-        SL = {'display_name'  : SLData.display_name, 
-              'num_with_ROMs' : SLData.num_with_ROMs,
-              'num_with_CHDs' : SLData.num_with_CHDs,
-              'rom_DB_noext'  : FN.getBase_noext()
+        SL = {
+            'display_name'  : SLData.display_name,
+            'num_with_ROMs' : SLData.num_with_ROMs,
+            'num_with_CHDs' : SLData.num_with_CHDs,
+            'rom_DB_noext'  : FN.getBase_noext(),
         }
         SL_catalog_dic[FN.getBase_noext()] = SL
 
         # >> Update progress
         processed_files += 1
-    fs_write_JSON_file(PATHS.SL_INDEX_PATH.getPath(), SL_catalog_dic)
     pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, ' ')
 
     # --- Make the SL ROM/CHD unified Audit databases ---
@@ -5984,7 +5999,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         SL_ROMs = fs_load_JSON_file_dic(SL_ROMs_DB_FN.getPath(), verbose = False)
 
         # --- First add the SL item ROMs to the audit database ---
-        SL_Audit_ROMs_dic = {}        
+        SL_Audit_ROMs_dic = {}
         for SL_item_name in SL_ROMs:
             # >> If SL item is a clone then create parent_rom_dic. This is only needed in the
             # >> SPLIT set, so current code is a bit inefficient for other sets.
@@ -6097,7 +6112,6 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         SL_PClone_dic[sl_name] = pclone_dic
         # >> Update progress
         processed_files += 1
-    fs_write_JSON_file(PATHS.SL_PCLONE_DIC_PATH.getPath(), SL_PClone_dic)
     pDialog.update((processed_files*100) // total_files, pdialog_line1, ' ')
 
     # --- Make a list of machines that can launch each SL ---
@@ -6119,10 +6133,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
                                       'devices'     : machines[machine_name]['devices']}
                     SL_machine_list.append(SL_machine_dic)
         SL_machines_dic[SL_name] = SL_machine_list
-
-        # >> Update progress
         processed_SL += 1
-    fs_write_JSON_file(PATHS.SL_MACHINES_PATH.getPath(), SL_machines_dic)
     pDialog.update((processed_SL*100) // total_SL, pdialog_line1, ' ')
 
     # --- Empty SL asset DB ---
@@ -6131,7 +6142,6 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     pDialog.update(0, pdialog_line1)
     total_SL = len(SL_catalog_dic)
     processed_SL = 0
-    SL_machines_dic = {}
     for SL_name in sorted(SL_catalog_dic):
         # --- Update progress ---
         pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'Software List {0}'.format(SL_name))
@@ -6150,8 +6160,6 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
 
         # --- Write SL asset JSON ---
         fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
-
-        # >> Update progress
         processed_SL += 1
     pDialog.update((processed_SL*100) // total_SL, pdialog_line1, ' ')
     pDialog.close()
@@ -6197,8 +6205,33 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     # --- SL build timestamp ---
     change_control_dic(control_dic, 't_SL_DB_build', time.time())
 
-    # --- Save modified stuff in this function ---
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    # --- Save modified/created stuff in this function ---
+    if OPTION_LOWMEM_WRITE_JSON:
+        json_write_func = fs_write_JSON_file_lowmem
+        log_debug('Using fs_write_JSON_file_lowmem() JSON writer')
+    else:
+        json_write_func = fs_write_JSON_file
+        log_debug('Using fs_write_JSON_file() JSON writer')
+    db_files = [
+        # Fix this list of files!!!
+        [SL_catalog_dic, 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
+        [SL_PClone_dic, 'Software Lists P/Clone', PATHS.SL_PCLONE_DIC_PATH.getPath()],
+        [SL_machines_dic, 'Software Lists Machines', PATHS.SL_MACHINES_PATH.getPath()],
+        # --- Save control_dic after everything is saved ---
+        [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
+    ]
+    db_dic = fs_save_files(db_files, json_write_func)
+
+    # Return an dictionary with reference to the objects just in case they are needed after
+    # this function (in "Build everything", for example. This saves time (databases do not
+    # need to be reloaded) and apparently memory as well.
+    SL_dic = {
+        'SL_index' : SL_catalog_dic,
+        'SL_PClone_dic' : SL_PClone_dic,
+        'SL_machines' : SL_machines_dic,
+    }
+
+    return SL_dic
 
 # -------------------------------------------------------------------------------------------------
 # ROM/CHD and asset scanner

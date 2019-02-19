@@ -84,7 +84,7 @@
     <setting label="Log level" type="enum" id="log_level" default="2" values="ERROR|WARNING|INFO|VERBOSE|DEBUG" />
 
     <setting id="separator" type="lsep" label="MAME database cache" />
-    <setting label="Enable MAME machine cache" type="bool" default="false" id="debug_enable_MAME_machine_cache" />
+    <setting label="Enable MAME render cache" type="bool" default="false" id="debug_enable_MAME_render_cache" />
     <setting label="Enable MAME asset cache" type="bool" default="false" id="debug_enable_MAME_asset_cache" />
 
     <setting id="separator" type="lsep" label="Information dump" />
