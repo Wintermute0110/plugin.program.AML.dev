@@ -1082,10 +1082,6 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR violet]bestgames[/COLOR]: '{0}'".format(machine['bestgames']))
     slist.append("[COLOR violet]catlist[/COLOR]: '{0}'".format(machine['catlist']))
     slist.append("[COLOR violet]catver[/COLOR]: '{0}'".format(machine['catver']))
-    # >> Deprecated
-    slist.append("[COLOR skyblue]coins[/COLOR]: {0}".format(machine['coins']))
-    # >> Deprecated
-    slist.append("[COLOR skyblue]control_type[/COLOR]: {0}".format(unicode(machine['control_type'])))
     # --- Devices list is a special case ---
     if machine['devices']:
         for i, device in enumerate(machine['devices']):
@@ -1843,12 +1839,17 @@ def mame_build_MAME_plots(PATHS, machines, machines_render, assets_dic,
         if machine_name in gameinit_info_set: Flag_list.append('Gameinit')
         if machine_name in command_info_set: Flag_list.append('Command')
         Flag_str = ', '.join(Flag_list)
-        if m['control_type']:
-            controls_str = 'Controls {0}'.format(mame_get_control_str(m['control_type']))
+        if m['input']:
+            control_list = [ctrl_dic['type'] for ctrl_dic in m['input']['control_list']]
+        else:
+            control_list = []
+        if control_list:
+            controls_str = 'Controls {0}'.format(mame_get_control_str(control_list))
         else:
             controls_str = 'No controls'
         mecha_str = 'Mechanical' if m['isMechanical'] else 'Non-mechanical'
-        coin_str  = 'Machine has {0} coin slots'.format(m['coins']) if m['coins'] > 0 else 'Machine has no coin slots'
+        n_coins = m['input']['att_coins'] if m['input'] else 0
+        coin_str  = 'Machine has {0} coin slots'.format(n_coins) if n_coins > 0 else 'Machine has no coin slots'
         SL_str    = ', '.join(m['softwarelists']) if m['softwarelists'] else ''
 
         plot_str_list = []
@@ -3703,16 +3704,6 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         #     ]
         # }
         elif event == 'start' and elem.tag == 'input':
-            # --- Keep this as is it now for compatibility ---
-            if 'coins' in elem.attrib:
-                machine['coins'] = int(elem.attrib['coins'])
-
-            # --- Keep this as it is now for compatibility ---
-            # >> Iterate children of <input> and search for <control> tags
-            for control_child in elem:
-                if control_child.tag == 'control':
-                    machine['control_type'].append(control_child.attrib['type'])
-
             # --- New 'input' field in 0.9.6 ---
             # --- <input> attributes ---
             att_players = int(elem.attrib['players']) if 'players' in elem.attrib else 0
@@ -3822,8 +3813,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             #     print("Machine {0}: num_displays == 0 and not machine['ismechanical']".format(m_name))
             #     raise GeneralError
 
-            # >> Mark dead machines. A machine is dead if Status is preliminary AND have no controls
-            if m_render['driver_status'] == 'preliminary' and not machine['control_type']:
+            # >> Mark dead machines. A machine is dead if Status is preliminary AND have no controls.
+            if m_render['driver_status'] == 'preliminary' and not machine['input']['control_list']:
                 machine['isDead'] = True
 
             # >> Delete XML element once it has been processed
@@ -3849,7 +3840,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
                 if m_render['cloneof']: stats_BIOS_clones += 1
                 else:                   stats_BIOS_parents += 1
             if runnable:
-                if machine['coins'] > 0:
+                if machine['input']['att_coins'] > 0:
                     stats_coin += 1
                     if m_render['cloneof']: stats_coin_clones += 1
                     else:                   stats_coin_parents += 1
@@ -3886,12 +3877,10 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     pDialog.update(100)
     pDialog.close()
     log_info('Processed {0} MAME XML events'.format(num_iteration))
-    log_info('Processed machines {0}'.format(stats_processed_machines))
-    log_info('Parents            {0}'.format(stats_parents))
-    log_info('Clones             {0}'.format(stats_clones))
-    log_info('Dead machines      {0}'.format(stats_dead))
-    log_info('Dead parents       {0}'.format(stats_dead_parents))
-    log_info('Dead clones        {0}'.format(stats_dead_clones))
+    log_info('Processed machines {0} ({1} parents, {2} clones)'.format(
+        stats_processed_machines, stats_parents, stats_clones))
+    log_info('Dead machines      {0} ({1} parents, {2} clones)'.format(
+        stats_dead, stats_dead_parents, stats_dead_clones))
 
     # ---------------------------------------------------------------------------------------------
     # Main parent-clone list
@@ -4735,7 +4724,8 @@ def mame_check_before_build_MAME_catalogs(PATHS, settings, control_dic):
 #    }
 #
 def mame_build_MAME_catalogs(PATHS, settings, control_dic,
-                             machines, machines_render, machine_roms, main_pclone_dic, assets_dic):
+    machines, machines_render, machine_roms, main_pclone_dic, assets_dic):
+
     # >> Progress dialog
     pDialog_line1 = 'Building catalogs ...'
     pDialog = xbmcgui.DialogProgress()
@@ -4785,8 +4775,9 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
         machine_render = machines_render[parent_name]
+        n_coins = machine_main['input']['att_coins'] if machine_main['input'] else 0
         if machine_main['isMechanical']: continue
-        if machine_main['coins'] == 0: continue
+        if n_coins == 0: continue
         if machine_main['isDead']: continue
         if machine_render['isDevice']: continue
 
@@ -4797,8 +4788,12 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         #
         # Unusual machine driver exceptions (must be Normal and not Unusual):
         #
-        ctrl_list = machine_main['control_type']
-        if ('only_buttons' in ctrl_list and len(ctrl_list) > 1) or \
+        # control_list = machine_main['control_type']
+        if machine_main['input']:
+            control_list = [ctrl_dic['type'] for ctrl_dic in machine_main['input']['control_list']]
+        else:
+            control_list = []
+        if ('only_buttons' in control_list and len(control_list) > 1) or \
            machine_main['sourcefile'] == '88games.cpp' or \
            machine_main['sourcefile'] == 'cball.cpp' or \
            machine_main['sourcefile'] == 'asteroid.cpp':
@@ -4808,8 +4803,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         #
         # Unusual machines. Most of them you don't wanna play.
         #
-        elif not ctrl_list or 'only_buttons' in ctrl_list or 'gambling' in ctrl_list or \
-             'hanafuda' in ctrl_list or 'mahjong' in ctrl_list or \
+        elif not control_list or 'only_buttons' in control_list or 'gambling' in control_list or \
+             'hanafuda' in control_list or 'mahjong' in control_list or \
              machine_main['sourcefile'] == 'aristmk5.cpp' or \
              machine_main['sourcefile'] == 'adp.cpp' or \
              machine_main['sourcefile'] == 'mpu4vid.cpp' or \
@@ -4839,8 +4834,9 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
         machine_render = machines_render[parent_name]
+        n_coins = machine_main['input']['att_coins'] if machine_main['input'] else 0
         if machine_main['isMechanical']: continue
-        if machine_main['coins'] > 0: continue
+        if n_coins > 0: continue
         if machine_main['isDead']: continue
         if machine_render['isDevice']: continue
         parent_dic[parent_name] = machine_render['description']
@@ -5108,7 +5104,11 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         # >> Order alphabetically the list
-        pretty_control_type_list = mame_improve_control_type_list(machine['control_type'])
+        if machine['input']:
+            control_list = [ctrl_dic['type'] for ctrl_dic in machine['input']['control_list']]
+        else:
+            control_list = []
+        pretty_control_type_list = mame_improve_control_type_list(control_list)
         sorted_control_type_list = sorted(pretty_control_type_list)
         # >> Maybe a setting should be added for compact or non-compact control list
         # sorted_control_type_list = mame_compress_item_list(sorted_control_type_list)
@@ -5141,7 +5141,11 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         # >> Order alphabetically the list
-        pretty_control_type_list = mame_improve_control_type_list(machine['control_type'])
+        if machine['input']:
+            control_list = [ctrl_dic['type'] for ctrl_dic in machine['input']['control_list']]
+        else:
+            control_list = []
+        pretty_control_type_list = mame_improve_control_type_list(control_list)
         sorted_control_type_list = sorted(pretty_control_type_list)
         compressed_control_type_list = mame_compress_item_list_compact(sorted_control_type_list)
         if not compressed_control_type_list: compressed_control_type_list = [ '[ No controls ]' ]

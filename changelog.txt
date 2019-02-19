@@ -40,6 +40,8 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
+[B]Advanced MAME Launcher | version 0.10.0 | XX May 2019[/B]
+
 
 [B]Advanced MAME Launcher | version 0.9.9 | XX February 2019[/B]
 
@@ -55,12 +57,12 @@ FEATURE  [CORE] Implement context menu "All in one (Extract, Build and Scan)"
 
 FEATURE  [CORE] Refactoring and code cleaning of the addon setup functions (DB build, scanner).
 
+FEATURE  [CORE] Remove redundant fields from MAME DB 'coins' and 'control_type'. Use new
+         'input' data structure to replace them.
+
 WIP      [CORE] At least two directories for samples are needed. MAME includes a default samples
          directory with some samples used by some machines. Both directories must be configured
          in mame.ini in order to get all the samples working.
-
-WIP      [CORE] Remove redundant fields from MAME DB like 'coins' and 'control_type'. Use new
-         'input' data structure to replace them.
 
 FIX      In MAME 0.206, some clone merged ROMs are not present in the parent machine, only
          in the BIOS. For example, in machine adonisce (clone of adonis). Before 0.206, such

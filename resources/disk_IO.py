@@ -106,8 +106,6 @@ def fs_new_machine_dic():
         'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
         'display_rotate' : [], # (0|90|180|270) #REQUIRED>
         'input'          : {},
-        'coins'          : 0,  # Deprecated field 0.9.6
-        'control_type'   : [], # Deprecated field 0.9.6
         'softwarelists'  : [],
         'devices'        : [], # List of dictionaries. See comments avobe.
         # >> Custom AML data (from INI files or generated)
@@ -1173,7 +1171,7 @@ def fs_build_main_hashed_db(PATHS, machines, machines_render):
                 machine_dic.update(machines_render[key])
                 hashed_db_dic[key] = machine_dic
         # --- Save JSON file ---
-        hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '.json')
+        hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '_machines.json')
         fs_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic, verbose = False)
         item_count += 1
         pDialog.update(int((item_count*100) / num_items))
@@ -1187,7 +1185,7 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
     log_debug('fs_get_machine_main_db_hash() machine {0}'.format(machine_name))
     md5_str = hashlib.md5(machine_name).hexdigest()
     # WARNING Python slicing does not work like in C/C++!
-    hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '.json')
+    hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_machines.json')
     hashed_db_dic = fs_load_JSON_file_dic(hash_DB_FN.getPath())
 
     return hashed_db_dic[machine_name]
