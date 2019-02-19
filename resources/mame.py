@@ -3304,7 +3304,6 @@ def mame_build_SL_names(PATHS, settings):
 # -------------------------------------------------------------------------------------------------
 # MAME database building
 # -------------------------------------------------------------------------------------------------
-
 #
 # Checks for errors before scanning for SL ROMs.
 # Display a Kodi dialog if an error is found.
@@ -3315,11 +3314,12 @@ def mame_check_before_build_MAME_main_database(PATHS, settings, control_dic):
     options_dic = {}
     options_dic['abort'] = False
 
-    # --- Check that MAME database have been built ---
+    # --- Check for errors ---
     # >> Check that MAME_XML_PATH exists
     if not PATHS.MAME_XML_PATH.exists():
         kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
-        return
+        options_dic['abort'] = True
+        return options_dic
 
     return options_dic
 
@@ -5381,6 +5381,12 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
     ]
     db_dic = fs_save_files(db_files)
+
+    # Return an dictionary with reference to the objects just in case they are needed after
+    # this function (in "Build everything", for example. This saves time (databases do not
+    # need to be reloaded) and apparently memory as well.
+
+    return cache_index_dic
 
 # -------------------------------------------------------------------------------------------------
 # Software Lists and ROM audit database building function

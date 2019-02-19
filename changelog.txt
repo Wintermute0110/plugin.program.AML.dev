@@ -51,9 +51,9 @@ FEATURE  [CORE] Add plots for entries in the root window.
 FEATURE  [CORE] Renamed the "Machines by Score" filter to "Machines by Rating", to avoid
          confusing with scores in games.
 
-WORKING  [CORE] Implement context menu "All in one (Extract, Build and Scan)"
+FEATURE  [CORE] Implement context menu "All in one (Extract, Build and Scan)"
 
-WORKING  [CORE] Refactoring and code cleaning of the addon setup functions (DB build, scanner).
+FEATURE  [CORE] Refactoring and code cleaning of the addon setup functions (DB build, scanner).
 
 WIP      [CORE] At least two directories for samples are needed. MAME includes a default samples
          directory with some samples used by some machines. Both directories must be configured
