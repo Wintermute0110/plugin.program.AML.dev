@@ -2247,7 +2247,17 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
                     z_info = zip_f.getinfo(zfile)
                     z_info_file_size = z_info.file_size
                     z_info_crc_hex_str = '{0:08x}'.format(z_info.CRC)
-                    zip_file_dic[zfile] = {'size' : z_info_file_size, 'crc' : z_info_crc_hex_str}
+                    # Unicode filenames in ZIP files cause problems later in this function.
+                    # zfile has type str and it's not encoded in utf-8.
+                    # How to know encoding of ZIP files?
+                    # https://stackoverflow.com/questions/15918314/how-to-detect-string-byte-encoding/15918519
+                    try:
+                        zfile_unicode = zfile.decode('utf-8')
+                    except:
+                        log_error('Exception in mame_audit_SL_machine()')
+                        log_error('Type of zfile = {0}'.format(type(zfile)))
+                        raise
+                    zip_file_dic[zfile_unicode] = {'size' : z_info_file_size, 'crc' : z_info_crc_hex_str}
                     # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
                     # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
                 zip_f.close()
@@ -2257,7 +2267,7 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
                 # >> Mark ZIP file as not found
                 z_cache_status[zip_path] = ZIP_NOT_FOUND
 
-    # >> Audit ROM by ROM
+    # --- Audit ROM by ROM ---
     for m_rom in rom_list:
         if m_rom['type'] == ROM_TYPE_DISK:
             split_list = m_rom['location'].split('/')
@@ -2800,7 +2810,13 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
             # >> audit_roms_list and audit_dic are mutable and edited inside the function()
             audit_rom_list = audit_roms[rom_key]
             audit_dic = fs_new_audit_dic()
-            mame_audit_SL_machine(settings, audit_rom_list, audit_dic)
+            try:
+                mame_audit_SL_machine(settings, audit_rom_list, audit_dic)
+            except:
+                # Print message and re-raise same exception
+                log_error('Excepcion in mame_audit_SL_all()')
+                log_error('SL_name "{0}", rom_key "{1}"'.format(SL_name, rom_key))
+                raise
 
             # >> Audit statistics
             audit_SL_items_runnable += 1
