@@ -2257,8 +2257,6 @@ def _command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         xbmc.executebuiltin('ShowPicture("{0}")'.format(m_assets['fanart']))
 
     # --- View Manual ---
-    # For the PDF viewer implementation look at https://github.com/i96751414/plugin.image.pdfreader
-    #
     # When Pictures menu is clicked on Home, the window pictures (MyPics.xml) opens.
     # Pictures are browsed with the pictures window. When an image is clicked with ENTER the
     # window changes to slideshow (SlideShow.xml) and the pictures are displayed in full 
@@ -2314,22 +2312,58 @@ def _command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             kodi_dialog_OK('Manual "{0}" not found.'.format(man_file_FN.getPath()))
             return
 
+        # --- Only PDF files supported at the moment ---
+        man_ext = man_file_FN.getExt().lower()
+        log_debug('Manual file extension "{0}"'.format(man_ext))
+        if not man_ext == '.pdf':
+            kodi_dialog_OK('Only PDF files supported at the moment.')
+            return
+
         # --- If output directory does not exist create it ---
         if not img_dir_FN.exists():
             log_info('Creating DIR "{0}"'.format(img_dir_FN.getPath()))
             img_dir_FN.makedirs()
 
-        # --- Extract images of manual ---
+        # OLD CODE
+        # pDialog = xbmcgui.DialogProgress()
+        # pDialog.create('Advanced MAME Launcher', 'Extracting manual images')
+        # pDialog.update(0)
+        # status_dic = {
+        #     'manFormat' : '', # PDF, CBZ, CBR, ...
+        #     'numImages' : 0,
+        # }
+        # manuals_extract_pages(status_dic, man_file_FN, img_dir_FN)
+        # pDialog.update(100)
+        # pDialog.close()
+
+        # Check if JSON INFO file exists. If so, read it and compare the timestamp of the
+        # extraction of the images with the timestamp of the PDF file. Do not extract
+        # the images if the images are newer than the PDF
+        
+
+        # --- Open manual file ---
+        status_dic = {}
+        manuals_open_PDF_file(status_dic, man_file_FN, img_dir_FN)
+        if status_dic['abort']:
+            kodi_dialog_OK('Cannot extract images from file {0}'.format(man_file_FN.getPath()))
+            return
+
+        # --- Extract page by page ---
         pDialog = xbmcgui.DialogProgress()
         pDialog.create('Advanced MAME Launcher', 'Extracting manual images')
-        pDialog.update(0)
-        status_dic = {
-            'manFormat' : '', # PDF, CBZ, CBR, ...
-            'numImages' : 0,
-        }
-        manuals_extract_pages(status_dic, man_file_FN, img_dir_FN)
-        pDialog.update(100)
+        page_counter = 0
+        for page_index in range(status_dic['numPages']):
+            pDialog.update(int((100*page_counter)/status_dic['numPages']))
+            manuals_extract_PDF_page(status_dic, man_file_FN, img_dir_FN, page_index)
+            page_counter += 1
+        pDialog.update(int((100*page_counter)/status_dic['numPages']))
         pDialog.close()
+
+        # --- Close file ---
+        manuals_close_PDF_file()
+
+        # --- Create JSON INFO file ---
+        manuals_create_INFO_file(status_dic, PDF_file_FN, img_dir_FN)
 
         # --- Display page images ---
         if status_dic['numImages'] < 1:

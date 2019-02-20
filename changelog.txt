@@ -69,12 +69,12 @@ WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored i
 
 WIP      [FILTERING] Implement <Include>, <Exclude> and <Change> tags.
 
+FEATURE  [MANUALS] Progress bar when extracting PDF pages.
+
 WIP      [MANUALS] When displaying manuals use cached extracted images if they exist.
          When the manual is extracted, create a small JSON file with the timestamp of
          the extraction so it can be compared with the timestamp of the PDF file to
          test if images must be extracted again.
-
-WIP      [MANUALS] Progress bar when extracting PDF pages.
 
 FIX      In MAME 0.206, some clone merged ROMs are not present in the parent machine, only
          in the BIOS. For example, in machine adonisce (clone of adonis). Before 0.206, such

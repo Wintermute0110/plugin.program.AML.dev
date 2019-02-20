@@ -16,11 +16,11 @@
 # --- Python standard library ---
 # NOTE String literals are needed in this file so unicode_literals cannot be defined.
 # from __future__ import unicode_literals
-import zlib
 import pprint
-import types
 import StringIO
 import struct
+import types
+import zlib
 
 try:
     from PIL import Image
@@ -35,6 +35,7 @@ import xbmcgui, xbmcaddon
 # --- Modules/packages in this plugin ---
 from utils import *
 from utils_kodi import *
+from disk_IO import *
 
 # --- Load pdfrw module ---
 __addon_id__ = xbmcaddon.Addon().getAddonInfo('id').decode('utf-8')
@@ -45,7 +46,7 @@ from pdfrw.objects.pdfarray import PdfArray
 from pdfrw.objects.pdfname import BasePdfName
 
 # -------------------------------------------------------------------------------------------------
-# ReaderPDF code
+# ReaderPDF code (deprecated)
 # -------------------------------------------------------------------------------------------------
 def manuals_extract_pages_PDFReader(status_dic, man_file_FN, img_dir_FN):
     # >> Progress dialog
@@ -235,6 +236,7 @@ def _extract_image_from_XObject(xobj_dic):
 
     return img
 
+# OLD CODE (extracts all pages)
 def manuals_extract_pages_pdfrw(status_dic, PDF_file_FN, img_dir_FN):
     # --- Load and parse PDF ---
     reader = PdfReader(PDF_file_FN.getPath())
@@ -305,9 +307,116 @@ def manuals_extract_pages_pdfrw(status_dic, PDF_file_FN, img_dir_FN):
 # -------------------------------------------------------------------------------------------------
 # Main function to extract images
 # -------------------------------------------------------------------------------------------------
+# Global variables for the manual reader.
+PDF_reader = None
+
+# This function receives a PDF file in man_file_FN.
+# Directory img_dir_FN must exist when calling this function.
 #
-# Detect manual file type (PDF, CBZ, CBR) and call extracter img function
+# Mutates status_dic:
+#   status_dic['abort'] = bool  True is extraction should be aborted
+#   status_dic['manFormat'] = string  ['PDF', 'CBZ', 'CBR']
+#   status_dic['numPages'] = int
+#   status_dic['numImages'] = int
 #
-def manuals_extract_pages(status_dic, man_file_FN, img_dir_FN):
-    # manuals_extract_pages_PDFReader(status_dic, man_file_FN, img_dir_FN)
-    manuals_extract_pages_pdfrw(status_dic, man_file_FN, img_dir_FN)
+# Creates a JSON file with the timestamp of the extraction and timestamp of the manual file.
+#
+def manuals_open_PDF_file(status_dic, PDF_file_FN, img_dir_FN):
+    global PDF_reader
+    log_debug('manuals_open_PDF_file() Starting ...')
+
+    # --- Load and parse PDF ---
+    log_info('PDF file "{0}"'.format(PDF_file_FN.getPath()))
+    PDF_reader = PdfReader(PDF_file_FN.getPath())
+    log_info('PDF has {0} pages'.format(PDF_reader.numPages))
+
+    # --- Update status_dic ---
+    status_dic['abort'] = False
+    status_dic['manFormat'] = 'PDF'
+    status_dic['numPages'] = PDF_reader.numPages
+    status_dic['numImages'] = 0
+
+def manuals_close_PDF_file():
+    global PDF_reader
+
+    PDF_reader = None
+
+#
+# Create JSON INFO file
+#
+def manuals_create_INFO_file(status_dic, PDF_file_FN, img_dir_FN):
+    rom_name = PDF_file_FN.getBase_noext()
+    info_FN = img_dir_FN.pjoin(rom_name + '.json')
+    log_info('Info file "{0}"'.format(info_FN.getPath()))
+
+    info_dic = {
+        'PDF_path' : PDF_file_FN.getPath(),
+        'IMG_path' : img_dir_FN.getPath(),
+        'PDF_timestamp' : 0,
+        'IMG_timestamp' : 0,
+    }
+    fs_write_JSON_file(info_FN.getPath(), info_dic)
+
+#
+# Extracts images in a PDF page.
+#
+def manuals_extract_PDF_page(status_dic, man_file_FN, img_dir_FN, page_index):
+    # --- Get page object ---
+    page = PDF_reader.pages[page_index]
+
+    # --- Iterate /Resources in page ---
+    image_counter = 0
+    log_debug('###### Processing page {0} ######'.format(page_index))
+    resource_dic = page['/Resources']
+    for resource_name, resource in resource_dic.iteritems():
+        # >> Skip non /XObject keys in /Resources
+        if resource_name != '/XObject': continue
+
+        # >> DEBUG dump /XObjects dictionary
+        # print('--- resource ---')
+        # pprint(resource)
+        # print('----------------')
+
+        # >> Traverse /XObject dictionary data. Each page may have 0, 1 or more /XObjects
+        # >> If there is more than 1 image in the page there could be more than 1 /XObject.
+        # >> Some /XObjects are not images, for example, /Subtype = /Form.
+        # >> NOTE Also, images may be inside the /Resources of a /From /XObject.
+        img_index = 0
+        for xobj_name, xobj_dic in resource.iteritems():
+            xobj_type = xobj_dic['/Type']
+            xobj_subtype = xobj_dic['/Subtype']
+            # >> Skip XObject forms
+            if xobj_subtype == '/Form':
+                # >> NOTE There could be an image /XObject in the /From : /Resources dictionary.
+                log_info('Skipping /Form /XObject')
+                log_info('--- xobj_dic ---')
+                log_info(pprint.pformat(xobj_dic))
+                log_info('----------------')
+                continue
+
+            # --- Print info ---
+            log_debug('------ Page {0:02d} Image {1:02d} ------'.format(page_index, img_index))
+            log_debug('xobj_name     {0}'.format(xobj_name))
+            log_debug('xobj_type     {0}'.format(xobj_type))
+            log_debug('xobj_subtype  {0}'.format(xobj_subtype))
+            # log_debug('--- xobj_dic ---')
+            # log_debug(pprint.pformat(xobj_dic))
+            # log_debug('----------------')
+
+            # --- Extract image ---
+            # Returns a PIL image object or None
+            img = _extract_image_from_XObject(xobj_dic)
+
+            # --- Save image ---
+            if img:
+                img_basename_str = 'Image_page{0:02d}_img{1:02d}.png'.format(page_index, img_index)
+                img_path_str = img_dir_FN.pjoin(img_basename_str).getPath()
+                log_debug('Saving IMG "{0}"'.format(img_path_str))
+                img.save(img_path_str, 'PNG')
+                image_counter += 1
+                img_index += 1
+            else:
+                log_warning('Error extracting image from /XObject')
+    # --- Update info ---
+    status_dic['numImages'] += image_counter
+    log_info('PDF page {0} extracted {1} images'.format(page_index, image_counter))
