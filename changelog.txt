@@ -3,20 +3,18 @@
 WIP      [CORE] JSON database files (specially MAME_DB_main.json, MAME_DB_render.json and 
          MAME_assets.json) could be compressed with DEFLATE to reduce the size on disk. They
          will decompressed on the fly. I have to test if this is faster than no compression at all.
+         Use low values of compression in the deflate algorithm. Maximum compression is very
+         slow but less compression is fast and may reduce the XML file size a lot.
 
 WIP      [MANUALS] Increase the number of supported PDF filters.
-
-WIP      [MANUALS] When displaying manuals use cached extracted images if they exist.
-
-WIP      [MANUALS] Progress bar when extracting PDF pages.
+         This may required A LOT of Python coding.
 
 WIP      [MANUALS] Support for CBZ/CBR manuals.
+         In theory Kodi VFS is able to read RAR files.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
 
 [B]AML ideas and planned features (read to implement)[/B]
-
-WIP      [DOCS] Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
 WIP      [CORE] [LEIA] Check out the ListItem constructor offscreen parameter in Leia. It can
          dramatically speed up ListItem creation and population.
@@ -32,15 +30,16 @@ WIP      [CORE] [LEIA] Recursive context menus.
          Pay attention to the select() bug in Kodi Krypton.
          This requires Kodi version detection and having different code for Krypton/Leia.
 
-WIP      [MAME FILTERING] Implement <Include>, <Exclude> and <Change> tags.
+
+[B]Advanced MAME Launcher | version 0.10.0 | XX May 2019[/B]
+
+WIP      [DOCS] Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
 WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
          launcher information as well as the ROMs information. ROLs are generated with AML,
          can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
-
-[B]Advanced MAME Launcher | version 0.10.0 | XX May 2019[/B]
 
 
 [B]Advanced MAME Launcher | version 0.9.9 | XX February 2019[/B]
@@ -60,9 +59,22 @@ FEATURE  [CORE] Refactoring and code cleaning of the addon setup functions (DB b
 FEATURE  [CORE] Remove redundant fields from MAME DB 'coins' and 'control_type'. Use new
          'input' data structure to replace them.
 
-WIP      [CORE] At least two directories for samples are needed. MAME includes a default samples
+WORKING  [CORE] At least two directories for samples are needed. MAME includes a default samples
          directory with some samples used by some machines. Both directories must be configured
          in mame.ini in order to get all the samples working.
+
+WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored into ZIP files.
+         The MAME audit engine must take this into account.
+         See comments in mame_scan_MAME_ROMs() @mame.py
+
+WIP      [FILTERING] Implement <Include>, <Exclude> and <Change> tags.
+
+WIP      [MANUALS] When displaying manuals use cached extracted images if they exist.
+         When the manual is extracted, create a small JSON file with the timestamp of
+         the extraction so it can be compared with the timestamp of the PDF file to
+         test if images must be extracted again.
+
+WIP      [MANUALS] Progress bar when extracting PDF pages.
 
 FIX      In MAME 0.206, some clone merged ROMs are not present in the parent machine, only
          in the BIOS. For example, in machine adonisce (clone of adonis). Before 0.206, such

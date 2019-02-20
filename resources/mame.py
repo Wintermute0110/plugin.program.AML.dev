@@ -6254,6 +6254,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
 # 
 #
 def mame_check_before_scan_MAME_ROMs(PATHS, settings, control_dic):
+    log_info('mame_check_before_scan_MAME_ROMs() Starting ...')
     options_dic = {}
     options_dic['abort'] = False
 
@@ -6272,8 +6273,8 @@ def mame_check_before_scan_MAME_ROMs(PATHS, settings, control_dic):
     if settings['chd_path']:
         CHD_path_FN = FileName(settings['chd_path'])
         if not CHD_path_FN.isdir():
-            options_dic['scan_CHDs'] = False
             kodi_dialog_OK('CHD directory does not exist. CHD scanning disabled.')
+            options_dic['scan_CHDs'] = False
         else:
             options_dic['scan_CHDs'] = True
     else:
@@ -6281,17 +6282,34 @@ def mame_check_before_scan_MAME_ROMs(PATHS, settings, control_dic):
         options_dic['scan_CHDs'] = False
 
     # Scanning of Samples is optional.
-    # Remember Samples must have 2 paths.
-    if settings['samples_path']:
-        Samples_path_FN = FileName(settings['samples_path'])
+    # If either Samples path is working then scan samples. If both fail (not configured, not
+    # found) then disable samples scanning.
+    if settings['samples_path_1']:
+        Samples_path_FN = FileName(settings['samples_path_1'])
         if not Samples_path_FN.isdir():
-            options_dic['scan_Samples'] = False
-            kodi_dialog_OK('Samples directory does not exist. Samples scanning disabled.')
+            log_info('Samples 1 dir isdir() failed {0}'.format(Samples_path_FN.getPath()))
+            options_dic['scan_Samples_1'] = False
         else:
-            options_dic['scan_Samples'] = True
+            options_dic['scan_Samples_1'] = True
     else:
-        kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
-        options_dic['scan_Samples'] = False
+        log_info('Samples 1 directory not configured.')
+        options_dic['scan_Samples_1'] = False
+
+    # >> Check if also Samples 2 path is OK.
+    if settings['samples_path_2']:
+        Samples_path_FN = FileName(settings['samples_path_2'])
+        if not Samples_path_FN.isdir():
+            log_info('Samples 2 dir isdir() failed {0}'.format(Samples_path_FN.getPath()))
+            options_dic['scan_Samples_2'] = False
+        else:
+            options_dic['scan_Samples_2'] = True
+    else:
+        log_info('Samples 2 directory not configured.')
+        options_dic['scan_Samples_2'] = False
+
+    options_dic['scan_Samples'] = options_dic['scan_Samples_1'] or options_dic['scan_Samples_2']
+    if not options_dic['scan_Samples']:
+        kodi_dialog_OK('Sample scanning disabled. Both sample paths not configured or not found.')
 
     return options_dic
 
@@ -6299,6 +6317,7 @@ def mame_check_before_scan_MAME_ROMs(PATHS, settings, control_dic):
 def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     machines, machines_render, assets_dic, machine_archives_dic,
     ROM_archive_list, CHD_archive_list):
+    log_info('mame_scan_MAME_ROMs() Starting ...')
 
     # At this point paths have been verified and exists.
     ROM_path_FN = FileName(settings['rom_path'])
@@ -6313,22 +6332,32 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         CHD_path_FN = FileName('')
         log_info('Scan of CHDs disabled.')
 
-    if options_dic['scan_Samples']:
-        Samples_path_FN = FileName(settings['samples_path'])
-        log_info('mame_scan_MAME_ROMs() Samples dir OP {0}'.format(Samples_path_FN.getOriginalPath()))
-        log_info('mame_scan_MAME_ROMs() Samples dir  P {0}'.format(Samples_path_FN.getPath()))
+    if options_dic['scan_Samples_1']:
+        Samples_1_path_FN = FileName(settings['samples_path_1'])
+        log_info('mame_scan_MAME_ROMs() Samples 1 OP {0}'.format(Samples_1_path_FN.getOriginalPath()))
+        log_info('mame_scan_MAME_ROMs() Samples 1 P {0}'.format(Samples_1_path_FN.getPath()))
     else:
-        Samples_path_FN = FileName('')
-        log_info('Scan of Samples disabled.')
+        Samples_1_path_FN = FileName('')
+        log_info('Scan of Samples 1 disabled.')
+
+    if options_dic['scan_Samples_2']:
+        Samples_2_path_FN = FileName(settings['samples_path_2'])
+        log_info('mame_scan_MAME_ROMs() Samples 2 OP {0}'.format(Samples_2_path_FN.getOriginalPath()))
+        log_info('mame_scan_MAME_ROMs() Samples 2  P {0}'.format(Samples_2_path_FN.getPath()))
+    else:
+        Samples_2_path_FN = FileName('')
+        log_info('Scan of Samples 2 disabled.')
 
     # --- Create a cache of assets ---
     # >> misc_add_file_cache() creates a set with all files in a given directory.
     # >> That set is stored in a function internal cache associated with the path.
     # >> Files in the cache can be searched with misc_search_file_cache()
+    # >> misc_add_file_cache() accepts invalid/empty paths, just do not add them to the cache.
     ROM_path_str = ROM_path_FN.getPath()
     CHD_path_str = CHD_path_FN.getPath()
-    Samples_path_str = Samples_path_FN.getPath()
-    STUFF_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_path_str]
+    Samples_1_path_str = Samples_1_path_FN.getPath()
+    Samples_2_path_str = Samples_2_path_FN.getPath()
+    STUFF_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_1_path_str, Samples_2_path_str]
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Scanning files in ROM/CHD/Samples directories ...')
@@ -6570,6 +6599,15 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         file.write('\n'.join(r_list).encode('utf-8'))
 
     # --- Scan Samples ---
+    # PROBLEM with samples scanning.
+    # Most samples are stored in ZIP files. However, the samples shipped with MAME executable
+    # are uncompressed:
+    #   MAME_DIR/samples/floppy/35_seek_12ms.wav
+    #   MAME_DIR/samples/floppy/35_seek_20ms.wav
+    #   ...
+    #   MAME_DIR/samples/MM1_keyboard/beep.wav
+    #   MAME_DIR/samples/MM1_keyboard/power_switch.wav
+    #
     pDialog.create('Advanced MAME Launcher', 'Scanning MAME Samples ...')
     total_machines = len(machines_render)
     processed_machines = 0
@@ -6585,8 +6623,10 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_Samples_total += 1
             if options_dic['scan_Samples']:
                 sample = machines[key]['sampleof']
-                Sample_FN = misc_search_file_cache(Samples_path_str, sample, MAME_SAMPLE_EXTS)
-                if Sample_FN:
+                # Look for sample ZIP files in both directories.
+                Sample_1_FN = misc_search_file_cache(Samples_1_path_str, sample, MAME_SAMPLE_EXTS)
+                Sample_2_FN = misc_search_file_cache(Samples_2_path_str, sample, MAME_SAMPLE_EXTS)
+                if Sample_1_FN or Sample_2_FN:
                     Sample_flag = 'S'
                     scan_Samples_have += 1
                     m_have_str_list.append('Have sample {0}'.format(sample))

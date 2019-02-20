@@ -521,30 +521,18 @@ def _get_settings():
 
     # --- Paths ---
     # >> Mandatory
-    g_settings['mame_prog']    = o.getSetting('mame_prog').decode('utf-8')
-    g_settings['rom_path']     = o.getSetting('rom_path').decode('utf-8')
+    g_settings['mame_prog'] = o.getSetting('mame_prog').decode('utf-8')
+    g_settings['rom_path']  = o.getSetting('rom_path').decode('utf-8')
 
     # >> Optional
-    g_settings['assets_path']  = o.getSetting('assets_path').decode('utf-8')
-    g_settings['dats_path']    = o.getSetting('dats_path').decode('utf-8')
-    g_settings['chd_path']     = o.getSetting('chd_path').decode('utf-8')
-    g_settings['samples_path'] = o.getSetting('samples_path').decode('utf-8')
-    g_settings['SL_hash_path'] = o.getSetting('SL_hash_path').decode('utf-8')
-    g_settings['SL_rom_path']  = o.getSetting('SL_rom_path').decode('utf-8')
-    g_settings['SL_chd_path']  = o.getSetting('SL_chd_path').decode('utf-8')
-
-    # --- DAT paths (order alpahbetically) ---
-    # g_settings['bestgames_path'] = o.getSetting('bestgames_path').decode('utf-8')
-    # g_settings['catlist_path']   = o.getSetting('catlist_path').decode('utf-8')
-    # g_settings['catver_path']    = o.getSetting('catver_path').decode('utf-8')
-    # g_settings['command_path']   = o.getSetting('command_path').decode('utf-8')
-    # g_settings['gameinit_path']  = o.getSetting('gameinit_path').decode('utf-8')
-    # g_settings['genre_path']     = o.getSetting('genre_path').decode('utf-8')
-    # g_settings['history_path']   = o.getSetting('history_path').decode('utf-8')
-    # g_settings['mameinfo_path']  = o.getSetting('mameinfo_path').decode('utf-8')
-    # g_settings['mature_path']    = o.getSetting('mature_path').decode('utf-8')
-    # g_settings['nplayers_path']  = o.getSetting('nplayers_path').decode('utf-8')
-    # g_settings['series_path']    = o.getSetting('series_path').decode('utf-8')
+    g_settings['assets_path']    = o.getSetting('assets_path').decode('utf-8')
+    g_settings['dats_path']      = o.getSetting('dats_path').decode('utf-8')
+    g_settings['chd_path']       = o.getSetting('chd_path').decode('utf-8')
+    g_settings['samples_path_1'] = o.getSetting('samples_path_1').decode('utf-8')
+    g_settings['samples_path_2'] = o.getSetting('samples_path_2').decode('utf-8')
+    g_settings['SL_hash_path']   = o.getSetting('SL_hash_path').decode('utf-8')
+    g_settings['SL_rom_path']    = o.getSetting('SL_rom_path').decode('utf-8')
+    g_settings['SL_chd_path']    = o.getSetting('SL_chd_path').decode('utf-8')
 
     # --- ROM sets ---
     g_settings['mame_rom_set'] = int(o.getSetting('mame_rom_set'))
@@ -585,6 +573,7 @@ def _get_settings():
     g_settings['display_hide_trailers'] = True if o.getSetting('display_hide_trailers') == 'true' else False
 
     # --- Utilities ---
+    # Call to RunPlugin() built-in function.
 
     # --- Advanced ---
     g_settings['media_state_action']             = int(o.getSetting('media_state_action'))
@@ -5827,7 +5816,8 @@ def _command_check_AML_configuration():
     check_dir_WARN(slist, g_settings['chd_path'], 'MAME CHD path')
 
     # --- Samples path ---
-    check_dir_WARN(slist, g_settings['samples_path'], 'MAME Samples path')
+    check_dir_WARN(slist, g_settings['samples_path_1'], 'MAME Samples 1 path')
+    check_dir_WARN(slist, g_settings['samples_path_2'], 'MAME Samples 2 path')
     slist.append('')
 
     # --- Software Lists paths ---
