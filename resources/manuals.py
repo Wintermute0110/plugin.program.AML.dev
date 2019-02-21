@@ -385,11 +385,11 @@ def manuals_create_INFO_file(status_dic, PDF_file_FN, img_dir_FN):
         'PDF_path' : PDF_file_FN.getPath(),
         'IMG_path' : img_dir_FN.getPath(),
         'PDF_timestamp' : PDF_timestamp,
-        'PDF_time' : time.strftime('%a  %d %b %Y  %H:%M:%S', time.localtime(PDF_timestamp)),
+        'PDF_time' : time.strftime('%a %d %b %Y %H:%M:%S', time.localtime(PDF_timestamp)),
         'IMG_timestamp' : IMG_timestamp,
-        'IMG_time' : time.strftime('%a  %d %b %Y  %H:%M:%S', time.localtime(IMG_timestamp)),
+        'IMG_time' : time.strftime('%a %d %b %Y %H:%M:%S', time.localtime(IMG_timestamp)),
     }
-    fs_write_JSON_file(info_FN.getPath(), info_dic)
+    fs_write_JSON_file_pprint(info_FN.getPath(), info_dic)
 
 #
 # Gets a list of filters (codecs) used in the PDF file.
@@ -459,7 +459,7 @@ def manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN):
                 else:
                     log_info('Unknown type(xobj_dic[\'/Filter\']) = "{0}"'.format(type(xobj_dic['/Filter'])))
                     raise TypeError
-                img_filter_list_list.append(filter_list)
+                img_filter_list_list.append(' and '.join(filter_list))
                 img_index += 1
     status_dic['imgFilterList'] = img_filter_list_list
 

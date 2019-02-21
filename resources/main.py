@@ -2438,6 +2438,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
     ACTION_VIEW_REPORT_AUDIT       = 1000
     ACTION_AUDIT_MAME_MACHINE      = 1100
     ACTION_AUDIT_SL_MACHINE        = 1200
+    ACTION_VIEW_MANUAL_JSON        = 1300
 
     # --- Determine if we are in a category, launcher or ROM ---
     log_debug('_command_context_view() machine_name "{0}"'.format(machine_name))
@@ -2475,6 +2476,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
           'View database statistics ...',
           'View scanner reports ...',
           'View audit reports ...',
+          'View manual INFO file',
           'View MAME last execution output ({0})'.format(STD_status),
         ]
     elif view_type == VIEW_SL_ROM:
@@ -2512,7 +2514,8 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         elif selected_value == 4: action = ACTION_VIEW_DB_STATS
         elif selected_value == 5: action = ACTION_VIEW_REPORT_SCANNER
         elif selected_value == 6: action = ACTION_VIEW_REPORT_AUDIT
-        elif selected_value == 7: action = ACTION_VIEW_EXEC_OUTPUT
+        elif selected_value == 7: action = ACTION_VIEW_MANUAL_JSON
+        elif selected_value == 8: action = ACTION_VIEW_EXEC_OUTPUT
         else:
             kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
                            'This is a bug, please report it.')
@@ -3056,6 +3059,36 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         window_title = 'MAME last execution output'
         info_text = ''
         with open(PATHS.MAME_OUTPUT_PATH.getPath(), 'r') as myfile:
+            info_text = myfile.read()
+        _display_text_window(window_title, info_text)
+
+    # --- View manual JSON INFO file of a MAME machine ---
+    elif action == ACTION_VIEW_MANUAL_JSON:
+        pdialog_line1 = 'Loading databases ...'
+        pDialog = xbmcgui.DialogProgress()
+        pDialog.create('Advanced MAME Launcher')
+        pDialog.update(0, pdialog_line1, 'ROM hashed database')
+        machine = fs_get_machine_main_db_hash(PATHS, machine_name)
+        pDialog.update(50, pdialog_line1, 'Assets hashed database')
+        assets = fs_get_machine_assets_db_hash(PATHS, machine_name)
+        pDialog.update(100, pdialog_line1)
+        pDialog.close()
+            
+        if not assets['manual']:
+            kodi_dialog_OK('Manual not found in database.')
+            return
+        man_file_FN = FileName(assets['manual'])
+        img_dir_FN = FileName(g_settings['assets_path']).pjoin('manuals').pjoin(machine_name + '.pages')
+        rom_name = man_file_FN.getBase_noext()
+        info_FN = img_dir_FN.pjoin(rom_name + '.json')
+        if not info_FN.exists():
+            kodi_dialog_OK('Manual JSON INFO file not found. View the manual first.')
+            return
+
+        # --- Read stdout and put into a string ---
+        window_title = 'MAME machine manual JSON INFO file'
+        info_text = ''
+        with open(info_FN.getPath(), 'r') as myfile:
             info_text = myfile.read()
         _display_text_window(window_title, info_text)
 
