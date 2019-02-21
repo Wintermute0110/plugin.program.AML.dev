@@ -645,6 +645,13 @@ class FileName:
     # ---------------------------------------------------------------------------------------------
     # Filesystem functions
     # ---------------------------------------------------------------------------------------------
+    #
+    # mtime (Modification time) is a floating point number giving the number of seconds since
+    # the epoch (see the time module).
+    #
+    def getmtime(self):
+        return os.path.getmtime(self.path)
+
     def stat(self):
         return os.stat(self.path)
 

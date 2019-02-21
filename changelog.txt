@@ -71,7 +71,7 @@ WIP      [FILTERING] Implement <Include>, <Exclude> and <Change> tags.
 
 FEATURE  [MANUALS] Progress bar when extracting PDF pages.
 
-WIP      [MANUALS] When displaying manuals use cached extracted images if they exist.
+FEATURE  [MANUALS] When displaying manuals use cached extracted images if they exist.
          When the manual is extracted, create a small JSON file with the timestamp of
          the extraction so it can be compared with the timestamp of the PDF file to
          test if images must be extracted again.

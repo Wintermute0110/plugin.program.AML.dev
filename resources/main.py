@@ -2338,42 +2338,44 @@ def _command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
 
         # Check if JSON INFO file exists. If so, read it and compare the timestamp of the
         # extraction of the images with the timestamp of the PDF file. Do not extract
-        # the images if the images are newer than the PDF
-        
+        # the images if the images are newer than the PDF.
+        status_dic = manuals_check_img_extraction_needed(man_file_FN, img_dir_FN)
+        if status_dic['extraction_needed']:
+            log_info('Extracting images from PDF file.')
+            # --- Open manual file ---
+            manuals_open_PDF_file(status_dic, man_file_FN, img_dir_FN)
+            if status_dic['abort_extraction']:
+                kodi_dialog_OK('Cannot extract images from file {0}'.format(man_file_FN.getPath()))
+                return
+            manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN)
 
-        # --- Open manual file ---
-        status_dic = {}
-        manuals_open_PDF_file(status_dic, man_file_FN, img_dir_FN)
-        if status_dic['abort']:
-            kodi_dialog_OK('Cannot extract images from file {0}'.format(man_file_FN.getPath()))
-            return
-
-        # --- Extract page by page ---
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher', 'Extracting manual images')
-        page_counter = 0
-        for page_index in range(status_dic['numPages']):
+            # --- Extract page by page ---
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Extracting manual images')
+            page_counter = 0
+            for page_index in range(status_dic['numPages']):
+                pDialog.update(int((100*page_counter)/status_dic['numPages']))
+                manuals_extract_PDF_page(status_dic, man_file_FN, img_dir_FN, page_index)
+                page_counter += 1
             pDialog.update(int((100*page_counter)/status_dic['numPages']))
-            manuals_extract_PDF_page(status_dic, man_file_FN, img_dir_FN, page_index)
-            page_counter += 1
-        pDialog.update(int((100*page_counter)/status_dic['numPages']))
-        pDialog.close()
+            pDialog.close()
+            manuals_close_PDF_file()
 
-        # --- Close file ---
-        manuals_close_PDF_file()
-
-        # --- Create JSON INFO file ---
-        manuals_create_INFO_file(status_dic, PDF_file_FN, img_dir_FN)
+            # --- Create JSON INFO file ---
+            manuals_create_INFO_file(status_dic, man_file_FN, img_dir_FN)
+        else:
+            log_info('Extraction of PDF images skipped.')
 
         # --- Display page images ---
         if status_dic['numImages'] < 1:
+            log_info('No images found. Nothing to show.')
             str_list = [
                 'Cannot find images inside the {0} file. '.format(status_dic['manFormat']),
                 'Check log for more details.'
             ]
             kodi_dialog_OK(''.join(str_list))
             return
-        log_debug('Rendering images in "{0}"'.format(img_dir_FN.getPath()))
+        log_info('Rendering images in "{0}"'.format(img_dir_FN.getPath()))
         xbmc.executebuiltin('SlideShow("{0}",pause)'.format(img_dir_FN.getPath()))
 
     # --- Display brother machines (same driver) ---
