@@ -181,9 +181,13 @@ def filter_get_filter_DB(machine_main_dic, machine_render_dic,
             hasSamples = True if machine_archives_dic[m_name]['Samples'] else False
         else:
             hasSamples = False
-
-        # >> Fix this to match "Controls (Compact)" filter
-        raw_control_list = machine_main_dic[m_name]['control_type']
+        # >> Fix controls to match "Controls (Compact)" filter
+        if machine_main_dic[m_name]['input']:
+            raw_control_list = [
+                ctrl_dic['type'] for ctrl_dic in machine_main_dic[m_name]['input']['control_list']
+            ]
+        else:
+            raw_control_list = []
         pretty_control_type_list = mame_improve_control_type_list(raw_control_list)
         control_list = mame_compress_item_list_compact(pretty_control_type_list)
         if not control_list: control_list = [ '[ No controls ]' ]
