@@ -4601,31 +4601,25 @@ def _command_context_setup_custom_filters():
             return
 
         # --- Open main ROM databases ---
-        pDialog = xbmcgui.DialogProgress()
-        pDialog_canceled = False
-        pdialog_line1 = 'Loading databases ...'
-        num_items = 5
-        pDialog.create('Advanced MAME Launcher')
-        pDialog.update(int((0*100) / num_items), pdialog_line1, 'Machines Main')
-        machine_main_dic = fs_load_JSON_file_dic(PATHS.MAIN_DB_PATH.getPath())
-        pDialog.update(int((1*100) / num_items), pdialog_line1, 'Machines Render')
-        machine_render_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
-        pDialog.update(int((2*100) / num_items), pdialog_line1, 'Machine assets')
-        assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        pDialog.update(int((3*100) / num_items), pdialog_line1, 'Parent/Clone')
-        main_pclone_dic = fs_load_JSON_file_dic(PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-        pDialog.update(int((4*100) / num_items), pdialog_line1, 'Machine archives')
-        machine_archives_dic = fs_load_JSON_file_dic(PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath())
-        pDialog.update(int((5*100) / num_items), pdialog_line1, ' ')
-        pDialog.close()
+        db_files = [
+            ['machines', 'MAME machines main', PATHS.MAIN_DB_PATH.getPath()],
+            ['render', 'MAME machines render', PATHS.RENDER_DB_PATH.getPath()],
+            ['assets', 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+            ['main_pclone_dic', 'MAME PClone dictionary', PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
+            ['machine_archives', 'Machine archives list', PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
 
         # --- Make a dictionary of objects to be filtered ---
-        main_filter_dic = filter_get_filter_DB(machine_main_dic, machine_render_dic,
-                                               assets_dic, main_pclone_dic, machine_archives_dic,
-                                               pDialog)
+        # This currently includes all MAME parent machines.
+        # However, it must include all machines (parent and clones).
+        main_filter_dic = filter_get_filter_DB(
+            db_dic['machines'], db_dic['render'], db_dic['assets'],
+            db_dic['main_pclone_dic'], db_dic['machine_archives'])
 
         # --- Clean 'filters' directory JSON files ---
         log_info('Cleaning dir "{0}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
+        pDialog = xbmcgui.DialogProgress()
         pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
         pDialog.update(0)
         file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
@@ -4645,6 +4639,7 @@ def _command_context_setup_custom_filters():
 
         # --- Traverse list of filters, build filter index and compute filter list ---
         pdialog_line1 = 'Building custom MAME filters'
+        pDialog = xbmcgui.DialogProgress()
         pDialog.create('Advanced MAME Launcher', pdialog_line1)
         Filters_index_dic = {}
         total_items = len(filters_list)
@@ -4667,9 +4662,9 @@ def _command_context_setup_custom_filters():
             filtered_machine_dic = mame_filter_Controls_tag(filtered_machine_dic, f_definition)
             filtered_machine_dic = mame_filter_Devices_tag(filtered_machine_dic, f_definition)
             filtered_machine_dic = mame_filter_Year_tag(filtered_machine_dic, f_definition)
-            # >> filtered_machine_dic = mame_filter_Include_tag(filtered_machine_dic, f_definition)
-            # >> filtered_machine_dic = mame_filter_Exclude_tag(filtered_machine_dic, f_definition)
-            # >> filtered_machine_dic = mame_filter_Change_tag(filtered_machine_dic, f_definition)
+            # filtered_machine_dic = mame_filter_Include_tag(filtered_machine_dic, f_definition, db_dic['machines'])
+            # filtered_machine_dic = mame_filter_Exclude_tag(filtered_machine_dic, f_definition, main_filter_dic)
+            # filtered_machine_dic = mame_filter_Change_tag(filtered_machine_dic, f_definition, main_filter_dic)
 
             # --- Make indexed catalog ---
             filtered_machine_parents_dic = {}
@@ -4678,15 +4673,15 @@ def _command_context_setup_custom_filters():
             filtered_assets_dic = {}
             for p_name in sorted(filtered_machine_dic.keys()):
                 # >> Add parents
-                filtered_machine_parents_dic[p_name] = machine_render_dic[p_name]['description']
-                filtered_machine_all_dic[p_name] = machine_render_dic[p_name]['description']
-                filtered_render_ROMs[p_name] = machine_render_dic[p_name]
-                filtered_assets_dic[p_name] = assets_dic[p_name]
+                filtered_machine_parents_dic[p_name] = db_dic['render'][p_name]['description']
+                filtered_machine_all_dic[p_name] = db_dic['render'][p_name]['description']
+                filtered_render_ROMs[p_name] = db_dic['render'][p_name]
+                filtered_assets_dic[p_name] = db_dic['assets'][p_name]
                 # >> Add clones
-                for c_name in main_pclone_dic[p_name]:
-                    filtered_machine_all_dic[c_name] = machine_render_dic[c_name]['description']
-                    filtered_render_ROMs[c_name] = machine_render_dic[c_name]
-                    filtered_assets_dic[c_name] = assets_dic[c_name]
+                for c_name in db_dic['main_pclone_dic'][p_name]:
+                    filtered_machine_all_dic[c_name] = db_dic['render'][c_name]['description']
+                    filtered_render_ROMs[c_name] = db_dic['render'][c_name]
+                    filtered_assets_dic[c_name] = db_dic['assets'][c_name]
             rom_DB_noext = hashlib.md5(f_name).hexdigest()
             this_filter_idx_dic = {
                 'display_name' : f_definition['name'],

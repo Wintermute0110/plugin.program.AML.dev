@@ -7,10 +7,11 @@
     <Name>Example filter name</Name>
 
     <!--
+        Device machines are removed automatically.
         Separate multiple options with ','
         Multiple <Options> tags allowed.
       -->
-    <Options>NoCoin, NoCoinLess, NoROMs, NoCHDs, NoSamples</Options>
+    <Options>NoClones, NoCoin, NoCoinLess, NoROMs, NoCHDs, NoSamples</Options>
     <Options>NoMature, NoBIOS, NoMechanical, NoImperfect, NoNonworking</Options>
 
     <!--

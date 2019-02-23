@@ -13,6 +13,13 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
          In theory Kodi VFS is able to read RAR files.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
+WIP      [FILTERING] Test the filters for errors. For example, test that all the drivers
+         defined in <Driver> exist. Another example, test that the genres defined in
+         <Genre> and the controls defined in <Controls> exist. Warn the user if errors
+         found.
+
+WIP      [FILTERING] Make a filter report the user can read.
+
 
 [B]AML ideas and planned features (read to implement)[/B]
 
@@ -31,7 +38,7 @@ WIP      [CORE] [LEIA] Recursive context menus.
          This requires Kodi version detection and having different code for Krypton/Leia.
 
 
-[B]Advanced MAME Launcher | version 0.10.0 | XX May 2019[/B]
+[B]Advanced MAME Launcher | version 0.10.0 | XX June 2019[/B]
 
 WIP      [DOCS] Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
@@ -42,7 +49,7 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
          and then imported again into AML.
 
 
-[B]Advanced MAME Launcher | version 0.9.9 | XX February 2019[/B]
+[B]Advanced MAME Launcher | version 0.9.9 | XX March 2019[/B]
 
 FEATURE  [CORE] Configuring every DAT and INI file one by one is tedious. Instead, define
          a directory where the DATs must be placed and pick the files from there automatically.
@@ -59,7 +66,7 @@ FEATURE  [CORE] Refactoring and code cleaning of the addon setup functions (DB b
 FEATURE  [CORE] Remove redundant fields from MAME DB 'coins' and 'control_type'. Use new
          'input' data structure to replace them.
 
-WORKING  [CORE] At least two directories for samples are needed. MAME includes a default samples
+FEATURE  [CORE] At least two directories for samples are needed. MAME includes a default samples
          directory with some samples used by some machines. Both directories must be configured
          in mame.ini in order to get all the samples working.
 
@@ -67,7 +74,12 @@ WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored i
          The MAME audit engine must take this into account.
          See comments in mame_scan_MAME_ROMs() @mame.py
 
-WIP      [FILTERING] Implement <Include>, <Exclude> and <Change> tags.
+WORKING  [FILTERING] Implement <Include>, <Exclude> and <Change> tags.
+         This will require more work than expected. Currently, only parent machines are filtered
+         and clone machines are added after the filtering process. However, to implement
+         Include, Exclude and Change tags, all machines must be included in the filter list.
+         This will require modification of the filter render engine (must be rendered in
+         flat mode and not in parent/clone mode).
 
 FEATURE  [MANUALS] Progress bar when extracting PDF pages.
 
@@ -84,6 +96,11 @@ FIX      Fixed the AML addon and MAME numerical versioning scheme.
 
 FIX      Fix crash in "Build MAME databases".
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2822949#pid2822949
+
+WIP      Some Software List ROMs are compressed using non-ASCII characters and this make
+         the audit engine to crash. I have to investigate how to fix this issue.
+         Maybe use the chardet library https://github.com/Wintermute0110/chardet/tree/master/chardet
+         Problematic ROM example (link the SL in Github).
 
 
 [B]Advanced MAME Launcher | version 0.9.8 | 23 June 2018[/B]

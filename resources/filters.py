@@ -30,11 +30,18 @@ from mame import *
 # -------------------------------------------------------------------------------------------------
 # Parse filter XML definition
 # -------------------------------------------------------------------------------------------------
+#
+# Strips a list of strings.
+#
 def strip_str_list(t_list):
-    for i, s_t in enumerate(t_list): t_list[i] = s_t.strip()
+    for i, s_t in enumerate(t_list):
+        t_list[i] = s_t.strip()
 
     return t_list
 
+#
+# Returns a comma-separated list of values as a list of strings.
+#
 def _get_comma_separated_list(text_t):
     if not text_t:
         return []
@@ -149,16 +156,23 @@ def filter_parse_XML(fname_str):
             f_definition['genre']        = f_definition['genre'].replace(initial_str, final_str)
             f_definition['controls']     = f_definition['controls'].replace(initial_str, final_str)
             f_definition['devices']      = f_definition['devices'].replace(initial_str, final_str)
-            # f_definition['include']      = f_definition['include'].replace(initial_str, final_str)
-            # f_definition['exclude']      = f_definition['exclude'].replace(initial_str, final_str)
-            # f_definition['change']       = f_definition['change'].replace(initial_str, final_str)
+            # Replace strings in list of strings.
+            for i, s_t in enumerate(f_definition['include']):
+                f_definition['include'][i] = s_t.replace(initial_str, final_str)
+            for i, s_t in enumerate(f_definition['exclude']):
+                f_definition['exclude'][i] = s_t.replace(initial_str, final_str)
+            for i, s_t in enumerate(f_definition['change']):
+                f_definition['change'][i] = s_t.replace(initial_str, final_str)
+
     return filters_list
 
 #
-# Returns a dictionary of dictionaries.
+# Returns a dictionary of dictionaries, indexed by the machine name.
+# This includes all MAME parent machines.
 #
 def filter_get_filter_DB(machine_main_dic, machine_render_dic,
-                         assets_dic, main_pclone_dic, machine_archives_dic, pDialog):
+    assets_dic, main_pclone_dic, machine_archives_dic):
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Building filter database ...')
     total_items = len(main_pclone_dic)
     item_count = 0
@@ -1151,6 +1165,51 @@ def mame_filter_Year_tag(mame_xml_dic, f_definition):
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
     log_debug('mame_filter_Year_tag() Initial {0} | '.format(initial_num_games) + \
+              'Removed {0} | '.format(filtered_out_games) + \
+              'Remaining {0}'.format(len(machines_filtered_dic)))
+
+    return machines_filtered_dic
+
+def mame_filter_Include_tag(mame_xml_dic, f_definition, machines_dic):
+    # log_debug('mame_filter_Include_tag() Starting ...')
+    log_debug('mame_filter_Include_tag() Include machines {0}'.format(unicode(f_definition['include'])))
+    added_machines = 0
+    machines_filtered_dic = mame_xml_dic.copy()
+    for m_name in sorted(machines_dic):
+        # Traverse list of strings
+        for f_name in f_definition['include']:
+            if f_name == m_name:
+                if f_name in machines_filtered_dic:
+                    log_debug('mame_filter_Include_tag() Machine {0} already in filtered list'.format(f_name))
+                else:
+                    log_debug('mame_filter_Include_tag() Adding machine {0}'.format(f_name))
+                    machines_filtered_dic[m_name] = machines_dic[m_name]
+                    added_machines += 1
+    log_debug('mame_filter_Include_tag() Initial {0} | '.format(len(mame_xml_dic)) + \
+              'Added {0} | '.format(added_machines) + \
+              'Remaining {0}'.format(len(machines_filtered_dic)))
+
+    return machines_filtered_dic
+
+def mame_filter_Exclude_tag(mame_xml_dic, f_definition):
+    log_debug('mame_filter_Exclude_tag() Starting ...')
+    filtered_out_games = 0
+    machines_filtered_dic = {}
+    for m_name in sorted(mame_xml_dic):
+        machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+    log_debug('mame_filter_Exclude_tag() Initial {0} | '.format(initial_num_games) + \
+              'Removed {0} | '.format(filtered_out_games) + \
+              'Remaining {0}'.format(len(machines_filtered_dic)))
+
+    return machines_filtered_dic
+
+def mame_filter_Change_tag(mame_xml_dic, f_definition):
+    log_debug('mame_filter_Change_tag() Starting ...')
+    filtered_out_games = 0
+    machines_filtered_dic = {}
+    for m_name in sorted(mame_xml_dic):
+        machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+    log_debug('mame_filter_Change_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
