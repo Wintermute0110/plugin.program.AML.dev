@@ -1150,7 +1150,9 @@ def _render_root_custom_filter_row(root_name, root_URL, plot_str = ''):
 #----------------------------------------------------------------------------------------------
 # Cataloged machines
 #----------------------------------------------------------------------------------------------
+#
 # Renders the category names in a catalog.
+#
 def _render_catalog_list(catalog_name):
     log_debug('_render_catalog_list() Starting ...')
     log_debug('_render_catalog_list() catalog_name = "{0}"'.format(catalog_name))
@@ -1253,7 +1255,7 @@ def _render_catalog_parent_list(catalog_name, category_name):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
-    # >> Load main MAME info DB and catalog
+    # >> Load main MAME info databases and catalog
     l_cataloged_dic_start = time.time()
     if view_mode_property == VIEW_MODE_PCLONE:
         catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
@@ -1302,7 +1304,7 @@ def _render_catalog_parent_list(catalog_name, category_name):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
-    # --- Process ROMs ---
+    # --- Process ROMs for rendering ---
     processing_ticks_start = time.time()
     r_list = _render_process_machines(catalog_dic, catalog_name, category_name,
                                      render_db_dic, assets_db_dic,
@@ -1321,14 +1323,14 @@ def _render_catalog_parent_list(catalog_name, category_name):
     # --- DEBUG Data loading/rendering statistics ---
     total_time = loading_time + processing_time + rendering_time
     # log_debug('Loading catalog    {0:.4f} s'.format(catalog_t))
-    log_debug('Loading render db  {0:.4f} s'.format(render_t))
-    log_debug('Loading assets db  {0:.4f} s'.format(assets_t))
+    # log_debug('Loading render db  {0:.4f} s'.format(render_t))
+    # log_debug('Loading assets db  {0:.4f} s'.format(assets_t))
     # log_debug('Loading pclone dic {0:.4f} s'.format(pclone_t))
     # log_debug('Loading MAME favs  {0:.4f} s'.format(favs_t))
-    log_debug('Loading            {0:.4f} s'.format(loading_time))
-    log_debug('Processing         {0:.4f} s'.format(processing_time))
-    log_debug('Rendering          {0:.4f} s'.format(rendering_time))
-    log_debug('Total              {0:.4f} s'.format(total_time))
+    log_debug('Loading time       {0:.4f} s'.format(loading_time))
+    log_debug('Processing time    {0:.4f} s'.format(processing_time))
+    log_debug('Rendering time     {0:.4f} s'.format(rendering_time))
+    log_debug('Total time         {0:.4f} s'.format(total_time))
 
 #
 # Renders a list of MAME Clone machines (including parent).
@@ -1406,8 +1408,8 @@ def _render_catalog_clone_list(catalog_name, category_name, parent_name):
 
 #
 # First make this function work OK, then try to optimize it.
-# "Premature optimization is the root of all evil." DK
-# Returns a list of dictionaries
+# "Premature optimization is the root of all evil." Donald Knuth
+# Returns a list of dictionaries:
 # r_list = [
 #   {
 #     'm_name' : str, 'render_name' : str,
@@ -1425,7 +1427,7 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
     if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
     display_hide_nonworking = g_settings['display_hide_nonworking']
     display_hide_imperfect  = g_settings['display_hide_imperfect']
-    # >> Think about how to implement this settings ...
+    # >> Think about how to implement these settings ...
     display_rom_available = g_settings['display_rom_available']
     display_chd_available  = g_settings['display_chd_available']
 
@@ -1563,6 +1565,10 @@ def _render_process_machines(catalog_dic, catalog_name, category_name,
 
     return r_list
 
+#
+# Renders a processed list of machines/ROMs. Basically, this function only calls the
+# Kodi API with the precomputed values.
+#
 def _render_commit_machines(r_list):
     for r_dict in r_list:
         # >> Krypton
@@ -1584,7 +1590,7 @@ def _render_commit_machines(r_list):
                                     listitem = listitem, isFolder = False)
 
 #
-# Not used at the moment -> There are global display settings.
+# Not used at the moment -> There are global display settings in addon settings for this.
 #
 def _command_context_display_settings(catalog_name, category_name):
     # >> Load ListItem properties
@@ -4344,6 +4350,200 @@ def _command_context_manage_SL_recent_played(SL_name, ROM_name):
 # Custom filters are defined in a XML file, the XML file is processed and the custom catalogs
 # created from the main database.
 # ---------------------------------------------------------------------------------------------
+def _command_context_setup_custom_filters():
+    dialog = xbmcgui.Dialog()
+    menu_item = dialog.select('Setup AML custom filters',
+                             ['Build custom filter databases',
+                              'View custom filter XML'])
+    if menu_item < 0: return
+
+    # --- Update custom filters ---
+    # filter_index_dic = {
+    #     'name' : {
+    #         'display_name' : str,
+    #         'num_machines' : int,
+    #         'num_parents' : int,
+    #         'order' : int,
+    #         'plot' : str,
+    #         'rom_DB_noext' : str,
+    #     }
+    # }
+    #
+    # AML_DATA_DIR/filters/'rom_DB_noext'_all.json -> machine_list = {
+    #     'machine1' : 'display_name1', 'machine2' : 'display_name2', ...
+    # }
+    #
+    # AML_DATA_DIR/filters/'rom_DB_noext'_parents.json -> machine_list = {
+    #     'machine1' : 'display_name1', 'machine2' : 'display_name2', ...
+    # }
+    #
+    # AML_DATA_DIR/filters/'rom_DB_noext'_ROMs.json -> machine_render = {}
+    #
+    # AML_DATA_DIR/filters/'rom_DB_noext'_assets.json -> asset_dic = {}
+    #
+    if menu_item == 0:
+        # --- Open custom filter XML and parse it ---
+        cf_XML_path_str = g_settings['filter_XML']
+        log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
+        if not cf_XML_path_str:
+            log_debug('Using default XML custom filter.')
+            XML_FN = PATHS.CUSTOM_FILTER_PATH
+        else:
+            log_debug('Using user-defined in addon settings XML custom filter.')
+            XML_FN = FileName(cf_XML_path_str)
+        log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+        try:
+            filters_list = filter_parse_XML(XML_FN.getPath())
+        except Addon_Error as ex:
+            kodi_notify_warn('{0}'.format(ex))
+            return
+        else:
+            log_debug('Filter XML read succesfully.')
+
+        # --- If no filters sayonara ---
+        if len(filters_list) < 1:
+            kodi_notify_warn('Filter XML has 0 filter definitions')
+            return
+
+        # --- Open main ROM databases ---
+        db_files = [
+            ['machines', 'MAME machines main', PATHS.MAIN_DB_PATH.getPath()],
+            ['render', 'MAME machines render', PATHS.RENDER_DB_PATH.getPath()],
+            ['assets', 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+            ['main_pclone_dic', 'MAME PClone dictionary', PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
+            ['machine_archives', 'Machine archives list', PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        # --- Make a dictionary of objects to be filtered ---
+        # This currently includes all MAME parent machines.
+        # However, it must include all machines (parent and clones).
+        main_filter_dic = filter_get_filter_DB(
+            db_dic['machines'], db_dic['render'], db_dic['assets'],
+            db_dic['main_pclone_dic'], db_dic['machine_archives'])
+
+        # --- Clean 'filters' directory JSON files ---
+        log_info('Cleaning dir "{0}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
+        pDialog = xbmcgui.DialogProgress()
+        pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
+        pDialog.update(0)
+        file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
+        num_files = len(file_list)
+        if num_files < 1:
+            log_info('Found {0} files'.format(num_files))
+            processed_items = 0
+            for file in file_list:
+                pDialog.update((processed_items*100) // num_files)
+                if file.endswith('.json'):
+                    full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
+                    # log_debug('UNLINK "{0}"'.format(full_path))
+                    os.unlink(full_path)
+                processed_items += 1
+        pDialog.update(100)
+        pDialog.close()
+
+        # --- Traverse list of filters, build filter index and compute filter list ---
+        pdialog_line1 = 'Building custom MAME filters'
+        pDialog = xbmcgui.DialogProgress()
+        pDialog.create('Advanced MAME Launcher', pdialog_line1)
+        Filters_index_dic = {}
+        total_items = len(filters_list)
+        processed_items = 0
+        for f_definition in filters_list:
+            # --- Initialise ---
+            f_name = f_definition['name']
+            log_debug('_command_context_setup_custom_filters() Processing filter "{0}"'.format(f_name))
+            # log_debug('f_definition = {0}'.format(unicode(f_definition)))
+
+            # --- Initial progress ---
+            pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{0}" ...'.format(f_name))
+
+            # --- Do filtering ---
+            filtered_machine_dic = mame_filter_Default(main_filter_dic)
+            filtered_machine_dic = mame_filter_Options_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Manufacturer_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Genre_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Controls_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Devices_tag(filtered_machine_dic, f_definition)
+            filtered_machine_dic = mame_filter_Year_tag(filtered_machine_dic, f_definition)
+            # filtered_machine_dic = mame_filter_Include_tag(filtered_machine_dic, f_definition, db_dic['machines'])
+            # filtered_machine_dic = mame_filter_Exclude_tag(filtered_machine_dic, f_definition, main_filter_dic)
+            # filtered_machine_dic = mame_filter_Change_tag(filtered_machine_dic, f_definition, main_filter_dic)
+
+            # --- Make indexed catalog ---
+            filtered_machine_parents_dic = {}
+            filtered_machine_all_dic = {}
+            filtered_render_ROMs = {}
+            filtered_assets_dic = {}
+            for p_name in sorted(filtered_machine_dic.keys()):
+                # >> Add parents
+                filtered_machine_parents_dic[p_name] = db_dic['render'][p_name]['description']
+                filtered_machine_all_dic[p_name] = db_dic['render'][p_name]['description']
+                filtered_render_ROMs[p_name] = db_dic['render'][p_name]
+                filtered_assets_dic[p_name] = db_dic['assets'][p_name]
+                # >> Add clones
+                for c_name in db_dic['main_pclone_dic'][p_name]:
+                    filtered_machine_all_dic[c_name] = db_dic['render'][c_name]['description']
+                    filtered_render_ROMs[c_name] = db_dic['render'][c_name]
+                    filtered_assets_dic[c_name] = db_dic['assets'][c_name]
+            rom_DB_noext = hashlib.md5(f_name).hexdigest()
+            this_filter_idx_dic = {
+                'display_name' : f_definition['name'],
+                'num_parents'  : len(filtered_machine_parents_dic),
+                'num_machines' : len(filtered_machine_all_dic),
+                'order'        : processed_items,
+                'plot'         : f_definition['plot'],
+                'rom_DB_noext' : rom_DB_noext
+            }
+            Filters_index_dic[f_name] = this_filter_idx_dic
+
+            # --- Save filter database ---
+            writing_ticks_start = time.time()
+            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
+            fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_dic, verbose = False)
+            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
+            fs_write_JSON_file(output_FN.getPath(), filtered_machine_all_dic, verbose = False)
+            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json')
+            fs_write_JSON_file(output_FN.getPath(), filtered_render_ROMs, verbose = False)
+            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
+            fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
+            writing_ticks_end = time.time()
+            writing_time = writing_ticks_end - writing_ticks_start
+            log_debug('JSON writing time {0:.4f} s'.format(writing_time))
+
+            # --- Final progress ---
+            processed_items += 1
+        pDialog.update(100, pdialog_line1, ' ')
+        pDialog.close()
+        # >> Save custom filter index.
+        fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
+        # >> Update timestamp
+        control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+        change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
+        fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+        kodi_notify('Custom filter database built')
+
+    # --- View custom filter XML ---
+    elif menu_item == 1:
+        cf_XML_path_str = g_settings['filter_XML']
+        log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
+        if not cf_XML_path_str:
+            log_debug('Using default XML custom filter.')
+            XML_FN = PATHS.CUSTOM_FILTER_PATH
+        else:
+            log_debug('Using user-defined in addon settings XML custom filter.')
+            XML_FN = FileName(cf_XML_path_str)
+        log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+        if not XML_FN.exists():
+            kodi_dialog_OK('Custom filter XML file not found.')
+            return
+        with open(XML_FN.getPath(), 'r') as myfile:
+            info_text = myfile.read().decode('utf-8')
+            _display_text_window('Custom filter XML', info_text)
+
 def _command_show_custom_filters():
     log_debug('_command_show_custom_filters() Starting ...')
 
@@ -4539,204 +4739,10 @@ def _render_custom_filter_machines_clones(filter_name, parent_name):
 
     # --- DEBUG Data loading/rendering statistics ---
     total_time = loading_time + processing_time + rendering_time
-    log_debug('Loading     {0:.4f} s'.format(loading_time))
-    log_debug('Processing  {0:.4f} s'.format(processing_time))
-    log_debug('Rendering   {0:.4f} s'.format(rendering_time))
-    log_debug('Total       {0:.4f} s'.format(total_time))
-
-def _command_context_setup_custom_filters():
-    dialog = xbmcgui.Dialog()
-    menu_item = dialog.select('Setup AML custom filters',
-                             ['Build custom filter databases',
-                              'View custom filter XML'])
-    if menu_item < 0: return
-
-    # --- Update custom filters ---
-    # filter_index_dic = {
-    #     'name' : {
-    #         'display_name' : str,
-    #         'num_machines' : int,
-    #         'num_parents' : int,
-    #         'order' : int,
-    #         'plot' : str,
-    #         'rom_DB_noext' : str,
-    #     }
-    # }
-    #
-    # AML_DATA_DIR/filters/'rom_DB_noext'_all.json -> machine_list = {
-    #     'machine1' : 'display_name1', 'machine2' : 'display_name2', ...
-    # }
-    #
-    # AML_DATA_DIR/filters/'rom_DB_noext'_parents.json -> machine_list = {
-    #     'machine1' : 'display_name1', 'machine2' : 'display_name2', ...
-    # }
-    #
-    # AML_DATA_DIR/filters/'rom_DB_noext'_ROMs.json -> machine_render = {}
-    #
-    # AML_DATA_DIR/filters/'rom_DB_noext'_assets.json -> asset_dic = {}
-    #
-    if menu_item == 0:
-        # --- Open custom filter XML and parse it ---
-        cf_XML_path_str = g_settings['filter_XML']
-        log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
-        if not cf_XML_path_str:
-            log_debug('Using default XML custom filter.')
-            XML_FN = PATHS.CUSTOM_FILTER_PATH
-        else:
-            log_debug('Using user-defined in addon settings XML custom filter.')
-            XML_FN = FileName(cf_XML_path_str)
-        log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
-        log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
-        try:
-            filters_list = filter_parse_XML(XML_FN.getPath())
-        except Addon_Error as ex:
-            kodi_notify_warn('{0}'.format(ex))
-            return
-        else:
-            log_debug('Filter XML read succesfully.')
-
-        # --- If no filters sayonara ---
-        if len(filters_list) < 1:
-            kodi_notify_warn('Filter XML has 0 filter definitions')
-            return
-
-        # --- Open main ROM databases ---
-        db_files = [
-            ['machines', 'MAME machines main', PATHS.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines render', PATHS.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-            ['main_pclone_dic', 'MAME PClone dictionary', PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
-            ['machine_archives', 'Machine archives list', PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
-        ]
-        db_dic = fs_load_files(db_files)
-
-        # --- Make a dictionary of objects to be filtered ---
-        # This currently includes all MAME parent machines.
-        # However, it must include all machines (parent and clones).
-        main_filter_dic = filter_get_filter_DB(
-            db_dic['machines'], db_dic['render'], db_dic['assets'],
-            db_dic['main_pclone_dic'], db_dic['machine_archives'])
-
-        # --- Clean 'filters' directory JSON files ---
-        log_info('Cleaning dir "{0}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
-        pDialog.update(0)
-        file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
-        num_files = len(file_list)
-        if num_files < 1:
-            log_info('Found {0} files'.format(num_files))
-            processed_items = 0
-            for file in file_list:
-                pDialog.update((processed_items*100) // num_files)
-                if file.endswith('.json'):
-                    full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
-                    # log_debug('UNLINK "{0}"'.format(full_path))
-                    os.unlink(full_path)
-                processed_items += 1
-        pDialog.update(100)
-        pDialog.close()
-
-        # --- Traverse list of filters, build filter index and compute filter list ---
-        pdialog_line1 = 'Building custom MAME filters'
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher', pdialog_line1)
-        Filters_index_dic = {}
-        total_items = len(filters_list)
-        processed_items = 0
-        for f_definition in filters_list:
-            # --- Initialise ---
-            f_name = f_definition['name']
-            log_debug('_command_context_setup_custom_filters() Processing filter "{0}"'.format(f_name))
-            # log_debug('f_definition = {0}'.format(unicode(f_definition)))
-
-            # --- Initial progress ---
-            pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{0}" ...'.format(f_name))
-
-            # --- Do filtering ---
-            filtered_machine_dic = mame_filter_Default(main_filter_dic)
-            filtered_machine_dic = mame_filter_Options_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Manufacturer_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Genre_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Controls_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Devices_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Year_tag(filtered_machine_dic, f_definition)
-            # filtered_machine_dic = mame_filter_Include_tag(filtered_machine_dic, f_definition, db_dic['machines'])
-            # filtered_machine_dic = mame_filter_Exclude_tag(filtered_machine_dic, f_definition, main_filter_dic)
-            # filtered_machine_dic = mame_filter_Change_tag(filtered_machine_dic, f_definition, main_filter_dic)
-
-            # --- Make indexed catalog ---
-            filtered_machine_parents_dic = {}
-            filtered_machine_all_dic = {}
-            filtered_render_ROMs = {}
-            filtered_assets_dic = {}
-            for p_name in sorted(filtered_machine_dic.keys()):
-                # >> Add parents
-                filtered_machine_parents_dic[p_name] = db_dic['render'][p_name]['description']
-                filtered_machine_all_dic[p_name] = db_dic['render'][p_name]['description']
-                filtered_render_ROMs[p_name] = db_dic['render'][p_name]
-                filtered_assets_dic[p_name] = db_dic['assets'][p_name]
-                # >> Add clones
-                for c_name in db_dic['main_pclone_dic'][p_name]:
-                    filtered_machine_all_dic[c_name] = db_dic['render'][c_name]['description']
-                    filtered_render_ROMs[c_name] = db_dic['render'][c_name]
-                    filtered_assets_dic[c_name] = db_dic['assets'][c_name]
-            rom_DB_noext = hashlib.md5(f_name).hexdigest()
-            this_filter_idx_dic = {
-                'display_name' : f_definition['name'],
-                'num_parents'  : len(filtered_machine_parents_dic),
-                'num_machines' : len(filtered_machine_all_dic),
-                'order'        : processed_items,
-                'plot'         : f_definition['plot'],
-                'rom_DB_noext' : rom_DB_noext
-            }
-            Filters_index_dic[f_name] = this_filter_idx_dic
-
-            # --- Save filter database ---
-            writing_ticks_start = time.time()
-            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_parents.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_machine_parents_dic, verbose = False)
-            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_all.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_machine_all_dic, verbose = False)
-            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_ROMs.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_render_ROMs, verbose = False)
-            output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
-            writing_ticks_end = time.time()
-            writing_time = writing_ticks_end - writing_ticks_start
-            log_debug('JSON writing time {0:.4f} s'.format(writing_time))
-
-            # --- Final progress ---
-            processed_items += 1
-        pDialog.update(100, pdialog_line1, ' ')
-        pDialog.close()
-        # >> Save custom filter index.
-        fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
-        # >> Update timestamp
-        control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
-        change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
-        fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-        kodi_notify('Custom filter database built')
-
-    # --- View custom filter XML ---
-    elif menu_item == 1:
-        cf_XML_path_str = g_settings['filter_XML']
-        log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
-        if not cf_XML_path_str:
-            log_debug('Using default XML custom filter.')
-            XML_FN = PATHS.CUSTOM_FILTER_PATH
-        else:
-            log_debug('Using user-defined in addon settings XML custom filter.')
-            XML_FN = FileName(cf_XML_path_str)
-        log_debug('_command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
-        log_debug('_command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
-        if not XML_FN.exists():
-            kodi_dialog_OK('Custom filter XML file not found.')
-            return
-        with open(XML_FN.getPath(), 'r') as myfile:
-            info_text = myfile.read().decode('utf-8')
-            _display_text_window('Custom filter XML', info_text)
+    log_debug('Loading    time {0:.4f} s'.format(loading_time))
+    log_debug('Processing time {0:.4f} s'.format(processing_time))
+    log_debug('Rendering  time {0:.4f} s'.format(rendering_time))
+    log_debug('Total      time {0:.4f} s'.format(total_time))
 
 # -------------------------------------------------------------------------------------------------
 # Check AML status
