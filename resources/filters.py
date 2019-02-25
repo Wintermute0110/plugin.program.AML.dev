@@ -49,14 +49,14 @@ def _get_comma_separated_list(text_t):
         return strip_str_list(text_t.split(','))
 
 #
-# Parse a string 'XXXXXX with YYYYYY'
+# Parse a string 'XXXXXX with YYYYYY' and return a tuple.
 #
 def _get_change_tuple(text_t):
-    if not text_t:
-        return ''
-    tuple_list = re.findall(r'(\w+) with (\w+)', text_t)
+    if not text_t: return ()
+    # Returns a list of strings or list of tuples.
+    tuple_list = re.findall('(\w+) with (\w+)', text_t)
     if tuple_list:
-        return tuple_list
+        return tuple_list[0]
     else:
         log_error('_get_change_tuple() text_t = "{0}"'.format(text_t))
         m = '(Exception) Cannot parse <Change> "{0}"'.format(text_t)
@@ -132,12 +132,10 @@ def filter_parse_XML(fname_str):
                     this_filter_dic['year'] = text_t
                 elif filter_element.tag == 'Include':
                     t_list = _get_comma_separated_list(text_t)
-                    if t_list:
-                        this_filter_dic['include'].extend(t_list)
+                    if t_list: this_filter_dic['include'].extend(t_list)
                 elif filter_element.tag == 'Exclude':
                     t_list = _get_comma_separated_list(text_t)
-                    if t_list:
-                        this_filter_dic['exclude'].extend(t_list)
+                    if t_list: this_filter_dic['exclude'].extend(t_list)
                 elif filter_element.tag == 'Change':
                     tuple_t = _get_change_tuple(text_t)
                     if tuple_t: this_filter_dic['change'].append(tuple_t)
@@ -161,23 +159,22 @@ def filter_parse_XML(fname_str):
                 f_definition['include'][i] = s_t.replace(initial_str, final_str)
             for i, s_t in enumerate(f_definition['exclude']):
                 f_definition['exclude'][i] = s_t.replace(initial_str, final_str)
-            for i, s_t in enumerate(f_definition['change']):
-                f_definition['change'][i] = s_t.replace(initial_str, final_str)
+            # for i, s_t in enumerate(f_definition['change']):
+            #     f_definition['change'][i] = s_t.replace(initial_str, final_str)
 
     return filters_list
 
 #
 # Returns a dictionary of dictionaries, indexed by the machine name.
-# This includes all MAME parent machines.
+# This includes all MAME machines, including parents and clones.
 #
-def filter_get_filter_DB(machine_main_dic, machine_render_dic,
-    assets_dic, main_pclone_dic, machine_archives_dic):
+def filter_get_filter_DB(machine_main_dic, machine_render_dic, assets_dic, machine_archives_dic):
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Building filter database ...')
-    total_items = len(main_pclone_dic)
+    total_items = len(machine_main_dic)
     item_count = 0
     main_filter_dic = {}
-    for m_name in main_pclone_dic:
+    for m_name in machine_main_dic:
         pDialog.update(int((item_count*100) / total_items))
         if 'att_coins' in machine_main_dic[m_name]['input']:
             coins = machine_main_dic[m_name]['input']['att_coins']
@@ -217,6 +214,7 @@ def filter_get_filter_DB(machine_main_dic, machine_render_dic,
             # --- Default filters ---
             'isDevice' : machine_render_dic[m_name]['isDevice'],
             # --- <Option> filters ---
+            'isClone' : True if machine_render_dic[m_name]['cloneof'] else False,
             'coins' : coins,
             'hasROMs' : hasROMs,
             'hasCHDs' : hasCHDs,
@@ -949,6 +947,7 @@ def mame_filter_Options_tag(mame_xml_dic, f_definition):
     log_debug('Option list "{0}"'.format(options_list))
 
     # --- Compute bool variables ---
+    NoClones_bool     = True if 'NoClones' in options_list else False
     NoCoin_bool       = True if 'NoCoin' in options_list else False
     NoCoinLess_bool   = True if 'NoCoinLess' in options_list else False
     NoROMs_bool       = True if 'NoROMs' in options_list else False
@@ -959,6 +958,7 @@ def mame_filter_Options_tag(mame_xml_dic, f_definition):
     NoMechanical_bool = True if 'NoMechanical' in options_list else False
     NoImperfect_bool  = True if 'NoImperfect' in options_list else False
     NoNonWorking_bool = True if 'NoNonworking' in options_list else False
+    log_debug('NoClones_bool     {0}'.format(NoClones_bool))
     log_debug('NoCoin_bool       {0}'.format(NoCoin_bool))
     log_debug('NoCoinLess_bool   {0}'.format(NoCoinLess_bool))
     log_debug('NoROMs_bool       {0}'.format(NoROMs_bool))
@@ -974,6 +974,10 @@ def mame_filter_Options_tag(mame_xml_dic, f_definition):
     filtered_out_games = 0
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
+        # >> Remove Clone machines
+        if NoClones_bool and mame_xml_dic[m_name]['isClone']:
+            filtered_out_games += 1
+            continue
         # >> Remove Coin machines
         if NoCoin_bool and mame_xml_dic[m_name]['coins'] > 0:
             filtered_out_games += 1
@@ -1175,10 +1179,15 @@ def mame_filter_Include_tag(mame_xml_dic, f_definition, machines_dic):
     log_debug('mame_filter_Include_tag() Include machines {0}'.format(unicode(f_definition['include'])))
     added_machines = 0
     machines_filtered_dic = mame_xml_dic.copy()
+    # If no machines to include then skip processing
+    if not f_definition['include']:
+        log_debug('mame_filter_Include_tag() No machines to include. Exiting.')
+        return machines_filtered_dic
+    # First traverse all MAME machines, then traverse list of strings to include.
     for m_name in sorted(machines_dic):
-        # Traverse list of strings
         for f_name in f_definition['include']:
             if f_name == m_name:
+                log_debug('mame_filter_Include_tag() Matched machine {0}'.format(f_name))
                 if f_name in machines_filtered_dic:
                     log_debug('mame_filter_Include_tag() Machine {0} already in filtered list'.format(f_name))
                 else:
@@ -1192,25 +1201,53 @@ def mame_filter_Include_tag(mame_xml_dic, f_definition, machines_dic):
     return machines_filtered_dic
 
 def mame_filter_Exclude_tag(mame_xml_dic, f_definition):
-    log_debug('mame_filter_Exclude_tag() Starting ...')
+    # log_debug('mame_filter_Exclude_tag() Starting ...')
+    log_debug('mame_filter_Exclude_tag() Exclude machines {0}'.format(unicode(f_definition['exclude'])))
+    initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
-    machines_filtered_dic = {}
+    machines_filtered_dic = mame_xml_dic.copy()
+    # If no machines to exclude then skip processing
+    if not f_definition['exclude']:
+        log_debug('mame_filter_Exclude_tag() No machines to exclude. Exiting.')
+        return machines_filtered_dic
+    # First traverse current set of machines, then traverse list of strings to include.
     for m_name in sorted(mame_xml_dic):
-        machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        for f_name in f_definition['exclude']:
+            if f_name == m_name:
+                log_debug('mame_filter_Exclude_tag() Matched machine {0}'.format(f_name))
+                log_debug('mame_filter_Exclude_tag() Deleting machine {0}'.format(f_name))
+                del machines_filtered_dic[f_name]
+                filtered_out_games += 1
     log_debug('mame_filter_Exclude_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Change_tag(mame_xml_dic, f_definition):
-    log_debug('mame_filter_Change_tag() Starting ...')
-    filtered_out_games = 0
-    machines_filtered_dic = {}
+def mame_filter_Change_tag(mame_xml_dic, f_definition, machines_dic):
+    # log_debug('mame_filter_Change_tag() Starting ...')
+    log_debug('mame_filter_Change_tag() Change machines {0}'.format(unicode(f_definition['change'])))
+    initial_num_games = len(mame_xml_dic)
+    changed_machines = 0
+    machines_filtered_dic = mame_xml_dic.copy()
+    # If no machines to change then skip processing
+    if not f_definition['change']:
+        log_debug('mame_filter_Change_tag() No machines to swap. Exiting.')
+        return machines_filtered_dic
+    # First traverse current set of machines, then traverse list of strings to include.
     for m_name in sorted(mame_xml_dic):
-        machines_filtered_dic[m_name] = mame_xml_dic[m_name]
+        for (f_name, new_name) in f_definition['change']:
+            if f_name == m_name:
+                log_debug('mame_filter_Change_tag() Matched machine {0}'.format(f_name))
+                if new_name in machines_dic:
+                    log_debug('mame_filter_Change_tag() Changing machine {0} with {1}'.format(f_name, new_name))
+                    del machines_filtered_dic[f_name]
+                    machines_filtered_dic[new_name] = machines_dic[new_name]
+                    changed_machines += 1
+                else:
+                    log_warning('mame_filter_Change_tag() New machine {0} not found on MAME machines.'.format(new_name))
     log_debug('mame_filter_Change_tag() Initial {0} | '.format(initial_num_games) + \
-              'Removed {0} | '.format(filtered_out_games) + \
+              'Changed {0} | '.format(changed_machines) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic

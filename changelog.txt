@@ -74,7 +74,7 @@ WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored i
          The MAME audit engine must take this into account.
          See comments in mame_scan_MAME_ROMs() @mame.py
 
-WORKING  [FILTERING] Implement <Include>, <Exclude> and <Change> tags.
+FEATURE  [FILTERING] Implement <Include>, <Exclude> and <Change> tags.
          This will require more work than expected. Currently, only parent machines are filtered
          and clone machines are added after the filtering process. However, to implement
          Include, Exclude and Change tags, all machines must be included in the filter list.
