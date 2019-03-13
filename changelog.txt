@@ -40,6 +40,10 @@ WIP      [CORE] [LEIA] Recursive context menus.
 
 [B]Advanced MAME Launcher | version 0.10.0 | XX June 2019[/B]
 
+WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored into ZIP files.
+         The MAME audit engine must take this into account.
+         See comments in mame_scan_MAME_ROMs() @mame.py
+
 WIP      [DOCS] Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
 
 WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
@@ -69,10 +73,6 @@ FEATURE  [CORE] Remove redundant fields from MAME DB 'coins' and 'control_type'.
 FEATURE  [CORE] At least two directories for samples are needed. MAME includes a default samples
          directory with some samples used by some machines. Both directories must be configured
          in mame.ini in order to get all the samples working.
-
-WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored into ZIP files.
-         The MAME audit engine must take this into account.
-         See comments in mame_scan_MAME_ROMs() @mame.py
 
 FEATURE  [FILTERING] Implement <Include>, <Exclude> and <Change> tags.
          This will require more work than expected. Currently, only parent machines are filtered
