@@ -572,11 +572,12 @@ def change_control_dic(control_dic, field, value):
         raise TypeError('Field {0} not in control_dic'.format(field))
 
 #
-# AML version is like this: xxx.yyy.zzz[-|~][alpha[jj]|beta[jj]]
-# It gets converted to: xxx.yyy.zzz ijj -> int xxx,yyy,zzz,ijj
+# All version numbers must be less than 100, except the major version.
+# AML version is like this: aa.bb.cc[-|~][alpha[dd]|beta[dd]]
+# It gets converted to: aa.bb.cc Rdd -> int aab,bcc,Rdd
 # The number 2,147,483,647 is the maximum positive value for a 32-bit signed binary integer.
 #
-# aa.bb.cc.Xdd    formatted aab,bcc,Xdd
+# aa.bb.cc.Rdd    formatted aab,bcc,Xdd
 #  |  |  | | |--> Beta/Alpha flag 0, 1, ..., 99
 #  |  |  | |----> Release kind flag 
 #  |  |  |        5 for non-beta, non-alpha, non RC versions.
@@ -584,27 +585,29 @@ def change_control_dic(control_dic, field, value):
 #  |  |  |        1 for beta versions
 #  |  |  |        0 for alpha versions
 #  |  |  |------> Build version 0, 1, ..., 99
-#  |  |----------> Minor version 0, 1, ..., 99
-#  |--------------> Major version 0, ..., infinity
+#  |  |---------> Minor version 0, 1, ..., 99
+#  |------------> Major version 0, ..., infinity
 #
 def fs_AML_version_str_to_int(AML_version_str):
     log_verb('fs_AML_version_str_to_int() AML_version_str = "{0}"'.format(AML_version_str))
     version_int = 0
     # Parse versions like 0.9.8[-|~]alpha[jj]
     m_obj_alpha_n = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)(\d+?)', AML_version_str)
-    # Parse versions like 0.9.8[-|~]alpha[jj]
+    # Parse versions like 0.9.8[-|~]alpha
     m_obj_alpha = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)', AML_version_str)
     # Parse versions like 0.9.8
     m_obj_standard = re.search('^(\d+?)\.(\d+?)\.(\d+?)', AML_version_str)
 
     if m_obj_alpha_n:
-        major  = int(m_obj_alpha_n.group(1))
-        minor  = int(m_obj_alpha_n.group(2))
-        build  = int(m_obj_alpha_n.group(3))
+        major    = int(m_obj_alpha_n.group(1))
+        minor    = int(m_obj_alpha_n.group(2))
+        build    = int(m_obj_alpha_n.group(3))
         kind_str = m_obj_alpha_n.group(4)
-        beta   = int(m_obj_alpha_n.group(5))
-        if kind_str == 'alpha':  release_flag = 0
-        elif kind_str == 'beta': release_flag = 1
+        beta     = int(m_obj_alpha_n.group(5))
+        if kind_str == 'alpha':
+            release_flag = 0
+        elif kind_str == 'beta':
+            release_flag = 1
         # log_debug('fs_AML_version_str_to_int() major        {0}'.format(major))
         # log_debug('fs_AML_version_str_to_int() minor        {0}'.format(minor))
         # log_debug('fs_AML_version_str_to_int() build        {0}'.format(build))
@@ -613,12 +616,14 @@ def fs_AML_version_str_to_int(AML_version_str):
         # log_debug('fs_AML_version_str_to_int() beta         {0}'.format(beta))
         version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100 + beta
     elif m_obj_alpha:
-        major  = int(m_obj_alpha.group(1))
-        minor  = int(m_obj_alpha.group(2))
-        build  = int(m_obj_alpha.group(3))
+        major    = int(m_obj_alpha.group(1))
+        minor    = int(m_obj_alpha.group(2))
+        build    = int(m_obj_alpha.group(3))
         kind_str = m_obj_alpha.group(4)
-        if kind_str == 'alpha':  release_flag = 0
-        elif kind_str == 'beta': release_flag = 1
+        if kind_str == 'alpha':
+            release_flag = 0
+        elif kind_str == 'beta':
+            release_flag = 1
         # log_debug('fs_AML_version_str_to_int() major        {0}'.format(major))
         # log_debug('fs_AML_version_str_to_int() minor        {0}'.format(minor))
         # log_debug('fs_AML_version_str_to_int() build        {0}'.format(build))

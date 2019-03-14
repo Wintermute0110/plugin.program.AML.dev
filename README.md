@@ -1,8 +1,8 @@
 # Advanced MAME Launcher #
 
-*Advance MAME Launcher* is an advanced MAME front end for Kodi. AML has support for both MAME archade
-machines and Software Lists. AML supports `Merged`, `Split` and `Non-merged` ROM sets and has the
-ability to fully audit your ROM and CHD collection.
+*Advanced MAME Launcher* is an advanced MAME front end for Kodi media center. AML has support for both
+MAME archade machines and Software Lists. AML supports `Merged`, `Split` and `Non-merged` ROM sets and
+has the ability to fully audit your ROM and CHD collection.
 
 ## Getting Started guide and Documentation ##
 
@@ -19,7 +19,7 @@ this guide is far from complete and I will try to improve it soon.
 
 ## Screenshot gallery ##
 
-All the screenshots have been taken using the Kodi skin [Estuary AEL MOD].
+All the screenshots have been taken using the skin [Estuary AEL MOD].
 
 [Estuary AEL MOD]: https://forum.kodi.tv/showthread.php?tid=287826&pid=2398922#pid2398922
 

@@ -151,7 +151,7 @@
     <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
-    <Year>year > 1000 and year &lt; 1980</Year>
+    <Year>year &gt; 1000 and year &lt; 1980</Year>
 </MAMEFilter>
 
 <MAMEFilter>
@@ -160,7 +160,7 @@
     <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
-    <Year>year >= 1980 and year &lt; 1990</Year>
+    <Year>year &gt;= 1980 and year &lt; 1990</Year>
 
     <!-- Include notable clone games -->
     <Include>pacman</Include>
@@ -172,7 +172,7 @@
     <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
-    <Year>year >= 1990 and year &lt; 2000</Year>
+    <Year>year &gt;= 1990 and year &lt; 2000</Year>
 </MAMEFilter>
 
 <MAMEFilter>
@@ -181,7 +181,7 @@
     <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
-    <Year>year >= 2000 and year &lt; 2010</Year>
+    <Year>year &gt;= 2000 and year &lt; 2010</Year>
 </MAMEFilter>
 
 <MAMEFilter>
@@ -190,6 +190,6 @@
     <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
     <Controls>STANDARD_CONTROLS</Controls>
-    <Year>year >= 2010</Year>
+    <Year>year &gt;= 2010</Year>
 </MAMEFilter>
 </Advanced_MAME_Launcher_custom_filters>
