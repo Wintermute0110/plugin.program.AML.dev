@@ -1264,7 +1264,7 @@ def _render_catalog_parent_list(catalog_name, category_name):
     l_render_db_start = time.time()
     if g_settings['debug_enable_MAME_render_cache']:
         cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-        render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
+        render_db_dic = fs_load_render_dic_all(PATHS, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME machine cache disabled.')
         render_db_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
@@ -1348,7 +1348,7 @@ def _render_catalog_clone_list(catalog_name, category_name, parent_name):
     catalog_dic = fs_get_cataloged_dic_all(PATHS, catalog_name)
     if g_settings['debug_enable_MAME_render_cache']:
         cache_index_dic = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
-        render_db_dic = fs_load_roms_all(PATHS, cache_index_dic, catalog_name, category_name)
+        render_db_dic = fs_load_render_dic_all(PATHS, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME machine cache disabled.')
         render_db_dic = fs_load_JSON_file_dic(PATHS.RENDER_DB_PATH.getPath())
