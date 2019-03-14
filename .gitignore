@@ -5,8 +5,5 @@
 # KDE Kate temp files
 *.kate-swp
 
-# Misc files
-MAME.xml
-catlist.ini
-catver.ini
-genre.ini
+# Ignore installation directory
+plugin.program.AML
