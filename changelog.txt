@@ -55,6 +55,15 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
 
 [B]Advanced MAME Launcher | version 0.9.9 | XX March 2019[/B]
 
+WIP      [CORE] Move the utilities from the addon settings into the root menu.
+
+WIP      [CORE] Move the report viewer from the context menu to the root menu. The context
+         menu is a little bit overloaded and this will alleviate the situation.
+
+FEATURE  [CORE] Use xbmcplugin.addDirectoryItems() instead of xbmcplugin.addDirectoryItem().
+         According to the docs "Large lists benefit over using the standard addDirectoryItem().
+         You may call this more than once to add items in chunks."
+
 FEATURE  [CORE] Configuring every DAT and INI file one by one is tedious. Instead, define
          a directory where the DATs must be placed and pick the files from there automatically.
 
