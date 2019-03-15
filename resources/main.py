@@ -369,14 +369,14 @@ def run_plugin(addon_argv):
             catalog_name  = args['catalog'][0] if 'catalog' in args else ''
             category_name = args['category'][0] if 'category' in args else ''
             machine_name  = args['parent'][0] if 'parent' in args else ''
-            url = _misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
+            url = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         elif command == 'EXEC_SHOW_SL_CLONES':
             catalog_name  = args['catalog'][0] if 'catalog' in args else ''
             category_name = args['category'][0] if 'category' in args else ''
             machine_name  = args['parent'][0] if 'parent' in args else ''
-            url = _misc_url_3_arg('catalog', 'SL', 'category', category_name, 'parent', machine_name)
+            url = misc_url_3_arg('catalog', 'SL', 'category', category_name, 'parent', machine_name)
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         # >> If location is not present in the URL default to standard.
@@ -1254,7 +1254,7 @@ def _render_catalog_list(catalog_name):
         return
 
     # >> Render categories in catalog index
-    _set_Kodi_all_sorting_methods_and_size()
+    set_Kodi_all_sorting_methods_and_size()
     mame_view_mode = g_settings['mame_view_mode']
     loading_ticks_start = time.time()
     cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
@@ -1296,8 +1296,8 @@ def _render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_st
                                'overlay' : ICON_OVERLAY, 'size' : num_machines})
 
     # --- Artwork ---
-    icon_path   = ICON_FILE_PATH.getPath()
-    fanart_path = FANART_FILE_PATH.getPath()
+    icon_path   = g_PATHS.ICON_FILE_PATH.getPath()
+    fanart_path = g_PATHS.FANART_FILE_PATH.getPath()
     listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
 
     # --- Create context menu ---
@@ -1479,7 +1479,7 @@ def _render_catalog_clone_list(catalog_name, category_name, parent_name):
 
     # --- Commit ROMs ---
     rendering_ticks_start = time.time()
-    _set_Kodi_all_sorting_methods()
+    set_Kodi_all_sorting_methods()
     render_commit_machines(r_list)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
@@ -1768,7 +1768,7 @@ def _render_SL_list(catalog_name):
         return
     log_debug('_render_SL_list() len(catalog_name) = {0}\n'.format(len(SL_catalog_dic)))
 
-    _set_Kodi_all_sorting_methods()
+    set_Kodi_all_sorting_methods()
     for SL_name in SL_catalog_dic:
         SL = SL_catalog_dic[SL_name]
         _render_SL_list_row(SL_name, SL)
@@ -1800,7 +1800,7 @@ def _render_SL_ROMs(SL_name):
     SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
     SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
 
-    _set_Kodi_all_sorting_methods()
+    set_Kodi_all_sorting_methods()
     SL_proper_name = SL_catalog_dic[SL_name]['display_name']
     if view_mode_property == VIEW_MODE_PCLONE:
         log_debug('_render_SL_ROMs() Rendering Parent/Clone launcher')
@@ -1845,7 +1845,7 @@ def _render_SL_pclone_set(SL_name, parent_name):
 
     # >> Render parent first
     SL_proper_name = SL_catalog_dic[SL_name]['display_name']
-    _set_Kodi_all_sorting_methods()
+    set_Kodi_all_sorting_methods()
     ROM = SL_roms[parent_name]
     assets = SL_asset_dic[parent_name] if parent_name in SL_asset_dic else fs_new_SL_asset()
     ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
@@ -1953,8 +1953,8 @@ def _render_SL_ROM_row(SL_name, rom_name, ROM, assets, flag_parent_list = False,
     listitem.addContextMenuItems(commands)
 
     # --- Add row ---
-    URL = _misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
-    xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = URL, listitem = listitem, isFolder = False)
+    URL = misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
+    xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
 
 #----------------------------------------------------------------------------------------------
 # DATs
@@ -1981,7 +1981,7 @@ def _render_DAT_list(catalog_name):
             kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
             return
-        _set_Kodi_all_sorting_methods()
+        set_Kodi_all_sorting_methods()
         for key in DAT_idx_dic:
             category_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(DAT_idx_dic[key]['name'], key)
             listitem = xbmcgui.ListItem(category_name)
@@ -1995,7 +1995,7 @@ def _render_DAT_list(catalog_name):
             kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
             return
-        _set_Kodi_all_sorting_methods()
+        set_Kodi_all_sorting_methods()
         for key in DAT_idx_dic:
             category_name = '{0}'.format(key)
             listitem = xbmcgui.ListItem(category_name)
@@ -2009,13 +2009,13 @@ def _render_DAT_list(catalog_name):
             kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
             return
-        _set_Kodi_all_sorting_methods()
+        set_Kodi_all_sorting_methods()
         for machine_name_list in DAT_idx_list:
             machine_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(machine_name_list[1], machine_name_list[0])
             listitem = xbmcgui.ListItem(machine_name)
             listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
             listitem.addContextMenuItems(commands)
-            URL = _misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
+            URL = misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
             xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = URL, listitem = listitem, isFolder = False)
     elif catalog_name == 'Command':
         DAT_idx_list = fs_load_JSON_file_dic(g_PATHS.COMMAND_IDX_PATH.getPath())
@@ -2023,13 +2023,13 @@ def _render_DAT_list(catalog_name):
             kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
             return
-        _set_Kodi_all_sorting_methods()
+        set_Kodi_all_sorting_methods()
         for machine_name_list in DAT_idx_list:
             machine_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(machine_name_list[1], machine_name_list[0])
             listitem = xbmcgui.ListItem(machine_name)
             listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
             listitem.addContextMenuItems(commands)
-            URL = _misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
+            URL = misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
             xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = URL, listitem = listitem, isFolder = False)
     else:
         kodi_dialog_OK('DAT database file "{0}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
@@ -2051,7 +2051,7 @@ def _render_DAT_category(catalog_name, category_name):
         kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
-    _set_Kodi_all_sorting_methods()
+    set_Kodi_all_sorting_methods()
     if catalog_name == 'History':
         category_machine_list = DAT_catalog_dic[category_name]['machines']
         for machine_tuple in category_machine_list:
@@ -2079,7 +2079,7 @@ def _render_DAT_category_row(catalog_name, category_name, machine_tuple):
     listitem.addContextMenuItems(commands)
 
     # --- Add row ---
-    URL = _misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_tuple[0])
+    URL = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_tuple[0])
     xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = URL, listitem = listitem, isFolder = False)
 
 def _render_DAT_machine_info(catalog_name, category_name, machine_name):
@@ -2111,7 +2111,7 @@ def _render_DAT_machine_info(catalog_name, category_name, machine_name):
 
     # --- Show information window ---
     window_title = '{0} information'.format(catalog_name)
-    _display_text_window(window_title, info_text)
+    display_text_window(window_title, info_text)
 
 #
 # Not used at the moment -> There are global display settings.
@@ -2302,7 +2302,7 @@ def _command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
             window_title = 'History DAT for SL item {0}'.format(SL_ROM)
             info_text = DAT_dic[SL_name][SL_ROM]
-        _display_text_window(window_title, info_text)
+        display_text_window(window_title, info_text)
 
     elif action == ACTION_VIEW_MAMEINFO:
         if machine_name not in Mameinfo_MAME_set:
@@ -2312,7 +2312,7 @@ def _command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         info_text = DAT_dic['mame'][machine_name]
 
         window_title = 'MAMEinfo DAT for machine {0}'.format(machine_name)
-        _display_text_window(window_title, info_text)
+        display_text_window(window_title, info_text)
 
     elif action == ACTION_VIEW_GAMEINIT:
         if machine_name not in Gameinit_MAME_set:
@@ -2321,7 +2321,7 @@ def _command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_DB_PATH.getPath())
         window_title = 'Gameinit DAT for machine {0}'.format(machine_name)
         info_text = DAT_dic[machine_name]
-        _display_text_window(window_title, info_text)
+        display_text_window(window_title, info_text)
 
     elif action == ACTION_VIEW_COMMAND:
         if machine_name not in Command_MAME_set:
@@ -2330,7 +2330,7 @@ def _command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.COMMAND_DB_PATH.getPath())
         window_title = 'Command DAT for machine {0}'.format(machine_name)
         info_text = DAT_dic[machine_name]
-        _display_text_window(window_title, info_text)
+        display_text_window(window_title, info_text)
 
     # --- View Fanart ---
     elif action == ACTION_VIEW_FANART:
@@ -2700,7 +2700,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Make information string and display text window ---
         slist = []
         mame_info_MAME_print(slist, location, machine_name, machine, assets)
-        _display_text_window(window_title, '\n'.join(slist))
+        display_text_window(window_title, '\n'.join(slist))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_item_data']:
@@ -2779,7 +2779,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         # >> Build information string
         slist = []
         mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL_machine_list)
-        _display_text_window(window_title, '\n'.join(slist))
+        display_text_window(window_title, '\n'.join(slist))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_item_data']:
@@ -2808,7 +2808,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             info_text = []
             mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
-            _display_text_window('Database main statistics', '\n'.join(info_text))
+            display_text_window('Database main statistics', '\n'.join(info_text))
 
         # --- Scanner statistics ---
         elif type_sub == 1:
@@ -2819,7 +2819,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             info_text = []
             mame_stats_scanner_print_slist(info_text, control_dic)
-            _display_text_window('Scanner statistics', '\n'.join(info_text))
+            display_text_window('Scanner statistics', '\n'.join(info_text))
 
         # --- Audit statistics ---
         elif type_sub == 2:
@@ -2830,7 +2830,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             info_text = []
             mame_stats_audit_print_slist(info_text, control_dic, g_settings)
-            _display_text_window('Database information and statistics', '\n'.join(info_text))
+            display_text_window('Database information and statistics', '\n'.join(info_text))
 
         # --- All statistics ---
         elif type_sub == 3:
@@ -2845,7 +2845,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             mame_stats_scanner_print_slist(info_text, control_dic)
             info_text.append('')
             mame_stats_audit_print_slist(info_text, control_dic, g_settings)
-            _display_text_window('Database full statistics', '\n'.join(info_text))
+            display_text_window('Database full statistics', '\n'.join(info_text))
 
         # --- Write statistics to disk ---
         elif type_sub == 4:
@@ -2966,7 +2966,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
             info_text.append('')
             info_text.extend(bios_table_str_list)
         window_title = 'Machine {0} ROMs'.format(machine_name)
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_ROM_DB_data']:
@@ -3035,7 +3035,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Machine {0} ROM audit'.format(machine_name)
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_Audit_DB_data']:
@@ -3099,7 +3099,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Software List ROM List (ROMs DB)'
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_ROM_DB_data']:
@@ -3143,7 +3143,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Software List ROM List (Audit DB)'
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_Audit_DB_data']:
@@ -3163,7 +3163,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         info_text = ''
         with open(g_PATHS.MAME_OUTPUT_PATH.getPath(), 'r') as myfile:
             info_text = myfile.read()
-        _display_text_window(window_title, info_text)
+        display_text_window(window_title, info_text)
 
     # --- View manual JSON INFO file of a MAME machine ---
     elif action == ACTION_VIEW_MANUAL_JSON:
@@ -3193,7 +3193,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         info_text = ''
         with open(info_FN.getPath(), 'r') as myfile:
             info_text = myfile.read()
-        _display_text_window(window_title, info_text)
+        display_text_window(window_title, info_text)
 
     # --- Audit ROMs of a single machine ---
     elif action == ACTION_AUDIT_MAME_MACHINE:
@@ -3262,7 +3262,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Machine {0} ROM audit'.format(machine_name)
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
     # --- Audit ROMs of SL item ---
     elif action == ACTION_AUDIT_SL_MACHINE:
@@ -3309,7 +3309,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'SL {0} Software {1} ROM audit'.format(SL_name, SL_ROM)
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
     # --- View ROM scanner reports ---
     elif action == ACTION_VIEW_REPORT_SCANNER:
@@ -3342,7 +3342,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Full MAME machines archives scanner report', myfile.read())
+                display_text_window('Full MAME machines archives scanner report', myfile.read())
 
         # --- View Have MAME machines archives ---
         elif type_sub == 1:
@@ -3351,7 +3351,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Have MAME machines archives scanner report', myfile.read())
+                display_text_window('Have MAME machines archives scanner report', myfile.read())
 
         # --- View Missing MAME machines archives ---
         elif type_sub == 2:
@@ -3360,7 +3360,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing MAME machines archives scanner report', myfile.read())
+                display_text_window('Missing MAME machines archives scanner report', myfile.read())
 
         # --- View Missing MAME ROM list ---
         elif type_sub == 3:
@@ -3369,7 +3369,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing MAME ROM list scanner report', myfile.read())
+                display_text_window('Missing MAME ROM list scanner report', myfile.read())
 
         # --- View Missing MAME CHD list ---
         elif type_sub == 4:
@@ -3378,7 +3378,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing MAME CHD list scanner report', myfile.read())
+                display_text_window('Missing MAME CHD list scanner report', myfile.read())
 
         # --- View Full MAME Samples report ---
         elif type_sub == 5:
@@ -3387,7 +3387,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_SCAN_SAMP_FULL_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Full MAME Samples report scanner report', myfile.read())
+                display_text_window('Full MAME Samples report scanner report', myfile.read())
 
         # --- View Have MAME Samples report ---
         elif type_sub == 6:
@@ -3396,7 +3396,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Have MAME Samples scanner report', myfile.read())
+                display_text_window('Have MAME Samples scanner report', myfile.read())
 
         # --- View Missing MAME Samples report ---
         elif type_sub == 7:
@@ -3405,7 +3405,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing MAME Samples scanner report', myfile.read())
+                display_text_window('Missing MAME Samples scanner report', myfile.read())
 
         # --- View Full Software Lists item archives ---
         elif type_sub == 8:
@@ -3414,7 +3414,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan SL ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Full Software Lists item archives scanner report', myfile.read())
+                display_text_window('Full Software Lists item archives scanner report', myfile.read())
 
         # --- View Have Software Lists item archives ---
         elif type_sub == 9:
@@ -3423,7 +3423,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan SL ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Have Software Lists item archives scanner report', myfile.read())
+                display_text_window('Have Software Lists item archives scanner report', myfile.read())
 
         # --- View Missing Software Lists item archives ---
         elif type_sub == 10:
@@ -3432,7 +3432,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan SL ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing Software Lists item archives scanner report', myfile.read())
+                display_text_window('Missing Software Lists item archives scanner report', myfile.read())
 
         # --- View Missing Software Lists ROM list ---
         elif type_sub == 11:
@@ -3441,7 +3441,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan SL ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing Software Lists ROM list scanner report', myfile.read())
+                display_text_window('Missing Software Lists ROM list scanner report', myfile.read())
 
         # --- View Missing Software Lists CHD list ---
         elif type_sub == 12:
@@ -3450,7 +3450,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan SL ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing Software Lists CHD list scanner report', myfile.read())
+                display_text_window('Missing Software Lists CHD list scanner report', myfile.read())
 
         # --- View MAME asset report ---
         elif type_sub == 13:
@@ -3459,7 +3459,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan MAME assets and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME asset report', myfile.read())
+                display_text_window('MAME asset report', myfile.read())
 
         # --- View Software Lists asset report ---
         elif type_sub == 14:
@@ -3468,7 +3468,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please scan Software List assets and try again.')
                 return
             with open(g_PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Software Lists asset report', myfile.read())
+                display_text_window('Software Lists asset report', myfile.read())
 
     # --- View audit reports ---
     elif action == ACTION_VIEW_REPORT_AUDIT:
@@ -3500,7 +3500,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (Full)', myfile.read())
+                display_text_window('MAME audit report (Full)', myfile.read())
 
         elif type_sub == 1:
             if not g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.exists():
@@ -3508,7 +3508,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (Good)', myfile.read())
+                display_text_window('MAME audit report (Good)', myfile.read())
 
         elif type_sub == 2:
             if not g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.exists():
@@ -3516,7 +3516,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (Errors)', myfile.read())
+                display_text_window('MAME audit report (Errors)', myfile.read())
 
         elif type_sub == 3:
             if not g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.exists():
@@ -3524,7 +3524,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (ROMs Good)', myfile.read())
+                display_text_window('MAME audit report (ROMs Good)', myfile.read())
 
         elif type_sub == 4:
             if not g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.exists():
@@ -3532,7 +3532,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (ROM Errors)', myfile.read())
+                display_text_window('MAME audit report (ROM Errors)', myfile.read())
 
         elif type_sub == 5:
             if not g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.exists():
@@ -3540,7 +3540,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (Samples Good)', myfile.read())
+                display_text_window('MAME audit report (Samples Good)', myfile.read())
 
         elif type_sub == 6:
             if not g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.exists():
@@ -3548,7 +3548,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (Sample Errors)', myfile.read())
+                display_text_window('MAME audit report (Sample Errors)', myfile.read())
 
         elif type_sub == 7:
             if not g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.exists():
@@ -3556,7 +3556,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (CHDs Good)', myfile.read())
+                display_text_window('MAME audit report (CHDs Good)', myfile.read())
 
         elif type_sub == 8:
             if not g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.exists():
@@ -3564,7 +3564,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (CHD Errors)', myfile.read())
+                display_text_window('MAME audit report (CHD Errors)', myfile.read())
 
         # >> SL audit reports
         elif type_sub == 9:
@@ -3573,7 +3573,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your SL ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
-                _display_text_window('SL audit report (Full)', myfile.read())
+                display_text_window('SL audit report (Full)', myfile.read())
 
         elif type_sub == 10:
             if not g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.exists():
@@ -3581,7 +3581,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your SL ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('SL audit report (Good)', myfile.read())
+                display_text_window('SL audit report (Good)', myfile.read())
 
         elif type_sub == 11:
             if not g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.exists():
@@ -3589,7 +3589,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your SL ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('SL audit report (Errors)', myfile.read())
+                display_text_window('SL audit report (Errors)', myfile.read())
 
         elif type_sub == 12:
             if not g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.exists():
@@ -3597,7 +3597,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (ROM Good)', myfile.read())
+                display_text_window('MAME audit report (ROM Good)', myfile.read())
 
         elif type_sub == 13:
             if not g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.exists():
@@ -3605,7 +3605,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (ROM Errors)', myfile.read())
+                display_text_window('MAME audit report (ROM Errors)', myfile.read())
 
         elif type_sub == 14:
             if not g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.exists():
@@ -3613,7 +3613,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (CHD Good)', myfile.read())
+                display_text_window('MAME audit report (CHD Good)', myfile.read())
 
         elif type_sub == 15:
             if not g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.exists():
@@ -3621,7 +3621,7 @@ def _command_context_view(machine_name, SL_name, SL_ROM, location):
                                'Please audit your MAME ROMs and try again.')
                 return
             with open(g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (CHD Errors)', myfile.read())
+                display_text_window('MAME audit report (CHD Errors)', myfile.read())
 
     else:
         kodi_dialog_OK('Wrong action == {0}. This is a bug, please report it.'.format(action))
@@ -3802,7 +3802,7 @@ def _command_show_mame_fav():
         return
 
     # >> Render Favourites
-    _set_Kodi_all_sorting_methods()
+    set_Kodi_all_sorting_methods()
     for m_name in fav_machines:
         machine = fav_machines[m_name]
         assets  = machine['assets']
@@ -3903,7 +3903,7 @@ def _render_fav_machine_row(m_name, machine, m_assets, location):
     listitem.addContextMenuItems(commands)
 
     # --- Add row ---
-    URL = _misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', location)
+    URL = misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', location)
     xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = URL, listitem = listitem, isFolder = False)
 
 def _command_context_add_sl_fav(SL_name, ROM_name):
@@ -4059,7 +4059,7 @@ def _command_show_sl_fav():
         return
 
     # >> Render Favourites
-    _set_Kodi_all_sorting_methods()
+    set_Kodi_all_sorting_methods()
     for SL_fav_key in fav_SL_roms:
         SL_fav_ROM = fav_SL_roms[SL_fav_key]
         assets = SL_fav_ROM['assets']
@@ -4616,7 +4616,7 @@ def _command_context_setup_custom_filters():
             return
         with open(XML_FN.getPath(), 'r') as myfile:
             info_text = myfile.read().decode('utf-8')
-            _display_text_window('Custom filter XML', info_text)
+            display_text_window('Custom filter XML', info_text)
 
 def _command_show_custom_filters():
     log_debug('_command_show_custom_filters() Starting ...')
@@ -4637,7 +4637,7 @@ def _command_show_custom_filters():
 
     # --- Render Custom Filters, always in flat mode ---
     mame_view_mode = g_settings['mame_view_mode']
-    _set_Kodi_all_sorting_methods()
+    set_Kodi_all_sorting_methods()
     for f_name in sorted(filter_index_dic, key = lambda x: filter_index_dic[x]['order'], reverse = False):
         num_machines = filter_index_dic[f_name]['num_machines']
         if num_machines == 1: machine_str = 'machine'
@@ -4653,8 +4653,8 @@ def _render_custom_filter_item_row(f_name, num_machines, machine_str, plot):
     listitem.setInfo('video', {'title' : title_str, 'plot' : plot, 'overlay' : ICON_OVERLAY})
 
     # --- Artwork ---
-    icon_path   = ICON_FILE_PATH.getPath()
-    fanart_path = FANART_FILE_PATH.getPath()
+    icon_path   = g_PATHS.ICON_FILE_PATH.getPath()
+    fanart_path = g_PATHS.FANART_FILE_PATH.getPath()
     listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
 
     # --- Create context menu ---
@@ -4729,7 +4729,7 @@ def _render_custom_filter_machines(filter_name):
 
     # --- Commit ROMs ---
     rendering_ticks_start = time.time()
-    _set_Kodi_all_sorting_methods()
+    set_Kodi_all_sorting_methods()
     render_commit_machines(r_list)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
     rendering_ticks_end = time.time()
@@ -5958,7 +5958,7 @@ def _command_check_AML_configuration():
         slist.append('{0} MAME INI/DAT path not set'.format(WARN))
 
     # --- Display info to the user ---
-    _display_text_window('AML configuration check report', '\n'.join(slist))
+    display_text_window('AML configuration check report', '\n'.join(slist))
 
 #
 # Check MAME and SL CRC 32 hash collisions.
@@ -6030,7 +6030,7 @@ def _command_check_MAME_CRC_collisions():
     slist.append('')
     table_str_list = text_render_table_str(table_str)
     slist.extend(table_str_list)
-    _display_text_window('AML MAME CRC32 hash collision report', '\n'.join(slist))
+    display_text_window('AML MAME CRC32 hash collision report', '\n'.join(slist))
     log_info('Writing "{0}"'.format(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath()))
     with open(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(slist).encode('utf-8'))
@@ -6128,7 +6128,7 @@ def _command_check_SL_CRC_collisions():
     slist.append('')
     table_str_list = text_render_table_str(table_str)
     slist.extend(table_str_list)
-    _display_text_window('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
+    display_text_window('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
     log_info('Writing "{0}"'.format(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
     with open(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(slist).encode('utf-8'))
