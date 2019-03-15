@@ -1994,7 +1994,8 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
         # >> Process ROM ZIP files
         set_name = m_rom['location'].split('/')[0]
         if m_rom['type'] == ROM_TYPE_SAMPLE:
-            zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
+            # Must include samples path 2 as well
+            zip_FN = FileName(settings['samples_path_1']).pjoin(set_name + '.zip')
         else:
             zip_FN = FileName(settings['rom_path']).pjoin(set_name + '.zip')
         zip_path = zip_FN.getPath()
@@ -2081,7 +2082,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
 
             # >> Test if ZIP file exists (use cached data). ZIP file must be in the cache always
             # >> at this point.
-            zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
+            zip_FN = FileName(settings['samples_path_1']).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('ZIP {0}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
