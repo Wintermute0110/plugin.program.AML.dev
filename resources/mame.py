@@ -5705,7 +5705,7 @@ def _get_SL_dataarea_CHDs(SL_name, item_name, part_child, diskarea_dic):
 
 def _mame_load_SL_XML(xml_filename):
     __debug_xml_parser = False
-    SLData = SLDataObj()
+    SLData = _new_SL_Data_dic()
 
     # --- If file does not exist return empty dictionary ---
     if not os.path.isfile(xml_filename): return SLData
@@ -5719,7 +5719,7 @@ def _mame_load_SL_XML(xml_filename):
     except:
         return SLData
     xml_root = xml_tree.getroot()
-    SLData.display_name = xml_root.attrib['description']
+    SLData['display_name'] = xml_root.attrib['description']
     for root_element in xml_root:
         if __debug_xml_parser: print('Root child {0}'.format(root_element.tag))
 
@@ -5804,21 +5804,21 @@ def _mame_load_SL_XML(xml_filename):
         if num_roms:
             SL_item['hasROMs'] = True
             SL_item['status_ROM'] = '?'
-            SLData.num_with_ROMs += 1
+            SLData['num_with_ROMs'] += 1
         else:
             SL_item['hasROMs'] = False
             SL_item['status_ROM'] = '-'
         if num_disks:
             SL_item['hasCHDs'] = True
             SL_item['status_CHD'] = '?'
-            SLData.num_with_CHDs += 1
+            SLData['num_with_CHDs'] += 1
         else:
             SL_item['hasCHDs'] = False
             SL_item['status_CHD'] = '-'
 
         # >> Add <software> item (SL_item) to database and software ROM/CHDs to database
-        SLData.roms[item_name] = SL_item
-        SLData.SL_roms[item_name] = SL_rom_list
+        SLData['roms'][item_name] = SL_item
+        SLData['SL_roms'][item_name] = SL_rom_list
 
     return SLData
 
@@ -5981,17 +5981,17 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         SL_path_FN = FileName(file)
         SLData = _mame_load_SL_XML(SL_path_FN.getPath())
         fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json').getPath(),
-                           SLData.roms, verbose = False)
+                           SLData['roms'], verbose = False)
         fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(),
-                           SLData.SL_roms, verbose = False)
+                           SLData['SL_roms'], verbose = False)
 
         # >> Add software list to catalog
-        num_SL_with_ROMs += SLData.num_with_ROMs
-        num_SL_with_CHDs += SLData.num_with_CHDs
+        num_SL_with_ROMs += SLData['num_with_ROMs']
+        num_SL_with_CHDs += SLData['num_with_CHDs']
         SL = {
-            'display_name'  : SLData.display_name,
-            'num_with_ROMs' : SLData.num_with_ROMs,
-            'num_with_CHDs' : SLData.num_with_CHDs,
+            'display_name'  : SLData['display_name'],
+            'num_with_ROMs' : SLData['num_with_ROMs'],
+            'num_with_CHDs' : SLData['num_with_CHDs'],
             'rom_DB_noext'  : FN.getBase_noext(),
         }
         SL_catalog_dic[FN.getBase_noext()] = SL
