@@ -1329,7 +1329,7 @@ def render_GlobalReports_vlaunchers():
 
     listitem = aux_get_generic_listitem(
         'View MAME scanner Missing archives report',
-        ('Report of all MAME machines where some of all ROM ZIP files, CHDs or Sample ZIP files ',
+        ('Report of all MAME machines where some of all ROM ZIP files, CHDs or Sample ZIP files '
          'are missing.'),
         commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_ARCH_MISS')
@@ -5961,7 +5961,7 @@ def command_exec_report(which_report):
         kodi_notify('Exported AML statistic')
 
     # --- MAME scanner reports -------------------------------------------------------------------
-    elif which_report == 'VIEW_SCANNER_MAME_FULL':
+    elif which_report == 'VIEW_SCANNER_MAME_ARCH_FULL':
         if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.exists():
             kodi_dialog_OK('Full MAME machines archives scanner report not found. '
                            'Please scan MAME ROMs and try again.')
@@ -5969,7 +5969,7 @@ def command_exec_report(which_report):
         with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
             display_text_window('Full MAME machines archives scanner report', myfile.read())
 
-    elif which_report == 'VIEW_SCANNER_MAME_HAVE':
+    elif which_report == 'VIEW_SCANNER_MAME_ARCH_HAVE':
         if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
             kodi_dialog_OK('Have MAME machines archives scanner report not found. '
                            'Please scan MAME ROMs and try again.')
@@ -5977,7 +5977,7 @@ def command_exec_report(which_report):
         with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
             display_text_window('Have MAME machines archives scanner report', myfile.read())
 
-    elif which_report == 'VIEW_SCANNER_MAME_MISS':
+    elif which_report == 'VIEW_SCANNER_MAME_ARCH_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.exists():
             kodi_dialog_OK('Missing MAME machines archives scanner report not found. '
                            'Please scan MAME ROMs and try again.')
@@ -6006,7 +6006,7 @@ def command_exec_report(which_report):
             kodi_dialog_OK('Full MAME Samples report scanner report not found. '
                            'Please scan MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_SCAN_SAMP_FULL_PATH.getPath(), 'r') as myfile:
+        with open(g_PATHS.REPORT_MAME_SCAN_SAM_FULL_PATH.getPath(), 'r') as myfile:
             display_text_window('Full MAME Samples report scanner report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_MAME_SAM_HAVE':
@@ -6014,7 +6014,7 @@ def command_exec_report(which_report):
             kodi_dialog_OK('Have MAME Samples scanner report not found. '
                            'Please scan MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath(), 'r') as myfile:
+        with open(g_PATHS.REPORT_MAME_SCAN_SAM_HAVE_PATH.getPath(), 'r') as myfile:
             display_text_window('Have MAME Samples scanner report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_MAME_SAM_MISS':
@@ -6022,7 +6022,7 @@ def command_exec_report(which_report):
             kodi_dialog_OK('Missing MAME Samples scanner report not found. '
                            'Please scan MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath(), 'r') as myfile:
+        with open(g_PATHS.REPORT_MAME_SCAN_SAM_MISS_PATH.getPath(), 'r') as myfile:
             display_text_window('Missing MAME Samples scanner report', myfile.read())
 
     # --- SL scanner reports ---------------------------------------------------------------------
