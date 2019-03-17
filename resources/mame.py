@@ -2272,9 +2272,18 @@ def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, ro
                     # How to know encoding of ZIP files?
                     # https://stackoverflow.com/questions/15918314/how-to-detect-string-byte-encoding/15918519
                     try:
-                        zfile_unicode = zfile.decode('utf-8')
+                        # zfile sometimes has type str, sometimes unicode. If type is str then
+                        # try to decode it as UTF-8.
+                        if type(zfile) == unicode:
+                            zfile_unicode = zfile
+                        else:
+                            zfile_unicode = zfile.decode('utf-8')
                     except UnicodeDecodeError:
                         log_error('mame_audit_SL_machine() Exception UnicodeDecodeError')
+                        log_error('type(zfile) = {0}'.format(type(zfile)))
+                        log_error('SL_name "{0}", item_name "{1}", rom name "{2}"'.format(SL_name, item_name, m_rom['name']))
+                    except UnicodeEncodeError:
+                        log_error('mame_audit_SL_machine() Exception UnicodeEncodeError')
                         log_error('type(zfile) = {0}'.format(type(zfile)))
                         log_error('SL_name "{0}", item_name "{1}", rom name "{2}"'.format(SL_name, item_name, m_rom['name']))
                     else:
