@@ -1566,8 +1566,9 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
 # -------------------------------------------------------------------------------------------------
 # Check/Update/Repair Favourite ROM objects
 # -------------------------------------------------------------------------------------------------
-def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog):
+def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, assets_dic):
     line1_str = 'Checking/Updating MAME Favourites ...'
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', line1_str)
     fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
     if len(fav_machines) > 1:
@@ -1595,8 +1596,9 @@ def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, 
         pDialog.update(100, line1_str)
     pDialog.close()
 
-def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog):
+def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic):
     line1_str = 'Checking/Updating MAME Most Played machines ...'
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', line1_str)
     most_played_roms_dic = fs_load_JSON_file_dic(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
     if len(most_played_roms_dic) > 1:
@@ -1629,8 +1631,9 @@ def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_ren
         pDialog.update(100, line1_str)
     pDialog.close()
 
-def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog):
+def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic):
     line1_str = 'Checking/Updating MAME Recently Played machines ...'
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', line1_str)
     recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
     if len(recent_roms_list) > 1:
@@ -1659,7 +1662,7 @@ def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_r
         pDialog.update(100, line1_str)
     pDialog.close()
 
-def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
+def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
     fav_SL_roms = fs_load_JSON_file_dic(PATHS.FAV_SL_ROMS_PATH.getPath())
     num_SL_favs = len(fav_SL_roms)
     num_iteration = 0
@@ -1704,7 +1707,7 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
     pDialog.update(100)
     pDialog.close()
 
-def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
+def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
     most_played_roms_dic = fs_load_JSON_file_dic(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
     num_SL_favs = len(most_played_roms_dic)
     num_iteration = 0
@@ -1753,7 +1756,7 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic, pDialog)
     pDialog.update(100)
     pDialog.close()
 
-def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
+def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
     recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
     num_SL_favs = len(recent_roms_list)
     num_iteration = 0
@@ -5572,13 +5575,14 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 #   ], ...
 # }
 #
-class SLDataObj:
-    def __init__(self):
-        self.roms = {}
-        self.SL_roms = {}
-        self.display_name = ''
-        self.num_with_ROMs = 0
-        self.num_with_CHDs = 0
+def _new_SL_Data_dic():
+    return {
+        'roms'          : {},
+        'SL_roms'       : {},
+        'display_name'  : '',
+        'num_with_ROMs' : 0,
+        'num_with_CHDs' : 0,
+    }
 
 def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
     # >> Get ROMs in dataarea
