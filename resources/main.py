@@ -4978,12 +4978,12 @@ def command_context_setup_plugin():
             pDialog.close()
             
             # --- assets_dic has changed. Rebuild hashed database ---
-            fs_build_asset_hashed_db(g_PATHS, assets_dic, pDialog)
+            fs_build_asset_hashed_db(g_PATHS, assets_dic)
 
             # --- Rebuild asset cache ---
             if g_settings['debug_enable_MAME_asset_cache']:
                 cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_asset_cache(g_PATHS, assets_dic, cache_index_dic, pDialog)
+                fs_build_asset_cache(g_PATHS, assets_dic, cache_index_dic)
             if pDialog_canceled: kodi_notify('MAME fanarts building stopped. Partial progress saved.')
             else:                kodi_notify('MAME fanarts building finished')
 

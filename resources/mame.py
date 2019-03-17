@@ -3144,9 +3144,28 @@ def mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR
                 # log_debug('{0:<10} file not found'.format(asset_db_name))
                 continue
             # log_debug('{0:<10} found'.format(asset_db_name))
-            img_asset = Image.open(Asset_FN.getPath())
-            img_asset = PIL_resize_proportional(img_asset, layout, asset_key, CANVAS_COLOR)
-            fanart_img = PIL_paste_image(fanart_img, img_asset, layout, asset_key)
+            # Sometimes PIL_resize_proportional() fails.
+            #   File "~/plugin.program.AML.dev/resources/mame.py", line 3017, in PIL_resize_proportional
+            #   img = img.resize((r_x_size, r_y_size), Image.ANTIALIAS)
+            #   File "/usr/lib/python2.7/dist-packages/PIL/Image.py", line 1804, in resize
+            #   self.load()
+            #   File "/usr/lib/python2.7/dist-packages/PIL/ImageFile.py", line 252, in load
+            #   self.load_end()
+            #   File "/usr/lib/python2.7/dist-packages/PIL/PngImagePlugin.py", line 680, in load_end
+            #   self.png.call(cid, pos, length)
+            #   File "/usr/lib/python2.7/dist-packages/PIL/PngImagePlugin.py", line 140, in call
+            #   return getattr(self, "chunk_" + cid.decode('ascii'))(pos, length)
+            #   AttributeError: 'PngStream' object has no attribute 'chunk_tIME'
+            # If so, report the machine that produces the fail and do not generate the
+            # Fanart.
+            try:
+                img_asset = Image.open(Asset_FN.getPath())
+                img_asset = PIL_resize_proportional(img_asset, layout, asset_key, CANVAS_COLOR)
+            except AttributeError:
+                u = 'mame_build_fanart() Exception AttributeError in m_name {0}, asset_key {1}'.format(m_name, asset_key)
+                log_error(u)
+            else:
+                fanart_img = PIL_paste_image(fanart_img, img_asset, layout, asset_key)
 
     # >> Save fanart and update database
     # log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
