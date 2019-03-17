@@ -772,18 +772,23 @@ def render_root_list():
     SL_ROM_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have both ROMs and CHDs.')
     SL_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only CHDs and not ROMs.')
 
-    MAME_favs_plot = ('Display your favourite MAME machines.')
-    SL_favs_plot = ('Display your favourite Software List items.')
     custom_filters_plot = ('Custom filters allows to generate machine listings configured to your whises. '
                            'For example, you can define a filter of all the machines released in '
                            'the 1980s that use a joystick. AML includes a fairly complete default XML '
                            'set of filters and you can also generate your own filters.')
+
+    MAME_favs_plot = ('Display your favourite MAME machines.')
     MAME_most_played_plot = ('Display the MAME machines that you play most, sorted by the number '
                              'of times you have launched them.')
     MAME_recent_played_plot = ('Display the MAME machines that you have launched recently.')
+
+    SL_favs_plot = ('Display your favourite Software List items.')
     SL_most_played_plot = ('Display the Software List itmes that you play most, sorted by the number '
                            'of times you have launched them.')
     SL_recent_played_plot = ('Display the Software List items that you have launched recently.')
+
+    Utilities_plot = 'Execute several [COLOR orange]Utilities[/COLOR].'
+    Global_Reports_plot = 'View the [COLOR orange]Global Reports[/COLOR] and [COLOR orange]Statistics[/COLOR].'
 
     # --- Machine counters ---
     if counters_available and mame_view_mode == VIEW_MODE_FLAT:
@@ -969,51 +974,13 @@ def render_root_list():
                                        misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
                                        CM_title, CM_URL, SL_recent_played_plot)
 
-    render_Utilities_root()
-    render_GlobalReports_root()
+    render_root_list_row_standard(
+        'Utilities', misc_url_1_arg('command', 'SHOW_UTILITIES_VLAUNCHERS'), Utilities_plot)
+    render_root_list_row_standard(
+        'Global Reports', misc_url_1_arg('command', 'SHOW_GLOBALREPORTS_VLAUNCHERS'), Global_Reports_plot)
 
     # --- End of directory ---
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
-
-def render_Utilities_root():
-    vcategory_name   = 'Utilities'
-    vcategory_plot   = 'Execute several [COLOR orange]Utilities[/COLOR].'
-    vcategory_icon   = g_PATHS.ICON_FILE_PATH.getPath()
-    vcategory_fanart = g_PATHS.FANART_FILE_PATH.getPath()
-
-    listitem = xbmcgui.ListItem(vcategory_name)
-    listitem.setInfo('video', {'title': vcategory_name, 'plot' : vcategory_plot, 'overlay': 4})
-    listitem.setArt({'icon' : vcategory_icon, 'fanart' : vcategory_fanart})
-
-    commands = []
-    commands.append(('Add new Launcher', misc_url_RunPlugin('ADD_LAUNCHER_ROOT')))
-    commands.append(('Add new Category', misc_url_RunPlugin('ADD_CATEGORY')))
-    commands.append(('Open Kodi file manager', 'ActivateWindow(filemanager)'))
-    commands.append(('AEL addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
-    listitem.addContextMenuItems(commands)
-
-    url_str = misc_url('SHOW_UTILITIES_VLAUNCHERS')
-    xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = url_str, listitem = listitem, isFolder = True)
-
-def render_GlobalReports_root():
-    vcategory_name   = 'Global Reports'
-    vcategory_plot   = 'View the [COLOR orange]Global Reports[/COLOR] and [COLOR orange]Statistics[/COLOR].'
-    vcategory_icon   = g_PATHS.ICON_FILE_PATH.getPath()
-    vcategory_fanart = g_PATHS.FANART_FILE_PATH.getPath()
-
-    listitem = xbmcgui.ListItem(vcategory_name)
-    listitem.setInfo('video', {'title': vcategory_name, 'plot' : vcategory_plot, 'overlay': 4})
-    listitem.setArt({'icon' : vcategory_icon, 'fanart' : vcategory_fanart})
-
-    commands = []
-    commands.append(('Add new Launcher', misc_url_RunPlugin('ADD_LAUNCHER_ROOT')))
-    commands.append(('Add new Category', misc_url_RunPlugin('ADD_CATEGORY')))
-    commands.append(('Open Kodi file manager', 'ActivateWindow(filemanager)'))
-    commands.append(('AEL addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
-    listitem.addContextMenuItems(commands)
-
-    url_str = misc_url('SHOW_GLOBALREPORTS_VLAUNCHERS')
-    xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = url_str, listitem = listitem, isFolder = True)
 
 #
 # These _render_skin_* functions used by skins to display widgets.
@@ -1173,7 +1140,6 @@ def render_root_custom_filter_row(root_name, root_URL, plot_str = ''):
 
     # --- Create context menu ---
     commands = [
-        ('View', misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS')),
         ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
