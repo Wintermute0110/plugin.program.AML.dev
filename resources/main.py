@@ -58,12 +58,10 @@ __addon_type__    = __addon__.getAddonInfo('type').decode('utf-8')
 # _PATH is a filename | _DIR is a directory
 class AML_Paths:
     def __init__(self):
-        self.ADDONS_DATA_DIR  = FileName('special://profile/addon_data')
-        self.ADDON_DATA_DIR   = self.ADDONS_DATA_DIR.pjoin(__addon_id__)
         self.PROFILE_DIR      = FileName('special://profile')
         self.HOME_DIR         = FileName('special://home')
-        self.ADDONS_CODE_DIR  = self.HOME_DIR.pjoin('addons')
-        self.ADDON_CODE_DIR   = self.ADDONS_CODE_DIR.pjoin(__addon_id__)
+        self.ADDON_CODE_DIR   = self.HOME_DIR.pjoin('addons/' + __addon_id__)
+        self.ADDON_DATA_DIR   = self.PROFILE_DIR.pjoin('addon_data/' + __addon_id__)
         self.ICON_FILE_PATH   = self.ADDON_CODE_DIR.pjoin('media/icon.png')
         self.FANART_FILE_PATH = self.ADDON_CODE_DIR.pjoin('media/fanart.jpg')
 
@@ -4842,9 +4840,9 @@ def command_context_setup_plugin():
 
         # --- Test MAME Fanart ---
         if submenu == 0:
-            Template_FN = AML_ADDON_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
-            Asset_path_FN = AML_ADDON_DIR.pjoin('media/MAME_assets')
-            Fanart_FN = ADDON_DATA_DIR.pjoin('Fanart_MAME.png')
+            Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
+            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/MAME_assets')
+            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('Fanart_MAME.png')
             log_debug('Testing MAME Fanart generation ...')
             log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
             log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
@@ -4880,9 +4878,9 @@ def command_context_setup_plugin():
 
         # --- Test SL Fanart ---
         elif submenu == 1:
-            Template_FN = AML_ADDON_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
-            Fanart_FN = ADDON_DATA_DIR.pjoin('Fanart_SL.png')
-            Asset_path_FN = AML_ADDON_DIR.pjoin('media/SL_assets')
+            Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
+            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
+            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('Fanart_SL.png')
             log_debug('Testing Software List Fanart generation ...')
             log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
             log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
@@ -4900,8 +4898,8 @@ def command_context_setup_plugin():
             m_name = 'doom'
             assets_dic = {
                 m_name : {
-                    'title' :    Asset_path_FN.pjoin('doom_title.png').getPath(),
-                    'snap' :     Asset_path_FN.pjoin('doom_snap.png').getPath(),
+                    'title'    : Asset_path_FN.pjoin('doom_title.png').getPath(),
+                    'snap'     : Asset_path_FN.pjoin('doom_snap.png').getPath(),
                     'boxfront' : Asset_path_FN.pjoin('doom_boxfront.png').getPath(),
                 }
             }
@@ -4925,7 +4923,7 @@ def command_context_setup_plugin():
                 return
 
             # >> If fanart directory doesn't exist create it.
-            Template_FN = AML_ADDON_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
+            Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
             Asset_path_FN = FileName(g_settings['assets_path'])
             Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
             if not Fanart_path_FN.isdir():
@@ -5002,7 +5000,7 @@ def command_context_setup_plugin():
                 return
 
             # >> Load Fanart template from XML file
-            Template_FN = AML_ADDON_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
+            Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
             layout = mame_load_SL_Fanart_template(Template_FN)
             # log_debug(unicode(layout))
             if not layout:
