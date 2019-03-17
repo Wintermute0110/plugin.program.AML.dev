@@ -55,7 +55,11 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
 
 [B]Advanced MAME Launcher | version 0.9.9 | XX March 2019[/B]
 
-WIP      [CORE] Move the utilities from the addon settings into the root menu.
+WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
+
+WIP      [CORE] New artwork type, 3dboxes.
+
+FEATURE  [CORE] Move the utilities from the addon settings into the root menu.
 
 WIP      [CORE] Move the report viewer from the context menu to the root menu. The context
          menu is a little bit overloaded and this will alleviate the situation.

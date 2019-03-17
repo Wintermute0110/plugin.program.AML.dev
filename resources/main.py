@@ -474,24 +474,21 @@ def run_plugin(addon_argv):
         elif command == 'SETUP_CUSTOM_FILTERS':
             command_context_setup_custom_filters()
 
+        # >> Utilities and global reports.
         elif command == 'SHOW_UTILITIES_VLAUNCHERS':
             render_Utilities_vlaunchers()
         elif command == 'SHOW_GLOBALREPORTS_VLAUNCHERS':
             render_GlobalReports_vlaunchers()
 
-        # >> Check and update all MAME and SL Favourite objects
-        elif command == 'CHECK_ALL_OBJECTS':
-            command_check_all_Favourite_objects()
+        # >> Execute Utilities
+        elif command == 'EXECUTE_UTILITY':
+            which_utility = args['which'][0]
+            command_exec_utility(which_utility)
 
-        # >> Check AML config
-        elif command == 'CHECK_CONFIG':
-            command_check_AML_configuration()
-
-        # >> Utilities to check CRC hash collisions.
-        elif command == 'CHECK_MAME_COLLISIONS':
-            command_check_MAME_CRC_collisions()
-        elif command == 'CHECK_SL_COLLISIONS':
-            command_check_SL_CRC_collisions()
+        # >> Execute View Reports
+        elif command == 'EXECUTE_REPORT':
+            which_report = args['which'][0]
+            command_exec_report(which_report)
 
         else:
             u = 'Unknown command "{0}"'.format(command)
@@ -1199,15 +1196,15 @@ def render_Utilities_vlaunchers():
     commands.append(('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
 
     # --- Check/Update all objects ---
-    vcategory_name   = 'Check/Update all objects'
-    vcategory_plot   = 'Check/Update all objects'
+    vcategory_name   = 'Check/Update all Favourite objects'
+    vcategory_plot   = 'Check/Update all Favourite objects'
     vcategory_icon   = g_PATHS.ICON_FILE_PATH.getPath()
     vcategory_fanart = g_PATHS.FANART_FILE_PATH.getPath()
     listitem = xbmcgui.ListItem(vcategory_name)
     listitem.setInfo('video', {'title': vcategory_name, 'plot' : vcategory_plot, 'overlay': 4})
     listitem.setArt({'icon' : vcategory_icon, 'fanart' : vcategory_fanart})
     listitem.addContextMenuItems(commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_ALL_OBJECTS')
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_ALL_FAV_OBJECTS')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
     # --- Check AML configuration ---
@@ -5768,402 +5765,398 @@ def command_context_setup_plugin():
             kodi_notify('MAME machine and asset caches rebuilt')
 
 #
-# Checks and updates all MAME and SL Favourite object. This function is useful for plugin upgrades.
+# Execute utilities.
 #
-def command_check_all_Favourite_objects():
-    # --- Load databases ---
-    # USE fs_load_files()
-    pDialog = xbmcgui.DialogProgress()
-    num_items = 5
-    pDialog.create('Advanced MAME Launcher')
-    line1_str = 'Loading databases ...'
-    pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    pDialog.update(int((1*100) / num_items), line1_str, 'MAME machines Main')
-    machines = fs_load_JSON_file_dic(g_PATHS.MAIN_DB_PATH.getPath())
-    pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Render')
-    machines_render = fs_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
-    pDialog.update(int((3*100) / num_items), line1_str, 'MAME machine Assets')
-    assets_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
-    pDialog.update(int((4*100) / num_items), line1_str, 'SL index catalog')
-    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-    pDialog.update(int((5*100) / num_items), ' ', ' ')
-    pDialog.close()
+def command_exec_utility(which_utility):
+    log_debug('command_exec_utility() which_utility = "{0}" starting ...'.format(which_utility))
 
-    # --- Check/Update MAME Favourite machines ---
-    mame_update_MAME_Fav_objects(g_PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
+    # xxxxx
+    if which_utility == 'CHECK_ALL_FAV_OBJECTS':
+        # --- Load databases ---
+        db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
+            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
+            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
+            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+            ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
 
-    # --- Check/Update MAME Most Played machines ---
-    mame_update_MAME_MostPlay_objects(g_PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
+        mame_update_MAME_Fav_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+        mame_update_MAME_MostPlay_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+        mame_update_MAME_RecentPlay_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+        mame_update_SL_Fav_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
+        mame_update_SL_MostPlay_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
+        mame_update_SL_RecentPlay_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
+        kodi_refresh_container()
+        kodi_notify('All MAME Favourite objects checked')
 
-    # --- Check/Update MAME Recently Played machines ---
-    mame_update_MAME_RecentPlay_objects(g_PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
-
-    # --- Check/Update SL Favourite ROMs ---
-    mame_update_SL_Fav_objects(g_PATHS, control_dic, SL_catalog_dic, pDialog)
-
-    # --- Check/Update SL Most Played machines ---
-    mame_update_SL_MostPlay_objects(g_PATHS, control_dic, SL_catalog_dic, pDialog)
-
-    # --- Check/Update SL Recently Played machines ---
-    mame_update_SL_RecentPlay_objects(g_PATHS, control_dic, SL_catalog_dic, pDialog)
-
-    # --- Notify the user ---
-    kodi_refresh_container()
-    kodi_notify('All MAME Favourite objects checked')
-
-#
-# Checks AML configuration and informs users of potential problems.
-# OK
-# WARN
-# ERR
-#
-def command_check_AML_configuration():
-    def check_dir_ERR(slist, dir_str, msg):
-        if dir_str:
-            if FileName(dir_str).exists():
-                slist.append('{0} {1} "{2}"'.format(OK, msg, dir_str))
-            else:
-                slist.append('{0} {1} not found'.format(ERR, msg))
-        else:
-            slist.append('{0} {1} not set'.format(ERR, msg))
-
-    def check_dir_WARN(slist, dir_str, msg):
-        if dir_str:
-            if FileName(dir_str).exists():
-                slist.append('{0} {1} "{2}"'.format(OK, msg, dir_str))
-            else:
-                slist.append('{0} {1} not found'.format(WARN, msg))
-        else:
-            slist.append('{0} {1} not set'.format(WARN, msg))
-
-    def check_file_WARN(slist, file_str, msg):
-        if file_str:
-            if FileName(file_str).exists():
-                slist.append('{0} {1} "{2}"'.format(OK, msg, file_str))
-            else:
-                slist.append('{0} {1} not found'.format(WARN, msg))
-        else:
-            slist.append('{0} {1} not set'.format(WARN, msg))
-
-    def check_asset_dir(slist, dir_FN, msg):
-        if dir_FN.exists():
-            slist.append('{0} Found {1} path "{2}"'.format(OK, msg, dir_FN.getPath()))
-        else:
-            slist.append('{0} {1} path does not exist'.format(WARN, msg))
-            slist.append('     Tried "{0}"'.format(dir_FN.getPath()))
-
-    log_info('command_check_AML_configuration() Checking AML configuration ...')
-    OK   = '[COLOR green]OK  [/COLOR]'
-    WARN = '[COLOR yellow]WARN[/COLOR]'
-    ERR  = '[COLOR red]ERR [/COLOR]'
-    slist = []
-
-    # --- Check mandatory stuff ---
-    slist.append('[COLOR orange]Mandatory stuff[/COLOR]')
-    # MAME executable
-    if g_settings['mame_prog']:
-        if FileName(g_settings['mame_prog']).exists():
-            slist.append('{0} MAME executable "{1}"'.format(OK, g_settings['mame_prog']))
-        else:
-            slist.append('{0} MAME executable not found'.format(ERR))
-    else:
-        slist.append('{0} MAME executable not set'.format(ERR))
-    # ROM path
-    check_dir_ERR(slist, g_settings['rom_path'], 'MAME ROM path')
-    slist.append('')
-
-    # --- MAME assets ---
-    slist.append('[COLOR orange]MAME assets[/COLOR]')
-    if g_settings['assets_path']:
-        if FileName(g_settings['assets_path']).exists():
-            slist.append('{0} MAME Asset path "{1}"'.format(OK, g_settings['assets_path']))
-
-            # >> Check that artwork subdirectories exist
-            Asset_path_FN = FileName(g_settings['assets_path'])
-
-            PCB_FN = Asset_path_FN.pjoin('PCBs')
-            artpreview_FN = Asset_path_FN.pjoin('artpreviews')
-            artwork_FN = Asset_path_FN.pjoin('artwork')
-            cabinets_FN = Asset_path_FN.pjoin('cabinets')
-            clearlogos_FN = Asset_path_FN.pjoin('clearlogos')
-            cpanels_FN = Asset_path_FN.pjoin('cpanels')
-            flyers_FN = Asset_path_FN.pjoin('flyers')
-            manuals_FN = Asset_path_FN.pjoin('manuals')
-            marquees_FN = Asset_path_FN.pjoin('marquees')
-            snaps_FN = Asset_path_FN.pjoin('snaps')
-            titles_FN = Asset_path_FN.pjoin('titles')
-            videosnaps_FN = Asset_path_FN.pjoin('videosnaps')
-
-            check_asset_dir(slist, PCB_FN, 'PCB')
-            check_asset_dir(slist, artpreview_FN, 'Artpreviews')
-            check_asset_dir(slist, artwork_FN, 'Artwork')
-            check_asset_dir(slist, cabinets_FN, 'Cabinets')
-            check_asset_dir(slist, clearlogos_FN, 'Clearlogos')
-            check_asset_dir(slist, cpanels_FN, 'CPanels')
-            check_asset_dir(slist, flyers_FN, 'Flyers')
-            check_asset_dir(slist, manuals_FN, 'Manuals')
-            check_asset_dir(slist, marquees_FN, 'Marquees')
-            check_asset_dir(slist, snaps_FN, 'Snaps')
-            check_asset_dir(slist, titles_FN, 'Titles')
-            check_asset_dir(slist, videosnaps_FN, 'Trailers')
-        else:
-            slist.append('{0} MAME Asset path not found'.format(ERR))
-    else:
-        slist.append('{0} MAME Asset path not set'.format(WARN))
-    slist.append('')
-
-    # --- CHD path ---
-    slist.append('[COLOR orange]MAME optional g_PATHS[/COLOR]')
-    check_dir_WARN(slist, g_settings['chd_path'], 'MAME CHD path')
-
-    # --- Samples path ---
-    check_dir_WARN(slist, g_settings['samples_path_1'], 'MAME Samples 1 path')
-    check_dir_WARN(slist, g_settings['samples_path_2'], 'MAME Samples 2 path')
-    slist.append('')
-
-    # --- Software Lists g_PATHS ---
-    slist.append('[COLOR orange]Software List g_PATHS[/COLOR]')
-    check_dir_WARN(slist, g_settings['SL_hash_path'], 'SL hash path')
-    check_dir_WARN(slist, g_settings['SL_rom_path'], 'SL ROM path')
-    check_dir_WARN(slist, g_settings['SL_chd_path'], 'SL CHD path')
-    slist.append('')
-
-    slist.append('[COLOR orange]Software Lists assets[/COLOR]')
-    if g_settings['assets_path']:
-        if FileName(g_settings['assets_path']).exists():
-            slist.append('{0} MAME Asset path "{1}"'.format(OK, g_settings['assets_path']))
-
-            # >> Check that artwork subdirectories exist
-            Asset_path_FN = FileName(g_settings['assets_path'])
-
-            covers_FN = Asset_path_FN.pjoin('covers_SL')
-            manuals_FN = Asset_path_FN.pjoin('manuals_SL')
-            snaps_FN = Asset_path_FN.pjoin('snaps_SL')
-            titles_FN = Asset_path_FN.pjoin('titles_SL')
-            videosnaps_FN = Asset_path_FN.pjoin('videosnaps_SL')
-
-            check_asset_dir(slist, covers_FN, 'SL Covers')
-            check_asset_dir(slist, manuals_FN, 'SL Manuals')
-            check_asset_dir(slist, snaps_FN, 'SL Snaps')
-            check_asset_dir(slist, titles_FN, 'SL Titles')
-            check_asset_dir(slist, videosnaps_FN, 'SL Trailers')
-        else:
-            slist.append('{0} MAME Asset path not found'.format(ERR))
-    else:
-        slist.append('{0} MAME Asset path not set'.format(WARN))
-    slist.append('')
-
-    # --- Optional INI files ---
-    slist.append('[COLOR orange]INI/DAT files[/COLOR]')
-    if g_settings['dats_path']:
-        if FileName(g_settings['dats_path']).exists():
-            slist.append('{0} MAME INI/DAT path "{1}"'.format(OK, g_settings['dats_path']))
-
-            DATS_dir_FN = FileName(g_settings['dats_path'])
-            BESTGAMES_FN = DATS_dir_FN.pjoin(BESTGAMES_INI)
-            CATLIST_FN = DATS_dir_FN.pjoin(CATLIST_INI)
-            CATVER_FN = DATS_dir_FN.pjoin(CATVER_INI)
-            GENRE_FN = DATS_dir_FN.pjoin(GENRE_INI)
-            MATURE_FN = DATS_dir_FN.pjoin(MATURE_INI)
-            NPLAYERS_FN = DATS_dir_FN.pjoin(NPLAYERS_INI)
-            SERIES_FN = DATS_dir_FN.pjoin(SERIES_INI)
-            COMMAND_FN = DATS_dir_FN.pjoin(COMMAND_DAT)
-            GAMEINIT_FN = DATS_dir_FN.pjoin(GAMEINIT_DAT)
-            HISTORY_FN = DATS_dir_FN.pjoin(HISTORY_DAT)
-            MAMEINFO_FN = DATS_dir_FN.pjoin(MAMEINFO_DAT)
-
-            check_file_WARN(slist, BESTGAMES_FN.getPath(), BESTGAMES_INI + ' file')
-            check_file_WARN(slist, CATLIST_FN.getPath(), CATLIST_INI + ' file')
-            check_file_WARN(slist, CATVER_FN.getPath(), CATVER_INI + ' file')
-            check_file_WARN(slist, GENRE_FN.getPath(), GENRE_INI + ' file')
-            check_file_WARN(slist, MATURE_FN.getPath(), MATURE_INI + ' file')
-            check_file_WARN(slist, NPLAYERS_FN.getPath(), NPLAYERS_INI + ' file')
-            check_file_WARN(slist, SERIES_FN.getPath(), SERIES_INI + ' file')
-            check_file_WARN(slist, COMMAND_FN.getPath(), COMMAND_DAT + ' file')
-            check_file_WARN(slist, GAMEINIT_FN.getPath(), GAMEINIT_DAT + ' file')
-            check_file_WARN(slist, HISTORY_FN.getPath(), HISTORY_DAT + ' file')
-            check_file_WARN(slist, MAMEINFO_FN.getPath(), MAMEINFO_DAT + ' file')
-        else:
-            slist.append('{0} MAME INI/DAT path not found'.format(ERR))
-    else:
-        slist.append('{0} MAME INI/DAT path not set'.format(WARN))
-
-    # --- Display info to the user ---
-    display_text_window('AML configuration check report', '\n'.join(slist))
-
-#
-# Check MAME and SL CRC 32 hash collisions.
-# The assumption in this function is that there is not SHA1 hash collisions.
-# Implicit ROM merging must not be confused with a collision.
-#
-def command_check_MAME_CRC_collisions():
-    log_info('command_check_MAME_CRC_collisions() Initialising ...')
-
-    # >> Open ROMs database.
-    pDialog = xbmcgui.DialogProgress()
-    line1_str = 'Loading databases ...'
-    num_items = 2
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(int((0*100) / num_items), line1_str, 'MAME machine ROMs')
-    machines_roms = fs_load_JSON_file_dic(g_PATHS.ROMS_DB_PATH.getPath())
-    pDialog.update(int((1*100) / num_items), line1_str, 'MAME ROMs SHA1 dictionary')
-    roms_sha1_dic = fs_load_JSON_file_dic(g_PATHS.ROM_SHA1_HASH_DB_PATH.getPath())
-    pDialog.update(int((2*100) / num_items), ' ', ' ')
-    pDialog.close()
-
-    # >> Detect implicit ROM merging using the SHA1 hash and check for CRC32 collisions for
-    # >> non-implicit merged ROMs.
-    pdialog_line1 = 'Checking for MAME CRC32 hash collisions ...'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    total_machines = len(machines_roms)
-    processed_machines = 0
-    crc_roms_dic = {}
-    sha1_roms_dic = {}
-    num_collisions = 0
-    table_str = []
-    table_str.append(['right',  'left',     'left', 'left', 'left'])
-    table_str.append(['Status', 'ROM name', 'Size', 'CRC',  'SHA1'])
-    for m_name in sorted(machines_roms):
-        pDialog.update((processed_machines*100) // total_machines, pdialog_line1)
-        m_roms = machines_roms[m_name]
-        for rom in m_roms['roms']:
-            rom_nonmerged_location = m_name + '/' + rom['name']
-            # >> Skip invalid ROMs (no CRC, no SHA1
-            if rom_nonmerged_location not in roms_sha1_dic:
-                continue
-            sha1 = roms_sha1_dic[rom_nonmerged_location]
-            if sha1 in sha1_roms_dic:
-                # >> ROM implicit merging (using SHA1). No check of CRC32 collision.
-                pass
-            else:
-                # >> No ROM implicit mergin. Check CRC32 collision
-                sha1_roms_dic[sha1] = rom_nonmerged_location
-                if rom['crc'] in crc_roms_dic:
-                    num_collisions += 1
-                    coliding_name = crc_roms_dic[rom['crc']]
-                    coliding_crc = rom['crc']
-                    coliding_sha1 = roms_sha1_dic[coliding_name]
-                    table_str.append(['Collision', rom_nonmerged_location, str(rom['size']), rom['crc'], sha1])
-                    table_str.append(['with', coliding_name, ' ', coliding_crc, coliding_sha1])
+    elif which_utility == 'CHECK_CONFIG':
+        # Functions defined here can see local variables defined in this code block.
+        def aux_check_dir_ERR(slist, dir_str, msg):
+            if dir_str:
+                if FileName(dir_str).exists():
+                    slist.append('{0} {1} "{2}"'.format(OK, msg, dir_str))
                 else:
-                    crc_roms_dic[rom['crc']] = rom_nonmerged_location
-        processed_machines += 1
-    pDialog.update((processed_machines*100) // total_machines, pdialog_line1, ' ')
-    pDialog.close()
-    log_debug('MAME has {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
-    log_debug('There are {0} CRC32 collisions'.format(num_collisions))
+                    slist.append('{0} {1} not found'.format(ERR, msg))
+            else:
+                slist.append('{0} {1} not set'.format(ERR, msg))
 
-    # >> Write report and debug file
-    slist = []
-    slist.append('*** AML MAME ROMs CRC32 hash collision report ***')
-    slist.append('MAME has {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
-    slist.append('There are {0} CRC32 collisions'.format(num_collisions))
-    slist.append('')
-    table_str_list = text_render_table_str(table_str)
-    slist.extend(table_str_list)
-    display_text_window('AML MAME CRC32 hash collision report', '\n'.join(slist))
-    log_info('Writing "{0}"'.format(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath()))
-    with open(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(slist).encode('utf-8'))
+        def aux_check_dir_WARN(slist, dir_str, msg):
+            if dir_str:
+                if FileName(dir_str).exists():
+                    slist.append('{0} {1} "{2}"'.format(OK, msg, dir_str))
+                else:
+                    slist.append('{0} {1} not found'.format(WARN, msg))
+            else:
+                slist.append('{0} {1} not set'.format(WARN, msg))
 
-def command_check_SL_CRC_collisions():
-    log_info('command_check_SL_CRC_collisions() Initialising ...')
+        def aux_check_file_WARN(slist, file_str, msg):
+            if file_str:
+                if FileName(file_str).exists():
+                    slist.append('{0} {1} "{2}"'.format(OK, msg, file_str))
+                else:
+                    slist.append('{0} {1} not found'.format(WARN, msg))
+            else:
+                slist.append('{0} {1} not set'.format(WARN, msg))
 
-    # >> Load SL catalog and check for errors.
-    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        def aux_check_asset_dir(slist, dir_FN, msg):
+            if dir_FN.exists():
+                slist.append('{0} Found {1} path "{2}"'.format(OK, msg, dir_FN.getPath()))
+            else:
+                slist.append('{0} {1} path does not exist'.format(WARN, msg))
+                slist.append('     Tried "{0}"'.format(dir_FN.getPath()))
 
-    # >> Process all SLs
-    pDialog = xbmcgui.DialogProgress()
-    pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    total_files = len(SL_catalog_dic)
-    processed_files = 0
-    pDialog.update(0)
-    roms_sha1_dic = {}
-    crc_roms_dic = {}
-    sha1_roms_dic = {}
-    num_collisions = 0
-    table_str = []
-    table_str.append(['right',  'left',     'left', 'left', 'left'])
-    table_str.append(['Status', 'ROM name', 'Size', 'CRC',  'SHA1'])
-    for SL_name in sorted(SL_catalog_dic):
-        # >> Progress dialog
-        update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+        # Checks AML configuration and informs users of potential problems.
+        log_info('command_check_AML_configuration() Checking AML configuration ...')
+        OK   = '[COLOR green]OK  [/COLOR]'
+        WARN = '[COLOR yellow]WARN[/COLOR]'
+        ERR  = '[COLOR red]ERR [/COLOR]'
+        slist = []
 
-        # >> Load SL databases
-        # SL_SETS_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
-        # sl_sets = fs_load_JSON_file_dic(SL_SETS_DB_FN.getPath(), verbose = False)
-        SL_ROMS_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
-        sl_roms = fs_load_JSON_file_dic(SL_ROMS_DB_FN.getPath(), verbose = False)
+        # --- Check mandatory stuff ---
+        slist.append('[COLOR orange]Mandatory stuff[/COLOR]')
+        # MAME executable
+        if g_settings['mame_prog']:
+            if FileName(g_settings['mame_prog']).exists():
+                slist.append('{0} MAME executable "{1}"'.format(OK, g_settings['mame_prog']))
+            else:
+                slist.append('{0} MAME executable not found'.format(ERR))
+        else:
+            slist.append('{0} MAME executable not set'.format(ERR))
+        # ROM path
+        aux_check_dir_ERR(slist, g_settings['rom_path'], 'MAME ROM path')
+        slist.append('')
 
-        # >> First step: make a SHA1 dictionary of all SL item hashes
-        for set_name in sorted(sl_roms):
-            set_rom_list = sl_roms[set_name]
-            for area in set_rom_list:
-                if 'dataarea' not in area: continue
-                for da_dict in area['dataarea']:
-                    for rom in da_dict['roms']:
-                        sha1 = rom['sha1']
-                        if sha1:
+        # --- MAME assets ---
+        slist.append('[COLOR orange]MAME assets[/COLOR]')
+        if g_settings['assets_path']:
+            if FileName(g_settings['assets_path']).exists():
+                slist.append('{0} MAME Asset path "{1}"'.format(OK, g_settings['assets_path']))
+
+                # >> Check that artwork subdirectories exist
+                Asset_path_FN = FileName(g_settings['assets_path'])
+
+                PCB_FN = Asset_path_FN.pjoin('PCBs')
+                artpreview_FN = Asset_path_FN.pjoin('artpreviews')
+                artwork_FN = Asset_path_FN.pjoin('artwork')
+                cabinets_FN = Asset_path_FN.pjoin('cabinets')
+                clearlogos_FN = Asset_path_FN.pjoin('clearlogos')
+                cpanels_FN = Asset_path_FN.pjoin('cpanels')
+                flyers_FN = Asset_path_FN.pjoin('flyers')
+                manuals_FN = Asset_path_FN.pjoin('manuals')
+                marquees_FN = Asset_path_FN.pjoin('marquees')
+                snaps_FN = Asset_path_FN.pjoin('snaps')
+                titles_FN = Asset_path_FN.pjoin('titles')
+                videosnaps_FN = Asset_path_FN.pjoin('videosnaps')
+
+                aux_check_asset_dir(slist, PCB_FN, 'PCB')
+                aux_check_asset_dir(slist, artpreview_FN, 'Artpreviews')
+                aux_check_asset_dir(slist, artwork_FN, 'Artwork')
+                aux_check_asset_dir(slist, cabinets_FN, 'Cabinets')
+                aux_check_asset_dir(slist, clearlogos_FN, 'Clearlogos')
+                aux_check_asset_dir(slist, cpanels_FN, 'CPanels')
+                aux_check_asset_dir(slist, flyers_FN, 'Flyers')
+                aux_check_asset_dir(slist, manuals_FN, 'Manuals')
+                aux_check_asset_dir(slist, marquees_FN, 'Marquees')
+                aux_check_asset_dir(slist, snaps_FN, 'Snaps')
+                aux_check_asset_dir(slist, titles_FN, 'Titles')
+                aux_check_asset_dir(slist, videosnaps_FN, 'Trailers')
+            else:
+                slist.append('{0} MAME Asset path not found'.format(ERR))
+        else:
+            slist.append('{0} MAME Asset path not set'.format(WARN))
+        slist.append('')
+
+        # --- CHD path ---
+        slist.append('[COLOR orange]MAME optional paths[/COLOR]')
+        aux_check_dir_WARN(slist, g_settings['chd_path'], 'MAME CHD path')
+
+        # --- Samples path ---
+        aux_check_dir_WARN(slist, g_settings['samples_path_1'], 'MAME Samples 1 path')
+        aux_check_dir_WARN(slist, g_settings['samples_path_2'], 'MAME Samples 2 path')
+        slist.append('')
+
+        # --- Software Lists paths ---
+        slist.append('[COLOR orange]Software List paths[/COLOR]')
+        aux_check_dir_WARN(slist, g_settings['SL_hash_path'], 'SL hash path')
+        aux_check_dir_WARN(slist, g_settings['SL_rom_path'], 'SL ROM path')
+        aux_check_dir_WARN(slist, g_settings['SL_chd_path'], 'SL CHD path')
+        slist.append('')
+
+        slist.append('[COLOR orange]Software Lists assets[/COLOR]')
+        if g_settings['assets_path']:
+            if FileName(g_settings['assets_path']).exists():
+                slist.append('{0} MAME Asset path "{1}"'.format(OK, g_settings['assets_path']))
+
+                # >> Check that artwork subdirectories exist
+                Asset_path_FN = FileName(g_settings['assets_path'])
+
+                covers_FN = Asset_path_FN.pjoin('covers_SL')
+                manuals_FN = Asset_path_FN.pjoin('manuals_SL')
+                snaps_FN = Asset_path_FN.pjoin('snaps_SL')
+                titles_FN = Asset_path_FN.pjoin('titles_SL')
+                videosnaps_FN = Asset_path_FN.pjoin('videosnaps_SL')
+
+                aux_check_asset_dir(slist, covers_FN, 'SL Covers')
+                aux_check_asset_dir(slist, manuals_FN, 'SL Manuals')
+                aux_check_asset_dir(slist, snaps_FN, 'SL Snaps')
+                aux_check_asset_dir(slist, titles_FN, 'SL Titles')
+                aux_check_asset_dir(slist, videosnaps_FN, 'SL Trailers')
+            else:
+                slist.append('{0} MAME Asset path not found'.format(ERR))
+        else:
+            slist.append('{0} MAME Asset path not set'.format(WARN))
+        slist.append('')
+
+        # --- Optional INI files ---
+        slist.append('[COLOR orange]INI/DAT files[/COLOR]')
+        if g_settings['dats_path']:
+            if FileName(g_settings['dats_path']).exists():
+                slist.append('{0} MAME INI/DAT path "{1}"'.format(OK, g_settings['dats_path']))
+
+                DATS_dir_FN = FileName(g_settings['dats_path'])
+                BESTGAMES_FN = DATS_dir_FN.pjoin(BESTGAMES_INI)
+                CATLIST_FN = DATS_dir_FN.pjoin(CATLIST_INI)
+                CATVER_FN = DATS_dir_FN.pjoin(CATVER_INI)
+                GENRE_FN = DATS_dir_FN.pjoin(GENRE_INI)
+                MATURE_FN = DATS_dir_FN.pjoin(MATURE_INI)
+                NPLAYERS_FN = DATS_dir_FN.pjoin(NPLAYERS_INI)
+                SERIES_FN = DATS_dir_FN.pjoin(SERIES_INI)
+                COMMAND_FN = DATS_dir_FN.pjoin(COMMAND_DAT)
+                GAMEINIT_FN = DATS_dir_FN.pjoin(GAMEINIT_DAT)
+                HISTORY_FN = DATS_dir_FN.pjoin(HISTORY_DAT)
+                MAMEINFO_FN = DATS_dir_FN.pjoin(MAMEINFO_DAT)
+
+                aux_check_file_WARN(slist, BESTGAMES_FN.getPath(), BESTGAMES_INI + ' file')
+                aux_check_file_WARN(slist, CATLIST_FN.getPath(), CATLIST_INI + ' file')
+                aux_check_file_WARN(slist, CATVER_FN.getPath(), CATVER_INI + ' file')
+                aux_check_file_WARN(slist, GENRE_FN.getPath(), GENRE_INI + ' file')
+                aux_check_file_WARN(slist, MATURE_FN.getPath(), MATURE_INI + ' file')
+                aux_check_file_WARN(slist, NPLAYERS_FN.getPath(), NPLAYERS_INI + ' file')
+                aux_check_file_WARN(slist, SERIES_FN.getPath(), SERIES_INI + ' file')
+                aux_check_file_WARN(slist, COMMAND_FN.getPath(), COMMAND_DAT + ' file')
+                aux_check_file_WARN(slist, GAMEINIT_FN.getPath(), GAMEINIT_DAT + ' file')
+                aux_check_file_WARN(slist, HISTORY_FN.getPath(), HISTORY_DAT + ' file')
+                aux_check_file_WARN(slist, MAMEINFO_FN.getPath(), MAMEINFO_DAT + ' file')
+            else:
+                slist.append('{0} MAME INI/DAT path not found'.format(ERR))
+        else:
+            slist.append('{0} MAME INI/DAT path not set'.format(WARN))
+
+        # --- Display info to the user ---
+        display_text_window('AML configuration check report', '\n'.join(slist))
+
+    # Check MAME and SL CRC 32 hash collisions.
+    # The assumption in this function is that there is not SHA1 hash collisions.
+    # Implicit ROM merging must not be confused with a collision.
+    elif which_utility == 'CHECK_MAME_COLLISIONS':
+        log_info('command_check_MAME_CRC_collisions() Initialising ...')
+
+        # >> Open ROMs database.
+        db_files = [
+            ['machine_roms', 'MAME machine ROMs', g_PATHS.ROMS_DB_PATH.getPath()],
+            ['roms_sha1_dic', 'MAME ROMs SHA1 dictionary', g_PATHS.ROM_SHA1_HASH_DB_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        # >> Detect implicit ROM merging using the SHA1 hash and check for CRC32 collisions for
+        # >> non-implicit merged ROMs.
+        pdialog_line1 = 'Checking for MAME CRC32 hash collisions ...'
+        pDialog = xbmcgui.DialogProgress()
+        pDialog.create('Advanced MAME Launcher', pdialog_line1)
+        total_machines = len(db_dic['machine_roms'])
+        processed_machines = 0
+        crc_roms_dic = {}
+        sha1_roms_dic = {}
+        num_collisions = 0
+        table_str = []
+        table_str.append(['right',  'left',     'left', 'left', 'left'])
+        table_str.append(['Status', 'ROM name', 'Size', 'CRC',  'SHA1'])
+        for m_name in sorted(db_dic['machine_roms']):
+            pDialog.update((processed_machines*100) // total_machines, pdialog_line1)
+            m_roms = db_dic['machine_roms'][m_name]
+            for rom in m_roms['roms']:
+                rom_nonmerged_location = m_name + '/' + rom['name']
+                # >> Skip invalid ROMs (no CRC, no SHA1
+                if rom_nonmerged_location not in db_dic['roms_sha1_dic']:
+                    continue
+                sha1 = db_dic['roms_sha1_dic'][rom_nonmerged_location]
+                if sha1 in sha1_roms_dic:
+                    # >> ROM implicit merging (using SHA1). No check of CRC32 collision.
+                    pass
+                else:
+                    # >> No ROM implicit mergin. Check CRC32 collision
+                    sha1_roms_dic[sha1] = rom_nonmerged_location
+                    if rom['crc'] in crc_roms_dic:
+                        num_collisions += 1
+                        coliding_name = crc_roms_dic[rom['crc']]
+                        coliding_crc = rom['crc']
+                        coliding_sha1 = db_dic['roms_sha1_dic'][coliding_name]
+                        table_str.append(
+                            ['Collision', rom_nonmerged_location, str(rom['size']), rom['crc'], sha1])
+                        table_str.append(['with', coliding_name, ' ', coliding_crc, coliding_sha1])
+                    else:
+                        crc_roms_dic[rom['crc']] = rom_nonmerged_location
+            processed_machines += 1
+        pDialog.update((processed_machines*100) // total_machines, pdialog_line1, ' ')
+        pDialog.close()
+        log_debug('MAME has {0:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])))
+        log_debug('There are {0} CRC32 collisions'.format(num_collisions))
+
+        # >> Write report and debug file
+        slist = []
+        slist.append('*** AML MAME ROMs CRC32 hash collision report ***')
+        slist.append('MAME has {0:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])))
+        slist.append('There are {0} CRC32 collisions'.format(num_collisions))
+        slist.append('')
+        table_str_list = text_render_table_str(table_str)
+        slist.extend(table_str_list)
+        display_text_window('AML MAME CRC32 hash collision report', '\n'.join(slist))
+        log_info('Writing "{0}"'.format(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath()))
+        with open(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath(), 'w') as file:
+            file.write('\n'.join(slist).encode('utf-8'))
+
+    elif which_utility == 'CHECK_SL_COLLISIONS':
+        log_info('command_check_SL_CRC_collisions() Initialising ...')
+
+        # >> Load SL catalog and check for errors.
+        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+
+        # >> Process all SLs
+        pDialog = xbmcgui.DialogProgress()
+        pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
+        pDialog.create('Advanced MAME Launcher', pdialog_line1)
+        total_files = len(SL_catalog_dic)
+        processed_files = 0
+        pDialog.update(0)
+        roms_sha1_dic = {}
+        crc_roms_dic = {}
+        sha1_roms_dic = {}
+        num_collisions = 0
+        table_str = []
+        table_str.append(['right',  'left',     'left', 'left', 'left'])
+        table_str.append(['Status', 'ROM name', 'Size', 'CRC',  'SHA1'])
+        for SL_name in sorted(SL_catalog_dic):
+            # >> Progress dialog
+            update_number = (processed_files*100) // total_files
+            pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+
+            # >> Load SL databases
+            # SL_SETS_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
+            # sl_sets = fs_load_JSON_file_dic(SL_SETS_DB_FN.getPath(), verbose = False)
+            SL_ROMS_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
+            sl_roms = fs_load_JSON_file_dic(SL_ROMS_DB_FN.getPath(), verbose = False)
+
+            # >> First step: make a SHA1 dictionary of all SL item hashes
+            for set_name in sorted(sl_roms):
+                set_rom_list = sl_roms[set_name]
+                for area in set_rom_list:
+                    if 'dataarea' not in area: continue
+                    for da_dict in area['dataarea']:
+                        for rom in da_dict['roms']:
+                            sha1 = rom['sha1']
+                            if sha1:
+                                rom_nonmerged_location = SL_name + '/' + set_name + '/' + rom['name']
+                                roms_sha1_dic[rom_nonmerged_location] = sha1
+
+            # >> Second step: make
+            for set_name in sorted(sl_roms):
+                set_rom_list = sl_roms[set_name]
+                for area in set_rom_list:
+                    if 'dataarea' not in area: continue
+                    for da_dict in area['dataarea']:
+                        for rom in da_dict['roms']:
                             rom_nonmerged_location = SL_name + '/' + set_name + '/' + rom['name']
-                            roms_sha1_dic[rom_nonmerged_location] = sha1
-        
-        # >> Second step: make
-        for set_name in sorted(sl_roms):
-            set_rom_list = sl_roms[set_name]
-            for area in set_rom_list:
-                if 'dataarea' not in area: continue
-                for da_dict in area['dataarea']:
-                    for rom in da_dict['roms']:
-                        rom_nonmerged_location = SL_name + '/' + set_name + '/' + rom['name']
-                        # >> Skip invalid ROMs (no CRC, no SHA1
-                        if rom_nonmerged_location not in roms_sha1_dic:
-                            continue
-                        sha1 = roms_sha1_dic[rom_nonmerged_location]
-                        if sha1 in sha1_roms_dic:
-                            # >> ROM implicit merging (using SHA1). No check of CRC32 collision.
-                            pass
-                        else:
-                            # >> No ROM implicit mergin. Check CRC32 collision
-                            sha1_roms_dic[sha1] = rom_nonmerged_location
-                            if rom['crc'] in crc_roms_dic:
-                                num_collisions += 1
-                                coliding_name = crc_roms_dic[rom['crc']]
-                                coliding_crc = rom['crc']
-                                coliding_sha1 = roms_sha1_dic[coliding_name]
-                                table_str.append([
-                                    'Collision', rom_nonmerged_location,
-                                    str(rom['size']), rom['crc'], sha1
-                                ])
-                                table_str.append([
-                                    'with', coliding_name, ' ',
-                                    coliding_crc, coliding_sha1
-                                ])
+                            # >> Skip invalid ROMs (no CRC, no SHA1
+                            if rom_nonmerged_location not in roms_sha1_dic:
+                                continue
+                            sha1 = roms_sha1_dic[rom_nonmerged_location]
+                            if sha1 in sha1_roms_dic:
+                                # >> ROM implicit merging (using SHA1). No check of CRC32 collision.
+                                pass
                             else:
-                                crc_roms_dic[rom['crc']] = rom_nonmerged_location
+                                # >> No ROM implicit mergin. Check CRC32 collision
+                                sha1_roms_dic[sha1] = rom_nonmerged_location
+                                if rom['crc'] in crc_roms_dic:
+                                    num_collisions += 1
+                                    coliding_name = crc_roms_dic[rom['crc']]
+                                    coliding_crc = rom['crc']
+                                    coliding_sha1 = roms_sha1_dic[coliding_name]
+                                    table_str.append([
+                                        'Collision', rom_nonmerged_location,
+                                        str(rom['size']), rom['crc'], sha1
+                                    ])
+                                    table_str.append([
+                                        'with', coliding_name, ' ',
+                                        coliding_crc, coliding_sha1
+                                    ])
+                                else:
+                                    crc_roms_dic[rom['crc']] = rom_nonmerged_location
 
-        # >> Increment file count
-        processed_files += 1
-    update_number = (processed_files*100) // total_files
-    pDialog.update(update_number, pdialog_line1, ' ')
-    pDialog.close()
-    log_debug('The SL have {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
-    log_debug('There are {0} CRC32 collisions'.format(num_collisions))
+            # >> Increment file count
+            processed_files += 1
+        update_number = (processed_files*100) // total_files
+        pDialog.update(update_number, pdialog_line1, ' ')
+        pDialog.close()
+        log_debug('The SL have {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
+        log_debug('There are {0} CRC32 collisions'.format(num_collisions))
 
-    # >> Write report
-    slist = []
-    slist.append('*** AML SL ROMs CRC32 hash collision report ***')
-    slist.append('The Software Lists have {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
-    slist.append('There are {0} CRC32 collisions'.format(num_collisions))
-    slist.append('')
-    table_str_list = text_render_table_str(table_str)
-    slist.extend(table_str_list)
-    _display_text_window('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
-    log_info('Writing "{0}"'.format(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
-    with open(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(slist).encode('utf-8'))
+        # --- Write report ---
+        slist = []
+        slist.append('*** AML SL ROMs CRC32 hash collision report ***')
+        slist.append('The Software Lists have {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
+        slist.append('There are {0} CRC32 collisions'.format(num_collisions))
+        slist.append('')
+        table_str_list = text_render_table_str(table_str)
+        slist.extend(table_str_list)
+        display_text_window('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
+        log_info('Writing "{0}"'.format(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
+        with open(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'w') as file:
+            file.write('\n'.join(slist).encode('utf-8'))
+
+    else:
+        u = 'Utility "{0}" not found. This is a bug, please report it.'.format(which_utility)
+        log_error(u)
+        kodi_dialog_OK(u)
+
+#
+# Execute view reports.
+#
+def command_exec_report(which_report):
+    log_debug('command_exec_report() which_report = "{0}" starting ...'.format(which_report))
+    if which_report == '':
+        pass
+    else:
+        u = 'Report "{0}" not found. This is a bug, please report it.'.format(which_report)
+        log_error(u)
+        kodi_dialog_OK(u)
 
 #
 # Launch MAME machine. Syntax: $ mame <machine_name> [options]
@@ -6173,7 +6166,7 @@ def run_machine(machine_name, location):
     log_info('run_machine() Launching MAME machine  "{0}"'.format(machine_name))
     log_info('run_machine() Launching MAME location "{0}"'.format(location))
 
-    # --- Get g_PATHS ---
+    # --- Get paths ---
     mame_prog_FN = FileName(g_settings['mame_prog'])
 
     # --- Load databases ---
