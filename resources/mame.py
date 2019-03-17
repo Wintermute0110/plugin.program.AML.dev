@@ -1218,8 +1218,10 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     slist.append("nplayers.ini version  {0}".format(control_dic['ver_nplayers']))
     slist.append("series.ini version    {0}".format(control_dic['ver_series']))
 
+    # Timestamps ordered if user selects "All in one step"
     slist.append('')
     slist.append('[COLOR orange]Timestamps[/COLOR]')
+    # MAME and SL databases.
     if control_dic['t_XML_extraction']:
         slist.append("MAME XML extracted on   {0}".format(_str_time(control_dic['t_XML_extraction'])))
     else:
@@ -1236,6 +1238,12 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
         slist.append("MAME Catalog built on   {0}".format(_str_time(control_dic['t_MAME_Catalog_build'])))
     else:
         slist.append("MAME Catalog never built")
+    if control_dic['t_SL_DB_build']:
+        slist.append("SL DB built on          {0}".format(_str_time(control_dic['t_SL_DB_build'])))
+    else:
+        slist.append("SL DB never built")
+
+    # MAME and SL scanner.
     if control_dic['t_MAME_ROMs_scan']:
         slist.append("MAME ROMs scaned on     {0}".format(_str_time(control_dic['t_MAME_ROMs_scan'])))
     else:
@@ -1244,16 +1252,7 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
         slist.append("MAME assets scaned on   {0}".format(_str_time(control_dic['t_MAME_assets_scan'])))
     else:
         slist.append("MAME assets never scaned")
-    if control_dic['t_Custom_Filter_build']:
-        slist.append("Custom filters built on {0}".format(_str_time(control_dic['t_Custom_Filter_build'])))
-    else:
-        slist.append("Custom filters never built")
 
-    # >> Software Lists stuff
-    if control_dic['t_SL_DB_build']:
-        slist.append("SL DB built on          {0}".format(_str_time(control_dic['t_SL_DB_build'])))
-    else:
-        slist.append("SL DB never built")
     if control_dic['t_SL_ROMs_scan']:
         slist.append("SL ROMs scaned on       {0}".format(_str_time(control_dic['t_SL_ROMs_scan'])))
     else:
@@ -1263,7 +1262,24 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     else:
         slist.append("SL assets never scaned")
 
-    # >> Audit stuff
+    # Plots and fanarts.
+    slist.append("MAME Plots never built")
+    slist.append("SL Plots never built")
+
+    slist.append("MAME Fanarts never built")
+    slist.append("SL Fanarts never built")
+
+    # MAME render and asset cache (optional).
+    slist.append("MAME render cache never built")
+    slist.append("MAME asset cache never built")
+
+    # Custsom filters.
+    if control_dic['t_Custom_Filter_build']:
+        slist.append("Custom filters built on {0}".format(_str_time(control_dic['t_Custom_Filter_build'])))
+    else:
+        slist.append("Custom filters never built")
+
+    # Audit stuff.
     if control_dic['t_MAME_audit']:
         slist.append("MAME ROMs audited on    {0}".format(_str_time(control_dic['t_MAME_audit'])))
     else:
@@ -1566,8 +1582,9 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
 # -------------------------------------------------------------------------------------------------
 # Check/Update/Repair Favourite ROM objects
 # -------------------------------------------------------------------------------------------------
-def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog):
+def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, assets_dic):
     line1_str = 'Checking/Updating MAME Favourites ...'
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', line1_str)
     fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
     if len(fav_machines) > 1:
@@ -1595,8 +1612,9 @@ def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, 
         pDialog.update(100, line1_str)
     pDialog.close()
 
-def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog):
+def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic):
     line1_str = 'Checking/Updating MAME Most Played machines ...'
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', line1_str)
     most_played_roms_dic = fs_load_JSON_file_dic(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
     if len(most_played_roms_dic) > 1:
@@ -1629,8 +1647,9 @@ def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_ren
         pDialog.update(100, line1_str)
     pDialog.close()
 
-def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic, pDialog):
+def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic):
     line1_str = 'Checking/Updating MAME Recently Played machines ...'
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', line1_str)
     recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
     if len(recent_roms_list) > 1:
@@ -1659,7 +1678,7 @@ def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_r
         pDialog.update(100, line1_str)
     pDialog.close()
 
-def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
+def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
     fav_SL_roms = fs_load_JSON_file_dic(PATHS.FAV_SL_ROMS_PATH.getPath())
     num_SL_favs = len(fav_SL_roms)
     num_iteration = 0
@@ -1704,7 +1723,7 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
     pDialog.update(100)
     pDialog.close()
 
-def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
+def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
     most_played_roms_dic = fs_load_JSON_file_dic(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
     num_SL_favs = len(most_played_roms_dic)
     num_iteration = 0
@@ -1753,7 +1772,7 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic, pDialog)
     pDialog.update(100)
     pDialog.close()
 
-def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic, pDialog):
+def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
     recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
     num_SL_favs = len(recent_roms_list)
     num_iteration = 0
@@ -5573,13 +5592,14 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 #   ], ...
 # }
 #
-class SLDataObj:
-    def __init__(self):
-        self.roms = {}
-        self.SL_roms = {}
-        self.display_name = ''
-        self.num_with_ROMs = 0
-        self.num_with_CHDs = 0
+def _new_SL_Data_dic():
+    return {
+        'roms'          : {},
+        'SL_roms'       : {},
+        'display_name'  : '',
+        'num_with_ROMs' : 0,
+        'num_with_CHDs' : 0,
+    }
 
 def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
     # >> Get ROMs in dataarea
@@ -5702,7 +5722,7 @@ def _get_SL_dataarea_CHDs(SL_name, item_name, part_child, diskarea_dic):
 
 def _mame_load_SL_XML(xml_filename):
     __debug_xml_parser = False
-    SLData = SLDataObj()
+    SLData = _new_SL_Data_dic()
 
     # --- If file does not exist return empty dictionary ---
     if not os.path.isfile(xml_filename): return SLData
@@ -5716,7 +5736,7 @@ def _mame_load_SL_XML(xml_filename):
     except:
         return SLData
     xml_root = xml_tree.getroot()
-    SLData.display_name = xml_root.attrib['description']
+    SLData['display_name'] = xml_root.attrib['description']
     for root_element in xml_root:
         if __debug_xml_parser: print('Root child {0}'.format(root_element.tag))
 
@@ -5801,21 +5821,21 @@ def _mame_load_SL_XML(xml_filename):
         if num_roms:
             SL_item['hasROMs'] = True
             SL_item['status_ROM'] = '?'
-            SLData.num_with_ROMs += 1
+            SLData['num_with_ROMs'] += 1
         else:
             SL_item['hasROMs'] = False
             SL_item['status_ROM'] = '-'
         if num_disks:
             SL_item['hasCHDs'] = True
             SL_item['status_CHD'] = '?'
-            SLData.num_with_CHDs += 1
+            SLData['num_with_CHDs'] += 1
         else:
             SL_item['hasCHDs'] = False
             SL_item['status_CHD'] = '-'
 
         # >> Add <software> item (SL_item) to database and software ROM/CHDs to database
-        SLData.roms[item_name] = SL_item
-        SLData.SL_roms[item_name] = SL_rom_list
+        SLData['roms'][item_name] = SL_item
+        SLData['SL_roms'][item_name] = SL_rom_list
 
     return SLData
 
@@ -5977,18 +5997,18 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
         SL_path_FN = FileName(file)
         SLData = _mame_load_SL_XML(SL_path_FN.getPath())
-        fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json').getPath(),
-                           SLData.roms, verbose = False)
-        fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(),
-                           SLData.SL_roms, verbose = False)
+        fs_write_JSON_file(
+            PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json').getPath(), SLData['roms'], verbose = False)
+        fs_write_JSON_file(
+            PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(), SLData['SL_roms'], verbose = False)
 
         # >> Add software list to catalog
-        num_SL_with_ROMs += SLData.num_with_ROMs
-        num_SL_with_CHDs += SLData.num_with_CHDs
+        num_SL_with_ROMs += SLData['num_with_ROMs']
+        num_SL_with_CHDs += SLData['num_with_CHDs']
         SL = {
-            'display_name'  : SLData.display_name,
-            'num_with_ROMs' : SLData.num_with_ROMs,
-            'num_with_CHDs' : SLData.num_with_CHDs,
+            'display_name'  : SLData['display_name'],
+            'num_with_ROMs' : SLData['num_with_ROMs'],
+            'num_with_CHDs' : SLData['num_with_CHDs'],
             'rom_DB_noext'  : FN.getBase_noext(),
         }
         SL_catalog_dic[FN.getBase_noext()] = SL
@@ -6680,11 +6700,11 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
     # >> Write reports
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath(), 'w') as file:
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAM_HAVE_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_SAM_HAVE_PATH.getPath(), 'w') as file:
         file.write('\n'.join(r_have_list).encode('utf-8'))
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath(), 'w') as file:
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAM_MISS_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_SAM_MISS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(r_miss_list).encode('utf-8'))
 
     # --- Update statistics ---
