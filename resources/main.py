@@ -192,9 +192,9 @@ class AML_Paths:
         self.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH     = self.REPORTS_DIR.pjoin('Scanner_MAME_ROM_list_miss.txt')
         self.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH     = self.REPORTS_DIR.pjoin('Scanner_MAME_CHD_list_miss.txt')
 
-        self.REPORT_MAME_SCAN_SAMP_FULL_PATH         = self.REPORTS_DIR.pjoin('Scanner_Samples_full.txt')
-        self.REPORT_MAME_SCAN_SAMP_HAVE_PATH         = self.REPORTS_DIR.pjoin('Scanner_Samples_have.txt')
-        self.REPORT_MAME_SCAN_SAMP_MISS_PATH         = self.REPORTS_DIR.pjoin('Scanner_Samples_miss.txt')
+        self.REPORT_MAME_SCAN_SAM_FULL_PATH          = self.REPORTS_DIR.pjoin('Scanner_Samples_full.txt')
+        self.REPORT_MAME_SCAN_SAM_HAVE_PATH          = self.REPORTS_DIR.pjoin('Scanner_Samples_have.txt')
+        self.REPORT_MAME_SCAN_SAM_MISS_PATH          = self.REPORTS_DIR.pjoin('Scanner_Samples_miss.txt')
 
         self.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH   = self.REPORTS_DIR.pjoin('Scanner_SL_item_archives_full.txt')
         self.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH   = self.REPORTS_DIR.pjoin('Scanner_SL_item_archives_have.txt')
@@ -607,9 +607,9 @@ def render_root_list():
     # ----- Machine count -----
     cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
 
-    # >> Do not crash if cache_index_dic is corrupted or has missing fields (may happen in
-    # >> upgrades). This function must never crash because the user must have always access to
-    # >> the setup menu.
+    # Do not crash if cache_index_dic is corrupted or has missing fields (may happen in
+    # upgrades). This function must never crash because the user must have always access to
+    # the setup menu.
     try:
         num_m_Main_Normal = cache_index_dic['Main']['Normal']['num_machines']
         num_m_Main_Unusual = cache_index_dic['Main']['Unusual']['num_machines']
@@ -922,24 +922,18 @@ def render_root_list():
             'Software Lists (with CHDs)', misc_url_1_arg('catalog', 'SL_CHD'), SL_CHD_plot)
 
     # >> Special launchers
+    if g_settings['display_custom_filters']:
+        render_root_custom_filter_row('[Custom MAME filters]',
+                                      misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
+                                      custom_filters_plot)
+
     if g_settings['display_MAME_favs']:
         CM_title = 'Manage Favourites'
         CM_URL = misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV')
         render_root_list_row_custom_CM('<Favourite MAME machines>', 
                                        misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
                                        CM_title, CM_URL, MAME_favs_plot)
-    if g_settings['display_SL_favs']:
-        CM_title = 'Manage SL Favourites'
-        CM_URL = misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV')
-        render_root_list_row_custom_CM('<Favourite Software Lists ROMs>',
-                                       misc_url_1_arg('command', 'SHOW_SL_FAVS'),
-                                       CM_title, CM_URL, SL_favs_plot)
-
-    if g_settings['display_custom_filters']:
-        render_root_custom_filter_row('[Custom MAME filters]',
-                                      misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
-                                      custom_filters_plot)
-
+                                       
     if g_settings['display_MAME_most']:
         CM_title = 'Manage Most Played'
         CM_URL = URL_manage = misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED')
@@ -953,6 +947,13 @@ def render_root_list():
         render_root_list_row_custom_CM('{Recently Played MAME machines}',
                                        misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
                                        CM_title, CM_URL, MAME_recent_played_plot)
+
+    if g_settings['display_SL_favs']:
+        CM_title = 'Manage SL Favourites'
+        CM_URL = misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV')
+        render_root_list_row_custom_CM('<Favourite Software Lists ROMs>',
+                                       misc_url_1_arg('command', 'SHOW_SL_FAVS'),
+                                       CM_title, CM_URL, SL_favs_plot)
 
     if g_settings['display_SL_most']:
         CM_title = 'Manage SL Most Played'
@@ -1107,7 +1108,6 @@ def render_root_list_row_catalog(display_name, catalog_name, catalog_key, plot_s
     URL_utils = misc_url_3_arg_RunPlugin(
         'command', 'UTILITIES', 'catalog', catalog_name, 'category', catalog_key)
     commands = [
-        ('View', misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Utilities', URL_utils),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
@@ -1132,7 +1132,6 @@ def render_root_list_row_standard(root_name, root_URL, plot_str = ''):
 
     # --- Create context menu ---
     commands = [
-        ('View', misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
         ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
@@ -1153,7 +1152,6 @@ def render_root_list_row_custom_CM(root_name, root_URL, CM_title, CM_URL, plot_s
 
     # --- Create context menu ---
     commands = [
-        ('View', misc_url_1_arg_RunPlugin('command', 'VIEW')),
         (CM_title, CM_URL),
         ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
@@ -1189,79 +1187,368 @@ def render_root_custom_filter_row(root_name, root_URL, plot_str = ''):
 # -------------------------------------------------------------------------------------------------
 # Utilities and Global reports
 # -------------------------------------------------------------------------------------------------
+def aux_get_generic_listitem(name, plot, commands):
+    vcategory_name   = name
+    vcategory_plot   = plot
+    vcategory_icon   = g_PATHS.ICON_FILE_PATH.getPath()
+    vcategory_fanart = g_PATHS.FANART_FILE_PATH.getPath()
+    listitem = xbmcgui.ListItem(vcategory_name)
+    listitem.setInfo('video', {'title': vcategory_name, 'plot' : vcategory_plot, 'overlay': 4})
+    listitem.setArt({'icon' : vcategory_icon, 'fanart' : vcategory_fanart})
+    listitem.addContextMenuItems(commands)
+
+    return listitem
+
 def render_Utilities_vlaunchers():
     # --- Common context menu for all VLaunchers ---
-    commands = []
-    commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
-    commands.append(('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
-
-    # --- Check/Update all objects ---
-    vcategory_name   = 'Check/Update all Favourite objects'
-    vcategory_plot   = 'Check/Update all Favourite objects'
-    vcategory_icon   = g_PATHS.ICON_FILE_PATH.getPath()
-    vcategory_fanart = g_PATHS.FANART_FILE_PATH.getPath()
-    listitem = xbmcgui.ListItem(vcategory_name)
-    listitem.setInfo('video', {'title': vcategory_name, 'plot' : vcategory_plot, 'overlay': 4})
-    listitem.setArt({'icon' : vcategory_icon, 'fanart' : vcategory_fanart})
-    listitem.addContextMenuItems(commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_ALL_FAV_OBJECTS')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+    commands = [
+        ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+    ]
 
     # --- Check AML configuration ---
-    vcategory_name   = 'Check AML configuration'
-    vcategory_plot   = 'Check AML configuration'
-    vcategory_icon   = g_PATHS.ICON_FILE_PATH.getPath()
-    vcategory_fanart = g_PATHS.FANART_FILE_PATH.getPath()
-    listitem = xbmcgui.ListItem(vcategory_name)
-    listitem.setInfo('video', {'title': vcategory_name, 'plot' : vcategory_plot, 'overlay': 4})
-    listitem.setArt({'icon' : vcategory_icon, 'fanart' : vcategory_fanart})
-    listitem.addContextMenuItems(commands)
+    listitem = aux_get_generic_listitem(
+        'Check AML configuration',
+        'Check AML configuration',
+        commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_CONFIG')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
+    # --- Check/Update all Favourite objects ---
+    listitem = aux_get_generic_listitem(
+        'Check/Update all Favourite objects',
+        'Check/Update all Favourite objects',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_ALL_FAV_OBJECTS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- Check/Update MAME Favourites ---
+    listitem = aux_get_generic_listitem(
+        'Check/Update MAME Favourites objects',
+        'Check/Update MAME Favourites objects',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_MAME_FAV_OBJECTS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- Check/Update MAME Most Played machines ---
+    listitem = aux_get_generic_listitem(
+        'Check/Update MAME Most Played machines',
+        'Check/Update MAME Most Played machines',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_MAME_MOST_PLAY_OBJECTS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- Check/Update MAME Recently Played machines ---
+    listitem = aux_get_generic_listitem(
+        'Check/Update MAME Recently Played machines',
+        'Check/Update MAME Recently Played machines',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_MAME_RECENT_PLAY_OBJECTS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- Check/Update SL Favourites ---
+    listitem = aux_get_generic_listitem(
+        'Check/Update SL Favourites',
+        'Check/Update SL Favourites',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_SL_FAV_OBJECTS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- Check/Update SL Most Played items ---
+    listitem = aux_get_generic_listitem(
+        'Check/Update SL Most Played items', 'Check/Update SL Most Played items', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_SL_MOST_PLAY_OBJECTS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- Check/Update SL Recently Played items ---
+    listitem = aux_get_generic_listitem(
+        'Check/Update SL Recently Played items',
+        'Check/Update SL Recently Played items',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_SL_RECENT_PLAY_OBJECTS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
     # --- Check MAME CRC hash collisions ---
-    vcategory_name   = 'Check MAME CRC hash collisions'
-    vcategory_plot   = 'Check MAME CRC hash collisions'
-    vcategory_icon   = g_PATHS.ICON_FILE_PATH.getPath()
-    vcategory_fanart = g_PATHS.FANART_FILE_PATH.getPath()
-    listitem = xbmcgui.ListItem(vcategory_name)
-    listitem.setInfo('video', {'title': vcategory_name, 'plot' : vcategory_plot, 'overlay': 4})
-    listitem.setArt({'icon' : vcategory_icon, 'fanart' : vcategory_fanart})
-    listitem.addContextMenuItems(commands)
+    listitem = aux_get_generic_listitem(
+        'Check MAME CRC hash collisions',
+        'Check MAME CRC hash collisions',
+        commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_MAME_COLLISIONS')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
     # --- Check SL CRC hash collisions ---
-    vcategory_name   = 'Check SL CRC hash collisions'
-    vcategory_plot   = 'Check SL CRC hash collisions'
-    vcategory_icon   = g_PATHS.ICON_FILE_PATH.getPath()
-    vcategory_fanart = g_PATHS.FANART_FILE_PATH.getPath()
-    listitem = xbmcgui.ListItem(vcategory_name)
-    listitem.setInfo('video', {'title': vcategory_name, 'plot' : vcategory_plot, 'overlay': 4})
-    listitem.setArt({'icon' : vcategory_icon, 'fanart' : vcategory_fanart})
-    listitem.addContextMenuItems(commands)
+    listitem = aux_get_generic_listitem(
+        'Check SL CRC hash collisions',
+        'Check SL CRC hash collisions',
+        commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_SL_COLLISIONS')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
     # --- End of directory ---
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
 
+#
+# Kodi BUG: if size of text file to display is 0 then previous text in window is rendered.
+# Solution: report files are never empty. Always print a text header in the report.
+#
 def render_GlobalReports_vlaunchers():
     # --- Common context menu for all VLaunchers ---
-    commands = []
-    commands.append(('Kodi File Manager', 'ActivateWindow(filemanager)'))
-    commands.append(('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)))
+    commands = [
+        ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+    ]
 
-    # --- Global ROM statistics ---
-    vcategory_name   = 'Global ROM statistics'
-    vcategory_plot   = 'Global ROM statistics'
-    vcategory_icon   = g_PATHS.ICON_FILE_PATH.getPath()
-    vcategory_fanart = g_PATHS.FANART_FILE_PATH.getPath()
-    listitem = xbmcgui.ListItem(vcategory_name)
-    listitem.setInfo('video', {'title': vcategory_name, 'plot' : vcategory_plot, 'overlay': 4})
-    listitem.setArt({'icon' : vcategory_icon, 'fanart' : vcategory_fanart})
-    listitem.addContextMenuItems(commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'CHECK_SL_COLLISIONS')
+    # --- View MAME last execution output --------------------------------------------------------
+    if g_PATHS.MAME_OUTPUT_PATH.exists():
+        filesize = g_PATHS.MAME_OUTPUT_PATH.fileSize()
+        STD_status = '{0} bytes'.format(filesize)
+    else:
+        STD_status = 'not found'
+    listitem = aux_get_generic_listitem(
+        'View MAME last execution output ({0})'.format(STD_status),
+        'View MAME last execution output', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_EXEC_OUTPUT')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- View statistics ------------------------------------------------------------------------
+    # --- View main statistics ---
+    listitem = aux_get_generic_listitem(
+        'View main statistics',
+        'View main statistics', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_STATS_MAIN')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- View scanner statistics ---
+    listitem = aux_get_generic_listitem(
+        'View scanner statistics',
+        'View scanner statistics', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_STATS_SCANNER')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- View audit statistics ---
+    listitem = aux_get_generic_listitem(
+        'View audit statistics',
+        'View audit statistics', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_STATS_AUDIT')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- View all statistics ---
+    listitem = aux_get_generic_listitem(
+        'View all statistics',
+        'View all statistics', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_STATS_ALL')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- Write all statistics to file ---
+    listitem = aux_get_generic_listitem(
+        'Write all statistics to file',
+        'Write all statistics to file', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_STATS_WRITE_FILE')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- View ROM scanner reports ---------------------------------------------------------------
+    listitem = aux_get_generic_listitem(
+        'View MAME scanner Full archives report',
+        ('Report of all MAME machines and the ROM ZIP files, CHDs and Sample ZIP files required '
+         'to run each machine.'),
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_ARCH_FULL')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME scanner Have archives report',
+        ('Report of all MAME machines where you have all the ROM ZIP files, CHDs and Sample ZIP '
+         'files necessary to run each machine.'),
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_ARCH_HAVE')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME scanner Missing archives report',
+        ('Report of all MAME machines where some of all ROM ZIP files, CHDs or Sample ZIP files ',
+         'are missing.'),
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_ARCH_MISS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME scanner Missing ROM ZIP files',
+        'Report a list of all Missing ROM ZIP files.',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_ROM_LIST_MISS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME scanner Missing CHD files',
+        'List of all missing CHD files.',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_CHD_LIST_MISS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME scanner Full Samples report',
+        'View Full MAME Samples report',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_SAM_FULL')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME scanner Have Samples report',
+        'View Have MAME Samples report',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_SAM_HAVE')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME scanner Missing Samples report',
+        'View Missing MAME Samples report',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_SAM_MISS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- View Software Lists scanner reports ----------------------------------------------------
+    listitem = aux_get_generic_listitem(
+        'View Software List scanner Full archives report',
+        'View Full Software Lists item archives',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_FULL')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software List scanner Have archives report',
+        'View Have Software Lists item archives',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_HAVE')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software Lists scanner Missing archives report',
+        'View Missing Software Lists item archives',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_MISS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software Lists scanner Missing ROM ZIP files',
+        'View Missing Software Lists ROM list', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_ROM_LIST_MISS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software Lists scanner Missing CHD files',
+        'View Missing Software Lists CHD list', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_CHD_LIST_MISS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- Asset scanner reports ------------------------------------------------------------------
+    listitem = aux_get_generic_listitem(
+        'View MAME asset scanner report',
+        'View MAME asset scanner report', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_ASSETS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software Lists asset scanner report',
+        'View Software Lists asset scanner report', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_ASSETS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- View MAME Audit reports ----------------------------------------------------------------
+    listitem = aux_get_generic_listitem(
+        'View MAME audit Machine Full report',
+        'View MAME audit report (Full)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_MAME_FULL')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME audit Machine Good report',
+        'View MAME audit report (Good)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_MAME_GOOD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME audit Machine Bad report',
+        'View MAME audit report (Errors)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_MAME_BAD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME audit ROM Good report',
+        'View MAME audit report (ROMs Good)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_MAME_ROM_GOOD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME audit ROM Bad report',
+        'View MAME audit report (ROM Errors)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_MAME_ROM_BAD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME audit Samples Good report',
+        'View MAME audit report (Samples Good)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_MAME_SAM_GOOD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME audit Sample Bad report',
+        'View MAME audit report (Sample Errors)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_MAME_SAM_BAD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME audit CHD Good report',
+        'View MAME audit report (CHDs Good)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_MAME_CHD_GOOD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View MAME audit CHD Bad report',
+        'View MAME audit report (CHD Errors)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_MAME_CHD_BAD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- View SL Audit reports ------------------------------------------------------------------
+    listitem = aux_get_generic_listitem(
+        'View Software Lists audit Full report',
+        'View SL audit report (Full)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_SL_FULL')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software Lists audit Good report',
+        'View SL audit report (Good)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_SL_GOOD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software Lists audit Bad report',
+        'View SL audit report (Errors)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_SL_BAD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software Lists audit ROM Good report',
+        'View SL audit report (ROM Good)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_SL_ROM_GOOD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software Lists audit ROM Errors report',
+        'View SL audit report (ROM Errors)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_SL_ROM_BAD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software Lists audit CHD Good report',
+        'View SL audit report (CHD Good)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_SL_CHD_GOOD')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
+        'View Software Lists audit CHD Errors report',
+        'View SL audit report (CHD Errors)', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_AUDIT_SL_CHD_BAD')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
     # --- End of directory ---
@@ -2556,73 +2843,49 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
 # Information display
 # ---------------------------------------------------------------------------------------------
 def command_context_view(machine_name, SL_name, SL_ROM, location):
-    VIEW_SIMPLE       = 100
-    VIEW_MAME_MACHINE = 200
-    VIEW_SL_ROM       = 300
+    VIEW_MAME_MACHINE = 100
+    VIEW_SL_ROM       = 200
 
     ACTION_VIEW_MACHINE_DATA       = 100
+    ACTION_VIEW_SL_ROM_DATA        = 400
     ACTION_VIEW_MACHINE_ROMS       = 200
     ACTION_VIEW_MACHINE_AUDIT_ROMS = 300
-    ACTION_VIEW_SL_ROM_DATA        = 400
     ACTION_VIEW_SL_ROM_ROMS        = 500
     ACTION_VIEW_SL_ROM_AUDIT_ROMS  = 600
-    ACTION_VIEW_DB_STATS           = 700
-    ACTION_VIEW_EXEC_OUTPUT        = 800
-    ACTION_VIEW_REPORT_SCANNER     = 900
-    ACTION_VIEW_REPORT_AUDIT       = 1000
+    ACTION_VIEW_MANUAL_JSON        = 1300
     ACTION_AUDIT_MAME_MACHINE      = 1100
     ACTION_AUDIT_SL_MACHINE        = 1200
-    ACTION_VIEW_MANUAL_JSON        = 1300
 
     # --- Determine if we are in a category, launcher or ROM ---
     log_debug('command_context_view() machine_name "{0}"'.format(machine_name))
     log_debug('command_context_view() SL_name      "{0}"'.format(SL_name))
     log_debug('command_context_view() SL_ROM       "{0}"'.format(SL_ROM))
     log_debug('command_context_view() location     "{0}"'.format(location))
-    if not machine_name and not SL_name:
-        view_type = VIEW_SIMPLE
-    elif machine_name:
+    if machine_name:
         view_type = VIEW_MAME_MACHINE
     elif SL_name:
         view_type = VIEW_SL_ROM
+    else:
+        kodi_dialog_OK(
+            'In command_context_view(), undetermined view_type. This is a bug, please report it.')
+        return
     log_debug('command_context_view() view_type = {0}'.format(view_type))
 
     # --- Build menu base on view_type ---
-    if g_PATHS.MAME_OUTPUT_PATH.exists():
-        filesize = g_PATHS.MAME_OUTPUT_PATH.fileSize()
-        STD_status = '{0} bytes'.format(filesize)
-    else:
-        STD_status = 'not found'
-
-    if view_type == VIEW_SIMPLE:
-        d_list = [
-          'View database statistics ...',
-          'View scanner reports ...',
-          'View audit reports ...',
-          'View MAME last execution output ({0})'.format(STD_status),
-        ]
-    elif view_type == VIEW_MAME_MACHINE:
+    if view_type == VIEW_MAME_MACHINE:
         d_list = [
           'View MAME machine data',
           'View MAME machine ROMs (ROMs DB)',
           'View MAME machine ROMs (Audit DB)',
           'Audit MAME machine ROMs',
-          'View database statistics ...',
-          'View scanner reports ...',
-          'View audit reports ...',
           'View manual INFO file',
-          'View MAME last execution output ({0})'.format(STD_status),
         ]
     elif view_type == VIEW_SL_ROM:
         d_list = [
           'View Software List item data',
-          'View Software List ROMs (ROMs DB)',
-          'View Software List ROMs (Audit DB)',
-          'Audit Software List ROMs',
-          'View database statistics ...',
-          'View scanner reports ...',
-          'View audit reports ...',
-          'View MAME last execution output ({0})'.format(STD_status),
+          'View Software List item ROMs (ROMs DB)',
+          'View Software List item ROMs (Audit DB)',
+          'Audit Software List item',
         ]
     else:
         kodi_dialog_OK('Wrong view_type = {0}. This is a bug, please report it.'.format(view_type))
@@ -2631,25 +2894,12 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
     if selected_value < 0: return
 
     # --- Polymorphic menu. Determine action to do. ---
-    if view_type == VIEW_SIMPLE:
-        if   selected_value == 0: action = ACTION_VIEW_DB_STATS
-        elif selected_value == 1: action = ACTION_VIEW_REPORT_SCANNER
-        elif selected_value == 2: action = ACTION_VIEW_REPORT_AUDIT
-        elif selected_value == 3: action = ACTION_VIEW_EXEC_OUTPUT
-        else:
-            kodi_dialog_OK('view_type == VIEW_SIMPLE and selected_value = {0}. '.format(selected_value) +
-                           'This is a bug, please report it.')
-            return
-    elif view_type == VIEW_MAME_MACHINE:
+    if view_type == VIEW_MAME_MACHINE:
         if   selected_value == 0: action = ACTION_VIEW_MACHINE_DATA
         elif selected_value == 1: action = ACTION_VIEW_MACHINE_ROMS
         elif selected_value == 2: action = ACTION_VIEW_MACHINE_AUDIT_ROMS
         elif selected_value == 3: action = ACTION_AUDIT_MAME_MACHINE
-        elif selected_value == 4: action = ACTION_VIEW_DB_STATS
-        elif selected_value == 5: action = ACTION_VIEW_REPORT_SCANNER
-        elif selected_value == 6: action = ACTION_VIEW_REPORT_AUDIT
-        elif selected_value == 7: action = ACTION_VIEW_MANUAL_JSON
-        elif selected_value == 8: action = ACTION_VIEW_EXEC_OUTPUT
+        elif selected_value == 4: action = ACTION_VIEW_MANUAL_JSON
         else:
             kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
                            'This is a bug, please report it.')
@@ -2659,10 +2909,6 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         elif selected_value == 1: action = ACTION_VIEW_SL_ROM_ROMS
         elif selected_value == 2: action = ACTION_VIEW_SL_ROM_AUDIT_ROMS
         elif selected_value == 3: action = ACTION_AUDIT_SL_MACHINE
-        elif selected_value == 4: action = ACTION_VIEW_DB_STATS
-        elif selected_value == 5: action = ACTION_VIEW_REPORT_SCANNER
-        elif selected_value == 6: action = ACTION_VIEW_REPORT_AUDIT
-        elif selected_value == 7: action = ACTION_VIEW_EXEC_OUTPUT
         else:
             kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {0}. '.format(selected_value) +
                            'This is a bug, please report it.')
@@ -2731,7 +2977,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Make information string and display text window ---
         slist = []
         mame_info_MAME_print(slist, location, machine_name, machine, assets)
-        _display_text_window(window_title, '\n'.join(slist))
+        display_text_window(window_title, '\n'.join(slist))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_item_data']:
@@ -2810,7 +3056,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # >> Build information string
         slist = []
         mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL_machine_list)
-        _display_text_window(window_title, '\n'.join(slist))
+        display_text_window(window_title, '\n'.join(slist))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_item_data']:
@@ -2818,90 +3064,6 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             with open(g_PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath(), 'w') as file:
                 text_remove_color_tags_slist(slist)
                 file.write('\n'.join(slist).encode('utf-8'))
-
-    # --- View database information and statistics stored in control dictionary ---
-    elif action == ACTION_VIEW_DB_STATS:
-        d = xbmcgui.Dialog()
-        type_sub = d.select('View scanner reports',
-                            ['View main statistics',
-                             'View scanner statistics',
-                             'View audit statistics',
-                             'View all statistics',
-                             'Write all statistics to file'])
-        if type_sub < 0: return
-
-        # --- Main stats ---
-        if type_sub == 0:
-            # --- Warn user if error ---
-            if not g_PATHS.MAIN_CONTROL_PATH.exists():
-                kodi_dialog_OK('MAME database not found. Please setup the addon first.')
-                return
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-            info_text = []
-            mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
-            _display_text_window('Database main statistics', '\n'.join(info_text))
-
-        # --- Scanner statistics ---
-        elif type_sub == 1:
-            # --- Warn user if error ---
-            if not g_PATHS.MAIN_CONTROL_PATH.exists():
-                kodi_dialog_OK('MAME database not found. Please setup the addon first.')
-                return
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-            info_text = []
-            mame_stats_scanner_print_slist(info_text, control_dic)
-            _display_text_window('Scanner statistics', '\n'.join(info_text))
-
-        # --- Audit statistics ---
-        elif type_sub == 2:
-            # --- Warn user if error ---
-            if not g_PATHS.MAIN_CONTROL_PATH.exists():
-                kodi_dialog_OK('MAME database not found. Please setup the addon first.')
-                return
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-            info_text = []
-            mame_stats_audit_print_slist(info_text, control_dic, g_settings)
-            _display_text_window('Database information and statistics', '\n'.join(info_text))
-
-        # --- All statistics ---
-        elif type_sub == 3:
-            # --- Warn user if error ---
-            if not g_PATHS.MAIN_CONTROL_PATH.exists():
-                kodi_dialog_OK('MAME database not found. Please setup the addon first.')
-                return
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-            info_text = []
-            mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
-            info_text.append('')
-            mame_stats_scanner_print_slist(info_text, control_dic)
-            info_text.append('')
-            mame_stats_audit_print_slist(info_text, control_dic, g_settings)
-            _display_text_window('Database full statistics', '\n'.join(info_text))
-
-        # --- Write statistics to disk ---
-        elif type_sub == 4:
-            # --- Warn user if error ---
-            if not g_PATHS.MAIN_CONTROL_PATH.exists():
-                kodi_dialog_OK('MAME database not found. Please setup the addon first.')
-                return
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-
-            # --- Generate stats string and remove Kodi colours ---
-            info_text = []
-            mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
-            info_text.append('')
-            mame_stats_scanner_print_slist(info_text, control_dic)
-            info_text.append('')
-            mame_stats_audit_print_slist(info_text, control_dic, g_settings)
-            # text_remove_slist_colours(info_text)
-
-            # --- Write file to disk and inform user ---
-            log_info('Writing AML statistics report ...')
-            log_info('File "{0}"'.format(g_PATHS.REPORT_STATS_PATH.getPath()))
-            with open(g_PATHS.REPORT_STATS_PATH.getPath(), 'w') as f:
-                text_remove_color_tags_slist(info_text)
-                f.write('\n'.join(info_text).encode('utf-8'))
-            kodi_notify('Exported AML statistic')
 
     # --- View MAME machine ROMs (ROMs database) ---
     elif action == ACTION_VIEW_MACHINE_ROMS:
@@ -2997,7 +3159,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             info_text.append('')
             info_text.extend(bios_table_str_list)
         window_title = 'Machine {0} ROMs'.format(machine_name)
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_ROM_DB_data']:
@@ -3066,7 +3228,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Machine {0} ROM audit'.format(machine_name)
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_Audit_DB_data']:
@@ -3130,7 +3292,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Software List ROM List (ROMs DB)'
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_ROM_DB_data']:
@@ -3174,7 +3336,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Software List ROM List (Audit DB)'
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_Audit_DB_data']:
@@ -3182,19 +3344,6 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             with open(g_PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath(), 'w') as file:
                 text_remove_color_tags_slist(info_text)
                 file.write('\n'.join(info_text).encode('utf-8'))
-
-    # --- View MAME stdout/stderr ---
-    elif action == ACTION_VIEW_EXEC_OUTPUT:
-        if not g_PATHS.MAME_OUTPUT_PATH.exists():
-            kodi_dialog_OK('MAME output file not found. Execute MAME and try again.')
-            return
-
-        # --- Read stdout and put into a string ---
-        window_title = 'MAME last execution output'
-        info_text = ''
-        with open(g_PATHS.MAME_OUTPUT_PATH.getPath(), 'r') as myfile:
-            info_text = myfile.read()
-        _display_text_window(window_title, info_text)
 
     # --- View manual JSON INFO file of a MAME machine ---
     elif action == ACTION_VIEW_MANUAL_JSON:
@@ -3224,7 +3373,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         info_text = ''
         with open(info_FN.getPath(), 'r') as myfile:
             info_text = myfile.read()
-        _display_text_window(window_title, info_text)
+        display_text_window(window_title, info_text)
 
     # --- Audit ROMs of a single machine ---
     elif action == ACTION_AUDIT_MAME_MACHINE:
@@ -3293,7 +3442,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Machine {0} ROM audit'.format(machine_name)
-        _display_text_window(window_title, '\n'.join(info_text))
+        display_text_window(window_title, '\n'.join(info_text))
 
     # --- Audit ROMs of SL item ---
     elif action == ACTION_AUDIT_SL_MACHINE:
@@ -3340,319 +3489,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'SL {0} Software {1} ROM audit'.format(SL_name, SL_ROM)
-        _display_text_window(window_title, '\n'.join(info_text))
-
-    # --- View ROM scanner reports ---
-    elif action == ACTION_VIEW_REPORT_SCANNER:
-        d = xbmcgui.Dialog()
-        type_sub = d.select('View scanner reports',
-                            ['View Full MAME machines archives',
-                             'View Have MAME machines archives',
-                             'View Missing MAME machines archives',
-                             'View Missing MAME ROM list',
-                             'View Missing MAME CHD list',
-                             'View Full MAME Samples report',
-                             'View Have MAME Samples report',
-                             'View Missing MAME Samples report',
-                             'View Full Software Lists item archives',
-                             'View Have Software Lists item archives',
-                             'View Missing Software Lists item archives',
-                             'View Missing Software Lists ROM list',
-                             'View Missing Software Lists CHD list',
-                             'View MAME asset report',
-                             'View Software Lists asset report'])
-        if type_sub < 0: return
-
-        # >> Kodi BUG: if size of file is 0 then previous text in window is rendered.
-        # >> Solution: report files are never empty. Always print a text header in the report.
-
-        # --- View Full MAME machines archives ---
-        if type_sub == 0:
-            if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.exists():
-                kodi_dialog_OK('Full MAME machines archives scanner report not found. '
-                               'Please scan MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Full MAME machines archives scanner report', myfile.read())
-
-        # --- View Have MAME machines archives ---
-        elif type_sub == 1:
-            if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
-                kodi_dialog_OK('Have MAME machines archives scanner report not found. '
-                               'Please scan MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Have MAME machines archives scanner report', myfile.read())
-
-        # --- View Missing MAME machines archives ---
-        elif type_sub == 2:
-            if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.exists():
-                kodi_dialog_OK('Missing MAME machines archives scanner report not found. '
-                               'Please scan MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing MAME machines archives scanner report', myfile.read())
-
-        # --- View Missing MAME ROM list ---
-        elif type_sub == 3:
-            if not g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.exists():
-                kodi_dialog_OK('Missing MAME ROM list scanner report not found. '
-                               'Please scan MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing MAME ROM list scanner report', myfile.read())
-
-        # --- View Missing MAME CHD list ---
-        elif type_sub == 4:
-            if not g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.exists():
-                kodi_dialog_OK('Missing MAME CHD list scanner report not found. '
-                               'Please scan MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing MAME CHD list scanner report', myfile.read())
-
-        # --- View Full MAME Samples report ---
-        elif type_sub == 5:
-            if not g_PATHS.REPORT_MAME_SCAN_SAMP_FULL_PATH.exists():
-                kodi_dialog_OK('Full MAME Samples report scanner report not found. '
-                               'Please scan MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_SCAN_SAMP_FULL_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Full MAME Samples report scanner report', myfile.read())
-
-        # --- View Have MAME Samples report ---
-        elif type_sub == 6:
-            if not g_PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.exists():
-                kodi_dialog_OK('Have MAME Samples scanner report not found. '
-                               'Please scan MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Have MAME Samples scanner report', myfile.read())
-
-        # --- View Missing MAME Samples report ---
-        elif type_sub == 7:
-            if not g_PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.exists():
-                kodi_dialog_OK('Missing MAME Samples scanner report not found. '
-                               'Please scan MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing MAME Samples scanner report', myfile.read())
-
-        # --- View Full Software Lists item archives ---
-        elif type_sub == 8:
-            if not g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.exists():
-                kodi_dialog_OK('Full Software Lists item archives scanner report not found. '
-                               'Please scan SL ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Full Software Lists item archives scanner report', myfile.read())
-
-        # --- View Have Software Lists item archives ---
-        elif type_sub == 9:
-            if not g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
-                kodi_dialog_OK('Have Software Lists item archives scanner report not found. '
-                               'Please scan SL ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Have Software Lists item archives scanner report', myfile.read())
-
-        # --- View Missing Software Lists item archives ---
-        elif type_sub == 10:
-            if not g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.exists():
-                kodi_dialog_OK('Missing Software Lists item archives scanner report not found. '
-                               'Please scan SL ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing Software Lists item archives scanner report', myfile.read())
-
-        # --- View Missing Software Lists ROM list ---
-        elif type_sub == 11:
-            if not g_PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.exists():
-                kodi_dialog_OK('Missing Software Lists ROM list scanner report not found. '
-                               'Please scan SL ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing Software Lists ROM list scanner report', myfile.read())
-
-        # --- View Missing Software Lists CHD list ---
-        elif type_sub == 12:
-            if not g_PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.exists():
-                kodi_dialog_OK('Missing Software Lists CHD list scanner report not found. '
-                               'Please scan SL ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Missing Software Lists CHD list scanner report', myfile.read())
-
-        # --- View MAME asset report ---
-        elif type_sub == 13:
-            if not g_PATHS.REPORT_MAME_ASSETS_PATH.exists():
-                kodi_dialog_OK('MAME asset report report not found. '
-                               'Please scan MAME assets and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME asset report', myfile.read())
-
-        # --- View Software Lists asset report ---
-        elif type_sub == 14:
-            if not g_PATHS.REPORT_SL_ASSETS_PATH.exists():
-                kodi_dialog_OK('Software Lists asset report not found. '
-                               'Please scan Software List assets and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('Software Lists asset report', myfile.read())
-
-    # --- View audit reports ---
-    elif action == ACTION_VIEW_REPORT_AUDIT:
-        d = xbmcgui.Dialog()
-        type_sub = d.select('View audit reports',
-                            ['View MAME audit report (Full)',
-                             'View MAME audit report (Good)',
-                             'View MAME audit report (Errors)',
-                             'View MAME audit report (ROMs Good)',
-                             'View MAME audit report (ROM Errors)',
-                             'View MAME audit report (Samples Good)',
-                             'View MAME audit report (Sample Errors)',
-                             'View MAME audit report (CHDs Good)',
-                             'View MAME audit report (CHD Errors)',
-                             'View SL audit report (Full)',
-                             'View SL audit report (Good)',
-                             'View SL audit report (Errors)',
-                             'View SL audit report (ROM Good)',
-                             'View SL audit report (ROM Errors)',
-                             'View SL audit report (CHD Good)',
-                             'View SL audit report (CHD Errors)'
-                             ])
-        if type_sub < 0: return
-
-        # >> MAME audit reports
-        if type_sub == 0:
-            if not g_PATHS.REPORT_MAME_AUDIT_FULL_PATH.exists():
-                kodi_dialog_OK('MAME audit report (Full) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (Full)', myfile.read())
-
-        elif type_sub == 1:
-            if not g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.exists():
-                kodi_dialog_OK('MAME audit report (Good) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (Good)', myfile.read())
-
-        elif type_sub == 2:
-            if not g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.exists():
-                kodi_dialog_OK('MAME audit report (Errors) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (Errors)', myfile.read())
-
-        elif type_sub == 3:
-            if not g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.exists():
-                kodi_dialog_OK('MAME audit report (ROMs Good) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (ROMs Good)', myfile.read())
-
-        elif type_sub == 4:
-            if not g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.exists():
-                kodi_dialog_OK('MAME audit report (ROM Errors) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (ROM Errors)', myfile.read())
-
-        elif type_sub == 5:
-            if not g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.exists():
-                kodi_dialog_OK('MAME audit report (Samples Good) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (Samples Good)', myfile.read())
-
-        elif type_sub == 6:
-            if not g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.exists():
-                kodi_dialog_OK('MAME audit report (Sample Errors) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (Sample Errors)', myfile.read())
-
-        elif type_sub == 7:
-            if not g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.exists():
-                kodi_dialog_OK('MAME audit report (CHDs Good) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (CHDs Good)', myfile.read())
-
-        elif type_sub == 8:
-            if not g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.exists():
-                kodi_dialog_OK('MAME audit report (CHD Errors) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (CHD Errors)', myfile.read())
-
-        # >> SL audit reports
-        elif type_sub == 9:
-            if not g_PATHS.REPORT_SL_AUDIT_FULL_PATH.exists():
-                kodi_dialog_OK('SL audit report (Full) not found. '
-                               'Please audit your SL ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
-                _display_text_window('SL audit report (Full)', myfile.read())
-
-        elif type_sub == 10:
-            if not g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.exists():
-                kodi_dialog_OK('SL audit report (Good) not found. '
-                               'Please audit your SL ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('SL audit report (Good)', myfile.read())
-
-        elif type_sub == 11:
-            if not g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.exists():
-                kodi_dialog_OK('SL audit report (Errors) not found. '
-                               'Please audit your SL ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('SL audit report (Errors)', myfile.read())
-
-        elif type_sub == 12:
-            if not g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.exists():
-                kodi_dialog_OK('MAME audit report (ROM Good) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (ROM Good)', myfile.read())
-
-        elif type_sub == 13:
-            if not g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.exists():
-                kodi_dialog_OK('MAME audit report (ROM Errors) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (ROM Errors)', myfile.read())
-
-        elif type_sub == 14:
-            if not g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.exists():
-                kodi_dialog_OK('MAME audit report (CHD Good) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (CHD Good)', myfile.read())
-
-        elif type_sub == 15:
-            if not g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.exists():
-                kodi_dialog_OK('MAME audit report (CHD Errors) not found. '
-                               'Please audit your MAME ROMs and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'r') as myfile:
-                _display_text_window('MAME audit report (CHD Errors)', myfile.read())
+        display_text_window(window_title, '\n'.join(info_text))
 
     else:
         kodi_dialog_OK('Wrong action == {0}. This is a bug, please report it.'.format(action))
@@ -3760,48 +3597,12 @@ def command_context_add_mame_fav(machine_name):
 #
 def command_context_manage_mame_fav(machine_name):
     dialog = xbmcgui.Dialog()
-    if machine_name:
-        idx = dialog.select('Manage MAME Favourites',
-                           ['Check/Update all MAME Favourites',
-                            'Delete machine from MAME Favourites'])
-    else:
-        idx = dialog.select('Manage MAME Favourites',
-                           ['Check/Update all MAME Favourites'])
+    idx = dialog.select('Manage MAME Favourites',
+                       ['Delete machine from MAME Favourites'])
     if idx < 0: return
 
-    # --- Check/Update all MAME Favourites ---
-    # >> Check if Favourites can be found in current MAME main database. It may happen that
-    # >> a machine is renamed between MAME version although I think this is very unlikely.
-    # >> MAME Favs can not be relinked. If the machine is not found in current database it must
-    # >> be deleted by the user and a new Favourite created.
-    # >> If the machine is found in the main database, then update the Favourite database
-    # >> with data from the main database.
-    if idx == 0:
-        # --- Load databases ---
-        pDialog = xbmcgui.DialogProgress()
-        num_items = 4
-        pDialog.create('Advanced MAME Launcher')
-        line1_str = 'Loading databases ...'
-        pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        pDialog.update(int((1*100) / num_items), line1_str, 'MAME machines Main')
-        machines = fs_load_JSON_file_dic(g_PATHS.MAIN_DB_PATH.getPath())
-        pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Render')
-        machines_render = fs_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
-        pDialog.update(int((3*100) / num_items), line1_str, 'MAME machine Assets')
-        assets_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        pDialog.update(int((4*100) / num_items), ' ', ' ')
-        pDialog.close()
-
-        # --- Check/Update MAME Favourite machines ---
-        mame_update_MAME_Fav_objects(g_PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
-
-        # >> Save MAME Favourites DB
-        kodi_refresh_container()
-        kodi_notify('MAME Favourite checked and updated')
-
     # --- Delete machine from MAME Favourites ---
-    elif idx == 1:
+    if idx == 0:
         log_debug('command_context_manage_mame_fav() Delete MAME Favourite machine')
         log_debug('command_context_manage_mame_fav() Machine_name "{0}"'.format(machine_name))
 
@@ -3996,32 +3797,13 @@ def command_context_add_sl_fav(SL_name, ROM_name):
 #
 def command_context_manage_sl_fav(SL_name, ROM_name):
     dialog = xbmcgui.Dialog()
-    if SL_name and ROM_name:
-        idx = dialog.select('Manage Software Lists Favourites',
-                           ['Check/Update all SL Favourite items',
-                            'Choose default machine for SL item',
-                            'Delete ROM from SL Favourites'])
-    else:
-        idx = dialog.select('Manage Software Lists Favourites',
-                           ['Check/Update all SL Favourites items'])
+    idx = dialog.select('Manage Software Lists Favourites',
+                       ['Choose default machine for SL item',
+                        'Delete ROM from SL Favourites'])
     if idx < 0: return
 
-    # --- Check/Update SL Favourites ---
-    if idx == 0:
-        # --- Load databases ---
-        pDialog = xbmcgui.DialogProgress()
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-
-        # --- Check/Update SL Favourite ROMs ---
-        mame_update_SL_Fav_objects(g_PATHS, control_dic, SL_catalog_dic, pDialog)
-
-        # --- Notify user ---
-        kodi_refresh_container()
-        kodi_notify('SL Favourite ROMs checked and updated')
-
     # --- Choose default machine for SL ROM ---
-    elif idx == 1:
+    if idx == 0:
         # >> Load Favs
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
@@ -4051,7 +3833,7 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         kodi_notify('Deafult machine set to {0} ({1})'.format(machine_name, machine_desc))
 
     # --- Delete ROM from SL Favourites ---
-    elif idx == 2:
+    elif idx == 1:
         log_debug('command_context_manage_sl_fav() Delete SL Favourite ROM')
         log_debug('command_context_manage_sl_fav() SL_name  "{0}"'.format(SL_name))
         log_debug('command_context_manage_sl_fav() ROM_name "{0}"'.format(ROM_name))
@@ -4196,41 +3978,12 @@ def command_show_mame_most_played():
 
 def command_context_manage_mame_most_played(machine_name):
     dialog = xbmcgui.Dialog()
-    if machine_name:
-        idx = dialog.select('Manage MAME Most Played', 
-                           ['Check/Update all MAME Most Played machines',
-                            'Delete machine from MAME Most Played machines'])
-    else:
-        idx = dialog.select('Manage MAME Most Played', 
-                           ['Check/Update all MAME Most Played machines'])
+    idx = dialog.select('Manage MAME Most Played', 
+                       ['Delete machine from MAME Most Played machines'])
     if idx < 0: return
 
-    # --- Check/Update all MAME Most Played machines ---
-    if idx == 0:
-        pDialog = xbmcgui.DialogProgress()
-        line1_str = 'Loading databases ...'
-        num_items = 4
-        pDialog.create('Advanced MAME Launcher')
-        pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        pDialog.update(int((1*100) / num_items), line1_str, 'MAME machines Main')
-        machines = fs_load_JSON_file_dic(g_PATHS.MAIN_DB_PATH.getPath())
-        pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Render')
-        machines_render = fs_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
-        pDialog.update(int((3*100) / num_items), line1_str, 'MAME machine Assets')
-        assets_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        pDialog.update(int((4*100) / num_items), ' ', ' ')
-        pDialog.close()
-
-        # --- Check/Update MAME Most Played machines ---
-        mame_update_MAME_MostPlay_objects(g_PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
-
-        # --- Save MAME Most Played machines DB ---
-        kodi_refresh_container()
-        kodi_notify('MAME Favourite checked and updated')
-
     # --- Delete machine from MAME Most Played machines ---
-    elif idx == 1:
+    if idx == 0:
         log_debug('command_context_manage_mame_most_played() Delete MAME machine')
         log_debug('command_context_manage_mame_most_played() Machine_name "{0}"'.format(machine_name))
 
@@ -4265,42 +4018,12 @@ def command_show_mame_recently_played():
 
 def command_context_manage_mame_recent_played(machine_name):
     dialog = xbmcgui.Dialog()
-    if machine_name:
-        idx = dialog.select('Manage MAME Recently Played', 
-                           ['Check/Update all MAME Recently Played machines',
-                            'Delete machine from MAME Recently Played machines'])
-    else:
-        idx = dialog.select('Manage MAME Recently Played', 
-                           ['Check/Update all MAME Recently Played machines'])
+    idx = dialog.select('Manage MAME Recently Played', 
+                       ['Delete machine from MAME Recently Played machines'])
     if idx < 0: return
 
-    # --- Check/Update all MAME Recently Played machines ---
-    if idx == 0:
-        # --- Load databases ---
-        pDialog = xbmcgui.DialogProgress()
-        line1_str = 'Loading databases ...'
-        num_items = 4
-        pDialog.create('Advanced MAME Launcher')
-        pDialog.update(int((0*100) / num_items), line1_str, 'Control dictionary')
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        pDialog.update(int((1*100) / num_items), line1_str, 'MAME machines Main')
-        machines = fs_load_JSON_file_dic(g_PATHS.MAIN_DB_PATH.getPath())
-        pDialog.update(int((2*100) / num_items), line1_str, 'MAME machines Render')
-        machines_render = fs_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
-        pDialog.update(int((3*100) / num_items), line1_str, 'MAME machine Assets')
-        assets_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        pDialog.update(int((4*100) / num_items), ' ', ' ')
-        pDialog.close()
-
-        # --- Check/Update MAME Recently Played machines ---
-        mame_update_MAME_RecentPlay_objects(g_PATHS, control_dic, machines, machines_render, assets_dic, pDialog)
-
-        # --- Save MAME Favourites DB ---
-        kodi_refresh_container()
-        kodi_notify('MAME Recently Played machines checked and updated')
-
     # --- Delete machine from MAME Recently Played machine list ---
-    elif idx == 1:
+    if idx == 0:
         log_debug('command_context_manage_mame_recent_played() Delete MAME Recently Played machine')
         log_debug('command_context_manage_mame_recent_played() Machine_name "{0}"'.format(machine_name))
 
@@ -4349,31 +4072,12 @@ def command_show_SL_most_played():
 
 def command_context_manage_SL_most_played(SL_name, ROM_name):
     dialog = xbmcgui.Dialog()
-    if SL_name and ROM_name:
-        idx = dialog.select('Manage SL Most Played items', 
-                           ['Check/Update all SL Most Played items',
-                            'Delete machine from SL Most Played items'])
-    else:
-        idx = dialog.select('Manage SL Most Played items', 
-                           ['Check/Update all SL Most Played items'])
+    idx = dialog.select('Manage SL Most Played items', 
+                       ['Delete machine from SL Most Played items'])
     if idx < 0: return
 
-    # --- Check/Update all SL Most Played items ---
-    if idx == 0:
-        # --- Load databases ---
-        pDialog = xbmcgui.DialogProgress()
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-
-        # --- Check/Update SL Favourite ROMs ---
-        mame_update_SL_MostPlay_objects(g_PATHS, control_dic, SL_catalog_dic, pDialog)
-
-        # --- Save MAME Most Played items DB ---
-        kodi_refresh_container()
-        kodi_notify('SL Most Played items checked and updated')
-
     # --- Delete machine from SL Most Played items ---
-    elif idx == 1:
+    if idx == 0:
         log_debug('command_context_manage_sl_most_played() Delete SL Most Played machine')
         log_debug('command_context_manage_sl_most_played() SL_name  "{0}"'.format(SL_name))
         log_debug('command_context_manage_sl_most_played() ROM_name "{0}"'.format(ROM_name))
@@ -4419,31 +4123,12 @@ def command_show_SL_recently_played():
 
 def command_context_manage_SL_recent_played(SL_name, ROM_name):
     dialog = xbmcgui.Dialog()
-    if SL_name and ROM_name:
-        idx = dialog.select('Manage SL Recently Played items', 
-                           ['Check/Update all SL Recently Played items',
-                            'Delete machine from SL Recently Played items'])
-    else:
-        idx = dialog.select('Manage SL Recently Played', 
-                           ['Check/Update all MAME Recently Played items'])
+    idx = dialog.select('Manage SL Recently Played items', 
+                       ['Delete machine from SL Recently Played items'])
     if idx < 0: return
 
-    # --- Check/Update all MAME Recently Played items ---
-    if idx == 0:
-        # --- Load databases ---
-        pDialog = xbmcgui.DialogProgress()
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-
-        # --- Check/Update SL Favourite ROMs ---
-        mame_update_SL_RecentPlay_objects(g_PATHS, control_dic, SL_catalog_dic, pDialog)
-
-        # --- Save MAME Favourites DB ---
-        kodi_refresh_container()
-        kodi_notify('SL Recently Played items checked and updated')
-
     # --- Delete machine from MAME Recently Played machine list ---
-    elif idx == 1:
+    if idx == 0:
         log_debug('command_context_manage_SL_recent_played() Delete SL Recently Played machine')
         log_debug('command_context_manage_SL_recent_played() SL_name  "{0}"'.format(SL_name))
         log_debug('command_context_manage_SL_recent_played() ROM_name "{0}"'.format(ROM_name))
@@ -4683,8 +4368,8 @@ def render_custom_filter_item_row(f_name, num_machines, machine_str, plot):
     listitem.setInfo('video', {'title' : title_str, 'plot' : plot, 'overlay' : ICON_OVERLAY})
 
     # --- Artwork ---
-    icon_path   = ICON_FILE_PATH.getPath()
-    fanart_path = FANART_FILE_PATH.getPath()
+    icon_path   = g_PATHS.ICON_FILE_PATH.getPath()
+    fanart_path = g_PATHS.FANART_FILE_PATH.getPath()
     listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
 
     # --- Create context menu ---
@@ -5770,34 +5455,8 @@ def command_context_setup_plugin():
 def command_exec_utility(which_utility):
     log_debug('command_exec_utility() which_utility = "{0}" starting ...'.format(which_utility))
 
-    # xxxxx
-    if which_utility == 'CHECK_ALL_FAV_OBJECTS':
-        # --- Load databases ---
-        db_files = [
-            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
-            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-            ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
-        ]
-        db_dic = fs_load_files(db_files)
-
-        mame_update_MAME_Fav_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
-        mame_update_MAME_MostPlay_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
-        mame_update_MAME_RecentPlay_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
-        mame_update_SL_Fav_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
-        mame_update_SL_MostPlay_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
-        mame_update_SL_RecentPlay_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
-        kodi_refresh_container()
-        kodi_notify('All MAME Favourite objects checked')
-
-    elif which_utility == 'CHECK_CONFIG':
+    # Check AML configuration
+    if which_utility == 'CHECK_CONFIG':
         # Functions defined here can see local variables defined in this code block.
         def aux_check_dir_ERR(slist, dir_str, msg):
             if dir_str:
@@ -5972,6 +5631,117 @@ def command_exec_utility(which_utility):
 
         # --- Display info to the user ---
         display_text_window('AML configuration check report', '\n'.join(slist))
+
+    # Check and update all favourite objects.
+    elif which_utility == 'CHECK_ALL_FAV_OBJECTS':
+        # --- Load databases ---
+        db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
+            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
+            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
+            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+            ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        mame_update_MAME_Fav_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+        mame_update_MAME_MostPlay_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+        mame_update_MAME_RecentPlay_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+        mame_update_SL_Fav_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
+        mame_update_SL_MostPlay_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
+        mame_update_SL_RecentPlay_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
+        kodi_refresh_container()
+        kodi_notify('All MAME Favourite objects checked')
+
+    # --- Check/Update MAME Favourites ---
+    # Check if Favourites can be found in current MAME main database. It may happen that
+    # a machine is renamed between MAME version although I think this is very unlikely.
+    # MAME Favs can not be relinked. If the machine is not found in current database it must
+    # be deleted by the user and a new Favourite created.
+    # If the machine is found in the main database, then update the Favourite database
+    # with data from the main database.
+    elif which_utility == 'CHECK_MAME_FAV_OBJECTS':
+        db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
+            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
+            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
+            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        mame_update_MAME_Fav_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+        kodi_refresh_container()
+        kodi_notify('MAME Favourite checked and updated')
+
+    # --- Check/Update all MAME Most Played machines ---
+    elif which_utility == 'CHECK_MAME_MOST_PLAY_OBJECTS':
+        db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
+            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
+            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
+            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        mame_update_MAME_MostPlay_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+        kodi_refresh_container()
+        kodi_notify('MAME Favourite checked and updated')
+
+    # --- Check/Update all MAME Recently Played machines ---
+    elif which_utility == 'CHECK_MAME_RECENT_PLAY_OBJECTS':
+        db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
+            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
+            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
+            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        mame_update_MAME_RecentPlay_objects(
+            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+        kodi_refresh_container()
+        kodi_notify('MAME Recently Played machines checked and updated')
+
+    # --- Check/Update SL Favourites ---
+    elif which_utility == 'CHECK_SL_FAV_OBJECTS':
+        db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
+            ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        mame_update_SL_Fav_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
+        kodi_refresh_container()
+        kodi_notify('SL Favourite ROMs checked and updated')
+
+    # --- Check/Update all SL Most Played items ---
+    elif which_utility == 'CHECK_SL_MOST_PLAY_OBJECTS':
+        db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
+            ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        mame_update_SL_MostPlay_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
+        kodi_refresh_container()
+        kodi_notify('SL Most Played items checked and updated')
+
+    # --- Check/Update SL Recently Played items ---
+    elif which_utility == 'CHECK_SL_RECENT_PLAY_OBJECTS':
+        db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
+            ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        mame_update_SL_RecentPlay_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
+        kodi_refresh_container()
+        kodi_notify('SL Recently Played items checked and updated')
 
     # Check MAME and SL CRC 32 hash collisions.
     # The assumption in this function is that there is not SHA1 hash collisions.
@@ -6151,8 +5921,335 @@ def command_exec_utility(which_utility):
 #
 def command_exec_report(which_report):
     log_debug('command_exec_report() which_report = "{0}" starting ...'.format(which_report))
-    if which_report == '':
-        pass
+
+    if which_report == 'VIEW_EXEC_OUTPUT':
+        if not g_PATHS.MAME_OUTPUT_PATH.exists():
+            kodi_dialog_OK('MAME output file not found. Execute MAME and try again.')
+            return
+        info_text = ''
+        with open(g_PATHS.MAME_OUTPUT_PATH.getPath(), 'r') as myfile:
+            info_text = myfile.read()
+        display_text_window('MAME last execution output', info_text)
+
+    # --- View database information and statistics stored in control dictionary ------------------
+    elif which_report == 'VIEW_STATS_MAIN':
+        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+            kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+            return
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        info_text = []
+        mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
+        display_text_window('Database main statistics', '\n'.join(info_text))
+
+    elif which_report == 'VIEW_STATS_SCANNER':
+        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+            kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+            return
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        info_text = []
+        mame_stats_scanner_print_slist(info_text, control_dic)
+        display_text_window('Scanner statistics', '\n'.join(info_text))
+
+    elif which_report == 'VIEW_STATS_AUDIT':
+        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+            kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+            return
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        info_text = []
+        mame_stats_audit_print_slist(info_text, control_dic, g_settings)
+        display_text_window('Database information and statistics', '\n'.join(info_text))
+
+    # --- All statistics ---
+    elif which_report == 'VIEW_STATS_ALL':
+        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+            kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+            return
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        info_text = []
+        mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
+        info_text.append('')
+        mame_stats_scanner_print_slist(info_text, control_dic)
+        info_text.append('')
+        mame_stats_audit_print_slist(info_text, control_dic, g_settings)
+        display_text_window('Database full statistics', '\n'.join(info_text))
+
+    elif which_report == 'VIEW_STATS_WRITE_FILE':
+        if not g_PATHS.MAIN_CONTROL_PATH.exists():
+            kodi_dialog_OK('MAME database not found. Please setup the addon first.')
+            return
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+
+        # --- Generate stats string and remove Kodi colours ---
+        info_text = []
+        mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
+        info_text.append('')
+        mame_stats_scanner_print_slist(info_text, control_dic)
+        info_text.append('')
+        mame_stats_audit_print_slist(info_text, control_dic, g_settings)
+        # text_remove_slist_colours(info_text)
+
+        # --- Write file to disk and inform user ---
+        log_info('Writing AML statistics report ...')
+        log_info('File "{0}"'.format(g_PATHS.REPORT_STATS_PATH.getPath()))
+        with open(g_PATHS.REPORT_STATS_PATH.getPath(), 'w') as f:
+            text_remove_color_tags_slist(info_text)
+            f.write('\n'.join(info_text).encode('utf-8'))
+        kodi_notify('Exported AML statistic')
+
+    # --- MAME scanner reports -------------------------------------------------------------------
+    elif which_report == 'VIEW_SCANNER_MAME_FULL':
+        if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.exists():
+            kodi_dialog_OK('Full MAME machines archives scanner report not found. '
+                           'Please scan MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
+            display_text_window('Full MAME machines archives scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_MAME_HAVE':
+        if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
+            kodi_dialog_OK('Have MAME machines archives scanner report not found. '
+                           'Please scan MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
+            display_text_window('Have MAME machines archives scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_MAME_MISS':
+        if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.exists():
+            kodi_dialog_OK('Missing MAME machines archives scanner report not found. '
+                           'Please scan MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
+            display_text_window('Missing MAME machines archives scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_MAME_ROM_LIST_MISS':
+        if not g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.exists():
+            kodi_dialog_OK('Missing MAME ROM list scanner report not found. '
+                           'Please scan MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
+            display_text_window('Missing MAME ROM list scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_MAME_CHD_LIST_MISS':
+        if not g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.exists():
+            kodi_dialog_OK('Missing MAME CHD list scanner report not found. '
+                           'Please scan MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
+            display_text_window('Missing MAME CHD list scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_MAME_SAM_FULL':
+        if not g_PATHS.REPORT_MAME_SCAN_SAM_FULL_PATH.exists():
+            kodi_dialog_OK('Full MAME Samples report scanner report not found. '
+                           'Please scan MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_SCAN_SAMP_FULL_PATH.getPath(), 'r') as myfile:
+            display_text_window('Full MAME Samples report scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_MAME_SAM_HAVE':
+        if not g_PATHS.REPORT_MAME_SCAN_SAM_HAVE_PATH.exists():
+            kodi_dialog_OK('Have MAME Samples scanner report not found. '
+                           'Please scan MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath(), 'r') as myfile:
+            display_text_window('Have MAME Samples scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_MAME_SAM_MISS':
+        if not g_PATHS.REPORT_MAME_SCAN_SAM_MISS_PATH.exists():
+            kodi_dialog_OK('Missing MAME Samples scanner report not found. '
+                           'Please scan MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath(), 'r') as myfile:
+            display_text_window('Missing MAME Samples scanner report', myfile.read())
+
+    # --- SL scanner reports ---------------------------------------------------------------------
+    elif which_report == 'VIEW_SCANNER_SL_FULL':
+        if not g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.exists():
+            kodi_dialog_OK('Full Software Lists item archives scanner report not found. '
+                           'Please scan SL ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
+            display_text_window('Full Software Lists item archives scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_SL_HAVE':
+        if not g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
+            kodi_dialog_OK('Have Software Lists item archives scanner report not found. '
+                           'Please scan SL ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
+            display_text_window('Have Software Lists item archives scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_SL_MISS':
+        if not g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.exists():
+            kodi_dialog_OK('Missing Software Lists item archives scanner report not found. '
+                           'Please scan SL ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
+            display_text_window('Missing Software Lists item archives scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_SL_ROM_LIST_MISS':
+        if not g_PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.exists():
+            kodi_dialog_OK('Missing Software Lists ROM list scanner report not found. '
+                           'Please scan SL ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
+            display_text_window('Missing Software Lists ROM list scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_SL_CHD_LIST_MISS':
+        if not g_PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.exists():
+            kodi_dialog_OK('Missing Software Lists CHD list scanner report not found. '
+                           'Please scan SL ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
+            display_text_window('Missing Software Lists CHD list scanner report', myfile.read())
+
+    # --- Asset scanner reports ------------------------------------------------------------------
+    elif which_report == 'VIEW_SCANNER_MAME_ASSETS':
+        if not g_PATHS.REPORT_MAME_ASSETS_PATH.exists():
+            kodi_dialog_OK('MAME asset report report not found. '
+                           'Please scan MAME assets and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME asset report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_SL_ASSETS':
+            if not g_PATHS.REPORT_SL_ASSETS_PATH.exists():
+                kodi_dialog_OK('Software Lists asset report not found. '
+                               'Please scan Software List assets and try again.')
+                return
+            with open(g_PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'r') as myfile:
+                display_text_window('Software Lists asset report', myfile.read())
+
+    # --- MAME audit reports ---------------------------------------------------------------------
+    elif which_report == 'VIEW_AUDIT_MAME_FULL':
+        if not g_PATHS.REPORT_MAME_AUDIT_FULL_PATH.exists():
+            kodi_dialog_OK('MAME audit report (Full) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (Full)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_MAME_GOOD':
+        if not g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.exists():
+            kodi_dialog_OK('MAME audit report (Good) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (Good)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_MAME_BAD':
+        if not g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.exists():
+            kodi_dialog_OK('MAME audit report (Errors) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (Errors)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_MAME_ROM_GOOD':
+        if not g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.exists():
+            kodi_dialog_OK('MAME audit report (ROMs Good) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (ROMs Good)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_MAME_ROM_BAD':
+        if not g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.exists():
+            kodi_dialog_OK('MAME audit report (ROM Errors) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (ROM Errors)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_MAME_SAM_GOOD':
+        if not g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.exists():
+            kodi_dialog_OK('MAME audit report (Samples Good) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (Samples Good)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_MAME_SAM_BAD':
+        if not g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.exists():
+            kodi_dialog_OK('MAME audit report (Sample Errors) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (Sample Errors)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_MAME_CHD_GOOD':
+        if not g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.exists():
+            kodi_dialog_OK('MAME audit report (CHDs Good) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (CHDs Good)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_MAME_CHD_BAD':
+        if not g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.exists():
+            kodi_dialog_OK('MAME audit report (CHD Errors) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (CHD Errors)', myfile.read())
+
+    # --- SL audit reports -----------------------------------------------------------------------
+    elif which_report == 'VIEW_AUDIT_SL_FULL':
+        if not g_PATHS.REPORT_SL_AUDIT_FULL_PATH.exists():
+            kodi_dialog_OK('SL audit report (Full) not found. '
+                           'Please audit your SL ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
+            display_text_window('SL audit report (Full)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_SL_GOOD':
+        if not g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.exists():
+            kodi_dialog_OK('SL audit report (Good) not found. '
+                           'Please audit your SL ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
+            display_text_window('SL audit report (Good)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_SL_BAD':
+        if not g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.exists():
+            kodi_dialog_OK('SL audit report (Errors) not found. '
+                           'Please audit your SL ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
+            display_text_window('SL audit report (Errors)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_SL_ROM_GOOD':
+        if not g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.exists():
+            kodi_dialog_OK('MAME audit report (ROM Good) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (ROM Good)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_SL_ROM_BAD':
+        if not g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.exists():
+            kodi_dialog_OK('MAME audit report (ROM Errors) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (ROM Errors)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_SL_CHD_GOOD':
+        if not g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.exists():
+            kodi_dialog_OK('MAME audit report (CHD Good) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (CHD Good)', myfile.read())
+
+    elif which_report == 'VIEW_AUDIT_SL_CHD_BAD':
+        if not g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.exists():
+            kodi_dialog_OK('MAME audit report (CHD Errors) not found. '
+                           'Please audit your MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'r') as myfile:
+            display_text_window('MAME audit report (CHD Errors)', myfile.read())
+
+    # --- Error ----------------------------------------------------------------------------------
     else:
         u = 'Report "{0}" not found. This is a bug, please report it.'.format(which_report)
         log_error(u)
