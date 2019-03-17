@@ -369,14 +369,14 @@ def run_plugin(addon_argv):
             catalog_name  = args['catalog'][0] if 'catalog' in args else ''
             category_name = args['category'][0] if 'category' in args else ''
             machine_name  = args['parent'][0] if 'parent' in args else ''
-            url = _misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
+            url = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         elif command == 'EXEC_SHOW_SL_CLONES':
             catalog_name  = args['catalog'][0] if 'catalog' in args else ''
             category_name = args['category'][0] if 'category' in args else ''
             machine_name  = args['parent'][0] if 'parent' in args else ''
-            url = _misc_url_3_arg('catalog', 'SL', 'category', category_name, 'parent', machine_name)
+            url = misc_url_3_arg('catalog', 'SL', 'category', category_name, 'parent', machine_name)
             xbmc.executebuiltin('Container.Update({0})'.format(url))
 
         # >> If location is not present in the URL default to standard.
@@ -1534,7 +1534,7 @@ def render_catalog_list(catalog_name):
     # >> Check if databases have been built, print warning messages, etc. This function returns
     # >> False if no issues, True if there is issues and a dialog has been printed.
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not _check_AML_MAME_status(g_PATHS, g_settings, control_dic):
+    if not check_AML_MAME_status(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -1581,8 +1581,8 @@ def render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_str
                                'overlay' : ICON_OVERLAY, 'size' : num_machines})
 
     # --- Artwork ---
-    icon_path   = ICON_FILE_PATH.getPath()
-    fanart_path = FANART_FILE_PATH.getPath()
+    icon_path   = g_PATHS.ICON_FILE_PATH.getPath()
+    fanart_path = g_PATHS.FANART_FILE_PATH.getPath()
     listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
 
     # --- Create context menu ---
@@ -2024,7 +2024,7 @@ def render_SL_list(catalog_name):
 
     # --- General AML plugin check ---
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not _check_AML_SL_status(g_PATHS, g_settings, control_dic):
+    if not check_AML_SL_status(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -2064,7 +2064,7 @@ def render_SL_ROMs(SL_name):
 
     # --- General AML plugin check ---
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not _check_AML_SL_status(g_PATHS, g_settings, control_dic):
+    if not check_AML_SL_status(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -2238,7 +2238,7 @@ def render_SL_ROM_row(SL_name, rom_name, ROM, assets, flag_parent_list = False, 
     listitem.addContextMenuItems(commands)
 
     # --- Add row ---
-    URL = _misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
+    URL = misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
     xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
 
 #----------------------------------------------------------------------------------------------
@@ -2300,7 +2300,7 @@ def render_DAT_list(catalog_name):
             listitem = xbmcgui.ListItem(machine_name)
             listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
             listitem.addContextMenuItems(commands)
-            URL = _misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
+            URL = misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
             xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
     elif catalog_name == 'Command':
         DAT_idx_list = fs_load_JSON_file_dic(g_PATHS.COMMAND_IDX_PATH.getPath())
@@ -2314,7 +2314,7 @@ def render_DAT_list(catalog_name):
             listitem = xbmcgui.ListItem(machine_name)
             listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
             listitem.addContextMenuItems(commands)
-            URL = _misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
+            URL = misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
             xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
     else:
         kodi_dialog_OK('DAT database file "{0}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
@@ -2364,7 +2364,7 @@ def render_DAT_category_row(catalog_name, category_name, machine_tuple):
     listitem.addContextMenuItems(commands)
 
     # --- Add row ---
-    URL = _misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_tuple[0])
+    URL = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_tuple[0])
     xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
 
 def render_DAT_machine_info(catalog_name, category_name, machine_name):
@@ -3701,7 +3701,7 @@ def render_fav_machine_row(m_name, machine, m_assets, location):
     listitem.addContextMenuItems(commands)
 
     # --- Add row ---
-    URL = _misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', location)
+    URL = misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', location)
     xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = URL, listitem = listitem, isFolder = False)
 
 def command_context_add_sl_fav(SL_name, ROM_name):

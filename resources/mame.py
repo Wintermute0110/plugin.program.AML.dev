@@ -5980,10 +5980,10 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
         SL_path_FN = FileName(file)
         SLData = _mame_load_SL_XML(SL_path_FN.getPath())
-        fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json').getPath(),
-                           SLData['roms'], verbose = False)
-        fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(),
-                           SLData['SL_roms'], verbose = False)
+        fs_write_JSON_file(
+            PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '.json').getPath(), SLData['roms'], verbose = False)
+        fs_write_JSON_file(
+            PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(), SLData['SL_roms'], verbose = False)
 
         # >> Add software list to catalog
         num_SL_with_ROMs += SLData['num_with_ROMs']
