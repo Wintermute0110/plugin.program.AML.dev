@@ -1218,8 +1218,10 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     slist.append("nplayers.ini version  {0}".format(control_dic['ver_nplayers']))
     slist.append("series.ini version    {0}".format(control_dic['ver_series']))
 
+    # Timestamps ordered if user selects "All in one step"
     slist.append('')
     slist.append('[COLOR orange]Timestamps[/COLOR]')
+    # MAME and SL databases.
     if control_dic['t_XML_extraction']:
         slist.append("MAME XML extracted on   {0}".format(_str_time(control_dic['t_XML_extraction'])))
     else:
@@ -1236,6 +1238,12 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
         slist.append("MAME Catalog built on   {0}".format(_str_time(control_dic['t_MAME_Catalog_build'])))
     else:
         slist.append("MAME Catalog never built")
+    if control_dic['t_SL_DB_build']:
+        slist.append("SL DB built on          {0}".format(_str_time(control_dic['t_SL_DB_build'])))
+    else:
+        slist.append("SL DB never built")
+
+    # MAME and SL scanner.
     if control_dic['t_MAME_ROMs_scan']:
         slist.append("MAME ROMs scaned on     {0}".format(_str_time(control_dic['t_MAME_ROMs_scan'])))
     else:
@@ -1244,16 +1252,7 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
         slist.append("MAME assets scaned on   {0}".format(_str_time(control_dic['t_MAME_assets_scan'])))
     else:
         slist.append("MAME assets never scaned")
-    if control_dic['t_Custom_Filter_build']:
-        slist.append("Custom filters built on {0}".format(_str_time(control_dic['t_Custom_Filter_build'])))
-    else:
-        slist.append("Custom filters never built")
 
-    # >> Software Lists stuff
-    if control_dic['t_SL_DB_build']:
-        slist.append("SL DB built on          {0}".format(_str_time(control_dic['t_SL_DB_build'])))
-    else:
-        slist.append("SL DB never built")
     if control_dic['t_SL_ROMs_scan']:
         slist.append("SL ROMs scaned on       {0}".format(_str_time(control_dic['t_SL_ROMs_scan'])))
     else:
@@ -1263,7 +1262,24 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     else:
         slist.append("SL assets never scaned")
 
-    # >> Audit stuff
+    # Plots and fanarts.
+    slist.append("MAME Plots never built")
+    slist.append("SL Plots never built")
+
+    slist.append("MAME Fanarts never built")
+    slist.append("SL Fanarts never built")
+
+    # MAME render and asset cache (optional).
+    slist.append("MAME render cache never built")
+    slist.append("MAME asset cache never built")
+
+    # Custsom filters.
+    if control_dic['t_Custom_Filter_build']:
+        slist.append("Custom filters built on {0}".format(_str_time(control_dic['t_Custom_Filter_build'])))
+    else:
+        slist.append("Custom filters never built")
+
+    # Audit stuff.
     if control_dic['t_MAME_audit']:
         slist.append("MAME ROMs audited on    {0}".format(_str_time(control_dic['t_MAME_audit'])))
     else:
@@ -6683,11 +6699,11 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
     # >> Write reports
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_SAMP_HAVE_PATH.getPath(), 'w') as file:
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAM_HAVE_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_SAM_HAVE_PATH.getPath(), 'w') as file:
         file.write('\n'.join(r_have_list).encode('utf-8'))
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_SAMP_MISS_PATH.getPath(), 'w') as file:
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAM_MISS_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_SCAN_SAM_MISS_PATH.getPath(), 'w') as file:
         file.write('\n'.join(r_miss_list).encode('utf-8'))
 
     # --- Update statistics ---
