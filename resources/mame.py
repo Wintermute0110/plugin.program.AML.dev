@@ -2233,7 +2233,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
 # -------------------------------------------------------------------------------------------------
 # SL ROM/CHD audit code
 # -------------------------------------------------------------------------------------------------
-def mame_audit_SL_machine(settings, rom_list, audit_dic):
+def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, rom_list, audit_dic):
     # --- Cache the ROM set ZIP files and detect wrong named files by CRC ---
     # >> Look at mame_audit_MAME_machine() for comments.
     z_cache = {}
@@ -2246,7 +2246,7 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
         split_list = m_rom['location'].split('/')
         SL_name  = split_list[0]
         zip_name = split_list[1] + '.zip'
-        zip_FN = FileName(settings['SL_rom_path']).pjoin(SL_name).pjoin(zip_name)
+        zip_FN = SL_ROM_path_FN.pjoin(SL_name).pjoin(zip_name)
         zip_path = zip_FN.getPath()
 
         # >> ZIP file encountered for the first time. Skip ZIP files already in the cache.
@@ -2273,11 +2273,13 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
                     # https://stackoverflow.com/questions/15918314/how-to-detect-string-byte-encoding/15918519
                     try:
                         zfile_unicode = zfile.decode('utf-8')
-                    except:
-                        log_error('Exception in mame_audit_SL_machine()')
-                        log_error('Type of zfile = {0}'.format(type(zfile)))
-                        raise
-                    zip_file_dic[zfile_unicode] = {'size' : z_info_file_size, 'crc' : z_info_crc_hex_str}
+                    except UnicodeDecodeError:
+                        log_error('mame_audit_SL_machine() Exception UnicodeDecodeError')
+                        log_error('type(zfile) = {0}'.format(type(zfile)))
+                        log_error('SL_name "{0}", item_name "{1}", rom name "{2}"'.format(SL_name, item_name, m_rom['name']))
+                    else:
+                        # For now, do not add non-ASCII ROMs so the audit will fail for this ROM.
+                        zip_file_dic[zfile_unicode] = {'size' : z_info_file_size, 'crc' : z_info_crc_hex_str}
                     # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
                     # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
                 zip_f.close()
@@ -2290,6 +2292,7 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
     # --- Audit ROM by ROM ---
     for m_rom in rom_list:
         if m_rom['type'] == ROM_TYPE_DISK:
+            # --- Audit CHD ----------------------------------------------------------------------
             split_list = m_rom['location'].split('/')
             SL_name   = split_list[0]
             item_name = split_list[1]
@@ -2307,7 +2310,7 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
                 continue
 
             # >> Test if DISK file exists
-            chd_FN = FileName(settings['SL_chd_path']).pjoin(SL_name).pjoin(item_name).pjoin(disk_name + '.chd')
+            chd_FN = SL_CHD_path_FN.pjoin(SL_name).pjoin(item_name).pjoin(disk_name + '.chd')
             # log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
             if not chd_FN.exists():
                 m_rom['status'] = AUDIT_STATUS_CHD_NO_FOUND
@@ -2333,6 +2336,7 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
             m_rom['status'] = AUDIT_STATUS_OK
             m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
         else:
+            # --- Audit ROM ----------------------------------------------------------------------
             split_list = m_rom['location'].split('/')
             SL_name   = split_list[0]
             item_name = split_list[1]
@@ -2350,7 +2354,7 @@ def mame_audit_SL_machine(settings, rom_list, audit_dic):
                 continue
 
             # >> Test if ZIP file exists
-            zip_FN = FileName(settings['SL_rom_path']).pjoin(SL_name).pjoin(item_name + '.zip')
+            zip_FN = SL_ROM_path_FN.pjoin(SL_name).pjoin(item_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('zip_FN P {0}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
@@ -2817,6 +2821,8 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     total_files = len(SL_catalog_dic)
     processed_files = 0
+    SL_ROM_path_FN = FileName(settings['SL_rom_path'])
+    SL_CHD_path_FN = FileName(settings['SL_chd_path'])
     for SL_name in sorted(SL_catalog_dic):
         pDialog.update((processed_files*100) // total_files, pdialog_line1, 'Software List {0}'.format(SL_name))
         SL_dic = SL_catalog_dic[SL_name]
@@ -2830,13 +2836,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
             # >> audit_roms_list and audit_dic are mutable and edited inside the function()
             audit_rom_list = audit_roms[rom_key]
             audit_dic = fs_new_audit_dic()
-            try:
-                mame_audit_SL_machine(settings, audit_rom_list, audit_dic)
-            except:
-                # Print message and re-raise same exception
-                log_error('Excepcion in mame_audit_SL_all()')
-                log_error('SL_name "{0}", rom_key "{1}"'.format(SL_name, rom_key))
-                raise
+            mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, rom_key, audit_rom_list, audit_dic)
 
             # >> Audit statistics
             audit_SL_items_runnable += 1
