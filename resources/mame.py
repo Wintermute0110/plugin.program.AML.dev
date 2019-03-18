@@ -1749,7 +1749,7 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
         num_iteration += 1
 
         # >> Load SL ROMs DB and assets
-        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '.json'
+        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
@@ -1798,7 +1798,7 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
         num_iteration += 1
 
         # >> Load SL ROMs DB and assets
-        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '.json'
+        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
@@ -1843,7 +1843,7 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
         num_iteration += 1
 
         # >> Load SL ROMs DB and assets
-        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '.json'
+        file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
@@ -1968,7 +1968,7 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
 
         # >> Open database
         SL_DB_prefix = SL_index_dic[SL_name]['rom_DB_noext']
-        SL_ROMs_FN      = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '.json')
+        SL_ROMs_FN      = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_items.json')
         SL_assets_FN    = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_assets.json')
         SL_ROM_audit_FN = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_ROM_audit.json')
         SL_roms          = fs_load_JSON_file_dic(SL_ROMs_FN.getPath(), verbose = False)
@@ -2894,7 +2894,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
     for SL_name in sorted(SL_catalog_dic):
         pDialog.update((processed_files*100) // total_files, pdialog_line1, 'Software List {0}'.format(SL_name))
         SL_dic = SL_catalog_dic[SL_name]
-        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '.json')
+        SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_items.json')
         SL_AUDIT_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_ROM_audit.json')
         roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         audit_roms = fs_load_JSON_file_dic(SL_AUDIT_ROMs_DB_FN.getPath(), verbose = False)

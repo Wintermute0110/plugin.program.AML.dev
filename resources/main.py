@@ -3659,7 +3659,7 @@ def command_context_add_sl_fav(SL_name, ROM_name):
     # --- Load databases ---
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
     SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-    file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+    file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
     SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(file_name)
     SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
     assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -4131,7 +4131,7 @@ def command_context_setup_custom_filters():
             ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
             ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
             ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-            ['machine_archives', 'Machine archives list', g_PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
+            ['machine_archives', 'Machine archives list', g_PATHS.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
         ]
         db_dic = fs_load_files(db_files)
 
@@ -6390,7 +6390,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
         # >> Load DBs
         log_info('run_SL_machine() SL ROM is in Standard Location')
         SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-        SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json')
+        SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json')
         log_info('run_SL_machine() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
         SL_ROMs = fs_load_JSON_file_dic(SL_DB_FN.getPath())
         SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json')
