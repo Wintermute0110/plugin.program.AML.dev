@@ -4170,7 +4170,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         [machines_devices, 'MAME machine Devices', PATHS.DEVICES_DB_PATH.getPath()],
         [assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()],
         [main_pclone_dic, 'MAME PClone dictionary', PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
-        [roms_sha1_dic, 'MAME ROMs SHA1 dictionary', PATHS.ROM_SHA1_HASH_DB_PATH.getPath()],
+        [roms_sha1_dic, 'MAME ROMs SHA1 dictionary', PATHS.SHA1_HASH_DB_PATH.getPath()],
         # --- DAT files ---
         [history_idx_dic, 'History DAT index', PATHS.HISTORY_IDX_PATH.getPath()],
         [history_dic, 'History DAT database', PATHS.HISTORY_DB_PATH.getPath()],
@@ -4436,7 +4436,12 @@ def mame_check_before_build_ROM_audit_databases(PATHS, settings, control_dic):
 
     return options_dic
 
-# Audit database build main function.
+#
+# Builds the ROM/CHD/Samples audit database and more things.
+# Updates statistics in control_dic and saves it.
+#
+# The audit databases changes for Merged, Split and Non-merged sets (the location of the ROMs changes).
+# The audit database is used when auditing MAME machines.
 #
 # audit_roms_dic = {
 #     'machine_name ' : [
@@ -4446,43 +4451,60 @@ def mame_check_before_build_ROM_audit_databases(PATHS, settings, control_dic):
 #             'name'     : string,
 #             'size'     : int,
 #             'type'     : 'ROM' or 'BROM' or 'MROM' or 'XROM'
-#         },
+#         }, ...,
 #         {
 #             'location' : 'machine_name/chd_name.chd'
 #             'name'     : string,
 #             'sha1'     : string,
 #             'type'     : 'DISK'
-#         }, ...
-#     ],
-#     ...
+#         }, ...,
+#         {
+#             'location' : 'machine_name/sample_name'
+#             'name'     : string,
+#             'type'     : 'SAM'
+#         }, ...,
+#     ], ...
 # }
 #
-# A) Used by the ROM scanner to check how many machines may be run or not depending of the
-#    ZIPs/CHDs you have. Note that depeding of the ROM set (Merged, Split, Non-merged) the number
-#    of machines you can run changes.
-# B) For every machine stores the ZIP/CHD required files to run the machine.
-# C) A ZIP/CHD exists if and only if it is valid (CRC/SHA1 exists). Invalid ROMs are excluded.
+# This function also builds the machine files database.
+#
+# A) For every machine stores the ROM ZIP/CHD/Samples ZIP files required to run the machine.
+# B) A ROM ZIP/CHD exists if and only if it has valid ROMs (CRC and SHA1 exist).
+# C) Used by the ROM scanner to check how many machines may be run or not depending of the
+#    ROM ZIPs/CHDs/Sample ZIPs you have.
+# D) ROM ZIPs and CHDs are mandatory to run a machine. Samples are not. This function kind of
+#    thinks that Samples are also mandatory.
 #
 # machine_archives_dic = {
-#     'machine_name ' : { 'ROMs' : [name1, name2, ...], 'CHDs' : [dir/name1, dir/name2, ...] }, ...
+#     'machine_name ' : {
+#         'ROMs'    : [name1, name2, ...],
+#         'CHDs'    : [dir/name1, dir/name2, ...],
+#         'Samples' : [name1, name2, ...],
+#     }, ...
 # }
 #
-# A) Used by the ROM scanner to determine how many ZIPs/CHDs files you have or not.
-# B) Both lists have unique elements (instead of lists there should be sets but sets are 
-#    not JSON serializable).
-# C) A ZIP/CHD exists if and only if it is valid (CRC/SHA1 exists). Invalid ROMs are excluded.
+# This function builds the ROM ZIP list, the CHD list and the Samples ZIP list.
+#
+# A) Used by the ROM scanner to determine how many ROM ZIP/CHD/SampleZIP files you have or not.
+# B) The three lists have unique elements. Instead of Python lists there should be Python sets.
+#    However, sets are not serializable with JSON.
+# C) A ROM ZIP/CHD/Sample ZIP exists if and only if it has valid ROMs (CRC/SHA1 exists).
+#    Invalid ROMs are excluded.
 #
 # ROM_archive_list = [ name1, name2, ..., nameN ]
 # CHD_archive_list = [ dir1/name1, dir2/name2, ..., dirN/nameN ]
+# SAM_archive_list = [ name1, name2, ..., nameN ]
 #
-# Saves:
-#   ROM_AUDIT_DB_PATH
-#   ROM_SET_MACHINE_ARCHIVES_DB_PATH
-#   ROM_SET_ROM_ARCHIVES_DB_PATH
-#   ROM_SET_CHD_ARCHIVES_DB_PATH
+# Saved files:
+#     ROM_AUDIT_DB_PATH
+#     ROM_SET_MACHINE_FILES_DB_PATH
+#     ROM_SET_ROM_LIST_DB_PATH
+#     ROM_SET_CHD_LIST_DB_PATH
+#     ROM_SET_SAM_LIST_DB_PATH
+#     MAIN_CONTROL_PATH
 #
 def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
-                                   machines, machines_render, devices_db_dic, machine_roms):
+    machines, machines_render, devices_db_dic, machine_roms):
     log_info('mame_build_ROM_audit_databases() Initialising ...')
 
     # --- Initialise ---
@@ -4492,16 +4514,18 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     chd_set_str = ['Merged', 'Split', 'Non-merged'][settings['mame_chd_set']]
     log_info('mame_build_ROM_audit_databases() ROM set is {0}'.format(rom_set))
     log_info('mame_build_ROM_audit_databases() CHD set is {0}'.format(chd_set))
-    audit_roms_dic = {}
-    pDialog = xbmcgui.DialogProgress()
 
-    # --- ROM set (refactored code) ---------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
+    # Audit database
+    # ---------------------------------------------------------------------------------------------
+    log_info('mame_build_ROM_audit_databases() Building {0} ROM/Sample audit database ...'.format(rom_set_str))
+    pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher')
-    log_info('mame_build_ROM_audit_databases() Building {0} ROM set ...'.format(rom_set_str))
     pDialog.update(0, 'Building {0} ROM set ...'.format(rom_set_str))
     num_items = len(machines)
     item_count = 0
     stats_audit_MAME_machines_runnable = 0
+    audit_roms_dic = {}
     for m_name in sorted(machines):
         # --- Update dialog ---
         pDialog.update((item_count*100)//num_items)
@@ -4545,8 +4569,8 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     pDialog.close()
 
     # --- CHD set (refactored code) ---------------------------------------------------------------
+    log_info('mame_build_ROM_audit_databases() Building {0} CHD audit database ...'.format(chd_set_str))
     pDialog.create('Advanced MAME Launcher')
-    log_info('mame_build_ROM_audit_databases() Building {0} CHD set ...'.format(chd_set_str))
     pDialog.update(0, 'Building {0} CHD set ...'.format(chd_set_str))
     num_items = len(machines)
     item_count = 0
@@ -4572,18 +4596,21 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         item_count += 1
     pDialog.close()
 
-    # --- Machine archives and ROM/Sample/CHD sets ---
+    # ---------------------------------------------------------------------------------------------
+    # Machine files and ROM ZIP/Sample ZIP/CHD lists
+    # ---------------------------------------------------------------------------------------------
     # NOTE roms_dic and chds_dic may have invalid ROMs/CHDs. However, machine_archives_dic must
     #      have only valid ROM archives (ZIP/7Z).
     # For every machine, it goes ROM by ROM and makes a list of ZIP archive locations. Then, it
     # transforms the list into a set to have a list with unique elements.
     # roms_dic/chds_dic have invalid ROMs. Skip invalid ROMs.
+    log_info('mame_build_ROM_audit_databases() Building ROM ZIP/Sample ZIP/CHD file lists ...')
+    pDialog.create('Advanced MAME Launcher')
+    pDialog.update(0, 'Building ROM, Sample and CHD archive lists ...')
     machine_archives_dic = {}
     full_ROM_archive_set = set()
     full_Sample_archive_set = set()
     full_CHD_archive_set = set()
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Building ROM and CHD archive lists ...')
     num_items = len(machines)
     item_count = 0
     machine_archives_ROM = 0
@@ -4679,17 +4706,20 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         # --- Update dialog ---
         item_count += 1
     pDialog.close()
-    ROM_archive_list = list(sorted(full_ROM_archive_set))
-    Sample_archive_list = list(sorted(full_Sample_archive_set))
+    # Sort lists alphabetically
+    ROM_ZIP_list     = list(sorted(full_ROM_archive_set))
+    Sample_ZIP_list  = list(sorted(full_Sample_archive_set))
     CHD_archive_list = list(sorted(full_CHD_archive_set))
 
     # ---------------------------------------------------------------------------------------------
-    # Remove unused fiels to save memory before saving the JSON file.
+    # machine_roms dictionary is passed as argument and not save in this function.
+    # It is modified in this function to create audit_roms_dic.
+    # Remove unused fields to save memory before saving the audit_roms_dic JSON file.
     # Do not remove earlier because 'merge' is used in the _get_XXX_location() functions.
     # ---------------------------------------------------------------------------------------------
     pDialog.create('Advanced MAME Launcher')
-    log_info('mame_build_ROM_audit_databases() Building {0} ROM set ...'.format(rom_set_str))
-    pDialog.update(0, 'Building {0} ROM set ...'.format(rom_set_str))
+    log_info('mame_build_ROM_audit_databases() Cleaning audit database before saving ...')
+    pDialog.update(0, 'Cleaning audit database ...')
     num_items = len(machines)
     item_count = 0
     for m_name in sorted(machines):
@@ -4713,8 +4743,8 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # Update MAME control dictionary
     # ---------------------------------------------------------------------------------------------
     change_control_dic(control_dic, 'stats_audit_MAME_machines_runnable', stats_audit_MAME_machines_runnable)
-    change_control_dic(control_dic, 'stats_audit_MAME_ROM_ZIP_files', len(ROM_archive_list))
-    change_control_dic(control_dic, 'stats_audit_MAME_Sample_ZIP_files', len(Sample_archive_list))
+    change_control_dic(control_dic, 'stats_audit_MAME_ROM_ZIP_files', len(ROM_ZIP_list))
+    change_control_dic(control_dic, 'stats_audit_MAME_Sample_ZIP_files', len(Sample_ZIP_list))
     change_control_dic(control_dic, 'stats_audit_MAME_CHD_files', len(CHD_archive_list))
     change_control_dic(control_dic, 'stats_audit_machine_archives_ROM', machine_archives_ROM)
     change_control_dic(control_dic, 'stats_audit_machine_archives_ROM_parents', machine_archives_ROM_parents)
@@ -4745,9 +4775,10 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         log_debug('Using fs_write_JSON_file() JSON writer')
     db_files = [
         [audit_roms_dic, 'MAME ROM Audit', PATHS.ROM_AUDIT_DB_PATH.getPath()],
-        [machine_archives_dic, 'Machine archives list', PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
-        [ROM_archive_list, 'ROM List index', PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath()],
-        [CHD_archive_list, 'CHD list index', PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath()],
+        [machine_archives_dic, 'Machine file list', PATHS.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
+        [ROM_ZIP_list, 'ROM ZIP list', PATHS.ROM_SET_ROM_LIST_DB_PATH.getPath()],
+        [Sample_ZIP_list, 'Sample ZIP list', PATHS.ROM_SET_SAM_LIST_DB_PATH.getPath()],
+        [CHD_archive_list, 'CHD list', PATHS.ROM_SET_CHD_LIST_DB_PATH.getPath()],
         # --- Save control_dic after everything is saved ---
         [control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()],
     ]
@@ -4758,7 +4789,8 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     audit_dic = {
         'audit_roms' : audit_roms_dic,
         'machine_archives' : machine_archives_dic,
-        'ROM_archive_list' : ROM_archive_list,
+        'ROM_ZIP_list' : ROM_ZIP_list,
+        'Sample_ZIP_list' : Sample_ZIP_list,
         'CHD_archive_list' : CHD_archive_list,
     }
 

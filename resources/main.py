@@ -58,8 +58,8 @@ __addon_type__    = __addon__.getAddonInfo('type').decode('utf-8')
 # _PATH is a filename | _DIR is a directory
 class AML_Paths:
     def __init__(self):
-        self.PROFILE_DIR      = FileName('special://profile')
         self.HOME_DIR         = FileName('special://home')
+        self.PROFILE_DIR      = FileName('special://profile')
         self.ADDON_CODE_DIR   = self.HOME_DIR.pjoin('addons/' + __addon_id__)
         self.ADDON_DATA_DIR   = self.PROFILE_DIR.pjoin('addon_data/' + __addon_id__)
         self.ICON_FILE_PATH   = self.ADDON_CODE_DIR.pjoin('media/icon.png')
@@ -74,7 +74,7 @@ class AML_Paths:
         self.MONO_FONT_PATH       = self.ADDON_CODE_DIR.pjoin('fonts/Inconsolata.otf')
         self.CUSTOM_FILTER_PATH   = self.ADDON_CODE_DIR.pjoin('filters/AML-MAME-filters.xml')
 
-        # >> MAME XML, main database and main PClone list.
+        # --- MAME XML, main database and main PClone list ---
         self.MAME_XML_PATH        = self.ADDON_DATA_DIR.pjoin('MAME.xml')
         self.MAIN_ASSETS_DB_PATH  = self.ADDON_DATA_DIR.pjoin('MAME_assets.json')
         self.MAIN_CONTROL_PATH    = self.ADDON_DATA_DIR.pjoin('MAME_control_dic.json')
@@ -82,14 +82,15 @@ class AML_Paths:
         self.MAIN_DB_PATH         = self.ADDON_DATA_DIR.pjoin('MAME_DB_main.json')
         self.RENDER_DB_PATH       = self.ADDON_DATA_DIR.pjoin('MAME_DB_render.json')
         self.ROMS_DB_PATH         = self.ADDON_DATA_DIR.pjoin('MAME_DB_roms.json')
+        self.SHA1_HASH_DB_PATH    = self.ADDON_DATA_DIR.pjoin('MAME_DB_SHA1_hashes.json')
         self.MAIN_PCLONE_DIC_PATH = self.ADDON_DATA_DIR.pjoin('MAME_DB_pclone_dic.json')
 
-        # >> ROM set databases
-        self.ROM_AUDIT_DB_PATH                = self.ADDON_DATA_DIR.pjoin('ROM_Audit_DB.json')
-        self.ROM_SET_MACHINE_ARCHIVES_DB_PATH = self.ADDON_DATA_DIR.pjoin('ROM_Set_machine_archives.json')
-        self.ROM_SET_ROM_ARCHIVES_DB_PATH     = self.ADDON_DATA_DIR.pjoin('ROM_Set_ROM_archives.json')
-        self.ROM_SET_CHD_ARCHIVES_DB_PATH     = self.ADDON_DATA_DIR.pjoin('ROM_Set_CHD_archives.json')
-        self.ROM_SHA1_HASH_DB_PATH            = self.ADDON_DATA_DIR.pjoin('ROM_SHA1_hashes.json')
+        # --- ROM set databases ---
+        self.ROM_AUDIT_DB_PATH             = self.ADDON_DATA_DIR.pjoin('ROM_Audit_DB.json')
+        self.ROM_SET_MACHINE_FILES_DB_PATH = self.ADDON_DATA_DIR.pjoin('ROM_Set_machine_files.json')
+        self.ROM_SET_ROM_LIST_DB_PATH      = self.ADDON_DATA_DIR.pjoin('ROM_Set_ROM_list.json')
+        self.ROM_SET_SAM_LIST_DB_PATH      = self.ADDON_DATA_DIR.pjoin('ROM_Set_Sample_list.json')
+        self.ROM_SET_CHD_LIST_DB_PATH      = self.ADDON_DATA_DIR.pjoin('ROM_Set_CHD_list.json')
 
         # >> DAT indices and databases.
         self.HISTORY_IDX_PATH  = self.ADDON_DATA_DIR.pjoin('DAT_History_index.json')

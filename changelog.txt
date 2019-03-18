@@ -40,6 +40,11 @@ WIP      [CORE] [LEIA] Recursive context menus.
 
 [B]Advanced MAME Launcher | version 0.10.0 | XX June 2019[/B]
 
+WIP      [CORE] Differentiate between Non-merged and Fully non-merged ROM sets.
+         Non-merged sets do not include BIOS and device ROMs.
+         Fully non-merged sets include BIOS and devices ROMs (every ROM required to run each
+         machine). Pleasuredome rom sets are Fully non-merged.
+
 WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored into ZIP files.
          The MAME audit engine must take this into account.
          See comments in mame_scan_MAME_ROMs() @mame.py
