@@ -4970,7 +4970,7 @@ def command_context_setup_plugin():
             # --- MAME Fanart build timestamp ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             change_control_dic(control_dic, 't_MAME_fanart_build', time.time())
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            fs_write_JSON_file(g_PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
             # --- assets_dic has changed. Rebuild hashed database ---
             fs_build_asset_hashed_db(g_PATHS, g_settings, control_dic, assets_dic)
@@ -5074,7 +5074,7 @@ def command_context_setup_plugin():
             # --- SL Fanart build timestamp ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             change_control_dic(control_dic, 't_SL_fanart_build', time.time())
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+            fs_write_JSON_file(g_PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
             # --- Inform user ---
             if pDialog_canceled:
