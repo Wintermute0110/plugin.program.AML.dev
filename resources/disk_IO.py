@@ -305,18 +305,29 @@ def fs_new_control_dic():
         'stats_total_machines' : 0,
 
         # --- Timestamps ---
-        't_XML_extraction'      : 0,
-        't_MAME_DB_build'       : 0,
-        't_MAME_Audit_DB_build' : 0,
-        't_MAME_Catalog_build'  : 0,
-        't_MAME_ROMs_scan'      : 0,
-        't_MAME_assets_scan'    : 0,
-        't_Custom_Filter_build' : 0,
-        't_SL_DB_build'         : 0,
-        't_SL_ROMs_scan'        : 0,
-        't_SL_assets_scan'      : 0,
-        't_MAME_audit'          : 0,
-        't_SL_audit'            : 0,
+        # MAME
+        't_XML_extraction'          : 0,
+        't_MAME_DB_build'           : 0,
+        't_MAME_Audit_DB_build'     : 0,
+        't_MAME_Catalog_build'      : 0,
+        't_MAME_ROMs_scan'          : 0,
+        't_MAME_assets_scan'        : 0,
+        't_MAME_plots_build'        : 0,
+        't_MAME_fanart_build'       : 0,
+        't_MAME_machine_hash'       : 0,
+        't_MAME_asset_hash'         : 0,
+        't_MAME_render_cache_build' : 0,
+        't_MAME_asset_cache_build'  : 0,
+        # Software Lists
+        't_SL_DB_build'             : 0,
+        't_SL_ROMs_scan'            : 0,
+        't_SL_assets_scan'          : 0,
+        't_SL_plots_build'          : 0,
+        't_SL_fanart_build'         : 0,
+        # Misc
+        't_Custom_Filter_build'     : 0,
+        't_MAME_audit'              : 0,
+        't_SL_audit'                : 0,
 
         # --- Filed in when building main MAME database ---
         'ver_AML'       : 0,
@@ -1154,10 +1165,10 @@ def fs_set_Sample_flag(m_render, new_Sample_flag):
     m_render['flags'] = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
 # -------------------------------------------------------------------------------------------------
-# Hashed databases. Useful when only one item in a big dictionary is required.
+# MAME hashed databases. Useful when only one item in a big dictionary is required.
 # -------------------------------------------------------------------------------------------------
 # Hash database with 256 elements (2 hex digits)
-def fs_build_main_hashed_db(PATHS, machines, machines_render):
+def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_render):
     log_info('fs_build_main_hashed_db() Building main hashed database ...')
 
     # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
@@ -1201,6 +1212,10 @@ def fs_build_main_hashed_db(PATHS, machines, machines_render):
         pDialog.update(int((item_count*100) / num_items))
     pDialog.close()
 
+    # --- Timestamp ---
+    change_control_dic(control_dic, 't_MAME_machine_hash', time.time())
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
 #
 # Retrieves machine from distributed database.
 # This is very quick for retrieving individual machines, very slow for multiple machines.
@@ -1214,8 +1229,8 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
 
     return hashed_db_dic[machine_name]
 
-# Hash database with 256 elements (2 hex digits)
-def fs_build_asset_hashed_db(PATHS, assets_dic):
+# MAME hash database with 256 elements (2 hex digits)
+def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
     log_info('fs_build_asset_hashed_db() Building assets hashed database ...')
 
     # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
@@ -1250,6 +1265,10 @@ def fs_build_asset_hashed_db(PATHS, assets_dic):
         pDialog.update(int((item_count*100) / num_items))
     pDialog.close()
 
+    # --- Timestamp ---
+    change_control_dic(control_dic, 't_MAME_asset_hash', time.time())
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
 #
 # Retrieves machine from distributed database.
 # This is very quick for retrieving individual machines, very slow for multiple machines.
@@ -1263,16 +1282,16 @@ def fs_get_machine_assets_db_hash(PATHS, machine_name):
     return hashed_db_dic[machine_name]
 
 # -------------------------------------------------------------------------------------------------
-# Machine render cache
-# Creates a separate machines render and assets databases for each catalog to speed up
-# access of ListItems.
+# MAME machine render cache
+# Creates a separate MAME render and assets databases for each catalog to speed up
+# access of ListItems when rendering machine lists.
 # -------------------------------------------------------------------------------------------------
 def fs_render_cache_get_hash(catalog_name, category_name):
     prop_key = '{0} - {1}'.format(catalog_name, category_name)
 
     return hashlib.md5(prop_key).hexdigest()
 
-def fs_build_render_cache(PATHS, cache_index_dic, machines_render):
+def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machines_render):
     log_info('fs_build_render_cache() Building ROM cache ...')
 
     # --- Clean 'cache' directory JSON ROM files ---
@@ -1329,6 +1348,10 @@ def fs_build_render_cache(PATHS, cache_index_dic, machines_render):
         catalog_count += 1
     pDialog.close()
 
+    # --- Timestamp ---
+    change_control_dic(control_dic, 't_MAME_render_cache_build', time.time())
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
 def fs_load_render_dic_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
     ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_render.json')
@@ -1336,9 +1359,9 @@ def fs_load_render_dic_all(PATHS, cache_index_dic, catalog_name, category_name):
     return fs_load_JSON_file_dic(ROMs_all_FN.getPath())
 
 # -------------------------------------------------------------------------------------------------
-# Asset cache
+# MAME asset cache
 # -------------------------------------------------------------------------------------------------
-def fs_build_asset_cache(PATHS, cache_index_dic, assets_dic):
+def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_dic):
     log_info('fs_build_asset_cache() Building Asset cache ...')
 
     # --- Clean 'cache' directory JSON Asset files ---
@@ -1394,6 +1417,10 @@ def fs_build_asset_cache(PATHS, cache_index_dic, assets_dic):
         # >> Progress dialog
         catalog_count += 1
     pDialog.close()
+
+    # --- Timestamp ---
+    change_control_dic(control_dic, 't_MAME_asset_cache_build', time.time())
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
@@ -1452,8 +1479,8 @@ def fs_save_files(db_files, json_write_func = fs_write_JSON_file):
 # -------------------------------------------------------------------------------------------------
 # Export stuff
 # -------------------------------------------------------------------------------------------------
-def fs_export_Virtual_Launcher(export_FN, catalog_dic, machines, machines_render, assets_dic):
-    log_verb('fs_export_Virtual_Launcher() File "{0}"'.format(export_FN.getPath()))
+def fs_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_render, assets_dic):
+    log_verb('fs_export_Read_Only_Launcher() File "{0}"'.format(export_FN.getPath()))
 
     # --- Create list of strings ---
     str_list = []

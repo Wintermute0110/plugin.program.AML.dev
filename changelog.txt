@@ -52,12 +52,23 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
-
-[B]Advanced MAME Launcher | version 0.9.9 | XX March 2019[/B]
-
 WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
 
 WIP      [CORE] New artwork type, 3dboxes.
+
+
+[B]Advanced MAME Launcher | version 0.9.9 | XX March 2019[/B]
+
+WIP      [FANARTS] Set an order to print fanart assets. This will allow to have images printed
+         on top of each other.
+
+WIP      [CORE] Improve the Samples scanner and report.
+
+FEATURE  [CORE] MAME and SL plots build timestamp.
+
+FEATURE  [CORE] MAME and SL Fanart build timestamp.
+
+FEATURE  [CORE] MAME render and asset cache build timestamp.
 
 FEATURE  [CORE] Move the utilities from the addon settings into the root menu.
 
@@ -110,11 +121,14 @@ FIX      Fixed the AML addon and MAME numerical versioning scheme.
 FIX      Fix crash in "Build MAME databases".
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2822949#pid2822949
 
-WIP      Some Software List ROMs are compressed using non-ASCII characters and this make
+FIX      Some Software List ROMs are compressed using non-ASCII characters and this make
          the audit engine to crash. I have to investigate how to fix this issue.
          Maybe use the chardet library https://github.com/Wintermute0110/chardet/tree/master/chardet
          I think this should reported creating an issue in MAME project in Github.
-         Problematic ROM example (link the SL in Github).
+         Problematic SL ROM example: SL ibm5170, item wordfndr
+         https://github.com/mamedev/mame/blob/master/hash/ibm5170.xml#L7521
+         The current implementation just ignores non-ASCII files and the audit fails for those
+         SL items.
 
 
 [B]Advanced MAME Launcher | version 0.9.8 | 23 June 2018[/B]

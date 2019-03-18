@@ -1223,69 +1223,114 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     slist.append('[COLOR orange]Timestamps[/COLOR]')
     # MAME and SL databases.
     if control_dic['t_XML_extraction']:
-        slist.append("MAME XML extracted on   {0}".format(_str_time(control_dic['t_XML_extraction'])))
+        slist.append("MAME XML extracted on   {0}".format(
+            _str_time(control_dic['t_XML_extraction'])))
     else:
         slist.append("MAME XML never extracted")
     if control_dic['t_MAME_DB_build']:
-        slist.append("MAME DB built on        {0}".format(_str_time(control_dic['t_MAME_DB_build'])))
+        slist.append("MAME DB built on        {0}".format(
+            _str_time(control_dic['t_MAME_DB_build'])))
     else:
         slist.append("MAME DB never built")
     if control_dic['t_MAME_Audit_DB_build']:
-        slist.append("MAME Audit DB built on  {0}".format(_str_time(control_dic['t_MAME_Audit_DB_build'])))
+        slist.append("MAME Audit DB built on  {0}".format(
+            _str_time(control_dic['t_MAME_Audit_DB_build'])))
     else:
         slist.append("MAME Audit DB never built")
     if control_dic['t_MAME_Catalog_build']:
-        slist.append("MAME Catalog built on   {0}".format(_str_time(control_dic['t_MAME_Catalog_build'])))
+        slist.append("MAME Catalog built on   {0}".format(
+            _str_time(control_dic['t_MAME_Catalog_build'])))
     else:
         slist.append("MAME Catalog never built")
     if control_dic['t_SL_DB_build']:
-        slist.append("SL DB built on          {0}".format(_str_time(control_dic['t_SL_DB_build'])))
+        slist.append("SL DB built on          {0}".format(
+            _str_time(control_dic['t_SL_DB_build'])))
     else:
         slist.append("SL DB never built")
 
     # MAME and SL scanner.
     if control_dic['t_MAME_ROMs_scan']:
-        slist.append("MAME ROMs scaned on     {0}".format(_str_time(control_dic['t_MAME_ROMs_scan'])))
+        slist.append("MAME ROMs scaned on     {0}".format(
+            _str_time(control_dic['t_MAME_ROMs_scan'])))
     else:
         slist.append("MAME ROMs never scaned")
     if control_dic['t_MAME_assets_scan']:
-        slist.append("MAME assets scaned on   {0}".format(_str_time(control_dic['t_MAME_assets_scan'])))
+        slist.append("MAME assets scaned on   {0}".format(
+            _str_time(control_dic['t_MAME_assets_scan'])))
     else:
         slist.append("MAME assets never scaned")
 
     if control_dic['t_SL_ROMs_scan']:
-        slist.append("SL ROMs scaned on       {0}".format(_str_time(control_dic['t_SL_ROMs_scan'])))
+        slist.append("SL ROMs scaned on       {0}".format(
+            _str_time(control_dic['t_SL_ROMs_scan'])))
     else:
         slist.append("SL ROMs never scaned")
     if control_dic['t_SL_assets_scan']:
-        slist.append("SL assets scaned on     {0}".format(_str_time(control_dic['t_SL_assets_scan'])))
+        slist.append("SL assets scaned on     {0}".format(
+            _str_time(control_dic['t_SL_assets_scan'])))
     else:
         slist.append("SL assets never scaned")
 
     # Plots and fanarts.
-    slist.append("MAME Plots never built")
-    slist.append("SL Plots never built")
+    if control_dic['t_MAME_plots_build']:
+        slist.append("MAME Plots built on     {0}".format(
+            _str_time(control_dic['t_MAME_plots_build'])))
+    else:
+        slist.append("MAME Plots never built")
+    if control_dic['t_SL_plots_build']:
+        slist.append("SL Plots built on       {0}".format(
+            _str_time(control_dic['t_SL_plots_build'])))
+    else:
+        slist.append("SL Plots never built")
+    if control_dic['t_MAME_fanart_build']:
+        slist.append("MAME Fanarts built on      {0}".format(
+            _str_time(control_dic['t_MAME_fanart_build'])))
+    else:
+        slist.append("MAME Fanarts never built")
+    if control_dic['t_SL_DB_build']:
+        slist.append("SL Fanarts built on        {0}".format(
+            _str_time(control_dic['t_SL_DB_build'])))
+    else:
+        slist.append("SL Fanarts never built")
 
-    slist.append("MAME Fanarts never built")
-    slist.append("SL Fanarts never built")
-
-    # MAME render and asset cache (optional).
-    slist.append("MAME render cache never built")
-    slist.append("MAME asset cache never built")
+    # MAME machine hash, asset hash, render cache and asset cache.
+    if control_dic['t_MAME_machine_hash']:
+        slist.append("MAME machine hash built on {0}".format(
+            _str_time(control_dic['t_MAME_machine_hash'])))
+    else:
+        slist.append("MAME machine hash never built")
+    if control_dic['t_MAME_asset_hash']:
+        slist.append("MAME asset hash built on   {0}".format(
+            _str_time(control_dic['t_MAME_asset_hash'])))
+    else:
+        slist.append("MAME asset hash never built")
+    if control_dic['t_MAME_render_cache_build']:
+        slist.append("MAME render cache built on  {0}".format(
+            _str_time(control_dic['t_MAME_render_cache_build'])))
+    else:
+        slist.append("MAME render cache never built")
+    if control_dic['t_MAME_asset_cache_build']:
+        slist.append("MAME asset cache built on   {0}".format(
+            _str_time(control_dic['t_MAME_asset_cache_build'])))
+    else:
+        slist.append("MAME asset cache never built")
 
     # Custsom filters.
     if control_dic['t_Custom_Filter_build']:
-        slist.append("Custom filters built on {0}".format(_str_time(control_dic['t_Custom_Filter_build'])))
+        slist.append("Custom filters built on {0}".format(
+            _str_time(control_dic['t_Custom_Filter_build'])))
     else:
         slist.append("Custom filters never built")
 
     # Audit stuff.
     if control_dic['t_MAME_audit']:
-        slist.append("MAME ROMs audited on    {0}".format(_str_time(control_dic['t_MAME_audit'])))
+        slist.append("MAME ROMs audited on    {0}".format(
+            _str_time(control_dic['t_MAME_audit'])))
     else:
         slist.append("MAME ROMs never audited")
     if control_dic['t_SL_audit']:
-        slist.append("SL ROMs audited on      {0}".format(_str_time(control_dic['t_SL_audit'])))
+        slist.append("SL ROMs audited on      {0}".format(
+            _str_time(control_dic['t_SL_audit'])))
     else:
         slist.append("SL ROMs never audited")
 
@@ -1828,9 +1873,10 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
 # Line 5) Artwork, Manual, History, Info, Gameinit, Command
 # Line 6) Machine [supports|does not support] a Software List.
 # ---------------------------------------------------------------------------------------------
-def mame_build_MAME_plots(PATHS, machines, machines_render, assets_dic,
-                          history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic):
-    log_info('mame_build_plots() Building machine plots/descriptions ...')
+def mame_build_MAME_plots(PATHS, settings, control_dic,
+    machines, machines_render, assets_dic,
+    history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic):
+    log_info('mame_build_MAME_plots() Building machine plots/descriptions ...')
     # >> Do not crash if DAT files are not configured.
     if history_idx_dic:
         history_info_set  = {machine[0] for machine in history_idx_dic['mame']['machines']}
@@ -1880,14 +1926,19 @@ def mame_build_MAME_plots(PATHS, machines, machines_render, assets_dic,
         if SL_str: plot_str_list.append('SL {0}'.format(SL_str))
         assets_dic[machine_name]['plot'] = '\n'.join(plot_str_list)
 
-        # >> Update progress
+        # --- Update progress ---
         num_machines += 1
         pDialog.update((num_machines*100)//total_machines)
     pDialog.close()
 
+    # --- Timestamp ---
+    change_control_dic(control_dic, 't_MAME_plots_build', time.time())
+
     # --- Save the MAME asset database ---
     db_files = [
         (assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()),
+        # --- Save control_dic after everything is saved ---
+        (control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()),
     ]
     fs_save_files(db_files)
 
@@ -1898,7 +1949,8 @@ def mame_build_MAME_plots(PATHS, machines, machines_render, assets_dic,
 # Line 3) Manual, History
 # Line 4) Machines: machine list ...
 # ---------------------------------------------------------------------------------------------
-def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic):
+def mame_build_SL_plots(PATHS, settings, control_dic,
+    SL_index_dic, SL_machines_dic, History_idx_dic):
     pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
@@ -1959,6 +2011,10 @@ def mame_build_SL_plots(PATHS, SL_index_dic, SL_machines_dic, History_idx_dic):
         processed_files += 1
     update_number = (processed_files*100) // total_files
     pDialog.close()
+
+    # --- Timestamp ---
+    change_control_dic(control_dic, 't_SL_plots_build', time.time())
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
 # MAME ROM/CHD audit code
@@ -4040,13 +4096,6 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
                 machine_list[1] = machines_render[machine_list[0]]['description']
 
     # ---------------------------------------------------------------------------------------------
-    # Build main distributed hashed database
-    # ---------------------------------------------------------------------------------------------
-    # >> This saves the hash files in the database directory.
-    fs_build_main_hashed_db(PATHS, machines, machines_render)
-    fs_build_asset_hashed_db(PATHS, assets_dic)
-
-    # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary
     # ---------------------------------------------------------------------------------------------
     # >> Versions
@@ -4097,8 +4146,16 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     change_control_dic(control_dic, 'stats_samples_parents', stats_samples_parents)
     change_control_dic(control_dic, 'stats_samples_clones', stats_samples_clones)
 
-    # >> Timestamp
+    # --- Timestamp ---
     change_control_dic(control_dic, 't_MAME_DB_build', time.time())
+
+    # ---------------------------------------------------------------------------------------------
+    # Build main distributed hashed database
+    # ---------------------------------------------------------------------------------------------
+    # This saves the hash files in the database directory.
+    # At this point the main hashed database is complete but the asset hashed DB is empty.
+    fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_render)
+    fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic)
 
     # --- Save databases ---
     log_info('Saving database JSON files ...')
