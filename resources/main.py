@@ -3,7 +3,7 @@
 # Advanced MAME Launcher main script file
 #
 
-# Copyright (c) 2016-2018 Wintermute0110 <wintermute0110@gmail.com>
+# Copyright (c) 2016-2019 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -650,11 +650,11 @@ def render_root_list():
         num_cat_Year = len(cache_index_dic['Year'])
 
         counters_available = True
-        log_debug('_render_root_list() counters_available = True')
+        log_debug('render_root_list() counters_available = True')
 
     except KeyError as E:
         counters_available = False
-        log_debug('_render_root_list() counters_available = False')
+        log_debug('render_root_list() counters_available = False')
 
     # >> Main filter
     machines_n_str = 'Machines with coin slot (Normal)'
@@ -1506,14 +1506,14 @@ def render_GlobalReports_vlaunchers():
 # Renders the category names in a catalog.
 #
 def render_catalog_list(catalog_name):
-    log_debug('_render_catalog_list() Starting ...')
-    log_debug('_render_catalog_list() catalog_name = "{0}"'.format(catalog_name))
+    log_debug('render_catalog_list() Starting ...')
+    log_debug('render_catalog_list() catalog_name = "{0}"'.format(catalog_name))
 
     # --- General AML plugin check ---
-    # >> Check if databases have been built, print warning messages, etc. This function returns
-    # >> False if no issues, True if there is issues and a dialog has been printed.
+    # Check if databases have been built, print warning messages, etc. This function returns
+    # False if no issues, True if there is issues and a dialog has been printed.
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not check_AML_MAME_status(g_PATHS, g_settings, control_dic):
+    if not check_MAME_DB_before_rendering(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -1581,33 +1581,34 @@ def render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_str
 
 #
 # Renders a list of parent MAME machines knowing the catalog name and the category.
+# Also renders machine lists in flat mode.
 # Display mode: a) parents only b) all machines (flat)
 #
 def render_catalog_parent_list(catalog_name, category_name):
     # When using threads the performance gain is small: from 0.76 to 0.71, just 20 ms.
     # It's not worth it.
-    log_debug('_render_catalog_parent_list() catalog_name  = {0}'.format(catalog_name))
-    log_debug('_render_catalog_parent_list() category_name = {0}'.format(category_name))
+    log_debug('render_catalog_parent_list() catalog_name  = {0}'.format(catalog_name))
+    log_debug('render_catalog_parent_list() category_name = {0}'.format(category_name))
 
-    # >> Load ListItem properties (Not used at the moment)
+    # --- Load ListItem properties (Not used at the moment) ---
     # prop_key = '{0} - {1}'.format(catalog_name, category_name)
-    # log_debug('_render_catalog_parent_list() Loading props with key "{0}"'.format(prop_key))
+    # log_debug('render_catalog_parent_list() Loading props with key "{0}"'.format(prop_key))
     # mame_properties_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_PROPERTIES_PATH.getPath())
     # prop_dic = mame_properties_dic[prop_key]
     # view_mode_property = prop_dic['vm']
-    # >> Global properties
+
+    # --- Global properties ---
     view_mode_property = g_settings['mame_view_mode']
-    log_debug('_render_catalog_parent_list() view_mode_property = {0}'.format(view_mode_property))
+    log_debug('render_catalog_parent_list() view_mode_property = {0}'.format(view_mode_property))
 
     # --- General AML plugin check ---
-    # >> Check if databases have been built, print warning messages, etc. This function returns
-    # >> False if no issues, True if there is issues and a dialog has been printed.
+    # Check if databases have been built, print warning messages, etc.
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not check_AML_MAME_status(g_PATHS, g_settings, control_dic):
+    if not check_MAME_DB_before_rendering(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
-    # >> Load main MAME info databases and catalog
+    # --- Load main MAME info databases and catalog ---
     l_cataloged_dic_start = time.time()
     if view_mode_property == VIEW_MODE_PCLONE:
         catalog_dic = fs_get_cataloged_dic_parents(g_PATHS, catalog_name)
@@ -1642,7 +1643,7 @@ def render_catalog_parent_list(catalog_name, category_name):
     fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
     l_favs_end = time.time()
 
-    # >> Compute loading times.
+    # --- Compute loading times ---
     catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
     render_t = l_render_db_end - l_render_db_start
     assets_t = l_assets_db_end - l_assets_db_start
@@ -1650,7 +1651,7 @@ def render_catalog_parent_list(catalog_name, category_name):
     favs_t   = l_favs_end - l_favs_start
     loading_time = catalog_t + render_t + assets_t + pclone_t + favs_t
 
-    # >> Check if catalog is empty
+    # --- Check if catalog is empty ---
     if not catalog_dic:
         kodi_dialog_OK('Catalog is empty. Check out "Setup plugin" context menu.')
         xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -1689,18 +1690,18 @@ def render_catalog_parent_list(catalog_name, category_name):
 # hence all ROMs databases exist.
 #
 def render_catalog_clone_list(catalog_name, category_name, parent_name):
-    log_debug('_render_catalog_clone_list() catalog_name  = {0}'.format(catalog_name))
-    log_debug('_render_catalog_clone_list() category_name = {0}'.format(category_name))
-    log_debug('_render_catalog_clone_list() parent_name   = {0}'.format(parent_name))
+    log_debug('render_catalog_clone_list() catalog_name  = {0}'.format(catalog_name))
+    log_debug('render_catalog_clone_list() category_name = {0}'.format(category_name))
+    log_debug('render_catalog_clone_list() parent_name   = {0}'.format(parent_name))
     display_hide_Mature = g_settings['display_hide_Mature']
     display_hide_BIOS = g_settings['display_hide_BIOS']
     if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
     display_hide_nonworking = g_settings['display_hide_nonworking']
     display_hide_imperfect  = g_settings['display_hide_imperfect']
     view_mode_property = g_settings['mame_view_mode']
-    log_debug('_render_catalog_clone_list() view_mode_property = {0}'.format(view_mode_property))
+    log_debug('render_catalog_clone_list() view_mode_property = {0}'.format(view_mode_property))
 
-    # >> Load main MAME info DB
+    # --- Load main MAME info DB ---
     loading_ticks_start = time.time()
     catalog_dic = fs_get_cataloged_dic_all(g_PATHS, catalog_name)
     if g_settings['debug_enable_MAME_render_cache']:
@@ -1727,11 +1728,11 @@ def render_catalog_clone_list(catalog_name, category_name, parent_name):
     t_catalog_dic = {}
     t_render_dic = {}
     t_assets_dic = {}
-    # >> Render parent first
+    # Render parent first
     t_catalog_dic[category_name] = {parent_name : machine_dic[parent_name]}
     t_render_dic[parent_name] = render_db_dic[parent_name]
     t_assets_dic[parent_name] = assets_db_dic[parent_name]
-    # >> Then clones
+    # Then clones
     for clone_name in main_pclone_dic[parent_name]:
         t_catalog_dic[category_name][clone_name] = machine_dic[clone_name]
         t_render_dic[clone_name] = render_db_dic[clone_name]
@@ -1955,10 +1956,10 @@ def render_commit_machines(r_list):
 #
 def command_context_display_settings(catalog_name, category_name):
     # >> Load ListItem properties
-    log_debug('_command_display_settings() catalog_name  "{0}"'.format(catalog_name))
-    log_debug('_command_display_settings() category_name "{0}"'.format(category_name))
+    log_debug('command_display_settings() catalog_name  "{0}"'.format(catalog_name))
+    log_debug('command_display_settings() category_name "{0}"'.format(category_name))
     prop_key = '{0} - {1}'.format(catalog_name, category_name)
-    log_debug('_command_display_settings() Loading props with key "{0}"'.format(prop_key))
+    log_debug('command_display_settings() Loading props with key "{0}"'.format(prop_key))
     mame_properties_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_PROPERTIES_PATH.getPath())
     prop_dic = mame_properties_dic[prop_key]
     if prop_dic['vm'] == VIEW_MODE_NORMAL: dmode_str = 'Parents only'
@@ -1980,9 +1981,9 @@ def command_context_display_settings(catalog_name, category_name):
         # See http://forum.kodi.tv/showthread.php?tid=250936&pid=2327011#pid2327011
         if prop_dic['vm'] == VIEW_MODE_NORMAL: p_idx = 0
         else:                                  p_idx = 1
-        log_debug('_command_display_settings() p_idx = "{0}"'.format(p_idx))
+        log_debug('command_display_settings() p_idx = "{0}"'.format(p_idx))
         idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
-        log_debug('_command_display_settings() idx = "{0}"'.format(idx))
+        log_debug('command_display_settings() idx = "{0}"'.format(idx))
         if idx < 0: return
         if idx == 0:   prop_dic['vm'] = VIEW_MODE_NORMAL
         elif idx == 1: prop_dic['vm'] = VIEW_MODE_ALL
@@ -1999,11 +2000,11 @@ def command_context_display_settings(catalog_name, category_name):
 # Software Lists
 #----------------------------------------------------------------------------------------------
 def render_SL_list(catalog_name):
-    log_debug('_render_SL_list() catalog_name = {0}\n'.format(catalog_name))
+    log_debug('render_SL_list() catalog_name = {0}\n'.format(catalog_name))
 
     # --- General AML plugin check ---
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not check_AML_SL_status(g_PATHS, g_settings, control_dic):
+    if not check_SL_DB_before_rendering(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -2030,7 +2031,7 @@ def render_SL_list(catalog_name):
     else:
         kodi_dialog_OK('Wrong catalog_name {0}'.format(catalog_name))
         return
-    log_debug('_render_SL_list() len(catalog_name) = {0}\n'.format(len(SL_catalog_dic)))
+    log_debug('render_SL_list() len(catalog_name) = {0}\n'.format(len(SL_catalog_dic)))
 
     set_Kodi_all_sorting_methods()
     for SL_name in SL_catalog_dic:
@@ -2039,11 +2040,11 @@ def render_SL_list(catalog_name):
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_SL_ROMs(SL_name):
-    log_debug('_render_SL_ROMs() SL_name "{0}"'.format(SL_name))
+    log_debug('render_SL_ROMs() SL_name "{0}"'.format(SL_name))
 
     # --- General AML plugin check ---
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not check_AML_SL_status(g_PATHS, g_settings, control_dic):
+    if not check_SL_DB_before_rendering(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -2052,7 +2053,7 @@ def render_SL_ROMs(SL_name):
     # prop_dic = SL_properties_dic[SL_name]
     # >> Global properties
     view_mode_property = g_settings['sl_view_mode']
-    log_debug('_render_SL_ROMs() view_mode_property = {0}'.format(view_mode_property))
+    log_debug('render_SL_ROMs() view_mode_property = {0}'.format(view_mode_property))
 
     # >> Load Software List ROMs
     SL_PClone_dic = fs_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
@@ -2067,7 +2068,7 @@ def render_SL_ROMs(SL_name):
     set_Kodi_all_sorting_methods()
     SL_proper_name = SL_catalog_dic[SL_name]['display_name']
     if view_mode_property == VIEW_MODE_PCLONE:
-        log_debug('_render_SL_ROMs() Rendering Parent/Clone launcher')
+        log_debug('render_SL_ROMs() Rendering Parent/Clone launcher')
         # >> Get list of parents
         parent_list = []
         for parent_name in sorted(SL_PClone_dic[SL_name]): parent_list.append(parent_name)
@@ -2078,7 +2079,7 @@ def render_SL_ROMs(SL_name):
             ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
             render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, num_clones)
     elif view_mode_property == VIEW_MODE_FLAT:
-        log_debug('_render_SL_ROMs() Rendering Flat launcher')
+        log_debug('render_SL_ROMs() Rendering Flat launcher')
         for rom_name in SL_roms:
             ROM    = SL_roms[rom_name]
             assets = SL_asset_dic[rom_name] if rom_name in SL_asset_dic else fs_new_SL_asset()
@@ -2090,17 +2091,17 @@ def render_SL_ROMs(SL_name):
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_SL_pclone_set(SL_name, parent_name):
-    log_debug('_render_SL_pclone_set() SL_name     "{0}"'.format(SL_name))
-    log_debug('_render_SL_pclone_set() parent_name "{0}"'.format(parent_name))
+    log_debug('render_SL_pclone_set() SL_name     "{0}"'.format(SL_name))
+    log_debug('render_SL_pclone_set() parent_name "{0}"'.format(parent_name))
     view_mode_property = g_settings['sl_view_mode']
-    log_debug('_render_SL_pclone_set() view_mode_property = {0}'.format(view_mode_property))
+    log_debug('render_SL_pclone_set() view_mode_property = {0}'.format(view_mode_property))
 
     # >> Load Software List ROMs
     SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
     SL_PClone_dic = fs_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
     file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
     SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(file_name)
-    log_debug('_render_SL_pclone_set() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+    log_debug('render_SL_pclone_set() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
     SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
 
     assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -2400,9 +2401,9 @@ def command_context_display_settings_SL(SL_name):
     if menu_item == 0:
         if prop_dic['vm'] == VIEW_MODE_NORMAL: p_idx = 0
         else:                                  p_idx = 1
-        log_debug('_command_display_settings() p_idx = "{0}"'.format(p_idx))
+        log_debug('command_display_settings() p_idx = "{0}"'.format(p_idx))
         idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
-        log_debug('_command_display_settings() idx = "{0}"'.format(idx))
+        log_debug('command_display_settings() idx = "{0}"'.format(idx))
         if idx < 0: return
         if idx == 0:   prop_dic['vm'] = VIEW_MODE_NORMAL
         elif idx == 1: prop_dic['vm'] = VIEW_MODE_ALL
@@ -2862,7 +2863,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         kodi_dialog_OK('Wrong view_type = {0}. '.format(view_type) +
                        'This is a bug, please report it.')
         return
-    log_debug('_command_context_view() action = {0}'.format(action))
+    log_debug('command_context_view() action = {0}'.format(action))
 
     # --- Execute action ---
     if action == ACTION_VIEW_MACHINE_DATA:
@@ -3117,8 +3118,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
     elif action == ACTION_VIEW_MACHINE_AUDIT_ROMS:
         # --- Load machine dictionary and ROM database ---
         rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][g_settings['mame_rom_set']]
-        log_debug('_command_context_view() View Machine ROMs (Audit database)\n')
-        log_debug('_command_context_view() rom_set {0}\n'.format(rom_set))
+        log_debug('command_context_view() View Machine ROMs (Audit database)\n')
+        log_debug('command_context_view() rom_set {0}\n'.format(rom_set))
 
         pDialog = xbmcgui.DialogProgress()
         pdialog_line1 = 'Loading databases ...'
@@ -3135,9 +3136,9 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         rom_list = audit_roms_dic[machine_name]
         cloneof = machine['cloneof']
         romof = machine['romof']
-        log_debug('_command_context_view() machine {0}\n'.format(machine_name))
-        log_debug('_command_context_view() cloneof {0}\n'.format(cloneof))
-        log_debug('_command_context_view() romof   {0}\n'.format(romof))
+        log_debug('command_context_view() machine {0}\n'.format(machine_name))
+        log_debug('command_context_view() cloneof {0}\n'.format(cloneof))
+        log_debug('command_context_view() romof   {0}\n'.format(romof))
 
         # --- Generate report ---
         info_text = []
@@ -3324,8 +3325,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
     elif action == ACTION_AUDIT_MAME_MACHINE:
         # --- Load machine dictionary and ROM database ---
         rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][g_settings['mame_rom_set']]
-        log_debug('_command_context_view() Auditing Machine ROMs\n')
-        log_debug('_command_context_view() rom_set {0}\n'.format(rom_set))
+        log_debug('command_context_view() Auditing Machine ROMs\n')
+        log_debug('command_context_view() rom_set {0}\n'.format(rom_set))
 
         pDialog = xbmcgui.DialogProgress()
         pdialog_line1 = 'Loading databases ...'
@@ -3342,9 +3343,9 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         rom_list = audit_roms_dic[machine_name]
         cloneof = machine['cloneof']
         romof = machine['romof']
-        log_debug('_command_context_view() machine {0}\n'.format(machine_name))
-        log_debug('_command_context_view() cloneof {0}\n'.format(cloneof))
-        log_debug('_command_context_view() romof   {0}\n'.format(romof))
+        log_debug('command_context_view() machine {0}\n'.format(machine_name))
+        log_debug('command_context_view() cloneof {0}\n'.format(cloneof))
+        log_debug('command_context_view() romof   {0}\n'.format(romof))
 
         # --- Open ZIP file, check CRC32 and also CHDs ---
         audit_dic = fs_new_audit_dic()
@@ -3392,9 +3393,9 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
     # --- Audit ROMs of SL item ---
     elif action == ACTION_AUDIT_SL_MACHINE:
         # --- Load machine dictionary and ROM database ---
-        log_debug('_command_context_view() Auditing SL Software ROMs\n')
-        log_debug('_command_context_view() SL_name {0}\n'.format(SL_name))
-        log_debug('_command_context_view() SL_ROM {0}\n'.format(SL_ROM))
+        log_debug('command_context_view() Auditing SL Software ROMs\n')
+        log_debug('command_context_view() SL_name {0}\n'.format(SL_name))
+        log_debug('command_context_view() SL_ROM {0}\n'.format(SL_ROM))
 
         SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
         SL_ROM_Audit_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
@@ -4415,100 +4416,119 @@ def render_custom_filter_machines(filter_name):
 # Returns True if everything is OK and machines inside a Category can be rendered.
 # Returns False and prints warning message if machines inside a category cannot be rendered.
 #
-def check_AML_MAME_status(g_PATHS, settings, control_dic):
-    # >> Check if MAME executable path has been configured.
+def check_MAME_DB_before_rendering(g_PATHS, settings, control_dic):
+    # Check if MAME executable path has been configured.
     if not g_settings['mame_prog']:
-        t = 'MAME executable not configured. ' \
-            'Open AML addon settings and configure the location of the MAME executable in the ' \
-            '"Paths" tab.'
+        t = ('MAME executable not configured. '
+             'Open AML addon settings and configure the location of the MAME executable in the '
+             '"Paths" tab.')
         kodi_dialog_OK(t)
         return False
 
-    # >> Check if MAME executable exists.
+    # Check if MAME executable exists.
     mame_prog_FN = FileName(g_settings['mame_prog'])
     if not mame_prog_FN.exists():
-        t = 'MAME executable configured but not found. ' \
-            'Open AML addon settings and configure the location of the MAME executable in the ' \
-            '"Paths" tab.'
+        t = ('MAME executable configured but not found. '
+             'Open AML addon settings and configure the location of the MAME executable in the '
+             '"Paths" tab.')
         kodi_dialog_OK(t)
         return False
 
-    # >> Check if MAME XML has been extracted.
+    # Check if MAME XML has been extracted.
     if control_dic['t_XML_extraction'] == 0:
-        t = 'MAME.XML has not been extracted. ' \
-            'In AML root window open the context menu, select "Setup plugin" and then ' \
-            'click on "Extract MAME.xml".'
+        t = ('MAME.XML has not been extracted. '
+             'In AML root window open the context menu, select "Setup plugin" and then '
+             'click on "Extract MAME.xml."')
         kodi_dialog_OK(t)
         return False
 
-    # >> Check if MAME Main DB has been built and is more recent than the XML.
+    # Check if MAME Main DB has been built and is more recent than the XML.
     if control_dic['t_MAME_DB_build'] < control_dic['t_XML_extraction']:
-        t = 'MAME Main database needs to be built. ' \
-            'In AML root window open the context menu, select "Setup plugin" and then ' \
-            'click on "Build all databases".'
+        t = ('MAME Main database needs to be built. '
+             'In AML root window open the context menu, select "Setup plugin" and then '
+             'click on "Build all databases."')
         kodi_dialog_OK(t)
         return False
 
-    # >> Check if MAME Audit DB has been built and is more recent than the Main DB.
+    # Check if MAME Audit DB has been built and is more recent than the Main DB.
     if control_dic['t_MAME_Audit_DB_build'] < control_dic['t_MAME_DB_build']:
-        t = 'MAME Audit database needs to be built. ' \
-            'In AML root window open the context menu, select "Setup plugin" and then ' \
-            'click on "Build all databases".'
+        t = ('MAME Audit database needs to be built. '
+             'In AML root window open the context menu, select "Setup plugin" and then '
+             'click on "Build all databases."')
         kodi_dialog_OK(t)
         return False
 
-    # >> Check if MAME Catalog DB has been built and is more recent than the Main DB.
+    # Check if MAME Catalog DB has been built and is more recent than the Main DB.
     if control_dic['t_MAME_Catalog_build'] < control_dic['t_MAME_Audit_DB_build']:
-        t = 'MAME Catalog database needs to be built. ' \
-            'In AML root window open the context menu, select "Setup plugin" and then ' \
-            'click on "Build all databases".'
+        t = ('MAME Catalog database needs to be built. '
+             'In AML root window open the context menu, select "Setup plugin" and then '
+             'click on "Build all databases."')
         kodi_dialog_OK(t)
         return False
 
-    # >> All good!
-    log_debug('check_AML_MAME_status() All good!')
+    # If MAME render cache is enabled then check that it is up-to-date.
+    if g_settings['debug_enable_MAME_render_cache']:
+        if control_dic['t_MAME_render_cache_build'] < control_dic['t_MAME_Catalog_build']:
+            log_warning('t_MAME_render_cache_build < t_MAME_Catalog_build')
+            t = ('MAME render cache needs to be updated. '
+                 'In AML root window open the context menu, select "Setup plugin", then '
+                 '"Step by Step", and then "Rebuild MAME machine and asset caches."')
+            kodi_dialog_OK(t)
+            return False
+
+    if g_settings['debug_enable_MAME_asset_cache']:
+        if control_dic['t_MAME_asset_cache_build'] < control_dic['t_MAME_Catalog_build']:
+            log_warning('t_MAME_asset_cache_build < t_MAME_Catalog_build')
+            t = ('MAME asset cache needs to be updated. '
+                 'In AML root window open the context menu, select "Setup plugin", then '
+                 '"Step by Step", and then "Rebuild MAME machine and asset caches."')
+            kodi_dialog_OK(t)
+            return False
+
+    # All good!
+    log_debug('check_MAME_DB_before_rendering() All good!')
     return True
 
 #
 # Same function for Software Lists. Called before rendering SL Items inside a Software List.
 #
-def check_AML_SL_status(g_PATHS, g_settings, control_dic):
+def check_SL_DB_before_rendering(g_PATHS, g_settings, control_dic):
     # >> Check if MAME executable path has been configured.
     if not g_settings['mame_prog']:
-        t = 'MAME executable not configured. ' \
-            'Open AML addon settings and configure the location of the MAME executable in the ' \
-            '"Paths" tab.'
+        t = ('MAME executable not configured. '
+             'Open AML addon settings and configure the location of the MAME executable in the '
+             '"Paths" tab.')
         kodi_dialog_OK(t)
         return False
 
     # >> Check if MAME executable exists.
     mame_prog_FN = FileName(g_settings['mame_prog'])
     if not mame_prog_FN.exists():
-        t = 'MAME executable configured but not found. ' \
-            'Open AML addon settings and configure the location of the MAME executable in the ' \
-            '"Paths" tab.'
+        t = ('MAME executable configured but not found. '
+             'Open AML addon settings and configure the location of the MAME executable in the '
+             '"Paths" tab.')
         kodi_dialog_OK(t)
         return False
 
     # >> Check if MAME Main DB has been built and is more recent than the XML.
     # >> The SL DB relies on the MAME Main DB (verify this).
     if control_dic['t_MAME_DB_build'] < control_dic['t_XML_extraction']:
-        t = 'MAME Main database needs to be built. ' \
-            'In AML root window open the context menu, select "Setup plugin" and then ' \
-            'click on "Build all databases".'
+        t = ('MAME Main database needs to be built. '
+             'In AML root window open the context menu, select "Setup plugin" and then '
+             'click on "Build all databases."')
         kodi_dialog_OK(t)
         return False
 
     # >> Check if SL Main DB has been built and is more recent than the MAME database.
     if control_dic['t_SL_DB_build'] < control_dic['t_MAME_DB_build']:
-        t = 'Software List database needs to be built. ' \
-            'In AML root window open the context menu, select "Setup plugin" and then ' \
-            'click on "Build all databases".'
+        t = ('Software List database needs to be built. '
+             'In AML root window open the context menu, select "Setup plugin" and then '
+             'click on "Build all databases."')
         kodi_dialog_OK(t)
         return False
 
     # >> All good!
-    log_debug('check_AML_SL_status() All good!')
+    log_debug('check_SL_DB_before_rendering() All good!')
     return True
 
 # -------------------------------------------------------------------------------------------------
@@ -4904,8 +4924,8 @@ def command_context_setup_plugin():
         # >> For a complete MAME artwork collection rebuilding all Fanarts will take hours!
         elif submenu == 2 or submenu == 3:
             BUILD_MISSING = True if submenu == 2 else False
-            if BUILD_MISSING: log_info('_command_setup_plugin() Building missing Fanarts ...')
-            else:             log_info('_command_setup_plugin() Rebuilding all Fanarts ...')
+            if BUILD_MISSING: log_info('command_setup_plugin() Building missing Fanarts ...')
+            else:             log_info('command_setup_plugin() Rebuilding all Fanarts ...')
 
             # >> If artwork directory not configured abort.
             if not g_settings['assets_path']:
@@ -4991,9 +5011,9 @@ def command_context_setup_plugin():
         elif submenu == 4 or submenu == 5:
             BUILD_MISSING = True if submenu == 4 else False
             if BUILD_MISSING:
-                log_info('_command_setup_plugin() Building missing Software Lists Fanarts ...')
+                log_info('command_setup_plugin() Building missing Software Lists Fanarts ...')
             else:
-                log_info('_command_setup_plugin() Rebuilding all Software Lists Fanarts ...')
+                log_info('command_setup_plugin() Rebuilding all Software Lists Fanarts ...')
 
             # >> If artwork directory not configured abort.
             if not g_settings['assets_path']:
@@ -6308,11 +6328,11 @@ def run_machine(machine_name, location):
 
     # >> Launch machine using subprocess module
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
-    log_debug('_run_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
-    log_debug('_run_machine() mame_dir     "{0}"'.format(mame_dir))
-    log_debug('_run_machine() mame_exec    "{0}"'.format(mame_exec))
-    log_debug('_run_machine() machine_name "{0}"'.format(machine_name))
-    log_debug('_run_machine() BIOS_name    "{0}"'.format(BIOS_name))
+    log_debug('run_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
+    log_debug('run_machine() mame_dir     "{0}"'.format(mame_dir))
+    log_debug('run_machine() mame_exec    "{0}"'.format(mame_exec))
+    log_debug('run_machine() machine_name "{0}"'.format(machine_name))
+    log_debug('run_machine() BIOS_name    "{0}"'.format(BIOS_name))
 
     # --- Compute ROM recently played list ---
     # >> If the machine is already in the list remove it and place it on the first position.
@@ -6323,8 +6343,8 @@ def run_machine(machine_name, location):
     recent_roms_list = [machine for machine in recent_roms_list if machine_name != machine['name']]
     recent_roms_list.insert(0, recent_rom)
     if len(recent_roms_list) > MAX_RECENT_PLAYED_ROMS:
-        log_debug('_run_machine() len(recent_roms_list) = {0}'.format(len(recent_roms_list)))
-        log_debug('_run_machine() Trimming list to {0} ROMs'.format(MAX_RECENT_PLAYED_ROMS))
+        log_debug('run_machine() len(recent_roms_list) = {0}'.format(len(recent_roms_list)))
+        log_debug('run_machine() Trimming list to {0} ROMs'.format(MAX_RECENT_PLAYED_ROMS))
         temp_list = recent_roms_list[:MAX_RECENT_PLAYED_ROMS]
         recent_roms_list = temp_list
     fs_write_JSON_file(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
@@ -6351,14 +6371,14 @@ def run_machine(machine_name, location):
     if g_settings['display_launcher_notify']:
         kodi_notify('Launching MAME machine "{0}"'.format(machine_name))
     if DISABLE_MAME_LAUNCHING:
-        log_info('_run_machine() MAME launching disabled. Exiting function.')
+        log_info('run_machine() MAME launching disabled. Exiting function.')
         return
 
     # --- Run MAME ---
     _run_before_execution()
     _run_process(g_PATHS, arg_list, mame_dir)
     _run_after_execution()
-    log_info('_run_machine() Exiting function.')
+    log_info('run_machine() Exiting function.')
 
 #
 # Launch a SL machine. See http://docs.mamedev.org/usingmame/usingmame.html
