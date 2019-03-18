@@ -187,20 +187,13 @@ class AML_Paths:
         self.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH = self.REPORTS_DIR.pjoin('Scanner_MAME_machine_archives_full.txt')
         self.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH = self.REPORTS_DIR.pjoin('Scanner_MAME_machine_archives_have.txt')
         self.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH = self.REPORTS_DIR.pjoin('Scanner_MAME_machine_archives_miss.txt')
-
         self.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH     = self.REPORTS_DIR.pjoin('Scanner_MAME_ROM_list_miss.txt')
+        self.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH     = self.REPORTS_DIR.pjoin('Scanner_MAME_SAM_list_miss.txt')
         self.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH     = self.REPORTS_DIR.pjoin('Scanner_MAME_CHD_list_miss.txt')
-
-        self.REPORT_MAME_SCAN_SAM_FULL_PATH          = self.REPORTS_DIR.pjoin('Scanner_Samples_full.txt')
-        self.REPORT_MAME_SCAN_SAM_HAVE_PATH          = self.REPORTS_DIR.pjoin('Scanner_Samples_have.txt')
-        self.REPORT_MAME_SCAN_SAM_MISS_PATH          = self.REPORTS_DIR.pjoin('Scanner_Samples_miss.txt')
 
         self.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH   = self.REPORTS_DIR.pjoin('Scanner_SL_item_archives_full.txt')
         self.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH   = self.REPORTS_DIR.pjoin('Scanner_SL_item_archives_have.txt')
         self.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH   = self.REPORTS_DIR.pjoin('Scanner_SL_item_archives_miss.txt')
-
-        self.REPORT_SL_SCAN_ROM_LIST_MISS_PATH       = self.REPORTS_DIR.pjoin('Scanner_SL_ROM_list_miss.txt')
-        self.REPORT_SL_SCAN_CHD_LIST_MISS_PATH       = self.REPORTS_DIR.pjoin('Scanner_SL_CHD_list_miss.txt')
 
         # >> Asset scanner reports. These reports show have and missing assets.
         self.REPORT_MAME_ASSETS_PATH = self.REPORTS_DIR.pjoin('Assets_MAME.txt')
@@ -1325,31 +1318,17 @@ def render_GlobalReports_vlaunchers():
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
     listitem = aux_get_generic_listitem(
+        'View MAME scanner Missing Sample ZIP files',
+        'Report a list of all Missing Sample ZIP files.',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_SAM_LIST_MISS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    listitem = aux_get_generic_listitem(
         'View MAME scanner Missing CHD files',
         'List of all missing CHD files.',
         commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_CHD_LIST_MISS')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
-    listitem = aux_get_generic_listitem(
-        'View MAME scanner Full Samples report',
-        'View Full MAME Samples report',
-        commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_SAM_FULL')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
-    listitem = aux_get_generic_listitem(
-        'View MAME scanner Have Samples report',
-        'View Have MAME Samples report',
-        commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_SAM_HAVE')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
-    listitem = aux_get_generic_listitem(
-        'View MAME scanner Missing Samples report',
-        'View Missing MAME Samples report',
-        commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_MAME_SAM_MISS')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
     # --- View Software Lists scanner reports ----------------------------------------------------
@@ -1372,18 +1351,6 @@ def render_GlobalReports_vlaunchers():
         'View Missing Software Lists item archives',
         commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_MISS')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
-    listitem = aux_get_generic_listitem(
-        'View Software Lists scanner Missing ROM ZIP files',
-        'View Missing Software Lists ROM list', commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_ROM_LIST_MISS')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
-    listitem = aux_get_generic_listitem(
-        'View Software Lists scanner Missing CHD files',
-        'View Missing Software Lists CHD list', commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_CHD_LIST_MISS')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
     # --- Asset scanner reports ------------------------------------------------------------------
@@ -2059,7 +2026,7 @@ def render_SL_ROMs(SL_name):
     # >> Load Software List ROMs
     SL_PClone_dic = fs_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
     SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-    file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+    file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
     SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(file_name)
     assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
     SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
@@ -2100,7 +2067,7 @@ def render_SL_pclone_set(SL_name, parent_name):
     # >> Load Software List ROMs
     SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
     SL_PClone_dic = fs_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
-    file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '.json'
+    file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
     SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(file_name)
     log_debug('render_SL_pclone_set() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
     SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
@@ -4607,9 +4574,8 @@ def command_context_setup_plugin():
         options_dic = mame_check_before_scan_MAME_ROMs(g_PATHS, g_settings, control_dic)
         if not options_dic['abort']:
             mame_scan_MAME_ROMs(g_PATHS, g_settings, control_dic, options_dic,
-                db_dic['machines'], db_dic['render'], db_dic['assets'],
-                audit_dic['machine_archives'],
-                audit_dic['ROM_archive_list'], audit_dic['CHD_archive_list'])
+                db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'],
+                audit_dic['ROM_ZIP_list'], audit_dic['Sample_ZIP_list'], audit_dic['CHD_archive_list'])
         else:
             log_info('Skipping mame_scan_MAME_ROMs()')
 
@@ -4702,7 +4668,8 @@ def command_context_setup_plugin():
         del db_dic['command_idx_list']
         del audit_dic['audit_roms']
         del audit_dic['machine_archives']
-        del audit_dic['ROM_archive_list']
+        del audit_dic['ROM_ZIP_list']
+        del audit_dic['Sample_ZIP_list']
         del audit_dic['CHD_archive_list']
 
         # --- Build MAME catalogs (mandatory) ---
@@ -4748,9 +4715,10 @@ def command_context_setup_plugin():
             ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
             ['main_pclone_dic', 'MAME PClone dictionary', g_PATHS.MAIN_PCLONE_DIC_PATH.getPath()],
             ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-            ['machine_archives', 'Machine archives list', g_PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
-            ['ROM_archive_list', 'ROM List index', g_PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath()],
-            ['CHD_archive_list', 'CHD list index', g_PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath()],
+            ['machine_archives', 'Machine file list', g_PATHS.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
+            ['ROM_ZIP_list', 'ROM List index', g_PATHS.ROM_SET_ROM_LIST_DB_PATH.getPath()],
+            ['Sample_ZIP_list', 'ROM List index', g_PATHS.ROM_SET_SAM_LIST_DB_PATH.getPath()],
+            ['CHD_archive_list', 'CHD list index', g_PATHS.ROM_SET_CHD_LIST_DB_PATH.getPath()],
             ['cache_index', 'MAME cache index', g_PATHS.CACHE_INDEX_PATH.getPath()],
             ['history_idx_dic', 'History DAT', g_PATHS.HISTORY_IDX_PATH.getPath()],
             ['mameinfo_idx_dic', 'Mameinfo DAT', g_PATHS.MAMEINFO_IDX_PATH.getPath()],
@@ -4762,7 +4730,8 @@ def command_context_setup_plugin():
         control_dic = db_dic['control_dic']
         audit_dic = {
             'machine_archives' : db_dic['machine_archives'],
-            'ROM_archive_list' : db_dic['ROM_archive_list'],
+            'ROM_ZIP_list'     : db_dic['ROM_ZIP_list'],
+            'Sample_ZIP_list'  : db_dic['Sample_ZIP_list'],
             'CHD_archive_list' : db_dic['CHD_archive_list'],
         }
 
@@ -4770,9 +4739,8 @@ def command_context_setup_plugin():
         options_dic = mame_check_before_scan_MAME_ROMs(g_PATHS, g_settings, control_dic)
         if not options_dic['abort']:
             mame_scan_MAME_ROMs(g_PATHS, g_settings, control_dic, options_dic,
-                db_dic['machines'], db_dic['render'], db_dic['assets'],
-                audit_dic['machine_archives'],
-                audit_dic['ROM_archive_list'], audit_dic['CHD_archive_list'])
+                db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'],
+                audit_dic['ROM_ZIP_list'], audit_dic['Sample_ZIP_list'], audit_dic['CHD_archive_list'])
         else:
             log_info('Skipping mame_scan_MAME_ROMs()')
 
@@ -5277,16 +5245,18 @@ def command_context_setup_plugin():
                 ['machines', 'MAME machines Main', g_PATHS.MAIN_DB_PATH.getPath()],
                 ['render', 'MAME machines Render', g_PATHS.RENDER_DB_PATH.getPath()],
                 ['assets', 'MAME machine Assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-                ['machine_archives', 'Machine archives list', g_PATHS.ROM_SET_MACHINE_ARCHIVES_DB_PATH.getPath()],
-                ['ROM_archive_list', 'ROM List index', g_PATHS.ROM_SET_ROM_ARCHIVES_DB_PATH.getPath()],
-                ['CHD_archive_list', 'CHD list index', g_PATHS.ROM_SET_CHD_ARCHIVES_DB_PATH.getPath()],
+                ['machine_archives', 'Machine file list', g_PATHS.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
+                ['ROM_ZIP_list', 'ROM List index', g_PATHS.ROM_SET_ROM_LIST_DB_PATH.getPath()],
+                ['Sample_ZIP_list', 'ROM List index', g_PATHS.ROM_SET_SAM_LIST_DB_PATH.getPath()],
+                ['CHD_archive_list', 'CHD list index', g_PATHS.ROM_SET_CHD_LIST_DB_PATH.getPath()],
                 ['cache_index', 'MAME cache index', g_PATHS.CACHE_INDEX_PATH.getPath()],
             ]
             db_dic = fs_load_files(db_files)
             # For compatibility with "All in one step" menu option
             audit_dic = {
                 'machine_archives' : db_dic['machine_archives'],
-                'ROM_archive_list' : db_dic['ROM_archive_list'],
+                'ROM_ZIP_list'     : db_dic['ROM_ZIP_list'],
+                'Sample_ZIP_list'  : db_dic['Sample_ZIP_list'],
                 'CHD_archive_list' : db_dic['CHD_archive_list'],
             }
 
@@ -5297,8 +5267,8 @@ def command_context_setup_plugin():
             # 4) Requires rebuilding the asset hashed DB.
             # 5) Requires rebuilding the asset cache.
             mame_scan_MAME_ROMs(g_PATHS, g_settings, control_dic, options_dic,
-                db_dic['machines'], db_dic['render'], db_dic['assets'],
-                audit_dic['machine_archives'], audit_dic['ROM_archive_list'], audit_dic['CHD_archive_list'])
+                db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'],
+                audit_dic['ROM_ZIP_list'], audit_dic['Sample_ZIP_list'], audit_dic['CHD_archive_list'])
             fs_build_asset_hashed_db(g_PATHS, g_settings, control_dic, db_dic['assets'])
             if g_settings['debug_enable_MAME_asset_cache']:
                 fs_build_asset_cache(g_PATHS, g_settings, control_dic,
@@ -6029,11 +5999,19 @@ def command_exec_report(which_report):
 
     elif which_report == 'VIEW_SCANNER_MAME_ROM_LIST_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.exists():
-            kodi_dialog_OK('Missing MAME ROM list scanner report not found. '
+            kodi_dialog_OK('Missing MAME ROM ZIP list scanner report not found. '
                            'Please scan MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-            display_text_window('Missing MAME ROM list scanner report', myfile.read())
+            display_text_window('Missing MAME ROM ZIP list scanner report', myfile.read())
+
+    elif which_report == 'VIEW_SCANNER_MAME_SAM_LIST_MISS':
+        if not g_PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.exists():
+            kodi_dialog_OK('Missing MAME Sample ZIP list scanner report not found. '
+                           'Please scan MAME ROMs and try again.')
+            return
+        with open(g_PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), 'r') as myfile:
+            display_text_window('Missing MAME Sample ZIP list scanner report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_MAME_CHD_LIST_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.exists():
@@ -6042,30 +6020,6 @@ def command_exec_report(which_report):
             return
         with open(g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
             display_text_window('Missing MAME CHD list scanner report', myfile.read())
-
-    elif which_report == 'VIEW_SCANNER_MAME_SAM_FULL':
-        if not g_PATHS.REPORT_MAME_SCAN_SAM_FULL_PATH.exists():
-            kodi_dialog_OK('Full MAME Samples report scanner report not found. '
-                           'Please scan MAME ROMs and try again.')
-            return
-        with open(g_PATHS.REPORT_MAME_SCAN_SAM_FULL_PATH.getPath(), 'r') as myfile:
-            display_text_window('Full MAME Samples report scanner report', myfile.read())
-
-    elif which_report == 'VIEW_SCANNER_MAME_SAM_HAVE':
-        if not g_PATHS.REPORT_MAME_SCAN_SAM_HAVE_PATH.exists():
-            kodi_dialog_OK('Have MAME Samples scanner report not found. '
-                           'Please scan MAME ROMs and try again.')
-            return
-        with open(g_PATHS.REPORT_MAME_SCAN_SAM_HAVE_PATH.getPath(), 'r') as myfile:
-            display_text_window('Have MAME Samples scanner report', myfile.read())
-
-    elif which_report == 'VIEW_SCANNER_MAME_SAM_MISS':
-        if not g_PATHS.REPORT_MAME_SCAN_SAM_MISS_PATH.exists():
-            kodi_dialog_OK('Missing MAME Samples scanner report not found. '
-                           'Please scan MAME ROMs and try again.')
-            return
-        with open(g_PATHS.REPORT_MAME_SCAN_SAM_MISS_PATH.getPath(), 'r') as myfile:
-            display_text_window('Missing MAME Samples scanner report', myfile.read())
 
     # --- SL scanner reports ---------------------------------------------------------------------
     elif which_report == 'VIEW_SCANNER_SL_FULL':
@@ -6091,22 +6045,6 @@ def command_exec_report(which_report):
             return
         with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
             display_text_window('Missing Software Lists item archives scanner report', myfile.read())
-
-    elif which_report == 'VIEW_SCANNER_SL_ROM_LIST_MISS':
-        if not g_PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.exists():
-            kodi_dialog_OK('Missing Software Lists ROM list scanner report not found. '
-                           'Please scan SL ROMs and try again.')
-            return
-        with open(g_PATHS.REPORT_SL_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-            display_text_window('Missing Software Lists ROM list scanner report', myfile.read())
-
-    elif which_report == 'VIEW_SCANNER_SL_CHD_LIST_MISS':
-        if not g_PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.exists():
-            kodi_dialog_OK('Missing Software Lists CHD list scanner report not found. '
-                           'Please scan SL ROMs and try again.')
-            return
-        with open(g_PATHS.REPORT_SL_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
-            display_text_window('Missing Software Lists CHD list scanner report', myfile.read())
 
     # --- Asset scanner reports ------------------------------------------------------------------
     elif which_report == 'VIEW_SCANNER_MAME_ASSETS':

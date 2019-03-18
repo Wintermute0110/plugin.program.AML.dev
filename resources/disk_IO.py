@@ -468,37 +468,43 @@ def fs_new_control_dic():
         'audit_SL_items_without_CHD'       : 0,
 
         # --- Filed in by the MAME ROM/CHD/Samples scanner ---
-        # >> ROM_Set_ROM_archives.json database
-        # Number of ROM ZIP files, including devices.
+        # ROM_Set_ROM_list.json database
+        # Number of ROM ZIP files, including device ROMs.
         'scan_ROM_ZIP_files_total'   : 0,
         'scan_ROM_ZIP_files_have'    : 0,
         'scan_ROM_ZIP_files_missing' : 0,
 
-        # >> ROM_Set_CHD_archives.json database
+        # ROM_Set_Sample_list.json
+        # Number of Samples ZIP files.
+        'scan_Samples_ZIP_total'   : 0,
+        'scan_Samples_ZIP_have'    : 0,
+        'scan_Samples_ZIP_missing' : 0,
+
+        # ROM_Set_CHD_list.json database
         # Number of CHD files.
         'scan_CHD_files_total'   : 0,
         'scan_CHD_files_have'    : 0,
         'scan_CHD_files_missing' : 0,
 
-        # >> ROM_Set_machine_archives.json database
+        # ROM_Set_machine_files.json database
         # Number of runnable machines that need one or more ROM ZIP file to run (excluding devices).
-        'scan_machine_archives_ROM_total'   : 0,
         # Number of machines you can run, excluding devices.
-        'scan_machine_archives_ROM_have'    : 0,
         # Number of machines you cannot run, excluding devices.
+        'scan_machine_archives_ROM_total'   : 0,
+        'scan_machine_archives_ROM_have'    : 0,
         'scan_machine_archives_ROM_missing' : 0,
 
-        # Number of machines that need one or more CHDs to run.
-        'scan_machine_archives_CHD_total'   : 0,
-        # Number of machines with CHDs you can run.
-        'scan_machine_archives_CHD_have'    : 0,
-        # Number of machines with CHDs you cannot run.
-        'scan_machine_archives_CHD_missing' : 0,
+        # Sames with Samples
+        'scan_machine_archives_Samples_total'   : 0,
+        'scan_machine_archives_Samples_have'    : 0,
+        'scan_machine_archives_Samples_missing' : 0,
 
-        # >> Samples
-        'scan_Samples_total'   : 0,
-        'scan_Samples_have'    : 0,
-        'scan_Samples_missing' : 0,
+        # Number of machines that need one or more CHDs to run.
+        # Number of machines with CHDs you can run.
+        # Number of machines with CHDs you cannot run.
+        'scan_machine_archives_CHD_total'   : 0,
+        'scan_machine_archives_CHD_have'    : 0,
+        'scan_machine_archives_CHD_missing' : 0,
 
         # --- Filed in by the SL ROM/CHD scanner ---
         'scan_SL_archives_ROM_total'   : 0,

@@ -67,7 +67,7 @@ WIP      [CORE] New artwork type, 3dboxes.
 WIP      [FANARTS] Set an order to print fanart assets. This will allow to have images printed
          on top of each other.
 
-WIP      [CORE] Improve the Samples scanner and report.
+FEATURE  [CORE] Improve the Samples scanner and report.
 
 FEATURE  [CORE] MAME and SL plots build timestamp.
 
