@@ -1353,14 +1353,14 @@ def render_GlobalReports_vlaunchers():
 
     # --- View Software Lists scanner reports ----------------------------------------------------
     listitem = aux_get_generic_listitem(
-        'View Software List scanner Full archives report',
+        'View Software Lists scanner Full archives report',
         'View Full Software Lists item archives',
         commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_FULL')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
     listitem = aux_get_generic_listitem(
-        'View Software List scanner Have archives report',
+        'View Software Lists scanner Have archives report',
         'View Have Software Lists item archives',
         commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_SCANNER_SL_HAVE')
