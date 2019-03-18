@@ -519,14 +519,13 @@ def get_settings():
     g_settings['rom_path']  = o.getSetting('rom_path').decode('utf-8')
 
     # >> Optional
-    g_settings['assets_path']    = o.getSetting('assets_path').decode('utf-8')
-    g_settings['dats_path']      = o.getSetting('dats_path').decode('utf-8')
-    g_settings['chd_path']       = o.getSetting('chd_path').decode('utf-8')
-    g_settings['samples_path_1'] = o.getSetting('samples_path_1').decode('utf-8')
-    g_settings['samples_path_2'] = o.getSetting('samples_path_2').decode('utf-8')
-    g_settings['SL_hash_path']   = o.getSetting('SL_hash_path').decode('utf-8')
-    g_settings['SL_rom_path']    = o.getSetting('SL_rom_path').decode('utf-8')
-    g_settings['SL_chd_path']    = o.getSetting('SL_chd_path').decode('utf-8')
+    g_settings['assets_path']  = o.getSetting('assets_path').decode('utf-8')
+    g_settings['dats_path']    = o.getSetting('dats_path').decode('utf-8')
+    g_settings['chd_path']     = o.getSetting('chd_path').decode('utf-8')
+    g_settings['samples_path'] = o.getSetting('samples_path').decode('utf-8')
+    g_settings['SL_hash_path'] = o.getSetting('SL_hash_path').decode('utf-8')
+    g_settings['SL_rom_path']  = o.getSetting('SL_rom_path').decode('utf-8')
+    g_settings['SL_chd_path']  = o.getSetting('SL_chd_path').decode('utf-8')
 
     # --- ROM sets ---
     g_settings['mame_rom_set'] = int(o.getSetting('mame_rom_set'))
@@ -927,55 +926,37 @@ def render_root_list():
     # >> Special launchers
     if g_settings['display_custom_filters']:
         render_root_custom_filter_row('[Custom MAME filters]',
-                                      misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
-                                      custom_filters_plot)
+            misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'), custom_filters_plot)
 
     if g_settings['display_MAME_favs']:
-        CM_title = 'Manage Favourites'
-        CM_URL = misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV')
-        render_root_list_row_custom_CM('<Favourite MAME machines>', 
-                                       misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
-                                       CM_title, CM_URL, MAME_favs_plot)
+        render_root_list_row_standard('<Favourite MAME machines>', 
+            misc_url_1_arg('command', 'SHOW_MAME_FAVS'), MAME_favs_plot)
                                        
     if g_settings['display_MAME_most']:
-        CM_title = 'Manage Most Played'
-        CM_URL = URL_manage = misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED')
-        render_root_list_row_custom_CM('{Most Played MAME machines}',
-                                       misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
-                                       CM_title, CM_URL, MAME_most_played_plot)
+        render_root_list_row_standard('{Most Played MAME machines}',
+            misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'), MAME_most_played_plot)
 
     if g_settings['display_MAME_recent']:
-        CM_title = 'Manage Recently Played'
-        CM_URL = URL_manage = misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED')
-        render_root_list_row_custom_CM('{Recently Played MAME machines}',
-                                       misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
-                                       CM_title, CM_URL, MAME_recent_played_plot)
+        render_root_list_row_standard('{Recently Played MAME machines}',
+            misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'), MAME_recent_played_plot)
 
     if g_settings['display_SL_favs']:
-        CM_title = 'Manage SL Favourites'
-        CM_URL = misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV')
-        render_root_list_row_custom_CM('<Favourite Software Lists ROMs>',
-                                       misc_url_1_arg('command', 'SHOW_SL_FAVS'),
-                                       CM_title, CM_URL, SL_favs_plot)
+        render_root_list_row_standard('<Favourite Software Lists ROMs>',
+            misc_url_1_arg('command', 'SHOW_SL_FAVS'), SL_favs_plot)
 
     if g_settings['display_SL_most']:
-        CM_title = 'Manage SL Most Played'
-        CM_URL = URL_manage = misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED')
-        render_root_list_row_custom_CM('{Most Played SL ROMs}',
-                                       misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
-                                       CM_title, CM_URL, SL_most_played_plot)
+        render_root_list_row_standard('{Most Played SL ROMs}',
+            misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'), SL_most_played_plot)
 
     if g_settings['display_SL_recent']:
-        CM_title = 'Manage SL Recently Played'
-        CM_URL = URL_manage = misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED')
-        render_root_list_row_custom_CM('{Recently Played SL ROMs}',
-                                       misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
-                                       CM_title, CM_URL, SL_recent_played_plot)
+        render_root_list_row_standard('{Recently Played SL ROMs}',
+        misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'), SL_recent_played_plot)
 
-    render_root_list_row_standard(
-        'Utilities', misc_url_1_arg('command', 'SHOW_UTILITIES_VLAUNCHERS'), Utilities_plot)
-    render_root_list_row_standard(
-        'Global Reports', misc_url_1_arg('command', 'SHOW_GLOBALREPORTS_VLAUNCHERS'), Global_Reports_plot)
+    # Always render these two.
+    render_root_list_row_standard('Utilities',
+        misc_url_1_arg('command', 'SHOW_UTILITIES_VLAUNCHERS'), Utilities_plot)
+    render_root_list_row_standard('Global Reports',
+        misc_url_1_arg('command', 'SHOW_GLOBALREPORTS_VLAUNCHERS'), Global_Reports_plot)
 
     # --- End of directory ---
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -1104,7 +1085,7 @@ def render_root_list_row_standard(root_name, root_URL, plot_str = ''):
     listitem.addContextMenuItems(commands)
     xbmcplugin.addDirectoryItem(g_addon_handle, root_URL, listitem, isFolder = True)
 
-def render_root_list_row_custom_CM(root_name, root_URL, CM_title, CM_URL, plot_str = ''):
+def render_root_list_row_custom_CM(root_name, root_URL, plot_str, CM_title, CM_URL):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     listitem = xbmcgui.ListItem(root_name)
@@ -4868,15 +4849,15 @@ def command_context_setup_plugin():
             m_name = 'dino'
             assets_dic = {
                 m_name : {
-                    'title' :      Asset_path_FN.pjoin('dino_title.png').getPath(),
-                    'snap' :       Asset_path_FN.pjoin('dino_snap.png').getPath(),
-                    'flyer' :      Asset_path_FN.pjoin('dino_flyer.png').getPath(),
-                    'cabinet' :    Asset_path_FN.pjoin('dino_cabinet.png').getPath(),
+                    'title'      : Asset_path_FN.pjoin('dino_title.png').getPath(),
+                    'snap'       : Asset_path_FN.pjoin('dino_snap.png').getPath(),
+                    'flyer'      : Asset_path_FN.pjoin('dino_flyer.png').getPath(),
+                    'cabinet'    : Asset_path_FN.pjoin('dino_cabinet.png').getPath(),
                     'artpreview' : Asset_path_FN.pjoin('dino_artpreview.png').getPath(),
-                    'PCB' :        Asset_path_FN.pjoin('dino_PCB.png').getPath(),
-                    'clearlogo' :  Asset_path_FN.pjoin('dino_clearlogo.png').getPath(),
-                    'cpanel' :     Asset_path_FN.pjoin('dino_cpanel.png').getPath(),
-                    'marquee' :    Asset_path_FN.pjoin('dino_marquee.png').getPath(),
+                    'PCB'        : Asset_path_FN.pjoin('dino_PCB.png').getPath(),
+                    'clearlogo'  : Asset_path_FN.pjoin('dino_clearlogo.png').getPath(),
+                    'cpanel'     : Asset_path_FN.pjoin('dino_cpanel.png').getPath(),
+                    'marquee'    : Asset_path_FN.pjoin('dino_marquee.png').getPath(),
                 }
             }
             mame_build_fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (25, 25, 50))
@@ -4981,19 +4962,25 @@ def command_context_setup_plugin():
 
             # --- Save assets DB ---
             pDialog.create('Advanced MAME Launcher', 'Saving asset database ... ')
-            pDialog.update(0)
+            pDialog.update(1)
             fs_write_JSON_file(g_PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
             pDialog.update(100)
             pDialog.close()
 
-            # --- assets_dic has changed. Rebuild hashed database ---
+            # --- MAME Fanart build timestamp ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+            change_control_dic(control_dic, 't_MAME_fanart_build', time.time())
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+            # --- assets_dic has changed. Rebuild hashed database ---
             fs_build_asset_hashed_db(g_PATHS, g_settings, control_dic, assets_dic)
 
             # --- Rebuild MAME asset cache ---
             if g_settings['debug_enable_MAME_asset_cache']:
                 cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
                 fs_build_asset_cache(g_PATHS, g_settings, control_dic, cache_index_dic, assets_dic)
+
+            # --- Inform user ---
             if pDialog_canceled:
                 kodi_notify('MAME fanarts building stopped. Partial progress saved.')
             else:
@@ -5050,8 +5037,9 @@ def command_context_setup_plugin():
                 SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
                 SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
 
-                # >> Traverse all SL items and build fanart from other pieces of artwork
-                total_SL_items = len(SL_assets_dic)
+                # Traverse all SL items and build fanart from other pieces of artwork
+                # Last slot of the progress bar is to save the JSON database.
+                total_SL_items = len(SL_assets_dic) + 1
                 processed_SL_items = 0
                 for m_name in sorted(SL_assets_dic):
                     pdialog_line2 = 'SL item {0}'.format(m_name)
@@ -5073,15 +5061,22 @@ def command_context_setup_plugin():
                         mame_build_SL_fanart(g_PATHS, layout, SL_name, m_name, SL_assets_dic, Fanart_FN)
                     processed_SL_items += 1
 
-                # >> Save assets DB
+                # --- Save SL assets DB ---
                 pdialog_line2 = 'Saving SL {0} asset database ... '.format(SL_name)
                 pDialog.update(100, pdialog_line1, pdialog_line2)
                 fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
 
-                # >> Update progress
+                # --- Update progress ---
                 SL_count += 1
                 if pDialog_canceled: break
             pDialog.close()
+
+            # --- SL Fanart build timestamp ---
+            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+            change_control_dic(control_dic, 't_SL_fanart_build', time.time())
+            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+            # --- Inform user ---
             if pDialog_canceled:
                 kodi_notify('SL Fanart building stopped. Partial progress saved.')
             else:
@@ -5549,8 +5544,7 @@ def command_exec_utility(which_utility):
         aux_check_dir_WARN(slist, g_settings['chd_path'], 'MAME CHD path')
 
         # --- Samples path ---
-        aux_check_dir_WARN(slist, g_settings['samples_path_1'], 'MAME Samples 1 path')
-        aux_check_dir_WARN(slist, g_settings['samples_path_2'], 'MAME Samples 2 path')
+        aux_check_dir_WARN(slist, g_settings['samples_path'], 'MAME Samples path')
         slist.append('')
 
         # --- Software Lists paths ---

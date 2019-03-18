@@ -1223,84 +1223,84 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     slist.append('[COLOR orange]Timestamps[/COLOR]')
     # MAME and SL databases.
     if control_dic['t_XML_extraction']:
-        slist.append("MAME XML extracted on   {0}".format(
+        slist.append("MAME XML extracted on       {0}".format(
             _str_time(control_dic['t_XML_extraction'])))
     else:
         slist.append("MAME XML never extracted")
     if control_dic['t_MAME_DB_build']:
-        slist.append("MAME DB built on        {0}".format(
+        slist.append("MAME DB built on            {0}".format(
             _str_time(control_dic['t_MAME_DB_build'])))
     else:
         slist.append("MAME DB never built")
     if control_dic['t_MAME_Audit_DB_build']:
-        slist.append("MAME Audit DB built on  {0}".format(
+        slist.append("MAME Audit DB built on      {0}".format(
             _str_time(control_dic['t_MAME_Audit_DB_build'])))
     else:
         slist.append("MAME Audit DB never built")
     if control_dic['t_MAME_Catalog_build']:
-        slist.append("MAME Catalog built on   {0}".format(
+        slist.append("MAME Catalog built on       {0}".format(
             _str_time(control_dic['t_MAME_Catalog_build'])))
     else:
         slist.append("MAME Catalog never built")
     if control_dic['t_SL_DB_build']:
-        slist.append("SL DB built on          {0}".format(
+        slist.append("SL DB built on              {0}".format(
             _str_time(control_dic['t_SL_DB_build'])))
     else:
         slist.append("SL DB never built")
 
     # MAME and SL scanner.
     if control_dic['t_MAME_ROMs_scan']:
-        slist.append("MAME ROMs scaned on     {0}".format(
+        slist.append("MAME ROMs scaned on         {0}".format(
             _str_time(control_dic['t_MAME_ROMs_scan'])))
     else:
         slist.append("MAME ROMs never scaned")
     if control_dic['t_MAME_assets_scan']:
-        slist.append("MAME assets scaned on   {0}".format(
+        slist.append("MAME assets scaned on       {0}".format(
             _str_time(control_dic['t_MAME_assets_scan'])))
     else:
         slist.append("MAME assets never scaned")
 
     if control_dic['t_SL_ROMs_scan']:
-        slist.append("SL ROMs scaned on       {0}".format(
+        slist.append("SL ROMs scaned on           {0}".format(
             _str_time(control_dic['t_SL_ROMs_scan'])))
     else:
         slist.append("SL ROMs never scaned")
     if control_dic['t_SL_assets_scan']:
-        slist.append("SL assets scaned on     {0}".format(
+        slist.append("SL assets scaned on         {0}".format(
             _str_time(control_dic['t_SL_assets_scan'])))
     else:
         slist.append("SL assets never scaned")
 
     # Plots and fanarts.
     if control_dic['t_MAME_plots_build']:
-        slist.append("MAME Plots built on     {0}".format(
+        slist.append("MAME Plots built on         {0}".format(
             _str_time(control_dic['t_MAME_plots_build'])))
     else:
         slist.append("MAME Plots never built")
     if control_dic['t_SL_plots_build']:
-        slist.append("SL Plots built on       {0}".format(
+        slist.append("SL Plots built on           {0}".format(
             _str_time(control_dic['t_SL_plots_build'])))
     else:
         slist.append("SL Plots never built")
     if control_dic['t_MAME_fanart_build']:
-        slist.append("MAME Fanarts built on      {0}".format(
+        slist.append("MAME Fanarts built on       {0}".format(
             _str_time(control_dic['t_MAME_fanart_build'])))
     else:
         slist.append("MAME Fanarts never built")
-    if control_dic['t_SL_DB_build']:
-        slist.append("SL Fanarts built on        {0}".format(
-            _str_time(control_dic['t_SL_DB_build'])))
+    if control_dic['t_SL_fanart_build']:
+        slist.append("SL Fanarts built on         {0}".format(
+            _str_time(control_dic['t_SL_fanart_build'])))
     else:
         slist.append("SL Fanarts never built")
 
     # MAME machine hash, asset hash, render cache and asset cache.
     if control_dic['t_MAME_machine_hash']:
-        slist.append("MAME machine hash built on {0}".format(
+        slist.append("MAME machine hash built on  {0}".format(
             _str_time(control_dic['t_MAME_machine_hash'])))
     else:
         slist.append("MAME machine hash never built")
     if control_dic['t_MAME_asset_hash']:
-        slist.append("MAME asset hash built on   {0}".format(
+        slist.append("MAME asset hash built on    {0}".format(
             _str_time(control_dic['t_MAME_asset_hash'])))
     else:
         slist.append("MAME asset hash never built")
@@ -1317,19 +1317,19 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
 
     # Custsom filters.
     if control_dic['t_Custom_Filter_build']:
-        slist.append("Custom filters built on {0}".format(
+        slist.append("Custom filters built on     {0}".format(
             _str_time(control_dic['t_Custom_Filter_build'])))
     else:
         slist.append("Custom filters never built")
 
     # Audit stuff.
     if control_dic['t_MAME_audit']:
-        slist.append("MAME ROMs audited on    {0}".format(
+        slist.append("MAME ROMs audited on        {0}".format(
             _str_time(control_dic['t_MAME_audit'])))
     else:
         slist.append("MAME ROMs never audited")
     if control_dic['t_SL_audit']:
-        slist.append("SL ROMs audited on      {0}".format(
+        slist.append("SL ROMs audited on          {0}".format(
             _str_time(control_dic['t_SL_audit'])))
     else:
         slist.append("SL ROMs never audited")
@@ -2069,8 +2069,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
         # >> Process ROM ZIP files
         set_name = m_rom['location'].split('/')[0]
         if m_rom['type'] == ROM_TYPE_SAMPLE:
-            # Must include samples path 2 as well
-            zip_FN = FileName(settings['samples_path_1']).pjoin(set_name + '.zip')
+            zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
         else:
             zip_FN = FileName(settings['rom_path']).pjoin(set_name + '.zip')
         zip_path = zip_FN.getPath()
@@ -2157,7 +2156,7 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
 
             # >> Test if ZIP file exists (use cached data). ZIP file must be in the cache always
             # >> at this point.
-            zip_FN = FileName(settings['samples_path_1']).pjoin(set_name + '.zip')
+            zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
             # log_debug('ZIP {0}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
@@ -3490,8 +3489,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     log_info('assets_path    = "{0}"'.format(settings['assets_path']))
     log_info('dats_path      = "{0}"'.format(settings['dats_path']))
     log_info('chd_path       = "{0}"'.format(settings['chd_path']))
-    log_info('samples_path_1 = "{0}"'.format(settings['samples_path_1']))
-    log_info('samples_path_2 = "{0}"'.format(settings['samples_path_2']))
+    log_info('samples_path   = "{0}"'.format(settings['samples_path']))
     log_info('SL_hash_path   = "{0}"'.format(settings['SL_hash_path']))
     log_info('SL_rom_path    = "{0}"'.format(settings['SL_rom_path']))
     log_info('SL_chd_path    = "{0}"'.format(settings['SL_chd_path']))
@@ -6405,38 +6403,22 @@ def mame_check_before_scan_MAME_ROMs(PATHS, settings, control_dic):
         options_dic['scan_CHDs'] = False
 
     # Scanning of Samples is optional.
-    # If either Samples path is working then scan samples. If both fail (not configured, not
-    # found) then disable samples scanning.
-    if settings['samples_path_1']:
-        Samples_path_FN = FileName(settings['samples_path_1'])
+    if settings['samples_path']:
+        Samples_path_FN = FileName(settings['samples_path'])
         if not Samples_path_FN.isdir():
-            log_info('Samples 1 dir isdir() failed {0}'.format(Samples_path_FN.getPath()))
-            options_dic['scan_Samples_1'] = False
+            kodi_dialog_OK('Samples directory does not exist. Samples scanning disabled.')
+            options_dic['scan_Samples'] = False
         else:
-            options_dic['scan_Samples_1'] = True
+            options_dic['scan_Samples'] = True
     else:
-        log_info('Samples 1 directory not configured.')
-        options_dic['scan_Samples_1'] = False
-
-    # >> Check if also Samples 2 path is OK.
-    if settings['samples_path_2']:
-        Samples_path_FN = FileName(settings['samples_path_2'])
-        if not Samples_path_FN.isdir():
-            log_info('Samples 2 dir isdir() failed {0}'.format(Samples_path_FN.getPath()))
-            options_dic['scan_Samples_2'] = False
-        else:
-            options_dic['scan_Samples_2'] = True
-    else:
-        log_info('Samples 2 directory not configured.')
-        options_dic['scan_Samples_2'] = False
-
-    options_dic['scan_Samples'] = options_dic['scan_Samples_1'] or options_dic['scan_Samples_2']
-    if not options_dic['scan_Samples']:
-        kodi_dialog_OK('Sample scanning disabled. Both sample paths not configured or not found.')
+        kodi_dialog_OK('Samples directory not configured. Samples scanning disabled.')
+        options_dic['scan_Samples'] = False
 
     return options_dic
 
-# Does not save any file. assets_dic and control_dic mutated by assigment.
+#
+# Saves control_dic and assets_dic.
+#
 def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     machines, machines_render, assets_dic, machine_archives_dic,
     ROM_archive_list, CHD_archive_list):
@@ -6455,21 +6437,13 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         CHD_path_FN = FileName('')
         log_info('Scan of CHDs disabled.')
 
-    if options_dic['scan_Samples_1']:
-        Samples_1_path_FN = FileName(settings['samples_path_1'])
-        log_info('mame_scan_MAME_ROMs() Samples 1 OP {0}'.format(Samples_1_path_FN.getOriginalPath()))
-        log_info('mame_scan_MAME_ROMs() Samples 1 P {0}'.format(Samples_1_path_FN.getPath()))
+    if options_dic['scan_Samples']:
+        Samples_path_FN = FileName(settings['samples_path'])
+        log_info('mame_scan_MAME_ROMs() Samples OP {0}'.format(Samples_path_FN.getOriginalPath()))
+        log_info('mame_scan_MAME_ROMs() Samples P {0}'.format(Samples_path_FN.getPath()))
     else:
-        Samples_1_path_FN = FileName('')
-        log_info('Scan of Samples 1 disabled.')
-
-    if options_dic['scan_Samples_2']:
-        Samples_2_path_FN = FileName(settings['samples_path_2'])
-        log_info('mame_scan_MAME_ROMs() Samples 2 OP {0}'.format(Samples_2_path_FN.getOriginalPath()))
-        log_info('mame_scan_MAME_ROMs() Samples 2  P {0}'.format(Samples_2_path_FN.getPath()))
-    else:
-        Samples_2_path_FN = FileName('')
-        log_info('Scan of Samples 2 disabled.')
+        Samples_path_FN = FileName('')
+        log_info('Scan of Samples disabled.')
 
     # --- Create a cache of assets ---
     # >> misc_add_file_cache() creates a set with all files in a given directory.
@@ -6478,9 +6452,8 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     # >> misc_add_file_cache() accepts invalid/empty paths, just do not add them to the cache.
     ROM_path_str = ROM_path_FN.getPath()
     CHD_path_str = CHD_path_FN.getPath()
-    Samples_1_path_str = Samples_1_path_FN.getPath()
-    Samples_2_path_str = Samples_2_path_FN.getPath()
-    STUFF_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_1_path_str, Samples_2_path_str]
+    Samples_path_str = Samples_path_FN.getPath()
+    STUFF_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_path_str, Samples_2_path_str]
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Scanning files in ROM/CHD/Samples directories ...')

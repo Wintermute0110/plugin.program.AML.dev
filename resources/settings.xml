@@ -8,8 +8,7 @@
     <setting label="MAME Assets path" type="folder" id="assets_path" source="auto" option="" />
     <setting label="MAME INI/DAT path" type="folder" id="dats_path" source="auto" option="" />
     <setting label="MAME CHDs path" type="folder" id="chd_path" source="auto" option="" />
-    <setting label="MAME Samples 1 path" type="folder" id="samples_path_1" source="auto" option="" />
-    <setting label="MAME Samples 2 path" type="folder" id="samples_path_2" source="auto" option="" />
+    <setting label="MAME Samples path" type="folder" id="samples_path" source="auto" option="" />
     <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="auto" option="" />
     <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="auto" option="" />
     <setting label="Software Lists CHDs path" type="folder" id="SL_chd_path" source="auto" option="" />
