@@ -18,8 +18,8 @@ WIP      [FILTERING] Test the filters for errors. For example, test that all the
          <Genre> and the controls defined in <Controls> exist. Warn the user if errors
          found.
 
-WIP      [FILTERING] Make a filter report the user can read. I have to think if this is really
-         useful or not.
+WIP      [FILTERING] Make a filter report the user can read.
+         I have to think if this is really useful or not.
 
 WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored into ZIP files.
          The MAME audit engine must take this into account.
