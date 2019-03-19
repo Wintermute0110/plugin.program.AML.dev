@@ -1856,7 +1856,7 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
             'cartridge' : m_assets['PCB'],     'flyer'     : m_assets['flyer'],
             'icon'      : icon_path,           'fanart'    : fanart_path,
             'banner'    : banner_path,         'clearlogo' : clearlogo_path,
-            'poster' : poster_path
+            'poster'    : poster_path
         }
 
         # --- Create context menu ---
@@ -1865,8 +1865,7 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
         URL_fav      = misc_url_2_arg_RunPlugin('command', 'ADD_MAME_FAV', 'machine', machine_name)
         if flag_parent_list and num_clones > 0:
             URL_clones = misc_url_4_arg_RunPlugin('command', 'EXEC_SHOW_MAME_CLONES', 
-                                                   'catalog', catalog_name,
-                                                   'category', category_name, 'parent', machine_name)
+                'catalog', catalog_name, 'category', category_name, 'parent', machine_name)
             commands = [
                 ('Info / Utils', URL_view_DAT),
                 ('View / Audit', URL_view),
@@ -1885,7 +1884,7 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
             ]
         r_dict['context'] = commands
 
-        # --- Add row ---
+        # --- Add row to the list ---
         r_dict['URL'] = misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
         r_list.append(r_dict)
 
@@ -1897,26 +1896,37 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
 #
 def render_commit_machines(r_list):
     listitem_list = []
-    # Here differentiate code between Krypton and Leia and up.
-    for r_dict in r_list:
-        # >> Kodi Krypton
-        listitem = xbmcgui.ListItem(r_dict['render_name'])
-        # >> Kodi Leia (much faster rendering). See changelog.
-        # listitem = xbmcgui.ListItem(r_dict['render_name'], offscreen = True)
 
-        listitem.setInfo('video', r_dict['info'])
+    # Kodi Leia and up.
+    if kodi_running_version >= KODI_VERSION_LEIA:
+        log_debug('Rendering machine list in Kodi Leia and up.')
+        for r_dict in r_list:
+            # --- New offscreen parameter in Leia ---
+            # offscreen increases the performance a bit. For example, for a list with 4058 items:
+            # offscreent = True  Rendering time  0.4620 s
+            # offscreent = True  Rendering time  0.5780 s
+            # See https://forum.kodi.tv/showthread.php?tid=329315&pid=2711937#pid2711937
+            # and https://forum.kodi.tv/showthread.php?tid=307394&pid=2531524
+            listitem = xbmcgui.ListItem(r_dict['render_name'], offscreen = True)
+            listitem.setInfo('video', r_dict['info'])
+            listitem.setProperties(r_dict['props'])
+            listitem.setArt(r_dict['art'])
+            listitem.addContextMenuItems(r_dict['context'])
+            listitem_list.append((r_dict['URL'], listitem, False))
 
-        # >> Kodi Krypton
-        for prop_name, prop_value in r_dict['props'].iteritems():
-            listitem.setProperty(prop_name, prop_value)
-        # >> In Kodi Leia use setProperties(). See https://github.com/xbmc/xbmc/pull/13952
-        # listitem.setProperties(r_dict['props'])
+    # Kodi Krypton and down.
+    else:
+        log_debug('Rendering machine list in Kodi Krypton and down.')
+        for r_dict in r_list:
+            listitem = xbmcgui.ListItem(r_dict['render_name'])
+            listitem.setInfo('video', r_dict['info'])
+            for prop_name, prop_value in r_dict['props'].iteritems():
+                listitem.setProperty(prop_name, prop_value)
+            listitem.setArt(r_dict['art'])
+            listitem.addContextMenuItems(r_dict['context'])
+            listitem_list.append((r_dict['URL'], listitem, False))
 
-        listitem.setArt(r_dict['art'])
-        listitem.addContextMenuItems(r_dict['context'])
-        # Add listitem object to list of object.
-        listitem_list.append((r_dict['URL'], listitem, False))
-    # xbmcplugin.addDirectoryItems() must be much faster than xbmcplugin.addDirectoryItem()
+    # Add all listitems in one go.
     xbmcplugin.addDirectoryItems(g_addon_handle, listitem_list, len(listitem_list))
 
 #
