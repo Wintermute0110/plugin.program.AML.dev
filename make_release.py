@@ -100,6 +100,7 @@ def edit_xml_attribute(xml_file_path, tag_name, attrib_name, attrib_value):
 
 #
 # Replaces ocurrences of a string in a text file.
+# The string must be in a line of text. No multiline strings allowed.
 #
 def edit_text_file(file_path, old_str, new_str):
     print('Reading XML file "{0}"'.format(file_path))
@@ -187,8 +188,10 @@ edit_xml_attribute(addon_xml_path, 'addon', 'name', AML_NAME)
 edit_xml_attribute(addon_xml_path, 'addon', 'version', AML_VERSION)
 
 # Edit resources/settings.xml.
-print('\nEditing settings.xml ...')
-settings_xml_path = os.path.join(release_dir, 'resources/settings.xml')
-edit_text_file(settings_xml_path, AML_DEV_ID, AML_ID)
+# print('\nEditing settings.xml ...')
+# settings_xml_path = os.path.join(release_dir, 'resources/settings.xml')
+# edit_text_file(settings_xml_path, AML_DEV_ID, AML_ID)
+
+# So long and thanks for all the fish.
 print('All operations finished. Exiting.')
 sys.exit(0)
