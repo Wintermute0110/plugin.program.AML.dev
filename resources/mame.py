@@ -1567,7 +1567,7 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     slist.append(t.format(control_dic['stats_audit_SL_items_with_CHD']))
 
     # --- MAME audit info ---
-    slist.append('\n[COLOR orange]MAME ROM audit information[/COLOR]\n')
+    slist.append('\n[COLOR orange]MAME ROM audit information[/COLOR]')
     table_str = []
     table_str.append(['left', 'right', 'right',  'right'])
     table_str.append(['Type', 'Total', 'Good',   'Bad'])
@@ -1602,7 +1602,7 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     slist.extend(text_render_table_str(table_str))
 
     # --- SL audit info ---
-    slist.append('\n[COLOR orange]SL audit information[/COLOR]\n')
+    slist.append('\n[COLOR orange]SL audit information[/COLOR]')
     table_str = []
     table_str.append(['left', 'right', 'right',  'right'])
     table_str.append(['Type', 'Total', 'Good',   'Bad'])
