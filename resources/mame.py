@@ -6158,7 +6158,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     log_info('Processing Software List XML files ...')
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pdialog_line1 = 'Building Sofware Lists ROM databases ...'
+    pdialog_line1 = 'Building Sofware Lists item databases ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
     # >> DEBUG code for development, only process first SL file (32x).
@@ -6203,7 +6203,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['SL_chd_set']]
     log_info('mame_build_SoftwareLists_databases() SL ROM set is {0}'.format(rom_set))
     log_info('mame_build_SoftwareLists_databases() SL CHD set is {0}'.format(chd_set))
-    pdialog_line1 = 'Building Software List ROM Audit database ...'
+    pdialog_line1 = 'Building Software List ROM audit databases ...'
     pDialog.update(0, pdialog_line1)
     total_files = len(SL_file_list)
     processed_files = 0
