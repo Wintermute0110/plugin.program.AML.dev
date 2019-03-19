@@ -16,6 +16,7 @@
 # --- Python standard library ---
 from __future__ import unicode_literals
 import binascii
+from collections import OrderedDict
 import struct
 import xml.etree.ElementTree as ET
 import zipfile as z
@@ -3043,6 +3044,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic):
 font_mono = None
 font_mono_SL = None
 font_mono_item = None
+font_mono_debug = None
 
 #
 # Scales and centers img into a box of size (box_x_size, box_y_size).
@@ -3124,9 +3126,13 @@ MAME_layout_assets = {
     'Marquee'     : 'marquee',
 }
 
+#
+# Returns an Ordered dictionary with the layout of the fanart.
+# The Ordered dictionary is to keep the order of the tags in the XML
+#
 def mame_load_MAME_Fanart_template(Template_FN):
-    # >> Load XML file
-    layout = {}
+    # --- Load XML file ---
+    layout = OrderedDict()
     if not os.path.isfile(Template_FN.getPath()): return None
     log_debug('mame_load_MAME_Fanart_template() Loading XML "{0}"'.format(Template_FN.getPath()))
     try:
@@ -3135,7 +3141,7 @@ def mame_load_MAME_Fanart_template(Template_FN):
         return None
     xml_root = xml_tree.getroot()
 
-    # >> Parse file
+    # --- Parse XML file ---
     art_list = ['Title', 'Snap', 'Flyer', 'Cabinet', 'Artpreview', 'PCB', 'Clearlogo', 'CPanel', 'Marquee']
     art_tag_list = ['width', 'height', 'left', 'top']
     text_list = ['MachineName']
@@ -3143,7 +3149,7 @@ def mame_load_MAME_Fanart_template(Template_FN):
     for root_element in xml_root:
         # log_debug('Root child {0}'.format(root_element.tag))
         if root_element.tag in art_list:
-            art_dic = d = {key : 0 for key in art_tag_list}
+            art_dic = {key : 0 for key in art_tag_list}
             for art_child in root_element:
                 if art_child.tag in art_tag_list:
                     art_dic[art_child.tag] = int(art_child.text)
@@ -3153,7 +3159,7 @@ def mame_load_MAME_Fanart_template(Template_FN):
                     return None
             layout[root_element.tag] = art_dic
         elif root_element.tag in text_list:
-            text_dic = d = {key : 0 for key in test_tag_list}
+            text_dic = {key : 0 for key in test_tag_list}
             for art_child in root_element:
                 if art_child.tag in test_tag_list:
                     text_dic[art_child.tag] = int(art_child.text)
@@ -3163,18 +3169,25 @@ def mame_load_MAME_Fanart_template(Template_FN):
                     return None
             layout[root_element.tag] = text_dic
         else:
-            log_error('Unknown tag <{0}>'.format(root_element.tag))
+            log_error('Unknown root tag <{0}>'.format(root_element.tag))
             return None
 
     return layout
 
 #
-# Rebuild Fanart for a given MAME machine
+# Rebuild Fanart for a given MAME machine.
 #
-def mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (0, 0, 0)):
+def mame_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
+    Fanart_FN, CANVAS_COLOR = (0, 0, 0), test_flag = False):
     global font_mono
+    global font_mono_debug
+    canvas_size = (1920, 1080)
+    canvas_bg_color = (0, 0, 0)
+    color_white = (255, 255, 255)
+    t_color_fg = (255,255,0)
+    t_color_bg = (102,102,0)
 
-    # >> Quickly check if machine has valid assets, and skip fanart generation if not.
+    # Quickly check if machine has valid assets, and skip fanart generation if not.
     # log_debug('mame_build_fanart() Building fanart for machine {0}'.format(m_name))
     machine_has_valid_assets = False
     for asset_key, asset_db_name in MAME_layout_assets.iteritems():
@@ -3184,24 +3197,31 @@ def mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR
             break
     if not machine_has_valid_assets: return
 
-    # >> If font object does not exists open font an cache it.
+    # --- If font object does not exists open font an cache it. ---
     if not font_mono:
         log_debug('mame_build_fanart() Creating font_mono object')
         log_debug('mame_build_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['MachineName']['fontsize'])
+    if not font_mono_debug:
+        log_debug('mame_build_SL_fanart() Creating font_mono_debug object')
+        log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 44)
 
-    # >> Create fanart canvas
-    fanart_img = Image.new('RGB', (1920, 1080), (0, 0, 0))
+    # --- Create fanart canvas ---
+    fanart_img = Image.new('RGB', canvas_size, canvas_bg_color)
     draw = ImageDraw.Draw(fanart_img)
 
-    # >> Draw assets according to layout
+    # --- Draw assets according to layout ---
+    # layout is an ordered dictionary, so the assets are draw in the order they appear
+    # in the XML file.
+    img_index = 1
     for asset_key in layout:
         # log_debug('{0:<10} initialising'.format(asset_key))
         m_assets = assets_dic[m_name]
         if asset_key == 'MachineName':
             t_left = layout['MachineName']['left']
             t_top = layout['MachineName']['top']
-            draw.text((t_left, t_top), m_name, (255, 255, 255), font = font_mono)
+            draw.text((t_left, t_top), m_name, color_white, font_mono)
         else:
             asset_db_name = MAME_layout_assets[asset_key]
             if not m_assets[asset_db_name]:
@@ -3234,8 +3254,20 @@ def mame_build_fanart(PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR
                 log_error(u)
             else:
                 fanart_img = PIL_paste_image(fanart_img, img_asset, layout, asset_key)
+            # In debug mode print asset name and draw order.
+            if test_flag:
+                t_off = 15
+                bg_off = 2
+                t_bg_coord = (layout[asset_key]['left'] + t_off + bg_off,
+                              layout[asset_key]['top'] + t_off + bg_off)
+                t_coord = (layout[asset_key]['left'] + t_off, layout[asset_key]['top'] + t_off)
+                debug_text = '{0} {1}'.format(img_index, asset_key)
+                # Draw text background first, then front text to create a nice effect.
+                draw.text(t_bg_coord, debug_text, t_color_bg, font_mono_debug)
+                draw.text(t_coord, debug_text, t_color_fg, font_mono_debug)
+            img_index += 1
 
-    # >> Save fanart and update database
+    # --- Save fanart and update database ---
     # log_debug('mame_build_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
@@ -3254,9 +3286,13 @@ SL_layout_assets = {
     'BoxFront' : 'boxfront',
 }
 
+#
+# Returns an Ordered dictionary with the layout of the fanart.
+# The Ordered dictionary is to keep the order of the tags in the XML
+#
 def mame_load_SL_Fanart_template(Template_FN):
-    # >> Load XML file
-    layout = {}
+    # --- Load XML file ---
+    layout = OrderedDict()
     if not os.path.isfile(Template_FN.getPath()): return None
     log_debug('mame_load_SL_Fanart_template() Loading XML "{0}"'.format(Template_FN.getPath()))
     try:
@@ -3265,7 +3301,7 @@ def mame_load_SL_Fanart_template(Template_FN):
         return None
     xml_root = xml_tree.getroot()
 
-    # >> Parse file
+    # --- Parse file ---
     art_list = ['Title', 'Snap', 'BoxFront']
     art_tag_list = ['width', 'height', 'left', 'top']
     text_list = ['SLName', 'ItemName']
@@ -3273,7 +3309,8 @@ def mame_load_SL_Fanart_template(Template_FN):
     for root_element in xml_root:
         # log_debug('Root child {0}'.format(root_element.tag))
         if root_element.tag in art_list:
-            art_dic = d = {key : 0 for key in art_tag_list}
+            # Default size tags to 0
+            art_dic = {key : 0 for key in art_tag_list}
             for art_child in root_element:
                 if art_child.tag in art_tag_list:
                     art_dic[art_child.tag] = int(art_child.text)
@@ -3283,7 +3320,7 @@ def mame_load_SL_Fanart_template(Template_FN):
                     return None
             layout[root_element.tag] = art_dic
         elif root_element.tag in text_list:
-            text_dic = d = {key : 0 for key in test_tag_list}
+            text_dic = {key : 0 for key in test_tag_list}
             for art_child in root_element:
                 if art_child.tag in test_tag_list:
                     text_dic[art_child.tag] = int(art_child.text)
@@ -3293,7 +3330,7 @@ def mame_load_SL_Fanart_template(Template_FN):
                     return None
             layout[root_element.tag] = text_dic
         else:
-            log_error('Unknown tag <{0}>'.format(root_element.tag))
+            log_error('Unknown root tag <{0}>'.format(root_element.tag))
             return None
 
     return layout
@@ -3301,11 +3338,18 @@ def mame_load_SL_Fanart_template(Template_FN):
 #
 # Rebuild Fanart for a given SL item
 #
-def mame_build_SL_fanart(PATHS, layout_SL, SL_name, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (0, 0, 0)):
+def mame_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
+    Fanart_FN, CANVAS_COLOR = (0, 0, 0), test_flag = False):
     global font_mono_SL
     global font_mono_item
+    global font_mono_debug
+    canvas_size = (1920, 1080)
+    canvas_bg_color = (0, 0, 0)
+    color_white = (255, 255, 255)
+    t_color_fg = (255,255,0)
+    t_color_bg = (102,102,0)
 
-    # >> Quickly check if machine has valid assets, and skip fanart generation if not.
+    # Quickly check if machine has valid assets, and skip fanart generation if not.
     # log_debug('mame_build_SL_fanart() Building fanart for SL {0} item {1}'.format(SL_name, m_name))
     machine_has_valid_assets = False
     for asset_key, asset_db_name in SL_layout_assets.iteritems():
@@ -3315,32 +3359,35 @@ def mame_build_SL_fanart(PATHS, layout_SL, SL_name, m_name, assets_dic, Fanart_F
             break
     if not machine_has_valid_assets: return
 
-    # >> If font object does not exists open font an cache it.
+    # If font object does not exists open font an cache it.
     if not font_mono_SL:
         log_debug('mame_build_SL_fanart() Creating font_mono_SL object')
         log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_SL = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout_SL['SLName']['fontsize'])
+        font_mono_SL = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['SLName']['fontsize'])
     if not font_mono_item:
         log_debug('mame_build_SL_fanart() Creating font_mono_item object')
         log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
-        font_mono_item = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout_SL['ItemName']['fontsize'])
+        font_mono_item = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['ItemName']['fontsize'])
+    if not font_mono_debug:
+        log_debug('mame_build_SL_fanart() Creating font_mono_debug object')
+        log_debug('mame_build_SL_fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 44)
 
-    # >> Create fanart canvas
-    fanart_img = Image.new('RGB', (1920, 1080), (0, 0, 0))
+    # --- Create fanart canvas ---
+    fanart_img = Image.new('RGB', canvas_size, canvas_bg_color)
     draw = ImageDraw.Draw(fanart_img)
 
-    # >> Draw assets according to layout_SL
-    for asset_key in layout_SL:
+    # --- Draw assets according to layout ---
+    # layout is an ordered dictionary, so the assets are draw in the order they appear
+    # in the XML file.
+    img_index = 1
+    for asset_key in layout:
         # log_debug('{0:<10} initialising'.format(asset_key))
         m_assets = assets_dic[m_name]
-        if asset_key == 'SLName':
-            t_left = layout_SL['SLName']['left']
-            t_top = layout_SL['SLName']['top']
-            draw.text((t_left, t_top), SL_name, (255, 255, 255), font = font_mono_SL)
-        elif asset_key == 'ItemName':
-            t_left = layout_SL['ItemName']['left']
-            t_top = layout_SL['ItemName']['top']
-            draw.text((t_left, t_top), m_name, (255, 255, 255), font = font_mono_item)
+        if asset_key == 'SLName' or asset_key == 'ItemName':
+            t_left = layout[asset_key]['left']
+            t_top = layout[asset_key]['top']
+            draw.text((t_left, t_top), SL_name, color_white, font_mono_SL)
         else:
             asset_db_name = SL_layout_assets[asset_key]
             if not m_assets[asset_db_name]:
@@ -3352,10 +3399,21 @@ def mame_build_SL_fanart(PATHS, layout_SL, SL_name, m_name, assets_dic, Fanart_F
                 continue
             # log_debug('{0:<10} found'.format(asset_db_name))
             img_asset = Image.open(Asset_FN.getPath())
-            img_asset = PIL_resize_proportional(img_asset, layout_SL, asset_key, CANVAS_COLOR)
-            fanart_img = PIL_paste_image(fanart_img, img_asset, layout_SL, asset_key)
-
-    # >> Save fanart and update database
+            img_asset = PIL_resize_proportional(img_asset, layout, asset_key, CANVAS_COLOR)
+            fanart_img = PIL_paste_image(fanart_img, img_asset, layout, asset_key)
+            # In debug mode print asset name and draw order.
+            if test_flag:
+                t_off = 15
+                bg_off = 2
+                t_bg_coord = (layout[asset_key]['left'] + t_off + bg_off,
+                              layout[asset_key]['top'] + t_off + bg_off)
+                t_coord = (layout[asset_key]['left'] + t_off, layout[asset_key]['top'] + t_off)
+                debug_text = '{0} {1}'.format(img_index, asset_key)
+                # Draw text background first, then front text to create a nice effect.
+                draw.text(t_bg_coord, debug_text, t_color_bg, font_mono_debug)
+                draw.text(t_coord, debug_text, t_color_fg, font_mono_debug)
+            img_index += 1
+    # --- Save fanart and update database ---
     # log_debug('mame_build_SL_fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()

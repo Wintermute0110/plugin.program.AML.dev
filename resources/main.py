@@ -4804,13 +4804,12 @@ def command_context_setup_plugin():
     # --- Build Fanarts ---
     elif menu_item == 5:
         submenu = dialog.select('Build Fanarts',
-                               ['Test MAME Fanart',
-                                'Test Software List item Fanart',
-                                'Build missing MAME Fanarts',
-                                'Rebuild all MAME Fanarts',
-                                'Build missing Software Lists Fanarts',
-                                'Rebuild all Software Lists Fanarts',
-                                ])
+            ['Test MAME Fanart',
+             'Test Software List item Fanart',
+             'Build missing MAME Fanarts',
+             'Rebuild all MAME Fanarts',
+             'Build missing Software Lists Fanarts',
+             'Rebuild all Software Lists Fanarts'])
         if submenu < 0: return
         # >> Check if Pillow library is available. Abort if not.
         if not PILLOW_AVAILABLE:
@@ -4849,7 +4848,8 @@ def command_context_setup_plugin():
                     'marquee'    : Asset_path_FN.pjoin('dino_marquee.png').getPath(),
                 }
             }
-            mame_build_fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (25, 25, 50))
+            mame_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN,
+                CANVAS_COLOR = (25, 25, 50), test_flag = True)
 
             # >> Display Fanart
             log_debug('Rendering fanart "{0}"'.format(Fanart_FN.getPath()))
@@ -4882,7 +4882,9 @@ def command_context_setup_plugin():
                     'boxfront' : Asset_path_FN.pjoin('doom_boxfront.png').getPath(),
                 }
             }
-            mame_build_SL_fanart(g_PATHS, layout, SL_name, m_name, assets_dic, Fanart_FN, CANVAS_COLOR = (50, 50, 75))
+            mame_build_SL_Fanart(
+                g_PATHS, layout, SL_name, m_name, assets_dic, Fanart_FN,
+                CANVAS_COLOR = (50, 50, 75), test_flag = True)
 
             # >> Display Fanart
             log_debug('Rendering fanart "{0}"'.format(Fanart_FN.getPath()))
@@ -4942,9 +4944,9 @@ def command_context_setup_plugin():
                     if Fanart_FN.exists():
                         assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
                     else:
-                        mame_build_fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN)
+                        mame_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN)
                 else:
-                    mame_build_fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN)
+                    mame_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN)
                 processed_machines += 1
             pDialog.update(100)
             pDialog.close()
@@ -5045,9 +5047,9 @@ def command_context_setup_plugin():
                         if Fanart_FN.exists():
                             SL_assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
                         else:
-                            mame_build_SL_fanart(g_PATHS, layout, SL_name, m_name, SL_assets_dic, Fanart_FN)
+                            mame_build_SL_Fanart(g_PATHS, layout, SL_name, m_name, SL_assets_dic, Fanart_FN)
                     else:
-                        mame_build_SL_fanart(g_PATHS, layout, SL_name, m_name, SL_assets_dic, Fanart_FN)
+                        mame_build_SL_Fanart(g_PATHS, layout, SL_name, m_name, SL_assets_dic, Fanart_FN)
                     processed_SL_items += 1
 
                 # --- Save SL assets DB ---
