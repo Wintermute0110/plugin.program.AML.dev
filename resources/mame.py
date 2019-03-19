@@ -3387,7 +3387,10 @@ def mame_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
         if asset_key == 'SLName' or asset_key == 'ItemName':
             t_left = layout[asset_key]['left']
             t_top = layout[asset_key]['top']
-            draw.text((t_left, t_top), SL_name, color_white, font_mono_SL)
+            if asset_key == 'SLName': name = SL_name
+            elif asset_key == 'ItemName': name = m_name
+            else: raise TypeError
+            draw.text((t_left, t_top), name, color_white, font_mono_SL)
         else:
             asset_db_name = SL_layout_assets[asset_key]
             if not m_assets[asset_db_name]:
