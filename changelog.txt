@@ -6,21 +6,6 @@ WIP      [CORE] JSON database files (specially MAME_DB_main.json, MAME_DB_render
          Use low values of compression in the deflate algorithm. Maximum compression is very
          slow but less compression is fast and may reduce the XML file size a lot.
 
-WIP      [MANUALS] Increase the number of supported PDF filters.
-         This may required A LOT of Python coding.
-
-WIP      [MANUALS] Support for CBZ/CBR manuals.
-         In theory Kodi VFS is able to read RAR files.
-         Wait until this is implemented in AEL and then port it from AEL into AML?
-
-WIP      [FILTERING] Test the filters for errors. For example, test that all the drivers
-         defined in <Driver> exist. Another example, test that the genres defined in
-         <Genre> and the controls defined in <Controls> exist. Warn the user if errors
-         found.
-
-WIP      [FILTERING] Make a filter report the user can read.
-         I have to think if this is really useful or not.
-
 WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored into ZIP files.
          The MAME audit engine must take this into account.
          See comments in mame_scan_MAME_ROMs() @mame.py
@@ -33,6 +18,21 @@ WIP      [CORE] [LEIA] Recursive context menus.
 [B]AML ideas and planned features (read to implement)[/B]
 
 WIP      [DOCS] Improve AML wiki in Github and move documentation from Kodi forum to Github wiki.
+
+WIP      [MANUALS] Increase the number of supported PDF filters.
+         This may required A LOT of Python coding.
+
+WIP      [MANUALS] Support for CBZ/CBR manuals.
+         In theory Kodi VFS is able to read RAR files.
+         Wait until this is implemented in AEL and then port it from AEL into AML?
+
+WIP      [FILTERING] Test the filters for errors. For example, test that all the drivers
+         defined in <Driver> exist. Another example, test that the genres defined in
+         <Genre> and the controls defined in <Controls> exist.
+         Warn the user if errors found, maybe in a report the user reads.
+
+WIP      [FILTERING] Make a filter report the user can read.
+         I have to think if this is really useful or not.
 
 WIP      [CORE] Differentiate between Non-merged and Fully non-merged ROM sets.
          Non-merged sets do not include BIOS and device ROMs.
@@ -51,6 +51,8 @@ WIP      [CORE] New artwork type, 3dboxes.
 
 
 [B]Advanced MAME Launcher | version 0.9.9 | xx March 2019[/B]
+
+WIP      [CORE] Improve statistics of working, non-working games, etc. for the Main filters.
 
 FEATURE  [CORE] [LEIA] Check out the ListItem constructor offscreen parameter in Leia.
          The offscreen parameter increases the speed a bit.
