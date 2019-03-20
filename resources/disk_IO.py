@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#
 # Advanced MAME Launcher filesystem I/O functions
 #
 

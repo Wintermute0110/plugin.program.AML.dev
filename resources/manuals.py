@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#
 # Advanced MAME Launcher PDF/CBZ/CBR manual image extraction.
 #
 
