@@ -1339,43 +1339,108 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     # >> 5,d prints the comma separator but does not pad to 5 spaces.
     slist.append('')
     slist.append('[COLOR orange]MAME machine count[/COLOR]')
-    t = "Machines   {0:5d}, parents {1:5d}, clones {2:5d}"
-    slist.append(t.format(control_dic['stats_processed_machines'],
-                          control_dic['stats_parents'], 
-                          control_dic['stats_clones']))
-    t = "Runnable   {0:5d}, parents {1:5d}, clones {2:5d}"
-    slist.append(t.format(control_dic['stats_runnable'],
-                          control_dic['stats_runnable_parents'], 
-                          control_dic['stats_runnable_clones']))
-    t = "Coin       {0:5d}, parents {1:5d}, clones {2:5d}"
-    slist.append(t.format(control_dic['stats_coin'],
-                          control_dic['stats_coin_parents'], 
-                          control_dic['stats_coin_clones']))
-    t = "Nocoin     {0:5d}, parents {1:5d}, clones {2:5d}"
-    slist.append(t.format(control_dic['stats_nocoin'],
-                          control_dic['stats_nocoin_parents'],
-                          control_dic['stats_nocoin_clones']))
-    t = "Mechanical {0:5d}, parents {1:5d}, clones {2:5d}"
-    slist.append(t.format(control_dic['stats_mechanical'],
-                          control_dic['stats_mechanical_parents'],
-                          control_dic['stats_mechanical_clones']))
-    t = "Dead       {0:5d}, parents {1:5d}, clones {2:5d}"
-    slist.append(t.format(control_dic['stats_dead'],
-                          control_dic['stats_dead_parents'], 
-                          control_dic['stats_dead_clones']))
-    t = "Devices    {0:5d}, parents {1:5d}, clones {2:5d}"
-    slist.append(t.format(control_dic['stats_devices'],
-                          control_dic['stats_devices_parents'], 
-                          control_dic['stats_devices_clones']))
-    # >> Binary filters
-    t = "BIOS       {0:5d}, parents {1:5d}, clones {2:5d}"
-    slist.append(t.format(control_dic['stats_BIOS'],
-                          control_dic['stats_BIOS_parents'], 
-                          control_dic['stats_BIOS_clones']))
-    t = "Samples    {0:5d}, parents {1:5d}, clones {2:5d}"
-    slist.append(t.format(control_dic['stats_samples'],
-                          control_dic['stats_samples_parents'], 
-                          control_dic['stats_samples_clones']))
+    table_str = []
+    table_str.append(['left', 'right', 'right',  'right'])
+    table_str.append(['Type', 'Total', 'Parent', 'Clones'])
+    table_str.append([
+        'Machines',
+        '{0:5d}'.format(control_dic['stats_processed_machines']),
+        '{0:5d}'.format(control_dic['stats_parents']),
+        '{0:5d}'.format(control_dic['stats_clones']),
+    ])
+    table_str.append([
+        'Runnable',
+        '{0:5d}'.format(control_dic['stats_runnable']),
+        '{0:5d}'.format(control_dic['stats_runnable_parents']),
+        '{0:5d}'.format(control_dic['stats_runnable_clones']),
+    ])
+    table_str.append([
+        'Coin',
+        '{0:5d}'.format(control_dic['stats_coin']),
+        '{0:5d}'.format(control_dic['stats_coin_parents']),
+        '{0:5d}'.format(control_dic['stats_coin_clones']),
+    ])
+    table_str.append([
+        'Nocoin',
+        '{0:5d}'.format(control_dic['stats_nocoin']),
+        '{0:5d}'.format(control_dic['stats_nocoin_parents']),
+        '{0:5d}'.format(control_dic['stats_nocoin_clones']),
+    ])
+    table_str.append([
+        'Mechanical',
+        '{0:5d}'.format(control_dic['stats_mechanical']),
+        '{0:5d}'.format(control_dic['stats_mechanical_parents']),
+        '{0:5d}'.format(control_dic['stats_mechanical_clones']),
+    ])
+    table_str.append([
+        'Dead',
+        '{0:5d}'.format(control_dic['stats_dead']),
+        '{0:5d}'.format(control_dic['stats_dead_parents']),
+        '{0:5d}'.format(control_dic['stats_dead_clones']),
+    ])
+    table_str.append([
+        'Devices',
+        '{0:5d}'.format(control_dic['stats_devices']),
+        '{0:5d}'.format(control_dic['stats_devices_parents']),
+        '{0:5d}'.format(control_dic['stats_devices_clones']),
+    ])
+    # Binary filters
+    table_str.append([
+        'BIOS',
+        '{0:5d}'.format(control_dic['stats_BIOS']),
+        '{0:5d}'.format(control_dic['stats_BIOS_parents']),
+        '{0:5d}'.format(control_dic['stats_BIOS_clones']),
+    ])
+    table_str.append([
+        'Samples',
+        '{0:5d}'.format(control_dic['stats_samples']),
+        '{0:5d}'.format(control_dic['stats_samples_parents']),
+        '{0:5d}'.format(control_dic['stats_samples_clones']),
+    ])
+    slist.extend(text_render_table_str(table_str))
+
+    slist.append('')
+    slist.append('[COLOR orange]MAME machine statistics[/COLOR]')
+    table_str = []
+    table_str.append(['left', 'right', 'right', 'right',     'right'])
+    table_str.append(['Type', 'Total', 'Good',  'Imperfect', 'Nonworking'])
+    table_str.append([
+        'Coin slot machines (Normal)',
+        '{0:5d}'.format(control_dic['stats_MF_Normal_Total']),
+        '{0:5d}'.format(control_dic['stats_MF_Normal_Good']),
+        '{0:5d}'.format(control_dic['stats_MF_Normal_Imperfect']),
+        '{0:5d}'.format(control_dic['stats_MF_Normal_Nonworking']),
+    ])
+    table_str.append([
+        'Coin slot machines (Unusual)',
+        '{0:5d}'.format(control_dic['stats_MF_Unusual_Total']),
+        '{0:5d}'.format(control_dic['stats_MF_Unusual_Good']),
+        '{0:5d}'.format(control_dic['stats_MF_Unusual_Imperfect']),
+        '{0:5d}'.format(control_dic['stats_MF_Unusual_Nonworking']),
+    ])
+    table_str.append([
+        'No coin slot',
+        '{0:5d}'.format(control_dic['stats_MF_Nocoin_Total']),
+        '{0:5d}'.format(control_dic['stats_MF_Nocoin_Good']),
+        '{0:5d}'.format(control_dic['stats_MF_Nocoin_Imperfect']),
+        '{0:5d}'.format(control_dic['stats_MF_Nocoin_Nonworking']),
+    ])
+    table_str.append([
+        'Mechanical machines',
+        '{0:5d}'.format(control_dic['stats_MF_Mechanical_Total']),
+        '{0:5d}'.format(control_dic['stats_MF_Mechanical_Good']),
+        '{0:5d}'.format(control_dic['stats_MF_Mechanical_Imperfect']),
+        '{0:5d}'.format(control_dic['stats_MF_Mechanical_Nonworking']),
+    ])
+    table_str.append([
+        'Dead machines',
+        '{0:5d}'.format(control_dic['stats_MF_Dead_Total']),
+        '{0:5d}'.format(control_dic['stats_MF_Dead_Good']),
+        '{0:5d}'.format(control_dic['stats_MF_Dead_Imperfect']),
+        '{0:5d}'.format(control_dic['stats_MF_Dead_Nonworking']),
+    ])
+    table_str.append(['Device machines', 'N/A', 'N/A', 'N/A'])
+    slist.extend(text_render_table_str(table_str))
 
     slist.append('')
     slist.append('[COLOR orange]Software Lists item count[/COLOR]')
@@ -3974,10 +4039,14 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
                 # device_type = '{0} (NI)'.format(device_type)
 
             # >> Add device to database
-            device_dic = {'att_type'      : att_type,      'att_tag'        : att_tag,
-                          'att_mandatory' : att_mandatory, 'att_interface'  : att_interface,
-                          'instance'      : { 'name' : inst_name, 'briefname' : inst_briefname},
-                          'ext_names'     : ext_names}
+            device_dic = {
+                'att_type'      : att_type,
+                'att_tag'       : att_tag,
+                'att_mandatory' : att_mandatory,
+                'att_interface' : att_interface,
+                'instance'      : { 'name' : inst_name, 'briefname' : inst_briefname },
+                'ext_names'     : ext_names
+            }
             machine['devices'].append(device_dic)
 
         # --- <machine> tag closing. Add new machine to database ---
@@ -4002,7 +4071,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             if m_render['driver_status'] == 'preliminary' and not machine['input']['control_list']:
                 machine['isDead'] = True
 
-            # >> Delete XML element once it has been processed
+            # --- Delete XML element once it has been processed to conserve memory ---
             elem.clear()
 
             # --- Compute statistics ---
@@ -4052,7 +4121,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         num_iteration += 1
         if num_iteration % 1000 == 0:
             pDialog.update((stats_processed_machines * 100) // total_machines)
-            # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(num_iteration, stats_processed_machines))
+            # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(
+            #     num_iteration, stats_processed_machines))
             # log_debug('stats_processed_machines   = {0}'.format(stats_processed_machines))
             # log_debug('total_machines = {0}'.format(total_machines))
             # log_debug('Update number  = {0}'.format(update_number))
@@ -4102,24 +4172,30 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # Improve information fields in Main Render database
     # ---------------------------------------------------------------------------------------------
     if mature_set:
+        log_info('MAME machine Mature information available.')
         for machine_name in machines_render:
             machines_render[machine_name]['isMature'] = True if machine_name in mature_set else False
+    else:
+        log_info('MAME machine Mature flag not available.')
 
     # >> Add genre infolabel into render database
     if genre_dic:
+        log_info('Using genre.ini for MAME genre information.')
         for machine_name in machines_render:
             machines_render[machine_name]['genre'] = machines[machine_name]['genre']
     elif categories_dic:
+        log_info('Using catver.ini for MAME genre information.')
         for machine_name in machines_render:
             machines_render[machine_name]['genre'] = machines[machine_name]['catver']
     elif catlist_dic:
+        log_info('Using catlist.ini for MAME genre information.')
         for machine_name in machines_render:
             machines_render[machine_name]['genre'] = machines[machine_name]['catlist']
 
     # ---------------------------------------------------------------------------------------------
     # Improve name in DAT indices and machine names
     # ---------------------------------------------------------------------------------------------
-    # >> History DAT categories are Software List names.
+    # --- History DAT categories are Software List names ---
     if history_idx_dic:
         log_debug('Updating History DAT cateogories and machine names ...')
         # >> Open Software List index if it exists.
@@ -5109,7 +5185,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     main_catalog_parents['Devices'] = parent_dic
     main_catalog_all['Devices'] = all_dic
 
-    # >> Build ROM cache index and save Main catalog JSON file
+    # --- Build ROM cache index and save Main catalog JSON file ---
     _cache_index_builder('Main', cache_index_dic, main_catalog_all, main_catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_MAIN_ALL_PATH.getPath(), main_catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_MAIN_PARENT_PATH.getPath(), main_catalog_parents)
@@ -5582,9 +5658,9 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     pDialog.close()
 
     # --- Create properties database with default values ------------------------------------------
-    # >> Now overwrites all properties when the catalog is rebuilt.
-    #    New versions must kept user set properties!
-    # >> Disabled
+    # Now overwrites all properties when the catalog is rebuilt.
+    # New versions must kept user set properties!
+    # This code is disabled
     # mame_properties_dic = {}
     # for catalog_name in CATALOG_NAME_LIST:
     #     catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
@@ -5593,6 +5669,106 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_PCLONE}
     # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
     # log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
+
+    # --- Compute main filter statistics ---
+    stats_MF_Normal_Total = 0
+    stats_MF_Normal_Good = 0
+    stats_MF_Normal_Imperfect = 0
+    stats_MF_Normal_Nonworking = 0
+    stats_MF_Unusual_Total = 0
+    stats_MF_Unusual_Good = 0
+    stats_MF_Unusual_Imperfect = 0
+    stats_MF_Unusual_Nonworking = 0
+    stats_MF_Nocoin_Total = 0
+    stats_MF_Nocoin_Good = 0
+    stats_MF_Nocoin_Imperfect = 0
+    stats_MF_Nocoin_Nonworking = 0
+    stats_MF_Mechanical_Total = 0
+    stats_MF_Mechanical_Good = 0
+    stats_MF_Mechanical_Imperfect = 0
+    stats_MF_Mechanical_Nonworking = 0
+    stats_MF_Dead_Total = 0
+    stats_MF_Dead_Good = 0
+    stats_MF_Dead_Imperfect = 0
+    stats_MF_Dead_Nonworking = 0
+    NUM_FILTERS = 5
+    processed_filters = 0
+    pDialog.create('Advanced MAME Launcher', 'Computing statistics ...')
+    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
+    pDialog.update(update_number)
+    for m_name in main_catalog_all['Normal']:
+        driver_status = machines_render[m_name]['driver_status']
+        stats_MF_Normal_Total += 1
+        if   driver_status == 'good':        stats_MF_Normal_Good += 1
+        elif driver_status == 'imperfect':   stats_MF_Normal_Imperfect += 1
+        elif driver_status == 'preliminary': stats_MF_Normal_Nonworking += 1
+        else: raise TypeError
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
+    pDialog.update(update_number)
+    for m_name in main_catalog_all['Unusual']:
+        driver_status = machines_render[m_name]['driver_status']
+        stats_MF_Unusual_Total += 1
+        if   driver_status == 'good':        stats_MF_Unusual_Good += 1
+        elif driver_status == 'imperfect':   stats_MF_Unusual_Imperfect += 1
+        elif driver_status == 'preliminary': stats_MF_Unusual_Nonworking += 1
+        else: raise TypeError
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
+    pDialog.update(update_number)
+    for m_name in main_catalog_all['NoCoin']:
+        driver_status = machines_render[m_name]['driver_status']
+        stats_MF_Nocoin_Total += 1
+        if   driver_status == 'good':        stats_MF_Nocoin_Good += 1
+        elif driver_status == 'imperfect':   stats_MF_Nocoin_Imperfect += 1
+        elif driver_status == 'preliminary': stats_MF_Nocoin_Nonworking += 1
+        else: raise TypeError
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
+    pDialog.update(update_number)
+    for m_name in main_catalog_all['Mechanical']:
+        driver_status = machines_render[m_name]['driver_status']
+        stats_MF_Mechanical_Total += 1
+        if   driver_status == 'good':        stats_MF_Mechanical_Good += 1
+        elif driver_status == 'imperfect':   stats_MF_Mechanical_Imperfect += 1
+        elif driver_status == 'preliminary': stats_MF_Mechanical_Nonworking += 1
+        else: raise TypeError
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
+    pDialog.update(update_number)
+    for m_name in main_catalog_all['Dead']:
+        driver_status = machines_render[m_name]['driver_status']
+        stats_MF_Dead_Total += 1
+        if   driver_status == 'good':        stats_MF_Dead_Good += 1
+        elif driver_status == 'imperfect':   stats_MF_Dead_Imperfect += 1
+        elif driver_status == 'preliminary': stats_MF_Dead_Nonworking += 1
+        else: raise TypeError
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
+    pDialog.update(update_number)
+    pDialog.close()
+
+    # --- Update statistics ---
+    change_control_dic(control_dic, 'stats_MF_Normal_Total', stats_MF_Normal_Total)
+    change_control_dic(control_dic, 'stats_MF_Normal_Good', stats_MF_Normal_Good)
+    change_control_dic(control_dic, 'stats_MF_Normal_Imperfect', stats_MF_Normal_Imperfect)
+    change_control_dic(control_dic, 'stats_MF_Normal_Nonworking', stats_MF_Normal_Nonworking)
+    change_control_dic(control_dic, 'stats_MF_Unusual_Total', stats_MF_Unusual_Total)
+    change_control_dic(control_dic, 'stats_MF_Unusual_Good', stats_MF_Unusual_Good)
+    change_control_dic(control_dic, 'stats_MF_Unusual_Imperfect', stats_MF_Unusual_Imperfect)
+    change_control_dic(control_dic, 'stats_MF_Unusual_Nonworking', stats_MF_Unusual_Nonworking)
+    change_control_dic(control_dic, 'stats_MF_Nocoin_Total', stats_MF_Nocoin_Total)
+    change_control_dic(control_dic, 'stats_MF_Nocoin_Good', stats_MF_Nocoin_Good)
+    change_control_dic(control_dic, 'stats_MF_Nocoin_Imperfect', stats_MF_Nocoin_Imperfect)
+    change_control_dic(control_dic, 'stats_MF_Nocoin_Nonworking', stats_MF_Nocoin_Nonworking)
+    change_control_dic(control_dic, 'stats_MF_Mechanical_Total', stats_MF_Mechanical_Total)
+    change_control_dic(control_dic, 'stats_MF_Mechanical_Good', stats_MF_Mechanical_Good)
+    change_control_dic(control_dic, 'stats_MF_Mechanical_Imperfect', stats_MF_Mechanical_Imperfect)
+    change_control_dic(control_dic, 'stats_MF_Mechanical_Nonworking', stats_MF_Mechanical_Nonworking)
+    change_control_dic(control_dic, 'stats_MF_Dead_Total', stats_MF_Dead_Total)
+    change_control_dic(control_dic, 'stats_MF_Dead_Good', stats_MF_Dead_Good)
+    change_control_dic(control_dic, 'stats_MF_Dead_Imperfect', stats_MF_Dead_Imperfect)
+    change_control_dic(control_dic, 'stats_MF_Dead_Nonworking', stats_MF_Dead_Nonworking)
 
     # --- Update timestamp ---
     change_control_dic(control_dic, 't_MAME_Catalog_build', time.time())

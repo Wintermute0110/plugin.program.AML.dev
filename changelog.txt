@@ -52,7 +52,7 @@ WIP      [CORE] New artwork type, 3dboxes.
 
 [B]Advanced MAME Launcher | version 0.9.9 | xx March 2019[/B]
 
-WIP      [CORE] Improve statistics of working, non-working games, etc. for the Main filters.
+FEATURE  [CORE] Improve statistics of working, non-working games, etc. for the Main filters.
 
 FEATURE  [CORE] [LEIA] Check out the ListItem constructor offscreen parameter in Leia.
          The offscreen parameter increases the speed a bit.

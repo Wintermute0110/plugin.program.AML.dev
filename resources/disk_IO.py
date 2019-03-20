@@ -353,7 +353,8 @@ def fs_new_control_dic():
         'stats_processed_machines' : 0,
         'stats_parents'            : 0,
         'stats_clones'             : 0,
-        'stats_runnable'           : 0, # Excluding devices (devices are not runnable)
+        # Excluding devices machines (devices are not runnable)
+        'stats_runnable'           : 0,
         'stats_runnable_parents'   : 0,
         'stats_runnable_clones'    : 0,
         # Main filters
@@ -379,6 +380,29 @@ def fs_new_control_dic():
         'stats_samples'            : 0,
         'stats_samples_parents'    : 0,
         'stats_samples_clones'     : 0,
+
+        # --- Filed in when building the MAME catalogs in  mame_build_MAME_catalogs() ---
+        'stats_MF_Normal_Total'          : 0,
+        'stats_MF_Normal_Good'           : 0,
+        'stats_MF_Normal_Imperfect'      : 0,
+        'stats_MF_Normal_Nonworking'     : 0,
+        'stats_MF_Unusual_Total'         : 0,
+        'stats_MF_Unusual_Good'          : 0,
+        'stats_MF_Unusual_Imperfect'     : 0,
+        'stats_MF_Unusual_Nonworking'    : 0,
+        'stats_MF_Nocoin_Total'          : 0,
+        'stats_MF_Nocoin_Good'           : 0,
+        'stats_MF_Nocoin_Imperfect'      : 0,
+        'stats_MF_Nocoin_Nonworking'     : 0,
+        'stats_MF_Mechanical_Total'      : 0,
+        'stats_MF_Mechanical_Good'       : 0,
+        'stats_MF_Mechanical_Imperfect'  : 0,
+        'stats_MF_Mechanical_Nonworking' : 0,
+        'stats_MF_Dead_Total'            : 0,
+        'stats_MF_Dead_Good'             : 0,
+        'stats_MF_Dead_Imperfect'        : 0,
+        'stats_MF_Dead_Nonworking'       : 0,
+        # Devices driver_status is always the empty string ''
 
         # --- Filed in when building the ROM audit databases ---
         'stats_audit_MAME_machines_runnable' : 0,
