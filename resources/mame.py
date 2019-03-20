@@ -1439,7 +1439,10 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
         '{0:5d}'.format(control_dic['stats_MF_Dead_Imperfect']),
         '{0:5d}'.format(control_dic['stats_MF_Dead_Nonworking']),
     ])
-    table_str.append(['Device machines', 'N/A', 'N/A', 'N/A'])
+    table_str.append([
+        'Device machines',
+        '{0:5d}'.format(control_dic['stats_devices']),
+        'N/A', 'N/A', 'N/A'])
     slist.extend(text_render_table_str(table_str))
 
     slist.append('')
