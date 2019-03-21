@@ -324,6 +324,20 @@ def mame_improve_device_list(control_type_list):
     return out_list
 
 #
+# A) Substitute well know display types with fancier names.
+#
+def mame_improve_display_type_list(display_type_list):
+    out_list = []
+    for dt in display_type_list:
+        if   dt == 'lcd':    out_list.append('LCD')
+        elif dt == 'raster': out_list.append('Raster')
+        elif dt == 'svg':    out_list.append('SVG')
+        elif dt == 'vector': out_list.append('Vector')
+        else:                out_list.append(dt)
+
+    return out_list
+
+#
 # See tools/test_compress_item_list.py for reference
 # Input/Output examples:
 # 1) ['dial']                 ->  ['dial']
@@ -5468,8 +5482,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
-        if machine_render['isDevice']: continue # >> Skip device machines
-        catalog_key = " / ".join(machine['display_type'])
+        # >> Skip device machines
+        if machine_render['isDevice']: continue
+        display_list = mame_improve_display_type_list(machine['display_type'])
+        catalog_key = " / ".join(display_list)
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
         if catalog_key in catalog_parents:
