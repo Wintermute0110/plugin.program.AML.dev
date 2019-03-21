@@ -6330,9 +6330,9 @@ def run_machine(machine_name, location):
         return
 
     # --- Run MAME ---
-    _run_before_execution()
-    _run_process(g_PATHS, arg_list, mame_dir)
-    _run_after_execution()
+    run_before_execution()
+    run_process(g_PATHS, arg_list, mame_dir)
+    run_after_execution()
     log_info('run_machine() Exiting function.')
 
 #
