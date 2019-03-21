@@ -441,7 +441,7 @@ def run_plugin(addon_argv):
             command_context_manage_mame_most_played(m_name)
 
         elif command == 'SHOW_MAME_RECENTLY_PLAYED':
-            _command_show_mame_recently_played()
+            command_show_mame_recently_played()
         elif command == 'MANAGE_MAME_RECENT_PLAYED':
             m_name = args['machine'][0] if 'machine' in args else ''
             command_context_manage_mame_recent_played(m_name)
@@ -3805,7 +3805,7 @@ def command_show_sl_fav():
         # >> Add the SL name as 'genre'
         SL_name = SL_fav_ROM['SL_name']
         SL_fav_ROM['genre'] = SL_catalog_dic[SL_name]['display_name']
-        _render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM, assets, LOCATION_SL_FAVS)
+        render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM, assets, LOCATION_SL_FAVS)
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
