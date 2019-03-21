@@ -692,94 +692,107 @@ def render_root_list():
 
     # --- Root window plots ---
     machines_n_plot = ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
-                       'slot[/COLOR] and normal controls. This list includes the machines you would '
-                       'typically find in Europe and USA amusement arcades some decades ago.')
+        'slot[/COLOR] and normal controls. This list includes the machines you would '
+        'typically find in Europe and USA amusement arcades some decades ago.')
     machines_u_plot = ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
-                       'slot[/COLOR] and Only buttons, Gambling, Hanafuda and Mahjong controls. '
-                       'This corresponds to slot, gambling and Japanese card and mahjong machines.')
+        'slot[/COLOR] and Only buttons, Gambling, Hanafuda and Mahjong controls. '
+        'This corresponds to slot, gambling and Japanese card and mahjong machines.')
     nocoin_plot = ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with no coin '
-                   'slot[/COLOR]. Here you will find the good old MESS machines, including computers, '
-                   'video game consoles, hand-held video game consoles, etc.')
-    mecha_plot = ('[COLOR orange]Main filter[/COLOR] of mechanical MAME machines. These machines '
-                  'have mechanical parts, for example pinballs, and currently do not work with MAME. '
-                  'They are here for preservation and historical reasons.')
-    dead_plot = ('[COLOR orange]Main filter[/COLOR] of dead MAME machines. Dead machines do not '
-                 'work and have no controls, so you cannot interact with them in any way.')
-    devices_plot = ('[COLOR orange]Main filter[/COLOR] of device MAME machines. Device machines '
-                    'are components used by other machines and cannot be run.')
+        'slot[/COLOR]. Here you will find the good old MESS machines, including computers, '
+        'video game consoles, hand-held video game consoles, etc.')
+    mecha_plot = ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]mechanical[/COLOR] MAME machines. '
+        'These machines have mechanical parts, for example pinballs, and currently do not work with MAME. '
+        'They are here for preservation and historical reasons.')
+    dead_plot = ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]dead[/COLOR] MAME machines. '
+        'Dead machines do not work and have no controls, so you cannot interact with them in any way.')
+    devices_plot = ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]device machines[/COLOR]. '
+        'Device machines, for example the Zilog Z80 CPU, are components used by other machines '
+        'and cannot be run on their own.')
 
-    bios_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that are BIOSes. Some BIOS '
-                 'machines can be run and usually will display a message like "Game not found".')
-    chd_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that need one or more CHDs '
-                'to run. They may also need ROMs and/or BIOS or not.')
-    samples_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that require samples. '
-                    'Samples are optional and will increase the quality of the emulated sound.')
+    bios_plot = ('[COLOR orange]Binary filter[/COLOR] of [COLOR violet]BIOS[/COLOR] machines. Some BIOS '
+        'machines can be run and usually will display a message like "Game not found".')
+    chd_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that need one or more '
+        '[COLOR violet]CHDs[/COLOR] to run. They may also need ROMs and/or BIOS or not.')
+    samples_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that require '
+        '[COLOR violet]samples[/COLOR]. Samples are optional and will increase the quality'
+        ' of the emulated sound.')
     softlists_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that have one or more '
-                      'Software List associated.')
+        '[COLOR violet]Software Lists[/COLOR] associated.')
 
     catver_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
-                   'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].')
+        'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].')
     catlist_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
-                    'This filter requires that you configure [COLOR violet]catlist.ini[/COLOR].')
+        'This filter requires that you configure [COLOR violet]catlist.ini[/COLOR].')
     genre_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Genre. '
-                  'This filter requires that you configure [COLOR violet]genre.ini[/COLOR].')
+        'This filter requires that you configure [COLOR violet]genre.ini[/COLOR].')
     NPlayers_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the number of '
-                     'players that can play simultaneously or alternatively. This filter requires '
-                     'that you configure [COLOR violet]nplayers.ini[/COLOR].')
+        'players that can play simultaneously or alternatively. This filter requires '
+        'that you configure [COLOR violet]nplayers.ini[/COLOR].')
     rating_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by rating. The rating '
-                   'is subjective but is a good indicator about the quality of the games. '
-                   'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].')
+        'is subjective but is a good indicator about the quality of the games. '
+        'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].')
     series_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by series. '
-                   'This filter requires that you configure [COLOR violet]series.ini[/COLOR].')
-    ctype_expanded_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control.')
-    ctype_compact_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control.')
-    device_expanded_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by device.')
-    device_compact_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by device.')
-    drotation_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display rotation.')
+        'This filter requires that you configure [COLOR violet]series.ini[/COLOR].')
+
+    ctype_expanded_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
+        'For each machine, all controls are included in the list.')
+    ctype_compact_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
+        'Machines may have additional controls.')
+    device_expanded_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
+        'For each machine, all pluggable devices are included in the list.')
+    device_compact_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
+        'Machines may have additional pluggable devices.')
+    drotation_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display rotation, '
+        'which could be Horizontal or Vertical.')
     dtype_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type.')
-    driver_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by driver.')
+    driver_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by driver. '
+        'Brother machines have the same driver.')
     manufacturer_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted by '
-                         'manufacturer.')
+        'manufacturer.')
     shortname_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
-                      'by the MAME short name. The short name originated during the old MS-DOS days '
-                      'where filenames were restricted to 8 ASCII characters.')
+        'by the MAME short name. The short name originated during the old MS-DOS days '
+        'where filenames were restricted to 8 ASCII characters.')
     longname_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
-                     'by the machine description.')
+        'by the machine description or long name.')
     SL_plot = ('[COLOR orange]Catalog filter[/COLOR] of the Software Lists and the machines '
-               'that run items belonging to that Software List.')
+        'that run items belonging to that Software List.')
     year_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by release year.')
 
     History_plot = ('Browse the contents of [COLOR orange]history.dat[/COLOR]. Note that '
-                    'history.dat is also available on the MAME machines and SL items context menu.')
+        'history.dat is also available on the MAME machines and SL items context menu.')
     MAMEInfo_plot = ('Browse the contents of [COLOR orange]mameinfo.dat[/COLOR]. Note that '
-                     'mameinfo.dat is also available on the MAME machines and SL items context menu.')
+        'mameinfo.dat is also available on the MAME machines context menu.')
     Gameinit_plot = ('Browse the contents of [COLOR orange]gameinit.dat[/COLOR]. Note that '
-                     'gameinit.dat is also available on the MAME machines and SL items context menu.')
+        'gameinit.dat is also available on the MAME machines context menu.')
     Command_plot = ('Browse the contents of [COLOR orange]command.dat[/COLOR]. Note that '
-                    'command.dat is also available on the MAME machines and SL items context menu.')
+        'command.dat is also available on the MAME machines context menu.')
 
     SL_all_plot = ('Display all [COLOR orange]Software Lists[/COLOR].')
     SL_ROM_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only ROMs and not CHDs (disks).')
     SL_ROM_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have both ROMs and CHDs.')
     SL_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only CHDs and not ROMs.')
 
-    custom_filters_plot = ('Custom filters allows to generate machine listings configured to your whises. '
-                           'For example, you can define a filter of all the machines released in '
-                           'the 1980s that use a joystick. AML includes a fairly complete default XML '
-                           'set of filters and you can also generate your own filters.')
+    custom_filters_plot = ('[COLOR orange]Custom filters[/COLOR] allows to generate machine '
+        'listings perfectly tailored to your whises. For example, you can define a filter of all '
+        'the machines released in the 1980s that use a joystick. AML includes a fairly '
+        'complete default set of filters in XML format which can be edited.')
 
-    MAME_favs_plot = ('Display your favourite MAME machines.')
+    MAME_favs_plot = ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
+        'To add machines to the Favourite list use the context menu on any MAME machine list.')
     MAME_most_played_plot = ('Display the MAME machines that you play most, sorted by the number '
-                             'of times you have launched them.')
+        'of times you have launched them.')
     MAME_recent_played_plot = ('Display the MAME machines that you have launched recently.')
 
-    SL_favs_plot = ('Display your favourite Software List items.')
+    SL_favs_plot = ('Display your [COLOR orange]Favourite Software List items[/COLOR]. '
+        'To add machines to the SL Favourite list use the context menu on any SL item list.')
     SL_most_played_plot = ('Display the Software List itmes that you play most, sorted by the number '
-                           'of times you have launched them.')
+        'of times you have launched them.')
     SL_recent_played_plot = ('Display the Software List items that you have launched recently.')
 
-    Utilities_plot = 'Execute several [COLOR orange]Utilities[/COLOR].'
-    Global_Reports_plot = 'View the [COLOR orange]Global Reports[/COLOR] and [COLOR orange]Statistics[/COLOR].'
+    Utilities_plot = ('Execute several [COLOR orange]Utilities[/COLOR]. For example, to '
+        'check you AML configuration.')
+    Global_Reports_plot = ('View the [COLOR orange]Global Reports[/COLOR] and '
+        'machine and audit [COLOR orange]Statistics[/COLOR].')
 
     # --- Machine counters ---
     if counters_available and mame_view_mode == VIEW_MODE_FLAT:
