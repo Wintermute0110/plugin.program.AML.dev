@@ -2919,7 +2919,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
             SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
             SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
-            SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
+            SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_items.json')
             roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
 
             # --- Prepare data ---
@@ -3163,7 +3163,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
 
     # --- View SL ROMs ---
     elif action == ACTION_VIEW_SL_ROM_ROMS:
-        SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
+        SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_items.json')
         SL_ROMS_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
         # SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
         # SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
@@ -3227,7 +3227,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
 
     # --- View SL ROM Audit ROMs ---
     elif action == ACTION_VIEW_SL_ROM_AUDIT_ROMS:
-        SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
+        SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_items.json')
         # SL_ROMs_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_roms.json')
         SL_ROM_Audit_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
 
@@ -3375,7 +3375,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         log_debug('command_context_view() SL_name {0}\n'.format(SL_name))
         log_debug('command_context_view() SL_ROM {0}\n'.format(SL_ROM))
 
-        SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '.json')
+        SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_items.json')
         SL_ROM_Audit_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
 
         roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
@@ -3385,7 +3385,9 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
 
         # --- Open ZIP file and check CRC32 ---
         audit_dic = fs_new_audit_dic()
-        mame_audit_SL_machine(g_settings, rom_db_list, audit_dic)
+        SL_ROM_path_FN = FileName(g_settings['SL_rom_path'])
+        SL_CHD_path_FN = FileName(g_settings['SL_chd_path'])
+        mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, SL_ROM, rom_db_list, audit_dic)
 
         info_text = []
         info_text.append('[COLOR violet]SL_name[/COLOR] {0}'.format(SL_name))
