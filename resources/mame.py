@@ -350,7 +350,7 @@ def mame_compress_item_list(item_list):
     item_count = 1
     for i in range(1, num_items):
         current_item = item_list[i]
-        # print('{0} | item_count {1} | previous_item "{2:>8}" | current_item "{3:>8}"'.format(i, item_count, previous_item, current_item))
+        # log_debug('{0} | item_count {1} | previous_item "{2:>8}" | current_item "{3:>8}"'.format(i, item_count, previous_item, current_item))
         if current_item == previous_item:
             item_count += 1
         else:
@@ -3777,9 +3777,9 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     num_iteration = 0
     for event, elem in context:
         # --- Debug the elements we are iterating from the XML file ---
-        # print('Event     {0:6s} | Elem.tag    "{1}"'.format(event, elem.tag))
-        # print('                   Elem.text   "{0}"'.format(elem.text))
-        # print('                   Elem.attrib "{0}"'.format(elem.attrib))
+        # log_debug('Event     {0:6s} | Elem.tag    "{1}"'.format(event, elem.tag))
+        # log_debug('                   Elem.text   "{0}"'.format(elem.text))
+        # log_debug('                   Elem.attrib "{0}"'.format(elem.attrib))
 
         # <machine> tag start event includes <machine> attributes
         if event == 'start' and elem.tag == 'machine':
@@ -3810,7 +3810,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
                 # if raw_driver_name[-4:] == '.cpp':
                 #     driver_name = raw_driver_name[0:-4]
                 # else:
-                #     print('Unrecognised driver name "{0}"'.format(raw_driver_name))
+                #     log_debug('Unrecognised driver name "{0}"'.format(raw_driver_name))
 
                 # >> Assign driver name
                 machine['sourcefile'] = raw_driver_name
@@ -4067,18 +4067,18 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         elif event == 'end' and elem.tag == 'machine':
             # >> Assumption 1: isdevice = True if and only if runnable = False
             if m_render['isDevice'] == runnable:
-                print("Machine {0}: machine['isDevice'] == runnable".format(m_name))
+                log_error("Machine {0}: machine['isDevice'] == runnable".format(m_name))
                 raise GeneralError
 
             # >> Are there machines with more than 1 <display> tag. Answer: YES
             # if num_displays > 1:
-            #     print("Machine {0}: num_displays = {1}".format(m_name, num_displays))
+            #     log_error("Machine {0}: num_displays = {1}".format(m_name, num_displays))
             #     raise GeneralError
 
-            # >> All machines with 0 displays are mechanical? NO, 24cdjuke has no screen and is not mechanical. However
-            # >> 24cdjuke is a preliminary driver.
+            # >> All machines with 0 displays are mechanical? NO, 24cdjuke has no screen and
+            # is not mechanical. However 24cdjuke is a preliminary driver.
             # if num_displays == 0 and not machine['ismechanical']:
-            #     print("Machine {0}: num_displays == 0 and not machine['ismechanical']".format(m_name))
+            #     log_error("Machine {0}: num_displays == 0 and not machine['ismechanical']".format(m_name))
             #     raise GeneralError
 
             # >> Mark dead machines. A machine is dead if Status is preliminary AND have no controls.
@@ -6110,7 +6110,7 @@ def _mame_load_SL_XML(xml_filename):
     xml_root = xml_tree.getroot()
     SLData['display_name'] = xml_root.attrib['description']
     for root_element in xml_root:
-        if __debug_xml_parser: print('Root child {0}'.format(root_element.tag))
+        if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
 
         # >> Only process 'software' elements
         if root_element.tag != 'software': continue
@@ -6128,7 +6128,7 @@ def _mame_load_SL_XML(xml_filename):
             # >> By default read strings
             xml_text = rom_child.text if rom_child.text is not None else ''
             xml_tag  = rom_child.tag
-            if __debug_xml_parser: print('{0} --> {1}'.format(xml_tag, xml_text))
+            if __debug_xml_parser: log_debug('{0} --> {1}'.format(xml_tag, xml_text))
 
             # --- Only pick tags we want ---
             if xml_tag == 'description' or xml_tag == 'year' or xml_tag == 'publisher':

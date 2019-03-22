@@ -28,7 +28,6 @@ try:
     from PIL import Image
     PYTHON_PIL_AVAILABLE = True
 except:
-    print('Exception importing PIL')
     PYTHON_PIL_AVAILABLE = False
 
 # --- Kodi stuff ---
