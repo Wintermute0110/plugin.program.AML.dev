@@ -629,7 +629,7 @@ def LSP_parse_exec(program, search_list):
 # Year Parser (YP) engine. Grammar token objects.
 # Parser inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 #
-# YP operators: ==, <>, >, <, >=, <=, and, or, not, '(', ')', literal.
+# YP operators: ==, !=, >, <, >=, <=, and, or, not, '(', ')', literal.
 # literal may be the special variable 'year' or a MAME number.
 # -------------------------------------------------------------------------------------------------
 debug_YP_parser = False
@@ -650,7 +650,7 @@ class YP_literal_token:
         if debug_YP_parser: log_debug('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
-        return '<LITERAL "{0}">'.format(self.value)
+        return '[LITERAL "{0}"]'.format(self.value)
 
 def YP_advance(id = None):
     global YP_token
@@ -668,14 +668,14 @@ class YP_operator_open_par_token:
         YP_advance("OP )")
         return expr
     def __repr__(self):
-        return "<OP (>"
+        return "[OP (]"
 
 class YP_operator_close_par_token:
     lbp = 0
     def __init__(self):
         self.id = "OP )"
     def __repr__(self):
-        return "<OP )>"
+        return "[OP )]"
 
 class YP_operator_not_token:
     lbp = 60
@@ -690,7 +690,7 @@ class YP_operator_not_token:
         if debug_YP_parser: log_debug('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
-        return "<OP not>"
+        return "[OP not]"
 
 class YP_operator_and_token:
     lbp = 10
@@ -707,7 +707,7 @@ class YP_operator_and_token:
         if debug_YP_parser: log_debug('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
-        return "<OP and>"
+        return "[OP and]"
 
 class YP_operator_or_token:
     lbp = 10
@@ -723,7 +723,7 @@ class YP_operator_or_token:
         if debug_YP_parser: log_debug('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
-        return "<OP or>"
+        return "[OP or]"
 
 class YP_operator_equal_token:
     lbp = 50
@@ -739,23 +739,23 @@ class YP_operator_equal_token:
         if debug_YP_parser: log_debug('== token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
-        return "<OP ==>"
+        return "[OP ==]"
 
 class YP_operator_not_equal_token:
     lbp = 50
     def __init__(self):
-        self.id = "OP <>"
+        self.id = "OP !="
     def led(self, left):
         self.first = left
         self.second = YP_expression(10)
         return self
     def exec_token(self):
-        if debug_YP_parser: log_debug('Executing <> token')
+        if debug_YP_parser: log_debug('Executing != token')
         ret = self.first.exec_token() <> self.second.exec_token()
-        if debug_YP_parser: log_debug('<> token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('!= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
-        return "<OP <>>"
+        return "[OP !=]"
 
 class YP_operator_great_than_token:
     lbp = 50
@@ -771,7 +771,7 @@ class YP_operator_great_than_token:
         if debug_YP_parser: log_debug('> token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
-        return "<OP >>"
+        return "[OP >]"
 
 class YP_operator_less_than_token:
     lbp = 50
@@ -787,7 +787,7 @@ class YP_operator_less_than_token:
         if debug_YP_parser: log_debug('< token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
-        return "<OP <>"
+        return "[OP <]"
 
 class YP_operator_great_or_equal_than_token:
     lbp = 50
@@ -803,7 +803,7 @@ class YP_operator_great_or_equal_than_token:
         if debug_YP_parser: log_debug('>= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
-        return "<OP >=>"
+        return "[OP >=]"
 
 class YP_operator_less_or_equal_than_token:
     lbp = 50
@@ -819,56 +819,43 @@ class YP_operator_less_or_equal_than_token:
         if debug_YP_parser: log_debug('<= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):
-        return "<OP <=>"
+        return "[OP <=]"
 
 class YP_end_token:
     lbp = 0
     def __init__(self):
         self.id = "END TOKEN"
     def __repr__(self):
-        return "<END token>"
+        return "[END token]"
 
 # -------------------------------------------------------------------------------------------------
-# Tokenizer
+# Year Parser Tokenizer
 # See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
-YP_token_pat = re.compile("\s*(?:(==|<>|>=|<=|>|<|and|or|not|\(|\))|([\w]+))")
+YP_token_pat = re.compile("\s*(?:(==|!=|>=|<=|>|<|and|or|not|\(|\))|([\w]+))")
 
 def YP_tokenize(program):
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
     # (?:...) -> A non-capturing version of regular parentheses.
     # \w -> Matches [a-zA-Z0-9_]
     for operator, n_string in YP_token_pat.findall(program):
-        if n_string:
-            yield YP_literal_token(n_string)
-        elif operator == "==":
-            yield YP_operator_equal_token()
-        elif operator == "<>":
-            yield YP_operator_not_equal_token()
-        elif operator == ">":
-            yield YP_operator_great_than_token()
-        elif operator == "<":
-            yield YP_operator_less_than_token()
-        elif operator == ">=":
-            yield YP_operator_great_or_equal_than_token()
-        elif operator == "<=":
-            yield YP_operator_less_or_equal_than_token()
-        elif operator == "and":
-            yield YP_operator_and_token()
-        elif operator == "or":
-            yield YP_operator_or_token()
-        elif operator == "not":
-            yield YP_operator_not_token()
-        elif operator == "(":
-            yield YP_operator_open_par_token()
-        elif operator == ")":
-            yield YP_operator_close_par_token()
-        else:
-            raise SyntaxError("Unknown operator: '{0}'".format(operator))
+        if n_string:            yield YP_literal_token(n_string)
+        elif operator == "==":  yield YP_operator_equal_token()
+        elif operator == "!=":  yield YP_operator_not_equal_token()
+        elif operator == ">":   yield YP_operator_great_than_token()
+        elif operator == "<":   yield YP_operator_less_than_token()
+        elif operator == ">=":  yield YP_operator_great_or_equal_than_token()
+        elif operator == "<=":  yield YP_operator_less_or_equal_than_token()
+        elif operator == "and": yield YP_operator_and_token()
+        elif operator == "or":  yield YP_operator_or_token()
+        elif operator == "not": yield YP_operator_not_token()
+        elif operator == "(":   yield YP_operator_open_par_token()
+        elif operator == ")":   yield YP_operator_close_par_token()
+        else:                   raise SyntaxError("Unknown operator: '{0}'".format(operator))
     yield YP_end_token()
 
 # -------------------------------------------------------------------------------------------------
-# Manufacturer Parser (YP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+# Year Parser (YP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 # -------------------------------------------------------------------------------------------------
 def YP_expression(rbp = 0):
     global YP_token
@@ -895,7 +882,7 @@ def YP_parse_exec(program, year_str):
 
     if debug_YP_parse_exec:
         log_debug('YP_parse_exec() Initialising program execution')
-        log_debug('YP_parse_exec() year     {0}'.format(year))
+        log_debug('YP_parse_exec() year     "{0}"'.format(year))
         log_debug('YP_parse_exec() Program  "{0}"'.format(program))
     YP_year = year
     YP_next = YP_tokenize(program).next
