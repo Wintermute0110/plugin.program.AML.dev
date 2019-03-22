@@ -97,6 +97,7 @@ def edit_xml_attribute(xml_file_path, tag_name, attrib_name, attrib_value):
     else:
         print('Not matches found. Aborting.')
         sys.exit(1)
+    print(' ')
 
 #
 # Replaces ocurrences of a string in a text file.
