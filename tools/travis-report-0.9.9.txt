@@ -1,0 +1,157 @@
+INFO: Checking add-on plugin.program.AML
+INFO: Created by Wintermute0110
+INFO: Addon id matches folder name
+INFO: Valid XML file found
+WARN: http://forum.kodi.tv/showthread.php?tid=304186 redirects to https://forum.kodi.tv/showthread.php?tid=304186
+INFO: Image icon exists
+INFO: Icon dimensions are fine 256x256
+INFO: Image fanart exists
+INFO: Fanart dimensions are fine 1920x1080
+INFO: Image screenshot exists
+INFO: Image screenshot exists
+INFO: Image screenshot exists
+INFO: Image screenshot exists
+INFO: Image screenshot exists
+INFO: Image screenshot exists
+INFO: Image screenshot exists
+ERROR: ./plugin.program.AML/resources/filters.py
+|   # | Existing Code                                             | Changes required                                          |
+|----:|:----------------------------------------------------------|:----------------------------------------------------------|
+| 754 | ret = self.first.exec_token() <> self.second.exec_token() | ret = self.first.exec_token() != self.second.exec_token() |
+INFO: ./plugin.program.AML/pdfrw/pdfrw/findobjs.py
+|   # | Existing Code                                  | Changes required                           |
+|----:|:-----------------------------------------------|:-------------------------------------------|
+|  52 | obj = [y for (x, y) in sorted(obj.iteritems()) | obj = [y for (x, y) in sorted(obj.items()) |
+INFO: ./plugin.program.AML/pdfrw/pdfrw/pagemerge.py
+|   # | Existing Code                                  | Changes required                                     |
+|----:|:-----------------------------------------------|:-----------------------------------------------------|
+| 199 | allkeys = xobjs.keys()                         | allkeys = list(xobjs.keys())                         |
+| 249 | a, b, c, d = zip(*(xobj.box for xobj in self)) | a, b, c, d = list(zip(*(xobj.box for xobj in self))) |
+INFO: ./plugin.program.AML/pdfrw/pdfrw/pdfreader.py
+|   # | Existing Code                                             | Changes required                                                |
+|----:|:----------------------------------------------------------|:----------------------------------------------------------------|
+|  66 | next = source.next                                        | next = source.__next__                                          |
+| 201 | source.next()                                             | next(source)                                                    |
+| 217 | obj = source.next()                                       | obj = next(source)                                              |
+| 228 | tok = source.next()                                       | tok = next(source)                                              |
+| 274 | self.indirect_objects.values(), self.stream_crypt_filter, | list(self.indirect_objects.values()), self.stream_crypt_filter, |
+| 280 | uncompress(self.indirect_objects.values())                | uncompress(list(self.indirect_objects.values()))                |
+| 302 | next = objsource.next                                     | next = objsource.__next__                                       |
+| 332 | tok = source.next()                                       | tok = next(source)                                              |
+| 356 | next = source.next                                        | next = source.__next__                                          |
+| 379 | num_pairs = zip(num_pairs[0::2], num_pairs[1::2])         | num_pairs = list(zip(num_pairs[0::2], num_pairs[1::2]))         |
+| 402 | next = source.next                                        | next = source.__next__                                          |
+| 451 | next = source.next                                        | next = source.__next__                                          |
+| 622 | token = source.next()                                     | token = next(source)                                            |
+INFO: ./plugin.program.AML/pdfrw/pdfrw/pdfwriter.py
+|   # | Existing Code                  | Changes required                |
+|----:|:-------------------------------|:--------------------------------|
+| 141 | for (x, y) in obj.iteritems()) | for (x, y) in obj.items())      |
+| 383 | workitems += obj.values()      | workitems += list(obj.values()) |
+INFO: ./plugin.program.AML/pdfrw/pdfrw/toreportlab.py
+|   # | Existing Code                         | Changes required                  |
+|----:|:--------------------------------------|:----------------------------------|
+|  70 | for key, value in pdfobj.iteritems(): | for key, value in pdfobj.items(): |
+|  88 | for key, value in pdfobj.iteritems(): | for key, value in pdfobj.items(): |
+INFO: ./plugin.program.AML/pdfrw/pdfrw/uncompress.py
+|   # | Existing Code                                       | Changes required                                   |
+|----:|:----------------------------------------------------|:---------------------------------------------------|
+|  97 | for i in xrange(pixel_size, length):                | for i in range(pixel_size, length):                |
+| 104 | for i in xrange(length):                            | for i in range(length):                            |
+| 111 | for i in xrange(length):                            | for i in range(length):                            |
+| 131 | for i in xrange(length):                            | for i in range(length):                            |
+| 146 | rows = xrange(0, len(data), rowlen)                 | rows = range(0, len(data), rowlen)                 |
+| 147 | prior_row_data = [ 0 for i in xrange(columnbytes) ] | prior_row_data = [ 0 for i in range(columnbytes) ] |
+INFO: ./plugin.program.AML/pdfrw/pdfrw/objects/pdfdict.py
+|   # | Existing Code                                           | Changes required                                    |
+|----:|:--------------------------------------------------------|:----------------------------------------------------|
+| 183 | return list(self.iteritems())                           | return list(self.items())                           |
+| 186 | for key, value in self.iteritems():                     | for key, value in self.items():                     |
+| 190 | return list((value for key, value in self.iteritems())) | return list((value for key, value in self.items())) |
+| 193 | return list((key for key, value in self.iteritems()))   | return list((key for key, value in self.items()))   |
+| 196 | for key, value in self.iteritems():                     | for key, value in self.items():                     |
+INFO: ./plugin.program.AML/pdfrw/pdfrw/objects/pdfstring.py
+|   # | Existing Code                                                     | Changes required                                                   |
+|----:|:------------------------------------------------------------------|:-------------------------------------------------------------------|
+| 294 | decoding_map.update(zip(range(0x18, 0x20), (                      | decoding_map.update(list(zip(list(range(0x18, 0x20)), (            |
+| 295 | 0x02D8, 0x02C7, 0x02C6, 0x02D9, 0x02DD, 0x02DB, 0x02DA, 0x02DC))) | 0x02D8, 0x02C7, 0x02C6, 0x02D9, 0x02DD, 0x02DB, 0x02DA, 0x02DC)))) |
+| 296 | decoding_map.update(zip(range(0x80, 0x9F), (                      | decoding_map.update(list(zip(list(range(0x80, 0x9F)), (            |
+| 300 | 0x0178, 0x017D, 0x0131, 0x0142, 0x0153, 0x0161, 0x017E)))         | 0x0178, 0x017D, 0x0131, 0x0142, 0x0153, 0x0161, 0x017E))))         |
+| 353 | unescape_dict.update(zip('nrtbf', '\n\r\t\b\f'))                  | unescape_dict.update(list(zip('nrtbf', '\n\r\t\b\f')))             |
+INFO: ./plugin.program.AML/resources/disk_IO.py
+|    # | Existing Code                                  | Changes required                           |
+|-----:|:-----------------------------------------------|:-------------------------------------------|
+|   39 | from constants import *                        | from .constants import *                   |
+|   40 | from utils import *                            | from .utils import *                       |
+|   42 | from utils_kodi import *                       | from .utils_kodi import *                  |
+| 1521 | for m_name, r_name in catalog_dic.iteritems(): | for m_name, r_name in catalog_dic.items(): |
+INFO: ./plugin.program.AML/resources/filters.py
+|   # | Existing Code                                         | Changes required                                  |
+|----:|:------------------------------------------------------|:--------------------------------------------------|
+|  25 | from constants import *                               | from .constants import *                          |
+|  26 | from utils import *                                   | from .utils import *                              |
+|  27 | from utils_kodi import *                              | from .utils_kodi import *                         |
+|  28 | from mame import *                                    | from .mame import *                               |
+| 151 | for initial_str, final_str in define_dic.iteritems(): | for initial_str, final_str in define_dic.items(): |
+| 403 | SP_next = SP_tokenize(program).next                   | SP_next = SP_tokenize(program).__next__           |
+| 611 | LSP_next = LSP_tokenize(program).next                 | LSP_next = LSP_tokenize(program).__next__         |
+| 901 | YP_next = YP_tokenize(program).next                   | YP_next = YP_tokenize(program).__next__           |
+INFO: ./plugin.program.AML/resources/main.py
+|    # | Existing Code                                                            | Changes required                                                     |
+|-----:|:-------------------------------------------------------------------------|:---------------------------------------------------------------------|
+|   39 | from constants import *                                                  | from .constants import *                                             |
+|   40 | from assets import *                                                     | from .assets import *                                                |
+|   41 | from utils import *                                                      | from .utils import *                                                 |
+|   42 | from utils_kodi import *                                                 | from .utils_kodi import *                                            |
+|   43 | from disk_IO import *                                                    | from .disk_IO import *                                               |
+|   44 | from mame import *                                                       | from .mame import *                                                  |
+|   45 | from filters import *                                                    | from .filters import *                                               |
+|   46 | from manuals import *                                                    | from .manuals import *                                               |
+| 1771 | for machine_name, render_name in catalog_dic[category_name].iteritems(): | for machine_name, render_name in catalog_dic[category_name].items(): |
+| 1936 | for prop_name, prop_value in r_dict['props'].iteritems():                | for prop_name, prop_value in r_dict['props'].items():                |
+| 2008 | for SL_name, SL_dic in SL_main_catalog_dic.iteritems():                  | for SL_name, SL_dic in SL_main_catalog_dic.items():                  |
+| 2011 | for SL_name, SL_dic in SL_main_catalog_dic.iteritems():                  | for SL_name, SL_dic in SL_main_catalog_dic.items():                  |
+| 2015 | for SL_name, SL_dic in SL_main_catalog_dic.iteritems():                  | for SL_name, SL_dic in SL_main_catalog_dic.items():                  |
+| 2019 | for SL_name, SL_dic in SL_main_catalog_dic.iteritems():                  | for SL_name, SL_dic in SL_main_catalog_dic.items():                  |
+INFO: ./plugin.program.AML/resources/mame.py
+|    # | Existing Code                                                                                           | Changes required                                                                                     |
+|-----:|:--------------------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------|
+|   31 | from constants import *                                                                                 | from .constants import *                                                                             |
+|   32 | from utils import *                                                                                     | from .utils import *                                                                                 |
+|   34 | from utils_kodi import *                                                                                | from .utils_kodi import *                                                                            |
+|   37 | from disk_IO import *                                                                                   | from .disk_IO import *                                                                               |
+|  413 | if __debug_do_list_categories: print('Line "' + stripped_line + '"')                                    | if __debug_do_list_categories: print(('Line "' + stripped_line + '"'))                               |
+|  468 | if __debug_do_list_categories: print('Line "' + stripped_line + '"')                                    | if __debug_do_list_categories: print(('Line "' + stripped_line + '"'))                               |
+| 1986 | for machine_name, m in machines.iteritems():                                                            | for machine_name, m in machines.items():                                                             |
+| 3276 | for asset_key, asset_db_name in MAME_layout_assets.iteritems():                                         | for asset_key, asset_db_name in MAME_layout_assets.items():                                          |
+| 3438 | for asset_key, asset_db_name in SL_layout_assets.iteritems():                                           | for asset_key, asset_db_name in SL_layout_assets.items():                                            |
+| 3737 | event, root = context.next()                                                                            | event, root = next(context)                                                                          |
+| 4073 | print("Machine {0}: machine['isDevice'] == runnable".format(m_name))                                    | print(("Machine {0}: machine['isDevice'] == runnable".format(m_name)))                               |
+| 4167 | for machine_name, m_render in machines_render.iteritems():                                              | for machine_name, m_render in machines_render.items():                                               |
+| 4185 | for m_name, asset in assets_dic.iteritems():                                                            | for m_name, asset in assets_dic.items():                                                             |
+| 4387 | merged_rom_list = filter(lambda r: r['name'] == merged_name, roms)                                      | merged_rom_list = [r for r in roms if r['name'] == merged_name]                                      |
+| 4543 | parent_merged_disk_l = filter(lambda r: r['name'] == clone_disk_merged_name, parent_disks)              | parent_merged_disk_l = [r for r in parent_disks if r['name'] == clone_disk_merged_name]              |
+| 4552 | super_parent_merged_disk_l = filter(lambda r: r['name'] == parent_disk_merged_name, super_parent_disks) | super_parent_merged_disk_l = [r for r in super_parent_disks if r['name'] == parent_disk_merged_name] |
+| 6117 | if __debug_xml_parser: print('Root child {0}'.format(root_element.tag))                                 | if __debug_xml_parser: print(('Root child {0}'.format(root_element.tag)))                            |
+| 6135 | if __debug_xml_parser: print('{0} --> {1}'.format(xml_tag, xml_text))                                   | if __debug_xml_parser: print(('{0} --> {1}'.format(xml_tag, xml_text)))                              |
+INFO: ./plugin.program.AML/resources/manuals.py
+|   # | Existing Code                                            | Changes required                                     |
+|----:|:---------------------------------------------------------|:-----------------------------------------------------|
+|  38 | from utils import *                                      | from .utils import *                                 |
+|  39 | from utils_kodi import *                                 | from .utils_kodi import *                            |
+|  40 | from disk_IO import *                                    | from .disk_IO import *                               |
+| 101 | elif type(xobj_dic['/Filter']) is types.NoneType:        | elif type(xobj_dic['/Filter']) is type(None):        |
+| 238 | for r_name, resource in resource_dic.iteritems():        | for r_name, resource in resource_dic.items():        |
+| 252 | for xobj_name, xobj_dic in resource.iteritems():         | for xobj_name, xobj_dic in resource.items():         |
+| 409 | for resource_name, resource in resource_dic.iteritems(): | for resource_name, resource in resource_dic.items(): |
+| 423 | for xobj_name, xobj_dic in resource.iteritems():         | for xobj_name, xobj_dic in resource.items():         |
+| 455 | elif type(xobj_dic['/Filter']) is types.NoneType:        | elif type(xobj_dic['/Filter']) is type(None):        |
+| 478 | for resource_name, resource in resource_dic.iteritems(): | for resource_name, resource in resource_dic.items(): |
+| 484 | for xobj_name, xobj_dic in resource.iteritems():         | for xobj_name, xobj_dic in resource.items():         |
+INFO: ./plugin.program.AML/resources/utils.py
+|   # | Existing Code            | Changes required          |
+|----:|:-------------------------|:--------------------------|
+|  40 | from utils_kodi import * | from .utils_kodi import * |
+WARN: Found non whitelisted file ending in filename ./plugin.program.AML/version.sha
+WARN: Found non whitelisted file ending in filename ./plugin.program.AML/fonts/Inconsolata.otf
+ERROR: We found 1 problems and 3 warnings, please check the logfile.
