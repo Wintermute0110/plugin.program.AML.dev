@@ -145,7 +145,7 @@ class LSP_end_token:
         return "<END token>"
 
 # -------------------------------------------------------------------------------------------------
-# Tokenizer
+# List of String Parser (LSP) Tokenizer
 # See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
 LSP_token_pat = re.compile("\s*(?:(and|or|not|has|lacks|\(|\))|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
@@ -180,7 +180,7 @@ def LSP_tokenize(program):
     yield LSP_end_token()
 
 # -------------------------------------------------------------------------------------------------
-# Manufacturer Parser (LSP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+# List of String Parser (LSP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 # -------------------------------------------------------------------------------------------------
 def LSP_expression(rbp = 0):
     global LSP_token

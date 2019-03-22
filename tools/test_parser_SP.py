@@ -120,7 +120,7 @@ class SP_end_token:
         return "<END token>"
 
 # -------------------------------------------------------------------------------------------------
-# Tokenizer
+# String Parser (SP) Tokenizer
 # See http://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
 # -------------------------------------------------------------------------------------------------
 SP_token_pat = re.compile("\s*(?:(and|or|not|has|lacks)|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
@@ -151,7 +151,7 @@ def SP_tokenize(program):
     yield SP_end_token()
 
 # -------------------------------------------------------------------------------------------------
-# Manufacturer Parser (SP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
+# String Parser (SP) inspired by http://effbot.org/zone/simple-top-down-parsing.htm
 # -------------------------------------------------------------------------------------------------
 def SP_expression(rbp = 0):
     global SP_token
