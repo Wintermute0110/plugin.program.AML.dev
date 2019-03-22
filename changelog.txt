@@ -50,7 +50,7 @@ WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
 WIP      [CORE] New artwork type, 3dboxes.
 
 
-[B]Advanced MAME Launcher | version 0.9.9 | xx March 2019[/B]
+[B]Advanced MAME Launcher | version 0.9.9 | 22 March 2019[/B]
 
 FEATURE  [CORE] Improve statistics of working, non-working games, etc. for the Main filters.
 
@@ -102,6 +102,7 @@ FEATURE  [CORE] Remove redundant fields from MAME DB 'coins' and 'control_type'.
 FEATURE  [CORE] At least two directories for samples are needed. MAME includes a default samples
          directory with some samples used by some machines. Both directories must be configured
          in mame.ini in order to get all the samples working.
+
          NOTE This feature was cancelled. Only one Samples directory. If the user wants to have
          a complete Good audit, then the samples shipped with MAME must be compressed and
          the ZIP file placed in the unique samples directory. In any case, only three machines
