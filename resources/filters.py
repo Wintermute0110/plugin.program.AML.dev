@@ -22,10 +22,10 @@ from __future__ import division
 import xml.etree.ElementTree as ET
 
 # --- Modules/packages in this plugin ---
-from constants import *
-from utils import *
-from utils_kodi import *
-from mame import *
+from .constants import *
+from .mame import *
+from .utils import *
+from .utils_kodi import *
 
 # -------------------------------------------------------------------------------------------------
 # Parse filter XML definition
@@ -751,7 +751,7 @@ class YP_operator_not_equal_token:
         return self
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing != token')
-        ret = self.first.exec_token() <> self.second.exec_token()
+        ret = self.first.exec_token() != self.second.exec_token()
         if debug_YP_parser: log_debug('!= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):

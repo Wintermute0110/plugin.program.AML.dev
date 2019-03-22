@@ -35,9 +35,9 @@ except:
 import xbmcaddon
 
 # --- Modules/packages in this plugin ---
-from utils import *
-from utils_kodi import *
-from disk_IO import *
+from .utils import *
+from .utils_kodi import *
+from .disk_IO import *
 
 # --- Load pdfrw module ---
 __addon_id__ = xbmcaddon.Addon().getAddonInfo('id').decode('utf-8')
@@ -98,8 +98,8 @@ def _extract_image_from_XObject(xobj_dic):
     elif type(xobj_dic['/Filter']) is BasePdfName:
         num_filters = 1
         filter_list.append(xobj_dic['/Filter'])
-    elif type(xobj_dic['/Filter']) is types.NoneType:
-        log_info('type(xobj_dic[\'/Filter\']) is types.NoneType. Skipping.')
+    elif type(xobj_dic['/Filter']) is type(None):
+        log_info('type(xobj_dic[\'/Filter\']) is type(None). Skipping.')
         log_info('--- xobj_dic ---')
         log_info(pprint.pformat(xobj_dic))
         log_info('----------------')
@@ -452,8 +452,8 @@ def manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN):
                 elif type(xobj_dic['/Filter']) is BasePdfName:
                     num_filters = 1
                     filter_list.append(xobj_dic['/Filter'])
-                elif type(xobj_dic['/Filter']) is types.NoneType:
-                    log_info('type(xobj_dic[\'/Filter\']) is types.NoneType. Skipping.')
+                elif type(xobj_dic['/Filter']) is type(None):
+                    log_info('type(xobj_dic[\'/Filter\']) is type(None). Skipping.')
                     log_info('--- xobj_dic ---')
                     log_info(pprint.pformat(xobj_dic))
                     log_info('----------------')

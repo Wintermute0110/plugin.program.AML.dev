@@ -36,14 +36,14 @@ import xbmcaddon
 #   ReaderPDF <-- utils, utils_kodi
 #   filters <- mame <-- utils, utils_kodi
 #   manuals <- utils, utils_kodi
-from constants import *
-from assets import *
-from utils import *
-from utils_kodi import *
-from disk_IO import *
-from mame import *
-from filters import *
-from manuals import *
+from .constants import *
+from .assets import *
+from .utils import *
+from .utils_kodi import *
+from .disk_IO import *
+from .mame import *
+from .filters import *
+from .manuals import *
 
 # --- Addon object (used to access settings) ---
 __addon__         = xbmcaddon.Addon()

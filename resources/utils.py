@@ -37,7 +37,7 @@ except:
 
 # --- AEL modules ---
 # This module must only include utils_kodi.py to avoid circular dependencies.
-from utils_kodi import *
+from .utils_kodi import *
 
 # -------------------------------------------------------------------------------------------------
 # Strings and text

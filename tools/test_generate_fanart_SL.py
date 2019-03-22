@@ -10,37 +10,35 @@ from PIL import ImageDraw
 # Scaling keeps original img aspect ratio.
 # Returns an image of size (box_x_size, box_y_size)
 #
-def PIL_resize_proportional(img, layout, dic_key):
-    # CANVAS_COLOR = (25, 100, 25)
-    CANVAS_COLOR = (0, 0, 0)
-    box_x_size = layout[dic_key]['x_size']
-    box_y_size = layout[dic_key]['y_size']
-    # print('PIL_resize_proportional() Initialising ...')
-    # print('img X_size = {0} | Y_size = {1}'.format(img.size[0], img.size[1]))
-    # print('box X_size = {0} | Y_size = {1}'.format(box_x_size, box_y_size))
+def PIL_resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
+    box_x_size = layout[dic_key]['width']
+    box_y_size = layout[dic_key]['height']
+    # log_debug('PIL_resize_proportional() Initialising ...')
+    # log_debug('img X_size = {0} | Y_size = {1}'.format(img.size[0], img.size[1]))
+    # log_debug('box X_size = {0} | Y_size = {1}'.format(box_x_size, box_y_size))
 
     # --- First try to fit X dimension ---
-    # print('PIL_resize_proportional() Fitting X dimension')
+    # log_debug('PIL_resize_proportional() Fitting X dimension')
     wpercent = (box_x_size / float(img.size[0]))
     hsize = int((float(img.size[1]) * float(wpercent)))
     r_x_size = box_x_size
     r_y_size = hsize
     x_offset = 0
     y_offset = (box_y_size - r_y_size) / 2
-    # print('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
-    # print('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
+    # log_debug('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
+    # log_debug('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
 
     # --- Second try to fit Y dimension ---
     if y_offset < 0:
-        # print('Fitting Y dimension')
+        # log_debug('Fitting Y dimension')
         hpercent = (box_y_size / float(img.size[1]))
         wsize = int((float(img.size[0]) * float(hpercent)))
         r_x_size = wsize
         r_y_size = box_y_size
         x_offset = (box_x_size - r_x_size) / 2
         y_offset = 0
-        # print('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
-        # print('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
+        # log_debug('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
+        # log_debug('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
 
     # >> Create a new image and paste original image centered.
     canvas_img = Image.new('RGB', (box_x_size, box_y_size), CANVAS_COLOR)

@@ -137,7 +137,7 @@ class YP_operator_not_equal_token:
         return self
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing != token')
-        ret = self.first.exec_token() <> self.second.exec_token()
+        ret = self.first.exec_token() != self.second.exec_token()
         if debug_YP_parser: log_debug('!= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
         return ret
     def __repr__(self):

@@ -36,12 +36,9 @@ import copy
 import xml.etree.ElementTree as ET
 
 # --- AEL packages ---
-from constants import *
-from utils import *
-try:
-    from utils_kodi import *
-except:
-    from utils_kodi_standalone import *
+from .constants import *
+from .utils import *
+from .utils_kodi import *
 
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher data model

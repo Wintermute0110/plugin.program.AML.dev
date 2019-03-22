@@ -28,13 +28,10 @@ except:
     PILLOW_AVAILABLE = False
 
 # --- AEL packages ---
-from constants import *
-from utils import *
-try:
-    from utils_kodi import *
-except:
-    from utils_kodi_standalone import *
-from disk_IO import *
+from .constants import *
+from .utils import *
+from .utils_kodi import *
+from .disk_IO import *
 
 # -------------------------------------------------------------------------------------------------
 # Data structures
@@ -410,7 +407,7 @@ def mame_load_Catver_ini(filename):
         return (categories_dic, catver_version)
     for cat_line in f:
         stripped_line = cat_line.strip()
-        if __debug_do_list_categories: print('Line "' + stripped_line + '"')
+        if __debug_do_list_categories: log_debug('Line "' + stripped_line + '"')
         if read_status == 0:
             # >> Look for Catver version
             m = re.search(r'^;; CatVer ([0-9\.]+) / ', stripped_line)
@@ -418,7 +415,7 @@ def mame_load_Catver_ini(filename):
             m = re.search(r'^;; CATVER.ini ([0-9\.]+) / ', stripped_line)
             if m: catver_version = m.group(1)
             if stripped_line == '[Category]':
-                if __debug_do_list_categories: print('Found [Category]')
+                if __debug_do_list_categories: log_debug('Found [Category]')
                 read_status = 1
         elif read_status == 1:
             line_list = stripped_line.split("=")
@@ -426,7 +423,7 @@ def mame_load_Catver_ini(filename):
                 read_status = 2
                 continue
             else:
-                if __debug_do_list_categories: print(line_list)
+                if __debug_do_list_categories: log_debug(line_list)
                 machine_name = line_list[0]
                 category = line_list[1]
                 if machine_name not in categories_dic:
@@ -465,12 +462,12 @@ def mame_load_nplayers_ini(filename):
         return (categories_dic, nplayers_version)
     for cat_line in f:
         stripped_line = cat_line.strip()
-        if __debug_do_list_categories: print('Line "' + stripped_line + '"')
+        if __debug_do_list_categories: log_debug('Line "' + stripped_line + '"')
         if read_status == 0:
             m = re.search(r'NPlayers ([0-9\.]+) / ', stripped_line)
             if m: nplayers_version = m.group(1)
             if stripped_line == '[NPlayers]':
-                if __debug_do_list_categories: print('Found [NPlayers]')
+                if __debug_do_list_categories: log_debug('Found [NPlayers]')
                 read_status = 1
         elif read_status == 1:
             line_list = stripped_line.split("=")
@@ -478,7 +475,7 @@ def mame_load_nplayers_ini(filename):
                 read_status = 2
                 continue
             else:
-                if __debug_do_list_categories: print(line_list)
+                if __debug_do_list_categories: log_debug(line_list)
                 machine_name = line_list[0]
                 category = line_list[1]
                 if machine_name not in categories_dic:
@@ -3137,32 +3134,32 @@ font_mono_debug = None
 def PIL_resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
     box_x_size = layout[dic_key]['width']
     box_y_size = layout[dic_key]['height']
-    # print('PIL_resize_proportional() Initialising ...')
-    # print('img X_size = {0} | Y_size = {1}'.format(img.size[0], img.size[1]))
-    # print('box X_size = {0} | Y_size = {1}'.format(box_x_size, box_y_size))
+    # log_debug('PIL_resize_proportional() Initialising ...')
+    # log_debug('img X_size = {0} | Y_size = {1}'.format(img.size[0], img.size[1]))
+    # log_debug('box X_size = {0} | Y_size = {1}'.format(box_x_size, box_y_size))
 
     # --- First try to fit X dimension ---
-    # print('PIL_resize_proportional() Fitting X dimension')
+    # log_debug('PIL_resize_proportional() Fitting X dimension')
     wpercent = (box_x_size / float(img.size[0]))
     hsize = int((float(img.size[1]) * float(wpercent)))
     r_x_size = box_x_size
     r_y_size = hsize
     x_offset = 0
     y_offset = (box_y_size - r_y_size) / 2
-    # print('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
-    # print('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
+    # log_debug('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
+    # log_debug('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
 
     # --- Second try to fit Y dimension ---
     if y_offset < 0:
-        # print('Fitting Y dimension')
+        # log_debug('Fitting Y dimension')
         hpercent = (box_y_size / float(img.size[1]))
         wsize = int((float(img.size[0]) * float(hpercent)))
         r_x_size = wsize
         r_y_size = box_y_size
         x_offset = (box_x_size - r_x_size) / 2
         y_offset = 0
-        # print('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
-        # print('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
+        # log_debug('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
+        # log_debug('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
 
     # >> Create a new image and paste original image centered.
     canvas_img = Image.new('RGB', (box_x_size, box_y_size), CANVAS_COLOR)
@@ -4383,8 +4380,7 @@ def _get_ROM_type(rom):
 # be found in the ROMs of the parent.
 #
 def _get_merged_rom(roms, merged_name):
-    # filter() returns an iterator that passed the check in the iterable.
-    merged_rom_list = filter(lambda r: r['name'] == merged_name, roms)
+    merged_rom_list = [r for r in roms if r['name'] == merged_name]
 
     if len(merged_rom_list) > 0:
         return merged_rom_list[0]
@@ -4540,7 +4536,7 @@ def _get_CHD_location(chd_set, disk, m_name, machines, machines_render, machine_
                 parent_disks =  machine_roms[parent_name]['disks']
                 clone_disk_merged_name = disk['merge']
                 # >> Pick ROMs with same name and choose the first one.
-                parent_merged_disk_l = filter(lambda r: r['name'] == clone_disk_merged_name, parent_disks)
+                parent_merged_disk_l = [r for r in parent_disks if r['name'] == clone_disk_merged_name]
                 parent_merged_disk = parent_merged_disk_l[0]
                 # >> Check if clone merged ROM is also merged in parent
                 if parent_merged_disk['merge']:
@@ -4549,7 +4545,7 @@ def _get_CHD_location(chd_set, disk, m_name, machines, machines_render, machine_
                     super_parent_disks =  machine_roms[super_parent_name]['disks']
                     parent_disk_merged_name = parent_merged_disk['merge']
                     # >> Pick ROMs with same name and choose the first one.
-                    super_parent_merged_disk_l = filter(lambda r: r['name'] == parent_disk_merged_name, super_parent_disks)
+                    super_parent_merged_disk_l = [r for r in super_parent_disks if r['name'] == parent_disk_merged_name]
                     super_parent_merged_disk = super_parent_merged_disk_l[0]
                     location = super_parent_name + '/' + super_parent_merged_disk['name']
                 else:
