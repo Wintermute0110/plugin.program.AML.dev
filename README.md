@@ -23,18 +23,21 @@ All the screenshots have been taken using the skin [Estuary AEL MOD](https://for
 
 **Addon root window**
 
-![](https://raw.githubusercontent.com/wiki/Wintermute0110/plugin.program.AML.dev/shots/shot_root.png)
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_root.png)
 
 **Browsing MAME machines**
-![](https://raw.githubusercontent.com/wiki/Wintermute0110/plugin.program.AML.dev/shots/shot_MAME_pclone_list_A.png)
 
-![](https://raw.githubusercontent.com/wiki/Wintermute0110/plugin.program.AML.dev/shots/shot_MAME_pclone_list_B.png)
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_MAME_pclone_list_A.png)
+
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_MAME_pclone_list_B.png)
 
 **Browsing Software Lists**
-![](https://raw.githubusercontent.com/wiki/Wintermute0110/plugin.program.AML.dev/shots/shot_SL_pclone_list.png)
+
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_SL_pclone_list.png)
 
 **Audit of a MAME machine**
-![](https://raw.githubusercontent.com/wiki/Wintermute0110/plugin.program.AML.dev/shots/aml_machine_Audit_machine.png)
+
+![](https://raw.githubusercontent.com/Wintermute0110/plugin.program.AML.dev/master/media/shot_MAME_audit.png)
 
 ## Installing the latest released version ##
 
