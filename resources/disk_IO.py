@@ -1352,7 +1352,7 @@ def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machine
         catalog_index_dic = cache_index_dic[catalog_name]
         catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
 
-        pdialog_line1 = 'Building {0} ROM cache ({1} of {2}) ...'.format(
+        pdialog_line1 = 'Building {0} MAME render cache ({1} of {2}) ...'.format(
             catalog_name, catalog_count, num_catalogs)
         pDialog.update(0, pdialog_line1)
         total_items = len(catalog_index_dic)
@@ -1422,7 +1422,7 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
         catalog_index_dic = cache_index_dic[catalog_name]
         catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
 
-        pdialog_line1 = 'Building {0} asset cache ({1} of {2}) ...'.format(
+        pdialog_line1 = 'Building {0} MAME asset cache ({1} of {2}) ...'.format(
             catalog_name, catalog_count, num_catalogs)
         pDialog.update(0, pdialog_line1)
         total_items = len(catalog_index_dic)
