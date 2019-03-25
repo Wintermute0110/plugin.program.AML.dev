@@ -186,10 +186,11 @@ def fs_new_audit_dic():
     }
 
 #
-# Object used in MAME_assets.json, ordered alphabetically.
+# First is the database dictionary key of the asset, second is the subdirectory name.
+# List used in mame_scan_MAME_assets()
 #
 ASSET_MAME_T_LIST  = [
-    ('PCB',        'PCBs'),
+    ('3dbox',      '3dboxes'),
     ('artpreview', 'artpreviews'),
     ('artwork',    'artwork'),
     ('cabinet',    'cabinets'),
@@ -199,13 +200,14 @@ ASSET_MAME_T_LIST  = [
     ('flyer',      'flyers'),
     ('manual',     'manuals'),
     ('marquee',    'marquees'),
+    ('PCB',        'PCBs'),
     ('snap',       'snaps'),
     ('title',      'titles'),
     ('trailer',    'videosnaps'),
 ]
 
 #
-# flags -> ROM, CHD, Samples, SoftwareLists, Devices
+# flags -> ROM, CHD, Samples, SoftwareLists, Pluggable Devices
 #
 # Status flags meaning:
 #   -  Machine doesn't have ROMs | Machine doesn't have Software Lists
@@ -220,6 +222,7 @@ ASSET_MAME_T_LIST  = [
 #
 def fs_new_MAME_asset():
     return {
+        '3dbox'      : '',
         'PCB'        : '',
         'artpreview' : '',
         'artwork'    : '',
@@ -720,7 +723,12 @@ def fs_create_empty_control_dic(PATHS, AML_version_str):
     log_debug('fs_create_empty_control_dic() Exiting function')
 
 #
-# Favourite object creation
+# Favourite MAME object creation.
+# Simple means the main data and assets are used to created the Favourite.
+# Full means that the main data, the render data and the assets are used to create the Favourite.
+#
+# Both functioncs create a complete Favourite. When simple() is used the machine is taken from
+# the hashed database, which includes both the main and render machine data.
 #
 # Changes introduced in 0.9.6
 # 1) fav_machine['name'] = machine_name

@@ -50,6 +50,14 @@ WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
 WIP      [CORE] New artwork type, 3dboxes.
 
 
+[B]Advanced MAME Launcher | version 0.9.10 | xx June 2019[/B]
+
+FEATURE  By request of Rufoo, support MAME 3dboxes.
+
+FIX      Fixed a couple of crashes when executing context menus, thanks to Dax9.
+         See https://forum.kodi.tv/showthread.php?tid=304186&pid=2838180#pid2838180
+
+
 [B]Advanced MAME Launcher | version 0.9.9 | 22 March 2019[/B]
 
 FEATURE  [CORE] Improve statistics of working, non-working games, etc. for the Main filters.

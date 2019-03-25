@@ -1136,7 +1136,7 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR violet]sourcefile[/COLOR]: '{0}'".format(machine['sourcefile']))
 
     slist.append('\n[COLOR orange]Machine assets/artwork[/COLOR]')
-    slist.append("[COLOR violet]PCB[/COLOR]: '{0}'".format(assets['PCB']))
+    slist.append("[COLOR violet]3dbox[/COLOR]: '{0}'".format(assets['3dbox']))
     slist.append("[COLOR violet]artpreview[/COLOR]: '{0}'".format(assets['artpreview']))
     slist.append("[COLOR violet]artwork[/COLOR]: '{0}'".format(assets['artwork']))
     slist.append("[COLOR violet]cabinet[/COLOR]: '{0}'".format(assets['cabinet']))
@@ -1147,6 +1147,7 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR violet]flyer[/COLOR]: '{0}'".format(assets['flyer']))
     slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(assets['manual']))
     slist.append("[COLOR violet]marquee[/COLOR]: '{0}'".format(assets['marquee']))
+    slist.append("[COLOR violet]PCB[/COLOR]: '{0}'".format(assets['PCB']))
     slist.append("[COLOR violet]plot[/COLOR]: '{0}'".format(assets['plot']))
     slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(assets['snap']))
     slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(assets['title']))
@@ -1717,7 +1718,7 @@ def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, 
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', line1_str)
     fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
-    if len(fav_machines) > 1:
+    if len(fav_machines) >= 1:
         num_iteration = len(fav_machines)
         iteration = 0
         for fav_key in sorted(fav_machines):
@@ -1747,7 +1748,7 @@ def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_ren
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', line1_str)
     most_played_roms_dic = fs_load_JSON_file_dic(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
-    if len(most_played_roms_dic) > 1:
+    if len(most_played_roms_dic) >= 1:
         num_iteration = len(most_played_roms_dic)
         iteration = 0
         for fav_key in sorted(most_played_roms_dic):
@@ -1782,7 +1783,7 @@ def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_r
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', line1_str)
     recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
-    if len(recent_roms_list) > 1:
+    if len(recent_roms_list) >= 1:
         num_iteration = len(recent_roms_list)
         iteration = 0
         for i, recent_rom in enumerate(recent_roms_list):
@@ -7369,7 +7370,7 @@ def mame_check_before_scan_MAME_assets(PATHS, settings, control_dic):
 #   B) A parent may use assets from a clone.
 #
 def mame_scan_MAME_assets(PATHS, settings, control_dic,
-                          assets_dic, machines_render, main_pclone_dic):
+    assets_dic, machines_render, main_pclone_dic):
     Asset_path_FN = FileName(settings['assets_path'])
     log_info('mame_scan_MAME_assets() Asset path {0}'.format(Asset_path_FN.getPath()))
 

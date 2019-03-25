@@ -1867,6 +1867,7 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
             'title'     : m_assets['title'],   'snap'      : m_assets['snap'],
             'boxfront'  : m_assets['cabinet'], 'boxback'   : m_assets['cpanel'],
             'cartridge' : m_assets['PCB'],     'flyer'     : m_assets['flyer'],
+            '3dbox'     : m_assets['3dbox'],
             'icon'      : icon_path,           'fanart'    : fanart_path,
             'banner'    : banner_path,         'clearlogo' : clearlogo_path,
             'poster'    : poster_path
@@ -3631,12 +3632,15 @@ def render_fav_machine_row(m_name, machine, m_assets, location):
 
     # --- Assets ---
     # >> AEL custom artwork fields
-    listitem.setArt({'title'     : m_assets['title'],   'snap'    : m_assets['snap'],
-                     'boxfront'  : m_assets['cabinet'], 'boxback' : m_assets['cpanel'],
-                     'cartridge' : m_assets['PCB'],     'flyer'   : m_assets['flyer'],
-                     'icon'      : icon_path,           'fanart'    : fanart_path,
-                     'banner'    : banner_path,         'clearlogo' : clearlogo_path,
-                     'poster'    : poster_path})
+    listitem.setArt({
+        'title'     : m_assets['title'],   'snap'    : m_assets['snap'],
+        'boxfront'  : m_assets['cabinet'], 'boxback' : m_assets['cpanel'],
+        'cartridge' : m_assets['PCB'],     'flyer'   : m_assets['flyer'],
+        '3dbox'     : m_assets['3dbox'],
+        'icon'      : icon_path,           'fanart'    : fanart_path,
+        'banner'    : banner_path,         'clearlogo' : clearlogo_path,
+        'poster'    : poster_path,
+    })
 
     # --- ROM flags (Skins will use these flags to render icons) ---
     listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
@@ -5526,7 +5530,7 @@ def command_exec_utility(which_utility):
                 # >> Check that artwork subdirectories exist
                 Asset_path_FN = FileName(g_settings['assets_path'])
 
-                PCB_FN = Asset_path_FN.pjoin('PCBs')
+                _3dboxes_FN = Asset_path_FN.pjoin('3dboxes')
                 artpreview_FN = Asset_path_FN.pjoin('artpreviews')
                 artwork_FN = Asset_path_FN.pjoin('artwork')
                 cabinets_FN = Asset_path_FN.pjoin('cabinets')
@@ -5536,11 +5540,12 @@ def command_exec_utility(which_utility):
                 flyers_FN = Asset_path_FN.pjoin('flyers')
                 manuals_FN = Asset_path_FN.pjoin('manuals')
                 marquees_FN = Asset_path_FN.pjoin('marquees')
+                PCB_FN = Asset_path_FN.pjoin('PCBs')
                 snaps_FN = Asset_path_FN.pjoin('snaps')
                 titles_FN = Asset_path_FN.pjoin('titles')
                 videosnaps_FN = Asset_path_FN.pjoin('videosnaps')
 
-                aux_check_asset_dir(slist, PCB_FN, 'PCB')
+                aux_check_asset_dir(slist, _3dboxes_FN, '3D Boxes')
                 aux_check_asset_dir(slist, artpreview_FN, 'Artpreviews')
                 aux_check_asset_dir(slist, artwork_FN, 'Artwork')
                 aux_check_asset_dir(slist, cabinets_FN, 'Cabinets')
@@ -5550,6 +5555,7 @@ def command_exec_utility(which_utility):
                 aux_check_asset_dir(slist, flyers_FN, 'Flyers')
                 aux_check_asset_dir(slist, manuals_FN, 'Manuals')
                 aux_check_asset_dir(slist, marquees_FN, 'Marquees')
+                aux_check_asset_dir(slist, PCB_FN, 'PCB')
                 aux_check_asset_dir(slist, snaps_FN, 'Snaps')
                 aux_check_asset_dir(slist, titles_FN, 'Titles')
                 aux_check_asset_dir(slist, videosnaps_FN, 'Trailers')
@@ -5641,6 +5647,8 @@ def command_exec_utility(which_utility):
 
     # Check and update all favourite objects.
     elif which_utility == 'CHECK_ALL_FAV_OBJECTS':
+        log_debug('command_exec_utility() Executing CHECK_ALL_FAV_OBJECTS...')
+
         # --- Load databases ---
         db_files = [
             ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
@@ -5671,6 +5679,7 @@ def command_exec_utility(which_utility):
     # If the machine is found in the main database, then update the Favourite database
     # with data from the main database.
     elif which_utility == 'CHECK_MAME_FAV_OBJECTS':
+        log_debug('command_exec_utility() Executing CHECK_MAME_FAV_OBJECTS...')
         db_files = [
             ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
             ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
@@ -5678,7 +5687,6 @@ def command_exec_utility(which_utility):
             ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
         ]
         db_dic = fs_load_files(db_files)
-
         mame_update_MAME_Fav_objects(
             g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
         kodi_refresh_container()
