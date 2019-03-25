@@ -5424,12 +5424,12 @@ def command_context_setup_plugin():
             db_dic = fs_load_files(db_files)
             # For compatibility with "All in one step" menu option
             SL_dic = {
-                'SL_index' : db_dic['SL_index'],
+                'SL_index'    : db_dic['SL_index'],
                 'SL_machines' : db_dic['SL_machines'],
             }
 
             # --- Build plots ---
-            mame_build_SL_plots(g_PATHS, g_settings, SL_dic['control_dic'],
+            mame_build_SL_plots(g_PATHS, g_settings, db_dic['control_dic'],
                 SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
             kodi_notify('SL item plot generation finished')
 
@@ -5759,7 +5759,7 @@ def command_exec_utility(which_utility):
         # >> Open ROMs database.
         db_files = [
             ['machine_roms', 'MAME machine ROMs', g_PATHS.ROMS_DB_PATH.getPath()],
-            ['roms_sha1_dic', 'MAME ROMs SHA1 dictionary', g_PATHS.ROM_SHA1_HASH_DB_PATH.getPath()],
+            ['roms_sha1_dic', 'MAME ROMs SHA1 dictionary', g_PATHS.SHA1_HASH_DB_PATH.getPath()],
         ]
         db_dic = fs_load_files(db_files)
 
