@@ -4627,9 +4627,9 @@ def command_context_setup_plugin():
         main_filter_dic = filter_get_filter_DB(
             db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'])
         (filter_list, options_dic) = mame_custom_filters_load_XML(
-            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic)
+            g_PATHS, g_settings, control_dic, main_filter_dic)
         if len(filter_list) >= 1 and options_dic['XML_errors'] == False:
-            mame_build_custom_filters(g_PATHS, g_settings, db_dic['control_dic'],
+            mame_build_custom_filters(g_PATHS, g_settings, control_dic,
                 filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
 
         # --- Regenerate MAME asset hashed database ---
@@ -4730,9 +4730,9 @@ def command_context_setup_plugin():
         main_filter_dic = filter_get_filter_DB(
             db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'])
         (filter_list, options_dic) = mame_custom_filters_load_XML(
-            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic)
+            g_PATHS, g_settings, control_dic, main_filter_dic)
         if len(filter_list) >= 1 and options_dic['XML_errors'] == False:
-            mame_build_custom_filters(g_PATHS, g_settings, db_dic['control_dic'],
+            mame_build_custom_filters(g_PATHS, g_settings, control_dic,
                 filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
 
         # --- Regenerate MAME asset hashed database ---
