@@ -55,13 +55,13 @@ WIP      [FILTERING] Make a filter report the user can read.
 FEATURE  Improved filter "Machines by Display Type" and removed filter
          "Machines by Display Rotation."
 
-WIP      New catalog filter "Machines by Display VSync freq." Inspired by
+FEATURE  New catalog filter "Machines by Display VSync freq." Inspired by
          MASH's MAMEINFO Vsync.ini.
 
-WIP      New catalog filter "Machines by Display Resolution." Inspired by
+FEATURE  New catalog filter "Machines by Display Resolution." Inspired by
          MASH's MAMEINFO Screen.ini.
 
-WIP      New catalog filter "Machines by CPU." Inspired by
+FEATURE  New catalog filter "Machines by CPU." Inspired by
          MASH's MAMEINFO CPU.ini.
 
 WIP      New INI file Artwork.ini (produced by MASH's MAMEINFO).

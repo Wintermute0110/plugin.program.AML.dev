@@ -941,6 +941,7 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR violet]bestgames[/COLOR]: '{0}'".format(machine['bestgames']))
     slist.append("[COLOR violet]catlist[/COLOR]: '{0}'".format(machine['catlist']))
     slist.append("[COLOR violet]catver[/COLOR]: '{0}'".format(machine['catver']))
+    slist.append("[COLOR skyblue]chip_cpu_name[/COLOR]: {0}".format(unicode(machine['chip_cpu_name'])))
     # --- Devices list is a special case ---
     if machine['devices']:
         for i, device in enumerate(machine['devices']):
@@ -953,8 +954,11 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
             slist.append("  [COLOR skyblue]ext_names[/COLOR]: {0}".format(unicode(device['ext_names'])))
     else:
         slist.append("[COLOR lime]devices[/COLOR]: []")
+    slist.append("[COLOR skyblue]display_height[/COLOR]: {0}".format(unicode(machine['display_height'])))
+    slist.append("[COLOR skyblue]display_refresh[/COLOR]: {0}".format(unicode(machine['display_refresh'])))
     slist.append("[COLOR skyblue]display_rotate[/COLOR]: {0}".format(unicode(machine['display_rotate'])))
     slist.append("[COLOR skyblue]display_type[/COLOR]: {0}".format(unicode(machine['display_type'])))
+    slist.append("[COLOR skyblue]display_width[/COLOR]: {0}".format(unicode(machine['display_width'])))
     slist.append("[COLOR violet]genre[/COLOR]: '{0}'".format(machine['genre']))
     # --- input is a special case ---
     if machine['input']:
@@ -3978,13 +3982,24 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             sample = { 'name' : unicode(elem.attrib['name']) }
             m_roms['samples'].append(sample)
 
+        # >> Chips define CPU and audio circuits.
+        elif event == 'start' and elem.tag == 'chip':
+            if elem.attrib['type'] == 'cpu':
+                machine['chip_cpu_name'].append(elem.attrib['name'])
+
         # Some machines have more than one display tag (for example aquastge has 2).
         # Other machines have no display tag (18w)
         elif event == 'start' and elem.tag == 'display':
             rotate_str = elem.attrib['rotate'] if 'rotate' in elem.attrib else '0'
+            width_str = elem.attrib['width'] if 'width' in elem.attrib else 'Undefined'
+            height_str = elem.attrib['height'] if 'height' in elem.attrib else 'Undefined'
+            # All attribute lists have same length, event if data is empty.
             # machine['display_tag'].append(elem.attrib['tag'])
             machine['display_type'].append(elem.attrib['type'])
             machine['display_rotate'].append(rotate_str)
+            machine['display_width'].append(width_str)
+            machine['display_height'].append(height_str)
+            machine['display_refresh'].append(elem.attrib['refresh'])
             num_displays += 1
 
         # Some machines have no controls at all.
@@ -5010,7 +5025,11 @@ def _cache_index_builder(cat_name, cache_index_dic, catalog_all, catalog_parents
             'hash'         : fs_render_cache_get_hash(cat_name, cat_key)
         }
 
-def _build_catalog_helper(catalog_parents, catalog_all, machines, machines_render, main_pclone_dic, db_field):
+#
+# db_field is a string
+#
+def _build_catalog_helper(catalog_parents, catalog_all,
+    machines, machines_render, main_pclone_dic, db_field):
     for parent_name in main_pclone_dic:
         # >> Skip device machines in catalogs.
         if machines_render[parent_name]['isDevice']: continue
@@ -5023,6 +5042,31 @@ def _build_catalog_helper(catalog_parents, catalog_all, machines, machines_rende
             catalog_all[catalog_key] = { parent_name : machines_render[parent_name]['description'] }
         for clone_name in main_pclone_dic[parent_name]:
             catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
+
+#
+# db_field is a list of strings.
+# This list is converted into a set. For example, a machine with 2 x 'Zilog Z80' CPUs will
+# appear in the 'Zilog Z80' list.
+#
+def _build_catalog_helper_list(catalog_parents, catalog_all,
+    machines, machines_render, main_pclone_dic, db_field):
+    for parent_name in main_pclone_dic:
+        # Skip device machines in catalogs.
+        if machines_render[parent_name]['isDevice']: continue
+        # One machine can be in multiple catalogs. Compress repeated items into a set.
+        field_set = set(machines[parent_name][db_field])
+        # If set is empty then create a default key.
+        if len(field_set) == 0: field_set = {'[ Not set ]'}
+        for catalog_key in field_set:
+            if catalog_key in catalog_parents:
+                catalog_parents[catalog_key][parent_name] = machines_render[parent_name]['description']
+                catalog_all[catalog_key][parent_name] = machines_render[parent_name]['description']
+            else:
+                catalog_parents[catalog_key] = { parent_name : machines_render[parent_name]['description'] }
+                catalog_all[catalog_key] = { parent_name : machines_render[parent_name]['description'] }
+            # Add clones to all catalog.
+            for clone_name in main_pclone_dic[parent_name]:
+                catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
 
 #
 # Checks for errors before scanning for SL ROMs.
@@ -5560,18 +5604,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     pDialog.update(update_number, pDialog_line1, 'Display VSync catalog')
     catalog_parents = {}
     catalog_all = {}
-    for parent_name in main_pclone_dic:
-        machine = machines[parent_name]
-        machine_render = machines_render[parent_name]
-        if machine_render['isDevice']: continue
-        catalog_key = '[Write me]'
-        if catalog_key in catalog_parents:
-            catalog_parents[catalog_key][parent_name] = machine_render['description']
-            catalog_all[catalog_key][parent_name] = machine_render['description']
-        else:
-            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
-            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
+    _build_catalog_helper_list(catalog_parents, catalog_all,
+        machines, machines_render, main_pclone_dic, 'display_refresh')
     _cache_index_builder('Display_VSync', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath(), catalog_parents)
@@ -5587,7 +5621,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue
-        catalog_key = '[Write me]'
+        catalog_key = misc_get_display_resolution_catalog_key(
+            machine['display_width'], machine['display_height'])
         if catalog_key in catalog_parents:
             catalog_parents[catalog_key][parent_name] = machine_render['description']
             catalog_all[catalog_key][parent_name] = machine_render['description']
@@ -5606,18 +5641,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     pDialog.update(update_number, pDialog_line1, 'CPU catalog')
     catalog_parents = {}
     catalog_all = {}
-    for parent_name in main_pclone_dic:
-        machine = machines[parent_name]
-        machine_render = machines_render[parent_name]
-        if machine_render['isDevice']: continue
-        catalog_key = '[Write me]'
-        if catalog_key in catalog_parents:
-            catalog_parents[catalog_key][parent_name] = machine_render['description']
-            catalog_all[catalog_key][parent_name] = machine_render['description']
-        else:
-            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
-            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
+    _build_catalog_helper_list(catalog_parents, catalog_all,
+        machines, machines_render, main_pclone_dic, 'chip_cpu_name')
     _cache_index_builder('CPU', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CPU_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_CPU_PARENT_PATH.getPath(), catalog_parents)

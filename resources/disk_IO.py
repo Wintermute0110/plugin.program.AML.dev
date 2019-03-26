@@ -96,23 +96,31 @@ from .utils_kodi import *
 def fs_new_machine_dic():
     return {
         # >> <machine> attributes
-        'romof'          : '',
-        'sampleof'       : '',
-        'sourcefile'     : '',
-        'isMechanical'   : False,
+        'romof'           : '',
+        'sampleof'        : '',
+        'sourcefile'      : '',
+        'isMechanical'    : False,
+        # <!ATTLIST chip type (cpu|audio) #REQUIRED>
+        # <!ATTLIST chip name CDATA #REQUIRED>
+        # Name of the chip when type == 'cpu'
+        # Example <chip type="cpu" tag="maincpu" name="Zilog Z80" />
+        'chip_cpu_name'   : [],
         # >> Other <machine> tags from MAME XML
-        'display_type'   : [], # (raster|vector|lcd|unknown) #REQUIRED>
-        'display_rotate' : [], # (0|90|180|270) #REQUIRED>
-        'input'          : {},
-        'softwarelists'  : [],
-        'devices'        : [], # List of dictionaries. See comments avobe.
+        'display_type'    : [], # <!ATTLIST display type (raster|vector|lcd|svg|unknown) #REQUIRED>
+        'display_rotate'  : [], # <!ATTLIST display rotate (0|90|180|270) #IMPLIED>
+        'display_width'   : [], # <!ATTLIST display width CDATA #IMPLIED>
+        'display_height'  : [], # <!ATTLIST display height CDATA #IMPLIED>
+        'display_refresh' : [], # <!ATTLIST display refresh CDATA #REQUIRED>
+        'input'           : {},
+        'softwarelists'   : [],
+        'devices'         : [], # List of dictionaries. See comments avobe.
         # >> Custom AML data (from INI files or generated)
-        'catver'         : '', # External catalog
-        'catlist'        : '', # External catalog
-        'genre'          : '', # External catalog
-        'bestgames'      : '', # External catalog
-        'series'         : '', # External catalog
-        'isDead'         : False,
+        'catver'          : '', # External catalog
+        'catlist'         : '', # External catalog
+        'genre'           : '', # External catalog
+        'bestgames'       : '', # External catalog
+        'series'          : '', # External catalog
+        'isDead'          : False,
     }
 
 #

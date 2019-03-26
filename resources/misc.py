@@ -123,6 +123,20 @@ def misc_get_display_type_catalog_key(display_type_list, display_rotate_list):
 
     return catalog_key
 
+def misc_get_display_resolution_catalog_key(display_width, display_height):
+    if len(display_width) > 1 or len(display_height) > 1:
+        catalog_key = '{0} displays'.format(len(display_width))
+    elif len(display_width) == 0 and len(display_height) == 1:
+        catalog_key = 'Empty x {0}'.format(display_height[0])
+    elif len(display_width) == 1 and len(display_height) == 0:
+        catalog_key = '{0} x Empty'.format(display_width[0])
+    elif len(display_width) == 0 and len(display_height) == 0:
+        catalog_key = 'Empty x Empty'
+    else:
+        catalog_key = '{0} x {1}'.format(display_width[0], display_height[0])
+
+    return catalog_key
+
 #
 # A) Capitalise every list item
 # B) Substitute Only_buttons -> Only buttons
