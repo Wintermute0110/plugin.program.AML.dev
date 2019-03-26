@@ -791,30 +791,34 @@ def fs_get_cataloged_dic_parents(PATHS, catalog_name):
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath())
     elif catalog_name == 'Series':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SERIES_PARENT_PATH.getPath())
-    elif catalog_name == 'Manufacturer':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath())
-    elif catalog_name == 'Year':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_YEAR_PARENT_PATH.getPath())
-    elif catalog_name == 'Driver':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Compact':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath())
-    elif catalog_name == 'Display_Type':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath())
-    elif catalog_name == 'Display_Rotate':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_ROTATE_PARENT_PATH.getPath())
     elif catalog_name == 'Devices_Expanded':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath())
     elif catalog_name == 'Devices_Compact':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath())
-    elif catalog_name == 'BySL':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SL_PARENT_PATH.getPath())
+    elif catalog_name == 'Display_Type':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath())
+    elif catalog_name == 'Display_VSync':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath())
+    elif catalog_name == 'Display_Resolution':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_RES_PARENT_PATH.getPath())
+    elif catalog_name == 'CPU':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CPU_PARENT_PATH.getPath())
+    elif catalog_name == 'Driver':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath())
+    elif catalog_name == 'Manufacturer':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath())
     elif catalog_name == 'ShortName':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath())
     elif catalog_name == 'LongName':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath())
+    elif catalog_name == 'BySL':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SL_PARENT_PATH.getPath())
+    elif catalog_name == 'Year':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_YEAR_PARENT_PATH.getPath())
     else:
         log_error('fs_get_cataloged_dic_parents() Unknown catalog_name = "{0}"'.format(catalog_name))
 
@@ -837,30 +841,34 @@ def fs_get_cataloged_dic_all(PATHS, catalog_name):
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath())
     elif catalog_name == 'Series':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SERIES_ALL_PATH.getPath())
-    elif catalog_name == 'Manufacturer':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath())
-    elif catalog_name == 'Year':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_YEAR_ALL_PATH.getPath())
-    elif catalog_name == 'Driver':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DRIVER_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Compact':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath())
-    elif catalog_name == 'Display_Type':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath())
-    elif catalog_name == 'Display_Rotate':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_ROTATE_ALL_PATH.getPath())
     elif catalog_name == 'Devices_Expanded':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath())
     elif catalog_name == 'Devices_Compact':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath())
-    elif catalog_name == 'BySL':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SL_ALL_PATH.getPath())
+    elif catalog_name == 'Display_Type':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath())
+    elif catalog_name == 'Display_VSync':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath())
+    elif catalog_name == 'Display_Resolution':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_RES_ALL_PATH.getPath())
+    elif catalog_name == 'CPU':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CPU_ALL_PATH.getPath())
+    elif catalog_name == 'Driver':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DRIVER_ALL_PATH.getPath())
+    elif catalog_name == 'Manufacturer':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath())
     elif catalog_name == 'ShortName':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath())
     elif catalog_name == 'LongName':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath())
+    elif catalog_name == 'BySL':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SL_ALL_PATH.getPath())
+    elif catalog_name == 'Year':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_YEAR_ALL_PATH.getPath())
     else:
         log_error('fs_get_cataloged_dic_all() Unknown catalog_name = "{0}"'.format(catalog_name))
 

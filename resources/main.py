@@ -132,32 +132,35 @@ class AML_Paths:
         self.CATALOG_BESTGAMES_ALL_PATH           = self.CATALOG_DIR.pjoin('catalog_bestgames_all.json')
         self.CATALOG_SERIES_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_series_parents.json')
         self.CATALOG_SERIES_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_series_all.json')
-        self.CATALOG_MANUFACTURER_PARENT_PATH     = self.CATALOG_DIR.pjoin('catalog_manufacturer_parents.json')
-        self.CATALOG_MANUFACTURER_ALL_PATH        = self.CATALOG_DIR.pjoin('catalog_manufacturer_all.json')
-        self.CATALOG_YEAR_PARENT_PATH             = self.CATALOG_DIR.pjoin('catalog_year_parents.json')
-        self.CATALOG_YEAR_ALL_PATH                = self.CATALOG_DIR.pjoin('catalog_year_all.json')
-        self.CATALOG_DRIVER_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_driver_parents.json')
-        self.CATALOG_DRIVER_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_driver_all.json')
+
         self.CATALOG_CONTROL_EXPANDED_PARENT_PATH = self.CATALOG_DIR.pjoin('catalog_control_expanded_parents.json')
         self.CATALOG_CONTROL_EXPANDED_ALL_PATH    = self.CATALOG_DIR.pjoin('catalog_control_expanded_all.json')
         self.CATALOG_CONTROL_COMPACT_PARENT_PATH  = self.CATALOG_DIR.pjoin('catalog_control_compact_parents.json')
         self.CATALOG_CONTROL_COMPACT_ALL_PATH     = self.CATALOG_DIR.pjoin('catalog_control_compact_all.json')
-        self.CATALOG_DISPLAY_TAG_PARENT_PATH      = self.CATALOG_DIR.pjoin('catalog_display_tag_parents.json')
-        self.CATALOG_DISPLAY_TAG_ALL_PATH         = self.CATALOG_DIR.pjoin('catalog_display_tag_all.json')
-        self.CATALOG_DISPLAY_TYPE_PARENT_PATH     = self.CATALOG_DIR.pjoin('catalog_display_type_parents.json')
-        self.CATALOG_DISPLAY_TYPE_ALL_PATH        = self.CATALOG_DIR.pjoin('catalog_display_type_all.json')
-        self.CATALOG_DISPLAY_ROTATE_PARENT_PATH   = self.CATALOG_DIR.pjoin('catalog_display_rotate_parents.json')
-        self.CATALOG_DISPLAY_ROTATE_ALL_PATH      = self.CATALOG_DIR.pjoin('catalog_display_rotate_all.json')
         self.CATALOG_DEVICE_EXPANDED_PARENT_PATH  = self.CATALOG_DIR.pjoin('catalog_device_expanded_parents.json')
         self.CATALOG_DEVICE_EXPANDED_ALL_PATH     = self.CATALOG_DIR.pjoin('catalog_device_expanded_all.json')
         self.CATALOG_DEVICE_COMPACT_PARENT_PATH   = self.CATALOG_DIR.pjoin('catalog_device_compact_parents.json')
         self.CATALOG_DEVICE_COMPACT_ALL_PATH      = self.CATALOG_DIR.pjoin('catalog_device_compact_all.json')
-        self.CATALOG_SL_PARENT_PATH               = self.CATALOG_DIR.pjoin('catalog_SL_parents.json')
-        self.CATALOG_SL_ALL_PATH                  = self.CATALOG_DIR.pjoin('catalog_SL_all.json')
+        self.CATALOG_DISPLAY_TYPE_PARENT_PATH     = self.CATALOG_DIR.pjoin('catalog_display_type_parents.json')
+        self.CATALOG_DISPLAY_TYPE_ALL_PATH        = self.CATALOG_DIR.pjoin('catalog_display_type_all.json')
+        self.CATALOG_DISPLAY_VSYNC_PARENT_PATH    = self.CATALOG_DIR.pjoin('catalog_display_vsync_parents.json')
+        self.CATALOG_DISPLAY_VSYNC_ALL_PATH       = self.CATALOG_DIR.pjoin('catalog_display_vsync_all.json')
+        self.CATALOG_DISPLAY_RES_PARENT_PATH      = self.CATALOG_DIR.pjoin('catalog_display_resolution_parents.json')
+        self.CATALOG_DISPLAY_RES_ALL_PATH         = self.CATALOG_DIR.pjoin('catalog_display_resolution_all.json')
+        self.CATALOG_CPU_PARENT_PATH              = self.CATALOG_DIR.pjoin('catalog_CPU_parents.json')
+        self.CATALOG_CPU_ALL_PATH                 = self.CATALOG_DIR.pjoin('catalog_CPU_all.json')
+        self.CATALOG_DRIVER_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_driver_parents.json')
+        self.CATALOG_DRIVER_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_driver_all.json')
+        self.CATALOG_MANUFACTURER_PARENT_PATH     = self.CATALOG_DIR.pjoin('catalog_manufacturer_parents.json')
+        self.CATALOG_MANUFACTURER_ALL_PATH        = self.CATALOG_DIR.pjoin('catalog_manufacturer_all.json')
         self.CATALOG_SHORTNAME_PARENT_PATH        = self.CATALOG_DIR.pjoin('catalog_shortname_parents.json')
         self.CATALOG_SHORTNAME_ALL_PATH           = self.CATALOG_DIR.pjoin('catalog_shortname_all.json')
         self.CATALOG_LONGNAME_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_longname_parents.json')
         self.CATALOG_LONGNAME_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_longname_all.json')
+        self.CATALOG_SL_PARENT_PATH               = self.CATALOG_DIR.pjoin('catalog_SL_parents.json')
+        self.CATALOG_SL_ALL_PATH                  = self.CATALOG_DIR.pjoin('catalog_SL_all.json')
+        self.CATALOG_YEAR_PARENT_PATH             = self.CATALOG_DIR.pjoin('catalog_year_parents.json')
+        self.CATALOG_YEAR_ALL_PATH                = self.CATALOG_DIR.pjoin('catalog_year_all.json')
 
         # >> Distributed hashed database
         self.MAIN_DB_HASH_DIR      = self.ADDON_DATA_DIR.pjoin('hash')
@@ -637,8 +640,10 @@ def render_root_list():
         num_cat_Controls_Compact = len(cache_index_dic['Controls_Compact'])
         num_cat_Devices_Expanded = len(cache_index_dic['Devices_Expanded'])
         num_cat_Devices_Compact = len(cache_index_dic['Devices_Compact'])
-        num_cat_Display_Rotate = len(cache_index_dic['Display_Rotate'])
         num_cat_Display_Type = len(cache_index_dic['Display_Type'])
+        num_cat_Display_VSync = len(cache_index_dic['Display_VSync'])
+        num_cat_Display_Resolution = len(cache_index_dic['Display_Resolution'])
+        num_cat_CPU = len(cache_index_dic['CPU'])
         num_cat_Driver = len(cache_index_dic['Driver'])
         num_cat_Manufacturer = len(cache_index_dic['Manufacturer'])
         num_cat_ShortName = len(cache_index_dic['ShortName'])
@@ -686,6 +691,9 @@ def render_root_list():
     device_compact_str  = 'Machines by Device (Compact)'
     # drotation_str       = 'Machines by Display Rotation'
     dtype_str           = 'Machines by Display Type'
+    d_vsync_freq_str    = 'Machines by Display VSync freq'
+    d_resolution_str    = 'Machines by Display Resolution'
+    CPU_str             = 'Machines by CPU'
     driver_str          = 'Machines by Driver'
     manufacturer_str    = 'Machines by Manufacturer'
     shortname_str       = 'Machines by MAME short name'
@@ -749,6 +757,11 @@ def render_root_list():
     #     'which could be Horizontal or Vertical.')
     dtype_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type '
         'and rotation.')
+    d_vsync_freq_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the display '
+        'vertical synchronisation (VSync) frequency, also known as the display refresh rate or '
+        'frames per second (FPS).')
+    d_resolution_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display resolution.')
+    CPU_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the CPU used.')
     driver_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by driver. '
         'Brother machines have the same driver.')
     manufacturer_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted by '
@@ -839,6 +852,9 @@ def render_root_list():
         device_expanded_str += a.format(num_cat_Devices_Expanded)
         device_compact_str  += a.format(num_cat_Devices_Compact)
         dtype_str           += a.format(num_cat_Display_Type)
+        d_vsync_freq_str    += a.format(num_cat_Display_VSync)
+        d_resolution_str    += a.format(num_cat_Display_Resolution)
+        CPU_str             += a.format(num_cat_CPU)
         driver_str          += a.format(num_cat_Driver)
         manufacturer_str    += a.format(num_cat_Manufacturer)
         shortname_str       += a.format(num_cat_ShortName)
@@ -878,12 +894,15 @@ def render_root_list():
             catlist_str, misc_url_1_arg('catalog', 'Catlist'), catlist_plot)
         render_root_list_row_standard(
             genre_str, misc_url_1_arg('catalog', 'Genre'), genre_plot)
+        # Future "Machines by Category" here.
         render_root_list_row_standard(
             NPlayers_str, misc_url_1_arg('catalog', 'NPlayers'), NPlayers_plot)
         render_root_list_row_standard(
             rating_str, misc_url_1_arg('catalog', 'Bestgames'), rating_plot)
         render_root_list_row_standard(
             series_str, misc_url_1_arg('catalog', 'Series'), series_plot)
+        # Future "Machines by Artwork" here.
+
         # >> Cataloged filters (always there)
         render_root_list_row_standard(
             ctype_expanded_str, misc_url_1_arg('catalog', 'Controls_Expanded'), ctype_expanded_plot)
@@ -897,6 +916,12 @@ def render_root_list():
         #     drotation_str, misc_url_1_arg('catalog', 'Display_Rotate'), drotation_plot)
         render_root_list_row_standard(
             dtype_str, misc_url_1_arg('catalog', 'Display_Type'), dtype_plot)
+        render_root_list_row_standard(
+            d_vsync_freq_str, misc_url_1_arg('catalog', 'Display_VSync'), d_vsync_freq_plot)
+        render_root_list_row_standard(
+            d_resolution_str, misc_url_1_arg('catalog', 'Display_Resolution'), d_resolution_plot)
+        render_root_list_row_standard(
+            CPU_str, misc_url_1_arg('catalog', 'CPU'), CPU_plot)
         render_root_list_row_standard(
             driver_str, misc_url_1_arg('catalog', 'Driver'), driver_plot)
         render_root_list_row_standard(

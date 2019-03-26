@@ -5080,26 +5080,32 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Machine count ---
     cache_index_dic = {
-        'Main'              : {},
-        'Binary'            : {},
-        'Catver'            : {},
-        'Catlist'           : {},
-        'Genre'             : {},
-        'NPlayers'          : {},
-        'Bestgames'         : {},
-        'Series'            : {},
-        'Manufacturer'      : {},
-        'Year'              : {},
-        'Driver'            : {},
-        'Controls_Expanded' : {},
-        'Controls_Compact'  : {},
-        'Display_Type'      : {},
-        'Display_Rotate'    : {},
-        'Devices_Expanded'  : {},
-        'Devices_Compact'   : {},
-        'BySL'              : {},
-        'ShortName'         : {},
-        'LongName'          : {},
+        # Virtual Main filter catalog
+        'Main'               : {},
+        # Virtual Binary filter catalog
+        'Binary'             : {},
+        # DAT/INI based catalogs
+        'Catver'             : {},
+        'Catlist'            : {},
+        'Genre'              : {},
+        'NPlayers'           : {},
+        'Bestgames'          : {},
+        'Series'             : {},
+        # MAME XML extracted catalogs
+        'Controls_Expanded'  : {},
+        'Controls_Compact'   : {},
+        'Devices_Expanded'   : {},
+        'Devices_Compact'    : {},
+        'Display_Type'       : {},
+        'Display_VSync'      : {},
+        'Display_Resolution' : {},
+        'CPU'                : {},
+        'Driver'             : {},
+        'Manufacturer'       : {},
+        'ShortName'          : {},
+        'LongName'           : {},
+        'BySL'               : {},
+        'Year'               : {},
     }
     NUM_CATALOGS = len(cache_index_dic)
 
@@ -5355,6 +5361,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
+    # --- Category catalog ---
+
     # --- Nplayers catalog ---
     log_info('Making Nplayers catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Nplayers catalog')
@@ -5391,53 +5399,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
-    # --- Manufacturer catalog ---
-    log_info('Making Manufacturer catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Manufacturer catalog')
-    catalog_parents = {}
-    catalog_all = {}
-    _build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'manufacturer')
-    _cache_index_builder('Manufacturer', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
-    fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
-
-    # --- Year catalog ---
-    log_info('Making Year catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Year catalog')
-    catalog_parents = {}
-    catalog_all = {}
-    _build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'year')
-    _cache_index_builder('Year', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
-    fs_write_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
-
-    # --- Driver catalog ---
-    log_info('Making Driver catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Driver catalog')
-    catalog_parents = {}
-    catalog_all = {}
-    for parent_name in main_pclone_dic:
-        machine = machines[parent_name]
-        machine_render = machines_render[parent_name]
-        if machine_render['isDevice']: continue # >> Skip device machines
-        catalog_key = machine['sourcefile']
-        if catalog_key in mame_driver_name_dic: catalog_key = mame_driver_name_dic[catalog_key]
-        if catalog_key in catalog_parents:
-            catalog_parents[catalog_key][parent_name] = machine_render['description']
-            catalog_all[catalog_key][parent_name] = machine_render['description']
-        else:
-            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
-            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
-    _cache_index_builder('Driver', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
-    fs_write_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+    # --- Artwork catalog ---
 
     # --- Control catalog (Expanded) ---
     log_info('Making Control Expanded catalog ...')
@@ -5508,66 +5470,6 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
-    # --- Display rotate catalog ---
-    # --- Merged with Display rotate catalog ---
-    # log_info('Making Display Rotate catalog ...')
-    # pDialog.update(update_number, pDialog_line1, 'Display rotate catalog')
-    # catalog_parents = {}
-    # catalog_all = {}
-    # for parent_name in main_pclone_dic:
-    #     machine = machines[parent_name]
-    #     machine_render = machines_render[parent_name]
-    #     if machine_render['isDevice']: continue # >> Skip device machines
-    #     # >> machine['display_rotate'] is a list of strings
-    #     fixed_d_rotate_list = []
-    #     for d_str in machine['display_rotate']:
-    #         if d_str == '0' or d_str == '180':
-    #             fixed_d_rotate_list.append('Horizontal')
-    #         elif d_str == '90' or d_str == '270':
-    #             fixed_d_rotate_list.append('Vertical')
-    #         else:
-    #             raise TypeError('Machine {0} wrong display rotate "{1}"'.format(parent_name, d_str))
-    #     catalog_key = " / ".join(fixed_d_rotate_list)
-    #     # >> Change category name for machines with no display
-    #     if catalog_key == '': catalog_key = '[ No display ]'
-    #     if catalog_key in catalog_parents:
-    #         catalog_parents[catalog_key][parent_name] = machine_render['description']
-    #         catalog_all[catalog_key][parent_name] = machine_render['description']
-    #     else:
-    #         catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
-    #         catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-    #     _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
-    # _cache_index_builder('Display_Rotate', cache_index_dic, catalog_all, catalog_parents)
-    # fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_ALL_PATH.getPath(), catalog_all)
-    # fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PARENT_PATH.getPath(), catalog_parents)
-    # processed_filters += 1
-    # update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
-
-    # --- Display type catalog ---
-    log_info('Making Display Type catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Display type catalog')
-    catalog_parents = {}
-    catalog_all = {}
-    for parent_name in main_pclone_dic:
-        machine = machines[parent_name]
-        machine_render = machines_render[parent_name]
-        # Skip device machines
-        if machine_render['isDevice']: continue
-        # Compute the catalog_key. display_type and display_rotate main DB entries used.
-        catalog_key = misc_get_display_type_catalog_key(machine['display_type'], machine['display_rotate'])
-        if catalog_key in catalog_parents:
-            catalog_parents[catalog_key][parent_name] = machine_render['description']
-            catalog_all[catalog_key][parent_name] = machine_render['description']
-        else:
-            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
-            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
-    _cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
-
     # --- <device> / Device Expanded catalog ---
     log_info('Making <device> tag Expanded catalog ...')
     pDialog.update(update_number, pDialog_line1, '<device> Expanded catalog')
@@ -5629,32 +5531,132 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
-    # --- Software List catalog ---
-    log_info('Making Software List catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Software List catalog')
-    # >> Load proper Software List proper names, if available
-    SL_names_dic = fs_load_JSON_file_dic(PATHS.SL_NAMES_PATH.getPath())
+    # --- Display Type catalog ---
+    log_info('Making Display Type catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Display Type catalog')
+    catalog_parents = {}
+    catalog_all = {}
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
+        machine_render = machines_render[parent_name]
+        if machine_render['isDevice']: continue
+        # Compute the catalog_key. display_type and display_rotate main DB entries used.
+        catalog_key = misc_get_display_type_catalog_key(machine['display_type'], machine['display_rotate'])
+        if catalog_key in catalog_parents:
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
+        else:
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
+    _cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- Display VSync catalog ---
+    log_info('Making Display VSync catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Display VSync catalog')
+    catalog_parents = {}
+    catalog_all = {}
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
+        machine_render = machines_render[parent_name]
+        if machine_render['isDevice']: continue
+        catalog_key = '[Write me]'
+        if catalog_key in catalog_parents:
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
+        else:
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
+    _cache_index_builder('Display_VSync', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath(), catalog_all)
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath(), catalog_parents)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- Display Resolution catalog ---
+    log_info('Making Display Resolution catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Display Resolution catalog')
+    catalog_parents = {}
+    catalog_all = {}
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
+        machine_render = machines_render[parent_name]
+        if machine_render['isDevice']: continue
+        catalog_key = '[Write me]'
+        if catalog_key in catalog_parents:
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
+        else:
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
+    _cache_index_builder('Display_Resolution', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_RES_ALL_PATH.getPath(), catalog_all)
+    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_RES_PARENT_PATH.getPath(), catalog_parents)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- CPU catalog ---
+    log_info('Making CPU catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'CPU catalog')
+    catalog_parents = {}
+    catalog_all = {}
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
+        machine_render = machines_render[parent_name]
+        if machine_render['isDevice']: continue
+        catalog_key = '[Write me]'
+        if catalog_key in catalog_parents:
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
+        else:
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
+    _cache_index_builder('CPU', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_CPU_ALL_PATH.getPath(), catalog_all)
+    fs_write_JSON_file(PATHS.CATALOG_CPU_PARENT_PATH.getPath(), catalog_parents)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- Driver catalog ---
+    log_info('Making Driver catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Driver catalog')
     catalog_parents = {}
     catalog_all = {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
-        # >> A machine may have more than 1 software lists
-        for sl_name in machine['softwarelists']:
-            catalog_key = sl_name
-            if catalog_key in SL_names_dic:
-                catalog_key = SL_names_dic[catalog_key]
-            if catalog_key in catalog_parents:
-                catalog_parents[catalog_key][parent_name] = machine_render['description']
-                catalog_all[catalog_key][parent_name] = machine_render['description']
-            else:
-                catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
-                catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-            _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
-    _cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
-    fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
+        catalog_key = machine['sourcefile']
+        if catalog_key in mame_driver_name_dic: catalog_key = mame_driver_name_dic[catalog_key]
+        if catalog_key in catalog_parents:
+            catalog_parents[catalog_key][parent_name] = machine_render['description']
+            catalog_all[catalog_key][parent_name] = machine_render['description']
+        else:
+            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
+    _cache_index_builder('Driver', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
+    fs_write_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- Manufacturer catalog ---
+    log_info('Making Manufacturer catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Manufacturer catalog')
+    catalog_parents = {}
+    catalog_all = {}
+    _build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'manufacturer')
+    _cache_index_builder('Manufacturer', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
+    fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
@@ -5708,6 +5710,47 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
     pDialog.update(update_number)
     pDialog.close()
+
+    # --- Software List (BySL) catalog ---
+    log_info('Making Software List catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Software List catalog')
+    # >> Load proper Software List proper names, if available
+    SL_names_dic = fs_load_JSON_file_dic(PATHS.SL_NAMES_PATH.getPath())
+    catalog_parents = {}
+    catalog_all = {}
+    for parent_name in main_pclone_dic:
+        machine = machines[parent_name]
+        machine_render = machines_render[parent_name]
+        if machine_render['isDevice']: continue # >> Skip device machines
+        # >> A machine may have more than 1 software lists
+        for sl_name in machine['softwarelists']:
+            catalog_key = sl_name
+            if catalog_key in SL_names_dic:
+                catalog_key = SL_names_dic[catalog_key]
+            if catalog_key in catalog_parents:
+                catalog_parents[catalog_key][parent_name] = machine_render['description']
+                catalog_all[catalog_key][parent_name] = machine_render['description']
+            else:
+                catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+                catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+            _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
+    _cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
+    fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- Year catalog ---
+    log_info('Making Year catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Year catalog')
+    catalog_parents = {}
+    catalog_all = {}
+    _build_catalog_helper(catalog_parents, catalog_all, machines_render, machines_render, main_pclone_dic, 'year')
+    _cache_index_builder('Year', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
+    fs_write_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Create properties database with default values ------------------------------------------
     # Now overwrites all properties when the catalog is rebuilt.
