@@ -23,9 +23,9 @@ import xml.etree.ElementTree as ET
 
 # --- Modules/packages in this plugin ---
 from .constants import *
-from .mame import *
 from .utils import *
 from .utils_kodi import *
+from .misc import *
 
 # -------------------------------------------------------------------------------------------------
 # Parse filter XML definition
@@ -33,20 +33,20 @@ from .utils_kodi import *
 #
 # Strips a list of strings.
 #
-def strip_str_list(t_list):
+def _strip_str_list(t_list):
     for i, s_t in enumerate(t_list):
         t_list[i] = s_t.strip()
 
     return t_list
 
 #
-# Returns a comma-separated list of values as a list of strings.
+# Returns a comma-separated string of values as a list of strings.
 #
 def _get_comma_separated_list(text_t):
     if not text_t:
         return []
     else:
-        return strip_str_list(text_t.split(','))
+        return _strip_str_list(text_t.split(','))
 
 #
 # Parse a string 'XXXXXX with YYYYYY' and return a tuple.
@@ -199,14 +199,14 @@ def filter_get_filter_DB(machine_main_dic, machine_render_dic, assets_dic, machi
             ]
         else:
             raw_control_list = []
-        pretty_control_type_list = mame_improve_control_type_list(raw_control_list)
-        control_list = mame_compress_item_list_compact(pretty_control_type_list)
+        pretty_control_type_list = misc_improve_mame_control_type_list(raw_control_list)
+        control_list = misc_compress_mame_item_list_compact(pretty_control_type_list)
         if not control_list: control_list = [ '[ No controls ]' ]
 
         # >> Fix this to match "Device (Compact)" filter
         raw_device_list = [ device['att_type'] for device in machine_main_dic[m_name]['devices'] ]
-        pretty_device_list = mame_improve_device_list(raw_device_list)
-        device_list = mame_compress_item_list_compact(pretty_device_list)
+        pretty_device_list = misc_improve_mame_device_list(raw_device_list)
+        device_list = misc_compress_mame_item_list_compact(pretty_device_list)
         if not device_list: device_list = [ '[ No devices ]' ]
 
         # --- Build filtering dictionary ---
@@ -908,8 +908,8 @@ def YP_parse_exec(program, year_str):
 #
 # Default filter removes device machines
 #
-def mame_filter_Default(mame_xml_dic):
-    log_debug('mame_filter_Default() Starting ...')
+def filter_mame_Default(mame_xml_dic):
+    log_debug('filter_mame_Default() Starting ...')
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
     machines_filtered_dic = {}
@@ -918,18 +918,18 @@ def mame_filter_Default(mame_xml_dic):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('mame_filter_Default() Initial {0} | '.format(initial_num_games) + \
+    log_debug('filter_mame_Default() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Options_tag(mame_xml_dic, f_definition):
-    # log_debug('mame_filter_Options_tag() Starting ...')
+def filter_mame_Options_tag(mame_xml_dic, f_definition):
+    # log_debug('filter_mame_Options_tag() Starting ...')
     options_list = f_definition['options']
 
     if not options_list:
-        log_debug('mame_filter_Options_tag() Option list is empty.')
+        log_debug('filter_mame_Options_tag() Option list is empty.')
         return mame_xml_dic
     log_debug('Option list "{0}"'.format(options_list))
 
@@ -1007,18 +1007,18 @@ def mame_filter_Options_tag(mame_xml_dic, f_definition):
             continue
         # >> If machine was not removed then add it
         machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('mame_filter_Options_tag() Initial {0} | '.format(initial_num_games) + \
+    log_debug('filter_mame_Options_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Driver_tag(mame_xml_dic, f_definition):
-    # log_debug('mame_filter_Driver_tag() Starting ...')
+def filter_mame_Driver_tag(mame_xml_dic, f_definition):
+    # log_debug('filter_mame_Driver_tag() Starting ...')
     filter_expression = f_definition['driver']
 
     if not filter_expression:
-        log_debug('mame_filter_Driver_tag() User wants all drivers')
+        log_debug('filter_mame_Driver_tag() User wants all drivers')
         return mame_xml_dic
     log_debug('Expression "{0}"'.format(filter_expression))
 
@@ -1032,18 +1032,18 @@ def mame_filter_Driver_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('mame_filter_Driver_tag() Initial {0} | '.format(initial_num_games) + \
+    log_debug('filter_mame_Driver_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Manufacturer_tag(mame_xml_dic, f_definition):
-    # log_debug('mame_filter_Manufacturer_tag() Starting ...')
+def filter_mame_Manufacturer_tag(mame_xml_dic, f_definition):
+    # log_debug('filter_mame_Manufacturer_tag() Starting ...')
     filter_expression = f_definition['manufacturer']
 
     if not filter_expression:
-        log_debug('mame_filter_Manufacturer_tag() User wants all manufacturers')
+        log_debug('filter_mame_Manufacturer_tag() User wants all manufacturers')
         return mame_xml_dic
     log_debug('Expression "{0}"'.format(filter_expression))
 
@@ -1056,18 +1056,18 @@ def mame_filter_Manufacturer_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('mame_filter_Manufacturer_tag() Initial {0} | '.format(initial_num_games) + \
+    log_debug('filter_mame_Manufacturer_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Genre_tag(mame_xml_dic, f_definition):
-    # log_debug('mame_filter_Genre_tag() Starting ...')
+def filter_mame_Genre_tag(mame_xml_dic, f_definition):
+    # log_debug('filter_mame_Genre_tag() Starting ...')
     filter_expression = f_definition['genre']
 
     if not filter_expression:
-        log_debug('mame_filter_Genre_tag() User wants all genres')
+        log_debug('filter_mame_Genre_tag() User wants all genres')
         return mame_xml_dic
     log_debug('Expression "{0}"'.format(filter_expression))
 
@@ -1081,18 +1081,18 @@ def mame_filter_Genre_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('mame_filter_Genre_tag() Initial {0} | '.format(initial_num_games) + \
+    log_debug('filter_mame_Genre_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Controls_tag(mame_xml_dic, f_definition):
-    # log_debug('mame_filter_Controls_tag() Starting ...')
+def filter_mame_Controls_tag(mame_xml_dic, f_definition):
+    # log_debug('filter_mame_Controls_tag() Starting ...')
     filter_expression = f_definition['controls']
 
     if not filter_expression:
-        log_debug('mame_filter_Controls_tag() User wants all genres')
+        log_debug('filter_mame_Controls_tag() User wants all genres')
         return mame_xml_dic
     log_debug('Expression "{0}"'.format(filter_expression))
 
@@ -1105,18 +1105,18 @@ def mame_filter_Controls_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('mame_filter_Controls_tag() Initial {0} | '.format(initial_num_games) + \
+    log_debug('filter_mame_Controls_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Devices_tag(mame_xml_dic, f_definition):
-    # log_debug('mame_filter_Devices_tag() Starting ...')
+def filter_mame_Devices_tag(mame_xml_dic, f_definition):
+    # log_debug('filter_mame_Devices_tag() Starting ...')
     filter_expression = f_definition['devices']
 
     if not filter_expression:
-        log_debug('mame_filter_Devices_tag() User wants all genres')
+        log_debug('filter_mame_Devices_tag() User wants all genres')
         return mame_xml_dic
     log_debug('Expression "{0}"'.format(filter_expression))
 
@@ -1130,18 +1130,18 @@ def mame_filter_Devices_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('mame_filter_Devices_tag() Initial {0} | '.format(initial_num_games) + \
+    log_debug('filter_mame_Devices_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Year_tag(mame_xml_dic, f_definition):
-    # log_debug('mame_filter_Year_tag() Starting ...')
+def filter_mame_Year_tag(mame_xml_dic, f_definition):
+    # log_debug('filter_mame_Year_tag() Starting ...')
     filter_expression = f_definition['year']
 
     if not filter_expression:
-        log_debug('mame_filter_Year_tag() User wants all genres')
+        log_debug('filter_mame_Year_tag() User wants all genres')
         return mame_xml_dic
     log_debug('Expression "{0}"'.format(filter_expression))
 
@@ -1155,85 +1155,85 @@ def mame_filter_Year_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('mame_filter_Year_tag() Initial {0} | '.format(initial_num_games) + \
+    log_debug('filter_mame_Year_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Include_tag(mame_xml_dic, f_definition, machines_dic):
-    # log_debug('mame_filter_Include_tag() Starting ...')
-    log_debug('mame_filter_Include_tag() Include machines {0}'.format(unicode(f_definition['include'])))
+def filter_mame_Include_tag(mame_xml_dic, f_definition, machines_dic):
+    # log_debug('filter_mame_Include_tag() Starting ...')
+    log_debug('filter_mame_Include_tag() Include machines {0}'.format(unicode(f_definition['include'])))
     added_machines = 0
     machines_filtered_dic = mame_xml_dic.copy()
     # If no machines to include then skip processing
     if not f_definition['include']:
-        log_debug('mame_filter_Include_tag() No machines to include. Exiting.')
+        log_debug('filter_mame_Include_tag() No machines to include. Exiting.')
         return machines_filtered_dic
     # First traverse all MAME machines, then traverse list of strings to include.
     for m_name in sorted(machines_dic):
         for f_name in f_definition['include']:
             if f_name == m_name:
-                log_debug('mame_filter_Include_tag() Matched machine {0}'.format(f_name))
+                log_debug('filter_mame_Include_tag() Matched machine {0}'.format(f_name))
                 if f_name in machines_filtered_dic:
-                    log_debug('mame_filter_Include_tag() Machine {0} already in filtered list'.format(f_name))
+                    log_debug('filter_mame_Include_tag() Machine {0} already in filtered list'.format(f_name))
                 else:
-                    log_debug('mame_filter_Include_tag() Adding machine {0}'.format(f_name))
+                    log_debug('filter_mame_Include_tag() Adding machine {0}'.format(f_name))
                     machines_filtered_dic[m_name] = machines_dic[m_name]
                     added_machines += 1
-    log_debug('mame_filter_Include_tag() Initial {0} | '.format(len(mame_xml_dic)) + \
+    log_debug('filter_mame_Include_tag() Initial {0} | '.format(len(mame_xml_dic)) + \
               'Added {0} | '.format(added_machines) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Exclude_tag(mame_xml_dic, f_definition):
-    # log_debug('mame_filter_Exclude_tag() Starting ...')
-    log_debug('mame_filter_Exclude_tag() Exclude machines {0}'.format(unicode(f_definition['exclude'])))
+def filter_mame_Exclude_tag(mame_xml_dic, f_definition):
+    # log_debug('filter_mame_Exclude_tag() Starting ...')
+    log_debug('filter_mame_Exclude_tag() Exclude machines {0}'.format(unicode(f_definition['exclude'])))
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
     machines_filtered_dic = mame_xml_dic.copy()
     # If no machines to exclude then skip processing
     if not f_definition['exclude']:
-        log_debug('mame_filter_Exclude_tag() No machines to exclude. Exiting.')
+        log_debug('filter_mame_Exclude_tag() No machines to exclude. Exiting.')
         return machines_filtered_dic
     # First traverse current set of machines, then traverse list of strings to include.
     for m_name in sorted(mame_xml_dic):
         for f_name in f_definition['exclude']:
             if f_name == m_name:
-                log_debug('mame_filter_Exclude_tag() Matched machine {0}'.format(f_name))
-                log_debug('mame_filter_Exclude_tag() Deleting machine {0}'.format(f_name))
+                log_debug('filter_mame_Exclude_tag() Matched machine {0}'.format(f_name))
+                log_debug('filter_mame_Exclude_tag() Deleting machine {0}'.format(f_name))
                 del machines_filtered_dic[f_name]
                 filtered_out_games += 1
-    log_debug('mame_filter_Exclude_tag() Initial {0} | '.format(initial_num_games) + \
+    log_debug('filter_mame_Exclude_tag() Initial {0} | '.format(initial_num_games) + \
               'Removed {0} | '.format(filtered_out_games) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
-def mame_filter_Change_tag(mame_xml_dic, f_definition, machines_dic):
-    # log_debug('mame_filter_Change_tag() Starting ...')
-    log_debug('mame_filter_Change_tag() Change machines {0}'.format(unicode(f_definition['change'])))
+def filter_mame_Change_tag(mame_xml_dic, f_definition, machines_dic):
+    # log_debug('filter_mame_Change_tag() Starting ...')
+    log_debug('filter_mame_Change_tag() Change machines {0}'.format(unicode(f_definition['change'])))
     initial_num_games = len(mame_xml_dic)
     changed_machines = 0
     machines_filtered_dic = mame_xml_dic.copy()
     # If no machines to change then skip processing
     if not f_definition['change']:
-        log_debug('mame_filter_Change_tag() No machines to swap. Exiting.')
+        log_debug('filter_mame_Change_tag() No machines to swap. Exiting.')
         return machines_filtered_dic
     # First traverse current set of machines, then traverse list of strings to include.
     for m_name in sorted(mame_xml_dic):
         for (f_name, new_name) in f_definition['change']:
             if f_name == m_name:
-                log_debug('mame_filter_Change_tag() Matched machine {0}'.format(f_name))
+                log_debug('filter_mame_Change_tag() Matched machine {0}'.format(f_name))
                 if new_name in machines_dic:
-                    log_debug('mame_filter_Change_tag() Changing machine {0} with {1}'.format(f_name, new_name))
+                    log_debug('filter_mame_Change_tag() Changing machine {0} with {1}'.format(f_name, new_name))
                     del machines_filtered_dic[f_name]
                     machines_filtered_dic[new_name] = machines_dic[new_name]
                     changed_machines += 1
                 else:
-                    log_warning('mame_filter_Change_tag() New machine {0} not found on MAME machines.'.format(new_name))
-    log_debug('mame_filter_Change_tag() Initial {0} | '.format(initial_num_games) + \
+                    log_warning('filter_mame_Change_tag() New machine {0} not found on MAME machines.'.format(new_name))
+    log_debug('filter_mame_Change_tag() Initial {0} | '.format(initial_num_games) + \
               'Changed {0} | '.format(changed_machines) + \
               'Remaining {0}'.format(len(machines_filtered_dic)))
 

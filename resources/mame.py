@@ -31,7 +31,9 @@ except:
 from .constants import *
 from .utils import *
 from .utils_kodi import *
+from .misc import *
 from .disk_IO import *
+from .filters import *
 
 # -------------------------------------------------------------------------------------------------
 # Data structures
@@ -229,162 +231,6 @@ def mame_get_numerical_version(mame_version_str):
     log_verb('mame_get_numerical_version() version_int = {0}'.format(version_int))
 
     return version_int
-
-# -------------------------------------------------------------------------------------------------
-# Functions
-# -------------------------------------------------------------------------------------------------
-def mame_get_control_str(control_type_list):
-    control_set = set()
-    improved_c_type_list = mame_improve_control_type_list(control_type_list)
-    for control in improved_c_type_list: control_set.add(control)
-    control_str = ', '.join(list(sorted(control_set)))
-
-    return control_str
-
-def mame_get_screen_rotation_str(display_rotate):
-    if display_rotate == '0' or display_rotate == '180':
-        screen_str = 'horizontal'
-    elif display_rotate == '90' or display_rotate == '270':
-        screen_str = 'vertical'
-    else:
-        raise TypeError
-
-    return screen_str
-
-def mame_get_screen_str(machine_name, machine):
-    d_list = machine['display_type']
-    if d_list:
-        if len(d_list) == 1:
-            rotation_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
-            screen_str = 'One {0} {1} screen'.format(d_list[0], rotation_str)
-        elif len(d_list) == 2:
-            if d_list[0] == 'lcd' and d_list[1] == 'raster':
-                r_str_1 = mame_get_screen_rotation_str(machine['display_rotate'][0])
-                r_str_2 = mame_get_screen_rotation_str(machine['display_rotate'][1])
-                screen_str = 'One LCD {0} screen and one raster {1} screen'.format(r_str_1, r_str_2)
-            elif d_list[0] == 'raster' and d_list[1] == 'raster':
-                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
-                screen_str = 'Two raster {0} screens'.format(r_str)
-            elif d_list[0] == 'svg' and d_list[1] == 'svg':
-                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
-                screen_str = 'Two SVG {0} screens'.format(r_str)
-            elif d_list[0] == 'unknown' and d_list[1] == 'unknown':
-                screen_str = 'Two unknown screens'
-            else:
-                screen_str = 'Two unrecognised screens'
-        elif len(d_list) == 3:
-            if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster':
-                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
-                screen_str = 'Three raster {0} screens'.format(r_str)
-            elif d_list[0] == 'raster' and d_list[1] == 'lcd' and d_list[2] == 'lcd':
-                screen_str = 'Three screens special case'
-            else:
-                screen_str = 'Three unrecognised screens'
-        elif len(d_list) == 4:
-            if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster' and d_list[3] == 'raster':
-                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
-                screen_str = 'Four raster {0} screens'.format(r_str)
-            else:
-                screen_str = 'Four unrecognised screens'
-        elif len(d_list) == 5:
-            screen_str = 'Five unrecognised screens'
-        elif len(d_list) == 6:
-            screen_str = 'Six unrecognised screens'
-        else:
-            log_error('mame_get_screen_str() d_list = {0}'.format(unicode(d_list)))
-            raise TypeError
-    else:
-        screen_str = 'No screen'
-
-    return screen_str
-
-#
-# A) Capitalise every list item
-# B) Substitute Only_buttons -> Only buttons
-#
-def mame_improve_control_type_list(control_type_list):
-    out_list = []
-    for control_str in control_type_list:
-        capital_str = control_str.title()
-        if capital_str == 'Only_Buttons': capital_str = 'Only Buttons'
-        out_list.append(capital_str)
-
-    return out_list
-
-#
-# A) Capitalise every list item
-#
-def mame_improve_device_list(control_type_list):
-    out_list = []
-    for control_str in control_type_list: out_list.append(control_str.title())
-
-    return out_list
-
-#
-# A) Substitute well know display types with fancier names.
-#
-def mame_improve_display_type_list(display_type_list):
-    out_list = []
-    for dt in display_type_list:
-        if   dt == 'lcd':    out_list.append('LCD')
-        elif dt == 'raster': out_list.append('Raster')
-        elif dt == 'svg':    out_list.append('SVG')
-        elif dt == 'vector': out_list.append('Vector')
-        else:                out_list.append(dt)
-
-    return out_list
-
-#
-# See tools/test_compress_item_list.py for reference
-# Input/Output examples:
-# 1) ['dial']                 ->  ['dial']
-# 2) ['dial', 'dial']         ->  ['2 x dial']
-# 3) ['dial', 'dial', 'joy']  ->  ['2 x dial', 'joy']
-# 4) ['joy', 'dial', 'dial']  ->  ['joy', '2 x dial']
-#
-def mame_compress_item_list(item_list):
-    reduced_list = []
-    num_items = len(item_list)
-    if num_items == 0 or num_items == 1: return item_list
-    previous_item = item_list[0]
-    item_count = 1
-    for i in range(1, num_items):
-        current_item = item_list[i]
-        # log_debug('{0} | item_count {1} | previous_item "{2:>8}" | current_item "{3:>8}"'.format(i, item_count, previous_item, current_item))
-        if current_item == previous_item:
-            item_count += 1
-        else:
-            if item_count == 1: reduced_list.append('{0}'.format(previous_item))
-            else:               reduced_list.append('{0} {1}'.format(item_count, previous_item))
-            item_count = 1
-            previous_item = current_item
-        # >> Last elemnt of the list
-        if i == num_items - 1:
-            if current_item == previous_item:
-                if item_count == 1: reduced_list.append('{0}'.format(current_item))
-                else:               reduced_list.append('{0} {1}'.format(item_count, current_item))
-            else:
-               reduced_list.append('{0}'.format(current_item))
-
-    return reduced_list
-
-#
-# See tools/test_compress_item_list.py for reference
-# Output is sorted alphabetically
-# Input/Output examples:
-# 1) ['dial']                 ->  ['dial']
-# 2) ['dial', 'dial']         ->  ['dial']
-# 3) ['dial', 'dial', 'joy']  ->  ['dial', 'joy']
-# 4) ['joy', 'dial', 'dial']  ->  ['dial', 'joy']
-#
-def mame_compress_item_list_compact(item_list):
-    num_items = len(item_list)
-    if num_items == 0 or num_items == 1: return item_list
-    item_set = set(item_list)
-    reduced_list = list(item_set)
-    reduced_list_sorted = sorted(reduced_list)
-
-    return reduced_list_sorted
 
 # -------------------------------------------------------------------------------------------------
 # Loading of data files
@@ -1948,6 +1794,200 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
     pDialog.close()
 
 # -------------------------------------------------------------------------------------------------
+# Build MAME custom filters
+# -------------------------------------------------------------------------------------------------
+#
+# Returns a tuple (filter_list, options_dic).
+#
+def mame_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic):
+    filter_list = []
+    options_dic = {
+        'XML_errors' : True,
+    }
+
+    # --- Open custom filter XML and parse it ---
+    cf_XML_path_str = settings['filter_XML']
+    log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
+    if not cf_XML_path_str:
+        log_debug('Using default XML custom filter.')
+        XML_FN = PATHS.CUSTOM_FILTER_PATH
+    else:
+        log_debug('Using user-defined in addon settings XML custom filter.')
+        XML_FN = FileName(cf_XML_path_str)
+    log_debug('mame_custom_filters_load_XML() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+    log_debug('mame_custom_filters_load_XML() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+    try:
+        filter_list = filter_parse_XML(XML_FN.getPath())
+    except Addon_Error as ex:
+        kodi_notify_warn('{0}'.format(ex))
+        return (filter_list, options_dic)
+    else:
+        log_debug('Filter XML read succesfully.')
+
+    # --- Check XML for errors and write report ---
+    # Filters sorted as defined in the XML.
+    r_full = []
+    for filter_dic in filter_list:
+        c_list = []
+
+        # Check 1) Keywords in <Options> are correct.
+        
+        # Check 2) Drivers in <Driver> exist.
+        # Needs parsing of the <Driver> filter to get the literals.
+        
+        # Check 3) Genres in <Genre> exist.
+        
+        # Check 4) Controls in <Controls> exist.
+        
+        # Check 5) Plugabble devices in <Devices> exist.
+        
+        # Check 6) Machines in <Include> exist.
+        
+        # Check 7) Machines in <Exclude> exist.
+        
+        # Check 8) Machines in <Change> exist.
+
+        # Build report
+        r_full.append('Filter "{0}"'.format(filter_dic['name']))
+        if not c_list:
+            r_full.append('No errors found. (Not implemented yet)')
+        else:
+            r_full.extend(c_list)
+        r_full.append('')
+
+    # --- Write MAME scanner reports ---
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath()))
+    with open(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath(), 'w') as file:
+        report_slist = [
+            '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
+            'There are {0} custom filters defined.'.format(len(filter_list)),
+            'File "{0}"'.format(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath()),
+            '',
+        ]
+        report_slist.extend(r_full)
+        file.write('\n'.join(report_slist).encode('utf-8'))
+
+    # --- No errors found ---
+    options_dic['XML_errors']  = False
+
+    return (filter_list, options_dic)
+
+#
+# filter_index_dic = {
+#     'name' : {
+#         'display_name' : str,
+#         'num_machines' : int,
+#         'num_parents' : int,
+#         'order' : int,
+#         'plot' : str,
+#         'rom_DB_noext' : str,
+#     }
+# }
+# AML_DATA_DIR/filters/'rom_DB_noext'_render.json -> machine_render = {}
+# AML_DATA_DIR/filters/'rom_DB_noext'_assets.json -> asset_dic = {}
+#
+def mame_build_custom_filters(PATHS, settings, control_dic,
+    filter_list, main_filter_dic, machines_dic, render_dic, assets_dic):
+    # --- Clean 'filters' directory JSON files ---
+    log_info('mame_build_custom_filters() Cleaning dir "{0}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
+    pDialog.update(0)
+    file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
+    num_files = len(file_list)
+    if num_files > 1:
+        log_info('Found {0} files'.format(num_files))
+        processed_items = 0
+        for file in file_list:
+            pDialog.update((processed_items*100) // num_files)
+            if file.endswith('.json'):
+                full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
+                # log_debug('UNLINK "{0}"'.format(full_path))
+                os.unlink(full_path)
+            processed_items += 1
+    pDialog.update(100)
+    pDialog.close()
+
+    # --- Traverse list of filters, build filter index and compute filter list ---
+    pdialog_line1 = 'Building custom MAME filters'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    Filters_index_dic = {}
+    total_items = len(filter_list)
+    processed_items = 0
+    for f_definition in filter_list:
+        # --- Initialise ---
+        f_name = f_definition['name']
+        log_debug('mame_build_custom_filters() Processing filter "{0}"'.format(f_name))
+        # log_debug('f_definition = {0}'.format(unicode(f_definition)))
+
+        # --- Initial progress ---
+        pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{0}" ...'.format(f_name))
+
+        # --- Do filtering ---
+        filtered_machine_dic = filter_mame_Default(main_filter_dic)
+        filtered_machine_dic = filter_mame_Options_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Driver_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Manufacturer_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Genre_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Controls_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Devices_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Year_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Include_tag(filtered_machine_dic, f_definition, machines_dic)
+        filtered_machine_dic = filter_mame_Exclude_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Change_tag(filtered_machine_dic, f_definition, machines_dic)
+
+        # --- Make indexed catalog ---
+        filtered_render_dic = {}
+        filtered_assets_dic = {}
+        for p_name in sorted(filtered_machine_dic.keys()):
+            # >> Add parents
+            filtered_render_dic[p_name] = render_dic[p_name]
+            filtered_assets_dic[p_name] = assets_dic[p_name]
+        rom_DB_noext = hashlib.md5(f_name).hexdigest()
+        this_filter_idx_dic = {
+            'display_name' : f_definition['name'],
+            'num_machines' : len(filtered_render_dic),
+            'order'        : processed_items,
+            'plot'         : f_definition['plot'],
+            'rom_DB_noext' : rom_DB_noext
+        }
+        Filters_index_dic[f_name] = this_filter_idx_dic
+
+        # --- Save filter database ---
+        writing_ticks_start = time.time()
+        output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_render.json')
+        fs_write_JSON_file(output_FN.getPath(), filtered_render_dic, verbose = False)
+        output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
+        fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
+        writing_ticks_end = time.time()
+        writing_time = writing_ticks_end - writing_ticks_start
+        log_debug('JSON writing time {0:.4f} s'.format(writing_time))
+
+        # --- Final progress ---
+        processed_items += 1
+
+    # --- Save custom filter index ---
+    fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
+    pDialog.update(100, pdialog_line1, ' ')
+    pDialog.close()
+
+    # --- Update timestamp ---
+    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+    change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+    # --- Write MAME scanner reports ---
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()))
+    with open(PATHS.REPORT_CF_DB_BUILD_PATH.getPath(), 'w') as file:
+        report_slist = [
+            '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
+            'File "{0}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()),
+            '',
+        ]
+        report_slist.append('Not implemented yet, sorry.')
+        file.write('\n'.join(report_slist).encode('utf-8'))
+
+# -------------------------------------------------------------------------------------------------
 # Build MAME and SL plots
 # -------------------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------------
@@ -2892,11 +2932,8 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     # --- Save control_dic ---
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-def mame_audit_SL_all(PATHS, settings, control_dic):
+def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     log_debug('mame_audit_SL_all() Initialising ...')
-
-    # >> Load SL catalog.
-    SL_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
 
     # >> Report header and statistics
     report_full_list = [
@@ -5416,11 +5453,11 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
             control_list = [ctrl_dic['type'] for ctrl_dic in machine['input']['control_list']]
         else:
             control_list = []
-        pretty_control_type_list = mame_improve_control_type_list(control_list)
+        pretty_control_type_list = misc_improve_mame_control_type_list(control_list)
         sorted_control_type_list = sorted(pretty_control_type_list)
         # >> Maybe a setting should be added for compact or non-compact control list
-        # sorted_control_type_list = mame_compress_item_list(sorted_control_type_list)
-        sorted_control_type_list = mame_compress_item_list_compact(sorted_control_type_list)
+        # sorted_control_type_list = misc_compress_mame_item_list(sorted_control_type_list)
+        sorted_control_type_list = misc_compress_mame_item_list_compact(sorted_control_type_list)
         catalog_key = " / ".join(sorted_control_type_list)
         # >> Change category name for machines with no controls
         if catalog_key == '': catalog_key = '[ No controls ]'
@@ -5453,9 +5490,9 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
             control_list = [ctrl_dic['type'] for ctrl_dic in machine['input']['control_list']]
         else:
             control_list = []
-        pretty_control_type_list = mame_improve_control_type_list(control_list)
+        pretty_control_type_list = misc_improve_mame_control_type_list(control_list)
         sorted_control_type_list = sorted(pretty_control_type_list)
-        compressed_control_type_list = mame_compress_item_list_compact(sorted_control_type_list)
+        compressed_control_type_list = misc_compress_mame_item_list_compact(sorted_control_type_list)
         if not compressed_control_type_list: compressed_control_type_list = [ '[ No controls ]' ]
         for catalog_key in compressed_control_type_list:
             if catalog_key in catalog_parents:
@@ -5481,7 +5518,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         machine_render = machines_render[parent_name]
         # >> Skip device machines
         if machine_render['isDevice']: continue
-        display_list = mame_improve_display_type_list(machine['display_type'])
+        display_list = misc_improve_mame_display_type_list(machine['display_type'])
         catalog_key = " / ".join(display_list)
         # >> Change category name for machines with no display
         if catalog_key == '': catalog_key = '[ No display ]'
@@ -5543,11 +5580,11 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         if machine_render['isDevice']: continue # >> Skip device machines
         # >> Order alphabetically the list
         device_list = [device['att_type'] for device in machine['devices']]
-        pretty_device_list = mame_improve_device_list(device_list)
+        pretty_device_list = misc_improve_mame_device_list(device_list)
         sorted_device_list = sorted(pretty_device_list)
         # >> Maybe a setting should be added for compact or non-compact control list
-        # sorted_device_list = mame_compress_item_list(sorted_device_list)
-        sorted_device_list = mame_compress_item_list_compact(sorted_device_list)
+        # sorted_device_list = misc_compress_mame_item_list(sorted_device_list)
+        sorted_device_list = misc_compress_mame_item_list_compact(sorted_device_list)
         catalog_key = " / ".join(sorted_device_list)
         # >> Change category name for machines with no devices
         if catalog_key == '': catalog_key = '[ No devices ]'
@@ -5575,9 +5612,9 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         if machine_render['isDevice']: continue # >> Skip device machines
         # >> Order alphabetically the list
         device_list = [ device['att_type'] for device in machine['devices'] ]
-        pretty_device_list = mame_improve_device_list(device_list)
+        pretty_device_list = misc_improve_mame_device_list(device_list)
         sorted_device_list = sorted(pretty_device_list)
-        compressed_device_list = mame_compress_item_list_compact(sorted_device_list)
+        compressed_device_list = misc_compress_mame_item_list_compact(sorted_device_list)
         if not compressed_device_list: compressed_device_list = [ '[ No devices ]' ]
         for catalog_key in compressed_device_list:
             if catalog_key in catalog_parents:

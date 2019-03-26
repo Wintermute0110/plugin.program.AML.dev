@@ -32,17 +32,16 @@ import xbmcaddon
 
 # --- Modules/packages in this plugin ---
 # Addon module dependencies:
-#   main <-- mame <-- disk_IO <-- assets, utils, utils_kodi, constants
-#   ReaderPDF <-- utils, utils_kodi
-#   filters <- mame <-- utils, utils_kodi
-#   manuals <- utils, utils_kodi
+#   main <-- mame <-- disk_IO <-- assets, misc, utils, utils_kodi, constants
+#   mame <-- filters <-- misc, utils, utils_kodi, constants
+#   manuals <- misc, utils, utils_kodi, constants
 from .constants import *
 from .assets import *
 from .utils import *
 from .utils_kodi import *
 from .disk_IO import *
-from .mame import *
 from .filters import *
+from .mame import *
 from .manuals import *
 
 # --- Addon object (used to access settings) ---
@@ -220,6 +219,10 @@ class AML_Paths:
         self.REPORT_SL_AUDIT_ROMS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Audit_SL_ROMs_errors.txt')
         self.REPORT_SL_AUDIT_CHDS_GOOD_PATH    = self.REPORTS_DIR.pjoin('Audit_SL_CHDs_good.txt')
         self.REPORT_SL_AUDIT_CHDS_ERRORS_PATH  = self.REPORTS_DIR.pjoin('Audit_SL_CHDs_errors.txt')
+
+        # >> Custom filters report.
+        self.REPORT_CF_XML_SYNTAX_PATH = self.REPORTS_DIR.pjoin('Custom_filter_XML_check.txt')
+        self.REPORT_CF_DB_BUILD_PATH   = self.REPORTS_DIR.pjoin('Custom_filter_database_report.txt')
 
         # >> DEBUG data
         self.REPORT_DEBUG_MAME_ITEM_DATA_PATH       = self.REPORTS_DIR.pjoin('debug_MAME_item_data.txt')
@@ -4110,53 +4113,19 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
 def command_context_setup_custom_filters():
     dialog = xbmcgui.Dialog()
     menu_item = dialog.select('Setup AML custom filters',
-                             ['Build custom filter databases',
-                              'View custom filter XML'])
+        ['Build custom filter databases',
+         'Test custom filter XML',
+         'View custom filter XML',
+         'View filter XML syntax report',
+         'View filter report',
+         ])
     if menu_item < 0: return
 
-    # --- Update custom filters ---
-    # filter_index_dic = {
-    #     'name' : {
-    #         'display_name' : str,
-    #         'num_machines' : int,
-    #         'num_parents' : int,
-    #         'order' : int,
-    #         'plot' : str,
-    #         'rom_DB_noext' : str,
-    #     }
-    # }
-    #
-    # AML_DATA_DIR/filters/'rom_DB_noext'_render.json -> machine_render = {}
-    #
-    # AML_DATA_DIR/filters/'rom_DB_noext'_assets.json -> asset_dic = {}
-    #
+    # --- Build custom filter databases ---
     if menu_item == 0:
-        # --- Open custom filter XML and parse it ---
-        cf_XML_path_str = g_settings['filter_XML']
-        log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
-        if not cf_XML_path_str:
-            log_debug('Using default XML custom filter.')
-            XML_FN = g_PATHS.CUSTOM_FILTER_PATH
-        else:
-            log_debug('Using user-defined in addon settings XML custom filter.')
-            XML_FN = FileName(cf_XML_path_str)
-        log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
-        log_debug('command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
-        try:
-            filters_list = filter_parse_XML(XML_FN.getPath())
-        except Addon_Error as ex:
-            kodi_notify_warn('{0}'.format(ex))
-            return
-        else:
-            log_debug('Filter XML read succesfully.')
-
-        # --- If no filters sayonara ---
-        if len(filters_list) < 1:
-            kodi_notify_warn('Filter XML has 0 filter definitions')
-            return
-
         # --- Open main ROM databases ---
         db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
             ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
             ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
             ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
@@ -4170,96 +4139,64 @@ def command_context_setup_custom_filters():
         main_filter_dic = filter_get_filter_DB(
             db_dic['machines'], db_dic['render'], db_dic['assets'], db_dic['machine_archives'])
 
-        # --- Clean 'filters' directory JSON files ---
-        log_info('Cleaning dir "{0}"'.format(g_PATHS.FILTERS_DB_DIR.getPath()))
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
-        pDialog.update(0)
-        file_list = os.listdir(g_PATHS.FILTERS_DB_DIR.getPath())
-        num_files = len(file_list)
-        if num_files > 1:
-            log_info('Found {0} files'.format(num_files))
-            processed_items = 0
-            for file in file_list:
-                pDialog.update((processed_items*100) // num_files)
-                if file.endswith('.json'):
-                    full_path = os.path.join(g_PATHS.FILTERS_DB_DIR.getPath(), file)
-                    # log_debug('UNLINK "{0}"'.format(full_path))
-                    os.unlink(full_path)
-                processed_items += 1
-        pDialog.update(100)
-        pDialog.close()
+        # --- Parse custom filter XML and check for errors ---
+        # This function also check the filter XML syntax and produces a report.
+        (filter_list, options_dic) = mame_custom_filters_load_XML(
+            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic)
+        # If no filters sayonara
+        if len(filter_list) < 1:
+            kodi_notify_warn('Filter XML has no filter definitions')
+            return
+        # If errors found in the XML sayonara
+        if options_dic['XML_errors']:
+            kodi_dialog_OK('Custom filter database build cancelled because the XML filter '
+                'definition file contains errors. Have a look at the XML filter file report, '
+                'correct the mistakes and try again.')
+            return
 
-        # --- Traverse list of filters, build filter index and compute filter list ---
-        pdialog_line1 = 'Building custom MAME filters'
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher', pdialog_line1)
-        Filters_index_dic = {}
-        total_items = len(filters_list)
-        processed_items = 0
-        for f_definition in filters_list:
-            # --- Initialise ---
-            f_name = f_definition['name']
-            log_debug('command_context_setup_custom_filters() Processing filter "{0}"'.format(f_name))
-            # log_debug('f_definition = {0}'.format(unicode(f_definition)))
+        # --- Build filter database ---
+        # 1) Saves control_dic (updated custom filter build timestamp).
+        mame_build_custom_filters(g_PATHS, g_settings, db_dic['control_dic'],
+            filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
 
-            # --- Initial progress ---
-            pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{0}" ...'.format(f_name))
-
-            # --- Do filtering ---
-            filtered_machine_dic = mame_filter_Default(main_filter_dic)
-            filtered_machine_dic = mame_filter_Options_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Driver_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Manufacturer_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Genre_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Controls_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Devices_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Year_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Include_tag(filtered_machine_dic, f_definition, db_dic['machines'])
-            filtered_machine_dic = mame_filter_Exclude_tag(filtered_machine_dic, f_definition)
-            filtered_machine_dic = mame_filter_Change_tag(filtered_machine_dic, f_definition, db_dic['machines'])
-
-            # --- Make indexed catalog ---
-            filtered_render_dic = {}
-            filtered_assets_dic = {}
-            for p_name in sorted(filtered_machine_dic.keys()):
-                # >> Add parents
-                filtered_render_dic[p_name] = db_dic['render'][p_name]
-                filtered_assets_dic[p_name] = db_dic['assets'][p_name]
-            rom_DB_noext = hashlib.md5(f_name).hexdigest()
-            this_filter_idx_dic = {
-                'display_name' : f_definition['name'],
-                'num_machines' : len(filtered_render_dic),
-                'order'        : processed_items,
-                'plot'         : f_definition['plot'],
-                'rom_DB_noext' : rom_DB_noext
-            }
-            Filters_index_dic[f_name] = this_filter_idx_dic
-
-            # --- Save filter database ---
-            writing_ticks_start = time.time()
-            output_FN = g_PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_render.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_render_dic, verbose = False)
-            output_FN = g_PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
-            fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
-            writing_ticks_end = time.time()
-            writing_time = writing_ticks_end - writing_ticks_start
-            log_debug('JSON writing time {0:.4f} s'.format(writing_time))
-
-            # --- Final progress ---
-            processed_items += 1
-        # --- Save custom filter index ---
-        fs_write_JSON_file(g_PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
-        pDialog.update(100, pdialog_line1, ' ')
-        pDialog.close()
-        # --- Update timestamp ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
-        fs_write_JSON_file(g_PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+        # --- So long and thanks for all the fish ---
         kodi_notify('Custom filter database built')
 
-    # --- View custom filter XML ---
+    # --- Test custom filter XML ---
     elif menu_item == 1:
+        # --- Open main ROM databases ---
+        db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
+            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
+            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
+            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+            ['machine_archives', 'Machine archives list', g_PATHS.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        # --- Make a dictionary of machines to be filtered ---
+        # This currently includes all MAME parent machines.
+        # However, it must include all machines (parent and clones).
+        main_filter_dic = filter_get_filter_DB(
+            db_dic['machines'], db_dic['render'], db_dic['assets'], db_dic['machine_archives'])
+
+        # --- Parse custom filter XML and check for errors ---
+        # This function also check the filter XML syntax and produces a report.
+        (filter_list, options_dic) = mame_custom_filters_load_XML(
+            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic)
+        # If no filters sayonara
+        if len(filter_list) < 1:
+            kodi_notify_warn('Filter XML has no filter definitions')
+            return
+        # If errors found in the XML sayonara
+        elif options_dic['XML_errors']:
+            kodi_dialog_OK('The XML filter definition file contains errors. Have a look at the'
+                ' XML filter file report, fix the mistakes and try again.')
+            return
+        kodi_notify('Custom filter XML check succesful')
+
+    # --- View custom filter XML ---
+    elif menu_item == 2:
         cf_XML_path_str = g_settings['filter_XML']
         log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
         if not cf_XML_path_str:
@@ -4269,12 +4206,31 @@ def command_context_setup_custom_filters():
             log_debug('Using user-defined in addon settings XML custom filter.')
             XML_FN = FileName(cf_XML_path_str)
         log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
-        log_debug('command_context_setup_custom_filters() Reading XML  P "{0}"'.format(XML_FN.getPath()))
         if not XML_FN.exists():
             kodi_dialog_OK('Custom filter XML file not found.')
             return
         with open(XML_FN.getPath(), 'r') as myfile:
             display_text_window('Custom filter XML', myfile.read().decode('utf-8'))
+
+    # --- View filter XML syntax report ---
+    elif menu_item == 3:
+        XML_FN = g_PATHS.REPORT_CF_XML_SYNTAX_PATH
+        log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        if not XML_FN.exists():
+            kodi_dialog_OK('Filter XML filter syntax report not found.')
+            return
+        with open(XML_FN.getPath(), 'r') as myfile:
+            display_text_window('Custom filter XML syntax report', myfile.read().decode('utf-8'))
+
+    # --- View filter report ---
+    elif menu_item == 4:
+        XML_FN = g_PATHS.REPORT_CF_DB_BUILD_PATH
+        log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        if not XML_FN.exists():
+            kodi_dialog_OK('Custom filter database report not found.')
+            return
+        with open(XML_FN.getPath(), 'r') as myfile:
+            display_text_window('Custom filter XML syntax report', myfile.read().decode('utf-8'))
 
 def command_show_custom_filters():
     log_debug('command_show_custom_filters() Starting ...')
@@ -4536,7 +4492,8 @@ def command_context_setup_plugin():
     menu_item = dialog.select(
         'Setup plugin',
         ['Check MAME version',
-         'All in one step (Extract, Build and Scan)',
+         'All in one (Extract, Build, Scan, Filters)',
+         'All in one (Extract, Build, Scan, Filters, Audit)',
          'Extract MAME.xml',
          'Build all databases',
          'Scan everything and build plots',
@@ -4561,7 +4518,7 @@ def command_context_setup_plugin():
         mame_version_str = fs_extract_MAME_version(g_PATHS, mame_prog_FN)
         kodi_dialog_OK('MAME version is {0}'.format(mame_version_str))
 
-    # --- All in one step (Extract, Build and Scan) ---
+    # --- All in one (Extract, Build, Scan, Filters) ---
     elif menu_item == 1:
         log_info('command_context_setup_plugin() All in one step starting ...')
 
@@ -4641,6 +4598,15 @@ def command_context_setup_plugin():
         mame_build_SL_plots(g_PATHS, g_settings, control_dic,
             SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
 
+        # --- Regenerate the custom filters ---
+        main_filter_dic = filter_get_filter_DB(
+            db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'])
+        (filter_list, options_dic) = mame_custom_filters_load_XML(
+            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic)
+        if len(filter_list) >= 1 and options_dic['XML_errors'] == False:
+            mame_build_custom_filters(g_PATHS, g_settings, db_dic['control_dic'],
+                filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
+
         # --- Regenerate MAME asset hashed database ---
         fs_build_asset_hashed_db(g_PATHS, g_settings, control_dic, db_dic['assets'])
 
@@ -4653,10 +4619,120 @@ def command_context_setup_plugin():
                 db_dic['cache_index'], db_dic['assets'])
 
         # --- So long and thanks for all the fish ---
-        kodi_notify('Finished All in One Steps')
+        kodi_notify('Finished extracting, DB build, scanning and filters')
+
+    # --- All in one (Extract, Build, Scan, Filters, Audit) ---
+    elif menu_item == 2:
+        log_info('command_context_setup_plugin() All in one step starting ...')
+
+        # --- Extract MAME.xml (mandatory) ---
+        if not g_settings['mame_prog']:
+            kodi_dialog_OK('MAME executable is not set.')
+            return
+        mame_prog_FN = FileName(g_settings['mame_prog'])
+        (filesize, total_machines) = fs_extract_MAME_XML(g_PATHS, mame_prog_FN, __addon_version__)
+
+        # --- Build main MAME database, PClone list and MAME hashed database (mandatory) ---
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        options_dic = mame_check_before_build_MAME_main_database(g_PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, control_dic, __addon_version__)
+
+        # --- Build ROM audit/scanner databases (mandatory) ---
+        options_dic = mame_check_before_build_ROM_audit_databases(g_PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        audit_dic = mame_build_ROM_audit_databases(g_PATHS, g_settings, control_dic,
+            db_dic['machines'], db_dic['render'], db_dic['devices'], db_dic['roms'])
+
+        # --- Build MAME catalogs (mandatory) ---
+        options_dic = mame_check_before_build_MAME_catalogs(g_PATHS, g_settings, control_dic)
+        if options_dic['abort']: return
+        db_dic['cache_index'] = mame_build_MAME_catalogs(g_PATHS, g_settings, control_dic,
+            db_dic['machines'], db_dic['render'], db_dic['roms'],
+            db_dic['main_pclone_dic'], db_dic['assets'])
+
+        # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs (optional) ---
+        options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
+        if not options_dic['abort']:
+            SL_dic = mame_build_SoftwareLists_databases(g_PATHS, g_settings, control_dic,
+                db_dic['machines'], db_dic['render'])
+        else:
+            log_info('Skipping mame_build_SoftwareLists_databases()')
+
+        # --- Scan ROMs/CHDs/Samples and updates ROM status (optional) ---
+        options_dic = mame_check_before_scan_MAME_ROMs(g_PATHS, g_settings, control_dic)
+        if not options_dic['abort']:
+            mame_scan_MAME_ROMs(g_PATHS, g_settings, control_dic, options_dic,
+                db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'],
+                audit_dic['ROM_ZIP_list'], audit_dic['Sample_ZIP_list'], audit_dic['CHD_archive_list'])
+        else:
+            log_info('Skipping mame_scan_MAME_ROMs()')
+
+        # --- Scans MAME assets/artwork (optional) ---
+        options_dic = mame_check_before_scan_MAME_assets(g_PATHS, g_settings, control_dic)
+        if not options_dic['abort']:
+            mame_scan_MAME_assets(g_PATHS, g_settings, control_dic,
+                db_dic['assets'], db_dic['render'], db_dic['main_pclone_dic'])
+        else:
+            log_info('Skipping mame_scan_MAME_assets()')
+
+        # --- Scan SL ROMs/CHDs (optional) ---
+        options_dic = mame_check_before_scan_SL_ROMs(g_PATHS, g_settings, control_dic)
+        if not options_dic['abort']:
+            mame_scan_SL_ROMs(g_PATHS, g_settings, control_dic, options_dic, SL_dic['SL_index'])
+        else:
+            log_info('Skipping mame_scan_SL_ROMs()')
+
+        # --- Scan SL assets/artwork (optional) ---
+        options_dic = mame_check_before_scan_SL_assets(g_PATHS, g_settings, control_dic)
+        if not options_dic['abort']:
+            mame_scan_SL_assets(g_PATHS, g_settings, control_dic,
+                SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
+        else:
+            log_info('Skipping mame_scan_SL_assets()')
+
+        # --- Build MAME machines plot ---
+        mame_build_MAME_plots(g_PATHS, g_settings, control_dic,
+            db_dic['machines'], db_dic['render'], db_dic['assets'],
+            db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
+            db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
+
+        # --- Buils Software List items plot ---
+        mame_build_SL_plots(g_PATHS, g_settings, control_dic,
+            SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
+
+        # --- Regenerate the custom filters ---
+        main_filter_dic = filter_get_filter_DB(
+            db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'])
+        (filter_list, options_dic) = mame_custom_filters_load_XML(
+            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic)
+        if len(filter_list) >= 1 and options_dic['XML_errors'] == False:
+            mame_build_custom_filters(g_PATHS, g_settings, db_dic['control_dic'],
+                filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
+
+        # --- Regenerate MAME asset hashed database ---
+        fs_build_asset_hashed_db(g_PATHS, g_settings, control_dic, db_dic['assets'])
+
+        # --- Regenerate MAME machine render and assets cache ---
+        if g_settings['debug_enable_MAME_render_cache']:
+            fs_build_render_cache(g_PATHS, g_settings, control_dic,
+                db_dic['cache_index'], db_dic['render'])
+        if g_settings['debug_enable_MAME_asset_cache']:
+            fs_build_asset_cache(g_PATHS, g_settings, control_dic,
+                db_dic['cache_index'], db_dic['assets'])
+
+        # --- MAME audit ---
+        mame_audit_MAME_all(g_PATHS, g_settings, control_dic,
+            db_dic['machines'], db_dic['render'], audit_dic['audit_roms'])
+
+        # --- SL audit ---
+        mame_audit_SL_all(g_PATHS, g_settings, control_dic, SL_dic['SL_index'])
+
+        # --- So long and thanks for all the fish ---
+        kodi_notify('Finished extracting, DB build, scanning, filters and audit')
 
     # --- Extract MAME.xml ---
-    elif menu_item == 2:
+    elif menu_item == 3:
         log_info('command_context_setup_plugin() Extract MAME.xml starting ...')
 
         # --- Check for errors before extracting MAME XML ---
@@ -4674,7 +4750,7 @@ def command_context_setup_plugin():
                        'Size is {0} MB and there are {1} machines.'.format(filesize / 1000000, total_machines))
 
     # --- Build everything ---
-    elif menu_item == 3:
+    elif menu_item == 4:
         log_info('command_context_setup_plugin() Build everything starting ...')
 
         # --- Build main MAME database, PClone list and hashed database (mandatory) ---
@@ -4734,7 +4810,7 @@ def command_context_setup_plugin():
         kodi_notify('All databases built')
 
     # --- Scan everything ---
-    elif menu_item == 4:
+    elif menu_item == 5:
         log_info('command_setup_plugin() Scanning everything starting ...')
 
         # --- MAME -------------------------------------------------------------------------------
@@ -4831,7 +4907,7 @@ def command_context_setup_plugin():
         kodi_notify('All ROM/asset scanning finished')
 
     # --- Build Fanarts ---
-    elif menu_item == 5:
+    elif menu_item == 6:
         submenu = dialog.select('Build Fanarts',
             ['Test MAME Fanart',
              'Test Software List item Fanart',
@@ -5105,7 +5181,7 @@ def command_context_setup_plugin():
     # --- Audit MAME machine ROMs/CHDs ---
     # NOTE It is likekely that this function will take a looong time. It is important that the
     #      audit process can be canceled and a partial report is written.
-    elif menu_item == 6:
+    elif menu_item == 7:
         log_info('command_setup_plugin() Audit MAME machines ROMs/CHDs ...')
 
         # --- Check for requirements/errors ---
@@ -5126,32 +5202,33 @@ def command_context_setup_plugin():
         kodi_notify('ROM and CHD audit finished')
 
     # --- Audit SL ROMs/CHDs ---
-    elif menu_item == 7:
+    elif menu_item == 8:
         log_info('command_setup_plugin() Audit SL ROMs/CHDs ...')
 
         # --- Check for requirements/errors ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        SL_index = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
 
         # --- Audit all Software List items ---
         # 1) Updates control_dic statistics and timestamps and saves it.
-        mame_audit_SL_all(g_PATHS, g_settings, control_dic)
+        mame_audit_SL_all(g_PATHS, g_settings, control_dic, SL_index)
         kodi_notify('Software Lists audit finished')
 
     # --- Build Step by Step ---
-    elif menu_item == 8:
+    elif menu_item == 9:
         submenu = dialog.select('Setup plugin (step by step)', [
-                                    'Build MAME databases',
-                                    'Build MAME Audit/Scanner databases',
-                                    'Build MAME Catalogs',
-                                    'Build Software List databases',
-                                    'Scan MAME ROMs/CHDs/Samples',
-                                    'Scan MAME assets/artwork',
-                                    'Scan Software List ROMs/CHDs',
-                                    'Scan Software List assets/artwork',
-                                    'Build MAME machine plots',
-                                    'Build Software List item plots',
-                                    'Rebuild MAME machine and asset caches',
-                                ])
+            'Build MAME databases',
+            'Build MAME Audit/Scanner databases',
+            'Build MAME Catalogs',
+            'Build Software List databases',
+            'Scan MAME ROMs/CHDs/Samples',
+            'Scan MAME assets/artwork',
+            'Scan Software List ROMs/CHDs',
+            'Scan Software List assets/artwork',
+            'Build MAME machine plots',
+            'Build Software List item plots',
+            'Rebuild MAME machine and asset caches',
+            ])
         if submenu < 0: return
 
         # --- Build main MAME database, PClone list and hashed database ---
