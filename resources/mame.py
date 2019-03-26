@@ -1976,7 +1976,6 @@ def mame_build_custom_filters(PATHS, settings, control_dic,
     pDialog.close()
 
     # --- Update timestamp ---
-    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
     change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
