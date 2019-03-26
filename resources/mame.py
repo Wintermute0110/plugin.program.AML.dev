@@ -2035,7 +2035,7 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
         else:
             control_list = []
         if control_list:
-            controls_str = 'Controls {0}'.format(mame_get_control_str(control_list))
+            controls_str = 'Controls {0}'.format(misc_get_mame_control_str(control_list))
         else:
             controls_str = 'No controls'
         mecha_str = 'Mechanical' if m['isMechanical'] else 'Non-mechanical'
@@ -2045,7 +2045,7 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
 
         plot_str_list = []
         plot_str_list.append('{0}'.format(controls_str))
-        plot_str_list.append('{0}'.format(mame_get_screen_str(machine_name, m)))
+        plot_str_list.append('{0}'.format(misc_get_mame_screen_str(machine_name, m)))
         plot_str_list.append('{0} / Driver is {1}'.format(mecha_str, m['sourcefile']))
         plot_str_list.append('{0}'.format(coin_str))
         if Flag_str: plot_str_list.append('{0}'.format(Flag_str))

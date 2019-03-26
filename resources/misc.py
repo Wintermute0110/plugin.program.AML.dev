@@ -23,14 +23,16 @@ from __future__ import unicode_literals
 # -------------------------------------------------------------------------------------------------
 # Functions
 # -------------------------------------------------------------------------------------------------
+# Used in mame_build_MAME_plots()
 def misc_get_mame_control_str(control_type_list):
     control_set = set()
-    improved_c_type_list = mame_improve_control_type_list(control_type_list)
+    improved_c_type_list = misc_improve_mame_control_type_list(control_type_list)
     for control in improved_c_type_list: control_set.add(control)
     control_str = ', '.join(list(sorted(control_set)))
 
     return control_str
 
+# Used here in misc_get_mame_screen_str()
 def misc_get_mame_screen_rotation_str(display_rotate):
     if display_rotate == '0' or display_rotate == '180':
         screen_str = 'horizontal'
@@ -41,22 +43,23 @@ def misc_get_mame_screen_rotation_str(display_rotate):
 
     return screen_str
 
+# Used in mame_build_MAME_plots()
 def misc_get_mame_screen_str(machine_name, machine):
     d_list = machine['display_type']
     if d_list:
         if len(d_list) == 1:
-            rotation_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
+            rotation_str = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
             screen_str = 'One {0} {1} screen'.format(d_list[0], rotation_str)
         elif len(d_list) == 2:
             if d_list[0] == 'lcd' and d_list[1] == 'raster':
-                r_str_1 = mame_get_screen_rotation_str(machine['display_rotate'][0])
-                r_str_2 = mame_get_screen_rotation_str(machine['display_rotate'][1])
+                r_str_1 = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
+                r_str_2 = misc_get_mame_screen_rotation_str(machine['display_rotate'][1])
                 screen_str = 'One LCD {0} screen and one raster {1} screen'.format(r_str_1, r_str_2)
             elif d_list[0] == 'raster' and d_list[1] == 'raster':
-                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
+                r_str = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
                 screen_str = 'Two raster {0} screens'.format(r_str)
             elif d_list[0] == 'svg' and d_list[1] == 'svg':
-                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
+                r_str = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
                 screen_str = 'Two SVG {0} screens'.format(r_str)
             elif d_list[0] == 'unknown' and d_list[1] == 'unknown':
                 screen_str = 'Two unknown screens'
@@ -64,7 +67,7 @@ def misc_get_mame_screen_str(machine_name, machine):
                 screen_str = 'Two unrecognised screens'
         elif len(d_list) == 3:
             if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster':
-                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
+                r_str = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
                 screen_str = 'Three raster {0} screens'.format(r_str)
             elif d_list[0] == 'raster' and d_list[1] == 'lcd' and d_list[2] == 'lcd':
                 screen_str = 'Three screens special case'
@@ -72,7 +75,7 @@ def misc_get_mame_screen_str(machine_name, machine):
                 screen_str = 'Three unrecognised screens'
         elif len(d_list) == 4:
             if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster' and d_list[3] == 'raster':
-                r_str = mame_get_screen_rotation_str(machine['display_rotate'][0])
+                r_str = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
                 screen_str = 'Four raster {0} screens'.format(r_str)
             else:
                 screen_str = 'Four unrecognised screens'
