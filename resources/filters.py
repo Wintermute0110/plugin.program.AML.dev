@@ -106,7 +106,7 @@ def filter_parse_XML(fname_str):
                 'year'         : '',
                 'include'      : [], # List of strings
                 'exclude'      : [], # List of strings
-                'change'       : [], # List of tuples (change_orig, change_dest)
+                'change'       : [], # List of tuples (change_orig string, change_dest string)
             }
             for filter_element in root_element:
                 text_t = filter_element.text if filter_element.text else ''
