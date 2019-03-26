@@ -52,6 +52,24 @@ WIP      [FILTERING] Test the filters for errors. For example, test that all the
 WIP      [FILTERING] Make a filter report the user can read.
          I have to think if this is really useful or not.
 
+FEATURE  Improved filter "Machines by Display Type" and removed filter
+         "Machines by Display Rotation."
+
+WIP      New catalog filter "Machines by Display VSync freq." Inspired by
+         MASH's MAMEINFO Vsync.ini.
+
+WIP      New catalog filter "Machines by Display Resolution." Inspired by
+         MASH's MAMEINFO Screen.ini.
+
+WIP      New catalog filter "Machines by CPU." Inspired by
+         MASH's MAMEINFO CPU.ini.
+
+WIP      New INI file Artwork.ini (produced by MASH's MAMEINFO).
+         Catalog filter "Machines by Artwork".
+
+WIP      New INI file Category.ini (produced by MASH's MAMEINFO).
+         Catalog filter "Machines by Category".
+
 FEATURE  New "All in one (Extract, Build and Scan)" options:
          1) Delete current to "All in one (Extract, Build, Scan)"
          2) Add "All in one (Extract, Build, Scan, Filters)"

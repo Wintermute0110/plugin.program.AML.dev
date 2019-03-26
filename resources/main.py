@@ -684,7 +684,7 @@ def render_root_list():
     ctype_compact_str   = 'Machines by Controls (Compact)'
     device_expanded_str = 'Machines by Device (Expanded)'
     device_compact_str  = 'Machines by Device (Compact)'
-    drotation_str       = 'Machines by Display Rotation'
+    # drotation_str       = 'Machines by Display Rotation'
     dtype_str           = 'Machines by Display Type'
     driver_str          = 'Machines by Driver'
     manufacturer_str    = 'Machines by Manufacturer'
@@ -745,9 +745,10 @@ def render_root_list():
         'For each machine, all pluggable devices are included in the list.')
     device_compact_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
         'Machines may have additional pluggable devices.')
-    drotation_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display rotation, '
-        'which could be Horizontal or Vertical.')
-    dtype_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type.')
+    # drotation_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display rotation, '
+    #     'which could be Horizontal or Vertical.')
+    dtype_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type '
+        'and rotation.')
     driver_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by driver. '
         'Brother machines have the same driver.')
     manufacturer_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted by '
@@ -837,7 +838,6 @@ def render_root_list():
         ctype_compact_str   += a.format(num_cat_Controls_Compact)
         device_expanded_str += a.format(num_cat_Devices_Expanded)
         device_compact_str  += a.format(num_cat_Devices_Compact)
-        drotation_str       += a.format(num_cat_Display_Rotate)
         dtype_str           += a.format(num_cat_Display_Type)
         driver_str          += a.format(num_cat_Driver)
         manufacturer_str    += a.format(num_cat_Manufacturer)
@@ -893,8 +893,8 @@ def render_root_list():
             device_expanded_str, misc_url_1_arg('catalog', 'Devices_Expanded'), device_expanded_plot)
         render_root_list_row_standard(
             device_compact_str, misc_url_1_arg('catalog', 'Devices_Compact'), device_compact_plot)
-        render_root_list_row_standard(
-            drotation_str, misc_url_1_arg('catalog', 'Display_Rotate'), drotation_plot)
+        # render_root_list_row_standard(
+        #     drotation_str, misc_url_1_arg('catalog', 'Display_Rotate'), drotation_plot)
         render_root_list_row_standard(
             dtype_str, misc_url_1_arg('catalog', 'Display_Type'), dtype_plot)
         render_root_list_row_standard(

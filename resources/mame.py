@@ -5508,6 +5508,41 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
+    # --- Display rotate catalog ---
+    # --- Merged with Display rotate catalog ---
+    # log_info('Making Display Rotate catalog ...')
+    # pDialog.update(update_number, pDialog_line1, 'Display rotate catalog')
+    # catalog_parents = {}
+    # catalog_all = {}
+    # for parent_name in main_pclone_dic:
+    #     machine = machines[parent_name]
+    #     machine_render = machines_render[parent_name]
+    #     if machine_render['isDevice']: continue # >> Skip device machines
+    #     # >> machine['display_rotate'] is a list of strings
+    #     fixed_d_rotate_list = []
+    #     for d_str in machine['display_rotate']:
+    #         if d_str == '0' or d_str == '180':
+    #             fixed_d_rotate_list.append('Horizontal')
+    #         elif d_str == '90' or d_str == '270':
+    #             fixed_d_rotate_list.append('Vertical')
+    #         else:
+    #             raise TypeError('Machine {0} wrong display rotate "{1}"'.format(parent_name, d_str))
+    #     catalog_key = " / ".join(fixed_d_rotate_list)
+    #     # >> Change category name for machines with no display
+    #     if catalog_key == '': catalog_key = '[ No display ]'
+    #     if catalog_key in catalog_parents:
+    #         catalog_parents[catalog_key][parent_name] = machine_render['description']
+    #         catalog_all[catalog_key][parent_name] = machine_render['description']
+    #     else:
+    #         catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
+    #         catalog_all[catalog_key] = { parent_name : machine_render['description'] }
+    #     _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
+    # _cache_index_builder('Display_Rotate', cache_index_dic, catalog_all, catalog_parents)
+    # fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_ALL_PATH.getPath(), catalog_all)
+    # fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PARENT_PATH.getPath(), catalog_parents)
+    # processed_filters += 1
+    # update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
     # --- Display type catalog ---
     log_info('Making Display Type catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Display type catalog')
@@ -5516,12 +5551,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
-        # >> Skip device machines
+        # Skip device machines
         if machine_render['isDevice']: continue
-        display_list = misc_improve_mame_display_type_list(machine['display_type'])
-        catalog_key = " / ".join(display_list)
-        # >> Change category name for machines with no display
-        if catalog_key == '': catalog_key = '[ No display ]'
+        # Compute the catalog_key. display_type and display_rotate main DB entries used.
+        catalog_key = misc_get_display_type_catalog_key(machine['display_type'], machine['display_rotate'])
         if catalog_key in catalog_parents:
             catalog_parents[catalog_key][parent_name] = machine_render['description']
             catalog_all[catalog_key][parent_name] = machine_render['description']
@@ -5532,40 +5565,6 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
-
-    # --- Display rotate catalog ---
-    log_info('Making Display Rotate catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Display rotate catalog')
-    catalog_parents = {}
-    catalog_all = {}
-    for parent_name in main_pclone_dic:
-        machine = machines[parent_name]
-        machine_render = machines_render[parent_name]
-        if machine_render['isDevice']: continue # >> Skip device machines
-        # >> machine['display_rotate'] is a list of strings
-        fixed_d_rotate_list = []
-        for d_str in machine['display_rotate']:
-            if d_str == '0' or d_str == '180':
-                fixed_d_rotate_list.append('Horizontal')
-            elif d_str == '90' or d_str == '270':
-                fixed_d_rotate_list.append('Vertical')
-            else:
-                raise TypeError('Machine {0} wrong display rotate "{1}"'.format(parent_name, d_str))
-        catalog_key = " / ".join(fixed_d_rotate_list)
-        # >> Change category name for machines with no display
-        if catalog_key == '': catalog_key = '[ No display ]'
-        if catalog_key in catalog_parents:
-            catalog_parents[catalog_key][parent_name] = machine_render['description']
-            catalog_all[catalog_key][parent_name] = machine_render['description']
-        else:
-            catalog_parents[catalog_key] = { parent_name : machine_render['description'] }
-            catalog_all[catalog_key] = { parent_name : machine_render['description'] }
-        _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
-    _cache_index_builder('Display_Rotate', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_ALL_PATH.getPath(), catalog_all)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_ROTATE_PARENT_PATH.getPath(), catalog_parents)
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 

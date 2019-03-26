@@ -91,6 +91,38 @@ def misc_get_mame_screen_str(machine_name, machine):
 
     return screen_str
 
+def misc_get_mame_display_type(display_str):
+    if   display_str == 'lcd':    display_name = 'LCD'
+    elif display_str == 'raster': display_name = 'Raster'
+    elif display_str == 'svg':    display_name = 'SVG'
+    elif display_str == 'vector': display_name = 'Vector'
+    else:                         display_name = display_str
+
+    return display_name
+
+def misc_get_mame_display_rotation(d_str):
+    if d_str == '0' or d_str == '180':
+        rotation_letter = 'Hor'
+    elif d_str == '90' or d_str == '270':
+        rotation_letter = 'Ver'
+    else:
+        raise TypeError('Wrong display rotate "{1}"'.format(d_str))
+
+    return rotation_letter
+
+def misc_get_display_type_catalog_key(display_type_list, display_rotate_list):
+    if len(display_type_list) == 0:
+        catalog_key = '[ No display ]'
+    else:
+        display_list = []
+        for dis_index in range(len(display_type_list)):
+            display_name = misc_get_mame_display_type(display_type_list[dis_index])
+            display_rotation = misc_get_mame_display_rotation(display_rotate_list[dis_index])
+            display_list.append('{0} {1}'.format(display_name, display_rotation))
+        catalog_key = " / ".join(display_list)
+
+    return catalog_key
+
 #
 # A) Capitalise every list item
 # B) Substitute Only_buttons -> Only buttons
