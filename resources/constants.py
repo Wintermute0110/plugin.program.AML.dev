@@ -69,7 +69,9 @@ class Addon_Error(Exception):
 # Advanced MAME Launcher constants
 # -------------------------------------------------------------------------------------------------
 # >> INI and DAT files default names.
+ARTWORK_INI   = 'Artwork.ini'
 BESTGAMES_INI = 'bestgames.ini'
+CATEGORY_INI  = 'Category.ini'
 CATLIST_INI   = 'catlist.ini'
 CATVER_INI    = 'catver.ini'
 GENRE_INI     = 'genre.ini'
