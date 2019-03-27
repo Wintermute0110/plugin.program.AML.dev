@@ -11,8 +11,8 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 # --- Python standard library ---
 from __future__ import unicode_literals
@@ -115,11 +115,14 @@ def fs_new_machine_dic():
         'softwarelists'   : [],
         'devices'         : [], # List of dictionaries. See comments avobe.
         # >> Custom AML data (from INI files or generated)
-        'catver'          : '', # External catalog
+        'artwork'         : [], # MASH Artwork.ini
+        'category'        : '', # MASH Category.ini
+        'catver'          : '', # Progretto SNAPS catver.ini
         'catlist'         : '', # External catalog
         'genre'           : '', # External catalog
         'bestgames'       : '', # External catalog
         'series'          : '', # External catalog
+        # >> AML generated field.
         'isDead'          : False,
     }
 
@@ -139,8 +142,8 @@ def fs_new_machine_render_dic():
         'driver_status'  : '',
         # >> Custom AML data
         'isMature'       : False,
-        'genre'          : '',      # Taken from Genre.ini, Catver.ini or Catlist.ini
-        'nplayers'       : '',      # Taken from NPlayers.ini
+        'genre'          : '', # Taken from Genre.ini or Catver.ini or Catlist.ini
+        'nplayers'       : '', # Taken from NPlayers.ini
     }
 
 #
@@ -793,12 +796,16 @@ def fs_get_cataloged_dic_parents(PATHS, catalog_name):
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath())
     elif catalog_name == 'Genre':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_GENRE_PARENT_PATH.getPath())
+    elif catalog_name == 'Category':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATEGORY_PARENT_PATH.getPath())
     elif catalog_name == 'NPlayers':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath())
     elif catalog_name == 'Bestgames':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath())
     elif catalog_name == 'Series':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SERIES_PARENT_PATH.getPath())
+    elif catalog_name == 'Artwork':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Compact':
@@ -843,12 +850,16 @@ def fs_get_cataloged_dic_all(PATHS, catalog_name):
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATLIST_ALL_PATH.getPath())
     elif catalog_name == 'Genre':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_GENRE_ALL_PATH.getPath())
+    elif catalog_name == 'Category':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATEGORY_ALL_PATH.getPath())
     elif catalog_name == 'NPlayers':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath())
     elif catalog_name == 'Bestgames':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath())
     elif catalog_name == 'Series':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SERIES_ALL_PATH.getPath())
+    elif catalog_name == 'Artwork':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Compact':

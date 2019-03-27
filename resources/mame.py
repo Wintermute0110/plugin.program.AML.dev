@@ -381,8 +381,59 @@ def mame_load_Mature_ini(filename):
     return (ini_set, ini_version)
 
 #
-# Generic MAME INI file loader.
-# Supports Catlist.ini, Genre.ini, Bestgames.ini and Series.ini
+# Loads INI files like catver.ini and nplayers.ini.
+#
+# --- Example -----------------------------------
+# ;; Comment
+# [category_name_1]
+# machine_name_1 = data_1
+# machine_name_2 = data_2
+#
+# [category_name_2]
+# machine_name_1 = data_1
+# -----------------------------------------------
+#
+# ini_dic = {
+#
+# }
+#
+def mame_load_INI_datfile_complex(filename):
+    pass
+
+#
+# Generic MAME INI file loader. Supports catlist.ini, genre.ini, bestgames.ini and series.ini.
+#
+# --- Example -----------------------------------
+# ;; Comment
+# [category_name_1]
+# machine_name_1
+# machine_name_2
+#
+# [category_name_2]
+# machine_name_1
+# -----------------------------------------------
+#
+# Note that some INIs, for example Artwork.ini, may have the same machine on different
+# categories. This must be supported in this function.
+#
+# ini_dic = {
+#     'version' : string,
+#     'unique_categories' : bool,
+#     'single_category' : bool,
+#     'data' : {
+#         'machine_name' : [ 'category_1', 'category_2', ... ]
+#     }
+#     'categories' : [
+#         'category_1', 'category_2', ...
+#     ]
+# }
+#
+# categories is a list of unique categories, sorted alphabetically. Each category appears only once.
+# unique_categories is True is each machine has a unique category, False otherwise.
+# single_category is True if only one category is defined, for example in mature.ini 
+# or nplayers.ini.
+#
+# Rename this function to mame_load_INI_datfile_simple()
 #
 def mame_load_INI_datfile(filename):
     log_info('mame_load_INI_datfile() Parsing "{0}"'.format(filename))
@@ -394,22 +445,28 @@ def mame_load_INI_datfile(filename):
     except IOError:
         log_info('mame_load_INI_datfile() (IOError) opening "{0}"'.format(filename))
         return (ini_dic, ini_version)
+    # Compile regexes to increase performance.
+    # According to the docs: The compiled versions of the most recent patterns passed to 
+    # re.match(), re.search() or re.compile() are cached, so programs that use only a few 
+    # regular expressions at a time needn’t worry about compiling regular expressions.
     for file_line in f:
         stripped_line = file_line.strip()
-        # >> Skip comments: lines starting with ';;'
-        # >> Look for version string in comments
+        # Skip comments: lines starting with ';;'
+        # Look for version string in comments
         if re.search(r'^;;', stripped_line):
             m = re.search(r';; (\w+)\.ini ([0-9\.]+) / ', stripped_line)
             if m: ini_version = m.group(2)
             continue
-        # >> Skip blanks
+        # Skip blanks
         if stripped_line == '': continue
-        # >> New category
+        # Next line defines a category?
         searchObj = re.search(r'^\[(.*)\]', stripped_line)
         if searchObj:
+            # New category
             current_category = searchObj.group(1)
             ini_set.add(current_category)
         else:
+            # Add machine to category
             machine_name = stripped_line
             ini_dic[machine_name] = current_category
     f.close()
@@ -3655,7 +3712,9 @@ STOP_AFTER_MACHINES = 100000
 
 def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str):
     DATS_dir_FN = FileName(settings['dats_path'])
+    ARTWORK_FN = DATS_dir_FN.pjoin(ARTWORK_INI)
     BESTGAMES_FN = DATS_dir_FN.pjoin(BESTGAMES_INI)
+    CATEGORY_FN = DATS_dir_FN.pjoin(CATEGORY_INI)
     CATLIST_FN = DATS_dir_FN.pjoin(CATLIST_INI)
     CATVER_FN = DATS_dir_FN.pjoin(CATVER_INI)
     GENRE_FN = DATS_dir_FN.pjoin(GENRE_INI)
@@ -3671,16 +3730,18 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     log_info('mame_build_MAME_main_database() Starting ...')
     log_info('--- Paths ---')
     log_info('mame_prog      = "{0}"'.format(settings['mame_prog']))
-    log_info('rom_path       = "{0}"'.format(settings['rom_path']))
+    log_info('ROM_path       = "{0}"'.format(settings['rom_path']))
     log_info('assets_path    = "{0}"'.format(settings['assets_path']))
-    log_info('dats_path      = "{0}"'.format(settings['dats_path']))
-    log_info('chd_path       = "{0}"'.format(settings['chd_path']))
+    log_info('DATs_path      = "{0}"'.format(settings['dats_path']))
+    log_info('CHD_path       = "{0}"'.format(settings['chd_path']))
     log_info('samples_path   = "{0}"'.format(settings['samples_path']))
     log_info('SL_hash_path   = "{0}"'.format(settings['SL_hash_path']))
     log_info('SL_rom_path    = "{0}"'.format(settings['SL_rom_path']))
     log_info('SL_chd_path    = "{0}"'.format(settings['SL_chd_path']))
-    log_info('--- INI paths ---')   
+    log_info('--- INI paths ---')
+    log_info('artwork_path   = "{0}"'.format(ARTWORK_FN.getPath()))
     log_info('bestgames_path = "{0}"'.format(BESTGAMES_FN.getPath()))
+    log_info('category_path  = "{0}"'.format(CATEGORY_FN.getPath()))
     log_info('catlist_path   = "{0}"'.format(CATLIST_FN.getPath()))
     log_info('catver_path    = "{0}"'.format(CATVER_FN.getPath()))
     log_info('genre_path     = "{0}"'.format(GENRE_FN.getPath()))
@@ -3726,23 +3787,27 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
 
     # --- Load INI files to include category information ---
     pdialog_line1 = 'Processing INI files ...'
-    num_items = 7
+    num_items = 9
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(int((0*100) / num_items), pdialog_line1, BESTGAMES_INI)
+    pDialog.update(int((0*100) / num_items), pdialog_line1, ARTWORK_INI)
+    (artwork_dic, artwork_version) = mame_load_INI_datfile(ARTWORK_FN.getPath())
+    pDialog.update(int((1*100) / num_items), pdialog_line1, BESTGAMES_INI)
     (bestgames_dic, bestgames_version) = mame_load_INI_datfile(BESTGAMES_FN.getPath())
-    pDialog.update(int((1*100) / num_items), pdialog_line1, CATLIST_INI)
+    pDialog.update(int((2*100) / num_items), pdialog_line1, CATEGORY_INI)
+    (category_dic, category_version) = mame_load_INI_datfile(CATEGORY_FN.getPath())
+    pDialog.update(int((3*100) / num_items), pdialog_line1, CATLIST_INI)
     (catlist_dic, catlist_version) = mame_load_INI_datfile(CATLIST_FN.getPath())
-    pDialog.update(int((2*100) / num_items), pdialog_line1, CATVER_INI)
+    pDialog.update(int((4*100) / num_items), pdialog_line1, CATVER_INI)
     (categories_dic, catver_version) = mame_load_Catver_ini(CATVER_FN.getPath())
-    pDialog.update(int((3*100) / num_items), pdialog_line1, GENRE_INI)
+    pDialog.update(int((5*100) / num_items), pdialog_line1, GENRE_INI)
     (genre_dic, genre_version) = mame_load_INI_datfile(GENRE_FN.getPath())
-    pDialog.update(int((4*100) / num_items), pdialog_line1, MATURE_INI)
+    pDialog.update(int((6*100) / num_items), pdialog_line1, MATURE_INI)
     (mature_set, mature_version) = mame_load_Mature_ini(MATURE_FN.getPath())
-    pDialog.update(int((5*100) / num_items), pdialog_line1, NPLAYERS_INI)
+    pDialog.update(int((7*100) / num_items), pdialog_line1, NPLAYERS_INI)
     (nplayers_dic, nplayers_version) = mame_load_nplayers_ini(NPLAYERS_FN.getPath())
-    pDialog.update(int((6*100) / num_items), pdialog_line1, SERIES_INI)
+    pDialog.update(int((8*100) / num_items), pdialog_line1, SERIES_INI)
     (series_dic, series_version) = mame_load_INI_datfile(SERIES_FN.getPath())
-    pDialog.update(int((7*100) / num_items), ' ', ' ')
+    pDialog.update(int((9*100) / num_items), ' ', ' ')
     pDialog.close()
 
     # --- Load DAT files to include category information ---
@@ -3884,19 +3949,40 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             # sampleof is #IMPLIED attribute
             if 'sampleof' in elem.attrib: machine['sampleof'] = elem.attrib['sampleof']
 
-            # >> Add catver/catlist/genre
-            if m_name in categories_dic: machine['catver']    = categories_dic[m_name]
-            else:                        machine['catver']    = '[ Not set ]'
-            if m_name in catlist_dic:    machine['catlist']   = catlist_dic[m_name]
-            else:                        machine['catlist']   = '[ Not set ]'
-            if m_name in genre_dic:      machine['genre']     = genre_dic[m_name]
-            else:                        machine['genre']     = '[ Not set ]'
-            if m_name in bestgames_dic:  machine['bestgames'] = bestgames_dic[m_name]
-            else:                        machine['bestgames'] = '[ Not set ]'
-            if m_name in series_dic:     machine['series']    = series_dic[m_name]
-            else:                        machine['series']    = '[ Not set ]'
-            if m_name in nplayers_dic:   m_render['nplayers'] = nplayers_dic[m_name]
-            else:                        m_render['nplayers'] = '[ Not set ]'
+            # --- Add catver/catlist/genre ---
+            if m_name in artwork_dic:
+                machine['artwork'] = artwork_dic[m_name]
+            else:
+                machine['artwork'] = '[ Not set ]'
+            if m_name in category_dic:
+                machine['category'] = category_dic[m_name]
+            else:
+                machine['category'] = '[ Not set ]'
+            if m_name in categories_dic:
+                machine['catver'] = categories_dic[m_name]
+            else:
+                machine['catver'] = '[ Not set ]'
+            if m_name in catlist_dic:
+                machine['catlist'] = catlist_dic[m_name]
+            else:
+                machine['catlist'] = '[ Not set ]'
+            if m_name in genre_dic:
+                machine['genre'] = genre_dic[m_name]
+            else:
+                machine['genre'] = '[ Not set ]'
+            if m_name in bestgames_dic:
+                machine['bestgames'] = bestgames_dic[m_name]
+            else:
+                machine['bestgames'] = '[ Not set ]'
+            if m_name in series_dic:
+                machine['series'] = series_dic[m_name]
+            else:
+                machine['series'] = '[ Not set ]'
+            # Careful, nplayers goes into render database.
+            if m_name in nplayers_dic:
+                m_render['nplayers'] = nplayers_dic[m_name]
+            else:
+                m_render['nplayers'] = '[ Not set ]'
 
             # >> Increment number of machines
             stats_processed_machines += 1
@@ -5025,7 +5111,35 @@ def _cache_index_builder(cat_name, cache_index_dic, catalog_all, catalog_parents
         }
 
 #
+# Helper functions to get the catalog key.
+#
+def _aux_catalog_key_Category(parent_name, machines, machines_render):
+    return machines[parent_name]['category']
+
+def _aux_catalog_key_Artwork(parent_name, machines, machines_render):
+    return machines[parent_name]['artwork']
+
+#
+# Uses a "function pointer" to obtain the catalog_key
+#
+def _build_catalog_helper_new(catalog_parents, catalog_all,
+    machines, machines_render, main_pclone_dic, catalog_key_function):
+    for parent_name in main_pclone_dic:
+        # Skip device machines in catalogs.
+        if machines_render[parent_name]['isDevice']: continue
+        catalog_key = catalog_key_function(parent_name, machines, machines_render)
+        if catalog_key in catalog_parents:
+            catalog_parents[catalog_key][parent_name] = machines_render[parent_name]['description']
+            catalog_all[catalog_key][parent_name] = machines_render[parent_name]['description']
+        else:
+            catalog_parents[catalog_key] = { parent_name : machines_render[parent_name]['description'] }
+            catalog_all[catalog_key] = { parent_name : machines_render[parent_name]['description'] }
+        for clone_name in main_pclone_dic[parent_name]:
+            catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
+
+#
 # db_field is a string
+# DEPRECATED AND MUST BE REMOVED SOON.
 #
 def _build_catalog_helper(catalog_parents, catalog_all,
     machines, machines_render, main_pclone_dic, db_field):
@@ -5131,9 +5245,11 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         'Catver'             : {},
         'Catlist'            : {},
         'Genre'              : {},
+        'Category'           : {},
         'NPlayers'           : {},
         'Bestgames'          : {},
         'Series'             : {},
+        'Artwork'            : {},
         # MAME XML extracted catalogs
         'Controls_Expanded'  : {},
         'Controls_Compact'   : {},
@@ -5405,6 +5521,17 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Category catalog ---
+    log_info('Making Category catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Category catalog')
+    catalog_parents = {}
+    catalog_all = {}
+    _build_catalog_helper_new(catalog_parents, catalog_all,
+        machines, machines_render, main_pclone_dic, _aux_catalog_key_Category)
+    _cache_index_builder('Category', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_CATEGORY_PARENT_PATH.getPath(), catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_CATEGORY_ALL_PATH.getPath(), catalog_all)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Nplayers catalog ---
     log_info('Making Nplayers catalog ...')
@@ -5443,6 +5570,17 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Artwork catalog ---
+    log_info('Making Artwork catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Artwork catalog')
+    catalog_parents = {}
+    catalog_all = {}
+    _build_catalog_helper_new(catalog_parents, catalog_all,
+        machines, machines_render, main_pclone_dic, _aux_catalog_key_Artwork)
+    _cache_index_builder('Artwork', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath(), catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath(), catalog_all)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Control catalog (Expanded) ---
     log_info('Making Control Expanded catalog ...')

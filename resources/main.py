@@ -126,12 +126,16 @@ class AML_Paths:
         self.CATALOG_CATLIST_ALL_PATH             = self.CATALOG_DIR.pjoin('catalog_catlist_all.json')
         self.CATALOG_GENRE_PARENT_PATH            = self.CATALOG_DIR.pjoin('catalog_genre_parents.json')
         self.CATALOG_GENRE_ALL_PATH               = self.CATALOG_DIR.pjoin('catalog_genre_all.json')
+        self.CATALOG_CATEGORY_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_category_parents.json')
+        self.CATALOG_CATEGORY_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_category_all.json')
         self.CATALOG_NPLAYERS_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_nplayers_parents.json')
         self.CATALOG_NPLAYERS_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_nplayers_all.json')
         self.CATALOG_BESTGAMES_PARENT_PATH        = self.CATALOG_DIR.pjoin('catalog_bestgames_parents.json')
         self.CATALOG_BESTGAMES_ALL_PATH           = self.CATALOG_DIR.pjoin('catalog_bestgames_all.json')
         self.CATALOG_SERIES_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_series_parents.json')
         self.CATALOG_SERIES_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_series_all.json')
+        self.CATALOG_ARTWORK_PARENT_PATH          = self.CATALOG_DIR.pjoin('catalog_artwork_parents.json')
+        self.CATALOG_ARTWORK_ALL_PATH             = self.CATALOG_DIR.pjoin('catalog_artwork_all.json')
 
         self.CATALOG_CONTROL_EXPANDED_PARENT_PATH = self.CATALOG_DIR.pjoin('catalog_control_expanded_parents.json')
         self.CATALOG_CONTROL_EXPANDED_ALL_PATH    = self.CATALOG_DIR.pjoin('catalog_control_expanded_all.json')
@@ -315,7 +319,8 @@ def run_plugin(addon_argv):
         catalog_name = args['catalog'][0]
         # --- Software list is a special case ---
         if catalog_name == 'SL' or catalog_name == 'SL_ROM' or \
-           catalog_name == 'SL_CHD' or catalog_name == 'SL_ROM_CHD':
+           catalog_name == 'SL_CHD' or catalog_name == 'SL_ROM_CHD' or \
+           catalog_name == 'SL_empty':
             SL_name     = args['category'][0] if 'category' in args else ''
             parent_name = args['parent'][0] if 'parent' in args else ''
             if SL_name and parent_name:
@@ -603,6 +608,7 @@ def render_root_list():
 
     # ----- Machine count -----
     cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
+    SL_index_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
 
     # Do not crash if cache_index_dic is corrupted or has missing fields (may happen in
     # upgrades). This function must never crash because the user must have always access to
@@ -633,9 +639,12 @@ def render_root_list():
         num_cat_Catver = len(cache_index_dic['Catver'])
         num_cat_Catlist = len(cache_index_dic['Catlist'])
         num_cat_Genre = len(cache_index_dic['Genre'])
+        num_cat_Category = len(cache_index_dic['Category'])
         num_cat_NPlayers = len(cache_index_dic['NPlayers'])
         num_cat_Bestgames = len(cache_index_dic['Bestgames'])
         num_cat_Series = len(cache_index_dic['Series'])
+        num_cat_Artwork = len(cache_index_dic['Artwork'])
+
         num_cat_Controls_Expanded = len(cache_index_dic['Controls_Expanded'])
         num_cat_Controls_Compact = len(cache_index_dic['Controls_Compact'])
         num_cat_Devices_Expanded = len(cache_index_dic['Devices_Expanded'])
@@ -658,6 +667,38 @@ def render_root_list():
         counters_available = False
         log_debug('render_root_list() counters_available = False')
 
+    try:
+        num_SL_all = 0
+        num_SL_ROMs = 0
+        num_SL_CHDs = 0
+        num_SL_mixed = 0
+        num_SL_empty = 0
+        for l_name, l_dic in SL_index_dic.iteritems():
+            num_SL_all += 1
+            if l_dic['num_with_ROMs'] > 0 and l_dic['num_with_CHDs'] == 0:
+                num_SL_ROMs += 1
+            elif l_dic['num_with_ROMs'] == 0 and l_dic['num_with_CHDs'] > 0:
+                num_SL_CHDs += 1
+            elif l_dic['num_with_ROMs'] > 0 and l_dic['num_with_CHDs'] > 0:
+                num_SL_mixed += 1
+            elif l_dic['num_with_ROMs'] == 0 and l_dic['num_with_CHDs'] == 0:
+                num_SL_empty += 1
+            else:
+                log_error('Logical error in SL {0}'.format(l_name))
+        SL_counters_available = True
+        log_debug('render_root_list() SL_counters_available = True')
+        # log_debug('There are {0} SL_all lists.'.format(num_SL_all))
+        # log_debug('There are {0} SL_ROMs lists.'.format(num_SL_ROMs))
+        # log_debug('There are {0} SL_mixed lists.'.format(num_SL_mixed))
+        # log_debug('There are {0} SL_CHDs lists.'.format(num_SL_CHDs))
+        # log_debug('There are {0} SL_empty lists.'.format(num_SL_empty))
+
+    except KeyError as E:
+        SL_counters_available = False
+        # num_SL_empty always used to control visibility. If 0 then 'SL empty' is not visible.
+        num_SL_empty = 0
+        log_debug('render_root_list() SL_counters_available = False')
+
     # >> Main filter
     machines_n_str = 'Machines with coin slot (Normal)'
     machines_u_str = 'Machines with coin slot (Unusual)'
@@ -676,9 +717,11 @@ def render_root_list():
     catver_str   = 'Machines by Category (Catver)'
     catlist_str  = 'Machines by Category (Catlist)'
     genre_str    = 'Machines by Category (Genre)'
+    category_str = 'Machines by Category (MASH)'
     NPlayers_str = 'Machines by Number of players'
     rating_str   = 'Machines by Rating'
     series_str   = 'Machines by Series'
+    artwork_str  = 'Machines by Artwork (MASH)'
 
     # >> Cataloged filters (always there)
     # NOTE: use the same names as MAME executable
@@ -687,9 +730,8 @@ def render_root_list():
     # -listmedia     list available media for the system     XML tag <device>
     ctype_expanded_str  = 'Machines by Controls (Expanded)'
     ctype_compact_str   = 'Machines by Controls (Compact)'
-    device_expanded_str = 'Machines by Device (Expanded)'
-    device_compact_str  = 'Machines by Device (Compact)'
-    # drotation_str       = 'Machines by Display Rotation'
+    device_expanded_str = 'Machines by Plugabble Devices (Expanded)'
+    device_compact_str  = 'Machines by Plugabble Devices (Compact)'
     dtype_str           = 'Machines by Display Type'
     d_vsync_freq_str    = 'Machines by Display VSync freq'
     d_resolution_str    = 'Machines by Display Resolution'
@@ -736,6 +778,8 @@ def render_root_list():
         'This filter requires that you configure [COLOR violet]catlist.ini[/COLOR].')
     genre_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Genre. '
         'This filter requires that you configure [COLOR violet]genre.ini[/COLOR].')
+    category_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Category. '
+        'This filter requires that you configure [COLOR violet]Category.ini[/COLOR] by MASH.')
     NPlayers_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the number of '
         'players that can play simultaneously or alternatively. This filter requires '
         'that you configure [COLOR violet]nplayers.ini[/COLOR].')
@@ -744,6 +788,8 @@ def render_root_list():
         'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].')
     series_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by series. '
         'This filter requires that you configure [COLOR violet]series.ini[/COLOR].')
+    artwork_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Artwork. '
+        'This filter requires that you configure [COLOR violet]Artwork.ini[/COLOR] by MASH.')
 
     ctype_expanded_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
         'For each machine, all controls are included in the list.')
@@ -753,8 +799,6 @@ def render_root_list():
         'For each machine, all pluggable devices are included in the list.')
     device_compact_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
         'Machines may have additional pluggable devices.')
-    # drotation_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display rotation, '
-    #     'which could be Horizontal or Vertical.')
     dtype_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type '
         'and rotation.')
     d_vsync_freq_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the display '
@@ -788,6 +832,7 @@ def render_root_list():
     SL_ROM_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only ROMs and not CHDs (disks).')
     SL_ROM_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have both ROMs and CHDs.')
     SL_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only CHDs and not ROMs.')
+    SL_empty_plot = ('Display [COLOR orange]Software Lists[/COLOR] with no ROMs nor CHDs.')
 
     custom_filters_plot = ('[COLOR orange]Custom filters[/COLOR] allows to generate machine '
         'listings perfectly tailored to your whises. For example, you can define a filter of all '
@@ -812,41 +857,45 @@ def render_root_list():
         'machine and audit [COLOR orange]Statistics[/COLOR].')
 
     # --- Machine counters ---
-    if counters_available and mame_view_mode == VIEW_MODE_FLAT:
-        a = ' [COLOR orange]({0} machines)[/COLOR]'
-        machines_n_str += a.format(num_m_Main_Normal)
-        machines_u_str += a.format(num_m_Main_Unusual)
-        nocoin_str     += a.format(num_m_Main_NoCoin)
-        mecha_str      += a.format(num_m_Main_Mechanical)
-        dead_str       += a.format(num_m_Main_Dead)
-        devices_str    += a.format(num_m_Main_Devices)
-        bios_str       += a.format(num_m_Binary_BIOS)
-        chd_str        += a.format(num_m_Binary_CHD)
-        samples_str    += a.format(num_m_Binary_Samples)
-        softlists_str  += a.format(num_m_Binary_SoftwareLists)
-    elif counters_available and mame_view_mode == VIEW_MODE_PCLONE:
-        a = ' [COLOR orange]({0} parents)[/COLOR]'
-        machines_n_str += a.format(num_p_Main_Normal)
-        machines_u_str += a.format(num_p_Main_Unusual)
-        nocoin_str     += a.format(num_p_Main_NoCoin)
-        mecha_str      += a.format(num_p_Main_Mechanical)
-        dead_str       += a.format(num_p_Main_Dead)
-        devices_str    += a.format(num_p_Main_Devices)
-        bios_str       += a.format(num_p_Binary_BIOS)
-        chd_str        += a.format(num_p_Binary_CHD)
-        samples_str    += a.format(num_p_Binary_Samples)
-        softlists_str  += a.format(num_p_Binary_SoftwareLists)
-
     if counters_available:
+        # --- Special catalogs rended in root menu ---
+        if mame_view_mode == VIEW_MODE_FLAT:
+            a = ' [COLOR orange]({0} machines)[/COLOR]'
+            machines_n_str += a.format(num_m_Main_Normal)
+            machines_u_str += a.format(num_m_Main_Unusual)
+            nocoin_str     += a.format(num_m_Main_NoCoin)
+            mecha_str      += a.format(num_m_Main_Mechanical)
+            dead_str       += a.format(num_m_Main_Dead)
+            devices_str    += a.format(num_m_Main_Devices)
+            bios_str       += a.format(num_m_Binary_BIOS)
+            chd_str        += a.format(num_m_Binary_CHD)
+            samples_str    += a.format(num_m_Binary_Samples)
+            softlists_str  += a.format(num_m_Binary_SoftwareLists)
+        elif mame_view_mode == VIEW_MODE_PCLONE:
+            a = ' [COLOR orange]({0} parents)[/COLOR]'
+            machines_n_str += a.format(num_p_Main_Normal)
+            machines_u_str += a.format(num_p_Main_Unusual)
+            nocoin_str     += a.format(num_p_Main_NoCoin)
+            mecha_str      += a.format(num_p_Main_Mechanical)
+            dead_str       += a.format(num_p_Main_Dead)
+            devices_str    += a.format(num_p_Main_Devices)
+            bios_str       += a.format(num_p_Binary_BIOS)
+            chd_str        += a.format(num_p_Binary_CHD)
+            samples_str    += a.format(num_p_Binary_Samples)
+            softlists_str  += a.format(num_p_Binary_SoftwareLists)
+
+        # --- Standard catalog filters ---
         a = ' [COLOR gold]({0} items)[/COLOR]'
-        # >> Optional
+        # Optional
         catver_str          += a.format(num_cat_Catver)
         catlist_str         += a.format(num_cat_Catlist)
         genre_str           += a.format(num_cat_Genre)
+        category_str        += a.format(num_cat_Category)
         NPlayers_str        += a.format(num_cat_NPlayers)
         rating_str          += a.format(num_cat_Bestgames)
         series_str          += a.format(num_cat_Series)
-        # >> Always there
+        artwork_str         += a.format(num_cat_Artwork)
+        # Always present
         ctype_expanded_str  += a.format(num_cat_Controls_Expanded)
         ctype_compact_str   += a.format(num_cat_Controls_Compact)
         device_expanded_str += a.format(num_cat_Devices_Expanded)
@@ -861,6 +910,19 @@ def render_root_list():
         longname_str        += a.format(num_cat_LongName)
         SL_str              += a.format(num_cat_BySL)
         year_str            += a.format(num_cat_Year)
+
+    SL_all_str = 'Software Lists (all)'
+    SL_ROM_str = 'Software Lists (with ROMs)'
+    SL_mixed_str = 'Software Lists (with ROMs and CHDs)'
+    SL_CHD_str = 'Software Lists (with CHDs)'
+    SL_empty_str = 'Software Lists (no ROMs nor CHDs)'
+    if SL_counters_available:
+        a = ' [COLOR orange]({0} lists)[/COLOR]'
+        SL_all_str   += a.format(num_SL_all)
+        SL_ROM_str   += a.format(num_SL_ROMs)
+        SL_mixed_str += a.format(num_SL_mixed)
+        SL_CHD_str   += a.format(num_SL_CHDs)
+        SL_empty_str += a.format(num_SL_empty)
 
     # >> If everything deactivated render the main filters so user has access to the context menu.
     big_OR = g_settings['display_main_filters'] or g_settings['display_binary_filters'] or \
@@ -894,14 +956,16 @@ def render_root_list():
             catlist_str, misc_url_1_arg('catalog', 'Catlist'), catlist_plot)
         render_root_list_row_standard(
             genre_str, misc_url_1_arg('catalog', 'Genre'), genre_plot)
-        # Future "Machines by Category" here.
+        render_root_list_row_standard(
+            category_str, misc_url_1_arg('catalog', 'Category'), category_plot)
         render_root_list_row_standard(
             NPlayers_str, misc_url_1_arg('catalog', 'NPlayers'), NPlayers_plot)
         render_root_list_row_standard(
             rating_str, misc_url_1_arg('catalog', 'Bestgames'), rating_plot)
         render_root_list_row_standard(
             series_str, misc_url_1_arg('catalog', 'Series'), series_plot)
-        # Future "Machines by Artwork" here.
+        render_root_list_row_standard(
+            artwork_str, misc_url_1_arg('catalog', 'Artwork'), artwork_plot)
 
         # >> Cataloged filters (always there)
         render_root_list_row_standard(
@@ -912,8 +976,6 @@ def render_root_list():
             device_expanded_str, misc_url_1_arg('catalog', 'Devices_Expanded'), device_expanded_plot)
         render_root_list_row_standard(
             device_compact_str, misc_url_1_arg('catalog', 'Devices_Compact'), device_compact_plot)
-        # render_root_list_row_standard(
-        #     drotation_str, misc_url_1_arg('catalog', 'Display_Rotate'), drotation_plot)
         render_root_list_row_standard(
             dtype_str, misc_url_1_arg('catalog', 'Display_Type'), dtype_plot)
         render_root_list_row_standard(
@@ -949,14 +1011,16 @@ def render_root_list():
     # >> Software lists
     if g_settings['display_SL_browser']:
         render_root_list_row_standard(
-            'Software Lists (all)', misc_url_1_arg('catalog', 'SL'), SL_all_plot)
+            SL_all_str, misc_url_1_arg('catalog', 'SL'), SL_all_plot)
         render_root_list_row_standard(
-            'Software Lists (with ROMs)', misc_url_1_arg('catalog', 'SL_ROM'), SL_ROM_plot)
+            SL_ROM_str, misc_url_1_arg('catalog', 'SL_ROM'), SL_ROM_plot)
         render_root_list_row_standard(
-            'Software Lists (with ROMs and CHDs)', misc_url_1_arg('catalog', 'SL_ROM_CHD'),
-            SL_ROM_CHD_plot)
+            SL_mixed_str, misc_url_1_arg('catalog', 'SL_ROM_CHD'), SL_ROM_CHD_plot)
         render_root_list_row_standard(
-            'Software Lists (with CHDs)', misc_url_1_arg('catalog', 'SL_CHD'), SL_CHD_plot)
+            SL_CHD_str, misc_url_1_arg('catalog', 'SL_CHD'), SL_CHD_plot)
+        if num_SL_empty > 0:
+            render_root_list_row_standard(
+                SL_empty_str, misc_url_1_arg('catalog', 'SL_empty'), SL_empty_plot)
 
     # >> Special launchers
     if g_settings['display_custom_filters']:
@@ -2042,11 +2106,15 @@ def render_SL_list(catalog_name):
                 SL_catalog_dic[SL_name] = SL_dic
     elif catalog_name == 'SL_CHD':
         for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
-            if SL_dic['num_with_CHDs'] > 0 and SL_dic['num_with_ROMs'] == 0:
+            if SL_dic['num_with_ROMs'] == 0 and SL_dic['num_with_CHDs'] > 0:
                 SL_catalog_dic[SL_name] = SL_dic
     elif catalog_name == 'SL_ROM_CHD':
         for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
             if SL_dic['num_with_ROMs'] > 0 and SL_dic['num_with_CHDs'] > 0:
+                SL_catalog_dic[SL_name] = SL_dic
+    elif catalog_name == 'SL_empty':
+        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+            if SL_dic['num_with_ROMs'] == 0 and SL_dic['num_with_CHDs'] == 0:
                 SL_catalog_dic[SL_name] = SL_dic
     else:
         kodi_dialog_OK('Wrong catalog_name {0}'.format(catalog_name))

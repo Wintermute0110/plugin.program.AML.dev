@@ -64,10 +64,15 @@ FEATURE  New catalog filter "Machines by Display Resolution." Inspired by
 FEATURE  New catalog filter "Machines by CPU." Inspired by
          MASH's MAMEINFO CPU.ini.
 
+WIP      Rewrite the INI loading engine.
+         See comments in header of function mame_load_INI_datfile().
+
 WIP      New INI file Artwork.ini (produced by MASH's MAMEINFO).
          Catalog filter "Machines by Artwork".
+         Note that Artwork.ini places the same machine in different categories. This requires
+         some changes in AML engine.
 
-WIP      New INI file Category.ini (produced by MASH's MAMEINFO).
+FEATURE  New INI file Category.ini (produced by MASH's MAMEINFO).
          Catalog filter "Machines by Category".
 
 FEATURE  New "All in one (Extract, Build and Scan)" options:
