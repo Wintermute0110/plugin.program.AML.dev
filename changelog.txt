@@ -58,10 +58,10 @@ FEATURE  Improved filter "Machines by Display Type" and removed filter
 FEATURE  New catalog filter "Machines by Display VSync freq." Inspired by
          MASH's MAMEINFO Vsync.ini.
 
-FEATURE  New catalog filter "Machines by Display Resolution." Inspired by
+FEATURE  New catalog filter "Machines by Display Resolution" Inspired by
          MASH's MAMEINFO Screen.ini.
 
-FEATURE  New catalog filter "Machines by CPU." Inspired by
+FEATURE  New catalog filter "Machines by CPU" Inspired by
          MASH's MAMEINFO CPU.ini.
 
 WIP      Rewrite the INI loading engine.
@@ -69,7 +69,8 @@ WIP      Rewrite the INI loading engine.
 
 WIP      New INI file Artwork.ini (produced by MASH's MAMEINFO).
          Catalog filter "Machines by Artwork".
-         Note that Artwork.ini places the same machine in different categories. This requires
+         Note that Artwork.ini places the same machine in different categories. Maybe other
+         INIs do the same and currently AML does not support this. This requires
          some changes in AML engine.
 
 FEATURE  New INI file Category.ini (produced by MASH's MAMEINFO).

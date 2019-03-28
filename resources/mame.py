@@ -5196,7 +5196,6 @@ def _aux_catalog_key_Devices_Expanded(parent_name, machines, machines_render):
 def _aux_catalog_key_Devices_Compact(parent_name, machines, machines_render):
     machine = machines[parent_name]
     machine_render = machines_render[parent_name]
-    if machine_render['isDevice']: continue # >> Skip device machines
     # >> Order alphabetically the list
     device_list = [ device['att_type'] for device in machine['devices'] ]
     pretty_device_list = misc_improve_mame_device_list(device_list)
@@ -5215,20 +5214,19 @@ def _aux_catalog_key_Display_Type(parent_name, machines, machines_render):
     return [catalog_key]
 
 def _aux_catalog_key_Display_VSync(parent_name, machines, machines_render):
-    return [machines[parent_name]['display_refresh']]
+    # machine['display_refresh'] is a list.
+    return machines[parent_name]['display_refresh']
 
 def _aux_catalog_key_Display_Resolution(parent_name, machines, machines_render):
-    machine = machines[parent_name]
-    machine_render = machines_render[parent_name]
     # Move code of this function here???
     catalog_key = misc_get_display_resolution_catalog_key(
-        machine['display_width'], machine['display_height'])
-
+        machines[parent_name]['display_width'], machines[parent_name]['display_height'])
 
     return [catalog_key]
 
 def _aux_catalog_key_CPU(parent_name, machines, machines_render):
-    return [machines[parent_name]['chip_cpu_name']]
+    # machine['chip_cpu_name'] is a list.
+    return machines[parent_name]['chip_cpu_name']
 
 def _aux_catalog_key_Driver(parent_name, machines, machines_render):
     catalog_key = machines[parent_name]['sourcefile']
@@ -5243,17 +5241,17 @@ def _aux_catalog_key_Manufacturer(parent_name, machines, machines_render):
 
 # This is a special catalog, not easy to automatise.
 # def _aux_catalog_key_ShortName(parent_name, machines, machines_render):
-#     return [machine_render['year']]
+#     return [machines_render[parent_name]['year']]
 
 def _aux_catalog_key_LongName(parent_name, machines, machines_render):
-    return [machine_render['description'][0]]
+    return [machines_render[parent_name]['description'][0]]
 
 # This is a special catalog, not easy to automatise.
 # def _aux_catalog_key_BySL(parent_name, machines, machines_render):
-#     return [machine_render['year']]
+#     return [machines_render[parent_name]['year']]
 
 def _aux_catalog_key_Year(parent_name, machines, machines_render):
-    return [machine_render['year']]
+    return [machines_render[parent_name]['year']]
 
 #
 # Uses a "function pointer" to obtain the catalog_key.
