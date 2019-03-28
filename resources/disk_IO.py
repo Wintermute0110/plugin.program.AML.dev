@@ -348,7 +348,9 @@ def fs_new_control_dic():
         # >> MAME string version, as reported by the executable stdout. Example: '0.194 (mame0194)'
         'ver_mame'      : 0,
         'ver_mame_str'  : 'Undefined',
+        'ver_artwork'   : 'MAME database not built',
         'ver_bestgames' : 'MAME database not built',
+        'ver_category'  : 'MAME database not built',
         'ver_catlist'   : 'MAME database not built',
         'ver_catver'    : 'MAME database not built',
         'ver_command'   : 'MAME database not built',
@@ -552,9 +554,9 @@ def fs_new_control_dic():
 
         # --- Filed in by the MAME asset scanner ---
         'assets_num_MAME_machines'    : 0,
-        'assets_PCBs_have'            : 0,
-        'assets_PCBs_missing'         : 0,
-        'assets_PCBs_alternate'       : 0,
+        'assets_3dbox_have'           : 0,
+        'assets_3dbox_missing'        : 0,
+        'assets_3dbox_alternate'      : 0,
         'assets_artpreview_have'      : 0,
         'assets_artpreview_missing'   : 0,
         'assets_artpreview_alternate' : 0,
@@ -582,6 +584,9 @@ def fs_new_control_dic():
         'assets_marquees_have'        : 0,
         'assets_marquees_missing'     : 0,
         'assets_marquees_alternate'   : 0,
+        'assets_PCBs_have'            : 0,
+        'assets_PCBs_missing'         : 0,
+        'assets_PCBs_alternate'       : 0,
         'assets_snaps_have'           : 0,
         'assets_snaps_missing'        : 0,
         'assets_snaps_alternate'      : 0,

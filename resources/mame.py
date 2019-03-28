@@ -1127,7 +1127,9 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
         control_dic['ver_AML'], control_dic['ver_AML_str']))
     slist.append("MAME version          {0:,} (str [COLOR violet]{1}[/COLOR])".format(
         control_dic['ver_mame'], control_dic['ver_mame_str']))
+    slist.append("Artwork.ini version   {0}".format(control_dic['ver_artwork']))
     slist.append("bestgames.ini version {0}".format(control_dic['ver_bestgames']))
+    slist.append("Category.ini version  {0}".format(control_dic['ver_category']))
     slist.append("catlist.ini version   {0}".format(control_dic['ver_catlist']))
     slist.append("catver.ini version    {0}".format(control_dic['ver_catver']))
     slist.append("command.dat version   {0}".format(control_dic['ver_command']))
@@ -1412,14 +1414,14 @@ def mame_stats_scanner_print_slist(slist, control_dic):
                            control_dic['scan_SL_archives_CHD_total'],
                            control_dic['scan_SL_archives_CHD_missing']))
 
-    # >> MAME asset scanner.
+    # --- MAME asset scanner ---
     slist.append('')
     slist.append('[COLOR orange]MAME asset scanner information[/COLOR]')
     # slist.append('Total number of MAME machines {0:,d}'.format(control_dic['assets_num_MAME_machines']))
-    t = "You have {0:6d} MAME PCBs       , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_PCBs_have'],
-                          control_dic['assets_PCBs_missing'],
-                          control_dic['assets_PCBs_alternate']))
+    t = "You have {0:6d} MAME 3D Boxes   , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_3dbox_have'],
+                          control_dic['assets_3dbox_missing'],
+                          control_dic['assets_3dbox_alternate']))
     t = "You have {0:6d} MAME Artpreviews, missing {1:6d}, alternate {2:6d}"
     slist.append(t.format(control_dic['assets_artpreview_have'],
                           control_dic['assets_artpreview_missing'],
@@ -1456,6 +1458,10 @@ def mame_stats_scanner_print_slist(slist, control_dic):
     slist.append(t.format(control_dic['assets_marquees_have'],
                           control_dic['assets_marquees_missing'],
                           control_dic['assets_marquees_alternate']))
+    t = "You have {0:6d} MAME PCBs       , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_PCBs_have'],
+                          control_dic['assets_PCBs_missing'],
+                          control_dic['assets_PCBs_alternate']))
     t = "You have {0:6d} MAME Snaps      , missing {1:6d}, alternate {2:6d}"
     slist.append(t.format(control_dic['assets_snaps_have'],
                           control_dic['assets_snaps_missing'],
@@ -1469,7 +1475,7 @@ def mame_stats_scanner_print_slist(slist, control_dic):
                           control_dic['assets_trailers_missing'],
                           control_dic['assets_trailers_alternate']))
 
-    # >> Software List scanner
+    # --- Software List scanner ---
     slist.append('')
     slist.append('[COLOR orange]Software List asset scanner information[/COLOR]')
     # slist.append('Total number of SL items {0:,d}'.format(control_dic['assets_SL_num_items']))
@@ -7617,8 +7623,14 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
 
     # >> Iterate machines, check if assets/artwork exist.
     table_str = []
-    table_str.append(['left', 'left', 'left',  'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
-    table_str.append(['Name', 'PCB',  'Artp',  'Art',  'Cab',  'Clr',  'CPan', 'Fan',  'Fly',  'Man',  'Mar',  'Snap', 'Tit',  'Tra'])
+    table_str.append([
+        'left',
+        'left', 'left', 'left', 'left', 'left', 'left', 'left',
+        'left', 'left', 'left', 'left', 'left', 'left', 'left'])
+    table_str.append([
+        'Name',
+        '3DB',  'Apr',  'Art',  'Cab',  'Clr',  'CPa',  'Fan',
+        'Fly',  'Man',  'Mar',  'PCB',  'Snp',  'Tit',  'Tra'])
 
     # --- Create a cache of assets ---
     pDialog = xbmcgui.DialogProgress()
@@ -7722,25 +7734,27 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
     pDialog.close()
 
     # --- Asset statistics and report ---
-    PCB  = (have_count_list[0],  total_machines - have_count_list[0],  alternate_count_list[0])
-    Artp = (have_count_list[1],  total_machines - have_count_list[1],  alternate_count_list[1])
-    Art  = (have_count_list[2],  total_machines - have_count_list[2],  alternate_count_list[2])
-    Cab  = (have_count_list[3],  total_machines - have_count_list[3],  alternate_count_list[3])
-    Clr  = (have_count_list[4],  total_machines - have_count_list[4],  alternate_count_list[4])
-    CPan = (have_count_list[5],  total_machines - have_count_list[5],  alternate_count_list[5])
-    Fan  = (have_count_list[6],  total_machines - have_count_list[6],  alternate_count_list[6])
-    Fly  = (have_count_list[7],  total_machines - have_count_list[7],  alternate_count_list[7])
-    Man  = (have_count_list[8],  total_machines - have_count_list[8],  alternate_count_list[8])
-    Mar  = (have_count_list[9],  total_machines - have_count_list[9],  alternate_count_list[9])
-    Snap = (have_count_list[10], total_machines - have_count_list[10], alternate_count_list[10])
-    Tit  = (have_count_list[11], total_machines - have_count_list[11], alternate_count_list[11])
-    Tra  = (have_count_list[12], total_machines - have_count_list[12], alternate_count_list[12])
+    # This must match the order of ASSET_MAME_T_LIST defined in disk_IO.py
+    box3D = (have_count_list[0],  total_machines - have_count_list[0],  alternate_count_list[0])
+    Artp  = (have_count_list[1],  total_machines - have_count_list[1],  alternate_count_list[1])
+    Art   = (have_count_list[2],  total_machines - have_count_list[2],  alternate_count_list[2])
+    Cab   = (have_count_list[3],  total_machines - have_count_list[3],  alternate_count_list[3])
+    Clr   = (have_count_list[4],  total_machines - have_count_list[4],  alternate_count_list[4])
+    CPan  = (have_count_list[5],  total_machines - have_count_list[5],  alternate_count_list[5])
+    Fan   = (have_count_list[6],  total_machines - have_count_list[6],  alternate_count_list[6])
+    Fly   = (have_count_list[7],  total_machines - have_count_list[7],  alternate_count_list[7])
+    Man   = (have_count_list[8],  total_machines - have_count_list[8],  alternate_count_list[8])
+    Mar   = (have_count_list[9],  total_machines - have_count_list[9],  alternate_count_list[9])
+    PCB   = (have_count_list[0],  total_machines - have_count_list[0],  alternate_count_list[0])
+    Snap  = (have_count_list[10], total_machines - have_count_list[10], alternate_count_list[10])
+    Tit   = (have_count_list[11], total_machines - have_count_list[11], alternate_count_list[11])
+    Tra   = (have_count_list[12], total_machines - have_count_list[12], alternate_count_list[12])
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Creating MAME asset report ...')
     report_slist = []
     report_slist.append('*** Advanced MAME Launcher MAME machines asset scanner report ***')
     report_slist.append('Total MAME machines {0}'.format(total_machines))
-    report_slist.append('Have PCBs       {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*PCB))
+    report_slist.append('Have 3D Boxes   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*box3D))
     report_slist.append('Have Artpreview {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Artp))
     report_slist.append('Have Artwork    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Art))
     report_slist.append('Have Cabinets   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Cab))
@@ -7750,6 +7764,7 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
     report_slist.append('Have Flyers     {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Fly))
     report_slist.append('Have Manuals    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Man))
     report_slist.append('Have Marquees   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Mar))
+    report_slist.append('Have PCBs       {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*PCB))
     report_slist.append('Have Snaps      {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Snap))
     report_slist.append('Have Titles     {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Tit))
     report_slist.append('Have Trailers   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Tra))
@@ -7763,9 +7778,9 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
 
     # >> Update control_dic by assigment (will be saved in caller)
     change_control_dic(control_dic, 'assets_num_MAME_machines', total_machines)
-    change_control_dic(control_dic, 'assets_PCBs_have', PCB[0])
-    change_control_dic(control_dic, 'assets_PCBs_missing', PCB[1])
-    change_control_dic(control_dic, 'assets_PCBs_alternate', PCB[2])
+    change_control_dic(control_dic, 'assets_3dbox_have', box3D[0])
+    change_control_dic(control_dic, 'assets_3dbox_missing', box3D[1])
+    change_control_dic(control_dic, 'assets_3dbox_alternate', box3D[2])
     change_control_dic(control_dic, 'assets_artpreview_have', Artp[0])
     change_control_dic(control_dic, 'assets_artpreview_missing', Artp[1])
     change_control_dic(control_dic, 'assets_artpreview_alternate', Artp[2])
@@ -7793,6 +7808,9 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
     change_control_dic(control_dic, 'assets_marquees_have', Mar[0])
     change_control_dic(control_dic, 'assets_marquees_missing', Mar[1])
     change_control_dic(control_dic, 'assets_marquees_alternate', Mar[2])
+    change_control_dic(control_dic, 'assets_PCBs_have', PCB[0])
+    change_control_dic(control_dic, 'assets_PCBs_missing', PCB[1])
+    change_control_dic(control_dic, 'assets_PCBs_alternate', PCB[2])
     change_control_dic(control_dic, 'assets_snaps_have', Snap[0])
     change_control_dic(control_dic, 'assets_snaps_missing', Snap[1])
     change_control_dic(control_dic, 'assets_snaps_alternate', Snap[2])
@@ -7958,6 +7976,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     pDialog.close()
 
     # >> Asset statistics and report.
+    # This must match the order of ASSET_SL_T_LIST defined in disk_IO.py
     Tit  = (have_count_list[0], SL_item_count - have_count_list[0], alternate_count_list[0])
     Snap = (have_count_list[1], SL_item_count - have_count_list[1], alternate_count_list[1])
     Boxf = (have_count_list[2], SL_item_count - have_count_list[2], alternate_count_list[2])
