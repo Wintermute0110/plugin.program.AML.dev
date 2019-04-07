@@ -5302,7 +5302,7 @@ def command_context_setup_plugin():
 
         # --- Check for requirements/errors ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        SL_index = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
+        SL_index = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
 
         # --- Audit all Software List items ---
         # 1) Updates control_dic statistics and timestamps and saves it.
