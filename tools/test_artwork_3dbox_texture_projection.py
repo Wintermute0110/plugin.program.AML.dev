@@ -126,16 +126,17 @@ CANVAS_BG_COLOR = (100, 100, 100)
 # Box dimensions
 left, center, right = 100, 225, 900
 top, offset, bottom = 100, 100, 1400
+logoOffset, logoHeight = 10, 400
 alpha_blend = 0.5
+topOff, bottomOff = top + offset, bottom - offset
 
 # --- Create 3dbox canvas ---
 img = Image.new('RGB', CANVAS_SIZE, CANVAS_BG_COLOR)
-# draw = ImageDraw.Draw(img)
 
 # Box front (1000, 1500) and box spine (1000, 150).
-# Destination transformation size must have the same size as the canvas.
+# Canvas size of destination transformation must have the same size as the final canvas.
 img_front = Image.new('RGB', (1000, 1500), (100, 0, 0))
-img_spine = Image.new('RGB', (1000, 150),  (0, 100, 0))
+
 
 # --- Front image ---
 img_boxfront = Image.open('../media/SL_assets/doom_boxfront.png')
@@ -153,6 +154,7 @@ img_t.save('img_front_transform_A.png')
 img = Image.blend(img, img_t, alpha = alpha_blend)
 
 # --- Spine background ---
+img_spine = Image.new('RGB', (1000, 150),  (0, 100, 0))
 width, height = 1000, 150
 coeffs = perspective_coefficients(
     [(0, 0), (width, 0), (width, height), (0, height)],
@@ -163,7 +165,35 @@ img_t = img_spine.transform(CANVAS_SIZE, Image.PERSPECTIVE, coeffs, Image.BICUBI
 img_t.save('img_front_transform_B.png')
 img = Image.blend(img, img_t, alpha = alpha_blend)
 
-# --- Spine clearlogo ---
+# --- MAME background ---
+# img_mame = Image.new('RGB', (4500, 1500), (200, 0, 0))
+img_mame = Image.open('../media/MAME_clearlogo.jpg')
+width, height = img_mame.size
+print('boxfront width {0}, height {1}'.format(width, height))
+coeffs = perspective_coefficients(
+    [(0, 0), (width, 0), (width, height), (0, height)],
+    [(center-logoOffset, top+logoOffset+15), (center-logoOffset, top+logoOffset+logoHeight+70), 
+     (left+logoOffset, topOff+logoOffset+logoHeight), (left+logoOffset, topOff+logoOffset)]
+)
+print(coeffs)
+img_t = img_mame.transform(CANVAS_SIZE, Image.PERSPECTIVE, coeffs, Image.BICUBIC)
+img_t.save('img_front_transform_C.png')
+img = Image.blend(img, img_t, alpha = alpha_blend)
+
+# --- Spine game clearlogo ---
+# img_mame = Image.new('RGB', (4500, 1500), (0, 0, 200))
+img_mame = Image.open('../media/MAME_clearlogo.jpg')
+width, height = img_mame.size
+print('boxfront width {0}, height {1}'.format(width, height))
+coeffs = perspective_coefficients(
+    [(0, 0), (width, 0), (width, height), (0, height)],
+    [(center-logoOffset, bottom-logoOffset-logoHeight-70), (center-logoOffset, bottom-logoOffset-15), 
+     (left+logoOffset, bottomOff-logoOffset), (left+logoOffset, bottomOff-logoOffset-logoHeight)]
+)
+print(coeffs)
+img_t = img_mame.transform(CANVAS_SIZE, Image.PERSPECTIVE, coeffs, Image.BICUBIC)
+img_t.save('img_front_transform_D.png')
+img = Image.blend(img, img_t, alpha = alpha_blend)
 
 # --- Print machine name ---
 # Cannot use font-related Pillow functions at the moment in Cygwin.
