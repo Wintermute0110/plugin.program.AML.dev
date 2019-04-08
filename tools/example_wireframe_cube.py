@@ -6,12 +6,12 @@
 
     Modified by Wintermute0110 <wintermute0110@gmail.com>
 """
-import sys, math, pygame
+import sys, math, os, pygame
 
 class Point3D:
     def __init__(self, x = 0, y = 0, z = 0):
         self.x, self.y, self.z = float(x), float(y), float(z)
- 
+
     def rotateX(self, angle):
         """ Rotates the point around the X axis by the given angle in degrees. """
         rad = angle * math.pi / 180
@@ -48,6 +48,7 @@ class Point3D:
 
 class Simulation:
     def __init__(self, win_width = 640, win_height = 480):
+        os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
 
         self.screen = pygame.display.set_mode((win_width, win_height))
