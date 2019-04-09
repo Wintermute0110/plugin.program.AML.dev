@@ -177,7 +177,7 @@ img = Image.new('RGBA', CANVAS_SIZE, CANVAS_BG_COLOR)
 # --- Frontbox ---
 img_front = Image.new('RGBA', (1000, 1500), (200, 100, 100))
 img_t = project_texture(img_front, coord_dic['Frontbox'])
-img_t.save('img_front_transform_A.png')
+# img_t.save('img_front_transform_A.png')
 img.paste(img_t, mask = img_t)
 
 # --- Spine ---
