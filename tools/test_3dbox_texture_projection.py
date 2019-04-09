@@ -118,18 +118,18 @@ def perspective_coefficients(source_coords, target_coords):
 
     return res
 
-def project_texture(img_boxfront, coordinates, rotate = False):
-    print('project_texture() BEGIN ...')
+def project_texture(img_boxfront, coordinates, CANVAS_SIZE, rotate = False):
+    # print('project_texture() BEGIN ...')
 
     # --- Rotate 90 degress clockwise ---
     if rotate:
-        print('Rotating image 90 degress clockwise')
+        # print('Rotating image 90 degress clockwise')
         img_boxfront = img_boxfront.rotate(-90, expand = True)
         # img_boxfront.save('rotated.png')
 
     # --- Info ---
     width, height = img_boxfront.size
-    print('Image width {0}, height {1}'.format(width, height))
+    # print('Image width {0}, height {1}'.format(width, height))
 
     # --- Transform ---
     # Conver list of lists to list of tuples
@@ -146,76 +146,73 @@ def project_texture(img_boxfront, coordinates, rotate = False):
     # In the alpha channel 0 means transparent and 255 opaque.
     mask = Image.new('L', CANVAS_SIZE, color = 0)
     draw = ImageDraw.Draw(mask)
-    print(n_coords)
+    # print(n_coords)
     draw.polygon(n_coords, fill = 255)
     img_t.putalpha(mask)
 
     return img_t
 
 # --- Main code ----------------------------------------------------------------------------------
-# --- Parameters ---
-FONT_SIZE = 32
-CANVAS_SIZE = (1000, 1500)
-CANVAS_BG_COLOR = (0, 0, 0)
+def generate_3dbox():
+    # --- Parameters ---
+    FONT_SIZE = 90
+    CANVAS_SIZE = (1000, 1500)
+    CANVAS_BG_COLOR = (0, 0, 0)
 
-# Box dimensions
-left, center, right = 100, 225, 900
-top, offset, bottom = 100, 100, 1400
-logoOffset, logoHeight = 10, 400
-alpha_blend = 0.5
-topOff, bottomOff = top + offset, bottom - offset
+    # --- Load projection coordinates ---
+    with open('3dbox.json') as json_file:
+        coord_dic = json.load(json_file)
 
-# --- Load projection coordinates ---
-with open('3dbox.json') as json_file:
-    coord_dic = json.load(json_file)
+    # --- Create 3dbox canvas ---
+    # Create RGB image with alpha channel.
+    # Canvas size of destination transformation must have the same size as the final canvas.
+    img = Image.new('RGBA', CANVAS_SIZE, CANVAS_BG_COLOR)
 
-# --- Create 3dbox canvas ---
-# Create RGB image with alpha channel.
-# Canvas size of destination transformation must have the same size as the final canvas.
-img = Image.new('RGBA', CANVAS_SIZE, CANVAS_BG_COLOR)
+    # --- Frontbox ---
+    img_front = Image.new('RGBA', CANVAS_SIZE, (200, 100, 100))
+    img_t = project_texture(img_front, coord_dic['Frontbox'], CANVAS_SIZE)
+    # img_t.save('img_front_transform_A.png')
+    img.paste(img_t, mask = img_t)
 
-# --- Frontbox ---
-img_front = Image.new('RGBA', (1000, 1500), (200, 100, 100))
-img_t = project_texture(img_front, coord_dic['Frontbox'])
-# img_t.save('img_front_transform_A.png')
-img.paste(img_t, mask = img_t)
+    # --- Spine ---
+    img_spine = Image.new('RGBA', CANVAS_SIZE, (100, 200, 100))
+    img_t = project_texture(img_spine, coord_dic['Spine'], CANVAS_SIZE)
+    # img_t.save('img_front_transform_B.png')
+    img.paste(img_t, mask = img_t)
 
-# --- Spine ---
-img_spine = Image.new('RGBA', (1000, 1500), (100, 200, 100))
-img_t = project_texture(img_spine, coord_dic['Spine'])
-# img_t.save('img_front_transform_B.png')
-img.paste(img_t, mask = img_t)
+    # --- Front image ---
+    # img_flyer = Image.open('../media/SL_assets/doom_boxfront.png')
+    img_flyer = Image.open('../media/SL_assets/sonic3_boxfront.png')
+    img_t = project_texture(img_flyer, coord_dic['Flyer'], CANVAS_SIZE)
+    # img_t.save('img_front_transform_C.png')
+    img.paste(img_t, mask = img_t)
 
-# --- Front image ---
-# img_flyer = Image.open('../media/SL_assets/doom_boxfront.png')
-img_flyer = Image.open('../media/SL_assets/sonic3_boxfront.png')
-img_t = project_texture(img_flyer, coord_dic['Flyer'])
-# img_t.save('img_front_transform_C.png')
-img.paste(img_t, mask = img_t)
+    # --- Spine game clearlogo ---
+    # img_clearlogo = Image.open('../media/SL_assets/doom_clearlogo.png')
+    img_clearlogo = Image.open('../media/SL_assets/sonic3_clearlogo.png')
+    img_t = project_texture(img_clearlogo, coord_dic['Clearlogo'], CANVAS_SIZE, rotate = True)
+    # img_t.save('img_front_transform_D.png')
+    img.paste(img_t, mask = img_t)
 
-# --- Spine game clearlogo ---
-# img_clearlogo = Image.open('../media/SL_assets/doom_clearlogo.png')
-img_clearlogo = Image.open('../media/SL_assets/sonic3_clearlogo.png')
-img_t = project_texture(img_clearlogo, coord_dic['Clearlogo'], rotate = True)
-# img_t.save('img_front_transform_D.png')
-img.paste(img_t, mask = img_t)
+    # --- MAME background ---
+    img_mame = Image.open('../media/MAME_clearlogo.png')
+    img_t = project_texture(img_mame, coord_dic['Clearlogo_MAME'], CANVAS_SIZE, rotate = True)
+    # img_t.save('img_front_transform_E.png')
+    img.paste(img_t, mask = img_t)
 
-# --- MAME background ---
-img_mame = Image.open('../media/MAME_clearlogo.png')
-img_t = project_texture(img_mame, coord_dic['Clearlogo_MAME'], rotate = True)
-# img_t.save('img_front_transform_E.png')
-img.paste(img_t, mask = img_t)
+    # --- Machine name ---
+    font_mono = ImageFont.truetype('../fonts/Inconsolata.otf', FONT_SIZE)
+    img_name = Image.new('RGBA', (1000, 100), (0, 0, 0))
+    draw = ImageDraw.Draw(img_name)
+    draw.text((0, 0), 'SL 32x Item sonic3', (255, 255, 255), font = font_mono)
+    img_t = project_texture(img_name, coord_dic['Front_Title'], CANVAS_SIZE)
+    # img_name.save('img_name.png')
+    # img_t.save('img_front_transform_F.png')
+    img.paste(img_t, mask = img_t)
 
-# --- Machine name ---
-font_mono = ImageFont.truetype('../fonts/Inconsolata.otf', 90)
-img_name = Image.new('RGBA', (1000, 100), (0, 0, 0))
-draw = ImageDraw.Draw(img_name)
-draw.text((0, 0), 'SL 32x Item sonic3', (255, 255, 255), font = font_mono)
-img_t = project_texture(img_name, coord_dic['Front_Title'])
-# img_name.save('img_name.png')
-# img_t.save('img_front_transform_F.png')
-img.paste(img_t, mask = img_t)
+    # --- Save test 3dbox ---
+    img.save('3dbox.png')
+    sys.exit()
 
-# --- Save test 3dbox ---
-img.save('3dbox.png')
-sys.exit()
+#  Call main function
+generate_3dbox()
