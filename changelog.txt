@@ -52,6 +52,10 @@ WIP      [FILTERING] Test the filters for errors. For example, test that all the
 WIP      [FILTERING] Make a filter report the user can read.
          I have to think if this is really useful or not.
 
+FEATURE  Generate MAME machines and SL items 3D Boxes.
+
+WIP      Refactoring of the Fanart and 3D Box code generation. Creation of graphics.py.
+
 FEATURE  Improved filter "Machines by Display Type" and removed filter
          "Machines by Display Rotation."
 

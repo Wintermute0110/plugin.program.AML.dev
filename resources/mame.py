@@ -21,6 +21,7 @@ from collections import OrderedDict
 import struct
 import xml.etree.ElementTree as ET
 import zipfile as z
+# All functions that depend on Pillow must be moved from here to graphics.py
 try:
     from PIL import Image, ImageDraw, ImageFont
     PILLOW_AVAILABLE = True
@@ -3223,8 +3224,8 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
 # -------------------------------------------------------------------------------------------------
 # Fanart generation
 # -------------------------------------------------------------------------------------------------
-# >> Cache font objects in global variables.
-# >> Used in mame.py, mame_build_fanart() and mame_build_SL_fanart()
+# Cache font objects in global variables.
+# Used in mame.py, mame_build_fanart() and mame_build_SL_fanart()
 font_mono = None
 font_mono_SL = None
 font_mono_item = None
