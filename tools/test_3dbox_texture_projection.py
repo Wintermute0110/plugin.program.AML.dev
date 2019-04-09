@@ -19,26 +19,26 @@ from PIL import ImageDraw
 # Here is a more elegant and scalable solution, imo. It'll work for any nxn matrix and 
 # you may find use for the other methods. Note that getMatrixInverse(m) takes in an 
 # array of arrays as input.
-def getMatrixTranspose(X):
+def math_MatrixTranspose(X):
     # return map(list, zip(*X))
     return [[X[j][i] for j in range(len(X))] for i in range(len(X[0]))]
 
-def getMatrixMinor(m, i, j):
+def math_MatrixMinor(m, i, j):
     return [row[:j] + row[j+1:] for row in (m[:i]+m[i+1:])]
 
-def getMatrixDeterminant(m):
+def math_MatrixDeterminant(m):
     # Base case for 2x2 matrix
     if len(m) == 2:
         return m[0][0]*m[1][1]-m[0][1]*m[1][0]
 
     determinant = 0
     for c in range(len(m)):
-        determinant += ((-1)**c)*m[0][c]*getMatrixDeterminant(getMatrixMinor(m,0,c))
+        determinant += ((-1)**c)*m[0][c]*math_MatrixDeterminant(math_MatrixMinor(m,0,c))
 
     return determinant
 
-def getMatrixInverse(m):
-    determinant = getMatrixDeterminant(m)
+def math_MatrixInverse(m):
+    determinant = math_MatrixDeterminant(m)
 
     # Special case for 2x2 matrix:
     if len(m) == 2:
@@ -52,10 +52,10 @@ def getMatrixInverse(m):
     for r in range(len(m)):
         cofactorRow = []
         for c in range(len(m)):
-            minor = getMatrixMinor(m,r,c)
-            cofactorRow.append(((-1)**(r+c)) * getMatrixDeterminant(minor))
+            minor = math_MatrixMinor(m,r,c)
+            cofactorRow.append(((-1)**(r+c)) * math_MatrixDeterminant(minor))
         cofactors.append(cofactorRow)
-    cofactors = getMatrixTranspose(cofactors)
+    cofactors = math_MatrixTranspose(cofactors)
     for r in range(len(cofactors)):
         for c in range(len(cofactors)):
             cofactors[r][c] = cofactors[r][c]/determinant
@@ -63,12 +63,12 @@ def getMatrixInverse(m):
     return cofactors
 
 # Both A and B have sizes NxM where N, M >= 2 (list of lists of floats).
-def getMatrixProduct(A, B):
+def math_MatrixProduct(A, B):
     return [[sum(a*b for a,b in zip(A_row, B_col)) for B_col in zip(*B)] for A_row in A]
 
 # A is a MxN matrix, B is a Nx1 matrix, result is a Mx1 matrix given as a list.
 # Returns a list with the result. Note that this list corresponds to a column matrix.
-def getMatrixProductColumn(A, B):
+def math_MatrixProduct_Column(A, B):
     return [sum(a*b for a,b in zip(A_row, B)) for A_row in A]
 
 # --- Auxiliar functions -------------------------------------------------------------------------
@@ -109,11 +109,11 @@ def perspective_coefficients(source_coords, target_coords):
     B = [float(item) for sublist in source_coords for item in sublist]
     # print('B =\n{0}'.format(pprint.pformat(B)))
 
-    A_T = getMatrixTranspose(A)
-    A_T_A = getMatrixProduct(A_T, A)
-    A_T_A_inv = getMatrixInverse(A_T_A)
-    A_T_A_inv_A_T = getMatrixProduct(A_T_A_inv, A_T)
-    res = getMatrixProductColumn(A_T_A_inv_A_T, B)
+    A_T = math_MatrixTranspose(A)
+    A_T_A = math_MatrixProduct(A_T, A)
+    A_T_A_inv = math_MatrixInverse(A_T_A)
+    A_T_A_inv_A_T = math_MatrixProduct(A_T_A_inv, A_T)
+    res = math_MatrixProduct_Column(A_T_A_inv_A_T, B)
     # print('res =\n{0}'.format(pprint.pformat(res)))
 
     return res
