@@ -10,9 +10,10 @@
 #
 import pprint
 import sys
+import json
 from PIL import Image
 from PIL import ImageFont
-from PIL import ImageDraw 
+from PIL import ImageDraw
 
 # --- Math functions -----------------------------------------------------------------------------
 # Here is a more elegant and scalable solution, imo. It'll work for any nxn matrix and 
@@ -117,11 +118,45 @@ def perspective_coefficients(source_coords, target_coords):
 
     return res
 
+def project_texture(img_boxfront, coordinates, rotate = False):
+    print('project_texture() BEGIN ...')
+
+    # --- Rotate 90 degress clockwise ---
+    if rotate:
+        print('Rotating image 90 degress clockwise')
+        img_boxfront = img_boxfront.rotate(-90, expand = True)
+        # img_boxfront.save('rotated.png')
+
+    # --- Info ---
+    width, height = img_boxfront.size
+    print('Image width {0}, height {1}'.format(width, height))
+
+    # --- Transform ---
+    # Conver list of lists to list of tuples
+    n_coords = [(int(c[0]), int(c[1])) for c in coordinates]
+    # top/left, top/right, bottom/right, bottom/left
+    coeffs = perspective_coefficients(
+        [(0, 0), (width, 0), (width, height), (0, height)],
+        n_coords
+    )
+    # print(coeffs)
+    img_t = img_boxfront.transform(CANVAS_SIZE, Image.PERSPECTIVE, coeffs, Image.BICUBIC)
+
+    # --- Add polygon with alpha channel for blending ---
+    # In the alpha channel 0 means transparent and 255 opaque.
+    mask = Image.new('L', CANVAS_SIZE, color = 0)
+    draw = ImageDraw.Draw(mask)
+    print(n_coords)
+    draw.polygon(n_coords, fill = 255)
+    img_t.putalpha(mask)
+
+    return img_t
+
 # --- Main code ----------------------------------------------------------------------------------
 # --- Parameters ---
 FONT_SIZE = 32
 CANVAS_SIZE = (1000, 1500)
-CANVAS_BG_COLOR = (100, 100, 100)
+CANVAS_BG_COLOR = (0, 0, 0)
 
 # Box dimensions
 left, center, right = 100, 225, 900
@@ -130,75 +165,57 @@ logoOffset, logoHeight = 10, 400
 alpha_blend = 0.5
 topOff, bottomOff = top + offset, bottom - offset
 
+# --- Load projection coordinates ---
+with open('3dbox.json') as json_file:
+    coord_dic = json.load(json_file)
+
 # --- Create 3dbox canvas ---
-img = Image.new('RGB', CANVAS_SIZE, CANVAS_BG_COLOR)
-
-# Box front (1000, 1500) and box spine (1000, 150).
+# Create RGB image with alpha channel.
 # Canvas size of destination transformation must have the same size as the final canvas.
-img_front = Image.new('RGB', (1000, 1500), (100, 0, 0))
+img = Image.new('RGBA', CANVAS_SIZE, CANVAS_BG_COLOR)
 
+# --- Frontbox ---
+img_front = Image.new('RGBA', (1000, 1500), (200, 100, 100))
+img_t = project_texture(img_front, coord_dic['Frontbox'])
+img_t.save('img_front_transform_A.png')
+img.paste(img_t, mask = img_t)
+
+# --- Spine ---
+img_spine = Image.new('RGBA', (1000, 1500), (100, 200, 100))
+img_t = project_texture(img_spine, coord_dic['Spine'])
+# img_t.save('img_front_transform_B.png')
+img.paste(img_t, mask = img_t)
 
 # --- Front image ---
-img_boxfront = Image.open('../media/SL_assets/doom_boxfront.png')
-width, height = img_boxfront.size
-print('boxfront width {0}, height {1}'.format(width, height))
-
-# top/left, top/right, bottom/right, bottom/left
-coeffs = perspective_coefficients(
-    [(0, 0), (width, 0), (width, height), (0, height)],
-    [(center, top), (right, top+offset), (right, bottom-offset), (center, bottom)]
-)
-print(coeffs)
-img_t = img_boxfront.transform(CANVAS_SIZE, Image.PERSPECTIVE, coeffs, Image.BICUBIC)
-img_t.save('img_front_transform_A.png')
-img = Image.blend(img, img_t, alpha = alpha_blend)
-
-# --- Spine background ---
-img_spine = Image.new('RGB', (1000, 150),  (0, 100, 0))
-width, height = 1000, 150
-coeffs = perspective_coefficients(
-    [(0, 0), (width, 0), (width, height), (0, height)],
-    [(left, top+offset), (center, top), (center, bottom), (left, bottom-offset)]
-)
-print(coeffs)
-img_t = img_spine.transform(CANVAS_SIZE, Image.PERSPECTIVE, coeffs, Image.BICUBIC)
-img_t.save('img_front_transform_B.png')
-img = Image.blend(img, img_t, alpha = alpha_blend)
-
-# --- MAME background ---
-# img_mame = Image.new('RGB', (4500, 1500), (200, 0, 0))
-img_mame = Image.open('../media/MAME_clearlogo.jpg')
-width, height = img_mame.size
-print('boxfront width {0}, height {1}'.format(width, height))
-coeffs = perspective_coefficients(
-    [(0, 0), (width, 0), (width, height), (0, height)],
-    [(center-logoOffset, top+logoOffset+15), (center-logoOffset, top+logoOffset+logoHeight+70), 
-     (left+logoOffset, topOff+logoOffset+logoHeight), (left+logoOffset, topOff+logoOffset)]
-)
-print(coeffs)
-img_t = img_mame.transform(CANVAS_SIZE, Image.PERSPECTIVE, coeffs, Image.BICUBIC)
-img_t.save('img_front_transform_C.png')
-img = Image.blend(img, img_t, alpha = alpha_blend)
+# img_flyer = Image.open('../media/SL_assets/doom_boxfront.png')
+img_flyer = Image.open('../media/SL_assets/sonic3_boxfront.png')
+img_t = project_texture(img_flyer, coord_dic['Flyer'])
+# img_t.save('img_front_transform_C.png')
+img.paste(img_t, mask = img_t)
 
 # --- Spine game clearlogo ---
-# img_mame = Image.new('RGB', (4500, 1500), (0, 0, 200))
-img_mame = Image.open('../media/MAME_clearlogo.jpg')
-width, height = img_mame.size
-print('boxfront width {0}, height {1}'.format(width, height))
-coeffs = perspective_coefficients(
-    [(0, 0), (width, 0), (width, height), (0, height)],
-    [(center-logoOffset, bottom-logoOffset-logoHeight-70), (center-logoOffset, bottom-logoOffset-15), 
-     (left+logoOffset, bottomOff-logoOffset), (left+logoOffset, bottomOff-logoOffset-logoHeight)]
-)
-print(coeffs)
-img_t = img_mame.transform(CANVAS_SIZE, Image.PERSPECTIVE, coeffs, Image.BICUBIC)
-img_t.save('img_front_transform_D.png')
-img = Image.blend(img, img_t, alpha = alpha_blend)
+# img_clearlogo = Image.open('../media/SL_assets/doom_clearlogo.png')
+img_clearlogo = Image.open('../media/SL_assets/sonic3_clearlogo.png')
+img_t = project_texture(img_clearlogo, coord_dic['Clearlogo'], rotate = True)
+# img_t.save('img_front_transform_D.png')
+img.paste(img_t, mask = img_t)
 
-# --- Print machine name ---
-# Cannot use font-related Pillow functions at the moment in Cygwin.
-# font_mono = ImageFont.truetype('../fonts/Inconsolata.otf', FONT_SIZE)
-# draw.text((0,0), 'doom', (255, 255, 255), font = font_mono)
+# --- MAME background ---
+img_mame = Image.open('../media/MAME_clearlogo.png')
+img_t = project_texture(img_mame, coord_dic['Clearlogo_MAME'], rotate = True)
+# img_t.save('img_front_transform_E.png')
+img.paste(img_t, mask = img_t)
+
+# --- Machine name ---
+font_mono = ImageFont.truetype('../fonts/Inconsolata.otf', 90)
+img_name = Image.new('RGBA', (1000, 100), (0, 0, 0))
+draw = ImageDraw.Draw(img_name)
+draw.text((0, 0), 'SL 32x Item sonic3', (255, 255, 255), font = font_mono)
+img_t = project_texture(img_name, coord_dic['Front_Title'])
+# img_name.save('img_name.png')
+# img_t.save('img_front_transform_F.png')
+img.paste(img_t, mask = img_t)
 
 # --- Save test 3dbox ---
 img.save('3dbox.png')
+sys.exit()
