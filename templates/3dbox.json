@@ -1,4 +1,15 @@
 {
+  "data" : {
+    "angleX" : -90,
+    "angleY" : -50,
+    "angleZ" : 0,
+    "fov" : 1200,
+    "viewer_distance" : 3000,
+    "spine_width" : 300,
+    "spine_length" : 1500,
+    "box_width" : 1000,
+    "box_length" : 1500
+  },
   "Spine": [
     [
       88.09680562531605,

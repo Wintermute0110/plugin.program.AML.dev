@@ -132,10 +132,7 @@ def project_texture(img_boxfront, coordinates, CANVAS_SIZE, rotate = False):
     # Conver list of lists to list of tuples
     n_coords = [(int(c[0]), int(c[1])) for c in coordinates]
     # top/left, top/right, bottom/right, bottom/left
-    coeffs = perspective_coefficients(
-        [(0, 0), (width, 0), (width, height), (0, height)],
-        n_coords
-    )
+    coeffs = perspective_coefficients([(0, 0), (width, 0), (width, height), (0, height)], n_coords)
     # print(coeffs)
     img_t = img_boxfront.transform(CANVAS_SIZE, Image.PERSPECTIVE, coeffs, Image.BICUBIC)
 
@@ -162,6 +159,7 @@ font_mono_debug = None
 def graph_build_MAME_3Dbox(PATHS, coord_dic, m_name, assets_dic,
     image_FN, CANVAS_COLOR = (0, 0, 0), test_flag = False):
     global font_mono
+    global font_mono_debug
     FONT_SIZE = 90
     CANVAS_SIZE = (1000, 1500)
     CANVAS_BG_COLOR = (50, 50, 75) if test_flag else (0, 0, 0)
@@ -181,6 +179,10 @@ def graph_build_MAME_3Dbox(PATHS, coord_dic, m_name, assets_dic,
         log_debug('graph_build_MAME_3Dbox() Creating font_mono object')
         log_debug('graph_build_MAME_3Dbox() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 90)
+    if not font_mono_debug:
+        log_debug('graph_build_MAME_3Dbox() Creating font_mono_debug object')
+        log_debug('graph_build_MAME_3Dbox() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 40)
 
     # --- Create 3dbox canvas ---
     # Create RGB image with alpha channel.
@@ -219,6 +221,23 @@ def graph_build_MAME_3Dbox(PATHS, coord_dic, m_name, assets_dic,
     draw.text((0, 0), ' {0}'.format(m_name), (255, 255, 255), font = font_mono)
     img_t = project_texture(img_name, coord_dic['Front_Title'], CANVAS_SIZE)
     img.paste(img_t, mask = img_t)
+
+    # --- Model data in debug mode ---
+    if test_flag:
+        data = coord_dic['data']
+        C_WHITE = (255, 255, 255)
+        C_BLACK = (0, 0, 0)
+        BOX_SIZE = (300, 200)
+        PASTE_POINT = (680, 1280)
+        img_name = Image.new('RGBA', BOX_SIZE, C_BLACK)
+        draw = ImageDraw.Draw(img_name)
+        draw.text((10, 0), 'angleX {0}'.format(data['angleX']), C_WHITE, font = font_mono_debug)
+        draw.text((10, 35), 'angleY {0}'.format(data['angleY']), C_WHITE, font = font_mono_debug)
+        draw.text((10, 70), 'angleY {0}'.format(data['angleY']), C_WHITE, font = font_mono_debug)
+        draw.text((10, 105), 'FOV {0}'.format(data['fov']), C_WHITE, font = font_mono_debug)
+        draw.text((10, 140), 'd {0}'.format(data['viewer_distance']), C_WHITE, font = font_mono_debug)
+        box = (PASTE_POINT[0], PASTE_POINT[1], PASTE_POINT[0]+BOX_SIZE[0], PASTE_POINT[1]+BOX_SIZE[1])
+        img.paste(img_name, box, mask = img_name)
 
     # --- Save fanart and update database ---
     log_debug('graph_build_MAME_3Dbox() Saving Fanart "{0}"'.format(image_FN.getPath()))

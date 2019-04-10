@@ -5135,9 +5135,14 @@ def command_context_setup_plugin():
                 }
             }
 
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Generating test MAME 3D Box ... ')
+            pDialog.update(15)
             graph_build_MAME_3Dbox(
                 g_PATHS, t_projection, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
+            pDialog.update(100)
+            pDialog.close()
 
             # --- Display Fanart ---
             log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
@@ -5165,9 +5170,15 @@ def command_context_setup_plugin():
                     'clearlogo'  : Asset_path_FN.pjoin('sonic3_clearlogo.png').getPath(),
                 }
             }
+
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Generating test SL 3D Box ... ')
+            pDialog.update(0)
             graph_build_MAME_3Dbox(
                 g_PATHS, t_projection, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
+            pDialog.update(100)
+            pDialog.close()
 
             # --- Display Fanart ---
             log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
