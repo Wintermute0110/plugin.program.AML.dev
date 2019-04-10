@@ -233,7 +233,7 @@ def graph_build_MAME_3Dbox(PATHS, coord_dic, m_name, assets_dic,
         draw = ImageDraw.Draw(img_name)
         draw.text((10, 0), 'angleX {0}'.format(data['angleX']), C_WHITE, font = font_mono_debug)
         draw.text((10, 35), 'angleY {0}'.format(data['angleY']), C_WHITE, font = font_mono_debug)
-        draw.text((10, 70), 'angleY {0}'.format(data['angleY']), C_WHITE, font = font_mono_debug)
+        draw.text((10, 70), 'angleZ {0}'.format(data['angleZ']), C_WHITE, font = font_mono_debug)
         draw.text((10, 105), 'FOV {0}'.format(data['fov']), C_WHITE, font = font_mono_debug)
         draw.text((10, 140), 'd {0}'.format(data['viewer_distance']), C_WHITE, font = font_mono_debug)
         box = (PASTE_POINT[0], PASTE_POINT[1], PASTE_POINT[0]+BOX_SIZE[0], PASTE_POINT[1]+BOX_SIZE[1])

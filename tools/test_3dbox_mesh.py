@@ -72,6 +72,17 @@ def write_all_surfaces(t):
         'Flyer', 'Clearlogo', 'Clearlogo_MAME', 'Front_Title'
     ]
     data_dic = {}
+    data_dic['data'] = {
+        'angleX' : angleX,
+        'angleY' : angleY,
+        'angleZ' : angleZ,
+        'fov' : fov,
+        'viewer_distance' : viewer_distance,
+        'spine_width' : spine_length,
+        'spine_length' : box_heigth,
+        'box_width' : box_width,
+        'box_length' : box_heigth,
+    }
     for s_index in range(len(faces)):
         f = faces[s_index]
         # Scale point 2x
@@ -80,9 +91,9 @@ def write_all_surfaces(t):
             (2*t[f[2]].x, 2*t[f[2]].y), (2*t[f[3]].x, 2*t[f[3]].y),
         ]
         data_dic[names[s_index]] = pointlist
-    json_str = json.dumps(data_dic, indent=2, separators=(',', ': '))
-    print(json_str)
     with open('3dbox.json', 'w') as outfile:
+        json_str = json.dumps(data_dic, indent=2, separators=(',', ': '))
+        # print(json_str)
         outfile.write(json_str)
 
 # --- 3D model of the box ---
@@ -159,7 +170,7 @@ face_colors = [
 angleX = -90
 angleY = -50
 angleZ = 0
-fov = 1200
+fov = 1250
 viewer_distance = 3000
 
 # --- main ----------------------------------------------------------------------------------------
@@ -242,13 +253,13 @@ while True:
         pygame.quit()
         sys.exit()
     elif event.type == pygame.KEYDOWN:
-        if   event.key == pygame.K_e: angleX -= 5
-        elif event.key == pygame.K_r: angleX += 5
-        elif event.key == pygame.K_d: angleY -= 5
-        elif event.key == pygame.K_f: angleY += 5
-        elif event.key == pygame.K_c: angleZ -= 5
-        elif event.key == pygame.K_v: angleZ += 5
-        elif event.key == pygame.K_q: fov -= 25
-        elif event.key == pygame.K_w: fov += 25
-        elif event.key == pygame.K_a: viewer_distance -= 100
-        elif event.key == pygame.K_s: viewer_distance += 100
+        if   event.key == pygame.K_e: angleX -= 2
+        elif event.key == pygame.K_r: angleX += 2
+        elif event.key == pygame.K_d: angleY -= 2
+        elif event.key == pygame.K_f: angleY += 2
+        elif event.key == pygame.K_c: angleZ -= 2
+        elif event.key == pygame.K_v: angleZ += 2
+        elif event.key == pygame.K_q: fov -= 20
+        elif event.key == pygame.K_w: fov += 20
+        elif event.key == pygame.K_a: viewer_distance -= 50
+        elif event.key == pygame.K_s: viewer_distance += 50

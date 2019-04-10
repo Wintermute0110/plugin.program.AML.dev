@@ -5103,7 +5103,11 @@ def command_context_setup_plugin():
         elif submenu == 2:
             Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('MAME_3dbox.png')
             Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/MAME_assets')
-            TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox.json')
+            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox.json')
+            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_50.json')
+            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
+            TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
+            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_66.json')
             log_debug('Testing Software List Fanart generation ...')
             log_debug('Fanart_FN      "{0}"'.format(Fanart_FN.getPath()))
             log_debug('Asset_path_FN  "{0}"'.format(Asset_path_FN.getPath()))
@@ -5130,8 +5134,8 @@ def command_context_setup_plugin():
             m_name = 'mslug'
             assets_dic = {
                 m_name : {
-                    'flyer'      : Asset_path_FN.pjoin('mslug_flyer.png').getPath(),
-                    'clearlogo'  : Asset_path_FN.pjoin('mslug_clearlogo.png').getPath(),
+                    'flyer'     : Asset_path_FN.pjoin('mslug_flyer.png').getPath(),
+                    'clearlogo' : Asset_path_FN.pjoin('mslug_clearlogo.png').getPath(),
                 }
             }
 
@@ -5152,7 +5156,11 @@ def command_context_setup_plugin():
         elif submenu == 3:
             Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_3dbox.png')
             Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
-            TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox.json')
+            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox.json')
+            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_50.json')
+            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
+            TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
+            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_66.json')
             log_debug('Testing Software List Fanart generation ...')
             log_debug('Fanart_FN      "{0}"'.format(Fanart_FN.getPath()))
             log_debug('Asset_path_FN  "{0}"'.format(Asset_path_FN.getPath()))
@@ -5173,7 +5181,7 @@ def command_context_setup_plugin():
 
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher', 'Generating test SL 3D Box ... ')
-            pDialog.update(0)
+            pDialog.update(15)
             graph_build_MAME_3Dbox(
                 g_PATHS, t_projection, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
