@@ -4846,8 +4846,18 @@ def _aux_catalog_key_Display_Type(parent_name, machines, machines_render):
     return [catalog_key]
 
 def _aux_catalog_key_Display_VSync(parent_name, machines, machines_render):
+    catalog_list = []
     # machine['display_refresh'] is a list.
-    return machines[parent_name]['display_refresh']
+    # Change string '60.12346' to 1 decimal only to avoid having a log of keys in this catalog.
+    # An empty machine['display_refresh'] means no display.
+    if len(machines[parent_name]['display_refresh']) == 0:
+        catalog_list.append('No display')
+    else:
+        for display_str in machines[parent_name]['display_refresh']:
+            vsync = float(display_str)
+            catalog_list.append('{0:.1f} Hz'.format(vsync))
+
+    return catalog_list
 
 def _aux_catalog_key_Display_Resolution(parent_name, machines, machines_render):
     # Move code of this function here???
