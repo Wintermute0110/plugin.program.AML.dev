@@ -5027,6 +5027,7 @@ def command_context_setup_plugin():
 
         # --- Test MAME Fanart ---
         if submenu == 0:
+            log_info('command_context_setup_plugin() Testing MAME Fanart generation ...')
             Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
             Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/MAME_assets')
             Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('MAME_Fanart.png')
@@ -5036,8 +5037,7 @@ def command_context_setup_plugin():
             log_debug('Asset_path_FN "{0}"'.format(Asset_path_FN.getPath()))
 
             # --- Load Fanart template from XML file ---
-            layout = mame_load_MAME_Fanart_template(Template_FN)
-            # log_debug(unicode(layout))
+            layout = graphs_load_MAME_Fanart_template(Template_FN)
             if not layout:
                 kodi_dialog_OK('Error loading XML MAME Fanart layout.')
                 return
@@ -5057,7 +5057,7 @@ def command_context_setup_plugin():
                     'marquee'    : Asset_path_FN.pjoin('dino_marquee.png').getPath(),
                 }
             }
-            mame_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN,
+            graphs_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (25, 25, 50), test_flag = True)
 
             # >> Display Fanart
@@ -5066,6 +5066,7 @@ def command_context_setup_plugin():
 
         # --- Test SL Fanart ---
         elif submenu == 1:
+            log_info('command_context_setup_plugin() Testing SL Fanart generation ...')
             Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
             Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
             Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_Fanart.png')
@@ -5075,8 +5076,7 @@ def command_context_setup_plugin():
             log_debug('Asset_path_FN "{0}"'.format(Asset_path_FN.getPath()))
 
             # --- Load Fanart template from XML file ---
-            layout = mame_load_SL_Fanart_template(Template_FN)
-            # log_debug(unicode(layout))
+            layout = graphs_load_SL_Fanart_template(Template_FN)
             if not layout:
                 kodi_dialog_OK('Error loading XML Software List Fanart layout.')
                 return
@@ -5091,7 +5091,7 @@ def command_context_setup_plugin():
                     'boxfront' : Asset_path_FN.pjoin('doom_boxfront.png').getPath(),
                 }
             }
-            mame_build_SL_Fanart(
+            graphs_build_SL_Fanart(
                 g_PATHS, layout, SL_name, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
 
@@ -5101,6 +5101,7 @@ def command_context_setup_plugin():
 
         # --- Test MAME 3D Box ---
         elif submenu == 2:
+            log_info('command_context_setup_plugin() Testing MAME 3D Box generation ...')
             Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('MAME_3dbox.png')
             Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/MAME_assets')
             # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox.json')
@@ -5120,15 +5121,8 @@ def command_context_setup_plugin():
             # m_name = 'dino'
             # assets_dic = {
             #     m_name : {
-            #         'title'      : Asset_path_FN.pjoin('dino_title.png').getPath(),
-            #         'snap'       : Asset_path_FN.pjoin('dino_snap.png').getPath(),
             #         'flyer'      : Asset_path_FN.pjoin('dino_flyer.png').getPath(),
-            #         'cabinet'    : Asset_path_FN.pjoin('dino_cabinet.png').getPath(),
-            #         'artpreview' : Asset_path_FN.pjoin('dino_artpreview.png').getPath(),
-            #         'PCB'        : Asset_path_FN.pjoin('dino_PCB.png').getPath(),
             #         'clearlogo'  : Asset_path_FN.pjoin('dino_clearlogo.png').getPath(),
-            #         'cpanel'     : Asset_path_FN.pjoin('dino_cpanel.png').getPath(),
-            #         'marquee'    : Asset_path_FN.pjoin('dino_marquee.png').getPath(),
             #     }
             # }
             m_name = 'mslug'
@@ -5142,7 +5136,7 @@ def command_context_setup_plugin():
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher', 'Generating test MAME 3D Box ... ')
             pDialog.update(15)
-            graph_build_MAME_3Dbox(
+            graphs_build_MAME_3DBox(
                 g_PATHS, t_projection, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
             pDialog.update(100)
@@ -5154,6 +5148,7 @@ def command_context_setup_plugin():
 
         # --- Test SL 3D Box ---
         elif submenu == 3:
+            log_info('command_context_setup_plugin() Testing SL 3D Box generation ...')
             Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_3dbox.png')
             Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
             # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox.json')
@@ -5182,7 +5177,7 @@ def command_context_setup_plugin():
             pDialog = xbmcgui.DialogProgress()
             pDialog.create('Advanced MAME Launcher', 'Generating test SL 3D Box ... ')
             pDialog.update(15)
-            graph_build_MAME_3Dbox(
+            graphs_build_MAME_3DBox(
                 g_PATHS, t_projection, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
             pDialog.update(100)
@@ -5197,216 +5192,56 @@ def command_context_setup_plugin():
         # For a complete MAME artwork collection, rebuilding all Fanarts will take hours!
         elif submenu == 4 or submenu == 5:
             BUILD_MISSING = True if submenu == 4 else False
-            if BUILD_MISSING: log_info('command_setup_plugin() Building missing Fanarts ...')
-            else:             log_info('command_setup_plugin() Rebuilding all Fanarts ...')
-
-            # >> If artwork directory not configured abort.
-            if not g_settings['assets_path']:
-                kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
-                return
-
-            # >> If fanart directory doesn't exist create it.
-            Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
-            Asset_path_FN = FileName(g_settings['assets_path'])
-            Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
-            if not Fanart_path_FN.isdir():
-                log_info('Creating Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
-                Fanart_path_FN.makedirs()
-
-            # >> Load Fanart template from XML file
-            layout = mame_load_MAME_Fanart_template(Template_FN)
-            # log_debug(unicode(layout))
-            if not layout:
-                kodi_dialog_OK('Error loading XML MAME Fanart layout.')
-                return
-
-            # >> Load Assets DB
-            pDialog_canceled = False
-            pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Loading assets database ... ')
-            pDialog.update(0)
-            assets_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
-            pDialog.update(100)
-            pDialog.close()
-
-            # >> Traverse all machines and build fanart from other pieces of artwork
-            total_machines = len(assets_dic)
-            processed_machines = 0
-            pDialog.create('Advanced MAME Launcher', 'Building MAME machine Fanarts ... ')
-            for m_name in sorted(assets_dic):
-                pDialog.update((processed_machines * 100) // total_machines)
-                if pDialog.iscanceled():
-                    pDialog_canceled = True
-                    # kodi_dialog_OK('Fanart generation was cancelled by the user.')
-                    break
-                # >> If build missing Fanarts was chosen only build fanart if file cannot
-                # >> be found.
-                Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
-                if BUILD_MISSING:
-                    if Fanart_FN.exists():
-                        assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
-                    else:
-                        mame_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN)
-                else:
-                    mame_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN)
-                processed_machines += 1
-            pDialog.update(100)
-            pDialog.close()
-
-            # --- Save assets DB ---
-            pDialog.create('Advanced MAME Launcher', 'Saving asset database ... ')
-            pDialog.update(1)
-            fs_write_JSON_file(g_PATHS.MAIN_ASSETS_DB_PATH.getPath(), assets_dic)
-            pDialog.update(100)
-            pDialog.close()
-
-            # --- MAME Fanart build timestamp ---
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-            change_control_dic(control_dic, 't_MAME_fanart_build', time.time())
-            fs_write_JSON_file(g_PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-
-            # --- assets_dic has changed. Rebuild hashed database ---
-            fs_build_asset_hashed_db(g_PATHS, g_settings, control_dic, assets_dic)
-
-            # --- Rebuild MAME asset cache ---
-            if g_settings['debug_enable_MAME_asset_cache']:
-                cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
-                fs_build_asset_cache(g_PATHS, g_settings, control_dic, cache_index_dic, assets_dic)
-
-            # --- Inform user ---
-            if pDialog_canceled:
-                kodi_notify('MAME fanarts building stopped. Partial progress saved.')
+            if BUILD_MISSING:
+                log_info('command_context_setup_plugin() Building missing Fanarts ...')
             else:
-                kodi_notify('MAME fanarts building finished')
+                log_info('command_context_setup_plugin() Rebuilding all Fanarts ...')
+            data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            # Kodi notification inside this function.
+            graphs_build_MAME_Fanart_all(g_PATHS, g_settings, data_dic)
 
         # --- 6 -> Missing SL Fanarts ---
         # --- 7 -> Rebuild all SL Fanarts ---
         elif submenu == 6 or submenu == 7:
             BUILD_MISSING = True if submenu == 6 else False
             if BUILD_MISSING:
-                log_info('command_setup_plugin() Building missing Software Lists Fanarts ...')
+                log_info('command_context_setup_plugin() Building missing Software Lists Fanarts ...')
             else:
-                log_info('command_setup_plugin() Rebuilding all Software Lists Fanarts ...')
-
-            # data_dic = graph_load_SL_Fanart_stuff(BUILD_MISSING)
-            # if data_dic['abort']: return
-            # Kodi notification inside this function.
-            # graph_build_SL_Fanart_stuff(g_PATHS, g_settings, data_dic)
-
-            # >> If artwork directory not configured abort.
-            if not g_settings['assets_path']:
-                kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
-                return
-
-            # >> Load Fanart template from XML file
-            Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
-            layout = mame_load_SL_Fanart_template(Template_FN)
-            # log_debug(unicode(layout))
-            if not layout:
-                kodi_dialog_OK('Error loading XML Software List Fanart layout.')
-                return
-
-            # >> Load SL index
-            SL_index_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-
-            # >> Traverse all SL and on each SL every item
-            pDialog_canceled = False
-            pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher')
-            SL_number = len(SL_index_dic)
-            SL_count = 1
-            for SL_name in sorted(SL_index_dic):
-                # >> Update progres dialog
-                pdialog_line1 = 'Processing SL {0} ({1} of {2})...'.format(SL_name, SL_count, SL_number)
-                pdialog_line2 = ' '
-                pDialog.update(0, pdialog_line1, pdialog_line2)
-
-                # >> If fanart directory doesn't exist create it.
-                Asset_path_FN = FileName(g_settings['assets_path'])
-                Fanart_path_FN = Asset_path_FN.pjoin('fanarts_SL/{0}'.format(SL_name))
-                if not Fanart_path_FN.isdir():
-                    log_info('Creating SL Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
-                    Fanart_path_FN.makedirs()
-
-                # >> Load Assets DB
-                pdialog_line2 = 'Loading SL asset database ... '
-                pDialog.update(0, pdialog_line1, pdialog_line2)
-                assets_file_name =  SL_index_dic[SL_name]['rom_DB_noext'] + '_assets.json'
-                SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
-                SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
-
-                # Traverse all SL items and build fanart from other pieces of artwork
-                # Last slot of the progress bar is to save the JSON database.
-                total_SL_items = len(SL_assets_dic) + 1
-                processed_SL_items = 0
-                for m_name in sorted(SL_assets_dic):
-                    pdialog_line2 = 'SL item {0}'.format(m_name)
-                    update_number = (processed_SL_items * 100) // total_SL_items
-                    pDialog.update(update_number, pdialog_line1, pdialog_line2)
-                    if pDialog.iscanceled():
-                        pDialog_canceled = True
-                        # kodi_dialog_OK('SL Fanart generation was cancelled by the user.')
-                        break
-                    # >> If build missing Fanarts was chosen only build fanart if file cannot
-                    # >> be found.
-                    Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
-                    if BUILD_MISSING:
-                        if Fanart_FN.exists():
-                            SL_assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
-                        else:
-                            mame_build_SL_Fanart(g_PATHS, layout, SL_name, m_name, SL_assets_dic, Fanart_FN)
-                    else:
-                        mame_build_SL_Fanart(g_PATHS, layout, SL_name, m_name, SL_assets_dic, Fanart_FN)
-                    processed_SL_items += 1
-
-                # --- Save SL assets DB ---
-                pdialog_line2 = 'Saving SL {0} asset database ... '.format(SL_name)
-                pDialog.update(100, pdialog_line1, pdialog_line2)
-                fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
-
-                # --- Update progress ---
-                SL_count += 1
-                if pDialog_canceled: break
-            pDialog.close()
-
-            # --- SL Fanart build timestamp ---
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-            change_control_dic(control_dic, 't_SL_fanart_build', time.time())
-            fs_write_JSON_file(g_PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-
-            # --- Inform user ---
-            if pDialog_canceled:
-                kodi_notify('SL Fanart building stopped. Partial progress saved.')
-            else:
-                kodi_notify('SL Fanart building finished')
+                log_info('command_context_setup_plugin() Rebuilding all Software Lists Fanarts ...')
+            data_dic = graph_load_SL_Fanart_stuff(BUILD_MISSING)
+            if data_dic['abort']: return
+            graph_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
 
         # --- 8 -> Missing MAME 3D Boxes ---
         # --- 9 -> Rebuild all MAME 3D Boxes ---
         elif submenu == 8 or submenu == 9:
             BUILD_MISSING = True if submenu == 8 else False
             if BUILD_MISSING:
-                log_info('command_setup_plugin() Building missing MAME 3D Boxes ...')
-                kodi_dialog_OK('Missing MAME 3D Boxes not implemented yet, sorry.')
+                log_info('command_context_setup_plugin() Building missing MAME 3D Boxes ...')
             else:
-                log_info('command_setup_plugin() Rebuilding all MAME 3D Boxes ...')
-                kodi_dialog_OK('Rebuild all MAME 3D Boxes not implemented yet, sorry.')
+                log_info('command_context_setup_plugin() Rebuilding all MAME 3D Boxes ...')
+            data_dic = graph_load_MAME_3DBox_stuff(BUILD_MISSING)
+            if data_dic['abort']: return
+            graph_build_MAME_3DBox_all(g_PATHS, g_settings, data_dic)
 
         # --- 10 -> Missing SL 3D Boxes ---
         # --- 11 -> Rebuild all SL 3D Boxes ---
         elif submenu == 10 or submenu == 11:
             BUILD_MISSING = True if submenu == 10 else False
             if BUILD_MISSING:
-                log_info('command_setup_plugin() Building missing Software Lists 3D Boxes ...')
-                kodi_dialog_OK('Missing Software Lists 3D Boxes not implemented yet, sorry.')
+                log_info('command_context_setup_plugin() Building missing Software Lists 3D Boxes ...')
             else:
-                log_info('command_setup_plugin() Rebuilding all Software Lists 3D Boxes ...')
-                kodi_dialog_OK('Rebuild all Software Lists 3D Boxes not implemented yet, sorry.')
+                log_info('command_context_setup_plugin() Rebuilding all Software Lists 3D Boxes ...')
+            data_dic = graph_load_SL_3DBox_stuff(BUILD_MISSING)
+            if data_dic['abort']: return
+            graph_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
 
     # --- Audit MAME machine ROMs/CHDs ---
     # NOTE It is likekely that this function will take a looong time. It is important that the
     #      audit process can be canceled and a partial report is written.
     elif menu_item == 7:
-        log_info('command_setup_plugin() Audit MAME machines ROMs/CHDs ...')
+        log_info('command_context_setup_plugin() Audit MAME machines ROMs/CHDs ...')
 
         # --- Check for requirements/errors ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -5427,7 +5262,7 @@ def command_context_setup_plugin():
 
     # --- Audit SL ROMs/CHDs ---
     elif menu_item == 8:
-        log_info('command_setup_plugin() Audit SL ROMs/CHDs ...')
+        log_info('command_context_setup_plugin() Audit SL ROMs/CHDs ...')
 
         # --- Check for requirements/errors ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -5457,7 +5292,7 @@ def command_context_setup_plugin():
 
         # --- Build main MAME database, PClone list and hashed database ---
         if submenu == 0:
-            log_info('command_setup_plugin() Generating MAME main database and PClone list ...')
+            log_info('command_context_setup_plugin() Generating MAME main database and PClone list ...')
 
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -5481,7 +5316,7 @@ def command_context_setup_plugin():
 
         # --- Build ROM audit/scanner databases ---
         elif submenu == 1:
-            log_info('command_setup_plugin() Generating ROM audit/scanner databases ...')
+            log_info('command_context_setup_plugin() Generating ROM audit/scanner databases ...')
 
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -5505,7 +5340,7 @@ def command_context_setup_plugin():
 
         # --- Build MAME catalogs ---
         elif submenu == 2:
-            log_info('command_setup_plugin() Building MAME catalogs ...')
+            log_info('command_context_setup_plugin() Building MAME catalogs ...')
 
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -5543,7 +5378,7 @@ def command_context_setup_plugin():
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
         elif submenu == 3:
-            log_info('command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
+            log_info('command_context_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
 
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -5565,7 +5400,7 @@ def command_context_setup_plugin():
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
         elif submenu == 4:
-            log_info('command_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
+            log_info('command_context_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
 
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -5609,7 +5444,7 @@ def command_context_setup_plugin():
 
         # --- Scans MAME assets/artwork ---
         elif submenu == 5:
-            log_info('command_setup_plugin() Scanning MAME assets/artwork ...')
+            log_info('command_context_setup_plugin() Scanning MAME assets/artwork ...')
 
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -5640,7 +5475,7 @@ def command_context_setup_plugin():
 
         # --- Scan SL ROMs/CHDs ---
         elif submenu == 6:
-            log_info('command_setup_plugin() Scanning SL ROMs/CHDs ...')
+            log_info('command_context_setup_plugin() Scanning SL ROMs/CHDs ...')
 
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -5662,7 +5497,7 @@ def command_context_setup_plugin():
         # >> Database format: ADDON_DATA_DIR/db_SoftwareLists/32x_assets.json
         # >> { 'ROM_name' : {'asset1' : 'path', 'asset2' : 'path', ... }, ... }
         elif submenu == 7:
-            log_info('command_setup_plugin() Scanning SL assets/artwork ...')
+            log_info('command_context_setup_plugin() Scanning SL assets/artwork ...')
 
             # --- Check for requirements/errors ---
             control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
