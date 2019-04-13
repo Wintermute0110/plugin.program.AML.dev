@@ -30,6 +30,7 @@ except:
 
 # --- Modules/packages in this addon ---
 from .constants import *
+from .disk_IO import *
 from .utils import *
 from .utils_kodi import *
 
@@ -630,11 +631,11 @@ def graphs_load_MAME_Fanart_stuff(PATHS, settings, BUILD_MISSING):
 # Builds or rebuilds missing SL Fanarts.
 def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
     # >> Traverse all machines and build fanart from other pieces of artwork
-    total_machines, processed_machines = len(assets_dic), 0
+    total_machines, processed_machines = len(data_dic['assets_dic']), 0
     pDialog_canceled = False
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Building MAME machine Fanarts ... ')
-    for m_name in sorted(assets_dic):
+    for m_name in sorted(data_dic['assets_dic']):
         pDialog.update((processed_machines * 100) // total_machines)
         if pDialog.iscanceled():
             pDialog_canceled = True
@@ -645,7 +646,7 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
         Fanart_FN = data_dic['Fanart_path_FN'].pjoin('{0}.png'.format(m_name))
         if data_dic['BUILD_MISSING']:
             if Fanart_FN.exists():
-                assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
+                data_dic['assets_dic'][m_name]['fanart'] = Fanart_FN.getPath()
             else:
                 graphs_build_MAME_Fanart(
                     PATHS, data_dic['layout'], m_name, data_dic['assets_dic'], Fanart_FN)
@@ -672,7 +673,7 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
     fs_build_asset_hashed_db(PATHS, settings, control_dic, data_dic['assets_dic'])
 
     # --- Rebuild MAME asset cache ---
-    if g_settings['debug_enable_MAME_asset_cache']:
+    if settings['debug_enable_MAME_asset_cache']:
         cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
         fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, data_dic['assets_dic'])
 
@@ -733,20 +734,20 @@ def graphs_load_SL_Fanart_template(Template_FN):
 
 # Returns a dictionary with all the data necessary to build the fanarts.
 # The dictionary has the 'abort' field if an error was detected.
-def graphs_load_SL_Fanart_stuff(BUILD_MISSING):
+def graphs_load_SL_Fanart_stuff(PATHS, settings, BUILD_MISSING):
     data_dic = {}
     data_dic['abort'] = False
     data_dic['BUILD_MISSING'] = BUILD_MISSING
 
     # >> If artwork directory not configured abort.
-    if not g_settings['assets_path']:
+    if not settings['assets_path']:
         kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
         data_dic['abort'] = True
         return
 
     # >> Load Fanart template from XML file
-    Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
-    layout = mame_load_SL_Fanart_template(Template_FN)
+    Template_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
+    layout = graphs_load_SL_Fanart_template(Template_FN)
     # log_debug(unicode(layout))
     if not layout:
         kodi_dialog_OK('Error loading XML Software List Fanart layout.')
@@ -756,7 +757,7 @@ def graphs_load_SL_Fanart_stuff(BUILD_MISSING):
         data_dic['layout'] = layout
 
     # >> Load SL index
-    SL_index = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    SL_index = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
     data_dic['SL_index'] = SL_index
 
     return data_dic
@@ -785,7 +786,7 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
         pdialog_line2 = 'Loading SL asset database ... '
         pDialog.update(0, pdialog_line1, pdialog_line2)
         assets_file_name =  data_dic['SL_index'][SL_name]['rom_DB_noext'] + '_assets.json'
-        SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
+        SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
         SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
 
         # Traverse all SL items and build fanart from other pieces of artwork
@@ -806,10 +807,10 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
                 if Fanart_FN.exists():
                     SL_assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
                 else:
-                    mame_build_SL_Fanart(
+                    graphs_build_SL_Fanart(
                         PATHS, data_dic['layout'], SL_name, m_name, SL_assets_dic, Fanart_FN)
             else:
-                mame_build_SL_Fanart(
+                graphs_build_SL_Fanart(
                     PATHS, data_dic['layout'], SL_name, m_name, SL_assets_dic, Fanart_FN)
             processed_SL_items += 1
 

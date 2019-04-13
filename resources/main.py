@@ -5203,9 +5203,9 @@ def command_context_setup_plugin():
                 log_info('command_context_setup_plugin() Building missing Software Lists Fanarts ...')
             else:
                 log_info('command_context_setup_plugin() Rebuilding all Software Lists Fanarts ...')
-            data_dic = graph_load_SL_Fanart_stuff(BUILD_MISSING)
+            data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
             if data_dic['abort']: return
-            graph_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
+            graphs_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
 
         # --- 8 -> Missing MAME 3D Boxes ---
         # --- 9 -> Rebuild all MAME 3D Boxes ---
@@ -5215,9 +5215,9 @@ def command_context_setup_plugin():
                 log_info('command_context_setup_plugin() Building missing MAME 3D Boxes ...')
             else:
                 log_info('command_context_setup_plugin() Rebuilding all MAME 3D Boxes ...')
-            data_dic = graph_load_MAME_3DBox_stuff(BUILD_MISSING)
+            data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
             if data_dic['abort']: return
-            graph_build_MAME_3DBox_all(g_PATHS, g_settings, data_dic)
+            graphs_build_MAME_3DBox_all(g_PATHS, g_settings, data_dic)
 
         # --- 10 -> Missing SL 3D Boxes ---
         # --- 11 -> Rebuild all SL 3D Boxes ---
@@ -5227,9 +5227,9 @@ def command_context_setup_plugin():
                 log_info('command_context_setup_plugin() Building missing Software Lists 3D Boxes ...')
             else:
                 log_info('command_context_setup_plugin() Rebuilding all Software Lists 3D Boxes ...')
-            data_dic = graph_load_SL_3DBox_stuff(BUILD_MISSING)
+            data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
             if data_dic['abort']: return
-            graph_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
+            graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
 
     # --- Audit MAME machine ROMs/CHDs ---
     # NOTE It is likekely that this function will take a looong time. It is important that the
