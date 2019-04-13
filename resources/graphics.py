@@ -477,7 +477,7 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
         log_debug('graphs_build_MAME_3DBox() Creating font_mono object')
         log_debug('graphs_build_MAME_3DBox() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 90)
-    if not font_mono_debug:
+    if test_flag and not font_mono_debug:
         log_debug('graphs_build_MAME_3DBox() Creating font_mono_debug object')
         log_debug('graphs_build_MAME_3DBox() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 40)
@@ -498,27 +498,34 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
     canvas.paste(img_t, mask = img_t)
 
     # --- Flyer image ---
+    # MAME machines have Flyer, SL items have Boxfront
+    FLYER_AVAILABLE, BOXFRONT_AVAILABLE = False, False
     try:
         img_flyer = Image.open(assets_dic[m_name]['flyer'])
         FLYER_AVAILABLE = True
     except:
-        FLYER_AVAILABLE = False
         try:
             img_flyer = Image.open(assets_dic[m_name]['boxfront'])
             BOXFRONT_AVAILABLE = True
         except:
-            BOXFRONT_AVAILABLE = False
+            pass
     if FLYER_AVAILABLE or BOXFRONT_AVAILABLE:
         img_t = project_texture(img_flyer, coord_dic['Flyer'], CANVAS_SIZE)
         canvas.paste(img_t, mask = img_t)
 
     # --- Spine game clearlogo ---
+    # MAME machines have Clearlogo and/or Marquee, SL items nothing.
+    CLEARLOGO_AVAILABLE, MARQUEE_AVAILABLE = False, False
     try:
         img_clearlogo = Image.open(assets_dic[m_name]['clearlogo'])
         CLEARLOGO_AVAILABLE = True
     except:
-        CLEARLOGO_AVAILABLE = False
-    if CLEARLOGO_AVAILABLE:
+        try:
+            img_clearlogo = Image.open(assets_dic[m_name]['marquee'])
+            MARQUEE_AVAILABLE = True
+        except:
+            pass
+    if CLEARLOGO_AVAILABLE or MARQUEE_AVAILABLE:
         img_t = project_texture(img_clearlogo, coord_dic['Clearlogo'], CANVAS_SIZE, rotate = True)
         canvas.paste(img_t, mask = img_t)
 

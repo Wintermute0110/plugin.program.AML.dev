@@ -293,6 +293,7 @@ def fs_new_SL_DISK_audit_dic():
     }
 
 ASSET_SL_T_LIST = [
+    ('3dbox',    '3dboxes_SL'),
     ('title',    'titles_SL'),
     ('snap',     'snaps_SL'),
     ('boxfront', 'covers_SL'),
@@ -602,6 +603,9 @@ def fs_new_control_dic():
 
         # --- Filed in by the SL asset scanner ---
         'assets_SL_num_items'           : 0,
+        'assets_SL_3dbox_have'          : 0,
+        'assets_SL_3dbox_missing'       : 0,
+        'assets_SL_3dbox_alternate'     : 0,
         'assets_SL_titles_have'         : 0,
         'assets_SL_titles_missing'      : 0,
         'assets_SL_titles_alternate'    : 0,

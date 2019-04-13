@@ -1492,6 +1492,10 @@ def mame_stats_scanner_print_slist(slist, control_dic):
     slist.append('')
     slist.append('[COLOR orange]Software List asset scanner information[/COLOR]')
     # slist.append('Total number of SL items {0:,d}'.format(control_dic['assets_SL_num_items']))
+    t = "You have {0:6d} SL 3D Boxes , missing {1:6d}, alternate {2:6d}"
+    slist.append(t.format(control_dic['assets_SL_3dbox_have'],
+                          control_dic['assets_SL_3dbox_missing'],
+                          control_dic['assets_SL_3dbox_alternate']))
     t = "You have {0:6d} SL Titles   , missing {1:6d}, alternate {2:6d}"
     slist.append(t.format(control_dic['assets_SL_titles_have'],
                           control_dic['assets_SL_titles_missing'],
@@ -7472,8 +7476,8 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     total_files = len(SL_index_dic)
     processed_files = 0
     table_str = []
-    table_str.append(['left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
-    table_str.append(['Soft', 'Name', 'Tit',  'Snap', 'Bft',  'Fan',  'Tra',  'Man'])
+    table_str.append(['left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
+    table_str.append(['Soft', 'Name', '3DB',  'Tit',  'Snap', 'Bft',  'Fan',  'Tra',  'Man'])
     have_count_list = [0] * len(ASSET_SL_T_LIST)
     alternate_count_list = [0] * len(ASSET_SL_T_LIST)
     SL_item_count = 0
@@ -7583,17 +7587,19 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
 
     # >> Asset statistics and report.
     # This must match the order of ASSET_SL_T_LIST defined in disk_IO.py
-    Tit  = (have_count_list[0], SL_item_count - have_count_list[0], alternate_count_list[0])
-    Snap = (have_count_list[1], SL_item_count - have_count_list[1], alternate_count_list[1])
-    Boxf = (have_count_list[2], SL_item_count - have_count_list[2], alternate_count_list[2])
-    Fan  = (have_count_list[3], SL_item_count - have_count_list[3], alternate_count_list[3])
-    Tra  = (have_count_list[4], SL_item_count - have_count_list[4], alternate_count_list[4])
-    Man  = (have_count_list[5], SL_item_count - have_count_list[5], alternate_count_list[5])
+    _3db = (have_count_list[0], SL_item_count - have_count_list[0], alternate_count_list[0])
+    Tit  = (have_count_list[1], SL_item_count - have_count_list[1], alternate_count_list[1])
+    Snap = (have_count_list[2], SL_item_count - have_count_list[2], alternate_count_list[2])
+    Boxf = (have_count_list[3], SL_item_count - have_count_list[3], alternate_count_list[3])
+    Fan  = (have_count_list[4], SL_item_count - have_count_list[4], alternate_count_list[4])
+    Tra  = (have_count_list[5], SL_item_count - have_count_list[5], alternate_count_list[5])
+    Man  = (have_count_list[6], SL_item_count - have_count_list[6], alternate_count_list[6])
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Creating SL asset report ...')
     report_slist = []
     report_slist.append('*** Advanced MAME Launcher Software List asset scanner report ***')
     report_slist.append('Total SL items {0}'.format(SL_item_count))
+    report_slist.append('Have 3D Boxes  {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*_3db))
     report_slist.append('Have Titles    {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Tit))
     report_slist.append('Have Snaps     {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Snap))
     report_slist.append('Have Boxfronts {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Boxf))
@@ -7611,6 +7617,9 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
 
     # >> Update control_dic by assigment (will be saved in caller)
     change_control_dic(control_dic, 'assets_SL_num_items', SL_item_count)
+    change_control_dic(control_dic, 'assets_SL_3dbox_have', _3db[0])
+    change_control_dic(control_dic, 'assets_SL_3dbox_missing', _3db[1])
+    change_control_dic(control_dic, 'assets_SL_3dbox_alternate', _3db[2])
     change_control_dic(control_dic, 'assets_SL_titles_have', Tit[0])
     change_control_dic(control_dic, 'assets_SL_titles_missing', Tit[1])
     change_control_dic(control_dic, 'assets_SL_titles_alternate', Tit[2])

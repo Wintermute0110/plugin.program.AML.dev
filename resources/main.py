@@ -1929,7 +1929,7 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
         fanart_path    = m_assets[g_mame_fanart]
         banner_path    = m_assets['marquee']
         clearlogo_path = m_assets['clearlogo']
-        poster_path    = m_assets['flyer']
+        poster_path    = m_assets['3dbox'] if m_assets['3dbox'] else m_assets['flyer']
 
         # --- Create listitem row ---
         # >> Make all the infolabels compatible with Advanced Emulator Launcher
@@ -2260,7 +2260,7 @@ def render_SL_ROM_row(SL_name, rom_name, ROM, assets, flag_parent_list = False, 
     # --- Assets/artwork ---
     icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
     fanart_path = assets[g_SL_fanart]
-    poster_path = assets['boxfront']
+    poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
 
     # --- Create listitem row ---
     ICON_OVERLAY = 6
@@ -2279,8 +2279,11 @@ def render_SL_ROM_row(SL_name, rom_name, ROM, assets, flag_parent_list = False, 
 
     # --- Assets ---
     # >> AEL custom artwork fields
-    listitem.setArt({'title' : assets['title'], 'snap' : assets['snap'], 'boxfront' : assets['boxfront'],
-                     'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
+    listitem.setArt({
+        'title' : assets['title'], 'snap' : assets['snap'],
+        'boxfront' : assets['boxfront'], '3dbox' : assets['3dbox'],
+        'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path
+    })
 
     # --- Create context menu ---
     URL_view_DAT = misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', rom_name)
@@ -3707,7 +3710,7 @@ def render_fav_machine_row(m_name, machine, m_assets, location):
     fanart_path    = m_assets[g_mame_fanart]
     banner_path    = m_assets['marquee']
     clearlogo_path = m_assets['clearlogo']
-    poster_path    = m_assets['flyer']
+    poster_path    = m_assets['3dbox'] if m_assets['3dbox'] else m_assets['flyer']
 
     # --- Create listitem row ---
     ICON_OVERLAY = 6
@@ -3942,7 +3945,7 @@ def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
     # --- Assets/artwork ---
     icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
     fanart_path = assets[g_SL_fanart]
-    poster_path = assets['boxfront']
+    poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
 
     # --- Create listitem row ---
     ICON_OVERLAY = 6
@@ -3961,8 +3964,11 @@ def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
 
     # --- Assets ---
     # >> AEL custom artwork fields
-    listitem.setArt({'title' : assets['title'], 'snap' : assets['snap'], 'boxfront' : assets['boxfront'],
-                     'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path})
+    listitem.setArt({
+        'title' : assets['title'], 'snap' : assets['snap'],
+        'boxfront' : assets['boxfront'], '3dbox' : assets['3dbox'],
+        'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path
+    })
 
     # --- Create context menu ---
     URL_view_DAT = misc_url_4_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', SL_ROM_name, 'location', location)
