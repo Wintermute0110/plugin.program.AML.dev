@@ -5122,6 +5122,7 @@ def command_context_setup_plugin():
             #         'clearlogo'  : Asset_path_FN.pjoin('dino_clearlogo.png').getPath(),
             #     }
             # }
+            SL_name = 'MAME'
             m_name = 'mslug'
             assets_dic = {
                 m_name : {
@@ -5134,7 +5135,7 @@ def command_context_setup_plugin():
             pDialog.create('Advanced MAME Launcher', 'Generating test MAME 3D Box ... ')
             pDialog.update(15)
             graphs_build_MAME_3DBox(
-                g_PATHS, t_projection, m_name, assets_dic, Fanart_FN,
+                g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
             pDialog.update(100)
             pDialog.close()
@@ -5146,25 +5147,26 @@ def command_context_setup_plugin():
         # --- Test SL 3D Box ---
         elif submenu == 3:
             log_info('command_context_setup_plugin() Testing SL 3D Box generation ...')
-            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_3dbox.png')
-            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
             # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
             TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
+            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_3dbox.png')
+            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
             log_debug('Testing Software List Fanart generation ...')
+            log_debug('TProjection_FN "{0}"'.format(TProjection_FN.getPath()))
             log_debug('Fanart_FN      "{0}"'.format(Fanart_FN.getPath()))
             log_debug('Asset_path_FN  "{0}"'.format(Asset_path_FN.getPath()))
-            log_debug('TProjection_FN "{0}"'.format(TProjection_FN.getPath()))
 
             # Load 3D texture projection matrix
             t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
 
             # Create fake asset dictionaries
+            # SL items in AML don't have clearlogo, but for testing is OK.
             SL_name = 'genesis'
             m_name = 'sonic3'
             assets_dic = {
                 m_name : {
-                    'flyer'      : Asset_path_FN.pjoin('sonic3_boxfront.png').getPath(),
-                    'clearlogo'  : Asset_path_FN.pjoin('sonic3_clearlogo.png').getPath(),
+                    'boxfront'  : Asset_path_FN.pjoin('sonic3_boxfront.png').getPath(),
+                    'clearlogo' : Asset_path_FN.pjoin('sonic3_clearlogo.png').getPath(),
                 }
             }
 
@@ -5172,7 +5174,7 @@ def command_context_setup_plugin():
             pDialog.create('Advanced MAME Launcher', 'Generating test SL 3D Box ... ')
             pDialog.update(15)
             graphs_build_MAME_3DBox(
-                g_PATHS, t_projection, m_name, assets_dic, Fanart_FN,
+                g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
             pDialog.update(100)
             pDialog.close()
@@ -5718,6 +5720,7 @@ def command_exec_utility(which_utility):
                 # >> Check that artwork subdirectories exist
                 Asset_path_FN = FileName(g_settings['assets_path'])
 
+                _3dboxes_FN = Asset_path_FN.pjoin('3dboxes_SL')
                 covers_FN = Asset_path_FN.pjoin('covers_SL')
                 fanarts_FN = Asset_path_FN.pjoin('fanarts_SL')
                 manuals_FN = Asset_path_FN.pjoin('manuals_SL')
@@ -5725,6 +5728,7 @@ def command_exec_utility(which_utility):
                 titles_FN = Asset_path_FN.pjoin('titles_SL')
                 videosnaps_FN = Asset_path_FN.pjoin('videosnaps_SL')
 
+                aux_check_asset_dir(slist, _3dboxes_FN, '3D Boxes')
                 aux_check_asset_dir(slist, covers_FN, 'SL Covers')
                 aux_check_asset_dir(slist, fanarts_FN, 'SL Fanarts')
                 aux_check_asset_dir(slist, manuals_FN, 'SL Manuals')

@@ -10,22 +10,18 @@ WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored i
          The MAME audit engine must take this into account.
          See comments in mame_scan_MAME_ROMs() @mame.py
 
-WIP      [CORE] [LEIA] Recursive context menus.
-         Pay attention to the select() bug in Kodi Krypton.
-         This requires Kodi version detection and having different code for Krypton/Leia.
-
 WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
          How to implement this? Using PIL?
-
-WIP      [MANUALS] Support for CBZ/CBR manuals.
-         In theory Kodi VFS is able to read RAR files.
-         Wait until this is implemented in AEL and then port it from AEL into AML?
 
 
 [B]AML ideas and planned features (read to implement)[/B]
 
 WIP      [MANUALS] Increase the number of supported PDF filters.
          This may required A LOT of Python coding.
+
+WIP      [MANUALS] Support for CBZ/CBR manuals.
+         In theory Kodi VFS is able to read RAR files.
+         Wait until this is implemented in AEL and then port it from AEL into AML?
 
 WIP      [CORE] Differentiate between Non-merged and Fully non-merged ROM sets.
          Non-merged sets do not include BIOS and device ROMs.
@@ -38,8 +34,12 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
+WIP      [CORE] [LEIA] Recursive context menus.
+         Pay attention to the select() bug in Kodi Krypton.
+         This requires Kodi version detection and having different code for Krypton/Leia.
 
-[B]Advanced MAME Launcher | version 0.9.10 | xx June 2019[/B]
+
+[B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
 
 WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
          Github wiki.
@@ -47,14 +47,16 @@ WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi 
 WIP      [FILTERING] Test the filters for errors. For example, test that all the drivers
          defined in <Driver> exist. Another example, test that the genres defined in
          <Genre> and the controls defined in <Controls> exist.
-         Warn the user if errors found, maybe in a report the user reads.
+
+WIP      [FILTERING] Warn the user if errors found in the XML filter definition, maybe in
+         a report the user can read later.
 
 WIP      [FILTERING] Make a filter report the user can read.
          I have to think if this is really useful or not.
 
 FEATURE  Generate MAME machines and SL items 3D Boxes.
 
-WIP      Refactoring of the Fanart and 3D Box code generation. Creation of graphics.py.
+FEATURE  Refactoring of the Fanart and 3D Box code generation. Creation of graphics.py.
 
 FEATURE  Improved filter "Machines by Display Type" and removed filter
          "Machines by Display Rotation."

@@ -1095,6 +1095,7 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
     slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(rom['year']))
 
     slist.append('\n[COLOR orange]Software List assets[/COLOR]')
+    slist.append("[COLOR violet]3dbox[/COLOR]: '{0}'".format(assets['3dbox']))
     slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(assets['title']))
     slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(assets['snap']))
     slist.append("[COLOR violet]boxfront[/COLOR]: '{0}'".format(assets['boxfront']))
@@ -1194,7 +1195,7 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
     else:
         slist.append("SL assets never scaned")
 
-    # Plots and fanarts.
+    # Plots, Fanarts and 3D Boxes.
     if control_dic['t_MAME_plots_build']:
         slist.append("MAME Plots built on         {0}".format(
             _str_time(control_dic['t_MAME_plots_build'])))
@@ -1205,6 +1206,7 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
             _str_time(control_dic['t_SL_plots_build'])))
     else:
         slist.append("SL Plots never built")
+
     if control_dic['t_MAME_fanart_build']:
         slist.append("MAME Fanarts built on       {0}".format(
             _str_time(control_dic['t_MAME_fanart_build'])))
@@ -1215,6 +1217,17 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
             _str_time(control_dic['t_SL_fanart_build'])))
     else:
         slist.append("SL Fanarts never built")
+
+    if control_dic['t_MAME_3dbox_build']:
+        slist.append("MAME 3D Boxes built on      {0}".format(
+            _str_time(control_dic['t_MAME_3dbox_build'])))
+    else:
+        slist.append("MAME 3D Boxes never built")
+    if control_dic['t_SL_3dbox_build']:
+        slist.append("SL 3D Boxes built on        {0}".format(
+            _str_time(control_dic['t_SL_3dbox_build'])))
+    else:
+        slist.append("SL 3D Boxes never built")
 
     # MAME machine hash, asset hash, render cache and asset cache.
     if control_dic['t_MAME_machine_hash']:

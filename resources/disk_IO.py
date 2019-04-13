@@ -234,7 +234,6 @@ ASSET_MAME_T_LIST  = [
 def fs_new_MAME_asset():
     return {
         '3dbox'      : '',
-        'PCB'        : '',
         'artpreview' : '',
         'artwork'    : '',
         'cabinet'    : '',
@@ -245,6 +244,7 @@ def fs_new_MAME_asset():
         'flyer'      : '',
         'manual'     : '',
         'marquee'    : '',
+        'PCB'        : '',
         'plot'       : '',
         'snap'       : '',
         'title'      : '',
@@ -303,6 +303,7 @@ ASSET_SL_T_LIST = [
 
 def fs_new_SL_asset():
     return {
+        '3dbox'    : '',
         'title'    : '',
         'snap'     : '',
         'boxfront' : '',
@@ -326,6 +327,7 @@ def fs_new_control_dic():
         't_MAME_assets_scan'        : 0,
         't_MAME_plots_build'        : 0,
         't_MAME_fanart_build'       : 0,
+        't_MAME_3dbox_build'        : 0,
         't_MAME_machine_hash'       : 0,
         't_MAME_asset_hash'         : 0,
         't_MAME_render_cache_build' : 0,
@@ -336,6 +338,7 @@ def fs_new_control_dic():
         't_SL_assets_scan'          : 0,
         't_SL_plots_build'          : 0,
         't_SL_fanart_build'         : 0,
+        't_SL_3dbox_build'          : 0,
         # Misc
         't_Custom_Filter_build'     : 0,
         't_MAME_audit'              : 0,
