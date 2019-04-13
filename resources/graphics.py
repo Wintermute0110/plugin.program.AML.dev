@@ -19,6 +19,7 @@
 from __future__ import unicode_literals
 from __future__ import division
 from collections import OrderedDict
+import time
 import xml.etree.ElementTree as ET
 try:
     from PIL import Image
@@ -551,7 +552,7 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
         canvas.paste(img_name, box, mask = img_name)
 
     # --- Save fanart and update database ---
-    log_debug('graphs_build_MAME_3DBox() Saving Fanart "{0}"'.format(image_FN.getPath()))
+    # log_debug('graphs_build_MAME_3DBox() Saving Fanart "{0}"'.format(image_FN.getPath()))
     canvas.save(image_FN.getPath())
     assets_dic[m_name]['3dbox'] = image_FN.getPath()
 
@@ -618,15 +619,15 @@ def graphs_load_MAME_Fanart_stuff(PATHS, settings, BUILD_MISSING):
         return data_dic
 
     # --- If fanart directory doesn't exist create it ---
-    Template_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
     Asset_path_FN = FileName(settings['assets_path'])
     Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
     if not Fanart_path_FN.isdir():
-        log_info('Creating Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
+        log_info('Creating MAME Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
         Fanart_path_FN.makedirs()
     data_dic['Fanart_path_FN'] = Fanart_path_FN
 
     # --- Load Fanart template from XML file ---
+    Template_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
     layout = graphs_load_MAME_Fanart_template(Template_FN)
     # log_debug(unicode(layout))
     if not layout:
@@ -760,6 +761,7 @@ def graphs_load_SL_Fanart_stuff(PATHS, settings, BUILD_MISSING):
     }
 
     # If artwork directory not configured abort.
+    # SL Fanart directories are created later in graphs_build_SL_Fanart_all()
     if not settings['assets_path']:
         kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
         data_dic['abort'] = True
@@ -870,14 +872,16 @@ def graphs_load_MAME_3DBox_stuff(PATHS, settings, BUILD_MISSING):
         return data_dic
 
     # --- If fanart directory doesn't exist create it ---
-    # TProjection_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
-    TProjection_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
     Asset_path_FN = FileName(settings['assets_path'])
     Boxes_path_FN = Asset_path_FN.pjoin('3dboxes')
     if not Boxes_path_FN.isdir():
         log_info('Creating Fanart dir "{0}"'.format(Boxes_path_FN.getPath()))
         Boxes_path_FN.makedirs()
     data_dic['Boxes_path_FN'] = Boxes_path_FN
+
+    # --- Load Fanart template from XML file ---
+    # TProjection_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
+    TProjection_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
     t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
     data_dic['t_projection'] = t_projection
 
@@ -898,10 +902,14 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
     total_machines, processed_machines = len(data_dic['assets_dic']), 0
     pDialog_canceled = False
     pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Building MAME machine 3D Boxes ... ')
+    pDialog.create('Advanced MAME Launcher', 'Building MAME machine 3D Boxes ...')
     SL_name = 'MAME'
+    ETA_str, total_build_time, average_build_time, actual_processed_machines = '', 0, 0, 0
     for m_name in sorted(data_dic['assets_dic']):
-        pDialog.update((processed_machines * 100) // total_machines)
+        build_time_start = time.time()
+        pDialog.update(
+            (processed_machines * 100) // total_machines,
+            'Building MAME machine 3D Boxes ...', 'ETA {0}'.format(ETA_str))
         if pDialog.iscanceled():
             pDialog_canceled = True
             break
@@ -909,14 +917,32 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
         if data_dic['BUILD_MISSING']:
             if Image_FN.exists():
                 data_dic['assets_dic'][m_name]['3dbox'] = Image_FN.getPath()
+                COMPUTE_TIME = False
             else:
                 graphs_build_MAME_3DBox(
                     PATHS, data_dic['t_projection'], SL_name, m_name, data_dic['assets_dic'], Image_FN)
+                COMPUTE_TIME = True
         else:
             graphs_build_MAME_3DBox(
                 PATHS, data_dic['t_projection'], SL_name, m_name, data_dic['assets_dic'], Image_FN)
         processed_machines += 1
-    pDialog.update(100)
+        build_time_end = time.time()
+        if COMPUTE_TIME:
+            actual_processed_machines += 1
+            image_build_time = build_time_end - build_time_start
+            total_build_time += image_build_time
+            average_build_time = total_build_time / actual_processed_machines
+            # log_debug('image_build_time {0}'.format(image_build_time))
+        remaining_machines = total_machines - processed_machines
+        ETA_s = remaining_machines * average_build_time
+        hours = int(ETA_s // 3600)
+        minutes = int((ETA_s - hours*3600) // 60)
+        seconds = ETA_s % 60
+        # log_debug('average_build_time {0}'.format(average_build_time))
+        # log_debug('ETA_s {0}'.format(ETA_s))
+        # log_debug('ETA {0:02d}:{1:02d}:{2:05.2f}'.format(hours, minutes, seconds))
+        ETA_str = '{0:02d}:{1:02d}:{2:05.2f}'.format(hours, minutes, seconds)
+    pDialog.update(100, ' ', ' ')
     pDialog.close()
 
     # --- Save assets DB ---
@@ -953,12 +979,13 @@ def graphs_load_SL_3DBox_stuff(PATHS, settings, BUILD_MISSING):
     }
 
     # If artwork directory not configured abort.
+    # SL 3dbox directories are created later in graphs_build_SL_3DBox_all()
     if not settings['assets_path']:
         kodi_dialog_OK('Asset directory not configured. Aborting Fanart generation.')
         data_dic['abort'] = True
         return
 
-    # --- Load Fanart template from XML file ---
+    # --- Load 3D projection template from XML file ---
     # TProjection_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
     TProjection_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
     t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
@@ -1006,19 +1033,16 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
             pDialog.update(update_number, pdialog_line1, pdialog_line2)
             if pDialog.iscanceled():
                 pDialog_canceled = True
-                # kodi_dialog_OK('SL Fanart generation was cancelled by the user.')
                 break
-            # >> If build missing Fanarts was chosen only build fanart if file cannot
-            # >> be found.
             Image_FN = Boxes_path_FN.pjoin('{0}.png'.format(m_name))
             if data_dic['BUILD_MISSING']:
                 if Image_FN.exists():
                     SL_assets_dic[m_name]['3dbox'] = Image_FN.getPath()
                 else:
-                    graphs_build_SL_Fanart(
+                    graphs_build_MAME_3DBox(
                         PATHS, data_dic['t_projection'], SL_name, m_name, SL_assets_dic, Image_FN)
             else:
-                graphs_build_SL_Fanart(
+                graphs_build_MAME_3DBox(
                     PATHS, data_dic['t_projection'], SL_name, m_name, SL_assets_dic, Image_FN)
             processed_SL_items += 1
 
