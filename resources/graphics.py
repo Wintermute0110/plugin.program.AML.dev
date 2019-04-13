@@ -113,7 +113,7 @@ def resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
     r_x_size = box_x_size
     r_y_size = hsize
     x_offset = 0
-    y_offset = (box_y_size - r_y_size) / 2
+    y_offset = int((box_y_size - r_y_size) / 2)
     # log_debug('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
     # log_debug('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
 
@@ -124,7 +124,7 @@ def resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
         wsize = int((float(img.size[0]) * float(hpercent)))
         r_x_size = wsize
         r_y_size = box_y_size
-        x_offset = (box_x_size - r_x_size) / 2
+        x_offset = int((box_x_size - r_x_size) / 2)
         y_offset = 0
         # log_debug('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
         # log_debug('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
@@ -298,8 +298,9 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
     # layout is an ordered dictionary, so the assets are draw in the order they appear
     # in the XML file.
     img_index = 1
+    # log_debug(unicode(layout))
     for asset_key in layout:
-        # log_debug('{0:<10} initialising'.format(asset_key))
+        # log_debug('{0:<11} initialising'.format(asset_key))
         m_assets = assets_dic[m_name]
         if asset_key == 'MachineName':
             t_left = layout['MachineName']['left']
@@ -451,7 +452,8 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, m_name, assets_dic,
     global font_mono_debug
     FONT_SIZE = 90
     CANVAS_SIZE = (1000, 1500)
-    CANVAS_BG_COLOR = (50, 50, 75) if test_flag else (0, 0, 0)
+    # CANVAS_BG_COLOR = (50, 50, 75) if test_flag else (0, 0, 0)
+    CANVAS_BG_COLOR = (0, 0, 0)
     FRONTBOX_BG_COLOR = (200, 100, 100)
     SPINE_BG_COLOR = (100, 200, 100)
     MAME_logo_FN = PATHS.ADDON_CODE_DIR.pjoin('media/MAME_clearlogo.png')
