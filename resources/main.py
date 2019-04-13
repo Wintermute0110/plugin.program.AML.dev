@@ -1087,6 +1087,7 @@ def render_skin_main_filters():
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_binary_filters():
+    # WARNING This needs to be updated.
     chd_str = 'Machines [with CHDs]'
     samples_str = 'Machines [with Samples]'
     softlists_str  = 'Machines [with Software Lists]'
@@ -1099,18 +1100,14 @@ def render_skin_binary_filters():
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_catalog_filters():
-    if g_settings['catver_path']:
-        render_root_list_row_standard('Machines by Category (Catver)',  misc_url_1_arg('catalog', 'Catver'))
-    if g_settings['catlist_path']:
-        render_root_list_row_standard('Machines by Category (Catlist)', misc_url_1_arg('catalog', 'Catlist'))
-    if g_settings['genre_path']:
-        render_root_list_row_standard('Machines by Category (Genre)',   misc_url_1_arg('catalog', 'Genre'))
-    if g_settings['nplayers_path']:
-        render_root_list_row_standard('Machines by Number of players',  misc_url_1_arg('catalog', 'NPlayers'))
-    if g_settings['bestgames_path']:
-        render_root_list_row_standard('Machines by Score',              misc_url_1_arg('catalog', 'Bestgames'))
-    if g_settings['series_path']:
-        render_root_list_row_standard('Machines by Series',             misc_url_1_arg('catalog', 'Series'))
+    # WARNING This needs to be updated.
+    # A mechanism to render only configured filters must be developed.
+    render_root_list_row_standard('Machines by Category (Catver)',  misc_url_1_arg('catalog', 'Catver'))
+    render_root_list_row_standard('Machines by Category (Catlist)', misc_url_1_arg('catalog', 'Catlist'))
+    render_root_list_row_standard('Machines by Category (Genre)',   misc_url_1_arg('catalog', 'Genre'))
+    render_root_list_row_standard('Machines by Number of players',  misc_url_1_arg('catalog', 'NPlayers'))
+    render_root_list_row_standard('Machines by Score',              misc_url_1_arg('catalog', 'Bestgames'))
+    render_root_list_row_standard('Machines by Series',             misc_url_1_arg('catalog', 'Series'))
 
     render_root_list_row_standard('Machines by Controls (Expanded)', misc_url_1_arg('catalog', 'Controls_Expanded'))
     render_root_list_row_standard('Machines by Controls (Compact)',  misc_url_1_arg('catalog', 'Controls_Compact'))
@@ -1134,6 +1131,7 @@ def render_skin_dat_slots():
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_SL_filters():
+    # WARNING This needs to be updated.
     if g_settings['SL_hash_path']:
         render_root_list_row_standard('Software Lists (with ROMs)', misc_url_1_arg('catalog', 'SL_ROM'))
         render_root_list_row_standard('Software Lists (with ROMs and CHDs)', misc_url_1_arg('catalog', 'SL_ROM_CHD'))
