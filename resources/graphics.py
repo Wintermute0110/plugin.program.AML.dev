@@ -701,8 +701,8 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
 
     # --- Rebuild MAME asset cache ---
     if settings['debug_enable_MAME_asset_cache']:
-        cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
-        fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, data_dic['assets_dic'])
+        cache_index = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
+        fs_build_asset_cache(PATHS, settings, control_dic, cache_index, data_dic['assets_dic'])
 
     # --- Inform user ---
     if pDialog_canceled:
@@ -969,8 +969,8 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
 
     # --- Rebuild MAME asset cache ---
     if settings['debug_enable_MAME_asset_cache']:
-        cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
-        fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, data_dic['assets_dic'])
+        cache_index = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
+        fs_build_asset_cache(PATHS, settings, control_dic, cache_index, data_dic['assets_dic'])
 
     # --- Inform user ---
     if pDialog_canceled:
