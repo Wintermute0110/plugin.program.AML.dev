@@ -921,6 +921,7 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
             pDialog_canceled = True
             break
         Image_FN = data_dic['Boxes_path_FN'].pjoin('{0}.png'.format(m_name))
+        COMPUTE_TIME = True
         if data_dic['BUILD_MISSING']:
             if Image_FN.exists():
                 data_dic['assets_dic'][m_name]['3dbox'] = Image_FN.getPath()
@@ -928,7 +929,6 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
             else:
                 graphs_build_MAME_3DBox(
                     PATHS, data_dic['t_projection'], SL_name, m_name, data_dic['assets_dic'], Image_FN)
-                COMPUTE_TIME = True
         else:
             graphs_build_MAME_3DBox(
                 PATHS, data_dic['t_projection'], SL_name, m_name, data_dic['assets_dic'], Image_FN)
@@ -940,15 +940,15 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
             total_build_time += image_build_time
             average_build_time = total_build_time / actual_processed_machines
             # log_debug('image_build_time {0}'.format(image_build_time))
-        remaining_machines = total_machines - processed_machines
-        ETA_s = remaining_machines * average_build_time
-        hours = int(ETA_s // 3600)
-        minutes = int((ETA_s - hours*3600) // 60)
-        seconds = ETA_s % 60
-        # log_debug('average_build_time {0}'.format(average_build_time))
-        # log_debug('ETA_s {0}'.format(ETA_s))
-        # log_debug('ETA {0:02d}:{1:02d}:{2:05.2f}'.format(hours, minutes, seconds))
-        ETA_str = '{0:02d}:{1:02d}:{2:05.2f}'.format(hours, minutes, seconds)
+        if average_build_time > 0:
+            ETA_s = (total_machines - processed_machines) * average_build_time
+            hours, minutes, seconds = int(ETA_s // 3600), int((ETA_s % 3600) // 60), int(ETA_s % 60)
+            # log_debug('average_build_time {0}'.format(average_build_time))
+            # log_debug('ETA_s {0}'.format(ETA_s))
+            # log_debug('ETA {0:02d}:{1:02d}:{2:02d}'.format(hours, minutes, seconds))
+            ETA_str = '{0:02d}:{1:02d}:{2:02d}'.format(hours, minutes, seconds)
+        else:
+            ETA_str = 'estimating'
     pDialog.update(100, ' ', ' ')
     pDialog.close()
 
@@ -1006,11 +1006,16 @@ def graphs_load_SL_3DBox_stuff(PATHS, settings, BUILD_MISSING):
 
 # Builds or rebuilds missing SL Fanarts.
 def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
+    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+
     # >> Traverse all SL and on each SL every item
     pDialog_canceled = False
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher')
     SL_number, SL_count = len(data_dic['SL_index']), 1
+    total_SL_items, total_processed_SL_items = control_dic['stats_SL_software_items'], 0
+    ETA_str, total_build_time, average_build_time, actual_processed_machines = '', 0, 0, 0
+    log_debug('graphs_build_SL_3DBox_all() total_SL_items = {0}'.format(total_SL_items))
     for SL_name in sorted(data_dic['SL_index']):
         # >> Update progres dialog
         pdialog_line1 = 'Processing SL {0} ({1} of {2})...'.format(SL_name, SL_count, SL_number)
@@ -1033,26 +1038,42 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
 
         # Traverse all SL items and build fanart from other pieces of artwork
         # Last slot of the progress bar is to save the JSON database.
-        total_SL_items, processed_SL_items = len(SL_assets_dic) + 1, 0
+        SL_items, processed_SL_items = len(SL_assets_dic) + 1, 0
         for m_name in sorted(SL_assets_dic):
-            pdialog_line2 = 'SL item {0}'.format(m_name)
-            update_number = (processed_SL_items * 100) // total_SL_items
+            build_time_start = time.time()
+            pdialog_line2 = 'ETA {0} SL item {1} '.format(ETA_str, m_name)
+            update_number = (processed_SL_items * 100) // SL_items
             pDialog.update(update_number, pdialog_line1, pdialog_line2)
             if pDialog.iscanceled():
                 pDialog_canceled = True
                 break
             Image_FN = Boxes_path_FN.pjoin('{0}.png'.format(m_name))
+            COMPUTE_TIME = True
             if data_dic['BUILD_MISSING']:
                 if Image_FN.exists():
                     SL_assets_dic[m_name]['3dbox'] = Image_FN.getPath()
+                    COMPUTE_TIME = False
                 else:
                     graphs_build_MAME_3DBox(
                         PATHS, data_dic['t_projection'], SL_name, m_name, SL_assets_dic, Image_FN)
             else:
                 graphs_build_MAME_3DBox(
                     PATHS, data_dic['t_projection'], SL_name, m_name, SL_assets_dic, Image_FN)
-            processed_SL_items += 1
-
+            processed_SL_items += 1 # For current list progress dialog
+            total_processed_SL_items += 1 # For total ETA calculation
+            build_time_end = time.time()
+            if COMPUTE_TIME:
+                actual_processed_machines += 1
+                image_build_time = build_time_end - build_time_start
+                total_build_time += image_build_time
+                average_build_time = total_build_time / actual_processed_machines
+                # log_debug('image_build_time {0}'.format(image_build_time))
+            if average_build_time > 0:
+                ETA_s = (total_SL_items - total_processed_SL_items) * average_build_time
+                hours, minutes, seconds = int(ETA_s // 3600), int((ETA_s % 3600) // 60), int(ETA_s % 60)
+                ETA_str = '{0:02d}:{1:02d}:{2:02d}'.format(hours, minutes, seconds)
+            else:
+                ETA_str = 'calculating'
         # --- Save SL assets DB ---
         pdialog_line2 = 'Saving SL {0} asset database ... '.format(SL_name)
         pDialog.update(100, pdialog_line1, pdialog_line2)
@@ -1064,7 +1085,6 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
     pDialog.close()
 
     # --- SL Fanart build timestamp ---
-    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
     change_control_dic(control_dic, 't_SL_3dbox_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
