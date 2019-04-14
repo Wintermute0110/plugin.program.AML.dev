@@ -4967,10 +4967,8 @@ def command_context_setup_plugin():
         # --- Regenerate asset hashed database ---
         fs_build_asset_hashed_db(g_PATHS, g_settings, control_dic, db_dic['assets'])
 
-        # --- Regenerate MAME machine render and assets cache ---
-        if g_settings['debug_enable_MAME_render_cache']:
-            fs_build_render_cache(g_PATHS, g_settings, control_dic,
-                db_dic['cache_index'], db_dic['render'])
+        # --- Regenerate MAME asset cache ---
+        # Note that scanning only changes the assets, never the machines or render DB.
         if g_settings['debug_enable_MAME_asset_cache']:
             fs_build_asset_cache(g_PATHS, g_settings, control_dic,
                 db_dic['cache_index'], db_dic['assets'])

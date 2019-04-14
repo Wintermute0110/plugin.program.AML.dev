@@ -6624,7 +6624,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     STUFF_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_path_str]
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Scanning files in ROM/CHD/Samples directories ...')
+    pDialog.create('Advanced MAME Launcher', 'Listing files in ROM/CHD/Samples directories ...')
     pDialog.update(0)
     for i, asset_dir in enumerate(STUFF_PATH_LIST):
         misc_add_file_cache(asset_dir)
@@ -6904,7 +6904,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         file.write('\n'.join(r_list).encode('utf-8'))
 
     # --- CHD file list ---
-    pDialog.create('Advanced MAME Launcher', 'Scanning MAME CHD files ...')
+    pDialog.create('Advanced MAME Launcher', 'Scanning MAME CHDs ...')
     total_machines = len(machines_render)
     processed_machines = 0
     scan_CHD_files_total = 0
@@ -7031,11 +7031,11 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
     SL_ROM_path_str = SL_ROM_dir_FN.getPath()
     SL_CHD_path_str = SL_CHD_path_FN.getPath()
     pDialog = xbmcgui.DialogProgress()
-    pdialog_line1 = 'Caching Sofware Lists ROMs/CHDs ...'
+    pdialog_line1 = 'Listing Sofware Lists ROM ZIPs and CHDs ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(0, pdialog_line1, 'Scanning SL ROM path')
+    pDialog.update(0, pdialog_line1, 'Listing SL ROM ZIP path')
     misc_add_file_cache(SL_ROM_path_str, verbose = True)
-    pDialog.update(75, pdialog_line1, 'Scanning SL CHD path')
+    pDialog.update(75, pdialog_line1, 'Listing SL CHD path')
     misc_add_file_cache(SL_CHD_path_str, verbose = True)
     pDialog.update(100, pdialog_line1, ' ')
     pDialog.close()
@@ -7043,7 +7043,7 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
     # --- SL ROM ZIP archives and CHDs ---
     # Traverse the Software Lists, check if ROMs ZIPs and CHDs exists for every SL item, 
     # update and save database.
-    pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
+    pdialog_line1 = 'Scanning Sofware Lists ROM ZIPs and CHDs ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(0)
     total_files = len(SL_catalog_dic)
@@ -7254,7 +7254,7 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
 
     # --- Create a cache of assets ---
     pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Scanning files in asset directories ...')
+    pDialog.create('Advanced MAME Launcher', 'Listing files in asset directories ...')
     pDialog.update(0)
     num_assets = len(ASSET_MAME_T_LIST)
     asset_dirs = [''] * num_assets
