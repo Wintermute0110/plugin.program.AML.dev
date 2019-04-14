@@ -470,7 +470,7 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
         if asset_filename:
             machine_has_valid_assets = True
             break
-    if not machine_has_valid_assets: return
+    if not machine_has_valid_assets: return False
 
     # --- If font object does not exists open font an cache it. ---
     if not font_mono:
@@ -568,6 +568,9 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
     # log_debug('graphs_build_MAME_3DBox() Saving Fanart "{0}"'.format(image_FN.getPath()))
     canvas.save(image_FN.getPath())
     assets_dic[m_name]['3dbox'] = image_FN.getPath()
+    
+    # 3D Box was sucessfully generated. Return true to estimate ETA.
+    return True
 
 #
 # Returns an Ordered dictionary with the layout of the fanart.
@@ -1054,26 +1057,30 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
                 pDialog_canceled = True
                 break
             Image_FN = Boxes_path_FN.pjoin('{0}.png'.format(m_name))
-            COMPUTE_TIME = True
             if data_dic['BUILD_MISSING']:
                 if Image_FN.exists():
                     SL_assets_dic[m_name]['3dbox'] = Image_FN.getPath()
-                    COMPUTE_TIME = False
+                    BUILD_SUCCESS = False
                 else:
-                    graphs_build_MAME_3DBox(
+                    BUILD_SUCCESS = graphs_build_MAME_3DBox(
                         PATHS, data_dic['t_projection'], SL_name, m_name, SL_assets_dic, Image_FN)
             else:
-                graphs_build_MAME_3DBox(
+                BUILD_SUCCESS = graphs_build_MAME_3DBox(
                     PATHS, data_dic['t_projection'], SL_name, m_name, SL_assets_dic, Image_FN)
             processed_SL_items += 1 # For current list progress dialog
             total_processed_SL_items += 1 # For total ETA calculation
             build_time_end = time.time()
-            if COMPUTE_TIME:
+            # WARNING Building of MAME boxes code must be updated.
+            # Only update ETA if 3DBox was sucesfully build.
+            if BUILD_SUCCESS:
                 actual_processed_machines += 1
-                image_build_time = build_time_end - build_time_start
-                total_build_time += image_build_time
+                total_build_time += build_time_end - build_time_start
                 average_build_time = total_build_time / actual_processed_machines
-                # log_debug('image_build_time {0}'.format(image_build_time))
+                # log_debug('image_build_time          {0}'.format(build_time_end - build_time_start))
+                # log_debug('average_build_time        {0}'.format(average_build_time))
+                # log_debug('actual_processed_machines {0}'.format(actual_processed_machines))
+                # log_debug('total_processed_SL_items  {0}'.format(total_processed_SL_items))
+                # log_debug('remaining                 {0}'.format(total_SL_items - total_processed_SL_items))
             if average_build_time > 0:
                 ETA_s = (total_SL_items - total_processed_SL_items) * average_build_time
                 hours, minutes, seconds = int(ETA_s // 3600), int((ETA_s % 3600) // 60), int(ETA_s % 60)
