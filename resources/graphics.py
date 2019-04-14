@@ -527,7 +527,13 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
             pass
     if CLEARLOGO_AVAILABLE or MARQUEE_AVAILABLE:
         img_t = project_texture(img_clearlogo, coord_dic['Clearlogo'], CANVAS_SIZE, rotate = True)
-        canvas.paste(img_t, mask = img_t)
+        try:
+            canvas.paste(img_t, mask = img_t)
+        except ValueError:
+            log_error('graphs_build_MAME_3DBox() Exception ValueError in Spine Clearlogo')
+            log_error('CLEARLOGO_AVAILABLE = {0}, MARQUEE_AVAILABLE = {1}'.format(
+                CLEARLOGO_AVAILABLE, MARQUEE_AVAILABLE))
+            log_error('SL_name = {0}, m_name = {1}'.format(SL_name, m_name))
 
     # --- MAME background ---
     img_mame = Image.open(MAME_logo_FN.getPath())
