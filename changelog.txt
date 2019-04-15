@@ -58,7 +58,7 @@ FEATURE  Generate MAME machines and SL items 3D Boxes.
 
 FEATURE  Refactoring of the Fanart and 3D Box code generation. Creation of graphics.py.
 
-WIP      Only generate 3D Boxes if both Fyler and Clearlogo (MAME) or Boxfront (SL)
+FEATURE  Only generate 3D Boxes if both Fyler and Clearlogo (MAME) or Boxfront (SL)
          are present. Avoid having empty 3D boxes.
 
 FEATURE  Improved filter "Machines by Display Type" and removed filter

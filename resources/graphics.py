@@ -522,15 +522,6 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
     SPINE_BG_COLOR = (100, 200, 100)
     MAME_logo_FN = PATHS.ADDON_CODE_DIR.pjoin('media/MAME_clearlogo.png')
 
-    # Quickly check if machine has valid assets, and skip fanart generation if not.
-    # log_debug('mame_build_fanart() Building fanart for machine {0}'.format(m_name))
-    machine_has_valid_assets = False
-    for asset_key, asset_filename in assets_dic[m_name].iteritems():
-        if asset_filename:
-            machine_has_valid_assets = True
-            break
-    if not machine_has_valid_assets: return False
-
     # --- If font object does not exists open font an cache it. ---
     if not font_mono:
         log_debug('graphs_build_MAME_3DBox() Creating font_mono object')
@@ -540,6 +531,37 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
         log_debug('graphs_build_MAME_3DBox() Creating font_mono_debug object')
         log_debug('graphs_build_MAME_3DBox() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 40)
+
+    # --- Open assets ---
+    # MAME 3D Box requires Flyer and (Clearlogo or Marquee)
+    # SL 3D Box requires Boxfront (not clearlogos available for SLs).
+    if SL_name == 'MAME':
+        # Check Flyer exists.
+        # Check Clearlogo or Marquee exists.
+        if not assets_dic[m_name]['flyer']: return False
+        if not assets_dic[m_name]['clearlogo'] and not assets_dic[m_name]['marquee']:
+            return False
+        # Try to open the Flyer.
+        try:
+            img_flyer = Image.open(assets_dic[m_name]['flyer'])
+        except:
+            return False
+        # Try to open the Clearlogo or Marquee if Clearlogo not available.
+        try:
+            img_clearlogo = Image.open(assets_dic[m_name]['clearlogo'])
+        except:
+            try:
+                img_clearlogo = Image.open(assets_dic[m_name]['marquee'])
+            except:
+                return False
+    else:
+        # Check Boxfront exists.
+        if not assets_dic[m_name]['boxfront']: return False
+        # Try to open the Boxfront as flyer.
+        try:
+            img_flyer = Image.open(assets_dic[m_name]['boxfront'])
+        except:
+            return False
 
     # --- Create 3dbox canvas ---
     # Create RGB image with alpha channel.
@@ -557,41 +579,22 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
     canvas.paste(img_t, mask = img_t)
 
     # --- Flyer image ---
-    # MAME machines have Flyer, SL items have Boxfront
-    FLYER_AVAILABLE, BOXFRONT_AVAILABLE = False, False
+    # At this point img_flyer is present and opened.
+    img_t = project_texture(img_flyer, coord_dic['Flyer'], CANVAS_SIZE)
     try:
-        img_flyer = Image.open(assets_dic[m_name]['flyer'])
-        FLYER_AVAILABLE = True
-    except:
-        try:
-            img_flyer = Image.open(assets_dic[m_name]['boxfront'])
-            BOXFRONT_AVAILABLE = True
-        except:
-            pass
-    if FLYER_AVAILABLE or BOXFRONT_AVAILABLE:
-        img_t = project_texture(img_flyer, coord_dic['Flyer'], CANVAS_SIZE)
         canvas.paste(img_t, mask = img_t)
+    except ValueError:
+        log_error('graphs_build_MAME_3DBox() Exception ValueError in Front Flyer')
+        log_error('SL_name = {0}, m_name = {1}'.format(SL_name, m_name))
 
     # --- Spine game clearlogo ---
-    # MAME machines have Clearlogo and/or Marquee, SL items nothing.
-    CLEARLOGO_AVAILABLE, MARQUEE_AVAILABLE = False, False
-    try:
-        img_clearlogo = Image.open(assets_dic[m_name]['clearlogo'])
-        CLEARLOGO_AVAILABLE = True
-    except:
-        try:
-            img_clearlogo = Image.open(assets_dic[m_name]['marquee'])
-            MARQUEE_AVAILABLE = True
-        except:
-            pass
-    if CLEARLOGO_AVAILABLE or MARQUEE_AVAILABLE:
+    # Skip Spine Clearlogo in SLs 3D Boxes.
+    if SL_name == 'MAME':
         img_t = project_texture(img_clearlogo, coord_dic['Clearlogo'], CANVAS_SIZE, rotate = True)
         try:
             canvas.paste(img_t, mask = img_t)
         except ValueError:
             log_error('graphs_build_MAME_3DBox() Exception ValueError in Spine Clearlogo')
-            log_error('CLEARLOGO_AVAILABLE = {0}, MARQUEE_AVAILABLE = {1}'.format(
-                CLEARLOGO_AVAILABLE, MARQUEE_AVAILABLE))
             log_error('SL_name = {0}, m_name = {1}'.format(SL_name, m_name))
 
     # --- MAME background ---
@@ -627,7 +630,7 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
     # log_debug('graphs_build_MAME_3DBox() Saving Fanart "{0}"'.format(image_FN.getPath()))
     canvas.save(image_FN.getPath())
     assets_dic[m_name]['3dbox'] = image_FN.getPath()
-    
+
     # 3D Box was sucessfully generated. Return true to estimate ETA.
     return True
 
