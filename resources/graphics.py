@@ -44,6 +44,9 @@ ETA_actual_processed_items = 0
 ETA_total_build_time = 0.0
 ETA_average_build_time = 0.0
 
+#
+# Returns initial ETA_str
+#
 def ETA_reset(total_items):
     global ETA_total_items
     global ETA_actual_processed_items
@@ -54,6 +57,8 @@ def ETA_reset(total_items):
     ETA_actual_processed_items = 0
     ETA_total_build_time = 0.0
     ETA_average_build_time = 0.0
+
+    return 'calculating'
 
 #
 # BUILD_SUCCESS True if image was generated correctly (time is accurate)
@@ -307,6 +312,7 @@ SL_layout_assets = {
 # ------------------------------------------------------------------------------------------------
 #
 # Rebuild Fanart for a given MAME machine.
+# Returns True if the Fanart was built succesfully, False if error.
 #
 def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
     Fanart_FN, CANVAS_COLOR = (0, 0, 0), test_flag = False):
@@ -315,8 +321,8 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
     canvas_size = (1920, 1080)
     canvas_bg_color = (0, 0, 0)
     color_white = (255, 255, 255)
-    t_color_fg = (255,255,0)
-    t_color_bg = (102,102,0)
+    t_color_fg = (255, 255, 0)
+    t_color_bg = (102, 102, 0)
 
     # Quickly check if machine has valid assets, and skip fanart generation if not.
     # log_debug('graphs_build_MAME_Fanart() Building fanart for machine {0}'.format(m_name))
@@ -326,7 +332,7 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
         if m_assets[asset_db_name]:
             machine_has_valid_assets = True
             break
-    if not machine_has_valid_assets: return
+    if not machine_has_valid_assets: return False
 
     # --- If font object does not exists open font an cache it. ---
     if not font_mono:
@@ -407,8 +413,12 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
 
+    # Fanart succesfully built.
+    return True
+
 #
 # Rebuild Fanart for a given SL item
+# Returns True if the Fanart was built succesfully, False if error.
 #
 def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
     Fanart_FN, CANVAS_COLOR = (0, 0, 0), test_flag = False):
@@ -418,8 +428,8 @@ def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
     canvas_size = (1920, 1080)
     canvas_bg_color = (0, 0, 0)
     color_white = (255, 255, 255)
-    t_color_fg = (255,255,0)
-    t_color_bg = (102,102,0)
+    t_color_fg = (255, 255, 0)
+    t_color_bg = (102, 102, 0)
 
     # Quickly check if machine has valid assets, and skip fanart generation if not.
     # log_debug('graphs_build_SL_Fanart() Building fanart for SL {0} item {1}'.format(SL_name, m_name))
@@ -429,7 +439,7 @@ def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
         if m_assets[asset_db_name]:
             machine_has_valid_assets = True
             break
-    if not machine_has_valid_assets: return
+    if not machine_has_valid_assets: return False
 
     # If font object does not exists open font an cache it.
     if not font_mono_SL:
@@ -493,6 +503,9 @@ def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
     # log_debug('graphs_build_SL_Fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
+
+    # Fanart succesfully built.
+    return True
 
 #
 # Builds a MAME or SL 3D Box.
@@ -713,12 +726,16 @@ def graphs_load_MAME_Fanart_stuff(PATHS, settings, BUILD_MISSING):
 # Builds or rebuilds missing MAME Fanarts.
 def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
     # >> Traverse all machines and build fanart from other pieces of artwork
-    total_machines, processed_machines = len(data_dic['assets_dic']), 0
     pDialog_canceled = False
     pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Building MAME machine Fanarts ... ')
+    pDialog_line1 = 'Building MAME machine Fanarts ...'
+    pDialog.create('Advanced MAME Launcher', pDialog_line1)
+    total_machines, processed_machines = len(data_dic['assets_dic']), 0
+    ETA_str = ETA_reset(total_machines)
     for m_name in sorted(data_dic['assets_dic']):
-        pDialog.update((processed_machines * 100) // total_machines)
+        build_time_start = time.time()
+        pDialog.update((processed_machines * 100) // total_machines, pDialog_line1,
+            'ETA {0} machine {1}'.format(ETA_str, m_name))
         if pDialog.iscanceled():
             pDialog_canceled = True
             # kodi_dialog_OK('Fanart generation was cancelled by the user.')
@@ -729,14 +746,19 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
         if data_dic['BUILD_MISSING']:
             if Fanart_FN.exists():
                 data_dic['assets_dic'][m_name]['fanart'] = Fanart_FN.getPath()
+                build_OK_flag = False
             else:
-                graphs_build_MAME_Fanart(
+                build_OK_flag = graphs_build_MAME_Fanart(
                     PATHS, data_dic['layout'], m_name, data_dic['assets_dic'], Fanart_FN)
         else:
-            graphs_build_MAME_Fanart(
+            build_OK_flag = graphs_build_MAME_Fanart(
                 PATHS, data_dic['layout'], m_name, data_dic['assets_dic'], Fanart_FN)
         processed_machines += 1
-    pDialog.update(100)
+        build_time_end = time.time()
+        build_time = build_time_end - build_time_start
+        # Only update ETA if 3DBox was sucesfully build.
+        ETA_str = ETA_update(build_OK_flag, processed_machines, build_time)
+    pDialog.update(100, ' ', ' ')
     pDialog.close()
 
     # --- Save assets DB ---
@@ -848,11 +870,16 @@ def graphs_load_SL_Fanart_stuff(PATHS, settings, BUILD_MISSING):
 
 # Builds or rebuilds missing SL Fanarts.
 def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
+    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
+
     # >> Traverse all SL and on each SL every item
     pDialog_canceled = False
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher')
     SL_number, SL_count = len(data_dic['SL_index']), 1
+    total_SL_items, total_processed_SL_items = control_dic['stats_SL_software_items'], 0
+    ETA_str = ETA_reset(total_SL_items)
+    log_debug('graphs_build_SL_Fanart_all() total_SL_items = {0}'.format(total_SL_items))
     for SL_name in sorted(data_dic['SL_index']):
         # >> Update progres dialog
         pdialog_line1 = 'Processing SL {0} ({1} of {2})...'.format(SL_name, SL_count, SL_number)
@@ -877,27 +904,33 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
         # Last slot of the progress bar is to save the JSON database.
         total_SL_items, processed_SL_items = len(SL_assets_dic) + 1, 0
         for m_name in sorted(SL_assets_dic):
-            pdialog_line2 = 'SL item {0}'.format(m_name)
+            build_time_start = time.time()
+            pdialog_line2 = 'ETA {0} SL item {1}'.format(ETA_str, m_name)
             update_number = (processed_SL_items * 100) // total_SL_items
             pDialog.update(update_number, pdialog_line1, pdialog_line2)
             if pDialog.iscanceled():
                 pDialog_canceled = True
                 # kodi_dialog_OK('SL Fanart generation was cancelled by the user.')
                 break
-            # >> If build missing Fanarts was chosen only build fanart if file cannot
-            # >> be found.
+            # If build missing Fanarts was chosen only build fanart if file cannot be found.
             Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
             if data_dic['BUILD_MISSING']:
                 if Fanart_FN.exists():
                     SL_assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
+                    build_OK_flag = False
                 else:
-                    graphs_build_SL_Fanart(
+                    build_OK_flag = graphs_build_SL_Fanart(
                         PATHS, data_dic['layout'], SL_name, m_name, SL_assets_dic, Fanart_FN)
             else:
-                graphs_build_SL_Fanart(
+                build_OK_flag = graphs_build_SL_Fanart(
                     PATHS, data_dic['layout'], SL_name, m_name, SL_assets_dic, Fanart_FN)
             processed_SL_items += 1
-
+            processed_SL_items += 1 # For current list progress dialog
+            total_processed_SL_items += 1 # For total ETA calculation
+            build_time_end = time.time()
+            build_time = build_time_end - build_time_start
+            # Only update ETA if 3DBox was sucesfully build.
+            ETA_str = ETA_update(build_OK_flag, total_processed_SL_items, build_time)
         # --- Save SL assets DB ---
         pdialog_line2 = 'Saving SL {0} asset database ... '.format(SL_name)
         pDialog.update(100, pdialog_line1, pdialog_line2)
@@ -909,7 +942,6 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
     pDialog.close()
 
     # --- SL Fanart build timestamp ---
-    control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
     change_control_dic(control_dic, 't_SL_fanart_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
@@ -964,16 +996,15 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
     SL_name = 'MAME'
     pDialog_canceled = False
     pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Building MAME machine 3D Boxes ...')
+    pDialog_line1 = 'Building MAME machine 3D Boxes ...'
+    pDialog.create('Advanced MAME Launcher', pDialog_line1)
     total_machines, processed_machines = len(data_dic['assets_dic']), 0
-    ETA_str = 'calculating'
-    ETA_reset(total_SL_items)
+    ETA_str = ETA_reset(total_machines)
     for m_name in sorted(data_dic['assets_dic']):
         build_time_start = time.time()
         pDialog.update(
-            (processed_machines * 100) // total_machines,
-            'Building MAME machine 3D Boxes ...',
-            'ETA {0} machine {1]'.format(ETA_str, m_name))
+            (processed_machines * 100) // total_machines, pDialog_line1,
+            'ETA {0} machine {1}'.format(ETA_str, m_name))
         if pDialog.iscanceled():
             pDialog_canceled = True
             break
@@ -1058,8 +1089,7 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
     pDialog.create('Advanced MAME Launcher')
     SL_number, SL_count = len(data_dic['SL_index']), 1
     total_SL_items, total_processed_SL_items = control_dic['stats_SL_software_items'], 0
-    ETA_str = 'calculating'
-    ETA_reset(total_SL_items)
+    ETA_str = ETA_reset(total_SL_items)
     log_debug('graphs_build_SL_3DBox_all() total_SL_items = {0}'.format(total_SL_items))
     for SL_name in sorted(data_dic['SL_index']):
         # >> Update progres dialog
@@ -1086,7 +1116,7 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
         SL_items, processed_SL_items = len(SL_assets_dic) + 1, 0
         for m_name in sorted(SL_assets_dic):
             build_time_start = time.time()
-            pdialog_line2 = 'ETA {0} SL item {1} '.format(ETA_str, m_name)
+            pdialog_line2 = 'ETA {0} SL item {1}'.format(ETA_str, m_name)
             update_number = (processed_SL_items * 100) // SL_items
             pDialog.update(update_number, pdialog_line1, pdialog_line2)
             if pDialog.iscanceled():
