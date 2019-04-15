@@ -72,13 +72,14 @@ def ETA_update(build_OK_flag, total_processed_items, build_time):
         ETA_actual_processed_items += 1
         ETA_total_build_time += build_time
         ETA_average_build_time = ETA_total_build_time / ETA_actual_processed_items
-        # log_debug('build_time                 {0}'.format(build_time))
-        # log_debug('ETA_average_build_time     {0}'.format(ETA_average_build_time))
-        # log_debug('ETA_actual_processed_items {0}'.format(ETA_actual_processed_items))
-        # log_debug('total_processed_items      {0}'.format(total_processed_items))
-        # log_debug('remaining items            {0}'.format(ETA_total_items - total_processed_items))
+    remaining_items = ETA_total_items - total_processed_items
+    # log_debug('build_time                 {0}'.format(build_time))
+    # log_debug('ETA_average_build_time     {0}'.format(ETA_average_build_time))
+    # log_debug('ETA_actual_processed_items {0}'.format(ETA_actual_processed_items))
+    # log_debug('total_processed_items      {0}'.format(total_processed_items))
+    # log_debug('remaining items            {0}'.format(remaining_items))
     if ETA_average_build_time > 0:
-        ETA_s = (ETA_total_items - total_processed_items) * ETA_average_build_time
+        ETA_s = remaining_items * ETA_average_build_time
         hours, minutes, seconds = int(ETA_s // 3600), int((ETA_s % 3600) // 60), int(ETA_s % 60)
         ETA_str = '{0:02d}:{1:02d}:{2:02d}'.format(hours, minutes, seconds)
     else:
