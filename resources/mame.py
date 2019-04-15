@@ -2160,8 +2160,8 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
 # ---------------------------------------------------------------------------------------------
 def mame_build_SL_plots(PATHS, settings, control_dic,
     SL_index_dic, SL_machines_dic, History_idx_dic):
-    pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
     pDialog = xbmcgui.DialogProgress()
+    pdialog_line1 = 'Generating SL item plots ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(0)
     total_files = len(SL_index_dic)
