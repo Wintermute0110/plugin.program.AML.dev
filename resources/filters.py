@@ -26,6 +26,7 @@ from .constants import *
 from .utils import *
 from .utils_kodi import *
 from .misc import *
+from .disk_IO import *
 
 # -------------------------------------------------------------------------------------------------
 # Constants
@@ -954,12 +955,12 @@ def filter_mame_Controls_tag(mame_xml_dic, f_definition):
 
     return machines_filtered_dic
 
-def filter_mame_Devices_tag(mame_xml_dic, f_definition):
-    # log_debug('filter_mame_Devices_tag() Starting ...')
-    filter_expression = f_definition['devices']
+def filter_mame_PluggableDevices_tag(mame_xml_dic, f_definition):
+    # log_debug('filter_mame_PluggableDevices_tag() Starting ...')
+    filter_expression = f_definition['pluggabledevices']
 
     if not filter_expression:
-        log_debug('filter_mame_Devices_tag() User wants all genres')
+        log_debug('filter_mame_PluggableDevices_tag() User wants all genres')
         return mame_xml_dic
     log_debug('Expression "{0}"'.format(filter_expression))
 
@@ -968,14 +969,15 @@ def filter_mame_Devices_tag(mame_xml_dic, f_definition):
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
         # --- Update search list variable and call parser to evaluate expression ---
-        bool_result = LSP_parse_exec(filter_expression, mame_xml_dic[m_name]['device_list'])
+        bool_result = LSP_parse_exec(filter_expression, mame_xml_dic[m_name]['pluggable_device_list'])
         if not bool_result:
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('filter_mame_Devices_tag() Initial {0} | '.format(initial_num_games) + \
-              'Removed {0} | '.format(filtered_out_games) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+    log_debug(
+        'filter_mame_PluggableDevices_tag() Initial {0} | '.format(initial_num_games) + \
+        'Removed {0} | '.format(filtered_out_games) + \
+        'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
@@ -1117,18 +1119,18 @@ def filter_parse_XML(fname_str):
             define_dic[name_str] = define_str
         elif root_element.tag == 'MAMEFilter':
             this_filter_dic = {
-                'name'         : '',
-                'plot'         : '',
-                'options'      : [], # List of strings
-                'driver'       : '',
-                'manufacturer' : '',
-                'genre'        : '',
-                'controls'     : '',
-                'devices'      : '',
-                'year'         : '',
-                'include'      : [], # List of strings
-                'exclude'      : [], # List of strings
-                'change'       : [], # List of tuples (change_orig string, change_dest string)
+                'name'             : '',
+                'plot'             : '',
+                'options'          : [], # List of strings
+                'driver'           : '',
+                'manufacturer'     : '',
+                'genre'            : '',
+                'controls'         : '',
+                'pluggabledevices' : '',
+                'year'             : '',
+                'include'          : [], # List of strings
+                'exclude'          : [], # List of strings
+                'change'           : [], # List of tuples (change_orig string, change_dest string)
             }
             for filter_element in root_element:
                 text_t = filter_element.text if filter_element.text else ''
@@ -1148,8 +1150,8 @@ def filter_parse_XML(fname_str):
                     this_filter_dic['genre'] = text_t
                 elif filter_element.tag == 'Controls':
                     this_filter_dic['controls'] = text_t
-                elif filter_element.tag == 'Devices':
-                    this_filter_dic['devices'] = text_t
+                elif filter_element.tag == 'PluggableDevices':
+                    this_filter_dic['pluggabledevices'] = text_t
                 elif filter_element.tag == 'Year':
                     this_filter_dic['year'] = text_t
                 elif filter_element.tag == 'Include':
@@ -1171,11 +1173,11 @@ def filter_parse_XML(fname_str):
     # >> Resolve DEFINE tags (substitute by the defined value)
     for f_definition in filters_list:
         for initial_str, final_str in define_dic.iteritems():
-            f_definition['driver']       = f_definition['driver'].replace(initial_str, final_str)
-            f_definition['manufacturer'] = f_definition['manufacturer'].replace(initial_str, final_str)
-            f_definition['genre']        = f_definition['genre'].replace(initial_str, final_str)
-            f_definition['controls']     = f_definition['controls'].replace(initial_str, final_str)
-            f_definition['devices']      = f_definition['devices'].replace(initial_str, final_str)
+            f_definition['driver']           = f_definition['driver'].replace(initial_str, final_str)
+            f_definition['manufacturer']     = f_definition['manufacturer'].replace(initial_str, final_str)
+            f_definition['genre']            = f_definition['genre'].replace(initial_str, final_str)
+            f_definition['controls']         = f_definition['controls'].replace(initial_str, final_str)
+            f_definition['pluggabledevices'] = f_definition['pluggabledevices'].replace(initial_str, final_str)
             # Replace strings in list of strings.
             for i, s_t in enumerate(f_definition['include']):
                 f_definition['include'][i] = s_t.replace(initial_str, final_str)
@@ -1226,7 +1228,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
         else:
             hasSamples = False
 
-        # >> Fix controls to match "Controls (Compact)" filter
+        # >> Fix controls to match "Machines by Controls (Compact)" filter
         if machine_main_dic[m_name]['input']:
             raw_control_list = [
                 ctrl_dic['type'] for ctrl_dic in machine_main_dic[m_name]['input']['control_list']
@@ -1235,13 +1237,13 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             raw_control_list = []
         pretty_control_type_list = misc_improve_mame_control_type_list(raw_control_list)
         control_list = misc_compress_mame_item_list_compact(pretty_control_type_list)
-        if not control_list: control_list = [ '[ No controls ]' ]
+        if not control_list: control_list = [ 'None' ]
 
-        # >> Fix this to match "Device (Compact)" filter
+        # >> Fix this to match "Machines by Pluggable Devices (Compact)" filter
         raw_device_list = [ device['att_type'] for device in machine_main_dic[m_name]['devices'] ]
         pretty_device_list = misc_improve_mame_device_list(raw_device_list)
-        device_list = misc_compress_mame_item_list_compact(pretty_device_list)
-        if not device_list: device_list = [ '[ No devices ]' ]
+        pluggable_device_list = misc_compress_mame_item_list_compact(pretty_device_list)
+        if not pluggable_device_list: pluggable_device_list = [ 'None' ]
 
         # --- Build filtering dictionary ---
         main_filter_dic[m_name] = {
@@ -1263,7 +1265,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             'manufacturer' : machine_render_dic[m_name]['manufacturer'],
             'genre' : machine_render_dic[m_name]['genre'],
             'control_list' : control_list,
-            'device_list' : device_list,
+            'pluggable_device_list' : pluggable_device_list,
             'year' : machine_render_dic[m_name]['year'],
         }
         item_count += 1
@@ -1273,7 +1275,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
         drivers_set.add(mdict['driver'])
         genres_set.add(mdict['genre'])
         for control in mdict['control_list']: controls_set.add(control)
-        for device in mdict['device_list']: pdevices_set.add(device)
+        for device in mdict['pluggable_device_list']: pdevices_set.add(device)
         # --- Histograms ---
         if mdict['genre'] in genres_drivers_dic:
             genres_drivers_dic[mdict['genre']] += 1
@@ -1284,7 +1286,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
                 controls_drivers_dic[control] += 1
             else:
                 controls_drivers_dic[control] = 1
-        for device in mdict['device_list']:
+        for device in mdict['pluggable_device_list']:
             if device in pdevices_drivers_dic:
                 pdevices_drivers_dic[device] += 1
             else:
@@ -1380,17 +1382,44 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
                 c_list.append('<Options> keywork "{0}" unrecognised.'.format(option_keyword))
 
         # Check 2) Drivers in <Driver> exist.
-        # Needs parsing of the <Driver> filter to get the literals.
-        # Needs a set of all drivers in database.
+        # <Driver> uses the LSP parser.
+        keyword_list = []
+        for token in SP_tokenize(filter_dic['driver']):
+            if isinstance(token, SP_literal_token):
+                keyword_list.append(token.value)
+        for dname in keyword_list:
+            if dname not in sets_dic['drivers_set']:
+                c_list.append('<Driver> "{0}" not found.'.format(dname))
 
         # Check 3) Genres in <Genre> exist.
-        
+        # <Genre> uses the LSP parser.
+        keyword_list = []
+        for token in SP_tokenize(filter_dic['genre']):
+            if isinstance(token, SP_literal_token):
+                keyword_list.append(token.value)
+        for dname in keyword_list:
+            if dname not in sets_dic['genres_set']:
+                c_list.append('<Genre> "{0}" not found.'.format(dname))
 
         # Check 4) Controls in <Controls> exist.
-        
+        # <Controls> uses the LSP parser.
+        keyword_list = []
+        for token in SP_tokenize(filter_dic['controls']):
+            if isinstance(token, SP_literal_token):
+                keyword_list.append(token.value)
+        for dname in keyword_list:
+            if dname not in sets_dic['controls_set']:
+                c_list.append('<Controls> "{0}" not found.'.format(dname))
 
         # Check 5) Plugabble devices in <PluggableDevices> exist.
-        
+        # <PluggableDevices> uses the LSP parser.
+        keyword_list = []
+        for token in SP_tokenize(filter_dic['pluggabledevices']):
+            if isinstance(token, SP_literal_token):
+                keyword_list.append(token.value)
+        for dname in keyword_list:
+            if dname not in sets_dic['pdevices_set']:
+                c_list.append('<PluggableDevices> "{0}" not found.'.format(dname))
 
         # Check 6) Machines in <Include> exist.
         for m_name in filter_dic['include']:
@@ -1491,7 +1520,7 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         filtered_machine_dic = filter_mame_Manufacturer_tag(filtered_machine_dic, f_definition)
         filtered_machine_dic = filter_mame_Genre_tag(filtered_machine_dic, f_definition)
         filtered_machine_dic = filter_mame_Controls_tag(filtered_machine_dic, f_definition)
-        filtered_machine_dic = filter_mame_Devices_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_PluggableDevices_tag(filtered_machine_dic, f_definition)
         filtered_machine_dic = filter_mame_Year_tag(filtered_machine_dic, f_definition)
         filtered_machine_dic = filter_mame_Include_tag(filtered_machine_dic, f_definition, machines_dic)
         filtered_machine_dic = filter_mame_Exclude_tag(filtered_machine_dic, f_definition)
