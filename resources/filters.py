@@ -28,6 +28,23 @@ from .utils_kodi import *
 from .misc import *
 
 # -------------------------------------------------------------------------------------------------
+# Constants
+# -------------------------------------------------------------------------------------------------
+OPTIONS_KEYWORK_LIST = [
+    'NoClones',
+    'NoCoin',
+    'NoCoinLess',
+    'NoROMs',
+    'NoCHDs',
+    'NoSamples',
+    'NoMature',
+    'NoBIOS',
+    'NoMechanical',
+    'NoImperfect',
+    'NoNonworking',
+]
+
+# -------------------------------------------------------------------------------------------------
 # Parse filter XML definition
 # -------------------------------------------------------------------------------------------------
 #
@@ -62,181 +79,6 @@ def _get_change_tuple(text_t):
         m = '(Exception) Cannot parse <Change> "{0}"'.format(text_t)
         log_error(m)
         raise Addon_Error(m)
-
-#
-# Returns a list of dictionaries, each dictionary has the filter definition.
-#
-def filter_parse_XML(fname_str):
-    __debug_xml_parser = False
-
-    # If XML has errors (invalid characters, etc.) this will rais exception 'err'
-    XML_FN = FileName(fname_str)
-    if not XML_FN.exists():
-        kodi_dialog_OK('Custom filter XML file not found.')
-        return
-    log_debug('filter_parse_XML() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
-    log_debug('filter_parse_XML() Reading XML  P "{0}"'.format(XML_FN.getPath()))
-    try:
-        xml_tree = ET.parse(XML_FN.getPath())
-    except IOError as ex:
-        log_error('(Exception) {0}'.format(ex))
-        log_error('(Exception) Syntax error in the XML file definition')
-        raise Addon_Error('(Exception) ET.parse(XML_FN.getPath()) failed.')
-    xml_root = xml_tree.getroot()
-    define_dic = {}
-    filters_list = []
-    for root_element in xml_root:
-        if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
-
-        if root_element.tag == 'DEFINE':
-            name_str = root_element.attrib['name']
-            define_str = root_element.text if root_element.text else ''
-            log_debug('DEFINE "{0}" := "{1}"'.format(name_str, define_str))
-            define_dic[name_str] = define_str
-        elif root_element.tag == 'MAMEFilter':
-            this_filter_dic = {
-                'name'         : '',
-                'plot'         : '',
-                'options'      : [], # List of strings
-                'driver'       : '',
-                'manufacturer' : '',
-                'genre'        : '',
-                'controls'     : '',
-                'devices'      : '',
-                'year'         : '',
-                'include'      : [], # List of strings
-                'exclude'      : [], # List of strings
-                'change'       : [], # List of tuples (change_orig string, change_dest string)
-            }
-            for filter_element in root_element:
-                text_t = filter_element.text if filter_element.text else ''
-                if filter_element.tag == 'Name':
-                    this_filter_dic['name'] = text_t
-                elif filter_element.tag == 'Plot':
-                    this_filter_dic['plot'] = text_t
-                elif filter_element.tag == 'Options':
-                    t_list = _get_comma_separated_list(text_t)
-                    if t_list:
-                        this_filter_dic['options'].extend(t_list)
-                elif filter_element.tag == 'Driver':
-                    this_filter_dic['driver'] = text_t
-                elif filter_element.tag == 'Manufacturer':
-                    this_filter_dic['manufacturer'] = text_t
-                elif filter_element.tag == 'Genre':
-                    this_filter_dic['genre'] = text_t
-                elif filter_element.tag == 'Controls':
-                    this_filter_dic['controls'] = text_t
-                elif filter_element.tag == 'Devices':
-                    this_filter_dic['devices'] = text_t
-                elif filter_element.tag == 'Year':
-                    this_filter_dic['year'] = text_t
-                elif filter_element.tag == 'Include':
-                    t_list = _get_comma_separated_list(text_t)
-                    if t_list: this_filter_dic['include'].extend(t_list)
-                elif filter_element.tag == 'Exclude':
-                    t_list = _get_comma_separated_list(text_t)
-                    if t_list: this_filter_dic['exclude'].extend(t_list)
-                elif filter_element.tag == 'Change':
-                    tuple_t = _get_change_tuple(text_t)
-                    if tuple_t: this_filter_dic['change'].append(tuple_t)
-                else:
-                    m = '(Exception) Unrecognised tag <{0}>'.format(filter_element.tag)
-                    log_debug(m)
-                    raise Addon_Error(m)
-            log_debug('Adding filter "{0}"'.format(this_filter_dic['name']))
-            filters_list.append(this_filter_dic)
-
-    # >> Resolve DEFINE tags (substitute by the defined value)
-    for f_definition in filters_list:
-        for initial_str, final_str in define_dic.iteritems():
-            f_definition['driver']       = f_definition['driver'].replace(initial_str, final_str)
-            f_definition['manufacturer'] = f_definition['manufacturer'].replace(initial_str, final_str)
-            f_definition['genre']        = f_definition['genre'].replace(initial_str, final_str)
-            f_definition['controls']     = f_definition['controls'].replace(initial_str, final_str)
-            f_definition['devices']      = f_definition['devices'].replace(initial_str, final_str)
-            # Replace strings in list of strings.
-            for i, s_t in enumerate(f_definition['include']):
-                f_definition['include'][i] = s_t.replace(initial_str, final_str)
-            for i, s_t in enumerate(f_definition['exclude']):
-                f_definition['exclude'][i] = s_t.replace(initial_str, final_str)
-            # for i, s_t in enumerate(f_definition['change']):
-            #     f_definition['change'][i] = s_t.replace(initial_str, final_str)
-
-    return filters_list
-
-#
-# Returns a dictionary of dictionaries, indexed by the machine name.
-# This includes all MAME machines, including parents and clones.
-#
-def filter_get_filter_DB(machine_main_dic, machine_render_dic, assets_dic, machine_archives_dic):
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Building filter database ...')
-    total_items = len(machine_main_dic)
-    item_count = 0
-    main_filter_dic = {}
-    for m_name in machine_main_dic:
-        pDialog.update(int((item_count*100) / total_items))
-        if 'att_coins' in machine_main_dic[m_name]['input']:
-            coins = machine_main_dic[m_name]['input']['att_coins']
-        else:
-            coins = 0
-        if m_name in machine_archives_dic:
-            hasROMs = True if machine_archives_dic[m_name]['ROMs'] else False
-        else:
-            hasROMs = False
-        if m_name in machine_archives_dic:
-            hasCHDs = True if machine_archives_dic[m_name]['CHDs'] else False
-        else:
-            hasCHDs = False
-        if m_name in machine_archives_dic:
-            hasSamples = True if machine_archives_dic[m_name]['Samples'] else False
-        else:
-            hasSamples = False
-        # >> Fix controls to match "Controls (Compact)" filter
-        if machine_main_dic[m_name]['input']:
-            raw_control_list = [
-                ctrl_dic['type'] for ctrl_dic in machine_main_dic[m_name]['input']['control_list']
-            ]
-        else:
-            raw_control_list = []
-        pretty_control_type_list = misc_improve_mame_control_type_list(raw_control_list)
-        control_list = misc_compress_mame_item_list_compact(pretty_control_type_list)
-        if not control_list: control_list = [ '[ No controls ]' ]
-
-        # >> Fix this to match "Device (Compact)" filter
-        raw_device_list = [ device['att_type'] for device in machine_main_dic[m_name]['devices'] ]
-        pretty_device_list = misc_improve_mame_device_list(raw_device_list)
-        device_list = misc_compress_mame_item_list_compact(pretty_device_list)
-        if not device_list: device_list = [ '[ No devices ]' ]
-
-        # --- Build filtering dictionary ---
-        main_filter_dic[m_name] = {
-            # --- Default filters ---
-            'isDevice' : machine_render_dic[m_name]['isDevice'],
-            # --- <Option> filters ---
-            'isClone' : True if machine_render_dic[m_name]['cloneof'] else False,
-            'coins' : coins,
-            'hasROMs' : hasROMs,
-            'hasCHDs' : hasCHDs,
-            'hasSamples' : hasSamples,
-            'isMature' : machine_render_dic[m_name]['isMature'],
-            'isBIOS' : machine_render_dic[m_name]['isBIOS'],
-            'isMechanical' : machine_main_dic[m_name]['isMechanical'],
-            'isImperfect' : True if machine_render_dic[m_name]['driver_status'] == 'imperfect' else False,
-            'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
-            # --- Other filters ---
-            'driver' : machine_main_dic[m_name]['sourcefile'],
-            'manufacturer' : machine_render_dic[m_name]['manufacturer'],
-            'genre' : machine_render_dic[m_name]['genre'],
-            'control_list' : control_list,
-            'device_list' : device_list,
-            'year' : machine_render_dic[m_name]['year'],
-        }
-        item_count += 1
-    pDialog.update(100)
-    pDialog.close()
-
-    return main_filter_dic
 
 # -------------------------------------------------------------------------------------------------
 # String Parser (SP) engine. Grammar token objects.
@@ -906,7 +748,7 @@ def YP_parse_exec(program, year_str):
 # MAME machine filters
 # -------------------------------------------------------------------------------------------------
 #
-# Default filter removes device machines
+# Default filter removes device machines.
 #
 def filter_mame_Default(mame_xml_dic):
     log_debug('filter_mame_Default() Starting ...')
@@ -934,6 +776,7 @@ def filter_mame_Options_tag(mame_xml_dic, f_definition):
     log_debug('Option list "{0}"'.format(options_list))
 
     # --- Compute bool variables ---
+    # This must match OPTIONS_KEYWORK_LIST
     NoClones_bool     = True if 'NoClones' in options_list else False
     NoCoin_bool       = True if 'NoCoin' in options_list else False
     NoCoinLess_bool   = True if 'NoCoinLess' in options_list else False
@@ -1238,3 +1081,390 @@ def filter_mame_Change_tag(mame_xml_dic, f_definition, machines_dic):
               'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
+
+# -------------------------------------------------------------------------------------------------
+# Build MAME custom filters
+# -------------------------------------------------------------------------------------------------
+#
+# Returns a list of dictionaries, each dictionary has the filter definition.
+#
+def filter_parse_XML(fname_str):
+    __debug_xml_parser = False
+
+    # If XML has errors (invalid characters, etc.) this will rais exception 'err'
+    XML_FN = FileName(fname_str)
+    if not XML_FN.exists():
+        kodi_dialog_OK('Custom filter XML file not found.')
+        return
+    log_debug('filter_parse_XML() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+    log_debug('filter_parse_XML() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+    try:
+        xml_tree = ET.parse(XML_FN.getPath())
+    except IOError as ex:
+        log_error('(Exception) {0}'.format(ex))
+        log_error('(Exception) Syntax error in the XML file definition')
+        raise Addon_Error('(Exception) ET.parse(XML_FN.getPath()) failed.')
+    xml_root = xml_tree.getroot()
+    define_dic = {}
+    filters_list = []
+    for root_element in xml_root:
+        if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
+
+        if root_element.tag == 'DEFINE':
+            name_str = root_element.attrib['name']
+            define_str = root_element.text if root_element.text else ''
+            log_debug('DEFINE "{0}" := "{1}"'.format(name_str, define_str))
+            define_dic[name_str] = define_str
+        elif root_element.tag == 'MAMEFilter':
+            this_filter_dic = {
+                'name'         : '',
+                'plot'         : '',
+                'options'      : [], # List of strings
+                'driver'       : '',
+                'manufacturer' : '',
+                'genre'        : '',
+                'controls'     : '',
+                'devices'      : '',
+                'year'         : '',
+                'include'      : [], # List of strings
+                'exclude'      : [], # List of strings
+                'change'       : [], # List of tuples (change_orig string, change_dest string)
+            }
+            for filter_element in root_element:
+                text_t = filter_element.text if filter_element.text else ''
+                if filter_element.tag == 'Name':
+                    this_filter_dic['name'] = text_t
+                elif filter_element.tag == 'Plot':
+                    this_filter_dic['plot'] = text_t
+                elif filter_element.tag == 'Options':
+                    t_list = _get_comma_separated_list(text_t)
+                    if t_list:
+                        this_filter_dic['options'].extend(t_list)
+                elif filter_element.tag == 'Driver':
+                    this_filter_dic['driver'] = text_t
+                elif filter_element.tag == 'Manufacturer':
+                    this_filter_dic['manufacturer'] = text_t
+                elif filter_element.tag == 'Genre':
+                    this_filter_dic['genre'] = text_t
+                elif filter_element.tag == 'Controls':
+                    this_filter_dic['controls'] = text_t
+                elif filter_element.tag == 'Devices':
+                    this_filter_dic['devices'] = text_t
+                elif filter_element.tag == 'Year':
+                    this_filter_dic['year'] = text_t
+                elif filter_element.tag == 'Include':
+                    t_list = _get_comma_separated_list(text_t)
+                    if t_list: this_filter_dic['include'].extend(t_list)
+                elif filter_element.tag == 'Exclude':
+                    t_list = _get_comma_separated_list(text_t)
+                    if t_list: this_filter_dic['exclude'].extend(t_list)
+                elif filter_element.tag == 'Change':
+                    tuple_t = _get_change_tuple(text_t)
+                    if tuple_t: this_filter_dic['change'].append(tuple_t)
+                else:
+                    m = '(Exception) Unrecognised tag <{0}>'.format(filter_element.tag)
+                    log_debug(m)
+                    raise Addon_Error(m)
+            log_debug('Adding filter "{0}"'.format(this_filter_dic['name']))
+            filters_list.append(this_filter_dic)
+
+    # >> Resolve DEFINE tags (substitute by the defined value)
+    for f_definition in filters_list:
+        for initial_str, final_str in define_dic.iteritems():
+            f_definition['driver']       = f_definition['driver'].replace(initial_str, final_str)
+            f_definition['manufacturer'] = f_definition['manufacturer'].replace(initial_str, final_str)
+            f_definition['genre']        = f_definition['genre'].replace(initial_str, final_str)
+            f_definition['controls']     = f_definition['controls'].replace(initial_str, final_str)
+            f_definition['devices']      = f_definition['devices'].replace(initial_str, final_str)
+            # Replace strings in list of strings.
+            for i, s_t in enumerate(f_definition['include']):
+                f_definition['include'][i] = s_t.replace(initial_str, final_str)
+            for i, s_t in enumerate(f_definition['exclude']):
+                f_definition['exclude'][i] = s_t.replace(initial_str, final_str)
+            # for i, s_t in enumerate(f_definition['change']):
+            #     f_definition['change'][i] = s_t.replace(initial_str, final_str)
+
+    return filters_list
+
+#
+# Returns a dictionary of dictionaries, indexed by the machine name.
+# This includes all MAME machines, including parents and clones.
+#
+def filter_get_filter_DB(machine_main_dic, machine_render_dic, assets_dic, machine_archives_dic):
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher', 'Building filter database ...')
+    total_items = len(machine_main_dic)
+    item_count = 0
+    main_filter_dic = {}
+    for m_name in machine_main_dic:
+        pDialog.update(int((item_count*100) / total_items))
+        if 'att_coins' in machine_main_dic[m_name]['input']:
+            coins = machine_main_dic[m_name]['input']['att_coins']
+        else:
+            coins = 0
+        if m_name in machine_archives_dic:
+            hasROMs = True if machine_archives_dic[m_name]['ROMs'] else False
+        else:
+            hasROMs = False
+        if m_name in machine_archives_dic:
+            hasCHDs = True if machine_archives_dic[m_name]['CHDs'] else False
+        else:
+            hasCHDs = False
+        if m_name in machine_archives_dic:
+            hasSamples = True if machine_archives_dic[m_name]['Samples'] else False
+        else:
+            hasSamples = False
+        # >> Fix controls to match "Controls (Compact)" filter
+        if machine_main_dic[m_name]['input']:
+            raw_control_list = [
+                ctrl_dic['type'] for ctrl_dic in machine_main_dic[m_name]['input']['control_list']
+            ]
+        else:
+            raw_control_list = []
+        pretty_control_type_list = misc_improve_mame_control_type_list(raw_control_list)
+        control_list = misc_compress_mame_item_list_compact(pretty_control_type_list)
+        if not control_list: control_list = [ '[ No controls ]' ]
+
+        # >> Fix this to match "Device (Compact)" filter
+        raw_device_list = [ device['att_type'] for device in machine_main_dic[m_name]['devices'] ]
+        pretty_device_list = misc_improve_mame_device_list(raw_device_list)
+        device_list = misc_compress_mame_item_list_compact(pretty_device_list)
+        if not device_list: device_list = [ '[ No devices ]' ]
+
+        # --- Build filtering dictionary ---
+        main_filter_dic[m_name] = {
+            # --- Default filters ---
+            'isDevice' : machine_render_dic[m_name]['isDevice'],
+            # --- <Option> filters ---
+            'isClone' : True if machine_render_dic[m_name]['cloneof'] else False,
+            'coins' : coins,
+            'hasROMs' : hasROMs,
+            'hasCHDs' : hasCHDs,
+            'hasSamples' : hasSamples,
+            'isMature' : machine_render_dic[m_name]['isMature'],
+            'isBIOS' : machine_render_dic[m_name]['isBIOS'],
+            'isMechanical' : machine_main_dic[m_name]['isMechanical'],
+            'isImperfect' : True if machine_render_dic[m_name]['driver_status'] == 'imperfect' else False,
+            'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
+            # --- Other filters ---
+            'driver' : machine_main_dic[m_name]['sourcefile'],
+            'manufacturer' : machine_render_dic[m_name]['manufacturer'],
+            'genre' : machine_render_dic[m_name]['genre'],
+            'control_list' : control_list,
+            'device_list' : device_list,
+            'year' : machine_render_dic[m_name]['year'],
+        }
+        item_count += 1
+    pDialog.update(100)
+    pDialog.close()
+
+    return main_filter_dic
+
+#
+# Returns a tuple (filter_list, options_dic).
+#
+def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic):
+    filter_list = []
+    options_dic = {
+        # No errors by default until an error is found.
+        'XML_errors' : False,
+    }
+
+    # --- Open custom filter XML and parse it ---
+    cf_XML_path_str = settings['filter_XML']
+    log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
+    if not cf_XML_path_str:
+        log_debug('Using default XML custom filter.')
+        XML_FN = PATHS.CUSTOM_FILTER_PATH
+    else:
+        log_debug('Using user-defined in addon settings XML custom filter.')
+        XML_FN = FileName(cf_XML_path_str)
+    log_debug('filter_custom_filters_load_XML() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+    log_debug('filter_custom_filters_load_XML() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+    try:
+        filter_list = filter_parse_XML(XML_FN.getPath())
+    except Addon_Error as ex:
+        kodi_notify_warn('{0}'.format(ex))
+        return (filter_list, options_dic)
+    else:
+        log_debug('Filter XML read succesfully.')
+
+    # --- Check XML for errors and write report ---
+    # Filters sorted as defined in the XML.
+    OPTIONS_KEYWORK_SET = set(OPTIONS_KEYWORK_LIST)
+    r_full = []
+    for filter_dic in filter_list:
+        c_list = []
+
+        # Check 1) Keywords in <Options> are correct.
+        for option_keyword in filter_dic['options']:
+            if option_keyword not in OPTIONS_KEYWORK_SET:
+                c_list.append('<Options> keywork "{0}" unrecognised.'.format(option_keyword))
+
+        # Check 2) Drivers in <Driver> exist.
+        # Needs parsing of the <Driver> filter to get the literals.
+        
+
+        # Check 3) Genres in <Genre> exist.
+        
+
+        # Check 4) Controls in <Controls> exist.
+        
+
+        # Check 5) Plugabble devices in <Devices> exist.
+        
+
+        # Check 6) Machines in <Include> exist.
+        for m_name in filter_dic['include']:
+            if m_name not in main_filter_dic:
+                c_list.append('<Include> machine "{0}" not found.'.format(m_name))
+
+        # Check 7) Machines in <Exclude> exist.
+        for m_name in filter_dic['exclude']:
+            if m_name not in main_filter_dic:
+                c_list.append('<Exclude> machine "{0}" not found.'.format(m_name))
+
+        # Check 8) Machines in <Change> exist.
+        for change_tuple in filter_dic['change']:
+            if change_tuple[0] not in main_filter_dic:
+                c_list.append('<Change> machine "{0}" not found.'.format(change_tuple[0]))
+            if change_tuple[1] not in main_filter_dic:
+                c_list.append('<Change> machine "{0}" not found.'.format(change_tuple[1]))
+
+        # Build report
+        r_full.append('Filter "{0}"'.format(filter_dic['name']))
+        if not c_list:
+            r_full.append('No issues found.')
+        else:
+            r_full.extend(c_list)
+            # Error found, set the flag.
+            options_dic['XML_errors'] = True
+        r_full.append('')
+
+    # --- Write MAME scanner reports ---
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath()))
+    with open(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath(), 'w') as file:
+        report_slist = [
+            '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
+            'There are {0} custom filters defined.'.format(len(filter_list)),
+            'XML "{0}"'.format(XML_FN.getOriginalPath()),
+            '',
+        ]
+        report_slist.extend(r_full)
+        file.write('\n'.join(report_slist).encode('utf-8'))
+
+    return (filter_list, options_dic)
+
+#
+# filter_index_dic = {
+#     'name' : {
+#         'display_name' : str,
+#         'num_machines' : int,
+#         'num_parents' : int,
+#         'order' : int,
+#         'plot' : str,
+#         'rom_DB_noext' : str,
+#     }
+# }
+# AML_DATA_DIR/filters/'rom_DB_noext'_render.json -> machine_render = {}
+# AML_DATA_DIR/filters/'rom_DB_noext'_assets.json -> asset_dic = {}
+#
+def filter_build_custom_filters(PATHS, settings, control_dic,
+    filter_list, main_filter_dic, machines_dic, render_dic, assets_dic):
+    # --- Clean 'filters' directory JSON files ---
+    log_info('filter_build_custom_filters() Cleaning dir "{0}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
+    pDialog.update(0)
+    file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
+    num_files = len(file_list)
+    if num_files > 1:
+        log_info('Found {0} files'.format(num_files))
+        processed_items = 0
+        for file in file_list:
+            pDialog.update((processed_items*100) // num_files)
+            if file.endswith('.json'):
+                full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
+                # log_debug('UNLINK "{0}"'.format(full_path))
+                os.unlink(full_path)
+            processed_items += 1
+    pDialog.update(100)
+    pDialog.close()
+
+    # --- Traverse list of filters, build filter index and compute filter list ---
+    pdialog_line1 = 'Building custom MAME filters'
+    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    Filters_index_dic = {}
+    total_items = len(filter_list)
+    processed_items = 0
+    for f_definition in filter_list:
+        # --- Initialise ---
+        f_name = f_definition['name']
+        log_debug('filter_build_custom_filters() Processing filter "{0}"'.format(f_name))
+        # log_debug('f_definition = {0}'.format(unicode(f_definition)))
+
+        # --- Initial progress ---
+        pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{0}" ...'.format(f_name))
+
+        # --- Do filtering ---
+        filtered_machine_dic = filter_mame_Default(main_filter_dic)
+        filtered_machine_dic = filter_mame_Options_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Driver_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Manufacturer_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Genre_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Controls_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Devices_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Year_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Include_tag(filtered_machine_dic, f_definition, machines_dic)
+        filtered_machine_dic = filter_mame_Exclude_tag(filtered_machine_dic, f_definition)
+        filtered_machine_dic = filter_mame_Change_tag(filtered_machine_dic, f_definition, machines_dic)
+
+        # --- Make indexed catalog ---
+        filtered_render_dic = {}
+        filtered_assets_dic = {}
+        for p_name in sorted(filtered_machine_dic.keys()):
+            # >> Add parents
+            filtered_render_dic[p_name] = render_dic[p_name]
+            filtered_assets_dic[p_name] = assets_dic[p_name]
+        rom_DB_noext = hashlib.md5(f_name).hexdigest()
+        this_filter_idx_dic = {
+            'display_name' : f_definition['name'],
+            'num_machines' : len(filtered_render_dic),
+            'order'        : processed_items,
+            'plot'         : f_definition['plot'],
+            'rom_DB_noext' : rom_DB_noext
+        }
+        Filters_index_dic[f_name] = this_filter_idx_dic
+
+        # --- Save filter database ---
+        writing_ticks_start = time.time()
+        output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_render.json')
+        fs_write_JSON_file(output_FN.getPath(), filtered_render_dic, verbose = False)
+        output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
+        fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
+        writing_ticks_end = time.time()
+        writing_time = writing_ticks_end - writing_ticks_start
+        log_debug('JSON writing time {0:.4f} s'.format(writing_time))
+
+        # --- Final progress ---
+        processed_items += 1
+
+    # --- Save custom filter index ---
+    fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
+    pDialog.update(100, pdialog_line1, ' ')
+    pDialog.close()
+
+    # --- Update timestamp ---
+    change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+    # --- Write MAME scanner reports ---
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()))
+    with open(PATHS.REPORT_CF_DB_BUILD_PATH.getPath(), 'w') as file:
+        report_slist = [
+            '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
+            'File "{0}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()),
+            '',
+        ]
+        report_slist.append('Not implemented yet, sorry.')
+        file.write('\n'.join(report_slist).encode('utf-8'))

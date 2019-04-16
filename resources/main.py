@@ -4216,7 +4216,7 @@ def command_context_setup_custom_filters():
          'Test custom filter XML',
          'View custom filter XML',
          'View filter XML syntax report',
-         'View filter report',
+         'View filter database report',
          ])
     if menu_item < 0: return
 
@@ -4239,8 +4239,9 @@ def command_context_setup_custom_filters():
             db_dic['machines'], db_dic['render'], db_dic['assets'], db_dic['machine_archives'])
 
         # --- Parse custom filter XML and check for errors ---
-        # This function also check the filter XML syntax and produces a report.
-        (filter_list, options_dic) = mame_custom_filters_load_XML(
+        # 1) Check the filter XML syntax and filter semantic errors.
+        # 2) Produces report PATHS.REPORT_CF_XML_SYNTAX_PATH
+        (filter_list, options_dic) = filter_custom_filters_load_XML(
             g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic)
         # If no filters sayonara
         if len(filter_list) < 1:
@@ -4255,7 +4256,8 @@ def command_context_setup_custom_filters():
 
         # --- Build filter database ---
         # 1) Saves control_dic (updated custom filter build timestamp).
-        mame_build_custom_filters(g_PATHS, g_settings, db_dic['control_dic'],
+        # 2) Generates PATHS.REPORT_CF_DB_BUILD_PATH
+        filter_build_custom_filters(g_PATHS, g_settings, db_dic['control_dic'],
             filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
 
         # --- So long and thanks for all the fish ---
@@ -4281,7 +4283,7 @@ def command_context_setup_custom_filters():
 
         # --- Parse custom filter XML and check for errors ---
         # This function also check the filter XML syntax and produces a report.
-        (filter_list, options_dic) = mame_custom_filters_load_XML(
+        (filter_list, options_dic) = filter_custom_filters_load_XML(
             g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic)
         # If no filters sayonara
         if len(filter_list) < 1:
@@ -4289,8 +4291,9 @@ def command_context_setup_custom_filters():
             return
         # If errors found in the XML sayonara
         elif options_dic['XML_errors']:
-            kodi_dialog_OK('The XML filter definition file contains errors. Have a look at the'
-                ' XML filter file report, fix the mistakes and try again.')
+            kodi_dialog_OK(
+                'The XML filter definition file contains errors. Have a look at the '
+                'XML filter file report, fix the mistakes and try again.')
             return
         kodi_notify('Custom filter XML check succesful')
 

@@ -39,16 +39,19 @@ WIP      [CORE] [LEIA] Recursive context menus.
          This requires Kodi version detection and having different code for Krypton/Leia.
 
 
-[B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
+[B]Advanced MAME Launcher | version 0.10.0 | xx June 2019[/B]
 
 WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
          Github wiki.
+
+
+[B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
 
 WIP      [FILTERING] Test the filters for errors. For example, test that all the drivers
          defined in <Driver> exist. Another example, test that the genres defined in
          <Genre> and the controls defined in <Controls> exist.
 
-WIP      [FILTERING] Warn the user if errors found in the XML filter definition, maybe in
+FEATURE  [FILTERING] Warn the user if errors found in the XML filter definition, maybe in
          a report the user can read later.
 
 WIP      [FILTERING] Make a filter report the user can read.
@@ -60,6 +63,8 @@ FEATURE  Refactoring of the Fanart and 3D Box code generation. Creation of graph
 
 FEATURE  Only generate 3D Boxes if both Fyler and Clearlogo (MAME) or Boxfront (SL)
          are present. Avoid having empty 3D boxes.
+
+WIP      Optimize the generation of 3D boxes. Cache the background images used in all boxes.
 
 FEATURE  Improved filter "Machines by Display Type" and removed filter
          "Machines by Display Rotation."
@@ -94,6 +99,9 @@ FEATURE  By request of Rufoo, support MAME 3dboxes.
 
 FIX      Fixed a couple of crashes when executing context menus, thanks to Dax9.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2838180#pid2838180
+
+WIP      Fix the render_skin_*() functions. These are called by skins to get a list of
+         filters.
 
 
 [B]Advanced MAME Launcher | version 0.9.9 | 22 March 2019[/B]
