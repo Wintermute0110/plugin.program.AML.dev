@@ -1523,6 +1523,12 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
     pDialog.update(100)
     pDialog.close()
 
+    # --- Report header ---
+    r_full = []
+    r_full.append('Number of machines {0}'.format(len(main_filter_dic)))
+    r_full.append('Number of filters {0}'.format(len(filter_list)))
+    r_full.append('')
+
     # --- Traverse list of filters, build filter index and compute filter list ---
     pdialog_line1 = 'Building custom MAME filters'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
@@ -1554,10 +1560,9 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         # --- Make indexed catalog ---
         filtered_render_dic = {}
         filtered_assets_dic = {}
-        for p_name in sorted(filtered_machine_dic.keys()):
-            # >> Add parents
-            filtered_render_dic[p_name] = render_dic[p_name]
-            filtered_assets_dic[p_name] = assets_dic[p_name]
+        for m_name in filtered_machine_dic:
+            filtered_render_dic[m_name] = render_dic[m_name]
+            filtered_assets_dic[m_name] = assets_dic[m_name]
         rom_DB_noext = hashlib.md5(f_name).hexdigest()
         this_filter_idx_dic = {
             'display_name' : f_definition['name'],
@@ -1581,6 +1586,11 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         # --- Final progress ---
         processed_items += 1
 
+        # --- Report ---
+        r_full.append('Filter "{0}"'.format(f_name))
+        r_full.append('{0} machines'.format(len(filtered_machine_dic)))
+        r_full.append('')
+
     # --- Save custom filter index ---
     fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
     pDialog.update(100, pdialog_line1, ' ')
@@ -1598,5 +1608,5 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
             'File "{0}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()),
             '',
         ]
-        report_slist.append('Not implemented yet, sorry.')
+        report_slist.extend(r_full)
         file.write('\n'.join(report_slist).encode('utf-8'))
