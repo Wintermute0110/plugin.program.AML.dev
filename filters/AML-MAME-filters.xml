@@ -144,6 +144,13 @@
     <Manufacturer>has Taito</Manufacturer>
 </MAMEFilter>
 
+<MAMEFilter>
+    <Name>Williams arcade games</Name>
+    <Plot>Arcade games by [COLOR orange]Williams[/COLOR].</Plot>
+    <Options>NoClones, NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Manufacturer>has Williams</Manufacturer>
+</MAMEFilter>
+
 <!--  Family game definitions  -->
 <MAMEFilter>
     <Name>Familiy games from the 1970s</Name>
@@ -192,4 +199,23 @@
     <Controls>STANDARD_CONTROLS</Controls>
     <Year>year &gt;= 2010</Year>
 </MAMEFilter>
+
+<MAMEFilter>
+    <Name>Familiy games with Horizonal Screen</Name>
+    <Plot>Arcade machines with a Horizontal screen with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
+    <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoVertical</Options>
+    <Genre>STANDARD_GENRES</Genre>
+    <Controls>STANDARD_CONTROLS</Controls>
+</MAMEFilter>
+
+<MAMEFilter>
+    <Name>Familiy games with Vertical Screen</Name>
+    <Plot>Arcade machines with a Horizontal screen with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
+    <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoHorizontal</Options>
+    <Genre>STANDARD_GENRES</Genre>
+    <Controls>STANDARD_CONTROLS</Controls>
+</MAMEFilter>
+
 </Advanced_MAME_Launcher_custom_filters>

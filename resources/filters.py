@@ -43,6 +43,8 @@ OPTIONS_KEYWORK_LIST = [
     'NoMechanical',
     'NoImperfect',
     'NoNonworking',
+    'NoVertical',
+    'NoHorizontal',
 ]
 
 # -------------------------------------------------------------------------------------------------
@@ -789,6 +791,9 @@ def filter_mame_Options_tag(mame_xml_dic, f_definition):
     NoMechanical_bool = True if 'NoMechanical' in options_list else False
     NoImperfect_bool  = True if 'NoImperfect' in options_list else False
     NoNonWorking_bool = True if 'NoNonworking' in options_list else False
+    NoVertical_bool   = True if 'NoVertical' in options_list else False
+    NoHorizontal_bool = True if 'NoHorizontal' in options_list else False
+
     log_debug('NoClones_bool     {0}'.format(NoClones_bool))
     log_debug('NoCoin_bool       {0}'.format(NoCoin_bool))
     log_debug('NoCoinLess_bool   {0}'.format(NoCoinLess_bool))
@@ -800,6 +805,8 @@ def filter_mame_Options_tag(mame_xml_dic, f_definition):
     log_debug('NoMechanical_bool {0}'.format(NoMechanical_bool))
     log_debug('NoImperfect_bool  {0}'.format(NoImperfect_bool))
     log_debug('NoNonWorking_bool {0}'.format(NoNonWorking_bool))
+    log_debug('NoVertical_bool   {0}'.format(NoVertical_bool))
+    log_debug('NoHorizontal_bool {0}'.format(NoHorizontal_bool))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -849,11 +856,20 @@ def filter_mame_Options_tag(mame_xml_dic, f_definition):
         if NoNonWorking_bool and mame_xml_dic[m_name]['isNonWorking']:
             filtered_out_games += 1
             continue
+        # >> Remove Vertical machines
+        if NoVertical_bool and mame_xml_dic[m_name]['isVertical']:
+            filtered_out_games += 1
+            continue
+        # >> Remove Horizontal machines
+        if NoHorizontal_bool and mame_xml_dic[m_name]['isHorizontal']:
+            filtered_out_games += 1
+            continue
         # >> If machine was not removed then add it
         machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('filter_mame_Options_tag() Initial {0} | '.format(initial_num_games) + \
-              'Removed {0} | '.format(filtered_out_games) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+    log_debug(
+        'filter_mame_Options_tag() Initial {0} | '.format(initial_num_games) + \
+        'Removed {0} | '.format(filtered_out_games) + \
+        'Remaining {0}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
@@ -1227,6 +1243,13 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             hasSamples = True if machine_archives_dic[m_name]['Samples'] else False
         else:
             hasSamples = False
+        # If the machine has no displays then both isVertical and isHorizontal are False.
+        isVertical, isHorizontal = False, False
+        for drotate in machine_main_dic[m_name]['display_rotate']:
+            if drotate == '0' or drotate == '180':
+                isHorizontal = True
+            elif drotate == '90' or drotate == '270':
+                isVertical = True
 
         # >> Fix controls to match "Machines by Controls (Compact)" filter
         if machine_main_dic[m_name]['input']:
@@ -1260,6 +1283,8 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             'isMechanical' : machine_main_dic[m_name]['isMechanical'],
             'isImperfect' : True if machine_render_dic[m_name]['driver_status'] == 'imperfect' else False,
             'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
+            'isHorizontal' : isHorizontal,
+            'isVertical' : isVertical,
             # --- Other filters ---
             'driver' : machine_main_dic[m_name]['sourcefile'],
             'manufacturer' : machine_render_dic[m_name]['manufacturer'],

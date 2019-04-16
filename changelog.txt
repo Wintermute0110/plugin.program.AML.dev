@@ -47,7 +47,7 @@ WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi 
 
 [B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
 
-WIP      [FILTERING] Test the filters for errors. For example, test that all the drivers
+FEATURE  [FILTERING] Test the filters for errors. For example, test that all the drivers
          defined in <Driver> exist. Another example, test that the genres defined in
          <Genre> and the controls defined in <Controls> exist.
 
