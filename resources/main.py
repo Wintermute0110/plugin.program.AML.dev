@@ -733,8 +733,8 @@ def render_root_list():
     # -listmedia     list available media for the system     XML tag <device>
     ctype_expanded_str  = 'Machines by Controls (Expanded)'
     ctype_compact_str   = 'Machines by Controls (Compact)'
-    device_expanded_str = 'Machines by Plugabble Devices (Expanded)'
-    device_compact_str  = 'Machines by Plugabble Devices (Compact)'
+    device_expanded_str = 'Machines by Pluggable Devices (Expanded)'
+    device_compact_str  = 'Machines by Pluggable Devices (Compact)'
     dtype_str           = 'Machines by Display Type'
     d_vsync_freq_str    = 'Machines by Display VSync freq'
     d_resolution_str    = 'Machines by Display Resolution'
