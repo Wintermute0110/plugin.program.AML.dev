@@ -228,7 +228,7 @@
 
 <MAMEFilter>
     <Name>Family games with Vertical Screen</Name>
-    <Plot>Arcade machines with a Horizontal screen with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
+    <Plot>Arcade machines with a Vertical screen with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
     <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Options>NoHorizontal</Options>
     <Genre>STANDARD_GENRES</Genre>
