@@ -34,12 +34,13 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
-WIP      [GRAPHICS] Optimize the generation of 3D boxes. Cache the background images used
-         in all boxes.
-
 WIP      [CORE] [LEIA] Recursive context menus.
          Pay attention to the select() bug in Kodi Krypton.
          This requires Kodi version detection and having different code for Krypton/Leia.
+         Start with the context menu in which recursiveness ir more useful.
+
+WIP      [GRAPHICS] Optimize the generation of 3D boxes. Cache the background images used
+         in all boxes.
 
 
 [B]Advanced MAME Launcher | version 0.10.0 | xx June 2019[/B]
@@ -101,7 +102,7 @@ FEATURE  [CORE] By request of Rufoo, support MAME 3dboxes.
 FIX      Fixed a couple of crashes when executing context menus, thanks to Dax9.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2838180#pid2838180
 
-WIP      Fix the render_skin_*() functions. These are called by skins to get a list of
+FIX      Fix the render_skin_*() functions. These are called by skins to get a list of
          filters.
 
 
