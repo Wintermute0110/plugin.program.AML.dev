@@ -1328,8 +1328,8 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
         ]
 
         table_str = [
-            ['right', 'left'],
-            ['Genre',  'Number of machines'],
+            ['right', 'right'],
+            ['Genre', 'Number of machines'],
         ]
         for dname, dnumber in sorted(genres_drivers_dic.items(), key = lambda x: x[1], reverse = True):
             table_str.append(['{0}'.format(dname), '{0}'.format(dnumber)])
@@ -1337,8 +1337,8 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
         rslist.append('')
 
         table_str = [
-            ['right', 'left'],
-            ['Control',  'Number of machines'],
+            ['right', 'right'],
+            ['Control', 'Number of machines'],
         ]
         for dname, dnumber in sorted(controls_drivers_dic.items(), key = lambda x: x[1], reverse = True):
             table_str.append(['{0}'.format(dname), '{0}'.format(dnumber)])
@@ -1346,8 +1346,8 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
         rslist.append('')
 
         table_str = [
-            ['right', 'left'],
-            ['Device',  'Number of machines'],
+            ['right', 'right'],
+            ['Device', 'Number of machines'],
         ]
         for dname, dnumber in sorted(pdevices_drivers_dic.items(), key = lambda x: x[1], reverse = True):
             table_str.append(['{0}'.format(dname), '{0}'.format(dnumber)])
