@@ -3143,9 +3143,10 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Table header ---
         # Table cell padding: left, right
         # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
-        table_str = []
-        table_str.append(['right', 'left',     'right', 'left',     'left',  'left'])
-        table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS/Device'])
+        table_str = [
+            ['right', 'left',     'right', 'left',     'left',  'left'],
+            ['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS/Device'],
+        ]
 
         # --- Table: Machine ROMs ---
         roms_dic = roms_db_dic[machine_name]
