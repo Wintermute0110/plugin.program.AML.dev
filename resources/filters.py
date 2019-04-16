@@ -1190,12 +1190,23 @@ def filter_parse_XML(fname_str):
 # Returns a dictionary of dictionaries, indexed by the machine name.
 # This includes all MAME machines, including parents and clones.
 #
-def filter_get_filter_DB(machine_main_dic, machine_render_dic, assets_dic, machine_archives_dic):
+def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic,
+    machine_archives_dic):
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Building filter database ...')
     total_items = len(machine_main_dic)
     item_count = 0
     main_filter_dic = {}
+    # Sets are used to check the integrity of the filters defined in the XML.
+    drivers_set = set()
+    genres_set = set()
+    controls_set = set()
+    pdevices_set = set()
+    # Histograms
+    # The driver histogram is too big and unuseful.
+    genres_drivers_dic = {}
+    controls_drivers_dic = {}
+    pdevices_drivers_dic = {}
     for m_name in machine_main_dic:
         pDialog.update(int((item_count*100) / total_items))
         if 'att_coins' in machine_main_dic[m_name]['input']:
@@ -1214,6 +1225,7 @@ def filter_get_filter_DB(machine_main_dic, machine_render_dic, assets_dic, machi
             hasSamples = True if machine_archives_dic[m_name]['Samples'] else False
         else:
             hasSamples = False
+
         # >> Fix controls to match "Controls (Compact)" filter
         if machine_main_dic[m_name]['input']:
             raw_control_list = [
@@ -1255,15 +1267,71 @@ def filter_get_filter_DB(machine_main_dic, machine_render_dic, assets_dic, machi
             'year' : machine_render_dic[m_name]['year'],
         }
         item_count += 1
+
+        # --- Make sets of drivers, genres, controls, and pluggable devices ---
+        mdict = main_filter_dic[m_name]
+        drivers_set.add(mdict['driver'])
+        genres_set.add(mdict['genre'])
+        for control in mdict['control_list']: controls_set.add(control)
+        for device in mdict['device_list']: pdevices_set.add(device)
+        # --- Histograms ---
+        if mdict['genre'] in genres_drivers_dic:
+            genres_drivers_dic[mdict['genre']] += 1
+        else:
+            genres_drivers_dic[mdict['genre']] = 1
+        for control in mdict['control_list']:
+            if control in controls_drivers_dic:
+                controls_drivers_dic[control] += 1
+            else:
+                controls_drivers_dic[control] = 1
+        for device in mdict['device_list']:
+            if device in pdevices_drivers_dic:
+                pdevices_drivers_dic[device] += 1
+            else:
+                pdevices_drivers_dic[device] = 1
     pDialog.update(100)
     pDialog.close()
 
-    return main_filter_dic
+    # --- Write statistics report ---
+    log_info('Writing report "{0}"'.format(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath()))
+    with open(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath(), 'w') as file:
+        rslist = [
+            '*** Advanced MAME Launcher MAME histogram report ***',
+            '',
+        ]
+        rslist.append('--- Genres ---')
+        # for dname, dnumber in genres_drivers_dic.iteritems():
+        for dname, dnumber in sorted(genres_drivers_dic.items(), key = lambda x: x[1], reverse = True):
+            rslist.append('{0} {1}'.format(dname, dnumber))
+        rslist.append('')
+
+        rslist.append('--- Controls ---')
+        # for dname, dnumber in controls_drivers_dic.iteritems():
+        for dname, dnumber in sorted(controls_drivers_dic.items(), key = lambda x: x[1], reverse = True):
+            rslist.append('{0} {1}'.format(dname, dnumber))
+        rslist.append('')
+
+        rslist.append('--- Devices ---')
+        # for dname, dnumber in pdevices_drivers_dic.iteritems():
+        for dname, dnumber in sorted(pdevices_drivers_dic.items(), key = lambda x: x[1], reverse = True):
+            rslist.append('{0} {1}'.format(dname, dnumber))
+        rslist.append('')
+
+        file.write('\n'.join(rslist).encode('utf-8'))
+
+    sets_dic = {
+        'drivers_set' : drivers_set,
+        'genres_set' : genres_set,
+        'controls_set' : controls_set,
+        'pdevices_set' : pdevices_set,
+    }
+
+    return (main_filter_dic, sets_dic)
 
 #
 # Returns a tuple (filter_list, options_dic).
 #
-def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic):
+def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic, sets_dic):
     filter_list = []
     options_dic = {
         # No errors by default until an error is found.
@@ -1303,7 +1371,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
 
         # Check 2) Drivers in <Driver> exist.
         # Needs parsing of the <Driver> filter to get the literals.
-        
+        # Needs a set of all drivers in database.
 
         # Check 3) Genres in <Genre> exist.
         
@@ -1311,7 +1379,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         # Check 4) Controls in <Controls> exist.
         
 
-        # Check 5) Plugabble devices in <Devices> exist.
+        # Check 5) Plugabble devices in <PluggableDevices> exist.
         
 
         # Check 6) Machines in <Include> exist.

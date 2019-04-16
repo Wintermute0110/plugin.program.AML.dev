@@ -232,6 +232,7 @@ class AML_Paths:
         # >> Custom filters report.
         self.REPORT_CF_XML_SYNTAX_PATH = self.REPORTS_DIR.pjoin('Custom_filter_XML_check.txt')
         self.REPORT_CF_DB_BUILD_PATH   = self.REPORTS_DIR.pjoin('Custom_filter_database_report.txt')
+        self.REPORT_CF_HISTOGRAMS_PATH = self.REPORTS_DIR.pjoin('Custom_filter_histogram.txt')
 
         # >> DEBUG data
         self.REPORT_DEBUG_MAME_ITEM_DATA_PATH       = self.REPORTS_DIR.pjoin('debug_MAME_item_data.txt')
@@ -4215,6 +4216,7 @@ def command_context_setup_custom_filters():
         ['Build custom filter databases',
          'Test custom filter XML',
          'View custom filter XML',
+         'View filter histogram report',
          'View filter XML syntax report',
          'View filter database report',
          ])
@@ -4235,14 +4237,15 @@ def command_context_setup_custom_filters():
         # --- Make a dictionary of machines to be filtered ---
         # This currently includes all MAME parent machines.
         # However, it must include all machines (parent and clones).
-        main_filter_dic = filter_get_filter_DB(
-            db_dic['machines'], db_dic['render'], db_dic['assets'], db_dic['machine_archives'])
+        (main_filter_dic, sets_dic) = filter_get_filter_DB(
+            g_PATHS, db_dic['machines'], db_dic['render'], db_dic['assets'],
+            db_dic['machine_archives'])
 
         # --- Parse custom filter XML and check for errors ---
         # 1) Check the filter XML syntax and filter semantic errors.
         # 2) Produces report PATHS.REPORT_CF_XML_SYNTAX_PATH
         (filter_list, options_dic) = filter_custom_filters_load_XML(
-            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic)
+            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic, sets_dic)
         # If no filters sayonara
         if len(filter_list) < 1:
             kodi_notify_warn('Filter XML has no filter definitions')
@@ -4278,13 +4281,14 @@ def command_context_setup_custom_filters():
         # --- Make a dictionary of machines to be filtered ---
         # This currently includes all MAME parent machines.
         # However, it must include all machines (parent and clones).
-        main_filter_dic = filter_get_filter_DB(
-            db_dic['machines'], db_dic['render'], db_dic['assets'], db_dic['machine_archives'])
+        (main_filter_dic, sets_dic) = filter_get_filter_DB(
+            g_PATHS, db_dic['machines'], db_dic['render'], db_dic['assets'],
+            db_dic['machine_archives'])
 
         # --- Parse custom filter XML and check for errors ---
         # This function also check the filter XML syntax and produces a report.
         (filter_list, options_dic) = filter_custom_filters_load_XML(
-            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic)
+            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic, sets_dic)
         # If no filters sayonara
         if len(filter_list) < 1:
             kodi_notify_warn('Filter XML has no filter definitions')
@@ -4314,8 +4318,18 @@ def command_context_setup_custom_filters():
         with open(XML_FN.getPath(), 'r') as myfile:
             display_text_window('Custom filter XML', myfile.read().decode('utf-8'))
 
-    # --- View filter XML syntax report ---
+    # --- View filter histogram report ---
     elif menu_item == 3:
+        XML_FN = g_PATHS.REPORT_CF_HISTOGRAMS_PATH
+        log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        if not XML_FN.exists():
+            kodi_dialog_OK('Filter histogram report not found.')
+            return
+        with open(XML_FN.getPath(), 'r') as myfile:
+            display_text_window('Filter histogram report', myfile.read().decode('utf-8'))
+
+    # --- View filter XML syntax report ---
+    elif menu_item == 4:
         XML_FN = g_PATHS.REPORT_CF_XML_SYNTAX_PATH
         log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
         if not XML_FN.exists():
@@ -4325,7 +4339,7 @@ def command_context_setup_custom_filters():
             display_text_window('Custom filter XML syntax report', myfile.read().decode('utf-8'))
 
     # --- View filter report ---
-    elif menu_item == 4:
+    elif menu_item == 5:
         XML_FN = g_PATHS.REPORT_CF_DB_BUILD_PATH
         log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
         if not XML_FN.exists():
