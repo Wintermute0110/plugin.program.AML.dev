@@ -4129,16 +4129,16 @@ def _get_merged_rom(roms, merged_name):
 # Traverses the ROM hierarchy and returns the ROM location and name.
 #
 def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_roms):
+    # In the Merged set all Parent and Clone ROMs are in the parent archive.
+    # What about BIOS and Device ROMs?
+    # However, according to the Pleasuredome DATs, ROMs are organised like
+    # this:
+    #   clone_name_a/clone_rom_1
+    #   clone_name_b/clone_rom_1
+    #   parent_rom_1
+    #   parent_rom_2
     if rom_set == 'MERGED':
         cloneof = machines_render[m_name]['cloneof']
-
-        # In the Merged set all Parent and Clone ROMs are in the parent archive.
-        # However, according to the Pleasuredome DATs, ROMs are organised like
-        # this:
-        #   clone_name_a/clone_rom_1
-        #   clone_name_b/clone_rom_1
-        #   parent_rom_1
-        #   parent_rom_2
         if cloneof:
             location = cloneof + '/' + m_name + '/' + rom['name']
         else:
@@ -4244,9 +4244,15 @@ def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_r
             else:
                 location = m_name + '/' + rom['name']
 
+    # In the Non-Merged set all ROMs are in the machine archive ZIP archive, with
+    # the exception of BIOS ROMs and device ROMs.
     elif rom_set == 'NONMERGED':
-        # >> In the Non-Merged set all ROMs are in the machine archive, including BIOSes and
-        # >> device ROMs.
+        location = m_name + '/' + rom['name']
+
+    # In the Fully Non-Merged sets all ROMs are in the machine ZIP archive, including
+    # BIOS ROMs and device ROMs.
+    # Note that PD ROM sets are named Non-Merged but actually they are Fully Non-merged.
+    elif rom_set == 'FULLYNONMERGED':
         location = m_name + '/' + rom['name']
 
     else:
@@ -4401,9 +4407,10 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     log_info('mame_build_ROM_audit_databases() Initialising ...')
 
     # --- Initialise ---
-    rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_rom_set']]
+    # This must match the values defined in settings.xml, "ROM sets" tab.
+    rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][settings['mame_rom_set']]
     chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
-    rom_set_str = ['Merged', 'Split', 'Non-merged'][settings['mame_rom_set']]
+    rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][settings['mame_rom_set']]
     chd_set_str = ['Merged', 'Split', 'Non-merged'][settings['mame_chd_set']]
     log_info('mame_build_ROM_audit_databases() ROM set is {0}'.format(rom_set))
     log_info('mame_build_ROM_audit_databases() CHD set is {0}'.format(chd_set))
@@ -4411,7 +4418,8 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # ---------------------------------------------------------------------------------------------
     # Audit database
     # ---------------------------------------------------------------------------------------------
-    log_info('mame_build_ROM_audit_databases() Building {0} ROM/Sample audit database ...'.format(rom_set_str))
+    log_info('mame_build_ROM_audit_databases() Starting ...')
+    log_info('Building {0} ROM/Sample audit database ...'.format(rom_set_str))
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Building {0} ROM set ...'.format(rom_set_str))
@@ -4424,7 +4432,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         pDialog.update((item_count*100)//num_items)
 
         # --- ROMs ---
-        # >> Skip Devices
+        # >> Skip device machines.
         if machines_render[m_name]['isDevice']: continue
         stats_audit_MAME_machines_runnable += 1
         m_roms = machine_roms[m_name]['roms']
@@ -4462,7 +4470,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     pDialog.close()
 
     # --- CHD set (refactored code) ---------------------------------------------------------------
-    log_info('mame_build_ROM_audit_databases() Building {0} CHD audit database ...'.format(chd_set_str))
+    log_info('Building {0} CHD audit database ...'.format(chd_set_str))
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Building {0} CHD set ...'.format(chd_set_str))
     num_items = len(machines)
@@ -4490,14 +4498,14 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     pDialog.close()
 
     # ---------------------------------------------------------------------------------------------
-    # Machine files and ROM ZIP/Sample ZIP/CHD lists
+    # Machine files and ROM ZIP/Sample ZIP/CHD lists.
     # ---------------------------------------------------------------------------------------------
     # NOTE roms_dic and chds_dic may have invalid ROMs/CHDs. However, machine_archives_dic must
     #      have only valid ROM archives (ZIP/7Z).
     # For every machine, it goes ROM by ROM and makes a list of ZIP archive locations. Then, it
     # transforms the list into a set to have a list with unique elements.
     # roms_dic/chds_dic have invalid ROMs. Skip invalid ROMs.
-    log_info('mame_build_ROM_audit_databases() Building ROM ZIP/Sample ZIP/CHD file lists ...')
+    log_info('Building ROM ZIP/Sample ZIP/CHD file lists ...')
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Building ROM, Sample and CHD archive lists ...')
     machine_archives_dic = {}
@@ -4611,7 +4619,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # Do not remove earlier because 'merge' is used in the _get_XXX_location() functions.
     # ---------------------------------------------------------------------------------------------
     pDialog.create('Advanced MAME Launcher')
-    log_info('mame_build_ROM_audit_databases() Cleaning audit database before saving ...')
+    log_info('Cleaning audit database before saving it to disk ...')
     pDialog.update(0, 'Cleaning audit database ...')
     num_items = len(machines)
     item_count = 0
