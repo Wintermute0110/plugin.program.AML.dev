@@ -842,6 +842,10 @@ def render_root_list():
         'the machines released in the 1980s that use a joystick. AML includes a fairly '
         'complete default set of filters in XML format which can be edited.')
 
+    ROLS_plot = ('[COLOR orange]AEL Read Only Launchers[/COLOR] are special launchers '
+        'exported to AEL. You can select your Favourite MAME machines or setup a custom '
+        'filter to enjoy your MAME games in AEL togheter with other emulators.')
+
     MAME_favs_plot = ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
         'To add machines to the Favourite list use the context menu on any MAME machine list.')
     MAME_most_played_plot = ('Display the MAME machines that you play most, sorted by the number '
@@ -1029,6 +1033,9 @@ def render_root_list():
     if g_settings['display_custom_filters']:
         render_root_custom_filter_row('[Custom MAME filters]',
             misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'), custom_filters_plot)
+
+    render_root_custom_filter_row('[AEL Read Only Launchers]',
+        misc_url_1_arg('command', 'SHOW_AEL_ROLS'), ROLS_plot)
 
     if g_settings['display_MAME_favs']:
         render_root_list_row_standard('<Favourite MAME machines>', 
