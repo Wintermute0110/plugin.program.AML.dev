@@ -114,14 +114,14 @@ def fs_new_machine_dic():
         'input'           : {},
         'softwarelists'   : [],
         'devices'         : [], # List of dictionaries. See comments avobe.
-        # >> Custom AML data (from INI files or generated)
+        # Custom AML data (from INI files or generated)
         'artwork'         : [], # MASH Artwork.ini
-        'category'        : '', # MASH Category.ini
+        'bestgames'       : '', # External INI
+        'category'        : [], # MASH Category.ini
+        'catlist'         : '', # External INI
         'catver'          : '', # Progretto SNAPS catver.ini
-        'catlist'         : '', # External catalog
-        'genre'           : '', # External catalog
-        'bestgames'       : '', # External catalog
-        'series'          : '', # External catalog
+        'genre'           : '', # External INI
+        'series'          : [], # External INI
         # >> AML generated field.
         'isDead'          : False,
     }
@@ -141,9 +141,9 @@ def fs_new_machine_render_dic():
         'manufacturer'   : '',
         'driver_status'  : '',
         # >> Custom AML data
-        'isMature'       : False,
-        'genre'          : '', # Taken from Genre.ini or Catver.ini or Catlist.ini
-        'nplayers'       : '', # Taken from NPlayers.ini
+        'isMature'       : False, # Taken from mature.ini
+        'genre'          : '',    # Taken from Genre.ini or Catver.ini or Catlist.ini
+        'nplayers'       : '',    # Taken from NPlayers.ini
     }
 
 #

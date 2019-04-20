@@ -235,6 +235,20 @@ def mame_get_numerical_version(mame_version_str):
 # -------------------------------------------------------------------------------------------------
 # Loading of data files
 # -------------------------------------------------------------------------------------------------
+# Catver.ini is very special so it has a custom loader.
+# It provides data for two catalogs: categories and version added. In other words, it
+# has 2 folders defined in the INI file.
+#
+# --- Example -----------------------------------
+# ;; Comment
+# [special_folder_name or no mae]
+# machine_name_1 = category_name_1
+# machine_name_2 = category_name_2
+# -----------------------------------------------
+#
+# Returns two dictionaries with struct similar a mame_load_INI_datfile_simple()
+# catver_dic, veradded_dic
+#
 def mame_load_Catver_ini(filename):
     log_info('mame_load_Catver_ini() Parsing "{0}"'.format(filename))
     catver_version = 'Not found'
@@ -290,6 +304,9 @@ def mame_load_Catver_ini(filename):
 # -------------------------------------------------------------------------------------------------
 # Load nplayers.ini. Structure similar to catver.ini
 # -------------------------------------------------------------------------------------------------
+# nplayers.ini does not have [ROOT_FOLDER], only [NPlayers].
+# nplayers.ini has an structure very similar to catver.ini, and it is also supported here.
+#
 def mame_load_nplayers_ini(filename):
     log_info('mame_load_nplayers_ini() Parsing "{0}"'.format(filename))
     nplayers_version = 'Not found'
@@ -346,65 +363,76 @@ def mame_load_nplayers_ini(filename):
 # 2) ini_version
 #
 def mame_load_Mature_ini(filename):
+    # FSM statuses
+    FSM_HEADER = 0        # Looking for and process '[ROOT_FOLDER]' directory tag.
+                          # Initial status.
+    FSM_FOLDER_NAME = 1   # Searching for [category_name] and/or adding machines.
+
     log_info('mame_load_Mature_ini() Parsing "{0}"'.format(filename))
-    ini_version = 'Not found'
-    ini_set = set()
+    ini_dic = {
+        'version' : 'unknown',
+        'unique_categories' : True,
+        'single_category' : False,
+        'data' : {},
+        'categories' : set(),
+    }
+    slist = []
     try:
         f = open(filename, 'rt')
+        for file_line in f:
+            stripped_line = file_line.strip()
+            if stripped_line == '': continue # Skip blanks
+            slist.append(stripped_line)
+        f.close()
     except IOError:
         log_info('mame_load_Mature_ini() (IOError) opening "{0}"'.format(filename))
-        return (ini_set, ini_version)
-    # FSM statuses
-    # 0 -> Reading the file header
-    # 1 -> '[ROOT_FOLDER]' found. Read machines (one per line).
-    fsm_status = 0
-    for file_line in f:
-        stripped_line = file_line.strip()
-        if fsm_status == 0:
-            # >> Skip comments: lines starting with ';;'
-            # >> Look for version string in comments
+        return ini_dic
+
+    fsm_status = FSM_HEADER
+    for stripped_line in slist:
+        if fsm_status == FSM_HEADER:
+            # Skip comments: lines starting with ';;'
+            # Look for version string in comments
             if re.search(r'^;;', stripped_line):
                 m = re.search(r';; (\w+)\.ini ([0-9\.]+) / ', stripped_line)
                 if m: ini_version = m.group(2)
                 continue
             if stripped_line == '[ROOT_FOLDER]':
-                fsm_status = 1
-                continue
-        elif fsm_status == 1:
-            if stripped_line == '': continue
-            machine_name = stripped_line
-            ini_set.add(machine_name)
-    f.close()
-    log_info('mame_load_Mature_ini() Version "{0}"'.format(ini_version))
-    log_info('mame_load_Mature_ini() Machines {0}'.format(len(ini_set)))
+                fsm_status = FSM_FOLDER_NAME
+                # Create default category
+                current_category = 'default'
+                ini_dic['categories'].add(current_category)
+        elif fsm_status == FSM_FOLDER_NAME:
+            m_name = stripped_line
+            if m_name in ini_dic['data']:
+                ini_dic['unique_categories'] = False
+                ini_dic['data'][m_name].add(current_category)
+            else:
+                ini_dic['data'][m_name] = set(current_category)
+        else:
+            raise ValueError('Unknown FSM fsm_status {0}'.format(fsm_status))
+    ini_dic['single_category'] = True if len(ini_dic['categories']) == 1 else False
 
-    return (ini_set, ini_version)
+    log_info('mame_load_Mature_ini() Machines   {0:6d}'.format(len(ini_dic['data'])))
+    log_info('mame_load_Mature_ini() Categories {0:6d}'.format(len(ini_dic['categories'])))
+    log_info('mame_load_Mature_ini() version "{0}"'.format(ini_dic['version']))
+    log_info('mame_load_Mature_ini() unique_categories {0}'.format(ini_dic['unique_categories']))
+    log_info('mame_load_Mature_ini() single_category   {0}'.format(ini_dic['single_category']))
+
+    return ini_dic
 
 #
-# Loads INI files like catver.ini and nplayers.ini.
+# Generic MAME INI file loader.
+# Supports Artwork.ini, bestgames.ini, Category.ini, catlist.ini, genre.ini and series.ini.
 #
 # --- Example -----------------------------------
 # ;; Comment
-# [category_name_1]
-# machine_name_1 = data_1
-# machine_name_2 = data_2
+# [FOLDER_SETTINGS]
+# RootFolderIcon mame
+# SubFolderIcon folder
 #
-# [category_name_2]
-# machine_name_1 = data_1
-# -----------------------------------------------
+# [ROOT_FOLDER]
 #
-# ini_dic = {
-#
-# }
-#
-def mame_load_INI_datfile_complex(filename):
-    pass
-
-#
-# Generic MAME INI file loader. Supports catlist.ini, genre.ini, bestgames.ini and series.ini.
-#
-# --- Example -----------------------------------
-# ;; Comment
 # [category_name_1]
 # machine_name_1
 # machine_name_2
@@ -421,60 +449,88 @@ def mame_load_INI_datfile_complex(filename):
 #     'unique_categories' : bool,
 #     'single_category' : bool,
 #     'data' : {
-#         'machine_name' : [ 'category_1', 'category_2', ... ]
+#         'machine_name' : { 'category_1', 'category_2', ... }
 #     }
-#     'categories' : [
+#     'categories' : {
 #         'category_1', 'category_2', ...
-#     ]
+#     }
 # }
 #
-# categories is a list of unique categories, sorted alphabetically. Each category appears only once.
+# categories is a set of (unique) categories. By definition of set, each category appears
+# only once.
 # unique_categories is True is each machine has a unique category, False otherwise.
-# single_category is True if only one category is defined, for example in mature.ini 
-# or nplayers.ini.
+# single_category is True if only one category is defined, for example in mature.ini.
 #
-# Rename this function to mame_load_INI_datfile_simple()
-#
-def mame_load_INI_datfile(filename):
-    log_info('mame_load_INI_datfile() Parsing "{0}"'.format(filename))
-    ini_version = 'Not found'
-    ini_dic = {}
-    ini_set = set()
+def mame_load_INI_datfile_simple(filename):
+    # FSM statuses
+    FSM_HEADER = 0        # Looking for and process '[ROOT_FOLDER]' directory tag.
+                          # Initial status.
+    FSM_FOLDER_NAME = 1   # Searching for [category_name] and/or adding machines.
+
+    # Read file and put it in a list of strings.
+    # Strings in this list are stripped.
+    log_info('mame_load_INI_datfile_simple() Parsing "{0}"'.format(filename))
+    ini_dic = {
+        'version' : 'unknown',
+        'unique_categories' : True,
+        'single_category' : False,
+        'data' : {},
+        'categories' : set(),
+    }
+    slist = []
     try:
         f = open(filename, 'rt')
+        for file_line in f:
+            stripped_line = file_line.strip()
+            if stripped_line == '': continue # Skip blanks
+            slist.append(stripped_line)
+        f.close()
     except IOError:
-        log_info('mame_load_INI_datfile() (IOError) opening "{0}"'.format(filename))
-        return (ini_dic, ini_version)
-    # Compile regexes to increase performance.
-    # According to the docs: The compiled versions of the most recent patterns passed to 
-    # re.match(), re.search() or re.compile() are cached, so programs that use only a few 
-    # regular expressions at a time needn’t worry about compiling regular expressions.
-    for file_line in f:
-        stripped_line = file_line.strip()
-        # Skip comments: lines starting with ';;'
-        # Look for version string in comments
-        if re.search(r'^;;', stripped_line):
-            m = re.search(r';; (\w+)\.ini ([0-9\.]+) / ', stripped_line)
-            if m: ini_version = m.group(2)
-            continue
-        # Skip blanks
-        if stripped_line == '': continue
-        # Next line defines a category?
-        searchObj = re.search(r'^\[(.*)\]', stripped_line)
-        if searchObj:
-            # New category
-            current_category = searchObj.group(1)
-            ini_set.add(current_category)
-        else:
-            # Add machine to category
-            machine_name = stripped_line
-            ini_dic[machine_name] = current_category
-    f.close()
-    log_info('mame_load_INI_datfile() Version "{0}"'.format(ini_version))
-    log_info('mame_load_INI_datfile() Machines {0:6d}'.format(len(ini_dic)))
-    log_info('mame_load_INI_datfile() Categories {0:6d}'.format(len(ini_set)))
+        log_info('mame_load_INI_datfile_simple() (IOError) opening "{0}"'.format(filename))
+        return ini_dic
 
-    return (ini_dic, ini_version)
+    # Compile regexes to increase performance => It is no necessary. According to the docs: The
+    # compiled versions of the most recent patterns passed to re.match(), re.search() or 
+    # re.compile() are cached, so programs that use only a few regular expressions at a 
+    # time needn’t worry about compiling regular expressions.
+    fsm_status = FSM_HEADER
+    for stripped_line in slist:
+        # log_debug('{0}'.format(stripped_line))
+        if fsm_status == FSM_HEADER:
+            # log_debug('FSM_HEADER "{0}"'.format(stripped_line))
+            # Skip comments: lines starting with ';;'
+            # Look for version string in comments
+            if re.search(r'^;;', stripped_line):
+                m = re.search(r';; (\w+)\.ini ([0-9\.]+) / ', stripped_line)
+                if m: ini_dic['version'] = m.group(2)
+                continue
+            if stripped_line.find('[ROOT_FOLDER]') >= 0:
+                fsm_status = FSM_FOLDER_NAME
+        elif fsm_status == FSM_FOLDER_NAME:
+            m = re.search(r'^\[(.*)\]', stripped_line)
+            if m:
+                current_category = m.group(1)
+                if current_category in ini_dic['categories']:
+                    raise ValueError('Repeated category {0}'.format(current_category))
+                ini_dic['categories'].add(current_category)
+            else:
+                m_name = stripped_line
+                if m_name in ini_dic['data']:
+                    ini_dic['unique_categories'] = False
+                    ini_dic['data'][m_name].add(current_category)
+                else:
+                    ini_dic['data'][m_name] = set(current_category)
+        else:
+            raise ValueError('Unknown FSM fsm_status {0}'.format(fsm_status))
+    ini_dic['single_category'] = True if len(ini_dic['categories']) == 1 else False
+
+    log_info('mame_load_INI_datfile_simple() Machines   {0:6d}'.format(len(ini_dic['data'])))
+    log_info('mame_load_INI_datfile_simple() Categories {0:6d}'.format(len(ini_dic['categories'])))
+    log_info('mame_load_INI_datfile_simple() version "{0}"'.format(ini_dic['version']))
+    log_info('mame_load_INI_datfile_simple() unique_categories {0}'.format(ini_dic['unique_categories']))
+    log_info('mame_load_INI_datfile_simple() single_category   {0}'.format(ini_dic['single_category']))
+
+    return ini_dic
 
 #
 # Loads History.dat
@@ -3390,23 +3446,23 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     num_items = 9
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     pDialog.update(int((0*100) / num_items), pdialog_line1, ARTWORK_INI)
-    (artwork_dic, artwork_version) = mame_load_INI_datfile(ARTWORK_FN.getPath())
+    artwork_dic = mame_load_INI_datfile_simple(ARTWORK_FN.getPath())
     pDialog.update(int((1*100) / num_items), pdialog_line1, BESTGAMES_INI)
-    (bestgames_dic, bestgames_version) = mame_load_INI_datfile(BESTGAMES_FN.getPath())
+    bestgames_dic = mame_load_INI_datfile_simple(BESTGAMES_FN.getPath())
     pDialog.update(int((2*100) / num_items), pdialog_line1, CATEGORY_INI)
-    (category_dic, category_version) = mame_load_INI_datfile(CATEGORY_FN.getPath())
+    category_dic = mame_load_INI_datfile_simple(CATEGORY_FN.getPath())
     pDialog.update(int((3*100) / num_items), pdialog_line1, CATLIST_INI)
-    (catlist_dic, catlist_version) = mame_load_INI_datfile(CATLIST_FN.getPath())
+    catlist_dic = mame_load_INI_datfile_simple(CATLIST_FN.getPath())
     pDialog.update(int((4*100) / num_items), pdialog_line1, CATVER_INI)
     (categories_dic, catver_version) = mame_load_Catver_ini(CATVER_FN.getPath())
     pDialog.update(int((5*100) / num_items), pdialog_line1, GENRE_INI)
-    (genre_dic, genre_version) = mame_load_INI_datfile(GENRE_FN.getPath())
+    genre_dic = mame_load_INI_datfile_simple(GENRE_FN.getPath())
     pDialog.update(int((6*100) / num_items), pdialog_line1, MATURE_INI)
-    (mature_set, mature_version) = mame_load_Mature_ini(MATURE_FN.getPath())
+    mature_set = mame_load_Mature_ini(MATURE_FN.getPath())
     pDialog.update(int((7*100) / num_items), pdialog_line1, NPLAYERS_INI)
     (nplayers_dic, nplayers_version) = mame_load_nplayers_ini(NPLAYERS_FN.getPath())
     pDialog.update(int((8*100) / num_items), pdialog_line1, SERIES_INI)
-    (series_dic, series_version) = mame_load_INI_datfile(SERIES_FN.getPath())
+    series_dic = mame_load_INI_datfile_simple(SERIES_FN.getPath())
     pDialog.update(int((9*100) / num_items), ' ', ' ')
     pDialog.close()
 
@@ -3424,6 +3480,21 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     (mameinfo_idx_dic, mameinfo_dic, mameinfo_version) = mame_load_MameInfo_DAT(MAMEINFO_FN.getPath())
     pDialog.update(int((4*100) / num_items), ' ', ' ')
     pDialog.close()
+
+    # Verify that INI files match the data model. Only verify the catalogs with unique keys.
+    if not bestgames_dic['unique_categories']:
+        raise ValueError('bestgames.ini has not unique categories.')
+    if not catlist_dic['unique_categories']:
+        raise ValueError('catlist.ini has not unique categories.')
+    # if not catver_dic['unique_categories']:
+    #     raise ValueError('catver.ini has not unique categories.')
+    if not genre_dic['unique_categories']:
+        raise ValueError('genre.ini has not unique categories.')
+
+    if not mature_set['unique_categories']:
+        raise ValueError('mature.ini has not unique categories.')
+    # if not nplayers_dic['unique_categories']:
+    #     raise ValueError('nplayers.ini has not unique categories.')
 
     # ---------------------------------------------------------------------------------------------
     # Incremental Parsing approach B (from [1])
@@ -3446,38 +3517,17 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # --- Process MAME XML ---
     total_machines = control_dic['stats_total_machines']
     log_info('mame_build_MAME_main_database() total_machines {0}'.format(total_machines))
-    machines = {}
-    machines_render = {}
-    machines_roms = {}
-    machines_devices = {}
+    machines, machines_render, machines_roms, machines_devices = {}, {}, {}, {}
     roms_sha1_dic = {}
-    stats_processed_machines = 0
-    stats_parents            = 0
-    stats_clones             = 0
-    stats_devices            = 0
-    stats_devices_parents    = 0
-    stats_devices_clones     = 0
-    stats_runnable           = 0
-    stats_runnable_parents   = 0
-    stats_runnable_clones    = 0
-    stats_samples            = 0
-    stats_samples_parents    = 0
-    stats_samples_clones     = 0
-    stats_BIOS               = 0
-    stats_BIOS_parents       = 0
-    stats_BIOS_clones        = 0
-    stats_coin               = 0
-    stats_coin_parents       = 0
-    stats_coin_clones        = 0
-    stats_nocoin             = 0
-    stats_nocoin_parents     = 0
-    stats_nocoin_clones      = 0
-    stats_mechanical         = 0
-    stats_mechanical_parents = 0
-    stats_mechanical_clones  = 0
-    stats_dead               = 0
-    stats_dead_parents       = 0
-    stats_dead_clones        = 0
+    stats_processed_machines, stats_parents, stats_clones = 0, 0, 0
+    stats_devices, stats_devices_parents, stats_devices_clones = 0, 0, 0
+    stats_runnable, stats_runnable_parents, stats_runnable_clones = 0, 0, 0
+    stats_samples, stats_samples_parents, stats_samples_clones = 0, 0, 0
+    stats_BIOS, stats_BIOS_parents, stats_BIOS_clones = 0, 0, 0
+    stats_coin, stats_coin_parents, stats_coin_clones = 0, 0, 0
+    stats_nocoin, stats_nocoin_parents, stats_nocoin_clones = 0, 0, 0
+    stats_mechanical, stats_mechanical_parents, stats_mechanical_clones = 0, 0, 0
+    stats_dead, stats_dead_parents, stats_dead_clones = 0, 0, 0
 
     log_info('mame_build_MAME_main_database() Parsing MAME XML file ...')
     num_iteration = 0
@@ -3550,6 +3600,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             if 'sampleof' in elem.attrib: machine['sampleof'] = elem.attrib['sampleof']
 
             # --- Add catver/catlist/genre ---
+            # THIS MUST BE FIXED. THE DATAMODEL OF THE INI PARSERS HAS CHANGED.
             if m_name in artwork_dic:
                 machine['artwork'] = artwork_dic[m_name]
             else:
