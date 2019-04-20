@@ -46,6 +46,19 @@ WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi 
 
 [B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
 
+WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed by AML.
+         In this core, the XML is extracted using the MAME internal menu, which must be
+         opened with the Retroarch core options menu. The XML file is saved in the SAVES
+         directory with name mame2003-plus/mame2003-plus.xml
+         TTBOMK, currently it is the only core to support this feature.
+         Exploit this to give support to MAME 2003 and then Android. According to
+         Chrisism, Retroarch is currently the best way to use MAME in Android.
+
+         See https://github.com/libretro/mame2003-libretro/pull/348
+         See https://github.com/libretro/mame2003-plus-libretro/pull/8
+         See https://github.com/libretro/mame2010-libretro/pull/123
+         See https://github.com/libretro/mame2010-libretro/tree/master/metadata
+
 WIP      [CORE] Ability to export DAT files in Logiqx format for MAME ROMs, Samples, CHDs,
          and SL ROMs and CHDs.
 
