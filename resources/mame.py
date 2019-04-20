@@ -823,6 +823,161 @@ def mame_load_Command_DAT(filename):
     return (proper_idx_list, proper_data_dic, version_str)
 
 # -------------------------------------------------------------------------------------------------
+# DAT export
+# -------------------------------------------------------------------------------------------------
+#
+# Writes a XML text tag line, indented 2 spaces by default.
+# Both tag_name and tag_text must be Unicode strings.
+# Returns an Unicode string.
+#
+def XML_t(tag_name, tag_text, num_spaces = 4):
+    if tag_text:
+        tag_text = text_escape_XML(tag_text)
+        line = '{0}<{1}>{2}</{3}>'.format(' ' * num_spaces, tag_name, tag_text, tag_name)
+    else:
+        # Empty tag
+        line = '{0}<{1} />'.format(' ' * num_spaces, tag_name)
+
+    return line
+
+#
+# Only valid ROMs in DAT file.
+#
+def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, DAT_FN,
+    machines, render, audit_roms):
+
+    # XML file header.
+    slist = []
+    slist.append('<?xml version="1.0" encoding="UTF-8"?>')
+    slist.append('<!DOCTYPE datafile PUBLIC "-//Logiqx//DTD ROM Management Datafile//EN" "http://www.logiqx.com/Dats/datafile.dtd">')
+    slist.append('<datafile>')
+
+    slist.append('<header>')
+    slist.append(XML_t('name', 'MAME {0} ROMs (xxxxx)'.format(control_dic['ver_mame'])))
+    slist.append(XML_t('description', ''))
+    slist.append(XML_t('version', ''))
+    slist.append(XML_t('author', 'Exported by Advanced MAME Launcher'))
+    slist.append('</header>')
+
+    # Traverse ROMs and write DAT.
+    total_machines, machine_counter = len(audit_roms), 0
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher', 'Creating MAME ROMs XML DAT ...')
+    pDialog.update(0)
+    for m_name in sorted(audit_roms):
+        # If machine has no ROMs then skip it
+        rom_list, actual_rom_list, num_ROMs = audit_roms[m_name], [], 0
+        for rom in rom_list:
+            if rom['type'] != ROM_TYPE_ROM: continue
+            actual_rom_list.append(rom)
+            num_ROMs += 1
+        if num_ROMs == 0: continue
+
+        # Print ROMs in the XML.
+        slist.append('<machine name="{0}">'.format(m_name))
+        slist.append(XML_t('description', render[m_name]['description']))
+        slist.append(XML_t('year', render[m_name]['year']))
+        slist.append(XML_t('manufacturer', render[m_name]['manufacturer']))
+        for rom in actual_rom_list:
+            t = '    <rom name="{0}" size="{1}" crc="{2}" sha1="{3}"/>'.format(
+                rom['name'], rom['size'], rom['crc'], 'xxxxx')
+            slist.append(t)
+        slist.append('</machine>')
+        machine_counter += 1
+        pDialog.update((100*machine_counter)/total_machines)
+    pDialog.close()
+
+    # XML file footer.
+    slist.append('</datafile>')
+
+    # Open output file name.
+    pDialog.create('Advanced MAME Launcher', 'Creating MAME ROMs XML DAT ...')
+    pDialog.update(15)
+    try:
+        file_obj = open(DAT_FN.getPath(), 'w')
+        file_obj.write('\n'.join(slist).encode('utf-8'))
+        file_obj.close()
+        pDialog.update(100)
+        pDialog.close()
+    except OSError:
+        pDialog.close()
+        log_error('(OSError) Cannot write DAT XML file')
+        kodi_notify_warn('(OSError) Cannot write DAT XML file')
+    except IOError:
+        pDialog.close()
+        log_error('(IOError) Cannot write DAT XML file')
+        kodi_notify_warn('(IOError) Cannot write DAT XML file')
+
+#
+# Only valid CHDs in DAT file.
+#
+def mame_write_MAME_CHD_XML_DAT(PATHS, settings, control_dic, DAT_FN,
+    machines, render, audit_roms):
+
+    # XML file header.
+    slist = []
+    slist.append('<?xml version="1.0" encoding="UTF-8"?>')
+    slist.append('<!DOCTYPE datafile PUBLIC "-//Logiqx//DTD ROM Management Datafile//EN" "http://www.logiqx.com/Dats/datafile.dtd">')
+    slist.append('<datafile>')
+
+    slist.append('<header>')
+    slist.append(XML_t('name', 'MAME {0} CHDs (xxxxx)'.format(control_dic['ver_mame'])))
+    slist.append(XML_t('description', ''))
+    slist.append(XML_t('version', ''))
+    slist.append(XML_t('author', 'Exported by Advanced MAME Launcher'))
+    slist.append('</header>')
+
+    # Traverse ROMs and write DAT.
+    total_machines, machine_counter = len(audit_roms), 0
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher', 'Creating MAME CHDs XML DAT ...')
+    pDialog.update(0)
+    for m_name in sorted(audit_roms):
+        # If machine has no ROMs then skip it
+        rom_list, actual_rom_list, num_ROMs = audit_roms[m_name], [], 0
+        for rom in rom_list:
+            if rom['type'] != ROM_TYPE_DISK: continue
+            actual_rom_list.append(rom)
+            num_ROMs += 1
+        if num_ROMs == 0: continue
+
+        # Print ROMs in the XML.
+        slist.append('<machine name="{0}">'.format(m_name))
+        slist.append(XML_t('description', render[m_name]['description']))
+        slist.append(XML_t('year', render[m_name]['year']))
+        slist.append(XML_t('manufacturer', render[m_name]['manufacturer']))
+        for rom in actual_rom_list:
+            t = '    <rom name="{0}" size="{1}" crc="{2}" sha1="{3}"/>'.format(
+                rom['name'], 'xxxxx', 'xxxxx', rom['sha1'])
+            slist.append(t)
+        slist.append('</machine>')
+        machine_counter += 1
+        pDialog.update((100*machine_counter)/total_machines)
+    pDialog.close()
+
+    # XML file footer.
+    slist.append('</datafile>')
+
+    # Open output file name.
+    pDialog.create('Advanced MAME Launcher', 'Creating MAME ROMs XML DAT ...')
+    pDialog.update(15)
+    try:
+        file_obj = open(DAT_FN.getPath(), 'w')
+        file_obj.write('\n'.join(slist).encode('utf-8'))
+        file_obj.close()
+        pDialog.update(100)
+        pDialog.close()
+    except OSError:
+        pDialog.close()
+        log_error('(OSError) Cannot write DAT XML file')
+        kodi_notify_warn('(OSError) Cannot write DAT XML file')
+    except IOError:
+        pDialog.close()
+        log_error('(IOError) Cannot write DAT XML file')
+        kodi_notify_warn('(IOError) Cannot write DAT XML file')
+
+#
+# -------------------------------------------------------------------------------------------------
 # CHD manipulation functions
 # -------------------------------------------------------------------------------------------------
 # Reference in https://github.com/rtissera/libchdr/blob/master/src/chd.h

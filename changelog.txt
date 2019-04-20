@@ -23,11 +23,6 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
          In theory Kodi VFS is able to read RAR files.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
-WIP      [CORE] Differentiate between Non-merged and Fully non-merged ROM sets.
-         Non-merged sets do not include BIOS and device ROMs.
-         Fully non-merged sets include BIOS and devices ROMs (every ROM required to run each
-         machine). Pleasuredome rom sets are Fully non-merged.
-
 WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
          launcher information as well as the ROMs information. ROLs are generated with AML,
          can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
@@ -50,6 +45,14 @@ WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi 
 
 
 [B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
+
+WIP      [CORE] Ability to export DAT files in Logiqx format for MAME ROMs, Samples, CHDs,
+         and SL ROMs and CHDs.
+
+WIP      [CORE] Differentiate between Non-merged and Fully non-merged MAME ROM sets.
+         Non-merged sets do not include BIOS and device ROMs.
+         Fully non-merged sets include BIOS and devices ROMs (every ROM required to run each
+         machine). Pleasuredome ROM sets are Fully non-merged.
 
 FEATURE  [FILTERING] Test the filters for errors. For example, test that all the drivers
          defined in <Driver> exist. Another example, test that the genres defined in
