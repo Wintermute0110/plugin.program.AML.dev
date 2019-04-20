@@ -4812,20 +4812,24 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     }
     NUM_CATALOGS = len(cache_index_dic)
 
+    NORMAL_DRIVER_LIST = [
+        '88games.cpp', 'cball.cpp', 'asteroid.cpp',
+    ]
+    UNUSUAL_DRIVER_LIST = [
+        'aristmk5.cpp', 'adp.cpp',     'mpu4vid.cpp',
+        'cubo.cpp',     'sfbonus.cpp', 'peplus.cpp',
+    ]
+
     # ---------------------------------------------------------------------------------------------
     # Main filters (None catalog) -----------------------------------------------------------------
     # ---------------------------------------------------------------------------------------------
     pDialog.update(update_number, pDialog_line1, 'Main Catalog')
-    main_catalog_parents = {}
-    main_catalog_all = {}
+    main_catalog_parents, main_catalog_all = {}, {}
 
     # --- Normal and Unusual machine list ---
     # Machines with Coin Slot and Non Mechanical and not Dead and not Device
     log_info('Making None catalog - Coin index ...')
-    normal_parent_dic = {}
-    normal_all_dic = {}
-    unusual_parent_dic = {}
-    unusual_all_dic = {}
+    normal_parent_dic, normal_all_dic, unusual_parent_dic, unusual_all_dic = {}, {}, {}, {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
         machine_render = machines_render[parent_name]
@@ -4835,36 +4839,27 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         if machine_main['isDead']: continue
         if machine_render['isDevice']: continue
 
-        # --- Determinte if machine is Normal or Unusual ----
-        # Add parent to parent list and parents and clonse to all list
-        # Unusual machine: no controls or control_type has "only_buttons" or "gambling"
-        # or "hanafuda" or "mahjong"
-        #
-        # Unusual machine driver exceptions (must be Normal and not Unusual):
-        #
-        # control_list = machine_main['control_type']
+        # Make list of machine controls.
         if machine_main['input']:
             control_list = [ctrl_dic['type'] for ctrl_dic in machine_main['input']['control_list']]
         else:
             control_list = []
-        if ('only_buttons' in control_list and len(control_list) > 1) or \
-           machine_main['sourcefile'] == '88games.cpp' or \
-           machine_main['sourcefile'] == 'cball.cpp' or \
-           machine_main['sourcefile'] == 'asteroid.cpp':
+
+        # --- Determinte if machine is Normal or Unusual ----
+        # Standard machines.
+        if ('only_buttons' in control_list and len(control_list) > 1) \
+            or machine_main['sourcefile'] in NORMAL_DRIVER_LIST:
             normal_parent_dic[parent_name] = machine_render['description']
             normal_all_dic[parent_name] = machine_render['description']
             _catalog_add_clones(parent_name, main_pclone_dic, machines_render, normal_all_dic)
         #
         # Unusual machines. Most of them you don't wanna play.
+        # No controls or control_type has "only_buttons" or "gambling" or "hanafuda" or "mahjong"
         #
-        elif not control_list or 'only_buttons' in control_list or 'gambling' in control_list or \
-             'hanafuda' in control_list or 'mahjong' in control_list or \
-             machine_main['sourcefile'] == 'aristmk5.cpp' or \
-             machine_main['sourcefile'] == 'adp.cpp' or \
-             machine_main['sourcefile'] == 'mpu4vid.cpp' or \
-             machine_main['sourcefile'] == 'cubo.cpp' or \
-             machine_main['sourcefile'] == 'sfbonus.cpp' or \
-             machine_main['sourcefile'] == 'peplus.cpp':
+        elif not control_list \
+            or 'only_buttons' in control_list or 'gambling' in control_list \
+            or 'hanafuda' in control_list or 'mahjong' in control_list \
+            or machine_main['sourcefile'] in UNUSUAL_DRIVER_LIST:
             unusual_parent_dic[parent_name] = machine_render['description']
             unusual_all_dic[parent_name] = machine_render['description']
             _catalog_add_clones(parent_name, main_pclone_dic, machines_render, unusual_all_dic)
@@ -4883,8 +4878,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- NoCoin list ---
     # A) Machines with No Coin Slot and Non Mechanical and not Dead and not Device
     log_info('Making NoCoin index ...')
-    parent_dic = {}
-    all_dic = {}
+    parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
         machine_render = machines_render[parent_name]
@@ -4902,8 +4896,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Mechanical machines ---
     # >> Mechanical machines and not Dead and not Device
     log_info('Making Mechanical index ...')
-    parent_dic = {}
-    all_dic = {}
+    parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
         machine_render = machines_render[parent_name]
@@ -4919,8 +4912,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Dead machines ---
     # >> Dead machines
     log_info('Making Dead Machines index ...')
-    parent_dic = {}
-    all_dic = {}
+    parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine_main = machines[parent_name]
         machine_render = machines_render[parent_name]
@@ -4934,8 +4926,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Device machines ---
     # >> Device machines
     log_info('Making Device Machines index ...')
-    parent_dic = {}
-    all_dic = {}
+    parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine_render = machines_render[parent_name]
         if not machine_render['isDevice']: continue
@@ -4956,13 +4947,11 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # Binary filters ------------------------------------------------------------------------------
     # ---------------------------------------------------------------------------------------------
     pDialog.update(update_number, pDialog_line1, 'Binary Catalog')
-    binary_catalog_parents = {}
-    binary_catalog_all = {}
+    binary_catalog_parents, binary_catalog_all = {}, {}
 
     # --- CHD machines ---
     log_info('Making CHD Machines index ...')
-    parent_dic = {}
-    all_dic = {}
+    parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
@@ -4976,8 +4965,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Machines with samples ---
     log_info('Making Samples Machines index ...')
-    parent_dic = {}
-    all_dic = {}
+    parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
@@ -4991,8 +4979,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Software List machines ---
     log_info('Making Software List Machines index ...')
-    parent_dic = {}
-    all_dic = {}
+    parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
@@ -5006,8 +4993,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- BIOS ---
     log_info('Making BIOS Machines index ...')
-    parent_dic = {}
-    all_dic = {}
+    parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
@@ -5018,7 +5004,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     binary_catalog_parents['BIOS'] = parent_dic
     binary_catalog_all['BIOS'] = all_dic
 
-    # >> Build cache index and save Binary catalog JSON file
+    # Build cache index and save Binary catalog JSON file
     _cache_index_builder('Binary', cache_index_dic, binary_catalog_all, binary_catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_BINARY_ALL_PATH.getPath(), binary_catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_BINARY_PARENT_PATH.getPath(), binary_catalog_parents)
@@ -5031,8 +5017,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Catver catalog ---
     log_info('Making Catver catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Catver catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Catver)
     _cache_index_builder('Catver', cache_index_dic, catalog_all, catalog_parents)
@@ -5044,8 +5029,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Catlist catalog ---
     log_info('Making Catlist catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Catlist catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Catlist)
     _cache_index_builder('Catlist', cache_index_dic, catalog_all, catalog_parents)
@@ -5057,8 +5041,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Genre catalog ---
     log_info('Making Genre catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Genre catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Genre)
     _cache_index_builder('Genre', cache_index_dic, catalog_all, catalog_parents)
@@ -5070,8 +5053,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Category catalog ---
     log_info('Making Category catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Category catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Category)
     _cache_index_builder('Category', cache_index_dic, catalog_all, catalog_parents)
@@ -5083,8 +5065,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Nplayers catalog ---
     log_info('Making Nplayers catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Nplayers catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines_render, machines_render, main_pclone_dic, _aux_catalog_key_NPlayers)
     _cache_index_builder('NPlayers', cache_index_dic, catalog_all, catalog_parents)
@@ -5096,8 +5077,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Bestgames catalog ---
     log_info('Making Bestgames catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Bestgames catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Bestgames)
     _cache_index_builder('Bestgames', cache_index_dic, catalog_all, catalog_parents)
@@ -5109,8 +5089,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Series catalog ---
     log_info('Making Series catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Series catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Series)
     _cache_index_builder('Series', cache_index_dic, catalog_all, catalog_parents)
@@ -5122,8 +5101,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Artwork catalog ---
     log_info('Making Artwork catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Artwork catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Artwork)
     _cache_index_builder('Artwork', cache_index_dic, catalog_all, catalog_parents)
@@ -5135,8 +5113,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Control catalog (Expanded) ---
     log_info('Making Control Expanded catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Control Expanded catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Controls_Expanded)
     _cache_index_builder('Controls_Expanded', cache_index_dic, catalog_all, catalog_parents)
@@ -5150,8 +5127,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # >> one control.
     log_info('Making Control Compact catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Control Compact catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Controls_Compact)
     _cache_index_builder('Controls_Compact', cache_index_dic, catalog_all, catalog_parents)
@@ -5163,8 +5139,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- <device> / Device Expanded catalog ---
     log_info('Making <device> tag Expanded catalog ...')
     pDialog.update(update_number, pDialog_line1, '<device> Expanded catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Devices_Expanded)
     _cache_index_builder('Devices_Expanded', cache_index_dic, catalog_all, catalog_parents)
@@ -5176,8 +5151,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- <device> / Device Compact catalog ---
     log_info('Making <device> tag Compact catalog ...')
     pDialog.update(update_number, pDialog_line1, '<device> Compact catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Devices_Compact)
     _cache_index_builder('Devices_Compact', cache_index_dic, catalog_all, catalog_parents)
@@ -5189,8 +5163,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Display Type catalog ---
     log_info('Making Display Type catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Display Type catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Display_Type)
     _cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
@@ -5202,8 +5175,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Display VSync catalog ---
     log_info('Making Display VSync catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Display VSync catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Display_VSync)
     _cache_index_builder('Display_VSync', cache_index_dic, catalog_all, catalog_parents)
@@ -5215,8 +5187,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Display Resolution catalog ---
     log_info('Making Display Resolution catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Display Resolution catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Display_Resolution)
     _cache_index_builder('Display_Resolution', cache_index_dic, catalog_all, catalog_parents)
@@ -5228,8 +5199,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- CPU catalog ---
     log_info('Making CPU catalog ...')
     pDialog.update(update_number, pDialog_line1, 'CPU catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_CPU)
     _cache_index_builder('CPU', cache_index_dic, catalog_all, catalog_parents)
@@ -5241,8 +5211,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Driver catalog ---
     log_info('Making Driver catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Driver catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Driver)
     _cache_index_builder('Driver', cache_index_dic, catalog_all, catalog_parents)
@@ -5254,8 +5223,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Manufacturer catalog ---
     log_info('Making Manufacturer catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Manufacturer catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Manufacturer)
     _cache_index_builder('Manufacturer', cache_index_dic, catalog_all, catalog_parents)
@@ -5265,10 +5233,11 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- MAME short name catalog ---
+    # This catalog cannot use _build_catalog_helper_new() because of the special name
+    # of the catalog (it is not the plain description).
     log_info('Making MAME short name catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Short name catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
@@ -5293,8 +5262,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- MAME long name catalog ---
     log_info('Making MAME long name catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Long name catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_LongName)
     _cache_index_builder('LongName', cache_index_dic, catalog_all, catalog_parents)
@@ -5302,21 +5270,18 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
-    pDialog.update(update_number)
-    pDialog.close()
 
     # --- Software List (BySL) catalog ---
+    # This catalog cannot use _build_catalog_helper_new() because of the name change of the SLs.
     log_info('Making Software List catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Software List catalog')
     # >> Load proper Software List proper names, if available
     SL_names_dic = fs_load_JSON_file_dic(PATHS.SL_NAMES_PATH.getPath())
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
-        if machine_render['isDevice']: continue # >> Skip device machines
-        # >> A machine may have more than 1 software lists
+        if machine_render['isDevice']: continue
         for sl_name in machine['softwarelists']:
             catalog_key = sl_name
             if catalog_key in SL_names_dic:
@@ -5337,8 +5302,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # --- Year catalog ---
     log_info('Making Year catalog ...')
     pDialog.update(update_number, pDialog_line1, 'Year catalog')
-    catalog_parents = {}
-    catalog_all = {}
+    catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Year)
     _cache_index_builder('Year', cache_index_dic, catalog_all, catalog_parents)
@@ -5346,6 +5310,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # Close progress dialog.
+    pDialog.update(update_number)
+    pDialog.close()
 
     # --- Create properties database with default values ------------------------------------------
     # Now overwrites all properties when the catalog is rebuilt.
