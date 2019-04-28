@@ -20,19 +20,19 @@ from __future__ import unicode_literals
 # -------------------------------------------------------------------------------------------------
 # Addon configuration options
 # -------------------------------------------------------------------------------------------------
-# >> Compat, smaller size, non-human readable JSON.
-# >> This settings must be True when releasing.
+# Compat, smaller size, non-human readable JSON.
+# This settings must be True when releasing.
 OPTION_COMPACT_JSON = True
 
-# >> Use less memory when writing big JSON files, but writing is slower.
-# >> This settings must be True when releasing.
+# Use less memory when writing big JSON files, but writing is slower.
+# This settings must be True when releasing.
 OPTION_LOWMEM_WRITE_JSON = True
 
 # -------------------------------------------------------------------------------------------------
 # DEBUG/TEST settings
 # -------------------------------------------------------------------------------------------------
-# >> If True MAME is not launched. Useful to test the Recently Played and Most Played code.
-# >> This settings must be False when releasing.
+# If True MAME is not launched. Useful to test the Recently Played and Most Played code.
+# This settings must be False when releasing.
 DISABLE_MAME_LAUNCHING = False
 
 # -------------------------------------------------------------------------------------------------
@@ -41,7 +41,8 @@ DISABLE_MAME_LAUNCHING = False
 # Unhandled exceptions must not raise Addon_Error() so the addon crashes and the traceback 
 # is printed in the Kodi log file.
 # -------------------------------------------------------------------------------------------------
-# >> Top-level GUI code looks like this
+# Top-level GUI code looks like this:
+#
 # try:
 #     autoconfig_export_category(category, export_FN)
 # except Addon_Error as ex:
@@ -49,7 +50,8 @@ DISABLE_MAME_LAUNCHING = False
 # else:
 #     kodi_notify('Exported Category "{0}" XML config'.format(category['m_name']))
 #
-# >> Low-level code looks like this
+# Low-level code looks like this:
+#
 # def autoconfig_export_category(category, export_FN):
 #     try:
 #         do_something_that_may_fail()
