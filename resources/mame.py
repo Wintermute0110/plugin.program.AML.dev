@@ -3961,7 +3961,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         #     ]
         # }
         elif event == 'start' and elem.tag == 'input':
-            # --- New 'input' field in 0.9.6 ---
+            # In the archaic MAMEs used by Retroarch the control structure is totally different
+            # and this code must be adapted.
             # --- <input> attributes ---
             att_players = int(elem.attrib['players']) if 'players' in elem.attrib else 0
             att_coins = int(elem.attrib['coins']) if 'coins' in elem.attrib else 0
@@ -3991,7 +3992,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
                 if 'ways3' in attrib: ways_list.append(attrib['ways3'])
                 t_ctrl_dic['ways'] = ways_list
                 control_list.append(t_ctrl_dic)
-            # >> Fix player field when implied
+            # Fix player field when implied
             if att_players == 1:
                 for control in control_list:
                     control['player'] = 1
