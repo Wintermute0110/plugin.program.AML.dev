@@ -65,8 +65,7 @@ WIP      Read-only Launcher (ROLs) to export into AEL.
 
 FEATURE  Initial support for Retroarch MAME 2003 Plus core.
 
-FEATURE  [CORE] Ability to export DAT files in Logiqx format for MAME ROMs, Samples, CHDs,
-         and SL ROMs and CHDs.
+FEATURE  [CORE] Ability to export DAT files in Logiqx format for MAME ROMs and MAME CHDs.
 
 FEATURE  [CORE] Differentiate between Non-merged and Fully non-merged MAME ROM sets.
          Non-merged sets do not include BIOS and device ROMs.
