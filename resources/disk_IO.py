@@ -1144,7 +1144,7 @@ def fs_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
     options_dic['abort'] = False
 
     # --- Check for errors ---
-    if not g_settings['mame_prog']:
+    if not settings['mame_prog']:
         options_dic['abort'] = True
         kodi_dialog_OK('MAME executable is not set.')
         return
