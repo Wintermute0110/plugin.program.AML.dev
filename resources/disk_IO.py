@@ -1103,13 +1103,54 @@ def fs_extract_MAME_version(PATHS, mame_prog_FN):
     return version_str
 
 #
-# Arguments:
-# 1) mame_prog_FN    -> (FileName object) path to MAME executable.
-# 2) AML_version_str -> AML addon version string.
+# Counts MAME machines in a modern MAME XML file.
+#
+def fs_count_MAME_machines_modern(XML_path_FN):
+    log_debug('fs_count_MAME_machines_modern() BEGIN ...')
+    log_debug('XML "{0}"'.format(XML_path_FN.getPath()))
+    pDialog = xbmcgui.DialogProgress()
+    pDialog_canceled = False
+    pDialog.create('Advanced MAME Launcher', 'Counting number of MAME machines ...')
+    pDialog.update(0)
+    num_machines = 0
+    with open(XML_path_FN.getPath(), 'rt') as f:
+        for line in f:
+            if line.decode('utf-8').find('<machine name=') > 0: num_machines += 1
+    pDialog.update(100)
+    pDialog.close()
+
+    return num_machines
+
+def fs_count_MAME_machines_archaic(XML_path_FN):
+    log_debug('fs_count_MAME_machines_archaic() BEGIN ...')
+    log_debug('XML "{0}"'.format(XML_path_FN.getPath()))
+    pDialog = xbmcgui.DialogProgress()
+    pDialog_canceled = False
+    pDialog.create('Advanced MAME Launcher', 'Counting number of MAME machines ...')
+    pDialog.update(0)
+    num_machines = 0
+    with open(XML_path_FN.getPath(), 'rt') as f:
+        for line in f:
+            if line.decode('utf-8').find('<game name=') > 0: num_machines += 1
+    pDialog.update(100)
+    pDialog.close()
+
+    return num_machines
+
 #
 # Creates a new control_dic and updates the number of machines.
 #
-def fs_extract_MAME_XML(PATHS, mame_prog_FN, AML_version_str):
+def fs_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
+    options_dic['abort'] = False
+
+    # --- Check for errors ---
+    if not g_settings['mame_prog']:
+        options_dic['abort'] = True
+        kodi_dialog_OK('MAME executable is not set.')
+        return
+
+    # Extract XML from MAME executable.
+    mame_prog_FN = FileName(settings['mame_prog'])
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
     log_info('fs_extract_MAME_XML() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
     log_info('fs_extract_MAME_XML() Saving XML   "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
@@ -1131,41 +1172,55 @@ def fs_extract_MAME_XML(PATHS, mame_prog_FN, AML_version_str):
     # --- Check if everything OK ---
     statinfo = os.stat(PATHS.MAME_XML_PATH.getPath())
     filesize = statinfo.st_size
+    options_dic['filesize'] = filesize
 
     # --- Count number of machines. Useful for progress dialogs ---
     log_info('fs_extract_MAME_XML() Counting number of machines ...')
-    stats_total_machines = fs_count_MAME_Machines(PATHS)
-    log_info('fs_extract_MAME_XML() Found {0} machines.'.format(stats_total_machines))
-    # kodi_dialog_OK('Found {0} machines in MAME.xml.'.format(stats_total_machines))
+    total_machines = fs_count_MAME_machines_modern(PATHS.MAME_XML_PATH)
+    options_dic['total_machines'] = total_machines
+    log_info('fs_extract_MAME_XML() Found {0} machines.'.format(total_machines))
 
     # -----------------------------------------------------------------------------
     # Reset MAME control dictionary completely
     # -----------------------------------------------------------------------------
     AML_version_int = fs_AML_version_str_to_int(AML_version_str)
-    log_info('fs_create_empty_control_dic() AML version str "{0}"'.format(AML_version_str))
-    log_info('fs_create_empty_control_dic() AML version int {0}'.format(AML_version_int))
+    log_info('fs_extract_MAME_XML() AML version str "{0}"'.format(AML_version_str))
+    log_info('fs_extract_MAME_XML() AML version int {0}'.format(AML_version_int))
     control_dic = fs_new_control_dic()
     change_control_dic(control_dic, 'ver_AML', AML_version_int)
     change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
-    change_control_dic(control_dic, 'stats_total_machines', stats_total_machines)
+    change_control_dic(control_dic, 'stats_total_machines', total_machines)
     change_control_dic(control_dic, 't_XML_extraction', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
 
-    return (filesize, stats_total_machines)
+def fs_process_RETRO_MAME2003PLUS(PATHS, settings, AML_version_str, options_dic):
+    options_dic['abort'] = False
 
-def fs_count_MAME_Machines(PATHS):
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Counting number of MAME machines ...')
-    pDialog.update(0)
-    num_machines = 0
-    with open(PATHS.MAME_XML_PATH.getPath(), 'rt') as f:
-        for line in f:
-            if line.decode('utf-8').find('<machine name=') > 0: num_machines += 1
-    pDialog.update(100)
-    pDialog.close()
+    # --- Check for errors ---
+    if not settings['xml_2003_path']:
+        options_dic['abort'] = True
+        kodi_dialog_OK('MAME 2003 Plus XML path is not set.')
+        return
 
-    return num_machines
+    # --- Count number of machines. Useful for progress dialogs ---
+    XML_path_FN = FileName(settings['xml_2003_path'])
+    log_info('fs_process_RETRO_MAME2003PLUS() Counting number of machines ...')
+    total_machines = fs_count_MAME_machines_archaic(XML_path_FN)
+    options_dic['total_machines'] = total_machines
+    log_info('fs_process_RETRO_MAME2003PLUS() Found {0} machines.'.format(total_machines))
+
+    # -----------------------------------------------------------------------------
+    # Reset MAME control dictionary completely
+    # -----------------------------------------------------------------------------
+    AML_version_int = fs_AML_version_str_to_int(AML_version_str)
+    log_info('fs_process_RETRO_MAME2003PLUS() AML version str "{0}"'.format(AML_version_str))
+    log_info('fs_process_RETRO_MAME2003PLUS() AML version int {0}'.format(AML_version_int))
+    control_dic = fs_new_control_dic()
+    change_control_dic(control_dic, 'ver_AML', AML_version_int)
+    change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
+    change_control_dic(control_dic, 'stats_total_machines', total_machines)
+    change_control_dic(control_dic, 't_XML_extraction', time.time())
+    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
 
 # Valid ROM: ROM has CRC hash
 # Valid CHD: CHD has SHA1 hash

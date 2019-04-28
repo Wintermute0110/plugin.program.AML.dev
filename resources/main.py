@@ -4752,13 +4752,23 @@ def command_context_setup_plugin():
     # --- All in one (Extract, Build, Scan, Filters) ---
     elif menu_item == 1:
         log_info('command_context_setup_plugin() All in one step starting ...')
+        log_info('Operation mode: {0}'.format(g_settings['op_mode']))
 
-        # --- Extract MAME.xml (mandatory) ---
-        if not g_settings['mame_prog']:
-            kodi_dialog_OK('MAME executable is not set.')
+        # Errors are checked inside the fs_extract*() or fs_process*() functions.
+        options_dic = {}
+        if g_settings['op_mode'] == OP_MODE_EXTERNAL:
+            # Extract MAME.xml from MAME exectuable.
+            # Reset control_dic and count the number of MAME machines.
+            fs_extract_MAME_XML(g_PATHS, g_settings, __addon_version__, options_dic)
+        elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+            # For MAME 2003 Plus the XML is already there.
+            # Reset control_dic and count the number of machines.
+            fs_process_RETRO_MAME2003PLUS(g_PATHS, g_settings, __addon_version__, options_dic)
+        else:
+            log_error('command_context_setup_plugin() Unknown op_mode "{0}"'.format(g_settings['op_mode']))
+            kodi_notify_warn('Database not built')
             return
-        mame_prog_FN = FileName(g_settings['mame_prog'])
-        (filesize, total_machines) = fs_extract_MAME_XML(g_PATHS, mame_prog_FN, __addon_version__)
+        if options_dic['abort']: return
 
         # --- Build main MAME database, PClone list and MAME hashed database (mandatory) ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -4778,6 +4788,7 @@ def command_context_setup_plugin():
         db_dic['cache_index'] = mame_build_MAME_catalogs(g_PATHS, g_settings, control_dic,
             db_dic['machines'], db_dic['render'], db_dic['roms'],
             db_dic['main_pclone_dic'], db_dic['assets'])
+        return
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs (optional) ---
         options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
