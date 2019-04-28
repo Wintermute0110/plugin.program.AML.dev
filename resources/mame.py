@@ -3975,9 +3975,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             control_list = []
             for control_child in elem:
                 attrib = control_child.attrib
-                # >> Skip non <control> tags
+                # >> Skip non <control> tags. Process <control> tags only.
                 if control_child.tag != 'control': continue
-                # >> Process <control> tags
                 t_ctrl_dic = {}
                 if 'type' in attrib:
                     t_ctrl_dic['type'] = attrib['type']
