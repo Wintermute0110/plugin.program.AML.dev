@@ -1418,7 +1418,7 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR skyblue]isMechanical[/COLOR]: {0}".format(unicode(machine['isMechanical'])))
     slist.append("[COLOR violet]romof[/COLOR]: '{0}'".format(machine['romof']))
     slist.append("[COLOR violet]sampleof[/COLOR]: '{0}'".format(machine['sampleof']))
-    slist.append("[COLOR violet]series[/COLOR]: '{0}'".format(machine['series']))
+    slist.append("[COLOR skyblue]series[/COLOR]: '{0}'".format(machine['series']))
     slist.append("[COLOR skyblue]softwarelists[/COLOR]: {0}".format(unicode(machine['softwarelists'])))
     slist.append("[COLOR violet]sourcefile[/COLOR]: '{0}'".format(machine['sourcefile']))
 
