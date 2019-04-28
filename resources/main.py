@@ -4351,27 +4351,28 @@ def command_context_setup_custom_filters():
     # --- Build custom filter databases ---
     if menu_item == 0:
         # --- Open main ROM databases ---
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         db_files = [
-            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
             ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
             ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
             ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
             ['machine_archives', 'Machine archives list', g_PATHS.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
         ]
         db_dic = fs_load_files(db_files)
+        # Compatibility with "All in one" code.
+        audit_dic = { 'machine_archives' : db_dic['machine_archives'] }
 
         # --- Make a dictionary of machines to be filtered ---
         # This currently includes all MAME parent machines.
         # However, it must include all machines (parent and clones).
-        (main_filter_dic, sets_dic) = filter_get_filter_DB(
-            g_PATHS, db_dic['machines'], db_dic['render'], db_dic['assets'],
-            db_dic['machine_archives'])
+        (main_filter_dic, sets_dic) = filter_get_filter_DB(g_PATHS,
+            db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'])
 
         # --- Parse custom filter XML and check for errors ---
         # 1) Check the filter XML syntax and filter semantic errors.
         # 2) Produces report PATHS.REPORT_CF_XML_SYNTAX_PATH
         (filter_list, options_dic) = filter_custom_filters_load_XML(
-            g_PATHS, g_settings, db_dic['control_dic'], main_filter_dic, sets_dic)
+            g_PATHS, g_settings, control_dic, main_filter_dic, sets_dic)
         # If no filters sayonara
         if len(filter_list) < 1:
             kodi_notify_warn('Filter XML has no filter definitions')
@@ -4386,7 +4387,7 @@ def command_context_setup_custom_filters():
         # --- Build filter database ---
         # 1) Saves control_dic (updated custom filter build timestamp).
         # 2) Generates PATHS.REPORT_CF_DB_BUILD_PATH
-        filter_build_custom_filters(g_PATHS, g_settings, db_dic['control_dic'],
+        filter_build_custom_filters(g_PATHS, g_settings, control_dic,
             filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
 
         # --- So long and thanks for all the fish ---
@@ -4851,12 +4852,12 @@ def command_context_setup_plugin():
             SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
 
         # --- Regenerate the custom filters ---
-        main_filter_dic = filter_get_filter_DB(
+        (main_filter_dic, sets_dic) = filter_get_filter_DB(g_PATHS,
             db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'])
-        (filter_list, options_dic) = mame_custom_filters_load_XML(
-            g_PATHS, g_settings, control_dic, main_filter_dic)
+        (filter_list, options_dic) = filter_custom_filters_load_XML(
+            g_PATHS, g_settings, control_dic, main_filter_dic, sets_dic)
         if len(filter_list) >= 1 and not options_dic['XML_errors']:
-            mame_build_custom_filters(g_PATHS, g_settings, control_dic,
+            filter_build_custom_filters(g_PATHS, g_settings, control_dic,
                 filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
         else:
             log_info('Custom XML filters not built.')
