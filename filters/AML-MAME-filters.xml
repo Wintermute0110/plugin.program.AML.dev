@@ -162,7 +162,7 @@
 </MAMEFilter>
 
 <MAMEFilter>
-    <Name>Family games from 80 to 84</Name>
+    <Name>Family games from the 80s</Name>
     <Plot>Arcade machines from 1980 to 1984 with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
     <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
@@ -173,7 +173,7 @@
 </MAMEFilter>
 
 <MAMEFilter>
-    <Name>Family games from 85 to 89</Name>
+    <Name>Family games from the 85s</Name>
     <Plot>Arcade machines from 1985 to 1989 with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
     <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
@@ -182,7 +182,7 @@
 </MAMEFilter>
 
 <MAMEFilter>
-    <Name>Family games from 90 to 94</Name>
+    <Name>Family games from the 90s</Name>
     <Plot>Arcade machines from 1990 to 1994 with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
     <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
@@ -191,7 +191,7 @@
 </MAMEFilter>
 
 <MAMEFilter>
-    <Name>Family games from 95 to 99</Name>
+    <Name>Family games from the 95s</Name>
     <Plot>Arcade machines from 1995 to 1999 with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
     <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
     <Genre>STANDARD_GENRES</Genre>
