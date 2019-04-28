@@ -521,12 +521,14 @@ def get_settings():
     global g_SL_fanart
     o = __addon__
 
-    # --- Paths ---
-    # >> Mandatory
-    g_settings['mame_prog'] = o.getSetting('mame_prog').decode('utf-8')
-    g_settings['rom_path']  = o.getSetting('rom_path').decode('utf-8')
+    # --- Main operation ---
+    g_settings['op_mode_raw']    = int(o.getSetting('op_mode_raw'))
+    g_settings['mame_prog']      = o.getSetting('mame_prog').decode('utf-8')
+    g_settings['retroarch_prog'] = o.getSetting('retroarch_prog').decode('utf-8')
+    g_settings['xml_2003_path']  = o.getSetting('xml_2003_path').decode('utf-8')
 
-    # >> Optional
+    # --- Optional paths ---
+    g_settings['rom_path']     = o.getSetting('rom_path').decode('utf-8')
     g_settings['assets_path']  = o.getSetting('assets_path').decode('utf-8')
     g_settings['dats_path']    = o.getSetting('dats_path').decode('utf-8')
     g_settings['chd_path']     = o.getSetting('chd_path').decode('utf-8')
@@ -595,6 +597,8 @@ def get_settings():
     g_settings['debug_SL_Audit_DB_data']         = True if o.getSetting('debug_SL_Audit_DB_data') == 'true' else False
 
     # --- Transform settings data ---
+    g_settings['op_mode'] = OP_MODE_LIST[g_settings['op_mode_raw']]
+
     g_mame_icon   = assets_get_asset_key_MAME_icon(g_settings['artwork_mame_icon'])
     g_mame_fanart = assets_get_asset_key_MAME_fanart(g_settings['artwork_mame_fanart'])
     g_SL_icon     = assets_get_asset_key_SL_icon(g_settings['artwork_SL_icon'])

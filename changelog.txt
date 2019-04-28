@@ -63,6 +63,8 @@ WIP      Read-only Launcher (ROLs) to export into AEL.
 
 [B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
 
+WIP      Initial support for Retroarch MAME 2003 Plus core.
+
 FEATURE  [CORE] Ability to export DAT files in Logiqx format for MAME ROMs, Samples, CHDs,
          and SL ROMs and CHDs.
 

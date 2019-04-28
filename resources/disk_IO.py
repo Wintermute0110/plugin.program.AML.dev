@@ -316,6 +316,10 @@ def fs_new_SL_asset():
 def fs_new_control_dic():
     return {
         # --- Filed in when extracting MAME XML ---
+        # Operation mode when the database is created. If the OP mode is changed database
+        # must be rebuilt.
+        'op_mode_raw'          : 0,
+        'op_mode'              : '',
         'stats_total_machines' : 0,
 
         # --- Timestamps ---

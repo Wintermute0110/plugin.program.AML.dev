@@ -66,9 +66,35 @@ class Addon_Error(Exception):
         return self.err_str
 
 # -------------------------------------------------------------------------------------------------
+# Advanced MAME Launcher settings
+# -------------------------------------------------------------------------------------------------
+# Operational modes
+# This must match setting op_mode_raw in settings.xml or bad things will happen.
+OP_MODE_EXTERNAL           = 'External MAME'
+OP_MODE_RETRO_MAME2003PLUS = 'Retroarch MAME 2003 Plus'
+OP_MODE_RETRO_MAME2010     = 'Retroarch MAME 2010'
+OP_MODE_RETRO_MAME2014     = 'Retroarch MAME 2014'
+OP_MODE_LIST = [
+    OP_MODE_EXTERNAL,
+    OP_MODE_RETRO_MAME2003PLUS,
+    OP_MODE_RETRO_MAME2010,
+    OP_MODE_RETRO_MAME2014,
+]
+
+# Make sure these strings are equal to the ones in settings.xml or bad things will happen.
+VIEW_MODE_FLAT             = 0 # 'Flat'
+VIEW_MODE_PCLONE           = 1 # 'Parent/Clone'
+ROMSET_MAME_MERGED         = 0 # 'Merged'
+ROMSET_MAME_SPLIT          = 1 # 'Split'
+ROMSET_MAME_NONMERGED      = 2 # 'Non-merged'
+ROMSET_MAME_FULLYNONMERGED = 3 # 'Non-merged'
+ROMSET_SL_MERGED           = 0 # 'Merged'
+ROMSET_SL_SPLIT            = 1 # 'Split'
+
+# -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher constants
 # -------------------------------------------------------------------------------------------------
-# >> INI and DAT files default names.
+# INI and DAT files default names.
 ARTWORK_INI   = 'Artwork.ini'
 BESTGAMES_INI = 'bestgames.ini'
 CATEGORY_INI  = 'Category.ini'
@@ -82,15 +108,6 @@ COMMAND_DAT   = 'command.dat'
 GAMEINIT_DAT  = 'gameinit.dat'
 HISTORY_DAT   = 'history.dat'
 MAMEINFO_DAT  = 'mameinfo.dat'
-
-# >> Make sure these strings are equal to the ones in settings.xml
-VIEW_MODE_FLAT         = 0 # 'Flat'
-VIEW_MODE_PCLONE       = 1 # 'Parent/Clone'
-ROMSET_MAME_MERGED     = 0 # 'Merged'
-ROMSET_MAME_SPLIT      = 1 # 'Split'
-ROMSET_MAME_NONMERGED  = 2 # 'Non-merged'
-ROMSET_SL_MERGED       = 0 # 'Merged'
-ROMSET_SL_SPLIT        = 1 # 'Split'
 
 # --- Used in the addon URLs so mark the location of machines/ROMs ---
 LOCATION_STANDARD           = 'STANDARD'

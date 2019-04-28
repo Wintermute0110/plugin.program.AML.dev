@@ -1,21 +1,28 @@
 <settings>
-<category label="Paths">
-    <setting id="separator" type="lsep" label="Mandatory paths" />
-    <setting label="MAME executable" type="file" id="mame_prog" />
-    <setting label="MAME ROMs path" type="folder" id="rom_path" source="auto" option="" />
+<category label="Main operation">
+    <setting label="Mode" type="enum" id="op_mode_raw" default="0" values="External MAME|Retroarch MAME 2003 Plus" />
 
-    <setting id="separator" type="lsep" label="Optional paths" />
-    <setting label="MAME Assets path" type="folder" id="assets_path" source="auto" option="" />
-    <setting label="MAME INI/DAT path" type="folder" id="dats_path" source="auto" option="" />
-    <setting label="MAME CHDs path" type="folder" id="chd_path" source="auto" option="" />
-    <setting label="MAME Samples path" type="folder" id="samples_path" source="auto" option="" />
-    <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="auto" option="" />
-    <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="auto" option="" />
-    <setting label="Software Lists CHDs path" type="folder" id="SL_chd_path" source="auto" option="" />
+    <setting id="separator" type="lsep" label="External MAME" />
+    <setting label="MAME executable" type="file" id="mame_prog" />
+
+    <setting id="separator" type="lsep" label="Retroarch MAME 2003 Plus" />
+    <setting label="Retroarch executable" type="file" id="retroarch_prog" />
+    <setting label="MAME XML path" type="file" id="xml_2003_path" />
+</category>
+<category label="Optional paths">
+    <!-- <setting id="separator" type="lsep" label="Optional paths" /> -->
+    <setting label="MAME ROMs path" type="folder" id="rom_path" source="" />
+    <setting label="MAME Assets path" type="folder" id="assets_path" source="" />
+    <setting label="MAME INI/DAT path" type="folder" id="dats_path" source="" />
+    <setting label="MAME CHDs path" type="folder" id="chd_path" source="" />
+    <setting label="MAME Samples path" type="folder" id="samples_path" source="" />
+    <setting label="Software Lists hash path" type="folder" id="SL_hash_path" source="" />
+    <setting label="Software Lists ROMs path" type="folder" id="SL_rom_path" source="" />
+    <setting label="Software Lists CHDs path" type="folder" id="SL_chd_path" source="" />
 </category>
 <category label="ROM sets">
-    <setting label="MAME ROM set" type="enum" id="mame_rom_set"  default="1" values="Merged|Split|Non-merged|Fully non-merged" />
-    <setting label="MAME CHD set" type="enum" id="mame_chd_set"  default="0" values="Merged|Split|Non-merged" />
+    <setting label="MAME ROM set" type="enum" id="mame_rom_set" default="1" values="Merged|Split|Non-merged|Fully non-merged" />
+    <setting label="MAME CHD set" type="enum" id="mame_chd_set" default="0" values="Merged|Split|Non-merged" />
     <setting label="Software Lists ROM set" type="enum" id="SL_rom_set"  default="1" values="Merged|Split|Non-merged" />
     <setting label="Software Lists CHD set" type="enum" id="SL_chd_set"  default="0" values="Merged|Split|Non-merged" />
 
