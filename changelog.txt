@@ -112,6 +112,8 @@ WIP      [CORE] New INI file Artwork.ini (produced by MASH's MAMEINFO).
          INIs do the same and currently AML does not support this. This requires
          some changes in AML engine.
 
+WIP      New catalog "Version added"
+
 FEATURE  [CORE] New INI file Category.ini (produced by MASH's MAMEINFO).
          Catalog filter "Machines by Category".
 

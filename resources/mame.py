@@ -250,69 +250,139 @@ def mame_get_numerical_version(mame_version_str):
 # catver_dic, veradded_dic
 #
 def mame_load_Catver_ini(filename):
-    log_info('mame_load_Catver_ini() Parsing "{0}"'.format(filename))
-    catver_version = 'Not found'
-    categories_dic = {}
-    categories_set = set()
     __debug_do_list_categories = False
-    read_status = 0
-    # read_status FSM values
+    log_info('mame_load_Catver_ini() Parsing "{0}"'.format(filename))
+    catver_dic = {
+        'version' : 'unknown',
+        'unique_categories' : True,
+        'single_category' : False,
+        'isValid' : False,
+        'data' : {},
+        'categories' : set(),
+    }
+    veradded_dic = {
+        'version' : 'unknown',
+        'unique_categories' : True,
+        'single_category' : False,
+        'isValid' : False,
+        'data' : {},
+        'categories' : set(),
+    }
+
+    # --- read_status FSM values ---
     # 0 -> Looking for '[Category]' tag
     # 1 -> Reading categories
-    # 2 -> Categories finished. STOP
+    # 2 -> Looking for '[VerAdded]' tag.
+    # 3 -> Reading version added
+    # 4 -> END
+    read_status = 0
     try:
         f = open(filename, 'rt')
     except IOError:
-        log_error('mame_load_Catver_ini() (IOError) opening "{0}"'.format(filename))
-        return (categories_dic, catver_version)
+        log_error('mame_load_Catver_ini() Exception IOError')
+        log_error('mame_load_Catver_ini() File "{0}"'.format(filename))
+        return (catver_dic, veradded_dic)
     for cat_line in f:
         stripped_line = cat_line.strip()
         if __debug_do_list_categories: log_debug('Line "' + stripped_line + '"')
         if read_status == 0:
             # >> Look for Catver version
             m = re.search(r'^;; CatVer ([0-9\.]+) / ', stripped_line)
-            if m: catver_version = m.group(1)
+            if m:
+                catver_dic['version'] = m.group(1)
+                veradded_dic['version'] = m.group(1)
             m = re.search(r'^;; CATVER.ini ([0-9\.]+) / ', stripped_line)
-            if m: catver_version = m.group(1)
+            if m:
+                catver_dic['version'] = m.group(1)
+                veradded_dic['version'] = m.group(1)
             if stripped_line == '[Category]':
                 if __debug_do_list_categories: log_debug('Found [Category]')
                 read_status = 1
         elif read_status == 1:
             line_list = stripped_line.split("=")
             if len(line_list) == 1:
+                log_debug('mame_load_Catver_ini() Reached end of categories parsing.')
                 read_status = 2
-                continue
             else:
                 if __debug_do_list_categories: log_debug(line_list)
                 machine_name = line_list[0]
-                category = line_list[1]
-                if machine_name not in categories_dic:
-                    categories_dic[machine_name] = category
-                categories_set.add(category)
+                current_category = line_list[1]
+                catver_dic['categories'].add(current_category)
+                if machine_name in catver_dic['data']:
+                    catver_dic['data'][machine_name].append(current_category)
+                else:
+                    catver_dic['data'][machine_name] = [current_category]
         elif read_status == 2:
-            log_debug('mame_load_Catver_ini() Reached end of categories parsing.')
+            if stripped_line == '[VerAdded]':
+                if __debug_do_list_categories: log_debug('Found [VerAdded]')
+                read_status = 3
+        elif read_status == 3:
+            line_list = stripped_line.split("=")
+            if len(line_list) == 1:
+                log_debug('mame_load_Catver_ini() Reached end of veradded parsing.')
+                read_status = 4
+            else:
+                if __debug_do_list_categories: log_debug(line_list)
+                machine_name = line_list[0]
+                current_category = line_list[1]
+                veradded_dic['categories'].add(current_category)
+                if machine_name in veradded_dic['data']:
+                    veradded_dic['data'][machine_name].append(current_category)
+                else:
+                    veradded_dic['data'][machine_name] = [current_category]
+        elif read_status == 4:
+            log_debug('End parsing')
             break
         else:
             raise CriticalError('Unknown read_status FSM value')
     f.close()
-    log_info('mame_load_Catver_ini() Version "{0}"'.format(catver_version))
-    log_info('mame_load_Catver_ini() Machines {0}'.format(len(categories_dic)))
-    log_info('mame_load_Catver_ini() Categories {0}'.format(len(categories_set)))
+    catver_dic['single_category'] = True if len(catver_dic['categories']) == 1 else False
+    for m_name in sorted(catver_dic['data']):
+        if len(catver_dic['data'][m_name]) > 1:
+            catver_dic['unique_categories'] = False
+            break
+    catver_dic['single_category'] = True
+    veradded_dic['single_category'] = True if len(veradded_dic['categories']) == 1 else False
+    for m_name in sorted(veradded_dic['data']):
+        if len(veradded_dic['data'][m_name]) > 1:
+            veradded_dic['unique_categories'] = False
+            break
+    veradded_dic['single_category'] = True
+    log_info('mame_load_Catver_ini() Catver Machines   {0:6d}'.format(len(catver_dic['data'])))
+    log_info('mame_load_Catver_ini() Catver Categories {0:6d}'.format(len(catver_dic['categories'])))
+    log_info('mame_load_Catver_ini() Catver Version "{0}"'.format(catver_dic['version']))
+    log_info('mame_load_Catver_ini() Catver unique_categories {0}'.format(catver_dic['unique_categories']))
+    log_info('mame_load_Catver_ini() Catver single_category   {0}'.format(catver_dic['single_category']))
+    log_info('mame_load_Catver_ini() Veradded Machines   {0:6d}'.format(len(veradded_dic['data'])))
+    log_info('mame_load_Catver_ini() Veradded Categories {0:6d}'.format(len(veradded_dic['categories'])))
+    log_info('mame_load_Catver_ini() Veradded Version "{0}"'.format(veradded_dic['version']))
+    log_info('mame_load_Catver_ini() Veradded unique_categories {0}'.format(veradded_dic['unique_categories']))
+    log_info('mame_load_Catver_ini() Veradded single_category   {0}'.format(veradded_dic['single_category']))
 
-    return (categories_dic, catver_version)
+    return (catver_dic, veradded_dic)
 
-# -------------------------------------------------------------------------------------------------
-# Load nplayers.ini. Structure similar to catver.ini
-# -------------------------------------------------------------------------------------------------
+#
 # nplayers.ini does not have [ROOT_FOLDER], only [NPlayers].
 # nplayers.ini has an structure very similar to catver.ini, and it is also supported here.
+# Returns a ini_dic with same structue as mame_load_INI_datfile_simple()
+#
+# NOTE  nplayers.ini has defects like having repeated entries for some machines.
+#       Do not crash because of this! For example (in verrsion 0.194 04-feb-18)
+#       1943=2P sim
+#       1943=2P sim
 #
 def mame_load_nplayers_ini(filename):
-    log_info('mame_load_nplayers_ini() Parsing "{0}"'.format(filename))
-    nplayers_version = 'Not found'
-    categories_dic = {}
-    categories_set = set()
     __debug_do_list_categories = False
+    log_info('mame_load_nplayers_ini() Parsing "{0}"'.format(filename))
+    ini_dic = {
+        'version' : 'unknown',
+        'unique_categories' : True,
+        'single_category' : False,
+        'isValid' : False,
+        'data' : {},
+        'categories' : set(),
+    }
+
     # --- read_status FSM values ---
     # 0 -> Looking for '[NPlayers]' tag
     # 1 -> Reading categories
@@ -322,13 +392,13 @@ def mame_load_nplayers_ini(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_nplayers_ini() (IOError) opening "{0}"'.format(filename))
-        return (categories_dic, nplayers_version)
+        return ini_dic
     for cat_line in f:
         stripped_line = cat_line.strip()
         if __debug_do_list_categories: log_debug('Line "' + stripped_line + '"')
         if read_status == 0:
             m = re.search(r'NPlayers ([0-9\.]+) / ', stripped_line)
-            if m: nplayers_version = m.group(1)
+            if m: ini_dic['version'] = m.group(1)
             if stripped_line == '[NPlayers]':
                 if __debug_do_list_categories: log_debug('Found [NPlayers]')
                 read_status = 1
@@ -338,29 +408,49 @@ def mame_load_nplayers_ini(filename):
                 read_status = 2
                 continue
             else:
-                if __debug_do_list_categories: log_debug(line_list)
-                machine_name = line_list[0]
-                category = line_list[1]
-                if machine_name not in categories_dic:
-                    categories_dic[machine_name] = category
-                categories_set.add(category)
+                machine_name, current_category = str(line_list[0]), str(line_list[1])
+                if __debug_do_list_categories: log_debug('"{0}" / "{1}"'.format(machine_name, current_category))
+                ini_dic['categories'].add(current_category)
+                if machine_name in ini_dic['data']:
+                    # Force a single category to avoid nplayers.ini bugs.
+                    pass
+                    # ini_dic['data'][machine_name].add(current_category)
+                    # log_debug('machine "{0}"'.format(machine_name))
+                    # log_debug('current_category "{0}"'.format(current_category))
+                    # log_debug('"{0}"'.format(unicode(ini_dic['data'][machine_name])))
+                    # raise ValueError('unique_categories False')
+                else:
+                    ini_dic['data'][machine_name] =  [current_category]
         elif read_status == 2:
             log_info('mame_load_nplayers_ini() Reached end of nplayers parsing.')
             break
         else:
-            raise CriticalError('Unknown read_status FSM value')
+            raise ValueError('Unknown read_status FSM value')
     f.close()
-    log_info('mame_load_nplayers_ini() Version "{0}"'.format(nplayers_version))
-    log_info('mame_load_nplayers_ini() Machines {0}'.format(len(categories_dic)))
-    log_info('mame_load_nplayers_ini() Categories {0}'.format(len(categories_set)))
+    ini_dic['single_category'] = True if len(ini_dic['categories']) == 1 else False
+    # nplayers.ini has repeated machines, so checking for unique_cateogories is here.
+    for m_name in sorted(ini_dic['data']):
+        if len(ini_dic['data'][m_name]) > 1:
+            ini_dic['unique_categories'] = False
+            break
+    ini_dic['single_category'] = True
+    log_info('mame_load_nplayers_ini() Machines   {0:6d}'.format(len(ini_dic['data'])))
+    log_info('mame_load_nplayers_ini() Categories {0:6d}'.format(len(ini_dic['categories'])))
+    log_info('mame_load_nplayers_ini() Version "{0}"'.format(ini_dic['version']))
+    log_info('mame_load_nplayers_ini() unique_categories {0}'.format(ini_dic['unique_categories']))
+    log_info('mame_load_nplayers_ini() single_category   {0}'.format(ini_dic['single_category']))
 
-    return (categories_dic, nplayers_version)
+    # DEBUG: print machines with more than one category.
+    # for m_name in sorted(ini_dic['data']):
+    #     if len(ini_dic['data'][m_name]) > 1:
+    #         for cat_name in ini_dic['data'][m_name]:
+    #             log_debug('machine {0} nplayers {1}'.format(m_name, cat_name))
+
+    return ini_dic
 
 #
 # Load mature.ini file.
-# Returns a tuple consisting of:
-# 1) ini_set = {machine1, machine2, ...}
-# 2) ini_version
+# Returns a ini_dic similar to mame_load_INI_datfile_simple()
 #
 def mame_load_Mature_ini(filename):
     # FSM statuses
@@ -373,6 +463,7 @@ def mame_load_Mature_ini(filename):
         'version' : 'unknown',
         'unique_categories' : True,
         'single_category' : False,
+        'isValid' : False,
         'data' : {},
         'categories' : set(),
     }
@@ -403,19 +494,22 @@ def mame_load_Mature_ini(filename):
                 current_category = 'default'
                 ini_dic['categories'].add(current_category)
         elif fsm_status == FSM_FOLDER_NAME:
-            m_name = stripped_line
-            if m_name in ini_dic['data']:
-                ini_dic['unique_categories'] = False
-                ini_dic['data'][m_name].add(current_category)
+            machine_name = stripped_line
+            if machine_name in ini_dic['data']:
+                ini_dic['data'][machine_name].append(current_category)
             else:
-                ini_dic['data'][m_name] = set(current_category)
+                ini_dic['data'][machine_name] = [current_category]
         else:
             raise ValueError('Unknown FSM fsm_status {0}'.format(fsm_status))
     ini_dic['single_category'] = True if len(ini_dic['categories']) == 1 else False
-
+    for m_name in sorted(ini_dic['data']):
+        if len(ini_dic['data'][m_name]) > 1:
+            ini_dic['unique_categories'] = False
+            break
+    ini_dic['single_category'] = True
     log_info('mame_load_Mature_ini() Machines   {0:6d}'.format(len(ini_dic['data'])))
     log_info('mame_load_Mature_ini() Categories {0:6d}'.format(len(ini_dic['categories'])))
-    log_info('mame_load_Mature_ini() version "{0}"'.format(ini_dic['version']))
+    log_info('mame_load_Mature_ini() Version "{0}"'.format(ini_dic['version']))
     log_info('mame_load_Mature_ini() unique_categories {0}'.format(ini_dic['unique_categories']))
     log_info('mame_load_Mature_ini() single_category   {0}'.format(ini_dic['single_category']))
 
@@ -474,6 +568,7 @@ def mame_load_INI_datfile_simple(filename):
         'version' : 'unknown',
         'unique_categories' : True,
         'single_category' : False,
+        'isValid' : False,
         'data' : {},
         'categories' : set(),
     }
@@ -514,19 +609,23 @@ def mame_load_INI_datfile_simple(filename):
                     raise ValueError('Repeated category {0}'.format(current_category))
                 ini_dic['categories'].add(current_category)
             else:
-                m_name = stripped_line
-                if m_name in ini_dic['data']:
+                machine_name = stripped_line
+                if machine_name in ini_dic['data']:
                     ini_dic['unique_categories'] = False
-                    ini_dic['data'][m_name].add(current_category)
+                    ini_dic['data'][machine_name].append(current_category)
                 else:
-                    ini_dic['data'][m_name] = set(current_category)
+                    ini_dic['data'][machine_name] = [current_category]
         else:
             raise ValueError('Unknown FSM fsm_status {0}'.format(fsm_status))
     ini_dic['single_category'] = True if len(ini_dic['categories']) == 1 else False
-
+    for m_name in sorted(ini_dic['data']):
+        if len(ini_dic['data'][m_name]) > 1:
+            ini_dic['unique_categories'] = False
+            break
+    ini_dic['single_category'] = True
     log_info('mame_load_INI_datfile_simple() Machines   {0:6d}'.format(len(ini_dic['data'])))
     log_info('mame_load_INI_datfile_simple() Categories {0:6d}'.format(len(ini_dic['categories'])))
-    log_info('mame_load_INI_datfile_simple() version "{0}"'.format(ini_dic['version']))
+    log_info('mame_load_INI_datfile_simple() Version "{0}"'.format(ini_dic['version']))
     log_info('mame_load_INI_datfile_simple() unique_categories {0}'.format(ini_dic['unique_categories']))
     log_info('mame_load_INI_datfile_simple() single_category   {0}'.format(ini_dic['single_category']))
 
@@ -3546,26 +3645,6 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     log_info('history_path   = "{0}"'.format(HISTORY_FN.getPath()))
     log_info('mameinfo_path  = "{0}"'.format(MAMEINFO_FN.getPath()))
 
-    # >> If the user did not extract MAME.xml (maybe he decided to use a custom one) then
-    # >> fields ver_AML, ver_AML_str, stats_total_machines and t_XML_extraction must be
-    # >> updated in the control_dic. Check fs_extract_MAME_XML()
-    if control_dic['stats_total_machines'] < 1:
-        log_info('control_dic does not have a machine count. Updating it ...')
-        # --- Count MAME machines ---
-        log_info('mame_build_MAME_main_database() Counting number of machines ...')
-        stats_total_machines = fs_count_MAME_Machines(PATHS)
-        log_info('mame_build_MAME_main_database() Found {0} machines.'.format(stats_total_machines))
-        # --- Bring control_dic up to date ---
-        AML_version_int = fs_AML_version_str_to_int(AML_version_str)
-        log_info('mame_build_MAME_main_database() AML version str "{0}"'.format(AML_version_str))
-        log_info('mame_build_MAME_main_database() AML version int {0}'.format(AML_version_int))
-        change_control_dic(control_dic, 'ver_AML', AML_version_int)
-        change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
-        change_control_dic(control_dic, 'stats_total_machines', stats_total_machines)
-        change_control_dic(control_dic, 't_XML_extraction', time.time())
-    else:
-        log_info('control_dic has stats_total_machines. User used fs_extract_MAME_XML()')
-
     # --- Progress dialog ---
     pDialog_canceled = False
     pDialog = xbmcgui.DialogProgress()
@@ -3590,13 +3669,13 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     pDialog.update(int((3*100) / num_items), pdialog_line1, CATLIST_INI)
     catlist_dic = mame_load_INI_datfile_simple(CATLIST_FN.getPath())
     pDialog.update(int((4*100) / num_items), pdialog_line1, CATVER_INI)
-    (categories_dic, catver_version) = mame_load_Catver_ini(CATVER_FN.getPath())
+    (catver_dic, veradded_dic) = mame_load_Catver_ini(CATVER_FN.getPath())
     pDialog.update(int((5*100) / num_items), pdialog_line1, GENRE_INI)
     genre_dic = mame_load_INI_datfile_simple(GENRE_FN.getPath())
     pDialog.update(int((6*100) / num_items), pdialog_line1, MATURE_INI)
-    mature_set = mame_load_Mature_ini(MATURE_FN.getPath())
+    mature_dic = mame_load_Mature_ini(MATURE_FN.getPath())
     pDialog.update(int((7*100) / num_items), pdialog_line1, NPLAYERS_INI)
-    (nplayers_dic, nplayers_version) = mame_load_nplayers_ini(NPLAYERS_FN.getPath())
+    nplayers_dic = mame_load_nplayers_ini(NPLAYERS_FN.getPath())
     pDialog.update(int((8*100) / num_items), pdialog_line1, SERIES_INI)
     series_dic = mame_load_INI_datfile_simple(SERIES_FN.getPath())
     pDialog.update(int((9*100) / num_items), ' ', ' ')
@@ -3617,20 +3696,18 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     pDialog.update(int((4*100) / num_items), ' ', ' ')
     pDialog.close()
 
-    # Verify that INI files match the data model. Only verify the catalogs with unique keys.
-    if not bestgames_dic['unique_categories']:
-        raise ValueError('bestgames.ini has not unique categories.')
-    if not catlist_dic['unique_categories']:
-        raise ValueError('catlist.ini has not unique categories.')
-    # if not catver_dic['unique_categories']:
-    #     raise ValueError('catver.ini has not unique categories.')
-    if not genre_dic['unique_categories']:
-        raise ValueError('genre.ini has not unique categories.')
-
-    if not mature_set['unique_categories']:
-        raise ValueError('mature.ini has not unique categories.')
-    # if not nplayers_dic['unique_categories']:
-    #     raise ValueError('nplayers.ini has not unique categories.')
+    # --- Verify that INIs comply with the data model ---
+    log_info('artwork_dic   unique_categories {0}'.format(artwork_dic['unique_categories']))
+    log_info('bestgames_dic unique_categories {0}'.format(bestgames_dic['unique_categories']))
+    log_info('category_dic  unique_categories {0}'.format(category_dic['unique_categories']))
+    log_info('catlist_dic   unique_categories {0}'.format(catlist_dic['unique_categories']))
+    log_info('catver_dic    unique_categories {0}'.format(catver_dic['unique_categories']))
+    log_info('genre_dic     unique_categories {0}'.format(genre_dic['unique_categories']))
+    log_info('mature_dic    unique_categories {0}'.format(mature_dic['unique_categories']))
+    log_info('nplayers_dic  unique_categories {0}'.format(nplayers_dic['unique_categories']))
+    log_info('series_dic    unique_categories {0}'.format(series_dic['unique_categories']))
+    log_info('veradded_dic  unique_categories {0}'.format(veradded_dic['unique_categories']))
+    # return
 
     # ---------------------------------------------------------------------------------------------
     # Incremental Parsing approach B (from [1])
@@ -3679,6 +3756,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
 
         # <machine> tag start event includes <machine> attributes
         if (event == 'start' and elem.tag == 'machine') or (event == 'start' and elem.tag == 'game'):
+            processed_machines += 1
             machine  = fs_new_machine_dic()
             m_render = fs_new_machine_render_dic()
             m_roms   = fs_new_roms_object()
@@ -3736,42 +3814,16 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             if 'sampleof' in elem.attrib: machine['sampleof'] = elem.attrib['sampleof']
 
             # --- Add catver/catlist/genre ---
-            # THIS MUST BE FIXED. THE DATAMODEL OF THE INI PARSERS HAS CHANGED.
-            if m_name in artwork_dic:
-                machine['artwork'] = artwork_dic[m_name]
-            else:
-                machine['artwork'] = '[ Not set ]'
-            if m_name in category_dic:
-                machine['category'] = category_dic[m_name]
-            else:
-                machine['category'] = '[ Not set ]'
-            if m_name in categories_dic:
-                machine['catver'] = categories_dic[m_name]
-            else:
-                machine['catver'] = '[ Not set ]'
-            if m_name in catlist_dic:
-                machine['catlist'] = catlist_dic[m_name]
-            else:
-                machine['catlist'] = '[ Not set ]'
-            if m_name in genre_dic:
-                machine['genre'] = genre_dic[m_name]
-            else:
-                machine['genre'] = '[ Not set ]'
-            if m_name in bestgames_dic:
-                machine['bestgames'] = bestgames_dic[m_name]
-            else:
-                machine['bestgames'] = '[ Not set ]'
-            if m_name in series_dic:
-                machine['series'] = series_dic[m_name]
-            else:
-                machine['series'] = '[ Not set ]'
+            machine['artwork'] = artwork_dic['data'][m_name] if m_name in artwork_dic['data'] else [ '[ Not set ]' ]
+            machine['bestgames'] = bestgames_dic['data'][m_name] if m_name in bestgames_dic['data'] else '[ Not set ]'
+            machine['category'] = category_dic['data'][m_name] if m_name in category_dic['data'] else [ '[ Not set ]' ]
+            machine['catlist'] = catlist_dic['data'][m_name] if m_name in catlist_dic['data'] else '[ Not set ]'
+            machine['catver'] = catver_dic['data'][m_name] if m_name in catver_dic['data'] else '[ Not set ]'
+            machine['genre'] = genre_dic['data'][m_name] if m_name in genre_dic['data'] else '[ Not set ]'
+            machine['series'] = series_dic['data'][m_name] if m_name in series_dic['data'] else [ '[ Not set ]' ]
+            machine['veradded'] = veradded_dic['data'][m_name] if m_name in veradded_dic['data'] else '[ Not set ]'
             # Careful, nplayers goes into render database.
-            if m_name in nplayers_dic:
-                m_render['nplayers'] = nplayers_dic[m_name]
-            else:
-                m_render['nplayers'] = '[ Not set ]'
-
-            processed_machines += 1
+            m_render['nplayers'] = nplayers_dic['data'][m_name] if m_name in nplayers_dic['data'] else '[ Not set ]'
 
         elif event == 'start' and elem.tag == 'description':
             m_render['description'] = unicode(elem.text)
@@ -4082,10 +4134,10 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # ---------------------------------------------------------------------------------------------
     # Improve information fields in Main Render database
     # ---------------------------------------------------------------------------------------------
-    if mature_set:
+    if mature_dic:
         log_info('MAME machine Mature information available.')
         for machine_name in machines_render:
-            machines_render[machine_name]['isMature'] = True if machine_name in mature_set else False
+            machines_render[machine_name]['isMature'] = True if machine_name in mature_dic['data'] else False
     else:
         log_info('MAME machine Mature flag not available.')
 
@@ -4149,30 +4201,33 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary
     # ---------------------------------------------------------------------------------------------
-    # >> Versions
+    # Version strings
     change_control_dic(control_dic, 'ver_mame', mame_version_int)
     change_control_dic(control_dic, 'ver_mame_str', mame_version_raw)
-    # change_control_dic(control_dic, 'ver_bestgames', bestgames_version)
-    # change_control_dic(control_dic, 'ver_catlist', catlist_version)
-    # change_control_dic(control_dic, 'ver_catver', catver_version)
-    # change_control_dic(control_dic, 'ver_command', command_version)
-    # change_control_dic(control_dic, 'ver_gameinit', gameinit_version)
-    # change_control_dic(control_dic, 'ver_genre', genre_version)
-    # change_control_dic(control_dic, 'ver_history', history_version)
-    # change_control_dic(control_dic, 'ver_mameinfo', mameinfo_version)
-    # change_control_dic(control_dic, 'ver_mature', mature_version)
-    # change_control_dic(control_dic, 'ver_nplayers', nplayers_version)
-    # change_control_dic(control_dic, 'ver_series', series_version)
+    # INI files
+    change_control_dic(control_dic, 'ver_artwork', artwork_dic['version'])
+    change_control_dic(control_dic, 'ver_bestgames', bestgames_dic['version'])
+    change_control_dic(control_dic, 'ver_category', category_dic['version'])
+    change_control_dic(control_dic, 'ver_catlist', catlist_dic['version'])
+    change_control_dic(control_dic, 'ver_catver', catver_dic['version'])
+    change_control_dic(control_dic, 'ver_genre', genre_dic['version'])
+    change_control_dic(control_dic, 'ver_mature', mature_dic['version'])
+    change_control_dic(control_dic, 'ver_nplayers', nplayers_dic['version'])
+    change_control_dic(control_dic, 'ver_series', series_dic['version'])
+    # DAT files
+    change_control_dic(control_dic, 'ver_command', command_version)
+    change_control_dic(control_dic, 'ver_gameinit', gameinit_version)
+    change_control_dic(control_dic, 'ver_history', history_version)
+    change_control_dic(control_dic, 'ver_mameinfo', mameinfo_version)
 
-    # >> Statistics
+    # Statistics
     change_control_dic(control_dic, 'stats_processed_machines', processed_machines)
     change_control_dic(control_dic, 'stats_parents', stats['parents'])
     change_control_dic(control_dic, 'stats_clones', stats['clones'])
     change_control_dic(control_dic, 'stats_runnable', stats['runnable'])
     change_control_dic(control_dic, 'stats_runnable_parents', stats['runnable_parents'])
     change_control_dic(control_dic, 'stats_runnable_clones', stats['runnable_clones'])
-
-    # >> Main filters
+    # Main filters
     change_control_dic(control_dic, 'stats_coin', stats['coin'])
     change_control_dic(control_dic, 'stats_coin_parents', stats['coin_parents'])
     change_control_dic(control_dic, 'stats_coin_clones', stats['coin_clones'])
@@ -4188,8 +4243,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     change_control_dic(control_dic, 'stats_devices', stats['devices'])
     change_control_dic(control_dic, 'stats_devices_parents', stats['devices_parents'])
     change_control_dic(control_dic, 'stats_devices_clones', stats['devices_clones'])
-
-    # >> Binary filters
+    # Binary filters
     change_control_dic(control_dic, 'stats_BIOS', stats['BIOS'])
     change_control_dic(control_dic, 'stats_BIOS_parents', stats['BIOS_parents'])
     change_control_dic(control_dic, 'stats_BIOS_clones', stats['BIOS_clones'])

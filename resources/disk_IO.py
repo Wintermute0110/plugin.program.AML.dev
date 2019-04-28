@@ -95,7 +95,7 @@ from .utils_kodi import *
 #
 def fs_new_machine_dic():
     return {
-        # >> <machine> attributes
+        # <machine> attributes
         'romof'           : '',
         'sampleof'        : '',
         'sourcefile'      : '',
@@ -105,7 +105,7 @@ def fs_new_machine_dic():
         # Name of the chip when type == 'cpu'
         # Example <chip type="cpu" tag="maincpu" name="Zilog Z80" />
         'chip_cpu_name'   : [],
-        # >> Other <machine> tags from MAME XML
+        # Other <machine> tags from MAME XML
         'display_type'    : [], # <!ATTLIST display type (raster|vector|lcd|svg|unknown) #REQUIRED>
         'display_rotate'  : [], # <!ATTLIST display rotate (0|90|180|270) #IMPLIED>
         'display_width'   : [], # <!ATTLIST display width CDATA #IMPLIED>
@@ -116,13 +116,14 @@ def fs_new_machine_dic():
         'devices'         : [], # List of dictionaries. See comments avobe.
         # Custom AML data (from INI files or generated)
         'artwork'         : [], # MASH Artwork.ini
-        'bestgames'       : '', # External INI
-        'category'        : [], # MASH Category.ini
-        'catlist'         : '', # External INI
+        'bestgames'       : '', # betsgames.ini
+        'category'        : [], # MASH category.ini
+        'catlist'         : '', # catlist.ini
         'catver'          : '', # Progretto SNAPS catver.ini
-        'genre'           : '', # External INI
-        'series'          : [], # External INI
-        # >> AML generated field.
+        'genre'           : '', # genre.ini
+        'series'          : [], # series.ini
+        'veradded'        : '', # catver.ini
+        # AML generated field.
         'isDead'          : False,
     }
 
@@ -131,19 +132,21 @@ def fs_new_machine_dic():
 #
 def fs_new_machine_render_dic():
     return {
-        # >> <machine> attributes
+        # <machine> attributes
         'cloneof'        : '', # Must be in the render DB to generate the PClone flag
         'isBIOS'         : False,
         'isDevice'       : False,
-        # >> Other <machine> tags from MAME XML
+        # Other <machine> tags from MAME XML
         'description'    : '',
         'year'           : '',
         'manufacturer'   : '',
         'driver_status'  : '',
-        # >> Custom AML data
+        # Custom AML data
         'isMature'       : False, # Taken from mature.ini
-        'genre'          : '',    # Taken from Genre.ini or Catver.ini or Catlist.ini
         'nplayers'       : '',    # Taken from NPlayers.ini
+        # Genre used in AML for the skin
+        # Taken from Genre.ini or Catver.ini or Catlist.ini
+        'genre'          : '',
     }
 
 #
@@ -352,23 +355,26 @@ def fs_new_control_dic():
         # --- Filed in when building main MAME database ---
         'ver_AML'       : 0,
         'ver_AML_str'   : 'Undefined',
-        # >> Numerical MAME version. Allows for comparisons like ver_mame >= MAME_VERSION_0190
-        # >> MAME string version, as reported by the executable stdout. Example: '0.194 (mame0194)'
+        # Numerical MAME version. Allows for comparisons like ver_mame >= MAME_VERSION_0190
+        # MAME string version, as reported by the executable stdout. Example: '0.194 (mame0194)'
         'ver_mame'      : 0,
         'ver_mame_str'  : 'Undefined',
+        # INI files
         'ver_artwork'   : 'MAME database not built',
         'ver_bestgames' : 'MAME database not built',
         'ver_category'  : 'MAME database not built',
         'ver_catlist'   : 'MAME database not built',
         'ver_catver'    : 'MAME database not built',
-        'ver_command'   : 'MAME database not built',
-        'ver_gameinit'  : 'MAME database not built',
         'ver_genre'     : 'MAME database not built',
-        'ver_history'   : 'MAME database not built',
-        'ver_mameinfo'  : 'MAME database not built',
         'ver_mature'    : 'MAME database not built',
         'ver_nplayers'  : 'MAME database not built',
         'ver_series'    : 'MAME database not built',
+
+        # DAT files
+        'ver_command'   : 'MAME database not built',
+        'ver_gameinit'  : 'MAME database not built',
+        'ver_history'   : 'MAME database not built',
+        'ver_mameinfo'  : 'MAME database not built',
 
         # Basic stats
         'stats_processed_machines' : 0,

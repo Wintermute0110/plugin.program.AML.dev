@@ -4725,7 +4725,7 @@ def command_context_setup_plugin():
         ['Check MAME version',
          'All in one (Extract, Build, Scan, Filters)',
          'All in one (Extract, Build, Scan, Filters, Audit)',
-         'Extract MAME.xml',
+         'Extract/Process MAME.xml',
          'Build all databases',
          'Scan everything and build plots',
          'Build Fanarts/3D Boxes ...',
@@ -4788,7 +4788,6 @@ def command_context_setup_plugin():
         db_dic['cache_index'] = mame_build_MAME_catalogs(g_PATHS, g_settings, control_dic,
             db_dic['machines'], db_dic['render'], db_dic['roms'],
             db_dic['main_pclone_dic'], db_dic['assets'])
-        return
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs (optional) ---
         options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
