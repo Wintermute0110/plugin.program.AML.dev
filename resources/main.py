@@ -4762,9 +4762,12 @@ def command_context_setup_plugin():
         kodi_dialog_OK('MAME version is {0}'.format(mame_version_str))
 
     # --- All in one (Extract, Build, Scan, Filters) ---
-    elif menu_item == 1:
+    # --- All in one (Extract, Build, Scan, Filters, Audit) ---
+    elif menu_item == 1 or menu_item == 2:
+        DO_AUDIT = False if menu_item == 1 else True
         log_info('command_context_setup_plugin() All in one step starting ...')
-        log_info('Operation mode: {0}'.format(g_settings['op_mode']))
+        log_info('Operation mode {0}'.format(g_settings['op_mode']))
+        log_info('DO_AUDIT {0}'.format(DO_AUDIT))
 
         # Errors are checked inside the fs_extract*() or fs_process*() functions.
         options_dic = {}
@@ -4873,118 +4876,19 @@ def command_context_setup_plugin():
             fs_build_asset_cache(g_PATHS, g_settings, control_dic,
                 db_dic['cache_index'], db_dic['assets'])
 
-        # --- So long and thanks for all the fish ---
-        kodi_notify('Finished extracting, DB build, scanning and filters')
+        if DO_AUDIT:
+            # --- MAME audit ---
+            mame_audit_MAME_all(g_PATHS, g_settings, control_dic,
+                db_dic['machines'], db_dic['render'], audit_dic['audit_roms'])
 
-    # --- All in one (Extract, Build, Scan, Filters, Audit) ---
-    elif menu_item == 2:
-        log_info('command_context_setup_plugin() All in one step starting ...')
-
-        # --- Extract MAME.xml (mandatory) ---
-        if not g_settings['mame_prog']:
-            kodi_dialog_OK('MAME executable is not set.')
-            return
-        mame_prog_FN = FileName(g_settings['mame_prog'])
-        (filesize, total_machines) = fs_extract_MAME_XML(g_PATHS, mame_prog_FN, __addon_version__)
-
-        # --- Build main MAME database, PClone list and MAME hashed database (mandatory) ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        options_dic = mame_check_before_build_MAME_main_database(g_PATHS, g_settings, control_dic)
-        if options_dic['abort']: return
-        db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, control_dic, __addon_version__)
-
-        # --- Build ROM audit/scanner databases (mandatory) ---
-        options_dic = mame_check_before_build_ROM_audit_databases(g_PATHS, g_settings, control_dic)
-        if options_dic['abort']: return
-        audit_dic = mame_build_ROM_audit_databases(g_PATHS, g_settings, control_dic,
-            db_dic['machines'], db_dic['render'], db_dic['devices'], db_dic['roms'])
-
-        # --- Build MAME catalogs (mandatory) ---
-        options_dic = mame_check_before_build_MAME_catalogs(g_PATHS, g_settings, control_dic)
-        if options_dic['abort']: return
-        db_dic['cache_index'] = mame_build_MAME_catalogs(g_PATHS, g_settings, control_dic,
-            db_dic['machines'], db_dic['render'], db_dic['roms'],
-            db_dic['main_pclone_dic'], db_dic['assets'])
-
-        # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs (optional) ---
-        options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            SL_dic = mame_build_SoftwareLists_databases(g_PATHS, g_settings, control_dic,
-                db_dic['machines'], db_dic['render'])
-        else:
-            log_info('Skipping mame_build_SoftwareLists_databases()')
-
-        # --- Scan ROMs/CHDs/Samples and updates ROM status (optional) ---
-        options_dic = mame_check_before_scan_MAME_ROMs(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_MAME_ROMs(g_PATHS, g_settings, control_dic, options_dic,
-                db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'],
-                audit_dic['ROM_ZIP_list'], audit_dic['Sample_ZIP_list'], audit_dic['CHD_archive_list'])
-        else:
-            log_info('Skipping mame_scan_MAME_ROMs()')
-
-        # --- Scans MAME assets/artwork (optional) ---
-        options_dic = mame_check_before_scan_MAME_assets(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_MAME_assets(g_PATHS, g_settings, control_dic,
-                db_dic['assets'], db_dic['render'], db_dic['main_pclone_dic'])
-        else:
-            log_info('Skipping mame_scan_MAME_assets()')
-
-        # --- Scan SL ROMs/CHDs (optional) ---
-        options_dic = mame_check_before_scan_SL_ROMs(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_SL_ROMs(g_PATHS, g_settings, control_dic, options_dic, SL_dic['SL_index'])
-        else:
-            log_info('Skipping mame_scan_SL_ROMs()')
-
-        # --- Scan SL assets/artwork (optional) ---
-        options_dic = mame_check_before_scan_SL_assets(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_SL_assets(g_PATHS, g_settings, control_dic,
-                SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
-        else:
-            log_info('Skipping mame_scan_SL_assets()')
-
-        # --- Build MAME machines plot ---
-        mame_build_MAME_plots(g_PATHS, g_settings, control_dic,
-            db_dic['machines'], db_dic['render'], db_dic['assets'],
-            db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
-            db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
-
-        # --- Buils Software List items plot ---
-        mame_build_SL_plots(g_PATHS, g_settings, control_dic,
-            SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
-
-        # --- Regenerate the custom filters ---
-        main_filter_dic = filter_get_filter_DB(
-            db_dic['machines'], db_dic['render'], db_dic['assets'], audit_dic['machine_archives'])
-        (filter_list, options_dic) = mame_custom_filters_load_XML(
-            g_PATHS, g_settings, control_dic, main_filter_dic)
-        if len(filter_list) >= 1 and options_dic['XML_errors'] == False:
-            mame_build_custom_filters(g_PATHS, g_settings, control_dic,
-                filter_list, main_filter_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
-
-        # --- Regenerate MAME asset hashed database ---
-        fs_build_asset_hashed_db(g_PATHS, g_settings, control_dic, db_dic['assets'])
-
-        # --- Regenerate MAME machine render and assets cache ---
-        if g_settings['debug_enable_MAME_render_cache']:
-            fs_build_render_cache(g_PATHS, g_settings, control_dic,
-                db_dic['cache_index'], db_dic['render'])
-        if g_settings['debug_enable_MAME_asset_cache']:
-            fs_build_asset_cache(g_PATHS, g_settings, control_dic,
-                db_dic['cache_index'], db_dic['assets'])
-
-        # --- MAME audit ---
-        mame_audit_MAME_all(g_PATHS, g_settings, control_dic,
-            db_dic['machines'], db_dic['render'], audit_dic['audit_roms'])
-
-        # --- SL audit ---
-        mame_audit_SL_all(g_PATHS, g_settings, control_dic, SL_dic['SL_index'])
+            # --- SL audit ---
+            mame_audit_SL_all(g_PATHS, g_settings, control_dic, SL_dic['SL_index'])
 
         # --- So long and thanks for all the fish ---
-        kodi_notify('Finished extracting, DB build, scanning, filters and audit')
+        if DO_AUDIT:
+            kodi_notify('Finished extracting, DB build, scanning, filters and audit')
+        else:
+            kodi_notify('Finished extracting, DB build, scanning and filters')
 
     # --- Extract MAME.xml ---
     elif menu_item == 3:
