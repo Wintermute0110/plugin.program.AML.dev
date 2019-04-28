@@ -138,6 +138,8 @@ class AML_Paths:
         self.CATALOG_SERIES_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_series_all.json')
         self.CATALOG_ARTWORK_PARENT_PATH          = self.CATALOG_DIR.pjoin('catalog_artwork_parents.json')
         self.CATALOG_ARTWORK_ALL_PATH             = self.CATALOG_DIR.pjoin('catalog_artwork_all.json')
+        self.CATALOG_VERADDED_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_version_parents.json')
+        self.CATALOG_VERADDED_ALL_PATH            = self.CATALOG_DIR.pjoin('catalog_version_all.json')
 
         self.CATALOG_CONTROL_EXPANDED_PARENT_PATH = self.CATALOG_DIR.pjoin('catalog_control_expanded_parents.json')
         self.CATALOG_CONTROL_EXPANDED_ALL_PATH    = self.CATALOG_DIR.pjoin('catalog_control_expanded_all.json')
@@ -654,6 +656,7 @@ def render_root_list():
         num_cat_Bestgames = len(cache_index_dic['Bestgames'])
         num_cat_Series = len(cache_index_dic['Series'])
         num_cat_Artwork = len(cache_index_dic['Artwork'])
+        num_cat_Version = len(cache_index_dic['Version'])
 
         num_cat_Controls_Expanded = len(cache_index_dic['Controls_Expanded'])
         num_cat_Controls_Compact = len(cache_index_dic['Controls_Compact'])
@@ -732,6 +735,7 @@ def render_root_list():
     rating_str   = 'Machines by Rating'
     series_str   = 'Machines by Series'
     artwork_str  = 'Machines by Artwork (MASH)'
+    version_str  = 'Machines by Version Added (Catver)'
 
     # >> Cataloged filters (always there)
     # NOTE: use the same names as MAME executable
@@ -800,6 +804,8 @@ def render_root_list():
         'This filter requires that you configure [COLOR violet]series.ini[/COLOR].')
     artwork_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Artwork. '
         'This filter requires that you configure [COLOR violet]Artwork.ini[/COLOR] by MASH.')
+    version_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Version Added. '
+        'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].')
 
     ctype_expanded_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
         'For each machine, all controls are included in the list.')
@@ -909,6 +915,7 @@ def render_root_list():
         rating_str          += a.format(num_cat_Bestgames)
         series_str          += a.format(num_cat_Series)
         artwork_str         += a.format(num_cat_Artwork)
+        version_str         += a.format(num_cat_Version)
         # Always present
         ctype_expanded_str  += a.format(num_cat_Controls_Expanded)
         ctype_compact_str   += a.format(num_cat_Controls_Compact)
@@ -980,6 +987,8 @@ def render_root_list():
             series_str, misc_url_1_arg('catalog', 'Series'), series_plot)
         render_root_list_row_standard(
             artwork_str, misc_url_1_arg('catalog', 'Artwork'), artwork_plot)
+        render_root_list_row_standard(
+            version_str, misc_url_1_arg('catalog', 'Version'), version_plot)
 
         # >> Cataloged filters (always there)
         render_root_list_row_standard(
@@ -1146,6 +1155,7 @@ def render_skin_catalog_filters():
     rating_str   = 'Machines by Rating'
     series_str   = 'Machines by Series'
     artwork_str  = 'Machines by Artwork (MASH)'
+    version_str  = 'Machines by Added Version'
 
     ctype_expanded_str  = 'Machines by Controls (Expanded)'
     ctype_compact_str   = 'Machines by Controls (Compact)'
@@ -1172,6 +1182,7 @@ def render_skin_catalog_filters():
         render_root_list_row_standard(rating_str, misc_url_1_arg('catalog', 'Bestgames'))
         render_root_list_row_standard(series_str, misc_url_1_arg('catalog', 'Series'))
         render_root_list_row_standard(artwork_str, misc_url_1_arg('catalog', 'Artwork'))
+        render_root_list_row_standard(version_str, misc_url_1_arg('catalog', 'Version'))
 
         # >> Cataloged filters (always there)
         render_root_list_row_standard(ctype_expanded_str, misc_url_1_arg('catalog', 'Controls_Expanded'))

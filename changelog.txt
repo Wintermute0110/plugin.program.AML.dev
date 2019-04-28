@@ -63,7 +63,7 @@ WIP      Read-only Launcher (ROLs) to export into AEL.
 
 [B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
 
-WIP      Initial support for Retroarch MAME 2003 Plus core.
+FEATURE  Initial support for Retroarch MAME 2003 Plus core.
 
 FEATURE  [CORE] Ability to export DAT files in Logiqx format for MAME ROMs, Samples, CHDs,
          and SL ROMs and CHDs.
@@ -103,16 +103,16 @@ FEATURE  [CORE] New catalog filter "Machines by Display Resolution" Inspired by
 FEATURE  [CORE] New catalog filter "Machines by CPU" Inspired by
          MASH's MAMEINFO CPU.ini.
 
-WIP      [CORE] Rewrite the INI loading engine.
+FEATURE  [CORE] Rewrite the INI loading engine.
          See comments in header of function mame_load_INI_datfile().
 
-WIP      [CORE] New INI file Artwork.ini (produced by MASH's MAMEINFO).
+FEATURE  [CORE] New INI file Artwork.ini (produced by MASH's MAMEINFO).
          Catalog filter "Machines by Artwork".
          Note that Artwork.ini places the same machine in different categories. Maybe other
          INIs do the same and currently AML does not support this. This requires
          some changes in AML engine.
 
-WIP      New catalog "Version added"
+FEATURE  New catalog "Version added"
 
 FEATURE  [CORE] New INI file Category.ini (produced by MASH's MAMEINFO).
          Catalog filter "Machines by Category".

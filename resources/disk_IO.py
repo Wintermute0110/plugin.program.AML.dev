@@ -119,7 +119,7 @@ def fs_new_machine_dic():
         'bestgames'       : '', # betsgames.ini
         'category'        : [], # MASH category.ini
         'catlist'         : '', # catlist.ini
-        'catver'          : '', # Progretto SNAPS catver.ini
+        'catver'          : '', # catver.ini
         'genre'           : '', # genre.ini
         'series'          : [], # series.ini
         'veradded'        : '', # catver.ini
@@ -828,6 +828,8 @@ def fs_get_cataloged_dic_parents(PATHS, catalog_name):
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SERIES_PARENT_PATH.getPath())
     elif catalog_name == 'Artwork':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath())
+    elif catalog_name == 'Version':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_VERADDED_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Compact':
@@ -882,6 +884,8 @@ def fs_get_cataloged_dic_all(PATHS, catalog_name):
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SERIES_ALL_PATH.getPath())
     elif catalog_name == 'Artwork':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath())
+    elif catalog_name == 'Version':
+        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_VERADDED_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Compact':

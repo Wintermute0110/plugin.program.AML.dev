@@ -348,6 +348,13 @@ def mame_load_Catver_ini(filename):
             veradded_dic['unique_categories'] = False
             break
     veradded_dic['single_category'] = True
+    # If categories are unique for each machine transform lists into strings
+    if catver_dic['unique_categories']:
+        for m_name in catver_dic['data']:
+            catver_dic['data'][m_name] = catver_dic['data'][m_name][0]
+    if veradded_dic['unique_categories']:
+        for m_name in veradded_dic['data']:
+            veradded_dic['data'][m_name] = veradded_dic['data'][m_name][0]
     log_info('mame_load_Catver_ini() Catver Machines   {0:6d}'.format(len(catver_dic['data'])))
     log_info('mame_load_Catver_ini() Catver Categories {0:6d}'.format(len(catver_dic['categories'])))
     log_info('mame_load_Catver_ini() Catver Version "{0}"'.format(catver_dic['version']))
@@ -433,7 +440,10 @@ def mame_load_nplayers_ini(filename):
         if len(ini_dic['data'][m_name]) > 1:
             ini_dic['unique_categories'] = False
             break
-    ini_dic['single_category'] = True
+    # If categories are unique for each machine transform lists into strings
+    if ini_dic['unique_categories']:
+        for m_name in ini_dic['data']:
+            ini_dic['data'][m_name] = ini_dic['data'][m_name][0]
     log_info('mame_load_nplayers_ini() Machines   {0:6d}'.format(len(ini_dic['data'])))
     log_info('mame_load_nplayers_ini() Categories {0:6d}'.format(len(ini_dic['categories'])))
     log_info('mame_load_nplayers_ini() Version "{0}"'.format(ini_dic['version']))
@@ -506,7 +516,10 @@ def mame_load_Mature_ini(filename):
         if len(ini_dic['data'][m_name]) > 1:
             ini_dic['unique_categories'] = False
             break
-    ini_dic['single_category'] = True
+    # If categories are unique for each machine transform lists into strings
+    if ini_dic['unique_categories']:
+        for m_name in ini_dic['data']:
+            ini_dic['data'][m_name] = ini_dic['data'][m_name][0]
     log_info('mame_load_Mature_ini() Machines   {0:6d}'.format(len(ini_dic['data'])))
     log_info('mame_load_Mature_ini() Categories {0:6d}'.format(len(ini_dic['categories'])))
     log_info('mame_load_Mature_ini() Version "{0}"'.format(ini_dic['version']))
@@ -622,7 +635,10 @@ def mame_load_INI_datfile_simple(filename):
         if len(ini_dic['data'][m_name]) > 1:
             ini_dic['unique_categories'] = False
             break
-    ini_dic['single_category'] = True
+    # If categories are unique for each machine transform lists into strings
+    if ini_dic['unique_categories']:
+        for m_name in ini_dic['data']:
+            ini_dic['data'][m_name] = ini_dic['data'][m_name][0]
     log_info('mame_load_INI_datfile_simple() Machines   {0:6d}'.format(len(ini_dic['data'])))
     log_info('mame_load_INI_datfile_simple() Categories {0:6d}'.format(len(ini_dic['categories'])))
     log_info('mame_load_INI_datfile_simple() Version "{0}"'.format(ini_dic['version']))
@@ -3697,6 +3713,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     pDialog.close()
 
     # --- Verify that INIs comply with the data model ---
+    # In MAME 0.209 only artwork, category and series are lists. Other INIs define
+    # machine-unique categories (each machine belongs to one category only).
     log_info('artwork_dic   unique_categories {0}'.format(artwork_dic['unique_categories']))
     log_info('bestgames_dic unique_categories {0}'.format(bestgames_dic['unique_categories']))
     log_info('category_dic  unique_categories {0}'.format(category_dic['unique_categories']))
@@ -3707,7 +3725,6 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     log_info('nplayers_dic  unique_categories {0}'.format(nplayers_dic['unique_categories']))
     log_info('series_dic    unique_categories {0}'.format(series_dic['unique_categories']))
     log_info('veradded_dic  unique_categories {0}'.format(veradded_dic['unique_categories']))
-    # return
 
     # ---------------------------------------------------------------------------------------------
     # Incremental Parsing approach B (from [1])
@@ -4944,7 +4961,8 @@ def _aux_catalog_key_Genre(parent_name, machines, machines_render):
     return [ machines[parent_name]['genre'] ]
 
 def _aux_catalog_key_Category(parent_name, machines, machines_render):
-    return [ machines[parent_name]['category'] ]
+    # Already a list.
+    return machines[parent_name]['category']
 
 def _aux_catalog_key_NPlayers(parent_name, machines, machines_render):
     return [ machines[parent_name]['nplayers'] ]
@@ -4953,10 +4971,15 @@ def _aux_catalog_key_Bestgames(parent_name, machines, machines_render):
     return [ machines[parent_name]['bestgames'] ]
 
 def _aux_catalog_key_Series(parent_name, machines, machines_render):
-    return [ machines[parent_name]['bestgames'] ]
+    # Already a list.
+    return machines[parent_name]['series']
 
 def _aux_catalog_key_Artwork(parent_name, machines, machines_render):
-    return [ machines[parent_name]['artwork'] ]
+    # Already a list.
+    return machines[parent_name]['artwork']
+
+def _aux_catalog_key_VerAdded(parent_name, machines, machines_render):
+    return [ machines[parent_name]['veradded'] ]
 
 def _aux_catalog_key_Controls_Expanded(parent_name, machines, machines_render):
     machine = machines[parent_name]
@@ -5161,7 +5184,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         'Main'               : {},
         # Virtual Binary filter catalog
         'Binary'             : {},
-        # DAT/INI based catalogs
+        # INI based catalogs
         'Catver'             : {},
         'Catlist'            : {},
         'Genre'              : {},
@@ -5170,6 +5193,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         'Bestgames'          : {},
         'Series'             : {},
         'Artwork'            : {},
+        'Version'            : {},
         # MAME XML extracted catalogs
         'Controls_Expanded'  : {},
         'Controls_Compact'   : {},
@@ -5483,6 +5507,18 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _cache_index_builder('Artwork', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath(), catalog_all)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- Version catalog ---
+    log_info('Making Version catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Version catalog')
+    catalog_parents, catalog_all = {}, {}
+    _build_catalog_helper_new(catalog_parents, catalog_all,
+        machines, machines_render, main_pclone_dic, _aux_catalog_key_VerAdded)
+    _cache_index_builder('Version', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_VERADDED_PARENT_PATH.getPath(), catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_VERADDED_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
