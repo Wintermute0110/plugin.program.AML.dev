@@ -495,8 +495,10 @@ def mame_load_Mature_ini(filename):
             # Skip comments: lines starting with ';;'
             # Look for version string in comments
             if re.search(r'^;;', stripped_line):
+                # log_debug('mame_load_Mature_ini() Comment line "{0}"'.format(stripped_line))
                 m = re.search(r';; (\w+)\.ini ([0-9\.]+) / ', stripped_line)
-                if m: ini_version = m.group(2)
+                if m:
+                    ini_dic['version'] = m.group(2)
                 continue
             if stripped_line == '[ROOT_FOLDER]':
                 fsm_status = FSM_FOLDER_NAME
