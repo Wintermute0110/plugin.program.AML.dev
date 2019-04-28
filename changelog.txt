@@ -12,6 +12,8 @@ WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored i
 
 WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
          How to implement this? Using PIL?
+         I think best way is that core developers expose the image aspect ratio to the
+         skin using infolabels.
 
 
 [B]AML ideas and planned features (read to implement)[/B]
@@ -38,13 +40,10 @@ WIP      [GRAPHICS] Optimize the generation of 3D boxes. Cache the background im
          in all boxes.
 
 
-[B]Advanced MAME Launcher | version 0.10.0 | xx June 2019[/B]
+[B]Advanced MAME Launcher | version 0.9.11 | xx June 2019[/B]
 
 WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
          Github wiki.
-
-
-[B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
 
 WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed by AML.
          In this core, the XML is extracted using the MAME internal menu, which must be
@@ -59,13 +58,17 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
          See https://github.com/libretro/mame2010-libretro/pull/123
          See https://github.com/libretro/mame2010-libretro/tree/master/metadata
 
-WIP      [CORE] Ability to export DAT files in Logiqx format for MAME ROMs, Samples, CHDs,
+
+[B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
+
+FEATURE  [CORE] Ability to export DAT files in Logiqx format for MAME ROMs, Samples, CHDs,
          and SL ROMs and CHDs.
 
-WIP      [CORE] Differentiate between Non-merged and Fully non-merged MAME ROM sets.
+FEATURE  [CORE] Differentiate between Non-merged and Fully non-merged MAME ROM sets.
          Non-merged sets do not include BIOS and device ROMs.
          Fully non-merged sets include BIOS and devices ROMs (every ROM required to run each
          machine). Pleasuredome ROM sets are Fully non-merged.
+         This needs more testing.
 
 FEATURE  [FILTERING] Test the filters for errors. For example, test that all the drivers
          defined in <Driver> exist. Another example, test that the genres defined in

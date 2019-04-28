@@ -899,19 +899,38 @@ def XML_t(tag_name, tag_text, num_spaces = 4):
 #
 # Only valid ROMs in DAT file.
 #
-def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, DAT_FN,
-    machines, render, audit_roms):
+def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic):
+    log_debug('mame_write_MAME_ROM_XML_DAT() BEGIN ...')
+    machines = db_dic['machines']
+    render = db_dic['render']
+    audit_roms = db_dic['audit_roms']
+    roms_sha1_dic = db_dic['roms_sha1_dic']
+
+    # Get output filename
+    # DAT filename: AML 0.xxx ROMs (merged|split|non-merged|fully non-merged).xml
+    mame_version_str = control_dic['ver_mame']
+    rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][settings['mame_rom_set']]
+    rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][settings['mame_rom_set']]
+    log_info('MAME version "{0}"'.format(mame_version_str))
+    log_info('ROM set is "{0}"'.format(rom_set_str))
+    DAT_basename_str = 'AML MAME {0} ROMs ({1}).xml'.format(mame_version_str, rom_set_str)
+    DAT_FN = out_dir_FN.pjoin(DAT_basename_str)
+    log_info('XML "{0}"'.format(DAT_FN.getPath()))
 
     # XML file header.
     slist = []
     slist.append('<?xml version="1.0" encoding="UTF-8"?>')
-    slist.append('<!DOCTYPE datafile PUBLIC "-//Logiqx//DTD ROM Management Datafile//EN" "http://www.logiqx.com/Dats/datafile.dtd">')
+    str_a = '-//Logiqx//DTD ROM Management Datafile//EN'
+    str_b = 'http://www.logiqx.com/Dats/datafile.dtd'
+    slist.append('<!DOCTYPE datafile PUBLIC "{0}" "{1}">'.format(str_a, str_b))
     slist.append('<datafile>')
 
+    desc_str = 'AML MAME {0} ROMs {1} set'.format(mame_version_str, rom_set_str)
     slist.append('<header>')
-    slist.append(XML_t('name', 'MAME {0} ROMs (xxxxx)'.format(control_dic['ver_mame'])))
-    slist.append(XML_t('description', ''))
-    slist.append(XML_t('version', ''))
+    slist.append(XML_t('name', desc_str))
+    slist.append(XML_t('description', desc_str))
+    slist.append(XML_t('version', '{0}'.format(mame_version_str)))
+    slist.append(XML_t('date', _str_time(time.time())))
     slist.append(XML_t('author', 'Exported by Advanced MAME Launcher'))
     slist.append('</header>')
 
@@ -924,9 +943,19 @@ def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, DAT_FN,
         # If machine has no ROMs then skip it
         rom_list, actual_rom_list, num_ROMs = audit_roms[m_name], [], 0
         for rom in rom_list:
-            if rom['type'] != ROM_TYPE_ROM: continue
+            # Skip CHDs and samples
+            if rom['type'] == ROM_TYPE_ERROR: raise ValueError
+            if rom['type'] in [ROM_TYPE_DISK, ROM_TYPE_SAMPLE]: continue
+            # Skip machine ROMs not in this machine ZIP file.
+            zip_name, rom_name = rom['location'].split('/')
+            if zip_name != m_name: continue
+            # Skip invalid ROMs
+            if not rom['crc']: continue
+            # Add SHA1 field
+            rom['sha1'] = roms_sha1_dic[rom['location']]
             actual_rom_list.append(rom)
             num_ROMs += 1
+        # Machine has no ROMs, skip it
         if num_ROMs == 0: continue
 
         # Print ROMs in the XML.
@@ -934,20 +963,20 @@ def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, DAT_FN,
         slist.append(XML_t('description', render[m_name]['description']))
         slist.append(XML_t('year', render[m_name]['year']))
         slist.append(XML_t('manufacturer', render[m_name]['manufacturer']))
+        if render[m_name]['cloneof']:
+            slist.append(XML_t('cloneof', render[m_name]['cloneof']))
         for rom in actual_rom_list:
             t = '    <rom name="{0}" size="{1}" crc="{2}" sha1="{3}"/>'.format(
-                rom['name'], rom['size'], rom['crc'], 'xxxxx')
+                rom['name'], rom['size'], rom['crc'], rom['sha1'])
             slist.append(t)
         slist.append('</machine>')
         machine_counter += 1
         pDialog.update((100*machine_counter)/total_machines)
     pDialog.close()
-
-    # XML file footer.
     slist.append('</datafile>')
 
     # Open output file name.
-    pDialog.create('Advanced MAME Launcher', 'Creating MAME ROMs XML DAT ...')
+    pDialog.create('Advanced MAME Launcher', 'Writing MAME ROMs XML DAT ...')
     pDialog.update(15)
     try:
         file_obj = open(DAT_FN.getPath(), 'w')
@@ -967,19 +996,37 @@ def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, DAT_FN,
 #
 # Only valid CHDs in DAT file.
 #
-def mame_write_MAME_CHD_XML_DAT(PATHS, settings, control_dic, DAT_FN,
-    machines, render, audit_roms):
+def mame_write_MAME_CHD_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic):
+    log_debug('mame_write_MAME_CHD_XML_DAT() BEGIN ...')
+    machines = db_dic['machines']
+    render = db_dic['render']
+    audit_roms = db_dic['audit_roms']
+
+    # Get output filename
+    # DAT filename: AML 0.xxx ROMs (merged|split|non-merged|fully non-merged).xml
+    mame_version_str = control_dic['ver_mame']
+    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
+    chd_set_str = ['Merged', 'Split', 'Non-merged'][settings['mame_chd_set']]
+    log_info('MAME version "{0}"'.format(mame_version_str))
+    log_info('CHD set is "{0}"'.format(chd_set_str))
+    DAT_basename_str = 'AML MAME {0} CHDs ({1}).xml'.format(mame_version_str, chd_set_str)
+    DAT_FN = out_dir_FN.pjoin(DAT_basename_str)
+    log_info('XML "{0}"'.format(DAT_FN.getPath()))
 
     # XML file header.
     slist = []
     slist.append('<?xml version="1.0" encoding="UTF-8"?>')
-    slist.append('<!DOCTYPE datafile PUBLIC "-//Logiqx//DTD ROM Management Datafile//EN" "http://www.logiqx.com/Dats/datafile.dtd">')
+    str_a = '-//Logiqx//DTD ROM Management Datafile//EN'
+    str_b = 'http://www.logiqx.com/Dats/datafile.dtd'
+    slist.append('<!DOCTYPE datafile PUBLIC "{0}" "{1}">'.format(str_a, str_b))
     slist.append('<datafile>')
 
+    desc_str = 'AML MAME {0} CHDs {1} set'.format(mame_version_str, chd_set_str)
     slist.append('<header>')
-    slist.append(XML_t('name', 'MAME {0} CHDs (xxxxx)'.format(control_dic['ver_mame'])))
-    slist.append(XML_t('description', ''))
-    slist.append(XML_t('version', ''))
+    slist.append(XML_t('name', desc_str))
+    slist.append(XML_t('description', desc_str))
+    slist.append(XML_t('version', '{0}'.format(mame_version_str)))
+    slist.append(XML_t('date', _str_time(time.time())))
     slist.append(XML_t('author', 'Exported by Advanced MAME Launcher'))
     slist.append('</header>')
 
@@ -990,28 +1037,33 @@ def mame_write_MAME_CHD_XML_DAT(PATHS, settings, control_dic, DAT_FN,
     pDialog.update(0)
     for m_name in sorted(audit_roms):
         # If machine has no ROMs then skip it
-        rom_list, actual_rom_list, num_ROMs = audit_roms[m_name], [], 0
-        for rom in rom_list:
-            if rom['type'] != ROM_TYPE_DISK: continue
-            actual_rom_list.append(rom)
-            num_ROMs += 1
-        if num_ROMs == 0: continue
+        chd_list, actual_chd_list, num_CHDs = audit_roms[m_name], [], 0
+        for chd in chd_list:
+            # Only include CHDs
+            if chd['type'] != ROM_TYPE_DISK: continue
+            # Skip machine ROMs not in this machine ZIP file.
+            zip_name, chd_name = chd['location'].split('/')
+            if zip_name != m_name: continue
+            # Skip invalid CHDs
+            if not chd['sha1']: continue
+            actual_chd_list.append(chd)
+            num_CHDs += 1
+        if num_CHDs == 0: continue
 
-        # Print ROMs in the XML.
+        # Print CHDs in the XML.
         slist.append('<machine name="{0}">'.format(m_name))
         slist.append(XML_t('description', render[m_name]['description']))
         slist.append(XML_t('year', render[m_name]['year']))
         slist.append(XML_t('manufacturer', render[m_name]['manufacturer']))
-        for rom in actual_rom_list:
-            t = '    <rom name="{0}" size="{1}" crc="{2}" sha1="{3}"/>'.format(
-                rom['name'], 'xxxxx', 'xxxxx', rom['sha1'])
+        if render[m_name]['cloneof']:
+            slist.append(XML_t('cloneof', render[m_name]['cloneof']))
+        for chd in actual_chd_list:
+            t = '    <rom name="{0}" sha1="{1}"/>'.format(chd['name'], chd['sha1'])
             slist.append(t)
         slist.append('</machine>')
         machine_counter += 1
         pDialog.update((100*machine_counter)/total_machines)
     pDialog.close()
-
-    # XML file footer.
     slist.append('</datafile>')
 
     # Open output file name.
@@ -4460,8 +4512,8 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # --- Initialise ---
     # This must match the values defined in settings.xml, "ROM sets" tab.
     rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][settings['mame_rom_set']]
-    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
     rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][settings['mame_rom_set']]
+    chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
     chd_set_str = ['Merged', 'Split', 'Non-merged'][settings['mame_chd_set']]
     log_info('mame_build_ROM_audit_databases() ROM set is {0}'.format(rom_set))
     log_info('mame_build_ROM_audit_databases() CHD set is {0}'.format(chd_set))
