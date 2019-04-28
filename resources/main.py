@@ -558,13 +558,16 @@ def get_settings():
     g_settings['display_catalog_filters'] = True if o.getSetting('display_catalog_filters') == 'true' else False
     g_settings['display_DAT_browser']     = True if o.getSetting('display_DAT_browser') == 'true' else False
     g_settings['display_SL_browser']      = True if o.getSetting('display_SL_browser') == 'true' else False
-    g_settings['display_MAME_favs']       = True if o.getSetting('display_MAME_favs') == 'true' else False
-    g_settings['display_SL_favs']         = True if o.getSetting('display_SL_favs') == 'true' else False
     g_settings['display_custom_filters']  = True if o.getSetting('display_custom_filters') == 'true' else False
+    g_settings['display_ROLs']            = True if o.getSetting('display_ROLs') == 'true' else False
+    g_settings['display_MAME_favs']       = True if o.getSetting('display_MAME_favs') == 'true' else False
     g_settings['display_MAME_most']       = True if o.getSetting('display_MAME_most') == 'true' else False
     g_settings['display_MAME_recent']     = True if o.getSetting('display_MAME_recent') == 'true' else False
+    g_settings['display_SL_favs']         = True if o.getSetting('display_SL_favs') == 'true' else False
     g_settings['display_SL_most']         = True if o.getSetting('display_SL_most') == 'true' else False
     g_settings['display_SL_recent']       = True if o.getSetting('display_SL_recent') == 'true' else False
+    g_settings['display_utilities']       = True if o.getSetting('display_utilities') == 'true' else False
+    g_settings['display_global_reports']  = True if o.getSetting('display_global_reports') == 'true' else False
 
     # --- Display ---
     g_settings['artwork_mame_icon']     = int(o.getSetting('artwork_mame_icon'))
@@ -1034,8 +1037,9 @@ def render_root_list():
         render_root_custom_filter_row('[Custom MAME filters]',
             misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'), custom_filters_plot)
 
-    render_root_custom_filter_row('[AEL Read Only Launchers]',
-        misc_url_1_arg('command', 'SHOW_AEL_ROLS'), ROLS_plot)
+    if g_settings['display_ROLs']:
+        render_root_custom_filter_row('[AEL Read Only Launchers]',
+            misc_url_1_arg('command', 'SHOW_AEL_ROLS'), ROLS_plot)
 
     if g_settings['display_MAME_favs']:
         render_root_list_row_standard('<Favourite MAME machines>', 
@@ -1062,10 +1066,12 @@ def render_root_list():
         misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'), SL_recent_played_plot)
 
     # Always render these two.
-    render_root_list_row_standard('Utilities',
-        misc_url_1_arg('command', 'SHOW_UTILITIES_VLAUNCHERS'), Utilities_plot)
-    render_root_list_row_standard('Global Reports',
-        misc_url_1_arg('command', 'SHOW_GLOBALREPORTS_VLAUNCHERS'), Global_Reports_plot)
+    if g_settings['display_utilities']:
+        render_root_list_row_standard('Utilities',
+            misc_url_1_arg('command', 'SHOW_UTILITIES_VLAUNCHERS'), Utilities_plot)
+    if g_settings['display_global_reports']:
+        render_root_list_row_standard('Global Reports',
+            misc_url_1_arg('command', 'SHOW_GLOBALREPORTS_VLAUNCHERS'), Global_Reports_plot)
 
     # --- End of directory ---
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)

@@ -40,13 +40,16 @@
     <setting label="Display Catalog filters" type="bool" default="true" id="display_catalog_filters" />
     <setting label="Display DAT browser" type="bool" default="false" id="display_DAT_browser" />
     <setting label="Display Software List browser" type="bool" default="true" id="display_SL_browser" />
-    <setting label="Display MAME Favourites" type="bool" default="true" id="display_MAME_favs" />
-    <setting label="Display SL Favourites" type="bool" default="true" id="display_SL_favs" />
     <setting label="Display Custom filters" type="bool" default="true" id="display_custom_filters" />
+    <setting label="Display Read-only Launchers" type="bool" default="false" id="display_ROLs" />
+    <setting label="Display MAME Favourites" type="bool" default="true" id="display_MAME_favs" />
     <setting label="Display MAME Most Played" type="bool" default="true" id="display_MAME_most" />
     <setting label="Display MAME Recently Played" type="bool" default="true" id="display_MAME_recent" />
+    <setting label="Display SL Favourites" type="bool" default="true" id="display_SL_favs" />
     <setting label="Display SL Most Played" type="bool" default="true" id="display_SL_most" />
     <setting label="Display SL Recently Played" type="bool" default="true" id="display_SL_recent" />
+    <setting label="Display Utilities" type="bool" default="true" id="display_utilities" />
+    <setting label="Display Global Reports" type="bool" default="true" id="display_global_reports" />
 </category>
 <category label="Artwork / Assets">
     <setting label="MAME Icon" type="enum" id="artwork_mame_icon"  default="0" values="Title|Snap|Flyer|Cabinet|PCB" />

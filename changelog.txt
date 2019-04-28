@@ -58,6 +58,8 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
          See https://github.com/libretro/mame2010-libretro/pull/123
          See https://github.com/libretro/mame2010-libretro/tree/master/metadata
 
+WIP      Read-only Launcher (ROLs) to export into AEL.
+
 
 [B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
 
