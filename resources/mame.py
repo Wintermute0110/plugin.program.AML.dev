@@ -3416,7 +3416,91 @@ def mame_check_before_build_MAME_main_database(PATHS, settings, control_dic):
 #   MAIN_CONTROL_PATH    (updated and then JSON file saved)
 #   ROM_SHA1_HASH_DB_PATH
 #
-STOP_AFTER_MACHINES = 100000
+def _get_stats_dic():
+    return {
+        'parents' : 0,
+        'clones' : 0,
+        'devices' : 0,
+        'devices_parents' : 0,
+        'devices_clones' : 0,
+        'runnable' : 0,
+        'runnable_parents' : 0,
+        'runnable_clones' : 0,
+        'samples' : 0,
+        'samples_parents' : 0,
+        'samples_clones' : 0,
+        'BIOS' : 0,
+        'BIOS_parents' : 0,
+        'BIOS_clones' : 0,
+        'coin' : 0,
+        'coin_parents' : 0,
+        'coin_clones' : 0,
+        'nocoin' : 0,
+        'nocoin_parents' : 0,
+        'nocoin_clones' : 0,
+        'mechanical' : 0,
+        'mechanical_parents' : 0,
+        'mechanical_clones' : 0,
+        'dead' : 0,
+        'dead_parents' : 0,
+        'dead_clones' : 0,
+    }
+
+def _update_stats(stats, machine, m_render, runnable):
+    if m_render['cloneof']: stats['clones'] += 1
+    else:                   stats['parents'] += 1
+    if m_render['isDevice']:
+        stats['devices'] += 1
+        if m_render['cloneof']:
+            stats['devices_clones'] += 1
+        else:
+            stats['devices_parents'] += 1
+    if runnable:
+        stats['runnable'] += 1
+        if m_render['cloneof']:
+            stats['runnable_clones'] += 1
+        else:
+            stats['runnable_parents'] += 1
+    if machine['sampleof']:
+        stats['samples'] += 1
+        if m_render['cloneof']:
+            stats['samples_clones'] += 1
+        else:
+            stats['samples_parents'] += 1
+    if m_render['isBIOS']:
+        stats['BIOS'] += 1
+        if m_render['cloneof']:
+            stats['BIOS_clones'] += 1
+        else:
+            stats['BIOS_parents'] += 1
+
+    if runnable:
+        if machine['input']['att_coins'] > 0:
+            stats['coin'] += 1
+            if m_render['cloneof']:
+                stats['coin_clones'] += 1
+            else:
+                stats['coin_parents'] += 1
+        else:
+            stats['nocoin'] += 1
+            if m_render['cloneof']:
+                stats['nocoin_clones'] += 1
+            else:
+                stats['nocoin_parents'] += 1
+        if machine['isMechanical']:
+            stats['mechanical'] += 1
+            if m_render['cloneof']:
+                stats['mechanical_clones'] += 1
+            else:
+                stats['mechanical_parents'] += 1
+        if machine['isDead']:
+            stats['dead'] += 1
+            if m_render['cloneof']: 
+                stats['dead_clones'] += 1
+            else:
+                stats['dead_parents'] += 1
+
+STOP_AFTER_MACHINES = 250000
 
 def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str):
     DATS_dir_FN = FileName(settings['dats_path'])
@@ -3555,32 +3639,36 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # grab only the information we want and discard the rest.
     # See http://effbot.org/zone/element-iterparse.htm [1]
     #
+    if settings['op_mode'] == OP_MODE_EXTERNAL:
+        MAME_XML_path = PATHS.MAME_XML_PATH
+    elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        MAME_XML_path = FileName(settings['xml_2003_path'])
+    else:
+        raise ValueError
     pDialog.create('Advanced MAME Launcher')
     pDialog.update(0, 'Building main MAME database ...')
-    log_info('mame_build_MAME_main_database() Loading "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
-    context = ET.iterparse(PATHS.MAME_XML_PATH.getPath(), events=("start", "end"))
+    log_info('Loading XML "{0}"'.format(MAME_XML_path.getPath()))
+    context = ET.iterparse(MAME_XML_path.getPath(), events=("start", "end"))
     context = iter(context)
     event, root = context.next()
-    mame_version_raw = root.attrib['build']
-    mame_version_int = mame_get_numerical_version(mame_version_raw)
+    if settings['op_mode'] == OP_MODE_EXTERNAL:
+        mame_version_raw = root.attrib['build']
+        mame_version_int = mame_get_numerical_version(mame_version_raw)
+    elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        mame_version_raw = '0.78 (RA2003Plus)'
+        mame_version_int = mame_get_numerical_version(mame_version_raw)
+    else:
+        raise ValueError
     log_info('mame_build_MAME_main_database() MAME str version "{0}"'.format(mame_version_raw))
     log_info('mame_build_MAME_main_database() MAME numerical version {0}'.format(mame_version_int))
 
     # --- Process MAME XML ---
     total_machines = control_dic['stats_total_machines']
+    processed_machines = 0
+    stats = _get_stats_dic()
     log_info('mame_build_MAME_main_database() total_machines {0}'.format(total_machines))
     machines, machines_render, machines_roms, machines_devices = {}, {}, {}, {}
     roms_sha1_dic = {}
-    stats_processed_machines, stats_parents, stats_clones = 0, 0, 0
-    stats_devices, stats_devices_parents, stats_devices_clones = 0, 0, 0
-    stats_runnable, stats_runnable_parents, stats_runnable_clones = 0, 0, 0
-    stats_samples, stats_samples_parents, stats_samples_clones = 0, 0, 0
-    stats_BIOS, stats_BIOS_parents, stats_BIOS_clones = 0, 0, 0
-    stats_coin, stats_coin_parents, stats_coin_clones = 0, 0, 0
-    stats_nocoin, stats_nocoin_parents, stats_nocoin_clones = 0, 0, 0
-    stats_mechanical, stats_mechanical_parents, stats_mechanical_clones = 0, 0, 0
-    stats_dead, stats_dead_parents, stats_dead_clones = 0, 0, 0
-
     log_info('mame_build_MAME_main_database() Parsing MAME XML file ...')
     num_iteration = 0
     for event, elem in context:
@@ -3590,7 +3678,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         # log_debug('                   Elem.attrib "{0}"'.format(elem.attrib))
 
         # <machine> tag start event includes <machine> attributes
-        if event == 'start' and elem.tag == 'machine':
+        if (event == 'start' and elem.tag == 'machine') or (event == 'start' and elem.tag == 'game'):
             machine  = fs_new_machine_dic()
             m_render = fs_new_machine_render_dic()
             m_roms   = fs_new_roms_object()
@@ -3602,26 +3690,22 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             # name is #REQUIRED attribute
             if 'name' not in elem.attrib:
                 log_error('name attribute not found in <machine> tag.')
-                raise CriticalError('name attribute not found in <machine> tag')
+                raise ValueError('name attribute not found in <machine> tag')
+            m_name = elem.attrib['name']
+
+            # In modern MAME sourcefile attribute is always present
+            if settings['op_mode'] == OP_MODE_EXTERNAL:
+                # sourcefile #IMPLIED attribute
+                if 'sourcefile' not in elem.attrib:
+                    log_error('sourcefile attribute not found in <machine> tag.')
+                    raise ValueError('sourcefile attribute not found in <machine> tag.')
+                # Remove trailing '.cpp' from driver name
+                machine['sourcefile'] = elem.attrib['sourcefile']
+            # In MAME 2003 Plus sourcefile does not exists.
+            elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+                machine['sourcefile'] = ''
             else:
-                m_name = elem.attrib['name']
-
-            # sourcefile #IMPLIED attribute
-            if 'sourcefile' not in elem.attrib:
-                log_error('sourcefile attribute not found in <machine> tag.')
-                raise CriticalError('sourcefile attribute not found in <machine> tag.')
-            else:
-                # >> Remove trailing '.cpp' from driver name
-                raw_driver_name = elem.attrib['sourcefile']
-
-                # >> In MAME 0.174 some driver end with .cpp and others with .hxx
-                # if raw_driver_name[-4:] == '.cpp':
-                #     driver_name = raw_driver_name[0:-4]
-                # else:
-                #     log_debug('Unrecognised driver name "{0}"'.format(raw_driver_name))
-
-                # >> Assign driver name
-                machine['sourcefile'] = raw_driver_name
+                raise ValueError
 
             # Optional, default no
             if 'isbios' not in elem.attrib:
@@ -3687,8 +3771,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             else:
                 m_render['nplayers'] = '[ Not set ]'
 
-            # >> Increment number of machines
-            stats_processed_machines += 1
+            processed_machines += 1
 
         elif event == 'start' and elem.tag == 'description':
             m_render['description'] = unicode(elem.text)
@@ -3905,22 +3988,29 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             machine['devices'].append(device_dic)
 
         # --- <machine> tag closing. Add new machine to database ---
-        elif event == 'end' and elem.tag == 'machine':
-            # >> Assumption 1: isdevice = True if and only if runnable = False
-            if m_render['isDevice'] == runnable:
-                log_error("Machine {0}: machine['isDevice'] == runnable".format(m_name))
-                raise GeneralError
+        elif (event == 'end' and elem.tag == 'machine') or (event == 'end' and elem.tag == 'game'):
+            # Checks in modern MAME
+            if settings['op_mode'] == OP_MODE_EXTERNAL:
+                # Assumption 1: isdevice = True if and only if runnable = False
+                if m_render['isDevice'] == runnable:
+                    log_error("Machine {0}: machine['isDevice'] == runnable".format(m_name))
+                    raise ValueError
 
-            # >> Are there machines with more than 1 <display> tag. Answer: YES
-            # if num_displays > 1:
-            #     log_error("Machine {0}: num_displays = {1}".format(m_name, num_displays))
-            #     raise GeneralError
+                # Are there machines with more than 1 <display> tag. Answer: YES
+                # if num_displays > 1:
+                #     log_error("Machine {0}: num_displays = {1}".format(m_name, num_displays))
+                #     raise ValueError
 
-            # >> All machines with 0 displays are mechanical? NO, 24cdjuke has no screen and
-            # is not mechanical. However 24cdjuke is a preliminary driver.
-            # if num_displays == 0 and not machine['ismechanical']:
-            #     log_error("Machine {0}: num_displays == 0 and not machine['ismechanical']".format(m_name))
-            #     raise GeneralError
+                # All machines with 0 displays are mechanical? NO, 24cdjuke has no screen and
+                # is not mechanical. However 24cdjuke is a preliminary driver.
+                # if num_displays == 0 and not machine['ismechanical']:
+                #     log_error("Machine {0}: num_displays == 0 and not machine['ismechanical']".format(m_name))
+                #     raise ValueError
+            # Checks in Retroarch MAME 2003 Plus
+            elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+                pass
+            else:
+                raise ValueError
 
             # >> Mark dead machines. A machine is dead if Status is preliminary AND have no controls.
             if m_render['driver_status'] == 'preliminary' and not machine['input']['control_list']:
@@ -3930,41 +4020,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             elem.clear()
 
             # --- Compute statistics ---
-            if m_render['cloneof']: stats_clones += 1
-            else:                   stats_parents += 1
-            if m_render['isDevice']:
-                stats_devices += 1
-                if m_render['cloneof']: stats_devices_clones += 1
-                else:                   stats_devices_parents += 1
-            if runnable:
-                stats_runnable += 1
-                if m_render['cloneof']: stats_runnable_clones += 1
-                else:                   stats_runnable_parents += 1
-            if machine['sampleof']:
-                stats_samples += 1
-                if m_render['cloneof']: stats_samples_clones += 1
-                else:                   stats_samples_parents += 1
-            if m_render['isBIOS']:
-                stats_BIOS += 1
-                if m_render['cloneof']: stats_BIOS_clones += 1
-                else:                   stats_BIOS_parents += 1
-            if runnable:
-                if machine['input']['att_coins'] > 0:
-                    stats_coin += 1
-                    if m_render['cloneof']: stats_coin_clones += 1
-                    else:                   stats_coin_parents += 1
-                else:
-                    stats_nocoin += 1
-                    if m_render['cloneof']: stats_nocoin_clones += 1
-                    else:                   stats_nocoin_parents += 1
-                if machine['isMechanical']:
-                    stats_mechanical += 1
-                    if m_render['cloneof']: stats_mechanical_clones += 1
-                    else:                   stats_mechanical_parents += 1
-                if machine['isDead']:
-                    stats_dead += 1
-                    if m_render['cloneof']: stats_dead_clones += 1
-                    else:                   stats_dead_parents += 1
+            _update_stats(stats, machine, m_render, runnable)
 
             # >> Add new machine
             machines[m_name] = machine
@@ -3975,22 +4031,22 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         # --- Print something to prove we are doing stuff ---
         num_iteration += 1
         if num_iteration % 1000 == 0:
-            pDialog.update((stats_processed_machines * 100) // total_machines)
+            pDialog.update((processed_machines * 100) // total_machines)
             # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(
-            #     num_iteration, stats_processed_machines))
-            # log_debug('stats_processed_machines   = {0}'.format(stats_processed_machines))
+            #     num_iteration, processed_machines))
+            # log_debug('processed_machines   = {0}'.format(processed_machines))
             # log_debug('total_machines = {0}'.format(total_machines))
             # log_debug('Update number  = {0}'.format(update_number))
 
         # --- Stop after STOP_AFTER_MACHINES machines have been processed for debug ---
-        if stats_processed_machines >= STOP_AFTER_MACHINES: break
+        if processed_machines >= STOP_AFTER_MACHINES: break
     pDialog.update(100)
     pDialog.close()
     log_info('Processed {0:,} MAME XML events'.format(num_iteration))
     log_info('Processed machines {0:,} ({1:,} parents, {2:,} clones)'.format(
-        stats_processed_machines, stats_parents, stats_clones))
+        processed_machines, stats['parents'], stats['clones']))
     log_info('Dead machines      {0:,} ({1:,} parents, {2:,} clones)'.format(
-        stats_dead, stats_dead_parents, stats_dead_clones))
+        stats['dead'], stats['dead_parents'], stats['dead_clones']))
 
     # ---------------------------------------------------------------------------------------------
     # Main parent-clone list
@@ -4096,50 +4152,50 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # >> Versions
     change_control_dic(control_dic, 'ver_mame', mame_version_int)
     change_control_dic(control_dic, 'ver_mame_str', mame_version_raw)
-    change_control_dic(control_dic, 'ver_bestgames', bestgames_version)
-    change_control_dic(control_dic, 'ver_catlist', catlist_version)
-    change_control_dic(control_dic, 'ver_catver', catver_version)
-    change_control_dic(control_dic, 'ver_command', command_version)
-    change_control_dic(control_dic, 'ver_gameinit', gameinit_version)
-    change_control_dic(control_dic, 'ver_genre', genre_version)
-    change_control_dic(control_dic, 'ver_history', history_version)
-    change_control_dic(control_dic, 'ver_mameinfo', mameinfo_version)
-    change_control_dic(control_dic, 'ver_mature', mature_version)
-    change_control_dic(control_dic, 'ver_nplayers', nplayers_version)
-    change_control_dic(control_dic, 'ver_series', series_version)
+    # change_control_dic(control_dic, 'ver_bestgames', bestgames_version)
+    # change_control_dic(control_dic, 'ver_catlist', catlist_version)
+    # change_control_dic(control_dic, 'ver_catver', catver_version)
+    # change_control_dic(control_dic, 'ver_command', command_version)
+    # change_control_dic(control_dic, 'ver_gameinit', gameinit_version)
+    # change_control_dic(control_dic, 'ver_genre', genre_version)
+    # change_control_dic(control_dic, 'ver_history', history_version)
+    # change_control_dic(control_dic, 'ver_mameinfo', mameinfo_version)
+    # change_control_dic(control_dic, 'ver_mature', mature_version)
+    # change_control_dic(control_dic, 'ver_nplayers', nplayers_version)
+    # change_control_dic(control_dic, 'ver_series', series_version)
 
     # >> Statistics
-    change_control_dic(control_dic, 'stats_processed_machines', stats_processed_machines)
-    change_control_dic(control_dic, 'stats_parents', stats_parents)
-    change_control_dic(control_dic, 'stats_clones', stats_clones)
-    change_control_dic(control_dic, 'stats_runnable', stats_runnable)
-    change_control_dic(control_dic, 'stats_runnable_parents', stats_runnable_parents)
-    change_control_dic(control_dic, 'stats_runnable_clones', stats_runnable_clones)
+    change_control_dic(control_dic, 'stats_processed_machines', processed_machines)
+    change_control_dic(control_dic, 'stats_parents', stats['parents'])
+    change_control_dic(control_dic, 'stats_clones', stats['clones'])
+    change_control_dic(control_dic, 'stats_runnable', stats['runnable'])
+    change_control_dic(control_dic, 'stats_runnable_parents', stats['runnable_parents'])
+    change_control_dic(control_dic, 'stats_runnable_clones', stats['runnable_clones'])
 
     # >> Main filters
-    change_control_dic(control_dic, 'stats_coin', stats_coin)
-    change_control_dic(control_dic, 'stats_coin_parents', stats_coin_parents)
-    change_control_dic(control_dic, 'stats_coin_clones', stats_coin_clones)
-    change_control_dic(control_dic, 'stats_nocoin', stats_nocoin)
-    change_control_dic(control_dic, 'stats_nocoin_parents', stats_nocoin_parents)
-    change_control_dic(control_dic, 'stats_nocoin_clones', stats_nocoin_clones)
-    change_control_dic(control_dic, 'stats_mechanical', stats_mechanical)
-    change_control_dic(control_dic, 'stats_mechanical_parents', stats_mechanical_parents)
-    change_control_dic(control_dic, 'stats_mechanical_clones', stats_mechanical_clones)
-    change_control_dic(control_dic, 'stats_dead', stats_dead)
-    change_control_dic(control_dic, 'stats_dead_parents', stats_dead_parents)
-    change_control_dic(control_dic, 'stats_dead_clones', stats_dead_clones)
-    change_control_dic(control_dic, 'stats_devices', stats_devices)
-    change_control_dic(control_dic, 'stats_devices_parents', stats_devices_parents)
-    change_control_dic(control_dic, 'stats_devices_clones', stats_devices_clones)
+    change_control_dic(control_dic, 'stats_coin', stats['coin'])
+    change_control_dic(control_dic, 'stats_coin_parents', stats['coin_parents'])
+    change_control_dic(control_dic, 'stats_coin_clones', stats['coin_clones'])
+    change_control_dic(control_dic, 'stats_nocoin', stats['nocoin'])
+    change_control_dic(control_dic, 'stats_nocoin_parents', stats['nocoin_parents'])
+    change_control_dic(control_dic, 'stats_nocoin_clones', stats['nocoin_clones'])
+    change_control_dic(control_dic, 'stats_mechanical', stats['mechanical'])
+    change_control_dic(control_dic, 'stats_mechanical_parents', stats['mechanical_parents'])
+    change_control_dic(control_dic, 'stats_mechanical_clones', stats['mechanical_clones'])
+    change_control_dic(control_dic, 'stats_dead', stats['dead'])
+    change_control_dic(control_dic, 'stats_dead_parents', stats['dead_parents'])
+    change_control_dic(control_dic, 'stats_dead_clones', stats['dead_clones'])
+    change_control_dic(control_dic, 'stats_devices', stats['devices'])
+    change_control_dic(control_dic, 'stats_devices_parents', stats['devices_parents'])
+    change_control_dic(control_dic, 'stats_devices_clones', stats['devices_clones'])
 
     # >> Binary filters
-    change_control_dic(control_dic, 'stats_BIOS', stats_BIOS)
-    change_control_dic(control_dic, 'stats_BIOS_parents', stats_BIOS_parents)
-    change_control_dic(control_dic, 'stats_BIOS_clones', stats_BIOS_clones)
-    change_control_dic(control_dic, 'stats_samples', stats_samples)
-    change_control_dic(control_dic, 'stats_samples_parents', stats_samples_parents)
-    change_control_dic(control_dic, 'stats_samples_clones', stats_samples_clones)
+    change_control_dic(control_dic, 'stats_BIOS', stats['BIOS'])
+    change_control_dic(control_dic, 'stats_BIOS_parents', stats['BIOS_parents'])
+    change_control_dic(control_dic, 'stats_BIOS_clones', stats['BIOS_clones'])
+    change_control_dic(control_dic, 'stats_samples', stats['samples'])
+    change_control_dic(control_dic, 'stats_samples_parents', stats['samples_parents'])
+    change_control_dic(control_dic, 'stats_samples_clones', stats['samples_clones'])
 
     # --- Timestamp ---
     change_control_dic(control_dic, 't_MAME_DB_build', time.time())
@@ -5626,7 +5682,12 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         if   driver_status == 'good':        stats_MF_Normal_Good += 1
         elif driver_status == 'imperfect':   stats_MF_Normal_Imperfect += 1
         elif driver_status == 'preliminary': stats_MF_Normal_Nonworking += 1
-        else: raise TypeError
+        # Found in mame2003-plus.xml, machine quizf1 and maybe others.
+        elif driver_status == 'protection': pass
+        elif driver_status == '': pass
+        else:
+            log_error('Machine {0}, unrecognised driver_status {1}'.format(m_name, driver_status))
+            raise TypeError
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
     pDialog.update(update_number)
@@ -5636,7 +5697,12 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         if   driver_status == 'good':        stats_MF_Unusual_Good += 1
         elif driver_status == 'imperfect':   stats_MF_Unusual_Imperfect += 1
         elif driver_status == 'preliminary': stats_MF_Unusual_Nonworking += 1
-        else: raise TypeError
+        # Found in mame2003-plus.xml, machine quizf1 and maybe others.
+        elif driver_status == 'protection': pass
+        elif driver_status == '': pass
+        else:
+            log_error('Machine {0}, unrecognised driver_status {1}'.format(m_name, driver_status))
+            raise TypeError
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
     pDialog.update(update_number)
@@ -5646,7 +5712,12 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         if   driver_status == 'good':        stats_MF_Nocoin_Good += 1
         elif driver_status == 'imperfect':   stats_MF_Nocoin_Imperfect += 1
         elif driver_status == 'preliminary': stats_MF_Nocoin_Nonworking += 1
-        else: raise TypeError
+        # Found in mame2003-plus.xml, machine quizf1 and maybe others.
+        elif driver_status == 'protection': pass
+        elif driver_status == '': pass
+        else:
+            log_error('Machine {0}, unrecognised driver_status {1}'.format(m_name, driver_status))
+            raise TypeError
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
     pDialog.update(update_number)
@@ -5656,7 +5727,12 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         if   driver_status == 'good':        stats_MF_Mechanical_Good += 1
         elif driver_status == 'imperfect':   stats_MF_Mechanical_Imperfect += 1
         elif driver_status == 'preliminary': stats_MF_Mechanical_Nonworking += 1
-        else: raise TypeError
+        # Found in mame2003-plus.xml, machine quizf1 and maybe others.
+        elif driver_status == 'protection': pass
+        elif driver_status == '': pass
+        else:
+            log_error('Machine {0}, unrecognised driver_status {1}'.format(m_name, driver_status))
+            raise TypeError
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
     pDialog.update(update_number)
@@ -5666,7 +5742,12 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         if   driver_status == 'good':        stats_MF_Dead_Good += 1
         elif driver_status == 'imperfect':   stats_MF_Dead_Imperfect += 1
         elif driver_status == 'preliminary': stats_MF_Dead_Nonworking += 1
-        else: raise TypeError
+        # Found in mame2003-plus.xml, machine quizf1 and maybe others.
+        elif driver_status == 'protection': pass
+        elif driver_status == '': pass
+        else:
+            log_error('Machine {0}, unrecognised driver_status {1}'.format(m_name, driver_status))
+            raise TypeError
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
     pDialog.update(update_number)
