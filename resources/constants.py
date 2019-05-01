@@ -96,6 +96,17 @@ ROMSET_SL_SPLIT            = 1 # 'Split'
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher constants
 # -------------------------------------------------------------------------------------------------
+# Database status. Status it determined with timestamps in control_dic
+MAME_XML_EXTRACTED    = 100
+MAME_MAIN_DB_BUILT    = 200
+MAME_AUDIT_DB_BUILT   = 300
+MAME_CATALOG_BUILT    = 400
+MAME_MACHINES_SCANNED = 500
+MAME_ASSETS_SCANNED   = 600
+SL_MAIN_DB_BUILT      = 700
+SL_ITEMS_SCANNED      = 800
+SL_ASSETS_SCANNED     = 900
+
 # INI and DAT files default names.
 ARTWORK_INI   = 'Artwork.ini'
 BESTGAMES_INI = 'bestgames.ini'

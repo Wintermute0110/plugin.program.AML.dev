@@ -1667,7 +1667,7 @@ def render_GlobalReports_vlaunchers():
 # Cataloged machines
 #----------------------------------------------------------------------------------------------
 #
-# Renders the category names in a catalog.
+# Renders the Launchers inside a Category for MAME.
 #
 def render_catalog_list(catalog_name):
     log_debug('render_catalog_list() Starting ...')
@@ -1677,7 +1677,7 @@ def render_catalog_list(catalog_name):
     # Check if databases have been built, print warning messages, etc. This function returns
     # False if no issues, True if there is issues and a dialog has been printed.
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not check_MAME_DB_before_rendering(g_PATHS, g_settings, control_dic):
+    if not check_MAME_DB_before_rendering_catalog(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -1768,7 +1768,7 @@ def render_catalog_parent_list(catalog_name, category_name):
     # --- General AML plugin check ---
     # Check if databases have been built, print warning messages, etc.
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not check_MAME_DB_before_rendering(g_PATHS, g_settings, control_dic):
+    if not check_MAME_DB_before_rendering_machines(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -3789,7 +3789,7 @@ def command_context_manage_mame_fav(machine_name):
 
         # --- Ensure MAME Catalog have been built ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        # mame_check_condition(MAME_CATALOG_BUILT)
+        # check_DB_status(MAME_CATALOG_BUILT)
 
         # --- Load databases ---
         db_files = [
@@ -4879,6 +4879,96 @@ def render_custom_filter_machines(filter_name):
 # -------------------------------------------------------------------------------------------------
 # Check AML status
 # -------------------------------------------------------------------------------------------------
+
+#
+# Recursive function.
+#
+# Return options dictionary:
+# options_dic['condition']  True if condition is met, False otherwise.
+# options_dic['msg']        if condition is not met a message to print to the user.
+#
+def check_MAME_DB_status(condition, control_dic):
+    # Conditions are a fall-trough. For example, if user checks MAME_MAIN_DB_BUILT but
+    # XML has not been extracted/processed then MAME_MAIN_DB_BUILT fails.
+    if condition == MAME_XML_EXTRACTED:
+        test_XML_EXTRACTED = True if control_dic['t_XML_extraction'] > 0 else False
+        if not test_XML_EXTRACTED:
+            t = 'MAME.XML has not been extracted. Use the context menu "Setup plugin" in root window.'
+            options_dic = {'msg' : t, 'condition' : False }
+        else:
+            log_debug('check_MAME_DB_status() Everything OK.')
+            options_dic = {'msg' : '', 'condition' : True }
+        return options_dic
+
+    elif condition == MAME_MAIN_DB_BUILT:
+        test_MAIN_DB_BUILT = True if control_dic['t_MAME_DB_build'] > control_dic['t_XML_extraction'] else False
+        if not test_MAIN_DB_BUILT:
+            t = 'MAME Main database needs to be built. Use the context menu "Setup plugin" in root window.'
+            options_dic = {'msg' : t, 'condition' : False }
+            return options_dic
+        else:
+            return check_MAME_DB_status(MAME_XML_EXTRACTED, control_dic)
+
+    elif condition == MAME_AUDIT_DB_BUILT:
+        test_AUDIT_DB_BUILT = True if control_dic['t_MAME_Audit_DB_build'] > control_dic['t_MAME_DB_build'] else False
+        if not test_AUDIT_DB_BUILT:
+            t = 'MAME Audit database needs to be built. Use the context menu "Setup plugin" in root window.'
+            options_dic = {'msg' : t, 'condition' : False }
+            return options_dic
+        else:
+            return check_MAME_DB_status(MAME_MAIN_DB_BUILT, control_dic)
+
+    elif condition == MAME_CATALOG_BUILT:
+        test_CATALOG_BUILT = True if control_dic['t_MAME_Catalog_build'] > control_dic['t_MAME_Audit_DB_build'] else False
+        if not test_CATALOG_BUILT:
+            t = 'MAME Catalog database needs to be built. Use the context menu "Setup plugin" in root window.'
+            options_dic = {'msg' : t, 'condition' : False }
+            return options_dic
+        else:
+            return check_MAME_DB_status(MAME_AUDIT_DB_BUILT, control_dic)
+
+    elif condition == MAME_MACHINES_SCANNED:
+        test_MACHINES_SCANNED = True if control_dic['t_MAME_ROMs_scan'] > control_dic['t_MAME_Catalog_build'] else False
+        if not test_MACHINES_SCANNED:
+            t = 'MAME machines needs to be scanned. Use the context menu "Setup plugin" in root window.'
+            options_dic = {'msg' : t, 'condition' : False }
+            return options_dic
+        else:
+            return check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
+
+    elif condition == MAME_ASSETS_SCANNED:
+        test_ASSETS_SCANNED = True if control_dic['t_MAME_assets_scan'] > control_dic['t_MAME_ROMs_scan'] else False
+        if not test_ASSETS_SCANNED:
+            t = 'MAME assets needs to be scanned. Use the context menu "Setup plugin" in root window.'
+            options_dic = {'msg' : t, 'condition' : False }
+            return options_dic
+        else:
+            return check_MAME_DB_status(MAME_MACHINES_SCANNED, control_dic)
+
+    else:
+        raise ValueError('check_MAME_DB_status() Recursive logic error')
+
+#
+# Look at check_MAME_DB_status()
+#
+def check_SL_DB_status(condition, control_dic):
+    pass
+
+#
+# This function is called before rendering a Catalog.
+#
+def check_MAME_DB_before_rendering_catalog(g_PATHS, settings, control_dic):
+    # Check if MAME catalogs are built.
+    options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
+    if not options['condition']:
+        kodi_dialog_OK(options['msg'])
+        return False
+
+    # All good!
+    log_debug('check_MAME_DB_before_rendering_catalog() All good!')
+    return True
+
+#
 # This function checks if the database is OK and machines inside a Category can be rendered.
 # This function is called before rendering machines.
 # This function does not affect MAME Favourites, Recently Played, etc. Those can always be rendered.
@@ -4887,54 +4977,11 @@ def render_custom_filter_machines(filter_name):
 # Returns True if everything is OK and machines inside a Category can be rendered.
 # Returns False and prints warning message if machines inside a category cannot be rendered.
 #
-def check_MAME_DB_before_rendering(g_PATHS, settings, control_dic):
-    # Check if MAME executable path has been configured.
-    if not g_settings['mame_prog']:
-        t = ('MAME executable not configured. '
-             'Open AML addon settings and configure the location of the MAME executable in the '
-             '"Paths" tab.')
-        kodi_dialog_OK(t)
-        return False
-
-    # Check if MAME executable exists.
-    mame_prog_FN = FileName(g_settings['mame_prog'])
-    if not mame_prog_FN.exists():
-        t = ('MAME executable configured but not found. '
-             'Open AML addon settings and configure the location of the MAME executable in the '
-             '"Paths" tab.')
-        kodi_dialog_OK(t)
-        return False
-
-    # Check if MAME XML has been extracted.
-    if control_dic['t_XML_extraction'] == 0:
-        t = ('MAME.XML has not been extracted. '
-             'In AML root window open the context menu, select "Setup plugin" and then '
-             'click on "Extract MAME.xml."')
-        kodi_dialog_OK(t)
-        return False
-
-    # Check if MAME Main DB has been built and is more recent than the XML.
-    if control_dic['t_MAME_DB_build'] < control_dic['t_XML_extraction']:
-        t = ('MAME Main database needs to be built. '
-             'In AML root window open the context menu, select "Setup plugin" and then '
-             'click on "Build all databases."')
-        kodi_dialog_OK(t)
-        return False
-
-    # Check if MAME Audit DB has been built and is more recent than the Main DB.
-    if control_dic['t_MAME_Audit_DB_build'] < control_dic['t_MAME_DB_build']:
-        t = ('MAME Audit database needs to be built. '
-             'In AML root window open the context menu, select "Setup plugin" and then '
-             'click on "Build all databases."')
-        kodi_dialog_OK(t)
-        return False
-
-    # Check if MAME Catalog DB has been built and is more recent than the Main DB.
-    if control_dic['t_MAME_Catalog_build'] < control_dic['t_MAME_Audit_DB_build']:
-        t = ('MAME Catalog database needs to be built. '
-             'In AML root window open the context menu, select "Setup plugin" and then '
-             'click on "Build all databases."')
-        kodi_dialog_OK(t)
+def check_MAME_DB_before_rendering_machines(g_PATHS, settings, control_dic):
+    # Check if MAME catalogs are built.
+    options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
+    if not options['condition']:
+        kodi_dialog_OK(options['msg'])
         return False
 
     # If MAME render cache is enabled then check that it is up-to-date.
@@ -4957,30 +5004,14 @@ def check_MAME_DB_before_rendering(g_PATHS, settings, control_dic):
             return False
 
     # All good!
-    log_debug('check_MAME_DB_before_rendering() All good!')
+    log_debug('check_MAME_DB_before_rendering_machines() All good!')
     return True
 
 #
 # Same function for Software Lists. Called before rendering SL Items inside a Software List.
+# WARNING This must be completed!!! Look at the MAME functions.
 #
-def check_SL_DB_before_rendering(g_PATHS, g_settings, control_dic):
-    # >> Check if MAME executable path has been configured.
-    if not g_settings['mame_prog']:
-        t = ('MAME executable not configured. '
-             'Open AML addon settings and configure the location of the MAME executable in the '
-             '"Paths" tab.')
-        kodi_dialog_OK(t)
-        return False
-
-    # >> Check if MAME executable exists.
-    mame_prog_FN = FileName(g_settings['mame_prog'])
-    if not mame_prog_FN.exists():
-        t = ('MAME executable configured but not found. '
-             'Open AML addon settings and configure the location of the MAME executable in the '
-             '"Paths" tab.')
-        kodi_dialog_OK(t)
-        return False
-
+def check_SL_DB_before_rendering_catalog(g_PATHS, g_settings, control_dic):
     # >> Check if MAME Main DB has been built and is more recent than the XML.
     # >> The SL DB relies on the MAME Main DB (verify this).
     if control_dic['t_MAME_DB_build'] < control_dic['t_XML_extraction']:
@@ -4999,7 +5030,12 @@ def check_SL_DB_before_rendering(g_PATHS, g_settings, control_dic):
         return False
 
     # >> All good!
-    log_debug('check_SL_DB_before_rendering() All good!')
+    log_debug('check_SL_DB_before_rendering_catalog() All good!')
+    return True
+
+def check_SL_DB_before_rendering_machines(g_PATHS, g_settings, control_dic):
+    # >> All good!
+    log_debug('check_SL_DB_before_rendering_machines() All good!')
     return True
 
 # -------------------------------------------------------------------------------------------------
@@ -6128,12 +6164,15 @@ def command_exec_utility(which_utility):
     elif which_utility == 'CHECK_ALL_FAV_OBJECTS':
         log_debug('command_exec_utility() Executing CHECK_ALL_FAV_OBJECTS...')
 
-        # --- Ensure databases are build before updating Favourites ---
-        
+        # --- Ensure databases are built and assets scanned before updating Favourites ---
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        options = check_MAME_DB_status(MAME_ASSETS_SCANNED, control_dic)
+        if not options['condition']:
+            kodi_dialog_OK(options['msg'])
+            return False
 
         # --- Load databases ---
         db_files = [
-            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
             ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
             ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
             ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
@@ -6142,14 +6181,14 @@ def command_exec_utility(which_utility):
         db_dic = fs_load_files(db_files)
 
         mame_update_MAME_Fav_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+            g_PATHS, control_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
         mame_update_MAME_MostPlay_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
+            g_PATHS, control_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
         mame_update_MAME_RecentPlay_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
-        mame_update_SL_Fav_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
-        mame_update_SL_MostPlay_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
-        mame_update_SL_RecentPlay_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
+            g_PATHS, control_dic, db_dic['machines'], db_dic['render'], db_dic['assets'])
+        mame_update_SL_Fav_objects(g_PATHS, control_dic, db_dic['SL_index'])
+        mame_update_SL_MostPlay_objects(g_PATHS, control_dic, db_dic['SL_index'])
+        mame_update_SL_RecentPlay_objects(g_PATHS, control_dic, db_dic['SL_index'])
         kodi_refresh_container()
         kodi_notify('All Favourite objects checked')
 
@@ -6159,15 +6198,22 @@ def command_exec_utility(which_utility):
     elif which_utility == 'CHECK_MAME_COLLISIONS':
         log_info('command_check_MAME_CRC_collisions() Initialising ...')
 
-        # >> Open ROMs database.
+        # --- Check database ---
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
+        if not options['condition']:
+            kodi_dialog_OK(options['msg'])
+            return False
+
+        # --- Open ROMs database ---
         db_files = [
             ['machine_roms', 'MAME machine ROMs', g_PATHS.ROMS_DB_PATH.getPath()],
             ['roms_sha1_dic', 'MAME ROMs SHA1 dictionary', g_PATHS.SHA1_HASH_DB_PATH.getPath()],
         ]
         db_dic = fs_load_files(db_files)
 
-        # >> Detect implicit ROM merging using the SHA1 hash and check for CRC32 collisions for
-        # >> non-implicit merged ROMs.
+        # Detect implicit ROM merging using the SHA1 hash and check for CRC32 collisions for
+        # non-implicit merged ROMs.
         pdialog_line1 = 'Checking for MAME CRC32 hash collisions ...'
         pDialog = xbmcgui.DialogProgress()
         pDialog.create('Advanced MAME Launcher', pdialog_line1)
@@ -6210,7 +6256,7 @@ def command_exec_utility(which_utility):
         log_debug('MAME has {0:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])))
         log_debug('There are {0} CRC32 collisions'.format(num_collisions))
 
-        # >> Write report and debug file
+        # --- Write report and debug file ---
         slist = []
         slist.append('*** AML MAME ROMs CRC32 hash collision report ***')
         slist.append('MAME has {0:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])))
@@ -6226,10 +6272,10 @@ def command_exec_utility(which_utility):
     elif which_utility == 'CHECK_SL_COLLISIONS':
         log_info('command_exec_utility() Initialising CHECK_SL_COLLISIONS ...')
 
-        # >> Load SL catalog and check for errors.
+        # --- Load SL catalog and check for errors ---
         SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
 
-        # >> Process all SLs
+        # --- Process all SLs ---
         pDialog = xbmcgui.DialogProgress()
         pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
         pDialog.create('Advanced MAME Launcher', pdialog_line1)
