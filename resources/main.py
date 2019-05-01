@@ -440,16 +440,6 @@ def run_plugin(addon_argv):
         elif command == 'SHOW_MAME_FAVS':
             command_show_mame_fav()
 
-        # >> SL Favourites
-        elif command == 'ADD_SL_FAV':
-            command_context_add_sl_fav(args['SL'][0], args['ROM'][0])
-        elif command == 'MANAGE_SL_FAV':
-            SL_name = args['SL'][0] if 'SL' in args else ''
-            ROM_name = args['ROM'][0] if 'ROM' in args else ''
-            command_context_manage_sl_fav(SL_name, ROM_name)
-        elif command == 'SHOW_SL_FAVS':
-            command_show_sl_fav()
-
         # >> Most and Recently played
         elif command == 'SHOW_MAME_MOST_PLAYED':
             command_show_mame_most_played()
@@ -462,6 +452,16 @@ def run_plugin(addon_argv):
         elif command == 'MANAGE_MAME_RECENT_PLAYED':
             m_name = args['machine'][0] if 'machine' in args else ''
             command_context_manage_mame_recent_played(m_name)
+
+        # >> SL Favourites
+        elif command == 'ADD_SL_FAV':
+            command_context_add_sl_fav(args['SL'][0], args['ROM'][0])
+        elif command == 'MANAGE_SL_FAV':
+            SL_name = args['SL'][0] if 'SL' in args else ''
+            ROM_name = args['ROM'][0] if 'ROM' in args else ''
+            command_context_manage_sl_fav(SL_name, ROM_name)
+        elif command == 'SHOW_SL_FAVS':
+            command_show_sl_fav()
 
         elif command == 'SHOW_SL_MOST_PLAYED':
             command_show_SL_most_played()
@@ -3995,38 +3995,52 @@ def command_show_sl_fav():
 
 #
 # Context menu "Manage SL Favourite ROMs"
-#   * 'Choose default machine for SL ROM'
-#      Allows to set the default machine to launch each SL ROM.
-#
-#   * (UNIMPLEMENTED, IS IT USEFUL?)
-#     'Scan all SL Favourite ROMs/CHDs'
-#      Scan SL ROM ZIPs and CHDs and update flags of the SL Favourites database JSON.
-#
-#   * (UNIMPLEMENTED, IS IT USEFUL?)
-#     'Scan all SL Favourite assets/artwork'
-#      Scan SL ROMs assets/artwork and update SL Favourites database JSON.
-#
-#   * 'Check/Update all SL Favourites ROMs'
-#      Checks that all SL Favourite ROMs exist in current database. If the ROM exists,
-#      then update information from current SL database. If the ROM doesn't exist, then
-#      delete it from SL Favourites (prompt the user about this).
-#
-#   * 'Delete ROM from SL Favourites'
 #
 def command_context_manage_sl_fav(SL_name, ROM_name):
-    dialog = xbmcgui.Dialog()
-    idx = dialog.select('Manage Software Lists Favourites',
-                       ['Choose default machine for SL item',
-                        'Delete ROM from SL Favourites'])
-    if idx < 0: return
+    VIEW_ROOT_MENU   = 100
+    VIEW_INSIDE_MENU = 200
 
-    # --- Choose default machine for SL ROM ---
-    if idx == 0:
-        # >> Load Favs
+    ACTION_DELETE_MACHINE = 100
+    ACTION_DELETE_MISSING = 200
+    ACTION_CHOOSE_DEFAULT = 300
+
+    menus_dic = {
+        VIEW_ROOT_MENU : [
+            ('Delete missing items from SL Favourites', ACTION_DELETE_MISSING),
+        ],
+        VIEW_INSIDE_MENU : [
+            ('Choose default machine for SL item', ACTION_CHOOSE_DEFAULT),
+            ('Delete item from SL Favourites', ACTION_DELETE_MACHINE),
+            ('Delete missing items from SL Favourites', ACTION_DELETE_MISSING),
+        ],
+    }
+
+    # --- Determine view type ---
+    log_debug('command_context_manage_sl_fav() BEGIN ...')
+    log_debug('SL_name  "{0}"'.format(SL_name))
+    log_debug('ROM_name "{0}"'.format(ROM_name))
+    if SL_name and ROM_name:
+        view_type = VIEW_INSIDE_MENU
+    else:
+        view_type = VIEW_ROOT_MENU
+    log_debug('view_type = {0}'.format(view_type))
+
+    # --- Build menu base on view_type (Polymorphic menu, determine action) ---
+    d_list = [menu[0] for menu in menus_dic[view_type]]
+    selected_value = xbmcgui.Dialog().select('Manage SL Favourite itmes', d_list)
+    if selected_value < 0: return
+    action = menus_dic[view_type][selected_value][1]
+    log_debug('action = {0}'.format(action))
+
+    # --- Execute actions ---
+    if action == ACTION_CHOOSE_DEFAULT:
+        log_debug('command_context_manage_sl_fav() ACTION_CHOOSE_DEFAULT')
+
+        # --- Load Favs ---
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
 
-        # >> Get a list of machines that can launch this SL ROM. User chooses.
+        # --- Get a list of machines that can launch this SL ROM. User chooses. ---
         SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
         SL_machine_list = SL_machines_dic[SL_name]
         SL_machine_names_list = []
@@ -4036,7 +4050,8 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         for SL_machine in SL_machine_list: 
             SL_machine_names_list.append(SL_machine['machine'])
             SL_machine_desc_list.append(SL_machine['description'])
-        # >> Krypton feature: preselect current machine
+        # Krypton feature: preselect current machine.
+        # Careful with the preselect bug.
         pre_idx = SL_machine_names_list.index(fav_SL_roms[SL_fav_key]['launch_machine'])
         if pre_idx < 0: pre_idx = 0
         dialog = xbmcgui.Dialog()
@@ -4045,36 +4060,43 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         machine_name = SL_machine_names_list[m_index]
         machine_desc = SL_machine_desc_list[m_index]
 
-        # >> Edit and save
+        # --- Edit and save ---
         fav_SL_roms[SL_fav_key]['launch_machine'] = machine_name
         fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
         kodi_notify('Deafult machine set to {0} ({1})'.format(machine_name, machine_desc))
 
     # --- Delete ROM from SL Favourites ---
-    elif idx == 1:
-        log_debug('command_context_manage_sl_fav() Delete SL Favourite ROM')
-        log_debug('command_context_manage_sl_fav() SL_name  "{0}"'.format(SL_name))
-        log_debug('command_context_manage_sl_fav() ROM_name "{0}"'.format(ROM_name))
+    elif action == ACTION_DELETE_MACHINE:
+        log_debug('command_context_manage_sl_fav() ACTION_DELETE_MACHINE')
+        log_debug('SL_name  "{0}"'.format(SL_name))
+        log_debug('ROM_name "{0}"'.format(ROM_name))
 
-        # >> Open Favourite Machines dictionary
+        # --- Open Favourite Machines dictionary ---
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
-        log_debug('command_delete_sl_fav() SL_fav_key "{0}"'.format(SL_fav_key))
+        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
 
-        # >> Ask user for confirmation.
+        # --- Ask user for confirmation ---
         desc = most_played_roms_dic[SL_fav_key]['description']
         a = 'Delete SL Item {0} ({1} / {2})?'
         ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
         if ret < 1: return
 
-        # >> Delete machine
+        # --- Delete machine and save DB ---
         del fav_SL_roms[SL_fav_key]
-        log_info('command_delete_sl_fav() Deleted machine {0} ({1})'.format(SL_name, ROM_name))
-
-        # >> Save Favourites
+        log_info('Deleted machine {0} ({1})'.format(SL_name, ROM_name))
         fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
         kodi_refresh_container()
         kodi_notify('SL Item {0}-{1} deleted from SL Favourites'.format(SL_name, ROM_name))
+
+    elif action == ACTION_DELETE_MISSING:
+        log_debug('command_context_manage_sl_fav() ACTION_DELETE_MISSING')
+        kodi_dialog_OK('ACTION_DELETE_MISSING not implemented yet. Sorry.')
+
+    else:
+        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        log_error(t)
+        kodi_dialog_OK(t)
 
 def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
     SL_name  = ROM['SL_name']
@@ -4414,37 +4436,78 @@ def command_show_SL_most_played():
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def command_context_manage_SL_most_played(SL_name, ROM_name):
-    dialog = xbmcgui.Dialog()
-    idx = dialog.select('Manage SL Most Played items', 
-                       ['Delete machine from SL Most Played items'])
-    if idx < 0: return
+    VIEW_ROOT_MENU   = 100
+    VIEW_INSIDE_MENU = 200
 
-    # --- Delete machine from SL Most Played items ---
-    if idx == 0:
-        log_debug('command_context_manage_sl_most_played() Delete SL Most Played machine')
-        log_debug('command_context_manage_sl_most_played() SL_name  "{0}"'.format(SL_name))
-        log_debug('command_context_manage_sl_most_played() ROM_name "{0}"'.format(ROM_name))
+    ACTION_DELETE_MACHINE = 100
+    ACTION_DELETE_MISSING = 200
+    ACTION_CHOOSE_DEFAULT = 300
 
-        # >> Load Most Played items dictionary
+    menus_dic = {
+        VIEW_ROOT_MENU : [
+            ('Delete missing items from SL Most Played', ACTION_DELETE_MISSING),
+        ],
+        VIEW_INSIDE_MENU : [
+            ('Choose default machine for SL item', ACTION_CHOOSE_DEFAULT),
+            ('Delete item from SL Most Played', ACTION_DELETE_MACHINE),
+            ('Delete missing items from SL Most Played', ACTION_DELETE_MISSING),
+        ],
+    }
+
+    # --- Determine view type ---
+    log_debug('command_context_manage_SL_most_played() BEGIN ...')
+    log_debug('SL_name  "{0}"'.format(SL_name))
+    log_debug('ROM_name "{0}"'.format(ROM_name))
+    if SL_name and ROM_name:
+        view_type = VIEW_INSIDE_MENU
+    else:
+        view_type = VIEW_ROOT_MENU
+    log_debug('view_type = {0}'.format(view_type))
+
+    # --- Build menu base on view_type (Polymorphic menu, determine action) ---
+    d_list = [menu[0] for menu in menus_dic[view_type]]
+    selected_value = xbmcgui.Dialog().select('Manage SL Most Played', d_list)
+    if selected_value < 0: return
+    action = menus_dic[view_type][selected_value][1]
+    log_debug('action = {0}'.format(action))
+
+    # --- Execute actions ---
+    if action == ACTION_CHOOSE_DEFAULT:
+        log_debug('command_context_manage_sl_most_played() ACTION_CHOOSE_DEFAULT')
+        kodi_dialog_OK('ACTION_CHOOSE_DEFAULT not implemented yet. Sorry.')
+
+    elif action == ACTION_DELETE_MACHINE:
+        log_debug('command_context_manage_sl_most_played() ACTION_DELETE_MACHINE')
+        log_debug('SL_name  "{0}"'.format(SL_name))
+        log_debug('ROM_name "{0}"'.format(ROM_name))
+
+        # --- Load Most Played items dictionary ---
         most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
-        log_debug('command_context_manage_sl_most_played() SL_fav_key "{0}"'.format(SL_fav_key))
+        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
 
-        # >> Ask user for confirmation.
+        # --- Ask user for confirmation ---
         desc = most_played_roms_dic[SL_fav_key]['description']
         a = 'Delete SL Item {0} ({1} / {2})?'
         ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
         if ret < 1: return
 
-        # >> Delete machine
+        # --- Delete machine and save DB ---
         del most_played_roms_dic[SL_fav_key]
-        a = 'command_context_manage_sl_most_played() Deleted SL_name "{0}" / ROM_name "{1}"'
+        a = 'Deleted SL_name "{0}" / ROM_name "{1}"'
         log_info(a.format(SL_name, ROM_name))
-
-        # >> Save Favourites
         fs_write_JSON_file(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
         kodi_refresh_container()
         kodi_notify('SL Item {0}-{1} deleted from SL Most Played'.format(SL_name, ROM_name))
+
+    elif action == ACTION_DELETE_MISSING:
+        log_debug('command_context_manage_sl_most_played() ACTION_DELETE_MISSING')
+        kodi_dialog_OK('ACTION_DELETE_MISSING not implemented yet. Sorry.')
+
+    else:
+        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        log_error(t)
+        kodi_dialog_OK(t)
 
 def command_show_SL_recently_played():
     SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
@@ -4465,18 +4528,52 @@ def command_show_SL_recently_played():
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def command_context_manage_SL_recent_played(SL_name, ROM_name):
-    dialog = xbmcgui.Dialog()
-    idx = dialog.select('Manage SL Recently Played items', 
-                       ['Delete machine from SL Recently Played items'])
-    if idx < 0: return
+    VIEW_ROOT_MENU   = 100
+    VIEW_INSIDE_MENU = 200
 
-    # --- Delete machine from MAME Recently Played machine list ---
-    if idx == 0:
+    ACTION_DELETE_MACHINE = 100
+    ACTION_DELETE_MISSING = 200
+    ACTION_CHOOSE_DEFAULT = 300
+
+    menus_dic = {
+        VIEW_ROOT_MENU : [
+            ('Delete missing items from SL Recently Played', ACTION_DELETE_MISSING),
+        ],
+        VIEW_INSIDE_MENU : [
+            ('Choose default machine for SL item', ACTION_CHOOSE_DEFAULT),
+            ('Delete item from SL Recently Played', ACTION_DELETE_MACHINE),
+            ('Delete missing items from SL Recently Played', ACTION_DELETE_MISSING),
+        ],
+    }
+
+    # --- Determine view type ---
+    log_debug('command_context_manage_SL_recent_played() BEGIN ...')
+    log_debug('SL_name  "{0}"'.format(SL_name))
+    log_debug('ROM_name "{0}"'.format(ROM_name))
+    if SL_name and ROM_name:
+        view_type = VIEW_INSIDE_MENU
+    else:
+        view_type = VIEW_ROOT_MENU
+    log_debug('view_type = {0}'.format(view_type))
+
+    # --- Build menu base on view_type (Polymorphic menu, determine action) ---
+    d_list = [menu[0] for menu in menus_dic[view_type]]
+    selected_value = xbmcgui.Dialog().select('Manage SL Recently Played', d_list)
+    if selected_value < 0: return
+    action = menus_dic[view_type][selected_value][1]
+    log_debug('action = {0}'.format(action))
+
+    # --- Execute actions ---
+    if action == ACTION_CHOOSE_DEFAULT:
+        log_debug('command_context_manage_SL_recent_played() ACTION_CHOOSE_DEFAULT')
+        kodi_dialog_OK('ACTION_CHOOSE_DEFAULT not implemented yet. Sorry.')
+
+    elif action == ACTION_DELETE_MACHINE:
         log_debug('command_context_manage_SL_recent_played() Delete SL Recently Played machine')
-        log_debug('command_context_manage_SL_recent_played() SL_name  "{0}"'.format(SL_name))
-        log_debug('command_context_manage_SL_recent_played() ROM_name "{0}"'.format(ROM_name))
+        log_debug('SL_name  "{0}"'.format(SL_name))
+        log_debug('ROM_name "{0}"'.format(ROM_name))
 
-        # >> Load Recently Played machine list
+        # --- Load Recently Played machine list ---
         recent_roms_list = fs_load_JSON_file_list(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
         machine_index = fs_locate_idx_by_SL_item_name(recent_roms_list, SL_name, SL_ROM_name)
         if machine_index < 0:
@@ -4484,21 +4581,28 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
             kodi_dialog_OK(a.format(SL_name, ROM_name))
             return
 
-        # >> Ask user for confirmation.
+        # --- Ask user for confirmation ---
         desc = recent_roms_list[machine_index]['description']
         a = 'Delete SL Item {0} ({1} / {2})?'
         ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
         if ret < 1: return
 
-        # >> Delete machine
+        # --- Delete machine and save DB ---
         recent_roms_list.pop(machine_index)
-        a = 'command_context_manage_SL_recent_played() Deleted SL_name "{0}" / ROM_name "{1}"'
+        a = 'Deleted SL_name "{0}" / ROM_name "{1}"'
         log_info(a.format(SL_name, ROM_name))
-
-        # >> Save Recently Played machine list
         fs_write_JSON_file(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
         kodi_refresh_container()
         kodi_notify('SL Item {0}-{1} deleted from SL Recently Played'.format(SL_name, ROM_name))
+
+    elif action == ACTION_DELETE_MISSING:
+        log_debug('command_context_manage_SL_recent_played() ACTION_DELETE_MISSING')
+        kodi_dialog_OK('ACTION_DELETE_MISSING not implemented yet. Sorry.')
+
+    else:
+        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        log_error(t)
+        kodi_dialog_OK(t)
 
 # ---------------------------------------------------------------------------------------------
 # Custom MAME filters
