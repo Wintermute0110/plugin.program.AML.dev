@@ -1375,7 +1375,9 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
 
     # >> Standard fields in Main database
     slist.append('\n[COLOR orange]Machine Main data[/COLOR]')
+    slist.append("[COLOR skyblue]artwork[/COLOR]: {0}".format(unicode(machine['artwork'])))
     slist.append("[COLOR violet]bestgames[/COLOR]: '{0}'".format(machine['bestgames']))
+    slist.append("[COLOR skyblue]category[/COLOR]: {0}".format(unicode(machine['category'])))
     slist.append("[COLOR violet]catlist[/COLOR]: '{0}'".format(machine['catlist']))
     slist.append("[COLOR violet]catver[/COLOR]: '{0}'".format(machine['catver']))
     slist.append("[COLOR skyblue]chip_cpu_name[/COLOR]: {0}".format(unicode(machine['chip_cpu_name'])))
@@ -1421,6 +1423,7 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR skyblue]series[/COLOR]: '{0}'".format(machine['series']))
     slist.append("[COLOR skyblue]softwarelists[/COLOR]: {0}".format(unicode(machine['softwarelists'])))
     slist.append("[COLOR violet]sourcefile[/COLOR]: '{0}'".format(machine['sourcefile']))
+    slist.append("[COLOR violet]veradded[/COLOR]: '{0}'".format(machine['veradded']))
 
     slist.append('\n[COLOR orange]Machine assets/artwork[/COLOR]')
     slist.append("[COLOR violet]3dbox[/COLOR]: '{0}'".format(assets['3dbox']))
@@ -2036,15 +2039,22 @@ def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, 
             log_debug('Checking Favourite "{0}"'.format(fav_key))
             if fav_key in machines:
                 machine = machines[fav_key]
-                m_render = machines_render[fav_key]
+                render = machines_render[fav_key]
                 assets = assets_dic[fav_key]
-                new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
-                fav_machines[fav_key] = new_fav
-                log_debug('Updated machine    "{0}"'.format(fav_key))
             else:
+                # Machine not found in DB. Create an empty one to update the database fields.
+                # The user can delete it later.
                 log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-                t = 'Favourite machine "{0}" not found in database'.format(fav_key)
-                kodi_dialog_OK(t)
+                machine = fs_new_machine_dic()
+                render = fs_new_machine_render_dic()
+                assets = fs_new_MAME_asset()
+                # Change plot to warn user this machine is not found in database.
+                t = 'Machine {0} missing'.format(fav_key)
+                render['description'] = t
+                assets['plot'] = t
+            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
+            fav_machines[fav_key] = new_fav
+            log_debug('Updated machine "{0}"'.format(fav_key))
             iteration += 1
         fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
         pDialog.update((iteration*100) // num_iteration, line1_str)
@@ -2064,22 +2074,26 @@ def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_ren
         for fav_key in sorted(most_played_roms_dic):
             pDialog.update((iteration*100) // num_iteration, line1_str)
             log_debug('Checking Most Played machine "{0}"'.format(fav_key))
+            if 'launch_count' in most_played_roms_dic[fav_key]:
+                launch_count = most_played_roms_dic[fav_key]['launch_count']
+            else:
+                launch_count = 1
             if fav_key in machines:
-                if 'launch_count' in most_played_roms_dic[fav_key]:
-                    launch_count = most_played_roms_dic[fav_key]['launch_count']
-                else:
-                    launch_count = 1
                 machine = machines[fav_key]
-                m_render = machines_render[fav_key]
+                render = machines_render[fav_key]
                 assets = assets_dic[fav_key]
-                new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
-                new_fav['launch_count'] = launch_count
-                most_played_roms_dic[fav_key] = new_fav
-                log_debug('Updated machine              "{0}"'.format(fav_key))
             else:
                 log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-                t = 'Favourite machine "{0}" not found in database'.format(fav_key)
-                kodi_dialog_OK(t)
+                machine = fs_new_machine_dic()
+                render = fs_new_machine_render_dic()
+                assets = fs_new_MAME_asset()
+                t = 'Machine {0} missing'.format(fav_key)
+                render['description'] = t
+                assets['plot'] = t
+            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
+            new_fav['launch_count'] = launch_count
+            most_played_roms_dic[fav_key] = new_fav
+            log_debug('Updated machine "{0}"'.format(fav_key))
             iteration += 1
         fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
         pDialog.update((iteration*100) // num_iteration, line1_str)
@@ -2102,15 +2116,19 @@ def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_r
             log_debug('Checking Recently Played "{0}"'.format(fav_key))
             if fav_key in machines:
                 machine = machines[fav_key]
-                m_render = machines_render[fav_key]
+                render = machines_render[fav_key]
                 assets = assets_dic[fav_key]
-                new_fav = fs_get_MAME_Favourite_full(fav_key, machine, m_render, assets, control_dic)
-                recent_roms_list[i] = new_fav
-                log_debug('Updated machine          "{0}"'.format(fav_key))
             else:
                 log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-                t = 'Favourite machine "{0}" not found in database'.format(fav_key)
-                kodi_dialog_OK(t)
+                machine = fs_new_machine_dic()
+                render = fs_new_machine_render_dic()
+                assets = fs_new_MAME_asset()
+                t = 'Machine {0} missing'.format(fav_key)
+                render['description'] = t
+                assets['plot'] = t
+            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
+            recent_roms_list[i] = new_fav
+            log_debug('Updated machine "{0}"'.format(fav_key))
             iteration += 1
         fs_write_JSON_file(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
         pDialog.update((iteration*100) // num_iteration, line1_str)
@@ -2135,12 +2153,12 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
         fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
         log_debug('Checking SL Favourite "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
 
-        # >> Update progress dialog (BEGIN)
+        # --- Update progress dialog (BEGIN) ---
         update_number = (num_iteration * 100) // num_SL_favs
         pDialog.update(update_number, 'Checking SL Favourites (ROM "{0}") ...'.format(fav_ROM_name))
         num_iteration += 1
 
-        # >> Load SL ROMs DB and assets
+        # --- Load SL ROMs DB and assets ---
         file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
@@ -2148,18 +2166,23 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
         SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
 
-        # >> Check
+        # --- Check ---
         if fav_ROM_name in SL_roms:
             SL_ROM = SL_roms[fav_ROM_name]
             SL_assets = SL_assets_dic[fav_ROM_name]
-            new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
-            fav_SL_roms[fav_SL_key] = new_fav_ROM
-            log_debug('Updated SL Favourite  "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
         else:
-            # >> Delete not found Favourites???
+            # Machine not found in DB. Create an empty one to update the database fields.
+            # The user can delete it later.
             log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
-            t = 'Favourite machine "{0}" in SL "{1}" not found in database'.format(fav_ROM_name, fav_SL_name)
-            kodi_dialog_OK(t)
+            SL_ROM = fs_new_SL_ROM()
+            SL_assets = fs_new_SL_asset()
+            # Change plot to warn user this machine is not found in database.
+            t = 'Item "{0}" missing'.format(fav_ROM_name)
+            SL_ROM['description'] = t
+            SL_ROM['plot'] = t
+        new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
+        fav_SL_roms[fav_SL_key] = new_fav_ROM
+        log_debug('Updated SL Favourite "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
     fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
     pDialog.update(100)
     pDialog.close()
@@ -2184,12 +2207,12 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
         fav_SL_name = most_played_roms_dic[fav_SL_key]['SL_name']
         log_debug('Checking SL Most Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
 
-        # >> Update progress dialog (BEGIN)
+        # --- Update progress dialog (BEGIN) ---
         update_number = (num_iteration * 100) // num_SL_favs
         pDialog.update(update_number, 'Checking SL Most Played (ROM "{0}") ...'.format(fav_ROM_name))
         num_iteration += 1
 
-        # >> Load SL ROMs DB and assets
+        # --- Load SL ROMs DB and assets ---
         file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
@@ -2197,18 +2220,21 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
         SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
 
+        # --- Check ---
         if fav_ROM_name in SL_roms:
             SL_ROM = SL_roms[fav_ROM_name]
             SL_assets = SL_assets_dic[fav_ROM_name]
-            new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
-            new_fav_ROM['launch_count'] = launch_count
-            most_played_roms_dic[fav_SL_key] = new_fav_ROM
-            log_debug('Updated SL Most Played  "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
         else:
-            # >> Delete Favourite ROM from Favourite DB
-            log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_SL_name, fav_ROM_name))
-            t = 'Favourite machine "{0}" in SL "{1}" not found in SL database'.format(fav_SL_name, fav_ROM_name)
-            kodi_dialog_OK(t)
+            log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
+            SL_ROM = fs_new_SL_ROM()
+            SL_assets = fs_new_SL_asset()
+            t = 'Item "{0}" missing'.format(fav_ROM_name)
+            SL_ROM['description'] = t
+            SL_ROM['plot'] = t
+        new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
+        new_fav_ROM['launch_count'] = launch_count
+        most_played_roms_dic[fav_SL_key] = new_fav_ROM
+        log_debug('Updated SL Most Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
     fs_write_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
     pDialog.update(100)
     pDialog.close()
@@ -2229,12 +2255,12 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
         fav_SL_name = recent_rom['SL_name']
         log_debug('Checking SL Recently Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
 
-        # >> Update progress dialog (BEGIN)
+        # --- Update progress dialog (BEGIN) ---
         update_number = (num_iteration * 100) // num_SL_favs
         pDialog.update(update_number, 'Checking SL Recently Played (ROM "{0}") ...'.format(fav_ROM_name))
         num_iteration += 1
 
-        # >> Load SL ROMs DB and assets
+        # --- Load SL ROMs DB and assets ---
         file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(file_name)
         assets_file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_assets.json'
@@ -2242,17 +2268,20 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
         SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath(), verbose = False)
 
+        # --- Check ---
         if fav_ROM_name in SL_roms:
             SL_ROM = SL_roms[fav_ROM_name]
             SL_assets = SL_assets_dic[fav_ROM_name]
-            new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
-            recent_roms_list[i] = new_fav_ROM
-            log_debug('Updated SL Recently Played  "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
         else:
-            # >> Delete Favourite ROM from Favourite DB
-            log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_SL_name, fav_ROM_name))
-            t = 'Favourite machine "{0}" in SL "{1}" not found in SL database'.format(fav_SL_name, fav_ROM_name)
-            kodi_dialog_OK(t)
+            log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
+            SL_ROM = fs_new_SL_ROM()
+            SL_assets = fs_new_SL_asset()
+            t = 'Item "{0}" missing'.format(fav_ROM_name)
+            SL_ROM['description'] = t
+            SL_ROM['plot'] = t
+        new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
+        recent_roms_list[i] = new_fav_ROM
+        log_debug('Updated SL Recently Played  "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
     fs_write_JSON_file(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
     pDialog.update(100)
     pDialog.close()

@@ -1364,52 +1364,6 @@ def render_Utilities_vlaunchers():
     url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_ALL_FAV_OBJECTS')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
-    # --- Check/Update MAME Favourites ---
-    listitem = aux_get_generic_listitem(
-        'Check/Update MAME Favourites objects',
-        'Check/Update MAME Favourites objects',
-        commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_MAME_FAV_OBJECTS')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
-    # --- Check/Update MAME Most Played machines ---
-    listitem = aux_get_generic_listitem(
-        'Check/Update MAME Most Played machines',
-        'Check/Update MAME Most Played machines',
-        commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_MAME_MOST_PLAY_OBJECTS')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
-    # --- Check/Update MAME Recently Played machines ---
-    listitem = aux_get_generic_listitem(
-        'Check/Update MAME Recently Played machines',
-        'Check/Update MAME Recently Played machines',
-        commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_MAME_RECENT_PLAY_OBJECTS')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
-    # --- Check/Update SL Favourites ---
-    listitem = aux_get_generic_listitem(
-        'Check/Update SL Favourites',
-        'Check/Update SL Favourites',
-        commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_SL_FAV_OBJECTS')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
-    # --- Check/Update SL Most Played items ---
-    listitem = aux_get_generic_listitem(
-        'Check/Update SL Most Played items', 'Check/Update SL Most Played items', commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_SL_MOST_PLAY_OBJECTS')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
-    # --- Check/Update SL Recently Played items ---
-    listitem = aux_get_generic_listitem(
-        'Check/Update SL Recently Played items',
-        'Check/Update SL Recently Played items',
-        commands)
-    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_SL_RECENT_PLAY_OBJECTS')
-    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
-
     # --- Check MAME CRC hash collisions ---
     listitem = aux_get_generic_listitem(
         'Check MAME CRC hash collisions',
@@ -5844,8 +5798,17 @@ def command_exec_utility(which_utility):
         display_text_window('AML configuration check report', '\n'.join(slist))
 
     # Check and update all favourite objects.
+    # Check if Favourites can be found in current MAME main database. It may happen that
+    # a machine is renamed between MAME version although I think this is very unlikely.
+    # MAME Favs can not be relinked. If the machine is not found in current database it must
+    # be deleted by the user and a new Favourite created.
+    # If the machine is found in the main database, then update the Favourite database
+    # with data from the main database.
     elif which_utility == 'CHECK_ALL_FAV_OBJECTS':
         log_debug('command_exec_utility() Executing CHECK_ALL_FAV_OBJECTS...')
+
+        # --- Ensure databases are build before updating Favourites ---
+        
 
         # --- Load databases ---
         db_files = [
@@ -5867,94 +5830,7 @@ def command_exec_utility(which_utility):
         mame_update_SL_MostPlay_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
         mame_update_SL_RecentPlay_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
         kodi_refresh_container()
-        kodi_notify('All MAME Favourite objects checked')
-
-    # --- Check/Update MAME Favourites ---
-    # Check if Favourites can be found in current MAME main database. It may happen that
-    # a machine is renamed between MAME version although I think this is very unlikely.
-    # MAME Favs can not be relinked. If the machine is not found in current database it must
-    # be deleted by the user and a new Favourite created.
-    # If the machine is found in the main database, then update the Favourite database
-    # with data from the main database.
-    elif which_utility == 'CHECK_MAME_FAV_OBJECTS':
-        log_debug('command_exec_utility() Executing CHECK_MAME_FAV_OBJECTS...')
-        db_files = [
-            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
-            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-        ]
-        db_dic = fs_load_files(db_files)
-        mame_update_MAME_Fav_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
-        kodi_refresh_container()
-        kodi_notify('MAME Favourite checked and updated')
-
-    # --- Check/Update all MAME Most Played machines ---
-    elif which_utility == 'CHECK_MAME_MOST_PLAY_OBJECTS':
-        db_files = [
-            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
-            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-        ]
-        db_dic = fs_load_files(db_files)
-
-        mame_update_MAME_MostPlay_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
-        kodi_refresh_container()
-        kodi_notify('MAME Favourite checked and updated')
-
-    # --- Check/Update all MAME Recently Played machines ---
-    elif which_utility == 'CHECK_MAME_RECENT_PLAY_OBJECTS':
-        db_files = [
-            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
-            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
-            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
-            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
-        ]
-        db_dic = fs_load_files(db_files)
-
-        mame_update_MAME_RecentPlay_objects(
-            g_PATHS, db_dic['control_dic'], db_dic['machines'], db_dic['render'], db_dic['assets'])
-        kodi_refresh_container()
-        kodi_notify('MAME Recently Played machines checked and updated')
-
-    # --- Check/Update SL Favourites ---
-    elif which_utility == 'CHECK_SL_FAV_OBJECTS':
-        db_files = [
-            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
-            ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
-        ]
-        db_dic = fs_load_files(db_files)
-
-        mame_update_SL_Fav_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
-        kodi_refresh_container()
-        kodi_notify('SL Favourite ROMs checked and updated')
-
-    # --- Check/Update all SL Most Played items ---
-    elif which_utility == 'CHECK_SL_MOST_PLAY_OBJECTS':
-        db_files = [
-            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
-            ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
-        ]
-        db_dic = fs_load_files(db_files)
-
-        mame_update_SL_MostPlay_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
-        kodi_refresh_container()
-        kodi_notify('SL Most Played items checked and updated')
-
-    # --- Check/Update SL Recently Played items ---
-    elif which_utility == 'CHECK_SL_RECENT_PLAY_OBJECTS':
-        db_files = [
-            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
-            ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
-        ]
-        db_dic = fs_load_files(db_files)
-
-        mame_update_SL_RecentPlay_objects(g_PATHS, db_dic['control_dic'], db_dic['SL_index'])
-        kodi_refresh_container()
-        kodi_notify('SL Recently Played items checked and updated')
+        kodi_notify('All Favourite objects checked')
 
     # Check MAME and SL CRC 32 hash collisions.
     # The assumption in this function is that there is not SHA1 hash collisions.
