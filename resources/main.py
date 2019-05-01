@@ -2179,7 +2179,7 @@ def render_SL_list(catalog_name):
 
     # --- General AML plugin check ---
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not check_SL_DB_before_rendering(g_PATHS, g_settings, control_dic):
+    if not check_SL_DB_before_rendering_catalog(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -2223,7 +2223,7 @@ def render_SL_ROMs(SL_name):
 
     # --- General AML plugin check ---
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    if not check_SL_DB_before_rendering(g_PATHS, g_settings, control_dic):
+    if not check_SL_DB_before_rendering_machines(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -4895,9 +4895,10 @@ def check_MAME_DB_status(condition, control_dic):
         if not test_XML_EXTRACTED:
             t = 'MAME.XML has not been extracted. Use the context menu "Setup plugin" in root window.'
             options_dic = {'msg' : t, 'condition' : False }
+            log_debug('check_MAME_DB_status() MAME_XML_EXTRACTED fails.')
         else:
-            log_debug('check_MAME_DB_status() Everything OK.')
             options_dic = {'msg' : '', 'condition' : True }
+            log_debug('check_MAME_DB_status() Everything OK')
         return options_dic
 
     elif condition == MAME_MAIN_DB_BUILT:
@@ -4905,6 +4906,7 @@ def check_MAME_DB_status(condition, control_dic):
         if not test_MAIN_DB_BUILT:
             t = 'MAME Main database needs to be built. Use the context menu "Setup plugin" in root window.'
             options_dic = {'msg' : t, 'condition' : False }
+            log_debug('check_MAME_DB_status() MAME_MAIN_DB_BUILT fails.')
             return options_dic
         else:
             return check_MAME_DB_status(MAME_XML_EXTRACTED, control_dic)
@@ -4914,6 +4916,7 @@ def check_MAME_DB_status(condition, control_dic):
         if not test_AUDIT_DB_BUILT:
             t = 'MAME Audit database needs to be built. Use the context menu "Setup plugin" in root window.'
             options_dic = {'msg' : t, 'condition' : False }
+            log_debug('check_MAME_DB_status() MAME_AUDIT_DB_BUILT fails.')
             return options_dic
         else:
             return check_MAME_DB_status(MAME_MAIN_DB_BUILT, control_dic)
@@ -4923,6 +4926,7 @@ def check_MAME_DB_status(condition, control_dic):
         if not test_CATALOG_BUILT:
             t = 'MAME Catalog database needs to be built. Use the context menu "Setup plugin" in root window.'
             options_dic = {'msg' : t, 'condition' : False }
+            log_debug('check_MAME_DB_status() MAME_CATALOG_BUILT fails.')
             return options_dic
         else:
             return check_MAME_DB_status(MAME_AUDIT_DB_BUILT, control_dic)
@@ -4930,8 +4934,9 @@ def check_MAME_DB_status(condition, control_dic):
     elif condition == MAME_MACHINES_SCANNED:
         test_MACHINES_SCANNED = True if control_dic['t_MAME_ROMs_scan'] > control_dic['t_MAME_Catalog_build'] else False
         if not test_MACHINES_SCANNED:
-            t = 'MAME machines needs to be scanned. Use the context menu "Setup plugin" in root window.'
+            t = 'MAME machines need to be scanned. Use the context menu "Setup plugin" in root window.'
             options_dic = {'msg' : t, 'condition' : False }
+            log_debug('check_MAME_DB_status() MAME_MACHINES_SCANNED fails.')
             return options_dic
         else:
             return check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
@@ -4939,8 +4944,9 @@ def check_MAME_DB_status(condition, control_dic):
     elif condition == MAME_ASSETS_SCANNED:
         test_ASSETS_SCANNED = True if control_dic['t_MAME_assets_scan'] > control_dic['t_MAME_ROMs_scan'] else False
         if not test_ASSETS_SCANNED:
-            t = 'MAME assets needs to be scanned. Use the context menu "Setup plugin" in root window.'
+            t = 'MAME assets need to be scanned. Use the context menu "Setup plugin" in root window.'
             options_dic = {'msg' : t, 'condition' : False }
+            log_debug('check_MAME_DB_status() MAME_ASSETS_SCANNED fails.')
             return options_dic
         else:
             return check_MAME_DB_status(MAME_MACHINES_SCANNED, control_dic)
@@ -4952,7 +4958,41 @@ def check_MAME_DB_status(condition, control_dic):
 # Look at check_MAME_DB_status()
 #
 def check_SL_DB_status(condition, control_dic):
-    pass
+    # Conditions are a fall-trough. For example, if user checks MAME_MAIN_DB_BUILT but
+    # XML has not been extracted/processed then MAME_MAIN_DB_BUILT fails.
+    if condition == SL_MAIN_DB_BUILT:
+        test_MAIN_DB_BUILT = True if control_dic['t_SL_DB_build'] > control_dic['t_MAME_DB_build'] else False
+        if not test_MAIN_DB_BUILT:
+            t = 'Software List databases not built or outdated. Use the context menu "Setup plugin" in root window.'
+            options_dic = {'msg' : t, 'condition' : False }
+            log_debug('check_SL_DB_status() SL_MAIN_DB_BUILT fails')
+        else:
+            options_dic = {'msg' : '', 'condition' : True }
+            log_debug('check_SL_DB_status() Everything OK')
+        return options_dic
+
+    elif condition == SL_ITEMS_SCANNED:
+        test_ITEMS_SCANNED = True if control_dic['t_SL_ROMs_scan'] > control_dic['t_SL_DB_build'] else False
+        if not test_ITEMS_SCANNED:
+            t = 'Software List items not scanned. Use the context menu "Setup plugin" in root window.'
+            options_dic = {'msg' : t, 'condition' : False }
+            log_debug('check_SL_DB_status() SL_ITEMS_SCANNED fails')
+            return options_dic
+        else:
+            return check_SL_DB_status(SL_MAIN_DB_BUILT, control_dic)
+
+    elif condition == SL_ASSETS_SCANNED:
+        test_ASSETS_SCANNED = True if control_dic['t_SL_assets_scan'] > control_dic['t_SL_ROMs_scan'] else False
+        if not test_ASSETS_SCANNED:
+            t = 'Software List assets not scanned. Use the context menu "Setup plugin" in root window.'
+            options_dic = {'msg' : t, 'condition' : False }
+            log_debug('check_SL_DB_status() SL_ASSETS_SCANNED fails')
+            return options_dic
+        else:
+            return check_SL_DB_status(SL_ITEMS_SCANNED, control_dic)
+
+    else:
+        raise ValueError('check_SL_DB_status() Recursive logic error')
 
 #
 # This function is called before rendering a Catalog.
@@ -4989,7 +5029,7 @@ def check_MAME_DB_before_rendering_machines(g_PATHS, settings, control_dic):
         if control_dic['t_MAME_render_cache_build'] < control_dic['t_MAME_Catalog_build']:
             log_warning('t_MAME_render_cache_build < t_MAME_Catalog_build')
             t = ('MAME render cache needs to be updated. '
-                 'In AML root window open the context menu, select "Setup plugin", then '
+                 'Open the context menu "Setup plugin", then '
                  '"Step by Step", and then "Rebuild MAME machine and asset caches."')
             kodi_dialog_OK(t)
             return False
@@ -4998,13 +5038,12 @@ def check_MAME_DB_before_rendering_machines(g_PATHS, settings, control_dic):
         if control_dic['t_MAME_asset_cache_build'] < control_dic['t_MAME_Catalog_build']:
             log_warning('t_MAME_asset_cache_build < t_MAME_Catalog_build')
             t = ('MAME asset cache needs to be updated. '
-                 'In AML root window open the context menu, select "Setup plugin", then '
+                 'Open the context menu "Setup plugin", then '
                  '"Step by Step", and then "Rebuild MAME machine and asset caches."')
             kodi_dialog_OK(t)
             return False
 
-    # All good!
-    log_debug('check_MAME_DB_before_rendering_machines() All good!')
+    log_debug('check_MAME_DB_before_rendering_machines() All good.')
     return True
 
 #
@@ -5012,30 +5051,23 @@ def check_MAME_DB_before_rendering_machines(g_PATHS, settings, control_dic):
 # WARNING This must be completed!!! Look at the MAME functions.
 #
 def check_SL_DB_before_rendering_catalog(g_PATHS, g_settings, control_dic):
-    # >> Check if MAME Main DB has been built and is more recent than the XML.
-    # >> The SL DB relies on the MAME Main DB (verify this).
-    if control_dic['t_MAME_DB_build'] < control_dic['t_XML_extraction']:
-        t = ('MAME Main database needs to be built. '
-             'In AML root window open the context menu, select "Setup plugin" and then '
-             'click on "Build all databases."')
-        kodi_dialog_OK(t)
+    # Check if SL databases are built.
+    options = check_SL_DB_status(SL_MAIN_DB_BUILT, control_dic)
+    if not options['condition']:
+        kodi_dialog_OK(options['msg'])
         return False
 
-    # >> Check if SL Main DB has been built and is more recent than the MAME database.
-    if control_dic['t_SL_DB_build'] < control_dic['t_MAME_DB_build']:
-        t = ('Software List database needs to be built. '
-             'In AML root window open the context menu, select "Setup plugin" and then '
-             'click on "Build all databases."')
-        kodi_dialog_OK(t)
-        return False
-
-    # >> All good!
-    log_debug('check_SL_DB_before_rendering_catalog() All good!')
+    log_debug('check_SL_DB_before_rendering_catalog() All good.')
     return True
 
 def check_SL_DB_before_rendering_machines(g_PATHS, g_settings, control_dic):
-    # >> All good!
-    log_debug('check_SL_DB_before_rendering_machines() All good!')
+    # Check if SL databases are built.
+    options = check_SL_DB_status(SL_MAIN_DB_BUILT, control_dic)
+    if not options['condition']:
+        kodi_dialog_OK(options['msg'])
+        return False
+
+    log_debug('check_SL_DB_before_rendering_machines() All good.')
     return True
 
 # -------------------------------------------------------------------------------------------------
