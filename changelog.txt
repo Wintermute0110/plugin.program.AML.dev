@@ -63,7 +63,9 @@ WIP      Read-only Launcher (ROLs) to export into AEL.
 
 [B]Advanced MAME Launcher | version 0.9.10 | xx April 2019[/B]
 
-WIP      Management of Favourite objects (delete missing, delete).
+FEATURE  Management of MAME Favourite objects (delete missing, delete single).
+
+WIP      Management of SL Favourite objects (delete missing, delete single).
 
 FEATURE  Initial support for Retroarch MAME 2003 Plus core.
 

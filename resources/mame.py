@@ -2036,7 +2036,7 @@ def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, 
         iteration = 0
         for fav_key in sorted(fav_machines):
             pDialog.update((iteration*100) // num_iteration, line1_str)
-            log_debug('Checking Favourite "{0}"'.format(fav_key))
+            log_debug('Checking machine "{0}"'.format(fav_key))
             if fav_key in machines:
                 machine = machines[fav_key]
                 render = machines_render[fav_key]
@@ -2073,7 +2073,7 @@ def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_ren
         iteration = 0
         for fav_key in sorted(most_played_roms_dic):
             pDialog.update((iteration*100) // num_iteration, line1_str)
-            log_debug('Checking Most Played machine "{0}"'.format(fav_key))
+            log_debug('Checking machine "{0}"'.format(fav_key))
             if 'launch_count' in most_played_roms_dic[fav_key]:
                 launch_count = most_played_roms_dic[fav_key]['launch_count']
             else:
@@ -2113,7 +2113,7 @@ def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_r
         for i, recent_rom in enumerate(recent_roms_list):
             pDialog.update((iteration*100) // num_iteration, line1_str)
             fav_key = recent_rom['name']
-            log_debug('Checking Recently Played "{0}"'.format(fav_key))
+            log_debug('Checking machine "{0}"'.format(fav_key))
             if fav_key in machines:
                 machine = machines[fav_key]
                 render = machines_render[fav_key]
