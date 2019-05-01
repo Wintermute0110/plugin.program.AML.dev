@@ -434,6 +434,7 @@ def run_plugin(addon_argv):
         elif command == 'ADD_MAME_FAV':
             command_context_add_mame_fav(args['machine'][0])
         elif command == 'MANAGE_MAME_FAV':
+            # If called from the root menu machine is empty.
             machine = args['machine'][0] if 'machine' in args else ''
             command_context_manage_mame_fav(machine)
         elif command == 'SHOW_MAME_FAVS':
@@ -615,6 +616,37 @@ def get_settings():
 # ---------------------------------------------------------------------------------------------
 # Root menu rendering
 # ---------------------------------------------------------------------------------------------
+# TODO Reuse data in render_root_list() and render_skin_*() functions.
+root_Main = {
+    'Normal' : {
+        'title' : '',
+        'plot' : '',
+    },
+}
+
+root_Binary = {
+    'BIOS' : {
+        'title' : '',
+        'plot' : '',
+    },
+}
+
+root_categories = {
+    'Catver' : {
+        'title' : '',
+        'plot' : '',
+        'URL' : '',
+    },
+}
+
+root_special = {
+    'MAME_Favs' : {
+        'title' : '',
+        'URL' : '',
+        'cmenu' : []
+    },
+}
+
 def render_root_list():
     mame_view_mode = g_settings['mame_view_mode']
 
@@ -955,136 +987,127 @@ def render_root_list():
 
     # >> Main filters (Virtual catalog 'Main')
     if g_settings['display_main_filters']:
-        render_root_list_row_catalog(machines_n_str, 'Main', 'Normal', machines_n_plot)
-        render_root_list_row_catalog(machines_u_str, 'Main', 'Unusual', machines_u_plot)
-        render_root_list_row_catalog(nocoin_str, 'Main', 'NoCoin', nocoin_plot)
-        render_root_list_row_catalog(mecha_str, 'Main', 'Mechanical', mecha_plot)
-        render_root_list_row_catalog(dead_str, 'Main', 'Dead', dead_plot)
-        render_root_list_row_catalog(devices_str, 'Main', 'Devices', devices_plot)
+        render_root_catalog_row(machines_n_str, 'Main', 'Normal', machines_n_plot)
+        render_root_catalog_row(machines_u_str, 'Main', 'Unusual', machines_u_plot)
+        render_root_catalog_row(nocoin_str, 'Main', 'NoCoin', nocoin_plot)
+        render_root_catalog_row(mecha_str, 'Main', 'Mechanical', mecha_plot)
+        render_root_catalog_row(dead_str, 'Main', 'Dead', dead_plot)
+        render_root_catalog_row(devices_str, 'Main', 'Devices', devices_plot)
 
     # >> Binary filters (Virtual catalog 'Binary')
     if g_settings['display_binary_filters']:
-        render_root_list_row_catalog(bios_str, 'Binary', 'BIOS', bios_plot)
-        render_root_list_row_catalog(chd_str, 'Binary', 'CHD', chd_plot)
-        render_root_list_row_catalog(samples_str, 'Binary', 'Samples', samples_plot)
-        render_root_list_row_catalog(softlists_str, 'Binary', 'SoftwareLists', softlists_plot)
+        render_root_catalog_row(bios_str, 'Binary', 'BIOS', bios_plot)
+        render_root_catalog_row(chd_str, 'Binary', 'CHD', chd_plot)
+        render_root_catalog_row(samples_str, 'Binary', 'Samples', samples_plot)
+        render_root_catalog_row(softlists_str, 'Binary', 'SoftwareLists', softlists_plot)
 
     if g_settings['display_catalog_filters']:
         # >> Optional cataloged filters (depend on a INI file)
-        render_root_list_row_standard(
-            catver_str, misc_url_1_arg('catalog', 'Catver'), catver_plot)
-        render_root_list_row_standard(
-            catlist_str, misc_url_1_arg('catalog', 'Catlist'), catlist_plot)
-        render_root_list_row_standard(
-            genre_str, misc_url_1_arg('catalog', 'Genre'), genre_plot)
-        render_root_list_row_standard(
-            category_str, misc_url_1_arg('catalog', 'Category'), category_plot)
-        render_root_list_row_standard(
-            NPlayers_str, misc_url_1_arg('catalog', 'NPlayers'), NPlayers_plot)
-        render_root_list_row_standard(
-            rating_str, misc_url_1_arg('catalog', 'Bestgames'), rating_plot)
-        render_root_list_row_standard(
-            series_str, misc_url_1_arg('catalog', 'Series'), series_plot)
-        render_root_list_row_standard(
-            artwork_str, misc_url_1_arg('catalog', 'Artwork'), artwork_plot)
-        render_root_list_row_standard(
-            version_str, misc_url_1_arg('catalog', 'Version'), version_plot)
+        render_root_category_row(catver_str, misc_url_1_arg('catalog', 'Catver'), catver_plot)
+        render_root_category_row(catlist_str, misc_url_1_arg('catalog', 'Catlist'), catlist_plot)
+        render_root_category_row(genre_str, misc_url_1_arg('catalog', 'Genre'), genre_plot)
+        render_root_category_row(category_str, misc_url_1_arg('catalog', 'Category'), category_plot)
+        render_root_category_row(NPlayers_str, misc_url_1_arg('catalog', 'NPlayers'), NPlayers_plot)
+        render_root_category_row(rating_str, misc_url_1_arg('catalog', 'Bestgames'), rating_plot)
+        render_root_category_row(series_str, misc_url_1_arg('catalog', 'Series'), series_plot)
+        render_root_category_row(artwork_str, misc_url_1_arg('catalog', 'Artwork'), artwork_plot)
+        render_root_category_row(version_str, misc_url_1_arg('catalog', 'Version'), version_plot)
 
         # >> Cataloged filters (always there)
-        render_root_list_row_standard(
-            ctype_expanded_str, misc_url_1_arg('catalog', 'Controls_Expanded'), ctype_expanded_plot)
-        render_root_list_row_standard(
-            ctype_compact_str, misc_url_1_arg('catalog', 'Controls_Compact'), ctype_compact_plot)
-        render_root_list_row_standard(
-            device_expanded_str, misc_url_1_arg('catalog', 'Devices_Expanded'), device_expanded_plot)
-        render_root_list_row_standard(
-            device_compact_str, misc_url_1_arg('catalog', 'Devices_Compact'), device_compact_plot)
-        render_root_list_row_standard(
-            dtype_str, misc_url_1_arg('catalog', 'Display_Type'), dtype_plot)
-        render_root_list_row_standard(
-            d_vsync_freq_str, misc_url_1_arg('catalog', 'Display_VSync'), d_vsync_freq_plot)
-        render_root_list_row_standard(
-            d_resolution_str, misc_url_1_arg('catalog', 'Display_Resolution'), d_resolution_plot)
-        render_root_list_row_standard(
-            CPU_str, misc_url_1_arg('catalog', 'CPU'), CPU_plot)
-        render_root_list_row_standard(
-            driver_str, misc_url_1_arg('catalog', 'Driver'), driver_plot)
-        render_root_list_row_standard(
-            manufacturer_str, misc_url_1_arg('catalog', 'Manufacturer'), manufacturer_plot)
-        render_root_list_row_standard(
-            shortname_str, misc_url_1_arg('catalog', 'ShortName'), shortname_plot)
-        render_root_list_row_standard(
-            longname_str, misc_url_1_arg('catalog', 'LongName'), longname_plot)
-        render_root_list_row_standard(
-            SL_str, misc_url_1_arg('catalog', 'BySL'), SL_plot)
-        render_root_list_row_standard(
-            year_str, misc_url_1_arg('catalog', 'Year'), year_plot)
+        render_root_category_row(ctype_expanded_str, misc_url_1_arg('catalog', 'Controls_Expanded'), ctype_expanded_plot)
+        render_root_category_row(ctype_compact_str, misc_url_1_arg('catalog', 'Controls_Compact'), ctype_compact_plot)
+        render_root_category_row(device_expanded_str, misc_url_1_arg('catalog', 'Devices_Expanded'), device_expanded_plot)
+        render_root_category_row(device_compact_str, misc_url_1_arg('catalog', 'Devices_Compact'), device_compact_plot)
+        render_root_category_row(dtype_str, misc_url_1_arg('catalog', 'Display_Type'), dtype_plot)
+        render_root_category_row(d_vsync_freq_str, misc_url_1_arg('catalog', 'Display_VSync'), d_vsync_freq_plot)
+        render_root_category_row(d_resolution_str, misc_url_1_arg('catalog', 'Display_Resolution'), d_resolution_plot)
+        render_root_category_row(CPU_str, misc_url_1_arg('catalog', 'CPU'), CPU_plot)
+        render_root_category_row(driver_str, misc_url_1_arg('catalog', 'Driver'), driver_plot)
+        render_root_category_row(manufacturer_str, misc_url_1_arg('catalog', 'Manufacturer'), manufacturer_plot)
+        render_root_category_row(shortname_str, misc_url_1_arg('catalog', 'ShortName'), shortname_plot)
+        render_root_category_row(longname_str, misc_url_1_arg('catalog', 'LongName'), longname_plot)
+        render_root_category_row(SL_str, misc_url_1_arg('catalog', 'BySL'), SL_plot)
+        render_root_category_row(year_str, misc_url_1_arg('catalog', 'Year'), year_plot)
 
     # >> history.dat, mameinfo.dat, gameinit.dat, command.dat
     if g_settings['display_DAT_browser']:
-        render_root_list_row_standard(
-            'History DAT', misc_url_1_arg('catalog', 'History'), History_plot)
-        render_root_list_row_standard(
-            'MAMEINFO DAT', misc_url_1_arg('catalog', 'MAMEINFO'), MAMEInfo_plot)
-        render_root_list_row_standard(
-            'Gameinit DAT', misc_url_1_arg('catalog', 'Gameinit'), Gameinit_plot)
-        render_root_list_row_standard(
-            'Command DAT', misc_url_1_arg('catalog', 'Command'), Command_plot)
+        render_root_category_row('History DAT', misc_url_1_arg('catalog', 'History'), History_plot)
+        render_root_category_row('MAMEINFO DAT', misc_url_1_arg('catalog', 'MAMEINFO'), MAMEInfo_plot)
+        render_root_category_row('Gameinit DAT', misc_url_1_arg('catalog', 'Gameinit'), Gameinit_plot)
+        render_root_category_row('Command DAT', misc_url_1_arg('catalog', 'Command'), Command_plot)
 
-    # >> Software lists
+    # --- Software lists ---
     if g_settings['display_SL_browser']:
-        render_root_list_row_standard(
-            SL_all_str, misc_url_1_arg('catalog', 'SL'), SL_all_plot)
-        render_root_list_row_standard(
-            SL_ROM_str, misc_url_1_arg('catalog', 'SL_ROM'), SL_ROM_plot)
-        render_root_list_row_standard(
-            SL_mixed_str, misc_url_1_arg('catalog', 'SL_ROM_CHD'), SL_ROM_CHD_plot)
-        render_root_list_row_standard(
-            SL_CHD_str, misc_url_1_arg('catalog', 'SL_CHD'), SL_CHD_plot)
+        render_root_category_row(SL_all_str, misc_url_1_arg('catalog', 'SL'), SL_all_plot)
+        render_root_category_row(SL_ROM_str, misc_url_1_arg('catalog', 'SL_ROM'), SL_ROM_plot)
+        render_root_category_row(SL_mixed_str, misc_url_1_arg('catalog', 'SL_ROM_CHD'), SL_ROM_CHD_plot)
+        render_root_category_row(SL_CHD_str, misc_url_1_arg('catalog', 'SL_CHD'), SL_CHD_plot)
         if num_SL_empty > 0:
-            render_root_list_row_standard(
-                SL_empty_str, misc_url_1_arg('catalog', 'SL_empty'), SL_empty_plot)
+            render_root_category_row(SL_empty_str, misc_url_1_arg('catalog', 'SL_empty'), SL_empty_plot)
 
-    # >> Special launchers
+    # --- Special launchers ---
     if g_settings['display_custom_filters']:
-        render_root_custom_filter_row('[Custom MAME filters]',
-            misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'), custom_filters_plot)
+        cmenu_list = [
+            ('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS')),
+        ]
+        URL = misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS')
+        render_root_category_row_custom_CM('[Custom MAME filters]', URL, custom_filters_plot, cmenu_list)
 
     if g_settings['display_ROLs']:
-        render_root_custom_filter_row('[AEL Read Only Launchers]',
-            misc_url_1_arg('command', 'SHOW_AEL_ROLS'), ROLS_plot)
+        URL = misc_url_1_arg('command', 'SHOW_AEL_ROLS')
+        render_root_category_row('[AEL Read Only Launchers]', URL, ROLS_plot)
 
+    # --- MAME Favourites ---
     if g_settings['display_MAME_favs']:
-        render_root_list_row_standard('<Favourite MAME machines>', 
-            misc_url_1_arg('command', 'SHOW_MAME_FAVS'), MAME_favs_plot)
-                                       
+        cmenu_list = [
+            ('Manage Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV')),
+        ]
+        URL = misc_url_1_arg('command', 'SHOW_MAME_FAVS')
+        render_root_category_row_custom_CM('<Favourite MAME machines>', URL, MAME_favs_plot, cmenu_list)
+
     if g_settings['display_MAME_most']:
-        render_root_list_row_standard('{Most Played MAME machines}',
-            misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'), MAME_most_played_plot)
+        cmenu_list = [
+            ('Manage Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED')),
+        ]
+        URL = misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED')
+        render_root_category_row_custom_CM('{Most Played MAME machines}', URL, MAME_most_played_plot, cmenu_list)
 
     if g_settings['display_MAME_recent']:
-        render_root_list_row_standard('{Recently Played MAME machines}',
-            misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'), MAME_recent_played_plot)
+        cmenu_list = [
+            ('Manage Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED')),
+        ]
+        URL = misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED')
+        render_root_category_row_custom_CM('{Recently Played MAME machines}', URL, MAME_recent_played_plot, cmenu_list)
 
+    # --- SL Favourites ---
     if g_settings['display_SL_favs']:
-        render_root_list_row_standard('<Favourite Software Lists ROMs>',
-            misc_url_1_arg('command', 'SHOW_SL_FAVS'), SL_favs_plot)
+        cmenu_list = [
+            ('Manage SL Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV')),
+        ]
+        URL = misc_url_1_arg('command', 'SHOW_SL_FAVS')
+        render_root_category_row_custom_CM('<Favourite Software Lists ROMs>', URL, SL_favs_plot, cmenu_list)
 
     if g_settings['display_SL_most']:
-        render_root_list_row_standard('{Most Played SL ROMs}',
-            misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'), SL_most_played_plot)
+        cmenu_list = [
+            ('Manage SL Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED')),
+        ]
+        URL = misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED')
+        render_root_category_row_custom_CM('{Most Played SL ROMs}', URL, SL_most_played_plot, cmenu_list)
 
     if g_settings['display_SL_recent']:
-        render_root_list_row_standard('{Recently Played SL ROMs}',
-        misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'), SL_recent_played_plot)
+        cmenu_list = [
+            ('Manage SL Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED')),
+        ]
+        URL = misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED')
+        render_root_category_row_custom_CM('{Recently Played SL ROMs}', URL, SL_recent_played_plot, cmenu_list)
 
-    # Always render these two.
+    # --- Always render these two ---
     if g_settings['display_utilities']:
-        render_root_list_row_standard('Utilities',
-            misc_url_1_arg('command', 'SHOW_UTILITIES_VLAUNCHERS'), Utilities_plot)
+        URL = misc_url_1_arg('command', 'SHOW_UTILITIES_VLAUNCHERS')
+        render_root_category_row('Utilities', URL, Utilities_plot)
     if g_settings['display_global_reports']:
-        render_root_list_row_standard('Global Reports',
-            misc_url_1_arg('command', 'SHOW_GLOBALREPORTS_VLAUNCHERS'), Global_Reports_plot)
+        URL = misc_url_1_arg('command', 'SHOW_GLOBALREPORTS_VLAUNCHERS')
+        render_root_category_row('Global Reports', URL, Global_Reports_plot)
 
     # --- End of directory ---
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -1095,20 +1118,14 @@ def render_root_list():
 #
 def render_skin_fav_slots():
     try:
-        render_root_list_row_standard('Favourite MAME machines',
-            misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
-        render_root_list_row_standard('Most Played MAME machines',
-            misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'))
-        render_root_list_row_standard('Recently Played MAME machines',
-            misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'))
-        render_root_list_row_standard('Favourite Software Lists ROMs',
-            misc_url_1_arg('command', 'SHOW_SL_FAVS'))
-        render_root_list_row_standard('Most Played SL ROMs',
-            misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'))
-        render_root_list_row_standard('Recently Played SL ROMs',
-            misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'))
+        render_root_category_row('Favourite MAME machines', misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
+        render_root_category_row('Most Played MAME machines', misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'))
+        render_root_category_row('Recently Played MAME machines', misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'))
+        render_root_category_row('Favourite Software Lists ROMs', misc_url_1_arg('command', 'SHOW_SL_FAVS'))
+        render_root_category_row('Most Played SL ROMs', misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'))
+        render_root_category_row('Recently Played SL ROMs', misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'))
     except:
-        pass
+        log_error('Excepcion in render_skin_fav_slots()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_main_filters():
@@ -1120,14 +1137,14 @@ def render_skin_main_filters():
     devices_str = 'Device machines'
 
     try:
-        render_root_list_row_catalog(machines_n_str, 'Main', 'Normal')
-        render_root_list_row_catalog(machines_u_str, 'Main', 'Unusual')
-        render_root_list_row_catalog(nocoin_str, 'Main', 'NoCoin')
-        render_root_list_row_catalog(mecha_str, 'Main', 'Mechanical')
-        render_root_list_row_catalog(dead_str, 'Main', 'Dead')
-        render_root_list_row_catalog(devices_str, 'Main', 'Devices')
+        render_root_catalog_row(machines_n_str, 'Main', 'Normal')
+        render_root_catalog_row(machines_u_str, 'Main', 'Unusual')
+        render_root_catalog_row(nocoin_str, 'Main', 'NoCoin')
+        render_root_catalog_row(mecha_str, 'Main', 'Mechanical')
+        render_root_catalog_row(dead_str, 'Main', 'Dead')
+        render_root_catalog_row(devices_str, 'Main', 'Devices')
     except:
-        pass
+        log_error('Excepcion in render_skin_main_filters()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_binary_filters():
@@ -1137,12 +1154,12 @@ def render_skin_binary_filters():
     softlists_str  = 'Machines [with Software Lists]'
 
     try:
-        render_root_list_row_catalog(bios_str, 'Binary', 'BIOS')
-        render_root_list_row_catalog(chd_str, 'Binary', 'CHD')
-        render_root_list_row_catalog(samples_str, 'Binary', 'Samples')
-        render_root_list_row_catalog(softlists_str, 'Binary', 'SoftwareLists')
+        render_root_catalog_row(bios_str, 'Binary', 'BIOS')
+        render_root_catalog_row(chd_str, 'Binary', 'CHD')
+        render_root_catalog_row(samples_str, 'Binary', 'Samples')
+        render_root_catalog_row(softlists_str, 'Binary', 'SoftwareLists')
     except:
-        pass
+        log_error('Excepcion in render_skin_binary_filters()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_catalog_filters():
@@ -1174,41 +1191,41 @@ def render_skin_catalog_filters():
 
     try:
         # >> Optional cataloged filters (depend on a INI file)
-        render_root_list_row_standard(catver_str, misc_url_1_arg('catalog', 'Catver'))
-        render_root_list_row_standard(catlist_str, misc_url_1_arg('catalog', 'Catlist'))
-        render_root_list_row_standard(genre_str, misc_url_1_arg('catalog', 'Genre'))
-        render_root_list_row_standard(category_str, misc_url_1_arg('catalog', 'Category'))
-        render_root_list_row_standard(NPlayers_str, misc_url_1_arg('catalog', 'NPlayers'))
-        render_root_list_row_standard(rating_str, misc_url_1_arg('catalog', 'Bestgames'))
-        render_root_list_row_standard(series_str, misc_url_1_arg('catalog', 'Series'))
-        render_root_list_row_standard(artwork_str, misc_url_1_arg('catalog', 'Artwork'))
-        render_root_list_row_standard(version_str, misc_url_1_arg('catalog', 'Version'))
+        render_root_category_row(catver_str, misc_url_1_arg('catalog', 'Catver'))
+        render_root_category_row(catlist_str, misc_url_1_arg('catalog', 'Catlist'))
+        render_root_category_row(genre_str, misc_url_1_arg('catalog', 'Genre'))
+        render_root_category_row(category_str, misc_url_1_arg('catalog', 'Category'))
+        render_root_category_row(NPlayers_str, misc_url_1_arg('catalog', 'NPlayers'))
+        render_root_category_row(rating_str, misc_url_1_arg('catalog', 'Bestgames'))
+        render_root_category_row(series_str, misc_url_1_arg('catalog', 'Series'))
+        render_root_category_row(artwork_str, misc_url_1_arg('catalog', 'Artwork'))
+        render_root_category_row(version_str, misc_url_1_arg('catalog', 'Version'))
 
         # >> Cataloged filters (always there)
-        render_root_list_row_standard(ctype_expanded_str, misc_url_1_arg('catalog', 'Controls_Expanded'))
-        render_root_list_row_standard(ctype_compact_str, misc_url_1_arg('catalog', 'Controls_Compact'))
-        render_root_list_row_standard(device_expanded_str, misc_url_1_arg('catalog', 'Devices_Expanded'))
-        render_root_list_row_standard(device_compact_str, misc_url_1_arg('catalog', 'Devices_Compact'))
-        render_root_list_row_standard(dtype_str, misc_url_1_arg('catalog', 'Display_Type'))
-        render_root_list_row_standard(d_vsync_freq_str, misc_url_1_arg('catalog', 'Display_VSync'))
-        render_root_list_row_standard(d_resolution_str, misc_url_1_arg('catalog', 'Display_Resolution'))
-        render_root_list_row_standard(CPU_str, misc_url_1_arg('catalog', 'CPU'))
-        render_root_list_row_standard(driver_str, misc_url_1_arg('catalog', 'Driver'))
-        render_root_list_row_standard(manufacturer_str, misc_url_1_arg('catalog', 'Manufacturer'))
-        render_root_list_row_standard(shortname_str, misc_url_1_arg('catalog', 'ShortName'))
-        render_root_list_row_standard(longname_str, misc_url_1_arg('catalog', 'LongName'))
-        render_root_list_row_standard(SL_str, misc_url_1_arg('catalog', 'BySL'))
-        render_root_list_row_standard(year_str, misc_url_1_arg('catalog', 'Year'))
+        render_root_category_row(ctype_expanded_str, misc_url_1_arg('catalog', 'Controls_Expanded'))
+        render_root_category_row(ctype_compact_str, misc_url_1_arg('catalog', 'Controls_Compact'))
+        render_root_category_row(device_expanded_str, misc_url_1_arg('catalog', 'Devices_Expanded'))
+        render_root_category_row(device_compact_str, misc_url_1_arg('catalog', 'Devices_Compact'))
+        render_root_category_row(dtype_str, misc_url_1_arg('catalog', 'Display_Type'))
+        render_root_category_row(d_vsync_freq_str, misc_url_1_arg('catalog', 'Display_VSync'))
+        render_root_category_row(d_resolution_str, misc_url_1_arg('catalog', 'Display_Resolution'))
+        render_root_category_row(CPU_str, misc_url_1_arg('catalog', 'CPU'))
+        render_root_category_row(driver_str, misc_url_1_arg('catalog', 'Driver'))
+        render_root_category_row(manufacturer_str, misc_url_1_arg('catalog', 'Manufacturer'))
+        render_root_category_row(shortname_str, misc_url_1_arg('catalog', 'ShortName'))
+        render_root_category_row(longname_str, misc_url_1_arg('catalog', 'LongName'))
+        render_root_category_row(SL_str, misc_url_1_arg('catalog', 'BySL'))
+        render_root_category_row(year_str, misc_url_1_arg('catalog', 'Year'))
     except:
-        pass
+        log_error('Excepcion in render_skin_catalog_filters()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_dat_slots():
     try:
-        render_root_list_row_standard('History DAT',  misc_url_1_arg('catalog', 'History'))
-        render_root_list_row_standard('MAMEINFO DAT', misc_url_1_arg('catalog', 'MAMEINFO'))
-        render_root_list_row_standard('Gameinit DAT', misc_url_1_arg('catalog', 'Gameinit'))
-        render_root_list_row_standard('Command DAT',  misc_url_1_arg('catalog', 'Command'))
+        render_root_category_row('History DAT',  misc_url_1_arg('catalog', 'History'))
+        render_root_category_row('MAMEINFO DAT', misc_url_1_arg('catalog', 'MAMEINFO'))
+        render_root_category_row('Gameinit DAT', misc_url_1_arg('catalog', 'Gameinit'))
+        render_root_category_row('Command DAT',  misc_url_1_arg('catalog', 'Command'))
     except:
         pass
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -1221,19 +1238,19 @@ def render_skin_SL_filters():
     SL_empty_str = 'Software Lists (no ROMs nor CHDs)'
 
     try:
-        render_root_list_row_standard(SL_all_str, misc_url_1_arg('catalog', 'SL'))
-        render_root_list_row_standard(SL_ROM_str, misc_url_1_arg('catalog', 'SL_ROM'))
-        render_root_list_row_standard(SL_mixed_str, misc_url_1_arg('catalog', 'SL_ROM_CHD'))
-        render_root_list_row_standard(SL_CHD_str, misc_url_1_arg('catalog', 'SL_CHD'))
-        render_root_list_row_standard(SL_empty_str, misc_url_1_arg('catalog', 'SL_empty'))
+        render_root_category_row(SL_all_str, misc_url_1_arg('catalog', 'SL'))
+        render_root_category_row(SL_ROM_str, misc_url_1_arg('catalog', 'SL_ROM'))
+        render_root_category_row(SL_mixed_str, misc_url_1_arg('catalog', 'SL_ROM_CHD'))
+        render_root_category_row(SL_CHD_str, misc_url_1_arg('catalog', 'SL_CHD'))
+        render_root_category_row(SL_empty_str, misc_url_1_arg('catalog', 'SL_empty'))
     except:
-        pass
+        log_error('Excepcion in render_skin_SL_filters()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 #
 # A Catalog is equivalent to a Launcher in AEL.
 #
-def render_root_list_row_catalog(display_name, catalog_name, catalog_key, plot_str = ''):
+def render_root_catalog_row(display_name, catalog_name, catalog_key, plot_str = ''):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     listitem = xbmcgui.ListItem(display_name)
@@ -1260,9 +1277,9 @@ def render_root_list_row_catalog(display_name, catalog_name, catalog_key, plot_s
     xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = True)
 
 #
-# A Category is equivalent to a Category in AEL. It contains a list of Launchers.
+# A Category is equivalent to a Category in AEL. It contains a list of Launchers (catalogs).
 #
-def render_root_list_row_standard(root_name, root_URL, plot_str = ''):
+def render_root_category_row(root_name, root_URL, plot_str = ''):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     listitem = xbmcgui.ListItem(root_name)
@@ -1282,7 +1299,7 @@ def render_root_list_row_standard(root_name, root_URL, plot_str = ''):
     listitem.addContextMenuItems(commands)
     xbmcplugin.addDirectoryItem(g_addon_handle, root_URL, listitem, isFolder = True)
 
-def render_root_list_row_custom_CM(root_name, root_URL, plot_str, CM_title, CM_URL):
+def render_root_category_row_custom_CM(root_name, root_URL, plot_str, cmenu_list):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     listitem = xbmcgui.ListItem(root_name)
@@ -1295,35 +1312,12 @@ def render_root_list_row_custom_CM(root_name, root_URL, plot_str, CM_title, CM_U
 
     # --- Create context menu ---
     commands = [
-        (CM_title, CM_URL),
         ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
         ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
     ]
-    listitem.addContextMenuItems(commands)
-    xbmcplugin.addDirectoryItem(g_addon_handle, root_URL, listitem, isFolder = True)
-
-def render_root_custom_filter_row(root_name, root_URL, plot_str = ''):
-    # --- Create listitem row ---
-    ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(root_name)
-    listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
-
-    # --- Artwork ---
-    icon_path   = g_PATHS.ICON_FILE_PATH.getPath()
-    fanart_path = g_PATHS.FANART_FILE_PATH.getPath()
-    listitem.setArt({'icon' : icon_path, 'fanart' : fanart_path})
-
-    # --- Create context menu ---
-    commands = [
-        ('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS')),
-        ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
-        ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-    ]
-    listitem.addContextMenuItems(commands)
-
-    # --- Add row ---
+    cmenu_list.extend(commands)
+    listitem.addContextMenuItems(cmenu_list)
     xbmcplugin.addDirectoryItem(g_addon_handle, root_URL, listitem, isFolder = True)
 
 # -------------------------------------------------------------------------------------------------
