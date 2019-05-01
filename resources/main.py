@@ -616,12 +616,12 @@ def get_settings():
 # ---------------------------------------------------------------------------------------------
 # Root menu rendering
 # ---------------------------------------------------------------------------------------------
-# TODO Reuse data in render_root_list() and render_skin_*() functions.
 root_Main = {}
 root_Binary = {}
 root_categories = {}
 root_special = {}
 root_special_CM = {}
+
 def set_render_root_data():
     global root_Main
     global root_Binary
@@ -2975,16 +2975,16 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
     VIEW_SL_ROM       = 200
 
     ACTION_VIEW_MACHINE_DATA       = 100
-    ACTION_VIEW_SL_ROM_DATA        = 400
-    ACTION_VIEW_MACHINE_ROMS       = 200
-    ACTION_VIEW_MACHINE_AUDIT_ROMS = 300
+    ACTION_VIEW_SL_ROM_DATA        = 200
+    ACTION_VIEW_MACHINE_ROMS       = 300
+    ACTION_VIEW_MACHINE_AUDIT_ROMS = 400
     ACTION_VIEW_SL_ROM_ROMS        = 500
     ACTION_VIEW_SL_ROM_AUDIT_ROMS  = 600
-    ACTION_VIEW_MANUAL_JSON        = 1300
-    ACTION_AUDIT_MAME_MACHINE      = 1100
-    ACTION_AUDIT_SL_MACHINE        = 1200
+    ACTION_VIEW_MANUAL_JSON        = 700
+    ACTION_AUDIT_MAME_MACHINE      = 800
+    ACTION_AUDIT_SL_MACHINE        = 900
 
-    # --- Determine if we are in a category, launcher or ROM ---
+    # --- Determine view type ---
     log_debug('command_context_view() machine_name "{0}"'.format(machine_name))
     log_debug('command_context_view() SL_name      "{0}"'.format(SL_name))
     log_debug('command_context_view() SL_ROM       "{0}"'.format(SL_ROM))
@@ -3623,7 +3623,9 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         display_text_window(window_title, '\n'.join(info_text))
 
     else:
-        kodi_dialog_OK('Wrong action == {0}. This is a bug, please report it.'.format(action))
+        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        log_error(t)
+        kodi_dialog_OK(t)
 
 def command_context_utilities(catalog_name, category_name):
     log_debug('command_context_utilities() catalog_name  "{0}"'.format(catalog_name))
@@ -3710,61 +3712,118 @@ def command_context_add_mame_fav(machine_name):
 
 #
 # Context menu "Manage Favourite machines"
-#   * UNIMPLEMENTED. IS IT USEFUL?
-#     'Scan all ROMs/CHDs/Samples'
-#     Scan Favourite machines ROM ZIPs and CHDs and update flags of the Favourites 
-#     database JSON.
-#
-#   * UNIMPLEMENTED. IS IT USEFUL?
-#     'Scan all assets/artwork'
-#     Scan Favourite machines assets/artwork and update MAME Favourites database JSON.
-#
-#   * 'Check/Update all MAME Favourites'
-#     Checks that all MAME Favourite machines exist in current database. If the ROM exists,
-#     then update information from current MAME database. If the machine doesn't exist, then
-#     delete it from MAME Favourites (prompt the user about this).
-#
-#   * 'Delete machine from MAME Favourites'
 #
 def command_context_manage_mame_fav(machine_name):
-    dialog = xbmcgui.Dialog()
-    idx = dialog.select('Manage MAME Favourites',
-                       ['Delete machine from MAME Favourites'])
-    if idx < 0: return
+    VIEW_ROOT_MENU   = 100
+    VIEW_INSIDE_MENU = 200
+
+    ACTION_DELETE_MACHINE = 100
+    ACTION_DELETE_MISSING = 200
+
+    menus_dic = {
+        VIEW_ROOT_MENU : [
+            ('Delete missing machines from MAME Favourites', ACTION_DELETE_MISSING),
+        ],
+        VIEW_INSIDE_MENU : [
+            ('Delete machine from MAME Favourites', ACTION_DELETE_MACHINE),
+            ('Delete missing machines from MAME Favourites', ACTION_DELETE_MISSING),
+        ],
+    }
+
+    # --- Determine view type ---
+    log_debug('command_context_manage_mame_fav() machine_name "{0}"'.format(machine_name))
+    if machine_name:
+        view_type = VIEW_INSIDE_MENU
+    else:
+        view_type = VIEW_ROOT_MENU
+    log_debug('command_context_manage_mame_fav() view_type = {0}'.format(view_type))
+
+    # --- Build menu base on view_type (Polymorphic menu, determine action) ---
+    d_list = [menu[0] for menu in menus_dic[view_type]]
+    selected_value = xbmcgui.Dialog().select('Manage Favourite machines', d_list)
+    if selected_value < 0: return
+    action = menus_dic[view_type][selected_value][1]
+    log_debug('command_context_manage_mame_fav() action = {0}'.format(action))
 
     # --- Delete machine from MAME Favourites ---
-    if idx == 0:
-        log_debug('command_context_manage_mame_fav() Delete MAME Favourite machine')
+    if action == ACTION_DELETE_MACHINE:
+        log_debug('command_context_manage_mame_fav() ACTION_DELETE_MACHINE')
         log_debug('command_context_manage_mame_fav() Machine_name "{0}"'.format(machine_name))
 
-        # >> Open Favourite Machines dictionary
+        # --- Open Favourite Machines dictionary ---
         fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
 
-        # >> Ask user for confirmation.
+        # --- Ask user for confirmation ---
         desc = fav_machines[machine_name]['description']
         ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
         if ret < 1: return
 
-        # >> Delete machine
+        # --- Delete machine and save DB ---
         del fav_machines[machine_name]
         log_info('command_context_manage_mame_fav() Deleted machine "{0}"'.format(machine_name))
-
-        # >> Save Favourites
         fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
         kodi_refresh_container()
         kodi_notify('Machine {0} deleted from MAME Favourites'.format(machine_name))
 
+    elif action == ACTION_DELETE_MISSING:
+        log_debug('command_context_manage_mame_fav() ACTION_DELETE_MISSING')
+
+        # --- Ensure MAME Catalog have been built ---
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        # mame_check_condition(MAME_CATALOG_BUILT)
+
+        # --- Load databases ---
+        db_files = [
+            ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
+            ['fav_machines', 'MAME Favourite machines', g_PATHS.FAV_MACHINES_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        # --- Delete missing MAME machines ---
+        line1_str = 'Delete missing MAME Favourites ...'
+        pDialog = xbmcgui.DialogProgress()
+        pDialog.create('Advanced MAME Launcher', line1_str)
+        num_deleted_machines = 0
+        if len(db_dic['fav_machines']) >= 1:
+            num_iteration = len(db_dic['fav_machines'])
+            iteration = 0
+            new_fav_machines = {}
+            for fav_key in sorted(db_dic['fav_machines']):
+                pDialog.update((iteration*100) // num_iteration, line1_str)
+                log_debug('Checking Favourite "{0}"'.format(fav_key))
+                if fav_key in db_dic['machines']:
+                    new_fav_machines[fav_key] = db_dic['fav_machines'][fav_key]
+                else:
+                    num_deleted_machines += 1
+                iteration += 1
+            fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), new_fav_machines)
+            pDialog.update((iteration*100) // num_iteration, line1_str)
+        else:
+            # fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), new_fav_machines)
+            pDialog.update(100, line1_str)
+        pDialog.close()
+        kodi_refresh_container()
+        if num_deleted_machines > 0:
+            kodi_notify('Deleted {0} missing MAME machines'.format(num_deleted_machines))
+        else:
+            kodi_notify('No missing machines found')
+
+    else:
+        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        log_error(t)
+        kodi_dialog_OK(t)
+
 def command_show_mame_fav():
     log_debug('command_show_mame_fav() Starting ...')
 
-    # >> Open Favourite Machines dictionary
+    # --- Open Favourite Machines dictionary ---
     fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
     if not fav_machines:
         kodi_dialog_OK('No Favourite MAME machines. Add some machines to MAME Favourites first.')
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
-    # >> Render Favourites
+    # --- Render Favourites ---
     set_Kodi_all_sorting_methods()
     for m_name in fav_machines:
         machine = fav_machines[m_name]
