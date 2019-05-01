@@ -617,38 +617,100 @@ def get_settings():
 # Root menu rendering
 # ---------------------------------------------------------------------------------------------
 # TODO Reuse data in render_root_list() and render_skin_*() functions.
-root_Main = {
-    'Normal' : {
-        'title' : '',
-        'plot' : '',
-    },
-}
+root_Main = {}
+root_Binary = {}
+root_categories = {}
+root_special = {}
+root_special_CM = {}
+def set_render_root_data():
+    global root_Main
+    global root_Binary
+    global root_categories
+    global root_special
+    global root_special_CM
 
-root_Binary = {
-    'BIOS' : {
-        'title' : '',
-        'plot' : '',
-    },
-}
+    root_Main = {
+        'Normal' : {
+            'title' : '',
+            'plot' : '',
+        },
+    }
 
-root_categories = {
-    'Catver' : {
-        'title' : '',
-        'plot' : '',
-        'URL' : '',
-    },
-}
+    root_Binary = {
+        'BIOS' : {
+            'title' : '',
+            'plot' : '',
+        },
+    }
 
-root_special = {
-    'MAME_Favs' : {
-        'title' : '',
-        'URL' : '',
-        'cmenu' : []
-    },
-}
+    # Tuple: title, URL, plot
+    root_categories = {
+        'Catver' : [
+            '',
+            '',
+            '',
+        ],
+    }
+
+    # Tuple: title, URL, plot
+    root_special = { }
+
+    # Tuple: title, URL, plot, context_menu_list
+    root_special_CM = {
+        'MAME_Favs' : [
+            '<Favourite MAME machines>',
+            misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
+            ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
+             'To add machines to the Favourite list use the context menu on any MAME machine list.'),
+            [('Manage Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV'))],
+        ],
+        'MAME_Most' : [
+            '{Most Played MAME machines}',
+            misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
+            ('Display the MAME machines that you play most, sorted by the number '
+             'of times you have launched them.'),
+            [('Manage Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED'))],
+        ],
+        'MAME_Recent' : [
+            '{Recently Played MAME machines}',
+            misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
+            ('Display the MAME machines that you have launched recently.'),
+            [('Manage Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED'))],
+        ],
+        'SL_Favs' : [
+            '<Favourite Software Lists ROMs>',
+            misc_url_1_arg('command', 'SHOW_SL_FAVS'),
+            ('Display your [COLOR orange]Favourite Software List items[/COLOR]. '
+             'To add machines to the SL Favourite list use the context menu on any SL item list.'),
+            [('Manage SL Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV'))],
+        ],
+        'SL_Most' : [
+            '{Most Played SL ROMs}',
+            misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
+            ('Display the Software List itmes that you play most, sorted by the number '
+             'of times you have launched them.'),
+            [('Manage SL Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED'))],
+        ],
+        'SL_Recent' : [
+            '{Recently Played SL ROMs}',
+            misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
+            'Display the Software List items that you have launched recently.',
+            [('Manage SL Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED'))],
+        ],
+        'Custom_Filters' : [
+            '[Custom MAME filters]',
+            misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
+            ('[COLOR orange]Custom filters[/COLOR] allows to generate machine '
+             'listings perfectly tailored to your whises. For example, you can define a filter of all '
+             'the machines released in the 1980s that use a joystick. AML includes a fairly '
+             'complete default set of filters in XML format which can be edited.'),
+            [('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS'))],
+        ],
+    }
 
 def render_root_list():
     mame_view_mode = g_settings['mame_view_mode']
+    set_render_root_data()
 
     # ----- Machine count -----
     cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
@@ -882,26 +944,9 @@ def render_root_list():
     SL_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only CHDs and not ROMs.')
     SL_empty_plot = ('Display [COLOR orange]Software Lists[/COLOR] with no ROMs nor CHDs.')
 
-    custom_filters_plot = ('[COLOR orange]Custom filters[/COLOR] allows to generate machine '
-        'listings perfectly tailored to your whises. For example, you can define a filter of all '
-        'the machines released in the 1980s that use a joystick. AML includes a fairly '
-        'complete default set of filters in XML format which can be edited.')
-
     ROLS_plot = ('[COLOR orange]AEL Read Only Launchers[/COLOR] are special launchers '
         'exported to AEL. You can select your Favourite MAME machines or setup a custom '
         'filter to enjoy your MAME games in AEL togheter with other emulators.')
-
-    MAME_favs_plot = ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
-        'To add machines to the Favourite list use the context menu on any MAME machine list.')
-    MAME_most_played_plot = ('Display the MAME machines that you play most, sorted by the number '
-        'of times you have launched them.')
-    MAME_recent_played_plot = ('Display the MAME machines that you have launched recently.')
-
-    SL_favs_plot = ('Display your [COLOR orange]Favourite Software List items[/COLOR]. '
-        'To add machines to the SL Favourite list use the context menu on any SL item list.')
-    SL_most_played_plot = ('Display the Software List itmes that you play most, sorted by the number '
-        'of times you have launched them.')
-    SL_recent_played_plot = ('Display the Software List items that you have launched recently.')
 
     Utilities_plot = ('Execute several [COLOR orange]Utilities[/COLOR]. For example, to '
         'check you AML configuration.')
@@ -1047,59 +1092,27 @@ def render_root_list():
 
     # --- Special launchers ---
     if g_settings['display_custom_filters']:
-        cmenu_list = [
-            ('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS')),
-        ]
-        URL = misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS')
-        render_root_category_row_custom_CM('[Custom MAME filters]', URL, custom_filters_plot, cmenu_list)
+        render_root_category_row_custom_CM(*root_special_CM['Custom_Filters'])
 
     if g_settings['display_ROLs']:
         URL = misc_url_1_arg('command', 'SHOW_AEL_ROLS')
         render_root_category_row('[AEL Read Only Launchers]', URL, ROLS_plot)
 
-    # --- MAME Favourites ---
+    # --- MAME Favourite stuff ---
     if g_settings['display_MAME_favs']:
-        cmenu_list = [
-            ('Manage Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV')),
-        ]
-        URL = misc_url_1_arg('command', 'SHOW_MAME_FAVS')
-        render_root_category_row_custom_CM('<Favourite MAME machines>', URL, MAME_favs_plot, cmenu_list)
-
+        render_root_category_row_custom_CM(*root_special_CM['MAME_Favs'])
     if g_settings['display_MAME_most']:
-        cmenu_list = [
-            ('Manage Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED')),
-        ]
-        URL = misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED')
-        render_root_category_row_custom_CM('{Most Played MAME machines}', URL, MAME_most_played_plot, cmenu_list)
-
+        render_root_category_row_custom_CM(*root_special_CM['MAME_Most'])
     if g_settings['display_MAME_recent']:
-        cmenu_list = [
-            ('Manage Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED')),
-        ]
-        URL = misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED')
-        render_root_category_row_custom_CM('{Recently Played MAME machines}', URL, MAME_recent_played_plot, cmenu_list)
+        render_root_category_row_custom_CM(*root_special_CM['MAME_Recent'])
 
-    # --- SL Favourites ---
+    # --- SL Favourite stuff ---
     if g_settings['display_SL_favs']:
-        cmenu_list = [
-            ('Manage SL Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV')),
-        ]
-        URL = misc_url_1_arg('command', 'SHOW_SL_FAVS')
-        render_root_category_row_custom_CM('<Favourite Software Lists ROMs>', URL, SL_favs_plot, cmenu_list)
-
+        render_root_category_row_custom_CM(*root_special_CM['SL_Favs'])
     if g_settings['display_SL_most']:
-        cmenu_list = [
-            ('Manage SL Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED')),
-        ]
-        URL = misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED')
-        render_root_category_row_custom_CM('{Most Played SL ROMs}', URL, SL_most_played_plot, cmenu_list)
-
+        render_root_category_row_custom_CM(*root_special_CM['SL_Most'])
     if g_settings['display_SL_recent']:
-        cmenu_list = [
-            ('Manage SL Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED')),
-        ]
-        URL = misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED')
-        render_root_category_row_custom_CM('{Recently Played SL ROMs}', URL, SL_recent_played_plot, cmenu_list)
+        render_root_category_row_custom_CM(*root_special_CM['SL_Recent'])
 
     # --- Always render these two ---
     if g_settings['display_utilities']:
@@ -1118,12 +1131,16 @@ def render_root_list():
 #
 def render_skin_fav_slots():
     try:
-        render_root_category_row('Favourite MAME machines', misc_url_1_arg('command', 'SHOW_MAME_FAVS'))
-        render_root_category_row('Most Played MAME machines', misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'))
-        render_root_category_row('Recently Played MAME machines', misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'))
-        render_root_category_row('Favourite Software Lists ROMs', misc_url_1_arg('command', 'SHOW_SL_FAVS'))
-        render_root_category_row('Most Played SL ROMs', misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'))
-        render_root_category_row('Recently Played SL ROMs', misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'))
+        set_render_root_data()
+        rsCM = root_special_CM.copy()
+        # Remove special markers (first and last character)
+        for key, value in rsCM.iteritems(): value[0] = value[0][1:-1]
+        render_root_category_row_custom_CM(*rsCM['MAME_Favs'])
+        render_root_category_row_custom_CM(*rsCM['MAME_Most'])
+        render_root_category_row_custom_CM(*rsCM['MAME_Recent'])
+        render_root_category_row_custom_CM(*rsCM['SL_Favs'])
+        render_root_category_row_custom_CM(*rsCM['SL_Most'])
+        render_root_category_row_custom_CM(*rsCM['SL_Recent'])
     except:
         log_error('Excepcion in render_skin_fav_slots()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
