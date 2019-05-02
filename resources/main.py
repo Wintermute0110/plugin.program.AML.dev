@@ -4960,17 +4960,15 @@ def render_custom_filter_machines(filter_name):
 # -------------------------------------------------------------------------------------------------
 # Check AML status
 # -------------------------------------------------------------------------------------------------
-
 #
-# Recursive function.
+# Recursive function. Conditions are a fall-trough. For example, if user checks
+# MAME_MAIN_DB_BUILT but XML has not been extracted/processed then MAME_MAIN_DB_BUILT fails.
 #
 # Return options dictionary:
 # options_dic['condition']  True if condition is met, False otherwise.
 # options_dic['msg']        if condition is not met a message to print to the user.
 #
 def check_MAME_DB_status(condition, control_dic):
-    # Conditions are a fall-trough. For example, if user checks MAME_MAIN_DB_BUILT but
-    # XML has not been extracted/processed then MAME_MAIN_DB_BUILT fails.
     if condition == MAME_XML_EXTRACTED:
         test_XML_EXTRACTED = True if control_dic['t_XML_extraction'] > 0 else False
         if not test_XML_EXTRACTED:
