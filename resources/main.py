@@ -3736,14 +3736,17 @@ def command_context_manage_mame_fav(machine_name):
 
     ACTION_DELETE_MACHINE = 100
     ACTION_DELETE_MISSING = 200
+    ACTION_DELETE_ALL     = 300
 
     menus_dic = {
         VIEW_ROOT_MENU : [
             ('Delete missing machines from MAME Favourites', ACTION_DELETE_MISSING),
+            ('Delete all machines from MAME Favourites', ACTION_DELETE_ALL),
         ],
         VIEW_INSIDE_MENU : [
             ('Delete machine from MAME Favourites', ACTION_DELETE_MACHINE),
             ('Delete missing machines from MAME Favourites', ACTION_DELETE_MISSING),
+            ('Delete all machines from MAME Favourites', ACTION_DELETE_ALL),
         ],
     }
 
@@ -3769,19 +3772,42 @@ def command_context_manage_mame_fav(machine_name):
         log_debug('machine_name "{0}"'.format(machine_name))
 
         # --- Open Favourite Machines dictionary ---
-        fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
+        db_files = [
+            ['fav_machines', 'MAME Favourite machines', g_PATHS.FAV_MACHINES_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
 
         # --- Ask user for confirmation ---
-        desc = fav_machines[machine_name]['description']
+        desc = db_dic['fav_machines'][machine_name]['description']
         ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
         if ret < 1: return
 
         # --- Delete machine and save DB ---
-        del fav_machines[machine_name]
+        del db_dic['fav_machines'][machine_name]
         log_info('Deleted machine "{0}"'.format(machine_name))
-        fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+        fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), db_dic['fav_machines'])
         kodi_refresh_container()
         kodi_notify('Machine {0} deleted from MAME Favourites'.format(machine_name))
+
+    elif action == ACTION_DELETE_ALL:
+        log_debug('command_context_manage_mame_fav() ACTION_DELETE_ALL')
+        db_files = [
+            ['fav_machines', 'MAME Favourite machines', g_PATHS.FAV_MACHINES_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        # Confirm with user
+        num_machines = len(db_dic['fav_machines'])
+        ret = kodi_dialog_yesno(
+            'You have {0} MAME Favourites. Delete them all?'.format(num_machines))
+        if ret < 1:
+            kodi_notify('MAME Favourites unchanged')
+            return
+
+        # Database is an empty dictionary
+        fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), dict())
+        kodi_refresh_container()
+        kodi_notify('Deleted all MAME Favourites'.format(machine_name))
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_mame_fav() ACTION_DELETE_MISSING')
