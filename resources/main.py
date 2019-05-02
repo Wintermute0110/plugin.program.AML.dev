@@ -3871,8 +3871,6 @@ def command_context_manage_mame_fav(machine_name):
     if action == ACTION_DELETE_MACHINE:
         log_debug('command_context_manage_mame_fav() ACTION_DELETE_MACHINE')
         log_debug('machine_name "{0}"'.format(machine_name))
-
-        # --- Open Favourite Machines dictionary ---
         db_files = [
             ['fav_machines', 'MAME Favourite machines', g_PATHS.FAV_MACHINES_PATH.getPath()],
         ]
@@ -3881,7 +3879,9 @@ def command_context_manage_mame_fav(machine_name):
         # --- Ask user for confirmation ---
         desc = db_dic['fav_machines'][machine_name]['description']
         ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
-        if ret < 1: return
+        if ret < 1:
+            kodi_notify('MAME Favourites unchanged')
+            return
 
         # --- Delete machine and save DB ---
         del db_dic['fav_machines'][machine_name]
@@ -3978,14 +3978,17 @@ def command_context_manage_mame_most_played(machine_name):
 
     ACTION_DELETE_MACHINE = 100
     ACTION_DELETE_MISSING = 200
+    ACTION_DELETE_ALL     = 300
 
     menus_dic = {
         VIEW_ROOT_MENU : [
             ('Delete missing machines from MAME Most Played', ACTION_DELETE_MISSING),
+            ('Delete all machines from MAME Most Played', ACTION_DELETE_ALL),
         ],
         VIEW_INSIDE_MENU : [
             ('Delete machine from MAME Most Played', ACTION_DELETE_MACHINE),
             ('Delete missing machines from MAME Most Played', ACTION_DELETE_MISSING),
+            ('Delete all machines from MAME Most Played', ACTION_DELETE_ALL),
         ],
     }
 
@@ -4025,8 +4028,12 @@ def command_context_manage_mame_most_played(machine_name):
         kodi_refresh_container()
         kodi_notify('Machine {0} deleted from MAME Most Played'.format(machine_name))
 
+    elif action == ACTION_DELETE_ALL:
+        log_debug('command_context_manage_mame_most_played() ACTION_DELETE_ALL')
+        kodi_dialog_OK('ACTION_DELETE_ALL not implemented yet. Sorry.')
+
     elif action == ACTION_DELETE_MISSING:
-        log_debug('command_context_manage_mame_fav() ACTION_DELETE_MISSING')
+        log_debug('command_context_manage_mame_most_played() ACTION_DELETE_MISSING')
 
         # --- Ensure MAME Catalog have been built ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -4091,14 +4098,17 @@ def command_context_manage_mame_recent_played(machine_name):
 
     ACTION_DELETE_MACHINE = 100
     ACTION_DELETE_MISSING = 200
+    ACTION_DELETE_ALL     = 300
 
     menus_dic = {
         VIEW_ROOT_MENU : [
             ('Delete missing machines from MAME Recently Played', ACTION_DELETE_MISSING),
+            ('Delete all machines from MAME Recently Played', ACTION_DELETE_ALL),
         ],
         VIEW_INSIDE_MENU : [
             ('Delete machine from MAME Recently Played', ACTION_DELETE_MACHINE),
             ('Delete missing machines from MAME Recently Played', ACTION_DELETE_MISSING),
+            ('Delete all machines from MAME Recently Played', ACTION_DELETE_ALL),
         ],
     }
 
@@ -4144,6 +4154,10 @@ def command_context_manage_mame_recent_played(machine_name):
         fs_write_JSON_file(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
         kodi_refresh_container()
         kodi_notify('Machine {0} deleted from MAME Recently Played'.format(machine_name))
+
+    elif action == ACTION_DELETE_ALL:
+        log_debug('command_context_manage_mame_recent_played() ACTION_DELETE_ALL')
+        kodi_dialog_OK('ACTION_DELETE_ALL not implemented yet. Sorry.')
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_mame_recent_played() ACTION_DELETE_MISSING')
