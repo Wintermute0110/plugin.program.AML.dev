@@ -3678,10 +3678,10 @@ def command_context_utilities(catalog_name, category_name):
         else:
             kodi_notify('Exported Virtual Launcher "{0}"'.format(vlauncher_str_name))
 
-# ---------------------------------------------------------------------------------------------
-# Favourites
-# ---------------------------------------------------------------------------------------------
-# >> Favourites use the main hashed database, not the main and render databases.
+# -------------------------------------------------------------------------------------------------
+# MAME Favourites/Recently Played/Most played
+# -------------------------------------------------------------------------------------------------
+# Favourites use the main hashed database, not the main and render databases.
 def command_context_add_mame_fav(machine_name):
     log_debug('command_add_mame_fav() Machine_name "{0}"'.format(machine_name))
 
@@ -3692,11 +3692,12 @@ def command_context_add_mame_fav(machine_name):
 
     # >> Open Favourite Machines dictionary
     fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
-    
+
     # >> If machine already in Favourites ask user if overwrite.
     if machine_name in fav_machines:
-        ret = kodi_dialog_yesno('Machine {0} ({1}) '.format(machine['description'], machine_name) +
-                                'already in MAME Favourites. Overwrite?')
+        ret = kodi_dialog_yesno(
+            'Machine {0} ({1}) '.format(machine['description'], machine_name) +
+            'already in MAME Favourites. Overwrite?')
         if ret < 1: return
 
     # >> Add machine. Add database version to Favourite.
@@ -3708,6 +3709,106 @@ def command_context_add_mame_fav(machine_name):
     fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
     kodi_notify('Machine {0} added to MAME Favourites'.format(machine_name))
     kodi_refresh_container()
+
+def render_fav_machine_row(m_name, machine, m_assets, location):
+    # --- Default values for flags ---
+    AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
+
+    # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
+    display_name = machine['description']
+    display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])            
+    if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+    if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+    if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+    if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+    elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+    # >> Render number of number the ROM has been launched
+    if location == LOCATION_MAME_MOST_PLAYED:
+        if machine['launch_count'] == 1:
+            display_name = '{0} [COLOR orange][{1} time][/COLOR]'.format(display_name, machine['launch_count'])
+        else:
+            display_name = '{0} [COLOR orange][{1} times][/COLOR]'.format(display_name, machine['launch_count'])
+
+    # --- Skin flags ---
+    if machine['cloneof']: AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE
+    else:                  AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
+
+    # --- Assets/artwork ---
+    icon_path      = m_assets[g_mame_icon] if m_assets[g_mame_icon] else 'DefaultProgram.png'
+    fanart_path    = m_assets[g_mame_fanart]
+    banner_path    = m_assets['marquee']
+    clearlogo_path = m_assets['clearlogo']
+    poster_path    = m_assets['3dbox'] if m_assets['3dbox'] else m_assets['flyer']
+
+    # --- Create listitem row ---
+    ICON_OVERLAY = 6
+    listitem = xbmcgui.ListItem(display_name)
+
+    # --- Metadata ---
+    # >> Make all the infotables compatible with Advanced Emulator Launcher
+    if g_settings['display_hide_trailers']:
+        listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
+                                   'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
+                                   'plot'    : m_assets['plot'],
+                                   'overlay' : ICON_OVERLAY})
+    else:
+        listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
+                                   'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
+                                   'plot'    : m_assets['plot'], 'trailer' : m_assets['trailer'],
+                                   'overlay' : ICON_OVERLAY})
+    listitem.setProperty('nplayers', machine['nplayers'])
+    listitem.setProperty('platform', 'MAME')
+
+    # --- Assets ---
+    # >> AEL custom artwork fields
+    listitem.setArt({
+        'title'     : m_assets['title'],   'snap'    : m_assets['snap'],
+        'boxfront'  : m_assets['cabinet'], 'boxback' : m_assets['cpanel'],
+        'cartridge' : m_assets['PCB'],     'flyer'   : m_assets['flyer'],
+        '3dbox'     : m_assets['3dbox'],
+        'icon'      : icon_path,           'fanart'    : fanart_path,
+        'banner'    : banner_path,         'clearlogo' : clearlogo_path,
+        'poster'    : poster_path,
+    })
+
+    # --- ROM flags (Skins will use these flags to render icons) ---
+    listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
+
+    # --- Create context menu ---
+    URL_view_DAT = misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'machine', m_name, 'location', location)
+    URL_view = misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', m_name, 'location', location)
+    if location == LOCATION_MAME_FAVS:
+        URL_manage = misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', m_name)
+        commands = [
+            ('Info / Utils',  URL_view_DAT),
+            ('View / Audit',  URL_view),
+            ('Manage Favourites', URL_manage),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
+    elif location == LOCATION_MAME_MOST_PLAYED:
+        URL_manage = misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED', 'machine', m_name)
+        commands = [
+            ('Info / Utils',  URL_view_DAT),
+            ('View / Audit',  URL_view),
+            ('Manage Most Played', URL_manage),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
+    elif location == LOCATION_MAME_RECENT_PLAYED:
+        URL_manage = misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED', 'machine', m_name)
+        commands = [
+            ('Info / Utils',  URL_view_DAT),
+            ('View / Audit',  URL_view),
+            ('Manage Recently Played', URL_manage),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
+    listitem.addContextMenuItems(commands)
+
+    # --- Add row ---
+    URL = misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', location)
+    xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = URL, listitem = listitem, isFolder = False)
 
 def command_show_mame_fav():
     log_debug('command_show_mame_fav() Starting ...')
@@ -3857,355 +3958,6 @@ def command_context_manage_mame_fav(machine_name):
         log_error(t)
         kodi_dialog_OK(t)
 
-def render_fav_machine_row(m_name, machine, m_assets, location):
-    # --- Default values for flags ---
-    AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_NONE
-
-    # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
-    display_name = machine['description']
-    display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])            
-    if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-    if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-    if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-    if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-    elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
-    # >> Render number of number the ROM has been launched
-    if location == LOCATION_MAME_MOST_PLAYED:
-        if machine['launch_count'] == 1:
-            display_name = '{0} [COLOR orange][{1} time][/COLOR]'.format(display_name, machine['launch_count'])
-        else:
-            display_name = '{0} [COLOR orange][{1} times][/COLOR]'.format(display_name, machine['launch_count'])
-
-    # --- Skin flags ---
-    if machine['cloneof']: AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE
-    else:                  AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
-
-    # --- Assets/artwork ---
-    icon_path      = m_assets[g_mame_icon] if m_assets[g_mame_icon] else 'DefaultProgram.png'
-    fanart_path    = m_assets[g_mame_fanart]
-    banner_path    = m_assets['marquee']
-    clearlogo_path = m_assets['clearlogo']
-    poster_path    = m_assets['3dbox'] if m_assets['3dbox'] else m_assets['flyer']
-
-    # --- Create listitem row ---
-    ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(display_name)
-
-    # --- Metadata ---
-    # >> Make all the infotables compatible with Advanced Emulator Launcher
-    if g_settings['display_hide_trailers']:
-        listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
-                                   'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                   'plot'    : m_assets['plot'],
-                                   'overlay' : ICON_OVERLAY})
-    else:
-        listitem.setInfo('video', {'title'   : display_name,     'year'    : machine['year'],
-                                   'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                                   'plot'    : m_assets['plot'], 'trailer' : m_assets['trailer'],
-                                   'overlay' : ICON_OVERLAY})
-    listitem.setProperty('nplayers', machine['nplayers'])
-    listitem.setProperty('platform', 'MAME')
-
-    # --- Assets ---
-    # >> AEL custom artwork fields
-    listitem.setArt({
-        'title'     : m_assets['title'],   'snap'    : m_assets['snap'],
-        'boxfront'  : m_assets['cabinet'], 'boxback' : m_assets['cpanel'],
-        'cartridge' : m_assets['PCB'],     'flyer'   : m_assets['flyer'],
-        '3dbox'     : m_assets['3dbox'],
-        'icon'      : icon_path,           'fanart'    : fanart_path,
-        'banner'    : banner_path,         'clearlogo' : clearlogo_path,
-        'poster'    : poster_path,
-    })
-
-    # --- ROM flags (Skins will use these flags to render icons) ---
-    listitem.setProperty(AEL_PCLONE_STAT_LABEL, AEL_PClone_stat_value)
-
-    # --- Create context menu ---
-    URL_view_DAT = misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'machine', m_name, 'location', location)
-    URL_view = misc_url_3_arg_RunPlugin('command', 'VIEW', 'machine', m_name, 'location', location)
-    if location == LOCATION_MAME_FAVS:
-        URL_manage = misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_FAV', 'machine', m_name)
-        commands = [
-            ('Info / Utils',  URL_view_DAT),
-            ('View / Audit',  URL_view),
-            ('Manage Favourites', URL_manage),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-        ]
-    elif location == LOCATION_MAME_MOST_PLAYED:
-        URL_manage = misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED', 'machine', m_name)
-        commands = [
-            ('Info / Utils',  URL_view_DAT),
-            ('View / Audit',  URL_view),
-            ('Manage Most Played', URL_manage),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-        ]
-    elif location == LOCATION_MAME_RECENT_PLAYED:
-        URL_manage = misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED', 'machine', m_name)
-        commands = [
-            ('Info / Utils',  URL_view_DAT),
-            ('View / Audit',  URL_view),
-            ('Manage Recently Played', URL_manage),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-        ]
-    listitem.addContextMenuItems(commands)
-
-    # --- Add row ---
-    URL = misc_url_3_arg('command', 'LAUNCH', 'machine', m_name, 'location', location)
-    xbmcplugin.addDirectoryItem(handle = g_addon_handle, url = URL, listitem = listitem, isFolder = False)
-
-def command_context_add_sl_fav(SL_name, ROM_name):
-    log_debug('command_add_sl_fav() SL_name  "{0}"'.format(SL_name))
-    log_debug('command_add_sl_fav() ROM_name "{0}"'.format(ROM_name))
-
-    # --- Load databases ---
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-    file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
-    SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(file_name)
-    SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
-    assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
-    SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
-    SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
-
-    # >> Open Favourite Machines dictionary
-    fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
-    SL_fav_key = SL_name + '-' + ROM_name
-    log_debug('command_add_sl_fav() SL_fav_key "{0}"'.format(SL_fav_key))
-
-    # >> If machine already in Favourites ask user if overwrite.
-    if SL_fav_key in fav_SL_roms:
-        ret = kodi_dialog_yesno('Machine {0} ({1}) '.format(ROM_name, SL_name) +
-                                'already in SL Favourites. Overwrite?')
-        if ret < 1: return
-
-    # >> Add machine to SL Favourites
-    SL_ROM = SL_roms[ROM_name]
-    # SL_assets = SL_assets_dic[ROM_name] if ROM_name in SL_assets_dic else fs_new_SL_asset()
-    SL_assets = SL_assets_dic[ROM_name]
-    fav_ROM = fs_get_SL_Favourite(SL_name, ROM_name, SL_ROM, SL_assets, control_dic)
-    fav_SL_roms[SL_fav_key] = fav_ROM
-    log_info('command_add_sl_fav() Added machine "{0}" ("{1}")'.format(ROM_name, SL_name))
-
-    # >> Save Favourites
-    fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
-    kodi_notify('ROM {0} added to SL Favourite ROMs'.format(ROM_name))
-
-def command_show_sl_fav():
-    log_debug('command_show_sl_fav() Starting ...')
-
-    # >> Load Software List ROMs
-    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-
-    # >> Open Favourite Machines dictionary
-    fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
-    if not fav_SL_roms:
-        kodi_dialog_OK('No Favourite Software Lists ROMs. Add some ROMs to SL Favourites first.')
-        xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
-        return
-
-    # >> Render Favourites
-    set_Kodi_all_sorting_methods()
-    for SL_fav_key in fav_SL_roms:
-        SL_fav_ROM = fav_SL_roms[SL_fav_key]
-        assets = SL_fav_ROM['assets']
-        # >> Add the SL name as 'genre'
-        SL_name = SL_fav_ROM['SL_name']
-        SL_fav_ROM['genre'] = SL_catalog_dic[SL_name]['display_name']
-        render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM, assets, LOCATION_SL_FAVS)
-    xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
-
-#
-# Context menu "Manage SL Favourite ROMs"
-#
-def command_context_manage_sl_fav(SL_name, ROM_name):
-    VIEW_ROOT_MENU   = 100
-    VIEW_INSIDE_MENU = 200
-
-    ACTION_DELETE_MACHINE = 100
-    ACTION_DELETE_MISSING = 200
-    ACTION_CHOOSE_DEFAULT = 300
-
-    menus_dic = {
-        VIEW_ROOT_MENU : [
-            ('Delete missing items from SL Favourites', ACTION_DELETE_MISSING),
-        ],
-        VIEW_INSIDE_MENU : [
-            ('Choose default machine for SL item', ACTION_CHOOSE_DEFAULT),
-            ('Delete item from SL Favourites', ACTION_DELETE_MACHINE),
-            ('Delete missing items from SL Favourites', ACTION_DELETE_MISSING),
-        ],
-    }
-
-    # --- Determine view type ---
-    log_debug('command_context_manage_sl_fav() BEGIN ...')
-    log_debug('SL_name  "{0}"'.format(SL_name))
-    log_debug('ROM_name "{0}"'.format(ROM_name))
-    if SL_name and ROM_name:
-        view_type = VIEW_INSIDE_MENU
-    else:
-        view_type = VIEW_ROOT_MENU
-    log_debug('view_type = {0}'.format(view_type))
-
-    # --- Build menu base on view_type (Polymorphic menu, determine action) ---
-    d_list = [menu[0] for menu in menus_dic[view_type]]
-    selected_value = xbmcgui.Dialog().select('Manage SL Favourite itmes', d_list)
-    if selected_value < 0: return
-    action = menus_dic[view_type][selected_value][1]
-    log_debug('action = {0}'.format(action))
-
-    # --- Execute actions ---
-    if action == ACTION_CHOOSE_DEFAULT:
-        log_debug('command_context_manage_sl_fav() ACTION_CHOOSE_DEFAULT')
-
-        # --- Load Favs ---
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
-        SL_fav_key = SL_name + '-' + ROM_name
-
-        # --- Get a list of machines that can launch this SL ROM. User chooses. ---
-        SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
-        SL_machine_list = SL_machines_dic[SL_name]
-        SL_machine_names_list = []
-        SL_machine_desc_list = []
-        SL_machine_names_list.append('')
-        SL_machine_desc_list.append('[ Not set ]')
-        for SL_machine in SL_machine_list: 
-            SL_machine_names_list.append(SL_machine['machine'])
-            SL_machine_desc_list.append(SL_machine['description'])
-        # Krypton feature: preselect current machine.
-        # Careful with the preselect bug.
-        pre_idx = SL_machine_names_list.index(fav_SL_roms[SL_fav_key]['launch_machine'])
-        if pre_idx < 0: pre_idx = 0
-        dialog = xbmcgui.Dialog()
-        m_index = dialog.select('Select machine', SL_machine_desc_list, preselect = pre_idx)
-        if m_index < 0 or m_index == pre_idx: return
-        machine_name = SL_machine_names_list[m_index]
-        machine_desc = SL_machine_desc_list[m_index]
-
-        # --- Edit and save ---
-        fav_SL_roms[SL_fav_key]['launch_machine'] = machine_name
-        fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
-        kodi_notify('Deafult machine set to {0} ({1})'.format(machine_name, machine_desc))
-
-    # --- Delete ROM from SL Favourites ---
-    elif action == ACTION_DELETE_MACHINE:
-        log_debug('command_context_manage_sl_fav() ACTION_DELETE_MACHINE')
-        log_debug('SL_name  "{0}"'.format(SL_name))
-        log_debug('ROM_name "{0}"'.format(ROM_name))
-
-        # --- Open Favourite Machines dictionary ---
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
-        SL_fav_key = SL_name + '-' + ROM_name
-        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
-
-        # --- Ask user for confirmation ---
-        desc = most_played_roms_dic[SL_fav_key]['description']
-        a = 'Delete SL Item {0} ({1} / {2})?'
-        ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
-        if ret < 1: return
-
-        # --- Delete machine and save DB ---
-        del fav_SL_roms[SL_fav_key]
-        log_info('Deleted machine {0} ({1})'.format(SL_name, ROM_name))
-        fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
-        kodi_refresh_container()
-        kodi_notify('SL Item {0}-{1} deleted from SL Favourites'.format(SL_name, ROM_name))
-
-    elif action == ACTION_DELETE_MISSING:
-        log_debug('command_context_manage_sl_fav() ACTION_DELETE_MISSING')
-        kodi_dialog_OK('ACTION_DELETE_MISSING not implemented yet. Sorry.')
-
-    else:
-        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
-        log_error(t)
-        kodi_dialog_OK(t)
-
-def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
-    SL_name  = ROM['SL_name']
-    SL_ROM_name = ROM['SL_ROM_name']
-    display_name = ROM['description']
-
-    # --- Mark Status and Clones ---
-    status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
-    display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
-    if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-    # >> Render number of number the ROM has been launched
-    if location == LOCATION_SL_MOST_PLAYED:
-        if ROM['launch_count'] == 1:
-            display_name = '{0} [COLOR orange][{1} time][/COLOR]'.format(display_name, ROM['launch_count'])
-        else:
-            display_name = '{0} [COLOR orange][{1} times][/COLOR]'.format(display_name, ROM['launch_count'])
-
-    # --- Assets/artwork ---
-    icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
-    fanart_path = assets[g_SL_fanart]
-    poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
-
-    # --- Create listitem row ---
-    ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(display_name)
-    # >> Make all the infolabels compatible with Advanced Emulator Launcher
-    if g_settings['display_hide_trailers']:
-        listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
-                                   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-                                   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY })
-    else:
-        listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
-                                   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-                                   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
-                                   'trailer' : assets['trailer'] })
-    listitem.setProperty('platform', 'MAME Software List')
-
-    # --- Assets ---
-    # >> AEL custom artwork fields
-    listitem.setArt({
-        'title' : assets['title'], 'snap' : assets['snap'],
-        'boxfront' : assets['boxfront'], '3dbox' : assets['3dbox'],
-        'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path
-    })
-
-    # --- Create context menu ---
-    URL_view_DAT = misc_url_4_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', SL_ROM_name, 'location', location)
-    URL_view = misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', SL_ROM_name, 'location', location)
-    if location == LOCATION_SL_FAVS:
-        URL_manage = misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', SL_ROM_name)
-        commands = [
-            ('Info / Utils', URL_view_DAT),
-            ('View / Audit', URL_view),
-            ('Manage SL Favourites', URL_manage),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
-        ]
-    elif location == LOCATION_SL_MOST_PLAYED:
-        URL_manage = misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED', 'SL', SL_name, 'ROM', SL_ROM_name)
-        commands = [
-            ('Info / Utils',  URL_view_DAT),
-            ('View / Audit',  URL_view),
-            ('Manage SL Most Played', URL_manage),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-        ]
-    elif location == LOCATION_SL_RECENT_PLAYED:
-        URL_manage = misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED', 'SL', SL_name, 'ROM', SL_ROM_name)
-        commands = [
-            ('Info / Utils',  URL_view_DAT),
-            ('View / Audit',  URL_view),
-            ('Manage SL Recently Played', URL_manage),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-        ]
-    listitem.addContextMenuItems(commands)
-
-    # --- Add row ---
-    URL = misc_url_4_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', SL_ROM_name, 'location', location)
-    xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
-
-# ---------------------------------------------------------------------------------------------
-# Most/Recently Played MAME/SL machines/SL items
-# ---------------------------------------------------------------------------------------------
 def command_show_mame_most_played():
     most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
     if not most_played_roms_dic:
@@ -4435,6 +4187,255 @@ def command_context_manage_mame_recent_played(machine_name):
             kodi_notify('Deleted {0} missing MAME machines'.format(num_deleted_machines))
         else:
             kodi_notify('No missing machines found')
+
+    else:
+        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        log_error(t)
+        kodi_dialog_OK(t)
+
+# -------------------------------------------------------------------------------------------------
+# SL Favourites/Recently Played/Most played
+# -------------------------------------------------------------------------------------------------
+def command_context_add_sl_fav(SL_name, ROM_name):
+    log_debug('command_add_sl_fav() SL_name  "{0}"'.format(SL_name))
+    log_debug('command_add_sl_fav() ROM_name "{0}"'.format(ROM_name))
+
+    # --- Load databases ---
+    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
+    SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(file_name)
+    SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
+    assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
+    SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
+    SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+
+    # >> Open Favourite Machines dictionary
+    fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+    SL_fav_key = SL_name + '-' + ROM_name
+    log_debug('command_add_sl_fav() SL_fav_key "{0}"'.format(SL_fav_key))
+
+    # >> If machine already in Favourites ask user if overwrite.
+    if SL_fav_key in fav_SL_roms:
+        ret = kodi_dialog_yesno('Machine {0} ({1}) '.format(ROM_name, SL_name) +
+                                'already in SL Favourites. Overwrite?')
+        if ret < 1: return
+
+    # >> Add machine to SL Favourites
+    SL_ROM = SL_roms[ROM_name]
+    # SL_assets = SL_assets_dic[ROM_name] if ROM_name in SL_assets_dic else fs_new_SL_asset()
+    SL_assets = SL_assets_dic[ROM_name]
+    fav_ROM = fs_get_SL_Favourite(SL_name, ROM_name, SL_ROM, SL_assets, control_dic)
+    fav_SL_roms[SL_fav_key] = fav_ROM
+    log_info('command_add_sl_fav() Added machine "{0}" ("{1}")'.format(ROM_name, SL_name))
+
+    # >> Save Favourites
+    fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+    kodi_notify('ROM {0} added to SL Favourite ROMs'.format(ROM_name))
+
+def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
+    SL_name  = ROM['SL_name']
+    SL_ROM_name = ROM['SL_ROM_name']
+    display_name = ROM['description']
+
+    # --- Mark Status and Clones ---
+    status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+    display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+    if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+    # >> Render number of number the ROM has been launched
+    if location == LOCATION_SL_MOST_PLAYED:
+        if ROM['launch_count'] == 1:
+            display_name = '{0} [COLOR orange][{1} time][/COLOR]'.format(display_name, ROM['launch_count'])
+        else:
+            display_name = '{0} [COLOR orange][{1} times][/COLOR]'.format(display_name, ROM['launch_count'])
+
+    # --- Assets/artwork ---
+    icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
+    fanart_path = assets[g_SL_fanart]
+    poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
+
+    # --- Create listitem row ---
+    ICON_OVERLAY = 6
+    listitem = xbmcgui.ListItem(display_name)
+    # >> Make all the infolabels compatible with Advanced Emulator Launcher
+    if g_settings['display_hide_trailers']:
+        listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+                                   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+                                   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY })
+    else:
+        listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+                                   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+                                   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
+                                   'trailer' : assets['trailer'] })
+    listitem.setProperty('platform', 'MAME Software List')
+
+    # --- Assets ---
+    # >> AEL custom artwork fields
+    listitem.setArt({
+        'title' : assets['title'], 'snap' : assets['snap'],
+        'boxfront' : assets['boxfront'], '3dbox' : assets['3dbox'],
+        'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path
+    })
+
+    # --- Create context menu ---
+    URL_view_DAT = misc_url_4_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', SL_ROM_name, 'location', location)
+    URL_view = misc_url_4_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', SL_ROM_name, 'location', location)
+    if location == LOCATION_SL_FAVS:
+        URL_manage = misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_FAV', 'SL', SL_name, 'ROM', SL_ROM_name)
+        commands = [
+            ('Info / Utils', URL_view_DAT),
+            ('View / Audit', URL_view),
+            ('Manage SL Favourites', URL_manage),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ]
+    elif location == LOCATION_SL_MOST_PLAYED:
+        URL_manage = misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED', 'SL', SL_name, 'ROM', SL_ROM_name)
+        commands = [
+            ('Info / Utils',  URL_view_DAT),
+            ('View / Audit',  URL_view),
+            ('Manage SL Most Played', URL_manage),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
+    elif location == LOCATION_SL_RECENT_PLAYED:
+        URL_manage = misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED', 'SL', SL_name, 'ROM', SL_ROM_name)
+        commands = [
+            ('Info / Utils',  URL_view_DAT),
+            ('View / Audit',  URL_view),
+            ('Manage SL Recently Played', URL_manage),
+            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
+            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ]
+    listitem.addContextMenuItems(commands)
+
+    # --- Add row ---
+    URL = misc_url_4_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', SL_ROM_name, 'location', location)
+    xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
+
+def command_show_sl_fav():
+    log_debug('command_show_sl_fav() Starting ...')
+
+    # >> Load Software List ROMs
+    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+
+    # >> Open Favourite Machines dictionary
+    fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+    if not fav_SL_roms:
+        kodi_dialog_OK('No Favourite Software Lists ROMs. Add some ROMs to SL Favourites first.')
+        xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+        return
+
+    # >> Render Favourites
+    set_Kodi_all_sorting_methods()
+    for SL_fav_key in fav_SL_roms:
+        SL_fav_ROM = fav_SL_roms[SL_fav_key]
+        assets = SL_fav_ROM['assets']
+        # >> Add the SL name as 'genre'
+        SL_name = SL_fav_ROM['SL_name']
+        SL_fav_ROM['genre'] = SL_catalog_dic[SL_name]['display_name']
+        render_sl_fav_machine_row(SL_fav_key, SL_fav_ROM, assets, LOCATION_SL_FAVS)
+    xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+
+#
+# Context menu "Manage SL Favourite ROMs"
+#
+def command_context_manage_sl_fav(SL_name, ROM_name):
+    VIEW_ROOT_MENU   = 100
+    VIEW_INSIDE_MENU = 200
+
+    ACTION_DELETE_MACHINE = 100
+    ACTION_DELETE_MISSING = 200
+    ACTION_CHOOSE_DEFAULT = 300
+
+    menus_dic = {
+        VIEW_ROOT_MENU : [
+            ('Delete missing items from SL Favourites', ACTION_DELETE_MISSING),
+        ],
+        VIEW_INSIDE_MENU : [
+            ('Choose default machine for SL item', ACTION_CHOOSE_DEFAULT),
+            ('Delete item from SL Favourites', ACTION_DELETE_MACHINE),
+            ('Delete missing items from SL Favourites', ACTION_DELETE_MISSING),
+        ],
+    }
+
+    # --- Determine view type ---
+    log_debug('command_context_manage_sl_fav() BEGIN ...')
+    log_debug('SL_name  "{0}"'.format(SL_name))
+    log_debug('ROM_name "{0}"'.format(ROM_name))
+    if SL_name and ROM_name:
+        view_type = VIEW_INSIDE_MENU
+    else:
+        view_type = VIEW_ROOT_MENU
+    log_debug('view_type = {0}'.format(view_type))
+
+    # --- Build menu base on view_type (Polymorphic menu, determine action) ---
+    d_list = [menu[0] for menu in menus_dic[view_type]]
+    selected_value = xbmcgui.Dialog().select('Manage SL Favourite itmes', d_list)
+    if selected_value < 0: return
+    action = menus_dic[view_type][selected_value][1]
+    log_debug('action = {0}'.format(action))
+
+    # --- Execute actions ---
+    if action == ACTION_CHOOSE_DEFAULT:
+        log_debug('command_context_manage_sl_fav() ACTION_CHOOSE_DEFAULT')
+
+        # --- Load Favs ---
+        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+        SL_fav_key = SL_name + '-' + ROM_name
+
+        # --- Get a list of machines that can launch this SL ROM. User chooses. ---
+        SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
+        SL_machine_list = SL_machines_dic[SL_name]
+        SL_machine_names_list = []
+        SL_machine_desc_list = []
+        SL_machine_names_list.append('')
+        SL_machine_desc_list.append('[ Not set ]')
+        for SL_machine in SL_machine_list: 
+            SL_machine_names_list.append(SL_machine['machine'])
+            SL_machine_desc_list.append(SL_machine['description'])
+        # Krypton feature: preselect current machine.
+        # Careful with the preselect bug.
+        pre_idx = SL_machine_names_list.index(fav_SL_roms[SL_fav_key]['launch_machine'])
+        if pre_idx < 0: pre_idx = 0
+        dialog = xbmcgui.Dialog()
+        m_index = dialog.select('Select machine', SL_machine_desc_list, preselect = pre_idx)
+        if m_index < 0 or m_index == pre_idx: return
+        machine_name = SL_machine_names_list[m_index]
+        machine_desc = SL_machine_desc_list[m_index]
+
+        # --- Edit and save ---
+        fav_SL_roms[SL_fav_key]['launch_machine'] = machine_name
+        fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+        kodi_notify('Deafult machine set to {0} ({1})'.format(machine_name, machine_desc))
+
+    # --- Delete ROM from SL Favourites ---
+    elif action == ACTION_DELETE_MACHINE:
+        log_debug('command_context_manage_sl_fav() ACTION_DELETE_MACHINE')
+        log_debug('SL_name  "{0}"'.format(SL_name))
+        log_debug('ROM_name "{0}"'.format(ROM_name))
+
+        # --- Open Favourite Machines dictionary ---
+        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+        SL_fav_key = SL_name + '-' + ROM_name
+        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
+
+        # --- Ask user for confirmation ---
+        desc = most_played_roms_dic[SL_fav_key]['description']
+        a = 'Delete SL Item {0} ({1} / {2})?'
+        ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
+        if ret < 1: return
+
+        # --- Delete machine and save DB ---
+        del fav_SL_roms[SL_fav_key]
+        log_info('Deleted machine {0} ({1})'.format(SL_name, ROM_name))
+        fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+        kodi_refresh_container()
+        kodi_notify('SL Item {0}-{1} deleted from SL Favourites'.format(SL_name, ROM_name))
+
+    elif action == ACTION_DELETE_MISSING:
+        log_debug('command_context_manage_sl_fav() ACTION_DELETE_MISSING')
+        kodi_dialog_OK('ACTION_DELETE_MISSING not implemented yet. Sorry.')
 
     else:
         t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
