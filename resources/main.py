@@ -1732,7 +1732,6 @@ def render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_str
     URL_utils = misc_url_3_arg_RunPlugin(
         'command', 'UTILITIES', 'catalog', catalog_name, 'category', catalog_key)
     commands = [
-        ('View', misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Utilities', URL_utils),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
         ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
