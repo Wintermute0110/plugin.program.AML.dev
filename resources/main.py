@@ -3915,7 +3915,10 @@ def command_context_manage_mame_fav(machine_name):
 
         # --- Ensure MAME Catalog have been built ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        # check_DB_status(MAME_CATALOG_BUILT)
+        options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
+        if not options['condition']:
+            kodi_dialog_OK(options['msg'])
+            return False
 
         # --- Load databases ---
         db_files = [
@@ -4055,7 +4058,10 @@ def command_context_manage_mame_most_played(machine_name):
 
         # --- Ensure MAME Catalog have been built ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        # mame_check_condition(MAME_CATALOG_BUILT)
+        options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
+        if not options['condition']:
+            kodi_dialog_OK(options['msg'])
+            return False
 
         # --- Load databases ---
         db_files = [
@@ -4186,7 +4192,7 @@ def command_context_manage_mame_recent_played(machine_name):
             kodi_notify('MAME Recently Played unchanged')
             return
 
-        # Database is an empty list
+        # Database is an empty list.
         fs_write_JSON_file(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), list())
         kodi_refresh_container()
         kodi_notify('Deleted all MAME Recently Played'.format(machine_name))
@@ -4196,7 +4202,10 @@ def command_context_manage_mame_recent_played(machine_name):
 
         # --- Ensure MAME Catalog have been built ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        # mame_check_condition(MAME_CATALOG_BUILT)
+        options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
+        if not options['condition']:
+            kodi_dialog_OK(options['msg'])
+            return False
 
         # --- Load databases ---
         db_files = [
