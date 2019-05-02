@@ -3944,7 +3944,6 @@ def command_context_manage_mame_fav(machine_name):
             fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), new_fav_machines)
             pDialog.update((iteration*100) // num_iteration, line1_str)
         else:
-            # fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), new_fav_machines)
             pDialog.update(100, line1_str)
         pDialog.close()
         kodi_refresh_container()
@@ -4012,25 +4011,44 @@ def command_context_manage_mame_most_played(machine_name):
     if action == ACTION_DELETE_MACHINE:
         log_debug('command_context_manage_mame_most_played() ACTION_DELETE_MACHINE')
         log_debug('machine_name "{0}"'.format(machine_name))
-
-        # --- Load Most Played machines dictionary ---
-        most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+        db_files = [
+            ['most_played_roms', 'MAME Most Played machines', g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
 
         # --- Ask user for confirmation ---
-        desc = most_played_roms_dic[machine_name]['description']
+        desc = db_dic['most_played_roms'][machine_name]['description']
         ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
-        if ret < 1: return
+        if ret < 1:
+            kodi_notify('MAME Most Played unchanged')
+            return
 
         # --- Delete machine and save DB ---
-        del most_played_roms_dic[machine_name]
+        del db_dic['most_played_roms'][machine_name]
         log_info('Deleted machine "{0}"'.format(machine_name))
-        fs_write_JSON_file(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+        fs_write_JSON_file(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), db_dic['most_played_roms'])
         kodi_refresh_container()
         kodi_notify('Machine {0} deleted from MAME Most Played'.format(machine_name))
 
     elif action == ACTION_DELETE_ALL:
         log_debug('command_context_manage_mame_most_played() ACTION_DELETE_ALL')
-        kodi_dialog_OK('ACTION_DELETE_ALL not implemented yet. Sorry.')
+        db_files = [
+            ['most_played_roms', 'MAME Most Played machines', g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        # Confirm with user
+        num_machines = len(db_dic['most_played_roms'])
+        ret = kodi_dialog_yesno(
+            'You have {0} MAME Most Played machines. Delete them all?'.format(num_machines))
+        if ret < 1:
+            kodi_notify('MAME Most Played unchanged')
+            return
+
+        # Database is an empty dictionary
+        fs_write_JSON_file(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), dict())
+        kodi_refresh_container()
+        kodi_notify('Deleted all MAME Most Played'.format(machine_name))
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_mame_most_played() ACTION_DELETE_MISSING')
@@ -4042,7 +4060,7 @@ def command_context_manage_mame_most_played(machine_name):
         # --- Load databases ---
         db_files = [
             ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
-            ['most_played_roms_dic', 'MAME Most Played machines', g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath()],
+            ['most_played_roms', 'MAME Most Played machines', g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath()],
         ]
         db_dic = fs_load_files(db_files)
 
@@ -4051,22 +4069,21 @@ def command_context_manage_mame_most_played(machine_name):
         pDialog = xbmcgui.DialogProgress()
         pDialog.create('Advanced MAME Launcher', line1_str)
         num_deleted_machines = 0
-        if len(db_dic['most_played_roms_dic']) >= 1:
-            num_iteration = len(db_dic['most_played_roms_dic'])
+        if len(db_dic['most_played_roms']) >= 1:
+            num_iteration = len(db_dic['most_played_roms'])
             iteration = 0
             new_fav_machines = {}
-            for fav_key in sorted(db_dic['most_played_roms_dic']):
+            for fav_key in sorted(db_dic['most_played_roms']):
                 pDialog.update((iteration*100) // num_iteration, line1_str)
                 log_debug('Checking Favourite "{0}"'.format(fav_key))
                 if fav_key in db_dic['machines']:
-                    new_fav_machines[fav_key] = db_dic['most_played_roms_dic'][fav_key]
+                    new_fav_machines[fav_key] = db_dic['most_played_roms'][fav_key]
                 else:
                     num_deleted_machines += 1
                 iteration += 1
-            fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), new_fav_machines)
+            fs_write_JSON_file(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), new_fav_machines)
             pDialog.update((iteration*100) // num_iteration, line1_str)
         else:
-            # fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), new_fav_machines)
             pDialog.update(100, line1_str)
         pDialog.close()
         kodi_refresh_container()
@@ -4146,7 +4163,9 @@ def command_context_manage_mame_recent_played(machine_name):
         # --- Ask user for confirmation ---
         desc = recent_roms_list[machine_index]['description']
         ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
-        if ret < 1: return
+        if ret < 1:
+            kodi_notify('MAME Recently Played unchanged')
+            return
 
         # --- Delete machine and save DB ---
         recent_roms_list.pop(machine_index)
@@ -4157,7 +4176,20 @@ def command_context_manage_mame_recent_played(machine_name):
 
     elif action == ACTION_DELETE_ALL:
         log_debug('command_context_manage_mame_recent_played() ACTION_DELETE_ALL')
-        kodi_dialog_OK('ACTION_DELETE_ALL not implemented yet. Sorry.')
+        recent_roms_list = fs_load_JSON_file_list(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
+
+        # Confirm with user
+        num_machines = len(recent_roms_list)
+        ret = kodi_dialog_yesno(
+            'You have {0} MAME Recently Played. Delete them all?'.format(num_machines))
+        if ret < 1:
+            kodi_notify('MAME Recently Played unchanged')
+            return
+
+        # Database is an empty list
+        fs_write_JSON_file(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), list())
+        kodi_refresh_container()
+        kodi_notify('Deleted all MAME Recently Played'.format(machine_name))
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_mame_recent_played() ACTION_DELETE_MISSING')
