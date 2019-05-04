@@ -1,8 +1,8 @@
 <settings>
 <category label="Main operation">
-    <setting label="Mode" type="enum" id="op_mode_raw" default="0" values="External MAME|Retroarch MAME 2003 Plus" />
+    <setting label="Mode" type="enum" id="op_mode_raw" default="0" values="Vanilla MAME|Retroarch MAME 2003 Plus" />
 
-    <setting id="separator" type="lsep" label="External MAME" />
+    <setting id="separator" type="lsep" label="Vanilla MAME" />
     <setting label="MAME executable" type="file" id="mame_prog" />
 
     <setting id="separator" type="lsep" label="Retroarch MAME 2003 Plus" />
@@ -10,7 +10,6 @@
     <setting label="MAME XML path" type="file" id="xml_2003_path" />
 </category>
 <category label="Optional paths">
-    <!-- <setting id="separator" type="lsep" label="Optional paths" /> -->
     <setting label="MAME ROMs path" type="folder" id="rom_path" source="" />
     <setting label="MAME Assets path" type="folder" id="assets_path" source="" />
     <setting label="MAME INI/DAT path" type="folder" id="dats_path" source="" />
