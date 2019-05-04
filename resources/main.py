@@ -4773,7 +4773,7 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
 
         # --- Load Recently Played machine list ---
         recent_roms_list = fs_load_JSON_file_list(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
-        machine_index = fs_locate_idx_by_SL_item_name(recent_roms_list, SL_name, SL_ROM_name)
+        machine_index = fs_locate_idx_by_SL_item_name(recent_roms_list, SL_name, ROM_name)
         if machine_index < 0:
             a = 'Item {0}-{1} cannot be located in SL Recently Played list. This is a bug.'
             kodi_dialog_OK(a.format(SL_name, ROM_name))
