@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3 -B
 # -*- coding: utf-8 -*-
 #
 # Prepare files for a new AML release.
@@ -127,72 +127,78 @@ def edit_text_file(file_path, old_str, new_str):
         sys.exit(1)
 
 # --- main ---------------------------------------------------------------------------------------
-print('AML_DEV_ID  {0}'.format(AML_DEV_ID))
-print('AML_ID      {0}'.format(AML_ID))
-print('AML_NAME    {0}'.format(AML_NAME))
-print('AML_VERSION {0}'.format(AML_VERSION))
+def main():
+    print('Starting {0}'.format(sys.argv[0]))
+    print('AML_DEV_ID  {0}'.format(AML_DEV_ID))
+    print('AML_ID      {0}'.format(AML_ID))
+    print('AML_NAME    {0}'.format(AML_NAME))
+    print('AML_VERSION {0}'.format(AML_VERSION))
 
-# Clean pyo and pyc files.
-print('\nCleaning pyo and pyc files ...')
-current_dir = os.getcwd()
-print('The current working directory is "{0}"'.format(current_dir))
-for filename in glob.iglob(current_dir + '/**/*.pyo', recursive = True):
-     print('Removing "{0}"'.format(filename))
-     os.unlink(filename)
-for filename in glob.iglob(current_dir + '/**/*.pyc', recursive = True):
-     print('Removing "{0}"'.format(filename))
-     os.unlink(filename)
+    # Clean pyo and pyc files.
+    print('\nCleaning pyo and pyc files ...')
+    current_dir = os.getcwd()
+    print('The current working directory is "{0}"'.format(current_dir))
+    for filename in glob.iglob(current_dir + '/**/*.pyo', recursive = True):
+         print('Removing "{0}"'.format(filename))
+         os.unlink(filename)
+    for filename in glob.iglob(current_dir + '/**/*.pyc', recursive = True):
+         print('Removing "{0}"'.format(filename))
+         os.unlink(filename)
 
-# Create directory AML_ID. If exists, then purge it.
-print('\nCreating target directory ...')
-release_dir = os.path.join(current_dir, AML_ID)
-print('The target directory is "{0}"'.format(release_dir))
-if os.path.isdir(release_dir):
-    print('Directory "{0}" exists'.format(release_dir))
-    print('Purging contents in "{0}"'.format(release_dir))
-    shutil.rmtree(release_dir)
-os.mkdir(release_dir)
-print('Created directory "{0}"'.format(release_dir))
+    # Create directory AML_ID. If exists, then purge it.
+    print('\nCreating target directory ...')
+    release_dir = os.path.join(current_dir, AML_ID)
+    print('The target directory is "{0}"'.format(release_dir))
+    if os.path.isdir(release_dir):
+        print('Directory "{0}" exists'.format(release_dir))
+        print('Purging contents in "{0}"'.format(release_dir))
+        shutil.rmtree(release_dir)
+    os.mkdir(release_dir)
+    print('Created directory "{0}"'.format(release_dir))
 
-# Copy required files to run AML
-print('\nCopying root files ...')
-for file in root_file_list:
-    src = os.path.join(current_dir, file)
-    dst = os.path.join(release_dir, file)
-    print('Copy "{0}"'.format(src))
-    # print('Into "{0}"'.format(dst))
-    # If target directory does not exists then create it, otherwise shutil.copy() will fail.
-    target_dir = os.path.dirname(dst)
-    if not os.path.exists(target_dir):
-        print('Creating directory "{0}"'.format(target_dir))
-        os.makedirs(target_dir)
-    shutil.copy(src, dst)
-print('\nCopying root whole directories ...')
-for directory in root_directory_list:
-    src = os.path.join(current_dir, directory)
-    dst = os.path.join(release_dir, directory)
-    print('Recursive copy "{0}"'.format(src))
-    # print('Into "{0}"'.format(dst))
-    shutil.copytree(src, dst)
+    # Copy required files to run AML
+    print('\nCopying root files ...')
+    for file in root_file_list:
+        src = os.path.join(current_dir, file)
+        dst = os.path.join(release_dir, file)
+        print('Copy "{0}"'.format(src))
+        # print('Into "{0}"'.format(dst))
+        # If target directory does not exists then create it, otherwise shutil.copy() will fail.
+        target_dir = os.path.dirname(dst)
+        if not os.path.exists(target_dir):
+            print('Creating directory "{0}"'.format(target_dir))
+            os.makedirs(target_dir)
+        shutil.copy(src, dst)
+    print('\nCopying root whole directories ...')
+    for directory in root_directory_list:
+        src = os.path.join(current_dir, directory)
+        dst = os.path.join(release_dir, directory)
+        print('Recursive copy "{0}"'.format(src))
+        # print('Into "{0}"'.format(dst))
+        shutil.copytree(src, dst)
 
-# Create file version.txt, which contains current git version.
-print('\nCreating file version.sha ...')
-src = os.path.join(current_dir, '.git/refs/heads/master')
-dst = os.path.join(release_dir, 'version.sha')
-shutil.copyfile(src, dst)
+    # Create file version.txt, which contains current git version.
+    print('\nCreating file version.sha ...')
+    src = os.path.join(current_dir, '.git/refs/heads/master')
+    dst = os.path.join(release_dir, 'version.sha')
+    shutil.copyfile(src, dst)
 
-# Edit addon.xml to change plugin id, name and version.
-print('\nEditing addon.xml ...')
-addon_xml_path = os.path.join(release_dir, 'addon.xml')
-edit_xml_attribute(addon_xml_path, 'addon', 'id', AML_ID)
-edit_xml_attribute(addon_xml_path, 'addon', 'name', AML_NAME)
-edit_xml_attribute(addon_xml_path, 'addon', 'version', AML_VERSION)
+    # Edit addon.xml to change plugin id, name and version.
+    print('\nEditing addon.xml ...')
+    addon_xml_path = os.path.join(release_dir, 'addon.xml')
+    edit_xml_attribute(addon_xml_path, 'addon', 'id', AML_ID)
+    edit_xml_attribute(addon_xml_path, 'addon', 'name', AML_NAME)
+    edit_xml_attribute(addon_xml_path, 'addon', 'version', AML_VERSION)
 
-# Edit resources/settings.xml.
-# print('\nEditing settings.xml ...')
-# settings_xml_path = os.path.join(release_dir, 'resources/settings.xml')
-# edit_text_file(settings_xml_path, AML_DEV_ID, AML_ID)
+    # Edit resources/settings.xml.
+    # print('\nEditing settings.xml ...')
+    # settings_xml_path = os.path.join(release_dir, 'resources/settings.xml')
+    # edit_text_file(settings_xml_path, AML_DEV_ID, AML_ID)
 
-# So long and thanks for all the fish.
-print('All operations finished. Exiting.')
-sys.exit(0)
+    # So long and thanks for all the fish.
+    print('All operations finished. Exiting.')
+    print('Exiting {0}'.format(sys.argv[0]))
+
+if __name__ == "__main__":
+    main()
+    sys.exit()
