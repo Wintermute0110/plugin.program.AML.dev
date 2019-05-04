@@ -4401,23 +4401,25 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
 
     ACTION_DELETE_MACHINE = 100
     ACTION_DELETE_MISSING = 200
-    ACTION_CHOOSE_DEFAULT = 300
+    ACTION_DELETE_ALL     = 300
+    ACTION_CHOOSE_DEFAULT = 400
 
     menus_dic = {
         VIEW_ROOT_MENU : [
             ('Delete missing items from SL Favourites', ACTION_DELETE_MISSING),
+            ('Delete all machines from SL Favourites', ACTION_DELETE_ALL),
         ],
         VIEW_INSIDE_MENU : [
             ('Choose default machine for SL item', ACTION_CHOOSE_DEFAULT),
             ('Delete item from SL Favourites', ACTION_DELETE_MACHINE),
             ('Delete missing items from SL Favourites', ACTION_DELETE_MISSING),
+            ('Delete all machines from SL Favourites', ACTION_DELETE_ALL),
         ],
     }
 
     # --- Determine view type ---
     log_debug('command_context_manage_sl_fav() BEGIN ...')
-    log_debug('SL_name  "{0}"'.format(SL_name))
-    log_debug('ROM_name "{0}"'.format(ROM_name))
+    log_debug('SL_name  "{0}" / ROM_name "{1}"'.format(SL_name, ROM_name))
     if SL_name and ROM_name:
         view_type = VIEW_INSIDE_MENU
     else:
@@ -4467,8 +4469,6 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
     # --- Delete ROM from SL Favourites ---
     elif action == ACTION_DELETE_MACHINE:
         log_debug('command_context_manage_sl_fav() ACTION_DELETE_MACHINE')
-        log_debug('SL_name  "{0}"'.format(SL_name))
-        log_debug('ROM_name "{0}"'.format(ROM_name))
 
         # --- Open Favourite Machines dictionary ---
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
@@ -4479,7 +4479,9 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         desc = most_played_roms_dic[SL_fav_key]['description']
         a = 'Delete SL Item {0} ({1} / {2})?'
         ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
-        if ret < 1: return
+        if ret < 1:
+            kodi_notify('SL Favourites unchanged')
+            return
 
         # --- Delete machine and save DB ---
         del fav_SL_roms[SL_fav_key]
@@ -4487,6 +4489,27 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
         kodi_refresh_container()
         kodi_notify('SL Item {0}-{1} deleted from SL Favourites'.format(SL_name, ROM_name))
+
+    elif action == ACTION_DELETE_ALL:
+        log_debug('command_context_manage_sl_fav() ACTION_DELETE_ALL')
+
+        # --- Open Favourite Machines dictionary ---
+        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+        SL_fav_key = SL_name + '-' + ROM_name
+        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
+
+        # --- Ask user for confirmation ---
+        num_items = len(fav_SL_roms)
+        ret = kodi_dialog_yesno(
+            'You have {0} SL Favourites. Delete them all?'.format(num_items))
+        if ret < 1:
+            kodi_notify('SL Favourites unchanged')
+            return
+
+        # --- Delete machine and save DB ---
+        fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), dict())
+        kodi_refresh_container()
+        kodi_notify('Deleted all SL Favourites'.format(SL_name, ROM_name))
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_sl_fav() ACTION_DELETE_MISSING')
@@ -4522,23 +4545,25 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
 
     ACTION_DELETE_MACHINE = 100
     ACTION_DELETE_MISSING = 200
-    ACTION_CHOOSE_DEFAULT = 300
+    ACTION_DELETE_ALL     = 300
+    ACTION_CHOOSE_DEFAULT = 400
 
     menus_dic = {
         VIEW_ROOT_MENU : [
             ('Delete missing items from SL Most Played', ACTION_DELETE_MISSING),
+            ('Delete all machines from SL Most Played', ACTION_DELETE_ALL),
         ],
         VIEW_INSIDE_MENU : [
             ('Choose default machine for SL item', ACTION_CHOOSE_DEFAULT),
             ('Delete item from SL Most Played', ACTION_DELETE_MACHINE),
             ('Delete missing items from SL Most Played', ACTION_DELETE_MISSING),
+            ('Delete all machines from SL Most Played', ACTION_DELETE_ALL),
         ],
     }
 
     # --- Determine view type ---
     log_debug('command_context_manage_SL_most_played() BEGIN ...')
-    log_debug('SL_name  "{0}"'.format(SL_name))
-    log_debug('ROM_name "{0}"'.format(ROM_name))
+    log_debug('SL_name  "{0}" / ROM_name "{1}"'.format(SL_name, ROM_name))
     if SL_name and ROM_name:
         view_type = VIEW_INSIDE_MENU
     else:
@@ -4559,8 +4584,6 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
 
     elif action == ACTION_DELETE_MACHINE:
         log_debug('command_context_manage_sl_most_played() ACTION_DELETE_MACHINE')
-        log_debug('SL_name  "{0}"'.format(SL_name))
-        log_debug('ROM_name "{0}"'.format(ROM_name))
 
         # --- Load Most Played items dictionary ---
         most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
@@ -4571,7 +4594,9 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
         desc = most_played_roms_dic[SL_fav_key]['description']
         a = 'Delete SL Item {0} ({1} / {2})?'
         ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
-        if ret < 1: return
+        if ret < 1:
+            kodi_notify('SL Most Played unchanged')
+            return
 
         # --- Delete machine and save DB ---
         del most_played_roms_dic[SL_fav_key]
@@ -4579,7 +4604,28 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
         log_info(a.format(SL_name, ROM_name))
         fs_write_JSON_file(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
         kodi_refresh_container()
-        kodi_notify('SL Item {0}-{1} deleted from SL Most Played'.format(SL_name, ROM_name))
+        kodi_notify('Item {0}-{1} deleted from SL Most Played'.format(SL_name, ROM_name))
+
+    elif action == ACTION_DELETE_ALL:
+        log_debug('command_context_manage_sl_most_played() ACTION_DELETE_ALL')
+
+        # --- Open Favourite Machines dictionary ---
+        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+        SL_fav_key = SL_name + '-' + ROM_name
+        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
+
+        # --- Ask user for confirmation ---
+        num_items = len(fav_SL_roms)
+        ret = kodi_dialog_yesno(
+            'You have {0} SL Favourites. Delete them all?'.format(num_items))
+        if ret < 1:
+            kodi_notify('SL Favourites unchanged')
+            return
+
+        # --- Delete machine and save DB ---
+        fs_write_JSON_file(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), dict())
+        kodi_refresh_container()
+        kodi_notify('Deleted all SL Favourites'.format(SL_name, ROM_name))
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_sl_most_played() ACTION_DELETE_MISSING')
@@ -4614,23 +4660,25 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
 
     ACTION_DELETE_MACHINE = 100
     ACTION_DELETE_MISSING = 200
-    ACTION_CHOOSE_DEFAULT = 300
+    ACTION_DELETE_ALL     = 300
+    ACTION_CHOOSE_DEFAULT = 400
 
     menus_dic = {
         VIEW_ROOT_MENU : [
             ('Delete missing items from SL Recently Played', ACTION_DELETE_MISSING),
+            ('Delete all machines from SL Recently Played', ACTION_DELETE_ALL),
         ],
         VIEW_INSIDE_MENU : [
             ('Choose default machine for SL item', ACTION_CHOOSE_DEFAULT),
             ('Delete item from SL Recently Played', ACTION_DELETE_MACHINE),
             ('Delete missing items from SL Recently Played', ACTION_DELETE_MISSING),
+            ('Delete all machines from SL Recently Played', ACTION_DELETE_ALL),
         ],
     }
 
     # --- Determine view type ---
     log_debug('command_context_manage_SL_recent_played() BEGIN ...')
-    log_debug('SL_name  "{0}"'.format(SL_name))
-    log_debug('ROM_name "{0}"'.format(ROM_name))
+    log_debug('SL_name  "{0}" / ROM_name "{1}"'.format(SL_name, ROM_name))
     if SL_name and ROM_name:
         view_type = VIEW_INSIDE_MENU
     else:
@@ -4651,8 +4699,6 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
 
     elif action == ACTION_DELETE_MACHINE:
         log_debug('command_context_manage_SL_recent_played() Delete SL Recently Played machine')
-        log_debug('SL_name  "{0}"'.format(SL_name))
-        log_debug('ROM_name "{0}"'.format(ROM_name))
 
         # --- Load Recently Played machine list ---
         recent_roms_list = fs_load_JSON_file_list(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
@@ -4666,7 +4712,9 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
         desc = recent_roms_list[machine_index]['description']
         a = 'Delete SL Item {0} ({1} / {2})?'
         ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
-        if ret < 1: return
+        if ret < 1:
+            kodi_notify('SL Recently Played unchanged')
+            return
 
         # --- Delete machine and save DB ---
         recent_roms_list.pop(machine_index)
@@ -4675,6 +4723,27 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
         fs_write_JSON_file(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
         kodi_refresh_container()
         kodi_notify('SL Item {0}-{1} deleted from SL Recently Played'.format(SL_name, ROM_name))
+
+    elif action == ACTION_DELETE_ALL:
+        log_debug('command_context_manage_SL_recent_played() ACTION_DELETE_ALL')
+
+        # --- Open Favourite Machines dictionary ---
+        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
+        SL_fav_key = SL_name + '-' + ROM_name
+        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
+
+        # --- Ask user for confirmation ---
+        num_items = len(fav_SL_roms)
+        ret = kodi_dialog_yesno(
+            'You have {0} SL Recently Played. Delete them all?'.format(num_items))
+        if ret < 1:
+            kodi_notify('SL Recently Played unchanged')
+            return
+
+        # --- Delete machine and save DB ---
+        fs_write_JSON_file(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), list())
+        kodi_refresh_container()
+        kodi_notify('Deleted all SL Recently Played'.format(SL_name, ROM_name))
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_SL_recent_played() ACTION_DELETE_MISSING')
