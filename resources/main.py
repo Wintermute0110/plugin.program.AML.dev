@@ -4499,9 +4499,8 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
 
         # --- Ask user for confirmation ---
-        num_items = len(fav_SL_roms)
         ret = kodi_dialog_yesno(
-            'You have {0} SL Favourites. Delete them all?'.format(num_items))
+            'You have {0} SL Favourites. Delete them all?'.format(len(fav_SL_roms)))
         if ret < 1:
             kodi_notify('SL Favourites unchanged')
             return
@@ -4509,7 +4508,7 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         # --- Delete machine and save DB ---
         fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), dict())
         kodi_refresh_container()
-        kodi_notify('Deleted all SL Favourites'.format(SL_name, ROM_name))
+        kodi_notify('Deleted all SL Favourites')
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_sl_fav() ACTION_DELETE_MISSING')
@@ -4519,6 +4518,7 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         num_iteration = 0
         pDialog = xbmcgui.DialogProgress()
         pDialog.create('Advanced MAME Launcher')
+        num_items_deleted = 0
         for fav_SL_key in sorted(fav_SL_roms):
             fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
             fav_ROM_name = fav_SL_roms[fav_SL_key]['SL_ROM_name']
@@ -4535,11 +4535,18 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
 
             # --- Check ---
             if fav_ROM_name not in SL_roms:
+                num_items_deleted += 1
                 del fav_SL_roms[fav_ROM_name]
-                log_info('Deleted machine {0} ({1})'.format(SL_name, ROM_name))
+                log_info('Deleted machine {0} ({1})'.format(fav_SL_name, fav_ROM_name))
+            else:
+                log_debug('Machine {0} ({1}) OK'.format(fav_SL_name, fav_ROM_name))
         fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
         pDialog.update(100)
         pDialog.close()
+        if num_items_deleted > 0:
+            kodi_notify('Deleted {0} items'.format(num_items_deleted))
+        else:
+            kodi_notify('No items deleted')
 
     else:
         t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
@@ -4641,21 +4648,54 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
         log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
 
         # --- Ask user for confirmation ---
-        num_items = len(fav_SL_roms)
         ret = kodi_dialog_yesno(
-            'You have {0} SL Favourites. Delete them all?'.format(num_items))
+            'You have {0} SL Most Played. Delete them all?'.format(len(fav_SL_roms)))
         if ret < 1:
-            kodi_notify('SL Favourites unchanged')
+            kodi_notify('SL Most Played unchanged')
             return
 
         # --- Delete machine and save DB ---
         fs_write_JSON_file(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), dict())
         kodi_refresh_container()
-        kodi_notify('Deleted all SL Favourites'.format(SL_name, ROM_name))
+        kodi_notify('Deleted all SL Most Played')
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_sl_most_played() ACTION_DELETE_MISSING')
-        kodi_dialog_OK('ACTION_DELETE_MISSING not implemented yet. Sorry.')
+        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+        num_SL_favs = len(fav_SL_roms)
+        num_iteration = 0
+        pDialog = xbmcgui.DialogProgress()
+        pDialog.create('Advanced MAME Launcher')
+        num_items_deleted = 0
+        for fav_SL_key in sorted(fav_SL_roms):
+            fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
+            fav_ROM_name = fav_SL_roms[fav_SL_key]['SL_ROM_name']
+            log_debug('Checking SL Most Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+
+            # --- Update progress dialog (BEGIN) ---
+            update_number = (num_iteration * 100) // num_SL_favs
+            pDialog.update(update_number, 'Checking SL Most Played (ROM "{0}") ...'.format(fav_ROM_name))
+            num_iteration += 1
+
+            # --- Load SL ROMs DB and assets ---
+            SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json')
+            SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+
+            # --- Check ---
+            if fav_ROM_name not in SL_roms:
+                num_items_deleted += 1
+                del fav_SL_roms[fav_ROM_name]
+                log_info('Deleted machine {0} ({1})'.format(fav_SL_name, fav_ROM_name))
+            else:
+                log_debug('Machine {0} ({1}) OK'.format(fav_SL_name, fav_ROM_name))
+        fs_write_JSON_file(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), fav_SL_roms)
+        pDialog.update(100)
+        pDialog.close()
+        if num_items_deleted > 0:
+            kodi_notify('Deleted {0} items'.format(num_items_deleted))
+        else:
+            kodi_notify('No items deleted')
 
     else:
         t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
@@ -4759,9 +4799,8 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
         log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
 
         # --- Ask user for confirmation ---
-        num_items = len(fav_SL_roms)
         ret = kodi_dialog_yesno(
-            'You have {0} SL Recently Played. Delete them all?'.format(num_items))
+            'You have {0} SL Recently Played. Delete them all?'.format(len(fav_SL_roms)))
         if ret < 1:
             kodi_notify('SL Recently Played unchanged')
             return
@@ -4769,12 +4808,48 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
         # --- Delete machine and save DB ---
         fs_write_JSON_file(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), list())
         kodi_refresh_container()
-        kodi_notify('Deleted all SL Recently Played'.format(SL_name, ROM_name))
+        kodi_notify('Deleted all SL Recently Played')
 
     elif action == ACTION_DELETE_MISSING:
+        # Careful because here fav_SL_roms is a list and not a dictionary.
         log_debug('command_context_manage_SL_recent_played() ACTION_DELETE_MISSING')
-        kodi_dialog_OK('ACTION_DELETE_MISSING not implemented yet. Sorry.')
+        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
+        num_SL_favs = len(fav_SL_roms)
+        num_iteration = 0
+        pDialog = xbmcgui.DialogProgress()
+        pDialog.create('Advanced MAME Launcher')
+        num_items_deleted = 0
+        new_fav_SL_roms = []
+        # fav_SL_roms is a list, do not sort it!
+        for fav_SL_item in fav_SL_roms:
+            fav_SL_name = fav_SL_item['SL_name']
+            fav_ROM_name = fav_SL_item['SL_ROM_name']
+            log_debug('Checking SL Recently Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
 
+            # --- Update progress dialog (BEGIN) ---
+            update_number = (num_iteration * 100) // num_SL_favs
+            pDialog.update(update_number, 'Checking SL Recently Played (ROM "{0}") ...'.format(fav_ROM_name))
+            num_iteration += 1
+
+            # --- Load SL ROMs DB and assets ---
+            SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json')
+            SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+
+            # --- Check ---
+            if fav_ROM_name not in SL_roms:
+                num_items_deleted += 1
+                log_info('Deleted machine {0} ({1})'.format(fav_SL_name, fav_ROM_name))
+            else:
+                new_fav_SL_roms.append(fav_SL_item)
+                log_debug('Machine {0} ({1}) OK'.format(fav_SL_name, fav_ROM_name))
+        fs_write_JSON_file(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), new_fav_SL_roms)
+        pDialog.update(100)
+        pDialog.close()
+        if num_items_deleted > 0:
+            kodi_notify('Deleted {0} items'.format(num_items_deleted))
+        else:
+            kodi_notify('No items deleted')
     else:
         t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
         log_error(t)
