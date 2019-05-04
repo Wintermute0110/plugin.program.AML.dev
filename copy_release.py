@@ -27,10 +27,10 @@ import make_release
 
 # --- main ---------------------------------------------------------------------------------------
 def main():
-    print('Creating AML release directory ...')
+    print('--- Creating AML release directory ---')
     make_release.main()
 
-    print('\nDeleting currently installed AML ...')
+    print('\n--- Deleting currently installed AML ---')
     current_dir = os.getcwd()
     addons_dir = os.path.abspath(os.path.join(current_dir, '..'))
     AML_target_dir = os.path.join(addons_dir, make_release.AML_ID)
@@ -45,10 +45,10 @@ def main():
         print('Purging contents in "{0}"'.format(AML_target_dir))
         shutil.rmtree(AML_target_dir)
 
-    print('\nMoving AML from source to target directory ...')
+    print('\n--- Moving AML from source to target directory ---')
     shutil.copytree(AML_source_dir, AML_target_dir)
 
-    print('\nPuring AML source directory ...')
+    print('\n--- Purging AML source directory ---')
     shutil.rmtree(AML_source_dir)
 
 if __name__ == "__main__":
