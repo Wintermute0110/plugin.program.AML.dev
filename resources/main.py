@@ -4513,7 +4513,33 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_sl_fav() ACTION_DELETE_MISSING')
-        kodi_dialog_OK('ACTION_DELETE_MISSING not implemented yet. Sorry.')
+        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+        num_SL_favs = len(fav_SL_roms)
+        num_iteration = 0
+        pDialog = xbmcgui.DialogProgress()
+        pDialog.create('Advanced MAME Launcher')
+        for fav_SL_key in sorted(fav_SL_roms):
+            fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
+            fav_ROM_name = fav_SL_roms[fav_SL_key]['SL_ROM_name']
+            log_debug('Checking SL Favourite "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+
+            # --- Update progress dialog (BEGIN) ---
+            update_number = (num_iteration * 100) // num_SL_favs
+            pDialog.update(update_number, 'Checking SL Favourites (ROM "{0}") ...'.format(fav_ROM_name))
+            num_iteration += 1
+
+            # --- Load SL ROMs DB and assets ---
+            SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json')
+            SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+
+            # --- Check ---
+            if fav_ROM_name not in SL_roms:
+                del fav_SL_roms[fav_ROM_name]
+                log_info('Deleted machine {0} ({1})'.format(SL_name, ROM_name))
+        fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+        pDialog.update(100)
+        pDialog.close()
 
     else:
         t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
