@@ -6758,7 +6758,7 @@ def command_exec_report(which_report):
             return
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
-        mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
+        mame_stats_main_print_slist(g_settings, info_text, control_dic, __addon_version__)
         display_text_window('Database main statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_SCANNER':
@@ -6767,7 +6767,7 @@ def command_exec_report(which_report):
             return
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
-        mame_stats_scanner_print_slist(info_text, control_dic)
+        mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
         display_text_window('Scanner statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_AUDIT':
@@ -6776,7 +6776,7 @@ def command_exec_report(which_report):
             return
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
-        mame_stats_audit_print_slist(info_text, control_dic, g_settings)
+        mame_stats_audit_print_slist(g_settings, info_text, control_dic, g_settings)
         display_text_window('Database information and statistics', '\n'.join(info_text))
 
     # --- All statistics ---

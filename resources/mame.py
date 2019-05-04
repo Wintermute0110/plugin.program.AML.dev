@@ -1495,7 +1495,7 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
 # slist is a list of strings that will be joined like '\n'.join(slist)
 # slist is a list, so it is mutable and can be changed by reference.
 #
-def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
+def mame_stats_main_print_slist(settings, slist, control_dic, AML_version_str):
     AML_version_int = fs_AML_version_str_to_int(AML_version_str)
 
     slist.append('[COLOR orange]Main information[/COLOR]')
@@ -1758,12 +1758,15 @@ def mame_stats_main_print_slist(slist, control_dic, AML_version_str):
 
     slist.append('')
     slist.append('[COLOR orange]Software Lists item count[/COLOR]')
-    slist.append("SL files           {0:6d}".format(control_dic['stats_SL_XML_files']))
-    slist.append("SL software items  {0:6d}".format(control_dic['stats_SL_software_items']))
-    slist.append("SL items with ROMs {0:6d}".format(control_dic['stats_SL_items_with_ROMs']))
-    slist.append("SL items with CHDs {0:6d}".format(control_dic['stats_SL_items_with_CHDs']))
+    if settings['enable_SL']:
+        slist.append("SL files           {0:6d}".format(control_dic['stats_SL_XML_files']))
+        slist.append("SL software items  {0:6d}".format(control_dic['stats_SL_software_items']))
+        slist.append("SL items with ROMs {0:6d}".format(control_dic['stats_SL_items_with_ROMs']))
+        slist.append("SL items with CHDs {0:6d}".format(control_dic['stats_SL_items_with_CHDs']))
+    else:
+        slist.append('Software Lists disabled')
 
-def mame_stats_scanner_print_slist(slist, control_dic):
+def mame_stats_scanner_print_slist(settings, slist, control_dic):
     # >> MAME statistics
     slist.append('[COLOR orange]MAME scanner information[/COLOR]')
     ta = "You have {0:5d} ROM ZIP files    out of  {1:5d}, missing    {2:5d}"
@@ -1795,14 +1798,17 @@ def mame_stats_scanner_print_slist(slist, control_dic):
     # >> SL statistics
     slist.append('')
     slist.append('[COLOR orange]Software List scanner information[/COLOR]')
-    ta = "You have {0:5d} SL ROMs out of {1:5d}, missing {2:5d}"
-    tb = "You have {0:5d} SL CHDs out of {1:5d}, missing {2:5d}"
-    slist.append(ta.format(control_dic['scan_SL_archives_ROM_have'],
-                           control_dic['scan_SL_archives_ROM_total'],
-                           control_dic['scan_SL_archives_ROM_missing']))
-    slist.append(tb.format(control_dic['scan_SL_archives_CHD_have'],
-                           control_dic['scan_SL_archives_CHD_total'],
-                           control_dic['scan_SL_archives_CHD_missing']))
+    if settings['enable_SL']:
+        ta = "You have {0:5d} SL ROMs out of {1:5d}, missing {2:5d}"
+        tb = "You have {0:5d} SL CHDs out of {1:5d}, missing {2:5d}"
+        slist.append(ta.format(control_dic['scan_SL_archives_ROM_have'],
+                               control_dic['scan_SL_archives_ROM_total'],
+                               control_dic['scan_SL_archives_ROM_missing']))
+        slist.append(tb.format(control_dic['scan_SL_archives_CHD_have'],
+                               control_dic['scan_SL_archives_CHD_total'],
+                               control_dic['scan_SL_archives_CHD_missing']))
+    else:
+        slist.append('Software Lists disabled')
 
     # --- MAME asset scanner ---
     slist.append('')
@@ -1868,37 +1874,40 @@ def mame_stats_scanner_print_slist(slist, control_dic):
     # --- Software List scanner ---
     slist.append('')
     slist.append('[COLOR orange]Software List asset scanner information[/COLOR]')
-    # slist.append('Total number of SL items {0:,d}'.format(control_dic['assets_SL_num_items']))
-    t = "You have {0:6d} SL 3D Boxes , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_SL_3dbox_have'],
-                          control_dic['assets_SL_3dbox_missing'],
-                          control_dic['assets_SL_3dbox_alternate']))
-    t = "You have {0:6d} SL Titles   , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_SL_titles_have'],
-                          control_dic['assets_SL_titles_missing'],
-                          control_dic['assets_SL_titles_alternate']))
-    t = "You have {0:6d} SL Snaps    , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_SL_snaps_have'],
-                          control_dic['assets_SL_snaps_missing'],
-                          control_dic['assets_SL_snaps_alternate']))
-    t = "You have {0:6d} SL Boxfronts, missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_SL_boxfronts_have'],
-                          control_dic['assets_SL_boxfronts_missing'],
-                          control_dic['assets_SL_boxfronts_alternate']))
-    t = "You have {0:6d} SL Fanarts  , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_SL_fanarts_have'],
-                          control_dic['assets_SL_fanarts_missing'],
-                          control_dic['assets_SL_fanarts_alternate']))
-    t = "You have {0:6d} SL Trailers , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_SL_trailers_have'],
-                          control_dic['assets_SL_trailers_missing'],
-                          control_dic['assets_SL_trailers_alternate']))
-    t = "You have {0:6d} SL Manuals  , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_SL_manuals_have'],
-                          control_dic['assets_SL_manuals_missing'],
-                          control_dic['assets_SL_manuals_alternate']))
+    if settings['enable_SL']:
+        # slist.append('Total number of SL items {0:,d}'.format(control_dic['assets_SL_num_items']))
+        t = "You have {0:6d} SL 3D Boxes , missing {1:6d}, alternate {2:6d}"
+        slist.append(t.format(control_dic['assets_SL_3dbox_have'],
+                              control_dic['assets_SL_3dbox_missing'],
+                              control_dic['assets_SL_3dbox_alternate']))
+        t = "You have {0:6d} SL Titles   , missing {1:6d}, alternate {2:6d}"
+        slist.append(t.format(control_dic['assets_SL_titles_have'],
+                              control_dic['assets_SL_titles_missing'],
+                              control_dic['assets_SL_titles_alternate']))
+        t = "You have {0:6d} SL Snaps    , missing {1:6d}, alternate {2:6d}"
+        slist.append(t.format(control_dic['assets_SL_snaps_have'],
+                              control_dic['assets_SL_snaps_missing'],
+                              control_dic['assets_SL_snaps_alternate']))
+        t = "You have {0:6d} SL Boxfronts, missing {1:6d}, alternate {2:6d}"
+        slist.append(t.format(control_dic['assets_SL_boxfronts_have'],
+                              control_dic['assets_SL_boxfronts_missing'],
+                              control_dic['assets_SL_boxfronts_alternate']))
+        t = "You have {0:6d} SL Fanarts  , missing {1:6d}, alternate {2:6d}"
+        slist.append(t.format(control_dic['assets_SL_fanarts_have'],
+                              control_dic['assets_SL_fanarts_missing'],
+                              control_dic['assets_SL_fanarts_alternate']))
+        t = "You have {0:6d} SL Trailers , missing {1:6d}, alternate {2:6d}"
+        slist.append(t.format(control_dic['assets_SL_trailers_have'],
+                              control_dic['assets_SL_trailers_missing'],
+                              control_dic['assets_SL_trailers_alternate']))
+        t = "You have {0:6d} SL Manuals  , missing {1:6d}, alternate {2:6d}"
+        slist.append(t.format(control_dic['assets_SL_manuals_have'],
+                              control_dic['assets_SL_manuals_missing'],
+                              control_dic['assets_SL_manuals_alternate']))
+    else:
+        slist.append('Software Lists disabled')
 
-def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
+def mame_stats_audit_print_slist(settings, slist, control_dic, settings_dic):
     rom_set = ['Merged', 'Split', 'Non-merged'][settings_dic['mame_rom_set']]
     chd_set = ['Merged', 'Split', 'Non-merged'][settings_dic['mame_chd_set']]
 
@@ -1945,14 +1954,17 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
     # --- SL item audit database statistics ---
     slist.append('')
     slist.append('[COLOR orange]SL audit database statistics[/COLOR]')
-    t = "{0:6d} runnable Software List items"
-    slist.append(t.format(control_dic['stats_audit_SL_items_runnable']))
-    t = "{0:6d} SL items require ROM ZIPs and/or CHDs"
-    slist.append(t.format(control_dic['stats_audit_SL_items_with_arch']))
-    t = "{0:6d} SL items require ROM ZIPs"
-    slist.append(t.format(control_dic['stats_audit_SL_items_with_arch_ROM']))
-    t = "{0:6d} SL items require CHDs"
-    slist.append(t.format(control_dic['stats_audit_SL_items_with_CHD']))
+    if settings['enable_SL']:
+        t = "{0:6d} runnable Software List items"
+        slist.append(t.format(control_dic['stats_audit_SL_items_runnable']))
+        t = "{0:6d} SL items require ROM ZIPs and/or CHDs"
+        slist.append(t.format(control_dic['stats_audit_SL_items_with_arch']))
+        t = "{0:6d} SL items require ROM ZIPs"
+        slist.append(t.format(control_dic['stats_audit_SL_items_with_arch_ROM']))
+        t = "{0:6d} SL items require CHDs"
+        slist.append(t.format(control_dic['stats_audit_SL_items_with_CHD']))
+    else:
+        slist.append('Software Lists disabled')
 
     # --- MAME audit info ---
     slist.append('\n[COLOR orange]MAME ROM audit information[/COLOR]')
@@ -1991,31 +2003,34 @@ def mame_stats_audit_print_slist(slist, control_dic, settings_dic):
 
     # --- SL audit info ---
     slist.append('\n[COLOR orange]SL audit information[/COLOR]')
-    table_str = []
-    table_str.append(['left', 'right', 'right',  'right'])
-    table_str.append(['Type', 'Total', 'Good',   'Bad'])
-    table_row = [
-        'SL items with ROMs and/or CHDs',
-        str(control_dic['audit_SL_items_with_arch']),
-        str(control_dic['audit_SL_items_with_arch_OK']),
-        str(control_dic['audit_SL_items_with_arch_BAD']),
-    ]
-    table_str.append(table_row)
-    table_row = [
-        'SL items with ROMs',
-        str(control_dic['audit_SL_items_with_arch_ROM']),
-        str(control_dic['audit_SL_items_with_arch_ROM_OK']),
-        str(control_dic['audit_SL_items_with_arch_ROM_BAD']),
-    ]
-    table_str.append(table_row)
-    table_row = [
-        'SL items with CHDs',
-        str(control_dic['audit_SL_items_with_CHD']),
-        str(control_dic['audit_SL_items_with_CHD_OK']),
-        str(control_dic['audit_SL_items_with_CHD_BAD']),
-    ]
-    table_str.append(table_row)
-    slist.extend(text_render_table_str(table_str))
+    if settings['enable_SL']:
+        table_str = []
+        table_str.append(['left', 'right', 'right',  'right'])
+        table_str.append(['Type', 'Total', 'Good',   'Bad'])
+        table_row = [
+            'SL items with ROMs and/or CHDs',
+            str(control_dic['audit_SL_items_with_arch']),
+            str(control_dic['audit_SL_items_with_arch_OK']),
+            str(control_dic['audit_SL_items_with_arch_BAD']),
+        ]
+        table_str.append(table_row)
+        table_row = [
+            'SL items with ROMs',
+            str(control_dic['audit_SL_items_with_arch_ROM']),
+            str(control_dic['audit_SL_items_with_arch_ROM_OK']),
+            str(control_dic['audit_SL_items_with_arch_ROM_BAD']),
+        ]
+        table_str.append(table_row)
+        table_row = [
+            'SL items with CHDs',
+            str(control_dic['audit_SL_items_with_CHD']),
+            str(control_dic['audit_SL_items_with_CHD_OK']),
+            str(control_dic['audit_SL_items_with_CHD_BAD']),
+        ]
+        table_str.append(table_row)
+        slist.extend(text_render_table_str(table_str))
+    else:
+        slist.append('Software Lists disabled')
 
 # -------------------------------------------------------------------------------------------------
 # Check/Update/Repair Favourite ROM objects
