@@ -526,8 +526,10 @@ def get_settings():
 
     # --- Main operation ---
     g_settings['op_mode_raw']    = int(o.getSetting('op_mode_raw'))
+    g_settings['enable_SL']      = True if o.getSetting('enable_SL') == 'true' else False
     g_settings['mame_prog']      = o.getSetting('mame_prog').decode('utf-8')
     g_settings['retroarch_prog'] = o.getSetting('retroarch_prog').decode('utf-8')
+    g_settings['libretro_dir']   = o.getSetting('libretro_dir').decode('utf-8')
     g_settings['xml_2003_path']  = o.getSetting('xml_2003_path').decode('utf-8')
 
     # --- Optional paths ---
@@ -1083,7 +1085,7 @@ def render_root_list():
         render_root_category_row('Command DAT', misc_url_1_arg('catalog', 'Command'), Command_plot)
 
     # --- Software lists ---
-    if g_settings['display_SL_browser']:
+    if g_settings['display_SL_browser'] and g_settings['enable_SL']:
         render_root_category_row(SL_all_str, misc_url_1_arg('catalog', 'SL'), SL_all_plot)
         render_root_category_row(SL_ROM_str, misc_url_1_arg('catalog', 'SL_ROM'), SL_ROM_plot)
         render_root_category_row(SL_mixed_str, misc_url_1_arg('catalog', 'SL_ROM_CHD'), SL_ROM_CHD_plot)
@@ -1249,6 +1251,9 @@ def render_skin_dat_slots():
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_SL_filters():
+    if not g_settings['enable_SL']:
+        xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
+        return
     SL_all_str = 'Software Lists (all)'
     SL_ROM_str = 'Software Lists (with ROMs)'
     SL_mixed_str = 'Software Lists (with ROMs and CHDs)'
@@ -5398,12 +5403,15 @@ def command_context_setup_plugin():
             db_dic['main_pclone_dic'], db_dic['assets'])
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs (optional) ---
-        options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            SL_dic = mame_build_SoftwareLists_databases(g_PATHS, g_settings, control_dic,
-                db_dic['machines'], db_dic['render'])
+        if g_settings['enable_SL']:
+            options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
+            if not options_dic['abort']:
+                SL_dic = mame_build_SoftwareLists_databases(g_PATHS, g_settings, control_dic,
+                    db_dic['machines'], db_dic['render'])
+            else:
+                log_info('Skipping mame_build_SoftwareLists_databases()')
         else:
-            log_info('Skipping mame_build_SoftwareLists_databases()')
+            log_info('SL disabled. Skipping mame_build_SoftwareLists_databases()')
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status (optional) ---
         options_dic = mame_check_before_scan_MAME_ROMs(g_PATHS, g_settings, control_dic)
@@ -5423,19 +5431,25 @@ def command_context_setup_plugin():
             log_info('Skipping mame_scan_MAME_assets()')
 
         # --- Scan SL ROMs/CHDs (optional) ---
-        options_dic = mame_check_before_scan_SL_ROMs(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_SL_ROMs(g_PATHS, g_settings, control_dic, options_dic, SL_dic['SL_index'])
+        if g_settings['enable_SL']:
+            options_dic = mame_check_before_scan_SL_ROMs(g_PATHS, g_settings, control_dic)
+            if not options_dic['abort']:
+                mame_scan_SL_ROMs(g_PATHS, g_settings, control_dic, options_dic, SL_dic['SL_index'])
+            else:
+                log_info('Skipping mame_scan_SL_ROMs()')
         else:
-            log_info('Skipping mame_scan_SL_ROMs()')
+            log_info('SL disabled. Skipping mame_scan_SL_ROMs()')
 
         # --- Scan SL assets/artwork (optional) ---
-        options_dic = mame_check_before_scan_SL_assets(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_SL_assets(g_PATHS, g_settings, control_dic,
-                SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
+        if g_settings['enable_SL']:
+            options_dic = mame_check_before_scan_SL_assets(g_PATHS, g_settings, control_dic)
+            if not options_dic['abort']:
+                mame_scan_SL_assets(g_PATHS, g_settings, control_dic,
+                    SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
+            else:
+                log_info('Skipping mame_scan_SL_assets()')
         else:
-            log_info('Skipping mame_scan_SL_assets()')
+            log_info('SL disabled. Skipping mame_scan_SL_assets()')
 
         # --- Build MAME machines plot ---
         mame_build_MAME_plots(g_PATHS, g_settings, control_dic,
@@ -5444,8 +5458,11 @@ def command_context_setup_plugin():
             db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
 
         # --- Buils Software List items plot ---
-        mame_build_SL_plots(g_PATHS, g_settings, control_dic,
-            SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
+        if g_settings['enable_SL']:
+            mame_build_SL_plots(g_PATHS, g_settings, control_dic,
+                SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
+        else:
+            log_info('SL disabled. Skipping mame_build_SL_plots()')
 
         # --- Regenerate the custom filters ---
         (main_filter_dic, sets_dic) = filter_get_filter_DB(g_PATHS,
@@ -5475,7 +5492,10 @@ def command_context_setup_plugin():
                 db_dic['machines'], db_dic['render'], audit_dic['audit_roms'])
 
             # --- SL audit ---
-            mame_audit_SL_all(g_PATHS, g_settings, control_dic, SL_dic['SL_index'])
+            if g_settings['enable_SL']:
+                mame_audit_SL_all(g_PATHS, g_settings, control_dic, SL_dic['SL_index'])
+            else:
+                log_info('SL disabled. Skipping mame_audit_SL_all()')
 
         # --- So long and thanks for all the fish ---
         if DO_AUDIT:
@@ -5551,12 +5571,15 @@ def command_context_setup_plugin():
         del db_dic['cache_index']
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs (optional) ---
-        options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            SL_dic = mame_build_SoftwareLists_databases(g_PATHS, g_settings, control_dic,
-                db_dic['machines'], db_dic['render'])
+        if g_settings['enable_SL']:
+            options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
+            if not options_dic['abort']:
+                SL_dic = mame_build_SoftwareLists_databases(g_PATHS, g_settings, control_dic,
+                    db_dic['machines'], db_dic['render'])
+            else:
+                log_info('Skipping mame_build_SoftwareLists_databases()')
         else:
-            log_info('Skipping mame_build_SoftwareLists_databases()')
+            log_info('SL disabled. Skipping mame_build_SoftwareLists_databases()')
 
         # --- So long and thanks for all the fish ---
         kodi_notify('All databases built')
@@ -5625,33 +5648,36 @@ def command_context_setup_plugin():
                 db_dic['cache_index'], db_dic['assets'])
 
         # --- Software Lists ---------------------------------------------------------------------
-        # --- Load databases ---
-        db_files = [
-            ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
-            ['SL_PClone_dic', 'Software Lists Parent/Clone database', g_PATHS.SL_PCLONE_DIC_PATH.getPath()],
-            ['SL_machines', 'Software Lists machines', g_PATHS.SL_MACHINES_PATH.getPath()],
-        ]
-        SL_dic = fs_load_files(db_files)
+        if g_settings['enable_SL']:
+            # --- Load databases ---
+            db_files = [
+                ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
+                ['SL_PClone_dic', 'Software Lists Parent/Clone database', g_PATHS.SL_PCLONE_DIC_PATH.getPath()],
+                ['SL_machines', 'Software Lists machines', g_PATHS.SL_MACHINES_PATH.getPath()],
+            ]
+            SL_dic = fs_load_files(db_files)
 
-        # --- Scan SL ROMs/CHDs (optional) ---
-        options_dic = mame_check_before_scan_SL_ROMs(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_SL_ROMs(g_PATHS, g_settings, control_dic,
-                options_dic, SL_dic['SL_index'])
+            # --- Scan SL ROMs/CHDs (optional) ---
+            options_dic = mame_check_before_scan_SL_ROMs(g_PATHS, g_settings, control_dic)
+            if not options_dic['abort']:
+                mame_scan_SL_ROMs(g_PATHS, g_settings, control_dic,
+                    options_dic, SL_dic['SL_index'])
+            else:
+                log_info('Skipping mame_scan_SL_ROMs()')
+
+            # --- Scan SL assets/artwork (optional) ---
+            options_dic = mame_check_before_scan_SL_assets(g_PATHS, g_settings, control_dic)
+            if not options_dic['abort']:
+                mame_scan_SL_assets(g_PATHS, g_settings, control_dic,
+                    SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
+            else:
+                log_info('Skipping mame_scan_SL_assets()')
+
+            # --- Buils Software List items plot (mandatory) ---
+            mame_build_SL_plots(g_PATHS, g_settings, control_dic,
+                SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
         else:
-            log_info('Skipping mame_scan_SL_ROMs()')
-
-        # --- Scan SL assets/artwork (optional) ---
-        options_dic = mame_check_before_scan_SL_assets(g_PATHS, g_settings, control_dic)
-        if not options_dic['abort']:
-            mame_scan_SL_assets(g_PATHS, g_settings, control_dic,
-                SL_dic['SL_index'], SL_dic['SL_PClone_dic'])
-        else:
-            log_info('Skipping mame_scan_SL_assets()')
-
-        # --- Buils Software List items plot (mandatory) ---
-        mame_build_SL_plots(g_PATHS, g_settings, control_dic,
-            SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
+            log_info('SL disabled. Skipping SL scanning and plot building.')
 
         # --- So long and thanks for all the fish ---
         kodi_notify('All ROM/asset scanning finished')

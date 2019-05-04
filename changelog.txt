@@ -63,6 +63,8 @@ WIP      Read-only Launcher (ROLs) to export into AEL.
 
 [B]Advanced MAME Launcher | version 0.9.10 | xx May 2019[/B]
 
+FEATURE  Option to disable Software Lists at all.
+
 FEATURE  Management of MAME Favourite objects (delete missing, delete single).
 
 FEATURE  Management of SL Favourite objects (delete missing, delete single).
