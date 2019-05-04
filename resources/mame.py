@@ -1799,8 +1799,8 @@ def mame_stats_scanner_print_slist(settings, slist, control_dic):
     slist.append('')
     slist.append('[COLOR orange]Software List scanner information[/COLOR]')
     if settings['enable_SL']:
-        ta = "You have {0:5d} SL ROMs out of {1:5d}, missing {2:5d}"
-        tb = "You have {0:5d} SL CHDs out of {1:5d}, missing {2:5d}"
+        ta = "You have {0:6d} SL ROMs out of {1:6d}, missing {2:6d}"
+        tb = "You have {0:6d} SL CHDs out of {1:6d}, missing {2:6d}"
         slist.append(ta.format(control_dic['scan_SL_archives_ROM_have'],
                                control_dic['scan_SL_archives_ROM_total'],
                                control_dic['scan_SL_archives_ROM_missing']))

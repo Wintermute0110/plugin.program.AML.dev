@@ -6786,11 +6786,11 @@ def command_exec_report(which_report):
             return
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
-        mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
+        mame_stats_main_print_slist(g_settings, info_text, control_dic, __addon_version__)
         info_text.append('')
-        mame_stats_scanner_print_slist(info_text, control_dic)
+        mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
         info_text.append('')
-        mame_stats_audit_print_slist(info_text, control_dic, g_settings)
+        mame_stats_audit_print_slist(g_settings, info_text, control_dic, g_settings)
         display_text_window('Database full statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_WRITE_FILE':
@@ -6801,11 +6801,11 @@ def command_exec_report(which_report):
 
         # --- Generate stats string and remove Kodi colours ---
         info_text = []
-        mame_stats_main_print_slist(info_text, control_dic, __addon_version__)
+        mame_stats_main_print_slist(g_settings, info_text, control_dic, __addon_version__)
         info_text.append('')
-        mame_stats_scanner_print_slist(info_text, control_dic)
+        mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
         info_text.append('')
-        mame_stats_audit_print_slist(info_text, control_dic, g_settings)
+        mame_stats_audit_print_slist(g_settings, info_text, control_dic, g_settings)
         # text_remove_slist_colours(info_text)
 
         # --- Write file to disk and inform user ---
