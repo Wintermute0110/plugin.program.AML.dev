@@ -547,7 +547,7 @@ def get_settings():
     g_settings['SL_chd_set']   = int(o.getSetting('SL_chd_set'))
     g_settings['filter_XML']   = o.getSetting('filter_XML').decode('utf-8')
 
-    # --- Display ---
+    # --- Display I ---
     g_settings['display_launcher_notify'] = True if o.getSetting('display_launcher_notify') == 'true' else False
     g_settings['mame_view_mode']          = int(o.getSetting('mame_view_mode'))
     g_settings['sl_view_mode']            = int(o.getSetting('sl_view_mode'))
@@ -558,6 +558,7 @@ def get_settings():
     g_settings['display_rom_available']   = True if o.getSetting('display_rom_available') == 'true' else False
     g_settings['display_chd_available']   = True if o.getSetting('display_chd_available') == 'true' else False
 
+    # --- Display II ---
     g_settings['display_main_filters']    = True if o.getSetting('display_main_filters') == 'true' else False
     g_settings['display_binary_filters']  = True if o.getSetting('display_binary_filters') == 'true' else False
     g_settings['display_catalog_filters'] = True if o.getSetting('display_catalog_filters') == 'true' else False
