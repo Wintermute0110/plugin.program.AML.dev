@@ -7160,6 +7160,8 @@ def run_machine(machine_name, location):
     run_before_execution()
     run_process(g_PATHS, arg_list, mame_dir)
     run_after_execution()
+    # Refresh list so Most Played and Recently played get updated.
+    kodi_refresh_container()
     log_info('run_machine() Exiting function.')
 
 #
@@ -7456,7 +7458,9 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
     run_before_execution()
     run_process(g_PATHS, arg_list, mame_dir)
     run_after_execution()
-    log_info('() Exiting function.')
+    # Refresh list so Most Played and Recently played get updated.
+    kodi_refresh_container()
+    log_info('run_SL_machine() Exiting function.')
 
 def run_before_execution():
     global g_flag_kodi_was_playing
