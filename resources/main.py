@@ -2329,7 +2329,6 @@ def render_SL_list_row(SL_name, SL):
 
     # --- Create context menu ---
     commands = [
-        ('View', misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)' ),
         ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
     ]
