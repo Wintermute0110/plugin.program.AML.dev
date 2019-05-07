@@ -1713,17 +1713,17 @@ def mame_stats_main_print_slist(settings, slist, control_dic, AML_version_str):
     slist.append('')
     slist.append('[COLOR orange]MAME machine statistics[/COLOR]')
     table_str = []
-    table_str.append(['left', 'right', 'right', 'right',     'right'])
-    table_str.append(['Type', 'Total', 'Good',  'Imperfect', 'Nonworking'])
+    table_str.append(['left', 'right', 'right', 'right', 'right'])
+    table_str.append(['Type (parents/total)', 'Total', 'Good',  'Imperfect', 'Nonworking'])
     table_str.append([
-        'Coin slot machines (Normal)',
+        'Coin slot (Normal)',
         '{0:5d}'.format(control_dic['stats_MF_Normal_Total']),
         '{0:5d}'.format(control_dic['stats_MF_Normal_Good']),
         '{0:5d}'.format(control_dic['stats_MF_Normal_Imperfect']),
         '{0:5d}'.format(control_dic['stats_MF_Normal_Nonworking']),
     ])
     table_str.append([
-        'Coin slot machines (Unusual)',
+        'Coin slot (Unusual)',
         '{0:5d}'.format(control_dic['stats_MF_Unusual_Total']),
         '{0:5d}'.format(control_dic['stats_MF_Unusual_Good']),
         '{0:5d}'.format(control_dic['stats_MF_Unusual_Imperfect']),
