@@ -1149,6 +1149,11 @@ def fs_count_MAME_machines_archaic(XML_path_FN):
 
 #
 # Creates a new control_dic and updates the number of machines.
+# Returns:
+# options_dic['abort']
+# options_dic['msg']            Only valid if options_dic['abort'] is True
+# options_dic['filesize']       In bytes
+# options_dic['total_machines'] Integer
 #
 def fs_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
     options_dic['abort'] = False
@@ -1156,7 +1161,7 @@ def fs_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
     # --- Check for errors ---
     if not settings['mame_prog']:
         options_dic['abort'] = True
-        kodi_dialog_OK('MAME executable is not set.')
+        options_dic['msg'] = 'MAME executable is not set.'
         return
 
     # Extract XML from MAME executable.

@@ -528,6 +528,8 @@ def get_settings():
     g_settings['op_mode_raw']    = int(o.getSetting('op_mode_raw'))
     g_settings['enable_SL']      = True if o.getSetting('enable_SL') == 'true' else False
     g_settings['mame_prog']      = o.getSetting('mame_prog').decode('utf-8')
+    g_settings['SL_hash_path'] = o.getSetting('SL_hash_path').decode('utf-8')
+
     g_settings['retroarch_prog'] = o.getSetting('retroarch_prog').decode('utf-8')
     g_settings['libretro_dir']   = o.getSetting('libretro_dir').decode('utf-8')
     g_settings['xml_2003_path']  = o.getSetting('xml_2003_path').decode('utf-8')
@@ -538,7 +540,6 @@ def get_settings():
     g_settings['dats_path']    = o.getSetting('dats_path').decode('utf-8')
     g_settings['chd_path']     = o.getSetting('chd_path').decode('utf-8')
     g_settings['samples_path'] = o.getSetting('samples_path').decode('utf-8')
-    g_settings['SL_hash_path'] = o.getSetting('SL_hash_path').decode('utf-8')
     g_settings['SL_rom_path']  = o.getSetting('SL_rom_path').decode('utf-8')
     g_settings['SL_chd_path']  = o.getSetting('SL_chd_path').decode('utf-8')
 
@@ -5380,7 +5381,9 @@ def command_context_setup_plugin():
             log_error('command_context_setup_plugin() Unknown op_mode "{0}"'.format(g_settings['op_mode']))
             kodi_notify_warn('Database not built')
             return
-        if options_dic['abort']: return
+        if options_dic['abort']:
+            kodi_dialog_OK(options_dic['msg'])
+            return
 
         # --- Build main MAME database, PClone list and MAME hashed database (mandatory) ---
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -5504,21 +5507,30 @@ def command_context_setup_plugin():
 
     # --- Extract MAME.xml ---
     elif menu_item == 3:
-        log_info('command_context_setup_plugin() Extract MAME.xml starting ...')
-
-        # --- Check for errors before extracting MAME XML ---
-        if not g_settings['mame_prog']:
-            kodi_dialog_OK('MAME executable is not set.')
+        log_info('command_context_setup_plugin() Extract/Process MAME.xml starting ...')
+        options_dic = {}
+        if g_settings['op_mode'] == OP_MODE_EXTERNAL:
+            # Extract MAME.xml from MAME exectuable.
+            # Reset control_dic and count the number of MAME machines.
+            fs_extract_MAME_XML(g_PATHS, g_settings, __addon_version__, options_dic)
+        elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+            # For MAME 2003 Plus the XML is already there.
+            # Reset control_dic and count the number of machines.
+            fs_process_RETRO_MAME2003PLUS(g_PATHS, g_settings, __addon_version__, options_dic)
+        else:
+            log_error('command_context_setup_plugin() Unknown op_mode "{0}"'.format(g_settings['op_mode']))
+            kodi_notify_warn('Database not built')
             return
-        mame_prog_FN = FileName(g_settings['mame_prog'])
+        if options_dic['abort']:
+            kodi_dialog_OK(options_dic['msg'])
+            return
 
-        # --- Extract MAME XML ---
-        # 1) Creates MAME.xml
-        # 2) Counts the number of MAME machines.
-        # 3) Resets and saves control_dic.
-        (filesize, total_machines) = fs_extract_MAME_XML(g_PATHS, mame_prog_FN, __addon_version__)
-        kodi_dialog_OK('Extracted MAME XML database. '
-                       'Size is {0} MB and there are {1} machines.'.format(filesize / 1000000, total_machines))
+        # Inform user everything went well.
+        size_MB = options_dic['filesize'] / 1000000
+        num_m = options_dic['total_machines']
+        kodi_dialog_OK(
+            'Extracted MAME XML database. '
+            'Size is {0} MB and there are {1} machines.'.format(size_MB, num_m))
 
     # --- Build everything ---
     elif menu_item == 4:
