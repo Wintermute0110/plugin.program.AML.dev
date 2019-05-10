@@ -61,9 +61,9 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
 WIP      Read-only Launcher (ROLs) to export into AEL.
 
 
-[B]Advanced MAME Launcher | version 0.9.10 | xx May 2019[/B]
+[B]Advanced MAME Launcher | version 0.9.10 | 10 May 2019[/B]
 
-FEATURE  Option to disable Software Lists at all.
+FEATURE  Option to disable Software Lists at all in Vanilla MAME mode.
 
 FEATURE  Management of MAME Favourite objects (delete missing, delete single).
 
