@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python -B
 # -*- coding: utf-8 -*-
 # xxx
 #
@@ -31,13 +31,13 @@ def log_verb(str): print(str)
 # See header of MAMEINFO.dat for a list of all MAME versions.
 #
 # M.mmm.Xbb
-# | |   ||--> Beta flag 0, 1, ..., 99
-# | |   ||--> Release kind flag 
-# | |         5 for non-beta, non-alpha, non RC versions.
-# | |         2 for RC versions
-# | |         1 for beta versions
-# | |         0 for alpha versions
-# | |-------> Minor version 0, 1, ..., 999
+# |   | | |-> Beta flag 0, 1, ..., 99
+# |   | |---> Release kind flag 
+# |   |       5 for non-beta, non-alpha, non RC versions.
+# |   |       2 for RC versions
+# |   |       1 for beta versions
+# |   |       0 for alpha versions
+# |   |-----> Minor version 0, 1, ..., 999
 # |---------> Major version 0, ..., infinity
 #
 # See https://retropie.org.uk/docs/MAME/
@@ -105,7 +105,8 @@ for test_list in input_str_list:
     version_str = test_list[0]
     expected_int = test_list[1]
     version_int = mame_get_numerical_version(version_str)
-    print('Input  {0} --> Output {1:,}'.format(version_str, version_int))
+    print('Input  {}'.format(version_str))
+    print('Output {:,}'.format(version_int))
     if expected_int != version_int:
         print('Expected {0:,} and obtained {1:,}'.format(expected_int, version_int))
         print('Test failed.')

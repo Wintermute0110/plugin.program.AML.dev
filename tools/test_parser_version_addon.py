@@ -27,8 +27,9 @@ def log_debug(str): print(str)
 
 # --- AML code ------------------------------------------------------------------------------------
 #
-# AML version is like this: xxx.yyy.zzz[-|~][alpha[jj]|beta[jj]]
-# It gets converted to: xxx.yyy.zzz ijj -> int xxx,yyy,zzz,ijj
+# All version numbers must be less than 100, except the major version.
+# AML version is like this: aa.bb.cc[-|~][alpha[dd]|beta[dd]]
+# It gets converted to: aa.bb.cc Rdd -> int aab,bcc,Rdd
 # The number 2,147,483,647 is the maximum positive value for a 32-bit signed binary integer.
 #
 # aa.bb.cc.Xdd    formatted aab,bcc,Xdd
@@ -39,18 +40,18 @@ def log_debug(str): print(str)
 #  |  |  |        1 for beta versions
 #  |  |  |        0 for alpha versions
 #  |  |  |------> Build version 0, 1, ..., 99
-#  |  |----------> Minor version 0, 1, ..., 99
-#  |--------------> Major version 0, ..., infinity
+#  |  |---------> Minor version 0, 1, ..., 99
+#  |------------> Major version 0, ..., infinity
 #
 def fs_AML_version_str_to_int(AML_version_str):
     log_verb('fs_AML_version_str_to_int() AML_version_str = "{0}"'.format(AML_version_str))
     version_int = 0
-    # Parse versions like 0.9.8[-|~]alpha[jj]
-    m_obj_alpha_n = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)(\d+?)', AML_version_str)
-    # Parse versions like 0.9.8[-|~]alpha[jj]
-    m_obj_alpha = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)', AML_version_str)
-    # Parse versions like 0.9.8
-    m_obj_standard = re.search('^(\d+?)\.(\d+?)\.(\d+?)', AML_version_str)
+    # Parse versions like "0.9.8[-|~]alpha[jj]"
+    m_obj_alpha_n = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)(\d+?)$', AML_version_str)
+    # Parse versions like "0.9.8[-|~]alpha[jj]"
+    m_obj_alpha = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)$', AML_version_str)
+    # Parse versions like "0.9.8"
+    m_obj_standard = re.search('^(\d+?)\.(\d+?)\.(\d+?)$', AML_version_str)
 
     if m_obj_alpha_n:
         major  = int(m_obj_alpha_n.group(1))
@@ -103,9 +104,12 @@ input_str_list = [
     ['0.9.9-beta',   909100],
     ['0.9.9-beta2',  909102],
     ['0.9.9',        909500],
+    ['0.9.10',       910500],
     ['0.10.0',      1000500],
-    ['1.1.1',     10101500],
-    ['2.1.1',     20101500],
+    ['1.1.1',      10101500],
+    ['1.10.1',     11001500],
+    ['2.1.1',      20101500],
+    ['10.10.10',  101010500],
 ]
 
 print('Unitary tests fs_AML_version_str_to_int()\n')
@@ -113,7 +117,8 @@ for test_list in input_str_list:
     version_str = test_list[0]
     expected_int = test_list[1]
     version_int = fs_AML_version_str_to_int(version_str)
-    print('Input  {0} --> Output {1:,}'.format(version_str, version_int))
+    print('Input  {}'.format(version_str))
+    print('Output {:,}'.format(version_int))
     if expected_int != version_int:
         print('Expected {0:,} and obtained {1:,}'.format(expected_int, version_int))
         print('Test failed.')

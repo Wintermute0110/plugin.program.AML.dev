@@ -169,13 +169,13 @@ SL_better_name_dic = {
 # See header of MAMEINFO.dat for a list of all MAME versions.
 #
 # M.mmm.Xbb
-# | |   ||--> Beta flag 0, 1, ..., 99
-# | |   ||--> Release kind flag 
-# | |         5 for non-beta, non-alpha, non RC versions.
-# | |         2 for RC versions
-# | |         1 for beta versions
-# | |         0 for alpha versions
-# | |-------> Minor version 0, 1, ..., 999
+# |   | | |-> Beta flag 0, 1, ..., 99
+# |   | |---> Release kind flag 
+# |   |       5 for non-beta, non-alpha, non RC versions.
+# |   |       2 for RC versions
+# |   |       1 for beta versions
+# |   |       0 for alpha versions
+# |   |-----> Minor version 0, 1, ..., 999
 # |---------> Major version 0, ..., infinity
 #
 # See https://retropie.org.uk/docs/MAME/

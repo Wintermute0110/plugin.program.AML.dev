@@ -40,7 +40,10 @@ WIP      [GRAPHICS] Optimize the generation of 3D boxes. Cache the background im
          in all boxes.
 
 
-[B]Advanced MAME Launcher | version 0.9.11 | xx June 2019[/B]
+[B]Advanced MAME Launcher | version 0.9.11 | xx November 2019[/B]
+
+WIP      [CORE] For SL, instead of showing the number of ROMs show the number of Items
+         in Flat display mode or Parents in Parent/Clone display mode.
 
 WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
          Github wiki.
@@ -59,6 +62,8 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
          See https://github.com/libretro/mame2010-libretro/tree/master/metadata
 
 WIP      Read-only Launcher (ROLs) to export into AEL.
+
+FIX      Fixed conversion to int of addon version str in fs_AML_version_str_to_int()
 
 
 [B]Advanced MAME Launcher | version 0.9.10 | 10 May 2019[/B]

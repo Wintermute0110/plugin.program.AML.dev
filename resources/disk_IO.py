@@ -652,7 +652,7 @@ def change_control_dic(control_dic, field, value):
 # It gets converted to: aa.bb.cc Rdd -> int aab,bcc,Rdd
 # The number 2,147,483,647 is the maximum positive value for a 32-bit signed binary integer.
 #
-# aa.bb.cc.Rdd    formatted aab,bcc,Xdd
+# aa.bb.cc.Xdd    formatted aab,bcc,Xdd
 #  |  |  | | |--> Beta/Alpha flag 0, 1, ..., 99
 #  |  |  | |----> Release kind flag 
 #  |  |  |        5 for non-beta, non-alpha, non RC versions.
@@ -666,12 +666,12 @@ def change_control_dic(control_dic, field, value):
 def fs_AML_version_str_to_int(AML_version_str):
     log_verb('fs_AML_version_str_to_int() AML_version_str = "{0}"'.format(AML_version_str))
     version_int = 0
-    # Parse versions like 0.9.8[-|~]alpha[jj]
-    m_obj_alpha_n = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)(\d+?)', AML_version_str)
-    # Parse versions like 0.9.8[-|~]alpha
-    m_obj_alpha = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)', AML_version_str)
-    # Parse versions like 0.9.8
-    m_obj_standard = re.search('^(\d+?)\.(\d+?)\.(\d+?)', AML_version_str)
+    # Parse versions like "0.9.8[-|~]alpha[jj]"
+    m_obj_alpha_n = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)(\d+?)$', AML_version_str)
+    # Parse versions like "0.9.8[-|~]alpha"
+    m_obj_alpha = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)$', AML_version_str)
+    # Parse versions like "0.9.8"
+    m_obj_standard = re.search('^(\d+?)\.(\d+?)\.(\d+?)$', AML_version_str)
 
     if m_obj_alpha_n:
         major    = int(m_obj_alpha_n.group(1))

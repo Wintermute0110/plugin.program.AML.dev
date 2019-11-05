@@ -3237,7 +3237,6 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
 
         # --- Table header ---
         # Table cell padding: left, right
-        # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
         table_str = [
             ['right', 'left',     'right', 'left',     'left',  'left'],
             ['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Merge', 'BIOS/Device'],
@@ -4019,7 +4018,6 @@ def command_context_manage_mame_most_played(machine_name):
     # --- Execute actions ---
     if action == ACTION_DELETE_MACHINE:
         log_debug('command_context_manage_mame_most_played() ACTION_DELETE_MACHINE')
-        log_debug('machine_name "{0}"'.format(machine_name))
         db_files = [
             ['most_played_roms', 'MAME Most Played machines', g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath()],
         ]
