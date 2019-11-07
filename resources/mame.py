@@ -614,7 +614,7 @@ def mame_load_INI_datfile_simple(filename):
         elif fsm_status == FSM_FOLDER_NAME:
             m = re.search(r'^\[(.*)\]', stripped_line)
             if m:
-                current_category = m.group(1)
+                current_category = str(m.group(1))
                 if current_category in ini_dic['categories']:
                     raise ValueError('Repeated category {0}'.format(current_category))
                 ini_dic['categories'].add(current_category)
@@ -1388,18 +1388,18 @@ def _str_time(secs):
 
 def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append('[COLOR orange]Machine {0} / Render data[/COLOR]'.format(machine_name))
-    # >> Print MAME Favourites special fields
+    # Print MAME Favourites special fields
     if 'ver_mame' in machine:
         slist.append("[COLOR slateblue]name[/COLOR]: {0}".format(machine['name']))
     if 'ver_mame' in machine:
         slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(machine['ver_mame']))
     if 'ver_mame_str' in machine:
         slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(machine['ver_mame_str']))
-    # >> Most Played Favourites special fields
+    # Most Played Favourites special fields
     if 'launch_count' in machine:
         slist.append("[COLOR slateblue]launch_count[/COLOR]: {0}".format(unicode(machine['launch_count'])))
 
-    # >> Standard fields in Render database
+    # Standard fields in Render database
     slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(machine['cloneof']))
     slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(machine['description']))
     slist.append("[COLOR violet]driver_status[/COLOR]: '{0}'".format(machine['driver_status']))
@@ -1411,8 +1411,9 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR violet]nplayers[/COLOR]: '{0}'".format(machine['nplayers']))
     slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(machine['year']))
 
-    # >> Standard fields in Main database
+    # Standard fields in Main database
     slist.append('\n[COLOR orange]Machine Main data[/COLOR]')
+    slist.append("[COLOR skyblue]alltime[/COLOR]: {0}".format(unicode(machine['alltime'])))
     slist.append("[COLOR skyblue]artwork[/COLOR]: {0}".format(unicode(machine['artwork'])))
     slist.append("[COLOR violet]bestgames[/COLOR]: '{0}'".format(machine['bestgames']))
     slist.append("[COLOR skyblue]category[/COLOR]: {0}".format(unicode(machine['category'])))
@@ -1439,13 +1440,13 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR violet]genre[/COLOR]: '{0}'".format(machine['genre']))
     # --- input is a special case ---
     if machine['input']:
-        # >> Print attributes
+        # Print attributes
         slist.append("[COLOR lime]input[/COLOR]:")
         slist.append("  [COLOR skyblue]att_coins[/COLOR]: {0}".format(unicode(machine['input']['att_coins'])))
         slist.append("  [COLOR skyblue]att_players[/COLOR]: {0}".format(unicode(machine['input']['att_players'])))
         slist.append("  [COLOR skyblue]att_service[/COLOR]: {0}".format(unicode(machine['input']['att_service'])))
         slist.append("  [COLOR skyblue]att_tilt[/COLOR]: {0}".format(unicode(machine['input']['att_tilt'])))
-        # >> Print control tag list
+        # Print control tag list
         for i, control in enumerate(machine['input']['control_list']):
             slist.append("[COLOR lime]control[/COLOR][{0}]:".format(i))
             slist.append("  [COLOR violet]type[/COLOR]: {0}".format(control['type']))
@@ -3703,6 +3704,7 @@ STOP_AFTER_MACHINES = 250000
 
 def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str):
     DATS_dir_FN = FileName(settings['dats_path'])
+    ALLTIME_FN = DATS_dir_FN.pjoin(ALLTIME_INI)
     ARTWORK_FN = DATS_dir_FN.pjoin(ARTWORK_INI)
     BESTGAMES_FN = DATS_dir_FN.pjoin(BESTGAMES_INI)
     CATEGORY_FN = DATS_dir_FN.pjoin(CATEGORY_INI)
@@ -3730,6 +3732,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     log_info('SL_rom_path    = "{0}"'.format(settings['SL_rom_path']))
     log_info('SL_chd_path    = "{0}"'.format(settings['SL_chd_path']))
     log_info('--- INI paths ---')
+    log_info('alltime_path   = "{0}"'.format(ALLTIME_FN.getPath()))
     log_info('artwork_path   = "{0}"'.format(ARTWORK_FN.getPath()))
     log_info('bestgames_path = "{0}"'.format(BESTGAMES_FN.getPath()))
     log_info('category_path  = "{0}"'.format(CATEGORY_FN.getPath()))
@@ -3758,27 +3761,29 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
 
     # --- Load INI files to include category information ---
     pdialog_line1 = 'Processing INI files ...'
-    num_items = 9
+    num_items = 10
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(int((0*100) / num_items), pdialog_line1, ARTWORK_INI)
+    pDialog.update(int((0*100) / num_items), pdialog_line1, ALLTIME_INI)
+    alltime_dic = mame_load_INI_datfile_simple(ALLTIME_FN.getPath())
+    pDialog.update(int((1*100) / num_items), pdialog_line1, ARTWORK_INI)
     artwork_dic = mame_load_INI_datfile_simple(ARTWORK_FN.getPath())
-    pDialog.update(int((1*100) / num_items), pdialog_line1, BESTGAMES_INI)
+    pDialog.update(int((2*100) / num_items), pdialog_line1, BESTGAMES_INI)
     bestgames_dic = mame_load_INI_datfile_simple(BESTGAMES_FN.getPath())
-    pDialog.update(int((2*100) / num_items), pdialog_line1, CATEGORY_INI)
+    pDialog.update(int((3*100) / num_items), pdialog_line1, CATEGORY_INI)
     category_dic = mame_load_INI_datfile_simple(CATEGORY_FN.getPath())
-    pDialog.update(int((3*100) / num_items), pdialog_line1, CATLIST_INI)
+    pDialog.update(int((4*100) / num_items), pdialog_line1, CATLIST_INI)
     catlist_dic = mame_load_INI_datfile_simple(CATLIST_FN.getPath())
-    pDialog.update(int((4*100) / num_items), pdialog_line1, CATVER_INI)
+    pDialog.update(int((5*100) / num_items), pdialog_line1, CATVER_INI)
     (catver_dic, veradded_dic) = mame_load_Catver_ini(CATVER_FN.getPath())
-    pDialog.update(int((5*100) / num_items), pdialog_line1, GENRE_INI)
+    pDialog.update(int((6*100) / num_items), pdialog_line1, GENRE_INI)
     genre_dic = mame_load_INI_datfile_simple(GENRE_FN.getPath())
-    pDialog.update(int((6*100) / num_items), pdialog_line1, MATURE_INI)
+    pDialog.update(int((7*100) / num_items), pdialog_line1, MATURE_INI)
     mature_dic = mame_load_Mature_ini(MATURE_FN.getPath())
-    pDialog.update(int((7*100) / num_items), pdialog_line1, NPLAYERS_INI)
+    pDialog.update(int((8*100) / num_items), pdialog_line1, NPLAYERS_INI)
     nplayers_dic = mame_load_nplayers_ini(NPLAYERS_FN.getPath())
-    pDialog.update(int((8*100) / num_items), pdialog_line1, SERIES_INI)
+    pDialog.update(int((9*100) / num_items), pdialog_line1, SERIES_INI)
     series_dic = mame_load_INI_datfile_simple(SERIES_FN.getPath())
-    pDialog.update(int((9*100) / num_items), ' ', ' ')
+    pDialog.update(int((10*100) / num_items), ' ', ' ')
     pDialog.close()
 
     # --- Load DAT files to include category information ---
@@ -3799,6 +3804,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # --- Verify that INIs comply with the data model ---
     # In MAME 0.209 only artwork, category and series are lists. Other INIs define
     # machine-unique categories (each machine belongs to one category only).
+    log_info('alltime_dic   unique_categories {0}'.format(alltime_dic['unique_categories']))
     log_info('artwork_dic   unique_categories {0}'.format(artwork_dic['unique_categories']))
     log_info('bestgames_dic unique_categories {0}'.format(bestgames_dic['unique_categories']))
     log_info('category_dic  unique_categories {0}'.format(category_dic['unique_categories']))
@@ -3915,6 +3921,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             if 'sampleof' in elem.attrib: machine['sampleof'] = elem.attrib['sampleof']
 
             # --- Add catver/catlist/genre ---
+            machine['alltime'] = alltime_dic['data'][m_name] if m_name in alltime_dic['data'] else '[ Not set ]'
             machine['artwork'] = artwork_dic['data'][m_name] if m_name in artwork_dic['data'] else [ '[ Not set ]' ]
             machine['bestgames'] = bestgames_dic['data'][m_name] if m_name in bestgames_dic['data'] else '[ Not set ]'
             machine['category'] = category_dic['data'][m_name] if m_name in category_dic['data'] else [ '[ Not set ]' ]
@@ -5058,6 +5065,10 @@ def _aux_catalog_key_Series(parent_name, machines, machines_render):
     # Already a list.
     return machines[parent_name]['series']
 
+def _aux_catalog_key_Alltime(parent_name, machines, machines_render):
+    log_debug('Machine {}, key {}'.format(parent_name, machines[parent_name]['alltime']))
+    return [ machines[parent_name]['alltime'] ]
+
 def _aux_catalog_key_Artwork(parent_name, machines, machines_render):
     # Already a list.
     return machines[parent_name]['artwork']
@@ -5276,6 +5287,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         'NPlayers'           : {},
         'Bestgames'          : {},
         'Series'             : {},
+        'Alltime'            : {},
         'Artwork'            : {},
         'Version'            : {},
         # MAME XML extracted catalogs
@@ -5296,13 +5308,13 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     }
     NUM_CATALOGS = len(cache_index_dic)
 
-    NORMAL_DRIVER_LIST = [
+    NORMAL_DRIVER_SET = {
         '88games.cpp', 'cball.cpp', 'asteroid.cpp',
-    ]
-    UNUSUAL_DRIVER_LIST = [
+    }
+    UNUSUAL_DRIVER_SET = {
         'aristmk5.cpp', 'adp.cpp',     'mpu4vid.cpp',
         'cubo.cpp',     'sfbonus.cpp', 'peplus.cpp',
-    ]
+    }
 
     # ---------------------------------------------------------------------------------------------
     # Main filters (None catalog) -----------------------------------------------------------------
@@ -5332,7 +5344,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         # --- Determinte if machine is Normal or Unusual ----
         # Standard machines.
         if ('only_buttons' in control_list and len(control_list) > 1) \
-            or machine_main['sourcefile'] in NORMAL_DRIVER_LIST:
+            or machine_main['sourcefile'] in NORMAL_DRIVER_SET:
             normal_parent_dic[parent_name] = machine_render['description']
             normal_all_dic[parent_name] = machine_render['description']
             _catalog_add_clones(parent_name, main_pclone_dic, machines_render, normal_all_dic)
@@ -5343,7 +5355,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         elif not control_list \
             or 'only_buttons' in control_list or 'gambling' in control_list \
             or 'hanafuda' in control_list or 'mahjong' in control_list \
-            or machine_main['sourcefile'] in UNUSUAL_DRIVER_LIST:
+            or machine_main['sourcefile'] in UNUSUAL_DRIVER_SET:
             unusual_parent_dic[parent_name] = machine_render['description']
             unusual_all_dic[parent_name] = machine_render['description']
             _catalog_add_clones(parent_name, main_pclone_dic, machines_render, unusual_all_dic)
@@ -5579,6 +5591,18 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _cache_index_builder('Series', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
+    processed_filters += 1
+    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
+
+    # --- Alltime catalog ---
+    log_info('Making Alltime catalog ...')
+    pDialog.update(update_number, pDialog_line1, 'Alltime catalog')
+    catalog_parents, catalog_all = {}, {}
+    _build_catalog_helper_new(catalog_parents, catalog_all,
+        machines, machines_render, main_pclone_dic, _aux_catalog_key_Alltime)
+    _cache_index_builder('Alltime', cache_index_dic, catalog_all, catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_ALLTIME_PARENT_PATH.getPath(), catalog_parents)
+    fs_write_JSON_file(PATHS.CATALOG_ALLTIME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
     update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 

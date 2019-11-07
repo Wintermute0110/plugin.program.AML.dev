@@ -108,6 +108,7 @@ SL_ITEMS_SCANNED      = 800
 SL_ASSETS_SCANNED     = 900
 
 # INI and DAT files default names.
+ALLTIME_INI   = 'Alltime.ini'
 ARTWORK_INI   = 'Artwork.ini'
 BESTGAMES_INI = 'bestgames.ini'
 CATEGORY_INI  = 'Category.ini'
@@ -151,7 +152,7 @@ SL_LAUNCH_CASE_ERROR = 'Case ERROR!'
 # --- ROM types ---
 ROM_TYPE_ROM    = 'ROM'  # Normal ROM (no merged, no BIOS)
 ROM_TYPE_BROM   = 'BROM' # BIOS merged ROM
-ROM_TYPE_XROM   = 'XROM' # BIOS non-merged
+ROM_TYPE_XROM   = 'XROM' # BIOS non-merged ROM
 ROM_TYPE_MROM   = 'MROM' # non-BIOS merged ROM
 ROM_TYPE_DROM   = 'DROM' # Device ROM
 ROM_TYPE_DISK   = 'DISK'

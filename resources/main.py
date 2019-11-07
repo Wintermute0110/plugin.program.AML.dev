@@ -136,6 +136,8 @@ class AML_Paths:
         self.CATALOG_BESTGAMES_ALL_PATH           = self.CATALOG_DIR.pjoin('catalog_bestgames_all.json')
         self.CATALOG_SERIES_PARENT_PATH           = self.CATALOG_DIR.pjoin('catalog_series_parents.json')
         self.CATALOG_SERIES_ALL_PATH              = self.CATALOG_DIR.pjoin('catalog_series_all.json')
+        self.CATALOG_ALLTIME_PARENT_PATH          = self.CATALOG_DIR.pjoin('catalog_alltime_parents.json')
+        self.CATALOG_ALLTIME_ALL_PATH             = self.CATALOG_DIR.pjoin('catalog_alltime_all.json')
         self.CATALOG_ARTWORK_PARENT_PATH          = self.CATALOG_DIR.pjoin('catalog_artwork_parents.json')
         self.CATALOG_ARTWORK_ALL_PATH             = self.CATALOG_DIR.pjoin('catalog_artwork_all.json')
         self.CATALOG_VERADDED_PARENT_PATH         = self.CATALOG_DIR.pjoin('catalog_version_parents.json')
@@ -753,6 +755,7 @@ def render_root_list():
         num_cat_NPlayers = len(cache_index_dic['NPlayers'])
         num_cat_Bestgames = len(cache_index_dic['Bestgames'])
         num_cat_Series = len(cache_index_dic['Series'])
+        num_cat_Alltime = len(cache_index_dic['Alltime'])
         num_cat_Artwork = len(cache_index_dic['Artwork'])
         num_cat_Version = len(cache_index_dic['Version'])
 
@@ -832,6 +835,7 @@ def render_root_list():
     NPlayers_str = 'Machines by Number of players'
     rating_str   = 'Machines by Rating'
     series_str   = 'Machines by Series'
+    alltime_str  = 'Machines by Alltime (MASH)'
     artwork_str  = 'Machines by Artwork (MASH)'
     version_str  = 'Machines by Version Added (Catver)'
 
@@ -900,6 +904,9 @@ def render_root_list():
         'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].')
     series_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by series. '
         'This filter requires that you configure [COLOR violet]series.ini[/COLOR].')
+    alltime_plot = ('[COLOR orange]Catalog filter[/COLOR] of a best-quality machine selection '
+        'sorted by year. '
+        'This filter requires that you configure [COLOR violet]Alltime.ini[/COLOR] by MASH.')
     artwork_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Artwork. '
         'This filter requires that you configure [COLOR violet]Artwork.ini[/COLOR] by MASH.')
     version_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Version Added. '
@@ -995,6 +1002,7 @@ def render_root_list():
         NPlayers_str        += a.format(num_cat_NPlayers)
         rating_str          += a.format(num_cat_Bestgames)
         series_str          += a.format(num_cat_Series)
+        alltime_str         += a.format(num_cat_Alltime)
         artwork_str         += a.format(num_cat_Artwork)
         version_str         += a.format(num_cat_Version)
         # Always present
@@ -1059,6 +1067,7 @@ def render_root_list():
         render_root_category_row(NPlayers_str, misc_url_1_arg('catalog', 'NPlayers'), NPlayers_plot)
         render_root_category_row(rating_str, misc_url_1_arg('catalog', 'Bestgames'), rating_plot)
         render_root_category_row(series_str, misc_url_1_arg('catalog', 'Series'), series_plot)
+        render_root_category_row(alltime_str, misc_url_1_arg('catalog', 'Alltime'), alltime_plot)
         render_root_category_row(artwork_str, misc_url_1_arg('catalog', 'Artwork'), artwork_plot)
         render_root_category_row(version_str, misc_url_1_arg('catalog', 'Version'), version_plot)
 
