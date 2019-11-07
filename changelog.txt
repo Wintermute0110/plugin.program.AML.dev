@@ -25,12 +25,6 @@ WIP      [MANUALS] Support for CBZ/CBR manuals.
          In theory Kodi VFS is able to read RAR files.
          Wait until this is implemented in AEL and then port it from AEL into AML?
 
-WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
-         launcher information as well as the ROMs information. ROLs are generated with AML,
-         can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
-         (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
-         and then imported again into AML.
-
 WIP      [CORE] [LEIA] Recursive context menus.
          Pay attention to the select() bug in Kodi Krypton.
          This requires Kodi version detection and having different code for Krypton/Leia.
@@ -39,14 +33,14 @@ WIP      [CORE] [LEIA] Recursive context menus.
 WIP      [GRAPHICS] Optimize the generation of 3D boxes. Cache the background images used
          in all boxes.
 
+WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
+         Github wiki.
+
 
 [B]Advanced MAME Launcher | version 0.9.11 | xx November 2019[/B]
 
-WIP      [CORE] For SL, instead of showing the number of ROMs show the number of Items
-         in Flat display mode or Parents in Parent/Clone display mode.
-
-WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
-         Github wiki.
+WIP      [CORE] For Software Lists, instead of showing the number of ROMs show the number
+         of Items in Flat display mode or Parents in Parent/Clone display mode.
 
 WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed by AML.
          In this core, the XML is extracted using the MAME internal menu, which must be
@@ -61,9 +55,18 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
          See https://github.com/libretro/mame2010-libretro/pull/123
          See https://github.com/libretro/mame2010-libretro/tree/master/metadata
 
-WIP      Read-only Launcher (ROLs) to export into AEL.
+WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
+         launcher information as well as the ROMs information. ROLs are generated with AML,
+         can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
+         (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
+         and then imported again into AML.
+
+WIP      Support for MASH's Alltime.ini.
 
 FIX      Fixed conversion to int of addon version str in fs_AML_version_str_to_int()
+
+FIX      New history.dat makes AML to crash because one entry could be for more than one
+         machine. In addition, the same description can be used over several SLs.
 
 
 [B]Advanced MAME Launcher | version 0.9.10 | 10 May 2019[/B]
