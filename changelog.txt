@@ -49,6 +49,12 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
          See https://github.com/libretro/mame2010-libretro/pull/123
          See https://github.com/libretro/mame2010-libretro/tree/master/metadata
 
+WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
+         launcher information as well as the ROMs information. ROLs are generated with AML,
+         can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
+         (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
+         and then imported again into AML.
+
 
 [B]Advanced MAME Launcher | version 0.9.11 | xx November 2019[/B]
 
@@ -56,12 +62,6 @@ FEATURE  [CORE] For Software Lists, instead of showing the number of ROMs show t
          of Items in Flat display mode or Parents in Parent/Clone display mode.
 
 FEATURE  [CORE] Support for MASH's Alltime.ini.
-
-WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
-         launcher information as well as the ROMs information. ROLs are generated with AML,
-         can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
-         (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
-         and then imported again into AML.
 
 FIX      Fixed conversion to int of addon version str in fs_AML_version_str_to_int()
 

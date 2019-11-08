@@ -2410,12 +2410,12 @@ def render_SL_list_row(SL_name, SL):
     # --- Display Parents or Total SL items ---
     view_mode_property = g_settings['sl_view_mode']
     if view_mode_property == VIEW_MODE_PCLONE:
-        if SL['num_parents'] == 1: f_str = '{}  [COLOR orange]({} Parent)[/COLOR]'
-        else:                      f_str = '{}  [COLOR orange]({} Parents)[/COLOR]'
+        if SL['num_parents'] == 1: f_str = '{}  [COLOR orange]({} parent)[/COLOR]'
+        else:                      f_str = '{}  [COLOR orange]({} parents)[/COLOR]'
         display_name = f_str.format(SL['display_name'], SL['num_parents'])
     elif view_mode_property == VIEW_MODE_FLAT:
-        if SL['num_items'] == 1: f_str = '{}  [COLOR orange]({} Item)[/COLOR]'
-        else:                    f_str = '{}  [COLOR orange]({} Items)[/COLOR]'
+        if SL['num_items'] == 1: f_str = '{}  [COLOR orange]({} item)[/COLOR]'
+        else:                    f_str = '{}  [COLOR orange]({} items)[/COLOR]'
         display_name = f_str.format(SL['display_name'], SL['num_items'])
     else:
         raise TypeError('Wrong view_mode_property {}'.format(view_mode_property))
