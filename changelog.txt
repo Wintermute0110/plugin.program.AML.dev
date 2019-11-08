@@ -19,7 +19,7 @@ WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
 [B]AML ideas and planned features (read to implement)[/B]
 
 WIP      [MANUALS] Increase the number of supported PDF filters.
-         This may required A LOT of Python coding.
+         This may require A LOT of Python coding.
 
 WIP      [MANUALS] Support for CBZ/CBR manuals.
          In theory Kodi VFS is able to read RAR files.

@@ -626,6 +626,7 @@ root_Main = {}
 root_Binary = {}
 root_categories = {}
 root_special = {}
+root_SL = {}
 root_special_CM = {}
 
 def set_render_root_data():
@@ -633,83 +634,349 @@ def set_render_root_data():
     global root_Binary
     global root_categories
     global root_special
+    global root_SL
     global root_special_CM
 
+    # Tuple: catalog_name, catalog_key, title, plot
     root_Main = {
-        'Normal' : {
-            'title' : '',
-            'plot' : '',
-        },
-    }
-
-    root_Binary = {
-        'BIOS' : {
-            'title' : '',
-            'plot' : '',
-        },
-    }
-
-    # Tuple: title, URL, plot
-    root_categories = {
-        'Catver' : [
-            '',
-            '',
-            '',
+        # Main filter Catalog
+        'Main_Normal' : [
+            'Main', 'Normal',
+            'Machines with coin slot (Normal)',
+            ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
+             'slot[/COLOR] and normal controls. This list includes the machines you would '
+             'typically find in Europe and USA amusement arcades some decades ago.'),
+        ],
+        'Main_Unusual' : [
+            'Main', 'Unusual',
+            'Machines with coin slot (Unusual)',
+            ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
+             'slot[/COLOR] and Only buttons, Gambling, Hanafuda and Mahjong controls. '
+             'This corresponds to slot, gambling and Japanese card and mahjong machines.'),
+        ],
+        'Main_NoCoin' : [
+            'Main', 'NoCoin',
+            'Machines with no coin slot',
+            ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with no coin '
+             'slot[/COLOR]. Here you will find the good old MESS machines, including computers, '
+             'video game consoles, hand-held video game consoles, etc.'),
+        ],
+        'Main_Mechanical' : [
+            'Main', 'Mechanical',
+            'Mechanical machines',
+            ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]mechanical[/COLOR] MAME machines. '
+             'These machines have mechanical parts, for example pinballs, and currently do not work with MAME. '
+             'They are here for preservation and historical reasons.'),
+        ],
+        'Main_Dead' : [
+            'Main', 'Dead',
+            'Dead machines',
+            ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]dead[/COLOR] MAME machines. '
+             'Dead machines do not work and have no controls, so you cannot interact with them in any way.'),
+        ],
+        'Main_Devices' : [
+            'Main', 'Devices',
+            'Device machines',
+            ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]device machines[/COLOR]. '
+             'Device machines, for example the Zilog Z80 CPU, are components used by other machines '
+             'and cannot be run on their own.'),
         ],
     }
 
-    # Tuple: title, URL, plot
-    root_special = { }
+    # Tuple: catalog_name, catalog_key, title, plot
+    root_Binary = {
+        # Binary filters Catalog
+        'BIOS' : [
+            'Binary', 'BIOS',
+            'Machines [BIOS]',
+            ('[COLOR orange]Binary filter[/COLOR] of [COLOR violet]BIOS[/COLOR] machines. Some BIOS '
+             'machines can be run and usually will display a message like "Game not found".'),
+        ],
+        'CHD' : [
+            'Binary', 'CHD',
+            'Machines [with CHDs]',
+            ('[COLOR orange]Binary filter[/COLOR] of machines that need one or more '
+             '[COLOR violet]CHDs[/COLOR] to run. They may also need ROMs and/or BIOS or not.'),
+        ],
+        'Samples' : [
+            'Binary', 'Samples',
+            'Machines [with Samples]',
+            ('[COLOR orange]Binary filter[/COLOR] of machines that require '
+             '[COLOR violet]samples[/COLOR]. Samples are optional and will increase the quality '
+             'of the emulated sound.'),
+        ],
+        'SoftwareLists' : [
+            'Binary', 'SoftwareLists',
+            'Machines [with Software Lists]',
+            ('[COLOR orange]Binary filter[/COLOR] of machines that have one or more '
+             '[COLOR violet]Software Lists[/COLOR] associated.'),
+        ],
+    }
 
-    # Tuple: title, URL, plot, context_menu_list
+    # Tuple: title, plot, URL
+    root_categories = {
+        # Cataloged filters (optional DAT/INI files required)
+        'Catver' : [
+            'Machines by Category (Catver)',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
+             'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].'),
+            misc_url_1_arg('catalog', 'Catver'),
+        ],
+        'Catlist' : [
+            'Machines by Category (Catlist)',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
+             'This filter requires that you configure [COLOR violet]catlist.ini[/COLOR].'),
+            misc_url_1_arg('catalog', 'Catlist'),
+        ],
+        'Genre' : [
+            'Machines by Category (Genre)',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Genre. '
+             'This filter requires that you configure [COLOR violet]genre.ini[/COLOR].'),
+            misc_url_1_arg('catalog', 'Genre'),
+        ],
+        'Category' : [
+            'Machines by Category (MASH)',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Category. '
+             'This filter requires that you configure [COLOR violet]Category.ini[/COLOR] by MASH.'),
+            misc_url_1_arg('catalog', 'Category'),
+        ],
+        'NPlayers' : [
+            'Machines by Number of players',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the number of '
+             'players that can play simultaneously or alternatively. This filter requires '
+             'that you configure [COLOR violet]nplayers.ini[/COLOR].'),
+            misc_url_1_arg('catalog', 'NPlayers'),
+        ],
+        'Bestgames' : [
+            'Machines by Rating',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by rating. The rating '
+             'is subjective but is a good indicator about the quality of the games. '
+             'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].'),
+            misc_url_1_arg('catalog', 'Bestgames'),
+        ],
+        'Series' : [
+            'Machines by Series',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by series. '
+             'This filter requires that you configure [COLOR violet]series.ini[/COLOR].'),
+            misc_url_1_arg('catalog', 'Series'),
+        ],
+        'Alltime' : [
+            'Machines by Alltime (MASH)',
+            ('[COLOR orange]Catalog filter[/COLOR] of a best-quality machine selection '
+             'sorted by year. '
+             'This filter requires that you configure [COLOR violet]Alltime.ini[/COLOR] by MASH.'),
+            misc_url_1_arg('catalog', 'Alltime'),
+        ],
+        'Artwork' : [
+            'Machines by Artwork (MASH)',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Artwork. '
+             'This filter requires that you configure [COLOR violet]Artwork.ini[/COLOR] by MASH.'),
+            misc_url_1_arg('catalog', 'Artwork'),
+        ],
+        'Version' : [
+            'Machines by Version Added (Catver)',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Version Added. '
+             'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].'),
+            misc_url_1_arg('catalog', 'Version'),
+        ],
+
+        # Cataloged filters (always there, extracted from MAME XML)
+        # NOTE: use the same names as MAME executable
+        # -listdevices   list available devices                  XML tag <device_ref>
+        # -listslots     list available slots and slot devices   XML tag <slot>
+        # -listmedia     list available media for the system     XML tag <device>
+        'Controls_Expanded' : [
+            'Machines by Controls (Expanded)',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
+             'For each machine, all controls are included in the list.'),
+            misc_url_1_arg('catalog', 'Controls_Expanded'),
+        ],
+        'Controls_Compact' : [
+            'Machines by Controls (Compact)',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
+             'Machines may have additional controls.'),
+            misc_url_1_arg('catalog', 'Controls_Compact'),
+        ],
+        'Devices_Expanded' : [
+            'Machines by Pluggable Devices (Expanded)',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
+             'For each machine, all pluggable devices are included in the list.'),
+            misc_url_1_arg('catalog', 'Devices_Expanded'),
+        ],
+        'Devices_Compact' : [
+            'Machines by Pluggable Devices (Compact)',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
+             'Machines may have additional pluggable devices.'),
+            misc_url_1_arg('catalog', 'Devices_Compact'),
+        ],
+        'Display_Type' : [
+            'Machines by Display Type',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type '
+             'and rotation.'),
+            misc_url_1_arg('catalog', 'Display_Type'),
+        ],
+        'Display_VSync' : [
+            'Machines by Display VSync freq',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the display '
+             'vertical synchronisation (VSync) frequency, also known as the display refresh rate or '
+             'frames per second (FPS).'),
+            misc_url_1_arg('catalog', 'Display_VSync'),
+        ],
+        'Display_Resolution' : [
+            'Machines by Display Resolution',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display resolution.'),
+            misc_url_1_arg('catalog', 'Display_Resolution'),
+        ],
+        'CPU' : [
+            'Machines by CPU',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the CPU used.'),
+            misc_url_1_arg('catalog', 'CPU'),
+        ],
+        'Driver' : [
+            'Machines by Driver',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by driver. '
+             'Brother machines have the same driver.'),
+            misc_url_1_arg('catalog', 'Driver'),
+        ],
+        'Manufacturer' : [
+            'Machines by Manufacturer',
+            ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted by '
+             'manufacturer.'),
+            misc_url_1_arg('catalog', 'Manufacturer'),
+        ],
+        'ShortName' : [
+            'Machines by MAME short name',
+            ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
+             'by the MAME short name. The short name originated during the old MS-DOS days '
+             'where filenames were restricted to 8 ASCII characters.'),
+            misc_url_1_arg('catalog', 'ShortName'),
+        ],
+        'LongName' : [
+            'Machines by MAME long name',
+            ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
+             'by the machine description or long name.'),
+            misc_url_1_arg('catalog', 'LongName'),
+        ],
+        'BySL' : [
+            'Machines by Software List',
+            ('[COLOR orange]Catalog filter[/COLOR] of the Software Lists and the machines '
+             'that run items belonging to that Software List.'),
+            misc_url_1_arg('catalog', 'BySL'),
+        ],
+        'Year' : [
+            'Machines by Year',
+            ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by release year.'),
+            misc_url_1_arg('catalog', 'Year'),
+        ],
+    }
+
+    # Tuple: title, plot, URL
+    root_special = {
+        # DAT browser: history.dat, mameinfo.dat, gameinit.dat, command.dat.
+        'History' : [
+            'History DAT',
+            ('Browse the contents of [COLOR orange]history.dat[/COLOR]. Note that '
+             'history.dat is also available on the MAME machines and SL items context menu.'),
+            misc_url_1_arg('catalog', 'History'),
+        ],
+        'MAMEINFO' : [
+            'MAMEINFO DAT',
+            ('Browse the contents of [COLOR orange]mameinfo.dat[/COLOR]. Note that '
+             'mameinfo.dat is also available on the MAME machines context menu.'),
+            misc_url_1_arg('catalog', 'MAMEINFO'),
+        ],
+        'Gameinit' : [
+            'Gameinit DAT',
+            ('Browse the contents of [COLOR orange]gameinit.dat[/COLOR]. Note that '
+             'gameinit.dat is also available on the MAME machines context menu.'),
+            misc_url_1_arg('catalog', 'Gameinit'),
+        ],
+        'Command' : [
+            'Command DAT',
+            ('Browse the contents of [COLOR orange]command.dat[/COLOR]. Note that '
+             'command.dat is also available on the MAME machines context menu.'),
+            misc_url_1_arg('catalog', 'Command'),
+        ],
+    }
+
+    # Tuple: title, plot, URL
+    root_SL = {
+        'SL' : [
+            'Software Lists (all)',
+            ('Display all [COLOR orange]Software Lists[/COLOR].'),
+            misc_url_1_arg('catalog', 'SL'),
+        ],
+        'SL_ROM' : [
+            'Software Lists (with ROMs)',
+            ('Display [COLOR orange]Software Lists[/COLOR] that have only ROMs and not CHDs (disks).'),
+            misc_url_1_arg('catalog', 'SL_ROM'),
+        ],
+        'SL_ROM_CHD' : [
+            'Software Lists (with ROMs and CHDs)',
+            ('Display [COLOR orange]Software Lists[/COLOR] that have both ROMs and CHDs.'),
+            misc_url_1_arg('catalog', 'SL_ROM_CHD'),
+        ],
+        'SL_CHD' : [
+            'Software Lists (with CHDs)',
+            ('Display [COLOR orange]Software Lists[/COLOR] that have only CHDs and not ROMs.'),
+            misc_url_1_arg('catalog', 'SL_CHD'),
+        ],
+        'SL_empty' : [
+            'Software Lists (no ROMs nor CHDs)',
+            ('Display [COLOR orange]Software Lists[/COLOR] with no ROMs nor CHDs.'),
+            misc_url_1_arg('catalog', 'SL_empty'),
+        ],
+    }
+
+    # Tuple: title, plot, URL, context_menu_list
     root_special_CM = {
         'MAME_Favs' : [
             '<Favourite MAME machines>',
-            misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
             ('Display your [COLOR orange]Favourite MAME machines[/COLOR]. '
              'To add machines to the Favourite list use the context menu on any MAME machine list.'),
+            misc_url_1_arg('command', 'SHOW_MAME_FAVS'),
             [('Manage Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_FAV'))],
         ],
         'MAME_Most' : [
             '{Most Played MAME machines}',
-            misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
             ('Display the MAME machines that you play most, sorted by the number '
              'of times you have launched them.'),
+            misc_url_1_arg('command', 'SHOW_MAME_MOST_PLAYED'),
             [('Manage Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED'))],
         ],
         'MAME_Recent' : [
             '{Recently Played MAME machines}',
-            misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
             ('Display the MAME machines that you have launched recently.'),
+            misc_url_1_arg('command', 'SHOW_MAME_RECENTLY_PLAYED'),
             [('Manage Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED'))],
         ],
         'SL_Favs' : [
             '<Favourite Software Lists ROMs>',
-            misc_url_1_arg('command', 'SHOW_SL_FAVS'),
             ('Display your [COLOR orange]Favourite Software List items[/COLOR]. '
              'To add machines to the SL Favourite list use the context menu on any SL item list.'),
+            misc_url_1_arg('command', 'SHOW_SL_FAVS'),
             [('Manage SL Favourites', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_FAV'))],
         ],
         'SL_Most' : [
             '{Most Played SL ROMs}',
-            misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
             ('Display the Software List itmes that you play most, sorted by the number '
              'of times you have launched them.'),
+            misc_url_1_arg('command', 'SHOW_SL_MOST_PLAYED'),
             [('Manage SL Most Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED'))],
         ],
         'SL_Recent' : [
             '{Recently Played SL ROMs}',
-            misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
             'Display the Software List items that you have launched recently.',
+            misc_url_1_arg('command', 'SHOW_SL_RECENTLY_PLAYED'),
             [('Manage SL Recently Played', misc_url_1_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED'))],
         ],
         'Custom_Filters' : [
             '[Custom MAME filters]',
-            misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
             ('[COLOR orange]Custom filters[/COLOR] allows to generate machine '
              'listings perfectly tailored to your whises. For example, you can define a filter of all '
              'the machines released in the 1980s that use a joystick. AML includes a fairly '
              'complete default set of filters in XML format which can be edited.'),
+            misc_url_1_arg('command', 'SHOW_CUSTOM_FILTERS'),
             [('Setup custom filters', misc_url_1_arg_RunPlugin('command', 'SETUP_CUSTOM_FILTERS'))],
         ],
     }
@@ -813,228 +1080,70 @@ def render_root_list():
         num_SL_empty = 0
         log_debug('render_root_list() SL_counters_available = False')
 
-    # >> Main filter
-    machines_n_str = 'Machines with coin slot (Normal)'
-    machines_u_str = 'Machines with coin slot (Unusual)'
-    nocoin_str     = 'Machines with no coin slot'
-    mecha_str      = 'Mechanical machines'
-    dead_str       = 'Dead machines'
-    devices_str    = 'Device machines'
-
-    # >> Binary filters
-    bios_str       = 'Machines [BIOS]'
-    chd_str        = 'Machines [with CHDs]'
-    samples_str    = 'Machines [with Samples]'
-    softlists_str  = 'Machines [with Software Lists]'
-
-    # >> Cataloged filters (optional)
-    catver_str   = 'Machines by Category (Catver)'
-    catlist_str  = 'Machines by Category (Catlist)'
-    genre_str    = 'Machines by Category (Genre)'
-    category_str = 'Machines by Category (MASH)'
-    NPlayers_str = 'Machines by Number of players'
-    rating_str   = 'Machines by Rating'
-    series_str   = 'Machines by Series'
-    alltime_str  = 'Machines by Alltime (MASH)'
-    artwork_str  = 'Machines by Artwork (MASH)'
-    version_str  = 'Machines by Version Added (Catver)'
-
-    # >> Cataloged filters (always there)
-    # NOTE: use the same names as MAME executable
-    # -listdevices   list available devices                  XML tag <device_ref>
-    # -listslots     list available slots and slot devices   XML tag <slot>
-    # -listmedia     list available media for the system     XML tag <device>
-    ctype_expanded_str  = 'Machines by Controls (Expanded)'
-    ctype_compact_str   = 'Machines by Controls (Compact)'
-    device_expanded_str = 'Machines by Pluggable Devices (Expanded)'
-    device_compact_str  = 'Machines by Pluggable Devices (Compact)'
-    dtype_str           = 'Machines by Display Type'
-    d_vsync_freq_str    = 'Machines by Display VSync freq'
-    d_resolution_str    = 'Machines by Display Resolution'
-    CPU_str             = 'Machines by CPU'
-    driver_str          = 'Machines by Driver'
-    manufacturer_str    = 'Machines by Manufacturer'
-    shortname_str       = 'Machines by MAME short name'
-    longname_str        = 'Machines by MAME long name'
-    SL_str              = 'Machines by Software List'
-    year_str            = 'Machines by Year'
-
-    # --- Root window plots ---
-    machines_n_plot = ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
-        'slot[/COLOR] and normal controls. This list includes the machines you would '
-        'typically find in Europe and USA amusement arcades some decades ago.')
-    machines_u_plot = ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with coin '
-        'slot[/COLOR] and Only buttons, Gambling, Hanafuda and Mahjong controls. '
-        'This corresponds to slot, gambling and Japanese card and mahjong machines.')
-    nocoin_plot = ('[COLOR orange]Main filter[/COLOR] of MAME machines [COLOR violet]with no coin '
-        'slot[/COLOR]. Here you will find the good old MESS machines, including computers, '
-        'video game consoles, hand-held video game consoles, etc.')
-    mecha_plot = ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]mechanical[/COLOR] MAME machines. '
-        'These machines have mechanical parts, for example pinballs, and currently do not work with MAME. '
-        'They are here for preservation and historical reasons.')
-    dead_plot = ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]dead[/COLOR] MAME machines. '
-        'Dead machines do not work and have no controls, so you cannot interact with them in any way.')
-    devices_plot = ('[COLOR orange]Main filter[/COLOR] of [COLOR violet]device machines[/COLOR]. '
-        'Device machines, for example the Zilog Z80 CPU, are components used by other machines '
-        'and cannot be run on their own.')
-
-    bios_plot = ('[COLOR orange]Binary filter[/COLOR] of [COLOR violet]BIOS[/COLOR] machines. Some BIOS '
-        'machines can be run and usually will display a message like "Game not found".')
-    chd_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that need one or more '
-        '[COLOR violet]CHDs[/COLOR] to run. They may also need ROMs and/or BIOS or not.')
-    samples_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that require '
-        '[COLOR violet]samples[/COLOR]. Samples are optional and will increase the quality'
-        ' of the emulated sound.')
-    softlists_plot = ('[COLOR orange]Binary filter[/COLOR] of machines that have one or more '
-        '[COLOR violet]Software Lists[/COLOR] associated.')
-
-    catver_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
-        'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].')
-    catlist_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by category. '
-        'This filter requires that you configure [COLOR violet]catlist.ini[/COLOR].')
-    genre_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Genre. '
-        'This filter requires that you configure [COLOR violet]genre.ini[/COLOR].')
-    category_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Category. '
-        'This filter requires that you configure [COLOR violet]Category.ini[/COLOR] by MASH.')
-    NPlayers_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the number of '
-        'players that can play simultaneously or alternatively. This filter requires '
-        'that you configure [COLOR violet]nplayers.ini[/COLOR].')
-    rating_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by rating. The rating '
-        'is subjective but is a good indicator about the quality of the games. '
-        'This filter requires that you configure [COLOR violet]bestgames.ini[/COLOR].')
-    series_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by series. '
-        'This filter requires that you configure [COLOR violet]series.ini[/COLOR].')
-    alltime_plot = ('[COLOR orange]Catalog filter[/COLOR] of a best-quality machine selection '
-        'sorted by year. '
-        'This filter requires that you configure [COLOR violet]Alltime.ini[/COLOR] by MASH.')
-    artwork_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Artwork. '
-        'This filter requires that you configure [COLOR violet]Artwork.ini[/COLOR] by MASH.')
-    version_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by Version Added. '
-        'This filter requires that you configure [COLOR violet]catver.ini[/COLOR].')
-
-    ctype_expanded_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
-        'For each machine, all controls are included in the list.')
-    ctype_compact_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by control. '
-        'Machines may have additional controls.')
-    device_expanded_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
-        'For each machine, all pluggable devices are included in the list.')
-    device_compact_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by pluggable devices. '
-        'Machines may have additional pluggable devices.')
-    dtype_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display type '
-        'and rotation.')
-    d_vsync_freq_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the display '
-        'vertical synchronisation (VSync) frequency, also known as the display refresh rate or '
-        'frames per second (FPS).')
-    d_resolution_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by display resolution.')
-    CPU_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by the CPU used.')
-    driver_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by driver. '
-        'Brother machines have the same driver.')
-    manufacturer_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted by '
-        'manufacturer.')
-    shortname_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
-        'by the MAME short name. The short name originated during the old MS-DOS days '
-        'where filenames were restricted to 8 ASCII characters.')
-    longname_plot = ('[COLOR orange]Catalog filter[/COLOR] of MAME machines sorted alphabetically '
-        'by the machine description or long name.')
-    SL_plot = ('[COLOR orange]Catalog filter[/COLOR] of the Software Lists and the machines '
-        'that run items belonging to that Software List.')
-    year_plot = ('[COLOR orange]Catalog filter[/COLOR] of machines sorted by release year.')
-
-    History_plot = ('Browse the contents of [COLOR orange]history.dat[/COLOR]. Note that '
-        'history.dat is also available on the MAME machines and SL items context menu.')
-    MAMEInfo_plot = ('Browse the contents of [COLOR orange]mameinfo.dat[/COLOR]. Note that '
-        'mameinfo.dat is also available on the MAME machines context menu.')
-    Gameinit_plot = ('Browse the contents of [COLOR orange]gameinit.dat[/COLOR]. Note that '
-        'gameinit.dat is also available on the MAME machines context menu.')
-    Command_plot = ('Browse the contents of [COLOR orange]command.dat[/COLOR]. Note that '
-        'command.dat is also available on the MAME machines context menu.')
-
-    SL_all_plot = ('Display all [COLOR orange]Software Lists[/COLOR].')
-    SL_ROM_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only ROMs and not CHDs (disks).')
-    SL_ROM_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have both ROMs and CHDs.')
-    SL_CHD_plot = ('Display [COLOR orange]Software Lists[/COLOR] that have only CHDs and not ROMs.')
-    SL_empty_plot = ('Display [COLOR orange]Software Lists[/COLOR] with no ROMs nor CHDs.')
-
-    ROLS_plot = ('[COLOR orange]AEL Read Only Launchers[/COLOR] are special launchers '
-        'exported to AEL. You can select your Favourite MAME machines or setup a custom '
-        'filter to enjoy your MAME games in AEL togheter with other emulators.')
-
-    Utilities_plot = ('Execute several [COLOR orange]Utilities[/COLOR]. For example, to '
-        'check you AML configuration.')
-    Global_Reports_plot = ('View the [COLOR orange]Global Reports[/COLOR] and '
-        'machine and audit [COLOR orange]Statistics[/COLOR].')
-
     # --- Machine counters ---
     if counters_available:
-        # --- Special catalogs rended in root menu ---
         if mame_view_mode == VIEW_MODE_FLAT:
-            a = ' [COLOR orange]({0} machines)[/COLOR]'
-            machines_n_str += a.format(num_m_Main_Normal)
-            machines_u_str += a.format(num_m_Main_Unusual)
-            nocoin_str     += a.format(num_m_Main_NoCoin)
-            mecha_str      += a.format(num_m_Main_Mechanical)
-            dead_str       += a.format(num_m_Main_Dead)
-            devices_str    += a.format(num_m_Main_Devices)
-            bios_str       += a.format(num_m_Binary_BIOS)
-            chd_str        += a.format(num_m_Binary_CHD)
-            samples_str    += a.format(num_m_Binary_Samples)
-            softlists_str  += a.format(num_m_Binary_SoftwareLists)
+            a = ' [COLOR orange]({} machines)[/COLOR]'
+            root_Main['Main_Normal'][2] += a.format(num_m_Main_Normal)
+            root_Main['Main_Unusual'][2] += a.format(num_m_Main_Unusual)
+            root_Main['Main_NoCoin'][2] += a.format(num_m_Main_NoCoin)
+            root_Main['Main_Mechanical'][2] += a.format(num_m_Main_Mechanical)
+            root_Main['Main_Dead'][2] += a.format(num_m_Main_Dead)
+            root_Main['Main_Devices'][2] += a.format(num_m_Main_Devices)
+            root_Binary['BIOS'][2] += a.format(num_m_Binary_BIOS)
+            root_Binary['CHD'][2] += a.format(num_m_Binary_CHD)
+            root_Binary['Samples'][2] += a.format(num_m_Binary_Samples)
+            root_Binary['SoftwareLists'][2] += a.format(num_m_Binary_SoftwareLists)
         elif mame_view_mode == VIEW_MODE_PCLONE:
-            a = ' [COLOR orange]({0} parents)[/COLOR]'
-            machines_n_str += a.format(num_p_Main_Normal)
-            machines_u_str += a.format(num_p_Main_Unusual)
-            nocoin_str     += a.format(num_p_Main_NoCoin)
-            mecha_str      += a.format(num_p_Main_Mechanical)
-            dead_str       += a.format(num_p_Main_Dead)
-            devices_str    += a.format(num_p_Main_Devices)
-            bios_str       += a.format(num_p_Binary_BIOS)
-            chd_str        += a.format(num_p_Binary_CHD)
-            samples_str    += a.format(num_p_Binary_Samples)
-            softlists_str  += a.format(num_p_Binary_SoftwareLists)
+            a = ' [COLOR orange]({} parents)[/COLOR]'
+            root_Main['Main_Normal'][2] += a.format(num_p_Main_Normal)
+            root_Main['Main_Unusual'][2] += a.format(num_p_Main_Unusual)
+            root_Main['Main_NoCoin'][2] += a.format(num_p_Main_NoCoin)
+            root_Main['Main_Mechanical'][2] += a.format(num_p_Main_Mechanical)
+            root_Main['Main_Dead'][2] += a.format(num_p_Main_Dead)
+            root_Main['Main_Devices'][2] += a.format(num_p_Main_Devices)
+            root_Binary['BIOS'][2] += a.format(num_p_Binary_BIOS)
+            root_Binary['CHD'][2] += a.format(num_p_Binary_CHD)
+            root_Binary['Samples'][2] += a.format(num_p_Binary_Samples)
+            root_Binary['SoftwareLists'][2] += a.format(num_p_Binary_SoftwareLists)
 
-        # --- Standard catalog filters ---
-        a = ' [COLOR gold]({0} items)[/COLOR]'
+        a = ' [COLOR gold]({} items)[/COLOR]'
         # Optional
-        catver_str          += a.format(num_cat_Catver)
-        catlist_str         += a.format(num_cat_Catlist)
-        genre_str           += a.format(num_cat_Genre)
-        category_str        += a.format(num_cat_Category)
-        NPlayers_str        += a.format(num_cat_NPlayers)
-        rating_str          += a.format(num_cat_Bestgames)
-        series_str          += a.format(num_cat_Series)
-        alltime_str         += a.format(num_cat_Alltime)
-        artwork_str         += a.format(num_cat_Artwork)
-        version_str         += a.format(num_cat_Version)
+        root_categories['Catver'][0] += a.format(num_cat_Catver)
+        root_categories['Catlist'][0] += a.format(num_cat_Catlist)
+        root_categories['Genre'][0] += a.format(num_cat_Genre)
+        root_categories['Category'][0] += a.format(num_cat_Category)
+        root_categories['NPlayers'][0] += a.format(num_cat_NPlayers)
+        root_categories['Bestgames'][0] += a.format(num_cat_Bestgames)
+        root_categories['Series'][0] += a.format(num_cat_Series)
+        root_categories['Alltime'][0] += a.format(num_cat_Alltime)
+        root_categories['Artwork'][0] += a.format(num_cat_Artwork)
+        root_categories['Version'][0] += a.format(num_cat_Version)
         # Always present
-        ctype_expanded_str  += a.format(num_cat_Controls_Expanded)
-        ctype_compact_str   += a.format(num_cat_Controls_Compact)
-        device_expanded_str += a.format(num_cat_Devices_Expanded)
-        device_compact_str  += a.format(num_cat_Devices_Compact)
-        dtype_str           += a.format(num_cat_Display_Type)
-        d_vsync_freq_str    += a.format(num_cat_Display_VSync)
-        d_resolution_str    += a.format(num_cat_Display_Resolution)
-        CPU_str             += a.format(num_cat_CPU)
-        driver_str          += a.format(num_cat_Driver)
-        manufacturer_str    += a.format(num_cat_Manufacturer)
-        shortname_str       += a.format(num_cat_ShortName)
-        longname_str        += a.format(num_cat_LongName)
-        SL_str              += a.format(num_cat_BySL)
-        year_str            += a.format(num_cat_Year)
+        root_categories['Controls_Expanded'][0] += a.format(num_cat_Controls_Expanded)
+        root_categories['Controls_Compact'][0] += a.format(num_cat_Controls_Compact)
+        root_categories['Devices_Expanded'][0] += a.format(num_cat_Devices_Expanded)
+        root_categories['Devices_Compact'][0] += a.format(num_cat_Devices_Compact)
+        root_categories['Display_Type'][0] += a.format(num_cat_Display_Type)
+        root_categories['Display_VSync'][0] += a.format(num_cat_Display_VSync)
+        root_categories['Display_Resolution'][0] += a.format(num_cat_Display_Resolution)
+        root_categories['CPU'][0] += a.format(num_cat_CPU)
+        root_categories['Driver'][0] += a.format(num_cat_Driver)
+        root_categories['Manufacturer'][0] += a.format(num_cat_Manufacturer)
+        root_categories['ShortName'][0] += a.format(num_cat_ShortName)
+        root_categories['LongName'][0] += a.format(num_cat_LongName)
+        root_categories['BySL'][0] += a.format(num_cat_BySL)
+        root_categories['Year'][0] += a.format(num_cat_Year)
 
-    SL_all_str = 'Software Lists (all)'
-    SL_ROM_str = 'Software Lists (with ROMs)'
-    SL_mixed_str = 'Software Lists (with ROMs and CHDs)'
-    SL_CHD_str = 'Software Lists (with CHDs)'
-    SL_empty_str = 'Software Lists (no ROMs nor CHDs)'
     if SL_counters_available:
-        a = ' [COLOR orange]({0} lists)[/COLOR]'
-        SL_all_str   += a.format(num_SL_all)
-        SL_ROM_str   += a.format(num_SL_ROMs)
-        SL_mixed_str += a.format(num_SL_mixed)
-        SL_CHD_str   += a.format(num_SL_CHDs)
-        SL_empty_str += a.format(num_SL_empty)
+        a = ' [COLOR orange]({} lists)[/COLOR]'
+        root_SL['SL'][0] += a.format(num_SL_all)
+        root_SL['SL_ROM'][0] += a.format(num_SL_ROMs)
+        root_SL['SL_ROM_CHD'][0] += a.format(num_SL_mixed)
+        root_SL['SL_CHD'][0] += a.format(num_SL_CHDs)
+        root_SL['SL_empty'][0] += a.format(num_SL_empty)
 
-    # >> If everything deactivated render the main filters so user has access to the context menu.
+    # If everything deactivated render the main filters so user has access to the context menu.
     big_OR = g_settings['display_main_filters'] or g_settings['display_binary_filters'] or \
              g_settings['display_catalog_filters'] or g_settings['display_DAT_browser'] or \
              g_settings['display_SL_browser'] or g_settings['display_MAME_favs'] or \
@@ -1042,74 +1151,77 @@ def render_root_list():
     if not big_OR:
         g_settings['display_main_filters'] = True
 
-    # >> Main filters (Virtual catalog 'Main')
+    # Main filters (Virtual catalog 'Main')
     if g_settings['display_main_filters']:
-        render_root_catalog_row(machines_n_str, 'Main', 'Normal', machines_n_plot)
-        render_root_catalog_row(machines_u_str, 'Main', 'Unusual', machines_u_plot)
-        render_root_catalog_row(nocoin_str, 'Main', 'NoCoin', nocoin_plot)
-        render_root_catalog_row(mecha_str, 'Main', 'Mechanical', mecha_plot)
-        render_root_catalog_row(dead_str, 'Main', 'Dead', dead_plot)
-        render_root_catalog_row(devices_str, 'Main', 'Devices', devices_plot)
+        render_root_catalog_row(*root_Main['Main_Normal'])
+        render_root_catalog_row(*root_Main['Main_Unusual'])
+        render_root_catalog_row(*root_Main['Main_NoCoin'])
+        render_root_catalog_row(*root_Main['Main_Mechanical'])
+        render_root_catalog_row(*root_Main['Main_Dead'])
+        render_root_catalog_row(*root_Main['Main_Devices'])
 
-    # >> Binary filters (Virtual catalog 'Binary')
+    # Binary filters (Virtual catalog 'Binary')
     if g_settings['display_binary_filters']:
-        render_root_catalog_row(bios_str, 'Binary', 'BIOS', bios_plot)
-        render_root_catalog_row(chd_str, 'Binary', 'CHD', chd_plot)
-        render_root_catalog_row(samples_str, 'Binary', 'Samples', samples_plot)
-        render_root_catalog_row(softlists_str, 'Binary', 'SoftwareLists', softlists_plot)
+        render_root_catalog_row(*root_Binary['BIOS'])
+        render_root_catalog_row(*root_Binary['CHD'])
+        render_root_catalog_row(*root_Binary['Samples'])
+        render_root_catalog_row(*root_Binary['SoftwareLists'])
 
     if g_settings['display_catalog_filters']:
-        # >> Optional cataloged filters (depend on a INI file)
-        render_root_category_row(catver_str, misc_url_1_arg('catalog', 'Catver'), catver_plot)
-        render_root_category_row(catlist_str, misc_url_1_arg('catalog', 'Catlist'), catlist_plot)
-        render_root_category_row(genre_str, misc_url_1_arg('catalog', 'Genre'), genre_plot)
-        render_root_category_row(category_str, misc_url_1_arg('catalog', 'Category'), category_plot)
-        render_root_category_row(NPlayers_str, misc_url_1_arg('catalog', 'NPlayers'), NPlayers_plot)
-        render_root_category_row(rating_str, misc_url_1_arg('catalog', 'Bestgames'), rating_plot)
-        render_root_category_row(series_str, misc_url_1_arg('catalog', 'Series'), series_plot)
-        render_root_category_row(alltime_str, misc_url_1_arg('catalog', 'Alltime'), alltime_plot)
-        render_root_category_row(artwork_str, misc_url_1_arg('catalog', 'Artwork'), artwork_plot)
-        render_root_category_row(version_str, misc_url_1_arg('catalog', 'Version'), version_plot)
+        # Optional cataloged filters (depend on a INI file)
+        render_root_category_row(*root_categories['Catver'])
+        render_root_category_row(*root_categories['Catlist'])
+        render_root_category_row(*root_categories['Genre'])
+        render_root_category_row(*root_categories['Category'])
+        render_root_category_row(*root_categories['NPlayers'])
+        render_root_category_row(*root_categories['Bestgames'])
+        render_root_category_row(*root_categories['Series'])
+        render_root_category_row(*root_categories['Alltime'])
+        render_root_category_row(*root_categories['Artwork'])
+        render_root_category_row(*root_categories['Version'])
 
-        # >> Cataloged filters (always there)
-        render_root_category_row(ctype_expanded_str, misc_url_1_arg('catalog', 'Controls_Expanded'), ctype_expanded_plot)
-        render_root_category_row(ctype_compact_str, misc_url_1_arg('catalog', 'Controls_Compact'), ctype_compact_plot)
-        render_root_category_row(device_expanded_str, misc_url_1_arg('catalog', 'Devices_Expanded'), device_expanded_plot)
-        render_root_category_row(device_compact_str, misc_url_1_arg('catalog', 'Devices_Compact'), device_compact_plot)
-        render_root_category_row(dtype_str, misc_url_1_arg('catalog', 'Display_Type'), dtype_plot)
-        render_root_category_row(d_vsync_freq_str, misc_url_1_arg('catalog', 'Display_VSync'), d_vsync_freq_plot)
-        render_root_category_row(d_resolution_str, misc_url_1_arg('catalog', 'Display_Resolution'), d_resolution_plot)
-        render_root_category_row(CPU_str, misc_url_1_arg('catalog', 'CPU'), CPU_plot)
-        render_root_category_row(driver_str, misc_url_1_arg('catalog', 'Driver'), driver_plot)
-        render_root_category_row(manufacturer_str, misc_url_1_arg('catalog', 'Manufacturer'), manufacturer_plot)
-        render_root_category_row(shortname_str, misc_url_1_arg('catalog', 'ShortName'), shortname_plot)
-        render_root_category_row(longname_str, misc_url_1_arg('catalog', 'LongName'), longname_plot)
-        render_root_category_row(SL_str, misc_url_1_arg('catalog', 'BySL'), SL_plot)
-        render_root_category_row(year_str, misc_url_1_arg('catalog', 'Year'), year_plot)
+        # Cataloged filters (always there)
+        render_root_category_row(*root_categories['Controls_Expanded'])
+        render_root_category_row(*root_categories['Controls_Compact'])
+        render_root_category_row(*root_categories['Devices_Expanded'])
+        render_root_category_row(*root_categories['Devices_Compact'])
+        render_root_category_row(*root_categories['Display_Type'])
+        render_root_category_row(*root_categories['Display_VSync'])
+        render_root_category_row(*root_categories['Display_Resolution'])
+        render_root_category_row(*root_categories['CPU'])
+        render_root_category_row(*root_categories['Driver'])
+        render_root_category_row(*root_categories['Manufacturer'])
+        render_root_category_row(*root_categories['ShortName'])
+        render_root_category_row(*root_categories['LongName'])
+        render_root_category_row(*root_categories['BySL'])
+        render_root_category_row(*root_categories['Year'])
 
-    # >> history.dat, mameinfo.dat, gameinit.dat, command.dat
+    # --- DAT browsers ---
     if g_settings['display_DAT_browser']:
-        render_root_category_row('History DAT', misc_url_1_arg('catalog', 'History'), History_plot)
-        render_root_category_row('MAMEINFO DAT', misc_url_1_arg('catalog', 'MAMEINFO'), MAMEInfo_plot)
-        render_root_category_row('Gameinit DAT', misc_url_1_arg('catalog', 'Gameinit'), Gameinit_plot)
-        render_root_category_row('Command DAT', misc_url_1_arg('catalog', 'Command'), Command_plot)
+        render_root_category_row(*root_special['History'])
+        render_root_category_row(*root_special['MAMEINFO'])
+        render_root_category_row(*root_special['Gameinit'])
+        render_root_category_row(*root_special['Command'])
 
     # --- Software lists ---
     if g_settings['display_SL_browser'] and g_settings['enable_SL']:
-        render_root_category_row(SL_all_str, misc_url_1_arg('catalog', 'SL'), SL_all_plot)
-        render_root_category_row(SL_ROM_str, misc_url_1_arg('catalog', 'SL_ROM'), SL_ROM_plot)
-        render_root_category_row(SL_mixed_str, misc_url_1_arg('catalog', 'SL_ROM_CHD'), SL_ROM_CHD_plot)
-        render_root_category_row(SL_CHD_str, misc_url_1_arg('catalog', 'SL_CHD'), SL_CHD_plot)
+        render_root_category_row(*root_SL['SL'])
+        render_root_category_row(*root_SL['SL_ROM'])
+        render_root_category_row(*root_SL['SL_ROM_CHD'])
+        render_root_category_row(*root_SL['SL_CHD'])
         if num_SL_empty > 0:
-            render_root_category_row(SL_empty_str, misc_url_1_arg('catalog', 'SL_empty'), SL_empty_plot)
+            render_root_category_row(*root_SL['SL_empty'])
 
     # --- Special launchers ---
     if g_settings['display_custom_filters']:
         render_root_category_row_custom_CM(*root_special_CM['Custom_Filters'])
 
     if g_settings['display_ROLs']:
+        ROLS_plot = ('[COLOR orange]AEL Read Only Launchers[/COLOR] are special launchers '
+            'exported to AEL. You can select your Favourite MAME machines or setup a custom '
+            'filter to enjoy your MAME games in AEL togheter with other emulators.')
         URL = misc_url_1_arg('command', 'SHOW_AEL_ROLS')
-        render_root_category_row('[AEL Read Only Launchers]', URL, ROLS_plot)
+        render_root_category_row('[AEL Read Only Launchers]', ROLS_plot, URL)
 
     # --- MAME Favourite stuff ---
     if g_settings['display_MAME_favs']:
@@ -1129,24 +1241,29 @@ def render_root_list():
 
     # --- Always render these two ---
     if g_settings['display_utilities']:
+        Utilities_plot = ('Execute several [COLOR orange]Utilities[/COLOR]. For example, to '
+            'check you AML configuration.')
         URL = misc_url_1_arg('command', 'SHOW_UTILITIES_VLAUNCHERS')
-        render_root_category_row('Utilities', URL, Utilities_plot)
+        render_root_category_row('Utilities', Utilities_plot, URL)
     if g_settings['display_global_reports']:
+        Global_Reports_plot = ('View the [COLOR orange]Global Reports[/COLOR] and '
+            'machine and audit [COLOR orange]Statistics[/COLOR].')
         URL = misc_url_1_arg('command', 'SHOW_GLOBALREPORTS_VLAUNCHERS')
-        render_root_category_row('Global Reports', URL, Global_Reports_plot)
+        render_root_category_row('Global Reports', Global_Reports_plot, URL)
 
     # --- End of directory ---
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 #
 # These _render_skin_* functions used by skins to display widgets.
-# These functions must never fail and be silent. They are called by skin widgets.
+# These functions must never fail and be silent in case of error.
+# They are called by skin widgets.
 #
 def render_skin_fav_slots():
     try:
         set_render_root_data()
-        rsCM = root_special_CM.copy()
         # Remove special markers (first and last character)
+        rsCM = root_special_CM.copy()
         for key, value in rsCM.iteritems(): value[0] = value[0][1:-1]
         render_root_category_row_custom_CM(*rsCM['MAME_Favs'])
         render_root_category_row_custom_CM(*rsCM['MAME_Most'])
@@ -1159,123 +1276,83 @@ def render_skin_fav_slots():
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_main_filters():
-    machines_n_str = 'Machines with coin slot (Normal)'
-    machines_u_str = 'Machines with coin slot (Unusual)'
-    nocoin_str = 'Machines with no coin slot'
-    mecha_str = 'Mechanical machines'
-    dead_str = 'Dead machines'
-    devices_str = 'Device machines'
-
     try:
-        render_root_catalog_row(machines_n_str, 'Main', 'Normal')
-        render_root_catalog_row(machines_u_str, 'Main', 'Unusual')
-        render_root_catalog_row(nocoin_str, 'Main', 'NoCoin')
-        render_root_catalog_row(mecha_str, 'Main', 'Mechanical')
-        render_root_catalog_row(dead_str, 'Main', 'Dead')
-        render_root_catalog_row(devices_str, 'Main', 'Devices')
+        set_render_root_data()
+        render_root_catalog_row(*root_Main['Main_Normal'])
+        render_root_catalog_row(*root_Main['Main_Unusual'])
+        render_root_catalog_row(*root_Main['Main_NoCoin'])
+        render_root_catalog_row(*root_Main['Main_Mechanical'])
+        render_root_catalog_row(*root_Main['Main_Dead'])
+        render_root_catalog_row(*root_Main['Main_Devices'])
     except:
         log_error('Excepcion in render_skin_main_filters()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_binary_filters():
-    bios_str = 'Machines [BIOS]'
-    chd_str = 'Machines [with CHDs]'
-    samples_str = 'Machines [with Samples]'
-    softlists_str  = 'Machines [with Software Lists]'
-
     try:
-        render_root_catalog_row(bios_str, 'Binary', 'BIOS')
-        render_root_catalog_row(chd_str, 'Binary', 'CHD')
-        render_root_catalog_row(samples_str, 'Binary', 'Samples')
-        render_root_catalog_row(softlists_str, 'Binary', 'SoftwareLists')
+        set_render_root_data()
+        render_root_catalog_row(*root_Binary['BIOS'])
+        render_root_catalog_row(*root_Binary['CHD'])
+        render_root_catalog_row(*root_Binary['Samples'])
+        render_root_catalog_row(*root_Binary['SoftwareLists'])
     except:
         log_error('Excepcion in render_skin_binary_filters()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_catalog_filters():
-    # A mechanism to render only configured filters must be developed.
-    catver_str   = 'Machines by Category (Catver)'
-    catlist_str  = 'Machines by Category (Catlist)'
-    genre_str    = 'Machines by Category (Genre)'
-    category_str = 'Machines by Category (MASH)'
-    NPlayers_str = 'Machines by Number of players'
-    rating_str   = 'Machines by Rating'
-    series_str   = 'Machines by Series'
-    artwork_str  = 'Machines by Artwork (MASH)'
-    version_str  = 'Machines by Added Version'
-
-    ctype_expanded_str  = 'Machines by Controls (Expanded)'
-    ctype_compact_str   = 'Machines by Controls (Compact)'
-    device_expanded_str = 'Machines by Plugabble Devices (Expanded)'
-    device_compact_str  = 'Machines by Plugabble Devices (Compact)'
-    dtype_str           = 'Machines by Display Type'
-    d_vsync_freq_str    = 'Machines by Display VSync freq'
-    d_resolution_str    = 'Machines by Display Resolution'
-    CPU_str             = 'Machines by CPU'
-    driver_str          = 'Machines by Driver'
-    manufacturer_str    = 'Machines by Manufacturer'
-    shortname_str       = 'Machines by MAME short name'
-    longname_str        = 'Machines by MAME long name'
-    SL_str              = 'Machines by Software List'
-    year_str            = 'Machines by Year'
-
     try:
-        # >> Optional cataloged filters (depend on a INI file)
-        render_root_category_row(catver_str, misc_url_1_arg('catalog', 'Catver'))
-        render_root_category_row(catlist_str, misc_url_1_arg('catalog', 'Catlist'))
-        render_root_category_row(genre_str, misc_url_1_arg('catalog', 'Genre'))
-        render_root_category_row(category_str, misc_url_1_arg('catalog', 'Category'))
-        render_root_category_row(NPlayers_str, misc_url_1_arg('catalog', 'NPlayers'))
-        render_root_category_row(rating_str, misc_url_1_arg('catalog', 'Bestgames'))
-        render_root_category_row(series_str, misc_url_1_arg('catalog', 'Series'))
-        render_root_category_row(artwork_str, misc_url_1_arg('catalog', 'Artwork'))
-        render_root_category_row(version_str, misc_url_1_arg('catalog', 'Version'))
-
-        # >> Cataloged filters (always there)
-        render_root_category_row(ctype_expanded_str, misc_url_1_arg('catalog', 'Controls_Expanded'))
-        render_root_category_row(ctype_compact_str, misc_url_1_arg('catalog', 'Controls_Compact'))
-        render_root_category_row(device_expanded_str, misc_url_1_arg('catalog', 'Devices_Expanded'))
-        render_root_category_row(device_compact_str, misc_url_1_arg('catalog', 'Devices_Compact'))
-        render_root_category_row(dtype_str, misc_url_1_arg('catalog', 'Display_Type'))
-        render_root_category_row(d_vsync_freq_str, misc_url_1_arg('catalog', 'Display_VSync'))
-        render_root_category_row(d_resolution_str, misc_url_1_arg('catalog', 'Display_Resolution'))
-        render_root_category_row(CPU_str, misc_url_1_arg('catalog', 'CPU'))
-        render_root_category_row(driver_str, misc_url_1_arg('catalog', 'Driver'))
-        render_root_category_row(manufacturer_str, misc_url_1_arg('catalog', 'Manufacturer'))
-        render_root_category_row(shortname_str, misc_url_1_arg('catalog', 'ShortName'))
-        render_root_category_row(longname_str, misc_url_1_arg('catalog', 'LongName'))
-        render_root_category_row(SL_str, misc_url_1_arg('catalog', 'BySL'))
-        render_root_category_row(year_str, misc_url_1_arg('catalog', 'Year'))
+        # A mechanism to render only configured filters must be developed.
+        set_render_root_data()
+        render_root_category_row(*root_categories['Catver'])
+        render_root_category_row(*root_categories['Catlist'])
+        render_root_category_row(*root_categories['Genre'])
+        render_root_category_row(*root_categories['Category'])
+        render_root_category_row(*root_categories['NPlayers'])
+        render_root_category_row(*root_categories['Bestgames'])
+        render_root_category_row(*root_categories['Series'])
+        render_root_category_row(*root_categories['Alltime'])
+        render_root_category_row(*root_categories['Artwork'])
+        render_root_category_row(*root_categories['Version'])
+        render_root_category_row(*root_categories['Controls_Expanded'])
+        render_root_category_row(*root_categories['Controls_Compact'])
+        render_root_category_row(*root_categories['Devices_Expanded'])
+        render_root_category_row(*root_categories['Devices_Compact'])
+        render_root_category_row(*root_categories['Display_Type'])
+        render_root_category_row(*root_categories['Display_VSync'])
+        render_root_category_row(*root_categories['Display_Resolution'])
+        render_root_category_row(*root_categories['CPU'])
+        render_root_category_row(*root_categories['Driver'])
+        render_root_category_row(*root_categories['Manufacturer'])
+        render_root_category_row(*root_categories['ShortName'])
+        render_root_category_row(*root_categories['LongName'])
+        render_root_category_row(*root_categories['BySL'])
+        render_root_category_row(*root_categories['Year'])
     except:
         log_error('Excepcion in render_skin_catalog_filters()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_dat_slots():
     try:
-        render_root_category_row('History DAT',  misc_url_1_arg('catalog', 'History'))
-        render_root_category_row('MAMEINFO DAT', misc_url_1_arg('catalog', 'MAMEINFO'))
-        render_root_category_row('Gameinit DAT', misc_url_1_arg('catalog', 'Gameinit'))
-        render_root_category_row('Command DAT',  misc_url_1_arg('catalog', 'Command'))
+        set_render_root_data()
+        render_root_category_row(*root_special['History'])
+        render_root_category_row(*root_special['MAMEINFO'])
+        render_root_category_row(*root_special['Gameinit'])
+        render_root_category_row(*root_special['Command'])
     except:
-        pass
+        log_error('Excepcion in render_skin_dat_slots()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_skin_SL_filters():
     if not g_settings['enable_SL']:
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
-    SL_all_str = 'Software Lists (all)'
-    SL_ROM_str = 'Software Lists (with ROMs)'
-    SL_mixed_str = 'Software Lists (with ROMs and CHDs)'
-    SL_CHD_str = 'Software Lists (with CHDs)'
-    SL_empty_str = 'Software Lists (no ROMs nor CHDs)'
-
     try:
-        render_root_category_row(SL_all_str, misc_url_1_arg('catalog', 'SL'))
-        render_root_category_row(SL_ROM_str, misc_url_1_arg('catalog', 'SL_ROM'))
-        render_root_category_row(SL_mixed_str, misc_url_1_arg('catalog', 'SL_ROM_CHD'))
-        render_root_category_row(SL_CHD_str, misc_url_1_arg('catalog', 'SL_CHD'))
-        render_root_category_row(SL_empty_str, misc_url_1_arg('catalog', 'SL_empty'))
+        set_render_root_data()
+        render_root_category_row(*root_SL['SL'])
+        render_root_category_row(*root_SL['SL_ROM'])
+        render_root_category_row(*root_SL['SL_ROM_CHD'])
+        render_root_category_row(*root_SL['SL_CHD'])
+        render_root_category_row(*root_SL['SL_empty'])
     except:
         log_error('Excepcion in render_skin_SL_filters()')
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -1283,7 +1360,7 @@ def render_skin_SL_filters():
 #
 # A Catalog is equivalent to a Launcher in AEL.
 #
-def render_root_catalog_row(display_name, catalog_name, catalog_key, plot_str = ''):
+def render_root_catalog_row(catalog_name, catalog_key, display_name, plot_str):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     listitem = xbmcgui.ListItem(display_name)
@@ -1312,11 +1389,11 @@ def render_root_catalog_row(display_name, catalog_name, catalog_key, plot_str = 
 #
 # A Category is equivalent to a Category in AEL. It contains a list of Launchers (catalogs).
 #
-def render_root_category_row(root_name, root_URL, plot_str = ''):
+def render_root_category_row(display_name, plot_str, root_URL):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(root_name)
-    listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
+    listitem = xbmcgui.ListItem(display_name)
+    listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
 
     # --- Artwork ---
     icon_path   = g_PATHS.ICON_FILE_PATH.getPath()
@@ -1332,11 +1409,11 @@ def render_root_category_row(root_name, root_URL, plot_str = ''):
     listitem.addContextMenuItems(commands)
     xbmcplugin.addDirectoryItem(g_addon_handle, root_URL, listitem, isFolder = True)
 
-def render_root_category_row_custom_CM(root_name, root_URL, plot_str, cmenu_list):
+def render_root_category_row_custom_CM(display_name, plot_str, root_URL, cmenu_list):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(root_name)
-    listitem.setInfo('video', {'title' : root_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
+    listitem = xbmcgui.ListItem(display_name)
+    listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY, 'plot' : plot_str})
 
     # --- Artwork ---
     icon_path   = g_PATHS.ICON_FILE_PATH.getPath()
