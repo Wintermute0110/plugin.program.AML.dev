@@ -6537,6 +6537,7 @@ def command_exec_utility(which_utility):
                 slist.append('{0} MAME INI/DAT path "{1}"'.format(OK, g_settings['dats_path']))
 
                 DATS_dir_FN = FileName(g_settings['dats_path'])
+                ALLTIME_FN = DATS_dir_FN.pjoin(ALLTIME_INI)
                 ARTWORK_FN = DATS_dir_FN.pjoin(ARTWORK_INI)
                 BESTGAMES_FN = DATS_dir_FN.pjoin(BESTGAMES_INI)
                 CATEGORY_FN = DATS_dir_FN.pjoin(CATEGORY_INI)
@@ -6551,6 +6552,7 @@ def command_exec_utility(which_utility):
                 HISTORY_FN = DATS_dir_FN.pjoin(HISTORY_DAT)
                 MAMEINFO_FN = DATS_dir_FN.pjoin(MAMEINFO_DAT)
 
+                aux_check_file_WARN(slist, ALLTIME_FN.getPath(), ALLTIME_INI + ' file')
                 aux_check_file_WARN(slist, ARTWORK_FN.getPath(), ARTWORK_INI + ' file')
                 aux_check_file_WARN(slist, BESTGAMES_FN.getPath(), BESTGAMES_INI + ' file')
                 aux_check_file_WARN(slist, CATEGORY_FN.getPath(), CATEGORY_INI + ' file')
