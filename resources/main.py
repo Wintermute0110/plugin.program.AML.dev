@@ -2725,43 +2725,43 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         view_type = VIEW_MAME_MACHINE
     elif SL_name:
         view_type = VIEW_SL_ROM
+    else:
+        raise TypeError('Logic error in command_context_view_DAT()')
     log_debug('command_context_view_DAT() view_type = {0}'.format(view_type))
 
     if view_type == VIEW_MAME_MACHINE:
-        # >> Load DAT indices
+        # --- Load DAT indices ---
         History_idx_dic   = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
         Mameinfo_idx_dic  = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_IDX_PATH.getPath())
         Gameinit_idx_list = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_IDX_PATH.getPath())
         Command_idx_list  = fs_load_JSON_file_dic(g_PATHS.COMMAND_IDX_PATH.getPath())
 
-        # >> Check if DAT information is available for this machine
+        # --- Check if DAT information is available for this machine ---
         if History_idx_dic:
-            # >> Python Set Comprehension
-            History_MAME_set = { machine[0] for machine in History_idx_dic['mame']['machines'] }
-            if machine_name in History_MAME_set: History_str = 'Found'
-            else:                                History_str = 'Not found'
+            # History.dat is special. Create a dictionary of the machine names and the list
+            # index for fast retrieval of the machine tuple.
+            # Python set comprehension
+            History_MAME_dic = {m[0]:i for i, m in enumerate(History_idx_dic['mame']['machines'])}
+            History_str = 'Found' if machine_name in History_MAME_dic else 'Not found'
         else:
             History_str = 'Not configured'
         if Mameinfo_idx_dic:
-            Mameinfo_MAME_set = { machine[0] for machine in Mameinfo_idx_dic['mame'] }
-            if machine_name in Mameinfo_MAME_set: Mameinfo_str = 'Found'
-            else:                                 Mameinfo_str = 'Not found'
+            Mameinfo_MAME_set = { m[0] for m in Mameinfo_idx_dic['mame'] }
+            Mameinfo_str = 'Found' if machine_name in Mameinfo_MAME_set else 'Not found'
         else:
             Mameinfo_str = 'Not configured'
         if Gameinit_idx_list:
-            Gameinit_MAME_set = { machine[0] for machine in Gameinit_idx_list }
-            if machine_name in Gameinit_MAME_set: Gameinit_str = 'Found'
-            else:                                 Gameinit_str = 'Not found'
+            Gameinit_MAME_set = { m[0] for m in Gameinit_idx_list }
+            Gameinit_str = 'Found' if machine_name in Gameinit_MAME_set else 'Not found'
         else:
             Gameinit_str = 'Not configured'
         if Command_idx_list:
-            Command_MAME_set = { machine[0] for machine in Command_idx_list }
-            if machine_name in Command_MAME_set: Command_str = 'Found'
-            else:                                Command_str = 'Not found'
+            Command_MAME_set = { m[0] for m in Command_idx_list }
+            Command_str = 'Found' if machine_name in Command_MAME_set else 'Not found'
         else:
             Command_str = 'Not configured'
 
-        # >> Check Fanart and Manual. Load hashed databases.
+        # Check Fanart and Manual. Load hashed databases.
         # NOTE A ROM loading factory need to be coded to deal with the different ROM
         #      locations to avoid duplicate code. Have a look at ACTION_VIEW_MACHINE_DATA
         #      in function _command_context_view()
@@ -2769,12 +2769,11 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         # Manual_str = 
 
     elif view_type == VIEW_SL_ROM:
-        History_idx_dic   = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
+        History_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
         if History_idx_dic:
             if SL_name in History_idx_dic:
-                History_MAME_set = { machine[0] for machine in History_idx_dic[SL_name]['machines'] }
-                if SL_ROM in History_MAME_set: History_str = 'Found'
-                else:                          History_str = 'Not found'
+                History_MAME_dic = {m[0]:i for i, m in enumerate(History_idx_dic[SL_name]['machines'])}
+                History_str = 'Found' if SL_ROM in History_MAME_dic else 'Not found'
             else:
                 History_str = 'SL not found'
         else:
@@ -2787,10 +2786,10 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
     # --- Build menu base on view_type ---
     if view_type == VIEW_MAME_MACHINE:
         d_list = [
-          'View History DAT ({0})'.format(History_str),
-          'View MAMEinfo DAT ({0})'.format(Mameinfo_str),
-          'View Gameinit DAT ({0})'.format(Gameinit_str),
-          'View Command DAT ({0})'.format(Command_str),
+          'View History DAT ({})'.format(History_str),
+          'View MAMEinfo DAT ({})'.format(Mameinfo_str),
+          'View Gameinit DAT ({})'.format(Gameinit_str),
+          'View Command DAT ({})'.format(Command_str),
           'View Fanart',
           'View Manual',
           'Display brother machines',
@@ -2799,7 +2798,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         ]
     elif view_type == VIEW_SL_ROM:
         d_list = [
-          'View History DAT ({0})'.format(History_str),
+          'View History DAT ({})'.format(History_str),
           'View Fanart',
           'View Manual',
         ]
@@ -2821,61 +2820,67 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         elif selected_value == 7: action = ACTION_VIEW_SAME_GENRE
         elif selected_value == 8: action = ACTION_VIEW_SAME_MANUFACTURER
         else:
-            kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
-                           'This is a bug, please report it.')
+            kodi_dialog_OK(
+                'view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
+                'This is a bug, please report it.')
             return
     elif view_type == VIEW_SL_ROM:
         if   selected_value == 0: action = ACTION_VIEW_HISTORY
         elif selected_value == 1: action = ACTION_VIEW_FANART
         elif selected_value == 2: action = ACTION_VIEW_MANUAL
         else:
-            kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {0}. '.format(selected_value) +
-                           'This is a bug, please report it.')
+            kodi_dialog_OK(
+                'view_type == VIEW_SL_ROM and selected_value = {}. '.format(selected_value) +
+                'This is a bug, please report it.')
             return
 
     # --- Execute action ---
     if action == ACTION_VIEW_HISTORY:
         if view_type == VIEW_MAME_MACHINE:
-            if machine_name not in History_MAME_set:
-                kodi_dialog_OK('MAME machine {0} not in History DAT'.format(machine_name))
+            if machine_name not in History_MAME_dic:
+                kodi_dialog_OK('MAME machine {} not in History DAT'.format(machine_name))
                 return
+            machine_tuple = History_idx_dic['mame']['machines'][History_MAME_dic[machine_name]]
             DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
-            window_title = 'History DAT for MAME machine {0}'.format(machine_name)
-            info_text = DAT_dic['mame'][machine_name]
+            window_title = 'History DAT for MAME machine {} (DB entry {})'.format(
+                machine_name, machine_tuple[3])
+            info_text = DAT_dic[machine_tuple[2]][machine_tuple[3]]
         elif view_type == VIEW_SL_ROM:
-            if SL_ROM not in History_MAME_set:
-                kodi_dialog_OK('SL item {0} not in History DAT'.format(SL_ROM))
+            if SL_ROM not in History_MAME_dic:
+                kodi_dialog_OK('SL item {} not in History DAT'.format(SL_ROM))
                 return
+            machine_tuple = History_idx_dic[SL_name]['machines'][History_MAME_dic[SL_ROM]]
             DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
-            window_title = 'History DAT for SL item {0}'.format(SL_ROM)
-            info_text = DAT_dic[SL_name][SL_ROM]
+            window_title = 'History DAT for SL item {} (DB entry {} {})'.format(
+                SL_ROM, machine_tuple[2], machine_tuple[3])
+            info_text = DAT_dic[machine_tuple[2]][machine_tuple[3]]
         display_text_window(window_title, info_text)
 
     elif action == ACTION_VIEW_MAMEINFO:
         if machine_name not in Mameinfo_MAME_set:
-            kodi_dialog_OK('Machine {0} not in Mameinfo DAT'.format(machine_name))
+            kodi_dialog_OK('Machine {} not in Mameinfo DAT'.format(machine_name))
             return
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_DB_PATH.getPath())
         info_text = DAT_dic['mame'][machine_name]
 
-        window_title = 'MAMEinfo DAT for machine {0}'.format(machine_name)
+        window_title = 'MAMEinfo DAT for machine {}'.format(machine_name)
         display_text_window(window_title, info_text)
 
     elif action == ACTION_VIEW_GAMEINIT:
         if machine_name not in Gameinit_MAME_set:
-            kodi_dialog_OK('Machine {0} not in Gameinit DAT'.format(machine_name))
+            kodi_dialog_OK('Machine {} not in Gameinit DAT'.format(machine_name))
             return
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_DB_PATH.getPath())
-        window_title = 'Gameinit DAT for machine {0}'.format(machine_name)
+        window_title = 'Gameinit DAT for machine {}'.format(machine_name)
         info_text = DAT_dic[machine_name]
         display_text_window(window_title, info_text)
 
     elif action == ACTION_VIEW_COMMAND:
         if machine_name not in Command_MAME_set:
-            kodi_dialog_OK('Machine {0} not in Command DAT'.format(machine_name))
+            kodi_dialog_OK('Machine {} not in Command DAT'.format(machine_name))
             return
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.COMMAND_DB_PATH.getPath())
-        window_title = 'Command DAT for machine {0}'.format(machine_name)
+        window_title = 'Command DAT for machine {}'.format(machine_name)
         info_text = DAT_dic[machine_name]
         display_text_window(window_title, info_text)
 
@@ -2890,7 +2895,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 mame_favs_dic = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
                 m_assets = mame_favs_dic[machine_name]['assets']
             if not m_assets['fanart']:
-                kodi_dialog_OK('Fanart for machine {0} not found.'.format(machine_name))
+                kodi_dialog_OK('Fanart for machine {} not found.'.format(machine_name))
                 return
         elif view_type == VIEW_SL_ROM:
             SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
