@@ -361,6 +361,7 @@ def fs_new_control_dic():
         'ver_mame'      : 0,
         'ver_mame_str'  : 'Undefined',
         # INI files
+        'ver_alltime'   : 'MAME database not built',
         'ver_artwork'   : 'MAME database not built',
         'ver_bestgames' : 'MAME database not built',
         'ver_category'  : 'MAME database not built',

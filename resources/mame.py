@@ -1544,25 +1544,26 @@ def mame_stats_main_print_slist(settings, slist, control_dic, AML_version_str):
     AML_version_int = fs_AML_version_str_to_int(AML_version_str)
 
     slist.append('[COLOR orange]Main information[/COLOR]')
-    slist.append("AML version           {0:,} (str [COLOR violet]{1}[/COLOR])".format(
+    slist.append("AML version           {:,} (str [COLOR violet]{1}[/COLOR])".format(
         AML_version_int, AML_version_str))
-    slist.append("Database version      {0:,} (str [COLOR violet]{1}[/COLOR])".format(
+    slist.append("Database version      {:,} (str [COLOR violet]{1}[/COLOR])".format(
         control_dic['ver_AML'], control_dic['ver_AML_str']))
-    slist.append("MAME version          {0:,} (str [COLOR violet]{1}[/COLOR])".format(
+    slist.append("MAME version          {:,} (str [COLOR violet]{1}[/COLOR])".format(
         control_dic['ver_mame'], control_dic['ver_mame_str']))
-    slist.append("Artwork.ini version   {0}".format(control_dic['ver_artwork']))
-    slist.append("bestgames.ini version {0}".format(control_dic['ver_bestgames']))
-    slist.append("Category.ini version  {0}".format(control_dic['ver_category']))
-    slist.append("catlist.ini version   {0}".format(control_dic['ver_catlist']))
-    slist.append("catver.ini version    {0}".format(control_dic['ver_catver']))
-    slist.append("command.dat version   {0}".format(control_dic['ver_command']))
-    slist.append("gameinit.dat version  {0}".format(control_dic['ver_gameinit']))
-    slist.append("genre.ini version     {0}".format(control_dic['ver_genre']))
-    slist.append("history.dat version   {0}".format(control_dic['ver_history']))
-    slist.append("mameinfo.dat version  {0}".format(control_dic['ver_mameinfo']))
-    slist.append("mature.ini version    {0}".format(control_dic['ver_mature']))
-    slist.append("nplayers.ini version  {0}".format(control_dic['ver_nplayers']))
-    slist.append("series.ini version    {0}".format(control_dic['ver_series']))
+    slist.append("Alltime.ini version   {}".format(control_dic['ver_alltime']))
+    slist.append("Artwork.ini version   {}".format(control_dic['ver_artwork']))
+    slist.append("bestgames.ini version {}".format(control_dic['ver_bestgames']))
+    slist.append("Category.ini version  {}".format(control_dic['ver_category']))
+    slist.append("catlist.ini version   {}".format(control_dic['ver_catlist']))
+    slist.append("catver.ini version    {}".format(control_dic['ver_catver']))
+    slist.append("command.dat version   {}".format(control_dic['ver_command']))
+    slist.append("gameinit.dat version  {}".format(control_dic['ver_gameinit']))
+    slist.append("genre.ini version     {}".format(control_dic['ver_genre']))
+    slist.append("history.dat version   {}".format(control_dic['ver_history']))
+    slist.append("mameinfo.dat version  {}".format(control_dic['ver_mameinfo']))
+    slist.append("mature.ini version    {}".format(control_dic['ver_mature']))
+    slist.append("nplayers.ini version  {}".format(control_dic['ver_nplayers']))
+    slist.append("series.ini version    {}".format(control_dic['ver_series']))
 
     # Timestamps ordered if user selects "All in one step"
     slist.append('')
@@ -4313,6 +4314,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     change_control_dic(control_dic, 'ver_mame', mame_version_int)
     change_control_dic(control_dic, 'ver_mame_str', mame_version_raw)
     # INI files
+    change_control_dic(control_dic, 'ver_alltime', alltime_dic['version'])
     change_control_dic(control_dic, 'ver_artwork', artwork_dic['version'])
     change_control_dic(control_dic, 'ver_bestgames', bestgames_dic['version'])
     change_control_dic(control_dic, 'ver_category', category_dic['version'])
@@ -6548,11 +6550,11 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     SL_catalog_dic = {}
     processed_files = 0
     for file in sorted(SL_file_list):
-        # >> Progress dialog
+        # Progress dialog
         FN = FileName(file)
         pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, 'File {0}'.format(FN.getBase()))
 
-        # >> Open software list XML and parse it. Then, save data fields we want in JSON.
+        # Open software list XML and parse it. Then, save data fields we want in JSON.
         # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
         SL_path_FN = FileName(file)
         SLData = _mame_load_SL_XML(SL_path_FN.getPath())
@@ -6561,7 +6563,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         fs_write_JSON_file(
             PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(), SLData['SL_roms'], verbose = False)
 
-        # >> Add software list to catalog
+        # Add software list to catalog
         num_SL_with_ROMs += SLData['num_with_ROMs']
         num_SL_with_CHDs += SLData['num_with_CHDs']
         SL = {
@@ -6572,7 +6574,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         }
         SL_catalog_dic[FN.getBase_noext()] = SL
 
-        # >> Update progress
+        # Update progress
         processed_files += 1
     pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, ' ')
 
