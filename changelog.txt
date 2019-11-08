@@ -55,7 +55,7 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
 FEATURE  [CORE] For Software Lists, instead of showing the number of ROMs show the number
          of Items in Flat display mode or Parents in Parent/Clone display mode.
 
-FEATURE  Support for MASH's Alltime.ini.
+FEATURE  [CORE] Support for MASH's Alltime.ini.
 
 WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
          launcher information as well as the ROMs information. ROLs are generated with AML,

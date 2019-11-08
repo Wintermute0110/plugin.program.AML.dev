@@ -2190,7 +2190,7 @@ def command_context_display_settings(catalog_name, category_name):
 # Software Lists
 #----------------------------------------------------------------------------------------------
 def render_SL_list(catalog_name):
-    log_debug('render_SL_list() catalog_name = {0}\n'.format(catalog_name))
+    log_debug('render_SL_list() catalog_name = {}\n'.format(catalog_name))
 
     # --- General AML plugin check ---
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -2198,10 +2198,8 @@ def render_SL_list(catalog_name):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
-    # >> Load Software List catalog
+    # --- Load Software List catalog and build render catalog ---
     SL_main_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-
-    # >> Build SL
     SL_catalog_dic = {}
     if catalog_name == 'SL':
         for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
@@ -2223,9 +2221,9 @@ def render_SL_list(catalog_name):
             if SL_dic['num_with_ROMs'] == 0 and SL_dic['num_with_CHDs'] == 0:
                 SL_catalog_dic[SL_name] = SL_dic
     else:
-        kodi_dialog_OK('Wrong catalog_name {0}'.format(catalog_name))
+        kodi_dialog_OK('Wrong catalog_name {}'.format(catalog_name))
         return
-    log_debug('render_SL_list() len(catalog_name) = {0}\n'.format(len(SL_catalog_dic)))
+    log_debug('render_SL_list() len(catalog_name) = {}\n'.format(len(SL_catalog_dic)))
 
     set_Kodi_all_sorting_methods()
     for SL_name in SL_catalog_dic:
@@ -2242,14 +2240,14 @@ def render_SL_ROMs(SL_name):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
-    # >> Load ListItem properties (Not used at the moment)
+    # Load ListItem properties (Not used at the moment)
     # SL_properties_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PROP_PATH.getPath()) 
     # prop_dic = SL_properties_dic[SL_name]
-    # >> Global properties
+    # Global properties
     view_mode_property = g_settings['sl_view_mode']
     log_debug('render_SL_ROMs() view_mode_property = {0}'.format(view_mode_property))
 
-    # >> Load Software List ROMs
+    # Load Software List ROMs
     SL_PClone_dic = fs_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
     SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
     file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
@@ -2262,22 +2260,22 @@ def render_SL_ROMs(SL_name):
     set_Kodi_all_sorting_methods()
     SL_proper_name = SL_catalog_dic[SL_name]['display_name']
     if view_mode_property == VIEW_MODE_PCLONE:
+        # Get list of parents
         log_debug('render_SL_ROMs() Rendering Parent/Clone launcher')
-        # >> Get list of parents
         parent_list = []
         for parent_name in sorted(SL_PClone_dic[SL_name]): parent_list.append(parent_name)
         for parent_name in parent_list:
             ROM        = SL_roms[parent_name]
             assets     = SL_asset_dic[parent_name] if parent_name in SL_asset_dic else fs_new_SL_asset()
             num_clones = len(SL_PClone_dic[SL_name][parent_name])
-            ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
+            ROM['genre'] = SL_proper_name # Add the SL name as 'genre'
             render_SL_ROM_row(SL_name, parent_name, ROM, assets, True, num_clones)
     elif view_mode_property == VIEW_MODE_FLAT:
         log_debug('render_SL_ROMs() Rendering Flat launcher')
         for rom_name in SL_roms:
             ROM    = SL_roms[rom_name]
             assets = SL_asset_dic[rom_name] if rom_name in SL_asset_dic else fs_new_SL_asset()
-            ROM['genre'] = SL_proper_name # >> Add the SL name as 'genre'
+            ROM['genre'] = SL_proper_name # Add the SL name as 'genre'
             render_SL_ROM_row(SL_name, rom_name, ROM, assets)
     else:
         kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
@@ -2319,32 +2317,40 @@ def render_SL_pclone_set(SL_name, parent_name):
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_SL_list_row(SL_name, SL):
-    if SL['num_with_CHDs'] == 0:
-        if SL['num_with_ROMs'] == 1:
-            display_name = '{0}  [COLOR orange]({1} ROM)[/COLOR]'.format(SL['display_name'], SL['num_with_ROMs'])
-        else:
-            display_name = '{0}  [COLOR orange]({1} ROMs)[/COLOR]'.format(SL['display_name'], SL['num_with_ROMs'])
-    elif SL['num_with_ROMs'] == 0:
-        if SL['num_with_CHDs'] == 1:
-            display_name = '{0}  [COLOR orange]({1} CHD)[/COLOR]'.format(SL['display_name'], SL['num_with_CHDs'])
-        else:
-            display_name = '{0}  [COLOR orange]({1} CHDs)[/COLOR]'.format(SL['display_name'], SL['num_with_CHDs'])
+    # --- Display number of ROMs and CHDs ---
+    # if SL['num_with_CHDs'] == 0:
+    #     if SL['num_with_ROMs'] == 1: f_str = '{}  [COLOR orange]({} ROM)[/COLOR]'
+    #     else:                        f_str = '{}  [COLOR orange]({} ROMs)[/COLOR]'
+    #     display_name = f_str.format(SL['display_name'], SL['num_with_ROMs'])
+    # elif SL['num_with_ROMs'] == 0:
+    #     if SL['num_with_CHDs'] == 1: f_str = '{}  [COLOR orange]({} CHD)[/COLOR]'
+    #     else:                        f_str = '{}  [COLOR orange]({} CHDs)[/COLOR]'
+    #     display_name = f_str.format(SL['display_name'], SL['num_with_CHDs'])
+    # else:
+    #     display_name = '{}  [COLOR orange]({} ROMs and {} CHDs)[/COLOR]'.format(
+    #         SL['display_name'], SL['num_with_ROMs'], SL['num_with_CHDs'])
+
+    # --- Display Parents or Total SL items ---
+    view_mode_property = g_settings['sl_view_mode']
+    if view_mode_property == VIEW_MODE_PCLONE:
+        if SL['num_parents'] == 1: f_str = '{}  [COLOR orange]({} Parent)[/COLOR]'
+        else:                      f_str = '{}  [COLOR orange]({} Parents)[/COLOR]'
+        display_name = f_str.format(SL['display_name'], SL['num_parents'])
+    elif view_mode_property == VIEW_MODE_FLAT:
+        if SL['num_items'] == 1: f_str = '{}  [COLOR orange]({} Item)[/COLOR]'
+        else:                    f_str = '{}  [COLOR orange]({} Items)[/COLOR]'
+        display_name = f_str.format(SL['display_name'], SL['num_items'])
     else:
-        display_name = '{0}  [COLOR orange]({1} ROMs and {2} CHDs)[/COLOR]'.format(SL['display_name'], SL['num_with_ROMs'], SL['num_with_CHDs'])
+        raise TypeError('Wrong view_mode_property {}'.format(view_mode_property))
 
     # --- Create listitem row ---
     ICON_OVERLAY = 6
     listitem = xbmcgui.ListItem(display_name)
     listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
-
-    # --- Create context menu ---
-    commands = [
+    listitem.addContextMenuItems([
         ('Kodi File Manager', 'ActivateWindow(filemanager)' ),
-        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-    ]
-    listitem.addContextMenuItems(commands)
-
-    # --- Add row ---
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__))
+    ])
     URL = misc_url_2_arg('catalog', 'SL', 'category', SL_name)
     xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = True)
 

@@ -1544,11 +1544,11 @@ def mame_stats_main_print_slist(settings, slist, control_dic, AML_version_str):
     AML_version_int = fs_AML_version_str_to_int(AML_version_str)
 
     slist.append('[COLOR orange]Main information[/COLOR]')
-    slist.append("AML version           {:,} (str [COLOR violet]{1}[/COLOR])".format(
+    slist.append("AML version           {:,} (str [COLOR violet]{}[/COLOR])".format(
         AML_version_int, AML_version_str))
-    slist.append("Database version      {:,} (str [COLOR violet]{1}[/COLOR])".format(
+    slist.append("Database version      {:,} (str [COLOR violet]{}[/COLOR])".format(
         control_dic['ver_AML'], control_dic['ver_AML_str']))
-    slist.append("MAME version          {:,} (str [COLOR violet]{1}[/COLOR])".format(
+    slist.append("MAME version          {:,} (str [COLOR violet]{}[/COLOR])".format(
         control_dic['ver_mame'], control_dic['ver_mame_str']))
     slist.append("Alltime.ini version   {}".format(control_dic['ver_alltime']))
     slist.append("Artwork.ini version   {}".format(control_dic['ver_artwork']))
@@ -6161,6 +6161,9 @@ def _new_SL_Data_dic():
         'display_name'  : '',
         'num_with_ROMs' : 0,
         'num_with_CHDs' : 0,
+        'num_items'     : 0,
+        'num_parents'   : 0,
+        'num_clones'    : 0,
     }
 
 # Get ROMs in dataarea.
@@ -6297,12 +6300,14 @@ def _mame_load_SL_XML(xml_filename):
     except:
         return SLData
     xml_root = xml_tree.getroot()
-    SLData['display_name'] = xml_root.attrib['description']
+    SL_name = xml_root.attrib['description']
+    SLData['display_name'] = SL_name
     for root_element in xml_root:
         if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
-
-        # >> Only process 'software' elements
-        if root_element.tag != 'software': continue
+        # Only process 'software' elements
+        if root_element.tag != 'software':
+            log_warning('In SL {}, unrecognised XML tag <{}>'.format(SL_name, root_element.tag))
+            continue
         SL_item = fs_new_SL_ROM()
         SL_rom_list = []
         num_roms = 0
@@ -6310,11 +6315,10 @@ def _mame_load_SL_XML(xml_filename):
         item_name = root_element.attrib['name']
         if 'cloneof' in root_element.attrib: SL_item['cloneof'] = root_element.attrib['cloneof']
         if 'romof' in root_element.attrib:
-            log_error('{0} -> "romof" in root_element.attrib'.format(item_name))
-            raise CriticalError('DEBUG')
+            raise TypeError('SL {} item {}, "romof" in root_element.attrib'.format(SL_name, item_name))
 
         for rom_child in root_element:
-            # >> By default read strings
+            # By default read strings
             xml_text = rom_child.text if rom_child.text is not None else ''
             xml_tag  = rom_child.tag
             if __debug_xml_parser: log_debug('{0} --> {1}'.format(xml_tag, xml_text))
@@ -6361,24 +6365,27 @@ def _mame_load_SL_XML(xml_filename):
                     elif part_child.tag == 'dipswitch':
                         pass
                     else:
-                        log_error('{0} -> Inside <part>, unrecognised tag <{1}>'.format(item_name, part_child.tag))
-                        raise CriticalError('DEBUG')
+                        raise TypeError('SL {} item {}, inside <part>, unrecognised tag <{}>'.format(
+                            SL_name, item_name, part_child.tag))
                 # --- Add ROMs/disks ---
                 SL_rom_list.append(SL_roms_dic)
 
                 # --- DEBUG/Research code ---
                 # if num_dataarea > 1:
                 #     log_error('{0} -> num_dataarea = {1}'.format(item_name, num_dataarea))
-                #     raise CriticalError('DEBUG')
+                #     raise TypeError('DEBUG')
                 # if num_diskarea > 1:
                 #     log_error('{0} -> num_diskarea = {1}'.format(item_name, num_diskarea))
-                #     raise CriticalError('DEBUG')
+                #     raise TypeError('DEBUG')
                 # if num_dataarea and num_diskarea:
                 #     log_error('{0} -> num_dataarea = {1}'.format(item_name, num_dataarea))
                 #     log_error('{0} -> num_diskarea = {1}'.format(item_name, num_diskarea))
-                #     raise CriticalError('DEBUG')
+                #     raise TypeError('DEBUG')
 
         # --- Finished processing of <software> element ---
+        SLData['num_items'] += 1
+        if SL_item['cloneof']: SLData['num_clones'] += 1
+        else:                  SLData['num_parents'] += 1
         if num_roms:
             SL_item['hasROMs'] = True
             SL_item['status_ROM'] = '?'
@@ -6394,7 +6401,7 @@ def _mame_load_SL_XML(xml_filename):
             SL_item['hasCHDs'] = False
             SL_item['status_CHD'] = '-'
 
-        # >> Add <software> item (SL_item) to database and software ROM/CHDs to database
+        # Add <software> item (SL_item) to database and software ROM/CHDs to database.
         SLData['items'][item_name] = SL_item
         SLData['SL_roms'][item_name] = SL_rom_list
 
@@ -6542,7 +6549,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     pdialog_line1 = 'Building Sofware Lists item databases ...'
     pDialog.create('Advanced MAME Launcher', pdialog_line1)
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
-    # >> DEBUG code for development, only process first SL file (32x).
+    # DEBUG code for development, only process first SL file (32x).
     # SL_file_list = [ sorted(SL_file_list)[0] ]
     total_SL_files = len(SL_file_list)
     num_SL_with_ROMs = 0
@@ -6558,10 +6565,10 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
         SL_path_FN = FileName(file)
         SLData = _mame_load_SL_XML(SL_path_FN.getPath())
-        fs_write_JSON_file(
-            PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_items.json').getPath(), SLData['items'], verbose = False)
-        fs_write_JSON_file(
-            PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(), SLData['SL_roms'], verbose = False)
+        fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_items.json').getPath(),
+            SLData['items'], verbose = False)
+        fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(),
+            SLData['SL_roms'], verbose = False)
 
         # Add software list to catalog
         num_SL_with_ROMs += SLData['num_with_ROMs']
@@ -6570,6 +6577,9 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
             'display_name'  : SLData['display_name'],
             'num_with_ROMs' : SLData['num_with_ROMs'],
             'num_with_CHDs' : SLData['num_with_CHDs'],
+            'num_items'     : SLData['num_items'],
+            'num_parents'   : SLData['num_parents'],
+            'num_clones'    : SLData['num_clones'],
             'rom_DB_noext'  : FN.getBase_noext(),
         }
         SL_catalog_dic[FN.getBase_noext()] = SL
@@ -6582,8 +6592,8 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     log_info('Building Software List ROM Audit database ...')
     rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['SL_rom_set']]
     chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['SL_chd_set']]
-    log_info('mame_build_SoftwareLists_databases() SL ROM set is {0}'.format(rom_set))
-    log_info('mame_build_SoftwareLists_databases() SL CHD set is {0}'.format(chd_set))
+    log_info('mame_build_SoftwareLists_databases() SL ROM set is {}'.format(rom_set))
+    log_info('mame_build_SoftwareLists_databases() SL CHD set is {}'.format(chd_set))
     pdialog_line1 = 'Building Software List ROM audit databases ...'
     pDialog.update(0, pdialog_line1)
     total_files = len(SL_file_list)
@@ -6690,7 +6700,6 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # --- Save databases ---
         fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs_dic, verbose = False)
         fs_write_JSON_file(SL_Soft_Archives_DB_FN.getPath(), SL_Item_Archives_dic, verbose = False)
-        # >> Update progress
         processed_files += 1
     pDialog.update((processed_files*100) // total_files, pdialog_line1, ' ')
 
@@ -6719,7 +6728,6 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
             else:
                 if rom_name not in pclone_dic: pclone_dic[rom_name] = []
         SL_PClone_dic[sl_name] = pclone_dic
-        # >> Update progress
         processed_files += 1
     pDialog.update((processed_files*100) // total_files, pdialog_line1, ' ')
 
