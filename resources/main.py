@@ -2518,7 +2518,7 @@ def render_DAT_list(catalog_name):
     # --- Unrolled variables ---
     ICON_OVERLAY = 6
 
-    # >> Load Software List catalog
+    # Load DAT index file.
     if catalog_name == 'History':
         DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
         if not DAT_idx_dic:
@@ -2582,7 +2582,7 @@ def render_DAT_list(catalog_name):
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_DAT_category(catalog_name, category_name):
-    # >> Load Software List catalog
+    # Load Software List catalog
     if catalog_name == 'History':
         DAT_catalog_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
     elif catalog_name == 'MAMEINFO':
@@ -2595,6 +2595,7 @@ def render_DAT_category(catalog_name, category_name):
         kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
         xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
         return
+
     set_Kodi_all_sorting_methods()
     if catalog_name == 'History':
         category_machine_list = DAT_catalog_dic[category_name]['machines']
@@ -2606,15 +2607,12 @@ def render_DAT_category(catalog_name, category_name):
             render_DAT_category_row(catalog_name, category_name, machine_tuple)
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
 
-def render_DAT_category_row(catalog_name, category_name, machine_tuple):
-    display_name = '{0} [COLOR lightgray]({1})[/COLOR]'.format(machine_tuple[1], machine_tuple[0])
-
+def render_DAT_category_row(catalog_name, category_name, m_tuple):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
+    display_name = '{} [COLOR lightgray]({})[/COLOR]'.format(m_tuple[1], m_tuple[0])
     listitem = xbmcgui.ListItem(display_name)
     listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
-
-    # --- Create context menu ---
     commands = [
         ('View', misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
@@ -2623,7 +2621,13 @@ def render_DAT_category_row(catalog_name, category_name, machine_tuple):
     listitem.addContextMenuItems(commands)
 
     # --- Add row ---
-    URL = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_tuple[0])
+    if catalog_name == 'History':
+        # In History.dat introduced in MAME 0.215 one machine/SL item description may be shared
+        # among several machines, typically the parent description is also used by the clones.
+        # This should be taken into account.
+        URL = misc_url_3_arg('catalog', catalog_name, 'category', m_tuple[2], 'machine', m_tuple[3])
+    else:
+        URL = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', m_tuple[0])
     xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
 
 def render_DAT_machine_info(catalog_name, category_name, machine_name):
