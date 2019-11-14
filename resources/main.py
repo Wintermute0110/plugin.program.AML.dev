@@ -1452,6 +1452,14 @@ def render_Utilities_vlaunchers():
         ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
     ]
 
+    # --- Check MAME version ---
+    listitem = aux_get_generic_listitem(
+        'Check MAME version',
+        'Check MAME version',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_MAME_VERSION')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
     # --- Check AML configuration ---
     listitem = aux_get_generic_listitem(
         'Check AML configuration',
@@ -5429,38 +5437,22 @@ def check_SL_DB_before_rendering_machines(g_PATHS, g_settings, control_dic):
 # -------------------------------------------------------------------------------------------------
 def command_context_setup_plugin():
     dialog = xbmcgui.Dialog()
-    menu_item = dialog.select(
-        'Setup plugin',
-        ['Check MAME version',
-         'All in one (Extract, Build, Scan, Filters)',
-         'All in one (Extract, Build, Scan, Filters, Audit)',
-         'Extract/Process MAME.xml',
-         'Build all databases',
-         'Scan everything and build plots',
-         'Build Fanarts/3D Boxes ...',
-         'Audit MAME machine ROMs/CHDs',
-         'Audit SL ROMs/CHDs',
-         'Step by step ...'])
+    menu_item = dialog.select('Setup plugin', [
+        'All in one (Extract, Build, Scan, Filters)',
+        'All in one (Extract, Build, Scan, Filters, Audit)',
+        'Extract/Process MAME.xml',
+        'Build all databases',
+        'Scan everything and build plots',
+        'Build Fanarts/3D Boxes ...',
+        'Audit MAME machine ROMs/CHDs',
+        'Audit SL ROMs/CHDs',
+        'Step by step ...',
+    ])
     if menu_item < 0: return
-
-    # --- Check MAME version ---
-    # >> Run 'mame -?' and extract version from stdout
-    if menu_item == 0:
-        log_info('command_context_setup_plugin() Check MAME version starting ...')
-
-        # --- Check for errors ---
-        if not g_settings['mame_prog']:
-            kodi_dialog_OK('MAME executable is not set.')
-            return
-        mame_prog_FN = FileName(g_settings['mame_prog'])
-
-        # --- Check MAME version ---
-        mame_version_str = fs_extract_MAME_version(g_PATHS, mame_prog_FN)
-        kodi_dialog_OK('MAME version is {0}'.format(mame_version_str))
 
     # --- All in one (Extract, Build, Scan, Filters) ---
     # --- All in one (Extract, Build, Scan, Filters, Audit) ---
-    elif menu_item == 1 or menu_item == 2:
+    if menu_item == 0 or menu_item == 1:
         DO_AUDIT = False if menu_item == 1 else True
         log_info('command_context_setup_plugin() All in one step starting ...')
         log_info('Operation mode {0}'.format(g_settings['op_mode']))
@@ -5605,7 +5597,7 @@ def command_context_setup_plugin():
             kodi_notify('Finished extracting, DB build, scanning and filters')
 
     # --- Extract MAME.xml ---
-    elif menu_item == 3:
+    elif menu_item == 2:
         log_info('command_context_setup_plugin() Extract/Process MAME.xml starting ...')
         options_dic = {}
         if g_settings['op_mode'] == OP_MODE_EXTERNAL:
@@ -5632,7 +5624,7 @@ def command_context_setup_plugin():
             'Size is {0} MB and there are {1} machines.'.format(size_MB, num_m))
 
     # --- Build everything ---
-    elif menu_item == 4:
+    elif menu_item == 3:
         log_info('command_context_setup_plugin() Build everything starting ...')
 
         # --- Build main MAME database, PClone list and hashed database (mandatory) ---
@@ -5695,7 +5687,7 @@ def command_context_setup_plugin():
         kodi_notify('All databases built')
 
     # --- Scan everything ---
-    elif menu_item == 5:
+    elif menu_item == 4:
         log_info('command_setup_plugin() Scanning everything starting ...')
 
         # --- MAME -------------------------------------------------------------------------------
@@ -5793,21 +5785,21 @@ def command_context_setup_plugin():
         kodi_notify('All ROM/asset scanning finished')
 
     # --- Build Fanarts ---
-    elif menu_item == 6:
-        submenu = dialog.select('Build Fanarts',
-            ['Test MAME Fanart',
-             'Test Software List item Fanart',
-             'Test MAME 3D Box',
-             'Test Software List item 3D Box',
-             'Build missing MAME Fanarts',
-             'Rebuild all MAME Fanarts',
-             'Build missing Software Lists Fanarts',
-             'Rebuild all Software Lists Fanarts',
-             'Build missing MAME 3D Boxes',
-             'Rebuild all MAME 3D Boxes',
-             'Build missing Software Lists 3D Boxes',
-             'Rebuild all Software Lists 3D Boxes',
-             ])
+    elif menu_item == 5:
+        submenu = dialog.select('Build Fanarts', [
+            'Test MAME Fanart',
+            'Test Software List item Fanart',
+            'Test MAME 3D Box',
+            'Test Software List item 3D Box',
+            'Build missing MAME Fanarts',
+            'Rebuild all MAME Fanarts',
+            'Build missing Software Lists Fanarts',
+            'Rebuild all Software Lists Fanarts',
+            'Build missing MAME 3D Boxes',
+            'Rebuild all MAME 3D Boxes',
+            'Build missing Software Lists 3D Boxes',
+            'Rebuild all Software Lists 3D Boxes',
+        ])
         if submenu < 0: return
         # >> Check if Pillow library is available. Abort if not.
         if not PILLOW_AVAILABLE:
@@ -6025,7 +6017,7 @@ def command_context_setup_plugin():
     # --- Audit MAME machine ROMs/CHDs ---
     # NOTE It is likekely that this function will take a looong time. It is important that the
     #      audit process can be canceled and a partial report is written.
-    elif menu_item == 7:
+    elif menu_item == 6:
         log_info('command_context_setup_plugin() Audit MAME machines ROMs/CHDs ...')
 
         # --- Check for requirements/errors ---
@@ -6046,7 +6038,7 @@ def command_context_setup_plugin():
         kodi_notify('ROM and CHD audit finished')
 
     # --- Audit SL ROMs/CHDs ---
-    elif menu_item == 8:
+    elif menu_item == 7:
         log_info('command_context_setup_plugin() Audit SL ROMs/CHDs ...')
 
         # --- Check for requirements/errors ---
@@ -6059,7 +6051,7 @@ def command_context_setup_plugin():
         kodi_notify('Software Lists audit finished')
 
     # --- Build Step by Step ---
-    elif menu_item == 9:
+    elif menu_item == 8:
         submenu = dialog.select('Setup plugin (step by step)', [
             'Build MAME databases',
             'Build MAME Audit/Scanner databases',
@@ -6072,7 +6064,7 @@ def command_context_setup_plugin():
             'Build MAME machine plots',
             'Build Software List item plots',
             'Rebuild MAME machine and asset caches',
-            ])
+        ])
         if submenu < 0: return
 
         # --- Build main MAME database, PClone list and hashed database ---
@@ -6384,8 +6376,21 @@ def command_context_setup_plugin():
 def command_exec_utility(which_utility):
     log_debug('command_exec_utility() which_utility = "{0}" starting ...'.format(which_utility))
 
+    # Check MAME version
+    # Run 'mame -?' and extract version from stdout
+    if which_utility == 'CHECK_MAME_VERSION':
+        # --- Check for errors ---
+        if not g_settings['mame_prog']:
+            kodi_dialog_OK('MAME executable is not set.')
+            return
+
+        # --- Check MAME version ---
+        mame_prog_FN = FileName(g_settings['mame_prog'])
+        mame_version_str = fs_extract_MAME_version(g_PATHS, mame_prog_FN)
+        kodi_dialog_OK('MAME version is {0}'.format(mame_version_str))
+
     # Check AML configuration
-    if which_utility == 'CHECK_CONFIG':
+    elif which_utility == 'CHECK_CONFIG':
         # Functions defined here can see local variables defined in this code block.
         def aux_check_dir_ERR(slist, dir_str, msg):
             if dir_str:
