@@ -644,7 +644,6 @@ def mame_load_INI_datfile_simple(filename):
 
     return ini_dic
 
-#
 # Loads History.dat
 #
 # One description can be for several MAME machines:
@@ -662,18 +661,18 @@ def mame_load_INI_datfile_simple(filename):
 # history_idx_dic = {
 #    'nes' : {
 #        'name': string,
-#        'machines' : [
-#            [machine_name, beautiful_name, db_list_name, db_machine_name],
-#            ['100mandk', 'beautiful_name', '100mandk'],
-#            ['89denku', 'beautiful_name', '89denku'],
-#        ],
+#        'machines' : {
+#            'machine_name' : "beautiful_name,db_list_name,db_machine_name",
+#            '100mandk' : "beautiful_name,nes,100mandk",
+#            '89denku' : "beautiful_name,nes,89denku",
+#        },
 #    }
 #    'mame' : {
 #        'name' : string,
-#        'machines': [
-#            ['88games', 'beautiful_name', db_list_name, db_machine_name],
-#            ['flagrall', 'beautiful_name', db_list_name, db_machine_name],
-#        ],
+#        'machines': {
+#            '88games' : "beautiful_name,db_list_name,db_machine_name",
+#            'flagrall' : "beautiful_name,db_list_name,db_machine_name",
+#        },
 #    }
 # }
 #
@@ -695,6 +694,7 @@ def mame_load_History_DAT(filename):
     __debug_function = False
     line_number = 0
     num_header_line = 0
+    ignore_this_bio = False
 
     # --- read_status FSM values ---
     # 0 -> Looking for '$info=machine_name_1,machine_name_2,' or '$SL_name=item_1,item_2,'
@@ -724,54 +724,90 @@ def mame_load_History_DAT(filename):
                 continue
             if line_str == '': continue
             # Machine list line
-            m = re.search(r'^\$(.+?)=(.+?),$', line_str)
+            # Parses lines like "$info=99lstwar,99lstwara,99lstwarb,"
+            # Parses lines like "$info=99lstwar,99lstwara,99lstwarb"
+            m = re.search(r'^\$(.+?)=(.+?),?$', line_str)
             if m:
                 num_header_line += 1
                 list_name = m.group(1)
-                mname_list = m.group(2).split(',')
+                machine_name_raw = m.group(2)
+                # Remove trailing ',' to fix history.dat syntactic errors like
+                # "$snes_bspack=bsfami,,"
+                if machine_name_raw[-1] == ',':
+                    machine_name_raw = machine_name_raw[:-1]
+                if not list_name:
+                    ignore_this_bio = True
+                    log_warning('On History.dat line {:,}, empty list_name "{}"'.format(
+                        line_number, list_name))
+                # History.dat has other syntactic errors like "$dc=,"
+                # In this case ignore those biographies and do not add to the index.
+                if not machine_name_raw:
+                    ignore_this_bio = True
+                    log_warning('On History.dat line {:,}, empty machine_name_raw "{}"'.format(
+                        line_number, machine_name_raw))
+                else:
+                    # history.dat V2.15 has syntactic errors, for example "$snes_bspack=bsfami,,"
+                    # The regular expression removes the trailing ',' but not the second one.
+                    # At this point the error must have been fixed in previous code.
+                    if machine_name_raw[-1] == ',':
+                        log_debug('group 0 "{}"'.format(m.group(0)))
+                        log_debug('group 1 "{}"'.format(list_name))
+                        log_debug('group 2 "{}"'.format(machine_name_raw))
+                        raise TypeError('machine_name_raw ends in ","')
+                mname_list = machine_name_raw.split(',')
                 num_machines = len(mname_list)
                 # Transform some special list names
                 if list_name in {'info', 'info,megatech', 'info,stv'}: list_name = 'mame'
-                # First line in the header determines the list and key in the database
+                # First line in the header determines the list and key in the database.
                 if num_header_line == 1:
                     db_list_name = list_name
                     db_machine_name = mname_list[0]
-                for machine_name in mname_list:
-                    if list_name not in history_idx_dic:
-                        history_idx_dic[list_name] = {'name' : list_name, 'machines' : []}
-                    m_list = [machine_name, machine_name, db_list_name, db_machine_name]
-                    history_idx_dic[list_name]['machines'].append(m_list)
-                continue
-            # Machine list line
-            m = re.search(r'^\$(.+?)=(.+?)$', line_str)
-            if m:
-                num_header_line += 1
-                list_name = m.group(1)
-                machine_name = m.group(2)
-                if num_header_line == 1:
-                    db_list_name = list_name
-                    db_machine_name = machine_name
-                if list_name not in history_idx_dic:
-                    history_idx_dic[list_name] = {'name' : list_name, 'machines' : []}
-                m_list = [machine_name, machine_name, db_list_name, db_machine_name]
-                history_idx_dic[list_name]['machines'].append(m_list)
+                # Check for errors.
+                if not db_list_name:
+                    log_warning('On History.dat line {:,}, empty db_list_name "{}"'.format(
+                        line_number, db_list_name))
+                if not db_machine_name:
+                    log_warning('On History.dat line {:,}, empty db_machine_name "{}"'.format(
+                        line_number, db_machine_name))
+                # Add machines to index.
+                if ignore_this_bio:
+                    log_warning('Ignoring machine list at line {:,}'.format(line_number))
+                else:
+                    for machine_name in mname_list:
+                        if list_name not in history_idx_dic:
+                            history_idx_dic[list_name] = {'name' : list_name, 'machines' : {}}
+                        # Check that there are no commas before building the CSV string.
+                        if machine_name.find(',') >= 0:
+                            raise TypeError('Comma in machine_name "{}"'.format(machine_name))
+                        if db_list_name.find(',') >= 0:
+                            raise TypeError('Comma in db_list_name "{}"'.format(db_list_name))
+                        if db_machine_name.find(',') >= 0:
+                            raise TypeError('Comma in db_machine_name "{}"'.format(db_machine_name))
+                        m_str = '{},{},{}'.format(machine_name, db_list_name, db_machine_name)
+                        history_idx_dic[list_name]['machines'][machine_name] = m_str
                 continue
             if line_str == '$bio':
                 read_status = 1
                 info_str_list = []
                 continue
             # If we reach this point it's an error.
-            raise TypeError('Wrong header "{}" (line {})'.format(line_str, line_number))
+            raise TypeError('Wrong header "{}" (line {:,})'.format(line_str, line_number))
         elif read_status == 1:
             if line_str == '$end':
-                if db_list_name not in history_dic: history_dic[db_list_name] = {}
-                history_dic[db_list_name][db_machine_name] = '\n'.join(info_str_list)
+                if ignore_this_bio:
+                    log_warning('Not adding bio ending at line {:,}'.format(line_number))
+                else:
+                    if db_list_name not in history_dic: history_dic[db_list_name] = {}
+                    h_str = '\n'.join(info_str_list)
+                    if h_str[-1] == '\n': h_str = h_str[:-1]
+                    history_dic[db_list_name][db_machine_name] = h_str
                 read_status = 0
                 num_header_line = 0
+                ignore_this_bio = False
             else:
                 info_str_list.append(line_str)
         else:
-            raise TypeError('Wrong read_status = {} (line {})'.format(read_status, line_number))
+            raise TypeError('Wrong read_status = {} (line {:,})'.format(read_status, line_number))
     # Close file
     f.close()
     log_info('mame_load_History_DAT() Version "{0}"'.format(version_str))
@@ -2357,9 +2393,9 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
     machines, machines_render, assets_dic,
     history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic):
     log_info('mame_build_MAME_plots() Building machine plots/descriptions ...')
-    # >> Do not crash if DAT files are not configured.
+    # Do not crash if DAT files are not configured.
     if history_idx_dic:
-        history_info_set  = {machine[0] for machine in history_idx_dic['mame']['machines']}
+        history_info_set  = {machine for machine in history_idx_dic['mame']['machines']}
     else:
         history_info_set  = set()
     if mameinfo_idx_dic:
@@ -4270,42 +4306,52 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # --- History DAT categories are Software List names ---
     if history_idx_dic:
         log_debug('Updating History DAT cateogories and machine names ...')
-        # >> Open Software List index if it exists.
         SL_main_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
-        # >> Update category names.
         for cat_name in history_idx_dic:
             if cat_name == 'mame':
                 history_idx_dic[cat_name]['name'] = 'MAME'
-                # >> Improve MAME machine names
-                for machine_list in history_idx_dic[cat_name]['machines']:
-                    if machine_list[0] in machines_render:
-                        machine_list[1] = machines_render[machine_list[0]]['description']
+                # Improve MAME machine names
+                for machine_name in history_idx_dic[cat_name]['machines']:
+                    if machine_name not in machines_render: continue
+                    # Rebuild the CSV string.
+                    m_str = history_idx_dic[cat_name]['machines'][machine_name]
+                    old_display_name, db_list_name, db_machine_name = m_str.split(',')
+                    display_name = machines_render[machine_name]['description']
+                    # Substitute commas in display_name, otherwise the CSV string is malformed
+                    # and will produce errors later. Other fields are already comma-free.
+                    display_name = display_name.replace(',', '_')
+                    # Yes... some machine long names have commas in MAME.
+                    # if display_name.find(',') >= 0:
+                    #     raise TypeError('Comma in display_name "{}"'.format(display_name))
+                    m_str = '{},{},{}'.format(display_name, db_list_name, db_machine_name)
+                    history_idx_dic[cat_name]['machines'][machine_name] = m_str
+
             elif cat_name in SL_main_catalog_dic:
                 history_idx_dic[cat_name]['name'] = SL_main_catalog_dic[cat_name]['display_name']
-                # >> Improve SL machine names
-                
+                # Improve SL machine names
+                # To be written...
 
-    # >> MameInfo DAT machine names.
+    # MameInfo DAT machine names.
     if mameinfo_idx_dic:
         log_debug('Updating Mameinfo DAT machine names ...')
         for cat_name in mameinfo_idx_dic:
             for machine_list in mameinfo_idx_dic[cat_name]:
-                if machine_list[0] in machines_render:
-                    machine_list[1] = machines_render[machine_list[0]]['description']
+                if machine_list[0] not in machines_render: continue
+                machine_list[1] = machines_render[machine_list[0]]['description']
 
-    # >> GameInit DAT machine names.
+    # GameInit DAT machine names.
     if gameinit_idx_dic:
         log_debug('Updating GameInit DAT machine names ...')
         for machine_list in gameinit_idx_dic:
-            if machine_list[0] in machines_render:
-                machine_list[1] = machines_render[machine_list[0]]['description']
+            if machine_list[0] not in machines_render: continue
+            machine_list[1] = machines_render[machine_list[0]]['description']
 
-    # >> Command DAT machine names.
+    # Command DAT machine names.
     if command_idx_dic:
         log_debug('Updating Command DAT machine names ...')
         for machine_list in command_idx_dic:
-            if machine_list[0] in machines_render:
-                machine_list[1] = machines_render[machine_list[0]]['description']
+            if machine_list[0] not in machines_render: continue
+            machine_list[1] = machines_render[machine_list[0]]['description']
 
     # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary

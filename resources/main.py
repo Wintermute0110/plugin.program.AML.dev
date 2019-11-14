@@ -2606,8 +2606,10 @@ def render_DAT_category(catalog_name, category_name):
 
     set_Kodi_all_sorting_methods()
     if catalog_name == 'History':
-        category_machine_list = DAT_catalog_dic[category_name]['machines']
-        for machine_tuple in category_machine_list:
+        category_machine_dic = DAT_catalog_dic[category_name]['machines']
+        for machine_key in category_machine_dic:
+            display_name, db_list, db_machine = category_machine_dic[machine_key].split(',')
+            machine_tuple = [machine_key, display_name, db_list, db_machine]
             render_DAT_category_row(catalog_name, category_name, machine_tuple)
     elif catalog_name == 'MAMEINFO':
         category_machine_list = DAT_catalog_dic[category_name]
@@ -2746,11 +2748,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
 
         # --- Check if DAT information is available for this machine ---
         if History_idx_dic:
-            # History.dat is special. Create a dictionary of the machine names and the list
-            # index for fast retrieval of the machine tuple.
-            # Python set comprehension
-            History_MAME_dic = {m[0]:i for i, m in enumerate(History_idx_dic['mame']['machines'])}
-            History_str = 'Found' if machine_name in History_MAME_dic else 'Not found'
+            History_str = 'Found' if machine_name in History_idx_dic['mame']['machines'] else 'Not found'
         else:
             History_str = 'Not configured'
         if Mameinfo_idx_dic:
@@ -2780,8 +2778,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         History_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
         if History_idx_dic:
             if SL_name in History_idx_dic:
-                History_MAME_dic = {m[0]:i for i, m in enumerate(History_idx_dic[SL_name]['machines'])}
-                History_str = 'Found' if SL_ROM in History_MAME_dic else 'Not found'
+                History_str = 'Found' if SL_ROM in History_idx_dic[SL_name]['machines'] else 'Not found'
             else:
                 History_str = 'SL not found'
         else:
@@ -2845,23 +2842,29 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
     # --- Execute action ---
     if action == ACTION_VIEW_HISTORY:
         if view_type == VIEW_MAME_MACHINE:
-            if machine_name not in History_MAME_dic:
+            if machine_name not in History_idx_dic['mame']['machines']:
                 kodi_dialog_OK('MAME machine {} not in History DAT'.format(machine_name))
                 return
-            machine_tuple = History_idx_dic['mame']['machines'][History_MAME_dic[machine_name]]
+            m_str = History_idx_dic['mame']['machines'][machine_name]
+            display_name, db_list, db_machine = m_str.split(',')
             DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
-            window_title = 'History DAT for MAME machine {} (DB entry {})'.format(
-                machine_name, machine_tuple[3])
-            info_text = DAT_dic[machine_tuple[2]][machine_tuple[3]]
+            t_str = ('History DAT for MAME machine [COLOR=orange]{}[/COLOR] '
+                '(DB entry [COLOR=orange]{}[/COLOR])')
+            window_title = t_str.format(machine_name, db_machine)
         elif view_type == VIEW_SL_ROM:
-            if SL_ROM not in History_MAME_dic:
-                kodi_dialog_OK('SL item {} not in History DAT'.format(SL_ROM))
+            if SL_name not in History_idx_dic:
+                kodi_dialog_OK('SL {} not found in History DAT'.format(SL_name))
                 return
-            machine_tuple = History_idx_dic[SL_name]['machines'][History_MAME_dic[SL_ROM]]
+            if SL_ROM not in History_idx_dic[SL_name]['machines']:
+                kodi_dialog_OK('SL {} item {} not in History DAT'.format(SL_name, SL_ROM))
+                return
+            m_str = History_idx_dic[SL_name]['machines'][SL_ROM]
+            display_name, db_list, db_machine = m_str.split(',')
             DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
-            window_title = 'History DAT for SL item {} (DB entry {} {})'.format(
-                SL_ROM, machine_tuple[2], machine_tuple[3])
-            info_text = DAT_dic[machine_tuple[2]][machine_tuple[3]]
+            t_str = ('History DAT for SL [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR] '
+                '(DB entry [COLOR=orange]{}[/COLOR]-[COLOR=orange]{}[/COLOR])')
+            window_title = t_str.format(SL_name, SL_ROM, db_list, db_machine)
+        info_text = DAT_dic[db_list][db_machine]
         display_text_window(window_title, info_text)
 
     elif action == ACTION_VIEW_MAMEINFO:

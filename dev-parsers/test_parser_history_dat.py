@@ -15,7 +15,6 @@ def log_info(str): print(str)
 def log_debug(str): print(str)
 
 # --- functions -----------------------------------------------------------------------------------
-#
 # Loads History.dat
 #
 # One description can be for several MAME machines:
