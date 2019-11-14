@@ -1,13 +1,18 @@
 #!/usr/bin/python -B
 #
+import json
 import pprint
 import re
+import sys
 
 # --- compatibility functions ---------------------------------------------------------------------
 def log_variable(var_name, var):
     print('Dumping variable "{}"\n{}'.format(var_name, pprint.pformat(var)))
 
+def log_error(str): print(str)
+def log_warning(str): print(str)
 def log_info(str): print(str)
+def log_debug(str): print(str)
 
 # --- functions -----------------------------------------------------------------------------------
 #
@@ -61,6 +66,7 @@ def mame_load_History_DAT(filename):
     __debug_function = False
     line_number = 0
     num_header_line = 0
+    ignore_this_bio = False
 
     # --- read_status FSM values ---
     # 0 -> Looking for '$info=machine_name_1,machine_name_2,' or '$SL_name=item_1,item_2,'
@@ -90,37 +96,47 @@ def mame_load_History_DAT(filename):
                 continue
             if line_str == '': continue
             # Machine list line
-            m = re.search(r'^\$(.+?)=(.+?),$', line_str)
+            # Parses lines like "$info=99lstwar,99lstwara,99lstwarb,"
+            # Parses lines like "$info=99lstwar,99lstwara,99lstwarb"
+            m = re.search(r'^\$(.+?)=(.+?),?$', line_str)
             if m:
                 num_header_line += 1
                 list_name = m.group(1)
-                mname_list = m.group(2).split(',')
+                machine_name_raw = m.group(2)
+                # Remove trailing ',' to fix history.dat syntactic errors like
+                # "$snes_bspack=bsfami,,"
+                if machine_name_raw[-1] == ',':
+                    machine_name_raw = machine_name_raw[:-1]
+                # History.dat has other syntactic errors like "$dc=,"
+                # In this case ignore those biographies and do not add to the index.
+                if not machine_name_raw:
+                    ignore_this_bio = True
+                else:
+                    # history.dat V2.15 has syntactic errors, for example "$snes_bspack=bsfami,,"
+                    # The regular expression removes the trailing ',' but not the second one.
+                    # At this point the error must have been fixed in previous code.
+                    if machine_name_raw[-1] == ',':
+                        log_debug('group 0 "{}"'.format(m.group(0)))
+                        log_debug('group 1 "{}"'.format(list_name))
+                        log_debug('group 2 "{}"'.format(machine_name_raw))
+                        raise TypeError('machine_name_raw ends in ","')
+                mname_list = machine_name_raw.split(',')
                 num_machines = len(mname_list)
                 # Transform some special list names
                 if list_name in {'info', 'info,megatech', 'info,stv'}: list_name = 'mame'
-                # First line in the header determines the list and key in the database
+                # First line in the header determines the list and key in the database.
                 if num_header_line == 1:
                     db_list_name = list_name
                     db_machine_name = mname_list[0]
-                for machine_name in mname_list:
-                    if list_name not in history_idx_dic:
-                        history_idx_dic[list_name] = {'name' : list_name, 'machines' : []}
-                    m_list = [machine_name, machine_name, db_list_name, db_machine_name]
-                    history_idx_dic[list_name]['machines'].append(m_list)
-                continue
-            # Machine list line
-            m = re.search(r'^\$(.+?)=(.+?)$', line_str)
-            if m:
-                num_header_line += 1
-                list_name = m.group(1)
-                machine_name = m.group(2)
-                if num_header_line == 1:
-                    db_list_name = list_name
-                    db_machine_name = machine_name
-                if list_name not in history_idx_dic:
-                    history_idx_dic[list_name] = {'name' : list_name, 'machines' : []}
-                m_list = [machine_name, machine_name, db_list_name, db_machine_name]
-                history_idx_dic[list_name]['machines'].append(m_list)
+                # Add machines to index.
+                if ignore_this_bio:
+                    log_warning('Ignoring machines at line {}'.format(line_number))
+                else:
+                    for machine_name in mname_list:
+                        if list_name not in history_idx_dic:
+                            history_idx_dic[list_name] = {'name' : list_name, 'machines' : []}
+                        m_list = [machine_name, machine_name, db_list_name, db_machine_name]
+                        history_idx_dic[list_name]['machines'].append(m_list)
                 continue
             if line_str == '$bio':
                 read_status = 1
@@ -130,10 +146,16 @@ def mame_load_History_DAT(filename):
             raise TypeError('Wrong header "{}" (line {})'.format(line_str, line_number))
         elif read_status == 1:
             if line_str == '$end':
-                if db_list_name not in history_dic: history_dic[db_list_name] = {}
-                history_dic[db_list_name][db_machine_name] = '\n'.join(info_str_list)
+                if ignore_this_bio:
+                    log_warning('Not adding bio ending at line {}'.format(line_number))
+                else:
+                    if db_list_name not in history_dic: history_dic[db_list_name] = {}
+                    h_str = '\n'.join(info_str_list)
+                    if h_str[-1] == '\n': h_str = h_str[:-1]
+                    history_dic[db_list_name][db_machine_name] = h_str
                 read_status = 0
                 num_header_line = 0
+                ignore_this_bio = False
             else:
                 info_str_list.append(line_str)
         else:
@@ -147,5 +169,20 @@ def mame_load_History_DAT(filename):
     return (history_idx_dic, history_dic, version_str)
 
 # --- main code -----------------------------------------------------------------------------------
+print('Testing string.split() behaviour')
+# Lesson learned: CSV strings MUST NOT END in a comma.
+str_list = [
+    '99lstwar,99lstwara,99lstwarb',
+    '99lstwar,99lstwara,99lstwarb,',
+]
+for test_str in str_list:
+    print('Str   "{}"'.format(test_str))
+    print('Split {}\n'.format(test_str.split(',')))
+
 print('Testing function mame_load_History_DAT()')
 (history_idx_dic, history_dic, version_str) = mame_load_History_DAT('history.dat')
+print('version_str {}'.format(version_str))
+with open('history_idx_dic.json', 'w') as f:
+    f.write(json.dumps(history_idx_dic, sort_keys = True, indent = 2))
+with open('history_dic.json', 'w') as f:
+    f.write(json.dumps(history_dic, sort_keys = True, indent = 2))
