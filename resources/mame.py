@@ -662,16 +662,16 @@ def mame_load_INI_datfile_simple(filename):
 #    'nes' : {
 #        'name': string,
 #        'machines' : {
-#            'machine_name' : "beautiful_name,db_list_name,db_machine_name",
-#            '100mandk' : "beautiful_name,nes,100mandk",
-#            '89denku' : "beautiful_name,nes,89denku",
+#            'machine_name' : "beautiful_name|db_list_name|db_machine_name",
+#            '100mandk' : "beautiful_name|nes|100mandk",
+#            '89denku' : "beautiful_name|nes|89denku",
 #        },
 #    }
 #    'mame' : {
 #        'name' : string,
 #        'machines': {
-#            '88games' : "beautiful_name,db_list_name,db_machine_name",
-#            'flagrall' : "beautiful_name,db_list_name,db_machine_name",
+#            '88games' : "beautiful_name|db_list_name|db_machine_name",
+#            'flagrall' : "beautiful_name|db_list_name|db_machine_name",
 #        },
 #    }
 # }
@@ -776,14 +776,7 @@ def mame_load_History_DAT(filename):
                     for machine_name in mname_list:
                         if list_name not in history_idx_dic:
                             history_idx_dic[list_name] = {'name' : list_name, 'machines' : {}}
-                        # Check that there are no commas before building the CSV string.
-                        if machine_name.find(',') >= 0:
-                            raise TypeError('Comma in machine_name "{}"'.format(machine_name))
-                        if db_list_name.find(',') >= 0:
-                            raise TypeError('Comma in db_list_name "{}"'.format(db_list_name))
-                        if db_machine_name.find(',') >= 0:
-                            raise TypeError('Comma in db_machine_name "{}"'.format(db_machine_name))
-                        m_str = '{},{},{}'.format(machine_name, db_list_name, db_machine_name)
+                        m_str = misc_build_db_str_3(machine_name, db_list_name, db_machine_name)
                         history_idx_dic[list_name]['machines'][machine_name] = m_str
                 continue
             if line_str == '$bio':
@@ -3547,7 +3540,6 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
 # -------------------------------------------------------------------------------------------------
 # MAME database building
 # -------------------------------------------------------------------------------------------------
-#
 # 1) Scan MAME hash dir for XML files.
 # 2) For each XML file, read the first XML_READ_LINES lines.
 # 3) Search for the line <softwarelist name="32x" description="Sega 32X cartridges">
@@ -3556,12 +3548,11 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
 # <softwarelist name="32x" description="Sega 32X cartridges">
 # <softwarelist name="vsmile_cart" description="VTech V.Smile cartridges">
 # <softwarelist name="vsmileb_cart" description="VTech V.Smile Baby cartridges">
-#
 XML_READ_LINES = 600
 def mame_build_SL_names(PATHS, settings):
     log_debug('mame_build_SL_names() Starting ...')
 
-    # >> If MAME hash path is not configured then create and empty file
+    # If MAME hash path is not configured then create and empty file
     SL_names_dic = {}
     hash_dir_FN = FileName(settings['SL_hash_path'])
     if not hash_dir_FN.exists():
@@ -3570,24 +3561,24 @@ def mame_build_SL_names(PATHS, settings):
         fs_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
         return
 
-    # >> MAME hash path exists. Carry on.
+    # MAME hash path exists. Carry on.
     file_list = os.listdir(hash_dir_FN.getPath())
-    log_debug('mame_build_SL_names() Found {0} files'.format(len(file_list)))
+    log_debug('mame_build_SL_names() Found {} files'.format(len(file_list)))
     xml_files = []
     for file in file_list:
         if file.endswith('.xml'): xml_files.append(file)
-    log_debug('mame_build_SL_names() Found {0} XML files'.format(len(xml_files)))
+    log_debug('mame_build_SL_names() Found {} XML files'.format(len(xml_files)))
     for f_name in xml_files:
         XML_FN = hash_dir_FN.pjoin(f_name)
         # log_debug('Inspecting file "{0}"'.format(XML_FN.getPath()))
-        # >> Read first XML_READ_LINES lines
+        # Read first XML_READ_LINES lines
         try:
             f = open(XML_FN.getPath(), 'r')
         except IOError:
-            log_error('(IOError) Exception opening {0}'.format(XML_FN.getPath()))
+            log_error('(IOError) Exception opening {}'.format(XML_FN.getPath()))
             continue
         else:
-            # >> f.readlines(XML_READ_LINES) does not work well for some files
+            # f.readlines(XML_READ_LINES) does not work well for some files
             # content_list = f.readlines(XML_READ_LINES)
             line_count = 0
             content_list = []
@@ -3598,32 +3589,30 @@ def mame_build_SL_names(PATHS, settings):
             content_list = [x.strip() for x in content_list]
             content_list = [x.decode('utf-8') for x in content_list]
             for line in content_list:
-                # >> DEBUG
+                # DEBUG
                 # if f_name == 'vsmileb_cart.xml': log_debug('Line "{0}"'.format(line))
-                # >> Search for SL name
-                if line.startswith('<softwarelist'):
-                    m = re.search(r'<softwarelist name="([^"]+?)" description="([^"]+?)"', line)
-                    if m:
-                        sl_name = m.group(1)
-                        sl_desc = m.group(2)
-                        # log_debug('mame_build_SL_names() SL "{0}" -> "{1}"'.format(sl_name, sl_desc))
-                        SL_names_dic[sl_name] = sl_desc
-    # >> Save database
-    log_debug('mame_build_SL_names() Extracted {0} Software List names'.format(len(SL_names_dic)))
+                # Search for SL name
+                if not line.startswith('<softwarelist'): continue
+                m = re.search(r'<softwarelist name="([^"]+?)" description="([^"]+?)"', line)
+                if m:
+                    sl_name = m.group(1)
+                    sl_desc = m.group(2)
+                    # log_debug('mame_build_SL_names() SL "{0}" -> "{1}"'.format(sl_name, sl_desc))
+                    SL_names_dic[sl_name] = sl_desc
+                    break
+    # Save database
+    log_debug('mame_build_SL_names() Extracted {} Software List names'.format(len(SL_names_dic)))
     fs_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
 
-#
 # Checks for errors before scanning for SL ROMs.
 # Display a Kodi dialog if an error is found.
 # Returns a dictionary of settings:
 # options_dic['abort'] is always present.
-#
 def mame_check_before_build_MAME_main_database(PATHS, settings, control_dic):
     options_dic = {}
     options_dic['abort'] = False
 
     # --- Check for errors ---
-    # >> Check that MAME_XML_PATH exists
     if not PATHS.MAME_XML_PATH.exists():
         kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
         options_dic['abort'] = True
@@ -4306,7 +4295,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # --- History DAT categories are Software List names ---
     if history_idx_dic:
         log_debug('Updating History DAT cateogories and machine names ...')
-        SL_main_catalog_dic = fs_load_JSON_file_dic(PATHS.SL_INDEX_PATH.getPath())
+        SL_names_dic = fs_load_JSON_file_dic(PATHS.SL_NAMES_PATH.getPath())
         for cat_name in history_idx_dic:
             if cat_name == 'mame':
                 history_idx_dic[cat_name]['name'] = 'MAME'
@@ -4315,21 +4304,15 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
                     if machine_name not in machines_render: continue
                     # Rebuild the CSV string.
                     m_str = history_idx_dic[cat_name]['machines'][machine_name]
-                    old_display_name, db_list_name, db_machine_name = m_str.split(',')
+                    old_display_name, db_list_name, db_machine_name = m_str.split('|')
                     display_name = machines_render[machine_name]['description']
-                    # Substitute commas in display_name, otherwise the CSV string is malformed
-                    # and will produce errors later. Other fields are already comma-free.
-                    display_name = display_name.replace(',', '_')
-                    # Yes... some machine long names have commas in MAME.
-                    # if display_name.find(',') >= 0:
-                    #     raise TypeError('Comma in display_name "{}"'.format(display_name))
-                    m_str = '{},{},{}'.format(display_name, db_list_name, db_machine_name)
+                    m_str = misc_build_db_str_3(display_name, db_list_name, db_machine_name)
                     history_idx_dic[cat_name]['machines'][machine_name] = m_str
 
-            elif cat_name in SL_main_catalog_dic:
-                history_idx_dic[cat_name]['name'] = SL_main_catalog_dic[cat_name]['display_name']
-                # Improve SL machine names
-                # To be written...
+            elif cat_name in SL_names_dic:
+                history_idx_dic[cat_name]['name'] = SL_names_dic[cat_name]
+                # Improve SL machine names. This must be done when building the SL databases
+                # and not here.
 
     # MameInfo DAT machine names.
     if mameinfo_idx_dic:

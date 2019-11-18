@@ -23,6 +23,15 @@ from __future__ import unicode_literals
 # -------------------------------------------------------------------------------------------------
 # Functions
 # -------------------------------------------------------------------------------------------------
+# Builds a string separated by a | character. Replaces | ocurrences with _
+# The string can be separated with str.split('|')
+def misc_build_db_str_3(str1, str2, str3):
+    if str1.find('|') >= 0: str1 = str1.replace('|', '_')
+    if str2.find('|') >= 0: str2 = str2.replace('|', '_')
+    if str3.find('|') >= 0: str3 = str3.replace('|', '_')
+
+    return '{}|{}|{}'.format(str1, str2, str3)
+
 # Used in mame_build_MAME_plots()
 def misc_get_mame_control_str(control_type_list):
     control_set = set()
