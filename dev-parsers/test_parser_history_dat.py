@@ -147,14 +147,7 @@ def mame_load_History_DAT(filename):
                     for machine_name in mname_list:
                         if list_name not in history_idx_dic:
                             history_idx_dic[list_name] = {'name' : list_name, 'machines' : {}}
-                        # Check that there are no commas before building the CSV string.
-                        if machine_name.find(',') >= 0:
-                            raise TypeError('Comma in machine_name "{}"'.format(machine_name))
-                        if db_list_name.find(',') >= 0:
-                            raise TypeError('Comma in db_list_name "{}"'.format(db_list_name))
-                        if db_machine_name.find(',') >= 0:
-                            raise TypeError('Comma in db_machine_name "{}"'.format(db_machine_name))
-                        m_str = '{},{},{}'.format(machine_name, db_list_name, db_machine_name)
+                        m_str = misc_build_db_str_3(machine_name, db_list_name, db_machine_name)
                         history_idx_dic[list_name]['machines'][machine_name] = m_str
                 continue
             if line_str == '$bio':
