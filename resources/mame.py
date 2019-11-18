@@ -813,18 +813,33 @@ def mame_load_History_DAT(filename):
 # Looks that mameinfo.dat has information for both machines and drivers.
 #
 # idx_dic  = { 
-#     'mame' : [['88games', 'beautiful_name'], ['flagrall', 'beautiful_name'], ...],
-#     'drv' : [['88games.cpp', 'beautiful_name'], ['flagrall.cpp', 'beautiful_name'], ...],
+#     'mame' : {
+#         '88games' : 'beautiful_name',
+#         'flagrall' : 'beautiful_name',
+#     },
+#     'drv' : {
+#         '88games.cpp' : 'beautiful_name'], 
+#         'flagrall.cpp' : 'beautiful_name'],
+#     }
 # }
 # data_dic = {
-#    'mame' : {'88games' : string, 'flagrall' : string, ...},
-#    'drv' : {'1942.cpp' : string, '1943.cpp' : string, ...},
+#    'mame' : {
+#        '88games' : string,
+#        'flagrall' : string,
+#     },
+#    'drv' : {
+#        '1942.cpp' : string,
+#        '1943.cpp' : string,
+#    }
 # }
 #
 def mame_load_MameInfo_DAT(filename):
     log_info('mame_load_MameInfo_DAT() Parsing "{0}"'.format(filename))
     version_str = 'Not found'
-    idx_dic = {}
+    idx_dic = {
+        'mame' : {},
+        'drv' : {},
+    }
     data_dic = {}
     __debug_function = False
 
@@ -867,20 +882,12 @@ def mame_load_MameInfo_DAT(filename):
                 read_status = 2
                 info_str_list = []
                 list_name = 'mame'
-                if 'mame' in idx_dic:
-                    idx_dic['mame'].append([machine_name, machine_name])
-                else:
-                    idx_dic['mame'] = []
-                    idx_dic['mame'].append([machine_name, machine_name])
+                idx_dic[list_name][machine_name] = machine_name
             elif line_uni == '$drv':
                 read_status = 2
                 info_str_list = []
                 list_name = 'drv'
-                if 'drv' in idx_dic:
-                    idx_dic['drv'].append([machine_name, machine_name])
-                else:
-                    idx_dic['drv'] = []
-                    idx_dic['drv'].append([machine_name, machine_name])
+                idx_dic[list_name][machine_name] = machine_name
             else:
                 raise TypeError('Wrong second line = "{0}"'.format(line_uni))
         elif read_status == 2:
@@ -906,13 +913,19 @@ def mame_load_MameInfo_DAT(filename):
 # NOTE set objects are not JSON-serializable. Use lists and transform lists to sets if
 #      necessary after loading the JSON file.
 #
-# idx_list  = [['88games', 'beautiful_name'], ['flagrall', 'beautiful_name'], ...],
-# data_dic = { '88games' : 'string', 'flagrall' : 'string', ... }
+# idx_list  = {
+#     '88games', 'beautiful_name',
+#     'flagrall', 'beautiful_name',
+# }
+# data_dic = { 
+#     '88games' : 'string',
+#     'flagrall' : 'string',
+# }
 #
 def mame_load_GameInit_DAT(filename):
     log_info('mame_load_GameInit_DAT() Parsing "{0}"'.format(filename))
     version_str = 'Not found'
-    idx_list = []
+    idx_list = {}
     data_dic = {}
     __debug_function = False
 
@@ -953,7 +966,7 @@ def mame_load_GameInit_DAT(filename):
             if m:
                 machine_name = m.group(1)
                 if __debug_function: log_debug('Machine "{0}"'.format(machine_name))
-                idx_list.append([machine_name, machine_name])
+                idx_list[machine_name] = machine_name
                 read_status = 1
         elif read_status == 1:
             if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
@@ -982,15 +995,21 @@ def mame_load_GameInit_DAT(filename):
 # NOTE set objects are not JSON-serializable. Use lists and transform lists to sets if
 #      necessary after loading the JSON file.
 #
-# idx_list = [['88games', 'beautiful_name'], ['flagrall', 'beautiful_name'], ...],
-# data_dic = { '88games' : 'string', 'flagrall' : 'string', ... }
+# idx_list  = {
+#     '88games', 'beautiful_name',
+#     'flagrall', 'beautiful_name',
+# }
+# data_dic = { 
+#     '88games' : 'string',
+#     'flagrall' : 'string',
+# }
 #
 def mame_load_Command_DAT(filename):
     log_info('mame_load_Command_DAT() Parsing "{0}"'.format(filename))
     version_str = 'Not found'
-    idx_list = []
+    idx_dic = {}
     data_dic = {}
-    proper_idx_list = []
+    proper_idx_dic = {}
     proper_data_dic = {}
     __debug_function = False
 
@@ -1005,7 +1024,7 @@ def mame_load_Command_DAT(filename):
         f = open(filename, 'rt')
     except IOError:
         log_info('mame_load_Command_DAT() (IOError) opening "{0}"'.format(filename))
-        return (proper_idx_list, proper_data_dic, version_str)
+        return (proper_idx_dic, proper_data_dic, version_str)
 
     # >> Parse file
     for file_line in f:
@@ -1025,7 +1044,7 @@ def mame_load_Command_DAT(filename):
             if m:
                 machine_name = m.group(1)
                 if __debug_function: log_debug('Machine "{0}"'.format(machine_name))
-                idx_list.append(machine_name)
+                idx_dic[machine_name] = machine_name
                 read_status = 1
         elif read_status == 1:
             if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
@@ -1045,22 +1064,21 @@ def mame_load_Command_DAT(filename):
             raise TypeError('Wrong read_status = {0}'.format(read_status))
     f.close()
     log_info('mame_load_Command_DAT() Version "{0}"'.format(version_str))
-    log_info('mame_load_Command_DAT() Rows in idx_list {0}'.format(len(idx_list)))
+    log_info('mame_load_Command_DAT() Rows in idx_dic  {0}'.format(len(idx_dic)))
     log_info('mame_load_Command_DAT() Rows in data_dic {0}'.format(len(data_dic)))
 
-    # >> Expand database. Many machines share the same entry. Expand the database.
-    for original_name in idx_list:
-        original_name_list = original_name.split(',')
-        for expanded_name in original_name_list:
+    # Many machines share the same entry. Expand the database.
+    for original_name in idx_dic:
+        for expanded_name in original_name.split(','):
             # Skip empty strings
             if not expanded_name: continue
             expanded_name = expanded_name.strip()
-            proper_idx_list.append([expanded_name, expanded_name])
+            proper_idx_dic[expanded_name] = expanded_name
             proper_data_dic[expanded_name] = data_dic[original_name]
-    log_info('mame_load_Command_DAT() Entries in proper_idx_list {0}'.format(len(proper_idx_list)))
+    log_info('mame_load_Command_DAT() Entries in proper_idx_dic  {0}'.format(len(proper_idx_dic)))
     log_info('mame_load_Command_DAT() Entries in proper_data_dic {0}'.format(len(proper_data_dic)))
 
-    return (proper_idx_list, proper_data_dic, version_str)
+    return (proper_idx_dic, proper_data_dic, version_str)
 
 # -------------------------------------------------------------------------------------------------
 # DAT export
@@ -4318,23 +4336,23 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     if mameinfo_idx_dic:
         log_debug('Updating Mameinfo DAT machine names ...')
         for cat_name in mameinfo_idx_dic:
-            for machine_list in mameinfo_idx_dic[cat_name]:
-                if machine_list[0] not in machines_render: continue
-                machine_list[1] = machines_render[machine_list[0]]['description']
+            for machine_key in mameinfo_idx_dic[cat_name]:
+                if machine_key not in machines_render: continue
+                mameinfo_idx_dic[cat_name][machine_key] = machines_render[machine_key]['description']
 
     # GameInit DAT machine names.
     if gameinit_idx_dic:
         log_debug('Updating GameInit DAT machine names ...')
-        for machine_list in gameinit_idx_dic:
-            if machine_list[0] not in machines_render: continue
-            machine_list[1] = machines_render[machine_list[0]]['description']
+        for machine_key in gameinit_idx_dic:
+            if machine_key not in machines_render: continue
+            gameinit_idx_dic[machine_key] = machines_render[machine_key]['description']
 
     # Command DAT machine names.
     if command_idx_dic:
         log_debug('Updating Command DAT machine names ...')
-        for machine_list in command_idx_dic:
-            if machine_list[0] not in machines_render: continue
-            machine_list[1] = machines_render[machine_list[0]]['description']
+        for machine_key in command_idx_dic:
+            if machine_key not in machines_render: continue
+            command_idx_dic[machine_key] = machines_render[machine_key]['description']
 
     # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary

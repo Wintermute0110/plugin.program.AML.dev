@@ -2526,8 +2526,8 @@ def render_DAT_list(catalog_name):
     # --- Unrolled variables ---
     ICON_OVERLAY = 6
 
-    # Load DAT index file.
     if catalog_name == 'History':
+        # Render list of categories.
         DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
         if not DAT_idx_dic:
             kodi_dialog_OK('DAT database file "{}" empty.'.format(catalog_name))
@@ -2542,6 +2542,7 @@ def render_DAT_list(catalog_name):
             URL = misc_url_2_arg('catalog', catalog_name, 'category', key)
             xbmcplugin.addDirectoryItem(g_addon_handle, url = URL, listitem = listitem, isFolder = True)
     elif catalog_name == 'MAMEINFO':
+        # Render list of categories.
         DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_IDX_PATH.getPath())
         if not DAT_idx_dic:
             kodi_dialog_OK('DAT database file "{}" empty.'.format(catalog_name))
@@ -2556,32 +2557,34 @@ def render_DAT_list(catalog_name):
             URL = misc_url_2_arg('catalog', catalog_name, 'category', key)
             xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = True)
     elif catalog_name == 'Gameinit':
-        DAT_idx_list = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_IDX_PATH.getPath())
-        if not DAT_idx_list:
+        # Render list of machines.
+        DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_IDX_PATH.getPath())
+        if not DAT_idx_dic:
             kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
             return
         set_Kodi_all_sorting_methods()
-        for machine_name_list in DAT_idx_list:
-            machine_name = '{} [COLOR lightgray]({})[/COLOR]'.format(machine_name_list[1], machine_name_list[0])
+        for machine_key in DAT_idx_dic:
+            machine_name = '{} [COLOR lightgray]({})[/COLOR]'.format(DAT_idx_dic[machine_key], machine_key)
             listitem = xbmcgui.ListItem(machine_name)
             listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
             listitem.addContextMenuItems(commands)
-            URL = misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
+            URL = misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_key)
             xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
     elif catalog_name == 'Command':
-        DAT_idx_list = fs_load_JSON_file_dic(g_PATHS.COMMAND_IDX_PATH.getPath())
-        if not DAT_idx_list:
+        # Render list of machines.
+        DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.COMMAND_IDX_PATH.getPath())
+        if not DAT_idx_dic:
             kodi_dialog_OK('DAT database file "{}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
             return
         set_Kodi_all_sorting_methods()
-        for machine_name_list in DAT_idx_list:
-            machine_name = '{} [COLOR lightgray]({})[/COLOR]'.format(machine_name_list[1], machine_name_list[0])
+        for machine_key in DAT_idx_dic:
+            machine_name = '{} [COLOR lightgray]({})[/COLOR]'.format(DAT_idx_dic[machine_key], machine_key)
             listitem = xbmcgui.ListItem(machine_name)
             listitem.setInfo('video', {'title' : machine_name, 'overlay' : ICON_OVERLAY } )
             listitem.addContextMenuItems(commands)
-            URL = misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_name_list[0])
+            URL = misc_url_3_arg('catalog', catalog_name, 'category', 'None', 'machine', machine_key)
             xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
     else:
         kodi_dialog_OK(
@@ -2590,6 +2593,7 @@ def render_DAT_list(catalog_name):
         return
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
 
+# Only History.dat and MAMEinfo.dat have categories.
 def render_DAT_category(catalog_name, category_name):
     # Load Software List catalog
     if catalog_name == 'History':
@@ -2612,10 +2616,10 @@ def render_DAT_category(catalog_name, category_name):
             display_name, db_list, db_machine = category_machine_dic[machine_key].split('|')
             render_DAT_category_row(catalog_name, category_name, machine_key, display_name)
     elif catalog_name == 'MAMEINFO':
-        category_machine_list = DAT_catalog_dic[category_name]
-        for machine_tuple in category_machine_list:
-            render_DAT_category_row(catalog_name, category_name,
-                machine_tuple)
+        category_machine_dic = DAT_catalog_dic[category_name]
+        for machine_key in category_machine_dic:
+            display_name = category_machine_dic[machine_key]
+            render_DAT_category_row(catalog_name, category_name, machine_key, display_name)
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_DAT_category_row(catalog_name, category_name, machine_key, display_name):
@@ -2632,13 +2636,7 @@ def render_DAT_category_row(catalog_name, category_name, machine_key, display_na
     listitem.addContextMenuItems(commands)
 
     # --- Add row ---
-    if catalog_name == 'History':
-        # In History.dat introduced in MAME 0.215 one machine/SL item description may be shared
-        # among several machines, typically the parent description is also used by the clones.
-        # This should be taken into account.
-        URL = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_key)
-    else:
-        URL = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_key)
+    URL = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'machine', machine_key)
     xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
 
 def render_DAT_machine_info(catalog_name, category_name, machine_name):
@@ -2650,21 +2648,22 @@ def render_DAT_machine_info(catalog_name, category_name, machine_name):
         DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
         display_name, db_list, db_machine = DAT_idx_dic[category_name]['machines'][machine_name].split('|')
-        t_str = ('History DAT for [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR] '
+        t_str = ('History for [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR] '
             '(DB entry [COLOR=orange]{}[/COLOR] / [COLOR=orange]{}[/COLOR])')
         window_title = t_str.format(category_name, machine_name, db_list, db_machine)
         info_text = DAT_dic[db_list][db_machine]
     elif catalog_name == 'MAMEINFO':
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_DB_PATH.getPath())
-        window_title = '{} information'.format(catalog_name)
+        t_str = 'MAMEINFO information for [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR]'
+        window_title = t_str.format(category_name, machine_name)
         info_text = DAT_dic[category_name][machine_name]
     elif catalog_name == 'Gameinit':
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_DB_PATH.getPath())
-        window_title = '{} information'.format(catalog_name)
+        window_title = 'Gameinit information for [COLOR=orange]{}[/COLOR]'.format(machine_name)
         info_text = DAT_dic[machine_name]
     elif catalog_name == 'Command':
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.COMMAND_DB_PATH.getPath())
-        window_title = '{} information'.format(catalog_name)
+        window_title = 'Command information for [COLOR=orange]{}[/COLOR]'.format(machine_name)
         info_text = DAT_dic[machine_name]
     else:
         kodi_dialog_OK(
