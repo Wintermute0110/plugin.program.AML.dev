@@ -775,7 +775,10 @@ def mame_load_History_DAT(filename):
                 else:
                     for machine_name in mname_list:
                         if list_name not in history_idx_dic:
-                            history_idx_dic[list_name] = {'name' : list_name, 'machines' : {}}
+                            history_idx_dic[list_name] = {
+                                'name' : list_name,
+                                'machines' : {}
+                            }
                         m_str = misc_build_db_str_3(machine_name, db_list_name, db_machine_name)
                         history_idx_dic[list_name]['machines'][machine_name] = m_str
                 continue
@@ -2401,20 +2404,12 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
 # Line 6) Machine [supports|does not support] a Software List.
 # ---------------------------------------------------------------------------------------------
 def mame_build_MAME_plots(PATHS, settings, control_dic,
-    machines, machines_render, assets_dic,
+    machines, machines_render, assets_dic, 
     history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic):
     log_info('mame_build_MAME_plots() Building machine plots/descriptions ...')
     # Do not crash if DAT files are not configured.
-    if history_idx_dic:
-        history_info_set  = {machine for machine in history_idx_dic['mame']['machines']}
-    else:
-        history_info_set  = set()
-    if mameinfo_idx_dic:
-        mameinfo_info_set = {machine[0] for machine in mameinfo_idx_dic['mame']}
-    else:
-        mameinfo_info_set = set()
-    gameinit_info_set = {machine[0] for machine in gameinit_idx_dic}
-    command_info_set  = {machine[0] for machine in command_idx_dic}
+    history_info_set  = {m for m in history_idx_dic['mame']['machines']} if history_idx_dic else set()
+    mameinfo_info_set = {m for m in mameinfo_idx_dic['mame']} if mameinfo_idx_dic else set()
 
     # --- Built machine plots ---
     pDialog = xbmcgui.DialogProgress()
@@ -2428,8 +2423,8 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
         if assets_dic[machine_name]['manual']: Flag_list.append('Manual')
         if machine_name in history_info_set: Flag_list.append('History')
         if machine_name in mameinfo_info_set: Flag_list.append('Info')
-        if machine_name in gameinit_info_set: Flag_list.append('Gameinit')
-        if machine_name in command_info_set: Flag_list.append('Command')
+        if machine_name in gameinit_idx_dic: Flag_list.append('Gameinit')
+        if machine_name in command_idx_dic: Flag_list.append('Command')
         Flag_str = ', '.join(Flag_list)
         if m['input']:
             control_list = [ctrl_dic['type'] for ctrl_dic in m['input']['control_list']]
@@ -2464,7 +2459,7 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
     # --- Save the MAME asset database ---
     db_files = [
         (assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()),
-        # --- Save control_dic after everything is saved ---
+        # Save control_dic after everything is saved
         (control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()),
     ]
     fs_save_files(db_files)
@@ -2485,11 +2480,11 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
     total_files = len(SL_index_dic)
     processed_files = 0
     for SL_name in sorted(SL_index_dic):
-        # >> Update progress
+        # Update progress
         update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, 'Software List {0}'.format(SL_name))
+        pDialog.update(update_number, pdialog_line1, 'Software List {}'.format(SL_name))
 
-        # >> Open database
+        # Open database
         SL_DB_prefix = SL_index_dic[SL_name]['rom_DB_noext']
         SL_ROMs_FN      = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_items.json')
         SL_assets_FN    = PATHS.SL_DB_DIR.pjoin(SL_DB_prefix + '_assets.json')
@@ -2497,15 +2492,11 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
         SL_roms          = fs_load_JSON_file_dic(SL_ROMs_FN.getPath(), verbose = False)
         SL_assets_dic    = fs_load_JSON_file_dic(SL_assets_FN.getPath(), verbose = False)
         SL_ROM_audit_dic = fs_load_JSON_file_dic(SL_ROM_audit_FN.getPath(), verbose = False)
-        # >> Python Set Comprehension
-        if SL_name in History_idx_dic:
-            History_SL_set = { machine[0] for machine in History_idx_dic[SL_name]['machines'] }
-        else:
-            History_SL_set = set()
+        History_SL_set  = {m for m in History_idx_dic[SL_name]['machines']} if SL_name in History_idx_dic else set()
         # Machine_list = [ m['machine'] for m in SL_machines_dic[SL_name] ]
         # Machines_str = 'Machines: {0}'.format(', '.join(sorted(Machine_list)))
 
-        # >> Traverse SL ROMs and make plot
+        # Traverse SL ROMs and make plot.
         for rom_key in sorted(SL_roms):
             SL_rom = SL_roms[rom_key]
             num_parts = len(SL_rom['parts'])
@@ -2532,9 +2523,8 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
             # SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str, Machines_str])
             SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str])
 
-        # >> Write SL ROMs JSON
+        # Write SL ROMs JSON
         fs_write_JSON_file(SL_ROMs_FN.getPath(), SL_roms, verbose = False)
-        # >> Update progress
         processed_files += 1
     update_number = (processed_files*100) // total_files
     pDialog.close()

@@ -2629,7 +2629,6 @@ def render_DAT_category_row(catalog_name, category_name, machine_key, display_na
     listitem = xbmcgui.ListItem(display_name)
     listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
     commands = [
-        ('View', misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
         ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
     ]
@@ -2755,18 +2754,15 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         else:
             History_str = 'Not configured'
         if Mameinfo_idx_dic:
-            Mameinfo_MAME_set = { m[0] for m in Mameinfo_idx_dic['mame'] }
-            Mameinfo_str = 'Found' if machine_name in Mameinfo_MAME_set else 'Not found'
+            Mameinfo_str = 'Found' if machine_name in Mameinfo_idx_dic['mame'] else 'Not found'
         else:
             Mameinfo_str = 'Not configured'
         if Gameinit_idx_list:
-            Gameinit_MAME_set = { m[0] for m in Gameinit_idx_list }
-            Gameinit_str = 'Found' if machine_name in Gameinit_MAME_set else 'Not found'
+            Gameinit_str = 'Found' if machine_name in Gameinit_idx_list else 'Not found'
         else:
             Gameinit_str = 'Not configured'
         if Command_idx_list:
-            Command_MAME_set = { m[0] for m in Command_idx_list }
-            Command_str = 'Found' if machine_name in Command_MAME_set else 'Not found'
+            Command_str = 'Found' if machine_name in Command_idx_list else 'Not found'
         else:
             Command_str = 'Not configured'
 
@@ -2787,7 +2783,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         else:
             History_str = 'Not configured'
 
-        # >> Check Fanart and Manual.
+        # Check Fanart and Manual.
         # Fanart_str =
         # Manual_str =
 
@@ -2849,7 +2845,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 kodi_dialog_OK('MAME machine {} not in History DAT'.format(machine_name))
                 return
             m_str = History_idx_dic['mame']['machines'][machine_name]
-            display_name, db_list, db_machine = m_str.split(',')
+            display_name, db_list, db_machine = m_str.split('|')
             DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
             t_str = ('History DAT for MAME machine [COLOR=orange]{}[/COLOR] '
                 '(DB entry [COLOR=orange]{}[/COLOR])')
@@ -2862,41 +2858,37 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 kodi_dialog_OK('SL {} item {} not in History DAT'.format(SL_name, SL_ROM))
                 return
             m_str = History_idx_dic[SL_name]['machines'][SL_ROM]
-            display_name, db_list, db_machine = m_str.split(',')
+            display_name, db_list, db_machine = m_str.split('|')
             DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
             t_str = ('History DAT for SL [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR] '
                 '(DB entry [COLOR=orange]{}[/COLOR] / [COLOR=orange]{}[/COLOR])')
             window_title = t_str.format(SL_name, SL_ROM, db_list, db_machine)
-        info_text = DAT_dic[db_list][db_machine]
-        display_text_window(window_title, info_text)
+        display_text_window(window_title, DAT_dic[db_list][db_machine])
 
     elif action == ACTION_VIEW_MAMEINFO:
-        if machine_name not in Mameinfo_MAME_set:
+        if machine_name not in Mameinfo_idx_dic['mame']:
             kodi_dialog_OK('Machine {} not in Mameinfo DAT'.format(machine_name))
             return
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_DB_PATH.getPath())
-        info_text = DAT_dic['mame'][machine_name]
-
-        window_title = 'MAMEinfo DAT for machine {}'.format(machine_name)
-        display_text_window(window_title, info_text)
+        t_str = 'MAMEINFO information for [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR]'
+        window_title = t_str.format('mame', machine_name)
+        display_text_window(window_title, DAT_dic['mame'][machine_name])
 
     elif action == ACTION_VIEW_GAMEINIT:
-        if machine_name not in Gameinit_MAME_set:
+        if machine_name not in Gameinit_idx_list:
             kodi_dialog_OK('Machine {} not in Gameinit DAT'.format(machine_name))
             return
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_DB_PATH.getPath())
-        window_title = 'Gameinit DAT for machine {}'.format(machine_name)
-        info_text = DAT_dic[machine_name]
-        display_text_window(window_title, info_text)
+        window_title = 'Gameinit information for [COLOR=orange]{}[/COLOR]'.format(machine_name)
+        display_text_window(window_title, DAT_dic[machine_name])
 
     elif action == ACTION_VIEW_COMMAND:
-        if machine_name not in Command_MAME_set:
+        if machine_name not in Command_idx_list:
             kodi_dialog_OK('Machine {} not in Command DAT'.format(machine_name))
             return
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.COMMAND_DB_PATH.getPath())
-        window_title = 'Command DAT for machine {}'.format(machine_name)
-        info_text = DAT_dic[machine_name]
-        display_text_window(window_title, info_text)
+        window_title = 'Command information for [COLOR=orange]{}[/COLOR]'.format(machine_name)
+        display_text_window(window_title, DAT_dic[machine_name])
 
     # --- View Fanart ---
     elif action == ACTION_VIEW_FANART:
@@ -2922,8 +2914,8 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 return
 
         # >> If manual found then display it.
-        log_debug('Rendering FS fanart "{0}"'.format(m_assets['fanart']))
-        xbmc.executebuiltin('ShowPicture("{0}")'.format(m_assets['fanart']))
+        log_debug('Rendering FS fanart "{}"'.format(m_assets['fanart']))
+        xbmc.executebuiltin('ShowPicture("{}")'.format(m_assets['fanart']))
 
     # --- View Manual ---
     # When Pictures menu is clicked on Home, the window pictures (MyPics.xml) opens.
