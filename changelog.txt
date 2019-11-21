@@ -66,6 +66,10 @@ FEATURE  [CORE] Support for MASH's Alltime.ini.
 FEATURE  [CORE] Improvements in the JSON index of DAT files. Use dictionaries and not list
          to reduce JSON file size and speed up data access.
 
+FEATURE  [CORE] Improved main statistics.
+
+FEATURE  [CORE] Improve some Software List long names until they are fixed in MAME repository.
+
 FIX      Fixed conversion to int of addon version str in fs_AML_version_str_to_int()
 
 FIX      New history.dat makes AML to crash because one entry could be for more than one
