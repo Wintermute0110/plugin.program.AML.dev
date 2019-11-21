@@ -32,8 +32,8 @@ from .filters import *
 # -------------------------------------------------------------------------------------------------
 # Data structures
 # -------------------------------------------------------------------------------------------------
-# >> Substitute notable drivers with a proper name
-# >> Drivers are located in https://github.com/mamedev/mame/blob/master/src/mame/drivers/<driver_name>.cpp
+# Substitute notable drivers with a proper name
+# Drivers are located in https://github.com/mamedev/mame/blob/master/src/mame/drivers/<driver_name>.cpp
 mame_driver_name_dic = {
     # --- Atari ---
     'atari_s1.cpp' : 'Atari Generation/System 1',
@@ -153,14 +153,23 @@ mame_driver_name_dic = {
     'zn.cpp' : 'Sony ZN1/ZN2 (Arcade PSX)',
 }
 
-# >> Some Software Lists don't follow the convention of adding the company name at the beginning.
-# >> I will try to create pull requests to fix theses and if the PRs are not accepted then
-# >> SL names will be changed using the data here.
+# Some Software Lists don't follow the convention of adding the company name at the beginning.
+# I will try to create pull requests to fix theses and if the PRs are not accepted then
+# SL names will be changed using the data here.
 SL_better_name_dic = {
-
-    # --- SEGA ---
-    'megacd'  : 'Sega Mega CD (Euro) CD-ROMs', # Mega CD (Euro) CD-ROMs
-    'megacdj' : 'Sega Mega CD (Jpn) CD-ROMs',  # Mega CD (Jpn) CD-ROMs
+    'Amiga AGA disk images' : 'Commodore Amiga AGA disk images',
+    'Amiga CD-32 CD-ROMs' : 'Commodore Amiga CD-32 CD-ROMs',
+    'Amiga CDTV CD-ROMs' : 'Commodore Amiga CDTV CD-ROMs',
+    'Amiga ECS disk images' : 'Commodore Amiga ECS disk images',
+    'Amiga OCS disk images' : 'Commodore Amiga OCS disk images',
+    'Mega CD (Euro) CD-ROMs' : 'Sega Mega CD (Euro) CD-ROMs',
+    'Mega CD (Jpn) CD-ROMs' : 'Sega Mega CD (Jpn) CD-ROMs',
+    'Pippin CD-ROMs' : 'Apple / Bandai Pippin CD-ROMs',
+    'SEGA Computer 3000 cartridges' : 'Sega Computer 3000 cartridges',
+    'SEGA Computer 3000 cassettes' : 'Sega Computer 3000 cassettes',
+    'Z88 ROM cartridges' : 'Z88 ROM cartridges',
+    'ZX80 cassettes' : 'Sinclair ZX80 cassettes',
+    'ZX81 cassettes' : 'Sinclair ZX81 cassettes',
 }
 
 #
@@ -3567,7 +3576,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
 # <softwarelist name="vsmileb_cart" description="VTech V.Smile Baby cartridges">
 XML_READ_LINES = 600
 def mame_build_SL_names(PATHS, settings):
-    log_debug('mame_build_SL_names() Starting ...')
+    log_debug('mame_build_SL_names() Starting...')
 
     # If MAME hash path is not configured then create and empty file
     SL_names_dic = {}
@@ -3594,29 +3603,31 @@ def mame_build_SL_names(PATHS, settings):
         except IOError:
             log_error('(IOError) Exception opening {}'.format(XML_FN.getPath()))
             continue
-        else:
-            # f.readlines(XML_READ_LINES) does not work well for some files
-            # content_list = f.readlines(XML_READ_LINES)
-            line_count = 0
-            content_list = []
-            for line in f:
-                content_list.append(line)
-                line_count += 1
-                if line_count > XML_READ_LINES: break
-            content_list = [x.strip() for x in content_list]
-            content_list = [x.decode('utf-8') for x in content_list]
-            for line in content_list:
-                # DEBUG
-                # if f_name == 'vsmileb_cart.xml': log_debug('Line "{0}"'.format(line))
-                # Search for SL name
-                if not line.startswith('<softwarelist'): continue
-                m = re.search(r'<softwarelist name="([^"]+?)" description="([^"]+?)"', line)
-                if m:
-                    sl_name = m.group(1)
-                    sl_desc = m.group(2)
-                    # log_debug('mame_build_SL_names() SL "{0}" -> "{1}"'.format(sl_name, sl_desc))
-                    SL_names_dic[sl_name] = sl_desc
-                    break
+        # f.readlines(XML_READ_LINES) does not work well for some files
+        # content_list = f.readlines(XML_READ_LINES)
+        line_count = 0
+        content_list = []
+        for line in f:
+            content_list.append(line)
+            line_count += 1
+            if line_count > XML_READ_LINES: break
+        f.close()
+        content_list = [x.strip().decode('utf-8') for x in content_list]
+        for line in content_list:
+            # Search for SL name
+            if not line.startswith('<softwarelist'): continue
+            m = re.search(r'<softwarelist name="([^"]+?)" description="([^"]+?)"', line)
+            if not m: continue
+            sl_name = m.group(1)
+            sl_desc = m.group(2)
+            # log_debug('SL "{0}" -> "{1}"'.format(sl_name, sl_desc))
+            # Substitute SL description (long name).
+            if sl_desc in SL_better_name_dic:
+                olf_sl_desc = sl_desc
+                sl_dec = SL_better_name_dic[sl_desc]
+                log_debug('Substitute SL "{}" with "{}"'.format(olf_sl_desc, sl_dec))
+            SL_names_dic[sl_name] = sl_desc
+            break
     # Save database
     log_debug('mame_build_SL_names() Extracted {} Software List names'.format(len(SL_names_dic)))
     fs_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
