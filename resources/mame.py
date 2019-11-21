@@ -42,18 +42,18 @@ mame_driver_name_dic = {
     'atarittl.cpp' : 'Atari / Kee Games Driver',
     'asteroid.cpp' : 'Atari Asteroids hardware',
     'atetris.cpp'  : 'Atari Tetris hardware',
-    # 'avalnche.cpp' : 'Atari XXXXX',
-    # 'bzone.cpp'    : 'Atari XXXXX',
-    # 'bwidow.cpp'   : 'Atari XXXXX',
-    # 'boxer.cpp'    : 'Atari XXXXX',
-    # 'canyon.cpp'   : 'Atari XXXXX',
-    # 'cball.cpp'    : 'Atari XXXXX',
-    # 'ccastles.cpp' : 'Atari XXXXX',
+    'avalnche.cpp' : 'Atari Avalanche hardware',
+    'bzone.cpp'    : 'Atari Battlezone hardware',
+    'bwidow.cpp'   : 'Atari Black Widow hardware',
+    'boxer.cpp'    : 'Atari Boxer (prototype) driver',
+    'canyon.cpp'   : 'Atari Canyon Bomber hardware',
+    'cball.cpp'    : 'Atari Cannonball (prototype) driver',
+    'ccastles.cpp' : 'Atari Crystal Castles hardware',
     'centiped.cpp' : 'Atari Centipede hardware',
-    # 'cloak.cpp'    : 'Atari XXXXX',
-    # 'destroyr.cpp' : 'Atari XXXXX',
-    # 'mhavoc.cpp'   : 'Atari XXXXX',
-    # 'mgolf.cpp'    : 'Atari XXXXX',
+    'cloak.cpp'    : 'Atari Cloak & Dagger hardware',
+    'destroyr.cpp' : 'Atari Destroyer driver',
+    'mhavoc.cpp'   : 'Atari Major Havoc hardware',
+    'mgolf.cpp'    : 'Atari Mini Golf (prototype) driver',
     'pong.cpp'     : 'Atari Pong hardware',
 
     # --- Capcom ---
@@ -95,7 +95,7 @@ mame_driver_name_dic = {
     'seta.cpp' : 'Seta Hardware',
 
     # --- SEGA ---
-    # Less known boards
+    # Lesser known boards
     'segajw.cpp'    : 'SEGA GOLDEN POKER SERIES',
     'segam1.cpp'    : 'SEGA M1 hardware',
     'segaufo.cpp'   : 'SEGA UFO Catcher, Z80 type hardware',
@@ -167,9 +167,11 @@ SL_better_name_dic = {
     'Pippin CD-ROMs' : 'Apple / Bandai Pippin CD-ROMs',
     'SEGA Computer 3000 cartridges' : 'Sega Computer 3000 cartridges',
     'SEGA Computer 3000 cassettes' : 'Sega Computer 3000 cassettes',
-    'Z88 ROM cartridges' : 'Z88 ROM cartridges',
+    'Z88 ROM cartridges' : 'Cambridge Computer Z88 ROM cartridges',
     'ZX80 cassettes' : 'Sinclair ZX80 cassettes',
     'ZX81 cassettes' : 'Sinclair ZX81 cassettes',
+    'ZX Spectrum +3 disk images' : 'Sinclair ZX Spectrum +3 disk images',
+    'ZX Spectrum Beta Disc / TR-DOS disk images' : 'Sinclair ZX Spectrum Beta Disc / TR-DOS disk images',
 }
 
 #
@@ -3618,15 +3620,14 @@ def mame_build_SL_names(PATHS, settings):
             if not line.startswith('<softwarelist'): continue
             m = re.search(r'<softwarelist name="([^"]+?)" description="([^"]+?)"', line)
             if not m: continue
-            sl_name = m.group(1)
-            sl_desc = m.group(2)
-            # log_debug('SL "{0}" -> "{1}"'.format(sl_name, sl_desc))
+            SL_name, SL_desc = m.group(1), m.group(2)
+            # log_debug('SL "{0}" -> "{1}"'.format(SL_name, SL_desc))
             # Substitute SL description (long name).
-            if sl_desc in SL_better_name_dic:
-                olf_sl_desc = sl_desc
-                sl_dec = SL_better_name_dic[sl_desc]
-                log_debug('Substitute SL "{}" with "{}"'.format(olf_sl_desc, sl_dec))
-            SL_names_dic[sl_name] = sl_desc
+            if SL_desc in SL_better_name_dic:
+                old_SL_desc = SL_desc
+                SL_desc = SL_better_name_dic[SL_desc]
+                log_debug('Substitute SL "{}" with "{}"'.format(old_SL_desc, SL_desc))
+            SL_names_dic[SL_name] = SL_desc
             break
     # Save database
     log_debug('mame_build_SL_names() Extracted {} Software List names'.format(len(SL_names_dic)))
@@ -6416,8 +6417,13 @@ def _mame_load_SL_XML(xml_filename):
     except:
         return SLData
     xml_root = xml_tree.getroot()
-    SL_name = xml_root.attrib['description']
-    SLData['display_name'] = SL_name
+    SL_desc = xml_root.attrib['description']
+    # Substitute SL description (long name).
+    if SL_desc in SL_better_name_dic:
+        old_SL_desc = SL_desc
+        SL_desc = SL_better_name_dic[SL_desc]
+        log_debug('Substitute SL "{}" with "{}"'.format(old_SL_desc, SL_desc))
+    SLData['display_name'] = SL_desc
     for root_element in xml_root:
         if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
         # Only process 'software' elements
@@ -6641,8 +6647,15 @@ def mame_check_before_build_SL_databases(PATHS, settings, control_dic):
 
     return options_dic
 
-# SL_catalog = { 'name' : {
-#     'display_name': u'', 'num_with_CHDs' : int, 'num_with_ROMs' : int, 'rom_DB_noext' : u'' }, ...
+# SL_catalog_dic = { 'name' : {
+#     'display_name': u'',
+#     'num_clones' : int,
+#     'num_items' : int,
+#     'num_parents' : int,
+#     'num_with_CHDs' : int,
+#     'num_with_ROMs' : int,
+#     'rom_DB_noext' : u''
+#     },
 # }
 #
 # Saves:
