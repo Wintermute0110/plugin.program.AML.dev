@@ -1788,58 +1788,58 @@ def mame_stats_main_print_slist(settings, slist, control_dic, AML_version_str):
     table_str.append(['Type', 'Total', 'Parent', 'Clones'])
     table_str.append([
         'Machines',
-        '{0:5d}'.format(control_dic['stats_processed_machines']),
-        '{0:5d}'.format(control_dic['stats_parents']),
-        '{0:5d}'.format(control_dic['stats_clones']),
+        '{:6,d}'.format(control_dic['stats_processed_machines']),
+        '{:6,d}'.format(control_dic['stats_parents']),
+        '{:6,d}'.format(control_dic['stats_clones']),
     ])
     table_str.append([
         'Runnable',
-        '{0:5d}'.format(control_dic['stats_runnable']),
-        '{0:5d}'.format(control_dic['stats_runnable_parents']),
-        '{0:5d}'.format(control_dic['stats_runnable_clones']),
+        '{:6,d}'.format(control_dic['stats_runnable']),
+        '{:6,d}'.format(control_dic['stats_runnable_parents']),
+        '{:6,d}'.format(control_dic['stats_runnable_clones']),
     ])
     table_str.append([
         'Coin',
-        '{0:5d}'.format(control_dic['stats_coin']),
-        '{0:5d}'.format(control_dic['stats_coin_parents']),
-        '{0:5d}'.format(control_dic['stats_coin_clones']),
+        '{:6,d}'.format(control_dic['stats_coin']),
+        '{:6,d}'.format(control_dic['stats_coin_parents']),
+        '{:6,d}'.format(control_dic['stats_coin_clones']),
     ])
     table_str.append([
         'Nocoin',
-        '{0:5d}'.format(control_dic['stats_nocoin']),
-        '{0:5d}'.format(control_dic['stats_nocoin_parents']),
-        '{0:5d}'.format(control_dic['stats_nocoin_clones']),
+        '{:6,d}'.format(control_dic['stats_nocoin']),
+        '{:6,d}'.format(control_dic['stats_nocoin_parents']),
+        '{:6,d}'.format(control_dic['stats_nocoin_clones']),
     ])
     table_str.append([
         'Mechanical',
-        '{0:5d}'.format(control_dic['stats_mechanical']),
-        '{0:5d}'.format(control_dic['stats_mechanical_parents']),
-        '{0:5d}'.format(control_dic['stats_mechanical_clones']),
+        '{:6,d}'.format(control_dic['stats_mechanical']),
+        '{:6,d}'.format(control_dic['stats_mechanical_parents']),
+        '{:6,d}'.format(control_dic['stats_mechanical_clones']),
     ])
     table_str.append([
         'Dead',
-        '{0:5d}'.format(control_dic['stats_dead']),
-        '{0:5d}'.format(control_dic['stats_dead_parents']),
-        '{0:5d}'.format(control_dic['stats_dead_clones']),
+        '{:6,d}'.format(control_dic['stats_dead']),
+        '{:6,d}'.format(control_dic['stats_dead_parents']),
+        '{:6,d}'.format(control_dic['stats_dead_clones']),
     ])
     table_str.append([
         'Devices',
-        '{0:5d}'.format(control_dic['stats_devices']),
-        '{0:5d}'.format(control_dic['stats_devices_parents']),
-        '{0:5d}'.format(control_dic['stats_devices_clones']),
+        '{:6,d}'.format(control_dic['stats_devices']),
+        '{:6,d}'.format(control_dic['stats_devices_parents']),
+        '{:6,d}'.format(control_dic['stats_devices_clones']),
     ])
     # Binary filters
     table_str.append([
         'BIOS',
-        '{0:5d}'.format(control_dic['stats_BIOS']),
-        '{0:5d}'.format(control_dic['stats_BIOS_parents']),
-        '{0:5d}'.format(control_dic['stats_BIOS_clones']),
+        '{:6,d}'.format(control_dic['stats_BIOS']),
+        '{:6,d}'.format(control_dic['stats_BIOS_parents']),
+        '{:6,d}'.format(control_dic['stats_BIOS_clones']),
     ])
     table_str.append([
         'Samples',
-        '{:5d}'.format(control_dic['stats_samples']),
-        '{:5d}'.format(control_dic['stats_samples_parents']),
-        '{:5d}'.format(control_dic['stats_samples_clones']),
+        '{:6,d}'.format(control_dic['stats_samples']),
+        '{:6,d}'.format(control_dic['stats_samples_parents']),
+        '{:6,d}'.format(control_dic['stats_samples_clones']),
     ])
     slist.extend(text_render_table_str(table_str))
 
@@ -1850,52 +1850,52 @@ def mame_stats_main_print_slist(settings, slist, control_dic, AML_version_str):
     table_str.append(['Type (parents/total)', 'Total', 'Good',  'Imperfect', 'Nonworking'])
     table_str.append([
         'Coin slot (Normal)',
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Normal_Total_parents'],control_dic['stats_MF_Normal_Total']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Normal_Good_parents'], control_dic['stats_MF_Normal_Good']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Normal_Imperfect_parents'], control_dic['stats_MF_Normal_Imperfect']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Normal_Nonworking_parents'], control_dic['stats_MF_Normal_Nonworking']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Normal_Total_parents'],control_dic['stats_MF_Normal_Total']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Normal_Good_parents'], control_dic['stats_MF_Normal_Good']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Normal_Imperfect_parents'], control_dic['stats_MF_Normal_Imperfect']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Normal_Nonworking_parents'], control_dic['stats_MF_Normal_Nonworking']),
     ])
     table_str.append([
         'Coin slot (Unusual)',
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Unusual_Total_parents'], control_dic['stats_MF_Unusual_Total']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Unusual_Good_parents'], control_dic['stats_MF_Unusual_Good']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Unusual_Imperfect_parents'], control_dic['stats_MF_Unusual_Imperfect']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Unusual_Nonworking_parents'], control_dic['stats_MF_Unusual_Nonworking']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Unusual_Total_parents'], control_dic['stats_MF_Unusual_Total']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Unusual_Good_parents'], control_dic['stats_MF_Unusual_Good']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Unusual_Imperfect_parents'], control_dic['stats_MF_Unusual_Imperfect']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Unusual_Nonworking_parents'], control_dic['stats_MF_Unusual_Nonworking']),
     ])
     table_str.append([
         'No coin slot',
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Nocoin_Total_parents'], control_dic['stats_MF_Nocoin_Total']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Nocoin_Good_parents'], control_dic['stats_MF_Nocoin_Good']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Nocoin_Imperfect_parents'], control_dic['stats_MF_Nocoin_Imperfect']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Nocoin_Nonworking_parents'], control_dic['stats_MF_Nocoin_Nonworking']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Nocoin_Total_parents'], control_dic['stats_MF_Nocoin_Total']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Nocoin_Good_parents'], control_dic['stats_MF_Nocoin_Good']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Nocoin_Imperfect_parents'], control_dic['stats_MF_Nocoin_Imperfect']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Nocoin_Nonworking_parents'], control_dic['stats_MF_Nocoin_Nonworking']),
     ])
     table_str.append([
         'Mechanical machines',
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Mechanical_Total_parents'], control_dic['stats_MF_Mechanical_Total']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Mechanical_Good_parents'], control_dic['stats_MF_Mechanical_Good']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Mechanical_Imperfect_parents'], control_dic['stats_MF_Mechanical_Imperfect']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Mechanical_Nonworking_parents'], control_dic['stats_MF_Mechanical_Nonworking']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Mechanical_Total_parents'], control_dic['stats_MF_Mechanical_Total']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Mechanical_Good_parents'], control_dic['stats_MF_Mechanical_Good']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Mechanical_Imperfect_parents'], control_dic['stats_MF_Mechanical_Imperfect']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Mechanical_Nonworking_parents'], control_dic['stats_MF_Mechanical_Nonworking']),
     ])
     table_str.append([
         'Dead machines',
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Dead_Total_parents'], control_dic['stats_MF_Dead_Total']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Dead_Good_parents'], control_dic['stats_MF_Dead_Good']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Dead_Imperfect_parents'], control_dic['stats_MF_Dead_Imperfect']),
-        '{:5d} / {:5d}'.format(control_dic['stats_MF_Dead_Nonworking_parents'], control_dic['stats_MF_Dead_Nonworking']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Dead_Total_parents'], control_dic['stats_MF_Dead_Total']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Dead_Good_parents'], control_dic['stats_MF_Dead_Good']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Dead_Imperfect_parents'], control_dic['stats_MF_Dead_Imperfect']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Dead_Nonworking_parents'], control_dic['stats_MF_Dead_Nonworking']),
     ])
     table_str.append([
         'Device machines',
-        '{:5d} / {:5d}'.format(control_dic['stats_devices']),
+        '{:5,d} / {:5,d}'.format(control_dic['stats_devices_parents'], control_dic['stats_devices']),
         'N/A', 'N/A', 'N/A'])
     slist.extend(text_render_table_str(table_str))
 
     slist.append('')
     slist.append('[COLOR orange]Software Lists item count[/COLOR]')
     if settings['enable_SL']:
-        slist.append("SL files           {0:6d}".format(control_dic['stats_SL_XML_files']))
-        slist.append("SL software items  {0:6d}".format(control_dic['stats_SL_software_items']))
-        slist.append("SL items with ROMs {0:6d}".format(control_dic['stats_SL_items_with_ROMs']))
-        slist.append("SL items with CHDs {0:6d}".format(control_dic['stats_SL_items_with_CHDs']))
+        slist.append("SL XML files        {:7,d}".format(control_dic['stats_SL_XML_files']))
+        slist.append("SL software items   {:7,d}".format(control_dic['stats_SL_software_items']))
+        slist.append("SL items with ROMs  {:7,d}".format(control_dic['stats_SL_items_with_ROMs']))
+        slist.append("SL items with CHDs  {:7,d}".format(control_dic['stats_SL_items_with_CHDs']))
     else:
         slist.append('Software Lists disabled')
 
@@ -5960,16 +5960,16 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     for m_name in main_catalog_all['Normal']:
         driver_status = machines_render[m_name]['driver_status']
         stats_MF_Normal_Total += 1
-        if machines_render[m_name]['cloneof']: stats_MF_Normal_Total_parents += 1
+        if not machines_render[m_name]['cloneof']: stats_MF_Normal_Total_parents += 1
         if driver_status == 'good':
             stats_MF_Normal_Good += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Normal_Good_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Normal_Good_parents += 1
         elif driver_status == 'imperfect':
             stats_MF_Normal_Imperfect += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Normal_Imperfect_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Normal_Imperfect_parents += 1
         elif driver_status == 'preliminary':
             stats_MF_Normal_Nonworking += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Normal_Nonworking_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Normal_Nonworking_parents += 1
         # Found in mame2003-plus.xml, machine quizf1 and maybe others.
         elif driver_status == 'protection': pass
         # Are there machines with undefined status?
@@ -5983,16 +5983,16 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     for m_name in main_catalog_all['Unusual']:
         driver_status = machines_render[m_name]['driver_status']
         stats_MF_Unusual_Total += 1
-        if machines_render[m_name]['cloneof']: stats_MF_Unusual_Total_parents += 1
+        if not machines_render[m_name]['cloneof']: stats_MF_Unusual_Total_parents += 1
         if driver_status == 'good':
             stats_MF_Unusual_Good += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Unusual_Good_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Unusual_Good_parents += 1
         elif driver_status == 'imperfect':
             stats_MF_Unusual_Imperfect += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Unusual_Imperfect_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Unusual_Imperfect_parents += 1
         elif driver_status == 'preliminary':
             stats_MF_Unusual_Nonworking += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Unusual_Nonworking_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Unusual_Nonworking_parents += 1
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
@@ -6004,16 +6004,16 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     for m_name in main_catalog_all['NoCoin']:
         driver_status = machines_render[m_name]['driver_status']
         stats_MF_Nocoin_Total += 1
-        if machines_render[m_name]['cloneof']: stats_MF_Nocoin_Total_parents += 1
+        if not machines_render[m_name]['cloneof']: stats_MF_Nocoin_Total_parents += 1
         if driver_status == 'good':
             stats_MF_Nocoin_Good += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Nocoin_Good_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Nocoin_Good_parents += 1
         elif driver_status == 'imperfect':
             stats_MF_Nocoin_Imperfect += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Nocoin_Imperfect_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Nocoin_Imperfect_parents += 1
         elif driver_status == 'preliminary':
             stats_MF_Nocoin_Nonworking += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Nocoin_Nonworking_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Nocoin_Nonworking_parents += 1
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
@@ -6025,16 +6025,16 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     for m_name in main_catalog_all['Mechanical']:
         driver_status = machines_render[m_name]['driver_status']
         stats_MF_Mechanical_Total += 1
-        if machines_render[m_name]['cloneof']: stats_MF_Mechanical_Total_parents += 1
+        if not machines_render[m_name]['cloneof']: stats_MF_Mechanical_Total_parents += 1
         if driver_status == 'good':
             stats_MF_Mechanical_Good += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Mechanical_Good_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Mechanical_Good_parents += 1
         elif driver_status == 'imperfect':
             stats_MF_Mechanical_Imperfect += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Mechanical_Imperfect_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Mechanical_Imperfect_parents += 1
         elif driver_status == 'preliminary':
             stats_MF_Mechanical_Nonworking += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Mechanical_Nonworking_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Mechanical_Nonworking_parents += 1
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
@@ -6046,16 +6046,16 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     for m_name in main_catalog_all['Dead']:
         driver_status = machines_render[m_name]['driver_status']
         stats_MF_Dead_Total += 1
-        if machines_render[m_name]['cloneof']: stats_MF_Normal_Total_parents += 1
+        if not machines_render[m_name]['cloneof']: stats_MF_Dead_Total_parents += 1
         if driver_status == 'good':
             stats_MF_Dead_Good += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Normal_Total_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Dead_Good_parents += 1
         elif driver_status == 'imperfect':
             stats_MF_Dead_Imperfect += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Normal_Total_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Dead_Imperfect_parents += 1
         elif driver_status == 'preliminary':
             stats_MF_Dead_Nonworking += 1
-            if machines_render[m_name]['cloneof']: stats_MF_Normal_Total_parents += 1
+            if not machines_render[m_name]['cloneof']: stats_MF_Dead_Nonworking_parents += 1
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
