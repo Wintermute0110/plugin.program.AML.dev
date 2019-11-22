@@ -156,15 +156,32 @@ mame_driver_name_dic = {
 # Some Software Lists don't follow the convention of adding the company name at the beginning.
 # I will try to create pull requests to fix theses and if the PRs are not accepted then
 # SL names will be changed using the data here.
+# Develop a test script to check wheter this substitutsion are used or not.
 SL_better_name_dic = {
     'Amiga AGA disk images' : 'Commodore Amiga AGA disk images',
     'Amiga CD-32 CD-ROMs' : 'Commodore Amiga CD-32 CD-ROMs',
     'Amiga CDTV CD-ROMs' : 'Commodore Amiga CDTV CD-ROMs',
     'Amiga ECS disk images' : 'Commodore Amiga ECS disk images',
     'Amiga OCS disk images' : 'Commodore Amiga OCS disk images',
+    'CC-40 cartridges' : 'Texas Instruments CC-40 cartridges',
+    'CD-i CD-ROMs' : 'Philips / Sony CD-i CD-ROMs',
+    'COMX-35 diskettes' : 'COMX COMX-35 diskettes',
+    'EPSON PX-4 ROM capsules' : 'Epson PX-4 ROM capsules',
+    'EPSON PX-8 ROM capsules' : 'Epson PX-8 ROM capsules',
+    'IQ-151 cartridges' : 'ZPA Nový Bor IQ-151 cartridges',
+    'IQ-151 disk images' : 'ZPA Nový Bor IQ-151 disk images',
+    'Mac Harddisks' : 'Apple Mac Harddisks',
+    'Macintosh 400K/800K Disk images' : 'Apple Macintosh 400K/800K Disk images',
+    'Macintosh High Density Disk images' : 'Apple Macintosh High Density Disk images',
+    'MC-1502 disk images' : 'Elektronika MC-1502 disk images',
+    'MD-2 disk images' : 'Morrow Micro Decision MD-2 disk images',
     'Mega CD (Euro) CD-ROMs' : 'Sega Mega CD (Euro) CD-ROMs',
     'Mega CD (Jpn) CD-ROMs' : 'Sega Mega CD (Jpn) CD-ROMs',
+    'MZ-2000 cassettes' : 'Sharp MZ-2000 cassettes',
+    'MZ-2000 disk images' : 'Sharp MZ-2000 disk images',
+    'MZ-2500 disk images' : 'Sharp MZ-2500 disk images',
     'Pippin CD-ROMs' : 'Apple / Bandai Pippin CD-ROMs',
+    'Pippin disk images' : 'Apple / Bandai Pippin disk images',
     'SEGA Computer 3000 cartridges' : 'Sega Computer 3000 cartridges',
     'SEGA Computer 3000 cassettes' : 'Sega Computer 3000 cassettes',
     'Z88 ROM cartridges' : 'Cambridge Computer Z88 ROM cartridges',
