@@ -18,6 +18,9 @@ WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
 
 [B]AML ideas and planned features (read to implement)[/B]
 
+WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
+         Github wiki.
+
 WIP      [MANUALS] Increase the number of supported PDF filters.
          This may require A LOT of Python coding.
 
@@ -33,8 +36,9 @@ WIP      [CORE] [LEIA] Recursive context menus.
 WIP      [GRAPHICS] Optimize the generation of 3D boxes.
          Cache the background images used in all boxes.
 
-WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
-         Github wiki.
+WIP      [GRAPHICS] Respect the aspect ratio in 3D boxes. For example, if the poster in the
+         front size of the 3D box is square the 3D box must be square, do not strech the
+         poster texture.
 
 WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed by AML.
          In this core, the XML is extracted using the MAME internal menu, which must be
