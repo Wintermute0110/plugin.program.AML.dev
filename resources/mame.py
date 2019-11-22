@@ -168,8 +168,11 @@ SL_better_name_dic = {
     'COMX-35 diskettes' : 'COMX COMX-35 diskettes',
     'EPSON PX-4 ROM capsules' : 'Epson PX-4 ROM capsules',
     'EPSON PX-8 ROM capsules' : 'Epson PX-8 ROM capsules',
-    'IQ-151 cartridges' : 'ZPA Nový Bor IQ-151 cartridges',
-    'IQ-151 disk images' : 'ZPA Nový Bor IQ-151 disk images',
+    # Unicode here causes trobule. I have to investigate this.
+    # 'IQ-151 cartridges' : 'ZPA Nový Bor IQ-151 cartridges',
+    # 'IQ-151 disk images' : 'ZPA Nový Bor IQ-151 disk images',
+    'IQ-151 cartridges' : 'ZPA Novy Bor IQ-151 cartridges',
+    'IQ-151 disk images' : 'ZPA Novy Bor IQ-151 disk images',
     'Mac Harddisks' : 'Apple Mac Harddisks',
     'Macintosh 400K/800K Disk images' : 'Apple Macintosh 400K/800K Disk images',
     'Macintosh High Density Disk images' : 'Apple Macintosh High Density Disk images',
