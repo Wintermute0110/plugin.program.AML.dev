@@ -5451,7 +5451,7 @@ def command_context_setup_plugin():
     # --- All in one (Extract, Build, Scan, Filters) ---
     # --- All in one (Extract, Build, Scan, Filters, Audit) ---
     if menu_item == 0 or menu_item == 1:
-        DO_AUDIT = False if menu_item == 1 else True
+        DO_AUDIT = True if menu_item == 1 else False
         log_info('command_context_setup_plugin() All in one step starting ...')
         log_info('Operation mode {0}'.format(g_settings['op_mode']))
         log_info('DO_AUDIT {0}'.format(DO_AUDIT))
