@@ -3,9 +3,10 @@
 #
 # Replace installed AML with the development version for testing.
 #
-#   1) Call make_release.py to create a plugin.program.AML directory.
-#   2) Delete the current installed version of AML.
-#   3) Move plugin.program.AML to correct location.
+#   1) Call make_release.py to create a ./plugin.program.AML/ directory.
+#   2) Delete the current installed stable version of AML.
+#   3) Move ./plugin.program.AML/ contents to correct location ../plugin.program.AML/
+#   4) Clean ./plugin.program.AML/ directory.
 
 # Copyright (c) 2016-2019 Wintermute0110 <wintermute0110@gmail.com>
 #
