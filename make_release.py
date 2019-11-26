@@ -1,6 +1,6 @@
 #!/usr/bin/python3 -B
 # -*- coding: utf-8 -*-
-#
+
 # Prepare files for a new AML release.
 #
 #   1) Clean pyo and pyc files.
@@ -19,8 +19,8 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 # --- Python standard library ---
 import glob
@@ -35,13 +35,25 @@ AML_ID      = 'plugin.program.AML'
 AML_NAME    = 'Advanced MAME Launcher'
 AML_VERSION = '0.9.11'
 root_file_list = [
-    'addon.py', 'addon.xml',
-    'AUTHORS.md', 'changelog.txt', 'LICENSE.txt', 'NOTES.md', 'README.md', 'SKINNING.md',
-    'pdfrw/LICENSE.txt', 'pdfrw/README.rst',
+    'addon.py',
+    'addon.xml',
+    'AUTHORS.md',
+    'changelog.txt',
+    'LICENSE.txt',
+    'NOTES.md',
+    'README.md',
+    'SKINNING.md',
+    'pdfrw/LICENSE.txt',
+    'pdfrw/README.rst',
 ]
+# No leading '/' in directory names.
 root_directory_list = [
-    'filters', 'fonts', 'media', 'resources', 'templates',
-    'pdfrw/pdfrw',
+    'filters/',
+    'fonts/',
+    'media/',
+    'resources/',
+    'templates/',
+    'pdfrw/pdfrw/',
 ]
 
 # --- functions ----------------------------------------------------------------------------------
@@ -139,10 +151,10 @@ def main():
     current_dir = os.getcwd()
     print('The current working directory is "{0}"'.format(current_dir))
     for filename in glob.iglob(current_dir + '/**/*.pyo', recursive = True):
-         print('Removing "{0}"'.format(filename))
+         # print('Removing "{0}"'.format(filename))
          os.unlink(filename)
     for filename in glob.iglob(current_dir + '/**/*.pyc', recursive = True):
-         print('Removing "{0}"'.format(filename))
+         # print('Removing "{0}"'.format(filename))
          os.unlink(filename)
 
     # Create directory AML_ID. If exists, then purge it.

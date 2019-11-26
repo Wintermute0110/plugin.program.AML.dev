@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-#
-# Advanced MAME Launcher filesystem I/O functions
-#
+
+# Advanced MAME Launcher filesystem I/O functions.
 
 # Copyright (c) 2016-2019 Wintermute0110 <wintermute0110@gmail.com>
 #

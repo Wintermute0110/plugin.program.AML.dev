@@ -1,6 +1,6 @@
 #!/usr/bin/python3 -B
 # -*- coding: utf-8 -*-
-#
+
 # Replace installed AML with the development version for testing.
 #
 #   1) Call make_release.py to create a ./plugin.program.AML/ directory.
@@ -16,8 +16,8 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU General Public License for more details.
 
 # --- Python standard library ---
 import os
