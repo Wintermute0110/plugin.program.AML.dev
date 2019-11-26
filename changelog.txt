@@ -59,8 +59,10 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
+[B]Advanced MAME Launcher | version 0.9.12 | xx xxxxx 2020[/B]
 
-[B]Advanced MAME Launcher | version 0.9.11 | xx November 2019[/B]
+
+[B]Advanced MAME Launcher | version 0.9.11 | 26 November 2019[/B]
 
 FEATURE  [CORE] For Software Lists, instead of showing the number of ROMs show the number
          of Items in Flat display mode or Parents in Parent/Clone display mode.
