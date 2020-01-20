@@ -1,14 +1,15 @@
 #!/usr/bin/python3 -B
 # -*- coding: utf-8 -*-
 
-# Replace installed AML with the development version for testing.
+# Replace installed stable AML with the development version in this directory.
+# This script must be called from the AML development directory.
 #
-#   1) Call make_release.py to create a ./plugin.program.AML/ directory.
+#   1) Call make_release.py to create a ./plugin.program.AML/ subdirectory.
 #   2) Delete the current installed stable version of AML.
 #   3) Move ./plugin.program.AML/ contents to correct location ../plugin.program.AML/
 #   4) Clean ./plugin.program.AML/ directory.
 
-# Copyright (c) 2016-2019 Wintermute0110 <wintermute0110@gmail.com>
+# Copyright (c) 2016-2020 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
