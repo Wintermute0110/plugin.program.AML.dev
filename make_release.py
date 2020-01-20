@@ -11,7 +11,7 @@
 #   6) Edit resources/settings.xml to change instances of
 #      'plugin.program.AML.dev' into 'plugin.program.AML.dev'.
 
-# Copyright (c) 2016-2019 Wintermute0110 <wintermute0110@gmail.com>
+# Copyright (c) 2016-2020 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
