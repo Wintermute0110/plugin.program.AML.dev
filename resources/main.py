@@ -580,11 +580,13 @@ def get_settings():
     g_settings['display_global_reports']  = True if o.getSetting('display_global_reports') == 'true' else False
 
     # --- Display ---
-    g_settings['artwork_mame_icon']     = int(o.getSetting('artwork_mame_icon'))
-    g_settings['artwork_mame_fanart']   = int(o.getSetting('artwork_mame_fanart'))
-    g_settings['artwork_SL_icon']       = int(o.getSetting('artwork_SL_icon'))
-    g_settings['artwork_SL_fanart']     = int(o.getSetting('artwork_SL_fanart'))
-    g_settings['display_hide_trailers'] = True if o.getSetting('display_hide_trailers') == 'true' else False
+    g_settings['display_hide_trailers']    = True if o.getSetting('display_hide_trailers') == 'true' else False
+    g_settings['render_history_infolabel'] = True if o.getSetting('render_history_infolabel') == 'true' else False
+
+    g_settings['artwork_mame_icon']        = int(o.getSetting('artwork_mame_icon'))
+    g_settings['artwork_mame_fanart']      = int(o.getSetting('artwork_mame_fanart'))
+    g_settings['artwork_SL_icon']          = int(o.getSetting('artwork_SL_icon'))
+    g_settings['artwork_SL_fanart']        = int(o.getSetting('artwork_SL_fanart'))
 
     # --- Utilities ---
     # Call to RunPlugin() built-in function.
@@ -1906,13 +1908,25 @@ def render_catalog_parent_list(catalog_name, category_name):
     fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
     l_favs_end = time.time()
 
+    # Load History.DAT to create an infolabel.
+    if g_settings['render_history_infolabel']:
+        l_history_start = time.time()
+        History_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
+        History_DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
+        l_history_end = time.time()
+    else:
+        l_history_start = l_history_end = 0
+        History_idx_dic = {}
+        History_DAT_dic = {}
+
     # --- Compute loading times ---
     catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
-    render_t = l_render_db_end - l_render_db_start
-    assets_t = l_assets_db_end - l_assets_db_start
-    pclone_t = l_pclone_dic_end - l_pclone_dic_start
-    favs_t   = l_favs_end - l_favs_start
-    loading_time = catalog_t + render_t + assets_t + pclone_t + favs_t
+    render_t  = l_render_db_end - l_render_db_start
+    assets_t  = l_assets_db_end - l_assets_db_start
+    pclone_t  = l_pclone_dic_end - l_pclone_dic_start
+    favs_t    = l_favs_end - l_favs_start
+    history_t = l_history_end - l_history_start
+    loading_time = catalog_t + render_t + assets_t + pclone_t + favs_t + history_t
 
     # --- Check if catalog is empty ---
     if not catalog_dic:
@@ -1924,28 +1938,27 @@ def render_catalog_parent_list(catalog_name, category_name):
     processing_ticks_start = time.time()
     r_list = render_process_machines(catalog_dic, catalog_name, category_name,
         render_db_dic, assets_db_dic, fav_machines, True, main_pclone_dic, False)
-    processing_ticks_end = time.time()
-    processing_time = processing_ticks_end - processing_ticks_start
+    processing_time = time.time() - processing_ticks_start
 
     # --- Commit ROMs ---
     rendering_ticks_start = time.time()
     set_Kodi_all_sorting_methods()
     render_commit_machines(r_list)
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
-    rendering_ticks_end = time.time()
-    rendering_time = rendering_ticks_end - rendering_ticks_start
+    rendering_time = time.time() - rendering_ticks_start
 
     # --- DEBUG Data loading/rendering statistics ---
     total_time = loading_time + processing_time + rendering_time
-    # log_debug('Loading catalog    {0:.4f} s'.format(catalog_t))
-    # log_debug('Loading render db  {0:.4f} s'.format(render_t))
-    # log_debug('Loading assets db  {0:.4f} s'.format(assets_t))
-    # log_debug('Loading pclone dic {0:.4f} s'.format(pclone_t))
-    # log_debug('Loading MAME favs  {0:.4f} s'.format(favs_t))
-    log_debug('Loading time       {0:.4f} s'.format(loading_time))
-    log_debug('Processing time    {0:.4f} s'.format(processing_time))
-    log_debug('Rendering time     {0:.4f} s'.format(rendering_time))
-    log_debug('Total time         {0:.4f} s'.format(total_time))
+    log_debug('Loading catalog     {0:.4f} s'.format(catalog_t))
+    log_debug('Loading render db   {0:.4f} s'.format(render_t))
+    log_debug('Loading assets db   {0:.4f} s'.format(assets_t))
+    log_debug('Loading pclone dic  {0:.4f} s'.format(pclone_t))
+    log_debug('Loading MAME favs   {0:.4f} s'.format(favs_t))
+    log_debug('Loading History.DAT {0:.4f} s'.format(history_t))
+    log_debug('Loading time        {0:.4f} s'.format(loading_time))
+    log_debug('Processing time     {0:.4f} s'.format(processing_time))
+    log_debug('Rendering time      {0:.4f} s'.format(rendering_time))
+    log_debug('Total time          {0:.4f} s'.format(total_time))
 
 #
 # Renders a list of MAME Clone machines (including parent).
@@ -2120,7 +2133,7 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
         poster_path    = m_assets['3dbox'] if m_assets['3dbox'] else m_assets['flyer']
 
         # --- Create listitem row ---
-        # >> Make all the infolabels compatible with Advanced Emulator Launcher
+        # Make all the infolabels compatible with Advanced Emulator Launcher
         ICON_OVERLAY = 6
         r_dict['render_name'] = display_name
         if g_settings['display_hide_trailers']:
@@ -2845,7 +2858,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 return
             m_str = History_idx_dic['mame']['machines'][machine_name]
             display_name, db_list, db_machine = m_str.split('|')
-            DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
+            History_DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
             t_str = ('History DAT for MAME machine [COLOR=orange]{}[/COLOR] '
                 '(DB entry [COLOR=orange]{}[/COLOR])')
             window_title = t_str.format(machine_name, db_machine)
@@ -2858,11 +2871,11 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 return
             m_str = History_idx_dic[SL_name]['machines'][SL_ROM]
             display_name, db_list, db_machine = m_str.split('|')
-            DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
+            History_DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
             t_str = ('History DAT for SL [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR] '
                 '(DB entry [COLOR=orange]{}[/COLOR] / [COLOR=orange]{}[/COLOR])')
             window_title = t_str.format(SL_name, SL_ROM, db_list, db_machine)
-        display_text_window(window_title, DAT_dic[db_list][db_machine])
+        display_text_window(window_title, History_DAT_dic[db_list][db_machine])
 
     elif action == ACTION_VIEW_MAMEINFO:
         if machine_name not in Mameinfo_idx_dic['mame']:
