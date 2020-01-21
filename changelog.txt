@@ -44,14 +44,18 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
          In this core, the XML is extracted using the MAME internal menu, which must be
          opened with the Retroarch core options menu. The XML file is saved in the SAVES
          directory with name mame2003-plus/mame2003-plus.xml
-         TTBOMK, currently it is the only core to support this feature.
          Exploit this to give support to MAME 2003 and then Android. According to
          Chrisism, Retroarch is currently the best way to use MAME in Android.
+         TTBOMK, currently it is the only core to support this feature. Investigate if there
+         are more Retroarch cores with this feature.
 
          See https://github.com/libretro/mame2003-libretro/pull/348
          See https://github.com/libretro/mame2003-plus-libretro/pull/8
          See https://github.com/libretro/mame2010-libretro/pull/123
          See https://github.com/libretro/mame2010-libretro/tree/master/metadata
+
+
+[B]Advanced MAME Launcher | version 0.9.12 | xx January 2020[/B]
 
 WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
          launcher information as well as the ROMs information. ROLs are generated with AML,
@@ -59,7 +63,12 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
-[B]Advanced MAME Launcher | version 0.9.12 | xx xxxxx 2020[/B]
+WIP      Create a new infolabel $INFO[ListItem.Property(history)] which shows the contents
+         of history.dat for a machine.
+         See https://forum.kodi.tv/showthread.php?tid=304186&pid=2916270#pid2916270
+
+FIX      Fixed parsing of History.dat 2.17.
+         See https://forum.kodi.tv/showthread.php?tid=304186&pid=2913592#pid2913592
 
 
 [B]Advanced MAME Launcher | version 0.9.11 | 26 November 2019[/B]
