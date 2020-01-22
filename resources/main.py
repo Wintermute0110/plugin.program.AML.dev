@@ -2,7 +2,7 @@
 
 # Advanced MAME Launcher main script file.
 
-# Copyright (c) 2016-2020 Wintermute0110 <wintermute0110@gmail.com>
+# Copyright (c) 2016-2019 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -561,6 +561,9 @@ def get_settings():
     g_settings['display_hide_nonworking'] = True if o.getSetting('display_hide_nonworking') == 'true' else False
     g_settings['display_rom_available']   = True if o.getSetting('display_rom_available') == 'true' else False
     g_settings['display_chd_available']   = True if o.getSetting('display_chd_available') == 'true' else False
+    g_settings['display_SL_rom_chd_available']   = True if o.getSetting('display_SL_rom_chd_available') == 'true' else False
+    g_settings['display_MAME_rom_name']   = True if o.getSetting('display_MAME_rom_name') == 'true' else False
+    g_settings['display_SL_rom_name']   = True if o.getSetting('display_SL_rom_name') == 'true' else False	
 
     # --- Display II ---
     g_settings['display_main_filters']    = True if o.getSetting('display_main_filters') == 'true' else False
@@ -580,13 +583,11 @@ def get_settings():
     g_settings['display_global_reports']  = True if o.getSetting('display_global_reports') == 'true' else False
 
     # --- Display ---
-    g_settings['display_hide_trailers']    = True if o.getSetting('display_hide_trailers') == 'true' else False
-    g_settings['render_history_infolabel'] = True if o.getSetting('render_history_infolabel') == 'true' else False
-
-    g_settings['artwork_mame_icon']        = int(o.getSetting('artwork_mame_icon'))
-    g_settings['artwork_mame_fanart']      = int(o.getSetting('artwork_mame_fanart'))
-    g_settings['artwork_SL_icon']          = int(o.getSetting('artwork_SL_icon'))
-    g_settings['artwork_SL_fanart']        = int(o.getSetting('artwork_SL_fanart'))
+    g_settings['artwork_mame_icon']     = int(o.getSetting('artwork_mame_icon'))
+    g_settings['artwork_mame_fanart']   = int(o.getSetting('artwork_mame_fanart'))
+    g_settings['artwork_SL_icon']       = int(o.getSetting('artwork_SL_icon'))
+    g_settings['artwork_SL_fanart']     = int(o.getSetting('artwork_SL_fanart'))
+    g_settings['display_hide_trailers'] = True if o.getSetting('display_hide_trailers') == 'true' else False
 
     # --- Utilities ---
     # Call to RunPlugin() built-in function.
@@ -1908,25 +1909,13 @@ def render_catalog_parent_list(catalog_name, category_name):
     fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
     l_favs_end = time.time()
 
-    # Load History.DAT to create an infolabel.
-    if g_settings['render_history_infolabel']:
-        l_history_start = time.time()
-        History_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
-        History_DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
-        l_history_end = time.time()
-    else:
-        l_history_start = l_history_end = 0
-        History_idx_dic = {}
-        History_DAT_dic = {}
-
     # --- Compute loading times ---
     catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
-    render_t  = l_render_db_end - l_render_db_start
-    assets_t  = l_assets_db_end - l_assets_db_start
-    pclone_t  = l_pclone_dic_end - l_pclone_dic_start
-    favs_t    = l_favs_end - l_favs_start
-    history_t = l_history_end - l_history_start
-    loading_time = catalog_t + render_t + assets_t + pclone_t + favs_t + history_t
+    render_t = l_render_db_end - l_render_db_start
+    assets_t = l_assets_db_end - l_assets_db_start
+    pclone_t = l_pclone_dic_end - l_pclone_dic_start
+    favs_t   = l_favs_end - l_favs_start
+    loading_time = catalog_t + render_t + assets_t + pclone_t + favs_t
 
     # --- Check if catalog is empty ---
     if not catalog_dic:
@@ -1938,27 +1927,28 @@ def render_catalog_parent_list(catalog_name, category_name):
     processing_ticks_start = time.time()
     r_list = render_process_machines(catalog_dic, catalog_name, category_name,
         render_db_dic, assets_db_dic, fav_machines, True, main_pclone_dic, False)
-    processing_time = time.time() - processing_ticks_start
+    processing_ticks_end = time.time()
+    processing_time = processing_ticks_end - processing_ticks_start
 
     # --- Commit ROMs ---
     rendering_ticks_start = time.time()
     set_Kodi_all_sorting_methods()
     render_commit_machines(r_list)
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
-    rendering_time = time.time() - rendering_ticks_start
+    rendering_ticks_end = time.time()
+    rendering_time = rendering_ticks_end - rendering_ticks_start
 
     # --- DEBUG Data loading/rendering statistics ---
     total_time = loading_time + processing_time + rendering_time
-    log_debug('Loading catalog     {0:.4f} s'.format(catalog_t))
-    log_debug('Loading render db   {0:.4f} s'.format(render_t))
-    log_debug('Loading assets db   {0:.4f} s'.format(assets_t))
-    log_debug('Loading pclone dic  {0:.4f} s'.format(pclone_t))
-    log_debug('Loading MAME favs   {0:.4f} s'.format(favs_t))
-    log_debug('Loading History.DAT {0:.4f} s'.format(history_t))
-    log_debug('Loading time        {0:.4f} s'.format(loading_time))
-    log_debug('Processing time     {0:.4f} s'.format(processing_time))
-    log_debug('Rendering time      {0:.4f} s'.format(rendering_time))
-    log_debug('Total time          {0:.4f} s'.format(total_time))
+    # log_debug('Loading catalog    {0:.4f} s'.format(catalog_t))
+    # log_debug('Loading render db  {0:.4f} s'.format(render_t))
+    # log_debug('Loading assets db  {0:.4f} s'.format(assets_t))
+    # log_debug('Loading pclone dic {0:.4f} s'.format(pclone_t))
+    # log_debug('Loading MAME favs  {0:.4f} s'.format(favs_t))
+    log_debug('Loading time       {0:.4f} s'.format(loading_time))
+    log_debug('Processing time    {0:.4f} s'.format(processing_time))
+    log_debug('Rendering time     {0:.4f} s'.format(rendering_time))
+    log_debug('Total time         {0:.4f} s'.format(total_time))
 
 #
 # Renders a list of MAME Clone machines (including parent).
@@ -2060,7 +2050,8 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
     # >> Think about how to implement these settings ...
     display_rom_available = g_settings['display_rom_available']
     display_chd_available  = g_settings['display_chd_available']
-
+    display_MAME_rom_name  = g_settings['display_MAME_rom_name']
+	
     # --- Traverse machines ---
     r_list = []
     for machine_name, render_name in catalog_dic[category_name].iteritems():
@@ -2096,11 +2087,12 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
             display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
 
             # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
-            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
-            if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-            if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-            if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-            elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+            if display_MAME_rom_name:
+				display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
+				if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+				if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+				if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+				elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
             # --- Skin flags ---
             if machine_name in fav_machines:
@@ -2109,12 +2101,13 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
             AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
         else:
             # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
-            display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
-            if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-            if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-            if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-            if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-            elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
+            if display_MAME_rom_name:
+				display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
+				if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
+				if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
+				if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
+				if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
+				elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
 
             # --- Skin flags ---
             if machine_name in fav_machines:
@@ -2133,7 +2126,7 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
         poster_path    = m_assets['3dbox'] if m_assets['3dbox'] else m_assets['flyer']
 
         # --- Create listitem row ---
-        # Make all the infolabels compatible with Advanced Emulator Launcher
+        # >> Make all the infolabels compatible with Advanced Emulator Launcher
         ICON_OVERLAY = 6
         r_dict['render_name'] = display_name
         if g_settings['display_hide_trailers']:
@@ -2452,74 +2445,150 @@ def render_SL_list_row(SL_name, SL):
     xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = True)
 
 def render_SL_ROM_row(SL_name, rom_name, ROM, assets, flag_parent_list = False, num_clones = 0):
-    display_name = ROM['description']
-    if flag_parent_list and num_clones > 0:
-        display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
-        status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
-    else:
-        # --- Mark flags and status ---
-        status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
-        if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
+	# --- Changes to make only available ROMS/CHDS visible in the list --- #
+	display_SL_rom_chd_available = g_settings['display_SL_rom_chd_available']
+	display_SL_rom_name = g_settings['display_SL_rom_name']	
+	if display_SL_rom_chd_available:
+		if ROM['status_CHD'] == 'C' or ROM['status_ROM'] == 'R':
+			display_name = ROM['description']
+			if flag_parent_list and num_clones > 0:
+				display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
+				if display_SL_rom_name:
+					status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+					display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+			else:
+				# --- Mark flags and status ---
+				if display_SL_rom_name:
+					status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+					display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+					if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
 
-    # --- Assets/artwork ---
-    icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
-    fanart_path = assets[g_SL_fanart]
-    poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
+			# --- Assets/artwork ---
+			icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
+			fanart_path = assets[g_SL_fanart]
+			poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
 
-    # --- Create listitem row ---
-    ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(display_name)
-    # >> Make all the infolabels compatible with Advanced Emulator Launcher
-    if g_settings['display_hide_trailers']:
-        listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
-                                   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-                                   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY })
-    else:
-        listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
-                                   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-                                   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
-                                   'trailer' : assets['trailer'] })
-    listitem.setProperty('platform', 'MAME Software List')
+			# --- Create listitem row ---
+			ICON_OVERLAY = 6
+			listitem = xbmcgui.ListItem(display_name)
+			# >> Make all the infolabels compatible with Advanced Emulator Launcher
+			if g_settings['display_hide_trailers']:
+				listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+										   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+										   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY })
+			else:
+				listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+										   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+										   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
+										   'trailer' : assets['trailer'] })
+			listitem.setProperty('platform', 'MAME Software List')
 
-    # --- Assets ---
-    # >> AEL custom artwork fields
-    listitem.setArt({
-        'title' : assets['title'], 'snap' : assets['snap'],
-        'boxfront' : assets['boxfront'], '3dbox' : assets['3dbox'],
-        'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path
-    })
+			# --- Assets ---
+			# >> AEL custom artwork fields
+			listitem.setArt({
+				'title' : assets['title'], 'snap' : assets['snap'],
+				'boxfront' : assets['boxfront'], '3dbox' : assets['3dbox'],
+				'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path
+			})
 
-    # --- Create context menu ---
-    URL_view_DAT = misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', rom_name)
-    URL_view = misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
-    URL_fav = misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
-    if flag_parent_list and num_clones > 0:
-        URL_show_c = misc_url_4_arg_RunPlugin(
-            'command', 'EXEC_SHOW_SL_CLONES', 'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
-        commands = [
-            ('Info / Utils', URL_view_DAT),
-            ('View / Audit', URL_view),
-            ('Show clones', URL_show_c),
-            ('Add ROM to SL Favourites', URL_fav),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-        ]
-    else:
-        commands = [
-            ('Info / Utils', URL_view_DAT),
-            ('View / Audit', URL_view),
-            ('Add ROM to SL Favourites', URL_fav),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-        ]
-    listitem.addContextMenuItems(commands)
+			# --- Create context menu ---
+			URL_view_DAT = misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', rom_name)
+			URL_view = misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
+			URL_fav = misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
+			if flag_parent_list and num_clones > 0:
+				URL_show_c = misc_url_4_arg_RunPlugin(
+					'command', 'EXEC_SHOW_SL_CLONES', 'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
+				commands = [
+					('Info / Utils', URL_view_DAT),
+					('View / Audit', URL_view),
+					('Show clones', URL_show_c),
+					('Add ROM to SL Favourites', URL_fav),
+					('Kodi File Manager', 'ActivateWindow(filemanager)'),
+					('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+				]
+			else:
+				commands = [
+					('Info / Utils', URL_view_DAT),
+					('View / Audit', URL_view),
+					('Add ROM to SL Favourites', URL_fav),
+					('Kodi File Manager', 'ActivateWindow(filemanager)'),
+					('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+				]
+			listitem.addContextMenuItems(commands)
 
-    # --- Add row ---
-    URL = misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
-    xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
+			# --- Add row ---
+			URL = misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
+			xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
+	else:
+		display_name = ROM['description']
+		if flag_parent_list and num_clones > 0:
+			display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
+			if display_SL_rom_name:
+				status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+				display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+		else:
+			# --- Mark flags and status ---
+			if display_SL_rom_name:
+				status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+				display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+				if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
 
+		# --- Assets/artwork ---
+		icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
+		fanart_path = assets[g_SL_fanart]
+		poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
+
+		# --- Create listitem row ---
+		ICON_OVERLAY = 6
+		listitem = xbmcgui.ListItem(display_name)
+		# >> Make all the infolabels compatible with Advanced Emulator Launcher
+		if g_settings['display_hide_trailers']:
+			listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+									   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+									   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY })
+		else:
+			listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+									   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+									   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
+									   'trailer' : assets['trailer'] })
+		listitem.setProperty('platform', 'MAME Software List')
+
+		# --- Assets ---
+		# >> AEL custom artwork fields
+		listitem.setArt({
+			'title' : assets['title'], 'snap' : assets['snap'],
+			'boxfront' : assets['boxfront'], '3dbox' : assets['3dbox'],
+			'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path
+		})
+
+		# --- Create context menu ---
+		URL_view_DAT = misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', rom_name)
+		URL_view = misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
+		URL_fav = misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
+		if flag_parent_list and num_clones > 0:
+			URL_show_c = misc_url_4_arg_RunPlugin(
+				'command', 'EXEC_SHOW_SL_CLONES', 'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
+			commands = [
+				('Info / Utils', URL_view_DAT),
+				('View / Audit', URL_view),
+				('Show clones', URL_show_c),
+				('Add ROM to SL Favourites', URL_fav),
+				('Kodi File Manager', 'ActivateWindow(filemanager)'),
+				('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+			]
+		else:
+			commands = [
+				('Info / Utils', URL_view_DAT),
+				('View / Audit', URL_view),
+				('Add ROM to SL Favourites', URL_fav),
+				('Kodi File Manager', 'ActivateWindow(filemanager)'),
+				('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+			]
+		listitem.addContextMenuItems(commands)
+
+		# --- Add row ---
+		URL = misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
+		xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
 #----------------------------------------------------------------------------------------------
 # DATs
 #
@@ -2858,7 +2927,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 return
             m_str = History_idx_dic['mame']['machines'][machine_name]
             display_name, db_list, db_machine = m_str.split('|')
-            History_DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
+            DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
             t_str = ('History DAT for MAME machine [COLOR=orange]{}[/COLOR] '
                 '(DB entry [COLOR=orange]{}[/COLOR])')
             window_title = t_str.format(machine_name, db_machine)
@@ -2871,11 +2940,11 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 return
             m_str = History_idx_dic[SL_name]['machines'][SL_ROM]
             display_name, db_list, db_machine = m_str.split('|')
-            History_DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
+            DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
             t_str = ('History DAT for SL [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR] '
                 '(DB entry [COLOR=orange]{}[/COLOR] / [COLOR=orange]{}[/COLOR])')
             window_title = t_str.format(SL_name, SL_ROM, db_list, db_machine)
-        display_text_window(window_title, History_DAT_dic[db_list][db_machine])
+        display_text_window(window_title, DAT_dic[db_list][db_machine])
 
     elif action == ACTION_VIEW_MAMEINFO:
         if machine_name not in Mameinfo_idx_dic['mame']:
@@ -7720,7 +7789,7 @@ def run_after_execution():
     log_verb('run_after_execution() g_flag_kodi_was_playing is {0}'.format(g_flag_kodi_was_playing))
     if g_flag_kodi_was_playing and media_state_action == 1:
         log_verb('run_after_execution() Executing built-in PlayerControl(play)')
-        xbmc.executebuiltin('PlayerControl(play)')
+        xbmc.executebuiltin('PlayerControl(resume)')
     log_debug('run_after_execution() Function ENDS')
 
 # ---------------------------------------------------------------------------------------------
