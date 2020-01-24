@@ -41,9 +41,9 @@
     <setting label="Hide non-working machines" type="bool" default="false" id="display_hide_nonworking" />
     <setting label="Display machines with available ROMs only" type="bool" default="false" id="display_rom_available" />
     <setting label="Display machines with available CHDs only" type="bool" default="false" id="display_chd_available" />
-	<setting label="Display SL with available ROMS/CHDs only" type="bool" default="false" id="display_SL_rom_chd_available" />
-	<setting label="Display MAME ROM flags" type="bool" default="false" id="display_MAME_rom_name" />
-	<setting label="Display SL ROM flags" type="bool" default="false" id="display_SL_rom_name" />
+    <setting label="Display SL with available ROMS/CHDs only" type="bool" default="false" id="display_SL_rom_chd_available" />
+    <setting label="Display MAME ROM flags" type="bool" default="false" id="display_MAME_rom_name" />
+    <setting label="Display SL ROM flags" type="bool" default="false" id="display_SL_rom_name" />
 </category>
 
 <category label="Display II">
