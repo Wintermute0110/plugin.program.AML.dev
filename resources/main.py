@@ -561,7 +561,10 @@ def get_settings():
     g_settings['display_hide_nonworking'] = True if o.getSetting('display_hide_nonworking') == 'true' else False
     g_settings['display_rom_available']   = True if o.getSetting('display_rom_available') == 'true' else False
     g_settings['display_chd_available']   = True if o.getSetting('display_chd_available') == 'true' else False
-
+    g_settings['display_SL_rom_chd_available']   = True if o.getSetting('display_SL_rom_chd_available') == 'true' else False
+    g_settings['display_MAME_rom_name']   = True if o.getSetting('display_MAME_rom_name') == 'true' else False
+    g_settings['display_SL_rom_name']   = True if o.getSetting('display_SL_rom_name') == 'true' else False
+	
     # --- Display II ---
     g_settings['display_main_filters']    = True if o.getSetting('display_main_filters') == 'true' else False
     g_settings['display_binary_filters']  = True if o.getSetting('display_binary_filters') == 'true' else False
@@ -2452,74 +2455,150 @@ def render_SL_list_row(SL_name, SL):
     xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = True)
 
 def render_SL_ROM_row(SL_name, rom_name, ROM, assets, flag_parent_list = False, num_clones = 0):
-    display_name = ROM['description']
-    if flag_parent_list and num_clones > 0:
-        display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
-        status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
-    else:
-        # --- Mark flags and status ---
-        status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
-        display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
-        if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
+	# --- Changes to make only available ROMS/CHDS visible in the list --- #
+	display_SL_rom_chd_available = g_settings['display_SL_rom_chd_available']
+	display_SL_rom_name = g_settings['display_SL_rom_name']	
+	if display_SL_rom_chd_available: #--- if hide ROMS/CHDS is selected continue to check ROMS/CHDS for presence ---#
+		if ROM['status_CHD'] == 'C' or ROM['status_ROM'] == 'R': # --- check to see if ROM/CHD is present --- #
+			display_name = ROM['description']
+			if flag_parent_list and num_clones > 0:
+				display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
+				if display_SL_rom_name: #--change flags based on preference selected in Display I --#
+					status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+					display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+			else:
+				# --- Mark flags and status ---
+				if display_SL_rom_name:  #--change flags based on preference selected in Display I --#
+					status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+					display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+					if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
 
-    # --- Assets/artwork ---
-    icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
-    fanart_path = assets[g_SL_fanart]
-    poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
+			# --- Assets/artwork ---
+			icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
+			fanart_path = assets[g_SL_fanart]
+			poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
 
-    # --- Create listitem row ---
-    ICON_OVERLAY = 6
-    listitem = xbmcgui.ListItem(display_name)
-    # >> Make all the infolabels compatible with Advanced Emulator Launcher
-    if g_settings['display_hide_trailers']:
-        listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
-                                   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-                                   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY })
-    else:
-        listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
-                                   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
-                                   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
-                                   'trailer' : assets['trailer'] })
-    listitem.setProperty('platform', 'MAME Software List')
+			# --- Create listitem row ---
+			ICON_OVERLAY = 6
+			listitem = xbmcgui.ListItem(display_name)
+			# >> Make all the infolabels compatible with Advanced Emulator Launcher
+			if g_settings['display_hide_trailers']:
+				listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+										   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+										   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY })
+			else:
+				listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+										   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+										   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
+										   'trailer' : assets['trailer'] })
+			listitem.setProperty('platform', 'MAME Software List')
 
-    # --- Assets ---
-    # >> AEL custom artwork fields
-    listitem.setArt({
-        'title' : assets['title'], 'snap' : assets['snap'],
-        'boxfront' : assets['boxfront'], '3dbox' : assets['3dbox'],
-        'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path
-    })
+			# --- Assets ---
+			# >> AEL custom artwork fields
+			listitem.setArt({
+				'title' : assets['title'], 'snap' : assets['snap'],
+				'boxfront' : assets['boxfront'], '3dbox' : assets['3dbox'],
+				'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path
+			})
 
-    # --- Create context menu ---
-    URL_view_DAT = misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', rom_name)
-    URL_view = misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
-    URL_fav = misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
-    if flag_parent_list and num_clones > 0:
-        URL_show_c = misc_url_4_arg_RunPlugin(
-            'command', 'EXEC_SHOW_SL_CLONES', 'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
-        commands = [
-            ('Info / Utils', URL_view_DAT),
-            ('View / Audit', URL_view),
-            ('Show clones', URL_show_c),
-            ('Add ROM to SL Favourites', URL_fav),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-        ]
-    else:
-        commands = [
-            ('Info / Utils', URL_view_DAT),
-            ('View / Audit', URL_view),
-            ('Add ROM to SL Favourites', URL_fav),
-            ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
-        ]
-    listitem.addContextMenuItems(commands)
+			# --- Create context menu ---
+			URL_view_DAT = misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', rom_name)
+			URL_view = misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
+			URL_fav = misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
+			if flag_parent_list and num_clones > 0:
+				URL_show_c = misc_url_4_arg_RunPlugin(
+					'command', 'EXEC_SHOW_SL_CLONES', 'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
+				commands = [
+					('Info / Utils', URL_view_DAT),
+					('View / Audit', URL_view),
+					('Show clones', URL_show_c),
+					('Add ROM to SL Favourites', URL_fav),
+					('Kodi File Manager', 'ActivateWindow(filemanager)'),
+					('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+				]
+			else:
+				commands = [
+					('Info / Utils', URL_view_DAT),
+					('View / Audit', URL_view),
+					('Add ROM to SL Favourites', URL_fav),
+					('Kodi File Manager', 'ActivateWindow(filemanager)'),
+					('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+				]
+			listitem.addContextMenuItems(commands)
 
-    # --- Add row ---
-    URL = misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
-    xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
+			# --- Add row ---
+			URL = misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
+			xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
+	else: #--- if hide unavailable ROMS/CHDS is not selected generate full SL list ---#
+		display_name = ROM['description']
+		if flag_parent_list and num_clones > 0:
+			display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
+			if display_SL_rom_name: #--change flags based on preference selected in Display I --#
+				status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+				display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+		else:
+			# --- Mark flags and status ---
+			if display_SL_rom_name: #--change flags based on preference selected in Display I --#
+				status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
+				display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+				if ROM['cloneof']: display_name += ' [COLOR orange][Clo][/COLOR]'
 
+		# --- Assets/artwork ---
+		icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
+		fanart_path = assets[g_SL_fanart]
+		poster_path = assets['3dbox'] if assets['3dbox'] else assets['boxfront']
+
+		# --- Create listitem row ---
+		ICON_OVERLAY = 6
+		listitem = xbmcgui.ListItem(display_name)
+		# >> Make all the infolabels compatible with Advanced Emulator Launcher
+		if g_settings['display_hide_trailers']:
+			listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+									   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+									   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY })
+		else:
+			listitem.setInfo('video', {'title'   : display_name,      'year'    : ROM['year'],
+									   'genre'   : ROM['genre'],      'studio'  : ROM['publisher'],
+									   'plot'    : ROM['plot'],       'overlay' : ICON_OVERLAY,
+									   'trailer' : assets['trailer'] })
+		listitem.setProperty('platform', 'MAME Software List')
+
+		# --- Assets ---
+		# >> AEL custom artwork fields
+		listitem.setArt({
+			'title' : assets['title'], 'snap' : assets['snap'],
+			'boxfront' : assets['boxfront'], '3dbox' : assets['3dbox'],
+			'icon' : icon_path, 'fanart' : fanart_path, 'poster' : poster_path
+		})
+
+		# --- Create context menu ---
+		URL_view_DAT = misc_url_3_arg_RunPlugin('command', 'VIEW_DAT', 'SL', SL_name, 'ROM', rom_name)
+		URL_view = misc_url_3_arg_RunPlugin('command', 'VIEW', 'SL', SL_name, 'ROM', rom_name)
+		URL_fav = misc_url_3_arg_RunPlugin('command', 'ADD_SL_FAV', 'SL', SL_name, 'ROM', rom_name)
+		if flag_parent_list and num_clones > 0:
+			URL_show_c = misc_url_4_arg_RunPlugin(
+				'command', 'EXEC_SHOW_SL_CLONES', 'catalog', 'SL', 'category', SL_name, 'parent', rom_name)
+			commands = [
+				('Info / Utils', URL_view_DAT),
+				('View / Audit', URL_view),
+				('Show clones', URL_show_c),
+				('Add ROM to SL Favourites', URL_fav),
+				('Kodi File Manager', 'ActivateWindow(filemanager)'),
+				('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+			]
+		else:
+			commands = [
+				('Info / Utils', URL_view_DAT),
+				('View / Audit', URL_view),
+				('Add ROM to SL Favourites', URL_fav),
+				('Kodi File Manager', 'ActivateWindow(filemanager)'),
+				('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+			]
+		listitem.addContextMenuItems(commands)
+
+		# --- Add row ---
+		URL = misc_url_3_arg('command', 'LAUNCH_SL', 'SL', SL_name, 'ROM', rom_name)
+		xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
 #----------------------------------------------------------------------------------------------
 # DATs
 #
@@ -7720,7 +7799,7 @@ def run_after_execution():
     log_verb('run_after_execution() g_flag_kodi_was_playing is {0}'.format(g_flag_kodi_was_playing))
     if g_flag_kodi_was_playing and media_state_action == 1:
         log_verb('run_after_execution() Executing built-in PlayerControl(play)')
-        xbmc.executebuiltin('PlayerControl(play)')
+        xbmc.executebuiltin('PlayerControl(resume)')  #--- when Kodi is in "pause" mode, resume is used to continue play ---#
     log_debug('run_after_execution() Function ENDS')
 
 # ---------------------------------------------------------------------------------------------
