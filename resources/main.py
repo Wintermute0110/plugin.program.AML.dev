@@ -2060,10 +2060,9 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
     if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
     display_hide_nonworking = g_settings['display_hide_nonworking']
     display_hide_imperfect  = g_settings['display_hide_imperfect']
-    # >> Think about how to implement these settings ...
     display_rom_available = g_settings['display_rom_available']
-    display_chd_available  = g_settings['display_chd_available']
-    display_MAME_rom_name  = g_settings['display_MAME_rom_name']
+    display_chd_available = g_settings['display_chd_available']
+    display_MAME_flags = g_settings['display_MAME_flags']
 
     # --- Traverse machines ---
     r_list = []
@@ -2086,47 +2085,38 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
 
         # main_pclone_dic and num_clones only used when rendering parents.
         if flag_parent_list:
-            if machine_name in main_pclone_dic:
-                num_clones = len(main_pclone_dic[machine_name])
-            else:
-                num_clones = 0
+            num_clones = len(main_pclone_dic[machine_name]) if machine_name in main_pclone_dic else 0
 
-        # --- Render a Parent only list ---
+        # --- Render machine name string ---
         display_name = render_name
+        if display_MAME_flags:
+            # Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status.
+            flags_str = ' [COLOR skyblue]{}[/COLOR]'.format(m_assets['flags'])
+            if machine['isBIOS']: flags_str += ' [COLOR cyan][BIOS][/COLOR]'
+            if machine['isDevice']: flags_str += ' [COLOR violet][Dev][/COLOR]'
+            if machine['driver_status'] == 'imperfect':
+                flags_str += ' [COLOR yellow][Imp][/COLOR]'
+            elif machine['driver_status'] == 'preliminary':
+                flags_str += ' [COLOR red][Pre][/COLOR]'
+        else:
+            flags_str = ''
         if flag_parent_list and num_clones > 0:
-            # NOTE all machines here are parents
-
-            # --- Mark number of clones ---
-            display_name += ' [COLOR orange] ({0} clones)[/COLOR]'.format(num_clones)
-
-            # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
-            if display_MAME_rom_name:
-                display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
-                if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-                if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-                if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-                elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
-
-            # --- Skin flags ---
+            # All machines here are parents. Mark number of clones.
+            display_name += ' [COLOR orange] ({} clones)[/COLOR]'.format(num_clones)
+            # Machine flags.
+            if flags_str: display_name += flags_str
+            # Skin flags.
             if machine_name in fav_machines:
                 display_name += ' [COLOR violet][Fav][/COLOR]'
                 AEL_InFav_bool_value = AEL_INFAV_BOOL_VALUE_TRUE
             AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
         else:
-            # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
-            if display_MAME_rom_name:
-                display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
-                if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
-                if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
-                if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
-                if   machine['driver_status'] == 'imperfect':   display_name += ' [COLOR yellow][Imp][/COLOR]'
-                elif machine['driver_status'] == 'preliminary': display_name += ' [COLOR red][Pre][/COLOR]'
-
-            # --- Skin flags ---
+            if flags_str: display_name += flags_str
             if machine_name in fav_machines:
                 display_name += ' [COLOR violet][Fav][/COLOR]'
                 AEL_InFav_bool_value = AEL_INFAV_BOOL_VALUE_TRUE
             if machine['cloneof']:
+                display_name += ' [COLOR orange][Clo][/COLOR]'
                 AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE
             else:
                 AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_PARENT
@@ -2187,7 +2177,7 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
                 ('Show clones', URL_clones),
                 ('Add to MAME Favourites', URL_fav),
                 ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-                ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+                ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__)),
             ]
         else:
             commands = [
@@ -2195,11 +2185,11 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
                 ('View / Audit', URL_view),
                 ('Add to MAME Favourites', URL_fav),
                 ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-                ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+                ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__)),
             ]
         r_dict['context'] = commands
 
-        # --- Add row to the list ---
+        # Add row to the list.
         r_dict['URL'] = misc_url_2_arg('command', 'LAUNCH', 'machine', machine_name)
         r_list.append(r_dict)
 
@@ -2457,6 +2447,7 @@ def render_SL_list_row(SL_name, SL):
     URL = misc_url_2_arg('catalog', 'SL', 'category', SL_name)
     xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = True)
 
+# TODO: render flag is SL item is in Favourites.
 def render_SL_ROM_row(SL_name, rom_name, ROM, assets, flag_parent_list = False, num_clones = 0):
     only_display_SL_items_available = g_settings['display_SL_items_available']
     display_SL_flags = g_settings['display_SL_flags']
