@@ -2547,7 +2547,7 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
             if mname in history_info_set:
                 m_str = history_idx_dic['mame']['machines'][mname]
                 display_name, db_list, db_machine = m_str.split('|')
-                plot_str = History_DAT_dic[db_list][db_machine]
+                plot_str += History_DAT_dic[db_list][db_machine]
             else:
                 plot_str += 'Machine {} not found in History.DAT'.format(mname)
         assets_dic[mname]['plot'] = plot_str
