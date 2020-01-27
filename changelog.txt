@@ -68,6 +68,15 @@ WIP      Create a new infolabel $INFO[ListItem.Property(history)] which shows th
          of history.dat for a machine.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2916270#pid2916270
 
+WIP      Option to hide MAME machine flags.
+         Contributed by Rychem28.
+
+FEATURE  Option to hide SL item flags.
+         Contributed by Rychem28.
+
+FEATURE  Option to display only SL items with ROMs/CHDs available.
+         Contributed by Rychem28.
+
 FIX      Fixed parsing of History.dat 2.17.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2913592#pid2913592
 
