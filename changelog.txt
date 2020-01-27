@@ -18,6 +18,12 @@ WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
 
 [B]AML ideas and planned features (read to implement)[/B]
 
+WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
+         launcher information as well as the ROMs information. ROLs are generated with AML,
+         can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
+         (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
+         and then imported again into AML.
+
 WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
          Github wiki.
 
@@ -56,13 +62,7 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
          See https://github.com/libretro/mame2010-libretro/tree/master/metadata
 
 
-[B]Advanced MAME Launcher | version 0.9.12 | xx January 2020[/B]
-
-WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
-         launcher information as well as the ROMs information. ROLs are generated with AML,
-         can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
-         (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
-         and then imported again into AML.
+[B]Advanced MAME Launcher | version 0.9.12 | xx February 2020[/B]
 
 FEATURE  Create a new infolabel $INFO[ListItem.Property(history)] which shows the contents
          of history.dat for a machine. Creating the infolabel slows down AML a lot. Instead,
