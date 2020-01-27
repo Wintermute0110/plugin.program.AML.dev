@@ -64,11 +64,12 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
-WIP      Create a new infolabel $INFO[ListItem.Property(history)] which shows the contents
-         of history.dat for a machine.
+FEATURE  Create a new infolabel $INFO[ListItem.Property(history)] which shows the contents
+         of history.dat for a machine. Creating the infolabel slows down AML a lot. Instead,
+         create an option to use History.dat content as plot.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2916270#pid2916270
 
-WIP      Option to hide MAME machine flags.
+FEATURE  Option to hide MAME machine flags.
          Contributed by Rychem28.
 
 FEATURE  Option to hide SL item flags.

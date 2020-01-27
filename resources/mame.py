@@ -2454,10 +2454,10 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
     pDialog.update(100)
     pDialog.close()
 
-# -------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------
 # Build MAME and SL plots
-# -------------------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------
+
 # Generate plot for MAME machines.
 # Line 1) Controls are {Joystick}
 # Line 2) {One Vertical Raster screen}
@@ -2465,11 +2465,55 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
 # Line 4) Machine has [no coin slots| N coin slots]
 # Line 5) Artwork, Manual, History, Info, Gameinit, Command
 # Line 6) Machine [supports|does not support] a Software List.
-# ---------------------------------------------------------------------------------------------
+def mame_MAME_plot_slits(mname, m, assets_dic,
+    history_info_set, mameinfo_info_set, gameinit_idx_dic, command_idx_dic):
+    Flag_list = []
+    if assets_dic[mname]['artwork']: Flag_list.append('Artwork')
+    if assets_dic[mname]['manual']: Flag_list.append('Manual')
+    if mname in history_info_set: Flag_list.append('History')
+    if mname in mameinfo_info_set: Flag_list.append('Info')
+    if mname in gameinit_idx_dic: Flag_list.append('Gameinit')
+    if mname in command_idx_dic: Flag_list.append('Command')
+    Flag_str = ', '.join(Flag_list)
+    if m['input']:
+        control_list = [ctrl_dic['type'] for ctrl_dic in m['input']['control_list']]
+    else:
+        control_list = []
+    if control_list:
+        controls_str = 'Controls {}'.format(misc_get_mame_control_str(control_list))
+    else:
+        controls_str = 'No controls'
+    mecha_str = 'Mechanical' if m['isMechanical'] else 'Non-mechanical'
+    n_coins = m['input']['att_coins'] if m['input'] else 0
+    coin_str = 'Machine has {} coin slots'.format(n_coins) if n_coins > 0 else 'Machine has no coin slots'
+    SL_str = ', '.join(m['softwarelists']) if m['softwarelists'] else ''
+
+    plot_str_list = []
+    plot_str_list.append('{}'.format(controls_str))
+    plot_str_list.append('{}'.format(misc_get_mame_screen_str(mname, m)))
+    plot_str_list.append('{} / Driver is {}'.format(mecha_str, m['sourcefile']))
+    plot_str_list.append('{}'.format(coin_str))
+    if Flag_str: plot_str_list.append('{}'.format(Flag_str))
+    if SL_str: plot_str_list.append('SL {}'.format(SL_str))
+
+    return plot_str_list
+
+# Setting id="MAME_plot" values="Info|History DAT|Info + History DAT"
 def mame_build_MAME_plots(PATHS, settings, control_dic,
-    machines, machines_render, assets_dic, 
-    history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic):
+    machines, machines_render, assets_dic,
+    history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic, History_DAT_dic):
     log_info('mame_build_MAME_plots() Building machine plots/descriptions ...')
+    MAME_plot = settings['MAME_plot']
+    log_info('MAME_plot = {}'.format(MAME_plot))
+    if MAME_plot == 0:
+        log_info('Using information only to build plot.')
+    elif MAME_plot == 1:
+        log_info('Using History DAT only to build plot.')
+    elif MAME_plot == 2:
+        log_info('Using both information and History DAT to build plot.')
+    else:
+        raise TypeError('Logical error')
+
     # Do not crash if DAT files are not configured.
     history_info_set  = {m for m in history_idx_dic['mame']['machines']} if history_idx_dic else set()
     mameinfo_info_set = {m for m in mameinfo_idx_dic['mame']} if mameinfo_idx_dic else set()
@@ -2480,49 +2524,42 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
     pDialog.update(0, 'Generating MAME machine plots ...')
     total_machines = len(machines)
     num_machines = 0
-    for machine_name, m in machines.iteritems():
-        Flag_list = []
-        if assets_dic[machine_name]['artwork']: Flag_list.append('Artwork')
-        if assets_dic[machine_name]['manual']: Flag_list.append('Manual')
-        if machine_name in history_info_set: Flag_list.append('History')
-        if machine_name in mameinfo_info_set: Flag_list.append('Info')
-        if machine_name in gameinit_idx_dic: Flag_list.append('Gameinit')
-        if machine_name in command_idx_dic: Flag_list.append('Command')
-        Flag_str = ', '.join(Flag_list)
-        if m['input']:
-            control_list = [ctrl_dic['type'] for ctrl_dic in m['input']['control_list']]
-        else:
-            control_list = []
-        if control_list:
-            controls_str = 'Controls {0}'.format(misc_get_mame_control_str(control_list))
-        else:
-            controls_str = 'No controls'
-        mecha_str = 'Mechanical' if m['isMechanical'] else 'Non-mechanical'
-        n_coins = m['input']['att_coins'] if m['input'] else 0
-        coin_str  = 'Machine has {0} coin slots'.format(n_coins) if n_coins > 0 else 'Machine has no coin slots'
-        SL_str    = ', '.join(m['softwarelists']) if m['softwarelists'] else ''
-
-        plot_str_list = []
-        plot_str_list.append('{0}'.format(controls_str))
-        plot_str_list.append('{0}'.format(misc_get_mame_screen_str(machine_name, m)))
-        plot_str_list.append('{0} / Driver is {1}'.format(mecha_str, m['sourcefile']))
-        plot_str_list.append('{0}'.format(coin_str))
-        if Flag_str: plot_str_list.append('{0}'.format(Flag_str))
-        if SL_str: plot_str_list.append('SL {0}'.format(SL_str))
-        assets_dic[machine_name]['plot'] = '\n'.join(plot_str_list)
-
-        # --- Update progress ---
+    for mname, m in machines.iteritems():
+        if MAME_plot == 0:
+            # Use machine information only (traditional behaviour).
+            plot_str_list = mame_MAME_plot_slits(mname, m, assets_dic,
+                history_info_set, mameinfo_info_set, gameinit_idx_dic, command_idx_dic)
+            plot_str = '\n'.join(plot_str_list)
+        elif MAME_plot == 1:
+            # Use History DAT content.
+            if mname in history_info_set:
+                m_str = history_idx_dic['mame']['machines'][mname]
+                display_name, db_list, db_machine = m_str.split('|')
+                plot_str = History_DAT_dic[db_list][db_machine]
+            else:
+                plot_str = 'Machine {} not found in History.DAT'.format(mname)
+        elif MAME_plot == 2:
+            # Use both information and History DAT contents.
+            plot_str_list = mame_MAME_plot_slits(mname, m, assets_dic,
+                history_info_set, mameinfo_info_set, gameinit_idx_dic, command_idx_dic)
+            plot_str = '\n'.join(plot_str_list)
+            plot_str += '\n'
+            if mname in history_info_set:
+                m_str = history_idx_dic['mame']['machines'][mname]
+                display_name, db_list, db_machine = m_str.split('|')
+                plot_str = History_DAT_dic[db_list][db_machine]
+            else:
+                plot_str += 'Machine {} not found in History.DAT'.format(mname)
+        assets_dic[mname]['plot'] = plot_str
         num_machines += 1
         pDialog.update((num_machines*100)//total_machines)
     pDialog.close()
 
-    # --- Timestamp ---
+    # Timestamp
     change_control_dic(control_dic, 't_MAME_plots_build', time.time())
-
-    # --- Save the MAME asset database ---
+    # Save the MAME asset database. Save control_dic at the end.
     db_files = [
         (assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()),
-        # Save control_dic after everything is saved
         (control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()),
     ]
     fs_save_files(db_files)
@@ -4517,6 +4554,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         'mameinfo_idx_dic' : mameinfo_idx_dic,
         'gameinit_idx_list' : gameinit_idx_dic,
         'command_idx_list' : command_idx_dic,
+        'history_dic' : history_dic,
     }
 
     return data_dic

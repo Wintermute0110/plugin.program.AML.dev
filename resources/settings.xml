@@ -29,6 +29,7 @@
 
     <setting id="separator" type="lsep" label="Misc" />
     <setting label="Custom filter XML path" type="file" id="filter_XML" default="" />
+    <setting label="MAME plots have" type="enum" id="MAME_plot" default="0" values="Info|History DAT|Info + History DAT" />
 </category>
 <category label="Display I">
     <!-- <setting id="separator" type="lsep" label="General"/> -->
