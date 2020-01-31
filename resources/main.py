@@ -549,6 +549,8 @@ def get_settings():
     g_settings['mame_chd_set'] = int(o.getSetting('mame_chd_set'))
     g_settings['SL_rom_set'] = int(o.getSetting('SL_rom_set'))
     g_settings['SL_chd_set'] = int(o.getSetting('SL_chd_set'))
+
+    # Misc separator
     g_settings['filter_XML'] = o.getSetting('filter_XML').decode('utf-8')
     g_settings['MAME_plot'] = int(o.getSetting('MAME_plot'))
     g_settings['generate_history_infolabel'] = True if o.getSetting('generate_history_infolabel') == 'true' else False
@@ -584,17 +586,12 @@ def get_settings():
     g_settings['display_utilities']       = True if o.getSetting('display_utilities') == 'true' else False
     g_settings['display_global_reports']  = True if o.getSetting('display_global_reports') == 'true' else False
 
-    # --- Display ---
+    # --- Artwork / Assets ---
     g_settings['display_hide_trailers']    = True if o.getSetting('display_hide_trailers') == 'true' else False
-    g_settings['render_history_infolabel'] = True if o.getSetting('render_history_infolabel') == 'true' else False
-
     g_settings['artwork_mame_icon']        = int(o.getSetting('artwork_mame_icon'))
     g_settings['artwork_mame_fanart']      = int(o.getSetting('artwork_mame_fanart'))
     g_settings['artwork_SL_icon']          = int(o.getSetting('artwork_SL_icon'))
     g_settings['artwork_SL_fanart']        = int(o.getSetting('artwork_SL_fanart'))
-
-    # --- Utilities ---
-    # Call to RunPlugin() built-in function.
 
     # --- Advanced ---
     g_settings['media_state_action']             = int(o.getSetting('media_state_action'))
@@ -1913,25 +1910,13 @@ def render_catalog_parent_list(catalog_name, category_name):
     fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
     l_favs_end = time.time()
 
-    # Load History.DAT to create an infolabel.
-    if g_settings['render_history_infolabel']:
-        l_history_start = time.time()
-        History_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
-        History_DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
-        l_history_end = time.time()
-    else:
-        l_history_start = l_history_end = 0
-        History_idx_dic = {}
-        History_DAT_dic = {}
-
     # --- Compute loading times ---
     catalog_t = l_cataloged_dic_end - l_cataloged_dic_start
     render_t  = l_render_db_end - l_render_db_start
     assets_t  = l_assets_db_end - l_assets_db_start
     pclone_t  = l_pclone_dic_end - l_pclone_dic_start
     favs_t    = l_favs_end - l_favs_start
-    history_t = l_history_end - l_history_start
-    loading_time = catalog_t + render_t + assets_t + pclone_t + favs_t + history_t
+    loading_time = catalog_t + render_t + assets_t + pclone_t + favs_t
 
     # --- Check if catalog is empty ---
     if not catalog_dic:
@@ -1954,12 +1939,11 @@ def render_catalog_parent_list(catalog_name, category_name):
 
     # --- DEBUG Data loading/rendering statistics ---
     total_time = loading_time + processing_time + rendering_time
-    log_debug('Loading catalog     {0:.4f} s'.format(catalog_t))
-    log_debug('Loading render db   {0:.4f} s'.format(render_t))
-    log_debug('Loading assets db   {0:.4f} s'.format(assets_t))
-    log_debug('Loading pclone dic  {0:.4f} s'.format(pclone_t))
-    log_debug('Loading MAME favs   {0:.4f} s'.format(favs_t))
-    log_debug('Loading History.DAT {0:.4f} s'.format(history_t))
+    # log_debug('Loading catalog     {0:.4f} s'.format(catalog_t))
+    # log_debug('Loading render db   {0:.4f} s'.format(render_t))
+    # log_debug('Loading assets db   {0:.4f} s'.format(assets_t))
+    # log_debug('Loading pclone dic  {0:.4f} s'.format(pclone_t))
+    # log_debug('Loading MAME favs   {0:.4f} s'.format(favs_t))
     log_debug('Loading time        {0:.4f} s'.format(loading_time))
     log_debug('Processing time     {0:.4f} s'.format(processing_time))
     log_debug('Rendering time      {0:.4f} s'.format(rendering_time))

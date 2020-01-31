@@ -67,8 +67,6 @@
 </category>
 <category label="Artwork / Assets">
     <setting label="Do not render trailers" type="bool" default="false" id="display_hide_trailers" />
-    <setting label="Render History.DAT infolabel" type="bool" default="false" id="render_history_infolabel" />
-
     <setting label="MAME Icon" type="enum" id="artwork_mame_icon"  default="0" values="Title|Snap|Flyer|Cabinet|PCB" />
     <setting label="MAME Fanart" type="enum" id="artwork_mame_fanart"  default="0" values="Fanart|Snap|Title|Flyer|CPanel" />
     <setting label="Software Lists Icon" type="enum" id="artwork_SL_icon"  default="0" values="Boxfront|Title|Snap" />
