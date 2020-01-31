@@ -547,10 +547,11 @@ def get_settings():
     # --- ROM sets ---
     g_settings['mame_rom_set'] = int(o.getSetting('mame_rom_set'))
     g_settings['mame_chd_set'] = int(o.getSetting('mame_chd_set'))
-    g_settings['SL_rom_set']   = int(o.getSetting('SL_rom_set'))
-    g_settings['SL_chd_set']   = int(o.getSetting('SL_chd_set'))
-    g_settings['filter_XML']   = o.getSetting('filter_XML').decode('utf-8')
-    g_settings['MAME_plot']    = int(o.getSetting('MAME_plot'))
+    g_settings['SL_rom_set'] = int(o.getSetting('SL_rom_set'))
+    g_settings['SL_chd_set'] = int(o.getSetting('SL_chd_set'))
+    g_settings['filter_XML'] = o.getSetting('filter_XML').decode('utf-8')
+    g_settings['MAME_plot'] = int(o.getSetting('MAME_plot'))
+    g_settings['generate_history_infolabel'] = True if o.getSetting('generate_history_infolabel') == 'true' else False
 
     # --- Display I ---
     g_settings['display_launcher_notify']    = True if o.getSetting('display_launcher_notify') == 'true' else False
@@ -2135,21 +2136,21 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
         r_dict['render_name'] = display_name
         if g_settings['display_hide_trailers']:
             r_dict['info'] = {
-                'title'   : display_name,     'year'    : machine['year'],
-                'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                'plot'    : m_assets['plot'],
-                'overlay' : ICON_OVERLAY
+                'title' : display_name, 'year' : machine['year'],
+                'genre' : machine['genre'], 'studio' : machine['manufacturer'],
+                'plot' : m_assets['plot'], 'overlay' : ICON_OVERLAY,
             }
         else:
             r_dict['info'] = {
-                'title'   : display_name,     'year'    : machine['year'],
-                'genre'   : machine['genre'], 'studio'  : machine['manufacturer'],
-                'plot'    : m_assets['plot'], 'trailer' : m_assets['trailer'],
-                'overlay' : ICON_OVERLAY
+                'title' : display_name, 'year' : machine['year'],
+                'genre' : machine['genre'], 'studio' : machine['manufacturer'],
+                'plot' : m_assets['plot'], 'overlay' : ICON_OVERLAY,
+                'trailer' : m_assets['trailer'],
             }
         r_dict['props'] = {
             'nplayers' : machine['nplayers'],
             'platform' : 'MAME',
+            'history' : m_assets['history'],
             AEL_PCLONE_STAT_LABEL : AEL_PClone_stat_value,
             AEL_INFAV_BOOL_LABEL : AEL_InFav_bool_value,
         }
@@ -2203,8 +2204,8 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
 def render_commit_machines(r_list):
     listitem_list = []
 
-    # Kodi Leia and up.
     if kodi_running_version >= KODI_VERSION_LEIA:
+        # Kodi Leia and up.
         log_debug('Rendering machine list in Kodi Leia and up.')
         for r_dict in r_list:
             # --- New offscreen parameter in Leia ---
@@ -2219,9 +2220,8 @@ def render_commit_machines(r_list):
             listitem.setArt(r_dict['art'])
             listitem.addContextMenuItems(r_dict['context'])
             listitem_list.append((r_dict['URL'], listitem, False))
-
-    # Kodi Krypton and down.
     else:
+        # Kodi Krypton and down.
         log_debug('Rendering machine list in Kodi Krypton and down.')
         for r_dict in r_list:
             listitem = xbmcgui.ListItem(r_dict['render_name'])

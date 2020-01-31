@@ -1587,6 +1587,7 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append("[COLOR violet]fanart[/COLOR]: '{0}'".format(assets['fanart']))
     slist.append("[COLOR violet]flags[/COLOR]: '{0}'".format(assets['flags']))
     slist.append("[COLOR violet]flyer[/COLOR]: '{0}'".format(assets['flyer']))
+    slist.append("[COLOR violet]history[/COLOR]: '{0}'".format(assets['history']))
     slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(assets['manual']))
     slist.append("[COLOR violet]marquee[/COLOR]: '{0}'".format(assets['marquee']))
     slist.append("[COLOR violet]PCB[/COLOR]: '{0}'".format(assets['PCB']))
@@ -4368,11 +4369,22 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             if machine_name not in main_pclone_dic: main_pclone_dic[machine_name] = []
 
     # ---------------------------------------------------------------------------------------------
-    # Make empty asset list
+    # Initialise asset list
     # ---------------------------------------------------------------------------------------------
+    log_debug('Initializing MAME asset database...')
+    log_debug('Option generate_history_infolabel is {}'.format(settings['generate_history_infolabel']))
     assets_dic = {key : fs_new_MAME_asset() for key in machines}
-    for m_name, asset in assets_dic.iteritems():
-        asset['flags'] = fs_initial_flags(machines[m_name], machines_render[m_name], machines_roms[m_name])
+    if settings['generate_history_infolabel'] and history_idx_dic:
+        log_debug('Adding History.DAT to MAME asset database.')
+        for m_name, asset in assets_dic.iteritems():
+            asset['flags'] = fs_initial_flags(machines[m_name], machines_render[m_name], machines_roms[m_name])
+            if m_name in history_idx_dic['mame']['machines']:
+                d_name, db_list, db_machine = history_idx_dic['mame']['machines'][m_name].split('|')
+                asset['history'] = history_dic[db_list][db_machine]
+    else:
+        log_debug('Not including History.DAT in MAME asset database.')
+        for m_name, asset in assets_dic.iteritems():
+            asset['flags'] = fs_initial_flags(machines[m_name], machines_render[m_name], machines_roms[m_name])
 
     # ---------------------------------------------------------------------------------------------
     # Improve information fields in Main Render database
@@ -4384,7 +4396,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     else:
         log_info('MAME machine Mature flag not available.')
 
-    # >> Add genre infolabel into render database
+    # Add genre infolabel into render database.
     if genre_dic:
         log_info('Using genre.ini for MAME genre information.')
         for machine_name in machines_render:
@@ -4403,12 +4415,12 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # ---------------------------------------------------------------------------------------------
     # --- History DAT categories are Software List names ---
     if history_idx_dic:
-        log_debug('Updating History DAT cateogories and machine names ...')
+        log_debug('Updating History DAT categories and machine names ...')
         SL_names_dic = fs_load_JSON_file_dic(PATHS.SL_NAMES_PATH.getPath())
         for cat_name in history_idx_dic:
             if cat_name == 'mame':
-                history_idx_dic[cat_name]['name'] = 'MAME'
                 # Improve MAME machine names
+                history_idx_dic[cat_name]['name'] = 'MAME'
                 for machine_name in history_idx_dic[cat_name]['machines']:
                     if machine_name not in machines_render: continue
                     # Rebuild the CSV string.
@@ -4417,11 +4429,10 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
                     display_name = machines_render[machine_name]['description']
                     m_str = misc_build_db_str_3(display_name, db_list_name, db_machine_name)
                     history_idx_dic[cat_name]['machines'][machine_name] = m_str
-
             elif cat_name in SL_names_dic:
-                history_idx_dic[cat_name]['name'] = SL_names_dic[cat_name]
                 # Improve SL machine names. This must be done when building the SL databases
                 # and not here.
+                history_idx_dic[cat_name]['name'] = SL_names_dic[cat_name]
 
     # MameInfo DAT machine names.
     if mameinfo_idx_dic:

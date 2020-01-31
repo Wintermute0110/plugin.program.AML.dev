@@ -245,6 +245,7 @@ def fs_new_MAME_asset():
         'fanart'     : '',
         'flags'      : '-----',
         'flyer'      : '',
+        'history'    : '',
         'manual'     : '',
         'marquee'    : '',
         'PCB'        : '',
