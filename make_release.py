@@ -33,7 +33,7 @@ import sys
 AML_DEV_ID  = 'plugin.program.AML.dev'
 AML_ID      = 'plugin.program.AML'
 AML_NAME    = 'Advanced MAME Launcher'
-AML_VERSION = '0.9.12'
+AML_VERSION = '0.10.0'
 root_file_list = [
     'addon.py',
     'addon.xml',
