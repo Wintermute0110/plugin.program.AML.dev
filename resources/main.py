@@ -552,7 +552,6 @@ def get_settings():
 
     # Misc separator
     g_settings['filter_XML'] = o.getSetting('filter_XML').decode('utf-8')
-    g_settings['MAME_plot'] = int(o.getSetting('MAME_plot'))
     g_settings['generate_history_infolabel'] = True if o.getSetting('generate_history_infolabel') == 'true' else False
 
     # --- Display I ---
@@ -5552,8 +5551,7 @@ def command_context_setup_plugin():
         mame_build_MAME_plots(g_PATHS, g_settings, control_dic,
             db_dic['machines'], db_dic['render'], db_dic['assets'],
             db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
-            db_dic['gameinit_idx_list'], db_dic['command_idx_list'],
-            db_dic['history_dic'])
+            db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
 
         # --- Buils Software List items plot ---
         if g_settings['enable_SL']:
@@ -5711,7 +5709,6 @@ def command_context_setup_plugin():
             ['mameinfo_idx_dic', 'Mameinfo DAT index', g_PATHS.MAMEINFO_IDX_PATH.getPath()],
             ['gameinit_idx_list', 'Gameinit DAT index', g_PATHS.GAMEINIT_IDX_PATH.getPath()],
             ['command_idx_list', 'Command DAT index', g_PATHS.COMMAND_IDX_PATH.getPath()],
-            ['history_dic', 'History DAT', g_PATHS.HISTORY_DB_PATH.getPath()],
         ]
         db_dic = fs_load_files(db_files)
         # For compatibility with "All in one step" and "Step by step" functions.
@@ -5744,8 +5741,7 @@ def command_context_setup_plugin():
         mame_build_MAME_plots(g_PATHS, g_settings, control_dic,
             db_dic['machines'], db_dic['render'], db_dic['assets'],
             db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
-            db_dic['gameinit_idx_list'], db_dic['command_idx_list'],
-            db_dic['history_dic'])
+            db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
 
         # --- Regenerate asset hashed database ---
         fs_build_asset_hashed_db(g_PATHS, g_settings, control_dic, db_dic['assets'])
@@ -6317,7 +6313,6 @@ def command_context_setup_plugin():
                 ['mameinfo_idx_dic', 'Mameinfo DAT index', g_PATHS.MAMEINFO_IDX_PATH.getPath()],
                 ['gameinit_idx_list', 'Gameinit DAT index', g_PATHS.GAMEINIT_IDX_PATH.getPath()],
                 ['command_idx_list', 'Command DAT index', g_PATHS.COMMAND_IDX_PATH.getPath()],
-                ['history_dic', 'History DAT', g_PATHS.HISTORY_DB_PATH.getPath()],
             ]
             db_dic = fs_load_files(db_files)
 
@@ -6328,8 +6323,7 @@ def command_context_setup_plugin():
             mame_build_MAME_plots(g_PATHS, g_settings, db_dic['control_dic'],
                 db_dic['machines'], db_dic['render'], db_dic['assets'],
                 db_dic['history_idx_dic'], db_dic['mameinfo_idx_dic'],
-                db_dic['gameinit_idx_list'], db_dic['command_idx_list'],
-                db_dic['history_dic'])
+                db_dic['gameinit_idx_list'], db_dic['command_idx_list'])
             fs_build_asset_hashed_db(g_PATHS, g_settings, db_dic['control_dic'], db_dic['assets'])
             if g_settings['debug_enable_MAME_asset_cache']:
                 fs_build_asset_cache(g_PATHS, g_settings, db_dic['control_dic'],

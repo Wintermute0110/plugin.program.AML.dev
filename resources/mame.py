@@ -167,7 +167,7 @@ SL_better_name_dic = {
     'COMX-35 diskettes' : 'COMX COMX-35 diskettes',
     'EPSON PX-4 ROM capsules' : 'Epson PX-4 ROM capsules',
     'EPSON PX-8 ROM capsules' : 'Epson PX-8 ROM capsules',
-    # Unicode here causes trobule. I have to investigate this.
+    # Unicode here causes trouble. I have to investigate why.
     # 'IQ-151 cartridges' : 'ZPA Nový Bor IQ-151 cartridges',
     # 'IQ-151 disk images' : 'ZPA Nový Bor IQ-151 disk images',
     'IQ-151 cartridges' : 'ZPA Novy Bor IQ-151 cartridges',
@@ -2502,18 +2502,8 @@ def mame_MAME_plot_slits(mname, m, assets_dic,
 # Setting id="MAME_plot" values="Info|History DAT|Info + History DAT"
 def mame_build_MAME_plots(PATHS, settings, control_dic,
     machines, machines_render, assets_dic,
-    history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic, History_DAT_dic):
+    history_idx_dic, mameinfo_idx_dic, gameinit_idx_dic, command_idx_dic):
     log_info('mame_build_MAME_plots() Building machine plots/descriptions ...')
-    MAME_plot = settings['MAME_plot']
-    log_info('MAME_plot = {}'.format(MAME_plot))
-    if MAME_plot == 0:
-        log_info('Using information only to build plot.')
-    elif MAME_plot == 1:
-        log_info('Using History DAT only to build plot.')
-    elif MAME_plot == 2:
-        log_info('Using both information and History DAT to build plot.')
-    else:
-        raise TypeError('Logical error')
 
     # Do not crash if DAT files are not configured.
     history_info_set  = {m for m in history_idx_dic['mame']['machines']} if history_idx_dic else set()
@@ -2526,32 +2516,9 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
     total_machines = len(machines)
     num_machines = 0
     for mname, m in machines.iteritems():
-        if MAME_plot == 0:
-            # Use machine information only (traditional behaviour).
-            plot_str_list = mame_MAME_plot_slits(mname, m, assets_dic,
-                history_info_set, mameinfo_info_set, gameinit_idx_dic, command_idx_dic)
-            plot_str = '\n'.join(plot_str_list)
-        elif MAME_plot == 1:
-            # Use History DAT content.
-            if mname in history_info_set:
-                m_str = history_idx_dic['mame']['machines'][mname]
-                display_name, db_list, db_machine = m_str.split('|')
-                plot_str = History_DAT_dic[db_list][db_machine]
-            else:
-                plot_str = 'Machine {} not found in History.DAT'.format(mname)
-        elif MAME_plot == 2:
-            # Use both information and History DAT contents.
-            plot_str_list = mame_MAME_plot_slits(mname, m, assets_dic,
-                history_info_set, mameinfo_info_set, gameinit_idx_dic, command_idx_dic)
-            plot_str = '\n'.join(plot_str_list)
-            plot_str += '\n'
-            if mname in history_info_set:
-                m_str = history_idx_dic['mame']['machines'][mname]
-                display_name, db_list, db_machine = m_str.split('|')
-                plot_str += History_DAT_dic[db_list][db_machine]
-            else:
-                plot_str += 'Machine {} not found in History.DAT'.format(mname)
-        assets_dic[mname]['plot'] = plot_str
+        plot_str_list = mame_MAME_plot_slits(mname, m, assets_dic,
+            history_info_set, mameinfo_info_set, gameinit_idx_dic, command_idx_dic)
+        assets_dic[mname]['plot'] = '\n'.join(plot_str_list)
         num_machines += 1
         pDialog.update((num_machines*100)//total_machines)
     pDialog.close()
