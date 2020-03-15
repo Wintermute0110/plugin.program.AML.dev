@@ -1494,6 +1494,22 @@ def render_Utilities_vlaunchers():
     url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'CHECK_SL_COLLISIONS')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
 
+    # --- Check SL CRC hash collisions ---
+    listitem = aux_get_generic_listitem(
+        'Show machines with biggest ROMs',
+        'Show machines with biggest ROMs',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'SHOW_BIGGEST_ROMS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- Check SL CRC hash collisions ---
+    listitem = aux_get_generic_listitem(
+        'Show machines with smallest ROMs',
+        'Show machines with smallest ROMs',
+        commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'SHOW_SMALLEST_ROMS')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
     # --- Export MAME ROMs DAT file ---
     listitem = aux_get_generic_listitem(
         'Export MAME ROMs Logiqx XML DAT file',
@@ -6390,7 +6406,7 @@ def command_exec_utility(which_utility):
         # --- Check MAME version ---
         mame_prog_FN = FileName(g_settings['mame_prog'])
         mame_version_str = fs_extract_MAME_version(g_PATHS, mame_prog_FN)
-        kodi_dialog_OK('MAME version is {0}'.format(mame_version_str))
+        kodi_dialog_OK('MAME version is {}'.format(mame_version_str))
 
     # Check AML configuration
     elif which_utility == 'CHECK_CONFIG':
@@ -6779,29 +6795,94 @@ def command_exec_utility(which_utility):
         update_number = (processed_files*100) // total_files
         pDialog.update(update_number, pdialog_line1, ' ')
         pDialog.close()
-        log_debug('The SL have {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
-        log_debug('There are {0} CRC32 collisions'.format(num_collisions))
+        log_debug('The SL have {:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
+        log_debug('There are {} CRC32 collisions'.format(num_collisions))
 
         # --- Write report ---
         slist = []
         slist.append('*** AML SL ROMs CRC32 hash collision report ***')
-        slist.append('The Software Lists have {0:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
-        slist.append('There are {0} CRC32 collisions'.format(num_collisions))
+        slist.append('The Software Lists have {:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
+        slist.append('There are {} CRC32 collisions'.format(num_collisions))
         slist.append('')
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
         display_text_window('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
-        log_info('Writing "{0}"'.format(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
+        log_info('Writing "{}"'.format(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
         with open(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'w') as file:
             file.write('\n'.join(slist).encode('utf-8'))
 
-    #
+    # Open the ROM audit database and calculate the size of all ROMs.
+    # Sort the list by size and print it.
+    elif which_utility == 'SHOW_BIGGEST_ROMS' or which_utility == 'SHOW_SMALLEST_ROMS':
+        show_BIG = True if which_utility == 'SHOW_BIGGEST_ROMS' else False
+        log_info('command_exec_utility() Initialising SHOW_BIGGEST_ROMS/SHOW_SMALLEST_ROMS...')
+        log_info('command_exec_utility() show_BIG {}'.format(show_BIG))
+        db_files = [
+            ['control_dic', 'Control dictionary', g_PATHS.MAIN_CONTROL_PATH.getPath()],
+            # ['machines', 'MAME machines Main', g_PATHS.MAIN_DB_PATH.getPath()],
+            ['render', 'MAME machines Render', g_PATHS.RENDER_DB_PATH.getPath()],
+            ['assets', 'MAME machine Assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+            ['roms', 'MAME machine ROMs', g_PATHS.ROMS_DB_PATH.getPath()],
+            # ['audit_roms', 'MAME ROM Audit', g_PATHS.ROM_AUDIT_DB_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+
+        # { mname : size (int), ... }
+        m_size_dic = {}
+        for mname in db_dic['render']:
+            roms = db_dic['roms'][mname]
+            ROMs_size = 0
+            invalid_ROMs = False
+            for rom_dic in roms['roms']:
+                ROMs_size += rom_dic['size']
+            # If total size of ROMs is 0 is because all ROMs are invalid.
+            # Do not add this machine to the dictionary.
+            if ROMs_size == 0: continue
+            m_size_dic[mname] = ROMs_size
+
+        table_str = []
+        table_str.append(['right', 'left', 'left', 'right'])
+        NUM_MACHINES = 512
+        DESC_MAX_LENGTH = 64
+        machine_i = 0
+        sorted_machine_list = []
+        if show_BIG:
+            table_str.append(['Short name', 'Flags', 'Long name', 'Size (MiB)'])
+            for mname in sorted(m_size_dic, key = lambda item: m_size_dic[item], reverse = True):
+                sorted_machine_list.append(mname)
+                machine_i += 1
+                if machine_i >= NUM_MACHINES: break
+            for mname in sorted_machine_list:
+                table_str.append([mname, db_dic['assets'][mname]['flags'],
+                    text_limit_string(db_dic['render'][mname]['description'], DESC_MAX_LENGTH),
+                    '{:7.2f}'.format(m_size_dic[mname] / 1024**2),
+                ])
+        else:
+            table_str.append(['Short name', 'Flags', 'Long name', 'Size'])
+            for mname in sorted(m_size_dic, key = lambda item: m_size_dic[item], reverse = False):
+                sorted_machine_list.append(mname)
+                machine_i += 1
+                if machine_i >= NUM_MACHINES: break
+            for mname in sorted_machine_list:
+                table_str.append([mname, db_dic['assets'][mname]['flags'],
+                    text_limit_string(db_dic['render'][mname]['description'], DESC_MAX_LENGTH),
+                    '{:,d}'.format(m_size_dic[mname]),
+                ])
+
+        # --- Write report ---
+        slist = []
+        table_str_list = text_render_table_str(table_str)
+        slist.extend(table_str_list)
+        if show_BIG:
+            display_text_window('MAME machines with biggest ROMs', '\n'.join(slist))
+        else:
+            display_text_window('MAME machines with smallest ROMs', '\n'.join(slist))
+
     # Export a MAME ROM DAT XML file with Logiqx format.
     # The DAT will be Merged, Split, Non-merged or Fully Non-merged same as the current
     # AML database.
-    #
     elif which_utility == 'EXPORT_MAME_ROM_DAT':
-        log_info('command_exec_utility() Initialising EXPORT_MAME_ROM_DAT ...')
+        log_info('command_exec_utility() Initialising EXPORT_MAME_ROM_DAT...')
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
 
         # Choose output directory (writable directory).
@@ -6852,7 +6933,7 @@ def command_exec_utility(which_utility):
         kodi_dialog_OK('EXPORT_SL_CHD_DAT not implemented yet. Sorry.')
 
     else:
-        u = 'Utility "{0}" not found. This is a bug, please report it.'.format(which_utility)
+        u = 'Utility "{}" not found. This is a bug, please report it.'.format(which_utility)
         log_error(u)
         kodi_dialog_OK(u)
 
@@ -6860,7 +6941,7 @@ def command_exec_utility(which_utility):
 # Execute view reports.
 #
 def command_exec_report(which_report):
-    log_debug('command_exec_report() which_report = "{0}" starting ...'.format(which_report))
+    log_debug('command_exec_report() which_report = "{}" starting ...'.format(which_report))
 
     if which_report == 'VIEW_EXEC_OUTPUT':
         if not g_PATHS.MAME_OUTPUT_PATH.exists():
