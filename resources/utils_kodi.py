@@ -167,8 +167,37 @@ def kodi_refresh_container():
     xbmc.executebuiltin('Container.Refresh')
 
 def kodi_toogle_fullscreen():
-    # Frodo and up compatible
-    xbmc.executeJSONRPC('{"jsonrpc":"2.0","id":"1","method":"Input.ExecuteAction","params":{"action":"togglefullscreen"}}')
+    kodi_jsonrpc_query('Input.ExecuteAction', '"action" : "togglefullscreen"')
+
+def kodi_get_screensaver_mode():
+    r_dic = kodi_jsonrpc_query_dict('Settings.getSettingValue', {'setting' : 'screensaver.mode'})
+    screensaver_mode = r_dic['value']
+    return screensaver_mode
+
+g_screensaver_mode = None # Global variable to store screensaver status.
+def kodi_disable_screensaver():
+    global g_screensaver_mode
+    g_screensaver_mode = kodi_get_screensaver_mode()
+    log_debug('kodi_disable_screensaver() g_screensaver_mode "{}"'.format(g_screensaver_mode))
+    p_dic = {
+        'setting' : 'screensaver.mode',
+        'value' : '',
+    }
+    kodi_jsonrpc_query_dict('Settings.setSettingValue', p_dic)
+    log_debug('kodi_disable_screensaver() Screensaver disabled.')
+
+# kodi_disable_screensaver() must be called before this function or bad things will happen.
+def kodi_restore_screensaver():
+    if g_screensaver_mode is None:
+        log_error('kodi_disable_screensaver() must be called before kodi_restore_screensaver()')
+        raise RuntimeError
+    log_debug('kodi_restore_screensaver() Screensaver mode "{}"'.format(g_screensaver_mode))
+    p_dic = {
+        'setting' : 'screensaver.mode',
+        'value' : g_screensaver_mode,
+    }
+    kodi_jsonrpc_query_dict('Settings.setSettingValue', p_dic)
+    log_debug('kodi_restore_screensaver() Restored previous screensaver status.')
 
 #
 # Access Kodi JSON-RPC interface in an easy way.
@@ -203,27 +232,52 @@ def kodi_toogle_fullscreen():
 #
 def kodi_jsonrpc_query(method_str, params_str, verbose = False):
     if verbose:
-        log_debug('kodi_jsonrpc_query() method_str "{0}"'.format(method_str))
-        log_debug('kodi_jsonrpc_query() params_str "{0}"'.format(params_str))
-        params_dic = json.loads(params_str)
-        log_debug('kodi_jsonrpc_query() params_dic = \n{0}'.format(pprint.pformat(params_dic)))
+        log_debug('kodi_jsonrpc_query() method_str "{}"'.format(method_str))
+        log_debug('kodi_jsonrpc_query() params_str "{}"'.format(params_str))
+        # params_dic = json.loads(params_str)
+        # log_debug('kodi_jsonrpc_query() params_dic = \n{}'.format(pprint.pformat(params_dic)))
 
     # --- Do query ---
-    query_str = '{{"id" : 1, "jsonrpc" : "2.0", "method" : "{0}", "params" : {1} }}'.format(method_str, params_str)
-    # if verbose: log_debug('kodi_jsonrpc_query() query_str "{0}"'.format(query_str))
+    query_str = '{{"id" : 1, "jsonrpc" : "2.0", "method" : "{0}", "params" : {1} }}'.format(
+        method_str, params_str)
+    # if verbose: log_debug('kodi_jsonrpc_query() query_str "{}"'.format(query_str))
     response_json_str = xbmc.executeJSONRPC(query_str)
-    # if verbose: log_debug('kodi_jsonrpc_query() response "{0}"'.format(response_json_str))
+    # if verbose: log_debug('kodi_jsonrpc_query() response "{}"'.format(response_json_str))
 
     # --- Parse JSON response ---
     response_dic = json.loads(response_json_str)
-    # if verbose: log_debug('kodi_jsonrpc_query() response_dic = \n{0}'.format(pprint.pformat(response_dic)))
+    # if verbose: log_debug('kodi_jsonrpc_query() response_dic = \n{}'.format(pprint.pformat(response_dic)))
     if 'error' in response_dic:
         result_dic = response_dic['error']
-        log_warning('kodi_jsonrpc_query() JSONRPC ERROR {0}'.format(result_dic['message']))
+        log_warning('kodi_jsonrpc_query() JSONRPC ERROR {}'.format(result_dic['message']))
     else:
         result_dic = response_dic['result']
     if verbose:
-        log_debug('kodi_jsonrpc_query() result_dic = \n{0}'.format(pprint.pformat(result_dic)))
+        log_debug('kodi_jsonrpc_query() result_dic = \n{}'.format(pprint.pformat(result_dic)))
+
+    return result_dic
+
+def kodi_jsonrpc_query_dict(method_str, params_dic, verbose = False):
+    params_str = json.dumps(params_dic)
+    if verbose:
+        log_debug('kodi_jsonrpc_query_dict() method_str "{}"'.format(method_str))
+        log_debug('kodi_jsonrpc_query_dict() params_dic = \n{}'.format(pprint.pformat(params_dic)))
+        log_debug('kodi_jsonrpc_query_dict() params_str "{}"'.format(params_str))
+
+    # --- Do query ---
+    header = '"id" : 1, "jsonrpc" : "2.0",'
+    query_str = '{{{0} "method" : "{1}", "params" : {2} }}'.format(header, method_str, params_str)
+    response_json_str = xbmc.executeJSONRPC(query_str)
+
+    # --- Parse JSON response ---
+    response_dic = json.loads(response_json_str)
+    if 'error' in response_dic:
+        result_dic = response_dic['error']
+        log_warning('kodi_jsonrpc_query_dict() JSONRPC ERROR {}'.format(result_dic['message']))
+    else:
+        result_dic = response_dic['result']
+    if verbose:
+        log_debug('kodi_jsonrpc_query_dict() result_dic = \n{}'.format(pprint.pformat(result_dic)))
 
     return result_dic
 

@@ -71,6 +71,9 @@ FEATURE  [CORE] New Utility "Show machines with biggest ROMs"
 
 FEATURE  [CORE] New Utility "Show machines with smallest ROMs"
 
+FEATURE  [CORE] Disable Kodi screensaver when launching MAME and reenable after MAME finishes.
+         See https://forum.kodi.tv/showthread.php?tid=304186&pid=2934194#pid2934194
+
 
 [B]Advanced MAME Launcher | version 0.9.12 | 10 February 2020[/B]
 

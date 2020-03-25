@@ -269,8 +269,8 @@ def run_plugin(addon_argv):
     global g_content_type
 
     # --- Initialise log system ---
-    # >> Force DEBUG log level for development.
-    # >> Place it before setting loading so settings can be dumped during debugging.
+    # Force DEBUG log level for development.
+    # Place it before setting loading so settings can be dumped during debugging.
     # set_log_level(LOG_DEBUG)
 
     # --- Fill in settings dictionary using addon_obj.getSetting() ---
@@ -279,14 +279,17 @@ def run_plugin(addon_argv):
 
     # --- Some debug stuff for development ---
     log_debug('---------- Called AML Main::run_plugin() constructor ----------')
-    log_debug('sys.platform    {0}'.format(sys.platform))
+    log_debug('sys.platform    {}'.format(sys.platform))
     log_debug('Python version  ' + sys.version.replace('\n', ''))
-    log_debug('__a_id__        {0}'.format(__addon_id__))
-    log_debug('__a_version__   {0}'.format(__addon_version__))
-    # log_debug('ADDON_DATA_DIR {0}'.format(g_PATHS.ADDON_DATA_DIR.getPath()))
-    for i in range(len(addon_argv)): log_debug('addon_argv[{0}] = "{1}"'.format(i, addon_argv[i]))
+    log_debug('__a_id__        {}'.format(__addon_id__))
+    log_debug('__a_version__   {}'.format(__addon_version__))
+    # log_debug('ADDON_DATA_DIR {}'.format(g_PATHS.ADDON_DATA_DIR.getPath()))
+    for i in range(len(addon_argv)): log_debug('addon_argv[{}] = "{}"'.format(i, addon_argv[i]))
     # Timestamp to see if this submodule is reinterpreted or not (interpreter uses a cached instance).
-    log_debug('submodule global timestamp {0}'.format(g_time_str))
+    log_debug('submodule global timestamp {}'.format(g_time_str))
+
+    # --- Playground and testing code ---
+    # kodi_get_screensaver_mode()
 
     # --- Addon data paths creation ---
     if not g_PATHS.ADDON_DATA_DIR.exists(): g_PATHS.ADDON_DATA_DIR.makedirs()
@@ -298,7 +301,7 @@ def run_plugin(addon_argv):
     if not g_PATHS.REPORTS_DIR.exists(): g_PATHS.REPORTS_DIR.makedirs()
 
     # --- If control_dic does not exists create an empty one ---
-    # >> control_dic will be used for database built checks, etc.
+    # control_dic will be used for database built checks, etc.
     if not g_PATHS.MAIN_CONTROL_PATH.exists(): fs_create_empty_control_dic(g_PATHS, __addon_version__)
 
     # --- Process URL ---
@@ -596,6 +599,7 @@ def get_settings():
     g_settings['media_state_action']             = int(o.getSetting('media_state_action'))
     g_settings['delay_tempo']                    = int(round(float(o.getSetting('delay_tempo'))))
     g_settings['suspend_audio_engine']           = True if o.getSetting('suspend_audio_engine') == 'true' else False
+    g_settings['suspend_screensaver'] = True if o.getSetting('suspend_screensaver') == 'true' else False
     g_settings['toggle_window']                  = True if o.getSetting('toggle_window') == 'true' else False
     g_settings['log_level']                      = int(o.getSetting('log_level'))
     g_settings['debug_enable_MAME_render_cache'] = True if o.getSetting('debug_enable_MAME_render_cache') == 'true' else False
@@ -7671,7 +7675,7 @@ def run_before_execution():
     log_info('run_before_execution() Function BEGIN ...')
 
     # --- Stop/Pause Kodi mediaplayer if requested in settings ---
-    # >> id="media_state_action" default="0" values="Stop|Pause|Keep playing"
+    # id = "media_state_action" default = "0" values = "Stop|Pause|Keep playing"
     g_flag_kodi_was_playing = False
     media_state_action = g_settings['media_state_action']
     media_state_str = ['Stop', 'Pause', 'Keep playing'][media_state_action]
@@ -7715,6 +7719,13 @@ def run_before_execution():
         g_flag_kodi_toggle_fullscreen = True
     else:
         log_verb('run_before_execution() Toggling Kodi fullscreen/windowed DISABLED')
+
+    # Disable screensaver
+    if g_settings['suspend_screensaver']:
+        kodi_disable_screensaver()
+    else:
+        screensaver_mode = kodi_get_screensaver_mode()
+        log_debug('run_before_execution() Screensaver status "{}"'.format(screensaver_mode))
 
     # --- Pause Kodi execution some time ---
     delay_tempo_ms = g_settings['delay_tempo']
@@ -7784,6 +7795,13 @@ def run_after_execution():
         xbmc.sleep(100)
     else:
         log_verb('run_after_execution() DO NOT resume Kodi audio engine')
+
+    # Restore screensaver status.
+    if g_settings['suspend_screensaver']:
+        kodi_restore_screensaver()
+    else:
+        screensaver_mode = kodi_get_screensaver_mode()
+        log_debug('run_before_execution() Screensaver status "{}"'.format(screensaver_mode))
 
     # --- Resume Kodi playing if it was paused. If it was stopped, keep it stopped. ---
     # >> id="media_state_action" default="0" values="Stop|Pause|Keep playing"
