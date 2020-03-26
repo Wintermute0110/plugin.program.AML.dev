@@ -7707,9 +7707,9 @@ def run_before_execution():
 
     # --- Force joystick suspend if requested in "Settings" --> "Advanced"
     # NOT IMPLEMENTED YET.
-    # >> See https://forum.kodi.tv/showthread.php?tid=287826&pid=2627128#pid2627128
-    # >> See https://forum.kodi.tv/showthread.php?tid=157499&pid=1722549&highlight=input.enablejoystick#pid1722549
-    # >> See https://forum.kodi.tv/showthread.php?tid=313615
+    # See https://forum.kodi.tv/showthread.php?tid=287826&pid=2627128#pid2627128
+    # See https://forum.kodi.tv/showthread.php?tid=157499&pid=1722549&highlight=input.enablejoystick#pid1722549
+    # See https://forum.kodi.tv/showthread.php?tid=313615
 
     # --- Toggle Kodi windowed/fullscreen if requested ---
     g_flag_kodi_toggle_fullscreen = False
@@ -7760,8 +7760,8 @@ def run_process(g_PATHS, arg_list, mame_dir):
     # --- Run MAME ---
     with open(g_PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
         p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info,
-                             stdout = f, stderr = subprocess.STDOUT)
-    p.wait()
+            stdout = f, stderr = subprocess.STDOUT)
+        p.wait()
     log_debug('run_process() function ENDS')
 
 def run_after_execution():
@@ -7801,7 +7801,7 @@ def run_after_execution():
         kodi_restore_screensaver()
     else:
         screensaver_mode = kodi_get_screensaver_mode()
-        log_debug('run_before_execution() Screensaver status "{}"'.format(screensaver_mode))
+        log_debug('run_after_execution() Screensaver status "{}"'.format(screensaver_mode))
 
     # --- Resume Kodi playing if it was paused. If it was stopped, keep it stopped. ---
     # >> id="media_state_action" default="0" values="Stop|Pause|Keep playing"
