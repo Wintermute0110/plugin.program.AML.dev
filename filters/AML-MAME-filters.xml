@@ -147,6 +147,20 @@
 </MAMEFilter>
 
 <MAMEFilter>
+    <Name>Toaplan arcade games</Name>
+    <Plot>Arcade games by [COLOR orange]Toaplan[/COLOR].</Plot>
+    <Options>NoClones, NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Manufacturer>has Toaplan</Manufacturer>
+</MAMEFilter>
+
+<MAMEFilter>
+    <Name>Visco arcade games</Name>
+    <Plot>Arcade games by [COLOR orange]Visco[/COLOR].</Plot>
+    <Options>NoClones, NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Manufacturer>has Visco</Manufacturer>
+</MAMEFilter>
+
+<MAMEFilter>
     <Name>Williams arcade games</Name>
     <Plot>Arcade games by [COLOR orange]Williams[/COLOR].</Plot>
     <Options>NoClones, NoCoinLess, NoBIOS, NoMechanical, NoNonworking</Options>
