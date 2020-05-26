@@ -1164,6 +1164,62 @@ def XML_t(tag_name, tag_text, num_spaces = 4):
 
     return line
 
+def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN):
+    log_debug('mame_write_MAME_ROM_Billyc999_XML() BEGIN ...')
+
+    # Get output filename
+    # DAT filename: AML 0.xxx ROMs (merged|split|non-merged|fully non-merged).xml
+    mame_version_str = control_dic['ver_mame']
+    rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][settings['mame_rom_set']]
+    rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][settings['mame_rom_set']]
+    log_info('MAME version "{}"'.format(mame_version_str))
+    log_info('ROM set is "{}"'.format(rom_set_str))
+    DAT_basename_str = 'AML MAME {} ROMs ({}).xml'.format(mame_version_str, rom_set_str)
+    DAT_FN = out_dir_FN.pjoin(DAT_basename_str)
+    log_info('XML "{}"'.format(DAT_FN.getPath()))
+
+    # XML file header.
+    sl = []
+    sl.append('<?xml version="1.0" encoding="UTF-8"?>')
+    sl.append('<menu>')
+    desc_str = 'AML MAME {} ROMs {} set'.format(mame_version_str, rom_set_str)
+    slist.append('<header>')
+    slist.append(XML_t('name', desc_str))
+    slist.append(XML_t('description', desc_str))
+    slist.append(XML_t('version', '{}'.format(mame_version_str)))
+    slist.append(XML_t('date', _str_time(time.time())))
+    slist.append(XML_t('author', 'Exported by Advanced MAME Launcher'))
+    slist.append('</header>')
+
+    # Traverse ROMs and write DAT.
+    total_machines, machine_counter = len(audit_roms), 0
+    pDialog = xbmcgui.DialogProgress()
+    pDialog.create('Advanced MAME Launcher', 'Creating MAME info XML ...')
+    pDialog.update(0)
+    for m_name in sorted(audit_roms):
+        machine_counter += 1
+        pDialog.update((100 * machine_counter) / total_machines)
+    sl.append('</menu>')
+    pDialog.close()
+
+    # Open output file name.
+    pDialog.create('Advanced MAME Launcher', 'Writing MAME info XML ...')
+    pDialog.update(15)
+    try:
+        file_obj = open(DAT_FN.getPath(), 'w')
+        file_obj.write('\n'.join(slist).encode('utf-8'))
+        file_obj.close()
+        pDialog.update(100)
+        pDialog.close()
+    except OSError:
+        pDialog.close()
+        log_error('(OSError) Cannot write file')
+        kodi_notify_warn('(OSError) Cannot write file')
+    except IOError:
+        pDialog.close()
+        log_error('(IOError) Cannot write file')
+        kodi_notify_warn('(IOError) Cannot write file')
+
 #
 # Only valid ROMs in DAT file.
 #
@@ -1179,25 +1235,24 @@ def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
     mame_version_str = control_dic['ver_mame']
     rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][settings['mame_rom_set']]
     rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][settings['mame_rom_set']]
-    log_info('MAME version "{0}"'.format(mame_version_str))
-    log_info('ROM set is "{0}"'.format(rom_set_str))
-    DAT_basename_str = 'AML MAME {0} ROMs ({1}).xml'.format(mame_version_str, rom_set_str)
+    log_info('MAME version "{}"'.format(mame_version_str))
+    log_info('ROM set is "{}"'.format(rom_set_str))
+    DAT_basename_str = 'AML MAME {} ROMs ({}).xml'.format(mame_version_str, rom_set_str)
     DAT_FN = out_dir_FN.pjoin(DAT_basename_str)
-    log_info('XML "{0}"'.format(DAT_FN.getPath()))
+    log_info('XML "{}"'.format(DAT_FN.getPath()))
 
     # XML file header.
     slist = []
     slist.append('<?xml version="1.0" encoding="UTF-8"?>')
-    str_a = '-//Logiqx//DTD ROM Management Datafile//EN'
-    str_b = 'http://www.logiqx.com/Dats/datafile.dtd'
-    slist.append('<!DOCTYPE datafile PUBLIC "{0}" "{1}">'.format(str_a, str_b))
+    slist.append('<!DOCTYPE datafile PUBLIC "{}" "{}">'.format(
+        '-//Logiqx//DTD ROM Management Datafile//EN', 'http://www.logiqx.com/Dats/datafile.dtd'))
     slist.append('<datafile>')
 
-    desc_str = 'AML MAME {0} ROMs {1} set'.format(mame_version_str, rom_set_str)
+    desc_str = 'AML MAME {} ROMs {} set'.format(mame_version_str, rom_set_str)
     slist.append('<header>')
     slist.append(XML_t('name', desc_str))
     slist.append(XML_t('description', desc_str))
-    slist.append(XML_t('version', '{0}'.format(mame_version_str)))
+    slist.append(XML_t('version', '{}'.format(mame_version_str)))
     slist.append(XML_t('date', _str_time(time.time())))
     slist.append(XML_t('author', 'Exported by Advanced MAME Launcher'))
     slist.append('</header>')
@@ -1227,14 +1282,14 @@ def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
         if num_ROMs == 0: continue
 
         # Print ROMs in the XML.
-        slist.append('<machine name="{0}">'.format(m_name))
+        slist.append('<machine name="{}">'.format(m_name))
         slist.append(XML_t('description', render[m_name]['description']))
         slist.append(XML_t('year', render[m_name]['year']))
         slist.append(XML_t('manufacturer', render[m_name]['manufacturer']))
         if render[m_name]['cloneof']:
             slist.append(XML_t('cloneof', render[m_name]['cloneof']))
         for rom in actual_rom_list:
-            t = '    <rom name="{0}" size="{1}" crc="{2}" sha1="{3}"/>'.format(
+            t = '    <rom name="{}" size="{}" crc="{}" sha1="{}"/>'.format(
                 rom['name'], rom['size'], rom['crc'], rom['sha1'])
             slist.append(t)
         slist.append('</machine>')

@@ -1516,6 +1516,13 @@ def render_Utilities_vlaunchers():
 
     # --- Export MAME ROMs DAT file ---
     listitem = aux_get_generic_listitem(
+        'Export MAME info in Billyc999 XML format',
+        'Export MAME info in Billyc999 XML format', commands)
+    url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'EXPORT_MAME_INFO_BILLYC999_XML')
+    xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
+
+    # --- Export MAME ROMs DAT file ---
+    listitem = aux_get_generic_listitem(
         'Export MAME ROMs Logiqx XML DAT file',
         'Export MAME ROMs Logiqx XML DAT file', commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_UTILITY', 'which', 'EXPORT_MAME_ROM_DAT')
@@ -6882,6 +6889,14 @@ def command_exec_utility(which_utility):
         else:
             display_text_window('MAME machines with smallest ROMs', '\n'.join(slist))
 
+    # Export MAME information in Billyc999 XML format to use with RCB.
+    elif which_utility == 'EXPORT_MAME_INFO_BILLYC999_XML':
+        log_info('command_exec_utility() Initialising EXPORT_MAME_INFO_BILLYC999_XML...')
+        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        dir_path = kodi_dialog_get_wdirectory('Chose directory to write MAME info XML')
+        if not dir_path: return
+        mame_write_MAME_ROM_Billyc999_XML(g_PATHS, g_settings, control_dic, FileName(dir_path))
+
     # Export a MAME ROM DAT XML file with Logiqx format.
     # The DAT will be Merged, Split, Non-merged or Fully Non-merged same as the current
     # AML database.
@@ -6892,7 +6907,6 @@ def command_exec_utility(which_utility):
         # Choose output directory (writable directory).
         dir_path = kodi_dialog_get_wdirectory('Chose directory to write MAME ROMs DAT')
         if not dir_path: return
-        out_dir_FN = FileName(dir_path)
 
         # Open databases.
         db_files = [
@@ -6904,7 +6918,7 @@ def command_exec_utility(which_utility):
         db_dic = fs_load_files(db_files)
 
         # Write MAME ROM dat. Notifies the user if successful.
-        mame_write_MAME_ROM_XML_DAT(g_PATHS, g_settings, control_dic, out_dir_FN, db_dic)
+        mame_write_MAME_ROM_XML_DAT(g_PATHS, g_settings, control_dic, FileName(dir_path), db_dic)
 
     elif which_utility == 'EXPORT_MAME_CHD_DAT':
         log_info('command_exec_utility() Initialising EXPORT_MAME_CHD_DAT ...')
@@ -6915,7 +6929,6 @@ def command_exec_utility(which_utility):
         # DAT filename: AML 0.xxx ROMs (merged|split|non-merged|fully non-merged).xml
         dir_path = kodi_dialog_get_wdirectory('Chose directory to write MAME CHDs DAT')
         if not dir_path: return
-        out_dir_FN = FileName(dir_path)
 
         # Open databases.
         db_files = [
@@ -6926,7 +6939,7 @@ def command_exec_utility(which_utility):
         db_dic = fs_load_files(db_files)
 
         # Write MAME ROM dat. Notifies the user if successful.
-        mame_write_MAME_CHD_XML_DAT(g_PATHS, g_settings, control_dic, out_dir_FN, db_dic)
+        mame_write_MAME_CHD_XML_DAT(g_PATHS, g_settings, control_dic, FileName(dir_path), db_dic)
 
     elif which_utility == 'EXPORT_SL_ROM_DAT':
         log_info('command_exec_utility() Initialising EXPORT_SL_ROM_DAT ...')
