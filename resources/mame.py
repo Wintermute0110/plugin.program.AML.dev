@@ -1562,9 +1562,8 @@ def _mame_stat_chd(chd_path):
 # -------------------------------------------------------------------------------------------------
 # Statistic printing
 # -------------------------------------------------------------------------------------------------
-# >> See https://docs.python.org/2/library/time.html
-def _str_time(secs):
-    return time.strftime('%a  %d %b %Y  %H:%M:%S', time.localtime(secs))
+# See https://docs.python.org/2/library/time.html
+def _str_time(secs): return time.strftime('%a %d %b %Y %H:%M:%S', time.localtime(secs))
 
 def mame_info_MAME_print(slist, location, machine_name, machine, assets):
     slist.append('[COLOR orange]Machine {0} / Render data[/COLOR]'.format(machine_name))

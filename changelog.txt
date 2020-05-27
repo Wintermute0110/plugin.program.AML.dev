@@ -67,7 +67,7 @@ WIP      [CORE] In the Setup Plugin CM, Build Fanarts and 3D boxes: add an optio
          build all the Fanarts and 3D boxes at once. Also an option to
          rebuild all missing stuff.
 
-WIP      [CORE] Export MAME info with billyc999s XML format.
+FEATURE  [CORE] Export MAME info with billyc999s XML format.
 
 FEATURE  [CORE] New Utility "Show machines with biggest ROMs"
 
