@@ -6895,7 +6895,12 @@ def command_exec_utility(which_utility):
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         dir_path = kodi_dialog_get_wdirectory('Chose directory to write MAME info XML')
         if not dir_path: return
-        mame_write_MAME_ROM_Billyc999_XML(g_PATHS, g_settings, control_dic, FileName(dir_path))
+        db_files = [
+            ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
+            ['assets', 'MAME machine assets', g_PATHS.MAIN_ASSETS_DB_PATH.getPath()],
+        ]
+        db_dic = fs_load_files(db_files)
+        mame_write_MAME_ROM_Billyc999_XML(g_PATHS, g_settings, control_dic, FileName(dir_path), db_dic)
 
     # Export a MAME ROM DAT XML file with Logiqx format.
     # The DAT will be Merged, Split, Non-merged or Fully Non-merged same as the current

@@ -1154,27 +1154,27 @@ def mame_load_Command_DAT(filename):
 # Both tag_name and tag_text must be Unicode strings.
 # Returns an Unicode string.
 #
-def XML_t(tag_name, tag_text, num_spaces = 4):
+def XML_t(tag_name, tag_text = '', num_spaces = 4):
     if tag_text:
         tag_text = text_escape_XML(tag_text)
-        line = '{0}<{1}>{2}</{3}>'.format(' ' * num_spaces, tag_name, tag_text, tag_name)
+        line = '{}<{}>{}</{}>'.format(' ' * num_spaces, tag_name, tag_text, tag_name)
     else:
         # Empty tag
-        line = '{0}<{1} />'.format(' ' * num_spaces, tag_name)
+        line = '{}<{} />'.format(' ' * num_spaces, tag_name)
 
     return line
 
-def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN):
+# Export a MAME information file in Billyc999 XML format to use with RCB.
+# https://forum.kodi.tv/showthread.php?tid=70115&pid=2949624#pid2949624
+# https://github.com/billyc999/Game-database-info
+def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN, db_dic):
     log_debug('mame_write_MAME_ROM_Billyc999_XML() BEGIN ...')
 
     # Get output filename
     # DAT filename: AML 0.xxx ROMs (merged|split|non-merged|fully non-merged).xml
     mame_version_str = control_dic['ver_mame']
-    rom_set = ['MERGED', 'SPLIT', 'NONMERGED', 'FULLYNONMERGED'][settings['mame_rom_set']]
-    rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][settings['mame_rom_set']]
     log_info('MAME version "{}"'.format(mame_version_str))
-    log_info('ROM set is "{}"'.format(rom_set_str))
-    DAT_basename_str = 'AML MAME {} ROMs ({}).xml'.format(mame_version_str, rom_set_str)
+    DAT_basename_str = 'AML MAME {} Billyc999.xml'.format(mame_version_str)
     DAT_FN = out_dir_FN.pjoin(DAT_basename_str)
     log_info('XML "{}"'.format(DAT_FN.getPath()))
 
@@ -1182,43 +1182,55 @@ def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN):
     sl = []
     sl.append('<?xml version="1.0" encoding="UTF-8"?>')
     sl.append('<menu>')
-    desc_str = 'AML MAME {} ROMs {} set'.format(mame_version_str, rom_set_str)
-    slist.append('<header>')
-    slist.append(XML_t('name', desc_str))
-    slist.append(XML_t('description', desc_str))
-    slist.append(XML_t('version', '{}'.format(mame_version_str)))
-    slist.append(XML_t('date', _str_time(time.time())))
-    slist.append(XML_t('author', 'Exported by Advanced MAME Launcher'))
-    slist.append('</header>')
+    sl.append('  <header>')
+    sl.append(XML_t('listname', 'Exported by Advanced MAME Launcher'))
+    sl.append(XML_t('lastlistupdate', _str_time(time.time())))
+    sl.append(XML_t('listversion', '{}'.format(mame_version_str)))
+    sl.append(XML_t('exporterversion', 'MAME {}'.format(mame_version_str)))
+    sl.append('  </header>')
 
     # Traverse ROMs and write DAT.
-    total_machines, machine_counter = len(audit_roms), 0
+    total_machines, machine_counter = len(db_dic['render']), 0
     pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Creating MAME info XML ...')
+    pDialog.create('Advanced MAME Launcher', 'Creating MAME Billyc999 XML ...')
     pDialog.update(0)
-    for m_name in sorted(audit_roms):
+    for m_name in sorted(db_dic['render']):
+        render = db_dic['render'][m_name]
+        assets = db_dic['assets'][m_name]
+        sl.append('  <game name="{}">'.format(m_name))
+        sl.append(XML_t('description', render['description']))
+        sl.append(XML_t('year', render['year']))
+        sl.append(XML_t('rating', 'ESRB - E (Everyone)'))
+        sl.append(XML_t('manufacturer', render['manufacturer']))
+        sl.append(XML_t('dev'))
+        sl.append(XML_t('genre', render['genre']))
+        sl.append(XML_t('score'))
+        sl.append(XML_t('player', render['nplayers']))
+        sl.append(XML_t('story', assets['plot']))
+        sl.append(XML_t('enabled', 'Yes'))
+        sl.append(XML_t('crc'))
+        sl.append(XML_t('cloneof', render['cloneof']))
+        sl.append('  </game>')
         machine_counter += 1
         pDialog.update((100 * machine_counter) / total_machines)
     sl.append('</menu>')
     pDialog.close()
 
     # Open output file name.
-    pDialog.create('Advanced MAME Launcher', 'Writing MAME info XML ...')
+    pDialog.create('Advanced MAME Launcher', 'Writing MAME Billyc999 XML ...')
     pDialog.update(15)
     try:
         file_obj = open(DAT_FN.getPath(), 'w')
-        file_obj.write('\n'.join(slist).encode('utf-8'))
+        file_obj.write('\n'.join(sl).encode('utf-8'))
         file_obj.close()
-        pDialog.update(100)
-        pDialog.close()
     except OSError:
-        pDialog.close()
         log_error('(OSError) Cannot write file')
         kodi_notify_warn('(OSError) Cannot write file')
     except IOError:
-        pDialog.close()
         log_error('(IOError) Cannot write file')
         kodi_notify_warn('(IOError) Cannot write file')
+    pDialog.update(100)
+    pDialog.close()
 
 #
 # Only valid ROMs in DAT file.
