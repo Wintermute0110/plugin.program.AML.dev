@@ -2,12 +2,12 @@
 <addon id="plugin.program.AML.dev" name="Advanced MAME Launcher (dev version)" version="1.0.0-alpha" provider-name="Wintermute0110">
     <requires>
         <!--
-            Check addon versions in https://github.com/xbmc/xbmc/tree/master/addons
+            Check main addon versions in https://github.com/xbmc/xbmc/tree/master/addons
             Change the branch according to the Kodi version.
         -->
-        <!-- 2.25.0 Krypton 17 -->
-        <import addon="xbmc.python" version="2.25.0" />
-        <import addon="script.module.pil" version="1.1.7" />
+        <!-- 3.0.0 Kodi Matrix 19 -->
+        <import addon="xbmc.python" version="3.0.0" />
+        <import addon="script.module.pil" version="5.1.0" />
     </requires>
     <extension point="xbmc.python.pluginsource" library="addon.py">
         <provides>executable game</provides>
