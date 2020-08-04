@@ -44,6 +44,9 @@ OPTIONS_KEYWORK_LIST = [
     'NoNonworking',
     'NoVertical',
     'NoHorizontal',
+    'NoMissingROMs',
+    'NoMissingCHDs',
+    'NoMissingSamples',
 ]
 
 # -------------------------------------------------------------------------------------------------
@@ -695,7 +698,7 @@ def YP_tokenize(program):
         elif operator == "not": yield YP_operator_not_token()
         elif operator == "(":   yield YP_operator_open_par_token()
         elif operator == ")":   yield YP_operator_close_par_token()
-        else:                   raise SyntaxError("Unknown operator: '{0}'".format(operator))
+        else:                   raise SyntaxError("Unknown operator: '{}'".format(operator))
     yield YP_end_token()
 
 # -------------------------------------------------------------------------------------------------
@@ -726,8 +729,8 @@ def YP_parse_exec(program, year_str):
 
     if debug_YP_parse_exec:
         log_debug('YP_parse_exec() Initialising program execution')
-        log_debug('YP_parse_exec() year     "{0}"'.format(year))
-        log_debug('YP_parse_exec() Program  "{0}"'.format(program))
+        log_debug('YP_parse_exec() year     "{}"'.format(year))
+        log_debug('YP_parse_exec() Program  "{}"'.format(program))
     YP_year = year
     YP_next = YP_tokenize(program).next
     YP_token = YP_next()
@@ -742,7 +745,7 @@ def YP_parse_exec(program, year_str):
         YP_token = YP_next()
         left = t.led(left)
     if debug_YP_parse_exec:
-        log_debug('YP_parse_exec() Init exec program in token {0}'.format(left))
+        log_debug('YP_parse_exec() Init exec program in token {}'.format(left))
 
     return left.exec_token()
 
@@ -762,9 +765,9 @@ def filter_mame_Default(mame_xml_dic):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('filter_mame_Default() Initial {0} | '.format(initial_num_games) + \
-              'Removed {0} | '.format(filtered_out_games) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+    log_debug('filter_mame_Default() Initial {} | '.format(initial_num_games) + \
+              'Removed {} | '.format(filtered_out_games) + \
+              'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
@@ -775,7 +778,7 @@ def filter_mame_Options_tag(mame_xml_dic, f_definition):
     if not options_list:
         log_debug('filter_mame_Options_tag() Option list is empty.')
         return mame_xml_dic
-    log_debug('Option list "{0}"'.format(options_list))
+    log_debug('Option list "{}"'.format(options_list))
 
     # --- Compute bool variables ---
     # This must match OPTIONS_KEYWORK_LIST
@@ -792,83 +795,102 @@ def filter_mame_Options_tag(mame_xml_dic, f_definition):
     NoNonWorking_bool = True if 'NoNonworking' in options_list else False
     NoVertical_bool   = True if 'NoVertical' in options_list else False
     NoHorizontal_bool = True if 'NoHorizontal' in options_list else False
+    # ROM scanner boolean filters.
+    NoMissingROMs_bool    = True if 'NoMissingROMs' in options_list else False
+    NoMissingCHDs_bool    = True if 'NoMissingCHDs' in options_list else False
+    NoMissingSamples_bool = True if 'NoMissingSamples' in options_list else False
 
-    log_debug('NoClones_bool     {0}'.format(NoClones_bool))
-    log_debug('NoCoin_bool       {0}'.format(NoCoin_bool))
-    log_debug('NoCoinLess_bool   {0}'.format(NoCoinLess_bool))
-    log_debug('NoROMs_bool       {0}'.format(NoROMs_bool))
-    log_debug('NoCHDs_bool       {0}'.format(NoCHDs_bool))
-    log_debug('NoSamples_bool    {0}'.format(NoSamples_bool))
-    log_debug('NoMature_bool     {0}'.format(NoMature_bool))
-    log_debug('NoBIOS_bool       {0}'.format(NoBIOS_bool))
-    log_debug('NoMechanical_bool {0}'.format(NoMechanical_bool))
-    log_debug('NoImperfect_bool  {0}'.format(NoImperfect_bool))
-    log_debug('NoNonWorking_bool {0}'.format(NoNonWorking_bool))
-    log_debug('NoVertical_bool   {0}'.format(NoVertical_bool))
-    log_debug('NoHorizontal_bool {0}'.format(NoHorizontal_bool))
+    log_debug('NoClones_bool     {}'.format(NoClones_bool))
+    log_debug('NoCoin_bool       {}'.format(NoCoin_bool))
+    log_debug('NoCoinLess_bool   {}'.format(NoCoinLess_bool))
+    log_debug('NoROMs_bool       {}'.format(NoROMs_bool))
+    log_debug('NoCHDs_bool       {}'.format(NoCHDs_bool))
+    log_debug('NoSamples_bool    {}'.format(NoSamples_bool))
+    log_debug('NoMature_bool     {}'.format(NoMature_bool))
+    log_debug('NoBIOS_bool       {}'.format(NoBIOS_bool))
+    log_debug('NoMechanical_bool {}'.format(NoMechanical_bool))
+    log_debug('NoImperfect_bool  {}'.format(NoImperfect_bool))
+    log_debug('NoNonWorking_bool {}'.format(NoNonWorking_bool))
+    log_debug('NoVertical_bool   {}'.format(NoVertical_bool))
+    log_debug('NoHorizontal_bool {}'.format(NoHorizontal_bool))
+    log_debug('NoMissingROMs_bool    {}'.format(NoMissingROMs_bool))
+    log_debug('NoMissingCHDs_bool    {}'.format(NoMissingCHDs_bool))
+    log_debug('NoMissingSamples_bool {}'.format(NoMissingSamples_bool))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
     machines_filtered_dic = {}
     for m_name in sorted(mame_xml_dic):
-        # >> Remove Clone machines
+        # Remove Clone machines
         if NoClones_bool and mame_xml_dic[m_name]['isClone']:
             filtered_out_games += 1
             continue
-        # >> Remove Coin machines
+        # Remove Coin machines
         if NoCoin_bool and mame_xml_dic[m_name]['coins'] > 0:
             filtered_out_games += 1
             continue
-        # >> Remove CoinLess machines
+        # Remove CoinLess machines
         if NoCoinLess_bool and mame_xml_dic[m_name]['coins'] == 0:
             filtered_out_games += 1
             continue
-        # >> Remove ROM machines
+        # Remove ROM machines
         if NoROMs_bool and mame_xml_dic[m_name]['hasROMs']:
             filtered_out_games += 1
             continue
-        # >> Remove CHD machines
+        # Remove CHD machines
         if NoCHDs_bool and mame_xml_dic[m_name]['hasCHDs']:
             filtered_out_games += 1
             continue
-        # >> Remove Samples machines
+        # Remove Samples machines
         if NoSamples_bool and mame_xml_dic[m_name]['hasSamples']:
             filtered_out_games += 1
             continue
-        # >> Remove Mature machines
+        # Remove Mature machines
         if NoMature_bool and mame_xml_dic[m_name]['isMature']:
             filtered_out_games += 1
             continue
-        # >> Remove BIOS machines
+        # Remove BIOS machines
         if NoBIOS_bool and mame_xml_dic[m_name]['isBIOS']:
             filtered_out_games += 1
             continue
-        # >> Remove Mechanical machines
+        # Remove Mechanical machines
         if NoMechanical_bool and mame_xml_dic[m_name]['isMechanical']:
             filtered_out_games += 1
             continue
-        # >> Remove Imperfect machines
+        # Remove Imperfect machines
         if NoImperfect_bool and mame_xml_dic[m_name]['isImperfect']:
             filtered_out_games += 1
             continue
-        # >> Remove NonWorking machines
+        # Remove NonWorking machines
         if NoNonWorking_bool and mame_xml_dic[m_name]['isNonWorking']:
             filtered_out_games += 1
             continue
-        # >> Remove Vertical machines
+        # Remove Vertical machines
         if NoVertical_bool and mame_xml_dic[m_name]['isVertical']:
             filtered_out_games += 1
             continue
-        # >> Remove Horizontal machines
+        # Remove Horizontal machines
         if NoHorizontal_bool and mame_xml_dic[m_name]['isHorizontal']:
             filtered_out_games += 1
             continue
-        # >> If machine was not removed then add it
+        # Remove machines with Missing ROMs
+        if NoMissingROMs_bool and mame_xml_dic[m_name]['missingROMs']:
+            filtered_out_games += 1
+            continue
+        # Remove machines with Missing CHDs
+        if NoMissingCHDs_bool and mame_xml_dic[m_name]['missingCHDs']:
+            filtered_out_games += 1
+            continue
+        # Remove machines with Missing Samples
+        if NoMissingSamples_bool and mame_xml_dic[m_name]['missingSamples']:
+            filtered_out_games += 1
+            continue
+        # If machine was not removed then add it
         machines_filtered_dic[m_name] = mame_xml_dic[m_name]
     log_debug(
-        'filter_mame_Options_tag() Initial {0} | '.format(initial_num_games) + \
-        'Removed {0} | '.format(filtered_out_games) + \
-        'Remaining {0}'.format(len(machines_filtered_dic)))
+        'filter_mame_Options_tag() Initial {} | '.format(initial_num_games) + \
+        'Removed {} | '.format(filtered_out_games) + \
+        'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
@@ -879,7 +901,7 @@ def filter_mame_Driver_tag(mame_xml_dic, f_definition):
     if not filter_expression:
         log_debug('filter_mame_Driver_tag() User wants all drivers')
         return mame_xml_dic
-    log_debug('Expression "{0}"'.format(filter_expression))
+    log_debug('Expression "{}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -891,9 +913,9 @@ def filter_mame_Driver_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('filter_mame_Driver_tag() Initial {0} | '.format(initial_num_games) + \
-              'Removed {0} | '.format(filtered_out_games) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+    log_debug('filter_mame_Driver_tag() Initial {} | '.format(initial_num_games) + \
+              'Removed {} | '.format(filtered_out_games) + \
+              'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
@@ -904,7 +926,7 @@ def filter_mame_Manufacturer_tag(mame_xml_dic, f_definition):
     if not filter_expression:
         log_debug('filter_mame_Manufacturer_tag() User wants all manufacturers')
         return mame_xml_dic
-    log_debug('Expression "{0}"'.format(filter_expression))
+    log_debug('Expression "{}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -915,9 +937,9 @@ def filter_mame_Manufacturer_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('filter_mame_Manufacturer_tag() Initial {0} | '.format(initial_num_games) + \
-              'Removed {0} | '.format(filtered_out_games) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+    log_debug('filter_mame_Manufacturer_tag() Initial {} | '.format(initial_num_games) + \
+              'Removed {} | '.format(filtered_out_games) + \
+              'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
@@ -928,7 +950,7 @@ def filter_mame_Genre_tag(mame_xml_dic, f_definition):
     if not filter_expression:
         log_debug('filter_mame_Genre_tag() User wants all genres')
         return mame_xml_dic
-    log_debug('Expression "{0}"'.format(filter_expression))
+    log_debug('Expression "{}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -940,9 +962,9 @@ def filter_mame_Genre_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('filter_mame_Genre_tag() Initial {0} | '.format(initial_num_games) + \
-              'Removed {0} | '.format(filtered_out_games) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+    log_debug('filter_mame_Genre_tag() Initial {} | '.format(initial_num_games) + \
+              'Removed {} | '.format(filtered_out_games) + \
+              'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
@@ -953,7 +975,7 @@ def filter_mame_Controls_tag(mame_xml_dic, f_definition):
     if not filter_expression:
         log_debug('filter_mame_Controls_tag() User wants all genres')
         return mame_xml_dic
-    log_debug('Expression "{0}"'.format(filter_expression))
+    log_debug('Expression "{}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -964,9 +986,9 @@ def filter_mame_Controls_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('filter_mame_Controls_tag() Initial {0} | '.format(initial_num_games) + \
-              'Removed {0} | '.format(filtered_out_games) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+    log_debug('filter_mame_Controls_tag() Initial {} | '.format(initial_num_games) + \
+              'Removed {} | '.format(filtered_out_games) + \
+              'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
@@ -977,7 +999,7 @@ def filter_mame_PluggableDevices_tag(mame_xml_dic, f_definition):
     if not filter_expression:
         log_debug('filter_mame_PluggableDevices_tag() User wants all genres')
         return mame_xml_dic
-    log_debug('Expression "{0}"'.format(filter_expression))
+    log_debug('Expression "{}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -990,9 +1012,9 @@ def filter_mame_PluggableDevices_tag(mame_xml_dic, f_definition):
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
     log_debug(
-        'filter_mame_PluggableDevices_tag() Initial {0} | '.format(initial_num_games) + \
-        'Removed {0} | '.format(filtered_out_games) + \
-        'Remaining {0}'.format(len(machines_filtered_dic)))
+        'filter_mame_PluggableDevices_tag() Initial {} | '.format(initial_num_games) + \
+        'Removed {} | '.format(filtered_out_games) + \
+        'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
@@ -1003,7 +1025,7 @@ def filter_mame_Year_tag(mame_xml_dic, f_definition):
     if not filter_expression:
         log_debug('filter_mame_Year_tag() User wants all genres')
         return mame_xml_dic
-    log_debug('Expression "{0}"'.format(filter_expression))
+    log_debug('Expression "{}"'.format(filter_expression))
 
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
@@ -1015,15 +1037,15 @@ def filter_mame_Year_tag(mame_xml_dic, f_definition):
             filtered_out_games += 1
         else:
             machines_filtered_dic[m_name] = mame_xml_dic[m_name]
-    log_debug('filter_mame_Year_tag() Initial {0} | '.format(initial_num_games) + \
-              'Removed {0} | '.format(filtered_out_games) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+    log_debug('filter_mame_Year_tag() Initial {} | '.format(initial_num_games) + \
+              'Removed {} | '.format(filtered_out_games) + \
+              'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
 def filter_mame_Include_tag(mame_xml_dic, f_definition, machines_dic):
     # log_debug('filter_mame_Include_tag() Starting ...')
-    log_debug('filter_mame_Include_tag() Include machines {0}'.format(unicode(f_definition['include'])))
+    log_debug('filter_mame_Include_tag() Include machines {}'.format(unicode(f_definition['include'])))
     added_machines = 0
     machines_filtered_dic = mame_xml_dic.copy()
     # If no machines to include then skip processing
@@ -1034,22 +1056,22 @@ def filter_mame_Include_tag(mame_xml_dic, f_definition, machines_dic):
     for m_name in sorted(machines_dic):
         for f_name in f_definition['include']:
             if f_name == m_name:
-                log_debug('filter_mame_Include_tag() Matched machine {0}'.format(f_name))
+                log_debug('filter_mame_Include_tag() Matched machine {}'.format(f_name))
                 if f_name in machines_filtered_dic:
-                    log_debug('filter_mame_Include_tag() Machine {0} already in filtered list'.format(f_name))
+                    log_debug('filter_mame_Include_tag() Machine {} already in filtered list'.format(f_name))
                 else:
-                    log_debug('filter_mame_Include_tag() Adding machine {0}'.format(f_name))
+                    log_debug('filter_mame_Include_tag() Adding machine {}'.format(f_name))
                     machines_filtered_dic[m_name] = machines_dic[m_name]
                     added_machines += 1
-    log_debug('filter_mame_Include_tag() Initial {0} | '.format(len(mame_xml_dic)) + \
-              'Added {0} | '.format(added_machines) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+    log_debug('filter_mame_Include_tag() Initial {} | '.format(len(mame_xml_dic)) + \
+              'Added {} | '.format(added_machines) + \
+              'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
 def filter_mame_Exclude_tag(mame_xml_dic, f_definition):
     # log_debug('filter_mame_Exclude_tag() Starting ...')
-    log_debug('filter_mame_Exclude_tag() Exclude machines {0}'.format(unicode(f_definition['exclude'])))
+    log_debug('filter_mame_Exclude_tag() Exclude machines {}'.format(unicode(f_definition['exclude'])))
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
     machines_filtered_dic = mame_xml_dic.copy()
@@ -1061,19 +1083,19 @@ def filter_mame_Exclude_tag(mame_xml_dic, f_definition):
     for m_name in sorted(mame_xml_dic):
         for f_name in f_definition['exclude']:
             if f_name == m_name:
-                log_debug('filter_mame_Exclude_tag() Matched machine {0}'.format(f_name))
-                log_debug('filter_mame_Exclude_tag() Deleting machine {0}'.format(f_name))
+                log_debug('filter_mame_Exclude_tag() Matched machine {}'.format(f_name))
+                log_debug('filter_mame_Exclude_tag() Deleting machine {}'.format(f_name))
                 del machines_filtered_dic[f_name]
                 filtered_out_games += 1
-    log_debug('filter_mame_Exclude_tag() Initial {0} | '.format(initial_num_games) + \
-              'Removed {0} | '.format(filtered_out_games) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+    log_debug('filter_mame_Exclude_tag() Initial {} | '.format(initial_num_games) + \
+              'Removed {} | '.format(filtered_out_games) + \
+              'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
 def filter_mame_Change_tag(mame_xml_dic, f_definition, machines_dic):
     # log_debug('filter_mame_Change_tag() Starting ...')
-    log_debug('filter_mame_Change_tag() Change machines {0}'.format(unicode(f_definition['change'])))
+    log_debug('filter_mame_Change_tag() Change machines {}'.format(unicode(f_definition['change'])))
     initial_num_games = len(mame_xml_dic)
     changed_machines = 0
     machines_filtered_dic = mame_xml_dic.copy()
@@ -1085,17 +1107,17 @@ def filter_mame_Change_tag(mame_xml_dic, f_definition, machines_dic):
     for m_name in sorted(mame_xml_dic):
         for (f_name, new_name) in f_definition['change']:
             if f_name == m_name:
-                log_debug('filter_mame_Change_tag() Matched machine {0}'.format(f_name))
+                log_debug('filter_mame_Change_tag() Matched machine {}'.format(f_name))
                 if new_name in machines_dic:
-                    log_debug('filter_mame_Change_tag() Changing machine {0} with {1}'.format(f_name, new_name))
+                    log_debug('filter_mame_Change_tag() Changing machine {} with {}'.format(f_name, new_name))
                     del machines_filtered_dic[f_name]
                     machines_filtered_dic[new_name] = machines_dic[new_name]
                     changed_machines += 1
                 else:
-                    log_warning('filter_mame_Change_tag() New machine {0} not found on MAME machines.'.format(new_name))
-    log_debug('filter_mame_Change_tag() Initial {0} | '.format(initial_num_games) + \
-              'Changed {0} | '.format(changed_machines) + \
-              'Remaining {0}'.format(len(machines_filtered_dic)))
+                    log_warning('filter_mame_Change_tag() New machine {} not found on MAME machines.'.format(new_name))
+    log_debug('filter_mame_Change_tag() Initial {} | '.format(initial_num_games) + \
+              'Changed {} | '.format(changed_machines) + \
+              'Remaining {}'.format(len(machines_filtered_dic)))
 
     return machines_filtered_dic
 
@@ -1113,24 +1135,24 @@ def filter_parse_XML(fname_str):
     if not XML_FN.exists():
         kodi_dialog_OK('Custom filter XML file not found.')
         return
-    log_debug('filter_parse_XML() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
-    log_debug('filter_parse_XML() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+    log_debug('filter_parse_XML() Reading XML OP "{}"'.format(XML_FN.getOriginalPath()))
+    log_debug('filter_parse_XML() Reading XML  P "{}"'.format(XML_FN.getPath()))
     try:
         xml_tree = ET.parse(XML_FN.getPath())
     except IOError as ex:
-        log_error('(Exception) {0}'.format(ex))
+        log_error('(Exception) {}'.format(ex))
         log_error('(Exception) Syntax error in the XML file definition')
         raise Addon_Error('(Exception) ET.parse(XML_FN.getPath()) failed.')
     xml_root = xml_tree.getroot()
     define_dic = {}
     filters_list = []
     for root_element in xml_root:
-        if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
+        if __debug_xml_parser: log_debug('Root child {}'.format(root_element.tag))
 
         if root_element.tag == 'DEFINE':
             name_str = root_element.attrib['name']
             define_str = root_element.text if root_element.text else ''
-            log_debug('DEFINE "{0}" := "{1}"'.format(name_str, define_str))
+            log_debug('DEFINE "{}" := "{}"'.format(name_str, define_str))
             define_dic[name_str] = define_str
         elif root_element.tag == 'MAMEFilter':
             this_filter_dic = {
@@ -1179,10 +1201,10 @@ def filter_parse_XML(fname_str):
                     tuple_t = _get_change_tuple(text_t)
                     if tuple_t: this_filter_dic['change'].append(tuple_t)
                 else:
-                    m = '(Exception) Unrecognised tag <{0}>'.format(filter_element.tag)
+                    m = '(Exception) Unrecognised tag <{}>'.format(filter_element.tag)
                     log_debug(m)
                     raise Addon_Error(m)
-            log_debug('Adding filter "{0}"'.format(this_filter_dic['name']))
+            log_debug('Adding filter "{}"'.format(this_filter_dic['name']))
             filters_list.append(this_filter_dic)
 
     # >> Resolve DEFINE tags (substitute by the defined value)
@@ -1204,11 +1226,11 @@ def filter_parse_XML(fname_str):
     return filters_list
 
 #
+# Makes a list of all machines and add flags for easy filtering.
 # Returns a dictionary of dictionaries, indexed by the machine name.
 # This includes all MAME machines, including parents and clones.
 #
-def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic,
-    machine_archives_dic):
+def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic, machine_archives_dic):
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Building filter database ...')
     total_items = len(machine_main_dic)
@@ -1250,7 +1272,12 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             elif drotate == '90' or drotate == '270':
                 isVertical = True
 
-        # >> Fix controls to match "Machines by Controls (Compact)" filter
+        # ROM/CHD/Sample scanner flags. See funcion fs_initial_flags()
+        missingROMs    = True if assets_dic[m_name]['flags'][0] == 'r' else False
+        missingCHDs    = True if assets_dic[m_name]['flags'][1] == 'c' else False
+        missingSamples = True if assets_dic[m_name]['flags'][2] == 's' else False
+
+        # Fix controls to match "Machines by Controls (Compact)" filter
         if machine_main_dic[m_name]['input']:
             raw_control_list = [
                 ctrl_dic['type'] for ctrl_dic in machine_main_dic[m_name]['input']['control_list']
@@ -1261,7 +1288,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
         control_list = misc_compress_mame_item_list_compact(pretty_control_type_list)
         if not control_list: control_list = [ 'None' ]
 
-        # >> Fix this to match "Machines by Pluggable Devices (Compact)" filter
+        # Fix this to match "Machines by Pluggable Devices (Compact)" filter
         raw_device_list = [ device['att_type'] for device in machine_main_dic[m_name]['devices'] ]
         pretty_device_list = misc_improve_mame_device_list(raw_device_list)
         pluggable_device_list = misc_compress_mame_item_list_compact(pretty_device_list)
@@ -1284,6 +1311,10 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             'isNonWorking' : True if machine_render_dic[m_name]['driver_status'] == 'preliminary' else False,
             'isHorizontal' : isHorizontal,
             'isVertical' : isVertical,
+            # --- <Option> scanner-related filters ---
+            'missingROMs' : missingROMs,
+            'missingCHDs' : missingCHDs,
+            'missingSamples' : missingSamples,
             # --- Other filters ---
             'driver' : machine_main_dic[m_name]['sourcefile'],
             'manufacturer' : machine_render_dic[m_name]['manufacturer'],
@@ -1319,7 +1350,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
     pDialog.close()
 
     # --- Write statistics report ---
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath()))
+    log_info('Writing report "{}"'.format(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath()))
     with open(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath(), 'w') as file:
         rslist = [
             '*** Advanced MAME Launcher MAME histogram report ***',
@@ -1331,7 +1362,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             ['Genre', 'Number of machines'],
         ]
         for dname, dnumber in sorted(genres_drivers_dic.items(), key = lambda x: x[1], reverse = True):
-            table_str.append(['{0}'.format(dname), '{0}'.format(dnumber)])
+            table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
         rslist.extend(text_render_table_str(table_str))
         rslist.append('')
 
@@ -1340,7 +1371,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             ['Control', 'Number of machines'],
         ]
         for dname, dnumber in sorted(controls_drivers_dic.items(), key = lambda x: x[1], reverse = True):
-            table_str.append(['{0}'.format(dname), '{0}'.format(dnumber)])
+            table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
         rslist.extend(text_render_table_str(table_str))
         rslist.append('')
 
@@ -1349,7 +1380,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             ['Device', 'Number of machines'],
         ]
         for dname, dnumber in sorted(pdevices_drivers_dic.items(), key = lambda x: x[1], reverse = True):
-            table_str.append(['{0}'.format(dname), '{0}'.format(dnumber)])
+            table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
         rslist.extend(text_render_table_str(table_str))
         rslist.append('')
 
@@ -1376,19 +1407,19 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
 
     # --- Open custom filter XML and parse it ---
     cf_XML_path_str = settings['filter_XML']
-    log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
+    log_debug('cf_XML_path_str = "{}"'.format(cf_XML_path_str))
     if not cf_XML_path_str:
         log_debug('Using default XML custom filter.')
         XML_FN = PATHS.CUSTOM_FILTER_PATH
     else:
         log_debug('Using user-defined in addon settings XML custom filter.')
         XML_FN = FileName(cf_XML_path_str)
-    log_debug('filter_custom_filters_load_XML() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
-    log_debug('filter_custom_filters_load_XML() Reading XML  P "{0}"'.format(XML_FN.getPath()))
+    log_debug('filter_custom_filters_load_XML() Reading XML OP "{}"'.format(XML_FN.getOriginalPath()))
+    log_debug('filter_custom_filters_load_XML() Reading XML  P "{}"'.format(XML_FN.getPath()))
     try:
         filter_list = filter_parse_XML(XML_FN.getPath())
     except Addon_Error as ex:
-        kodi_notify_warn('{0}'.format(ex))
+        kodi_notify_warn('{}'.format(ex))
         return (filter_list, options_dic)
     else:
         log_debug('Filter XML read succesfully.')
@@ -1403,7 +1434,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         # Check 1) Keywords in <Options> are correct.
         for option_keyword in filter_dic['options']:
             if option_keyword not in OPTIONS_KEYWORK_SET:
-                c_list.append('<Options> keywork "{0}" unrecognised.'.format(option_keyword))
+                c_list.append('<Options> keywork "{}" unrecognised.'.format(option_keyword))
 
         # Check 2) Drivers in <Driver> exist.
         # <Driver> uses the LSP parser.
@@ -1413,7 +1444,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
                 keyword_list.append(token.value)
         for dname in keyword_list:
             if dname not in sets_dic['drivers_set']:
-                c_list.append('<Driver> "{0}" not found.'.format(dname))
+                c_list.append('<Driver> "{}" not found.'.format(dname))
 
         # Check 3) Genres in <Genre> exist.
         # <Genre> uses the LSP parser.
@@ -1423,7 +1454,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
                 keyword_list.append(token.value)
         for dname in keyword_list:
             if dname not in sets_dic['genres_set']:
-                c_list.append('<Genre> "{0}" not found.'.format(dname))
+                c_list.append('<Genre> "{}" not found.'.format(dname))
 
         # Check 4) Controls in <Controls> exist.
         # <Controls> uses the LSP parser.
@@ -1433,7 +1464,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
                 keyword_list.append(token.value)
         for dname in keyword_list:
             if dname not in sets_dic['controls_set']:
-                c_list.append('<Controls> "{0}" not found.'.format(dname))
+                c_list.append('<Controls> "{}" not found.'.format(dname))
 
         # Check 5) Plugabble devices in <PluggableDevices> exist.
         # <PluggableDevices> uses the LSP parser.
@@ -1443,27 +1474,27 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
                 keyword_list.append(token.value)
         for dname in keyword_list:
             if dname not in sets_dic['pdevices_set']:
-                c_list.append('<PluggableDevices> "{0}" not found.'.format(dname))
+                c_list.append('<PluggableDevices> "{}" not found.'.format(dname))
 
         # Check 6) Machines in <Include> exist.
         for m_name in filter_dic['include']:
             if m_name not in main_filter_dic:
-                c_list.append('<Include> machine "{0}" not found.'.format(m_name))
+                c_list.append('<Include> machine "{}" not found.'.format(m_name))
 
         # Check 7) Machines in <Exclude> exist.
         for m_name in filter_dic['exclude']:
             if m_name not in main_filter_dic:
-                c_list.append('<Exclude> machine "{0}" not found.'.format(m_name))
+                c_list.append('<Exclude> machine "{}" not found.'.format(m_name))
 
         # Check 8) Machines in <Change> exist.
         for change_tuple in filter_dic['change']:
             if change_tuple[0] not in main_filter_dic:
-                c_list.append('<Change> machine "{0}" not found.'.format(change_tuple[0]))
+                c_list.append('<Change> machine "{}" not found.'.format(change_tuple[0]))
             if change_tuple[1] not in main_filter_dic:
-                c_list.append('<Change> machine "{0}" not found.'.format(change_tuple[1]))
+                c_list.append('<Change> machine "{}" not found.'.format(change_tuple[1]))
 
         # Build report
-        r_full.append('Filter "{0}"'.format(filter_dic['name']))
+        r_full.append('Filter "{}"'.format(filter_dic['name']))
         if not c_list:
             r_full.append('No issues found.')
         else:
@@ -1473,12 +1504,12 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         r_full.append('')
 
     # --- Write MAME scanner reports ---
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath()))
+    log_info('Writing report "{}"'.format(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath()))
     with open(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath(), 'w') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
-            'There are {0} custom filters defined.'.format(len(filter_list)),
-            'XML "{0}"'.format(XML_FN.getOriginalPath()),
+            'There are {} custom filters defined.'.format(len(filter_list)),
+            'XML "{}"'.format(XML_FN.getOriginalPath()),
             '',
         ]
         report_slist.extend(r_full)
@@ -1503,20 +1534,20 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
 def filter_build_custom_filters(PATHS, settings, control_dic,
     filter_list, main_filter_dic, machines_dic, render_dic, assets_dic):
     # --- Clean 'filters' directory JSON files ---
-    log_info('filter_build_custom_filters() Cleaning dir "{0}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
+    log_info('filter_build_custom_filters() Cleaning dir "{}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
     pDialog.update(0)
     file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
     num_files = len(file_list)
     if num_files > 1:
-        log_info('Found {0} files'.format(num_files))
+        log_info('Found {} files'.format(num_files))
         processed_items = 0
         for file in file_list:
             pDialog.update((processed_items*100) // num_files)
             if file.endswith('.json'):
                 full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
-                # log_debug('UNLINK "{0}"'.format(full_path))
+                # log_debug('UNLINK "{}"'.format(full_path))
                 os.unlink(full_path)
             processed_items += 1
     pDialog.update(100)
@@ -1524,8 +1555,8 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
 
     # --- Report header ---
     r_full = []
-    r_full.append('Number of machines {0}'.format(len(main_filter_dic)))
-    r_full.append('Number of filters {0}'.format(len(filter_list)))
+    r_full.append('Number of machines {}'.format(len(main_filter_dic)))
+    r_full.append('Number of filters {}'.format(len(filter_list)))
     r_full.append('')
 
     # --- Traverse list of filters, build filter index and compute filter list ---
@@ -1537,11 +1568,11 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
     for f_definition in filter_list:
         # --- Initialise ---
         f_name = f_definition['name']
-        log_debug('filter_build_custom_filters() Processing filter "{0}"'.format(f_name))
-        # log_debug('f_definition = {0}'.format(unicode(f_definition)))
+        log_debug('filter_build_custom_filters() Processing filter "{}"'.format(f_name))
+        # log_debug('f_definition = {}'.format(unicode(f_definition)))
 
         # --- Initial progress ---
-        pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{0}" ...'.format(f_name))
+        pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{}" ...'.format(f_name))
 
         # --- Do filtering ---
         filtered_machine_dic = filter_mame_Default(main_filter_dic)
@@ -1580,14 +1611,14 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
         writing_ticks_end = time.time()
         writing_time = writing_ticks_end - writing_ticks_start
-        log_debug('JSON writing time {0:.4f} s'.format(writing_time))
+        log_debug('JSON writing time {:.4f} s'.format(writing_time))
 
         # --- Final progress ---
         processed_items += 1
 
         # --- Report ---
-        r_full.append('Filter "{0}"'.format(f_name))
-        r_full.append('{0} machines'.format(len(filtered_machine_dic)))
+        r_full.append('Filter "{}"'.format(f_name))
+        r_full.append('{} machines'.format(len(filtered_machine_dic)))
         r_full.append('')
 
     # --- Save custom filter index ---
@@ -1600,11 +1631,11 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # --- Write MAME scanner reports ---
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()))
+    log_info('Writing report "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()))
     with open(PATHS.REPORT_CF_DB_BUILD_PATH.getPath(), 'w') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
-            'File "{0}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()),
+            'File "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()),
             '',
         ]
         report_slist.extend(r_full)

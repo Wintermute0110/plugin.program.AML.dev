@@ -7176,21 +7176,21 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
 
     # At this point paths have been verified and exists.
     ROM_path_FN = FileName(settings['rom_path'])
-    log_info('mame_scan_MAME_ROMs() ROM dir OP {0}'.format(ROM_path_FN.getOriginalPath()))
-    log_info('mame_scan_MAME_ROMs() ROM dir  P {0}'.format(ROM_path_FN.getPath()))
+    log_info('mame_scan_MAME_ROMs() ROM dir OP {}'.format(ROM_path_FN.getOriginalPath()))
+    log_info('mame_scan_MAME_ROMs() ROM dir  P {}'.format(ROM_path_FN.getPath()))
 
     if options_dic['scan_CHDs']:
         CHD_path_FN = FileName(settings['chd_path'])
-        log_info('mame_scan_MAME_ROMs() CHD dir OP {0}'.format(CHD_path_FN.getOriginalPath()))
-        log_info('mame_scan_MAME_ROMs() CHD dir  P {0}'.format(CHD_path_FN.getPath()))
+        log_info('mame_scan_MAME_ROMs() CHD dir OP {}'.format(CHD_path_FN.getOriginalPath()))
+        log_info('mame_scan_MAME_ROMs() CHD dir  P {}'.format(CHD_path_FN.getPath()))
     else:
         CHD_path_FN = FileName('')
         log_info('Scan of CHDs disabled.')
 
     if options_dic['scan_Samples']:
         Samples_path_FN = FileName(settings['samples_path'])
-        log_info('mame_scan_MAME_ROMs() Samples OP {0}'.format(Samples_path_FN.getOriginalPath()))
-        log_info('mame_scan_MAME_ROMs() Samples P {0}'.format(Samples_path_FN.getPath()))
+        log_info('mame_scan_MAME_ROMs() Samples OP {}'.format(Samples_path_FN.getOriginalPath()))
+        log_info('mame_scan_MAME_ROMs() Samples P  {}'.format(Samples_path_FN.getPath()))
     else:
         Samples_path_FN = FileName('')
         log_info('Scan of Samples disabled.')
@@ -7254,9 +7254,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
                 ROM_FN = misc_search_file_cache(ROM_path_str, rom, MAME_ROM_EXTS)
                 if ROM_FN:
                     have_rom_list[i] = True
-                    m_have_str_list.append('HAVE ROM {0}'.format(rom))
+                    m_have_str_list.append('HAVE ROM {}'.format(rom))
                 else:
-                    m_miss_str_list.append('MISS ROM {0}'.format(rom))
+                    m_miss_str_list.append('MISS ROM {}'.format(rom))
             if all(have_rom_list):
                 # --- All ZIP files required to run this machine exist ---
                 scan_march_ROM_have += 1
@@ -7277,9 +7277,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
                 Sample_FN = misc_search_file_cache(Samples_path_str, sample, MAME_SAMPLE_EXTS)
                 if ROM_FN:
                     have_sample_list[i] = True
-                    m_have_str_list.append('HAVE SAM {0}'.format(sample))
+                    m_have_str_list.append('HAVE SAM {}'.format(sample))
                 else:
-                    m_miss_str_list.append('MISS SAM {0}'.format(sample))
+                    m_miss_str_list.append('MISS SAM {}'.format(sample))
             if all(have_sample_list):
                 scan_march_SAM_have += 1
                 Sample_flag = 'S'
@@ -7295,7 +7295,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         fs_set_Sample_flag(assets_dic[key], Sample_flag)
 
         # --- Disks ---
-        # >> Machines with CHDs: 2spicy, sfiii2
+        # Machines with CHDs: 2spicy, sfiii2
         chd_list = machine_archives_dic[key]['CHDs']
         if chd_list and options_dic['scan_CHDs']:
             scan_march_CHD_total += 1
@@ -7309,9 +7309,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
                 CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
                 if CHD_FN:
                     has_chd_list[idx] = True
-                    m_have_str_list.append('HAVE CHD {0}'.format(chd_name))
+                    m_have_str_list.append('HAVE CHD {}'.format(chd_name))
                 else:
-                    m_miss_str_list.append('MISS CHD {0}'.format(chd_name))
+                    m_miss_str_list.append('MISS CHD {}'.format(chd_name))
             if all(has_chd_list):
                 scan_march_CHD_have += 1
                 CHD_flag = 'C'
@@ -7327,10 +7327,10 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         fs_set_CHD_flag(assets_dic[key], CHD_flag)
 
         # >> Build FULL, HAVE and MISSING reports.
-        r_full_list.append('Machine {0} "{1}"'.format(key, machines_render[key]['description']))
+        r_full_list.append('Machine {} "{}"'.format(key, machines_render[key]['description']))
         if machines_render[key]['cloneof']:
             cloneof = machines_render[key]['cloneof']
-            r_full_list.append('cloneof {0} "{1}"'.format(cloneof, machines_render[cloneof]['description']))
+            r_full_list.append('cloneof {} "{}"'.format(cloneof, machines_render[cloneof]['description']))
         if not rom_list and not sample_list and not chd_list:
             r_full_list.append('Machine has no ROMs, Samples and/or CHDs')
         else:
@@ -7340,44 +7340,44 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
 
         # In the HAVE report include machines if and only if every required file is there.
         if m_have_str_list and not m_miss_str_list:
-            r_have_list.append('Machine {0} "{1}"'.format(key, machines_render[key]['description']))
+            r_have_list.append('Machine {} "{}"'.format(key, machines_render[key]['description']))
             if machines_render[key]['cloneof']:
                 cloneof = machines_render[key]['cloneof']
-                r_have_list.append('cloneof {0} "{1}"'.format(cloneof, machines_render[cloneof]['description']))
+                r_have_list.append('cloneof {} "{}"'.format(cloneof, machines_render[cloneof]['description']))
             r_have_list.extend(m_have_str_list)
             r_have_list.extend(m_miss_str_list)
             r_have_list.append('')
 
         # In the MISSING report include machines if anything is missing.
         if m_miss_str_list:
-            r_miss_list.append('Machine {0} "{1}"'.format(key, machines_render[key]['description']))
+            r_miss_list.append('Machine {} "{}"'.format(key, machines_render[key]['description']))
             if machines_render[key]['cloneof']:
                 cloneof = machines_render[key]['cloneof']
-                r_miss_list.append('cloneof {0} "{1}"'.format(cloneof, machines_render[cloneof]['description']))
+                r_miss_list.append('cloneof {} "{}"'.format(cloneof, machines_render[cloneof]['description']))
             r_miss_list.extend(m_have_str_list)
             r_miss_list.extend(m_miss_str_list)
             r_miss_list.append('')
 
-        # >> Progress dialog
+        # Progress dialog
         processed_machines += 1
     pDialog.close()
 
-    # >> Write MAME scanner reports
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
+    # Write MAME scanner reports
+    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'w') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
             'This report shows all the scanned MAME machines.',
             '',
-            'MAME ROM path     "{0}"'.format(ROM_path_str),
-            'MAME Samples path "{0}"'.format(Samples_path_str),
-            'MAME CHD path     "{0}"'.format(CHD_path_str),
+            'MAME ROM path     "{}"'.format(ROM_path_str),
+            'MAME Samples path "{}"'.format(Samples_path_str),
+            'MAME CHD path     "{}"'.format(CHD_path_str),
             '',
         ]
         report_slist.extend(r_full_list)
         file.write('\n'.join(report_slist).encode('utf-8'))
 
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
+    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
@@ -7385,9 +7385,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             'ROM ZIP files, Sample ZIP files and CHD files.',
             'Machines that no require files are not listed.',
             '',
-            'MAME ROM path     "{0}"'.format(ROM_path_str),
-            'MAME Samples path "{0}"'.format(Samples_path_str),
-            'MAME CHD path     "{0}"'.format(CHD_path_str),
+            'MAME ROM path     "{}"'.format(ROM_path_str),
+            'MAME Samples path "{}"'.format(Samples_path_str),
+            'MAME CHD path     "{}"'.format(CHD_path_str),
             '',
         ]
         if not r_have_list:
@@ -7395,7 +7395,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         report_slist.extend(r_have_list)
         file.write('\n'.join(report_slist).encode('utf-8'))
 
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
+    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
@@ -7403,9 +7403,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             'ROM ZIP files, Sample ZIP files or CHD files.',
             'Machines that no require files are not listed.',
             '',
-            'MAME ROM path     "{0}"'.format(ROM_path_str),
-            'MAME Samples path "{0}"'.format(Samples_path_str),
-            'MAME CHD path     "{0}"'.format(CHD_path_str),
+            'MAME ROM path     "{}"'.format(ROM_path_str),
+            'MAME Samples path "{}"'.format(Samples_path_str),
+            'MAME CHD path     "{}"'.format(CHD_path_str),
             '',
         ]
         if not r_miss_list:
@@ -7427,9 +7427,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         'This report shows all missing MAME machine ROM ZIP files.',
         'Each missing ROM ZIP appears only once, but more than one machine may be affected.',
         '',
-        'MAME ROM path     "{0}"'.format(ROM_path_str),
-        'MAME Samples path "{0}"'.format(Samples_path_str),
-        'MAME CHD path     "{0}"'.format(CHD_path_str),
+        'MAME ROM path     "{}"'.format(ROM_path_str),
+        'MAME Samples path "{}"'.format(Samples_path_str),
+        'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
     for rom_name in ROM_ZIP_list:
@@ -7439,11 +7439,11 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_ROM_ZIP_files_have += 1
         else:
             scan_ROM_ZIP_files_missing += 1
-            r_list.append('Missing ROM {0}'.format(rom_name))
+            r_list.append('Missing ROM {}'.format(rom_name))
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath()))
+    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'w') as file:
         if scan_ROM_ZIP_files_missing == 0:
             r_list.append('Congratulations!!! You have no missing ROM ZIP files.')
@@ -7463,9 +7463,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         'This report shows all missing MAME machine Sample ZIP files.',
         'Each missing Sample ZIP appears only once, but more than one machine may be affected.',
         '',
-        'MAME ROM path     "{0}"'.format(ROM_path_str),
-        'MAME Samples path "{0}"'.format(Samples_path_str),
-        'MAME CHD path     "{0}"'.format(CHD_path_str),
+        'MAME ROM path     "{}"'.format(ROM_path_str),
+        'MAME Samples path "{}"'.format(Samples_path_str),
+        'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
     for sample_name in Sample_ZIP_list:
@@ -7475,11 +7475,11 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_Samples_ZIP_have += 1
         else:
             scan_Samples_ZIP_missing += 1
-            r_list.append('Missing Sample {0}'.format(sample_name))
+            r_list.append('Missing Sample {}'.format(sample_name))
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath()))
+    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), 'w') as file:
         if scan_Samples_ZIP_missing == 0:
             r_list.append('Congratulations!!! You have no missing Sample ZIP files.')
@@ -7497,9 +7497,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         'This report shows all missing MAME machine CHDs',
         'Each missing CHD appears only once, but more than one machine may be affected.',
         '',
-        'MAME ROM path     "{0}"'.format(ROM_path_str),
-        'MAME Samples path "{0}"'.format(Samples_path_str),
-        'MAME CHD path     "{0}"'.format(CHD_path_str),
+        'MAME ROM path     "{}"'.format(ROM_path_str),
+        'MAME Samples path "{}"'.format(Samples_path_str),
+        'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
     for chd_name in CHD_list:
@@ -7509,11 +7509,11 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_CHD_files_have += 1
         else:
             scan_CHD_files_missing += 1
-            r_list.append('Missing CHD {0}'.format(chd_name))
+            r_list.append('Missing CHD {}'.format(chd_name))
         processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines)
     pDialog.close()
-    log_info('Writing report "{0}"'.format(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath()))
+    log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath()))
     with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'w') as file:
         if scan_CHD_files_missing == 0:
             r_list.append('Congratulations!!! You have no missing CHD files.')

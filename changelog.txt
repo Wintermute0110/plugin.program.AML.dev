@@ -24,9 +24,6 @@ WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that inc
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
-WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
-         Github wiki.
-
 WIP      [MANUALS] Increase the number of supported PDF filters.
          This may require A LOT of Python coding.
 
@@ -65,19 +62,22 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
 
 WIP      [CORE] Port the addon to Kodi Matrix and Python 3.
 
+WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
+         Github wiki.
+
 
 [B]Advanced MAME Launcher | version 0.10.0 | xx August 2020[/B]
 
 WIP      [CORE] Create branch python2 and place series 0.10.x into this branch.
 
-WIP      [FILTERS] Implement filtering options NoMissingROMs, NoMissingCHDs
+FEATURE  [FILTERS] Implement filtering options NoMissingROMs, NoMissingCHDs
          and NoMissingSamples.
          See https://forum.kodi.tv/showthread.php?tid=304186&pid=2964109#pid2964109
 
-WIP NOW  [CORE] In the Setup Plugin CM, Build Fanarts and 3D boxes: add an option to
+FEATURE  [CORE] In the Setup Plugin CM, Build Fanarts and 3D boxes: add an option to
          build all the Fanarts and 3D boxes at once.
 
-WIP NOW  [CORE] Reorganised the Setup Plugin context menu a bit.
+FEATURE  [CORE] Reorganised the Setup Plugin context menu a bit.
 
 FEATURE  [CORE] Export MAME info with billyc999s XML format.
 

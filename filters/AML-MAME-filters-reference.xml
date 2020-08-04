@@ -12,6 +12,12 @@
       -->
     <Options>NoClones, NoCoin, NoCoinLess, NoROMs, NoCHDs, NoSamples</Options>
     <Options>NoMature, NoBIOS, NoMechanical, NoImperfect, NoNonworking</Options>
+    <Options>NoVertical, NoHorizontal</Options>
+
+    <!--
+        The following options rely on the ROM/CHD scanner.
+    -->
+    <Options>NoMissingROMs, NoMissingCHDs, NoMissingSamples</Options>
 
     <!--
         As shown in "Machines by Driver" filter.

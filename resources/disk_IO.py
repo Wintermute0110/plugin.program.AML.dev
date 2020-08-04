@@ -1247,7 +1247,7 @@ def fs_process_RETRO_MAME2003PLUS(PATHS, settings, AML_version_str, options_dic)
 # Valid ROM: ROM has CRC hash
 # Valid CHD: CHD has SHA1 hash
 def fs_initial_flags(machine, machine_render, m_roms):
-    # >> Machine has own ROMs (at least one ROM is valid and has empty 'merge' attribute)
+    # Machine has own ROMs (at least one ROM is valid and has empty 'merge' attribute)
     has_own_ROMs = False
     for rom in m_roms['roms']:
         if not rom['merge'] and rom['crc']:
@@ -1255,7 +1255,7 @@ def fs_initial_flags(machine, machine_render, m_roms):
             break
     flag_ROM = '?' if has_own_ROMs else '-'
 
-    # >> Machine has own CHDs
+    # Machine has own CHDs
     has_own_CHDs = False
     for rom in m_roms['disks']:
         if not rom['merge'] and rom['sha1']:
@@ -1263,62 +1263,59 @@ def fs_initial_flags(machine, machine_render, m_roms):
             break
     flag_CHD = '?' if has_own_CHDs else '-'
 
-    # >> Samples flag
+    # Samples flag
     flag_Samples = '?' if machine['sampleof'] else '-'
 
-    # >> Software List flag
+    # Software List flag
     flag_SL = 'L' if machine['softwarelists'] else '-'
 
-    # >> Devices flag
+    # Pluggable Devices flag
     if machine['devices']:
         num_dev_mandatory = 0
         for device in machine['devices']:
-            if device['att_mandatory']: 
+            if device['att_mandatory']:
                 flag_Devices = 'D'
                 num_dev_mandatory += 1
             else: 
                 flag_Devices  = 'd'
         if num_dev_mandatory > 2:
-            message = 'Machine {0} has {1} mandatory devices'.format(machine_name, num_dev_mandatory)
+            message = 'Machine {} has {} mandatory devices'.format(machine_name, num_dev_mandatory)
             raise CriticalError(message)
     else:
         flag_Devices  = '-'
 
-    return '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
+    return '{}{}{}{}{}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
 #
-# Update m_render using Python pass by assignment.
+# Update m_dic using Python pass by assignment.
 # Remember that strings are inmutable!
 #
-def fs_set_ROM_flag(m_render, new_ROM_flag):
-    old_flags_str = m_render['flags']
-    flag_ROM      = old_flags_str[0]
-    flag_CHD      = old_flags_str[1]
-    flag_Samples  = old_flags_str[2]
-    flag_SL       = old_flags_str[3]
-    flag_Devices  = old_flags_str[4]
-    flag_ROM      = new_ROM_flag
-    m_render['flags'] = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
+def fs_set_ROM_flag(m_dic, new_ROM_flag):
+    flag_ROM = m_dic['flags'][0]
+    flag_CHD = m_dic['flags'][1]
+    flag_Samples = m_dic['flags'][2]
+    flag_SL = m_dic['flags'][3]
+    flag_Devices = m_dic['flags'][4]
+    flag_ROM = new_ROM_flag
+    m_dic['flags'] = '{}{}{}{}{}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
-def fs_set_CHD_flag(m_render, new_CHD_flag):
-    old_flags_str = m_render['flags']
-    flag_ROM      = old_flags_str[0]
-    flag_CHD      = old_flags_str[1]
-    flag_Samples  = old_flags_str[2]
-    flag_SL       = old_flags_str[3]
-    flag_Devices  = old_flags_str[4]
+def fs_set_CHD_flag(m_dic, new_CHD_flag):
+    flag_ROM = m_dic['flags'][0]
+    flag_CHD = m_dic['flags'][1]
+    flag_Samples = m_dic['flags'][2]
+    flag_SL = m_dic['flags'][3]
+    flag_Devices = m_dic['flags'][4]
     flag_CHD      = new_CHD_flag
-    m_render['flags'] = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
+    m_dic['flags'] = '{}{}{}{}{}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
-def fs_set_Sample_flag(m_render, new_Sample_flag):
-    old_flags_str = m_render['flags']
-    flag_ROM      = old_flags_str[0]
-    flag_CHD      = old_flags_str[1]
-    flag_Samples  = old_flags_str[2]
-    flag_SL       = old_flags_str[3]
-    flag_Devices  = old_flags_str[4]
+def fs_set_Sample_flag(m_dic, new_Sample_flag):
+    flag_ROM = m_dic['flags'][0]
+    flag_CHD = m_dic['flags'][1]
+    flag_Samples = m_dic['flags'][2]
+    flag_SL = m_dic['flags'][3]
+    flag_Devices = m_dic['flags'][4]
     flag_Samples  = new_Sample_flag
-    m_render['flags'] = '{0}{1}{2}{3}{4}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
+    m_dic['flags'] = '{}{}{}{}{}'.format(flag_ROM, flag_CHD, flag_Samples, flag_SL, flag_Devices)
 
 # -------------------------------------------------------------------------------------------------
 # MAME hashed databases. Useful when only one item in a big dictionary is required.

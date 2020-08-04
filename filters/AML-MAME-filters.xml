@@ -251,4 +251,13 @@
     <Controls>STANDARD_CONTROLS</Controls>
 </MAMEFilter>
 
+<MAMEFilter>
+    <Name>Complete machines</Name>
+    <Plot>Complete arcade machines, that is, machines with no missing ROMs, CHDs, or Samples, with standard genres and controls, excluding mature, BIOSes, mechanical and non-working machines.</Plot>
+    <Options>NoClones, NoCoinLess, NoMature, NoBIOS, NoMechanical, NoNonworking</Options>
+    <Options>NoMissingROMs, NoMissingCHDs, NoMissingSamples</Options>
+    <Genre>STANDARD_GENRES</Genre>
+    <Controls>STANDARD_CONTROLS</Controls>
+</MAMEFilter>
+
 </Advanced_MAME_Launcher_custom_filters>
