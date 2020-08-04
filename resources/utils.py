@@ -14,20 +14,19 @@
 # See the GNU General Public License for more details.
 
 # --- Python standard library ---
-from __future__ import unicode_literals
-import sys
-import os
-import shutil
-import time
-import random
-import hashlib
-import urlparse
-import re
-import string
 import fnmatch
+import hashlib
+import os
+import random
+import re
+import shutil
+import string
+import sys
+import time
+import urllib.parse
 
 # --- Kodi modules ---
-# >> FileName class uses xbmc.translatePath()
+# FileName class uses xbmc.translatePath()
 try:
     import xbmc
     KODI_RUNTIME_AVAILABLE_UTILS = True

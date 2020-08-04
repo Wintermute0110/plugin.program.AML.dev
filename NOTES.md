@@ -6,6 +6,42 @@
 
  * From now on (August 2020), focus will be on release `1.x.y`. Make some features from **Pyhton 3** will be backported to **Python 2**.
 
+## Porting Python 2 to Pyhton 3 ##
+
+**Language specific issues**
+
+ * The `urlparse` module is renamed to `urllib.parse` in Python 3.
+
+ * The `StringIO` modules is gone. Use `io.StringIO` and `io.BytesIO`.
+
+ * Python 2 unicode object is str object in Python 3. Python 2 str object is bytes in Python 3.
+
+ * Python 2 dict.iteritems() must be converted to dict.items() 
+
+   [StackOverflow: When should iteritems() be used instead of items()?](https://stackoverflow.com/questions/13998492/when-should-iteritems-be-used-instead-of-items)
+
+**Kodi specific issues**
+
+ * AML Python 2 is Krypton compatible. This means in Python 3 all the API updates can be applied.
+
+ * Addon settings must be converted
+
+  [Kodi wiki: Addon settings conversion](https://kodi.wiki/view/Add-on_settings_conversion)
+
+ * Kodi functions now take/return Unicode strings (str type in Python 3)
+
+  [Kodi six](https://github.com/romanvm/kodi.six)
+
+ * Leia change: Addon setting functions getSettingBool(), getSettingInt(), etc.
+
+**References**
+
+[The Conservative Python 3 Porting Guide](https://portingguide.readthedocs.io/en/latest/index.html)
+
+[Kodi forum: Changes to the python API for Kodi Matrix (v19)](https://forum.kodi.tv/showthread.php?tid=344263)
+
+[Kodi forum: Changes to the python API for Kodi Leia](https://forum.kodi.tv/showthread.php?tid=303073)
+
 ## Installing multiple Kodi versions in Windows for development ##
 
  1. Download and then run the executable installer file for the version of Kodi you want to install. **You must change the installation location from the default location.**

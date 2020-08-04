@@ -14,9 +14,6 @@
 # See the GNU General Public License for more details.
 
 # --- Python standard library ---
-from __future__ import unicode_literals
-from __future__ import division
-
 import hashlib
 import json
 import os
@@ -25,7 +22,7 @@ import random
 import shutil
 import sys
 import time
-import urlparse
+import urllib.parse
 
 # --- Kodi modules ---
 try:
@@ -58,44 +55,44 @@ def set_log_level(level):
 def log_variable(var_name, var):
     if current_log_level < LOG_DEBUG: return
     log_text = 'AML DUMP : Dumping variable "{}"\n{}'.format(var_name, pprint.pformat(var))
-    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGERROR)
+    xbmc.log(log_text, level = xbmc.LOGERROR)
 
-# For Unicode stuff in Kodi log see http://forum.kodi.tv/showthread.php?tid=144677
-#
+# For Unicode stuff in Kodi log see https://github.com/romanvm/kodi.six
 def log_debug_KR(str_text):
     if current_log_level < LOG_DEBUG: return
 
-    # if it is str we assume it's "utf-8" encoded.
+    # if it is bytes we assume it's "utf-8" encoded.
     # will fail if called with other encodings (latin, etc).
-    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
+    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
                               
-    # At this point we are sure str_text is a unicode string.
+    # At this point we are sure str_text is a Unicode string.
+    # Kodi functions require Unicode strings as arguments.
     log_text = 'AML DEBUG: ' + str_text
-    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
+    xbmc.log(log_text, level = xbmc.LOGNOTICE)
 
 def log_verb_KR(str_text):
     if current_log_level < LOG_VERB: return
-    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
+    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
     log_text = 'AML VERB : ' + str_text
-    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
+    xbmc.log(log_text, level = xbmc.LOGNOTICE)
 
 def log_info_KR(str_text):
     if current_log_level < LOG_INFO: return
-    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
+    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
     log_text = 'AML INFO : ' + str_text
-    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGNOTICE)
+    xbmc.log(log_text, level = xbmc.LOGNOTICE)
 
 def log_warning_KR(str_text):
     if current_log_level < LOG_WARNING: return
-    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
+    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
     log_text = 'AML WARN : ' + str_text
-    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGWARNING)
+    xbmc.log(log_text, level = xbmc.LOGWARNING)
 
 def log_error_KR(str_text):
     if current_log_level < LOG_ERROR: return
-    if isinstance(str_text, str): str_text = str_text.decode('utf-8')
+    if isinstance(str_text, bytes): str_text = str_text.decode('utf-8')
     log_text = 'AML ERROR: ' + str_text
-    xbmc.log(log_text.encode('utf-8'), level = xbmc.LOGERROR)
+    xbmc.log(log_text, level = xbmc.LOGERROR)
 
 #
 # Replacement functions when running outside Kodi with the standard Python interpreter.

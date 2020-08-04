@@ -15,9 +15,9 @@
 
 # --- Python standard library ---
 # NOTE String literals are needed in this file so unicode_literals cannot be defined.
-# from __future__ import unicode_literals
+#      Is this because of the PDF library???
+import io
 import pprint
-import StringIO
 import struct
 import time
 import types
@@ -38,7 +38,7 @@ from .utils_kodi import *
 from .disk_IO import *
 
 # --- Load pdfrw module ---
-__addon_id__ = xbmcaddon.Addon().getAddonInfo('id').decode('utf-8')
+__addon_id__ = xbmcaddon.Addon().getAddonInfo('id')
 pdfrw_FN = FileName('special://home/addons').pjoin(__addon_id__).pjoin('pdfrw')
 sys.path.insert(0, pdfrw_FN.getPath())
 from pdfrw import PdfReader

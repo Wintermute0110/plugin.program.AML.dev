@@ -14,25 +14,20 @@
 # See the GNU General Public License for more details.
 
 # --- Python standard library ---
-from __future__ import unicode_literals
-from __future__ import division
-import json
-import io
+# cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
+# Using ElementTree seems to solve the problem
 import codecs
-import time
-import subprocess
-import re
-import threading
 import copy
+import io
+import json
+import re
+import subprocess
+import threading
+import time
+import xml.etree.ElementTree as ET
+
 # import gc
 # import resource # Module not available on Windows
-
-# --- XML stuff ---
-# >> cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
-# import xml.etree.cElementTree as ET
-
-# >> Using ElementTree seems to solve the problem
-import xml.etree.ElementTree as ET
 
 # --- AEL packages ---
 from .constants import *

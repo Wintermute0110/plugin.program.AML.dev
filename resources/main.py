@@ -14,14 +14,11 @@
 # See the GNU General Public License for more details.
 
 # --- Python standard library ---
-# Division operator: https://www.python.org/dev/peps/pep-0238/
-from __future__ import unicode_literals
-from __future__ import division
 import copy
 import datetime
 import os
 import subprocess
-import urlparse
+import urllib.parse
 
 # --- Kodi stuff ---
 import xbmc
@@ -47,12 +44,12 @@ from .graphics import *
 
 # --- Addon object (used to access settings) ---
 __addon__         = xbmcaddon.Addon()
-__addon_id__      = __addon__.getAddonInfo('id').decode('utf-8')
-__addon_name__    = __addon__.getAddonInfo('name').decode('utf-8')
-__addon_version__ = __addon__.getAddonInfo('version').decode('utf-8')
-__addon_author__  = __addon__.getAddonInfo('author').decode('utf-8')
-__addon_profile__ = __addon__.getAddonInfo('profile').decode('utf-8')
-__addon_type__    = __addon__.getAddonInfo('type').decode('utf-8')
+__addon_id__      = __addon__.getAddonInfo('id')
+__addon_name__    = __addon__.getAddonInfo('name')
+__addon_version__ = __addon__.getAddonInfo('version')
+__addon_author__  = __addon__.getAddonInfo('author')
+__addon_profile__ = __addon__.getAddonInfo('profile')
+__addon_type__    = __addon__.getAddonInfo('type')
 
 # --- Plugin database indices ---
 # _PATH is a filename | _DIR is a directory
@@ -253,7 +250,7 @@ g_settings = {}
 g_base_url = ''
 g_addon_handle = 0
 g_content_type = ''
-g_time_str = unicode(datetime.datetime.now())
+g_time_str = str(datetime.datetime.now())
 
 g_mame_icon = ''
 g_mame_fanart = ''
@@ -307,7 +304,7 @@ def run_plugin(addon_argv):
     # --- Process URL ---
     g_base_url = addon_argv[0]
     g_addon_handle = int(addon_argv[1])
-    args = urlparse.parse_qs(addon_argv[2][1:])
+    args = urllib.parse.parse_qs(addon_argv[2][1:])
     # log_debug('args = {0}'.format(args))
     # Interestingly, if plugin is called as type executable then args is empty.
     # However, if plugin is called as type game then Kodi adds the following
@@ -529,87 +526,87 @@ def get_settings():
     o = __addon__
 
     # --- Main operation ---
-    g_settings['op_mode_raw']    = int(o.getSetting('op_mode_raw'))
-    g_settings['enable_SL']      = True if o.getSetting('enable_SL') == 'true' else False
-    g_settings['mame_prog']      = o.getSetting('mame_prog').decode('utf-8')
-    g_settings['SL_hash_path'] = o.getSetting('SL_hash_path').decode('utf-8')
+    g_settings['op_mode_raw'] = o.getSettingInt('op_mode_raw')
+    g_settings['enable_SL'] = o.getSettingBool('enable_SL')
+    g_settings['mame_prog'] = o.getSettingString('mame_prog')
+    g_settings['SL_hash_path'] = o.getSettingString('SL_hash_path')
 
-    g_settings['retroarch_prog'] = o.getSetting('retroarch_prog').decode('utf-8')
-    g_settings['libretro_dir']   = o.getSetting('libretro_dir').decode('utf-8')
-    g_settings['xml_2003_path']  = o.getSetting('xml_2003_path').decode('utf-8')
+    g_settings['retroarch_prog'] = o.getSettingString('retroarch_prog')
+    g_settings['libretro_dir'] = o.getSettingString('libretro_dir')
+    g_settings['xml_2003_path'] = o.getSettingString('xml_2003_path')
 
     # --- Optional paths ---
-    g_settings['rom_path']     = o.getSetting('rom_path').decode('utf-8')
-    g_settings['assets_path']  = o.getSetting('assets_path').decode('utf-8')
-    g_settings['dats_path']    = o.getSetting('dats_path').decode('utf-8')
-    g_settings['chd_path']     = o.getSetting('chd_path').decode('utf-8')
-    g_settings['samples_path'] = o.getSetting('samples_path').decode('utf-8')
-    g_settings['SL_rom_path']  = o.getSetting('SL_rom_path').decode('utf-8')
-    g_settings['SL_chd_path']  = o.getSetting('SL_chd_path').decode('utf-8')
+    g_settings['rom_path'] = o.getSettingString('rom_path')
+    g_settings['assets_path'] = o.getSettingString('assets_path')
+    g_settings['dats_path'] = o.getSettingString('dats_path')
+    g_settings['chd_path'] = o.getSettingString('chd_path')
+    g_settings['samples_path'] = o.getSettingString('samples_path')
+    g_settings['SL_rom_path'] = o.getSettingString('SL_rom_path')
+    g_settings['SL_chd_path'] = o.getSettingString('SL_chd_path')
 
     # --- ROM sets ---
-    g_settings['mame_rom_set'] = int(o.getSetting('mame_rom_set'))
-    g_settings['mame_chd_set'] = int(o.getSetting('mame_chd_set'))
-    g_settings['SL_rom_set'] = int(o.getSetting('SL_rom_set'))
-    g_settings['SL_chd_set'] = int(o.getSetting('SL_chd_set'))
+    g_settings['mame_rom_set'] = o.getSettingInt('mame_rom_set')
+    g_settings['mame_chd_set'] = o.getSettingInt('mame_chd_set')
+    g_settings['SL_rom_set'] = o.getSettingInt('SL_rom_set')
+    g_settings['SL_chd_set'] = o.getSettingInt('SL_chd_set')
 
     # Misc separator
-    g_settings['filter_XML'] = o.getSetting('filter_XML').decode('utf-8')
-    g_settings['generate_history_infolabel'] = True if o.getSetting('generate_history_infolabel') == 'true' else False
+    g_settings['filter_XML'] = o.getSettingString('filter_XML')
+    g_settings['generate_history_infolabel'] = o.getSettingBool('generate_history_infolabel')
 
     # --- Display I ---
-    g_settings['display_launcher_notify']    = True if o.getSetting('display_launcher_notify') == 'true' else False
-    g_settings['mame_view_mode']             = int(o.getSetting('mame_view_mode'))
-    g_settings['sl_view_mode']               = int(o.getSetting('sl_view_mode'))
-    g_settings['display_hide_Mature']        = True if o.getSetting('display_hide_Mature') == 'true' else False
-    g_settings['display_hide_BIOS']          = True if o.getSetting('display_hide_BIOS') == 'true' else False
-    g_settings['display_hide_imperfect']     = True if o.getSetting('display_hide_imperfect') == 'true' else False
-    g_settings['display_hide_nonworking']    = True if o.getSetting('display_hide_nonworking') == 'true' else False
-    g_settings['display_rom_available']      = True if o.getSetting('display_rom_available') == 'true' else False
-    g_settings['display_chd_available']      = True if o.getSetting('display_chd_available') == 'true' else False
-    g_settings['display_SL_items_available'] = True if o.getSetting('display_SL_items_available') == 'true' else False
-    g_settings['display_MAME_flags']         = True if o.getSetting('display_MAME_flags') == 'true' else False
-    g_settings['display_SL_flags']           = True if o.getSetting('display_SL_flags') == 'true' else False
+    g_settings['display_launcher_notify'] = o.getSettingBool('display_launcher_notify')
+    g_settings['mame_view_mode'] = o.getSettingInt('mame_view_mode')
+    g_settings['sl_view_mode'] = o.getSettingInt('sl_view_mode')
+    g_settings['display_hide_Mature'] = o.getSettingBool('display_hide_Mature')
+    g_settings['display_hide_BIOS'] = o.getSettingBool('display_hide_BIOS')
+    g_settings['display_hide_imperfect'] = o.getSettingBool('display_hide_imperfect')
+    g_settings['display_hide_nonworking'] = o.getSettingBool('display_hide_nonworking')
+    g_settings['display_rom_available'] = o.getSettingBool('display_rom_available')
+    g_settings['display_chd_available'] = o.getSettingBool('display_chd_available')
+    g_settings['display_SL_items_available'] = o.getSettingBool('display_SL_items_available')
+    g_settings['display_MAME_flags'] = o.getSettingBool('display_MAME_flags')
+    g_settings['display_SL_flags'] = o.getSettingBool('display_SL_flags')
 
     # --- Display II ---
-    g_settings['display_main_filters']    = True if o.getSetting('display_main_filters') == 'true' else False
-    g_settings['display_binary_filters']  = True if o.getSetting('display_binary_filters') == 'true' else False
-    g_settings['display_catalog_filters'] = True if o.getSetting('display_catalog_filters') == 'true' else False
-    g_settings['display_DAT_browser']     = True if o.getSetting('display_DAT_browser') == 'true' else False
-    g_settings['display_SL_browser']      = True if o.getSetting('display_SL_browser') == 'true' else False
-    g_settings['display_custom_filters']  = True if o.getSetting('display_custom_filters') == 'true' else False
-    g_settings['display_ROLs']            = True if o.getSetting('display_ROLs') == 'true' else False
-    g_settings['display_MAME_favs']       = True if o.getSetting('display_MAME_favs') == 'true' else False
-    g_settings['display_MAME_most']       = True if o.getSetting('display_MAME_most') == 'true' else False
-    g_settings['display_MAME_recent']     = True if o.getSetting('display_MAME_recent') == 'true' else False
-    g_settings['display_SL_favs']         = True if o.getSetting('display_SL_favs') == 'true' else False
-    g_settings['display_SL_most']         = True if o.getSetting('display_SL_most') == 'true' else False
-    g_settings['display_SL_recent']       = True if o.getSetting('display_SL_recent') == 'true' else False
-    g_settings['display_utilities']       = True if o.getSetting('display_utilities') == 'true' else False
-    g_settings['display_global_reports']  = True if o.getSetting('display_global_reports') == 'true' else False
+    g_settings['display_main_filters'] = o.getSettingBool('display_main_filters')
+    g_settings['display_binary_filters'] = o.getSettingBool('display_binary_filters')
+    g_settings['display_catalog_filters'] = o.getSettingBool('display_catalog_filters')
+    g_settings['display_DAT_browser'] = o.getSettingBool('display_DAT_browser')
+    g_settings['display_SL_browser'] = o.getSettingBool('display_SL_browser')
+    g_settings['display_custom_filters'] = o.getSettingBool('display_custom_filters')
+    g_settings['display_ROLs'] = o.getSettingBool('display_ROLs')
+    g_settings['display_MAME_favs'] = o.getSettingBool('display_MAME_favs')
+    g_settings['display_MAME_most'] = o.getSettingBool('display_MAME_most')
+    g_settings['display_MAME_recent'] = o.getSettingBool('display_MAME_recent')
+    g_settings['display_SL_favs'] = o.getSettingBool('display_SL_favs')
+    g_settings['display_SL_most'] = o.getSettingBool('display_SL_most')
+    g_settings['display_SL_recent'] = o.getSettingBool('display_SL_recent')
+    g_settings['display_utilities'] = o.getSettingBool('display_utilities')
+    g_settings['display_global_reports'] = o.getSettingBool('display_global_reports')
 
     # --- Artwork / Assets ---
-    g_settings['display_hide_trailers']    = True if o.getSetting('display_hide_trailers') == 'true' else False
-    g_settings['artwork_mame_icon']        = int(o.getSetting('artwork_mame_icon'))
-    g_settings['artwork_mame_fanart']      = int(o.getSetting('artwork_mame_fanart'))
-    g_settings['artwork_SL_icon']          = int(o.getSetting('artwork_SL_icon'))
-    g_settings['artwork_SL_fanart']        = int(o.getSetting('artwork_SL_fanart'))
+    g_settings['display_hide_trailers'] = o.getSettingBool('display_hide_trailers')
+    g_settings['artwork_mame_icon'] = o.getSettingInt('artwork_mame_icon')
+    g_settings['artwork_mame_fanart'] = o.getSettingInt('artwork_mame_fanart')
+    g_settings['artwork_SL_icon'] = o.getSettingInt('artwork_SL_icon')
+    g_settings['artwork_SL_fanart'] = o.getSettingInt('artwork_SL_fanart')
 
     # --- Advanced ---
-    g_settings['media_state_action']             = int(o.getSetting('media_state_action'))
-    g_settings['delay_tempo']                    = int(round(float(o.getSetting('delay_tempo'))))
-    g_settings['suspend_audio_engine']           = True if o.getSetting('suspend_audio_engine') == 'true' else False
-    g_settings['suspend_screensaver'] = True if o.getSetting('suspend_screensaver') == 'true' else False
-    g_settings['toggle_window']                  = True if o.getSetting('toggle_window') == 'true' else False
-    g_settings['log_level']                      = int(o.getSetting('log_level'))
-    g_settings['debug_enable_MAME_render_cache'] = True if o.getSetting('debug_enable_MAME_render_cache') == 'true' else False
-    g_settings['debug_enable_MAME_asset_cache']  = True if o.getSetting('debug_enable_MAME_asset_cache') == 'true' else False
-    g_settings['debug_MAME_item_data']           = True if o.getSetting('debug_MAME_item_data') == 'true' else False
-    g_settings['debug_MAME_ROM_DB_data']         = True if o.getSetting('debug_MAME_ROM_DB_data') == 'true' else False
-    g_settings['debug_MAME_Audit_DB_data']       = True if o.getSetting('debug_MAME_Audit_DB_data') == 'true' else False
-    g_settings['debug_SL_item_data']             = True if o.getSetting('debug_SL_item_data') == 'true' else False
-    g_settings['debug_SL_ROM_DB_data']           = True if o.getSetting('debug_SL_ROM_DB_data') == 'true' else False
-    g_settings['debug_SL_Audit_DB_data']         = True if o.getSetting('debug_SL_Audit_DB_data') == 'true' else False
+    g_settings['media_state_action'] = o.getSettingInt('media_state_action')
+    g_settings['delay_tempo'] = o.getSettingInt('delay_tempo')
+    g_settings['suspend_audio_engine'] = o.getSettingBool('suspend_audio_engine')
+    g_settings['suspend_screensaver'] = o.getSettingBool('suspend_screensaver')
+    g_settings['toggle_window'] = o.getSettingBool('toggle_window')
+    g_settings['log_level'] = o.getSettingInt('log_level')
+    g_settings['debug_enable_MAME_render_cache'] = o.getSettingBool('debug_enable_MAME_render_cache')
+    g_settings['debug_enable_MAME_asset_cache']  = o.getSettingBool('debug_enable_MAME_asset_cache')
+    g_settings['debug_MAME_item_data'] = o.getSettingBool('debug_MAME_item_data')
+    g_settings['debug_MAME_ROM_DB_data'] = o.getSettingBool('debug_MAME_ROM_DB_data')
+    g_settings['debug_MAME_Audit_DB_data'] = o.getSettingBool('debug_MAME_Audit_DB_data')
+    g_settings['debug_SL_item_data'] = o.getSettingBool('debug_SL_item_data')
+    g_settings['debug_SL_ROM_DB_data'] = o.getSettingBool('debug_SL_ROM_DB_data')
+    g_settings['debug_SL_Audit_DB_data'] = o.getSettingBool('debug_SL_Audit_DB_data')
 
     # --- Transform settings data ---
     g_settings['op_mode'] = OP_MODE_LIST[g_settings['op_mode_raw']]
@@ -1060,7 +1057,7 @@ def render_root_list():
         num_SL_CHDs = 0
         num_SL_mixed = 0
         num_SL_empty = 0
-        for l_name, l_dic in SL_index_dic.iteritems():
+        for l_name, l_dic in SL_index_dic.items():
             num_SL_all += 1
             if l_dic['num_with_ROMs'] > 0 and l_dic['num_with_CHDs'] == 0:
                 num_SL_ROMs += 1
