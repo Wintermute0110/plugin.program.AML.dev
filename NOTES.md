@@ -6,6 +6,30 @@
 
  * From now on (August 2020), focus will be on release `1.x.y`. Make some features from **Pyhton 3** will be backported to **Python 2**.
 
+## Installing multiple Kodi versions in Windows for development ##
+
+ 1. Download and then run the executable installer file for the version of Kodi you want to install. **You must change the installation location from the default location.**
+
+ 2. Find the `Kodi.exe` application in the folder you just installed. Right-click the application, and choose ‘Create shortcut’.
+
+ 3. Right-click the shortcut you created, and choose ‘Properties’. In the ‘Target’ text field, add the argument `-p` after the file location. 
+
+ 4. If you create another shortcut and fail to add the `-p` switch, or start this portable version of Kodi in a different way, then the default userdata folder will be created, and might overwrite your standard installation of Kodi, if you have one.
+
+ 5. The Kodi folder which you nominated above will be used to host the data folder (where Kodi stores scripts, plugins, skins and userdata) in a subfolder named `portable_data`. `portable_data` is mapped to `special://home/`.
+
+**References**
+
+[Kodi Wiki: HOW-TO:Install_Kodi_for_Windows](https://kodi.wiki/view/HOW-TO:Install_Kodi_for_Windows#Portable_Mode)
+
+## Installing multiple Kodi versions in Linux for development ##
+
+WRITE ME.
+
+**References**
+
+[Kodi forum: Development with several Kodi versions and userdata directories](https://forum.kodi.tv/showthread.php?tid=356152)
+
 ## Publishing AML into the Kodi repository (Tortoise Git) ##
 
 **Setup**
