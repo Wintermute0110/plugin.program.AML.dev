@@ -5466,17 +5466,17 @@ def check_SL_DB_before_rendering_machines(g_PATHS, g_settings, control_dic):
 # Setup plugin databases
 # -------------------------------------------------------------------------------------------------
 def command_context_setup_plugin():
-    dialog = xbmcgui.Dialog()
-    menu_item = dialog.select('Setup plugin', [
-        'All in one (Extract, Build, Scan, Filters)',
-        'All in one (Extract, Build, Scan, Filters, Audit)',
+    menu_item = xbmcgui.Dialog().select('Setup plugin', [
+        'All in one (Extract, Build, Scan, Artwork, Filters)',
+        'All in one (Extract, Build, Scan, Artwork, Filters, Audit)',
         'Extract/Process MAME.xml',
         'Build all databases',
         'Scan everything and build plots',
-        'Build Fanarts/3D Boxes ...',
+        'Build missing Fanarts and 3D boxes',
         'Audit MAME machine ROMs/CHDs',
         'Audit SL ROMs/CHDs',
         'Step by step ...',
+        'Build Fanarts/3D Boxes ...',
     ])
     if menu_item < 0: return
 
@@ -5485,8 +5485,8 @@ def command_context_setup_plugin():
     if menu_item == 0 or menu_item == 1:
         DO_AUDIT = True if menu_item == 1 else False
         log_info('command_context_setup_plugin() All in one step starting ...')
-        log_info('Operation mode {0}'.format(g_settings['op_mode']))
-        log_info('DO_AUDIT {0}'.format(DO_AUDIT))
+        log_info('Operation mode {}'.format(g_settings['op_mode']))
+        log_info('DO_AUDIT {}'.format(DO_AUDIT))
 
         # Errors are checked inside the fs_extract*() or fs_process*() functions.
         options_dic = {}
@@ -5814,235 +5814,9 @@ def command_context_setup_plugin():
         # --- So long and thanks for all the fish ---
         kodi_notify('All ROM/asset scanning finished')
 
-    # --- Build Fanarts ---
+    # --- Build missing Fanarts and 3D boxes ---
     elif menu_item == 5:
-        submenu = dialog.select('Build Fanarts', [
-            'Test MAME Fanart',
-            'Test Software List item Fanart',
-            'Test MAME 3D Box',
-            'Test Software List item 3D Box',
-            'Build missing MAME Fanarts',
-            'Rebuild all MAME Fanarts',
-            'Build missing Software Lists Fanarts',
-            'Rebuild all Software Lists Fanarts',
-            'Build missing MAME 3D Boxes',
-            'Rebuild all MAME 3D Boxes',
-            'Build missing Software Lists 3D Boxes',
-            'Rebuild all Software Lists 3D Boxes',
-        ])
-        if submenu < 0: return
-        # >> Check if Pillow library is available. Abort if not.
-        if not PILLOW_AVAILABLE:
-            kodi_dialog_OK('Pillow Python library is not available. Aborting Fanart generation.')
-            return
-
-        # --- Test MAME Fanart ---
-        if submenu == 0:
-            log_info('command_context_setup_plugin() Testing MAME Fanart generation ...')
-            Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
-            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/MAME_assets')
-            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('MAME_Fanart.png')
-            log_debug('Testing MAME Fanart generation ...')
-            log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
-            log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
-            log_debug('Asset_path_FN "{0}"'.format(Asset_path_FN.getPath()))
-
-            # --- Load Fanart template from XML file ---
-            layout = graphs_load_MAME_Fanart_template(Template_FN)
-            if not layout:
-                kodi_dialog_OK('Error loading XML MAME Fanart layout.')
-                return
-
-            # ---Use hard-coded assets ---
-            m_name = 'dino'
-            assets_dic = {
-                m_name : {
-                    'title'      : Asset_path_FN.pjoin('dino_title.png').getPath(),
-                    'snap'       : Asset_path_FN.pjoin('dino_snap.png').getPath(),
-                    'flyer'      : Asset_path_FN.pjoin('dino_flyer.png').getPath(),
-                    'cabinet'    : Asset_path_FN.pjoin('dino_cabinet.png').getPath(),
-                    'artpreview' : Asset_path_FN.pjoin('dino_artpreview.png').getPath(),
-                    'PCB'        : Asset_path_FN.pjoin('dino_PCB.png').getPath(),
-                    'clearlogo'  : Asset_path_FN.pjoin('dino_clearlogo.png').getPath(),
-                    'cpanel'     : Asset_path_FN.pjoin('dino_cpanel.png').getPath(),
-                    'marquee'    : Asset_path_FN.pjoin('dino_marquee.png').getPath(),
-                }
-            }
-            graphs_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN,
-                CANVAS_COLOR = (25, 25, 50), test_flag = True)
-
-            # >> Display Fanart
-            log_debug('Rendering fanart "{0}"'.format(Fanart_FN.getPath()))
-            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
-
-        # --- Test SL Fanart ---
-        elif submenu == 1:
-            log_info('command_context_setup_plugin() Testing SL Fanart generation ...')
-            Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
-            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
-            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_Fanart.png')
-            log_debug('Testing Software List Fanart generation ...')
-            log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
-            log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
-            log_debug('Asset_path_FN "{0}"'.format(Asset_path_FN.getPath()))
-
-            # --- Load Fanart template from XML file ---
-            layout = graphs_load_SL_Fanart_template(Template_FN)
-            if not layout:
-                kodi_dialog_OK('Error loading XML Software List Fanart layout.')
-                return
-
-            # --- Use hard-coded assets ---
-            SL_name = '32x'
-            m_name = 'doom'
-            assets_dic = {
-                m_name : {
-                    'title'    : Asset_path_FN.pjoin('doom_title.png').getPath(),
-                    'snap'     : Asset_path_FN.pjoin('doom_snap.png').getPath(),
-                    'boxfront' : Asset_path_FN.pjoin('doom_boxfront.png').getPath(),
-                }
-            }
-            graphs_build_SL_Fanart(
-                g_PATHS, layout, SL_name, m_name, assets_dic, Fanart_FN,
-                CANVAS_COLOR = (50, 50, 75), test_flag = True)
-
-            # --- Display Fanart ---
-            log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
-            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
-
-        # --- Test MAME 3D Box ---
-        elif submenu == 2:
-            log_info('command_context_setup_plugin() Testing MAME 3D Box generation ...')
-            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('MAME_3dbox.png')
-            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/MAME_assets')
-            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
-            TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
-            log_debug('Testing Software List Fanart generation ...')
-            log_debug('Fanart_FN      "{0}"'.format(Fanart_FN.getPath()))
-            log_debug('Asset_path_FN  "{0}"'.format(Asset_path_FN.getPath()))
-            log_debug('TProjection_FN "{0}"'.format(TProjection_FN.getPath()))
-
-            # Load 3D texture projection matrix
-            t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
-
-            # Create fake asset dictionaries
-            # m_name = 'dino'
-            # assets_dic = {
-            #     m_name : {
-            #         'flyer'      : Asset_path_FN.pjoin('dino_flyer.png').getPath(),
-            #         'clearlogo'  : Asset_path_FN.pjoin('dino_clearlogo.png').getPath(),
-            #     }
-            # }
-            SL_name = 'MAME'
-            m_name = 'mslug'
-            assets_dic = {
-                m_name : {
-                    'flyer'     : Asset_path_FN.pjoin('mslug_flyer.png').getPath(),
-                    'clearlogo' : Asset_path_FN.pjoin('mslug_clearlogo.png').getPath(),
-                }
-            }
-
-            pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Generating test MAME 3D Box ... ')
-            pDialog.update(15)
-            graphs_build_MAME_3DBox(
-                g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
-                CANVAS_COLOR = (50, 50, 75), test_flag = True)
-            pDialog.update(100)
-            pDialog.close()
-
-            # --- Display Fanart ---
-            log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
-            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
-
-        # --- Test SL 3D Box ---
-        elif submenu == 3:
-            log_info('command_context_setup_plugin() Testing SL 3D Box generation ...')
-            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
-            TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
-            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_3dbox.png')
-            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
-            log_debug('Testing Software List Fanart generation ...')
-            log_debug('TProjection_FN "{0}"'.format(TProjection_FN.getPath()))
-            log_debug('Fanart_FN      "{0}"'.format(Fanart_FN.getPath()))
-            log_debug('Asset_path_FN  "{0}"'.format(Asset_path_FN.getPath()))
-
-            # Load 3D texture projection matrix
-            t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
-
-            # Create fake asset dictionaries
-            # SL items in AML don't have clearlogo, but for testing is OK.
-            SL_name = 'genesis'
-            m_name = 'sonic3'
-            assets_dic = {
-                m_name : {
-                    'boxfront'  : Asset_path_FN.pjoin('sonic3_boxfront.png').getPath(),
-                    'clearlogo' : Asset_path_FN.pjoin('sonic3_clearlogo.png').getPath(),
-                }
-            }
-
-            pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Generating test SL 3D Box ... ')
-            pDialog.update(15)
-            graphs_build_MAME_3DBox(
-                g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
-                CANVAS_COLOR = (50, 50, 75), test_flag = True)
-            pDialog.update(100)
-            pDialog.close()
-
-            # --- Display Fanart ---
-            log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
-            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
-
-        # --- 4 -> Build missing MAME Fanarts ---
-        # --- 5 -> Rebuild all MAME Fanarts ---
-        # For a complete MAME artwork collection, rebuilding all Fanarts will take hours!
-        elif submenu == 4 or submenu == 5:
-            BUILD_MISSING = True if submenu == 4 else False
-            if BUILD_MISSING:
-                log_info('command_context_setup_plugin() Building missing Fanarts ...')
-            else:
-                log_info('command_context_setup_plugin() Rebuilding all Fanarts ...')
-            data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
-            if data_dic['abort']: return
-            # Kodi notification inside this function.
-            graphs_build_MAME_Fanart_all(g_PATHS, g_settings, data_dic)
-
-        # --- 6 -> Missing SL Fanarts ---
-        # --- 7 -> Rebuild all SL Fanarts ---
-        elif submenu == 6 or submenu == 7:
-            BUILD_MISSING = True if submenu == 6 else False
-            if BUILD_MISSING:
-                log_info('command_context_setup_plugin() Building missing Software Lists Fanarts ...')
-            else:
-                log_info('command_context_setup_plugin() Rebuilding all Software Lists Fanarts ...')
-            data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
-
-        # --- 8 -> Missing MAME 3D Boxes ---
-        # --- 9 -> Rebuild all MAME 3D Boxes ---
-        elif submenu == 8 or submenu == 9:
-            BUILD_MISSING = True if submenu == 8 else False
-            if BUILD_MISSING:
-                log_info('command_context_setup_plugin() Building missing MAME 3D Boxes ...')
-            else:
-                log_info('command_context_setup_plugin() Rebuilding all MAME 3D Boxes ...')
-            data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_MAME_3DBox_all(g_PATHS, g_settings, data_dic)
-
-        # --- 10 -> Missing SL 3D Boxes ---
-        # --- 11 -> Rebuild all SL 3D Boxes ---
-        elif submenu == 10 or submenu == 11:
-            BUILD_MISSING = True if submenu == 10 else False
-            if BUILD_MISSING:
-                log_info('command_context_setup_plugin() Building missing Software Lists 3D Boxes ...')
-            else:
-                log_info('command_context_setup_plugin() Rebuilding all Software Lists 3D Boxes ...')
-            data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
-            if data_dic['abort']: return
-            graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
+        pass
 
     # --- Audit MAME machine ROMs/CHDs ---
     # NOTE It is likekely that this function will take a looong time. It is important that the
@@ -6080,9 +5854,9 @@ def command_context_setup_plugin():
         mame_audit_SL_all(g_PATHS, g_settings, control_dic, SL_index)
         kodi_notify('Software Lists audit finished')
 
-    # --- Build Step by Step ---
+    # --- Build Step by Step (database and scanner) ---
     elif menu_item == 8:
-        submenu = dialog.select('Setup plugin (step by step)', [
+        submenu = xbmcgui.Dialog().select('Setup plugin (step by step)', [
             'Build MAME databases',
             'Build MAME Audit/Scanner databases',
             'Build MAME Catalogs',
@@ -6399,6 +6173,236 @@ def command_context_setup_plugin():
             fs_build_asset_cache(g_PATHS, g_settings, db_dic['control_dic'],
                 db_dic['cache_index'], db_dic['assets'])
             kodi_notify('MAME machine and asset caches rebuilt')
+
+    # --- Build Fanarts/3D boxes ---
+    elif menu_item == 9:
+        submenu = xbmcgui.Dialog().select('Build Fanarts', [
+            'Test MAME Fanart',
+            'Test Software List item Fanart',
+            'Test MAME 3D Box',
+            'Test Software List item 3D Box',
+            'Build missing MAME Fanarts',
+            'Rebuild all MAME Fanarts',
+            'Build missing Software Lists Fanarts',
+            'Rebuild all Software Lists Fanarts',
+            'Build missing MAME 3D Boxes',
+            'Rebuild all MAME 3D Boxes',
+            'Build missing Software Lists 3D Boxes',
+            'Rebuild all Software Lists 3D Boxes',
+        ])
+        if submenu < 0: return
+        # Check if Pillow library is available. Abort if not.
+        if not PILLOW_AVAILABLE:
+            kodi_dialog_OK('Pillow Python library is not available. Aborting Fanart generation.')
+            return
+
+        # --- Test MAME Fanart ---
+        if submenu == 0:
+            log_info('command_context_setup_plugin() Testing MAME Fanart generation ...')
+            Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
+            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/MAME_assets')
+            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('MAME_Fanart.png')
+            log_debug('Testing MAME Fanart generation ...')
+            log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
+            log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
+            log_debug('Asset_path_FN "{0}"'.format(Asset_path_FN.getPath()))
+
+            # --- Load Fanart template from XML file ---
+            layout = graphs_load_MAME_Fanart_template(Template_FN)
+            if not layout:
+                kodi_dialog_OK('Error loading XML MAME Fanart layout.')
+                return
+
+            # ---Use hard-coded assets ---
+            m_name = 'dino'
+            assets_dic = {
+                m_name : {
+                    'title'      : Asset_path_FN.pjoin('dino_title.png').getPath(),
+                    'snap'       : Asset_path_FN.pjoin('dino_snap.png').getPath(),
+                    'flyer'      : Asset_path_FN.pjoin('dino_flyer.png').getPath(),
+                    'cabinet'    : Asset_path_FN.pjoin('dino_cabinet.png').getPath(),
+                    'artpreview' : Asset_path_FN.pjoin('dino_artpreview.png').getPath(),
+                    'PCB'        : Asset_path_FN.pjoin('dino_PCB.png').getPath(),
+                    'clearlogo'  : Asset_path_FN.pjoin('dino_clearlogo.png').getPath(),
+                    'cpanel'     : Asset_path_FN.pjoin('dino_cpanel.png').getPath(),
+                    'marquee'    : Asset_path_FN.pjoin('dino_marquee.png').getPath(),
+                }
+            }
+            graphs_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN,
+                CANVAS_COLOR = (25, 25, 50), test_flag = True)
+
+            # >> Display Fanart
+            log_debug('Rendering fanart "{0}"'.format(Fanart_FN.getPath()))
+            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
+
+        # --- Test SL Fanart ---
+        elif submenu == 1:
+            log_info('command_context_setup_plugin() Testing SL Fanart generation ...')
+            Template_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
+            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
+            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_Fanart.png')
+            log_debug('Testing Software List Fanart generation ...')
+            log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
+            log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
+            log_debug('Asset_path_FN "{0}"'.format(Asset_path_FN.getPath()))
+
+            # --- Load Fanart template from XML file ---
+            layout = graphs_load_SL_Fanart_template(Template_FN)
+            if not layout:
+                kodi_dialog_OK('Error loading XML Software List Fanart layout.')
+                return
+
+            # --- Use hard-coded assets ---
+            SL_name = '32x'
+            m_name = 'doom'
+            assets_dic = {
+                m_name : {
+                    'title'    : Asset_path_FN.pjoin('doom_title.png').getPath(),
+                    'snap'     : Asset_path_FN.pjoin('doom_snap.png').getPath(),
+                    'boxfront' : Asset_path_FN.pjoin('doom_boxfront.png').getPath(),
+                }
+            }
+            graphs_build_SL_Fanart(
+                g_PATHS, layout, SL_name, m_name, assets_dic, Fanart_FN,
+                CANVAS_COLOR = (50, 50, 75), test_flag = True)
+
+            # --- Display Fanart ---
+            log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
+            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
+
+        # --- Test MAME 3D Box ---
+        elif submenu == 2:
+            log_info('command_context_setup_plugin() Testing MAME 3D Box generation ...')
+            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('MAME_3dbox.png')
+            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/MAME_assets')
+            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
+            TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
+            log_debug('Testing Software List Fanart generation ...')
+            log_debug('Fanart_FN      "{0}"'.format(Fanart_FN.getPath()))
+            log_debug('Asset_path_FN  "{0}"'.format(Asset_path_FN.getPath()))
+            log_debug('TProjection_FN "{0}"'.format(TProjection_FN.getPath()))
+
+            # Load 3D texture projection matrix
+            t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
+
+            # Create fake asset dictionaries
+            # m_name = 'dino'
+            # assets_dic = {
+            #     m_name : {
+            #         'flyer'      : Asset_path_FN.pjoin('dino_flyer.png').getPath(),
+            #         'clearlogo'  : Asset_path_FN.pjoin('dino_clearlogo.png').getPath(),
+            #     }
+            # }
+            SL_name = 'MAME'
+            m_name = 'mslug'
+            assets_dic = {
+                m_name : {
+                    'flyer'     : Asset_path_FN.pjoin('mslug_flyer.png').getPath(),
+                    'clearlogo' : Asset_path_FN.pjoin('mslug_clearlogo.png').getPath(),
+                }
+            }
+
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Generating test MAME 3D Box ... ')
+            pDialog.update(15)
+            graphs_build_MAME_3DBox(
+                g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
+                CANVAS_COLOR = (50, 50, 75), test_flag = True)
+            pDialog.update(100)
+            pDialog.close()
+
+            # --- Display Fanart ---
+            log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
+            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
+
+        # --- Test SL 3D Box ---
+        elif submenu == 3:
+            log_info('command_context_setup_plugin() Testing SL 3D Box generation ...')
+            # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
+            TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
+            Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_3dbox.png')
+            Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
+            log_debug('Testing Software List Fanart generation ...')
+            log_debug('TProjection_FN "{0}"'.format(TProjection_FN.getPath()))
+            log_debug('Fanart_FN      "{0}"'.format(Fanart_FN.getPath()))
+            log_debug('Asset_path_FN  "{0}"'.format(Asset_path_FN.getPath()))
+
+            # Load 3D texture projection matrix
+            t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
+
+            # Create fake asset dictionaries
+            # SL items in AML don't have clearlogo, but for testing is OK.
+            SL_name = 'genesis'
+            m_name = 'sonic3'
+            assets_dic = {
+                m_name : {
+                    'boxfront'  : Asset_path_FN.pjoin('sonic3_boxfront.png').getPath(),
+                    'clearlogo' : Asset_path_FN.pjoin('sonic3_clearlogo.png').getPath(),
+                }
+            }
+
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.create('Advanced MAME Launcher', 'Generating test SL 3D Box ... ')
+            pDialog.update(15)
+            graphs_build_MAME_3DBox(
+                g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
+                CANVAS_COLOR = (50, 50, 75), test_flag = True)
+            pDialog.update(100)
+            pDialog.close()
+
+            # --- Display Fanart ---
+            log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
+            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
+
+        # --- 4 -> Build missing MAME Fanarts ---
+        # --- 5 -> Rebuild all MAME Fanarts ---
+        # For a complete MAME artwork collection, rebuilding all Fanarts will take hours!
+        elif submenu == 4 or submenu == 5:
+            BUILD_MISSING = True if submenu == 4 else False
+            if BUILD_MISSING:
+                log_info('command_context_setup_plugin() Building missing Fanarts ...')
+            else:
+                log_info('command_context_setup_plugin() Rebuilding all Fanarts ...')
+            data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            # Kodi notification inside this function.
+            graphs_build_MAME_Fanart_all(g_PATHS, g_settings, data_dic)
+
+        # --- 6 -> Missing SL Fanarts ---
+        # --- 7 -> Rebuild all SL Fanarts ---
+        elif submenu == 6 or submenu == 7:
+            BUILD_MISSING = True if submenu == 6 else False
+            if BUILD_MISSING:
+                log_info('command_context_setup_plugin() Building missing Software Lists Fanarts ...')
+            else:
+                log_info('command_context_setup_plugin() Rebuilding all Software Lists Fanarts ...')
+            data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
+
+        # --- 8 -> Missing MAME 3D Boxes ---
+        # --- 9 -> Rebuild all MAME 3D Boxes ---
+        elif submenu == 8 or submenu == 9:
+            BUILD_MISSING = True if submenu == 8 else False
+            if BUILD_MISSING:
+                log_info('command_context_setup_plugin() Building missing MAME 3D Boxes ...')
+            else:
+                log_info('command_context_setup_plugin() Rebuilding all MAME 3D Boxes ...')
+            data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_MAME_3DBox_all(g_PATHS, g_settings, data_dic)
+
+        # --- 10 -> Missing SL 3D Boxes ---
+        # --- 11 -> Rebuild all SL 3D Boxes ---
+        elif submenu == 10 or submenu == 11:
+            BUILD_MISSING = True if submenu == 10 else False
+            if BUILD_MISSING:
+                log_info('command_context_setup_plugin() Building missing Software Lists 3D Boxes ...')
+            else:
+                log_info('command_context_setup_plugin() Rebuilding all Software Lists 3D Boxes ...')
+            data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
 
 #
 # Execute utilities.
