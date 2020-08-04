@@ -5816,7 +5816,32 @@ def command_context_setup_plugin():
 
     # --- Build missing Fanarts and 3D boxes ---
     elif menu_item == 5:
-        pass
+        BUILD_MISSING = True
+        log_info('command_context_setup_plugin() Building missing Fanarts and 3D boxes...')
+
+        # Check if Pillow library is available. Abort if not.
+        if not PILLOW_AVAILABLE:
+            kodi_dialog_OK('Pillow Python library is not available. Aborting Fanart generation.')
+            return
+
+        # Kodi notifications inside graphs_build_*() functions.
+        # If the cache is enabled is it updated inside graphs_build_*() functions.
+        # This is ineficcient and must be changed!!!
+        data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
+        if data_dic['abort']: return
+        graphs_build_MAME_Fanart_all(g_PATHS, g_settings, data_dic)
+
+        data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
+        if data_dic['abort']: return
+        graphs_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
+
+        data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
+        if data_dic['abort']: return
+        graphs_build_MAME_3DBox_all(g_PATHS, g_settings, data_dic)
+
+        data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
+        if data_dic['abort']: return
+        graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
 
     # --- Audit MAME machine ROMs/CHDs ---
     # NOTE It is likekely that this function will take a looong time. It is important that the
@@ -6181,16 +6206,19 @@ def command_context_setup_plugin():
             'Test Software List item Fanart',
             'Test MAME 3D Box',
             'Test Software List item 3D Box',
+            'Build all missing Fanarts',
+            'Build all missing 3D boxes',
             'Build missing MAME Fanarts',
-            'Rebuild all MAME Fanarts',
             'Build missing Software Lists Fanarts',
-            'Rebuild all Software Lists Fanarts',
             'Build missing MAME 3D Boxes',
-            'Rebuild all MAME 3D Boxes',
             'Build missing Software Lists 3D Boxes',
+            'Rebuild all MAME Fanarts',
+            'Rebuild all Software Lists Fanarts',
+            'Rebuild all MAME 3D Boxes',
             'Rebuild all Software Lists 3D Boxes',
         ])
         if submenu < 0: return
+
         # Check if Pillow library is available. Abort if not.
         if not PILLOW_AVAILABLE:
             kodi_dialog_OK('Pillow Python library is not available. Aborting Fanart generation.')
@@ -6203,9 +6231,9 @@ def command_context_setup_plugin():
             Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/MAME_assets')
             Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('MAME_Fanart.png')
             log_debug('Testing MAME Fanart generation ...')
-            log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
-            log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
-            log_debug('Asset_path_FN "{0}"'.format(Asset_path_FN.getPath()))
+            log_debug('Template_FN   "{}"'.format(Template_FN.getPath()))
+            log_debug('Fanart_FN     "{}"'.format(Fanart_FN.getPath()))
+            log_debug('Asset_path_FN "{}"'.format(Asset_path_FN.getPath()))
 
             # --- Load Fanart template from XML file ---
             layout = graphs_load_MAME_Fanart_template(Template_FN)
@@ -6231,9 +6259,9 @@ def command_context_setup_plugin():
             graphs_build_MAME_Fanart(g_PATHS, layout, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (25, 25, 50), test_flag = True)
 
-            # >> Display Fanart
-            log_debug('Rendering fanart "{0}"'.format(Fanart_FN.getPath()))
-            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
+            # Display Fanart
+            log_debug('Rendering fanart "{}"'.format(Fanart_FN.getPath()))
+            xbmc.executebuiltin('ShowPicture("{}")'.format(Fanart_FN.getPath()))
 
         # --- Test SL Fanart ---
         elif submenu == 1:
@@ -6242,9 +6270,9 @@ def command_context_setup_plugin():
             Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
             Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_Fanart.png')
             log_debug('Testing Software List Fanart generation ...')
-            log_debug('Template_FN   "{0}"'.format(Template_FN.getPath()))
-            log_debug('Fanart_FN     "{0}"'.format(Fanart_FN.getPath()))
-            log_debug('Asset_path_FN "{0}"'.format(Asset_path_FN.getPath()))
+            log_debug('Template_FN   "{}"'.format(Template_FN.getPath()))
+            log_debug('Fanart_FN     "{}"'.format(Fanart_FN.getPath()))
+            log_debug('Asset_path_FN "{}"'.format(Asset_path_FN.getPath()))
 
             # --- Load Fanart template from XML file ---
             layout = graphs_load_SL_Fanart_template(Template_FN)
@@ -6267,8 +6295,8 @@ def command_context_setup_plugin():
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
 
             # --- Display Fanart ---
-            log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
-            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
+            log_debug('Displaying image "{}"'.format(Fanart_FN.getPath()))
+            xbmc.executebuiltin('ShowPicture("{}")'.format(Fanart_FN.getPath()))
 
         # --- Test MAME 3D Box ---
         elif submenu == 2:
@@ -6278,9 +6306,9 @@ def command_context_setup_plugin():
             # TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_56.json')
             TProjection_FN = g_PATHS.ADDON_CODE_DIR.pjoin('templates/3dbox_angleY_60.json')
             log_debug('Testing Software List Fanart generation ...')
-            log_debug('Fanart_FN      "{0}"'.format(Fanart_FN.getPath()))
-            log_debug('Asset_path_FN  "{0}"'.format(Asset_path_FN.getPath()))
-            log_debug('TProjection_FN "{0}"'.format(TProjection_FN.getPath()))
+            log_debug('Fanart_FN      "{}"'.format(Fanart_FN.getPath()))
+            log_debug('Asset_path_FN  "{}"'.format(Asset_path_FN.getPath()))
+            log_debug('TProjection_FN "{}"'.format(TProjection_FN.getPath()))
 
             # Load 3D texture projection matrix
             t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
@@ -6312,8 +6340,8 @@ def command_context_setup_plugin():
             pDialog.close()
 
             # --- Display Fanart ---
-            log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
-            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
+            log_debug('Displaying image "{}"'.format(Fanart_FN.getPath()))
+            xbmc.executebuiltin('ShowPicture("{}")'.format(Fanart_FN.getPath()))
 
         # --- Test SL 3D Box ---
         elif submenu == 3:
@@ -6323,9 +6351,9 @@ def command_context_setup_plugin():
             Fanart_FN = g_PATHS.ADDON_DATA_DIR.pjoin('SL_3dbox.png')
             Asset_path_FN = g_PATHS.ADDON_CODE_DIR.pjoin('media/SL_assets')
             log_debug('Testing Software List Fanart generation ...')
-            log_debug('TProjection_FN "{0}"'.format(TProjection_FN.getPath()))
-            log_debug('Fanart_FN      "{0}"'.format(Fanart_FN.getPath()))
-            log_debug('Asset_path_FN  "{0}"'.format(Asset_path_FN.getPath()))
+            log_debug('TProjection_FN "{}"'.format(TProjection_FN.getPath()))
+            log_debug('Fanart_FN      "{}"'.format(Fanart_FN.getPath()))
+            log_debug('Asset_path_FN  "{}"'.format(Asset_path_FN.getPath()))
 
             # Load 3D texture projection matrix
             t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
@@ -6351,55 +6379,101 @@ def command_context_setup_plugin():
             pDialog.close()
 
             # --- Display Fanart ---
-            log_debug('Displaying image "{0}"'.format(Fanart_FN.getPath()))
-            xbmc.executebuiltin('ShowPicture("{0}")'.format(Fanart_FN.getPath()))
+            log_debug('Displaying image "{}"'.format(Fanart_FN.getPath()))
+            xbmc.executebuiltin('ShowPicture("{}")'.format(Fanart_FN.getPath()))
 
-        # --- 4 -> Build missing MAME Fanarts ---
-        # --- 5 -> Rebuild all MAME Fanarts ---
-        # For a complete MAME artwork collection, rebuilding all Fanarts will take hours!
-        elif submenu == 4 or submenu == 5:
-            BUILD_MISSING = True if submenu == 4 else False
-            if BUILD_MISSING:
-                log_info('command_context_setup_plugin() Building missing Fanarts ...')
-            else:
-                log_info('command_context_setup_plugin() Rebuilding all Fanarts ...')
+        # --- Build all missing Fanarts ---
+        elif submenu == 4:
+            BUILD_MISSING = True
+            log_info('command_context_setup_plugin() Building all missing Fanarts...')
+
+            # Kodi notifications inside graphs_build_*() functions.
             data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
             if data_dic['abort']: return
-            # Kodi notification inside this function.
             graphs_build_MAME_Fanart_all(g_PATHS, g_settings, data_dic)
 
-        # --- 6 -> Missing SL Fanarts ---
-        # --- 7 -> Rebuild all SL Fanarts ---
-        elif submenu == 6 or submenu == 7:
-            BUILD_MISSING = True if submenu == 6 else False
-            if BUILD_MISSING:
-                log_info('command_context_setup_plugin() Building missing Software Lists Fanarts ...')
-            else:
-                log_info('command_context_setup_plugin() Rebuilding all Software Lists Fanarts ...')
             data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
             if data_dic['abort']: return
             graphs_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
 
-        # --- 8 -> Missing MAME 3D Boxes ---
-        # --- 9 -> Rebuild all MAME 3D Boxes ---
-        elif submenu == 8 or submenu == 9:
-            BUILD_MISSING = True if submenu == 8 else False
-            if BUILD_MISSING:
-                log_info('command_context_setup_plugin() Building missing MAME 3D Boxes ...')
-            else:
-                log_info('command_context_setup_plugin() Rebuilding all MAME 3D Boxes ...')
+        # --- Build all missing 3D boxes ---
+        elif submenu == 5:
+            BUILD_MISSING = True
+            log_info('command_context_setup_plugin() Building all missing 3D boxes...')
+
             data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
             if data_dic['abort']: return
             graphs_build_MAME_3DBox_all(g_PATHS, g_settings, data_dic)
 
-        # --- 10 -> Missing SL 3D Boxes ---
-        # --- 11 -> Rebuild all SL 3D Boxes ---
-        elif submenu == 10 or submenu == 11:
-            BUILD_MISSING = True if submenu == 10 else False
-            if BUILD_MISSING:
-                log_info('command_context_setup_plugin() Building missing Software Lists 3D Boxes ...')
-            else:
-                log_info('command_context_setup_plugin() Rebuilding all Software Lists 3D Boxes ...')
+            data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
+
+        # --- Build missing MAME Fanarts ---
+        elif submenu == 6:
+            BUILD_MISSING = True
+            log_info('command_context_setup_plugin() Building missing Fanarts...')
+            # Kodi notifications inside graphs_build_*() function.
+            data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_MAME_Fanart_all(g_PATHS, g_settings, data_dic)
+
+        # --- Missing SL Fanarts ---
+        elif submenu == 7:
+            BUILD_MISSING = True
+            log_info('command_context_setup_plugin() Building missing Software Lists Fanarts ...')
+            # Kodi notifications inside graphs_build_*() function.
+            data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
+
+        # --- Missing MAME 3D Boxes ---
+        elif submenu == 8:
+            BUILD_MISSING = True
+            log_info('command_context_setup_plugin() Building missing MAME 3D Boxes ...')
+            # Kodi notifications inside graphs_build_*() function.
+            data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_MAME_3DBox_all(g_PATHS, g_settings, data_dic)
+
+        # --- Missing SL 3D Boxes ---
+        elif submenu == 9:
+            BUILD_MISSING = True
+            log_info('command_context_setup_plugin() Building missing Software Lists 3D Boxes ...')
+            # Kodi notifications inside graphs_build_*() function.
+            data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
+
+        # --- Rebuild all MAME Fanarts ---
+        # For a complete MAME artwork collection, rebuilding all Fanarts will take hours!
+        elif submenu == 10:
+            BUILD_MISSING = False
+            log_info('command_context_setup_plugin() Rebuilding all Fanarts...')
+            data_dic = graphs_load_MAME_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_MAME_Fanart_all(g_PATHS, g_settings, data_dic)
+
+        # --- Rebuild all SL Fanarts ---
+        elif submenu == 11:
+            BUILD_MISSING = False
+            log_info('command_context_setup_plugin() Rebuilding all Software Lists Fanarts ...')
+            data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
+
+        # --- Rebuild all MAME 3D Boxes ---
+        elif submenu == 12:
+            BUILD_MISSING = False
+            log_info('command_context_setup_plugin() Rebuilding all MAME 3D Boxes ...')
+            data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_MAME_3DBox_all(g_PATHS, g_settings, data_dic)
+
+        # --- Rebuild all SL 3D Boxes ---
+        elif submenu == 13:
+            BUILD_MISSING = False
+            log_info('command_context_setup_plugin() Rebuilding all Software Lists 3D Boxes ...')
             data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
             if data_dic['abort']: return
             graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
