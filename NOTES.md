@@ -1,24 +1,60 @@
-## Launching MAME machines with media types (former MESS) ##
+## AML and Python 2 (Kodi Krypton and Leia) / Python 3 (Kodi Matrix)
 
-http://www.mess.org/mess/howto
+ * AML releases `0.9.x` and `0.10.x` will be **Python 2** for Kodi Krypton and Kodi Leia. **Python 2** code will be in branch `python2`.
 
-### Known media types in MAME ###
+ * AML releases `1.x.y` will be **Pyhton 3** for Kodi Matrix and up. **Pyhton 3** code will be in branch `master`.
 
- Name      | Short name | Machine example  |
------------|------------|------------------|
-cartridge  | cart       | 32x, sms, smspal |
-cassete    | cass       |                  |
-floppydisk | flop       |                  |
-quickload  | quick      |                  |
-snapshot   | dump       |                  |
-harddisk   | hard       |                  |
-cdrom      | cdrm       |                  |
-printer    | prin       |                  |
+ * From now on (August 2020), focus will be on release `1.x.y`. Make some features from **Pyhton 3** will be backported to **Python 2**.
+
+## Publishing AML into the Kodi repository (Tortoise Git) ##
+
+**Setup**
+
+First make sure the remote repository is OK. In `Tortoise Git`, `Settings`, in the `Remote` option there should be a remote named `upstream` with URL `https://github.com/xbmc/repo-plugins.git`.
+
+**Updating repository**
+
+Suppose we want to update the branch `krypton`. Use `Git show log` to make sure the repository is on the `krypton` branch.
+
+To update the working copy with the contents of upstream use `Pull` with remote `upstream` and remote branch `krypton`.
+
+**Update addon**
+
+Create a branch with `Create branch...`. The branch name must be `plugin.program.AML`. Make the description the same as the branch name. Use the `Switch/Checkout...` command to switch to the new branch.
+
+Make sure the repository is on the branch `plugin.program.AML`. Make the changes to update the addon and then do a single commit named `[plugin.program.AML] x.y.z`.
+
+Push the branch `plugin.program.AML` to the remote `origin`. Finally, open the pull request in Github.
+
+**Updating the pull request**
+
+Updating your pull request can be done by applying your changes and squashing them in the already present commit.
+
+**References**
+
+[Kodi xbmc-repoplugins: CONTRIBUTING](https://github.com/xbmc/repo-plugins/blob/master/CONTRIBUTING.md)
+
+## MAME implicit/explicit ROM merging ##
+
+ClrMAME Pro merges clone ROMs implicitly if a ROM with same CRC exists in the parent set. There is some info in PD forum about this.
+
+## Known media types in MAME ###
 
 Machines may have more than one media type. In this case, a number is appended at the end. For
 example, a machine with 2 cartriged slots has `cartridge1` and `cartridge2`.
 
-### Cartridges ###
+| Name       | Short name | Machine example  |
+|------------|------------|------------------|
+| cartridge  | cart       | 32x, sms, smspal |
+| cassete    | cass       |                  |
+| floppydisk | flop       |                  |
+| quickload  | quick      |                  |
+| snapshot   | dump       |                  |
+| harddisk   | hard       |                  |
+| cdrom      | cdrm       |                  |
+| printer    | prin       |                  |
+
+## Cartridges ###
 
 Most consoles have only one cartridge slot, for example `32x`.
 
@@ -65,10 +101,6 @@ mame abc110 -cart1 foo1.bin -cart2 foo2.bin
 
 ## Launching Software Lists ##
 
-http://www.mess.org/mess/howto#software_lists
-
-http://www.mess.org/mess/swlist_format
-
 Example of machines with SL: `32x`.
 
 ```
@@ -84,6 +116,12 @@ Example of machines with SL: `32x`.
     <softwarelist name="32x" status="original" filter="NTSC-U" />
 </machine>
 ```
+
+**References**
+
+[MESS wiki: HOWTO](http://mess.redump.net/mess/howto)
+
+[MESS wiki: Software List Format](http://mess.redump.net/mess/swlist_format)
 
 ## Special SL items in Software Lists ##
 
@@ -145,7 +183,7 @@ MAME 0.196, SL `neogeo`, item `aof` "Art of Fighting / Ryuuko no Ken (NGM-044 ~ 
 </software>
 ```
 
-## Memory consumption ##
+## AML memory consumption in Windows ##
 
 Windows 7 Ultimate version 6.1 64 bit, Kodi Krypton 17.6. MAME 0.197, Peak Working Set (Memory)
 Kodi is restarted before each test.
@@ -160,10 +198,9 @@ Build MAME Audit database, with INIs/DATs                                      -
 Build MAME database, with INIs/DATs, OPTION_COMPACT_JSON                       -> 870 MB
 Build MAME Audit database, with INIs/DATs, OPTION_COMPACT_JSON                 -> 905 MB
 
-I coded an interative JSON writer. See https://stackoverflow.com/questions/24239613/memoryerror-using-json-dumps
-Options: no ROM/Asset cache, with SLs, with INIs/DATs.
+I coded an interative JSON writer. See [Stackoverflow: memoryerror-using-json-dumps](https://stackoverflow.com/questions/24239613/memoryerror-using-json-dumps). Options: no ROM/Asset cache, with SLs, with INIs/DATs.
 
-Build all databases, older fast writer, OPTION_COMPACT_JSON -> 867 MB
+Build all databases, older fast writer, OPTION_COMPACT_JSON -> Peak memory 867 MB
 ```
 fs_write_JSON_file() "C:\Kodi\userdata\addon_data\plugin.program.AML\MAME_DB_main.json"
 fs_write_JSON_file() Writing time 8.258000 s
@@ -175,7 +212,7 @@ fs_write_JSON_file() "C:\Kodi\userdata\addon_data\plugin.program.AML\ROM_Audit_D
 fs_write_JSON_file() Writing time 12.347000 s
 ```
 
-Build all databases, newer slow writer, OPTION_COMPACT_JSON -> 621 MB
+Build all databases, newer slow writer, OPTION_COMPACT_JSON -> Peak memory 621 MB
 ```
 fs_write_JSON_file_lowmem() "C:\Kodi\userdata\addon_data\plugin.program.AML\MAME_DB_main.json"
 fs_write_JSON_file_lowmem() Writing time 13.526000 s
@@ -188,38 +225,3 @@ fs_write_JSON_file_lowmem() Writing time 20.663000 s
 ```
 
 The iterative JSON encoder consumes much less memory and is about twice as slow.
-
-## Publishing AML into the Kodi repository (Tortoise Git) ##
-
-[CONTRIBUTING](https://github.com/xbmc/repo-plugins/blob/master/CONTRIBUTING.md)
-
-**Setup**
-
-First make sure the remote repository is OK. In `Tortoise Git`, `Settings`, in the `Remote`
-option there should be a remote named `upstream` with 
-URL `https://github.com/xbmc/repo-plugins.git`.
-
-**Updating repository**
-
-Suppose we want to update the branch `krypton`. Use `Git show log` to make sure the
-repository is on the `krypton` branch.
-
-To update the working copy with the contents of upstream use `Pull` with remote `upstream` and
-remote branch `krypton`.
-
-**Update addon**
-
-Create a branch with `Create branch...`. The branch name must be `plugin.program.AML`.
-Make the description the same as the branch name. Use the `Switch/Checkout...` command to
-switch to the new branch.
-
-Make sure the repository is on the branch `plugin.program.AML`. Make the changes to update
-the addon and then do a single commit named `[plugin.program.AML] x.y.z`.
-
-Push the branch `plugin.program.AML` to the remote `origin`. Finally, open the pull request
-in Github.
-
-**Updating the pull request**
-
-Updating your pull request can be done by applying your changes and squashing them
-in the already present commit.
