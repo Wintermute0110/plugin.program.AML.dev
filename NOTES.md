@@ -1,3 +1,6 @@
+
+[Kodi Documentation (codedocs)](https://codedocs.xyz/xbmc/xbmc/)
+
 ## AML and Python 2 (Kodi Krypton and Leia) / Python 3 (Kodi Matrix)
 
  * AML releases `0.9.x` and `0.10.x` will be **Python 2** for Kodi Krypton and Kodi Leia. **Python 2** code will be in branch `python2`.
@@ -26,11 +29,11 @@
 
  * Addon settings must be converted
 
-  [Kodi wiki: Addon settings conversion](https://kodi.wiki/view/Add-on_settings_conversion)
+   [Kodi wiki: Addon settings conversion](https://kodi.wiki/view/Add-on_settings_conversion)
 
  * Kodi functions now take/return Unicode strings (str type in Python 3)
 
-  [Kodi six](https://github.com/romanvm/kodi.six)
+   [Kodi six](https://github.com/romanvm/kodi.six)
 
  * Leia change: Addon setting functions getSettingBool(), getSettingInt(), etc.
 
