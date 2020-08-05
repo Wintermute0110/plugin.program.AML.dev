@@ -79,11 +79,11 @@ from .utils_kodi import *
 # Rendering on AML Machine Information text window.
 # devices[0]:
 #   att_interface: string
-#   att_mandatory: unicode(bool)
+#   att_mandatory: str(bool)
 #   att_tag: string
 #   att_type: string
-#   ext_names: unicode(string list),
-#   instance: unicode(dictionary),
+#   ext_names: str(string list),
+#   instance: str(dictionary),
 # devices[1]:
 #   ...
 #
@@ -722,20 +722,26 @@ def fs_AML_version_str_to_int(AML_version_str):
 def fs_create_empty_control_dic(PATHS, AML_version_str):
     log_info('fs_create_empty_control_dic() Creating empty control_dic')
     AML_version_int = fs_AML_version_str_to_int(AML_version_str)
-    log_info('fs_create_empty_control_dic() AML version str "{0}"'.format(AML_version_str))
-    log_info('fs_create_empty_control_dic() AML version int {0}'.format(AML_version_int))
+    log_info('fs_create_empty_control_dic() AML version str "{}"'.format(AML_version_str))
+    log_info('fs_create_empty_control_dic() AML version int {}'.format(AML_version_int))
     main_window = xbmcgui.Window(10000)
     AML_LOCK_PROPNAME = 'AML_instance_lock'
     AML_LOCK_VALUE_LOCKED = 'True'
     AML_LOCK_VALUE_RELEASED = ''
 
-    # >> Use Kodi properties to protect the file writing by several threads.
+    # Use Kodi properties to protect the file writing by several threads.
     infinite_loop = True
+    num_waiting_cycles = 0
     while infinite_loop and not xbmc.Monitor().abortRequested():
         if main_window.getProperty(AML_LOCK_PROPNAME) == AML_LOCK_VALUE_LOCKED:
             log_debug('fs_create_empty_control_dic() AML is locked')
-            # >> Wait some time so other AML threads finish writing the file.
-            xbmc.sleep(0.25)
+            # Wait some time so other AML threads finish writing the file.
+            xbmc.sleep(250)
+            num_waiting_cycles += 1
+            if num_waiting_cycles > 10:
+                # Force release lock
+                log_debug('fs_create_empty_control_dic() Releasing lock')
+                main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_RELEASED)
         else:
             log_debug('fs_create_empty_control_dic() AML not locked. Writing control_dic')
             # Get the lock
@@ -954,10 +960,10 @@ def fs_load_JSON_file_dic(json_filename, verbose = True):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
     if not os.path.isfile(json_filename):
-        log_warning('fs_load_JSON_file_dic() File not found "{0}"'.format(json_filename))
+        log_warning('fs_load_JSON_file_dic() Not found "{}"'.format(json_filename))
         return data_dic
     if verbose:
-        log_debug('fs_load_JSON_file_dic() "{0}"'.format(json_filename))
+        log_debug('fs_load_JSON_file_dic() "{}"'.format(json_filename))
     with open(json_filename) as file:
         data_dic = json.load(file)
 
@@ -967,10 +973,10 @@ def fs_load_JSON_file_list(json_filename, verbose = True):
     # --- If file does not exist return empty dictionary ---
     data_list = []
     if not os.path.isfile(json_filename):
-        log_warning('fs_load_JSON_file_list() File not found "{0}"'.format(json_filename))
+        log_warning('fs_load_JSON_file_list() Not found "{}"'.format(json_filename))
         return data_list
     if verbose:
-        log_debug('fs_load_JSON_file_list() "{0}"'.format(json_filename))
+        log_debug('fs_load_JSON_file_list() "{}"'.format(json_filename))
     with open(json_filename) as file:
         data_list = json.load(file)
 
@@ -983,76 +989,76 @@ def fs_load_JSON_file_list(json_filename, verbose = True):
 def fs_write_JSON_file(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
-        log_debug('fs_write_JSON_file() "{0}"'.format(json_filename))
+        log_debug('fs_write_JSON_file() "{}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
             if OPTION_COMPACT_JSON:
-                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True)))
+                file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True))
             else:
-                file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
-                                              indent = 1, separators = (',', ':'))))
+                file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
+                    indent = 1, separators = (',', ':')))
     except OSError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (OSError)'.format(json_filename))
+                    'Cannot write {} file (OSError)'.format(json_filename))
     except IOError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (IOError)'.format(json_filename))
+                    'Cannot write {} file (IOError)'.format(json_filename))
     l_end = time.time()
     if verbose:
         write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file() Writing time {0:f} s'.format(write_time_s))
+        log_debug('fs_write_JSON_file() Writing time {:f} s'.format(write_time_s))
 
 def fs_write_JSON_file_pprint(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
-        log_debug('fs_write_JSON_file_pprint() "{0}"'.format(json_filename))
+        log_debug('fs_write_JSON_file_pprint() "{}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
-            file.write(unicode(json.dumps(
-                json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (', ', ' : '))))
+            file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
+                indent = 1, separators = (', ', ' : ')))
     except OSError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (OSError)'.format(json_filename))
+                    'Cannot write {} file (OSError)'.format(json_filename))
     except IOError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (IOError)'.format(json_filename))
+                    'Cannot write {} file (IOError)'.format(json_filename))
     l_end = time.time()
     if verbose:
         write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file_pprint() Writing time {0:f} s'.format(write_time_s))
+        log_debug('fs_write_JSON_file_pprint() Writing time {:f} s'.format(write_time_s))
 
 def fs_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
-        log_debug('fs_write_JSON_file_lowmem() "{0}"'.format(json_filename))
+        log_debug('fs_write_JSON_file_lowmem() "{}"'.format(json_filename))
     try:
         if OPTION_COMPACT_JSON:
             jobj = json.JSONEncoder(ensure_ascii = False, sort_keys = True)
         else:
             jobj = json.JSONEncoder(ensure_ascii = False, sort_keys = True,
-                                    indent = 1, separators = (',', ':'))
+                indent = 1, separators = (',', ':'))
         # --- Chunk by chunk JSON writer ---
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
             for chunk in jobj.iterencode(json_data):
-                file.write(unicode(chunk))
+                file.write(str(chunk))
     except OSError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (OSError)'.format(json_filename))
+                    'Cannot write {} file (OSError)'.format(json_filename))
     except IOError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (IOError)'.format(json_filename))
+                    'Cannot write {} file (IOError)'.format(json_filename))
     l_end = time.time()
     if verbose:
         write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file_lowmem() Writing time {0:f} s'.format(write_time_s))
+        log_debug('fs_write_JSON_file_lowmem() Writing time {:f} s'.format(write_time_s))
 
 # -------------------------------------------------------------------------------------------------
 # Generic file writer
 # str_list is a list of Unicode strings that will be joined and written to a file encoded in UTF-8.
 # -------------------------------------------------------------------------------------------------
 def fs_write_str_list_to_file(str_list, export_FN):
-    log_verb('fs_write_str_list_to_file() Exporting OP "{0}"'.format(export_FN.getOriginalPath()))
-    log_verb('fs_write_str_list_to_file() Exporting  P "{0}"'.format(export_FN.getPath()))
+    log_verb('fs_write_str_list_to_file() Exporting OP "{}"'.format(export_FN.getOriginalPath()))
+    log_verb('fs_write_str_list_to_file() Exporting  P "{}"'.format(export_FN.getPath()))
     try:
         full_string = ''.join(str_list).encode('utf-8')
         file_obj = open(export_FN.getPath(), 'w')
@@ -1061,11 +1067,11 @@ def fs_write_str_list_to_file(str_list, export_FN):
     except OSError:
         log_error('(OSError) exception in fs_write_str_list_to_file()')
         log_error('Cannot write {0} file'.format(export_FN.getBase()))
-        raise AEL_Error('(OSError) Cannot write {0} file'.format(export_FN.getBase()))
+        raise AEL_Error('(OSError) Cannot write {} file'.format(export_FN.getBase()))
     except IOError:
         log_error('(IOError) exception in fs_write_str_list_to_file()')
         log_error('Cannot write {0} file'.format(export_FN.getBase()))
-        raise AEL_Error('(IOError) Cannot write {0} file'.format(export_FN.getBase()))
+        raise AEL_Error('(IOError) Cannot write {} file'.format(export_FN.getBase()))
 
 # -------------------------------------------------------------------------------------------------
 # Threaded JSON loader
