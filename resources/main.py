@@ -7942,86 +7942,79 @@ def set_Kodi_all_sorting_methods_and_size():
 
 # ---------------------------------------------------------------------------------------------
 # Misc URL building functions
-# ---------------------------------------------------------------------------------------------
 # NOTE '&' must be scaped to '%26' in all URLs
+# ---------------------------------------------------------------------------------------------
 #
 # Functions used in xbmcplugin.addDirectoryItem()
 #
 def misc_url(command):
     command_escaped = command.replace('&', '%26')
 
-    return '{0}?command={1}'.format(g_base_url, command_escaped)
+    return '{}?command={}'.format(g_base_url, command_escaped)
 
 def misc_url_1_arg(arg_name, arg_value):
     arg_value_escaped = arg_value.replace('&', '%26')
 
-    return '{0}?{1}={2}'.format(g_base_url, arg_name, arg_value_escaped)
+    return '{}?{}={}'.format(g_base_url, arg_name, arg_value_escaped)
 
 def misc_url_2_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2):
     arg_value_1_escaped = arg_value_1.replace('&', '%26')
     arg_value_2_escaped = arg_value_2.replace('&', '%26')
 
-    return '{0}?{1}={2}&{3}={4}'.format(
-        g_base_url, arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped)
+    return '{}?{}={}&{}={}'.format(g_base_url,
+        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped)
 
-def misc_url_3_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2,
-                          arg_name_3, arg_value_3):
+def misc_url_3_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3):
     arg_value_1_escaped = arg_value_1.replace('&', '%26')
     arg_value_2_escaped = arg_value_2.replace('&', '%26')
     arg_value_3_escaped = arg_value_3.replace('&', '%26')
 
-    return '{0}?{1}={2}&{3}={4}&{5}={6}'.format(
-        g_base_url,
-        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped,
-        arg_name_3, arg_value_3_escaped)
+    return '{}?{}={}&{}={}&{}={}'.format(g_base_url,
+        arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped, arg_name_3, arg_value_3_escaped)
 
-def misc_url_4_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2,
-                          arg_name_3, arg_value_3, arg_name_4, arg_value_4):
+def misc_url_4_arg(arg_name_1, arg_value_1, arg_name_2, arg_value_2, arg_name_3, arg_value_3, arg_name_4, arg_value_4):
     arg_value_1_escaped = arg_value_1.replace('&', '%26')
     arg_value_2_escaped = arg_value_2.replace('&', '%26')
     arg_value_3_escaped = arg_value_3.replace('&', '%26')
     arg_value_4_escaped = arg_value_4.replace('&', '%26')
 
-    return '{0}?{1}={2}&{3}={4}&{5}={6}&{7}={8}'.format(
-        g_base_url,
+    return '{}?{}={}&{}={}&{}={}&{}={}'.format(g_base_url,
         arg_name_1, arg_value_1_escaped, arg_name_2, arg_value_2_escaped,
         arg_name_3, arg_value_3_escaped,arg_name_4, arg_value_4_escaped)
 
 #
-# Functions used in context menus, function listitem.addContextMenuItems()
+# Functions used in context menus, in listitem.addContextMenuItems()
 #
 def misc_url_RunPlugin(command):
     command_esc = command.replace('&', '%26')
 
-    return 'XBMC.RunPlugin({0}?command={1})'.format(g_base_url, command_esc)
+    return 'RunPlugin({}?command={})'.format(g_base_url, command_esc)
 
 def misc_url_1_arg_RunPlugin(arg_n_1, arg_v_1):
     arg_v_1_esc = arg_v_1.replace('&', '%26')
 
-    return 'XBMC.RunPlugin({0}?{1}={2})'.format(g_base_url, arg_n_1, arg_v_1_esc)
+    return 'RunPlugin({}?{}={})'.format(g_base_url, arg_n_1, arg_v_1_esc)
 
 def misc_url_2_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2):
     arg_v_1_esc = arg_v_1.replace('&', '%26')
     arg_v_2_esc = arg_v_2.replace('&', '%26')
 
-    return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4})'.format(
-        g_base_url, arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc)
+    return 'RunPlugin({}?{}={}&{}={})'.format(g_base_url,
+        arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc)
 
 def misc_url_3_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2, arg_n_3, arg_v_3):
     arg_v_1_esc = arg_v_1.replace('&', '%26')
     arg_v_2_esc = arg_v_2.replace('&', '%26')
     arg_v_3_esc = arg_v_3.replace('&', '%26')
 
-    return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4}&{5}={6})'.format(
-        g_base_url, arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc, arg_n_3, arg_v_3_esc)
+    return 'RunPlugin({}?{}={}&{}={}&{}={})'.format(g_base_url,
+        arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc, arg_n_3, arg_v_3_esc)
 
-def misc_url_4_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2,
-                              arg_n_3, arg_v_3, arg_n_4, arg_v_4):
+def misc_url_4_arg_RunPlugin(arg_n_1, arg_v_1, arg_n_2, arg_v_2, arg_n_3, arg_v_3, arg_n_4, arg_v_4):
     arg_v_1_esc = arg_v_1.replace('&', '%26')
     arg_v_2_esc = arg_v_2.replace('&', '%26')
     arg_v_3_esc = arg_v_3.replace('&', '%26')
     arg_v_4_esc = arg_v_4.replace('&', '%26')
 
-    return 'XBMC.RunPlugin({0}?{1}={2}&{3}={4}&{5}={6}&{7}={8})'.format(
-        g_base_url,
+    return 'RunPlugin({}?{}={}&{}={}&{}={}&{}={})'.format(g_base_url,
         arg_n_1, arg_v_1_esc, arg_n_2, arg_v_2_esc, arg_n_3, arg_v_3_esc, arg_n_4, arg_v_4_esc)

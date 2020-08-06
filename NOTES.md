@@ -32,15 +32,21 @@
 
  * Leia change: Addon setting functions getSettingBool(), getSettingInt(), etc.
 
- * Addon settings *should* be converted. The old settings are deprecated, quoting from the wiki: "Deprecated - Addons submitted to the Kodi 19 Matrix (and up) can use the new setting format. See Add-on_settings_conversion."
+ * Matrix change: Addon settings *should* be converted. The old settings are deprecated, quoting from the wiki: "Deprecated - Addons submitted to the Kodi 19 Matrix (and up) can use the new setting format. See Add-on_settings_conversion."
 
    [Kodi wiki: Add-on settings](https://kodi.wiki/view/Add-on_settings) [Kodi wiki: Addon settings conversion](https://kodi.wiki/view/Add-on_settings_conversion) [Kodi Matrix alpha 1, addon settings do not show](https://forum.kodi.tv/showthread.php?tid=356245)
+
+ * Matrix change: `XBMC.RunPlugin({}?command={})` must be changed to `XBMC.RunPlugin({}?command={})`.
+
+ * Matrix change: `xbmcgui.Dialog().yesno()` add support for custom button.
+
+ * Matrix change: `xbmcgui.Dialog().yesno()`, `.cancel()`, `.ok()`, `xbmcgui.DialogProgress().create()`, `.update()`, Removed Line2, Line3.
 
 **References**
 
 [The Conservative Python 3 Porting Guide](https://portingguide.readthedocs.io/en/latest/index.html)
 
-[Kodi forum: Changes to the python API for Kodi Matrix (v19)](https://forum.kodi.tv/showthread.php?tid=344263)
+[Kodi forum: Changes to the python API for Kodi Matrix](https://forum.kodi.tv/showthread.php?tid=344263)
 
 [Kodi forum: Changes to the python API for Kodi Leia](https://forum.kodi.tv/showthread.php?tid=303073)
 
