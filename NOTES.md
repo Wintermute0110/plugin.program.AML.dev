@@ -48,6 +48,10 @@
 
    All progress dialogs (search for `pDialog.create()` in the code) must use the new `KodiProgressDialog()` class.
 
+**TODO (remove items in this list when done)**
+
+ * Replace `pDialog.create` with `KodiProgressDialog()`
+
 **References**
 
 [The Conservative Python 3 Porting Guide](https://portingguide.readthedocs.io/en/latest/index.html)

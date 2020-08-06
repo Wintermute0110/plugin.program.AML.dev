@@ -1205,7 +1205,7 @@ def filter_parse_XML(fname_str):
 
     # >> Resolve DEFINE tags (substitute by the defined value)
     for f_definition in filters_list:
-        for initial_str, final_str in define_dic.iteritems():
+        for initial_str, final_str in define_dic.items():
             f_definition['driver']           = f_definition['driver'].replace(initial_str, final_str)
             f_definition['manufacturer']     = f_definition['manufacturer'].replace(initial_str, final_str)
             f_definition['genre']            = f_definition['genre'].replace(initial_str, final_str)

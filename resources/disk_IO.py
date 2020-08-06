@@ -1318,17 +1318,17 @@ def fs_set_Sample_flag(m_dic, new_Sample_flag):
 # -------------------------------------------------------------------------------------------------
 # Hash database with 256 elements (2 hex digits)
 def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_render):
-    log_info('fs_build_main_hashed_db() Building main hashed database ...')
+    log_info('fs_build_main_hashed_db() Building main hashed database...')
 
     # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
     # A) First create an index
     #    db_main_hash_idx = { 'machine_name' : 'aa', ... }
     # B) Then traverse a list [0, 1, ..., f] and write the machines in that sub database section.
     pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Building main hashed database ...')
+    pDialog.create('Advanced MAME Launcher', 'Building main hashed database...')
     db_main_hash_idx = {}
     for key in machines:
-        md5_str = hashlib.md5(key).hexdigest()
+        md5_str = hashlib.md5(key.encode('utf-8')).hexdigest()
         db_name = md5_str[0:2] # WARNING Python slicing does not work like in C/C++!
         db_main_hash_idx[key] = db_name
         # log_debug('Machine {0:20s} / hash {1} / db file {2}'.format(key, md5_str, db_name))
@@ -1370,7 +1370,7 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
 # This is very quick for retrieving individual machines, very slow for multiple machines.
 #
 def fs_get_machine_main_db_hash(PATHS, machine_name):
-    log_debug('fs_get_machine_main_db_hash() machine {0}'.format(machine_name))
+    log_debug('fs_get_machine_main_db_hash() machine {}'.format(machine_name))
     md5_str = hashlib.md5(machine_name).hexdigest()
     # WARNING Python slicing does not work like in C/C++!
     hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_machines.json')
@@ -1626,7 +1626,7 @@ def fs_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_rend
     str_list.append('<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n')
     str_list.append('<!-- Exported by AML on {0} -->\n'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
     str_list.append('<advanced_MAME_launcher_virtual_launcher>\n')
-    for m_name, r_name in catalog_dic.iteritems():
+    for m_name, r_name in catalog_dic.items():
         str_list.append('<machine>\n')
         str_list.append(XML_text('name', m_name))
         str_list.append(XML_text('description', machines_render[m_name]['description']))

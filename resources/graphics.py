@@ -324,7 +324,7 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
     # Quickly check if machine has valid assets, and skip fanart generation if not.
     # log_debug('graphs_build_MAME_Fanart() Building fanart for machine {0}'.format(m_name))
     machine_has_valid_assets = False
-    for asset_key, asset_db_name in MAME_layout_assets.iteritems():
+    for asset_key, asset_db_name in MAME_layout_assets.items():
         m_assets = assets_dic[m_name]
         if m_assets[asset_db_name]:
             machine_has_valid_assets = True
@@ -431,7 +431,7 @@ def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
     # Quickly check if machine has valid assets, and skip fanart generation if not.
     # log_debug('graphs_build_SL_Fanart() Building fanart for SL {0} item {1}'.format(SL_name, m_name))
     machine_has_valid_assets = False
-    for asset_key, asset_db_name in SL_layout_assets.iteritems():
+    for asset_key, asset_db_name in SL_layout_assets.items():
         m_assets = assets_dic[m_name]
         if m_assets[asset_db_name]:
             machine_has_valid_assets = True

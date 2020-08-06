@@ -233,7 +233,7 @@ def manuals_extract_pages_pdfrw(status_dic, PDF_file_FN, img_dir_FN):
         # --- Iterate /Resources in page ---
         # log_debug('###### Processing page {0} ######'.format(page_index))
         resource_dic = page['/Resources']
-        for r_name, resource in resource_dic.iteritems():
+        for r_name, resource in resource_dic.items():
             # >> Skip non /XObject keys in /Resources
             if r_name != '/XObject': continue
 
@@ -247,7 +247,7 @@ def manuals_extract_pages_pdfrw(status_dic, PDF_file_FN, img_dir_FN):
             # >> Some /XObjects are not images, for example, /Subtype = /Form.
             # >> NOTE Also, images may be inside the /Resources of a /From /XObject.
             img_index = 0
-            for xobj_name, xobj_dic in resource.iteritems():
+            for xobj_name, xobj_dic in resource.items():
                 xobj_type = xobj_dic['/Type']
                 xobj_subtype = xobj_dic['/Subtype']
                 # >> Skip XObject forms
@@ -404,7 +404,7 @@ def manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN):
         # log_debug('###### Processing page {0} ######'.format(page_index))
         resource_dic = page['/Resources']
         # --- Iterate /Resources in page ---
-        for resource_name, resource in resource_dic.iteritems():
+        for resource_name, resource in resource_dic.items():
             # >> Skip non /XObject keys in /Resources
             if resource_name != '/XObject': continue
 
@@ -418,7 +418,7 @@ def manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN):
             # >> Some /XObjects are not images, for example, /Subtype = /Form.
             # >> Also, images may be inside the /Resources of a /From /XObject.
             img_index = 0
-            for xobj_name, xobj_dic in resource.iteritems():
+            for xobj_name, xobj_dic in resource.items():
                 xobj_type = xobj_dic['/Type']
                 xobj_subtype = xobj_dic['/Subtype']
                 # >> Skip XObject forms
@@ -473,13 +473,13 @@ def manuals_extract_PDF_page(status_dic, man_file_FN, img_dir_FN, page_index):
     image_counter = 0
     log_debug('###### Processing page {0} ######'.format(page_index))
     resource_dic = page['/Resources']
-    for resource_name, resource in resource_dic.iteritems():
+    for resource_name, resource in resource_dic.items():
         # >> Skip non /XObject keys in /Resources
         if resource_name != '/XObject': continue
 
         # >> Traverse /XObject dictionary data.
         img_index = 0
-        for xobj_name, xobj_dic in resource.iteritems():
+        for xobj_name, xobj_dic in resource.items():
             xobj_type = xobj_dic['/Type']
             xobj_subtype = xobj_dic['/Subtype']
             # >> Skip XObject forms

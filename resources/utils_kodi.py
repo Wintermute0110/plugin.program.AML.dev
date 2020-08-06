@@ -173,8 +173,6 @@ class KodiProgressDialog(object):
         self.progress = math.floor((step_index * 100) / self.num_steps)
         if message is not None: self.message = message
         self.progressDialog.update(self.progress, self.message)
-        # For debugging
-        xbmc.sleep(500)
 
     # Update dialog message but keep same progress.
     def updateMessage(self, message):

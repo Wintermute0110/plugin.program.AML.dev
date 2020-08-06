@@ -2560,7 +2560,7 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
     pDialog.update(0, 'Generating MAME machine plots ...')
     total_machines = len(machines)
     num_machines = 0
-    for mname, m in machines.iteritems():
+    for mname, m in machines.items():
         plot_str_list = mame_MAME_plot_slits(mname, m, assets_dic,
             history_info_set, mameinfo_info_set, gameinit_idx_dic, command_idx_dic)
         assets_dic[mname]['plot'] = '\n'.join(plot_str_list)
@@ -3977,9 +3977,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     else:
         raise ValueError
     log_info('Loading XML "{}"'.format(MAME_XML_path.getPath()))
-    pDialog.startProgress('Loading MAME XML...')
-    context = ET.iterparse(MAME_XML_path.getPath(), events = ("start", "end"))
-    event, root = next(context)
+    xml_iter = ET.iterparse(MAME_XML_path.getPath(), events = ("start", "end"))
+    event, root = next(xml_iter)
     if settings['op_mode'] == OP_MODE_EXTERNAL:
         mame_version_raw = root.attrib['build']
         mame_version_int = mame_get_numerical_version(mame_version_raw)
@@ -3988,7 +3987,6 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         mame_version_int = mame_get_numerical_version(mame_version_raw)
     else:
         raise ValueError
-    pDialog.endProgress()
     log_info('mame_build_MAME_main_database() MAME str version "{}"'.format(mame_version_raw))
     log_info('mame_build_MAME_main_database() MAME numerical version {}'.format(mame_version_int))
 
@@ -3997,16 +3995,15 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     processed_machines = 0
     pDialog.startProgress('Building main MAME database ...', total_machines)
     stats = _get_stats_dic()
-    log_info('mame_build_MAME_main_database() total_machines {}'.format(total_machines))
+    log_info('mame_build_MAME_main_database() total_machines {:,}'.format(total_machines))
     machines, machines_render, machines_roms, machines_devices = {}, {}, {}, {}
     roms_sha1_dic = {}
     log_info('mame_build_MAME_main_database() Parsing MAME XML file ...')
     num_iteration = 0
-    for event, elem in context:
-        # --- Debug the elements we are iterating from the XML file ---
-        # log_debug('Event     {:6s} | Elem.tag    "{}"'.format(event, elem.tag))
-        # log_debug('                  Elem.text   "{}"'.format(elem.text))
-        # log_debug('                  Elem.attrib "{}"'.format(elem.attrib))
+    for event, elem in xml_iter:
+        # Debug the elements we are iterating from the XML file
+        # print('event "{}"'.format(event))
+        # print('elem.tag "{}" | elem.text "{}" | elem.attrib "{}"'.format(elem.tag, elem.text, str(elem.attrib)))
 
         # <machine> tag start event includes <machine> attributes
         if (event == 'start' and elem.tag == 'machine') or (event == 'start' and elem.tag == 'game'):
@@ -4363,7 +4360,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     log_info('Making PClone list...')
     main_pclone_dic = {}
     main_clone_to_parent_dic = {}
-    for machine_name, m_render in machines_render.iteritems():
+    for machine_name, m_render in machines_render.items():
         if m_render['cloneof']:
             parent_name = m_render['cloneof']
             # If parent already in main_pclone_dic then add clone to parent list.
@@ -4384,14 +4381,14 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     assets_dic = {key : fs_new_MAME_asset() for key in machines}
     if settings['generate_history_infolabel'] and history_idx_dic:
         log_debug('Adding History.DAT to MAME asset database.')
-        for m_name, asset in assets_dic.iteritems():
+        for m_name, asset in assets_dic.items():
             asset['flags'] = fs_initial_flags(machines[m_name], machines_render[m_name], machines_roms[m_name])
             if m_name in history_idx_dic['mame']['machines']:
                 d_name, db_list, db_machine = history_idx_dic['mame']['machines'][m_name].split('|')
                 asset['history'] = history_dic[db_list][db_machine]
     else:
         log_debug('Not including History.DAT in MAME asset database.')
-        for m_name, asset in assets_dic.iteritems():
+        for m_name, asset in assets_dic.items():
             asset['flags'] = fs_initial_flags(machines[m_name], machines_render[m_name], machines_roms[m_name])
 
     # ---------------------------------------------------------------------------------------------

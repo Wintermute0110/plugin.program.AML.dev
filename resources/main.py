@@ -1271,7 +1271,7 @@ def render_skin_fav_slots():
         set_render_root_data()
         # Remove special markers (first and last character)
         rsCM = root_special_CM.copy()
-        for key, value in rsCM.iteritems(): value[0] = value[0][1:-1]
+        for key, value in rsCM.items(): value[0] = value[0][1:-1]
         render_root_category_row_custom_CM(*rsCM['MAME_Favs'])
         render_root_category_row_custom_CM(*rsCM['MAME_Most'])
         render_root_category_row_custom_CM(*rsCM['MAME_Recent'])
@@ -2079,7 +2079,7 @@ def render_process_machines(catalog_dic, catalog_name, category_name,
 
     # --- Traverse machines ---
     r_list = []
-    for machine_name, render_name in catalog_dic[category_name].iteritems():
+    for machine_name, render_name in catalog_dic[category_name].items():
         machine = render_db_dic[machine_name]
         m_assets = assets_dic[machine_name]
         if not flag_ignore_filters:
@@ -2237,7 +2237,7 @@ def render_commit_machines(r_list):
         for r_dict in r_list:
             listitem = xbmcgui.ListItem(r_dict['render_name'])
             listitem.setInfo('video', r_dict['info'])
-            for prop_name, prop_value in r_dict['props'].iteritems():
+            for prop_name, prop_value in r_dict['props'].items():
                 listitem.setProperty(prop_name, prop_value)
             listitem.setArt(r_dict['art'])
             listitem.addContextMenuItems(r_dict['context'])
@@ -2307,22 +2307,22 @@ def render_SL_list(catalog_name):
     SL_main_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
     SL_catalog_dic = {}
     if catalog_name == 'SL':
-        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+        for SL_name, SL_dic in SL_main_catalog_dic.items():
             SL_catalog_dic[SL_name] = SL_dic
     elif catalog_name == 'SL_ROM':
-        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+        for SL_name, SL_dic in SL_main_catalog_dic.items():
             if SL_dic['num_with_ROMs'] > 0 and SL_dic['num_with_CHDs'] == 0:
                 SL_catalog_dic[SL_name] = SL_dic
     elif catalog_name == 'SL_CHD':
-        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+        for SL_name, SL_dic in SL_main_catalog_dic.items():
             if SL_dic['num_with_ROMs'] == 0 and SL_dic['num_with_CHDs'] > 0:
                 SL_catalog_dic[SL_name] = SL_dic
     elif catalog_name == 'SL_ROM_CHD':
-        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+        for SL_name, SL_dic in SL_main_catalog_dic.items():
             if SL_dic['num_with_ROMs'] > 0 and SL_dic['num_with_CHDs'] > 0:
                 SL_catalog_dic[SL_name] = SL_dic
     elif catalog_name == 'SL_empty':
-        for SL_name, SL_dic in SL_main_catalog_dic.iteritems():
+        for SL_name, SL_dic in SL_main_catalog_dic.items():
             if SL_dic['num_with_ROMs'] == 0 and SL_dic['num_with_CHDs'] == 0:
                 SL_catalog_dic[SL_name] = SL_dic
     else:
