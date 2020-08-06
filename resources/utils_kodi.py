@@ -18,7 +18,8 @@
 
 # --- Kodi modules ---
 try:
-    import xbmc, xbmcgui
+    import xbmc
+    import xbmcgui
     KODI_RUNTIME_AVAILABLE_UTILS_KODI = True
 except:
     KODI_RUNTIME_AVAILABLE_UTILS_KODI = False
@@ -26,6 +27,7 @@ except:
 # --- Python standard library ---
 import hashlib
 import json
+import math
 import os
 import pprint
 import random
@@ -148,65 +150,36 @@ def kodi_refresh_container():
 # Progress dialog that can be closed and reopened.
 # Messages in the dialog are always remembered.
 # If the dialog is canceled this class remembers it forever.
+# Kodi Matrix change: Renamed option line1 to message. Removed option line2. Removed option line3.
 class KodiProgressDialog(object):
     def __init__(self):
-        self.title = 'Advanced MAME Launcher'
+        self.heading = 'Advanced MAME Launcher'
         self.progress = 0
         self.flag_dialog_canceled = False
         self.dialog_active = False
         self.progressDialog = xbmcgui.DialogProgress()
 
-    def startProgress(self, message1, num_steps = 100, message2 = None):
+    def startProgress(self, message, num_steps = 100):
         self.num_steps = num_steps
         self.progress = 0
         self.dialog_active = True
-        self.message1 = message1
-        self.message2 = message2
-        if self.message2:
-            self.progressDialog.create(self.title, self.message1, self.message2)
-        else:
-            # The ' ' is to avoid a bug in Kodi progress dialog that keeps old messages 2
-            # if an empty string is passed.
-            self.progressDialog.create(self.title, self.message1, ' ')
+        self.message = message
+        self.progressDialog.create(self.heading, self.message)
         self.progressDialog.update(self.progress)
 
-    # Update progress and optionally update messages as well.
-    # If not messages specified then keep current message/s
-    def updateProgress(self, step_index, message1 = None, message2 = None):
-        self.progress = (step_index * 100) / self.num_steps
-        # Update both messages
-        if message1 and message2:
-            self.message1 = message1
-            self.message2 = message2
-        # Update only message1 and deletes message2. There could be no message2 without a message1.
-        elif message1:
-            self.message1 = message1
-            self.message2 = None
-            self.progressDialog.update(self.progress, message1, ' ')
-            return
-        if self.message2:
-            self.progressDialog.update(self.progress, self.message1, self.message2)
-        else:
-            # The ' ' is to avoid a bug in Kodi progress dialog that keeps old messages 2
-            # if an empty string is passed.
-            self.progressDialog.update(self.progress, self.message1, ' ')
-
-    # Update dialog message but keep same progress. message2 is removed if any.
-    def updateMessage(self, message1):
-        self.message1 = message1
-        self.message2 = None
-        self.progressDialog.update(self.progress, self.message1, ' ')
-
-    # Update message2 and keeps same progress and message1
-    def updateMessage2(self, message2):
-        self.message2 = message2
-        self.progressDialog.update(self.progress, self.message1, self.message2)
+    # Update progress and optionally update message as well.
+    # If not new message specified then keep current message.
+    def updateProgress(self, step_index, message = None):
+        self.progress = math.floor((step_index * 100) / self.num_steps)
+        if message is not None: self.message = message
+        self.progressDialog.update(self.progress, self.message)
+        # For debugging
+        xbmc.sleep(500)
 
     # Update dialog message but keep same progress.
-    def updateMessages(self, message1, message2):
+    def updateMessage(self, message):
         self.message1 = message1
-        self.message2 = message2
-        self.progressDialog.update(self.progress, message1, message2)
+        self.progressDialog.update(self.progress, self.message)
 
     def isCanceled(self):
         # If the user pressed the cancel button before then return it now.
@@ -216,30 +189,19 @@ class KodiProgressDialog(object):
             self.flag_dialog_canceled = self.progressDialog.iscanceled()
             return self.flag_dialog_canceled
 
-    def close(self):
-        # Before closing the dialog check if the user pressed the Cancel button and remember
-        # the user decision.
-        if self.progressDialog.iscanceled(): self.flag_dialog_canceled = True
-        self.progressDialog.close()
-        self.dialog_active = False
-
+    # Before closing the dialog check if the user pressed the Cancel button and remember
+    # the user decision.
     def endProgress(self):
-        # Before closing the dialog check if the user pressed the Cancel button and remember
-        # the user decision.
         if self.progressDialog.iscanceled(): self.flag_dialog_canceled = True
         self.progressDialog.update(100)
         self.progressDialog.close()
         self.dialog_active = False
 
-    # Reopens a previously closed dialog, remembering the messages and the progress it had
-    # when it was closed.
+    # Reopens a previously closed dialog with endProgress(), remembering the messages
+    # and the progress it had when it was closed.
     def reopen(self):
-        if self.message2:
-            self.progressDialog.create(self.title, self.message1, self.message2)
-        else:
-            # The ' ' is to avoid a bug in Kodi progress dialog that keeps old messages 2
-            # if an empty string is passed.
-            self.progressDialog.create(self.title, self.message1, ' ')
+        if self.dialog_active: return
+        self.progressDialog.create(self.title, self.message)
         self.progressDialog.update(self.progress)
         self.dialog_active = True
 
@@ -359,12 +321,9 @@ def kodi_jsonrpc_dict(method_str, params_dic, verbose = False):
     return result_dic
 
 # Displays a text window and requests a monospaced font.
+# v18 Leia change: New optional param added usemono.
 def kodi_display_text_window_mono(window_title, info_text):
-    log_debug('Setting Window(10000) Property "FontWidth" = "monospaced"')
-    xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-    xbmcgui.Dialog().textviewer(window_title, info_text)
-    log_debug('Setting Window(10000) Property "FontWidth" = "proportional"')
-    xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
+    xbmcgui.Dialog().textviewer(window_title, info_text, True)
 
 # Displays a text window with a proportional font (default).
 def kodi_display_text_window(window_title, info_text):
