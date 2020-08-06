@@ -7912,12 +7912,6 @@ def run_after_execution():
 # ---------------------------------------------------------------------------------------------
 # Misc functions
 # ---------------------------------------------------------------------------------------------
-def display_text_window(window_title, info_text):
-    xbmcgui.Window(10000).setProperty('FontWidth', 'monospaced')
-    dialog = xbmcgui.Dialog()
-    dialog.textviewer(window_title, info_text)
-    xbmcgui.Window(10000).setProperty('FontWidth', 'proportional')
-
 # List of sorting methods here http://mirrors.xbmc.org/docs/python-docs/16.x-jarvis/xbmcplugin.html#-setSetting
 def set_Kodi_unsorted_method():
     if g_addon_handle < 0: return

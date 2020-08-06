@@ -225,7 +225,7 @@ SL_better_name_dic = {
 #
 # re.search() returns a MatchObject https://docs.python.org/2/library/re.html#re.MatchObject
 def mame_get_numerical_version(mame_version_str):
-    log_verb('mame_get_numerical_version() mame_version_str = "{0}"'.format(mame_version_str))
+    log_verb('mame_get_numerical_version() mame_version_str = "{}"'.format(mame_version_str))
     version_int = 0
     # Search for old version scheme x.yyybzz
     m_obj_old = re.search('^(\d+)\.(\d+)b(\d+)', mame_version_str)
@@ -249,9 +249,9 @@ def mame_get_numerical_version(mame_version_str):
         # log_verb('mame_get_numerical_version() minor = {0}'.format(minor))
         version_int = major * 1000000 + minor * 1000 + release_flag * 100
     else:
-        log_error('MAME version "{0}" cannot be parsed.'.format(mame_version_str))
+        log_error('MAME version "{}" cannot be parsed.'.format(mame_version_str))
         raise TypeError
-    log_verb('mame_get_numerical_version() version_int = {0}'.format(version_int))
+    log_verb('mame_get_numerical_version() version_int = {}'.format(version_int))
 
     return version_int
 
@@ -300,7 +300,7 @@ def mame_load_Catver_ini(filename):
     # 4 -> END
     read_status = 0
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_error('mame_load_Catver_ini() Exception IOError')
         log_error('mame_load_Catver_ini() File "{0}"'.format(filename))
@@ -419,7 +419,7 @@ def mame_load_nplayers_ini(filename):
     # 2 -> Categories finished. STOP
     read_status = 0
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_info('mame_load_nplayers_ini() (IOError) opening "{0}"'.format(filename))
         return ini_dic
@@ -447,7 +447,7 @@ def mame_load_nplayers_ini(filename):
                     # ini_dic['data'][machine_name].add(current_category)
                     # log_debug('machine "{0}"'.format(machine_name))
                     # log_debug('current_category "{0}"'.format(current_category))
-                    # log_debug('"{0}"'.format(unicode(ini_dic['data'][machine_name])))
+                    # log_debug('"{0}"'.format(str(ini_dic['data'][machine_name])))
                     # raise ValueError('unique_categories False')
                 else:
                     ini_dic['data'][machine_name] =  [current_category]
@@ -502,7 +502,7 @@ def mame_load_Mature_ini(filename):
     }
     slist = []
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding = 'utf-8')
         for file_line in f:
             stripped_line = file_line.strip()
             if stripped_line == '': continue # Skip blanks
@@ -613,7 +613,7 @@ def mame_load_INI_datfile_simple(filename):
     }
     slist = []
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding = 'utf-8')
         for file_line in f:
             stripped_line = file_line.strip()
             if stripped_line == '': continue # Skip blanks
@@ -740,33 +740,29 @@ def mame_load_History_DAT(filename):
     # 1 -> Reading information. If '$end' found go to 2.
     # 2 -> Add information to database if no errors. Then go to 0.
     read_status = 0
-
-    # Open file
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding = 'utf-8')
     except IOError:
-        log_info('mame_load_History_DAT() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_History_DAT() (IOError) opening "{}"'.format(filename))
         return (history_idx_dic, history_dic, version_str)
     for file_line in f:
         line_number += 1
-        stripped_line = file_line.strip()
-        line_str = stripped_line.decode('utf-8', 'replace')
-        if __debug_function: log_debug('Line "{0}"'.format(line_str))
+        line_uni = file_line.strip()
+        if __debug_function: log_debug('Line "{}"'.format(line_uni))
         if read_status == 0:
             # Skip comments: lines starting with '##'
             # Look for version string in comments
-            if re.search(r'^##', line_str):
-                m = re.search(r'## REVISION\: ([0-9\.]+)$', line_str)
+            if re.search(r'^##', line_uni):
+                m = re.search(r'## REVISION\: ([0-9\.]+)$', line_uni)
                 if m: version_str = m.group(1)
                 continue
-            if line_str == '':
-                continue
+            if line_uni == '': continue
             # Machine list line
             # Parses lines like "$info=99lstwar,99lstwara,99lstwarb,"
             # Parses lines like "$info=99lstwar,99lstwara,99lstwarb"
             # History.dat has syntactic errors like "$dc=,".
             # History.dat has syntactic errors like "$megadriv=".
-            m = re.search(r'^\$(.+?)=(.*?),?$', line_str)
+            m = re.search(r'^\$(.+?)=(.*?),?$', line_uni)
             if m:
                 num_header_line += 1
                 list_name = m.group(1)
@@ -780,14 +776,14 @@ def mame_load_History_DAT(filename):
                 mname_list = machine_name_raw.split(',')
                 m_data.append([num_header_line, list_name, mname_list])
                 continue
-            if line_str == '$bio':
+            if line_uni == '$bio':
                 read_status = 1
                 info_str_list = []
                 continue
             # If we reach this point it's an error.
-            raise TypeError('Wrong header "{}" (line {:,})'.format(line_str, line_number))
+            raise TypeError('Wrong header "{}" (line {:,})'.format(line_uni, line_number))
         elif read_status == 1:
-            if line_str == '$end':
+            if line_uni == '$end':
                 # Generate biography text.
                 bio_str = '\n'.join(info_str_list)
                 if bio_str[0] == '\n': bio_str = bio_str[1:]
@@ -819,7 +815,7 @@ def mame_load_History_DAT(filename):
                 m_data = []
                 info_str_list = []
             else:
-                info_str_list.append(line_str)
+                info_str_list.append(line_uni)
         elif read_status == 2:
             # Go to state 0 of the FSM.
             read_status = 0
@@ -914,18 +910,13 @@ def mame_load_MameInfo_DAT(filename):
     # 2 -> Reading information. If '$end' found go to 0.
     # 3 -> Ignoring information. If '$end' found go to 0.
     read_status = 0
-
-    # >> Open file
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_info('mame_load_MameInfo_DAT() (IOError) opening "{0}"'.format(filename))
         return (idx_dic, data_dic, version_str)
-
-    # >> Parse file
     for file_line in f:
-        stripped_line = file_line.strip()
-        line_uni = stripped_line.decode('utf-8', 'replace')
+        line_uni = file_line.strip()
         # if __debug_function: log_debug('Line "{0}"'.format(line_uni))
         if read_status == 0:
             # >> Skip comments: lines starting with '#'
@@ -1000,18 +991,13 @@ def mame_load_GameInit_DAT(filename):
     # 2 -> Reading information. If '$end' found go to 0.
     # 3 -> Ignoring information. If '$end' found go to 0.
     read_status = 0
-
-    # >> Open file
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_info('mame_load_GameInit_DAT() (IOError) opening "{0}"'.format(filename))
         return (idx_list, data_dic, version_str)
-
-    # >> Parse file
     for file_line in f:
-        stripped_line = file_line.strip()
-        line_uni = stripped_line.decode('utf-8', 'replace')
+        line_uni = file_line.strip()
         if __debug_function: log_debug('read_status {0} | Line "{1}"'.format(read_status, line_uni))
         # >> Note that Gameinit.dat may have a BOM 0xEF,0xBB,0xBF
         # >> See https://en.wikipedia.org/wiki/Byte_order_mark
@@ -1083,19 +1069,14 @@ def mame_load_Command_DAT(filename):
     # 1 -> Looking for $cmd
     # 2 -> Reading information. If '$end' found go to 0.
     read_status = 0
-
-    # >> Open file
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding = 'utf-8')
     except IOError:
-        log_info('mame_load_Command_DAT() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_Command_DAT() (IOError) opening "{}"'.format(filename))
         return (proper_idx_dic, proper_data_dic, version_str)
-
-    # >> Parse file
     for file_line in f:
-        stripped_line = file_line.strip()
-        line_uni = stripped_line.decode('utf-8', 'replace')
-        # if __debug_function: log_debug('Line "{0}"'.format(line_uni))
+        line_uni = file_line.strip()
+        # if __debug_function: log_debug('Line "{}"'.format(line_uni))
         if read_status == 0:
             # >> Skip comments: lines starting with '#'
             # >> Look for version string in comments
@@ -1108,16 +1089,16 @@ def mame_load_Command_DAT(filename):
             m = re.search(r'^\$info=(.+?)$', line_uni)
             if m:
                 machine_name = m.group(1)
-                if __debug_function: log_debug('Machine "{0}"'.format(machine_name))
+                if __debug_function: log_debug('Machine "{}"'.format(machine_name))
                 idx_dic[machine_name] = machine_name
                 read_status = 1
         elif read_status == 1:
-            if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
+            if __debug_function: log_debug('Second line "{}"'.format(line_uni))
             if line_uni == '$cmd':
                 read_status = 2
                 info_str_list = []
             else:
-                raise TypeError('Wrong second line = "{0}"'.format(line_uni))
+                raise TypeError('Wrong second line = "{}"'.format(line_uni))
         elif read_status == 2:
             if line_uni == '$end':
                 data_dic[machine_name] = '\n'.join(info_str_list)
@@ -1126,11 +1107,11 @@ def mame_load_Command_DAT(filename):
             else:
                 info_str_list.append(line_uni)
         else:
-            raise TypeError('Wrong read_status = {0}'.format(read_status))
+            raise TypeError('Wrong read_status = {}'.format(read_status))
     f.close()
-    log_info('mame_load_Command_DAT() Version "{0}"'.format(version_str))
-    log_info('mame_load_Command_DAT() Rows in idx_dic  {0}'.format(len(idx_dic)))
-    log_info('mame_load_Command_DAT() Rows in data_dic {0}'.format(len(data_dic)))
+    log_info('mame_load_Command_DAT() Version "{}"'.format(version_str))
+    log_info('mame_load_Command_DAT() Rows in idx_dic  {}'.format(len(idx_dic)))
+    log_info('mame_load_Command_DAT() Rows in data_dic {}'.format(len(data_dic)))
 
     # Many machines share the same entry. Expand the database.
     for original_name in idx_dic:
@@ -1140,8 +1121,8 @@ def mame_load_Command_DAT(filename):
             expanded_name = expanded_name.strip()
             proper_idx_dic[expanded_name] = expanded_name
             proper_data_dic[expanded_name] = data_dic[original_name]
-    log_info('mame_load_Command_DAT() Entries in proper_idx_dic  {0}'.format(len(proper_idx_dic)))
-    log_info('mame_load_Command_DAT() Entries in proper_data_dic {0}'.format(len(proper_data_dic)))
+    log_info('mame_load_Command_DAT() Entries in proper_idx_dic  {}'.format(len(proper_idx_dic)))
+    log_info('mame_load_Command_DAT() Entries in proper_data_dic {}'.format(len(proper_data_dic)))
 
     return (proper_idx_dic, proper_data_dic, version_str)
 
@@ -1575,7 +1556,7 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
         slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(machine['ver_mame_str']))
     # Most Played Favourites special fields
     if 'launch_count' in machine:
-        slist.append("[COLOR slateblue]launch_count[/COLOR]: {0}".format(unicode(machine['launch_count'])))
+        slist.append("[COLOR slateblue]launch_count[/COLOR]: {0}".format(str(machine['launch_count'])))
 
     # Standard fields in Render database
     slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(machine['cloneof']))
@@ -1591,54 +1572,54 @@ def mame_info_MAME_print(slist, location, machine_name, machine, assets):
 
     # Standard fields in Main database
     slist.append('\n[COLOR orange]Machine Main data[/COLOR]')
-    slist.append("[COLOR skyblue]alltime[/COLOR]: {0}".format(unicode(machine['alltime'])))
-    slist.append("[COLOR skyblue]artwork[/COLOR]: {0}".format(unicode(machine['artwork'])))
+    slist.append("[COLOR skyblue]alltime[/COLOR]: {0}".format(str(machine['alltime'])))
+    slist.append("[COLOR skyblue]artwork[/COLOR]: {0}".format(str(machine['artwork'])))
     slist.append("[COLOR violet]bestgames[/COLOR]: '{0}'".format(machine['bestgames']))
-    slist.append("[COLOR skyblue]category[/COLOR]: {0}".format(unicode(machine['category'])))
+    slist.append("[COLOR skyblue]category[/COLOR]: {0}".format(str(machine['category'])))
     slist.append("[COLOR violet]catlist[/COLOR]: '{0}'".format(machine['catlist']))
     slist.append("[COLOR violet]catver[/COLOR]: '{0}'".format(machine['catver']))
-    slist.append("[COLOR skyblue]chip_cpu_name[/COLOR]: {0}".format(unicode(machine['chip_cpu_name'])))
+    slist.append("[COLOR skyblue]chip_cpu_name[/COLOR]: {0}".format(str(machine['chip_cpu_name'])))
     # --- Devices list is a special case ---
     if machine['devices']:
         for i, device in enumerate(machine['devices']):
             slist.append("[COLOR lime]devices[/COLOR][{0}]:".format(i))
             slist.append("  [COLOR violet]att_type[/COLOR]: {0}".format(device['att_type']))
             slist.append("  [COLOR violet]att_tag[/COLOR]: {0}".format(device['att_tag']))
-            slist.append("  [COLOR skyblue]att_mandatory[/COLOR]: {0}".format(unicode(device['att_mandatory'])))
+            slist.append("  [COLOR skyblue]att_mandatory[/COLOR]: {0}".format(str(device['att_mandatory'])))
             slist.append("  [COLOR violet]att_interface[/COLOR]: {0}".format(device['att_interface']))
-            slist.append("  [COLOR skyblue]instance[/COLOR]: {0}".format(unicode(device['instance'])))
-            slist.append("  [COLOR skyblue]ext_names[/COLOR]: {0}".format(unicode(device['ext_names'])))
+            slist.append("  [COLOR skyblue]instance[/COLOR]: {0}".format(str(device['instance'])))
+            slist.append("  [COLOR skyblue]ext_names[/COLOR]: {0}".format(str(device['ext_names'])))
     else:
         slist.append("[COLOR lime]devices[/COLOR]: []")
-    slist.append("[COLOR skyblue]display_height[/COLOR]: {0}".format(unicode(machine['display_height'])))
-    slist.append("[COLOR skyblue]display_refresh[/COLOR]: {0}".format(unicode(machine['display_refresh'])))
-    slist.append("[COLOR skyblue]display_rotate[/COLOR]: {0}".format(unicode(machine['display_rotate'])))
-    slist.append("[COLOR skyblue]display_type[/COLOR]: {0}".format(unicode(machine['display_type'])))
-    slist.append("[COLOR skyblue]display_width[/COLOR]: {0}".format(unicode(machine['display_width'])))
+    slist.append("[COLOR skyblue]display_height[/COLOR]: {0}".format(str(machine['display_height'])))
+    slist.append("[COLOR skyblue]display_refresh[/COLOR]: {0}".format(str(machine['display_refresh'])))
+    slist.append("[COLOR skyblue]display_rotate[/COLOR]: {0}".format(str(machine['display_rotate'])))
+    slist.append("[COLOR skyblue]display_type[/COLOR]: {0}".format(str(machine['display_type'])))
+    slist.append("[COLOR skyblue]display_width[/COLOR]: {0}".format(str(machine['display_width'])))
     slist.append("[COLOR violet]genre[/COLOR]: '{0}'".format(machine['genre']))
     # --- input is a special case ---
     if machine['input']:
         # Print attributes
         slist.append("[COLOR lime]input[/COLOR]:")
-        slist.append("  [COLOR skyblue]att_coins[/COLOR]: {0}".format(unicode(machine['input']['att_coins'])))
-        slist.append("  [COLOR skyblue]att_players[/COLOR]: {0}".format(unicode(machine['input']['att_players'])))
-        slist.append("  [COLOR skyblue]att_service[/COLOR]: {0}".format(unicode(machine['input']['att_service'])))
-        slist.append("  [COLOR skyblue]att_tilt[/COLOR]: {0}".format(unicode(machine['input']['att_tilt'])))
+        slist.append("  [COLOR skyblue]att_coins[/COLOR]: {0}".format(str(machine['input']['att_coins'])))
+        slist.append("  [COLOR skyblue]att_players[/COLOR]: {0}".format(str(machine['input']['att_players'])))
+        slist.append("  [COLOR skyblue]att_service[/COLOR]: {0}".format(str(machine['input']['att_service'])))
+        slist.append("  [COLOR skyblue]att_tilt[/COLOR]: {0}".format(str(machine['input']['att_tilt'])))
         # Print control tag list
         for i, control in enumerate(machine['input']['control_list']):
             slist.append("[COLOR lime]control[/COLOR][{0}]:".format(i))
             slist.append("  [COLOR violet]type[/COLOR]: {0}".format(control['type']))
-            slist.append("  [COLOR skyblue]player[/COLOR]: {0}".format(unicode(control['player'])))
-            slist.append("  [COLOR skyblue]buttons[/COLOR]: {0}".format(unicode(control['buttons'])))
-            slist.append("  [COLOR skyblue]ways[/COLOR]: {0}".format(unicode(control['ways'])))
+            slist.append("  [COLOR skyblue]player[/COLOR]: {0}".format(str(control['player'])))
+            slist.append("  [COLOR skyblue]buttons[/COLOR]: {0}".format(str(control['buttons'])))
+            slist.append("  [COLOR skyblue]ways[/COLOR]: {0}".format(str(control['ways'])))
     else:
         slist.append("[COLOR lime]input[/COLOR]: []")
-    slist.append("[COLOR skyblue]isDead[/COLOR]: {0}".format(unicode(machine['isDead'])))
-    slist.append("[COLOR skyblue]isMechanical[/COLOR]: {0}".format(unicode(machine['isMechanical'])))
+    slist.append("[COLOR skyblue]isDead[/COLOR]: {0}".format(str(machine['isDead'])))
+    slist.append("[COLOR skyblue]isMechanical[/COLOR]: {0}".format(str(machine['isMechanical'])))
     slist.append("[COLOR violet]romof[/COLOR]: '{0}'".format(machine['romof']))
     slist.append("[COLOR violet]sampleof[/COLOR]: '{0}'".format(machine['sampleof']))
     slist.append("[COLOR skyblue]series[/COLOR]: '{0}'".format(machine['series']))
-    slist.append("[COLOR skyblue]softwarelists[/COLOR]: {0}".format(unicode(machine['softwarelists'])))
+    slist.append("[COLOR skyblue]softwarelists[/COLOR]: {0}".format(str(machine['softwarelists'])))
     slist.append("[COLOR violet]sourcefile[/COLOR]: '{0}'".format(machine['sourcefile']))
     slist.append("[COLOR violet]veradded[/COLOR]: '{0}'".format(machine['veradded']))
 
@@ -1672,10 +1653,10 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
         slist.append("[COLOR slateblue]SL_name[/COLOR]: '{0}'".format(rom['SL_name']))
     slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(rom['cloneof']))
     slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(rom['description']))
-    slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {0}".format(unicode(rom['hasCHDs'])))
-    slist.append("[COLOR skyblue]hasROMs[/COLOR]: {0}".format(unicode(rom['hasROMs'])))
+    slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {0}".format(str(rom['hasCHDs'])))
+    slist.append("[COLOR skyblue]hasROMs[/COLOR]: {0}".format(str(rom['hasROMs'])))
     if 'launch_count' in rom:
-        slist.append("[COLOR slateblue]launch_count[/COLOR]: '{0}'".format(unicode(rom['launch_count'])))
+        slist.append("[COLOR slateblue]launch_count[/COLOR]: '{0}'".format(str(rom['launch_count'])))
     if 'launch_machine' in rom:
         slist.append("[COLOR slateblue]launch_machine[/COLOR]: '{0}'".format(rom['launch_machine']))
     if rom['parts']:
@@ -1706,8 +1687,8 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
 
     slist.append('\n[COLOR orange]Software List {0}[/COLOR]'.format(SL_name))
     slist.append("[COLOR violet]display_name[/COLOR]: '{0}'".format(SL_dic['display_name']))
-    slist.append("[COLOR skyblue]num_with_CHDs[/COLOR]: {0}".format(unicode(SL_dic['num_with_CHDs'])))
-    slist.append("[COLOR skyblue]num_with_ROMs[/COLOR]: {0}".format(unicode(SL_dic['num_with_ROMs'])))
+    slist.append("[COLOR skyblue]num_with_CHDs[/COLOR]: {0}".format(str(SL_dic['num_with_CHDs'])))
+    slist.append("[COLOR skyblue]num_with_ROMs[/COLOR]: {0}".format(str(SL_dic['num_with_ROMs'])))
     slist.append("[COLOR violet]rom_DB_noext[/COLOR]: '{0}'".format(SL_dic['rom_DB_noext']))
 
     slist.append('\n[COLOR orange]Runnable by[/COLOR]')
@@ -2978,7 +2959,7 @@ def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, ro
                     try:
                         # zfile sometimes has type str, sometimes unicode. If type is str then
                         # try to decode it as UTF-8.
-                        if type(zfile) == unicode:
+                        if type(zfile) == str:
                             zfile_unicode = zfile
                         else:
                             zfile_unicode = zfile.decode('utf-8')
@@ -3324,7 +3305,7 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
         if not rom_list: continue
 
         # >> Check if audit was canceled.
-        # log_debug(unicode(rom_list))
+        # log_debug(str(rom_list))
         if 'status' not in rom_list[0]:
             report_list.append('Audit was canceled at machine {0}'.format(m_name))
             break
@@ -3710,23 +3691,28 @@ def mame_build_SL_names(PATHS, settings):
     log_debug('mame_build_SL_names() Found {} XML files'.format(len(xml_files)))
     for f_name in xml_files:
         XML_FN = hash_dir_FN.pjoin(f_name)
-        # log_debug('Inspecting file "{0}"'.format(XML_FN.getPath()))
+        # log_debug('Inspecting file "{}"'.format(XML_FN.getPath()))
         # Read first XML_READ_LINES lines
         try:
-            f = open(XML_FN.getPath(), 'r')
+            f = open(XML_FN.getPath(), 'r', encoding = 'utf-8')
         except IOError:
             log_error('(IOError) Exception opening {}'.format(XML_FN.getPath()))
             continue
         # f.readlines(XML_READ_LINES) does not work well for some files
         # content_list = f.readlines(XML_READ_LINES)
-        line_count = 0
+        line_count = 1
         content_list = []
-        for line in f:
-            content_list.append(line)
-            line_count += 1
-            if line_count > XML_READ_LINES: break
+        try:
+            for line in f:
+                content_list.append(line)
+                line_count += 1
+                if line_count > XML_READ_LINES: break
+        except UnicodeDecodeError as ex:
+            log_error('Exception UnicodeDecodeError on line {} of file "{}"'.format(line_count, XML_FN.getBase()))
+            log_error('Previous line "{}"'.format(content_list[-1]))
+            raise TypeError
         f.close()
-        content_list = [x.strip().decode('utf-8') for x in content_list]
+        content_list = [x.strip() for x in content_list]
         for line in content_list:
             # Search for SL name
             if not line.startswith('<softwarelist'): continue
@@ -3889,119 +3875,111 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # --- Print user configuration for debug ---
     log_info('mame_build_MAME_main_database() Starting ...')
     log_info('--- Paths ---')
-    log_info('mame_prog      = "{0}"'.format(settings['mame_prog']))
-    log_info('ROM_path       = "{0}"'.format(settings['rom_path']))
-    log_info('assets_path    = "{0}"'.format(settings['assets_path']))
-    log_info('DATs_path      = "{0}"'.format(settings['dats_path']))
-    log_info('CHD_path       = "{0}"'.format(settings['chd_path']))
-    log_info('samples_path   = "{0}"'.format(settings['samples_path']))
-    log_info('SL_hash_path   = "{0}"'.format(settings['SL_hash_path']))
-    log_info('SL_rom_path    = "{0}"'.format(settings['SL_rom_path']))
-    log_info('SL_chd_path    = "{0}"'.format(settings['SL_chd_path']))
+    log_info('mame_prog      = "{}"'.format(settings['mame_prog']))
+    log_info('ROM_path       = "{}"'.format(settings['rom_path']))
+    log_info('assets_path    = "{}"'.format(settings['assets_path']))
+    log_info('DATs_path      = "{}"'.format(settings['dats_path']))
+    log_info('CHD_path       = "{}"'.format(settings['chd_path']))
+    log_info('samples_path   = "{}"'.format(settings['samples_path']))
+    log_info('SL_hash_path   = "{}"'.format(settings['SL_hash_path']))
+    log_info('SL_rom_path    = "{}"'.format(settings['SL_rom_path']))
+    log_info('SL_chd_path    = "{}"'.format(settings['SL_chd_path']))
     log_info('--- INI paths ---')
-    log_info('alltime_path   = "{0}"'.format(ALLTIME_FN.getPath()))
-    log_info('artwork_path   = "{0}"'.format(ARTWORK_FN.getPath()))
-    log_info('bestgames_path = "{0}"'.format(BESTGAMES_FN.getPath()))
-    log_info('category_path  = "{0}"'.format(CATEGORY_FN.getPath()))
-    log_info('catlist_path   = "{0}"'.format(CATLIST_FN.getPath()))
-    log_info('catver_path    = "{0}"'.format(CATVER_FN.getPath()))
-    log_info('genre_path     = "{0}"'.format(GENRE_FN.getPath()))
-    log_info('mature_path    = "{0}"'.format(MATURE_FN.getPath()))
-    log_info('nplayers_path  = "{0}"'.format(NPLAYERS_FN.getPath()))
-    log_info('series_path    = "{0}"'.format(SERIES_FN.getPath()))
+    log_info('alltime_path   = "{}"'.format(ALLTIME_FN.getPath()))
+    log_info('artwork_path   = "{}"'.format(ARTWORK_FN.getPath()))
+    log_info('bestgames_path = "{}"'.format(BESTGAMES_FN.getPath()))
+    log_info('category_path  = "{}"'.format(CATEGORY_FN.getPath()))
+    log_info('catlist_path   = "{}"'.format(CATLIST_FN.getPath()))
+    log_info('catver_path    = "{}"'.format(CATVER_FN.getPath()))
+    log_info('genre_path     = "{}"'.format(GENRE_FN.getPath()))
+    log_info('mature_path    = "{}"'.format(MATURE_FN.getPath()))
+    log_info('nplayers_path  = "{}"'.format(NPLAYERS_FN.getPath()))
+    log_info('series_path    = "{}"'.format(SERIES_FN.getPath()))
     log_info('--- DAT paths ---')
-    log_info('command_path   = "{0}"'.format(COMMAND_FN.getPath()))
-    log_info('gameinit_path  = "{0}"'.format(GAMEINIT_FN.getPath()))
-    log_info('history_path   = "{0}"'.format(HISTORY_FN.getPath()))
-    log_info('mameinfo_path  = "{0}"'.format(MAMEINFO_FN.getPath()))
+    log_info('command_path   = "{}"'.format(COMMAND_FN.getPath()))
+    log_info('gameinit_path  = "{}"'.format(GAMEINIT_FN.getPath()))
+    log_info('history_path   = "{}"'.format(HISTORY_FN.getPath()))
+    log_info('mameinfo_path  = "{}"'.format(MAMEINFO_FN.getPath()))
 
     # --- Progress dialog ---
-    pDialog_canceled = False
-    pDialog = xbmcgui.DialogProgress()
+    pDialog = KodiProgressDialog()
 
     # --- Build SL_NAMES_PATH if available, to be used later in the catalog building ---
-    pDialog.create('Advanced MAME Launcher', 'Creating list of Software List names ...')
-    pDialog.update(0)
+    pDialog.startProgress('Creating list of Software List names...')
     mame_build_SL_names(PATHS, settings)
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Load INI files to include category information ---
-    pdialog_line1 = 'Processing INI files ...'
     num_items = 10
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(int((0*100) / num_items), pdialog_line1, ALLTIME_INI)
+    pd_line1 = 'Processing INI files...'
+    pDialog.startProgress(pd_line1, num_items)
+    pDialog.updateProgress(0, '{}\nFile {}'.format(pd_line1, ALLTIME_INI))
     alltime_dic = mame_load_INI_datfile_simple(ALLTIME_FN.getPath())
-    pDialog.update(int((1*100) / num_items), pdialog_line1, ARTWORK_INI)
+    pDialog.updateProgress(1, '{}\nFile {}'.format(pd_line1, ARTWORK_INI))
     artwork_dic = mame_load_INI_datfile_simple(ARTWORK_FN.getPath())
-    pDialog.update(int((2*100) / num_items), pdialog_line1, BESTGAMES_INI)
+    pDialog.updateProgress(2, '{}\nFile {}'.format(pd_line1, BESTGAMES_INI))
     bestgames_dic = mame_load_INI_datfile_simple(BESTGAMES_FN.getPath())
-    pDialog.update(int((3*100) / num_items), pdialog_line1, CATEGORY_INI)
+    pDialog.updateProgress(3, '{}\nFile {}'.format(pd_line1, CATEGORY_INI))
     category_dic = mame_load_INI_datfile_simple(CATEGORY_FN.getPath())
-    pDialog.update(int((4*100) / num_items), pdialog_line1, CATLIST_INI)
+    pDialog.updateProgress(4, '{}\nFile {}'.format(pd_line1, CATLIST_INI))
     catlist_dic = mame_load_INI_datfile_simple(CATLIST_FN.getPath())
-    pDialog.update(int((5*100) / num_items), pdialog_line1, CATVER_INI)
+    pDialog.updateProgress(5, '{}\nFile {}'.format(pd_line1, CATVER_INI))
     (catver_dic, veradded_dic) = mame_load_Catver_ini(CATVER_FN.getPath())
-    pDialog.update(int((6*100) / num_items), pdialog_line1, GENRE_INI)
+    pDialog.updateProgress(6, '{}\nFile {}'.format(pd_line1, GENRE_INI))
     genre_dic = mame_load_INI_datfile_simple(GENRE_FN.getPath())
-    pDialog.update(int((7*100) / num_items), pdialog_line1, MATURE_INI)
+    pDialog.updateProgress(7, '{}\nFile {}'.format(pd_line1, MATURE_INI))
     mature_dic = mame_load_Mature_ini(MATURE_FN.getPath())
-    pDialog.update(int((8*100) / num_items), pdialog_line1, NPLAYERS_INI)
+    pDialog.updateProgress(8, '{}\nFile {}'.format(pd_line1, NPLAYERS_INI))
     nplayers_dic = mame_load_nplayers_ini(NPLAYERS_FN.getPath())
-    pDialog.update(int((9*100) / num_items), pdialog_line1, SERIES_INI)
+    pDialog.updateProgress(9, '{}\nFile {}'.format(pd_line1, SERIES_INI))
     series_dic = mame_load_INI_datfile_simple(SERIES_FN.getPath())
-    pDialog.update(int((10*100) / num_items), ' ', ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Load DAT files to include category information ---
-    pdialog_line1 = 'Processing DAT files ...'
     num_items = 4
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(int((3*100) / num_items), pdialog_line1, COMMAND_DAT)
+    pd_line1 = 'Processing DAT files ...'
+    pDialog.startProgress(pd_line1, num_items)
+    pDialog.updateProgress(0, '{}\nFile {}'.format(pd_line1, COMMAND_DAT))
     (command_idx_dic, command_dic, command_version) = mame_load_Command_DAT(COMMAND_FN.getPath())
-    pDialog.update(int((2*100) / num_items), pdialog_line1, GAMEINIT_DAT)
+    pDialog.updateProgress(1, '{}\nFile {}'.format(pd_line1, GAMEINIT_DAT))
     (gameinit_idx_dic, gameinit_dic, gameinit_version) = mame_load_GameInit_DAT(GAMEINIT_FN.getPath())
-    pDialog.update(int((0*100) / num_items), pdialog_line1, HISTORY_DAT)
+    pDialog.updateProgress(2, '{}\nFile {}'.format(pd_line1, HISTORY_DAT))
     (history_idx_dic, history_dic, history_version) = mame_load_History_DAT(HISTORY_FN.getPath())
-    pDialog.update(int((1*100) / num_items), pdialog_line1, MAMEINFO_DAT)
+    pDialog.updateProgress(3, '{}\nFile {}'.format(pd_line1, MAMEINFO_DAT))
     (mameinfo_idx_dic, mameinfo_dic, mameinfo_version) = mame_load_MameInfo_DAT(MAMEINFO_FN.getPath())
-    pDialog.update(int((4*100) / num_items), ' ', ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Verify that INIs comply with the data model ---
     # In MAME 0.209 only artwork, category and series are lists. Other INIs define
     # machine-unique categories (each machine belongs to one category only).
-    log_info('alltime_dic   unique_categories {0}'.format(alltime_dic['unique_categories']))
-    log_info('artwork_dic   unique_categories {0}'.format(artwork_dic['unique_categories']))
-    log_info('bestgames_dic unique_categories {0}'.format(bestgames_dic['unique_categories']))
-    log_info('category_dic  unique_categories {0}'.format(category_dic['unique_categories']))
-    log_info('catlist_dic   unique_categories {0}'.format(catlist_dic['unique_categories']))
-    log_info('catver_dic    unique_categories {0}'.format(catver_dic['unique_categories']))
-    log_info('genre_dic     unique_categories {0}'.format(genre_dic['unique_categories']))
-    log_info('mature_dic    unique_categories {0}'.format(mature_dic['unique_categories']))
-    log_info('nplayers_dic  unique_categories {0}'.format(nplayers_dic['unique_categories']))
-    log_info('series_dic    unique_categories {0}'.format(series_dic['unique_categories']))
-    log_info('veradded_dic  unique_categories {0}'.format(veradded_dic['unique_categories']))
+    log_info('alltime_dic   unique_categories {}'.format(alltime_dic['unique_categories']))
+    log_info('artwork_dic   unique_categories {}'.format(artwork_dic['unique_categories']))
+    log_info('bestgames_dic unique_categories {}'.format(bestgames_dic['unique_categories']))
+    log_info('category_dic  unique_categories {}'.format(category_dic['unique_categories']))
+    log_info('catlist_dic   unique_categories {}'.format(catlist_dic['unique_categories']))
+    log_info('catver_dic    unique_categories {}'.format(catver_dic['unique_categories']))
+    log_info('genre_dic     unique_categories {}'.format(genre_dic['unique_categories']))
+    log_info('mature_dic    unique_categories {}'.format(mature_dic['unique_categories']))
+    log_info('nplayers_dic  unique_categories {}'.format(nplayers_dic['unique_categories']))
+    log_info('series_dic    unique_categories {}'.format(series_dic['unique_categories']))
+    log_info('veradded_dic  unique_categories {}'.format(veradded_dic['unique_categories']))
 
     # ---------------------------------------------------------------------------------------------
     # Incremental Parsing approach B (from [1])
     # ---------------------------------------------------------------------------------------------
     # Do not load whole MAME XML into memory! Use an iterative parser to
     # grab only the information we want and discard the rest.
-    # See http://effbot.org/zone/element-iterparse.htm [1]
-    #
+    # See [1] http://effbot.org/zone/element-iterparse.htm
     if settings['op_mode'] == OP_MODE_EXTERNAL:
         MAME_XML_path = PATHS.MAME_XML_PATH
     elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
         MAME_XML_path = FileName(settings['xml_2003_path'])
     else:
         raise ValueError
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Building main MAME database ...')
-    log_info('Loading XML "{0}"'.format(MAME_XML_path.getPath()))
-    context = ET.iterparse(MAME_XML_path.getPath(), events=("start", "end"))
-    context = iter(context)
-    event, root = context.next()
+    log_info('Loading XML "{}"'.format(MAME_XML_path.getPath()))
+    pDialog.startProgress('Loading MAME XML...')
+    context = ET.iterparse(MAME_XML_path.getPath(), events = ("start", "end"))
+    event, root = next(context)
     if settings['op_mode'] == OP_MODE_EXTERNAL:
         mame_version_raw = root.attrib['build']
         mame_version_int = mame_get_numerical_version(mame_version_raw)
@@ -4010,23 +3988,25 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         mame_version_int = mame_get_numerical_version(mame_version_raw)
     else:
         raise ValueError
-    log_info('mame_build_MAME_main_database() MAME str version "{0}"'.format(mame_version_raw))
-    log_info('mame_build_MAME_main_database() MAME numerical version {0}'.format(mame_version_int))
+    pDialog.endProgress()
+    log_info('mame_build_MAME_main_database() MAME str version "{}"'.format(mame_version_raw))
+    log_info('mame_build_MAME_main_database() MAME numerical version {}'.format(mame_version_int))
 
     # --- Process MAME XML ---
     total_machines = control_dic['stats_total_machines']
     processed_machines = 0
+    pDialog.startProgress('Building main MAME database ...', total_machines)
     stats = _get_stats_dic()
-    log_info('mame_build_MAME_main_database() total_machines {0}'.format(total_machines))
+    log_info('mame_build_MAME_main_database() total_machines {}'.format(total_machines))
     machines, machines_render, machines_roms, machines_devices = {}, {}, {}, {}
     roms_sha1_dic = {}
     log_info('mame_build_MAME_main_database() Parsing MAME XML file ...')
     num_iteration = 0
     for event, elem in context:
         # --- Debug the elements we are iterating from the XML file ---
-        # log_debug('Event     {0:6s} | Elem.tag    "{1}"'.format(event, elem.tag))
-        # log_debug('                   Elem.text   "{0}"'.format(elem.text))
-        # log_debug('                   Elem.attrib "{0}"'.format(elem.attrib))
+        # log_debug('Event     {:6s} | Elem.tag    "{}"'.format(event, elem.tag))
+        # log_debug('                  Elem.text   "{}"'.format(elem.text))
+        # log_debug('                  Elem.attrib "{}"'.format(elem.attrib))
 
         # <machine> tag start event includes <machine> attributes
         if (event == 'start' and elem.tag == 'machine') or (event == 'start' and elem.tag == 'game'):
@@ -4101,21 +4081,21 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             m_render['nplayers'] = nplayers_dic['data'][m_name] if m_name in nplayers_dic['data'] else '[ Not set ]'
 
         elif event == 'start' and elem.tag == 'description':
-            m_render['description'] = unicode(elem.text)
+            m_render['description'] = str(elem.text)
 
         elif event == 'start' and elem.tag == 'year':
-            m_render['year'] = unicode(elem.text)
+            m_render['year'] = str(elem.text)
 
         elif event == 'start' and elem.tag == 'manufacturer':
-            m_render['manufacturer'] = unicode(elem.text)
+            m_render['manufacturer'] = str(elem.text)
 
         # >> Check in machine has BIOS
         # <biosset> name and description attributes are mandatory
         elif event == 'start' and elem.tag == 'biosset':
             # --- Add BIOS to ROMS_DB_PATH ---
             bios = fs_new_bios_dic()
-            bios['name'] = unicode(elem.attrib['name'])
-            bios['description'] = unicode(elem.attrib['description'])
+            bios['name'] = str(elem.attrib['name'])
+            bios['description'] = str(elem.attrib['description'])
             m_roms['bios'].append(bios)
 
         # >> Check in machine has ROMs
@@ -4138,15 +4118,15 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
 
             # --- Add BIOS to ROMS_DB_PATH ---
             rom = fs_new_rom_dic()
-            rom['name']  = unicode(elem.attrib['name'])
-            rom['merge'] = unicode(elem.attrib['merge']) if 'merge' in elem.attrib else ''
-            rom['bios']  = unicode(elem.attrib['bios']) if 'bios' in elem.attrib else ''
+            rom['name']  = str(elem.attrib['name'])
+            rom['merge'] = str(elem.attrib['merge']) if 'merge' in elem.attrib else ''
+            rom['bios']  = str(elem.attrib['bios']) if 'bios' in elem.attrib else ''
             rom['size']  = int(elem.attrib['size']) if 'size' in elem.attrib else 0
-            rom['crc']   = unicode(elem.attrib['crc']) if 'crc' in elem.attrib else ''
+            rom['crc']   = str(elem.attrib['crc']) if 'crc' in elem.attrib else ''
             m_roms['roms'].append(rom)
 
             # --- ROMs SHA1 database ---
-            sha1 = unicode(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
+            sha1 = str(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
             # >> Only add valid ROMs, ignore invalid.
             if sha1:
                 rom_nonmerged_location = m_name + '/' + rom['name']
@@ -4166,18 +4146,18 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
 
             # --- Add BIOS to ROMS_DB_PATH ---
             disk = fs_new_disk_dic()
-            disk['name']  = unicode(elem.attrib['name'])
-            disk['merge'] = unicode(elem.attrib['merge']) if 'merge' in elem.attrib else ''
-            disk['sha1']  = unicode(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
+            disk['name']  = str(elem.attrib['name'])
+            disk['merge'] = str(elem.attrib['merge']) if 'merge' in elem.attrib else ''
+            disk['sha1']  = str(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
             m_roms['disks'].append(disk)
 
         # >> Machine devices
         elif event == 'start' and elem.tag == 'device_ref':
-            device_list.append(unicode(elem.attrib['name']))
+            device_list.append(str(elem.attrib['name']))
 
         # >> Machine samples
         elif event == 'start' and elem.tag == 'sample':
-            sample = { 'name' : unicode(elem.attrib['name']) }
+            sample = { 'name' : str(elem.attrib['name']) }
             m_roms['samples'].append(sample)
 
         # >> Chips define CPU and audio circuits.
@@ -4264,7 +4244,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
 
         elif event == 'start' and elem.tag == 'driver':
             # status is #REQUIRED attribute
-            m_render['driver_status'] = unicode(elem.attrib['status'])
+            m_render['driver_status'] = str(elem.attrib['status'])
 
         elif event == 'start' and elem.tag == 'softwarelist':
             # name is #REQUIRED attribute
@@ -4349,7 +4329,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             # --- Compute statistics ---
             _update_stats(stats, machine, m_render, runnable)
 
-            # >> Add new machine
+            # Add new machine
             machines[m_name] = machine
             machines_render[m_name] = m_render
             machines_roms[m_name] = m_roms
@@ -4358,21 +4338,19 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         # --- Print something to prove we are doing stuff ---
         num_iteration += 1
         if num_iteration % 1000 == 0:
-            pDialog.update((processed_machines * 100) // total_machines)
-            # log_debug('Processed {0:10d} events ({1:6d} machines so far) ...'.format(
+            pDialog.updateProgress(processed_machines)
+            # log_debug('Processed {:10d} events ({:6d} machines so far) ...'.format(
             #     num_iteration, processed_machines))
-            # log_debug('processed_machines   = {0}'.format(processed_machines))
-            # log_debug('total_machines = {0}'.format(total_machines))
-            # log_debug('Update number  = {0}'.format(update_number))
-
-        # --- Stop after STOP_AFTER_MACHINES machines have been processed for debug ---
+            # log_debug('processed_machines   = {}'.format(processed_machines))
+            # log_debug('total_machines = {}'.format(total_machines))
+            # log_debug('Update number  = {}'.format(update_number))
+        # Stop after STOP_AFTER_MACHINES machines have been processed for debug.
         if processed_machines >= STOP_AFTER_MACHINES: break
-    pDialog.update(100)
-    pDialog.close()
-    log_info('Processed {0:,} MAME XML events'.format(num_iteration))
-    log_info('Processed machines {0:,} ({1:,} parents, {2:,} clones)'.format(
+    pDialog.endProgress()
+    log_info('Processed {:,} MAME XML events'.format(num_iteration))
+    log_info('Processed machines {:,} ({:,} parents, {:,} clones)'.format(
         processed_machines, stats['parents'], stats['clones']))
-    log_info('Dead machines      {0:,} ({1:,} parents, {2:,} clones)'.format(
+    log_info('Dead machines      {:,} ({:,} parents, {:,} clones)'.format(
         stats['dead'], stats['dead_parents'], stats['dead_clones']))
 
     # ---------------------------------------------------------------------------------------------
@@ -4387,17 +4365,16 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     main_clone_to_parent_dic = {}
     for machine_name, m_render in machines_render.iteritems():
         if m_render['cloneof']:
-            # >> Machine is a clone
             parent_name = m_render['cloneof']
-            # >> If parent already in main_pclone_dic then add clone to parent list.
-            # >> If parent not there, then add parent first and then add clone.
+            # If parent already in main_pclone_dic then add clone to parent list.
+            # If parent not there, then add parent first and then add clone.
             if parent_name not in main_pclone_dic: main_pclone_dic[parent_name] = []
             main_pclone_dic[parent_name].append(machine_name)
-            # >> Add clone machine to main_clone_to_parent_dic
-            main_clone_to_parent_dic[machine_name] = parent_name            
-        else:
-            # >> Machine is a parent. Add to main_pclone_dic if not already there.
-            if machine_name not in main_pclone_dic: main_pclone_dic[machine_name] = []
+            # Add clone machine to main_clone_to_parent_dic
+            main_clone_to_parent_dic[machine_name] = parent_name
+            continue
+        # Machine is a parent. Add to main_pclone_dic if not already there.
+        if machine_name not in main_pclone_dic: main_pclone_dic[machine_name] = []
 
     # ---------------------------------------------------------------------------------------------
     # Initialise asset list

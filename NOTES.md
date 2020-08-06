@@ -22,6 +22,10 @@
 
    [StackOverflow: When should iteritems() be used instead of items()?](https://stackoverflow.com/questions/13998492/when-should-iteritems-be-used-instead-of-items)
 
+ * Python 2 iterator method .next() is built-in function next(iterator) or .__next__() method in Python 3.
+
+ * `xml.etree.cElementTree` is deprecated. It will be used automatically by `xml.etree.ElementTree` whenever available.
+
 **Kodi specific issues**
 
  * AML Python 2 is Krypton compatible. This means in Python 3 all the API updates can be applied.
@@ -42,6 +46,8 @@
 
  * Matrix change: `xbmcgui.Dialog().yesno()`, `.cancel()`, `.ok()`, `xbmcgui.DialogProgress().create()`, `.update()`, Removed Line2, Line3.
 
+   All progress dialogs (search for `pDialog.create()` in the code) must use the new `KodiProgressDialog()` class.
+
 **References**
 
 [The Conservative Python 3 Porting Guide](https://portingguide.readthedocs.io/en/latest/index.html)
@@ -49,6 +55,8 @@
 [Kodi forum: Changes to the python API for Kodi Matrix](https://forum.kodi.tv/showthread.php?tid=344263)
 
 [Kodi forum: Changes to the python API for Kodi Leia](https://forum.kodi.tv/showthread.php?tid=303073)
+
+[Processing Text Files in Python 3](http://python-notes.curiousefficiency.org/en/latest/python3/text_file_processing.html)
 
 ## Installing multiple Kodi versions in Windows for development ##
 

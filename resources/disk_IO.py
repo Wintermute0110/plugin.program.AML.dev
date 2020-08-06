@@ -19,8 +19,6 @@ from .utils import *
 from .utils_kodi import *
 
 # --- Python standard library ---
-# cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
-# Using ElementTree seems to solve the problem
 import codecs
 import copy
 import io
@@ -991,7 +989,7 @@ def fs_write_JSON_file(json_filename, json_data, verbose = True):
     if verbose:
         log_debug('fs_write_JSON_file() "{}"'.format(json_filename))
     try:
-        with io.open(json_filename, 'wt', encoding='utf-8') as file:
+        with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
             if OPTION_COMPACT_JSON:
                 file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True))
             else:
@@ -1125,33 +1123,30 @@ def fs_extract_MAME_version(PATHS, mame_prog_FN):
 #
 def fs_count_MAME_machines_modern(XML_path_FN):
     log_debug('fs_count_MAME_machines_modern() BEGIN ...')
-    log_debug('XML "{0}"'.format(XML_path_FN.getPath()))
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Counting number of MAME machines ...')
-    pDialog.update(0)
+    log_debug('XML "{}"'.format(XML_path_FN.getPath()))
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Counting number of MAME machines...', )
     num_machines = 0
     with open(XML_path_FN.getPath(), 'rt') as f:
         for line in f:
-            if line.decode('utf-8').find('<machine name=') > 0: num_machines += 1
-    pDialog.update(100)
-    pDialog.close()
+            if line.find('<machine name=') > 0: num_machines += 1
+    pDialog.endProgress()
 
     return num_machines
 
+#
+# Older version fo MAME use <game> instead of <machine>
+#
 def fs_count_MAME_machines_archaic(XML_path_FN):
     log_debug('fs_count_MAME_machines_archaic() BEGIN ...')
-    log_debug('XML "{0}"'.format(XML_path_FN.getPath()))
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Counting number of MAME machines ...')
-    pDialog.update(0)
+    log_debug('XML "{}"'.format(XML_path_FN.getPath()))
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Counting number of MAME machines...', )
     num_machines = 0
     with open(XML_path_FN.getPath(), 'rt') as f:
         for line in f:
-            if line.decode('utf-8').find('<game name=') > 0: num_machines += 1
-    pDialog.update(100)
-    pDialog.close()
+            if line.find('<game name=') > 0: num_machines += 1
+    pDialog.endProgress()
 
     return num_machines
 
@@ -1590,45 +1585,35 @@ def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
 # Returns a dictionary with the context of the loaded files.
 #
 def fs_load_files(db_files):
-    log_debug('fs_load_files() Loading {0} JSON database files ...\n'.format(len(db_files)))
+    log_debug('fs_load_files() Loading {} JSON database files ...\n'.format(len(db_files)))
     db_dic = {}
-    line1_str = 'Loading databases ...'
+    line1_str = 'Loading databases...'
     num_items = len(db_files)
     item_count = 0
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher')
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress(line1_str, num_items)
     for f_item in db_files:
-        dict_key = f_item[0]
-        db_name  = f_item[1]
-        db_path  = f_item[2]
-        pDialog.update(int((item_count*100) / num_items), line1_str, db_name)
+        dict_key, db_name, db_path = f_item
+        pDialog.updateProgress(item_count, '{}\nDatabase {}'.format(pd_line1, db_name))
         db_dic[dict_key] = fs_load_JSON_file_dic(db_path)
         item_count += 1
-    # >> Kodi BUG: when the progress dialog is closed and reopened again, the
-    # >> second line of the previous dialog is not deleted (still printed).
-    pDialog.update(int((item_count*100) / num_items), ' ', ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
     return db_dic
 
 def fs_save_files(db_files, json_write_func = fs_write_JSON_file):
-    log_debug('fs_save_files() Saving {0} JSON database files ...\n'.format(len(db_files)))
-    line1_str = 'Saving databases ...'
+    log_debug('fs_save_files() Saving {} JSON database files...\n'.format(len(db_files)))
+    line1_str = 'Saving databases...'
     num_items = len(db_files)
     item_count = 0
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher')
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress(line1_str, num_items)
     for f_item in db_files:
-        dict_data = f_item[0]
-        db_name  = f_item[1]
-        db_path  = f_item[2]
-        pDialog.update(int((item_count*100) / num_items), line1_str, db_name)
+        dict_key, db_name, db_path = f_item
+        pDialog.updateProgress(item_count, '{}\nDatabase {}'.format(pd_line1, db_name))
         json_write_func(db_path, dict_data)
         item_count += 1
-    # >> Kodi BUG: when the progress dialog is closed and reopened again, the
-    # >> second line of the previous dialog is not deleted (still printed).
-    pDialog.update(int((item_count*100) / num_items), ' ', ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
 # -------------------------------------------------------------------------------------------------
 # Export stuff
@@ -1636,7 +1621,7 @@ def fs_save_files(db_files, json_write_func = fs_write_JSON_file):
 def fs_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_render, assets_dic):
     log_verb('fs_export_Read_Only_Launcher() File "{0}"'.format(export_FN.getPath()))
 
-    # --- Create list of strings ---
+    # Create list of strings.
     str_list = []
     str_list.append('<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n')
     str_list.append('<!-- Exported by AML on {0} -->\n'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
@@ -1651,5 +1636,5 @@ def fs_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_rend
         str_list.append('</machine>\n')
     str_list.append('</advanced_MAME_launcher_virtual_launcher>\n')
 
-    # >> Export file. Strings in the list are Unicode. Encode to UTF-8 when writing to file.
+    # Export file. Strings in the list are Unicode. Encode to UTF-8 when writing to file.
     fs_write_str_list_to_file(str_list, export_FN)
