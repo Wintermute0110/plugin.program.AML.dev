@@ -13,19 +13,15 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
-# --- Python standard library ---
-# Division operator: https://www.python.org/dev/peps/pep-0238/
-from __future__ import unicode_literals
-from __future__ import division
-
-import xml.etree.ElementTree as ET
-
 # --- Modules/packages in this plugin ---
 from .constants import *
 from .utils import *
 from .utils_kodi import *
 from .misc import *
 from .disk_IO import *
+
+# --- Python standard library ---
+import xml.etree.ElementTree as ET
 
 # -------------------------------------------------------------------------------------------------
 # Constants

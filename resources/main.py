@@ -13,18 +13,9 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
-# --- Python standard library ---
-import copy
-import datetime
-import os
-import subprocess
-import urllib.parse
-
-# --- Kodi stuff ---
-import xbmc
-import xbmcgui
-import xbmcplugin
-import xbmcaddon
+# First include modules in this package. 
+# Then include Kodi modulesl.
+# Finally include standard library modules.
 
 # --- Modules/packages in this plugin ---
 # Addon module dependencies:
@@ -41,6 +32,19 @@ from .filters import *
 from .mame import *
 from .manuals import *
 from .graphics import *
+
+# --- Kodi stuff ---
+import xbmc
+import xbmcgui
+import xbmcplugin
+import xbmcaddon
+
+# --- Python standard library ---
+import copy
+import datetime
+import os
+import subprocess
+import urllib.parse
 
 # --- Addon object (used to access settings) ---
 __addon__         = xbmcaddon.Addon()

@@ -13,6 +13,11 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# --- Modules/packages in this plugin ---
+from .utils import *
+from .utils_kodi import *
+from .disk_IO import *
+
 # --- Python standard library ---
 # NOTE String literals are needed in this file so unicode_literals cannot be defined.
 #      Is this because of the PDF library???
@@ -31,11 +36,6 @@ except:
 
 # --- Kodi stuff ---
 import xbmcaddon
-
-# --- Modules/packages in this plugin ---
-from .utils import *
-from .utils_kodi import *
-from .disk_IO import *
 
 # --- Load pdfrw module ---
 __addon_id__ = xbmcaddon.Addon().getAddonInfo('id')

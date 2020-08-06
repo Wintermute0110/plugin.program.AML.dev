@@ -13,6 +13,16 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# --- AEL modules ---
+# This module must not include any other AML/AEL modules to avoid circular dependencies.
+
+# --- Kodi modules ---
+try:
+    import xbmc, xbmcgui
+    KODI_RUNTIME_AVAILABLE_UTILS_KODI = True
+except:
+    KODI_RUNTIME_AVAILABLE_UTILS_KODI = False
+
 # --- Python standard library ---
 import hashlib
 import json
@@ -23,16 +33,6 @@ import shutil
 import sys
 import time
 import urllib.parse
-
-# --- Kodi modules ---
-try:
-    import xbmc, xbmcgui
-    KODI_RUNTIME_AVAILABLE_UTILS_KODI = True
-except:
-    KODI_RUNTIME_AVAILABLE_UTILS_KODI = False
-
-# --- AEL modules ---
-# This module must not include any other AML/AEL modules to avoid circular dependencies.
 
 # --- Constants -----------------------------------------------------------------------------------
 LOG_ERROR   = 0

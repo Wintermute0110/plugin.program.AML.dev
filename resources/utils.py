@@ -13,6 +13,18 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# --- AEL modules ---
+# This module must only include utils_kodi.py to avoid circular dependencies.
+from .utils_kodi import *
+
+# --- Kodi modules ---
+# FileName class uses xbmc.translatePath()
+try:
+    import xbmc
+    KODI_RUNTIME_AVAILABLE_UTILS = True
+except:
+    KODI_RUNTIME_AVAILABLE_UTILS = False
+
 # --- Python standard library ---
 import fnmatch
 import hashlib
@@ -24,18 +36,6 @@ import string
 import sys
 import time
 import urllib.parse
-
-# --- Kodi modules ---
-# FileName class uses xbmc.translatePath()
-try:
-    import xbmc
-    KODI_RUNTIME_AVAILABLE_UTILS = True
-except:
-    KODI_RUNTIME_AVAILABLE_UTILS = False
-
-# --- AEL modules ---
-# This module must only include utils_kodi.py to avoid circular dependencies.
-from .utils_kodi import *
 
 # -------------------------------------------------------------------------------------------------
 # Strings and text

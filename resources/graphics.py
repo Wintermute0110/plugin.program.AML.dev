@@ -13,11 +13,14 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# --- Modules/packages in this addon ---
+from .constants import *
+from .disk_IO import *
+from .utils import *
+from .utils_kodi import *
+
 # --- Python standard library ---
-# Division operator: https://www.python.org/dev/peps/pep-0238/
-from __future__ import unicode_literals
-from __future__ import division
-from collections import OrderedDict
+import collections
 import time
 import xml.etree.ElementTree as ET
 try:
@@ -27,12 +30,6 @@ try:
     PILLOW_AVAILABLE = True
 except:
     PILLOW_AVAILABLE = False
-
-# --- Modules/packages in this addon ---
-from .constants import *
-from .disk_IO import *
-from .utils import *
-from .utils_kodi import *
 
 # ------------------------------------------------------------------------------------------------
 # ETA

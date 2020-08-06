@@ -13,6 +13,11 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# --- AEL packages ---
+from .constants import *
+from .utils import *
+from .utils_kodi import *
+
 # --- Python standard library ---
 # cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
 # Using ElementTree seems to solve the problem
@@ -28,11 +33,6 @@ import xml.etree.ElementTree as ET
 
 # import gc
 # import resource # Module not available on Windows
-
-# --- AEL packages ---
-from .constants import *
-from .utils import *
-from .utils_kodi import *
 
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher data model

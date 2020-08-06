@@ -13,13 +13,6 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
-# --- Python standard library ---
-from __future__ import unicode_literals
-import binascii
-import struct
-import xml.etree.ElementTree as ET
-import zipfile as z
-
 # --- AEL packages ---
 from .constants import *
 from .utils import *
@@ -27,6 +20,12 @@ from .utils_kodi import *
 from .misc import *
 from .disk_IO import *
 from .filters import *
+
+# --- Python standard library ---
+import binascii
+import struct
+import xml.etree.ElementTree as ET
+import zipfile as z
 
 # -------------------------------------------------------------------------------------------------
 # Data structures
