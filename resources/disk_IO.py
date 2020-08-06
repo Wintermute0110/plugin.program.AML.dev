@@ -1371,7 +1371,7 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
 #
 def fs_get_machine_main_db_hash(PATHS, machine_name):
     log_debug('fs_get_machine_main_db_hash() machine {}'.format(machine_name))
-    md5_str = hashlib.md5(machine_name).hexdigest()
+    md5_str = hashlib.md5(machine_name.encode('utf-8')).hexdigest()
     # WARNING Python slicing does not work like in C/C++!
     hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_machines.json')
     hashed_db_dic = fs_load_JSON_file_dic(hash_DB_FN.getPath())
@@ -1387,7 +1387,7 @@ def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
     pDialog.create('Advanced MAME Launcher', 'Building asset hashed database ...')
     db_main_hash_idx = {}
     for key in assets_dic:
-        md5_str = hashlib.md5(key).hexdigest()
+        md5_str = hashlib.md5(key.encode('utf-8')).hexdigest()
         db_name = md5_str[0:2] # WARNING Python slicing does not work like in C/C++!
         db_main_hash_idx[key] = db_name
         # log_debug('Machine {0:20s} / hash {1} / db file {2}'.format(key, md5_str, db_name))
@@ -1424,7 +1424,7 @@ def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
 #
 def fs_get_machine_assets_db_hash(PATHS, machine_name):
     log_debug('fs_get_machine_assets_db_hash() machine {0}'.format(machine_name))
-    md5_str = hashlib.md5(machine_name).hexdigest()
+    md5_str = hashlib.md5(machine_name.encode('utf-8')).hexdigest()
     hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_assets.json')
     hashed_db_dic = fs_load_JSON_file_dic(hash_DB_FN.getPath())
 
@@ -1438,7 +1438,7 @@ def fs_get_machine_assets_db_hash(PATHS, machine_name):
 def fs_render_cache_get_hash(catalog_name, category_name):
     prop_key = '{0} - {1}'.format(catalog_name, category_name)
 
-    return hashlib.md5(prop_key).hexdigest()
+    return hashlib.md5(prop_key.encode('utf-8')).hexdigest()
 
 def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machines_render):
     log_info('fs_build_render_cache() Initialising ...')
@@ -1514,14 +1514,14 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
     log_info('fs_build_asset_cache() Initialising ...')
 
     # --- Clean 'cache' directory JSON Asset files ---
-    log_info('Cleaning dir "{0}"'.format(PATHS.CACHE_DIR.getPath()))
+    log_info('Cleaning dir "{}"'.format(PATHS.CACHE_DIR.getPath()))
     pdialog_line1 = 'Cleaning old cache JSON files ...'
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', pdialog_line1, ' ')
     pDialog.update(0, pdialog_line1)
     file_list = os.listdir(PATHS.CACHE_DIR.getPath())
     num_files = len(file_list)
-    log_info('Found {0} files'.format(num_files))
+    log_info('Found {} files'.format(num_files))
     processed_items = 0
     deleted_items = 0
     for file in file_list:
@@ -1533,7 +1533,7 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
         os.unlink(full_path)
         deleted_items += 1
     pDialog.close()
-    log_info('Deleted {0} files'.format(deleted_items))
+    log_info('Deleted {} files'.format(deleted_items))
 
     # --- Build cache ---
     pDialog.create('Advanced MAME Launcher', ' ', ' ')
@@ -1594,7 +1594,7 @@ def fs_load_files(db_files):
     pDialog.startProgress(line1_str, num_items)
     for f_item in db_files:
         dict_key, db_name, db_path = f_item
-        pDialog.updateProgress(item_count, '{}\nDatabase {}'.format(pd_line1, db_name))
+        pDialog.updateProgress(item_count, '{}\nDatabase {}'.format(line1_str, db_name))
         db_dic[dict_key] = fs_load_JSON_file_dic(db_path)
         item_count += 1
     pDialog.endProgress()
@@ -1609,8 +1609,8 @@ def fs_save_files(db_files, json_write_func = fs_write_JSON_file):
     pDialog = KodiProgressDialog()
     pDialog.startProgress(line1_str, num_items)
     for f_item in db_files:
-        dict_key, db_name, db_path = f_item
-        pDialog.updateProgress(item_count, '{}\nDatabase {}'.format(pd_line1, db_name))
+        dict_data, db_name, db_path = f_item
+        pDialog.updateProgress(item_count, '{}\nDatabase {}'.format(line1_str, db_name))
         json_write_func(db_path, dict_data)
         item_count += 1
     pDialog.endProgress()
