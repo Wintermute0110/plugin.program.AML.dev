@@ -160,6 +160,7 @@ class KodiProgressDialog(object):
         self.progressDialog = xbmcgui.DialogProgress()
 
     def startProgress(self, message, num_steps = 100):
+        if self.dialog_active: raise TypeError
         self.num_steps = num_steps
         self.progress = 0
         self.dialog_active = True
@@ -167,15 +168,24 @@ class KodiProgressDialog(object):
         self.progressDialog.create(self.heading, self.message)
         self.progressDialog.update(self.progress)
 
+    def resetProgress(self, message, num_steps = 100):
+        if not self.dialog_active: raise TypeError
+        self.num_steps = num_steps
+        self.progress = 0
+        self.message = message
+        self.progressDialog.update(self.progress, self.message)
+
     # Update progress and optionally update message as well.
     # If not new message specified then keep current message.
     def updateProgress(self, step_index, message = None):
+        if not self.dialog_active: raise TypeError
         self.progress = math.floor((step_index * 100) / self.num_steps)
         if message is not None: self.message = message
         self.progressDialog.update(self.progress, self.message)
 
     # Update dialog message but keep same progress.
     def updateMessage(self, message):
+        if not self.dialog_active: raise TypeError
         self.message1 = message1
         self.progressDialog.update(self.progress, self.message)
 
@@ -184,12 +194,14 @@ class KodiProgressDialog(object):
         if self.flag_dialog_canceled:
             return True
         else:
+            if not self.dialog_active: raise TypeError
             self.flag_dialog_canceled = self.progressDialog.iscanceled()
             return self.flag_dialog_canceled
 
     # Before closing the dialog check if the user pressed the Cancel button and remember
     # the user decision.
     def endProgress(self):
+        if not self.dialog_active: raise TypeError
         if self.progressDialog.iscanceled(): self.flag_dialog_canceled = True
         self.progressDialog.update(100)
         self.progressDialog.close()
@@ -198,7 +210,7 @@ class KodiProgressDialog(object):
     # Reopens a previously closed dialog with endProgress(), remembering the messages
     # and the progress it had when it was closed.
     def reopen(self):
-        if self.dialog_active: return
+        if self.dialog_active: raise TypeError
         self.progressDialog.create(self.title, self.message)
         self.progressDialog.update(self.progress)
         self.dialog_active = True

@@ -697,7 +697,7 @@ def graphs_load_MAME_Fanart_stuff(PATHS, settings, BUILD_MISSING):
     Asset_path_FN = FileName(settings['assets_path'])
     Fanart_path_FN = Asset_path_FN.pjoin('fanarts')
     if not Fanart_path_FN.isdir():
-        log_info('Creating MAME Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
+        log_info('Creating MAME Fanart dir "{}"'.format(Fanart_path_FN.getPath()))
         Fanart_path_FN.makedirs()
     data_dic['Fanart_path_FN'] = Fanart_path_FN
 
@@ -713,35 +713,31 @@ def graphs_load_MAME_Fanart_stuff(PATHS, settings, BUILD_MISSING):
         data_dic['layout'] = layout
 
     # --- Load Assets DB ---
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Loading MAME asset database ... ')
-    pDialog.update(0)
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Loading MAME asset database...')
     assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
     data_dic['assets_dic'] = assets_dic
 
     return data_dic
 
 # Builds or rebuilds missing MAME Fanarts.
 def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
-    # >> Traverse all machines and build fanart from other pieces of artwork
+    # Traverse all machines and build fanart from other pieces of artwork
     pDialog_canceled = False
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_line1 = 'Building MAME machine Fanarts ...'
-    pDialog.create('Advanced MAME Launcher', pDialog_line1)
+    pDialog = KodiProgressDialog()
     total_machines, processed_machines = len(data_dic['assets_dic']), 0
     ETA_str = ETA_reset(total_machines)
+    diag_t = 'Building MAME machine Fanarts...'
+    pDialog.startProgress(diag_t, total_machines)
     for m_name in sorted(data_dic['assets_dic']):
         build_time_start = time.time()
-        pDialog.update((processed_machines * 100) // total_machines, pDialog_line1,
-            'ETA {0} machine {1}'.format(ETA_str, m_name))
-        if pDialog.iscanceled():
+        pDialog.update(processed_machines, '{}\nETA {} machine {}'.format(diag_t, ETA_str, m_name))
+        if pDialog.isCanceled():
             pDialog_canceled = True
             # kodi_dialog_OK('Fanart generation was cancelled by the user.')
             break
-        # >> If build missing Fanarts was chosen only build fanart if file cannot
-        # >> be found.
+        # If build missing Fanarts was chosen only build fanart if file cannot be found.
         Fanart_FN = data_dic['Fanart_path_FN'].pjoin('{0}.png'.format(m_name))
         if data_dic['BUILD_MISSING']:
             if Fanart_FN.exists():
@@ -756,32 +752,29 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
         processed_machines += 1
         build_time_end = time.time()
         build_time = build_time_end - build_time_start
-        # Only update ETA if 3DBox was sucesfully build.
+        # Only update ETA if Fanart was sucesfully build.
         ETA_str = ETA_update(build_OK_flag, processed_machines, build_time)
-    pDialog.update(100, ' ', ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
-    # --- Save assets DB ---
-    pDialog.create('Advanced MAME Launcher', 'Saving MAME asset database ... ')
-    pDialog.update(1)
+    # Save assets DB
+    pDialog.startProgress('Saving MAME asset database...')
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), data_dic['assets_dic'])
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
-    # --- MAME Fanart build timestamp ---
+    # Update MAME Fanart build timestamp
     control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
     change_control_dic(control_dic, 't_MAME_fanart_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-    # --- assets_dic has changed. Rebuild hashed database ---
+    # assets_dic has changed. Rebuild hashed database.
     fs_build_asset_hashed_db(PATHS, settings, control_dic, data_dic['assets_dic'])
 
-    # --- Rebuild MAME asset cache ---
+    # Rebuild MAME asset cache.
     if settings['debug_enable_MAME_asset_cache']:
         cache_index = fs_load_JSON_file_dic(PATHS.CACHE_INDEX_PATH.getPath())
         fs_build_asset_cache(PATHS, settings, control_dic, cache_index, data_dic['assets_dic'])
 
-    # --- Inform user ---
+    # Inform user.
     if pDialog_canceled:
         kodi_notify('MAME Fanart building stopped. Partial progress saved.')
     else:
@@ -872,30 +865,28 @@ def graphs_load_SL_Fanart_stuff(PATHS, settings, BUILD_MISSING):
 def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
     control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
 
-    # >> Traverse all SL and on each SL every item
+    # Traverse all SL and on each SL every item
     pDialog_canceled = False
     pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher')
     SL_number, SL_count = len(data_dic['SL_index']), 1
     total_SL_items, total_processed_SL_items = control_dic['stats_SL_software_items'], 0
     ETA_str = ETA_reset(total_SL_items)
-    log_debug('graphs_build_SL_Fanart_all() total_SL_items = {0}'.format(total_SL_items))
+    log_debug('graphs_build_SL_Fanart_all() total_SL_items = {}'.format(total_SL_items))
+    pDialog.startProgress('Building Software List Fanarts...')
     for SL_name in sorted(data_dic['SL_index']):
-        # >> Update progres dialog
-        pdialog_line1 = 'Processing SL {0} ({1} of {2})...'.format(SL_name, SL_count, SL_number)
-        pdialog_line2 = ' '
-        pDialog.update(0, pdialog_line1, pdialog_line2)
+        # Update progres dialog
+        dtext = 'Processing SL {} ({} of {})...'.format(SL_name, SL_count, SL_number)
+        pDialog.resetProgress(dtext)
 
-        # >> If fanart directory doesn't exist create it.
+        # If fanart directory doesn't exist create it.
         Asset_path_FN = FileName(settings['assets_path'])
-        Fanart_path_FN = Asset_path_FN.pjoin('fanarts_SL/{0}'.format(SL_name))
+        Fanart_path_FN = Asset_path_FN.pjoin('fanarts_SL/{}'.format(SL_name))
         if not Fanart_path_FN.isdir():
-            log_info('Creating SL Fanart dir "{0}"'.format(Fanart_path_FN.getPath()))
+            log_info('Creating SL Fanart dir "{}"'.format(Fanart_path_FN.getPath()))
             Fanart_path_FN.makedirs()
 
-        # >> Load Assets DB
-        pdialog_line2 = 'Loading SL asset database ... '
-        pDialog.update(0, pdialog_line1, pdialog_line2)
+        # Load Assets DB
+        pDialog.resetProgress('{}\n{}'.format(dtext, 'Loading SL asset database'))
         assets_file_name =  data_dic['SL_index'][SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
         SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
@@ -903,17 +894,16 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
         # Traverse all SL items and build fanart from other pieces of artwork
         # Last slot of the progress bar is to save the JSON database.
         total_SL_items, processed_SL_items = len(SL_assets_dic) + 1, 0
+        pDialog.resetProgress(dtext, total_SL_items)
         for m_name in sorted(SL_assets_dic):
             build_time_start = time.time()
-            pdialog_line2 = 'ETA {0} SL item {1}'.format(ETA_str, m_name)
-            update_number = (processed_SL_items * 100) // total_SL_items
-            pDialog.update(update_number, pdialog_line1, pdialog_line2)
-            if pDialog.iscanceled():
+            pDialog.updateProgress(processed_SL_items, '{}\nETA {} SL item {}'.format(dtext, ETA_str, m_name))
+            if pDialog.isCanceled():
                 pDialog_canceled = True
                 # kodi_dialog_OK('SL Fanart generation was cancelled by the user.')
                 break
             # If build missing Fanarts was chosen only build fanart if file cannot be found.
-            Fanart_FN = Fanart_path_FN.pjoin('{0}.png'.format(m_name))
+            Fanart_FN = Fanart_path_FN.pjoin('{}.png'.format(m_name))
             if data_dic['BUILD_MISSING']:
                 if Fanart_FN.exists():
                     SL_assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
@@ -925,27 +915,24 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
                 build_OK_flag = graphs_build_SL_Fanart(
                     PATHS, data_dic['layout'], SL_name, m_name, SL_assets_dic, Fanart_FN)
             processed_SL_items += 1
-            processed_SL_items += 1 # For current list progress dialog
             total_processed_SL_items += 1 # For total ETA calculation
             build_time_end = time.time()
             build_time = build_time_end - build_time_start
             # Only update ETA if 3DBox was sucesfully build.
             ETA_str = ETA_update(build_OK_flag, total_processed_SL_items, build_time)
-        # --- Save SL assets DB ---
-        pdialog_line2 = 'Saving SL {0} asset database ... '.format(SL_name)
-        pDialog.update(100, pdialog_line1, pdialog_line2)
+        # Save SL assets DB.
+        pDialog.updateProgress(processed_SL_items, '{}\nSaving SL {} asset database'.format(dtext, SL_name))
         fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
-
-        # --- Update progress ---
+        # Update progress.
         SL_count += 1
         if pDialog_canceled: break
-    pDialog.close()
+    pDialog.endProgress()
 
-    # --- SL Fanart build timestamp ---
+    # Update SL Fanart build timestamp
     change_control_dic(control_dic, 't_SL_fanart_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
-    # --- Inform user ---
+    # Inform user.
     if pDialog_canceled:
         kodi_notify('SL Fanart building stopped. Partial progress saved.')
     else:

@@ -1170,22 +1170,20 @@ def fs_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
     # Extract XML from MAME executable.
     mame_prog_FN = FileName(settings['mame_prog'])
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
-    log_info('fs_extract_MAME_XML() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
-    log_info('fs_extract_MAME_XML() Saving XML   "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
-    log_debug('fs_extract_MAME_XML() mame_dir     "{0}"'.format(mame_dir))
-    log_debug('fs_extract_MAME_XML() mame_exec    "{0}"'.format(mame_exec))
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher',
-                   'Extracting MAME XML database. Progress bar is not accurate.')
+    log_info('fs_extract_MAME_XML() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
+    log_info('fs_extract_MAME_XML() Saving XML   "{}"'.format(PATHS.MAME_XML_PATH.getPath()))
+    log_debug('fs_extract_MAME_XML() mame_dir     "{}"'.format(mame_dir))
+    log_debug('fs_extract_MAME_XML() mame_exec    "{}"'.format(mame_exec))
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Extracting MAME XML database. Progress bar is not accurate.')
     with open(PATHS.MAME_XML_PATH.getPath(), 'wb') as out, open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as err:
         p = subprocess.Popen([mame_prog_FN.getPath(), '-listxml'], stdout=out, stderr=err, cwd=mame_dir)
         count = 0
         while p.poll() is None:
-            pDialog.update((count * 100) // 100)
             time.sleep(1)
-            count = count + 1
-    pDialog.close()
+            count += 1
+            pDialog.updateProgress(count)
+    pDialog.endProgress()
 
     # --- Check if everything OK ---
     statinfo = os.stat(PATHS.MAME_XML_PATH.getPath())
@@ -1196,14 +1194,14 @@ def fs_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
     log_info('fs_extract_MAME_XML() Counting number of machines ...')
     total_machines = fs_count_MAME_machines_modern(PATHS.MAME_XML_PATH)
     options_dic['total_machines'] = total_machines
-    log_info('fs_extract_MAME_XML() Found {0} machines.'.format(total_machines))
+    log_info('fs_extract_MAME_XML() Found {} machines.'.format(total_machines))
 
     # -----------------------------------------------------------------------------
     # Reset MAME control dictionary completely
     # -----------------------------------------------------------------------------
     AML_version_int = fs_AML_version_str_to_int(AML_version_str)
-    log_info('fs_extract_MAME_XML() AML version str "{0}"'.format(AML_version_str))
-    log_info('fs_extract_MAME_XML() AML version int {0}'.format(AML_version_int))
+    log_info('fs_extract_MAME_XML() AML version str "{}"'.format(AML_version_str))
+    log_info('fs_extract_MAME_XML() AML version int {}'.format(AML_version_int))
     control_dic = fs_new_control_dic()
     change_control_dic(control_dic, 'ver_AML', AML_version_int)
     change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
@@ -1324,26 +1322,24 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
     # A) First create an index
     #    db_main_hash_idx = { 'machine_name' : 'aa', ... }
     # B) Then traverse a list [0, 1, ..., f] and write the machines in that sub database section.
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Building main hashed database...')
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Building main hashed database...')
     db_main_hash_idx = {}
     for key in machines:
         md5_str = hashlib.md5(key.encode('utf-8')).hexdigest()
         db_name = md5_str[0:2] # WARNING Python slicing does not work like in C/C++!
         db_main_hash_idx[key] = db_name
         # log_debug('Machine {0:20s} / hash {1} / db file {2}'.format(key, md5_str, db_name))
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
     hex_digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
     distributed_db_files = []
     for u in range(len(hex_digits)):
         for v in range(len(hex_digits)):
-            db_str = '{0}{1}'.format(hex_digits[u], hex_digits[v])
-            distributed_db_files.append(db_str)
-    pDialog.create('Advanced MAME Launcher', 'Building main hashed database JSON files ...')
+            distributed_db_files.append('{}{}'.format(hex_digits[u], hex_digits[v]))
     num_items = len(distributed_db_files)
     item_count = 0
+    pDialog.startProgress('Building main hashed database JSON files...', num_items)
     for db_prefix in distributed_db_files:
         # log_debug('db prefix {0}'.format(db_prefix))
         # --- Generate dictionary in this JSON file ---
@@ -1358,10 +1354,10 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
         hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '_machines.json')
         fs_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic, verbose = False)
         item_count += 1
-        pDialog.update(int((item_count*100) / num_items))
-    pDialog.close()
+        pDialog.updateProgress(item_count)
+    pDialog.endProgress()
 
-    # --- Timestamp ---
+    # Update timestamp in control_dic.
     change_control_dic(control_dic, 't_MAME_machine_hash', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
@@ -1383,26 +1379,24 @@ def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
     log_info('fs_build_asset_hashed_db() Building assets hashed database ...')
 
     # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Building asset hashed database ...')
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Building asset hashed database...')
     db_main_hash_idx = {}
     for key in assets_dic:
         md5_str = hashlib.md5(key.encode('utf-8')).hexdigest()
         db_name = md5_str[0:2] # WARNING Python slicing does not work like in C/C++!
         db_main_hash_idx[key] = db_name
         # log_debug('Machine {0:20s} / hash {1} / db file {2}'.format(key, md5_str, db_name))
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
     hex_digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
     distributed_db_files = []
     for u in range(len(hex_digits)):
         for v in range(len(hex_digits)):
-            db_str = '{0}{1}'.format(hex_digits[u], hex_digits[v])
-            distributed_db_files.append(db_str)
-    pDialog.create('Advanced MAME Launcher', 'Building asset hashed database JSON files ...')
+            distributed_db_files.append('{}{}'.format(hex_digits[u], hex_digits[v]))
     num_items = len(distributed_db_files)
     item_count = 0
+    pDialog.startProgress('Building asset hashed database JSON files...', num_items)
     for db_prefix in distributed_db_files:
         hashed_db_dic = {}
         for key in db_main_hash_idx:
@@ -1411,8 +1405,8 @@ def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
         hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '_assets.json')
         fs_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic, verbose = False)
         item_count += 1
-        pDialog.update(int((item_count*100) / num_items))
-    pDialog.close()
+        pDialog.updateProgress(item_count)
+    pDialog.endProgress()
 
     # --- Timestamp ---
     change_control_dic(control_dic, 't_MAME_asset_hash', time.time())
@@ -1436,66 +1430,56 @@ def fs_get_machine_assets_db_hash(PATHS, machine_name):
 # access of ListItems when rendering machine lists.
 # -------------------------------------------------------------------------------------------------
 def fs_render_cache_get_hash(catalog_name, category_name):
-    prop_key = '{0} - {1}'.format(catalog_name, category_name)
-
-    return hashlib.md5(prop_key.encode('utf-8')).hexdigest()
+    return hashlib.md5('{} - {}'.format(catalog_name, category_name).encode('utf-8')).hexdigest()
 
 def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machines_render):
-    log_info('fs_build_render_cache() Initialising ...')
+    log_info('fs_build_render_cache() Initialising...')
 
     # --- Clean 'cache' directory JSON ROM files ---
-    log_info('Cleaning dir "{0}"'.format(PATHS.CACHE_DIR.getPath()))
-    pdialog_line1 = 'Cleaning old cache JSON files ...'
+    log_info('Cleaning dir "{}"'.format(PATHS.CACHE_DIR.getPath()))
     pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', pdialog_line1, ' ')
-    pDialog.update(0, pdialog_line1)
+    pDialog.startProgress('Listing render cache JSON files...')
     file_list = os.listdir(PATHS.CACHE_DIR.getPath())
-    num_files = len(file_list)
-    log_info('Found {0} files'.format(num_files))
+    log_info('Found {} files'.format(len(file_list)))
     processed_items = 0
     deleted_items = 0
+    pDialog.resetProgress('Cleaning render cache JSON files...', len(file_list))
     for file in file_list:
-        pDialog.update((processed_items*100) // num_files, pdialog_line1)
+        pDialog.updateProgress(processed_items)
         processed_items += 1
         if not file.endswith('_render.json'): continue
         full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
         # log_debug('UNLINK "{0}"'.format(full_path))
         os.unlink(full_path)
         deleted_items += 1
-    pDialog.close()
-    log_info('Deleted {0} files'.format(deleted_items))
+    pDialog.endProgress()
+    log_info('Deleted {} files'.format(deleted_items))
 
     # --- Build ROM cache ---
-    pDialog.create('Advanced MAME Launcher', ' ', ' ')
     num_catalogs = len(cache_index_dic)
     catalog_count = 1
+    pDialog.startProgress('Building MAME render cache')
     for catalog_name in sorted(cache_index_dic):
         catalog_index_dic = cache_index_dic[catalog_name]
         catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
-
-        pdialog_line1 = 'Building MAME {} render cache ({} of {}) ...'.format(
-            catalog_name, catalog_count, num_catalogs)
-        pDialog.update(0, pdialog_line1)
-        total_items = len(catalog_index_dic)
         item_count = 0
+        diag_t = 'Building MAME {} render cache ({} of {})...'.format(catalog_name, catalog_count, num_catalogs)
+        pDialog.resetProgress(diag_t, len(catalog_index_dic))
         for catalog_key in catalog_index_dic:
-            pDialog.update((item_count*100) // total_items, pdialog_line1)
+            pDialog.updateProgress(item_count)
             hash_str = catalog_index_dic[catalog_key]['hash']
             # log_verb('fs_build_ROM_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
             # log_verb('fs_build_ROM_cache() hash {0}'.format(hash_str))
 
-            # >> Build all machines cache
+            # Build all machines cache
             m_render_all_dic = {}
             for machine_name in catalog_all[catalog_key]:
                 m_render_all_dic[machine_name] = machines_render[machine_name]
             ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_render.json')
             fs_write_JSON_file(ROMs_all_FN.getPath(), m_render_all_dic, verbose = False)
-
-            # >> Progress dialog
             item_count += 1
-        # >> Progress dialog
         catalog_count += 1
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Timestamp ---
     change_control_dic(control_dic, 't_MAME_render_cache_build', time.time())
@@ -1511,63 +1495,55 @@ def fs_load_render_dic_all(PATHS, cache_index_dic, catalog_name, category_name):
 # MAME asset cache
 # -------------------------------------------------------------------------------------------------
 def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_dic):
-    log_info('fs_build_asset_cache() Initialising ...')
+    log_info('fs_build_asset_cache() Initialising...')
 
     # --- Clean 'cache' directory JSON Asset files ---
     log_info('Cleaning dir "{}"'.format(PATHS.CACHE_DIR.getPath()))
-    pdialog_line1 = 'Cleaning old cache JSON files ...'
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', pdialog_line1, ' ')
-    pDialog.update(0, pdialog_line1)
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Listing asset cache JSON files...')
     file_list = os.listdir(PATHS.CACHE_DIR.getPath())
-    num_files = len(file_list)
-    log_info('Found {} files'.format(num_files))
+    log_info('Found {} files'.format(len(file_list)))
     processed_items = 0
     deleted_items = 0
+    pDialog.resetProgress('Cleaning asset cache JSON files...', len(file_list))
     for file in file_list:
-        pDialog.update((processed_items*100) // num_files, pdialog_line1)
+        pDialog.updateProgress(processed_items)
         processed_items += 1
         if not file.endswith('_assets.json'): continue
         full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
         # log_debug('UNLINK "{0}"'.format(full_path))
         os.unlink(full_path)
         deleted_items += 1
-    pDialog.close()
+    pDialog.endProgress()
     log_info('Deleted {} files'.format(deleted_items))
 
-    # --- Build cache ---
-    pDialog.create('Advanced MAME Launcher', ' ', ' ')
+    # --- Build MAME asset cache ---
     num_catalogs = len(cache_index_dic)
     catalog_count = 1
+    pDialog.startProgress('Building MAME asset cache')
     for catalog_name in sorted(cache_index_dic):
         catalog_index_dic = cache_index_dic[catalog_name]
         catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
-
-        pdialog_line1 = 'Building MAME {} asset cache ({} of {}) ...'.format(
-            catalog_name, catalog_count, num_catalogs)
-        pDialog.update(0, pdialog_line1)
-        total_items = len(catalog_index_dic)
         item_count = 0
+        diag_t = 'Building MAME {} asset cache ({} of {})...'.format(catalog_name, catalog_count, num_catalogs)
+        pDialog.resetProgress(diag_t, len(catalog_index_dic))
         for catalog_key in catalog_index_dic:
-            pDialog.update((item_count*100) // total_items, pdialog_line1)
+            pDialog.updateProgress(item_count)
             hash_str = catalog_index_dic[catalog_key]['hash']
             # log_verb('fs_build_asset_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
             # log_verb('fs_build_asset_cache() hash {0}'.format(hash_str))
 
-            # >> Build all machines cache
+            # Build all machines cache
             m_assets_all_dic = {}
             for machine_name in catalog_all[catalog_key]:
                 m_assets_all_dic[machine_name] = assets_dic[machine_name]
             ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
             fs_write_JSON_file(ROMs_all_FN.getPath(), m_assets_all_dic, verbose = False)
-
-            # >> Progress dialog
             item_count += 1
-        # >> Progress dialog
         catalog_count += 1
-    pDialog.close()
+    pDialog.endProgress()
 
-    # --- Timestamp ---
+    # Update timestamp and save control_dic.
     change_control_dic(control_dic, 't_MAME_asset_cache_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 

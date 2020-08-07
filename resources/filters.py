@@ -1227,10 +1227,6 @@ def filter_parse_XML(fname_str):
 # This includes all MAME machines, including parents and clones.
 #
 def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic, machine_archives_dic):
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Building filter database ...')
-    total_items = len(machine_main_dic)
-    item_count = 0
     main_filter_dic = {}
     # Sets are used to check the integrity of the filters defined in the XML.
     drivers_set = set()
@@ -1242,8 +1238,10 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
     genres_drivers_dic = {}
     controls_drivers_dic = {}
     pdevices_drivers_dic = {}
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Building filter database...', len(machine_main_dic))
+    item_count = 0
     for m_name in machine_main_dic:
-        pDialog.update(int((item_count*100) / total_items))
         if 'att_coins' in machine_main_dic[m_name]['input']:
             coins = machine_main_dic[m_name]['input']['att_coins']
         else:
@@ -1319,7 +1317,6 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
             'pluggable_device_list' : pluggable_device_list,
             'year' : machine_render_dic[m_name]['year'],
         }
-        item_count += 1
 
         # --- Make sets of drivers, genres, controls, and pluggable devices ---
         mdict = main_filter_dic[m_name]
@@ -1342,8 +1339,11 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
                 pdevices_drivers_dic[device] += 1
             else:
                 pdevices_drivers_dic[device] = 1
-    pDialog.update(100)
-    pDialog.close()
+
+        # Progress dialog.
+        item_count += 1
+        pDialog.updateProgress(item_count)
+    pDialog.endProgress()
 
     # --- Write statistics report ---
     log_info('Writing report "{}"'.format(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath()))
@@ -1531,36 +1531,35 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
     filter_list, main_filter_dic, machines_dic, render_dic, assets_dic):
     # --- Clean 'filters' directory JSON files ---
     log_info('filter_build_custom_filters() Cleaning dir "{}"'.format(PATHS.FILTERS_DB_DIR.getPath()))
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Cleaning old filter JSON files ...')
-    pDialog.update(0)
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Listing filter JSON files...')
     file_list = os.listdir(PATHS.FILTERS_DB_DIR.getPath())
     num_files = len(file_list)
     if num_files > 1:
         log_info('Found {} files'.format(num_files))
         processed_items = 0
+        pDialog.resetProgress('Cleaning filter JSON files...', num_files)
         for file in file_list:
-            pDialog.update((processed_items*100) // num_files)
+            pDialog.updateProgress(processed_items)
             if file.endswith('.json'):
                 full_path = os.path.join(PATHS.FILTERS_DB_DIR.getPath(), file)
                 # log_debug('UNLINK "{}"'.format(full_path))
                 os.unlink(full_path)
             processed_items += 1
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Report header ---
-    r_full = []
-    r_full.append('Number of machines {}'.format(len(main_filter_dic)))
-    r_full.append('Number of filters {}'.format(len(filter_list)))
-    r_full.append('')
+    r_full = [
+        'Number of machines {}'.format(len(main_filter_dic)),
+        'Number of filters {}'.format(len(filter_list)),
+        '',
+    ]
 
     # --- Traverse list of filters, build filter index and compute filter list ---
-    pdialog_line1 = 'Building custom MAME filters'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
     Filters_index_dic = {}
-    total_items = len(filter_list)
     processed_items = 0
+    diag_t = 'Building custom MAME filters...'
+    pDialog.startProgress(diag_t, len(filter_list))
     for f_definition in filter_list:
         # --- Initialise ---
         f_name = f_definition['name']
@@ -1568,7 +1567,7 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         # log_debug('f_definition = {}'.format(unicode(f_definition)))
 
         # --- Initial progress ---
-        pDialog.update((processed_items*100) // total_items, pdialog_line1, 'Filter "{}" ...'.format(f_name))
+        pDialog.updateProgress(processed_items '{}\nFilter "{}"'.format(diag_t, f_name))
 
         # --- Do filtering ---
         filtered_machine_dic = filter_mame_Default(main_filter_dic)
@@ -1619,8 +1618,7 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
 
     # --- Save custom filter index ---
     fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
-    pDialog.update(100, pdialog_line1, ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Update timestamp ---
     change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
