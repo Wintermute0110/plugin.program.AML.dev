@@ -5423,13 +5423,6 @@ def mame_check_before_build_MAME_catalogs(PATHS, settings, control_dic):
 def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     machines, machines_render, machine_roms, main_pclone_dic, assets_dic):
 
-    # --- Progress dialog ---
-    pDialog_line1 = 'Building catalogs ...'
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', pDialog_line1)
-    processed_filters = 0
-    update_number = 0
-
     # --- Machine count ---
     cache_index_dic = {
         # Virtual Main filter catalog
@@ -5479,10 +5472,15 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         'sfbonus.cpp',
     }
 
+    # --- Progress dialog ---
+    diag_line1 = 'Building catalogs...'
+    pDialog = KodiProgressDialog()
+    processed_filters = 0
+
     # ---------------------------------------------------------------------------------------------
     # Main filters (None catalog) -----------------------------------------------------------------
     # ---------------------------------------------------------------------------------------------
-    pDialog.update(update_number, pDialog_line1, 'Main Catalog')
+    pDialog.startProgress('{}\n{}'.format(diag_line1, 'Main catalog'), NUM_CATALOGS)
     main_catalog_parents, main_catalog_all = {}, {}
 
     # --- Normal and Unusual machine list ---
@@ -5553,7 +5551,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     main_catalog_all['NoCoin'] = all_dic
 
     # --- Mechanical machines ---
-    # >> Mechanical machines and not Dead and not Device
+    # Mechanical machines and not Dead and not Device
     log_info('Making Mechanical index ...')
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
@@ -5569,7 +5567,6 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     main_catalog_all['Mechanical'] = all_dic
 
     # --- Dead machines ---
-    # >> Dead machines
     log_info('Making Dead Machines index ...')
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
@@ -5583,7 +5580,6 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     main_catalog_all['Dead'] = all_dic
 
     # --- Device machines ---
-    # >> Device machines
     log_info('Making Device Machines index ...')
     parent_dic, all_dic = {}, {}
     for parent_name in main_pclone_dic:
@@ -5600,12 +5596,11 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_MAIN_ALL_PATH.getPath(), main_catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_MAIN_PARENT_PATH.getPath(), main_catalog_parents)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # ---------------------------------------------------------------------------------------------
     # Binary filters ------------------------------------------------------------------------------
     # ---------------------------------------------------------------------------------------------
-    pDialog.update(update_number, pDialog_line1, 'Binary Catalog')
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Binary catalog'))
     binary_catalog_parents, binary_catalog_all = {}, {}
 
     # --- CHD machines ---
@@ -5668,14 +5663,13 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_BINARY_ALL_PATH.getPath(), binary_catalog_all)
     fs_write_JSON_file(PATHS.CATALOG_BINARY_PARENT_PATH.getPath(), binary_catalog_parents)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # ---------------------------------------------------------------------------------------------
     # Cataloged machine lists ---------------------------------------------------------------------
     # ---------------------------------------------------------------------------------------------
     # --- Catver catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Catver catalog'))
     log_info('Making Catver catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Catver catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Catver)
@@ -5683,11 +5677,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CATVER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Catlist catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Catlist catalog'))
     log_info('Making Catlist catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Catlist catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Catlist)
@@ -5695,11 +5688,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CATLIST_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Genre catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Genre catalog'))
     log_info('Making Genre catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Genre catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Genre)
@@ -5707,11 +5699,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_GENRE_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_GENRE_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Category catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Category catalog'))
     log_info('Making Category catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Category catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Category)
@@ -5719,11 +5710,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_CATEGORY_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CATEGORY_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Nplayers catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Nplayers catalog'))
     log_info('Making Nplayers catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Nplayers catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines_render, machines_render, main_pclone_dic, _aux_catalog_key_NPlayers)
@@ -5731,11 +5721,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Bestgames catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Bestgames catalog'))
     log_info('Making Bestgames catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Bestgames catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Bestgames)
@@ -5743,11 +5732,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Series catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Series catalog'))
     log_info('Making Series catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Series catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Series)
@@ -5755,11 +5743,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Alltime catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Alltime catalog'))
     log_info('Making Alltime catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Alltime catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Alltime)
@@ -5767,11 +5754,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_ALLTIME_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_ALLTIME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Artwork catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Artwork catalog'))
     log_info('Making Artwork catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Artwork catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Artwork)
@@ -5779,11 +5765,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Version catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Version catalog'))
     log_info('Making Version catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Version catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_VerAdded)
@@ -5791,11 +5776,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_VERADDED_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_VERADDED_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Control catalog (Expanded) ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Control Expanded catalog'))
     log_info('Making Control Expanded catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Control Expanded catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Controls_Expanded)
@@ -5803,13 +5787,12 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Control catalog (Compact) ---
-    # >> In this catalog one machine may be in several categories if the machine has more than
-    # >> one control.
+    # In this catalog one machine may be in several categories if the machine has more than
+    # one control.
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Control Compact catalog'))
     log_info('Making Control Compact catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Control Compact catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Controls_Compact)
@@ -5817,11 +5800,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- <device> / Device Expanded catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, '<device> Expanded catalog'))
     log_info('Making <device> tag Expanded catalog ...')
-    pDialog.update(update_number, pDialog_line1, '<device> Expanded catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Devices_Expanded)
@@ -5829,11 +5811,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- <device> / Device Compact catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, '<device> Compact catalog'))
     log_info('Making <device> tag Compact catalog ...')
-    pDialog.update(update_number, pDialog_line1, '<device> Compact catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Devices_Compact)
@@ -5841,11 +5822,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Display Type catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Display Type catalog'))
     log_info('Making Display Type catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Display Type catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Display_Type)
@@ -5853,11 +5833,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Display VSync catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Display VSync catalog'))
     log_info('Making Display VSync catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Display VSync catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Display_VSync)
@@ -5865,11 +5844,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Display Resolution catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Display Resolution catalog'))
     log_info('Making Display Resolution catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Display Resolution catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Display_Resolution)
@@ -5877,11 +5855,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_RES_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DISPLAY_RES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- CPU catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'CPU catalog'))
     log_info('Making CPU catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'CPU catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_CPU)
@@ -5889,11 +5866,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_CPU_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_CPU_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Driver catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Driver catalog'))
     log_info('Making Driver catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Driver catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Driver)
@@ -5901,11 +5877,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Manufacturer catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Manufacturer catalog'))
     log_info('Making Manufacturer catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Manufacturer catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Manufacturer)
@@ -5913,20 +5888,19 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- MAME short name catalog ---
     # This catalog cannot use _build_catalog_helper_new() because of the special name
     # of the catalog (it is not the plain description).
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Short name catalog'))
     log_info('Making MAME short name catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Short name catalog')
     catalog_parents, catalog_all = {}, {}
     for parent_name in main_pclone_dic:
         machine = machines[parent_name]
         machine_render = machines_render[parent_name]
         if machine_render['isDevice']: continue # >> Skip device machines
         catalog_key = parent_name[0]
-        t = '{0} "{1}"'.format(parent_name, machine_render['description'])
+        t = '{} "{}"'.format(parent_name, machine_render['description'])
         if catalog_key in catalog_parents:
             catalog_parents[catalog_key][parent_name] = t
             catalog_all[catalog_key][parent_name] = t
@@ -5934,17 +5908,16 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
             catalog_parents[catalog_key] = { parent_name : t }
             catalog_all[catalog_key] = { parent_name : t }
         for clone_name in main_pclone_dic[parent_name]:
-            t = '{0} "{1}"'.format(clone_name, machines_render[clone_name]['description'])
+            t = '{} "{}"'.format(clone_name, machines_render[clone_name]['description'])
             catalog_all[catalog_key][clone_name] = t
     _cache_index_builder('ShortName', cache_index_dic, catalog_all, catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- MAME long name catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Long name catalog'))
     log_info('Making MAME long name catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Long name catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_LongName)
@@ -5952,13 +5925,12 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Software List (BySL) catalog ---
     # This catalog cannot use _build_catalog_helper_new() because of the name change of the SLs.
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Software List catalog'))
     log_info('Making Software List catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Software List catalog')
-    # >> Load proper Software List proper names, if available
+    # Load proper Software List proper names, if available
     SL_names_dic = fs_load_JSON_file_dic(PATHS.SL_NAMES_PATH.getPath())
     catalog_parents, catalog_all = {}, {}
     for parent_name in main_pclone_dic:
@@ -5980,11 +5952,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # --- Year catalog ---
+    pDialog.updateProgress(processed_filters, '{}\n{}'.format(diag_line1, 'Year catalog'))
     log_info('Making Year catalog ...')
-    pDialog.update(update_number, pDialog_line1, 'Year catalog')
     catalog_parents, catalog_all = {}, {}
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Year)
@@ -5992,11 +5963,9 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     fs_write_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
     fs_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_CATALOGS)) * 100)
 
     # Close progress dialog.
-    pDialog.update(update_number)
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Create properties database with default values ------------------------------------------
     # Now overwrites all properties when the catalog is rebuilt.
@@ -6006,10 +5975,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     # for catalog_name in CATALOG_NAME_LIST:
     #     catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
     #     for category_name in sorted(catalog_dic):
-    #         prop_key = '{0} - {1}'.format(catalog_name, category_name)
+    #         prop_key = '{} - {}'.format(catalog_name, category_name)
     #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_PCLONE}
     # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
-    # log_info('mame_properties_dic has {0} entries'.format(len(mame_properties_dic)))
+    # log_info('mame_properties_dic has {} entries'.format(len(mame_properties_dic)))
 
     # --- Compute main filter statistics ---
     stats_MF_Normal_Total, stats_MF_Normal_Total_parents = 0, 0
@@ -6034,9 +6003,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     stats_MF_Dead_Nonworking, stats_MF_Dead_Nonworking_parents = 0, 0
     NUM_FILTERS = 5
     processed_filters = 0
-    pDialog.create('Advanced MAME Launcher', 'Computing statistics ...')
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.startProgress('Computing statistics ...', NUM_FILTERS)
     for m_name in main_catalog_all['Normal']:
         driver_status = machines_render[m_name]['driver_status']
         stats_MF_Normal_Total += 1
@@ -6055,11 +6022,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         # Are there machines with undefined status?
         elif driver_status == '': pass
         else:
-            log_error('Machine {0}, unrecognised driver_status {1}'.format(m_name, driver_status))
+            log_error('Machine {}, unrecognised driver_status {}'.format(m_name, driver_status))
             raise TypeError
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.updateProgress(processed_filters)
     for m_name in main_catalog_all['Unusual']:
         driver_status = machines_render[m_name]['driver_status']
         stats_MF_Unusual_Total += 1
@@ -6076,11 +6042,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
-            log_error('Machine {0}, unrecognised driver_status {1}'.format(m_name, driver_status))
+            log_error('Machine {}, unrecognised driver_status {}'.format(m_name, driver_status))
             raise TypeError
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.updateProgress(processed_filters)
     for m_name in main_catalog_all['NoCoin']:
         driver_status = machines_render[m_name]['driver_status']
         stats_MF_Nocoin_Total += 1
@@ -6097,11 +6062,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
-            log_error('Machine {0}, unrecognised driver_status {1}'.format(m_name, driver_status))
+            log_error('Machine {}, unrecognised driver_status {}'.format(m_name, driver_status))
             raise TypeError
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.updateProgress(processed_filters)
     for m_name in main_catalog_all['Mechanical']:
         driver_status = machines_render[m_name]['driver_status']
         stats_MF_Mechanical_Total += 1
@@ -6118,11 +6082,10 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
-            log_error('Machine {0}, unrecognised driver_status {1}'.format(m_name, driver_status))
+            log_error('Machine {}, unrecognised driver_status {}'.format(m_name, driver_status))
             raise TypeError
     processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
+    pDialog.updateProgress(processed_filters)
     for m_name in main_catalog_all['Dead']:
         driver_status = machines_render[m_name]['driver_status']
         stats_MF_Dead_Total += 1
@@ -6139,12 +6102,9 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
         elif driver_status == 'protection': pass
         elif driver_status == '': pass
         else:
-            log_error('Machine {0}, unrecognised driver_status {1}'.format(m_name, driver_status))
+            log_error('Machine {}, unrecognised driver_status {}'.format(m_name, driver_status))
             raise TypeError
-    processed_filters += 1
-    update_number = int((float(processed_filters) / float(NUM_FILTERS)) * 100)
-    pDialog.update(update_number)
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Update statistics ---
     change_control_dic(control_dic, 'stats_MF_Normal_Total', stats_MF_Normal_Total)
@@ -6766,14 +6726,10 @@ def mame_check_before_build_SL_databases(PATHS, settings, control_dic):
 #
 def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, machines_render):
     SL_dir_FN = FileName(settings['SL_hash_path'])
-    log_debug('mame_build_SoftwareLists_databases() SL_dir_FN "{0}"'.format(SL_dir_FN.getPath()))
+    log_debug('mame_build_SoftwareLists_databases() SL_dir_FN "{}"'.format(SL_dir_FN.getPath()))
 
     # --- Scan all XML files in Software Lists directory and save SL catalog and SL databases ---
     log_info('Processing Software List XML files ...')
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pdialog_line1 = 'Building Sofware Lists item databases ...'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
     SL_file_list = SL_dir_FN.scanFilesInPath('*.xml')
     # DEBUG code for development, only process first SL file (32x).
     # SL_file_list = [ sorted(SL_file_list)[0] ]
@@ -6782,10 +6738,13 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     num_SL_with_CHDs = 0
     SL_catalog_dic = {}
     processed_files = 0
+    diag_line = 'Building Sofware Lists item databases...'
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress(diag_line, total_SL_files)
     for file in sorted(SL_file_list):
         # Progress dialog
         FN = FileName(file)
-        pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, 'File {0}'.format(FN.getBase()))
+        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(diag_line, FN.getBase()))
 
         # Open software list XML and parse it. Then, save data fields we want in JSON.
         # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
@@ -6812,30 +6771,30 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
 
         # Update progress
         processed_files += 1
-    pDialog.update((processed_files*100) // total_SL_files, pdialog_line1, ' ')
+    pDialog.endProgress()
 
     # --- Make the SL ROM/CHD unified Audit databases ---
-    log_info('Building Software List ROM Audit database ...')
+    log_info('Building Software List ROM Audit database...')
     rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['SL_rom_set']]
     chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['SL_chd_set']]
     log_info('mame_build_SoftwareLists_databases() SL ROM set is {}'.format(rom_set))
     log_info('mame_build_SoftwareLists_databases() SL CHD set is {}'.format(chd_set))
-    pdialog_line1 = 'Building Software List ROM audit databases ...'
-    pDialog.update(0, pdialog_line1)
     total_files = len(SL_file_list)
     processed_files = 0
     stats_audit_SL_items_runnable = 0
     stats_audit_SL_items_with_arch = 0
     stats_audit_SL_items_with_arch_ROM = 0
     stats_audit_SL_items_with_CHD = 0
+    diag_line = 'Building Software List ROM audit databases...'
+    pDialog.startProgress(diag_line, total_files)
     for file in sorted(SL_file_list):
-        # >> Update progress
+        # Update progress
         FN = FileName(file)
         SL_name = FN.getBase_noext()
-        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'File {0}'.format(FN.getBase()))
+        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(diag_line, FN.getBase()))
 
-        # >> Filenames of the databases
-        # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
+        # Filenames of the databases
+        # log_debug('mame_build_SoftwareLists_databases() Processing "{}"'.format(file))
         SL_Items_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_items.json')
         SL_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json')
         SL_ROM_Audit_DB_FN = PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROM_audit.json')
@@ -6862,7 +6821,8 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
                 if not 'dataarea' in part_dic: continue
                 for dataarea_dic in part_dic['dataarea']:
                     for rom_dic in dataarea_dic['roms']:
-                        location = _get_SL_ROM_location(rom_set, SL_name, SL_item_name, rom_dic, SL_Items, parent_rom_dic)
+                        location = _get_SL_ROM_location(rom_set, SL_name, SL_item_name,
+                            rom_dic, SL_Items, parent_rom_dic)
                         rom_audit_dic = fs_new_SL_ROM_audit_dic()
                         rom_audit_dic['type']     = ROM_TYPE_ROM
                         rom_audit_dic['name']     = rom_dic['name']
@@ -6893,7 +6853,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
                 SL_Audit_ROMs_dic[SL_item_name] =  set_chds
 
         # --- Machine archives ---
-        # >> There is not ROMs and CHDs sets for Software List Items (not necessary).
+        # There is not ROMs and CHDs sets for Software List Items (not necessary).
         SL_Item_Archives_dic = {}
         for SL_item_name in SL_Audit_ROMs_dic:
             rom_list = SL_Audit_ROMs_dic[SL_item_name]
@@ -6927,19 +6887,19 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs_dic, verbose = False)
         fs_write_JSON_file(SL_Soft_Archives_DB_FN.getPath(), SL_Item_Archives_dic, verbose = False)
         processed_files += 1
-    pDialog.update((processed_files*100) // total_files, pdialog_line1, ' ')
+    pDialog.endProgress()
 
     # --- Make SL Parent/Clone databases ---
     log_info('Building Software List PClone list ...')
-    pdialog_line1 = 'Building Software List PClone list ...'
-    pDialog.update(0, pdialog_line1)
     total_files = len(SL_catalog_dic)
     processed_files = 0
     SL_PClone_dic = {}
     total_SL_XML_files = 0
     total_SL_software_items = 0
+    diag_line = 'Building Software List PClone list...'
+    pDialog.startProgress(diag_line, total_files)
     for sl_name in sorted(SL_catalog_dic):
-        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'Software List {0}'.format(sl_name))
+        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(diag_line, sl_name))
         total_SL_XML_files += 1
         pclone_dic = {}
         SL_database_FN = PATHS.SL_DB_DIR.pjoin(sl_name + '_items.json')
@@ -6955,17 +6915,17 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
                 if rom_name not in pclone_dic: pclone_dic[rom_name] = []
         SL_PClone_dic[sl_name] = pclone_dic
         processed_files += 1
-    pDialog.update((processed_files*100) // total_files, pdialog_line1, ' ')
+    pDialog.endProgress()
 
     # --- Make a list of machines that can launch each SL ---
-    log_info('Making Software List machine list ...')
-    pdialog_line1 = 'Building Software List machine list ...'
-    pDialog.update(0, pdialog_line1)
+    log_info('Making Software List machine list...')
     total_SL = len(SL_catalog_dic)
     processed_SL = 0
     SL_machines_dic = {}
+    diag_line = 'Building Software List machine list...'
+    pDialog.startProgress(diag_line, total_SL)
     for SL_name in sorted(SL_catalog_dic):
-        pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'Software List {0}'.format(SL_name))
+        pDialog.updateProgress(processed_SL, '{}\nSoftware List {}'.format(diag_line, SL_name))
         SL_machine_list = []
         for machine_name in machines:
             # if not machines[machine_name]['softwarelists']: continue
@@ -6979,17 +6939,16 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
                     SL_machine_list.append(SL_machine_dic)
         SL_machines_dic[SL_name] = SL_machine_list
         processed_SL += 1
-    pDialog.update((processed_SL*100) // total_SL, pdialog_line1, ' ')
+    pDialog.endProgress()
 
     # --- Empty SL asset DB ---
-    log_info('Making Software List (empty) asset databases ...')
-    pdialog_line1 = 'Building Software List (empty) asset databases ...'
-    pDialog.update(0, pdialog_line1)
+    log_info('Making Software List (empty) asset databases...')
     total_SL = len(SL_catalog_dic)
     processed_SL = 0
+    diag_line = 'Building Software List (empty) asset databases...'
+    pDialog.startProgress(diag_line, total_SL)
     for SL_name in sorted(SL_catalog_dic):
-        # --- Update progress ---
-        pDialog.update((processed_SL*100) // total_SL, pdialog_line1, 'Software List {0}'.format(SL_name))
+        pDialog.updateProgress(processed_SL, '{}\nSoftware List {}'.format(diag_line, SL_name))
 
         # --- Load SL databases ---
         file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
@@ -7006,8 +6965,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # --- Write SL asset JSON ---
         fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
         processed_SL += 1
-    pDialog.update((processed_SL*100) // total_SL, pdialog_line1, ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Create properties database with default values ---
     # --- Make SL properties DB ---
@@ -7177,19 +7135,15 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     CHD_path_str = CHD_path_FN.getPath()
     Samples_path_str = Samples_path_FN.getPath()
     STUFF_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_path_str]
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Listing files in ROM/CHD/Samples directories ...')
-    pDialog.update(0)
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Listing files in ROM/CHD/Samples directories...', len(STUFF_PATH_LIST))
     for i, asset_dir in enumerate(STUFF_PATH_LIST):
         misc_add_file_cache(asset_dir)
-        pDialog.update((100*(i+1))/len(STUFF_PATH_LIST))
-    pDialog.close()
+        pDialog.updateProgress(i)
+    pDialog.endProgress()
 
     # --- Scan machine archives ---
     # Traverses all machines and scans if all required files exist. 
-    pDialog.create('Advanced MAME Launcher',
-        'Scanning MAME machine archives (ROMs, Samples and CHDs) ...')
     total_machines = len(machines_render)
     processed_machines = 0
     scan_march_ROM_total = 0
@@ -7204,9 +7158,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     r_full_list = []
     r_have_list = []
     r_miss_list = []
+    dial_line = 'Scanning MAME machine archives (ROMs, CHDs and Samples)...'
+    pDialog.startProgress(dial_line, total_machines)
     for key in sorted(machines_render):
-        pDialog.update((processed_machines*100) // total_machines)
-
         # --- Initialise machine ---
         # log_info('mame_scan_MAME_ROMs() Checking machine {0}'.format(key))
         if machines_render[key]['isDevice']: continue # Skip Devices
@@ -7333,11 +7287,15 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
 
         # Progress dialog
         processed_machines += 1
-    pDialog.close()
+        pDialog.updateProgress(processed_machines)
+    pDialog.endProgress()
 
     # Write MAME scanner reports
+    reports_total = 3
+    reports_processed = 0
+    pDialog.startProgress('Saving scanner reports...', reports_total)
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'w') as file:
+    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'w', encoding = 'utf-8') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
             'This report shows all the scanned MAME machines.',
@@ -7348,10 +7306,12 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             '',
         ]
         report_slist.extend(r_full_list)
-        file.write('\n'.join(report_slist).encode('utf-8'))
+        file.write('\n'.join(report_slist))
+    reports_processed += 1
+    pDialog.updateProgress(reports_processed)
 
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w') as file:
+    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w', encoding = 'utf-8') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
             'This reports shows MAME machines that have all the required',
@@ -7366,10 +7326,12 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         if not r_have_list:
             r_have_list.append('Ouch!!! You do not have any ROM ZIP files and/or CHDs.')
         report_slist.extend(r_have_list)
-        file.write('\n'.join(report_slist).encode('utf-8'))
+        file.write('\n'.join(report_slist))
+    reports_processed += 1
+    pDialog.updateProgress(reports_processed)
 
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w') as file:
+    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
             'This reports shows MAME machines that miss all or some of the required',
@@ -7384,12 +7346,10 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         if not r_miss_list:
             r_miss_list.append('Congratulations!!! You have no missing ROM ZIP and/or CHDs files.')
         report_slist.extend(r_miss_list)
-        file.write('\n'.join(report_slist).encode('utf-8'))
+        file.write('\n'.join(report_slist))
+    pDialog.endProgress()
 
     # --- ROM ZIP file list ---
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Scanning MAME ROM ZIPs ...')
     total_machines = len(machines_render)
     processed_machines = 0
     scan_ROM_ZIP_files_total = 0
@@ -7405,6 +7365,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
+    pDialog.startProgress('Scanning MAME ROM ZIPs...', total_machines)
     for rom_name in ROM_ZIP_list:
         scan_ROM_ZIP_files_total += 1
         ROM_FN = misc_search_file_cache(ROM_path_str, rom_name, MAME_ROM_EXTS)
@@ -7414,18 +7375,15 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_ROM_ZIP_files_missing += 1
             r_list.append('Missing ROM {}'.format(rom_name))
         processed_machines += 1
-        pDialog.update((processed_machines*100) // total_machines)
-    pDialog.close()
+        pDialog.updateProgress(processed_machines)
+    pDialog.endProgress()
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'w') as file:
+    with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
         if scan_ROM_ZIP_files_missing == 0:
             r_list.append('Congratulations!!! You have no missing ROM ZIP files.')
-        file.write('\n'.join(r_list).encode('utf-8'))
+        file.write('\n'.join(r_list))
 
     # --- Sample ZIP file list ---
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pDialog.create('Advanced MAME Launcher', 'Scanning MAME Sample ZIPs ...')
     total_machines = len(machines_render)
     processed_machines = 0
     scan_Samples_ZIP_total = 0
@@ -7441,6 +7399,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
+    pDialog.startProgress('Scanning MAME Sample ZIPs...', total_machines)
     for sample_name in Sample_ZIP_list:
         scan_Samples_ZIP_total += 1
         Sample_FN = misc_search_file_cache(Samples_path_str, sample_name, MAME_SAMPLE_EXTS)
@@ -7450,16 +7409,15 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_Samples_ZIP_missing += 1
             r_list.append('Missing Sample {}'.format(sample_name))
         processed_machines += 1
-        pDialog.update((processed_machines*100) // total_machines)
-    pDialog.close()
+        pDialog.updateProgress(processed_machines)
+    pDialog.endProgress()
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), 'w') as file:
+    with open(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
         if scan_Samples_ZIP_missing == 0:
             r_list.append('Congratulations!!! You have no missing Sample ZIP files.')
-        file.write('\n'.join(r_list).encode('utf-8'))
+        file.write('\n'.join(r_list))
 
     # --- CHD file list ---
-    pDialog.create('Advanced MAME Launcher', 'Scanning MAME CHDs ...')
     total_machines = len(machines_render)
     processed_machines = 0
     scan_CHD_files_total = 0
@@ -7475,6 +7433,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
+    pDialog.startProgress('Scanning MAME CHDs...', total_machines)
     for chd_name in CHD_list:
         scan_CHD_files_total += 1
         CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
@@ -7484,13 +7443,13 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_CHD_files_missing += 1
             r_list.append('Missing CHD {}'.format(chd_name))
         processed_machines += 1
-        pDialog.update((processed_machines*100) // total_machines)
-    pDialog.close()
+        pDialog.updateProgress(processed_machines)
+    pDialog.endProgress()
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'w') as file:
+    with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
         if scan_CHD_files_missing == 0:
             r_list.append('Congratulations!!! You have no missing CHD files.')
-        file.write('\n'.join(r_list).encode('utf-8'))
+        file.write('\n'.join(r_list))
 
     # --- Update statistics ---
     change_control_dic(control_dic, 'scan_machine_archives_ROM_total', scan_march_ROM_total)
@@ -7585,22 +7544,17 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
     # --- Add files to cache ---
     SL_ROM_path_str = SL_ROM_dir_FN.getPath()
     SL_CHD_path_str = SL_CHD_path_FN.getPath()
-    pDialog = xbmcgui.DialogProgress()
-    pdialog_line1 = 'Listing Sofware Lists ROM ZIPs and CHDs ...'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(0, pdialog_line1, 'Listing SL ROM ZIP path')
+    pDialog = KodiProgressDialog()
+    d_text = 'Listing Sofware Lists ROM ZIPs and CHDs...'
+    pDialog.startProgress('{}\n{}'.format(d_text, 'Listing SL ROM ZIP path'), 2)
     misc_add_file_cache(SL_ROM_path_str, verbose = True)
-    pDialog.update(75, pdialog_line1, 'Listing SL CHD path')
+    pDialog.updateProgress(1, '{}\n{}'.format(d_text, 'Listing SL CHD path'))
     misc_add_file_cache(SL_CHD_path_str, verbose = True)
-    pDialog.update(100, pdialog_line1, ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- SL ROM ZIP archives and CHDs ---
     # Traverse the Software Lists, check if ROMs ZIPs and CHDs exists for every SL item, 
     # update and save database.
-    pdialog_line1 = 'Scanning Sofware Lists ROM ZIPs and CHDs ...'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(0)
     total_files = len(SL_catalog_dic)
     processed_files = 0
     SL_ROMs_have = 0
@@ -7612,18 +7566,18 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
     r_all_list = []
     r_have_list = []
     r_miss_list = []
+    d_text = 'Scanning Sofware Lists ROM ZIPs and CHDs ...'
+    pDialog.startProgress(d_text, total_files)
     for SL_name in sorted(SL_catalog_dic):
-        # >> Progress dialog
-        update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(d_text, SL_name))
 
-        # >> Load SL databases
+        # Load SL databases
         SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_items.json')
         SL_SOFT_ARCHIVES_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_ROM_archives.json')
         sl_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         soft_archives = fs_load_JSON_file_dic(SL_SOFT_ARCHIVES_DB_FN.getPath(), verbose = False)
 
-        # >> Scan
+        # Scan
         for rom_key in sorted(sl_roms):
             m_have_str_list = []
             m_miss_str_list = []
@@ -7706,59 +7660,61 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
                 if m_have_str_list: r_miss_list.extend(m_have_str_list)
                 r_miss_list.append('')
 
-        # >> Save SL database to update flags.
+        # Save SL database to update flags and update progress.
         fs_write_JSON_file(SL_DB_FN.getPath(), sl_roms, verbose = False)
-        # >> Increment file count
         processed_files += 1
-    pDialog.update(update_number, pdialog_line1, ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
-    # >> Write SL scanner reports
+    # Write SL scanner reports
+    reports_total = 3
+    reports_processed = 0
+    pDialog.startProgress('Writing scanner reports...', reports_total)
     log_info('Writing SL ROM ZIPs/CHDs FULL report')
-    log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
-    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'w') as file:
-        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n'.encode('utf-8'))
-        file.write('This report shows all the scanned SL items\n'.encode('utf-8'))
-        file.write('\n'.encode('utf-8'))
+    log_info('Report file "{}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
+    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n')
+        file.write('This report shows all the scanned SL items\n')
+        file.write('\n')
         if r_all_list:
-            file.write('\n'.join(r_all_list).encode('utf-8'))
+            file.write('\n'.join(r_all_list))
         else:
             raise TypeError
+    reports_processed += 1
+    pDialog.updateProgress(reports_processed)
 
     log_info('Writing SL ROM ZIPs and/or CHDs HAVE report')
-    log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
-    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w') as file:
-        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n'.encode('utf-8'))
-        file.write('This reports shows the SL items with ROM ZIPs and/or CHDs with HAVE status\n'.encode('utf-8'))
-        file.write('\n'.encode('utf-8'))
+    log_info('Report file "{}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
+    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n')
+        file.write('This reports shows the SL items with ROM ZIPs and/or CHDs with HAVE status\n')
+        file.write('\n')
         if r_have_list:
-            file.write('\n'.join(r_have_list).encode('utf-8'))
+            file.write('\n'.join(r_have_list))
         else:
-            file.write('You do not have any ROM ZIP or CHD files!\n'.encode('utf-8'))
+            file.write('You do not have any ROM ZIP or CHD files!\n')
+    reports_processed += 1
+    pDialog.updateProgress(reports_processed)
 
     log_info('Writing SL ROM ZIPs/CHDs MISS report')
-    log_info('Report file "{0}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w') as file:
-        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n'.encode('utf-8'))
-        file.write('This reports shows the SL items with ROM ZIPs and/or CHDs with MISSING status\n'.encode('utf-8'))
-        file.write('\n'.encode('utf-8'))
+    log_info('Report file "{}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
+    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n')
+        file.write('This reports shows the SL items with ROM ZIPs and/or CHDs with MISSING status\n')
+        file.write('\n')
         if r_miss_list:
-            file.write('\n'.join(r_miss_list).encode('utf-8'))
+            file.write('\n'.join(r_miss_list))
         else:
             file.write('Congratulations! No missing SL ROM ZIP or CHD files.')
+    pDialog.endProgress()
 
-    # --- Update statistics ---
+    # Update statistics, timestamp and save control_dic.
     change_control_dic(control_dic, 'scan_SL_archives_ROM_total', SL_ROMs_total)
     change_control_dic(control_dic, 'scan_SL_archives_ROM_have', SL_ROMs_have)
     change_control_dic(control_dic, 'scan_SL_archives_ROM_missing', SL_ROMs_missing)
     change_control_dic(control_dic, 'scan_SL_archives_CHD_total', SL_CHDs_total)
     change_control_dic(control_dic, 'scan_SL_archives_CHD_have', SL_CHDs_have)
     change_control_dic(control_dic, 'scan_SL_archives_CHD_missing', SL_CHDs_missing)
-
-    # --- Timestamps ---
     change_control_dic(control_dic, 't_SL_ROMs_scan', time.time())
-
-    # --- Save control_dic ---
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 #
@@ -7794,9 +7750,9 @@ def mame_check_before_scan_MAME_assets(PATHS, settings, control_dic):
 def mame_scan_MAME_assets(PATHS, settings, control_dic,
     assets_dic, machines_render, main_pclone_dic):
     Asset_path_FN = FileName(settings['assets_path'])
-    log_info('mame_scan_MAME_assets() Asset path {0}'.format(Asset_path_FN.getPath()))
+    log_info('mame_scan_MAME_assets() Asset path {}'.format(Asset_path_FN.getPath()))
 
-    # >> Iterate machines, check if assets/artwork exist.
+    # Iterate machines, check if assets/artwork exist.
     table_str = []
     table_str.append([
         'left',
@@ -7808,26 +7764,24 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
         'Fly',  'Man',  'Mar',  'PCB',  'Snp',  'Tit',  'Tra'])
 
     # --- Create a cache of assets ---
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Listing files in asset directories ...')
-    pDialog.update(0)
     num_assets = len(ASSET_MAME_T_LIST)
     asset_dirs = [''] * num_assets
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Listing files in asset directories...', num_assets)
     for i, asset_tuple in enumerate(ASSET_MAME_T_LIST):
         asset_dir = asset_tuple[1]
         full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir)
         asset_dir_str = full_asset_dir_FN.getPath()
         asset_dirs[i] = asset_dir_str
         misc_add_file_cache(asset_dir_str)
-        pDialog.update((100*(i+1))/num_assets)
-    pDialog.update(100)
-    pDialog.close()
+        pDialog.updateProgress(i)
+    pDialog.endProgress()
 
     # --- First pass: search for on-disk assets ---
-    pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork (first pass) ...')
     total_machines = len(machines_render)
     processed_machines = 0
     ondisk_assets_dic = {}
+    pDialog.startProgress('Scanning MAME assets/artwork (first pass)...', total_machines)
     for m_name in sorted(machines_render):
         machine_assets = fs_new_MAME_asset()
         for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
@@ -7841,24 +7795,24 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
                 asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_TRAILER_EXTS)
             else:
                 asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_IMAGE_EXTS)
+            # Low level debug.
             # if m_name == '005':
-            #     log_debug('asset_key       "{0}"'.format(asset_key))
-            #     log_debug('asset_dir       "{0}"'.format(asset_dir))
-            #     log_debug('asset_dirs[idx] "{0}"'.format(asset_dirs[idx]))
-            #     log_debug('asset_FN        "{0}"'.format(asset_FN))
+            #     log_debug('asset_key       "{}"'.format(asset_key))
+            #     log_debug('asset_dir       "{}"'.format(asset_dir))
+            #     log_debug('asset_dirs[idx] "{}"'.format(asset_dirs[idx]))
+            #     log_debug('asset_FN        "{}"'.format(asset_FN))
             machine_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN else ''
         ondisk_assets_dic[m_name] = machine_assets
-        # >> Update progress
         processed_machines += 1
-        pDialog.update((processed_machines*100) // total_machines)
-    pDialog.close()
+        pDialog.updateProgress(processed_machines)
+    pDialog.endProgress()
 
     # --- Second pass: substitute artwork ---
-    pDialog.create('Advanced MAME Launcher', 'Scanning MAME assets/artwork (second pass) ...')
     have_count_list = [0] * len(ASSET_MAME_T_LIST)
     alternate_count_list = [0] * len(ASSET_MAME_T_LIST)
     total_machines = len(machines_render)
     processed_machines = 0
+    pDialog.startProgress('Scanning MAME assets/artwork (second pass)...', total_machines)
     for m_name in sorted(machines_render):
         asset_row = ['---'] * len(ASSET_MAME_T_LIST)
         for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
@@ -7903,10 +7857,9 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
                                 break
         table_row = [m_name] + asset_row
         table_str.append(table_row)
-        # >> Update progress
         processed_machines += 1
-        pDialog.update((processed_machines*100) // total_machines)
-    pDialog.close()
+        pDialog.updateProgress(processed_machines)
+    pDialog.endProgress()
 
     # --- Asset statistics and report ---
     # This must match the order of ASSET_MAME_T_LIST defined in disk_IO.py
@@ -7924,11 +7877,10 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
     Snap  = (have_count_list[11], total_machines - have_count_list[11], alternate_count_list[11])
     Tit   = (have_count_list[12], total_machines - have_count_list[12], alternate_count_list[12])
     Tra   = (have_count_list[13], total_machines - have_count_list[13], alternate_count_list[13])
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Creating MAME asset report ...')
+    pDialog.startProgress('Creating MAME asset report...')
     report_slist = []
     report_slist.append('*** Advanced MAME Launcher MAME machines asset scanner report ***')
-    report_slist.append('Total MAME machines {0}'.format(total_machines))
+    report_slist.append('Total MAME machines {}'.format(total_machines))
     report_slist.append('Have 3D Boxes   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*box3D))
     report_slist.append('Have Artpreview {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Artp))
     report_slist.append('Have Artwork    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Art))
@@ -7946,12 +7898,12 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
     report_slist.append('')
     table_str_list = text_render_table_str(table_str)
     report_slist.extend(table_str_list)
-    log_info('Opening MAME asset report file "{0}"'.format(PATHS.REPORT_MAME_ASSETS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_slist).encode('utf-8'))
-    pDialog.update(100)
+    log_info('Opening MAME asset report file "{}"'.format(PATHS.REPORT_MAME_ASSETS_PATH.getPath()))
+    with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
+        file.write('\n'.join(report_slist))
+    pDialog.endProgress()
 
-    # >> Update control_dic by assigment (will be saved in caller)
+    # Update control_dic by assigment (will be saved in caller)
     change_control_dic(control_dic, 'assets_num_MAME_machines', total_machines)
     change_control_dic(control_dic, 'assets_3dbox_have', box3D[0])
     change_control_dic(control_dic, 'assets_3dbox_missing', box3D[1])
@@ -8013,7 +7965,7 @@ def mame_check_before_scan_SL_assets(PATHS, settings, control_dic):
     options_dic = {}
     options_dic['abort'] = False
 
-    # >> Get assets directory. Abort if not configured/found.
+    # Get assets directory. Abort if not configured/found.
     if not settings['assets_path']:
         kodi_dialog_OK('Asset directory not configured. Aborting.')
         options_dic['abort'] = True
@@ -8034,10 +7986,6 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     log_info('mame_scan_SL_assets() SL asset path {0}'.format(Asset_path_FN.getPath()))
 
     # --- Traverse Software List, check if ROM exists, update and save database ---
-    pDialog = xbmcgui.DialogProgress()
-    pdialog_line1 = 'Scanning Sofware Lists assets/artwork ...'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(0)
     total_files = len(SL_index_dic)
     processed_files = 0
     table_str = []
@@ -8051,10 +7999,11 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     #     "32x" :
     #     { "display_name" : "Sega 32X cartridges", "num_with_CHDs" : 0, "num_with_ROMs" : 203, "rom_DB_noext" : "32x" }
     # }
+    pDialog = KodiProgressDialog()
+    d_text = 'Scanning Sofware Lists assets/artwork...'
+    pDialog.startProgress(d_text, total_files)
     for SL_name in sorted(SL_index_dic):
-        # --- Update progress ---
-        update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, 'Software List {0}'.format(SL_name))
+        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(d_text, SL_name))
 
         # --- Load SL databases ---
         file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_items.json'
@@ -8144,13 +8093,10 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
             table_str.append(table_row)
         # --- Write SL asset JSON ---
         fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
-        # --- Update progress ---
         processed_files += 1
-    update_number = (processed_files*100) // total_files
-    pDialog.update(update_number, ' ', ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
-    # >> Asset statistics and report.
+    # Asset statistics and report.
     # This must match the order of ASSET_SL_T_LIST defined in disk_IO.py
     _3db = (have_count_list[0], SL_item_count - have_count_list[0], alternate_count_list[0])
     Tit  = (have_count_list[1], SL_item_count - have_count_list[1], alternate_count_list[1])
@@ -8159,11 +8105,9 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     Fan  = (have_count_list[4], SL_item_count - have_count_list[4], alternate_count_list[4])
     Tra  = (have_count_list[5], SL_item_count - have_count_list[5], alternate_count_list[5])
     Man  = (have_count_list[6], SL_item_count - have_count_list[6], alternate_count_list[6])
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Creating SL asset report ...')
     report_slist = []
     report_slist.append('*** Advanced MAME Launcher Software List asset scanner report ***')
-    report_slist.append('Total SL items {0}'.format(SL_item_count))
+    report_slist.append('Total SL items {}'.format(SL_item_count))
     report_slist.append('Have 3D Boxes  {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*_3db))
     report_slist.append('Have Titles    {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Tit))
     report_slist.append('Have Snaps     {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Snap))
@@ -8174,13 +8118,13 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     report_slist.append('')
     table_str_list = text_render_table_str(table_str)
     report_slist.extend(table_str_list)
-    log_info('Opening SL asset report file "{0}"'.format(PATHS.REPORT_SL_ASSETS_PATH.getPath()))
-    with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_slist).encode('utf-8'))
-    pDialog.update(100)
-    pDialog.close()
+    log_info('Opening SL asset report file "{}"'.format(PATHS.REPORT_SL_ASSETS_PATH.getPath()))
+    pDialog.startProgress('Creating SL asset report...')
+    with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
+        file.write('\n'.join(report_slist))
+    pDialog.endProgress()
 
-    # >> Update control_dic by assigment (will be saved in caller)
+    # Update control_dic by assigment (will be saved in caller) and save JSON.
     change_control_dic(control_dic, 'assets_SL_num_items', SL_item_count)
     change_control_dic(control_dic, 'assets_SL_3dbox_have', _3db[0])
     change_control_dic(control_dic, 'assets_SL_3dbox_missing', _3db[1])
@@ -8204,6 +8148,4 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     change_control_dic(control_dic, 'assets_SL_manuals_missing', Man[1])
     change_control_dic(control_dic, 'assets_SL_manuals_alternate', Man[2])
     change_control_dic(control_dic, 't_SL_assets_scan', time.time())
-
-    # --- Save control_dic ---
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)

@@ -6677,12 +6677,12 @@ def command_exec_utility(which_utility):
                 aux_check_file_WARN(slist, HISTORY_FN.getPath(), HISTORY_DAT + ' file')
                 aux_check_file_WARN(slist, MAMEINFO_FN.getPath(), MAMEINFO_DAT + ' file')
             else:
-                slist.append('{0} MAME INI/DAT path not found'.format(ERR))
+                slist.append('{} MAME INI/DAT path not found'.format(ERR))
         else:
-            slist.append('{0} MAME INI/DAT path not set'.format(WARN))
+            slist.append('{} MAME INI/DAT path not set'.format(WARN))
 
         # --- Display info to the user ---
-        display_text_window('AML configuration check report', '\n'.join(slist))
+        kodi_display_text_window_mono('AML configuration check report', '\n'.join(slist))
 
     # Check and update all favourite objects.
     # Check if Favourites can be found in current MAME main database. It may happen that
@@ -6783,19 +6783,19 @@ def command_exec_utility(which_utility):
             processed_machines += 1
         pDialog.update((processed_machines*100) // total_machines, pdialog_line1, ' ')
         pDialog.close()
-        log_debug('MAME has {0:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])))
-        log_debug('There are {0} CRC32 collisions'.format(num_collisions))
+        log_debug('MAME has {:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])))
+        log_debug('There are {} CRC32 collisions'.format(num_collisions))
 
         # --- Write report and debug file ---
         slist = []
         slist.append('*** AML MAME ROMs CRC32 hash collision report ***')
-        slist.append('MAME has {0:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])))
-        slist.append('There are {0} CRC32 collisions'.format(num_collisions))
+        slist.append('MAME has {:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])))
+        slist.append('There are {} CRC32 collisions'.format(num_collisions))
         slist.append('')
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
-        display_text_window('AML MAME CRC32 hash collision report', '\n'.join(slist))
-        log_info('Writing "{0}"'.format(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath()))
+        kodi_display_text_window_mono('AML MAME CRC32 hash collision report', '\n'.join(slist))
+        log_info('Writing "{}"'.format(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath()))
         with open(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath(), 'w') as file:
             file.write('\n'.join(slist).encode('utf-8'))
 
@@ -6892,7 +6892,7 @@ def command_exec_utility(which_utility):
         slist.append('')
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
-        display_text_window('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
+        kodi_display_text_window_mono('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
         log_info('Writing "{}"'.format(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
         with open(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'w') as file:
             file.write('\n'.join(slist).encode('utf-8'))
@@ -6960,9 +6960,10 @@ def command_exec_utility(which_utility):
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
         if show_BIG:
-            display_text_window('MAME machines with biggest ROMs', '\n'.join(slist))
+            window_title = 'MAME machines with biggest ROMs'
         else:
-            display_text_window('MAME machines with smallest ROMs', '\n'.join(slist))
+            window_title = 'MAME machines with smallest ROMs'
+        kodi_display_text_window_mono(window_title, '\n'.join(slist))
 
     # Export MAME information in Billyc999 XML format to use with RCB.
     elif which_utility == 'EXPORT_MAME_INFO_BILLYC999_XML':
@@ -7108,7 +7109,7 @@ def command_exec_report(which_report):
 
         # --- Write file to disk and inform user ---
         log_info('Writing AML statistics report ...')
-        log_info('File "{0}"'.format(g_PATHS.REPORT_STATS_PATH.getPath()))
+        log_info('File "{}"'.format(g_PATHS.REPORT_STATS_PATH.getPath()))
         with open(g_PATHS.REPORT_STATS_PATH.getPath(), 'w') as f:
             text_remove_color_tags_slist(info_text)
             f.write('\n'.join(info_text).encode('utf-8'))

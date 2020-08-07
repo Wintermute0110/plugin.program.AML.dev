@@ -436,15 +436,15 @@ def misc_add_file_cache(dir_str, verbose = True):
         return
     dir_FN = FileName(dir_str)
     if not dir_FN.exists():
-        log_debug('misc_add_file_cache() Does not exist "{0}"'.format(dir_str))
+        log_debug('misc_add_file_cache() Does not exist "{}"'.format(dir_str))
         file_cache[dir_str] = set()
         return
     if not dir_FN.isdir():
-        log_warning('misc_add_file_cache() Not a directory "{0}"'.format(dir_str))
+        log_warning('misc_add_file_cache() Not a directory "{}"'.format(dir_str))
         return
     if verbose:
         # log_debug('misc_add_file_cache() Scanning OP "{0}"'.format(dir_FN.getOriginalPath()))
-        log_debug('misc_add_file_cache() Scanning  P "{0}"'.format(dir_FN.getPath()))
+        log_debug('misc_add_file_cache() Scanning  P "{}"'.format(dir_FN.getPath()))
     # >> A recursive scanning function is needed. os.listdir() is not.
     # file_list = os.listdir(dir_FN.getPath())
     # >> os.walk() is recursive
@@ -459,7 +459,7 @@ def misc_add_file_cache(dir_str, verbose = True):
         # log_debug('files = {0}'.format(unicode(files)))
         # log_debug('\n')
         for f in files:
-            my_file = os.path.join(root, f).decode('utf-8')
+            my_file = os.path.join(root, f)
             cache_file = my_file.replace(root_dir_str, '')
             # >> In the cache always store paths as '/' and not as '\'
             cache_file = cache_file.replace('\\', '/')
@@ -470,8 +470,8 @@ def misc_add_file_cache(dir_str, verbose = True):
             file_list.append(cache_file)
     file_set = set(file_list)
     if verbose:
-        # for file in file_set: log_debug('File "{0}"'.format(file))
-        log_debug('misc_add_file_cache() Adding {0} files to cache'.format(len(file_set)))
+        # for file in file_set: log_debug('File "{}"'.format(file))
+        log_debug('misc_add_file_cache() Adding {} files to cache'.format(len(file_set)))
     file_cache[dir_str] = file_set
 
 #
@@ -482,11 +482,11 @@ def misc_search_file_cache(dir_str, filename_noext, file_exts):
     if not dir_str: return None
     current_cache_set = file_cache[dir_str]
     # if filename_noext == '005':
-    #     log_debug('misc_search_file_cache() Searching in "{0}"'.format(dir_str))
-    #     log_debug('misc_search_file_cache() current_cache_set "{0}"'.format(unicode(current_cache_set)))
+    #     log_debug('misc_search_file_cache() Searching in "{}"'.format(dir_str))
+    #     log_debug('misc_search_file_cache() current_cache_set "{}"'.format(unicode(current_cache_set)))
     for ext in file_exts:
         file_base = filename_noext + '.' + ext
-        # log_debug('misc_search_file_cache() file_Base = "{0}"'.format(file_base))
+        # log_debug('misc_search_file_cache() file_Base = "{}"'.format(file_base))
         if file_base in current_cache_set:
             # log_debug('misc_search_file_cache() Found in cache')
             return FileName(dir_str).pjoin(file_base)
@@ -521,7 +521,7 @@ def misc_look_for_file(rootPath, filename_noext, file_exts):
 def misc_generate_random_SID():
     t1 = time.time()
     t2 = t1 + random.getrandbits(32)
-    base = hashlib.md5( str(t1 + t2) )
+    base = hashlib.md5(str(t1 + t2))
     sid = base.hexdigest()
 
     return sid
