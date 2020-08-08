@@ -159,34 +159,38 @@ class KodiProgressDialog(object):
         self.dialog_active = False
         self.progressDialog = xbmcgui.DialogProgress()
 
-    def startProgress(self, message, num_steps = 100):
+    # Creates a new progress dialog.
+    def startProgress(self, message, num_steps = 100, step_index = 0):
         if self.dialog_active: raise TypeError
         self.num_steps = num_steps
-        self.progress = 0
+        self.progress = math.floor((step_index * 100) / self.num_steps)
         self.dialog_active = True
         self.message = message
         self.progressDialog.create(self.heading, self.message)
         self.progressDialog.update(self.progress)
 
-    def resetProgress(self, message, num_steps = 100):
+    # Changes message and resets progress.
+    def resetProgress(self, message, num_steps = 100, step_index = 0):
         if not self.dialog_active: raise TypeError
         self.num_steps = num_steps
-        self.progress = 0
+        self.progress = math.floor((step_index * 100) / self.num_steps)
         self.message = message
         self.progressDialog.update(self.progress, self.message)
 
     # Update progress and optionally update message as well.
-    # If not new message specified then keep current message.
     def updateProgress(self, step_index, message = None):
         if not self.dialog_active: raise TypeError
         self.progress = math.floor((step_index * 100) / self.num_steps)
-        if message is not None: self.message = message
-        self.progressDialog.update(self.progress, self.message)
+        if message is not None:
+            self.message = message
+            self.progressDialog.update(self.progress, self.message)
+        else:
+            self.progressDialog.update(self.progress)
 
     # Update dialog message but keep same progress.
     def updateMessage(self, message):
         if not self.dialog_active: raise TypeError
-        self.message1 = message1
+        self.message = message
         self.progressDialog.update(self.progress, self.message)
 
     def isCanceled(self):
