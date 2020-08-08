@@ -1170,10 +1170,9 @@ def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN, 
     sl.append('  </header>')
 
     # Traverse ROMs and write DAT.
-    total_machines, machine_counter = len(db_dic['render']), 0
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Creating MAME Billyc999 XML ...')
-    pDialog.update(0)
+    machine_counter = 0
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Creating MAME Billyc999 XML...', len(db_dic['render']))
     for m_name in sorted(db_dic['render']):
         render = db_dic['render'][m_name]
         assets = db_dic['assets'][m_name]
@@ -1192,16 +1191,15 @@ def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN, 
         sl.append(XML_t('cloneof', render['cloneof']))
         sl.append('  </game>')
         machine_counter += 1
-        pDialog.update((100 * machine_counter) / total_machines)
+        pDialog.updateProgress(machine_counter)
     sl.append('</menu>')
-    pDialog.close()
+    pDialog.endProgress()
 
     # Open output file name.
-    pDialog.create('Advanced MAME Launcher', 'Writing MAME Billyc999 XML ...')
-    pDialog.update(15)
+    pDialog.startProgress('Writing MAME Billyc999 XML...')
     try:
-        file_obj = open(DAT_FN.getPath(), 'w')
-        file_obj.write('\n'.join(sl).encode('utf-8'))
+        file_obj = open(DAT_FN.getPath(), 'wt', encoding = 'utf-8')
+        file_obj.write('\n'.join(sl))
         file_obj.close()
     except OSError:
         log_error('(OSError) Cannot write file')
@@ -1209,8 +1207,7 @@ def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN, 
     except IOError:
         log_error('(IOError) Cannot write file')
         kodi_notify_warn('(IOError) Cannot write file')
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
 #
 # Only valid ROMs in DAT file.
@@ -1250,10 +1247,9 @@ def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
     slist.append('</header>')
 
     # Traverse ROMs and write DAT.
-    total_machines, machine_counter = len(audit_roms), 0
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Creating MAME ROMs XML DAT ...')
-    pDialog.update(0)
+    machine_counter = 0
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Creating MAME ROMs XML DAT...', len(audit_roms))
     for m_name in sorted(audit_roms):
         # If machine has no ROMs then skip it
         rom_list, actual_rom_list, num_ROMs = audit_roms[m_name], [], 0
@@ -1286,27 +1282,23 @@ def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
             slist.append(t)
         slist.append('</machine>')
         machine_counter += 1
-        pDialog.update((100*machine_counter)/total_machines)
-    pDialog.close()
+        pDialog.updateProgress(machine_counter)
     slist.append('</datafile>')
+    pDialog.endProgress()
 
     # Open output file name.
-    pDialog.create('Advanced MAME Launcher', 'Writing MAME ROMs XML DAT ...')
-    pDialog.update(15)
+    pDialog.startProgress('Writing MAME ROMs XML DAT...')
     try:
-        file_obj = open(DAT_FN.getPath(), 'w')
-        file_obj.write('\n'.join(slist).encode('utf-8'))
+        file_obj = open(DAT_FN.getPath(), 'wt', encoding = 'utf-8')
+        file_obj.write('\n'.join(slist))
         file_obj.close()
-        pDialog.update(100)
-        pDialog.close()
     except OSError:
-        pDialog.close()
         log_error('(OSError) Cannot write DAT XML file')
         kodi_notify_warn('(OSError) Cannot write DAT XML file')
     except IOError:
-        pDialog.close()
         log_error('(IOError) Cannot write DAT XML file')
         kodi_notify_warn('(IOError) Cannot write DAT XML file')
+    pDialog.endProgress()
 
 #
 # Only valid CHDs in DAT file.
@@ -1322,34 +1314,33 @@ def mame_write_MAME_CHD_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
     mame_version_str = control_dic['ver_mame']
     chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
     chd_set_str = ['Merged', 'Split', 'Non-merged'][settings['mame_chd_set']]
-    log_info('MAME version "{0}"'.format(mame_version_str))
-    log_info('CHD set is "{0}"'.format(chd_set_str))
-    DAT_basename_str = 'AML MAME {0} CHDs ({1}).xml'.format(mame_version_str, chd_set_str)
+    log_info('MAME version "{}"'.format(mame_version_str))
+    log_info('CHD set is "{}"'.format(chd_set_str))
+    DAT_basename_str = 'AML MAME {} CHDs ({}).xml'.format(mame_version_str, chd_set_str)
     DAT_FN = out_dir_FN.pjoin(DAT_basename_str)
-    log_info('XML "{0}"'.format(DAT_FN.getPath()))
+    log_info('XML "{}"'.format(DAT_FN.getPath()))
 
     # XML file header.
     slist = []
     slist.append('<?xml version="1.0" encoding="UTF-8"?>')
     str_a = '-//Logiqx//DTD ROM Management Datafile//EN'
     str_b = 'http://www.logiqx.com/Dats/datafile.dtd'
-    slist.append('<!DOCTYPE datafile PUBLIC "{0}" "{1}">'.format(str_a, str_b))
+    slist.append('<!DOCTYPE datafile PUBLIC "{}" "{}">'.format(str_a, str_b))
     slist.append('<datafile>')
 
-    desc_str = 'AML MAME {0} CHDs {1} set'.format(mame_version_str, chd_set_str)
+    desc_str = 'AML MAME {} CHDs {} set'.format(mame_version_str, chd_set_str)
     slist.append('<header>')
     slist.append(XML_t('name', desc_str))
     slist.append(XML_t('description', desc_str))
-    slist.append(XML_t('version', '{0}'.format(mame_version_str)))
+    slist.append(XML_t('version', '{}'.format(mame_version_str)))
     slist.append(XML_t('date', _str_time(time.time())))
     slist.append(XML_t('author', 'Exported by Advanced MAME Launcher'))
     slist.append('</header>')
 
     # Traverse ROMs and write DAT.
-    total_machines, machine_counter = len(audit_roms), 0
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Creating MAME CHDs XML DAT ...')
-    pDialog.update(0)
+    machine_counter = 0
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Creating MAME CHDs XML DAT...', len(audit_roms))
     for m_name in sorted(audit_roms):
         # If machine has no ROMs then skip it
         chd_list, actual_chd_list, num_CHDs = audit_roms[m_name], [], 0
@@ -1366,38 +1357,34 @@ def mame_write_MAME_CHD_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
         if num_CHDs == 0: continue
 
         # Print CHDs in the XML.
-        slist.append('<machine name="{0}">'.format(m_name))
+        slist.append('<machine name="{}">'.format(m_name))
         slist.append(XML_t('description', render[m_name]['description']))
         slist.append(XML_t('year', render[m_name]['year']))
         slist.append(XML_t('manufacturer', render[m_name]['manufacturer']))
         if render[m_name]['cloneof']:
             slist.append(XML_t('cloneof', render[m_name]['cloneof']))
         for chd in actual_chd_list:
-            t = '    <rom name="{0}" sha1="{1}"/>'.format(chd['name'], chd['sha1'])
+            t = '    <rom name="{}" sha1="{}"/>'.format(chd['name'], chd['sha1'])
             slist.append(t)
         slist.append('</machine>')
         machine_counter += 1
-        pDialog.update((100*machine_counter)/total_machines)
-    pDialog.close()
+        pDialog.updateProgress(machine_counter)
     slist.append('</datafile>')
+    pDialog.endProgress()
 
     # Open output file name.
-    pDialog.create('Advanced MAME Launcher', 'Creating MAME ROMs XML DAT ...')
-    pDialog.update(15)
+    pDialog.startProgress('Creating MAME ROMs XML DAT...')
     try:
-        file_obj = open(DAT_FN.getPath(), 'w')
-        file_obj.write('\n'.join(slist).encode('utf-8'))
+        file_obj = open(DAT_FN.getPath(), 'wt', encoding = 'utf-8')
+        file_obj.write('\n'.join(slist))
         file_obj.close()
-        pDialog.update(100)
-        pDialog.close()
     except OSError:
-        pDialog.close()
         log_error('(OSError) Cannot write DAT XML file')
         kodi_notify_warn('(OSError) Cannot write DAT XML file')
     except IOError:
-        pDialog.close()
         log_error('(IOError) Cannot write DAT XML file')
         kodi_notify_warn('(IOError) Cannot write DAT XML file')
+    pDialog.endProgress()
 
 #
 # -------------------------------------------------------------------------------------------------
@@ -2241,115 +2228,105 @@ def mame_stats_audit_print_slist(settings, slist, control_dic, settings_dic):
 # Check/Update/Repair Favourite ROM objects
 # -------------------------------------------------------------------------------------------------
 def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, assets_dic):
-    line1_str = 'Checking/Updating MAME Favourites ...'
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', line1_str)
     fav_machines = fs_load_JSON_file_dic(PATHS.FAV_MACHINES_PATH.getPath())
-    if len(fav_machines) >= 1:
-        num_iteration = len(fav_machines)
-        iteration = 0
-        for fav_key in sorted(fav_machines):
-            pDialog.update((iteration*100) // num_iteration, line1_str)
-            log_debug('Checking machine "{0}"'.format(fav_key))
-            if fav_key in machines:
-                machine = machines[fav_key]
-                render = machines_render[fav_key]
-                assets = assets_dic[fav_key]
-            else:
-                # Machine not found in DB. Create an empty one to update the database fields.
-                # The user can delete it later.
-                log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-                machine = fs_new_machine_dic()
-                render = fs_new_machine_render_dic()
-                assets = fs_new_MAME_asset()
-                # Change plot to warn user this machine is not found in database.
-                t = 'Machine {0} missing'.format(fav_key)
-                render['description'] = t
-                assets['plot'] = t
-            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
-            fav_machines[fav_key] = new_fav
-            log_debug('Updated machine "{0}"'.format(fav_key))
-            iteration += 1
-        fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
-        pDialog.update((iteration*100) // num_iteration, line1_str)
-    else:
-        fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
-        pDialog.update(100, line1_str)
-    pDialog.close()
+    # If no MAME Favourites return
+    if len(fav_machines) < 1:
+        kodi_notify('MAME Favourites empty')
+        return
+    iteration = 0
+    d_text = 'Checking/Updating MAME Favourites...'
+    pDialog = KodiProgressDialog()
+    pDialog.create(d_text, len(fav_machines))
+    for fav_key in sorted(fav_machines):
+        log_debug('Checking machine "{}"'.format(fav_key))
+        if fav_key in machines:
+            machine = machines[fav_key]
+            render = machines_render[fav_key]
+            assets = assets_dic[fav_key]
+        else:
+            # Machine not found in DB. Create an empty one to update the database fields.
+            # The user can delete it later.
+            log_debug('Machine "{}" not found in MAME main DB'.format(fav_key))
+            machine = fs_new_machine_dic()
+            render = fs_new_machine_render_dic()
+            assets = fs_new_MAME_asset()
+            # Change plot to warn user this machine is not found in database.
+            t = 'Machine {} missing'.format(fav_key)
+            render['description'] = t
+            assets['plot'] = t
+        new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
+        fav_machines[fav_key] = new_fav
+        log_debug('Updated machine "{}"'.format(fav_key))
+        iteration += 1
+        pDialog.updateProgress(iteration)
+    fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+    pDialog.endProgress()
 
 def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic):
-    line1_str = 'Checking/Updating MAME Most Played machines ...'
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', line1_str)
     most_played_roms_dic = fs_load_JSON_file_dic(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
-    if len(most_played_roms_dic) >= 1:
-        num_iteration = len(most_played_roms_dic)
-        iteration = 0
-        for fav_key in sorted(most_played_roms_dic):
-            pDialog.update((iteration*100) // num_iteration, line1_str)
-            log_debug('Checking machine "{0}"'.format(fav_key))
-            if 'launch_count' in most_played_roms_dic[fav_key]:
-                launch_count = most_played_roms_dic[fav_key]['launch_count']
-            else:
-                launch_count = 1
-            if fav_key in machines:
-                machine = machines[fav_key]
-                render = machines_render[fav_key]
-                assets = assets_dic[fav_key]
-            else:
-                log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-                machine = fs_new_machine_dic()
-                render = fs_new_machine_render_dic()
-                assets = fs_new_MAME_asset()
-                t = 'Machine {0} missing'.format(fav_key)
-                render['description'] = t
-                assets['plot'] = t
-            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
-            new_fav['launch_count'] = launch_count
-            most_played_roms_dic[fav_key] = new_fav
-            log_debug('Updated machine "{0}"'.format(fav_key))
-            iteration += 1
-        fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
-        pDialog.update((iteration*100) // num_iteration, line1_str)
-    else:
-        fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
-        pDialog.update(100, line1_str)
-    pDialog.close()
+    if len(most_played_roms_dic) < 1:
+        kodi_notify('MAME Most Played empty')
+        return
+    iteration = 0
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Checking/Updating MAME Most Played machines...', len(most_played_roms_dic))
+    for fav_key in sorted(most_played_roms_dic):
+        log_debug('Checking machine "{}"'.format(fav_key))
+        if 'launch_count' in most_played_roms_dic[fav_key]:
+            launch_count = most_played_roms_dic[fav_key]['launch_count']
+        else:
+            launch_count = 1
+        if fav_key in machines:
+            machine = machines[fav_key]
+            render = machines_render[fav_key]
+            assets = assets_dic[fav_key]
+        else:
+            log_debug('Machine "{}" not found in MAME main DB'.format(fav_key))
+            machine = fs_new_machine_dic()
+            render = fs_new_machine_render_dic()
+            assets = fs_new_MAME_asset()
+            t = 'Machine {} missing'.format(fav_key)
+            render['description'] = t
+            assets['plot'] = t
+        new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
+        new_fav['launch_count'] = launch_count
+        most_played_roms_dic[fav_key] = new_fav
+        log_debug('Updated machine "{}"'.format(fav_key))
+        iteration += 1
+        pDialog.updateProgress(iteration)
+    fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+    pDialog.endProgress()
 
 def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic):
-    line1_str = 'Checking/Updating MAME Recently Played machines ...'
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', line1_str)
     recent_roms_list = fs_load_JSON_file_list(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
-    if len(recent_roms_list) >= 1:
-        num_iteration = len(recent_roms_list)
-        iteration = 0
-        for i, recent_rom in enumerate(recent_roms_list):
-            pDialog.update((iteration*100) // num_iteration, line1_str)
-            fav_key = recent_rom['name']
-            log_debug('Checking machine "{0}"'.format(fav_key))
-            if fav_key in machines:
-                machine = machines[fav_key]
-                render = machines_render[fav_key]
-                assets = assets_dic[fav_key]
-            else:
-                log_debug('Machine "{0}" not found in MAME main DB'.format(fav_key))
-                machine = fs_new_machine_dic()
-                render = fs_new_machine_render_dic()
-                assets = fs_new_MAME_asset()
-                t = 'Machine {0} missing'.format(fav_key)
-                render['description'] = t
-                assets['plot'] = t
-            new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
-            recent_roms_list[i] = new_fav
-            log_debug('Updated machine "{0}"'.format(fav_key))
-            iteration += 1
-        fs_write_JSON_file(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
-        pDialog.update((iteration*100) // num_iteration, line1_str)
-    else:
-        fs_write_JSON_file(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
-        pDialog.update(100, line1_str)
-    pDialog.close()
+    if len(recent_roms_list) < 1:
+        kodi_notify('MAME Recently Played empty')
+        return
+    iteration = 0
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Checking/Updating MAME Recently Played machines...', len(recent_roms_list))
+    for i, recent_rom in enumerate(recent_roms_list):
+        fav_key = recent_rom['name']
+        log_debug('Checking machine "{}"'.format(fav_key))
+        if fav_key in machines:
+            machine = machines[fav_key]
+            render = machines_render[fav_key]
+            assets = assets_dic[fav_key]
+        else:
+            log_debug('Machine "{}" not found in MAME main DB'.format(fav_key))
+            machine = fs_new_machine_dic()
+            render = fs_new_machine_render_dic()
+            assets = fs_new_MAME_asset()
+            t = 'Machine {} missing'.format(fav_key)
+            render['description'] = t
+            assets['plot'] = t
+        new_fav = fs_get_MAME_Favourite_full(fav_key, machine, render, assets, control_dic)
+        recent_roms_list[i] = new_fav
+        log_debug('Updated machine "{}"'.format(fav_key))
+        iteration += 1
+        pDialog.updateProgress(iteration)
+    fs_write_JSON_file(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+    pDialog.endProgress()
 
 def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
     fav_SL_roms = fs_load_JSON_file_dic(PATHS.FAV_SL_ROMS_PATH.getPath())

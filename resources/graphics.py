@@ -967,12 +967,10 @@ def graphs_load_MAME_3DBox_stuff(PATHS, settings, BUILD_MISSING):
     data_dic['t_projection'] = t_projection
 
     # --- Load Assets DB ---
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Loading MAME asset database ... ')
-    pDialog.update(0)
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Loading MAME asset database...')
     assets_dic = fs_load_JSON_file_dic(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
     data_dic['assets_dic'] = assets_dic
 
     return data_dic
@@ -981,21 +979,20 @@ def graphs_load_MAME_3DBox_stuff(PATHS, settings, BUILD_MISSING):
 def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
     # Traverse all machines and build 3D boxes from other pieces of artwork
     SL_name = 'MAME'
-    pDialog_canceled = False
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_line1 = 'Building MAME machine 3D Boxes ...'
-    pDialog.create('Advanced MAME Launcher', pDialog_line1)
     total_machines, processed_machines = len(data_dic['assets_dic']), 0
     ETA_str = ETA_reset(total_machines)
+    pDialog_canceled = False
+    pDialog = KodiProgressDialog()
+    d_text = 'Building MAME machine 3D Boxes...'
+    pDialog.startProgress(d_text, total_machines)
     for m_name in sorted(data_dic['assets_dic']):
         build_time_start = time.time()
-        pDialog.update(
-            (processed_machines * 100) // total_machines, pDialog_line1,
-            'ETA {0} machine {1}'.format(ETA_str, m_name))
+        d_str = '{}\nETA {} machine {}'.format(d_text, ETA_str, m_name)
+        pDialog.updateProgress(processed_machines, d_str)
         if pDialog.iscanceled():
             pDialog_canceled = True
             break
-        Image_FN = data_dic['Boxes_path_FN'].pjoin('{0}.png'.format(m_name))
+        Image_FN = data_dic['Boxes_path_FN'].pjoin('{}.png'.format(m_name))
         if data_dic['BUILD_MISSING']:
             if Image_FN.exists():
                 data_dic['assets_dic'][m_name]['3dbox'] = Image_FN.getPath()
@@ -1011,15 +1008,12 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
         build_time = build_time_end - build_time_start
         # Only update ETA if 3DBox was sucesfully build.
         ETA_str = ETA_update(build_OK_flag, processed_machines, build_time)
-    pDialog.update(100, ' ', ' ')
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Save assets DB ---
-    pDialog.create('Advanced MAME Launcher', 'Saving MAME asset database ... ')
-    pDialog.update(1)
+    pDialog.startProgress('Saving MAME asset database...')
     fs_write_JSON_file(PATHS.MAIN_ASSETS_DB_PATH.getPath(), data_dic['assets_dic'])
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- MAME Fanart build timestamp ---
     control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
@@ -1070,46 +1064,43 @@ def graphs_load_SL_3DBox_stuff(PATHS, settings, BUILD_MISSING):
 def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
     control_dic = fs_load_JSON_file_dic(PATHS.MAIN_CONTROL_PATH.getPath())
 
-    # >> Traverse all SL and on each SL every item
-    pDialog_canceled = False
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher')
+    # Traverse all SL and on each SL every item
     SL_number, SL_count = len(data_dic['SL_index']), 1
     total_SL_items, total_processed_SL_items = control_dic['stats_SL_software_items'], 0
     ETA_str = ETA_reset(total_SL_items)
     log_debug('graphs_build_SL_3DBox_all() total_SL_items = {0}'.format(total_SL_items))
+    pDialog_canceled = False
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Advanced MAME Launcher')
     for SL_name in sorted(data_dic['SL_index']):
-        # >> Update progres dialog
-        pdialog_line1 = 'Processing SL {0} ({1} of {2})...'.format(SL_name, SL_count, SL_number)
-        pdialog_line2 = ' '
-        pDialog.update(0, pdialog_line1, pdialog_line2)
+        d_text = 'Processing SL {} ({} of {})...'.format(SL_name, SL_count, SL_number)
 
-        # >> If fanart directory doesn't exist create it.
+        # If fanart directory doesn't exist create it.
+        pDialog.resetProgress(d_text + '\n' + 'Creating SL Fanart directory')
         Asset_path_FN = FileName(settings['assets_path'])
-        Boxes_path_FN = Asset_path_FN.pjoin('3dboxes_SL/{0}'.format(SL_name))
+        Boxes_path_FN = Asset_path_FN.pjoin('3dboxes_SL/{}'.format(SL_name))
         if not Boxes_path_FN.isdir():
-            log_info('Creating SL 3D Box dir "{0}"'.format(Boxes_path_FN.getPath()))
+            log_info('Creating SL 3D Box dir "{}"'.format(Boxes_path_FN.getPath()))
             Boxes_path_FN.makedirs()
 
-        # >> Load Assets DB
-        pdialog_line2 = 'Loading SL asset database ... '
-        pDialog.update(0, pdialog_line1, pdialog_line2)
+        # Load Assets DB
+        pDialog.resetProgress(d_text + '\n' + 'Loading SL asset database'
         assets_file_name =  data_dic['SL_index'][SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
         SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
 
         # Traverse all SL items and build fanart from other pieces of artwork
         # Last slot of the progress bar is to save the JSON database.
-        SL_items, processed_SL_items = len(SL_assets_dic) + 1, 0
+        processed_SL_items = 0
+        pDialog.resetProgress(d_text, len(SL_assets_dic))
         for m_name in sorted(SL_assets_dic):
             build_time_start = time.time()
-            pdialog_line2 = 'ETA {0} SL item {1}'.format(ETA_str, m_name)
-            update_number = (processed_SL_items * 100) // SL_items
-            pDialog.update(update_number, pdialog_line1, pdialog_line2)
+            d_str = d_text + '\n' + 'ETA {} SL item {}'.format(ETA_str, m_name)
+            pDialog.updateProgress(processed_SL_items, d_str)
             if pDialog.iscanceled():
                 pDialog_canceled = True
                 break
-            Image_FN = Boxes_path_FN.pjoin('{0}.png'.format(m_name))
+            Image_FN = Boxes_path_FN.pjoin('{}.png'.format(m_name))
             if data_dic['BUILD_MISSING']:
                 if Image_FN.exists():
                     SL_assets_dic[m_name]['3dbox'] = Image_FN.getPath()
@@ -1126,15 +1117,13 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
             build_time = build_time_end - build_time_start
             # Only update ETA if 3DBox was sucesfully build.
             ETA_str = ETA_update(build_OK_flag, total_processed_SL_items, build_time)
-        # --- Save SL assets DB ---
-        pdialog_line2 = 'Saving SL {0} asset database ... '.format(SL_name)
-        pDialog.update(100, pdialog_line1, pdialog_line2)
+        # Save SL assets DB.
+        pDialog.updateMessage(d_text + '\n' + 'Saving SL {} asset database'.format(SL_name))
         fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic)
-
-        # --- Update progress ---
+        # Update progress.
         SL_count += 1
         if pDialog_canceled: break
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- SL Fanart build timestamp ---
     change_control_dic(control_dic, 't_SL_3dbox_build', time.time())
