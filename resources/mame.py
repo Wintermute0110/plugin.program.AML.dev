@@ -2236,7 +2236,7 @@ def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, 
     iteration = 0
     d_text = 'Checking/Updating MAME Favourites...'
     pDialog = KodiProgressDialog()
-    pDialog.create(d_text, len(fav_machines))
+    pDialog.startProgress(d_text, len(fav_machines))
     for fav_key in sorted(fav_machines):
         log_debug('Checking machine "{}"'.format(fav_key))
         if fav_key in machines:
@@ -2329,11 +2329,11 @@ def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_r
     pDialog.endProgress()
 
 def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Loading SL Most Played JSON DB...')
     fav_SL_roms = fs_load_JSON_file_dic(PATHS.FAV_SL_ROMS_PATH.getPath())
-    num_SL_favs = len(fav_SL_roms)
     num_iteration = 0
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher')
+    pDialog.resetProgress('Checking SL Favourites', len(fav_SL_roms))
     for fav_SL_key in sorted(fav_SL_roms):
         if 'ROM_name' in fav_SL_roms[fav_SL_key]:
             fav_ROM_name = fav_SL_roms[fav_SL_key]['ROM_name']
@@ -2342,11 +2342,11 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
         else:
             raise TypeError('Cannot find SL ROM name')
         fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
-        log_debug('Checking SL Favourite "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+        log_debug('Checking SL Favourite "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
 
-        # --- Update progress dialog (BEGIN) ---
-        update_number = (num_iteration * 100) // num_SL_favs
-        pDialog.update(update_number, 'Checking SL Favourites (ROM "{0}") ...'.format(fav_ROM_name))
+        # Update progress dialog.
+        d_text = 'Checking SL Favourites (item "{}")...'.format(fav_ROM_name)
+        pDialog.updateProgress(num_iteration, d_text)
         num_iteration += 1
 
         # --- Load SL ROMs DB and assets ---
@@ -2364,26 +2364,25 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
         else:
             # Machine not found in DB. Create an empty one to update the database fields.
             # The user can delete it later.
-            log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
+            log_debug('Machine "{}" / "{}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
             SL_ROM = fs_new_SL_ROM()
             SL_assets = fs_new_SL_asset()
             # Change plot to warn user this machine is not found in database.
-            t = 'Item "{0}" missing'.format(fav_ROM_name)
+            t = 'Item "{}" missing'.format(fav_ROM_name)
             SL_ROM['description'] = t
             SL_ROM['plot'] = t
         new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
         fav_SL_roms[fav_SL_key] = new_fav_ROM
-        log_debug('Updated SL Favourite "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+        log_debug('Updated SL Favourite "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
     fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
 def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
-    most_played_roms_dic = fs_load_JSON_file_dic(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
-    num_SL_favs = len(most_played_roms_dic)
-    num_iteration = 0
     pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher')
+    pDialog.startProgress('Loading SL Most Played JSON DB...')
+    most_played_roms_dic = fs_load_JSON_file_dic(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+    num_iteration = 0
+    pDialog.resetProgress('Checking SL Most Played', len(most_played_roms_dic))
     for fav_SL_key in sorted(most_played_roms_dic):
         if 'ROM_name' in most_played_roms_dic[fav_SL_key]:
             fav_ROM_name = most_played_roms_dic[fav_SL_key]['ROM_name']
@@ -2396,11 +2395,11 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
         else:
             launch_count = 1
         fav_SL_name = most_played_roms_dic[fav_SL_key]['SL_name']
-        log_debug('Checking SL Most Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+        log_debug('Checking SL Most Played "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
 
-        # --- Update progress dialog (BEGIN) ---
-        update_number = (num_iteration * 100) // num_SL_favs
-        pDialog.update(update_number, 'Checking SL Most Played (ROM "{0}") ...'.format(fav_ROM_name))
+        # Update progress dialog.
+        d_text = 'Checking SL Most Played (ROM "{}")...'.format(fav_ROM_name)
+        pDialog.updateProgress(num_iteration, d_text)
         num_iteration += 1
 
         # --- Load SL ROMs DB and assets ---
@@ -2416,26 +2415,25 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
             SL_ROM = SL_roms[fav_ROM_name]
             SL_assets = SL_assets_dic[fav_ROM_name]
         else:
-            log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
+            log_debug('Machine "{}" / "{}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
             SL_ROM = fs_new_SL_ROM()
             SL_assets = fs_new_SL_asset()
-            t = 'Item "{0}" missing'.format(fav_ROM_name)
+            t = 'Item "{}" missing'.format(fav_ROM_name)
             SL_ROM['description'] = t
             SL_ROM['plot'] = t
         new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
         new_fav_ROM['launch_count'] = launch_count
         most_played_roms_dic[fav_SL_key] = new_fav_ROM
-        log_debug('Updated SL Most Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+        log_debug('Updated SL Most Played "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
     fs_write_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
 def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Loading SL Recently Played JSON DB...')
     recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
-    num_SL_favs = len(recent_roms_list)
     num_iteration = 0
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher')
+    pDialog.resetProgress('Checking SL Recently Played', len(recent_roms_list))
     for i, recent_rom in enumerate(recent_roms_list):
         if 'ROM_name' in recent_rom:
             fav_ROM_name = recent_rom['ROM_name']
@@ -2444,11 +2442,12 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
         else:
             raise TypeError('Cannot find SL ROM name')
         fav_SL_name = recent_rom['SL_name']
-        log_debug('Checking SL Recently Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+        log_debug('Checking SL Recently Played "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
 
-        # --- Update progress dialog (BEGIN) ---
+        # Update progress dialog.
         update_number = (num_iteration * 100) // num_SL_favs
-        pDialog.update(update_number, 'Checking SL Recently Played (ROM "{0}") ...'.format(fav_ROM_name))
+        d_text = 'Checking SL Recently Played (ROM "{}")...'.format(fav_ROM_name)
+        pDialog.updateProgress(num_iteration, d_text)
         num_iteration += 1
 
         # --- Load SL ROMs DB and assets ---
@@ -2464,18 +2463,17 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
             SL_ROM = SL_roms[fav_ROM_name]
             SL_assets = SL_assets_dic[fav_ROM_name]
         else:
-            log_debug('Machine "{0}" / "{1}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
+            log_debug('Machine "{}" / "{}" not found in SL main DB'.format(fav_ROM_name, fav_SL_name))
             SL_ROM = fs_new_SL_ROM()
             SL_assets = fs_new_SL_asset()
-            t = 'Item "{0}" missing'.format(fav_ROM_name)
+            t = 'Item "{}" missing'.format(fav_ROM_name)
             SL_ROM['description'] = t
             SL_ROM['plot'] = t
         new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
         recent_roms_list[i] = new_fav_ROM
-        log_debug('Updated SL Recently Played  "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+        log_debug('Updated SL Recently Played  "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
     fs_write_JSON_file(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
-    pDialog.update(100)
-    pDialog.close()
+    pDialog.endProgress()
 
 # ------------------------------------------------------------------------------------------------
 # Build MAME and SL plots
@@ -2532,22 +2530,19 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
     mameinfo_info_set = {m for m in mameinfo_idx_dic['mame']} if mameinfo_idx_dic else set()
 
     # --- Built machine plots ---
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Generating MAME machine plots ...')
-    total_machines = len(machines)
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Generating MAME machine plots...', len(machines))
     num_machines = 0
     for mname, m in machines.items():
         plot_str_list = mame_MAME_plot_slits(mname, m, assets_dic,
             history_info_set, mameinfo_info_set, gameinit_idx_dic, command_idx_dic)
         assets_dic[mname]['plot'] = '\n'.join(plot_str_list)
         num_machines += 1
-        pDialog.update((num_machines*100)//total_machines)
-    pDialog.close()
+        pDialog.updateProgress(num_machines)
+    pDialog.endProgress()
 
-    # Timestamp
+    # Timestamp, save the MAME asset database. Save control_dic at the end.
     change_control_dic(control_dic, 't_MAME_plots_build', time.time())
-    # Save the MAME asset database. Save control_dic at the end.
     db_files = [
         (assets_dic, 'MAME machine assets', PATHS.MAIN_ASSETS_DB_PATH.getPath()),
         (control_dic, 'Control dictionary', PATHS.MAIN_CONTROL_PATH.getPath()),
@@ -2563,16 +2558,13 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
 # ---------------------------------------------------------------------------------------------
 def mame_build_SL_plots(PATHS, settings, control_dic,
     SL_index_dic, SL_machines_dic, History_idx_dic):
-    pDialog = xbmcgui.DialogProgress()
-    pdialog_line1 = 'Generating SL item plots ...'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    pDialog.update(0)
-    total_files = len(SL_index_dic)
+    d_fline = 'Generating SL item plots ...'
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress(d_text, len(SL_index_dic))
     processed_files = 0
     for SL_name in sorted(SL_index_dic):
         # Update progress
-        update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, 'Software List {}'.format(SL_name))
+        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(d_fline, SL_name))
 
         # Open database
         SL_DB_prefix = SL_index_dic[SL_name]['rom_DB_noext']
@@ -2591,33 +2583,27 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
             SL_rom = SL_roms[rom_key]
             num_parts = len(SL_rom['parts'])
             if num_parts == 0:   parts_str = 'SL item has no parts'
-            elif num_parts == 1: parts_str = 'SL item has {0} part'.format(num_parts)
-            elif num_parts > 1:  parts_str = 'SL item has {0} parts'.format(num_parts)
+            elif num_parts == 1: parts_str = 'SL item has {} part'.format(num_parts)
+            elif num_parts > 1:  parts_str = 'SL item has {} parts'.format(num_parts)
             num_ROMs = 0
             num_disks = 0
             for SL_rom in SL_ROM_audit_dic[rom_key]:
                 if SL_rom['type'] == 'ROM': num_ROMs += 1
                 elif SL_rom['type'] == 'DISK': num_disks += 1
-            if num_ROMs == 0:   ROM_str = 'ROMs'
-            elif num_ROMs == 1: ROM_str = 'ROM'
-            elif num_ROMs > 1:  ROM_str = 'ROMs'
-            if num_disks == 0:   disk_str = 'disks'
-            elif num_disks == 1: disk_str = 'disk'
-            elif num_disks > 1:  disk_str = 'disks'
-            roms_str = '{0} {1} and {2} {3}'.format(num_ROMs, ROM_str, num_disks, disk_str)
+            ROM_str = 'ROM' if num_ROMs == 1 else 'ROMs'
+            disk_str = 'disk' if num_disks == 1 else 'disks'
+            roms_str = '{} {} and {} {}'.format(num_ROMs, ROM_str, num_disks, disk_str)
             Flag_list = []
             if SL_assets_dic[rom_key]['manual']: Flag_list.append('Manual')
             if rom_key in History_SL_set: Flag_list.append('History')
             Flag_str = ', '.join(Flag_list)
-            # >> Build plot
             # SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str, Machines_str])
             SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str])
-
         # Write SL ROMs JSON
         fs_write_JSON_file(SL_ROMs_FN.getPath(), SL_roms, verbose = False)
         processed_files += 1
     update_number = (processed_files*100) // total_files
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Timestamp ---
     change_control_dic(control_dic, 't_SL_plots_build', time.time())
@@ -3105,8 +3091,7 @@ def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, ro
 def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render, audit_roms_dic):
     log_debug('mame_audit_MAME_all() Initialising ...')
 
-    # >> Go machine by machine and audit ZIPs and CHDs.
-    # >> Adds new column 'status' to each ROM.
+    # Go machine by machine and audit ZIPs and CHDs. Adds new column 'status' to each ROM.
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', 'Auditing MAME ROMs and CHDs ... ')
     total_machines = len(machines_render)
