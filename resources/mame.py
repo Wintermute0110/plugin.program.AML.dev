@@ -3092,25 +3092,24 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     log_debug('mame_audit_MAME_all() Initialising ...')
 
     # Go machine by machine and audit ZIPs and CHDs. Adds new column 'status' to each ROM.
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher', 'Auditing MAME ROMs and CHDs ... ')
-    total_machines = len(machines_render)
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Auditing MAME ROMs and CHDs...', len(machines_render))
     processed_machines = 0
     machine_audit_dic = {}
     for m_name in sorted(machines_render):
-        pDialog.update((processed_machines * 100) // total_machines)
-        # >> Machine has ROMs
+        # Machine has ROMs
         audit_dic = fs_new_audit_dic()
         if m_name in audit_roms_dic:
-            # >> roms_dic is mutable and edited inside the function
+            # roms_dic is mutable and edited inside the function
             rom_list = audit_roms_dic[m_name]
             mame_audit_MAME_machine(settings, rom_list, audit_dic)
         machine_audit_dic[m_name] = audit_dic
         processed_machines += 1
-        if pDialog.iscanceled(): break
-    pDialog.close()
+        pDialog.updateProgress(processed_machines)
+        if pDialog.isCanceled(): break
+    pDialog.endProgress()
 
-    # >> Audit statistics.
+    # Audit statistics.
     audit_MAME_machines_with_arch        = 0
     audit_MAME_machines_with_arch_OK     = 0
     audit_MAME_machines_with_arch_BAD    = 0
@@ -3130,7 +3129,7 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     for m_name in machines_render:
         render_dic = machines_render[m_name]
         audit_dic = machine_audit_dic[m_name]
-        # >> Skip unrunnable (device) machines
+        # Skip unrunnable (device) machines
         if render_dic['isDevice']: continue
         if audit_dic['machine_has_ROMs_or_CHDs']:
             audit_MAME_machines_with_arch += 1
@@ -3198,8 +3197,8 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
         'This report shows machines with bad/missing CHDs',
     ]
     h_list = [
-        'There are {0} machines in total'.format(total_machines),
-        'Of those, {0} are runnable machines'.format(control_dic['stats_audit_MAME_machines_runnable']),
+        'There are {} machines in total'.format(total_machines),
+        'Of those, {} are runnable machines'.format(control_dic['stats_audit_MAME_machines_runnable']),
     ]
     report_full_list.extend(h_list)
     report_good_list.extend(h_list)
@@ -3212,22 +3211,22 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     CHD_report_error_list.extend(h_list)
 
     h_list = [
-        'Of those, {0} require ROMs and or CHDSs'.format(audit_MAME_machines_with_arch),
-        'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
+        'Of those, {} require ROMs and or CHDSs'.format(audit_MAME_machines_with_arch),
+        'Of those, {} are OK and {} have bad/missing ROMs and/or CHDs'.format(
             audit_MAME_machines_with_arch_OK, audit_MAME_machines_with_arch_BAD ),
     ]
     report_good_list.extend(h_list)
     report_error_list.extend(h_list)
     h_list = [
-        'Of those, {0} require ROMs'.format(audit_MAME_machines_with_ROMs),
-        'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
+        'Of those, {} require ROMs'.format(audit_MAME_machines_with_ROMs),
+        'Of those, {} are OK and {} have bad/missing ROMs and/or CHDs'.format(
             audit_MAME_machines_with_ROMs_OK, audit_MAME_machines_with_ROMs_BAD ),
     ]
     ROM_report_good_list.extend(h_list)
     ROM_report_error_list.extend(h_list)
     h_list = [
-        'Of those, {0} require ROMs and or CHDSs'.format(audit_MAME_machines_with_CHDs),
-        'Of those, {0} are OK and {1} have bad/missing ROMs and/or CHDs'.format(
+        'Of those, {} require ROMs and or CHDSs'.format(audit_MAME_machines_with_CHDs),
+        'Of those, {} are OK and {} have bad/missing ROMs and/or CHDs'.format(
             audit_MAME_machines_with_CHDs_OK, audit_MAME_machines_with_CHDs_BAD ),
     ]
     CHD_report_good_list.extend(h_list)
@@ -3243,15 +3242,14 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     CHD_report_good_list.append('')
     CHD_report_error_list.append('')
 
-    # >> Generate report.
-    pDialog.create('Advanced MAME Launcher', 'Generating audit reports ... ')
-    total_machines = len(machines_render)
+    # Generate report.
+    pDialog.startProgress('Generating audit reports...', len(machines_render))
     processed_machines = 0
     for m_name in sorted(machines_render):
-        # >> Update progress dialog
         pDialog.update((processed_machines * 100) // total_machines)
+        processed_machines += 1
 
-        # >> Skip ROMless and/or CHDless machines from reports, except the full report
+        # Skip ROMless and/or CHDless machines from reports, except the full report
         description = machines_render[m_name]['description']
         cloneof = machines_render[m_name]['cloneof']
         if m_name not in audit_roms_dic:
@@ -3325,9 +3323,6 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
                 CHD_report_good_list.extend(head_list + local_str_list)
             else:
                 CHD_report_error_list.extend(head_list + local_str_list)
-
-        # >> Update progress dialog. Check if user run out of patience.
-        processed_machines += 1
     else:
         a = '*** MAME audit finished ***'
         report_full_list.append(a)
@@ -3339,42 +3334,40 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
         SAMPLES_report_error_list.append(a)
         CHD_report_good_list.append(a)
         CHD_report_error_list.append(a)
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- Write reports ---
-    pDialog.create('Advanced MAME Launcher', 'Writing report files ... ')
     num_items = 9
-    pDialog.update(int((0*100) / num_items))
-    with open(PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_full_list).encode('utf-8'))
-    pDialog.update(int((1*100) / num_items))
-    with open(PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_good_list).encode('utf-8'))
-    pDialog.update(int((2*100) / num_items))
-    with open(PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_error_list).encode('utf-8'))
-    pDialog.update(int((3*100) / num_items))
-    with open(PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(ROM_report_good_list).encode('utf-8'))
-    pDialog.update(int((4*100) / num_items))
-    with open(PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(ROM_report_error_list).encode('utf-8'))
-    pDialog.update(int((5*100) / num_items))
-    with open(PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(SAMPLES_report_good_list).encode('utf-8'))
-    pDialog.update(int((6*100) / num_items))
-    with open(PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(SAMPLES_report_error_list).encode('utf-8'))
-    pDialog.update(int((7*100) / num_items))
-    with open(PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(CHD_report_good_list).encode('utf-8'))
-    pDialog.update(int((8*100) / num_items))
-    with open(PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(CHD_report_error_list).encode('utf-8'))
-    pDialog.update(int((9*100) / num_items))
-    pDialog.close()
+    pDialog.startProgress('Writing report files...', num_items)
+    with open(PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(report_full_list))
+    pDialog.updateProgress(1)
+    with open(PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(report_good_list))
+    pDialog.updateProgress(2)
+    with open(PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(report_error_list))
+    pDialog.updateProgress(3)
+    with open(PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(ROM_report_good_list))
+    pDialog.updateProgress(4)
+    with open(PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(ROM_report_error_list))
+    pDialog.updateProgress(5)
+    with open(PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(SAMPLES_report_good_list))
+    pDialog.updateProgress(6)
+    with open(PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(SAMPLES_report_error_list))
+    pDialog.updateProgress(7)
+    with open(PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(CHD_report_good_list))
+    pDialog.updateProgress(8)
+    with open(PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(CHD_report_error_list))
+    pDialog.endProgress()
 
-    # >> Update MAME audit statistics.
+    # Update MAME audit statistics.
     change_control_dic(control_dic, 'audit_MAME_machines_with_arch', audit_MAME_machines_with_arch)
     change_control_dic(control_dic, 'audit_MAME_machines_with_arch_OK', audit_MAME_machines_with_arch_OK)
     change_control_dic(control_dic, 'audit_MAME_machines_with_arch_BAD', audit_MAME_machines_with_arch_BAD)
@@ -3392,10 +3385,8 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     change_control_dic(control_dic, 'audit_MAME_machines_with_CHDs_BAD', audit_MAME_machines_with_CHDs_BAD)
     change_control_dic(control_dic, 'audit_MAME_machines_without_CHDs', audit_MAME_machines_without_CHDs)
 
-    # --- Update timestamp ---
+    # Update timestamp of ROM audit.
     change_control_dic(control_dic, 't_MAME_audit', time.time())
-
-    # --- Save control_dic ---
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
@@ -3431,7 +3422,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
         'This report shows SL items with errors in CHDs',
     ]
     h_list = [
-        'There are {0} software lists'.format(len(SL_catalog_dic)),
+        'There are {} software lists'.format(len(SL_catalog_dic)),
         '',
     ]
     report_full_list.extend(h_list)
@@ -3442,7 +3433,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     CHD_report_good_list.extend(h_list)
     CHD_report_error_list.extend(h_list)
 
-    # >> DEBUG code
+    # DEBUG code
     # SL_catalog_dic = {
     #     "32x" : {
     #         "display_name" : "Sega 32X cartridges",
@@ -3452,7 +3443,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     #     }
     # }
 
-    # >> SL audit statistics.
+    # SL audit statistics.
     audit_SL_items_runnable          = 0
     audit_SL_items_with_arch         = 0
     audit_SL_items_with_arch_OK      = 0
@@ -3467,31 +3458,31 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     audit_SL_items_with_CHD_BAD      = 0
     audit_SL_items_without_CHD       = 0
 
-    # >> Iterate all SL databases and audit ROMs.
-    pDialog = xbmcgui.DialogProgress()
-    pDialog_canceled = False
-    pdialog_line1 = 'Auditing Sofware Lists ROMs and CHDs ...'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
-    total_files = len(SL_catalog_dic)
+    # Iterate all SL databases and audit ROMs.
+    pDialog = KodiProgressDialog()
+    d_text = 'Auditing Sofware Lists ROMs and CHDs...'
+    pDialog.startProgress(d_text, len(SL_catalog_dic))
     processed_files = 0
     SL_ROM_path_FN = FileName(settings['SL_rom_path'])
     SL_CHD_path_FN = FileName(settings['SL_chd_path'])
     for SL_name in sorted(SL_catalog_dic):
-        pDialog.update((processed_files*100) // total_files, pdialog_line1, 'Software List {0}'.format(SL_name))
+        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(d_text, SL_name))
+        processed_files += 1
+
         SL_dic = SL_catalog_dic[SL_name]
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_items.json')
         SL_AUDIT_ROMs_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_ROM_audit.json')
         roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
         audit_roms = fs_load_JSON_file_dic(SL_AUDIT_ROMs_DB_FN.getPath(), verbose = False)
 
-        # >> Iterate SL ROMs
+        # Iterate SL ROMs
         for rom_key in sorted(roms):
-            # >> audit_roms_list and audit_dic are mutable and edited inside the function()
+            # audit_roms_list and audit_dic are mutable and edited inside the function()
             audit_rom_list = audit_roms[rom_key]
             audit_dic = fs_new_audit_dic()
             mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, rom_key, audit_rom_list, audit_dic)
 
-            # >> Audit statistics
+            # Audit statistics
             audit_SL_items_runnable += 1
             if audit_dic['machine_has_ROMs_or_CHDs']:
                 audit_SL_items_with_arch += 1
@@ -3514,18 +3505,17 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
             else:
                 audit_SL_items_without_CHD += 1
 
-            # >> Software/machine header.
-            # WARNING: Kodi crashes with a 22 MB text file with colours. No problem
-            # if TXT file has not colours.
+            # Software/machine header.
+            # WARNING: Kodi crashes with a 22 MB text file with colours. No problem if TXT file has not colours.
             rom = roms[rom_key]
             cloneof = rom['cloneof']
             head_list = []
             if cloneof:
-                head_list.append('SL {0} ROM {1} (cloneof {2})'.format(SL_name, rom_key, cloneof))
+                head_list.append('SL {} ROM {} (cloneof {})'.format(SL_name, rom_key, cloneof))
             else:
-                head_list.append('SL {0} ROM {1}'.format(SL_name, rom_key))
+                head_list.append('SL {} ROM {}'.format(SL_name, rom_key))
 
-            # >> ROM/CHD report.
+            # ROM/CHD report.
             table_str = [ ['right', 'left', 'left', 'left', 'left'] ]
             for m_rom in audit_rom_list:
                 if m_rom['type'] == ROM_TYPE_DISK:
@@ -3538,29 +3528,26 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
             local_str_list = text_render_table_str_NO_HEADER(table_str)
             local_str_list.append('')
 
-            # >> Full, ROMs and CHDs report.
+            # Full, ROMs and CHDs report.
             report_full_list.extend(head_list + local_str_list)
             if audit_dic['machine_is_OK']:
                 report_good_list.extend(head_list + local_str_list)
             else:
                 report_error_list.extend(head_list + local_str_list)
 
-            # >> ROM report
+            # ROM report
             if audit_dic['machine_has_ROMs']:
                 if audit_dic['machine_ROMs_are_OK']:
                     ROM_report_good_list.extend(head_list + local_str_list)
                 else:
                     ROM_report_error_list.extend(head_list + local_str_list)
 
-            # >> CHD report.
+            # CHD report.
             if audit_dic['machine_has_CHDs']:
                 if audit_dic['machine_CHDs_are_OK']:
                     CHD_report_good_list.extend(head_list + local_str_list)
                 else:
                     CHD_report_error_list.extend(head_list + local_str_list)
-
-        # >> Update progress
-        processed_files += 1
     a = '*** Software Lists audit finished ***'
     report_full_list.append(a)
     report_good_list.append(a)
@@ -3569,37 +3556,34 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     ROM_report_error_list.append(a)
     CHD_report_good_list.append(a)
     CHD_report_error_list.append(a)
-    pDialog.close()
+    pDialog.endProgress()
 
-    # >> Write report.
-    pdialog_line1 = 'Writing SL audit reports ...'
-    pDialog.create('Advanced MAME Launcher', pdialog_line1)
+    # Write reports.
     num_items = 7
-    pDialog.update(int((0*100) / num_items))
-    with open(PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_full_list).encode('utf-8'))
-    pDialog.update(int((1*100) / num_items))
-    with open(PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_good_list).encode('utf-8'))
-    pDialog.update(int((2*100) / num_items))
-    with open(PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(report_error_list).encode('utf-8'))
-    pDialog.update(int((3*100) / num_items))
-    with open(PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(ROM_report_good_list).encode('utf-8'))
-    pDialog.update(int((4*100) / num_items))
-    with open(PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(ROM_report_error_list).encode('utf-8'))
-    pDialog.update(int((5*100) / num_items))
-    with open(PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(CHD_report_good_list).encode('utf-8'))
-    pDialog.update(int((6*100) / num_items))
-    with open(PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'w') as file:
-        file.write('\n'.join(CHD_report_error_list).encode('utf-8'))
-    pDialog.update(int((7*100) / num_items))
-    pDialog.close()
+    pDialog.startProgress('Writing SL audit reports...', num_items)
+    with open(PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(report_full_list))
+    pDialog.updateProgress(1)
+    with open(PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(report_good_list))
+    pDialog.updateProgress(2)
+    with open(PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(report_error_list))
+    pDialog.updateProgress(3)
+    with open(PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(ROM_report_good_list))
+    pDialog.updateProgress(4)
+    with open(PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(ROM_report_error_list))
+    pDialog.updateProgress(5)
+    with open(PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(CHD_report_good_list))
+    pDialog.updateProgress(6)
+    with open(PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+        file.write('\n'.join(CHD_report_error_list))
+    pDialog.endProgress()
 
-    # >> Update SL audit statistics.
+    # Update SL audit statistics.
     change_control_dic(control_dic, 'audit_SL_items_runnable', audit_SL_items_runnable)
     change_control_dic(control_dic, 'audit_SL_items_with_arch', audit_SL_items_with_arch)
     change_control_dic(control_dic, 'audit_SL_items_with_arch_OK', audit_SL_items_with_arch_OK)
@@ -3614,10 +3598,8 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     change_control_dic(control_dic, 'audit_SL_items_with_CHD_BAD', audit_SL_items_with_CHD_BAD)
     change_control_dic(control_dic, 'audit_SL_items_without_CHD', audit_SL_items_without_CHD)
 
-    # --- Update timestamp ---
+    # Update timestamp and save control_dic.
     change_control_dic(control_dic, 't_SL_audit', time.time())
-
-    # --- Save control_dic ---
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
