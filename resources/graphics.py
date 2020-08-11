@@ -1084,7 +1084,7 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
             Boxes_path_FN.makedirs()
 
         # Load Assets DB
-        pDialog.resetProgress(d_text + '\n' + 'Loading SL asset database'
+        pDialog.resetProgress(d_text + '\n' + 'Loading SL asset database')
         assets_file_name =  data_dic['SL_index'][SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
         SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())

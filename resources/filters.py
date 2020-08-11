@@ -1564,10 +1564,8 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         # --- Initialise ---
         f_name = f_definition['name']
         log_debug('filter_build_custom_filters() Processing filter "{}"'.format(f_name))
-        # log_debug('f_definition = {}'.format(unicode(f_definition)))
-
-        # --- Initial progress ---
-        pDialog.updateProgress(processed_items '{}\nFilter "{}"'.format(diag_t, f_name))
+        # log_debug('f_definition = {}'.format(str(f_definition)))
+        pDialog.updateProgressInc('{}\nFilter "{}"'.format(diag_t, f_name))
 
         # --- Do filtering ---
         filtered_machine_dic = filter_mame_Default(main_filter_dic)
@@ -1597,6 +1595,7 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
             'rom_DB_noext' : rom_DB_noext
         }
         Filters_index_dic[f_name] = this_filter_idx_dic
+        processed_items += 1
 
         # --- Save filter database ---
         writing_ticks_start = time.time()
@@ -1607,9 +1606,6 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         writing_ticks_end = time.time()
         writing_time = writing_ticks_end - writing_ticks_start
         log_debug('JSON writing time {:.4f} s'.format(writing_time))
-
-        # --- Final progress ---
-        processed_items += 1
 
         # --- Report ---
         r_full.append('Filter "{}"'.format(f_name))
