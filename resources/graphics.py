@@ -349,7 +349,7 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
     # layout is an ordered dictionary, so the assets are draw in the order they appear
     # in the XML file.
     img_index = 1
-    # log_debug(unicode(layout))
+    # log_debug(str(layout))
     for asset_key in layout:
         # log_debug('{0:<11} initialising'.format(asset_key))
         m_assets = assets_dic[m_name]
@@ -704,7 +704,7 @@ def graphs_load_MAME_Fanart_stuff(PATHS, settings, BUILD_MISSING):
     # --- Load Fanart template from XML file ---
     Template_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/AML-MAME-Fanart-template.xml')
     layout = graphs_load_MAME_Fanart_template(Template_FN)
-    # log_debug(unicode(layout))
+    # log_debug(str(layout))
     if not layout:
         kodi_dialog_OK('Error loading XML MAME Fanart layout.')
         data_dic['abort'] = True
@@ -847,7 +847,7 @@ def graphs_load_SL_Fanart_stuff(PATHS, settings, BUILD_MISSING):
     # --- Load Fanart template from XML file ---
     Template_FN = PATHS.ADDON_CODE_DIR.pjoin('templates/AML-SL-Fanart-template.xml')
     layout = graphs_load_SL_Fanart_template(Template_FN)
-    # log_debug(unicode(layout))
+    # log_debug(str(layout))
     if not layout:
         kodi_dialog_OK('Error loading XML Software List Fanart layout.')
         data_dic['abort'] = True

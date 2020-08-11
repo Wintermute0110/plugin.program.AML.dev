@@ -14,7 +14,7 @@
 # See the GNU General Public License for more details.
 
 # First include modules in this package. 
-# Then include Kodi modulesl.
+# Then include Kodi modules.
 # Finally include standard library modules.
 
 # --- Modules/packages in this plugin ---
@@ -3348,8 +3348,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(machine['cloneof']))
         elif machine['romof']:
             info_text.append('[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
-                         '[COLOR skyblue]isDevice[/COLOR] {0}'.format(unicode(machine['isDevice'])))
+        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(str(machine['isBIOS'])) +
+                         '[COLOR skyblue]isDevice[/COLOR] {0}'.format(str(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3451,8 +3451,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(machine['cloneof']))
         elif machine['romof']:
             info_text.append('[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
+        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3657,8 +3657,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(machine['cloneof']))
         elif machine['romof']:
             info_text.append('[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
-            '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
+        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -7605,7 +7605,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
         sl_launch_mode = SL_LAUNCH_NO_MEDIA
 
     else:
-        log_info(unicode(machine_interfaces))
+        log_info(str(machine_interfaces))
         log_warning('run_SL_machine() Logical error in SL launch case.')
         launch_case = SL_LAUNCH_CASE_ERROR
         kodi_dialog_OK('Logical error in SL launch case. This is a bug, please report it.')

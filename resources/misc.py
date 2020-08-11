@@ -89,7 +89,7 @@ def misc_get_mame_screen_str(machine_name, machine):
         elif len(d_list) == 6:
             screen_str = 'Six unrecognised screens'
         else:
-            log_error('mame_get_screen_str() d_list = {0}'.format(unicode(d_list)))
+            log_error('mame_get_screen_str() d_list = {}'.format(str(d_list)))
             raise TypeError
     else:
         screen_str = 'No screen'

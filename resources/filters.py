@@ -99,7 +99,7 @@ class SP_literal_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing LITERAL token value "{0}"'.format(self.value))
         ret = self.value
-        if debug_SP_parser: log_debug('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('LITERAL token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return '<LITERAL "{0}">'.format(self.value)
@@ -114,7 +114,7 @@ class SP_operator_has_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing HAS token')
         ret = True if SP_parser_search_string.find(self.first.exec_token()) >= 0 else False
-        if debug_SP_parser: log_debug('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('HAS token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "<OP has>"
@@ -129,7 +129,7 @@ class SP_operator_lacks_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing LACKS token')
         ret = False if SP_parser_search_string.find(self.first.exec_token()) >= 0 else True
-        if debug_SP_parser: log_debug('LACKS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('LACKS token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "<OP lacks>"
@@ -144,7 +144,7 @@ class SP_operator_not_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing NOT token')
         ret = not self.first.exec_token()
-        if debug_SP_parser: log_debug('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('NOT token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "<OP not>"
@@ -161,7 +161,7 @@ class SP_operator_and_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_SP_parser: log_debug('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('AND token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "<OP and>"
@@ -177,7 +177,7 @@ class SP_operator_or_token:
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_SP_parser: log_debug('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('OR token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "<OP or>"
@@ -278,7 +278,7 @@ class LSP_literal_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing LITERAL token value "{0}"'.format(self.value))
         ret = self.value
-        if debug_LSP_parser: log_debug('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('LITERAL token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return '<LITERAL "{0}">'.format(self.value)
@@ -318,7 +318,7 @@ class LSP_operator_has_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing HAS token')
         ret = self.first.exec_token() in LSP_parser_search_list
-        if debug_LSP_parser: log_debug('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('HAS token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "<OP has>"
@@ -333,7 +333,7 @@ class LSP_operator_lacks_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing LACKS token')
         ret = self.first.exec_token() not in LSP_parser_search_list
-        if debug_LSP_parser: log_debug('LACKS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('LACKS token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "<OP lacks>"
@@ -348,7 +348,7 @@ class LSP_operator_not_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing NOT token')
         ret = not self.first.exec_token()
-        if debug_LSP_parser: log_debug('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('NOT token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "<OP not>"
@@ -365,7 +365,7 @@ class LSP_operator_and_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_LSP_parser: log_debug('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('AND token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "<OP and>"
@@ -381,7 +381,7 @@ class LSP_operator_or_token:
     def exec_token(self):
         if debug_LSP_parser: log_debug('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_LSP_parser: log_debug('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_LSP_parser: log_debug('OR token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "<OP or>"
@@ -448,7 +448,7 @@ def LSP_parse_exec(program, search_list):
 
     if debug_LSP_parse_exec:
         log_debug('LSP_parse_exec() Initialising program execution')
-        log_debug('LSP_parse_exec() Search string "{0}"'.format(unicode(search_list)))
+        log_debug('LSP_parse_exec() Search string "{0}"'.format(str(search_list)))
         log_debug('LSP_parse_exec() Program       "{0}"'.format(program))
     LSP_parser_search_list = search_list
     LSP_next = LSP_tokenize(program).next
@@ -490,7 +490,7 @@ class YP_literal_token:
             ret = YP_year
         else:
             ret = int(self.value)
-        if debug_YP_parser: log_debug('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('LITERAL token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return '[LITERAL "{0}"]'.format(self.value)
@@ -530,7 +530,7 @@ class YP_operator_not_token:
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing NOT token')
         ret = not self.first.exec_token()
-        if debug_YP_parser: log_debug('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('NOT token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "[OP not]"
@@ -547,7 +547,7 @@ class YP_operator_and_token:
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_YP_parser: log_debug('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('AND token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "[OP and]"
@@ -563,7 +563,7 @@ class YP_operator_or_token:
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_YP_parser: log_debug('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('OR token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "[OP or]"
@@ -579,7 +579,7 @@ class YP_operator_equal_token:
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing == token')
         ret = self.first.exec_token() == self.second.exec_token()
-        if debug_YP_parser: log_debug('== token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('== token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "[OP ==]"
@@ -595,7 +595,7 @@ class YP_operator_not_equal_token:
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing != token')
         ret = self.first.exec_token() != self.second.exec_token()
-        if debug_YP_parser: log_debug('!= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('!= token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "[OP !=]"
@@ -611,7 +611,7 @@ class YP_operator_great_than_token:
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing > token')
         ret = self.first.exec_token() > self.second.exec_token()
-        if debug_YP_parser: log_debug('> token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('> token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "[OP >]"
@@ -627,7 +627,7 @@ class YP_operator_less_than_token:
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing < token')
         ret = self.first.exec_token() < self.second.exec_token()
-        if debug_YP_parser: log_debug('< token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('< token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "[OP <]"
@@ -643,7 +643,7 @@ class YP_operator_great_or_equal_than_token:
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing >= token')
         ret = self.first.exec_token() >= self.second.exec_token()
-        if debug_YP_parser: log_debug('>= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('>= token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "[OP >=]"
@@ -659,7 +659,7 @@ class YP_operator_less_or_equal_than_token:
     def exec_token(self):
         if debug_YP_parser: log_debug('Executing <= token')
         ret = self.first.exec_token() <= self.second.exec_token()
-        if debug_YP_parser: log_debug('<= token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_YP_parser: log_debug('<= token returns {0} "{1}"'.format(type(ret), str(ret)))
         return ret
     def __repr__(self):
         return "[OP <=]"
@@ -1041,7 +1041,7 @@ def filter_mame_Year_tag(mame_xml_dic, f_definition):
 
 def filter_mame_Include_tag(mame_xml_dic, f_definition, machines_dic):
     # log_debug('filter_mame_Include_tag() Starting ...')
-    log_debug('filter_mame_Include_tag() Include machines {}'.format(unicode(f_definition['include'])))
+    log_debug('filter_mame_Include_tag() Include machines {}'.format(str(f_definition['include'])))
     added_machines = 0
     machines_filtered_dic = mame_xml_dic.copy()
     # If no machines to include then skip processing
@@ -1067,7 +1067,7 @@ def filter_mame_Include_tag(mame_xml_dic, f_definition, machines_dic):
 
 def filter_mame_Exclude_tag(mame_xml_dic, f_definition):
     # log_debug('filter_mame_Exclude_tag() Starting ...')
-    log_debug('filter_mame_Exclude_tag() Exclude machines {}'.format(unicode(f_definition['exclude'])))
+    log_debug('filter_mame_Exclude_tag() Exclude machines {}'.format(str(f_definition['exclude'])))
     initial_num_games = len(mame_xml_dic)
     filtered_out_games = 0
     machines_filtered_dic = mame_xml_dic.copy()
@@ -1091,7 +1091,7 @@ def filter_mame_Exclude_tag(mame_xml_dic, f_definition):
 
 def filter_mame_Change_tag(mame_xml_dic, f_definition, machines_dic):
     # log_debug('filter_mame_Change_tag() Starting ...')
-    log_debug('filter_mame_Change_tag() Change machines {}'.format(unicode(f_definition['change'])))
+    log_debug('filter_mame_Change_tag() Change machines {}'.format(str(f_definition['change'])))
     initial_num_games = len(mame_xml_dic)
     changed_machines = 0
     machines_filtered_dic = mame_xml_dic.copy()

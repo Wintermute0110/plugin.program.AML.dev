@@ -445,18 +445,17 @@ def misc_add_file_cache(dir_str, verbose = True):
     if verbose:
         # log_debug('misc_add_file_cache() Scanning OP "{0}"'.format(dir_FN.getOriginalPath()))
         log_debug('misc_add_file_cache() Scanning  P "{}"'.format(dir_FN.getPath()))
-    # >> A recursive scanning function is needed. os.listdir() is not.
+    # A recursive scanning function is needed. os.listdir() is not. os.walk() is recursive
     # file_list = os.listdir(dir_FN.getPath())
-    # >> os.walk() is recursive
     file_list = []
     root_dir_str = dir_FN.getPath()
-    # >> For unicode errors in os.walk() see
-    # >> https://stackoverflow.com/questions/21772271/unicodedecodeerror-when-performing-os-walk
+    # For unicode errors in os.walk() see
+    # https://stackoverflow.com/questions/21772271/unicodedecodeerror-when-performing-os-walk
     for root, dirs, files in os.walk(str(root_dir_str)):
         # log_debug('----------')
         # log_debug('root = {0}'.format(root))
-        # log_debug('dirs = {0}'.format(unicode(dirs)))
-        # log_debug('files = {0}'.format(unicode(files)))
+        # log_debug('dirs = {0}'.format(str(dirs)))
+        # log_debug('files = {0}'.format(str(files)))
         # log_debug('\n')
         for f in files:
             my_file = os.path.join(root, f)
@@ -483,7 +482,7 @@ def misc_search_file_cache(dir_str, filename_noext, file_exts):
     current_cache_set = file_cache[dir_str]
     # if filename_noext == '005':
     #     log_debug('misc_search_file_cache() Searching in "{}"'.format(dir_str))
-    #     log_debug('misc_search_file_cache() current_cache_set "{}"'.format(unicode(current_cache_set)))
+    #     log_debug('misc_search_file_cache() current_cache_set "{}"'.format(str(current_cache_set)))
     for ext in file_exts:
         file_base = filename_noext + '.' + ext
         # log_debug('misc_search_file_cache() file_Base = "{}"'.format(file_base))
