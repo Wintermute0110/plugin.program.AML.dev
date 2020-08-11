@@ -288,6 +288,7 @@ def run_plugin(addon_argv):
     for i in range(len(addon_argv)): log_debug('addon_argv[{}] = "{}"'.format(i, addon_argv[i]))
     # Timestamp to see if this submodule is reinterpreted or not (interpreter uses a cached instance).
     log_debug('submodule global timestamp {}'.format(g_time_str))
+    log_debug('recursionlimit {}'.format(sys.getrecursionlimit()))
 
     # --- Playground and testing code ---
     # kodi_get_screensaver_mode()
@@ -2703,7 +2704,7 @@ def render_DAT_machine_info(catalog_name, category_name, machine_name):
         return
 
     # --- Show information window ---
-    display_text_window(window_title, info_text)
+    kodi_display_text_window_mono(window_title, info_text)
 
 #
 # Not used at the moment -> There are global display settings.
@@ -2896,7 +2897,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             t_str = ('History DAT for SL [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR] '
                 '(DB entry [COLOR=orange]{}[/COLOR] / [COLOR=orange]{}[/COLOR])')
             window_title = t_str.format(SL_name, SL_ROM, db_list, db_machine)
-        display_text_window(window_title, History_DAT_dic[db_list][db_machine])
+        kodi_display_text_window_mono(window_title, History_DAT_dic[db_list][db_machine])
 
     elif action == ACTION_VIEW_MAMEINFO:
         if machine_name not in Mameinfo_idx_dic['mame']:
@@ -2905,7 +2906,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_DB_PATH.getPath())
         t_str = 'MAMEINFO information for [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR]'
         window_title = t_str.format('mame', machine_name)
-        display_text_window(window_title, DAT_dic['mame'][machine_name])
+        kodi_display_text_window_mono(window_title, DAT_dic['mame'][machine_name])
 
     elif action == ACTION_VIEW_GAMEINIT:
         if machine_name not in Gameinit_idx_list:
@@ -2913,7 +2914,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             return
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_DB_PATH.getPath())
         window_title = 'Gameinit information for [COLOR=orange]{}[/COLOR]'.format(machine_name)
-        display_text_window(window_title, DAT_dic[machine_name])
+        kodi_display_text_window_mono(window_title, DAT_dic[machine_name])
 
     elif action == ACTION_VIEW_COMMAND:
         if machine_name not in Command_idx_list:
@@ -2921,7 +2922,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             return
         DAT_dic = fs_load_JSON_file_dic(g_PATHS.COMMAND_DB_PATH.getPath())
         window_title = 'Command information for [COLOR=orange]{}[/COLOR]'.format(machine_name)
-        display_text_window(window_title, DAT_dic[machine_name])
+        kodi_display_text_window_mono(window_title, DAT_dic[machine_name])
 
     # --- View Fanart ---
     elif action == ACTION_VIEW_FANART:
@@ -3229,14 +3230,14 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Make information string and display text window ---
         slist = []
         mame_info_MAME_print(slist, location, machine_name, machine, assets)
-        display_text_window(window_title, '\n'.join(slist))
+        kodi_display_text_window_mono(window_title, '\n'.join(slist))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_item_data']:
-            log_info('Writing file "{0}"'.format(g_PATHS.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath(), 'w') as file:
+            log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath()))
+            with open(g_PATHS.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
                 text_remove_color_tags_slist(slist)
-                file.write('\n'.join(slist).encode('utf-8'))
+                file.write('\n'.join(slist))
 
     # --- View Software List ROM Machine data ---
     elif action == ACTION_VIEW_SL_ROM_DATA:
@@ -3308,14 +3309,14 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # >> Build information string
         slist = []
         mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL_machine_list)
-        display_text_window(window_title, '\n'.join(slist))
+        kodi_display_text_window_mono(window_title, '\n'.join(slist))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_item_data']:
-            log_info('Writing file "{0}"'.format(g_PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath(), 'w') as file:
+            log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath()))
+            with open(g_PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
                 text_remove_color_tags_slist(slist)
-                file.write('\n'.join(slist).encode('utf-8'))
+                file.write('\n'.join(slist))
 
     # --- View MAME machine ROMs (ROMs database) ---
     elif action == ACTION_VIEW_MACHINE_ROMS:
@@ -3408,15 +3409,15 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             bios_table_str_list = text_render_table_str(bios_table_str)
             info_text.append('')
             info_text.extend(bios_table_str_list)
-        window_title = 'Machine {0} ROMs'.format(machine_name)
-        display_text_window(window_title, '\n'.join(info_text))
+        window_title = 'Machine {} ROMs'.format(machine_name)
+        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_ROM_DB_data']:
-            log_info('Writing file "{0}"'.format(g_PATHS.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath(), 'w') as file:
+            log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath()))
+            with open(g_PATHS.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
                 text_remove_color_tags_slist(info_text)
-                file.write('\n'.join(info_text).encode('utf-8'))
+                file.write('\n'.join(info_text))
 
     # --- View MAME machine ROMs (Audit ROM database) ---
     elif action == ACTION_VIEW_MACHINE_AUDIT_ROMS:
@@ -3432,7 +3433,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME ROM Audit'))
         audit_roms_dic = fs_load_JSON_file_dic(g_PATHS.ROM_AUDIT_DB_PATH.getPath())
-        pDialog.close()
+        pDialog.endProgress()
 
         # --- Grab data and settings ---
         rom_list = audit_roms_dic[machine_name]
@@ -3458,9 +3459,10 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Table header ---
         # Table cell padding: left, right
         # Table columns: Type - ROM name - Size - CRC/SHA1 - Merge - BIOS - Location
-        table_str = []
-        table_str.append(['right', 'left',     'right', 'left',     'left'])
-        table_str.append(['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location'])
+        table_str = [
+            ['right', 'left',     'right', 'left',     'left'],
+            ['Type',  'ROM name', 'Size',  'CRC/SHA1', 'Location'],
+        ]
 
         # --- Table rows ---
         for m_rom in rom_list:
@@ -3475,15 +3477,15 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
-        window_title = 'Machine {0} ROM audit'.format(machine_name)
-        display_text_window(window_title, '\n'.join(info_text))
+        window_title = 'Machine {} ROM audit'.format(machine_name)
+        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_Audit_DB_data']:
-            log_info('Writing file "{0}"'.format(g_PATHS.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath(), 'w') as file:
+            log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath()))
+            with open(g_PATHS.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
                 text_remove_color_tags_slist(info_text)
-                file.write('\n'.join(info_text).encode('utf-8'))
+                file.write('\n'.join(info_text))
 
     # --- View SL ROMs ---
     elif action == ACTION_VIEW_SL_ROM_ROMS:
@@ -3540,14 +3542,14 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Software List ROM List (ROMs DB)'
-        display_text_window(window_title, '\n'.join(info_text))
+        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_ROM_DB_data']:
-            log_info('Writing file "{0}"'.format(g_PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath(), 'w') as file:
+            log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath()))
+            with open(g_PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
                 text_remove_color_tags_slist(info_text)
-                file.write('\n'.join(info_text).encode('utf-8'))
+                file.write('\n'.join(info_text))
 
     # --- View SL ROM Audit ROMs ---
     elif action == ACTION_VIEW_SL_ROM_AUDIT_ROMS:
@@ -3561,11 +3563,11 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         rom_db_list = rom_audit_db[SL_ROM]
 
         info_text = []
-        info_text.append('[COLOR violet]SL_name[/COLOR] {0}'.format(SL_name))
-        info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}'.format(SL_ROM))
-        info_text.append('[COLOR violet]description[/COLOR] {0}'.format(rom['description']))
+        info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
+        info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
+        info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
         if rom['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(rom['cloneof']))
+            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(rom['cloneof']))
         info_text.append('')
 
         # table_str = [    ['left', 'left',         'left', 'left',     'left'] ]
@@ -3584,14 +3586,14 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Software List ROM List (Audit DB)'
-        display_text_window(window_title, '\n'.join(info_text))
+        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_Audit_DB_data']:
             log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath(), 'w') as file:
+            with open(g_PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
                 text_remove_color_tags_slist(info_text)
-                file.write('\n'.join(info_text).encode('utf-8'))
+                file.write('\n'.join(info_text))
 
     # --- View manual JSON INFO file of a MAME machine ---
     elif action == ACTION_VIEW_MANUAL_JSON:
@@ -3619,7 +3621,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         info_text = ''
         with open(info_FN.getPath(), 'r') as myfile:
             info_text = myfile.read()
-        display_text_window(window_title, info_text)
+        kodi_display_text_window_mono(window_title, info_text)
 
     # --- Audit ROMs of a single machine ---
     elif action == ACTION_AUDIT_MAME_MACHINE:
@@ -3685,7 +3687,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'Machine {} ROM audit'.format(machine_name)
-        display_text_window(window_title, '\n'.join(info_text))
+        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
 
     # --- Audit ROMs of SL item ---
     elif action == ACTION_AUDIT_SL_MACHINE:
@@ -3734,7 +3736,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
         window_title = 'SL {0} Software {1} ROM audit'.format(SL_name, SL_ROM)
-        display_text_window(window_title, '\n'.join(info_text))
+        kodi_display_text_window_mono(window_title, '\n'.join(info_text))
 
     else:
         t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
@@ -5033,49 +5035,49 @@ def command_context_setup_custom_filters():
     # --- View custom filter XML ---
     elif menu_item == 2:
         cf_XML_path_str = g_settings['filter_XML']
-        log_debug('cf_XML_path_str = "{0}"'.format(cf_XML_path_str))
+        log_debug('cf_XML_path_str = "{}"'.format(cf_XML_path_str))
         if not cf_XML_path_str:
             log_debug('Using default XML custom filter.')
             XML_FN = g_PATHS.CUSTOM_FILTER_PATH
         else:
             log_debug('Using user-defined in addon settings XML custom filter.')
             XML_FN = FileName(cf_XML_path_str)
-        log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        log_debug('command_context_setup_custom_filters() Reading XML OP "{}"'.format(XML_FN.getOriginalPath()))
         if not XML_FN.exists():
             kodi_dialog_OK('Custom filter XML file not found.')
             return
-        with open(XML_FN.getPath(), 'r') as myfile:
-            display_text_window('Custom filter XML', myfile.read().decode('utf-8'))
+        with open(XML_FN.getPath(), 'rt', encoding = 'utf-8') as myfile:
+            kodi_display_text_window_mono('Custom filter XML', myfile.read())
 
     # --- View filter histogram report ---
     elif menu_item == 3:
         XML_FN = g_PATHS.REPORT_CF_HISTOGRAMS_PATH
-        log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        log_debug('command_context_setup_custom_filters() Reading XML OP "{}"'.format(XML_FN.getOriginalPath()))
         if not XML_FN.exists():
             kodi_dialog_OK('Filter histogram report not found.')
             return
-        with open(XML_FN.getPath(), 'r') as myfile:
-            display_text_window('Filter histogram report', myfile.read().decode('utf-8'))
+        with open(XML_FN.getPath(), 'rt', encoding = 'utf-8') as myfile:
+            kodi_display_text_window_mono('Filter histogram report', myfile.read())
 
     # --- View filter XML syntax report ---
     elif menu_item == 4:
         XML_FN = g_PATHS.REPORT_CF_XML_SYNTAX_PATH
-        log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        log_debug('command_context_setup_custom_filters() Reading XML OP "{}"'.format(XML_FN.getOriginalPath()))
         if not XML_FN.exists():
             kodi_dialog_OK('Filter XML filter syntax report not found.')
             return
-        with open(XML_FN.getPath(), 'r') as myfile:
-            display_text_window('Custom filter XML syntax report', myfile.read().decode('utf-8'))
+        with open(XML_FN.getPath(), 'rt', encoding = 'utf-8') as myfile:
+            kodi_display_text_window_mono('Custom filter XML syntax report', myfile.read())
 
     # --- View filter report ---
     elif menu_item == 5:
         XML_FN = g_PATHS.REPORT_CF_DB_BUILD_PATH
-        log_debug('command_context_setup_custom_filters() Reading XML OP "{0}"'.format(XML_FN.getOriginalPath()))
+        log_debug('command_context_setup_custom_filters() Reading XML OP "{}"'.format(XML_FN.getOriginalPath()))
         if not XML_FN.exists():
             kodi_dialog_OK('Custom filter database report not found.')
             return
-        with open(XML_FN.getPath(), 'r') as myfile:
-            display_text_window('Custom filter XML syntax report', myfile.read().decode('utf-8'))
+        with open(XML_FN.getPath(), 'rt', encoding = 'utf-8') as myfile:
+            kodi_display_text_window_mono('Custom filter XML syntax report', myfile.read())
 
 def command_show_custom_filters():
     log_debug('command_show_custom_filters() Starting ...')
@@ -6612,7 +6614,7 @@ def command_exec_utility(which_utility):
             slist.append('{} MAME INI/DAT path not set'.format(WARN))
 
         # --- Display info to the user ---
-        kodi_display_text_window_mono('AML configuration check report', '\n'.join(slist))
+        kodi_kodi_display_text_window_mono_mono('AML configuration check report', '\n'.join(slist))
 
     # Check and update all favourite objects.
     # Check if Favourites can be found in current MAME main database. It may happen that
@@ -6674,7 +6676,7 @@ def command_exec_utility(which_utility):
 
         # Detect implicit ROM merging using the SHA1 hash and check for CRC32 collisions for
         # non-implicit merged ROMs.
-        pDialog = xbmcgui.DialogProgress()
+        pDialog = KodiProgressDialog()
         pDialog.startProgress('Checking for MAME CRC32 hash collisions...', len(db_dic['machine_roms']))
         crc_roms_dic = {}
         sha1_roms_dic = {}
@@ -6719,10 +6721,10 @@ def command_exec_utility(which_utility):
         slist.append('')
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
-        kodi_display_text_window_mono('AML MAME CRC32 hash collision report', '\n'.join(slist))
+        kodi_kodi_display_text_window_mono_mono('AML MAME CRC32 hash collision report', '\n'.join(slist))
         log_info('Writing "{}"'.format(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath()))
-        with open(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath(), 'w') as file:
-            file.write('\n'.join(slist).encode('utf-8'))
+        with open(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+            file.write('\n'.join(slist))
 
     elif which_utility == 'CHECK_SL_COLLISIONS':
         log_info('command_exec_utility() Initialising CHECK_SL_COLLISIONS ...')
@@ -6731,7 +6733,7 @@ def command_exec_utility(which_utility):
         SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
 
         # --- Process all SLs ---
-        d_text = 'Scanning Sofware Lists ROMs/CHDs ...'
+        d_text = 'Scanning Sofware Lists ROMs/CHDs...'
         pDialog = KodiProgressDialog()
         pDialog.startProgress(d_text, len(SL_catalog_dic))
         roms_sha1_dic = {}
@@ -6742,7 +6744,7 @@ def command_exec_utility(which_utility):
         table_str.append(['right',  'left',     'left', 'left', 'left'])
         table_str.append(['Status', 'ROM name', 'Size', 'CRC',  'SHA1'])
         for SL_name in sorted(SL_catalog_dic):
-            pDialog.updateProgressInc('{}\nSoftware List {} ...'.format(d_text, SL_name))
+            pDialog.updateProgressInc('{}\nSoftware List "{}"'.format(d_text, SL_name))
 
             # Load SL databases
             # SL_SETS_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
@@ -6807,7 +6809,7 @@ def command_exec_utility(which_utility):
         slist.append('')
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
-        kodi_display_text_window_mono('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
+        kodi_kodi_display_text_window_mono_mono('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
         log_info('Writing "{}"'.format(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
         with open(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
             file.write('\n'.join(slist))
@@ -6878,7 +6880,7 @@ def command_exec_utility(which_utility):
             window_title = 'MAME machines with biggest ROMs'
         else:
             window_title = 'MAME machines with smallest ROMs'
-        kodi_display_text_window_mono(window_title, '\n'.join(slist))
+        kodi_kodi_display_text_window_mono_mono(window_title, '\n'.join(slist))
 
     # Export MAME information in Billyc999 XML format to use with RCB.
     elif which_utility == 'EXPORT_MAME_INFO_BILLYC999_XML':
@@ -6963,7 +6965,7 @@ def command_exec_report(which_report):
         info_text = ''
         with open(g_PATHS.MAME_OUTPUT_PATH.getPath(), 'r') as myfile:
             info_text = myfile.read()
-        display_text_window('MAME last execution output', info_text)
+        kodi_kodi_display_text_window_mono_mono('MAME last execution output', info_text)
 
     # --- View database information and statistics stored in control dictionary ------------------
     elif which_report == 'VIEW_STATS_MAIN':
@@ -6973,7 +6975,7 @@ def command_exec_report(which_report):
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_main_print_slist(g_settings, info_text, control_dic, __addon_version__)
-        display_text_window('Database main statistics', '\n'.join(info_text))
+        kodi_kodi_display_text_window_mono_mono('Database main statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_SCANNER':
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
@@ -6982,7 +6984,7 @@ def command_exec_report(which_report):
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
-        display_text_window('Scanner statistics', '\n'.join(info_text))
+        kodi_kodi_display_text_window_mono_mono('Scanner statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_AUDIT':
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
@@ -6991,7 +6993,7 @@ def command_exec_report(which_report):
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_audit_print_slist(g_settings, info_text, control_dic, g_settings)
-        display_text_window('Database information and statistics', '\n'.join(info_text))
+        kodi_kodi_display_text_window_mono_mono('Database information and statistics', '\n'.join(info_text))
 
     # --- All statistics ---
     elif which_report == 'VIEW_STATS_ALL':
@@ -7005,7 +7007,7 @@ def command_exec_report(which_report):
         mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
         info_text.append('')
         mame_stats_audit_print_slist(g_settings, info_text, control_dic, g_settings)
-        display_text_window('Database full statistics', '\n'.join(info_text))
+        kodi_kodi_display_text_window_mono_mono('Database full statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_WRITE_FILE':
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
@@ -7023,21 +7025,21 @@ def command_exec_report(which_report):
         # text_remove_slist_colours(info_text)
 
         # --- Write file to disk and inform user ---
-        log_info('Writing AML statistics report ...')
+        log_info('Writing AML statistics report...')
         log_info('File "{}"'.format(g_PATHS.REPORT_STATS_PATH.getPath()))
-        with open(g_PATHS.REPORT_STATS_PATH.getPath(), 'w') as f:
+        with open(g_PATHS.REPORT_STATS_PATH.getPath(), 'wt', encoding = 'utf-8') as f:
             text_remove_color_tags_slist(info_text)
-            f.write('\n'.join(info_text).encode('utf-8'))
-        kodi_notify('Exported AML statistic')
+            f.write('\n'.join(info_text))
+        kodi_notify('Exported AML statistics')
 
     # --- MAME scanner reports -------------------------------------------------------------------
     elif which_report == 'VIEW_SCANNER_MAME_ARCH_FULL':
         if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.exists():
             kodi_dialog_OK('Full MAME machines archives scanner report not found. '
-                           'Please scan MAME ROMs and try again.')
+                'Please scan MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
-            display_text_window('Full MAME machines archives scanner report', myfile.read())
+            kodi_display_text_window_mono('Full MAME machines archives scanner report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_MAME_ARCH_HAVE':
         if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
@@ -7045,7 +7047,7 @@ def command_exec_report(which_report):
                            'Please scan MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
-            display_text_window('Have MAME machines archives scanner report', myfile.read())
+            kodi_display_text_window_mono('Have MAME machines archives scanner report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_MAME_ARCH_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.exists():
@@ -7053,7 +7055,7 @@ def command_exec_report(which_report):
                            'Please scan MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
-            display_text_window('Missing MAME machines archives scanner report', myfile.read())
+            kodi_display_text_window_mono('Missing MAME machines archives scanner report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_MAME_ROM_LIST_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.exists():
@@ -7061,7 +7063,7 @@ def command_exec_report(which_report):
                            'Please scan MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-            display_text_window('Missing MAME ROM ZIP list scanner report', myfile.read())
+            kodi_display_text_window_mono('Missing MAME ROM ZIP list scanner report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_MAME_SAM_LIST_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.exists():
@@ -7069,7 +7071,7 @@ def command_exec_report(which_report):
                            'Please scan MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-            display_text_window('Missing MAME Sample ZIP list scanner report', myfile.read())
+            kodi_display_text_window_mono('Missing MAME Sample ZIP list scanner report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_MAME_CHD_LIST_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.exists():
@@ -7077,7 +7079,7 @@ def command_exec_report(which_report):
                            'Please scan MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
-            display_text_window('Missing MAME CHD list scanner report', myfile.read())
+            kodi_display_text_window_mono('Missing MAME CHD list scanner report', myfile.read())
 
     # --- SL scanner reports ---------------------------------------------------------------------
     elif which_report == 'VIEW_SCANNER_SL_FULL':
@@ -7086,7 +7088,7 @@ def command_exec_report(which_report):
                            'Please scan SL ROMs and try again.')
             return
         with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
-            display_text_window('Full Software Lists item archives scanner report', myfile.read())
+            kodi_display_text_window_mono('Full Software Lists item archives scanner report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_SL_HAVE':
         if not g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
@@ -7094,7 +7096,7 @@ def command_exec_report(which_report):
                            'Please scan SL ROMs and try again.')
             return
         with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
-            display_text_window('Have Software Lists item archives scanner report', myfile.read())
+            kodi_display_text_window_mono('Have Software Lists item archives scanner report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_SL_MISS':
         if not g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.exists():
@@ -7102,7 +7104,7 @@ def command_exec_report(which_report):
                            'Please scan SL ROMs and try again.')
             return
         with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
-            display_text_window('Missing Software Lists item archives scanner report', myfile.read())
+            kodi_display_text_window_mono('Missing Software Lists item archives scanner report', myfile.read())
 
     # --- Asset scanner reports ------------------------------------------------------------------
     elif which_report == 'VIEW_SCANNER_MAME_ASSETS':
@@ -7111,7 +7113,7 @@ def command_exec_report(which_report):
                            'Please scan MAME assets and try again.')
             return
         with open(g_PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME asset report', myfile.read())
+            kodi_display_text_window_mono('MAME asset report', myfile.read())
 
     elif which_report == 'VIEW_SCANNER_SL_ASSETS':
             if not g_PATHS.REPORT_SL_ASSETS_PATH.exists():
@@ -7119,7 +7121,7 @@ def command_exec_report(which_report):
                                'Please scan Software List assets and try again.')
                 return
             with open(g_PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'r') as myfile:
-                display_text_window('Software Lists asset report', myfile.read())
+                kodi_display_text_window_mono('Software Lists asset report', myfile.read())
 
     # --- MAME audit reports ---------------------------------------------------------------------
     elif which_report == 'VIEW_AUDIT_MAME_FULL':
@@ -7128,7 +7130,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (Full)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (Full)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_MAME_GOOD':
         if not g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.exists():
@@ -7136,7 +7138,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (Good)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (Good)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_MAME_BAD':
         if not g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.exists():
@@ -7144,7 +7146,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (Errors)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (Errors)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_MAME_ROM_GOOD':
         if not g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.exists():
@@ -7152,7 +7154,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (ROMs Good)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (ROMs Good)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_MAME_ROM_BAD':
         if not g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.exists():
@@ -7160,7 +7162,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (ROM Errors)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (ROM Errors)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_MAME_SAM_GOOD':
         if not g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.exists():
@@ -7168,7 +7170,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (Samples Good)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (Samples Good)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_MAME_SAM_BAD':
         if not g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.exists():
@@ -7176,7 +7178,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (Sample Errors)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (Sample Errors)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_MAME_CHD_GOOD':
         if not g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.exists():
@@ -7184,7 +7186,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (CHDs Good)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (CHDs Good)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_MAME_CHD_BAD':
         if not g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.exists():
@@ -7192,7 +7194,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (CHD Errors)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (CHD Errors)', myfile.read())
 
     # --- SL audit reports -----------------------------------------------------------------------
     elif which_report == 'VIEW_AUDIT_SL_FULL':
@@ -7201,7 +7203,7 @@ def command_exec_report(which_report):
                            'Please audit your SL ROMs and try again.')
             return
         with open(g_PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
-            display_text_window('SL audit report (Full)', myfile.read())
+            kodi_display_text_window_mono('SL audit report (Full)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_SL_GOOD':
         if not g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.exists():
@@ -7209,7 +7211,7 @@ def command_exec_report(which_report):
                            'Please audit your SL ROMs and try again.')
             return
         with open(g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
-            display_text_window('SL audit report (Good)', myfile.read())
+            kodi_display_text_window_mono('SL audit report (Good)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_SL_BAD':
         if not g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.exists():
@@ -7217,7 +7219,7 @@ def command_exec_report(which_report):
                            'Please audit your SL ROMs and try again.')
             return
         with open(g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
-            display_text_window('SL audit report (Errors)', myfile.read())
+            kodi_display_text_window_mono('SL audit report (Errors)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_SL_ROM_GOOD':
         if not g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.exists():
@@ -7225,7 +7227,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (ROM Good)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (ROM Good)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_SL_ROM_BAD':
         if not g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.exists():
@@ -7233,7 +7235,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (ROM Errors)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (ROM Errors)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_SL_CHD_GOOD':
         if not g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.exists():
@@ -7241,7 +7243,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (CHD Good)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (CHD Good)', myfile.read())
 
     elif which_report == 'VIEW_AUDIT_SL_CHD_BAD':
         if not g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.exists():
@@ -7249,7 +7251,7 @@ def command_exec_report(which_report):
                            'Please audit your MAME ROMs and try again.')
             return
         with open(g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'r') as myfile:
-            display_text_window('MAME audit report (CHD Errors)', myfile.read())
+            kodi_display_text_window_mono('MAME audit report (CHD Errors)', myfile.read())
 
     # --- Error ----------------------------------------------------------------------------------
     else:

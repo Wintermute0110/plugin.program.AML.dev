@@ -195,11 +195,12 @@ class SP_end_token:
 # -------------------------------------------------------------------------------------------------
 SP_token_pat = re.compile("\s*(?:(and|or|not|has|lacks)|(\"[ \.\w_\-\&\/]+\")|([\.\w_\-\&]+))")
 
-def SP_tokenize(program):
+# SP_program, the program Unicode string, is a global variable.
+def SP_tokenize():
     # \s* -> Matches any number of blanks [ \t\n\r\f\v].
     # (?:...) -> A non-capturing version of regular parentheses.
     # \w -> Matches [a-zA-Z0-9_]
-    for operator, q_string, string in SP_token_pat.findall(program):
+    for operator, q_string, string in SP_token_pat.findall(SP_program):
         if string:
             yield SP_literal_token(string)
         elif q_string:
@@ -217,7 +218,7 @@ def SP_tokenize(program):
         elif operator == "lacks":
             yield SP_operator_lacks_token()
         else:
-            raise SyntaxError("Unknown operator: '{0}'".format(operator))
+            raise SyntaxError("Unknown operator: '{}'".format(operator))
     yield SP_end_token()
 
 # -------------------------------------------------------------------------------------------------
@@ -227,36 +228,36 @@ def SP_expression(rbp = 0):
     global SP_token
 
     t = SP_token
-    SP_token = SP_next()
+    SP_token = next(SP_tokenize())
     left = t.nud()
     while rbp < SP_token.lbp:
         t = SP_token
-        SP_token = SP_next()
+        SP_token = next(SP_tokenize())
         left = t.led(left)
     return left
 
 def SP_parse_exec(program, search_string):
-    global SP_token, SP_next, SP_parser_search_string
+    global SP_token, SP_program, SP_parser_search_string
 
     if debug_SP_parse_exec:
         log_debug('SP_parse_exec() Initialising program execution')
-        log_debug('SP_parse_exec() Search string "{0}"'.format(search_string))
-        log_debug('SP_parse_exec() Program       "{0}"'.format(program))
+        log_debug('SP_parse_exec() Search string "{}"'.format(search_string))
+        log_debug('SP_parse_exec() Program       "{}"'.format(program))
+    SP_program = program
     SP_parser_search_string = search_string
-    SP_next = SP_tokenize(program).next
-    SP_token = SP_next()
+    SP_token = next(SP_tokenize())
 
     # --- Old function parse_exec() ---
     rbp = 0
     t = SP_token
-    SP_token = SP_next()
+    SP_token = next(SP_tokenize())
     left = t.nud()
     while rbp < SP_token.lbp:
         t = SP_token
-        SP_token = SP_next()
+        SP_token = next(SP_tokenize())
         left = t.led(left)
     if debug_SP_parse_exec:
-        log_debug('SP_parse_exec() Init exec program in token {0}'.format(left))
+        log_debug('SP_parse_exec() Init exec program in token {}'.format(left))
 
     return left.exec_token()
 
@@ -1347,7 +1348,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
 
     # --- Write statistics report ---
     log_info('Writing report "{}"'.format(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath()))
-    with open(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath(), 'w') as file:
+    with open(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
         rslist = [
             '*** Advanced MAME Launcher MAME histogram report ***',
             '',
@@ -1380,7 +1381,7 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
         rslist.extend(text_render_table_str(table_str))
         rslist.append('')
 
-        file.write('\n'.join(rslist).encode('utf-8'))
+        file.write('\n'.join(rslist))
 
     sets_dic = {
         'drivers_set' : drivers_set,
@@ -1396,6 +1397,9 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
 #
 def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic, sets_dic):
     filter_list = []
+    # Global variables required by parsers.
+    global SP_program
+    # Local variables.
     options_dic = {
         # No errors by default until an error is found.
         'XML_errors' : False,
@@ -1435,7 +1439,8 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         # Check 2) Drivers in <Driver> exist.
         # <Driver> uses the LSP parser.
         keyword_list = []
-        for token in SP_tokenize(filter_dic['driver']):
+        SP_program = filter_dic['driver']
+        for token in SP_tokenize():
             if isinstance(token, SP_literal_token):
                 keyword_list.append(token.value)
         for dname in keyword_list:
@@ -1445,7 +1450,8 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         # Check 3) Genres in <Genre> exist.
         # <Genre> uses the LSP parser.
         keyword_list = []
-        for token in SP_tokenize(filter_dic['genre']):
+        SP_program = filter_dic['genre']
+        for token in SP_tokenize():
             if isinstance(token, SP_literal_token):
                 keyword_list.append(token.value)
         for dname in keyword_list:
@@ -1455,7 +1461,8 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         # Check 4) Controls in <Controls> exist.
         # <Controls> uses the LSP parser.
         keyword_list = []
-        for token in SP_tokenize(filter_dic['controls']):
+        SP_program = filter_dic['controls']
+        for token in SP_tokenize():
             if isinstance(token, SP_literal_token):
                 keyword_list.append(token.value)
         for dname in keyword_list:
@@ -1465,7 +1472,8 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         # Check 5) Plugabble devices in <PluggableDevices> exist.
         # <PluggableDevices> uses the LSP parser.
         keyword_list = []
-        for token in SP_tokenize(filter_dic['pluggabledevices']):
+        SP_program = filter_dic['pluggabledevices']
+        for token in SP_tokenize():
             if isinstance(token, SP_literal_token):
                 keyword_list.append(token.value)
         for dname in keyword_list:
@@ -1501,7 +1509,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
 
     # --- Write MAME scanner reports ---
     log_info('Writing report "{}"'.format(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath()))
-    with open(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath(), 'w') as file:
+    with open(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
             'There are {} custom filters defined.'.format(len(filter_list)),
@@ -1509,7 +1517,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
             '',
         ]
         report_slist.extend(r_full)
-        file.write('\n'.join(report_slist).encode('utf-8'))
+        file.write('\n'.join(report_slist))
 
     return (filter_list, options_dic)
 
@@ -1622,11 +1630,11 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
 
     # --- Write MAME scanner reports ---
     log_info('Writing report "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()))
-    with open(PATHS.REPORT_CF_DB_BUILD_PATH.getPath(), 'w') as file:
+    with open(PATHS.REPORT_CF_DB_BUILD_PATH.getPath(), 'wt') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
             'File "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()),
             '',
         ]
         report_slist.extend(r_full)
-        file.write('\n'.join(report_slist).encode('utf-8'))
+        file.write('\n'.join(report_slist))

@@ -1053,22 +1053,22 @@ def fs_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
 # -------------------------------------------------------------------------------------------------
 # Generic file writer
 # str_list is a list of Unicode strings that will be joined and written to a file encoded in UTF-8.
+# Joining command is '\n'.join()
 # -------------------------------------------------------------------------------------------------
 def fs_write_str_list_to_file(str_list, export_FN):
     log_verb('fs_write_str_list_to_file() Exporting OP "{}"'.format(export_FN.getOriginalPath()))
     log_verb('fs_write_str_list_to_file() Exporting  P "{}"'.format(export_FN.getPath()))
     try:
-        full_string = ''.join(str_list).encode('utf-8')
-        file_obj = open(export_FN.getPath(), 'w')
-        file_obj.write(full_string)
+        file_obj = open(export_FN.getPath(), 'wt', encoding = 'utf-8')
+        file_obj.write('\n'.join(str_list))
         file_obj.close()
     except OSError:
         log_error('(OSError) exception in fs_write_str_list_to_file()')
-        log_error('Cannot write {0} file'.format(export_FN.getBase()))
+        log_error('Cannot write {} file'.format(export_FN.getBase()))
         raise AEL_Error('(OSError) Cannot write {} file'.format(export_FN.getBase()))
     except IOError:
         log_error('(IOError) exception in fs_write_str_list_to_file()')
-        log_error('Cannot write {0} file'.format(export_FN.getBase()))
+        log_error('Cannot write {} file'.format(export_FN.getBase()))
         raise AEL_Error('(IOError) Cannot write {} file'.format(export_FN.getBase()))
 
 # -------------------------------------------------------------------------------------------------
@@ -1437,16 +1437,14 @@ def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machine
 
     # --- Clean 'cache' directory JSON ROM files ---
     log_info('Cleaning dir "{}"'.format(PATHS.CACHE_DIR.getPath()))
-    pDialog = xbmcgui.DialogProgress()
+    pDialog = KodiProgressDialog()
     pDialog.startProgress('Listing render cache JSON files...')
     file_list = os.listdir(PATHS.CACHE_DIR.getPath())
     log_info('Found {} files'.format(len(file_list)))
-    processed_items = 0
     deleted_items = 0
     pDialog.resetProgress('Cleaning render cache JSON files...', len(file_list))
     for file in file_list:
-        pDialog.updateProgress(processed_items)
-        processed_items += 1
+        pDialog.updateProgressInc()
         if not file.endswith('_render.json'): continue
         full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
         # log_debug('UNLINK "{0}"'.format(full_path))
@@ -1462,11 +1460,10 @@ def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machine
     for catalog_name in sorted(cache_index_dic):
         catalog_index_dic = cache_index_dic[catalog_name]
         catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
-        item_count = 0
         diag_t = 'Building MAME {} render cache ({} of {})...'.format(catalog_name, catalog_count, num_catalogs)
         pDialog.resetProgress(diag_t, len(catalog_index_dic))
         for catalog_key in catalog_index_dic:
-            pDialog.updateProgress(item_count)
+            pDialog.updateProgressInc()
             hash_str = catalog_index_dic[catalog_key]['hash']
             # log_verb('fs_build_ROM_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
             # log_verb('fs_build_ROM_cache() hash {0}'.format(hash_str))
@@ -1477,7 +1474,6 @@ def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machine
                 m_render_all_dic[machine_name] = machines_render[machine_name]
             ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_render.json')
             fs_write_JSON_file(ROMs_all_FN.getPath(), m_render_all_dic, verbose = False)
-            item_count += 1
         catalog_count += 1
     pDialog.endProgress()
 

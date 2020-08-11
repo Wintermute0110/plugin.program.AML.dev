@@ -636,10 +636,10 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
 # The Ordered dictionary is to keep the order of the tags in the XML
 #
 def graphs_load_MAME_Fanart_template(Template_FN):
-    # --- Load XML file ---
-    layout = OrderedDict()
+    # Load XML file.
+    layout = collections.OrderedDict()
     if not os.path.isfile(Template_FN.getPath()): return None
-    log_debug('graphs_load_MAME_Fanart_template() Loading XML "{0}"'.format(Template_FN.getPath()))
+    log_debug('graphs_load_MAME_Fanart_template() Loading XML "{}"'.format(Template_FN.getPath()))
     try:
         xml_tree = ET.parse(Template_FN.getPath())
     except IOError as E:
@@ -652,7 +652,7 @@ def graphs_load_MAME_Fanart_template(Template_FN):
     text_list = ['MachineName']
     test_tag_list = ['left', 'top', 'fontsize']
     for root_element in xml_root:
-        # log_debug('Root child {0}'.format(root_element.tag))
+        # log_debug('Root child {}'.format(root_element.tag))
         if root_element.tag in art_list:
             art_dic = {key : 0 for key in art_tag_list}
             for art_child in root_element:
@@ -732,7 +732,7 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
     pDialog.startProgress(diag_t, total_machines)
     for m_name in sorted(data_dic['assets_dic']):
         build_time_start = time.time()
-        pDialog.update(processed_machines, '{}\nETA {} machine {}'.format(diag_t, ETA_str, m_name))
+        pDialog.updateProgress(processed_machines, '{}\nETA {} machine {}'.format(diag_t, ETA_str, m_name))
         if pDialog.isCanceled():
             pDialog_canceled = True
             # kodi_dialog_OK('Fanart generation was cancelled by the user.')
@@ -785,10 +785,10 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
 # The Ordered dictionary is to keep the order of the tags in the XML
 #
 def graphs_load_SL_Fanart_template(Template_FN):
-    # --- Load XML file ---
-    layout = OrderedDict()
+    # Load XML file.
+    layout = collections.OrderedDict()
     if not os.path.isfile(Template_FN.getPath()): return None
-    log_debug('mame_load_SL_Fanart_template() Loading XML "{0}"'.format(Template_FN.getPath()))
+    log_debug('mame_load_SL_Fanart_template() Loading XML "{}"'.format(Template_FN.getPath()))
     try:
         xml_tree = ET.parse(Template_FN.getPath())
     except IOError as E:
@@ -801,7 +801,7 @@ def graphs_load_SL_Fanart_template(Template_FN):
     text_list = ['SLName', 'ItemName']
     test_tag_list = ['left', 'top', 'fontsize']
     for root_element in xml_root:
-        # log_debug('Root child {0}'.format(root_element.tag))
+        # log_debug('Root child {}'.format(root_element.tag))
         if root_element.tag in art_list:
             # Default size tags to 0
             art_dic = {key : 0 for key in art_tag_list}
@@ -867,7 +867,7 @@ def graphs_build_SL_Fanart_all(PATHS, settings, data_dic):
 
     # Traverse all SL and on each SL every item
     pDialog_canceled = False
-    pDialog = xbmcgui.DialogProgress()
+    pDialog = KodiProgressDialog()
     SL_number, SL_count = len(data_dic['SL_index']), 1
     total_SL_items, total_processed_SL_items = control_dic['stats_SL_software_items'], 0
     ETA_str = ETA_reset(total_SL_items)
@@ -989,7 +989,7 @@ def graphs_build_MAME_3DBox_all(PATHS, settings, data_dic):
         build_time_start = time.time()
         d_str = '{}\nETA {} machine {}'.format(d_text, ETA_str, m_name)
         pDialog.updateProgress(processed_machines, d_str)
-        if pDialog.iscanceled():
+        if pDialog.isCanceled():
             pDialog_canceled = True
             break
         Image_FN = data_dic['Boxes_path_FN'].pjoin('{}.png'.format(m_name))
@@ -1097,7 +1097,7 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
             build_time_start = time.time()
             d_str = d_text + '\n' + 'ETA {} SL item {}'.format(ETA_str, m_name)
             pDialog.updateProgress(processed_SL_items, d_str)
-            if pDialog.iscanceled():
+            if pDialog.isCanceled():
                 pDialog_canceled = True
                 break
             Image_FN = Boxes_path_FN.pjoin('{}.png'.format(m_name))

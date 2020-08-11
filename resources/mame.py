@@ -2332,7 +2332,9 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading SL Most Played JSON DB...')
     fav_SL_roms = fs_load_JSON_file_dic(PATHS.FAV_SL_ROMS_PATH.getPath())
-    num_iteration = 0
+    if len(fav_SL_roms) < 1:
+        kodi_notify_warn('SL Most Played empty')
+        return
     pDialog.resetProgress('Checking SL Favourites', len(fav_SL_roms))
     for fav_SL_key in sorted(fav_SL_roms):
         if 'ROM_name' in fav_SL_roms[fav_SL_key]:
@@ -2343,11 +2345,7 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
             raise TypeError('Cannot find SL ROM name')
         fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
         log_debug('Checking SL Favourite "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
-
-        # Update progress dialog.
-        d_text = 'Checking SL Favourites (item "{}")...'.format(fav_ROM_name)
-        pDialog.updateProgress(num_iteration, d_text)
-        num_iteration += 1
+        pDialog.updateProgressInc('Checking SL Favourites...\nItem "{}"'.format(fav_ROM_name))
 
         # --- Load SL ROMs DB and assets ---
         file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
@@ -2378,10 +2376,12 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
     pDialog.endProgress()
 
 def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
-    pDialog = xbmcgui.DialogProgress()
+    pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading SL Most Played JSON DB...')
     most_played_roms_dic = fs_load_JSON_file_dic(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
-    num_iteration = 0
+    if len(most_played_roms_dic) < 1:
+        kodi_notify_warn('SL Most Played empty')
+        return
     pDialog.resetProgress('Checking SL Most Played', len(most_played_roms_dic))
     for fav_SL_key in sorted(most_played_roms_dic):
         if 'ROM_name' in most_played_roms_dic[fav_SL_key]:
@@ -2398,9 +2398,7 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
         log_debug('Checking SL Most Played "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
 
         # Update progress dialog.
-        d_text = 'Checking SL Most Played (ROM "{}")...'.format(fav_ROM_name)
-        pDialog.updateProgress(num_iteration, d_text)
-        num_iteration += 1
+        pDialog.updateProgressInc('Checking SL Most Played...\nItem "{}"'.format(fav_ROM_name))
 
         # --- Load SL ROMs DB and assets ---
         file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
@@ -2432,7 +2430,9 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Loading SL Recently Played JSON DB...')
     recent_roms_list = fs_load_JSON_file_list(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
-    num_iteration = 0
+    if len(recent_roms_list) < 1:
+        kodi_notify_warn('SL Recently Played empty')
+        return
     pDialog.resetProgress('Checking SL Recently Played', len(recent_roms_list))
     for i, recent_rom in enumerate(recent_roms_list):
         if 'ROM_name' in recent_rom:
@@ -2443,12 +2443,7 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
             raise TypeError('Cannot find SL ROM name')
         fav_SL_name = recent_rom['SL_name']
         log_debug('Checking SL Recently Played "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
-
-        # Update progress dialog.
-        update_number = (num_iteration * 100) // num_SL_favs
-        d_text = 'Checking SL Recently Played (ROM "{}")...'.format(fav_ROM_name)
-        pDialog.updateProgress(num_iteration, d_text)
-        num_iteration += 1
+        pDialog.updateProgressInc('Checking SL Recently Played...\nItem "{}"'.format(fav_ROM_name))
 
         # --- Load SL ROMs DB and assets ---
         file_name =  SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json'
@@ -7207,7 +7202,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     reports_processed = 0
     pDialog.startProgress('Saving scanner reports...', reports_total)
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'w', encoding = 'utf-8') as file:
+    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
             'This report shows all the scanned MAME machines.',
@@ -7223,7 +7218,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     pDialog.updateProgress(reports_processed)
 
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'w', encoding = 'utf-8') as file:
+    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
             'This reports shows MAME machines that have all the required',
@@ -7243,7 +7238,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     pDialog.updateProgress(reports_processed)
 
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
+    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
         report_slist = [
             '*** Advanced MAME Launcher MAME machines scanner report ***',
             'This reports shows MAME machines that miss all or some of the required',
@@ -7290,7 +7285,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         pDialog.updateProgress(processed_machines)
     pDialog.endProgress()
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
+    with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
         if scan_ROM_ZIP_files_missing == 0:
             r_list.append('Congratulations!!! You have no missing ROM ZIP files.')
         file.write('\n'.join(r_list))
@@ -7324,7 +7319,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         pDialog.updateProgress(processed_machines)
     pDialog.endProgress()
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
+    with open(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
         if scan_Samples_ZIP_missing == 0:
             r_list.append('Congratulations!!! You have no missing Sample ZIP files.')
         file.write('\n'.join(r_list))
@@ -7358,7 +7353,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         pDialog.updateProgress(processed_machines)
     pDialog.endProgress()
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
+    with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
         if scan_CHD_files_missing == 0:
             r_list.append('Congratulations!!! You have no missing CHD files.')
         file.write('\n'.join(r_list))
@@ -7811,7 +7806,7 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
     table_str_list = text_render_table_str(table_str)
     report_slist.extend(table_str_list)
     log_info('Opening MAME asset report file "{}"'.format(PATHS.REPORT_MAME_ASSETS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
+    with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
         file.write('\n'.join(report_slist))
     pDialog.endProgress()
 
@@ -8032,7 +8027,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     report_slist.extend(table_str_list)
     log_info('Opening SL asset report file "{}"'.format(PATHS.REPORT_SL_ASSETS_PATH.getPath()))
     pDialog.startProgress('Creating SL asset report...')
-    with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'w', encoding = 'utf-8') as file:
+    with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
         file.write('\n'.join(report_slist))
     pDialog.endProgress()
 

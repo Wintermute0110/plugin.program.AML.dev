@@ -124,12 +124,13 @@ def kodi_dialog_OK(text, title = 'Advanced MAME Launcher'):
 def kodi_dialog_yesno(text, title = 'Advanced MAME Launcher'):
     return xbmcgui.Dialog().yesno(title, text)
 
+# Returns a writable directory.
 # type 3 ShowAndGetWriteableDirectory
 # shares  'files'  list file sources (added through filemanager)
 # shares  'local'  list local drives
 # shares  ''       list local drives and network shares
 def kodi_dialog_get_wdirectory(dialog_heading):
-    return xbmcgui.Dialog().browse(3, dialog_heading, '').decode('utf-8')
+    return xbmcgui.Dialog().browse(3, dialog_heading, '')
 
 # Displays a small box in the bottom right corner
 def kodi_notify(text, title = 'Advanced MAME Launcher', time = 5000):
@@ -172,7 +173,12 @@ class KodiProgressDialog(object):
         if self.dialog_active: raise TypeError
         self.step_total = step_total
         self.step_counter = step_counter
-        self.progress = math.floor((self.step_counter * 100) / self.step_total)
+        try:
+            self.progress = math.floor((self.step_counter * 100) / self.step_total)
+        except ZeroDivisionError:
+            # Fix case when step_total is 0.
+            self.step_total = 0.001
+            self.progress = math.floor((self.step_counter * 100) / self.step_total)
         self.dialog_active = True
         self.message = message
         self.progressDialog.create(self.heading, self.message)
@@ -183,7 +189,12 @@ class KodiProgressDialog(object):
         if not self.dialog_active: raise TypeError
         self.step_total = step_total
         self.step_counter = step_counter
-        self.progress = math.floor((self.step_counter * 100) / self.step_total)
+        try:
+            self.progress = math.floor((self.step_counter * 100) / self.step_total)
+        except ZeroDivisionError:
+            # Fix case when step_total is 0.
+            self.step_total = 0.001
+            self.progress = math.floor((self.step_counter * 100) / self.step_total)
         self.message = message
         self.progressDialog.update(self.progress, self.message)
 
