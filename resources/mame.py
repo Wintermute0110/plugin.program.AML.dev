@@ -2553,13 +2553,11 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
 # ---------------------------------------------------------------------------------------------
 def mame_build_SL_plots(PATHS, settings, control_dic,
     SL_index_dic, SL_machines_dic, History_idx_dic):
-    d_fline = 'Generating SL item plots ...'
+    d_text = 'Generating SL item plots ...'
     pDialog = KodiProgressDialog()
     pDialog.startProgress(d_text, len(SL_index_dic))
-    processed_files = 0
     for SL_name in sorted(SL_index_dic):
-        # Update progress
-        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(d_fline, SL_name))
+        pDialog.updateProgressInc('{}\nSoftware List {}'.format(d_text, SL_name))
 
         # Open database
         SL_DB_prefix = SL_index_dic[SL_name]['rom_DB_noext']
@@ -2594,10 +2592,7 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
             Flag_str = ', '.join(Flag_list)
             # SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str, Machines_str])
             SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str])
-        # Write SL ROMs JSON
         fs_write_JSON_file(SL_ROMs_FN.getPath(), SL_roms, verbose = False)
-        processed_files += 1
-    update_number = (processed_files*100) // total_files
     pDialog.endProgress()
 
     # --- Timestamp ---
@@ -3089,19 +3084,16 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     # Go machine by machine and audit ZIPs and CHDs. Adds new column 'status' to each ROM.
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Auditing MAME ROMs and CHDs...', len(machines_render))
-    processed_machines = 0
     machine_audit_dic = {}
     for m_name in sorted(machines_render):
-        # Machine has ROMs
+        pDialog.updateProgressInc()
+        if pDialog.isCanceled(): break
+        # Only audit machine if it has ROMs. However, add all machines to machine_audit_dic.
+        # audit_roms_dic[m_name] is mutable and edited inside mame_audit_MAME_machine()
         audit_dic = fs_new_audit_dic()
         if m_name in audit_roms_dic:
-            # roms_dic is mutable and edited inside the function
-            rom_list = audit_roms_dic[m_name]
-            mame_audit_MAME_machine(settings, rom_list, audit_dic)
+            mame_audit_MAME_machine(settings, audit_roms_dic[m_name], audit_dic)
         machine_audit_dic[m_name] = audit_dic
-        processed_machines += 1
-        pDialog.updateProgress(processed_machines)
-        if pDialog.isCanceled(): break
     pDialog.endProgress()
 
     # Audit statistics.
@@ -3192,7 +3184,7 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
         'This report shows machines with bad/missing CHDs',
     ]
     h_list = [
-        'There are {} machines in total'.format(total_machines),
+        'There are {} machines in total'.format(len(machines_render)),
         'Of those, {} are runnable machines'.format(control_dic['stats_audit_MAME_machines_runnable']),
     ]
     report_full_list.extend(h_list)
@@ -3239,20 +3231,18 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
 
     # Generate report.
     pDialog.startProgress('Generating audit reports...', len(machines_render))
-    processed_machines = 0
     for m_name in sorted(machines_render):
-        pDialog.update((processed_machines * 100) // total_machines)
-        processed_machines += 1
+        pDialog.updateProgressInc()
 
         # Skip ROMless and/or CHDless machines from reports, except the full report
         description = machines_render[m_name]['description']
         cloneof = machines_render[m_name]['cloneof']
         if m_name not in audit_roms_dic:
             head_list = []
-            head_list.append('Machine {0} "{1}"'.format(m_name, description))
+            head_list.append('Machine {} "{}"'.format(m_name, description))
             if cloneof:
                 clone_desc = machines_render[cloneof]['description']
-                head_list.append('Cloneof {0} "{1}"'.format(cloneof, clone_desc))
+                head_list.append('Cloneof {} "{}"'.format(cloneof, clone_desc))
             head_list.append('This machine has no ROMs and/or CHDs')
             report_full_list.extend(head_list)
             continue
@@ -3262,29 +3252,27 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
         # >> Check if audit was canceled.
         # log_debug(str(rom_list))
         if 'status' not in rom_list[0]:
-            report_list.append('Audit was canceled at machine {0}'.format(m_name))
+            report_list.append('Audit was canceled at machine {}'.format(m_name))
             break
 
         # >> Machine header (in all reports).
         head_list = []
-        head_list.append('Machine {0} "{1}"'.format(m_name, description))
+        head_list.append('Machine {} "{}"'.format(m_name, description))
         if cloneof:
             clone_desc = machines_render[cloneof]['description']
-            head_list.append('Cloneof {0} "{1}"'.format(cloneof, clone_desc))
+            head_list.append('Cloneof {} "{}"'.format(cloneof, clone_desc))
 
-        # >> ROM/CHD report.
+        # ROM/CHD report.
         table_str = [ ['right', 'left', 'right', 'left', 'left', 'left'] ]
         for m_rom in rom_list:
             if m_rom['type'] == ROM_TYPE_DISK:
                 table_row = [m_rom['type'], m_rom['name'], '', m_rom['sha1'][0:8],
-                             m_rom['location'], m_rom['status']]
+                    m_rom['location'], m_rom['status']]
             elif m_rom['type'] == ROM_TYPE_SAMPLE:
-                table_row = [m_rom['type'], m_rom['name'], '', '',
-                             m_rom['location'], m_rom['status']]
+                table_row = [m_rom['type'], m_rom['name'], '', '', m_rom['location'], m_rom['status']]
             else:
-                table_row = [m_rom['type'], m_rom['name'],
-                             str(m_rom['size']), m_rom['crc'],
-                             m_rom['location'], m_rom['status']]
+                table_row = [m_rom['type'], m_rom['name'], str(m_rom['size']), m_rom['crc'],
+                    m_rom['location'], m_rom['status']]
             table_str.append(table_row)
         local_str_list = text_render_table_str_NO_HEADER(table_str)
         local_str_list.append('')
@@ -3454,15 +3442,13 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     audit_SL_items_without_CHD       = 0
 
     # Iterate all SL databases and audit ROMs.
-    pDialog = KodiProgressDialog()
     d_text = 'Auditing Sofware Lists ROMs and CHDs...'
+    pDialog = KodiProgressDialog()
     pDialog.startProgress(d_text, len(SL_catalog_dic))
-    processed_files = 0
     SL_ROM_path_FN = FileName(settings['SL_rom_path'])
     SL_CHD_path_FN = FileName(settings['SL_chd_path'])
     for SL_name in sorted(SL_catalog_dic):
-        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(d_text, SL_name))
-        processed_files += 1
+        pDialog.updateProgressInc('{}\nSoftware List {}'.format(d_text, SL_name))
 
         SL_dic = SL_catalog_dic[SL_name]
         SL_DB_FN = PATHS.SL_DB_DIR.pjoin(SL_dic['rom_DB_noext'] + '_items.json')
@@ -4279,7 +4265,6 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             #     num_iteration, processed_machines))
             # log_debug('processed_machines   = {}'.format(processed_machines))
             # log_debug('total_machines = {}'.format(total_machines))
-            # log_debug('Update number  = {}'.format(update_number))
         # Stop after STOP_AFTER_MACHINES machines have been processed for debug.
         if processed_machines >= STOP_AFTER_MACHINES: break
     pDialog.endProgress()

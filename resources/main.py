@@ -6614,7 +6614,7 @@ def command_exec_utility(which_utility):
             slist.append('{} MAME INI/DAT path not set'.format(WARN))
 
         # --- Display info to the user ---
-        kodi_kodi_display_text_window_mono_mono('AML configuration check report', '\n'.join(slist))
+        kodi_display_text_window_mono('AML configuration check report', '\n'.join(slist))
 
     # Check and update all favourite objects.
     # Check if Favourites can be found in current MAME main database. It may happen that
@@ -6721,7 +6721,7 @@ def command_exec_utility(which_utility):
         slist.append('')
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
-        kodi_kodi_display_text_window_mono_mono('AML MAME CRC32 hash collision report', '\n'.join(slist))
+        kodi_display_text_window_mono('AML MAME CRC32 hash collision report', '\n'.join(slist))
         log_info('Writing "{}"'.format(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath()))
         with open(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
             file.write('\n'.join(slist))
@@ -6809,7 +6809,7 @@ def command_exec_utility(which_utility):
         slist.append('')
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
-        kodi_kodi_display_text_window_mono_mono('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
+        kodi_display_text_window_mono('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
         log_info('Writing "{}"'.format(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
         with open(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
             file.write('\n'.join(slist))
@@ -6880,7 +6880,7 @@ def command_exec_utility(which_utility):
             window_title = 'MAME machines with biggest ROMs'
         else:
             window_title = 'MAME machines with smallest ROMs'
-        kodi_kodi_display_text_window_mono_mono(window_title, '\n'.join(slist))
+        kodi_display_text_window_mono(window_title, '\n'.join(slist))
 
     # Export MAME information in Billyc999 XML format to use with RCB.
     elif which_utility == 'EXPORT_MAME_INFO_BILLYC999_XML':
@@ -6965,7 +6965,7 @@ def command_exec_report(which_report):
         info_text = ''
         with open(g_PATHS.MAME_OUTPUT_PATH.getPath(), 'r') as myfile:
             info_text = myfile.read()
-        kodi_kodi_display_text_window_mono_mono('MAME last execution output', info_text)
+        kodi_display_text_window_mono('MAME last execution output', info_text)
 
     # --- View database information and statistics stored in control dictionary ------------------
     elif which_report == 'VIEW_STATS_MAIN':
@@ -6975,7 +6975,7 @@ def command_exec_report(which_report):
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_main_print_slist(g_settings, info_text, control_dic, __addon_version__)
-        kodi_kodi_display_text_window_mono_mono('Database main statistics', '\n'.join(info_text))
+        kodi_display_text_window_mono('Database main statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_SCANNER':
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
@@ -6984,7 +6984,7 @@ def command_exec_report(which_report):
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
-        kodi_kodi_display_text_window_mono_mono('Scanner statistics', '\n'.join(info_text))
+        kodi_display_text_window_mono('Scanner statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_AUDIT':
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
@@ -6993,7 +6993,7 @@ def command_exec_report(which_report):
         control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_audit_print_slist(g_settings, info_text, control_dic, g_settings)
-        kodi_kodi_display_text_window_mono_mono('Database information and statistics', '\n'.join(info_text))
+        kodi_display_text_window_mono('Database information and statistics', '\n'.join(info_text))
 
     # --- All statistics ---
     elif which_report == 'VIEW_STATS_ALL':
@@ -7007,7 +7007,7 @@ def command_exec_report(which_report):
         mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
         info_text.append('')
         mame_stats_audit_print_slist(g_settings, info_text, control_dic, g_settings)
-        kodi_kodi_display_text_window_mono_mono('Database full statistics', '\n'.join(info_text))
+        kodi_display_text_window_mono('Database full statistics', '\n'.join(info_text))
 
     elif which_report == 'VIEW_STATS_WRITE_FILE':
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
