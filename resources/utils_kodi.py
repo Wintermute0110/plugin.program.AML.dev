@@ -148,9 +148,17 @@ def kodi_refresh_container():
     xbmc.executebuiltin('Container.Refresh')
 
 # Progress dialog that can be closed and reopened.
-# Messages in the dialog are always remembered.
+# Messages and progress in the dialog are always remembered, even if closed and reopened.
 # If the dialog is canceled this class remembers it forever.
 # Kodi Matrix change: Renamed option line1 to message. Removed option line2. Removed option line3.
+#
+# --- Example 1 ---
+# pDialog = KodiProgressDialog()
+# pDialog.startProgress('Doing something...', step_total)
+# for ...
+#     pDialog.updateProgressInc()
+#     # Do stuff...
+# pDialog.endProgress()
 class KodiProgressDialog(object):
     def __init__(self):
         self.heading = 'Advanced MAME Launcher'
@@ -160,47 +168,64 @@ class KodiProgressDialog(object):
         self.progressDialog = xbmcgui.DialogProgress()
 
     # Creates a new progress dialog.
-    def startProgress(self, message, num_steps = 100, step_index = 0):
+    def startProgress(self, message, step_total = 100, step_counter = 0):
         if self.dialog_active: raise TypeError
-        self.num_steps = num_steps
-        self.progress = math.floor((step_index * 100) / self.num_steps)
+        self.step_total = step_total
+        self.step_counter = step_counter
+        self.progress = math.floor((self.step_counter * 100) / self.step_total)
         self.dialog_active = True
         self.message = message
         self.progressDialog.create(self.heading, self.message)
         self.progressDialog.update(self.progress)
 
     # Changes message and resets progress.
-    def resetProgress(self, message, num_steps = 100, step_index = 0):
+    def resetProgress(self, message, step_total = 100, step_counter = 0):
         if not self.dialog_active: raise TypeError
-        self.num_steps = num_steps
-        self.progress = math.floor((step_index * 100) / self.num_steps)
+        self.step_total = step_total
+        self.step_counter = step_counter
+        self.progress = math.floor((self.step_counter * 100) / self.step_total)
         self.message = message
         self.progressDialog.update(self.progress, self.message)
 
     # Update progress and optionally update message as well.
-    def updateProgress(self, step_index, message = None):
+    def updateProgress(self, step_counter, message = None):
         if not self.dialog_active: raise TypeError
-        self.progress = math.floor((step_index * 100) / self.num_steps)
-        if message is not None:
+        self.step_counter = step_counter
+        self.progress = math.floor((self.step_counter * 100) / self.step_total)
+        if message is None:
+            self.progressDialog.update(self.progress)
+        else:
+            if type(message) is not str: raise TypeError
             self.message = message
             self.progressDialog.update(self.progress, self.message)
-        else:
+
+    # Update progress, optionally update message as well, and autoincrements.
+    # Progress is incremented AFTER dialog is updated.
+    def updateProgressInc(self, message = None):
+        if not self.dialog_active: raise TypeError
+        self.progress = math.floor((self.step_counter * 100) / self.step_total)
+        self.step_counter += 1
+        if message is None:
             self.progressDialog.update(self.progress)
+        else:
+            if type(message) is not str: raise TypeError
+            self.message = message
+            self.progressDialog.update(self.progress, self.message)
 
     # Update dialog message but keep same progress.
     def updateMessage(self, message):
         if not self.dialog_active: raise TypeError
+        if type(message) is not str: raise TypeError
         self.message = message
         self.progressDialog.update(self.progress, self.message)
 
     def isCanceled(self):
         # If the user pressed the cancel button before then return it now.
-        if self.flag_dialog_canceled:
-            return True
-        else:
-            if not self.dialog_active: raise TypeError
-            self.flag_dialog_canceled = self.progressDialog.iscanceled()
-            return self.flag_dialog_canceled
+        if self.flag_dialog_canceled: return True
+        # If not check and set the flag.
+        if not self.dialog_active: raise TypeError
+        self.flag_dialog_canceled = self.progressDialog.iscanceled()
+        return self.flag_dialog_canceled
 
     # Before closing the dialog check if the user pressed the Cancel button and remember
     # the user decision.

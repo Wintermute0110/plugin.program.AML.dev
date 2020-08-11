@@ -4840,21 +4840,17 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # ---------------------------------------------------------------------------------------------
     # Audit database
     # ---------------------------------------------------------------------------------------------
-    log_info('mame_build_ROM_audit_databases() Starting ...')
-    log_info('Building {0} ROM/Sample audit database ...'.format(rom_set_str))
-    pDialog = xbmcgui.DialogProgress()
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Building {0} ROM set ...'.format(rom_set_str))
-    num_items = len(machines)
-    item_count = 0
+    log_info('mame_build_ROM_audit_databases() Starting...')
+    log_info('Building {} ROM/Sample audit database...'.format(rom_set_str))
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Building {} ROM set ...'.format(rom_set_str), len(machines))
     stats_audit_MAME_machines_runnable = 0
     audit_roms_dic = {}
     for m_name in sorted(machines):
-        # --- Update dialog ---
-        pDialog.update((item_count*100)//num_items)
+        pDialog.updateProgress()
 
         # --- ROMs ---
-        # >> Skip device machines.
+        # Skip device machines.
         if machines_render[m_name]['isDevice']: continue
         stats_audit_MAME_machines_runnable += 1
         m_roms = machine_roms[m_name]['roms']
@@ -4884,25 +4880,16 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             samples_list.append(sample)
         if samples_list: machine_rom_set.extend(samples_list)
 
-        # >> Add ROMs to main DB
+        # Add ROMs to main DB
         audit_roms_dic[m_name] = machine_rom_set
-
-        # --- Update dialog ---
-        item_count += 1
-    pDialog.close()
+    pDialog.endProgress()
 
     # --- CHD set (refactored code) ---------------------------------------------------------------
-    log_info('Building {0} CHD audit database ...'.format(chd_set_str))
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Building {0} CHD set ...'.format(chd_set_str))
-    num_items = len(machines)
-    item_count = 0
+    log_info('Building {} CHD audit database...'.format(chd_set_str))
+    pDialog.startProgress('Building {} CHD set...'.format(chd_set_str), len(machines))
     for m_name in sorted(machines):
-        # --- Update dialog ---
-        pDialog.update((item_count*100)//num_items)
-
-        # --- CHDs ---
-        # >> Skip Devices
+        pDialog.updateProgress()
+        # Skip Device Machines
         if machines_render[m_name]['isDevice']: continue
         m_disks = machine_roms[m_name]['disks']
         machine_chd_set = []
@@ -4914,10 +4901,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
             audit_roms_dic[m_name].extend(machine_chd_set)
         else:
             audit_roms_dic[m_name] = machine_chd_set
-
-        # --- Update dialog ---
-        item_count += 1
-    pDialog.close()
+    pDialog.endProgress()
 
     # ---------------------------------------------------------------------------------------------
     # Machine files and ROM ZIP/Sample ZIP/CHD lists.
@@ -4927,15 +4911,12 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # For every machine, it goes ROM by ROM and makes a list of ZIP archive locations. Then, it
     # transforms the list into a set to have a list with unique elements.
     # roms_dic/chds_dic have invalid ROMs. Skip invalid ROMs.
-    log_info('Building ROM ZIP/Sample ZIP/CHD file lists ...')
-    pDialog.create('Advanced MAME Launcher')
-    pDialog.update(0, 'Building ROM, Sample and CHD archive lists ...')
+    log_info('Building ROM ZIP/Sample ZIP/CHD file lists...')
+    pDialog.startProgress('Building ROM, Sample and CHD archive lists...', len(machines))
     machine_archives_dic = {}
     full_ROM_archive_set = set()
     full_Sample_archive_set = set()
     full_CHD_archive_set = set()
-    num_items = len(machines)
-    item_count = 0
     machine_archives_ROM = 0
     machine_archives_ROM_parents = 0
     machine_archives_ROM_clones = 0
@@ -4955,9 +4936,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     CHDs_valid = 0
     CHDs_invalid = 0
     for m_name in audit_roms_dic:
-        # --- Update dialog ---
-        pDialog.update((item_count*100)//num_items)
-
+        pDialog.updateProgressInc()
         isClone = True if machines_render[m_name]['cloneof'] else False
         rom_list = audit_roms_dic[m_name]
         machine_rom_archive_set = set()
@@ -4967,7 +4946,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
         for rom in rom_list:
             if rom['type'] == ROM_TYPE_DISK:
                 CHDs_total += 1
-                # >> Skip invalid CHDs
+                # Skip invalid CHDs
                 if not rom['sha1']:
                     CHDs_invalid += 1
                     continue
@@ -4983,7 +4962,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
                 full_Sample_archive_set.add(archive_str)
             else:
                 ROMs_total += 1
-                # >> Skip invalid ROMs
+                # Skip invalid ROMs
                 if not rom['crc']:
                     ROMs_invalid += 1
                     continue
@@ -5025,10 +5004,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
                 archive_less_clones += 1
             else:
                 archive_less_parents += 1
-
-        # --- Update dialog ---
-        item_count += 1
-    pDialog.close()
+    pDialog.endProgress()
     # Sort lists alphabetically
     ROM_ZIP_list     = list(sorted(full_ROM_archive_set))
     Sample_ZIP_list  = list(sorted(full_Sample_archive_set))
@@ -5040,27 +5016,19 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     # Remove unused fields to save memory before saving the audit_roms_dic JSON file.
     # Do not remove earlier because 'merge' is used in the _get_XXX_location() functions.
     # ---------------------------------------------------------------------------------------------
-    pDialog.create('Advanced MAME Launcher')
-    log_info('Cleaning audit database before saving it to disk ...')
-    pDialog.update(0, 'Cleaning audit database ...')
-    num_items = len(machines)
-    item_count = 0
+    log_info('Cleaning audit database before saving it to disk...')
+    pDialog.startProgress('Cleaning audit database...', len(machines))
     for m_name in sorted(machines):
-        # --- Update dialog ---
-        pDialog.update((item_count*100)//num_items)
-
+        pDialog.updateProgressInc()
         # --- Skip devices and process ROMs and CHDs ---
         if machines_render[m_name]['isDevice']: continue
         for rom in machine_roms[m_name]['roms']:
-            # >> Remove unused fields to save space in JSON database, but remove from the copy!
+            # Remove unused fields to save space in JSON database, but remove from the copy!
             rom.pop('merge')
             rom.pop('bios')
         for disk in machine_roms[m_name]['disks']:
             disk.pop('merge')
-
-        # --- Update dialog ---
-        item_count += 1
-    pDialog.close()
+    pDialog.endProgress()
 
     # ---------------------------------------------------------------------------------------------
     # Update MAME control dictionary

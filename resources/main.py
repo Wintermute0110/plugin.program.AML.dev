@@ -3019,16 +3019,11 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             img_dir_FN.makedirs()
 
         # OLD CODE
-        # pDialog = xbmcgui.DialogProgress()
-        # pDialog.create('Advanced MAME Launcher', 'Extracting manual images')
-        # pDialog.update(0)
         # status_dic = {
         #     'manFormat' : '', # PDF, CBZ, CBR, ...
         #     'numImages' : 0,
         # }
         # manuals_extract_pages(status_dic, man_file_FN, img_dir_FN)
-        # pDialog.update(100)
-        # pDialog.close()
 
         # Check if JSON INFO file exists. If so, read it and compare the timestamp of the
         # extraction of the images with the timestamp of the PDF file. Do not extract
@@ -3044,16 +3039,13 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN)
 
             # --- Extract page by page ---
-            pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Extracting manual images')
-            page_counter = 0
+            pDialog = KodiProgressDialog()
+            pDialog.startProgress('Extracting manual images...', status_dic['numPages'])
             for page_index in range(status_dic['numPages']):
-                pDialog.update(int((100*page_counter)/status_dic['numPages']))
+                pDialog.updateProgressInc()
                 manuals_extract_PDF_page(status_dic, man_file_FN, img_dir_FN, page_index)
-                page_counter += 1
-            pDialog.update(int((100*page_counter)/status_dic['numPages']))
-            pDialog.close()
             manuals_close_PDF_file()
+            pDialog.close()
 
             # --- Create JSON INFO file ---
             manuals_create_INFO_file(status_dic, man_file_FN, img_dir_FN)
@@ -3064,24 +3056,23 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         if status_dic['numImages'] < 1:
             log_info('No images found. Nothing to show.')
             str_list = [
-                'Cannot find images inside the {0} file. '.format(status_dic['manFormat']),
+                'Cannot find images inside the {} file. '.format(status_dic['manFormat']),
                 'Check log for more details.'
             ]
             kodi_dialog_OK(''.join(str_list))
             return
-        log_info('Rendering images in "{0}"'.format(img_dir_FN.getPath()))
-        xbmc.executebuiltin('SlideShow("{0}",pause)'.format(img_dir_FN.getPath()))
+        log_info('Rendering images in "{}"'.format(img_dir_FN.getPath()))
+        xbmc.executebuiltin('SlideShow("{}",pause)'.format(img_dir_FN.getPath()))
 
     # --- Display brother machines (same driver) ---
     elif action == ACTION_VIEW_BROTHERS:
-        # >> Load ROM Render data from hashed database
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
-        # >> Some (important) drivers have a different name
+        # Some (important) drivers have a different name
         sourcefile_str = machine['sourcefile']
-        log_debug('Original driver "{0}"'.format(sourcefile_str))
+        log_debug('Original driver "{}"'.format(sourcefile_str))
         if sourcefile_str in mame_driver_name_dic:
             sourcefile_str = mame_driver_name_dic[sourcefile_str]
-        log_debug('Final driver    "{0}"'.format(sourcefile_str))
+        log_debug('Final driver    "{}"'.format(sourcefile_str))
 
         # --- Replace current window by search window ---
         # When user press Back in search window it returns to the original window (either showing
@@ -3089,8 +3080,8 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         #
         # NOTE ActivateWindow() / RunPlugin() / RunAddon() seem not to work here
         url = misc_url_2_arg('catalog', 'Driver', 'category', sourcefile_str)
-        log_debug('Container.Update URL "{0}"'.format(url))
-        xbmc.executebuiltin('Container.Update({0})'.format(url))
+        log_debug('Container.Update URL "{}"'.format(url))
+        xbmc.executebuiltin('Container.Update({})'.format(url))
 
     # --- Display machines with same Genre ---
     elif action == ACTION_VIEW_SAME_GENRE:
@@ -3174,8 +3165,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         elif selected_value == 3: action = ACTION_AUDIT_MAME_MACHINE
         elif selected_value == 4: action = ACTION_VIEW_MANUAL_JSON
         else:
-            kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
-                           'This is a bug, please report it.')
+            kodi_dialog_OK('view_type == VIEW_MAME_MACHINE and selected_value = {}. '.format(selected_value) +
+                'This is a bug, please report it.')
             return
     elif view_type == VIEW_SL_ROM:
         if   selected_value == 0: action = ACTION_VIEW_SL_ROM_DATA
@@ -3183,58 +3174,46 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         elif selected_value == 2: action = ACTION_VIEW_SL_ROM_AUDIT_ROMS
         elif selected_value == 3: action = ACTION_AUDIT_SL_MACHINE
         else:
-            kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {0}. '.format(selected_value) +
-                           'This is a bug, please report it.')
+            kodi_dialog_OK('view_type == VIEW_SL_ROM and selected_value = {}. '.format(selected_value) +
+                'This is a bug, please report it.')
             return
     else:
-        kodi_dialog_OK('Wrong view_type = {0}. '.format(view_type) +
-                       'This is a bug, please report it.')
+        kodi_dialog_OK('Wrong view_type = {}. This is a bug, please report it.'.format(view_type))
         return
-    log_debug('command_context_view() action = {0}'.format(action))
+    log_debug('command_context_view() action = {}'.format(action))
 
     # --- Execute action ---
     if action == ACTION_VIEW_MACHINE_DATA:
-        pDialog = xbmcgui.DialogProgress()
+        pDialog = KodiProgressDialog()
+        d_text = 'Loading databases...'
         if location == LOCATION_STANDARD:
-            pdialog_line1 = 'Loading databases ...'
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(0, pdialog_line1, 'ROM hashed database')
+            pDialog.startProgress('{}\n{}'.format(d_text, 'ROM hashed database'), 2)
             machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
-            pDialog.update(50, pdialog_line1, 'Assets hashed database')
+            pDialog.updateProgress(1, '{}\n{}'.format(d_text, 'Assets hashed database'))
             assets = fs_get_machine_assets_db_hash(g_PATHS, machine_name)
-            pDialog.update(100, pdialog_line1)
-            pDialog.close()
+            pDialog.endProgress()
             window_title = 'MAME Machine Information'
 
         elif location == LOCATION_MAME_FAVS:
-            pdialog_line1 = 'Loading databases ...'
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(0, pdialog_line1, 'MAME Favourites database')
+            pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Favourites database'))
             machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
-            pDialog.update(100, pdialog_line1)
-            pDialog.close()
+            pDialog.endProgress()
             machine = machines[machine_name]
             assets = machine['assets']
             window_title = 'Favourite MAME Machine Information'
 
         elif location == LOCATION_MAME_MOST_PLAYED:
-            pdialog_line1 = 'Loading databases ...'
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(0, pdialog_line1, 'MAME Most Played database')
+            pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Most Played database'))
             most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
-            pDialog.update(100, pdialog_line1)
-            pDialog.close()
+            pDialog.endProgress()
             machine = most_played_roms_dic[machine_name]
             assets = machine['assets']
             window_title = 'Most Played MAME Machine Information'
 
         elif location == LOCATION_MAME_RECENT_PLAYED:
-            pdialog_line1 = 'Loading databases ...'
-            pDialog.create('Advanced MAME Launcher')
-            pDialog.update(0, pdialog_line1, 'MAME Recently Played database')
+            pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Recently Played database'))
             recent_roms_list = fs_load_JSON_file_list(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
-            pDialog.update(100, pdialog_line1)
-            pDialog.close()
+            pDialog.endProgress()
             machine_index = -1
             for i, recent_rom in enumerate(recent_roms_list):
                 if machine_name == recent_rom['name']:
@@ -3340,19 +3319,17 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
 
     # --- View MAME machine ROMs (ROMs database) ---
     elif action == ACTION_VIEW_MACHINE_ROMS:
-        # >> Load machine dictionary, ROM database and Devices database.
-        pDialog = xbmcgui.DialogProgress()
-        pdialog_line1 = 'Loading databases ...'
+        # Load machine dictionary, ROM database and Devices database.
+        d_text = 'Loading databases ...'
         num_items = 3
-        pDialog.create('Advanced MAME Launcher', pdialog_line1)
-        pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machines Main')
+        pDialog = KodiProgressDialog()
+        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machines Main'), num_items)
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
-        pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machine ROMs')
+        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine ROMs'))
         roms_db_dic = fs_load_JSON_file_dic(g_PATHS.ROMS_DB_PATH.getPath())
-        pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machine Devices')
+        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine Devices'))
         devices_db_dic = fs_load_JSON_file_dic(g_PATHS.DEVICES_DB_PATH.getPath())
-        pDialog.update(int((3*100) / num_items), ' ', ' ')
-        pDialog.close()
+        pDialog.endProgress()
 
         # --- Make a dictionary with device ROMs ---
         device_roms_list = []
@@ -3446,38 +3423,36 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Load machine dictionary and ROM database ---
         rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][g_settings['mame_rom_set']]
         log_debug('command_context_view() View Machine ROMs (Audit database)\n')
-        log_debug('command_context_view() rom_set {0}\n'.format(rom_set))
+        log_debug('command_context_view() rom_set {}\n'.format(rom_set))
 
-        pDialog = xbmcgui.DialogProgress()
-        pdialog_line1 = 'Loading databases ...'
+        d_text = 'Loading databases...'
         num_items = 2
-        pDialog.create('Advanced MAME Launcher', pdialog_line1)
-        pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machine hash')
+        pDialog = KodiProgressDialog()
+        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machine hash'), num_items)
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
-        pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME ROM Audit')
+        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME ROM Audit'))
         audit_roms_dic = fs_load_JSON_file_dic(g_PATHS.ROM_AUDIT_DB_PATH.getPath())
-        pDialog.update(int((2*100) / num_items), ' ', ' ')
         pDialog.close()
 
         # --- Grab data and settings ---
         rom_list = audit_roms_dic[machine_name]
         cloneof = machine['cloneof']
         romof = machine['romof']
-        log_debug('command_context_view() machine {0}\n'.format(machine_name))
-        log_debug('command_context_view() cloneof {0}\n'.format(cloneof))
-        log_debug('command_context_view() romof   {0}\n'.format(romof))
+        log_debug('command_context_view() machine {}\n'.format(machine_name))
+        log_debug('command_context_view() cloneof {}\n'.format(cloneof))
+        log_debug('command_context_view() romof   {}\n'.format(romof))
 
         # --- Generate report ---
         info_text = []
         if machine['cloneof'] and machine['romof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
-                             '[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
+            info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(machine['cloneof']) +
+                '[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
         elif machine['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(machine['cloneof']))
+            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(machine['cloneof']))
         elif machine['romof']:
-            info_text.append('[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
-                         '[COLOR skyblue]isDevice[/COLOR] {0}'.format(unicode(machine['isDevice'])))
+            info_text.append('[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
+        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3613,22 +3588,20 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
 
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_Audit_DB_data']:
-            log_info('Writing file "{0}"'.format(g_PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath()))
+            log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath()))
             with open(g_PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath(), 'w') as file:
                 text_remove_color_tags_slist(info_text)
                 file.write('\n'.join(info_text).encode('utf-8'))
 
     # --- View manual JSON INFO file of a MAME machine ---
     elif action == ACTION_VIEW_MANUAL_JSON:
-        pdialog_line1 = 'Loading databases ...'
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher')
-        pDialog.update(0, pdialog_line1, 'ROM hashed database')
+        d_text = 'Loading databases ...'
+        pDialog = KodiProgressDialog()
+        pDialog.startProgress('{}\n{}'.format(d_text, 'ROM hashed database'), 2)
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
-        pDialog.update(50, pdialog_line1, 'Assets hashed database')
+        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'Assets hashed database'))
         assets = fs_get_machine_assets_db_hash(g_PATHS, machine_name)
-        pDialog.update(100, pdialog_line1)
-        pDialog.close()
+        pDialog.endProgress()
 
         if not assets['manual']:
             kodi_dialog_OK('Manual not found in database.')
@@ -3655,24 +3628,21 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         log_debug('command_context_view() Auditing Machine ROMs\n')
         log_debug('command_context_view() rom_set {0}\n'.format(rom_set))
 
-        pDialog = xbmcgui.DialogProgress()
-        pdialog_line1 = 'Loading databases ...'
-        num_items = 2
-        pDialog.create('Advanced MAME Launcher', pdialog_line1)
-        pDialog.update(int((0*100) / num_items), pdialog_line1, 'MAME machine hash')
+        d_text = 'Loading databases...'
+        pDialog = KodiProgressDialog()
+        pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machine hash'), 2)
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
-        pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME ROM Audit')
+        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME ROM Audit'))
         audit_roms_dic = fs_load_JSON_file_dic(g_PATHS.ROM_AUDIT_DB_PATH.getPath())
-        pDialog.update(int((2*100) / num_items), ' ', ' ')
-        pDialog.close()
+        pDialog.endProgress()
 
         # --- Grab data and settings ---
         rom_list = audit_roms_dic[machine_name]
         cloneof = machine['cloneof']
         romof = machine['romof']
-        log_debug('command_context_view() machine {0}\n'.format(machine_name))
-        log_debug('command_context_view() cloneof {0}\n'.format(cloneof))
-        log_debug('command_context_view() romof   {0}\n'.format(romof))
+        log_debug('command_context_view() machine {}\n'.format(machine_name))
+        log_debug('command_context_view() cloneof {}\n'.format(cloneof))
+        log_debug('command_context_view() romof   {}\n'.format(romof))
 
         # --- Open ZIP file, check CRC32 and also CHDs ---
         audit_dic = fs_new_audit_dic()
@@ -3681,14 +3651,14 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Generate report ---
         info_text = []
         if machine['cloneof'] and machine['romof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
-                             '[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
+            info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(machine['cloneof']) +
+                '[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
         elif machine['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(machine['cloneof']))
+            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(machine['cloneof']))
         elif machine['romof']:
-            info_text.append('[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(unicode(machine['isBIOS'])) +
-                         '[COLOR skyblue]isDevice[/COLOR] {0}'.format(unicode(machine['isDevice'])))
+            info_text.append('[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
+        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(unicode(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(unicode(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3714,7 +3684,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
-        window_title = 'Machine {0} ROM audit'.format(machine_name)
+        window_title = 'Machine {} ROM audit'.format(machine_name)
         display_text_window(window_title, '\n'.join(info_text))
 
     # --- Audit ROMs of SL item ---
@@ -3785,43 +3755,40 @@ def command_context_utilities(catalog_name, category_name):
     if selected_value == 0:
         log_debug('command_context_utilities() Export AEL Virtual Launcher')
 
-        # >> Ask user for a path to export the launcher configuration
+        # Ask user for a path to export the launcher configuration
         vlauncher_str_name = 'AML_VLauncher_' + catalog_name + '_' + category_name + '.xml'
         dir_path = xbmcgui.Dialog().browse(0, 'Select XML export directory', 'files',
-                                           '', False, False).decode('utf-8')
+            '', False, False).decode('utf-8')
         if not dir_path: return
         export_FN = FileName(dir_path).pjoin(vlauncher_str_name)
         if export_FN.exists():
-            ret = kodi_dialog_yesno('Overwrite file {0}?'.format(export_FN.getPath()))
+            ret = kodi_dialog_yesno('Overwrite file {}?'.format(export_FN.getPath()))
             if not ret:
                 kodi_notify_warn('Export of Launcher XML cancelled')
                 return
 
         # --- Open databases and get list of machines of this filter ---
-        # >> This can be optimised: load stuff from the cache instead of the main databases.
-        pDialog = xbmcgui.DialogProgress()
-        pdialog_line1 = 'Loading databases ...'
-        num_items = 4
-        pDialog.create('Advanced MAME Launcher')
-        pDialog.update(int((0*100) / num_items), pdialog_line1, 'Catalog dictionary')
+        # This can be optimised: load stuff from the cache instead of the main databases.
+        d_text = 'Loading databases...'
+        pDialog = KodiProgressDialog()
+        pDialog.startProgress('{}\n{}'.format(d_text, 'Catalog dictionary'), 4)
         catalog_dic = fs_get_cataloged_dic_parents(g_PATHS, catalog_name)
-        pDialog.update(int((1*100) / num_items), pdialog_line1, 'MAME machines Main')
+        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machines Main'))
         machines = fs_load_JSON_file_dic(g_PATHS.MAIN_DB_PATH.getPath())
-        pDialog.update(int((2*100) / num_items), pdialog_line1, 'MAME machines Render')
+        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machines Render'))
         machines_render = fs_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
-        pDialog.update(int((3*100) / num_items), pdialog_line1, 'MAME machine Assets')
+        pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine Assets'))
         assets_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
-        pDialog.update(int((4*100) / num_items), ' ', ' ')
-        pDialog.close()
+        pDialog.endProgress()
 
         # --- Print error message is something goes wrong writing file ---
         try:
-            fs_export_Virtual_Launcher(
-                export_FN, catalog_dic[category_name], machines, machines_render, assets_dic)
+            fs_export_Virtual_Launcher(export_FN, catalog_dic[category_name],
+                machines, machines_render, assets_dic)
         except Addon_Error as ex:
-            kodi_notify_warn('{0}'.format(ex))
+            kodi_notify_warn('{}'.format(ex))
         else:
-            kodi_notify('Exported Virtual Launcher "{0}"'.format(vlauncher_str_name))
+            kodi_notify('Exported Virtual Launcher "{}"'.format(vlauncher_str_name))
 
 # -------------------------------------------------------------------------------------------------
 # MAME Favourites/Recently Played/Most played
@@ -3998,24 +3965,24 @@ def command_context_manage_mame_fav(machine_name):
 
     # --- Determine view type ---
     log_debug('command_context_manage_mame_fav() BEGIN ...')
-    log_debug('machine_name "{0}"'.format(machine_name))
+    log_debug('machine_name "{}"'.format(machine_name))
     if machine_name:
         view_type = VIEW_INSIDE_MENU
     else:
         view_type = VIEW_ROOT_MENU
-    log_debug('view_type = {0}'.format(view_type))
+    log_debug('view_type = {}'.format(view_type))
 
     # --- Build menu base on view_type (Polymorphic menu, determine action) ---
     d_list = [menu[0] for menu in menus_dic[view_type]]
     selected_value = xbmcgui.Dialog().select('Manage MAME Favourite machines', d_list)
     if selected_value < 0: return
     action = menus_dic[view_type][selected_value][1]
-    log_debug('action = {0}'.format(action))
+    log_debug('action = {}'.format(action))
 
     # --- Execute actions ---
     if action == ACTION_DELETE_MACHINE:
         log_debug('command_context_manage_mame_fav() ACTION_DELETE_MACHINE')
-        log_debug('machine_name "{0}"'.format(machine_name))
+        log_debug('machine_name "{}"'.format(machine_name))
         db_files = [
             ['fav_machines', 'MAME Favourite machines', g_PATHS.FAV_MACHINES_PATH.getPath()],
         ]
@@ -4023,17 +3990,17 @@ def command_context_manage_mame_fav(machine_name):
 
         # --- Ask user for confirmation ---
         desc = db_dic['fav_machines'][machine_name]['description']
-        ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
+        ret = kodi_dialog_yesno('Delete Machine {} ({})?'.format(desc, machine_name))
         if ret < 1:
             kodi_notify('MAME Favourites unchanged')
             return
 
         # --- Delete machine and save DB ---
         del db_dic['fav_machines'][machine_name]
-        log_info('Deleted machine "{0}"'.format(machine_name))
+        log_info('Deleted machine "{}"'.format(machine_name))
         fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), db_dic['fav_machines'])
         kodi_refresh_container()
-        kodi_notify('Machine {0} deleted from MAME Favourites'.format(machine_name))
+        kodi_notify('Machine {} deleted from MAME Favourites'.format(machine_name))
 
     elif action == ACTION_DELETE_ALL:
         log_debug('command_context_manage_mame_fav() ACTION_DELETE_ALL')
@@ -4043,9 +4010,8 @@ def command_context_manage_mame_fav(machine_name):
         db_dic = fs_load_files(db_files)
 
         # Confirm with user
-        num_machines = len(db_dic['fav_machines'])
         ret = kodi_dialog_yesno(
-            'You have {0} MAME Favourites. Delete them all?'.format(num_machines))
+            'You have {} MAME Favourites. Delete them all?'.format(len(db_dic['fav_machines'])))
         if ret < 1:
             kodi_notify('MAME Favourites unchanged')
             return
@@ -4053,7 +4019,7 @@ def command_context_manage_mame_fav(machine_name):
         # Database is an empty dictionary
         fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), dict())
         kodi_refresh_container()
-        kodi_notify('Deleted all MAME Favourites'.format(machine_name))
+        kodi_notify('Deleted all MAME Favourites')
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_mame_fav() ACTION_DELETE_MISSING')
@@ -4073,35 +4039,28 @@ def command_context_manage_mame_fav(machine_name):
         db_dic = fs_load_files(db_files)
 
         # --- Delete missing MAME machines ---
-        line1_str = 'Delete missing MAME Favourites ...'
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher', line1_str)
         num_deleted_machines = 0
         if len(db_dic['fav_machines']) >= 1:
-            num_iteration = len(db_dic['fav_machines'])
-            iteration = 0
+            pDialog = KodiProgressDialog()
+            pDialog.startProgress('Delete missing MAME Favourites...', len(db_dic['fav_machines']))
             new_fav_machines = {}
             for fav_key in sorted(db_dic['fav_machines']):
-                pDialog.update((iteration*100) // num_iteration, line1_str)
-                log_debug('Checking Favourite "{0}"'.format(fav_key))
+                pDialog.updateProgressInc()
+                log_debug('Checking Favourite "{}"'.format(fav_key))
                 if fav_key in db_dic['machines']:
                     new_fav_machines[fav_key] = db_dic['fav_machines'][fav_key]
                 else:
                     num_deleted_machines += 1
-                iteration += 1
             fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), new_fav_machines)
-            pDialog.update((iteration*100) // num_iteration, line1_str)
-        else:
-            pDialog.update(100, line1_str)
-        pDialog.close()
-        kodi_refresh_container()
+            pDialog.endProgress()
+            kodi_refresh_container()
         if num_deleted_machines > 0:
-            kodi_notify('Deleted {0} missing MAME machines'.format(num_deleted_machines))
+            kodi_notify('Deleted {} missing MAME machines'.format(num_deleted_machines))
         else:
             kodi_notify('No missing machines found')
 
     else:
-        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        t = 'Wrong action == {}. This is a bug, please report it.'.format(action)
         log_error(t)
         kodi_dialog_OK(t)
 
@@ -4215,35 +4174,27 @@ def command_context_manage_mame_most_played(machine_name):
         db_dic = fs_load_files(db_files)
 
         # --- Delete missing MAME machines ---
-        line1_str = 'Delete missing MAME Most Played ...'
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher', line1_str)
         num_deleted_machines = 0
         if len(db_dic['most_played_roms']) >= 1:
-            num_iteration = len(db_dic['most_played_roms'])
-            iteration = 0
+            pDialog = xbmcgui.DialogProgress()
+            pDialog.startProgress('Delete missing MAME Most Played...', len(db_dic['most_played_roms']))
             new_fav_machines = {}
             for fav_key in sorted(db_dic['most_played_roms']):
-                pDialog.update((iteration*100) // num_iteration, line1_str)
-                log_debug('Checking Favourite "{0}"'.format(fav_key))
+                pDialog.updateProgressInc()
+                log_debug('Checking Favourite "{}"'.format(fav_key))
                 if fav_key in db_dic['machines']:
                     new_fav_machines[fav_key] = db_dic['most_played_roms'][fav_key]
                 else:
                     num_deleted_machines += 1
-                iteration += 1
             fs_write_JSON_file(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), new_fav_machines)
-            pDialog.update((iteration*100) // num_iteration, line1_str)
-        else:
-            pDialog.update(100, line1_str)
-        pDialog.close()
-        kodi_refresh_container()
+            pDialog.endProgress()
+            kodi_refresh_container()
         if num_deleted_machines > 0:
-            kodi_notify('Deleted {0} missing MAME machines'.format(num_deleted_machines))
+            kodi_notify('Deleted {} missing MAME machines'.format(num_deleted_machines))
         else:
             kodi_notify('No missing machines found')
-
     else:
-        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        t = 'Wrong action == {}. This is a bug, please report it.'.format(action)
         log_error(t)
         kodi_dialog_OK(t)
 
@@ -4359,36 +4310,29 @@ def command_context_manage_mame_recent_played(machine_name):
         recent_roms_list = fs_load_JSON_file_list(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
 
         # --- Delete missing MAME machines ---
-        line1_str = 'Delete missing MAME Recently Played ...'
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher', line1_str)
         num_deleted_machines = 0
         if len(recent_roms_list) >= 1:
-            num_iteration = len(recent_roms_list)
-            iteration = 0
+            pDialog = KodiProgressDialog()
+            pDialog.startProgress('Delete missing MAME Recently Played...', len(recent_roms_list))
             new_recent_roms_list = []
             for i, recent_rom in enumerate(recent_roms_list):
-                pDialog.update((iteration*100) // num_iteration, line1_str)
+                pDialog.updateProgressInc()
                 fav_key = recent_rom['name']
-                log_debug('Checking Favourite "{0}"'.format(fav_key))
+                log_debug('Checking Favourite "{}"'.format(fav_key))
                 if fav_key in db_dic['machines']:
                     new_recent_roms_list.append(recent_rom)
                 else:
                     num_deleted_machines += 1
-                iteration += 1
             fs_write_JSON_file(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), new_recent_roms_list)
-            pDialog.update((iteration*100) // num_iteration, line1_str)
-        else:
-            pDialog.update(100, line1_str)
-        pDialog.close()
-        kodi_refresh_container()
+            pDialog.endProgress()
+            kodi_refresh_container()
         if num_deleted_machines > 0:
-            kodi_notify('Deleted {0} missing MAME machines'.format(num_deleted_machines))
+            kodi_notify('Deleted {} missing MAME machines'.format(num_deleted_machines))
         else:
             kodi_notify('No missing machines found')
 
     else:
-        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        t = 'Wrong action == {}. This is a bug, please report it.'.format(action)
         log_error(t)
         kodi_dialog_OK(t)
 
@@ -4617,7 +4561,7 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         # --- Open Favourite Machines dictionary ---
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
-        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
+        log_debug('SL_fav_key "{}"'.format(SL_fav_key))
 
         # --- Ask user for confirmation ---
         desc = most_played_roms_dic[SL_fav_key]['description']
@@ -4640,11 +4584,11 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         # --- Open Favourite Machines dictionary ---
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
-        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
+        log_debug('SL_fav_key "{}"'.format(SL_fav_key))
 
         # --- Ask user for confirmation ---
         ret = kodi_dialog_yesno(
-            'You have {0} SL Favourites. Delete them all?'.format(len(fav_SL_roms)))
+            'You have {} SL Favourites. Delete them all?'.format(len(fav_SL_roms)))
         if ret < 1:
             kodi_notify('SL Favourites unchanged')
             return
@@ -4655,23 +4599,22 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         kodi_notify('Deleted all SL Favourites')
 
     elif action == ACTION_DELETE_MISSING:
-        log_debug('command_context_manage_sl_fav() ACTION_DELETE_MISSING')
+        log_debug('command_context_manage_sl_fav() ACTION_DELETE_MISSING BEGIN...')
         SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
-        num_SL_favs = len(fav_SL_roms)
-        num_iteration = 0
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher')
+        if len(fav_SL_roms) < 1:
+            kodi_notify('SL Favourites empty')
+            return
+        pDialog = KodiProgressDialog()
+        pDialog.startProgress('Advanced MAME Launcher', len(fav_SL_roms))
         num_items_deleted = 0
         for fav_SL_key in sorted(fav_SL_roms):
             fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
             fav_ROM_name = fav_SL_roms[fav_SL_key]['SL_ROM_name']
-            log_debug('Checking SL Favourite "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
+            log_debug('Checking SL Favourite "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
 
-            # --- Update progress dialog (BEGIN) ---
-            update_number = (num_iteration * 100) // num_SL_favs
-            pDialog.update(update_number, 'Checking SL Favourites (ROM "{0}") ...'.format(fav_ROM_name))
-            num_iteration += 1
+            # Update progress dialog.
+            pDialog.updateProgressInc('Checking SL Favourites...\nItem "{}"'.format(fav_ROM_name))
 
             # --- Load SL ROMs DB and assets ---
             SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json')
@@ -4681,19 +4624,18 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
             if fav_ROM_name not in SL_roms:
                 num_items_deleted += 1
                 del fav_SL_roms[fav_ROM_name]
-                log_info('Deleted machine {0} ({1})'.format(fav_SL_name, fav_ROM_name))
+                log_info('Deleted machine {} ({})'.format(fav_SL_name, fav_ROM_name))
             else:
-                log_debug('Machine {0} ({1}) OK'.format(fav_SL_name, fav_ROM_name))
+                log_debug('Machine {} ({}) OK'.format(fav_SL_name, fav_ROM_name))
         fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
-        pDialog.update(100)
         pDialog.close()
         if num_items_deleted > 0:
-            kodi_notify('Deleted {0} items'.format(num_items_deleted))
+            kodi_notify('Deleted {} items'.format(num_items_deleted))
         else:
             kodi_notify('No items deleted')
 
     else:
-        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        t = 'Wrong action == {}. This is a bug, please report it.'.format(action)
         log_error(t)
         kodi_dialog_OK(t)
 
@@ -4745,14 +4687,14 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
         view_type = VIEW_INSIDE_MENU
     else:
         view_type = VIEW_ROOT_MENU
-    log_debug('view_type = {0}'.format(view_type))
+    log_debug('view_type = {}'.format(view_type))
 
     # --- Build menu base on view_type (Polymorphic menu, determine action) ---
     d_list = [menu[0] for menu in menus_dic[view_type]]
     selected_value = xbmcgui.Dialog().select('Manage SL Most Played', d_list)
     if selected_value < 0: return
     action = menus_dic[view_type][selected_value][1]
-    log_debug('action = {0}'.format(action))
+    log_debug('action = {}'.format(action))
 
     # --- Execute actions ---
     if action == ACTION_CHOOSE_DEFAULT:
@@ -4765,7 +4707,7 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
         # --- Load Most Played items dictionary ---
         most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
-        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
+        log_debug('SL_fav_key "{}"'.format(SL_fav_key))
 
         # --- Ask user for confirmation ---
         desc = most_played_roms_dic[SL_fav_key]['description']
@@ -4793,7 +4735,7 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
 
         # --- Ask user for confirmation ---
         ret = kodi_dialog_yesno(
-            'You have {0} SL Most Played. Delete them all?'.format(len(fav_SL_roms)))
+            'You have {} SL Most Played. Delete them all?'.format(len(fav_SL_roms)))
         if ret < 1:
             kodi_notify('SL Most Played unchanged')
             return
@@ -4807,20 +4749,18 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
         log_debug('command_context_manage_sl_most_played() ACTION_DELETE_MISSING')
         SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
-        num_SL_favs = len(fav_SL_roms)
-        num_iteration = 0
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher')
+        if len(fav_SL_roms) < 1:
+            kodi_notify('SL Most Played empty')
+            return
+        d_text = 'Checking SL Most Played...'
+        pDialog = KodiProgressDialog()
+        pDialog.startProgress(d_text, len(fav_SL_roms))
         num_items_deleted = 0
         for fav_SL_key in sorted(fav_SL_roms):
             fav_SL_name = fav_SL_roms[fav_SL_key]['SL_name']
             fav_ROM_name = fav_SL_roms[fav_SL_key]['SL_ROM_name']
-            log_debug('Checking SL Most Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
-
-            # --- Update progress dialog (BEGIN) ---
-            update_number = (num_iteration * 100) // num_SL_favs
-            pDialog.update(update_number, 'Checking SL Most Played (ROM "{0}") ...'.format(fav_ROM_name))
-            num_iteration += 1
+            log_debug('Checking SL Most Played "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
+            pDialog.updateProgressInc('{}\nItem "{}"'.format(d_text, fav_ROM_name))
 
             # --- Load SL ROMs DB and assets ---
             SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json')
@@ -4830,19 +4770,18 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
             if fav_ROM_name not in SL_roms:
                 num_items_deleted += 1
                 del fav_SL_roms[fav_ROM_name]
-                log_info('Deleted machine {0} ({1})'.format(fav_SL_name, fav_ROM_name))
+                log_info('Deleted machine {} ({})'.format(fav_SL_name, fav_ROM_name))
             else:
-                log_debug('Machine {0} ({1}) OK'.format(fav_SL_name, fav_ROM_name))
+                log_debug('Machine {} ({}) OK'.format(fav_SL_name, fav_ROM_name))
         fs_write_JSON_file(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), fav_SL_roms)
-        pDialog.update(100)
-        pDialog.close()
+        pDialog.endProgress()
         if num_items_deleted > 0:
-            kodi_notify('Deleted {0} items'.format(num_items_deleted))
+            kodi_notify('Deleted {} items'.format(num_items_deleted))
         else:
             kodi_notify('No items deleted')
 
     else:
-        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        t = 'Wrong action == {}. This is a bug, please report it.'.format(action)
         log_error(t)
         kodi_dialog_OK(t)
 
@@ -4959,22 +4898,20 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
         log_debug('command_context_manage_SL_recent_played() ACTION_DELETE_MISSING')
         SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
-        num_SL_favs = len(fav_SL_roms)
-        num_iteration = 0
-        pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher')
+        if len(fav_SL_roms) < 1:
+            kodi_notify_warn('SL Recently Played empty')
+            return
+        d_text = 'Checking SL Recently Played...'
+        pDialog = KodiProgressDialog()
+        pDialog.startProgress(d_text, len(fav_SL_roms))
         num_items_deleted = 0
         new_fav_SL_roms = []
         # fav_SL_roms is a list, do not sort it!
         for fav_SL_item in fav_SL_roms:
             fav_SL_name = fav_SL_item['SL_name']
             fav_ROM_name = fav_SL_item['SL_ROM_name']
-            log_debug('Checking SL Recently Played "{0}" / "{1}"'.format(fav_SL_name, fav_ROM_name))
-
-            # --- Update progress dialog (BEGIN) ---
-            update_number = (num_iteration * 100) // num_SL_favs
-            pDialog.update(update_number, 'Checking SL Recently Played (ROM "{0}") ...'.format(fav_ROM_name))
-            num_iteration += 1
+            log_debug('Checking SL Recently Played "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
+            pDialog.updateProgressInc('{}\nItem "{}"'.format(d_text, fav_ROM_name))
 
             # --- Load SL ROMs DB and assets ---
             SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json')
@@ -4983,19 +4920,18 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
             # --- Check ---
             if fav_ROM_name not in SL_roms:
                 num_items_deleted += 1
-                log_info('Deleted machine {0} ({1})'.format(fav_SL_name, fav_ROM_name))
+                log_info('Deleted machine {} ({})'.format(fav_SL_name, fav_ROM_name))
             else:
                 new_fav_SL_roms.append(fav_SL_item)
-                log_debug('Machine {0} ({1}) OK'.format(fav_SL_name, fav_ROM_name))
+                log_debug('Machine {} ({}) OK'.format(fav_SL_name, fav_ROM_name))
         fs_write_JSON_file(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), new_fav_SL_roms)
-        pDialog.update(100)
-        pDialog.close()
+        pDialog.endProgress()
         if num_items_deleted > 0:
-            kodi_notify('Deleted {0} items'.format(num_items_deleted))
+            kodi_notify('Deleted {} items'.format(num_items_deleted))
         else:
             kodi_notify('No items deleted')
     else:
-        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        t = 'Wrong action == {}. This is a bug, please report it.'.format(action)
         log_error(t)
         kodi_dialog_OK(t)
 
@@ -6327,14 +6263,11 @@ def command_context_setup_plugin():
                 }
             }
 
-            pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Generating test MAME 3D Box ... ')
-            pDialog.update(15)
-            graphs_build_MAME_3DBox(
-                g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
+            pDialog = KodiProgressDialog()
+            pDialog.startProgress('Generating test MAME 3D Box...')
+            graphs_build_MAME_3DBox(g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
-            pDialog.update(100)
-            pDialog.close()
+            pDialog.endProgress()
 
             # --- Display Fanart ---
             log_debug('Displaying image "{}"'.format(Fanart_FN.getPath()))
@@ -6366,14 +6299,11 @@ def command_context_setup_plugin():
                 }
             }
 
-            pDialog = xbmcgui.DialogProgress()
-            pDialog.create('Advanced MAME Launcher', 'Generating test SL 3D Box ... ')
-            pDialog.update(15)
-            graphs_build_MAME_3DBox(
-                g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
+            pDialog = KodiProgressDialog()
+            pDialog.startProgress('Generating test SL 3D Box...')
+            graphs_build_MAME_3DBox(g_PATHS, t_projection, SL_name, m_name, assets_dic, Fanart_FN,
                 CANVAS_COLOR = (50, 50, 75), test_flag = True)
-            pDialog.update(100)
-            pDialog.close()
+            pDialog.endProgress()
 
             # --- Display Fanart ---
             log_debug('Displaying image "{}"'.format(Fanart_FN.getPath()))
@@ -6744,11 +6674,8 @@ def command_exec_utility(which_utility):
 
         # Detect implicit ROM merging using the SHA1 hash and check for CRC32 collisions for
         # non-implicit merged ROMs.
-        pdialog_line1 = 'Checking for MAME CRC32 hash collisions ...'
         pDialog = xbmcgui.DialogProgress()
-        pDialog.create('Advanced MAME Launcher', pdialog_line1)
-        total_machines = len(db_dic['machine_roms'])
-        processed_machines = 0
+        pDialog.startProgress('Checking for MAME CRC32 hash collisions...', len(db_dic['machine_roms']))
         crc_roms_dic = {}
         sha1_roms_dic = {}
         num_collisions = 0
@@ -6756,19 +6683,19 @@ def command_exec_utility(which_utility):
         table_str.append(['right',  'left',     'left', 'left', 'left'])
         table_str.append(['Status', 'ROM name', 'Size', 'CRC',  'SHA1'])
         for m_name in sorted(db_dic['machine_roms']):
-            pDialog.update((processed_machines*100) // total_machines, pdialog_line1)
+            pDialog.updateProgressInc()
             m_roms = db_dic['machine_roms'][m_name]
             for rom in m_roms['roms']:
                 rom_nonmerged_location = m_name + '/' + rom['name']
-                # >> Skip invalid ROMs (no CRC, no SHA1
+                # Skip invalid ROMs (no CRC, no SHA1
                 if rom_nonmerged_location not in db_dic['roms_sha1_dic']:
                     continue
                 sha1 = db_dic['roms_sha1_dic'][rom_nonmerged_location]
                 if sha1 in sha1_roms_dic:
-                    # >> ROM implicit merging (using SHA1). No check of CRC32 collision.
+                    # ROM implicit merging (using SHA1). No check of CRC32 collision.
                     pass
                 else:
-                    # >> No ROM implicit mergin. Check CRC32 collision
+                    # No ROM implicit mergin. Check CRC32 collision
                     sha1_roms_dic[sha1] = rom_nonmerged_location
                     if rom['crc'] in crc_roms_dic:
                         num_collisions += 1
@@ -6780,9 +6707,7 @@ def command_exec_utility(which_utility):
                         table_str.append(['with', coliding_name, ' ', coliding_crc, coliding_sha1])
                     else:
                         crc_roms_dic[rom['crc']] = rom_nonmerged_location
-            processed_machines += 1
-        pDialog.update((processed_machines*100) // total_machines, pdialog_line1, ' ')
-        pDialog.close()
+        pDialog.endProgress()
         log_debug('MAME has {:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])))
         log_debug('There are {} CRC32 collisions'.format(num_collisions))
 
@@ -6806,12 +6731,9 @@ def command_exec_utility(which_utility):
         SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
 
         # --- Process all SLs ---
-        pDialog = xbmcgui.DialogProgress()
-        pdialog_line1 = 'Scanning Sofware Lists ROMs/CHDs ...'
-        pDialog.create('Advanced MAME Launcher', pdialog_line1)
-        total_files = len(SL_catalog_dic)
-        processed_files = 0
-        pDialog.update(0)
+        d_text = 'Scanning Sofware Lists ROMs/CHDs ...'
+        pDialog = KodiProgressDialog()
+        pDialog.startProgress(d_text, len(SL_catalog_dic))
         roms_sha1_dic = {}
         crc_roms_dic = {}
         sha1_roms_dic = {}
@@ -6820,17 +6742,15 @@ def command_exec_utility(which_utility):
         table_str.append(['right',  'left',     'left', 'left', 'left'])
         table_str.append(['Status', 'ROM name', 'Size', 'CRC',  'SHA1'])
         for SL_name in sorted(SL_catalog_dic):
-            # >> Progress dialog
-            update_number = (processed_files*100) // total_files
-            pDialog.update(update_number, pdialog_line1, 'Software List {0} ...'.format(SL_name))
+            pDialog.updateProgressInc('{}\nSoftware List {} ...'.format(d_text, SL_name))
 
-            # >> Load SL databases
+            # Load SL databases
             # SL_SETS_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
             # sl_sets = fs_load_JSON_file_dic(SL_SETS_DB_FN.getPath(), verbose = False)
             SL_ROMS_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
             sl_roms = fs_load_JSON_file_dic(SL_ROMS_DB_FN.getPath(), verbose = False)
 
-            # >> First step: make a SHA1 dictionary of all SL item hashes
+            # First step: make a SHA1 dictionary of all SL item hashes.
             for set_name in sorted(sl_roms):
                 set_rom_list = sl_roms[set_name]
                 for area in set_rom_list:
@@ -6842,7 +6762,7 @@ def command_exec_utility(which_utility):
                                 rom_nonmerged_location = SL_name + '/' + set_name + '/' + rom['name']
                                 roms_sha1_dic[rom_nonmerged_location] = sha1
 
-            # >> Second step: make
+            # Second step: make.
             for set_name in sorted(sl_roms):
                 set_rom_list = sl_roms[set_name]
                 for area in set_rom_list:
@@ -6875,12 +6795,7 @@ def command_exec_utility(which_utility):
                                     ])
                                 else:
                                     crc_roms_dic[rom['crc']] = rom_nonmerged_location
-
-            # >> Increment file count
-            processed_files += 1
-        update_number = (processed_files*100) // total_files
-        pDialog.update(update_number, pdialog_line1, ' ')
-        pDialog.close()
+        pDialog.endProgress()
         log_debug('The SL have {:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
         log_debug('There are {} CRC32 collisions'.format(num_collisions))
 
@@ -6894,8 +6809,8 @@ def command_exec_utility(which_utility):
         slist.extend(table_str_list)
         kodi_display_text_window_mono('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
         log_info('Writing "{}"'.format(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
-        with open(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'w') as file:
-            file.write('\n'.join(slist).encode('utf-8'))
+        with open(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
+            file.write('\n'.join(slist))
 
     # Open the ROM audit database and calculate the size of all ROMs.
     # Sort the list by size and print it.
