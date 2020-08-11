@@ -50,7 +50,7 @@
 
 **TODO (remove items in this list when done)**
 
- * Replace `pDialog.create` with `KodiProgressDialog()`
+ * The filter parsers must be adapted to Python 3. Currently, `Setup custom filters` -> `Build custom filter databases` is not working. Also change files in `ADDON-ROOT/dev-parsers/`.
 
 **References**
 
