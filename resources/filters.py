@@ -1350,9 +1350,6 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
 #
 def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic, sets_dic):
     filter_list = []
-    # Global variables required by parsers.
-    global SP_program
-    # Local variables.
     options_dic = {
         # No errors by default until an error is found.
         'XML_errors' : False,
@@ -1389,33 +1386,27 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
             if option_keyword not in OPTIONS_KEYWORK_SET:
                 c_list.append('<Options> keywork "{}" unrecognised.'.format(option_keyword))
 
-        # Check 2) Drivers in <Driver> exist.
-        # <Driver> uses the LSP parser.
+        # Check 2) Drivers in <Driver> exist. <Driver> uses the LSP parser.
         keyword_list = []
-        SP_program = filter_dic['driver']
-        for token in SP_tokenize():
+        for token in SP_tokenize(filter_dic['driver']):
             if isinstance(token, SP_literal_token):
                 keyword_list.append(token.value)
         for dname in keyword_list:
             if dname not in sets_dic['drivers_set']:
                 c_list.append('<Driver> "{}" not found.'.format(dname))
 
-        # Check 3) Genres in <Genre> exist.
-        # <Genre> uses the LSP parser.
+        # Check 3) Genres in <Genre> exist. <Genre> uses the LSP parser.
         keyword_list = []
-        SP_program = filter_dic['genre']
-        for token in SP_tokenize():
+        for token in LSP_tokenize(filter_dic['genre']):
             if isinstance(token, SP_literal_token):
                 keyword_list.append(token.value)
         for dname in keyword_list:
             if dname not in sets_dic['genres_set']:
                 c_list.append('<Genre> "{}" not found.'.format(dname))
 
-        # Check 4) Controls in <Controls> exist.
-        # <Controls> uses the LSP parser.
+        # Check 4) Controls in <Controls> exist. <Controls> uses the LSP parser.
         keyword_list = []
-        SP_program = filter_dic['controls']
-        for token in SP_tokenize():
+        for token in SP_tokenize(filter_dic['controls']):
             if isinstance(token, SP_literal_token):
                 keyword_list.append(token.value)
         for dname in keyword_list:
@@ -1425,8 +1416,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
         # Check 5) Plugabble devices in <PluggableDevices> exist.
         # <PluggableDevices> uses the LSP parser.
         keyword_list = []
-        SP_program = filter_dic['pluggabledevices']
-        for token in SP_tokenize():
+        for token in SP_tokenize(filter_dic['pluggabledevices']):
             if isinstance(token, SP_literal_token):
                 keyword_list.append(token.value)
         for dname in keyword_list:
@@ -1456,8 +1446,7 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
             r_full.append('No issues found.')
         else:
             r_full.extend(c_list)
-            # Error found, set the flag.
-            options_dic['XML_errors'] = True
+            options_dic['XML_errors'] = True # Error found, set the flag.
         r_full.append('')
 
     # --- Write MAME scanner reports ---
@@ -1547,7 +1536,7 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         for m_name in filtered_machine_dic:
             filtered_render_dic[m_name] = render_dic[m_name]
             filtered_assets_dic[m_name] = assets_dic[m_name]
-        rom_DB_noext = hashlib.md5(f_name).hexdigest()
+        rom_DB_noext = hashlib.md5(f_name.encode('utf-8')).hexdigest()
         this_filter_idx_dic = {
             'display_name' : f_definition['name'],
             'num_machines' : len(filtered_render_dic),

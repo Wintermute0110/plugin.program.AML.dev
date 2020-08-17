@@ -4827,7 +4827,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     stats_audit_MAME_machines_runnable = 0
     audit_roms_dic = {}
     for m_name in sorted(machines):
-        pDialog.updateProgress()
+        pDialog.updateProgressInc()
 
         # --- ROMs ---
         # Skip device machines.
@@ -4868,7 +4868,7 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     log_info('Building {} CHD audit database...'.format(chd_set_str))
     pDialog.startProgress('Building {} CHD set...'.format(chd_set_str), len(machines))
     for m_name in sorted(machines):
-        pDialog.updateProgress()
+        pDialog.updateProgressInc()
         # Skip Device Machines
         if machines_render[m_name]['isDevice']: continue
         m_disks = machine_roms[m_name]['disks']
