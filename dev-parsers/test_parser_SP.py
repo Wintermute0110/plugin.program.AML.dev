@@ -1,15 +1,13 @@
-#!/usr/bin/python
-#
+#!/usr/bin/python3 -B
+
 import re
 
 # -------------------------------------------------------------------------------------------------
 # Fake functions when running outisde the Kodi Python runtime
 # -------------------------------------------------------------------------------------------------
-def log_debug(str):
-    print(str)
+def log_debug(str): print(str)
 
-def log_info(str):
-    print(str)
+def log_info(str): print(str)
 
 # -------------------------------------------------------------------------------------------------
 # String Parser (SP) engine. Grammar token objects.
@@ -21,103 +19,102 @@ debug_SP_parser = False
 debug_SP_parse_exec = False
 
 class SP_literal_token:
-    def __init__(self, value):
-        self.value = value
-        self.id = "STRING"
+    def __init__(self, value): self.value = value
     def nud(self):
+        if debug_SP_parser: log_debug('Call LITERAL token nud()')
         return self
     def exec_token(self):
-        if debug_SP_parser: log_debug('Executing LITERAL token value "{0}"'.format(self.value))
+        if debug_SP_parser: log_debug('Executing LITERAL token value "{}"'.format(self.value))
         ret = self.value
-        if debug_SP_parser: log_debug('LITERAL token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('Token LITERAL returns {} "{}"'.format(type(ret), str(ret)))
         return ret
-    def __repr__(self):
-        return '<LITERAL "{0}">'.format(self.value)
+    def __repr__(self): return '<LITERAL "{}">'.format(self.value)
 
 class SP_operator_has_token:
     lbp = 50
-    def __init__(self):
-        self.id = "OP HAS"
+    def __init__(self): pass
     def nud(self):
+        if debug_SP_parser: log_debug('Call HAS token nud()')
         self.first = SP_expression(50)
         return self
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing HAS token')
-        ret = True if SP_parser_search_string.find(self.first.exec_token()) >= 0 else False
-        if debug_SP_parser: log_debug('HAS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        literal_str = self.first.exec_token()
+        if type(literal_str) is not str:
+            raise SyntaxError("HAS token exec; expected string, got {}".format(type(literal_str)))
+        ret = True if SP_parser_search_string.find(literal_str) >= 0 else False
+        if debug_SP_parser: log_debug('Token HAS returns {} "{}"'.format(type(ret), str(ret)))
         return ret
-    def __repr__(self):
-        return "<OP has>"
+    def __repr__(self): return "<OP has>"
 
 class SP_operator_lacks_token:
     lbp = 50
-    def __init__(self):
-        self.id = "OP LACKS"
+    def __init__(self): pass
     def nud(self):
+        if debug_SP_parser: log_debug('Call LACKS token nud()')
         self.first = SP_expression(50)
         return self
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing LACKS token')
-        ret = False if SP_parser_search_string.find(self.first.exec_token()) >= 0 else True
-        if debug_SP_parser: log_debug('LACKS token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        literal_str = self.first.exec_token()
+        if type(literal_str) is not str:
+            raise SyntaxError("LACKS token exec; expected string, got {}".format(type(literal_str)))
+        ret = False if SP_parser_search_string.find(literal_str) >= 0 else True
+        if debug_SP_parser: log_debug('Token LACKS returns {} "{}"'.format(type(ret), str(ret)))
         return ret
-    def __repr__(self):
-        return "<OP lacks>"
+    def __repr__(self): return "<OP lacks>"
 
 class SP_operator_not_token:
     lbp = 50
-    def __init__(self):
-        self.id = "OP NOT"
+    def __init__(self): pass
     def nud(self):
+        if debug_SP_parser: log_debug('Call NOT token nud()')
         self.first = SP_expression(50)
         return self
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing NOT token')
-        ret = not self.first.exec_token()
-        if debug_SP_parser: log_debug('NOT token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        exp_bool = self.first.exec_token()
+        if type(exp_bool) is not bool:
+            raise SyntaxError("NOT token exec; expected string, got {}".format(type(exp_bool)))
+        ret = not exp_bool
+        if debug_SP_parser: log_debug('Token NOT returns {} "{}"'.format(type(ret), str(ret)))
         return ret
-    def __repr__(self):
-        return "<OP not>"
+    def __repr__(self): return "<OP not>"
 
 class SP_operator_and_token:
     lbp = 10
-    def __init__(self):
-        self.id = "OP AND"
+    def __init__(self): pass
     def led(self, left):
-        if debug_SP_parser: log_debug('Executing AND token')
+        if debug_SP_parser: log_debug('Call AND token led()')
         self.first = left
         self.second = SP_expression(10)
         return self
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing AND token')
         ret = self.first.exec_token() and self.second.exec_token()
-        if debug_SP_parser: log_debug('AND token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('Token AND returns {} "{}"'.format(type(ret), str(ret)))
         return ret
-    def __repr__(self):
-        return "<OP and>"
+    def __repr__(self): return "<OP and>"
 
 class SP_operator_or_token:
     lbp = 10
-    def __init__(self):
-        self.id = "OP OR"
+    def __init__(self): pass
     def led(self, left):
+        if debug_SP_parser: log_debug('Call OR token led()')
         self.first = left
         self.second = SP_expression(10)
         return self
     def exec_token(self):
         if debug_SP_parser: log_debug('Executing OR token')
         ret = self.first.exec_token() or self.second.exec_token()
-        if debug_SP_parser: log_debug('OR token returns {0} "{1}"'.format(type(ret), unicode(ret)))
+        if debug_SP_parser: log_debug('Token OR returns {} "{}"'.format(type(ret), str(ret)))
         return ret
-    def __repr__(self):
-        return "<OP or>"
+    def __repr__(self): return "<OP or>"
 
 class SP_end_token:
     lbp = 0
-    def __init__(self):
-        self.id = "END TOKEN"
-    def __repr__(self):
-        return "<END token>"
+    def __init__(self): pass
+    def __repr__(self): return "<END token>"
 
 # -------------------------------------------------------------------------------------------------
 # String Parser (SP) Tokenizer
@@ -147,7 +144,7 @@ def SP_tokenize(program):
         elif operator == "lacks":
             yield SP_operator_lacks_token()
         else:
-            raise SyntaxError("Unknown operator: '{0}'".format(operator))
+            raise SyntaxError("Unknown operator: '{}'".format(operator))
     yield SP_end_token()
 
 # -------------------------------------------------------------------------------------------------
@@ -163,6 +160,7 @@ def SP_expression(rbp = 0):
         t = SP_token
         SP_token = SP_next()
         left = t.led(left)
+
     return left
 
 def SP_parse_exec(program, search_string):
@@ -170,13 +168,13 @@ def SP_parse_exec(program, search_string):
 
     if debug_SP_parse_exec:
         log_debug('SP_parse_exec() Initialising program execution')
-        log_debug('SP_parse_exec() Search string "{0}"'.format(search_string))
-        log_debug('SP_parse_exec() Program       "{0}"'.format(program))
+        log_debug('SP_parse_exec() Search string "{}"'.format(search_string))
+        log_debug('SP_parse_exec() Program       "{}"'.format(program))
     SP_parser_search_string = search_string
-    SP_next = SP_tokenize(program).next
+    SP_next = SP_tokenize(program).__next__
     SP_token = SP_next()
 
-    # --- Old function parse_exec() ---
+    # Old function parse_exec()
     rbp = 0
     t = SP_token
     SP_token = SP_next()
@@ -186,7 +184,7 @@ def SP_parse_exec(program, search_string):
         SP_token = SP_next()
         left = t.led(left)
     if debug_SP_parse_exec:
-        log_debug('SP_parse_exec() Init exec program in token {0}'.format(left))
+        log_debug('SP_parse_exec() Init exec program in token {}'.format(left))
 
     return left.exec_token()
 
@@ -202,16 +200,15 @@ i_str = 'Konami'
 # p_str = 'has Namco or has Konami'
 # p_str = 'has Konami or not has Namco'
 # p_str = 'has Konami or has Namco or has "Capcom / Kaneko"'
-# p_str = 'nothas Konami or nothas Namco or nothas "Capcom / Kaneko"'
+# p_str = 'nothas Konami or nothas Namco or not has "Capcom / Kaneko"'
 # p_str = 'lacks Konami and lacks Namco and lacks "Capcom / Kaneko"'
-p_str = 'lacks Konami or lacks Namco or lacks "Capcom / Kaneko"'
+# p_str = 'lacks Konami or lacks Namco and lacks "Capcom / Kaneko"'
+p_str = 'has Konami and not has Capcom'
 
 # --- Test ---
-log_info("String  '{0}'".format(i_str))
-log_info("Program '{0}'".format(p_str))
-t_counter = 0
-for token in SP_tokenize(p_str):
-    log_info("Token {0:02d} '{1}'".format(t_counter, token))
-    t_counter += 1
+log_info("String  '{}'".format(i_str))
+log_info("Program '{}'".format(p_str))
+for i, token in enumerate(SP_tokenize(p_str)):
+    log_info("Token {:02d} '{}'".format(i, token))
 result = SP_parse_exec(p_str, i_str)
-log_info('Program result {0}'.format(result))
+log_info('Program result {}'.format(result))

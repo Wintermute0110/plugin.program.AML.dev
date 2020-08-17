@@ -1,7 +1,5 @@
-#!/usr/bin/python -B
+#!/usr/bin/python3 -B
 # -*- coding: utf-8 -*-
-# xxx
-#
 
 # Copyright (c) 2019 Wintermute0110 <wintermute0110@gmail.com>
 #
@@ -15,14 +13,13 @@
 # GNU General Public License for more details.
 
 # --- Python standard library ---
-from __future__ import unicode_literals
 import os
 import pprint
 import re
 import sys
 
 # --- Helper code ---------------------------------------------------------------------------------
-def log_verb(str): print(str)
+def log_verb(string): print(string)
 
 # --- AML code ------------------------------------------------------------------------------------
 #
