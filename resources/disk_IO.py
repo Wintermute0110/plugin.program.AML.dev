@@ -17,9 +17,12 @@
 from __future__ import unicode_literals
 from __future__ import division
 
+# --- AEL packages ---
+from .constants import *
+from .utils import *
+from .utils_kodi import *
+
 # --- Python standard library ---
-# cElementTree sometimes fails to parse XML in Kodi's Python interpreter... I don't know why
-# Using ElementTree seems to solve the problem
 import codecs
 import copy
 import io
@@ -32,11 +35,6 @@ import xml.etree.ElementTree as ET
 
 # import gc
 # import resource # Module not available on Windows
-
-# --- AEL packages ---
-from .constants import *
-from .utils import *
-from .utils_kodi import *
 
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher data model
@@ -726,20 +724,26 @@ def fs_AML_version_str_to_int(AML_version_str):
 def fs_create_empty_control_dic(PATHS, AML_version_str):
     log_info('fs_create_empty_control_dic() Creating empty control_dic')
     AML_version_int = fs_AML_version_str_to_int(AML_version_str)
-    log_info('fs_create_empty_control_dic() AML version str "{0}"'.format(AML_version_str))
-    log_info('fs_create_empty_control_dic() AML version int {0}'.format(AML_version_int))
+    log_info('fs_create_empty_control_dic() AML version str "{}"'.format(AML_version_str))
+    log_info('fs_create_empty_control_dic() AML version int {}'.format(AML_version_int))
     main_window = xbmcgui.Window(10000)
     AML_LOCK_PROPNAME = 'AML_instance_lock'
     AML_LOCK_VALUE_LOCKED = 'True'
     AML_LOCK_VALUE_RELEASED = ''
 
-    # >> Use Kodi properties to protect the file writing by several threads.
+    # Use Kodi properties to protect the file writing by several threads.
     infinite_loop = True
+    num_waiting_cycles = 0
     while infinite_loop and not xbmc.Monitor().abortRequested():
         if main_window.getProperty(AML_LOCK_PROPNAME) == AML_LOCK_VALUE_LOCKED:
             log_debug('fs_create_empty_control_dic() AML is locked')
-            # >> Wait some time so other AML threads finish writing the file.
-            xbmc.sleep(0.25)
+            # Wait some time so other AML threads finish writing the file.
+            xbmc.sleep(250)
+            num_waiting_cycles += 1
+            if num_waiting_cycles > 10:
+                # Force release lock
+                log_debug('fs_create_empty_control_dic() Releasing lock')
+                main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_RELEASED)
         else:
             log_debug('fs_create_empty_control_dic() AML not locked. Writing control_dic')
             # Get the lock
@@ -958,10 +962,10 @@ def fs_load_JSON_file_dic(json_filename, verbose = True):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
     if not os.path.isfile(json_filename):
-        log_warning('fs_load_JSON_file_dic() File not found "{0}"'.format(json_filename))
+        log_warning('fs_load_JSON_file_dic() Not found "{}"'.format(json_filename))
         return data_dic
     if verbose:
-        log_debug('fs_load_JSON_file_dic() "{0}"'.format(json_filename))
+        log_debug('fs_load_JSON_file_dic() "{}"'.format(json_filename))
     with open(json_filename) as file:
         data_dic = json.load(file)
 
@@ -971,10 +975,10 @@ def fs_load_JSON_file_list(json_filename, verbose = True):
     # --- If file does not exist return empty dictionary ---
     data_list = []
     if not os.path.isfile(json_filename):
-        log_warning('fs_load_JSON_file_list() File not found "{0}"'.format(json_filename))
+        log_warning('fs_load_JSON_file_list() Not found "{}"'.format(json_filename))
         return data_list
     if verbose:
-        log_debug('fs_load_JSON_file_list() "{0}"'.format(json_filename))
+        log_debug('fs_load_JSON_file_list() "{}"'.format(json_filename))
     with open(json_filename) as file:
         data_list = json.load(file)
 
@@ -987,89 +991,89 @@ def fs_load_JSON_file_list(json_filename, verbose = True):
 def fs_write_JSON_file(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
-        log_debug('fs_write_JSON_file() "{0}"'.format(json_filename))
+        log_debug('fs_write_JSON_file() "{}"'.format(json_filename))
     try:
-        with io.open(json_filename, 'wt', encoding='utf-8') as file:
+        with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
             if OPTION_COMPACT_JSON:
                 file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True)))
             else:
                 file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
-                                              indent = 1, separators = (',', ':'))))
+                    indent = 1, separators = (',', ':'))))
     except OSError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (OSError)'.format(json_filename))
+                    'Cannot write {} file (OSError)'.format(json_filename))
     except IOError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (IOError)'.format(json_filename))
+                    'Cannot write {} file (IOError)'.format(json_filename))
     l_end = time.time()
     if verbose:
         write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file() Writing time {0:f} s'.format(write_time_s))
+        log_debug('fs_write_JSON_file() Writing time {:f} s'.format(write_time_s))
 
 def fs_write_JSON_file_pprint(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
-        log_debug('fs_write_JSON_file_pprint() "{0}"'.format(json_filename))
+        log_debug('fs_write_JSON_file_pprint() "{}"'.format(json_filename))
     try:
-        with io.open(json_filename, 'wt', encoding='utf-8') as file:
-            file.write(unicode(json.dumps(
-                json_data, ensure_ascii = False, sort_keys = True, indent = 1, separators = (', ', ' : '))))
+        with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
+            file.write(unicode(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
+                indent = 1, separators = (', ', ' : '))))
     except OSError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (OSError)'.format(json_filename))
+                    'Cannot write {} file (OSError)'.format(json_filename))
     except IOError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (IOError)'.format(json_filename))
+                    'Cannot write {} file (IOError)'.format(json_filename))
     l_end = time.time()
     if verbose:
         write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file_pprint() Writing time {0:f} s'.format(write_time_s))
+        log_debug('fs_write_JSON_file_pprint() Writing time {:f} s'.format(write_time_s))
 
 def fs_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
-        log_debug('fs_write_JSON_file_lowmem() "{0}"'.format(json_filename))
+        log_debug('fs_write_JSON_file_lowmem() "{}"'.format(json_filename))
     try:
         if OPTION_COMPACT_JSON:
             jobj = json.JSONEncoder(ensure_ascii = False, sort_keys = True)
         else:
             jobj = json.JSONEncoder(ensure_ascii = False, sort_keys = True,
-                                    indent = 1, separators = (',', ':'))
+                indent = 1, separators = (',', ':'))
         # --- Chunk by chunk JSON writer ---
-        with io.open(json_filename, 'wt', encoding='utf-8') as file:
+        with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
             for chunk in jobj.iterencode(json_data):
                 file.write(unicode(chunk))
     except OSError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (OSError)'.format(json_filename))
+                    'Cannot write {} file (OSError)'.format(json_filename))
     except IOError:
         kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {0} file (IOError)'.format(json_filename))
+                    'Cannot write {} file (IOError)'.format(json_filename))
     l_end = time.time()
     if verbose:
         write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file_lowmem() Writing time {0:f} s'.format(write_time_s))
+        log_debug('fs_write_JSON_file_lowmem() Writing time {:f} s'.format(write_time_s))
 
 # -------------------------------------------------------------------------------------------------
 # Generic file writer
 # str_list is a list of Unicode strings that will be joined and written to a file encoded in UTF-8.
+# Joining command is '\n'.join()
 # -------------------------------------------------------------------------------------------------
 def fs_write_str_list_to_file(str_list, export_FN):
-    log_verb('fs_write_str_list_to_file() Exporting OP "{0}"'.format(export_FN.getOriginalPath()))
-    log_verb('fs_write_str_list_to_file() Exporting  P "{0}"'.format(export_FN.getPath()))
+    log_verb('fs_write_str_list_to_file() Exporting OP "{}"'.format(export_FN.getOriginalPath()))
+    log_verb('fs_write_str_list_to_file() Exporting  P "{}"'.format(export_FN.getPath()))
     try:
-        full_string = ''.join(str_list).encode('utf-8')
-        file_obj = open(export_FN.getPath(), 'w')
-        file_obj.write(full_string)
+        file_obj = io.open(export_FN.getPath(), 'wt', encoding = 'utf-8')
+        file_obj.write('\n'.join(str_list))
         file_obj.close()
     except OSError:
         log_error('(OSError) exception in fs_write_str_list_to_file()')
-        log_error('Cannot write {0} file'.format(export_FN.getBase()))
-        raise AEL_Error('(OSError) Cannot write {0} file'.format(export_FN.getBase()))
+        log_error('Cannot write {} file'.format(export_FN.getBase()))
+        raise AEL_Error('(OSError) Cannot write {} file'.format(export_FN.getBase()))
     except IOError:
         log_error('(IOError) exception in fs_write_str_list_to_file()')
-        log_error('Cannot write {0} file'.format(export_FN.getBase()))
-        raise AEL_Error('(IOError) Cannot write {0} file'.format(export_FN.getBase()))
+        log_error('Cannot write {} file'.format(export_FN.getBase()))
+        raise AEL_Error('(IOError) Cannot write {} file'.format(export_FN.getBase()))
 
 # -------------------------------------------------------------------------------------------------
 # Threaded JSON loader
@@ -1123,7 +1127,7 @@ def fs_extract_MAME_version(PATHS, mame_prog_FN):
 #
 def fs_count_MAME_machines_modern(XML_path_FN):
     log_debug('fs_count_MAME_machines_modern() BEGIN ...')
-    log_debug('XML "{0}"'.format(XML_path_FN.getPath()))
+    log_debug('XML "{}"'.format(XML_path_FN.getPath()))
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher', 'Counting number of MAME machines ...')
@@ -1137,6 +1141,9 @@ def fs_count_MAME_machines_modern(XML_path_FN):
 
     return num_machines
 
+#
+# Older version fo MAME use <game> instead of <machine>
+#
 def fs_count_MAME_machines_archaic(XML_path_FN):
     log_debug('fs_count_MAME_machines_archaic() BEGIN ...')
     log_debug('XML "{0}"'.format(XML_path_FN.getPath()))
@@ -1173,10 +1180,10 @@ def fs_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
     # Extract XML from MAME executable.
     mame_prog_FN = FileName(settings['mame_prog'])
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
-    log_info('fs_extract_MAME_XML() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
-    log_info('fs_extract_MAME_XML() Saving XML   "{0}"'.format(PATHS.MAME_XML_PATH.getPath()))
-    log_debug('fs_extract_MAME_XML() mame_dir     "{0}"'.format(mame_dir))
-    log_debug('fs_extract_MAME_XML() mame_exec    "{0}"'.format(mame_exec))
+    log_info('fs_extract_MAME_XML() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
+    log_info('fs_extract_MAME_XML() Saving XML   "{}"'.format(PATHS.MAME_XML_PATH.getPath()))
+    log_debug('fs_extract_MAME_XML() mame_dir     "{}"'.format(mame_dir))
+    log_debug('fs_extract_MAME_XML() mame_exec    "{}"'.format(mame_exec))
     pDialog = xbmcgui.DialogProgress()
     pDialog_canceled = False
     pDialog.create('Advanced MAME Launcher',
@@ -1199,14 +1206,14 @@ def fs_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
     log_info('fs_extract_MAME_XML() Counting number of machines ...')
     total_machines = fs_count_MAME_machines_modern(PATHS.MAME_XML_PATH)
     options_dic['total_machines'] = total_machines
-    log_info('fs_extract_MAME_XML() Found {0} machines.'.format(total_machines))
+    log_info('fs_extract_MAME_XML() Found {} machines.'.format(total_machines))
 
     # -----------------------------------------------------------------------------
     # Reset MAME control dictionary completely
     # -----------------------------------------------------------------------------
     AML_version_int = fs_AML_version_str_to_int(AML_version_str)
-    log_info('fs_extract_MAME_XML() AML version str "{0}"'.format(AML_version_str))
-    log_info('fs_extract_MAME_XML() AML version int {0}'.format(AML_version_int))
+    log_info('fs_extract_MAME_XML() AML version str "{}"'.format(AML_version_str))
+    log_info('fs_extract_MAME_XML() AML version int {}'.format(AML_version_int))
     control_dic = fs_new_control_dic()
     change_control_dic(control_dic, 'ver_AML', AML_version_int)
     change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
@@ -1321,7 +1328,7 @@ def fs_set_Sample_flag(m_dic, new_Sample_flag):
 # -------------------------------------------------------------------------------------------------
 # Hash database with 256 elements (2 hex digits)
 def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_render):
-    log_info('fs_build_main_hashed_db() Building main hashed database ...')
+    log_info('fs_build_main_hashed_db() Building main hashed database...')
 
     # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
     # A) First create an index
@@ -1342,8 +1349,7 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
     distributed_db_files = []
     for u in range(len(hex_digits)):
         for v in range(len(hex_digits)):
-            db_str = '{0}{1}'.format(hex_digits[u], hex_digits[v])
-            distributed_db_files.append(db_str)
+            distributed_db_files.append('{}{}'.format(hex_digits[u], hex_digits[v]))
     pDialog.create('Advanced MAME Launcher', 'Building main hashed database JSON files ...')
     num_items = len(distributed_db_files)
     item_count = 0
@@ -1364,7 +1370,7 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
         pDialog.update(int((item_count*100) / num_items))
     pDialog.close()
 
-    # --- Timestamp ---
+    # Update timestamp in control_dic.
     change_control_dic(control_dic, 't_MAME_machine_hash', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
@@ -1401,8 +1407,7 @@ def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
     distributed_db_files = []
     for u in range(len(hex_digits)):
         for v in range(len(hex_digits)):
-            db_str = '{0}{1}'.format(hex_digits[u], hex_digits[v])
-            distributed_db_files.append(db_str)
+            distributed_db_files.append('{}{}'.format(hex_digits[u], hex_digits[v]))
     pDialog.create('Advanced MAME Launcher', 'Building asset hashed database JSON files ...')
     num_items = len(distributed_db_files)
     item_count = 0
@@ -1444,7 +1449,7 @@ def fs_render_cache_get_hash(catalog_name, category_name):
     return hashlib.md5(prop_key).hexdigest()
 
 def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machines_render):
-    log_info('fs_build_render_cache() Initialising ...')
+    log_info('fs_build_render_cache() Initialising...')
 
     # --- Clean 'cache' directory JSON ROM files ---
     log_info('Cleaning dir "{0}"'.format(PATHS.CACHE_DIR.getPath()))
@@ -1514,17 +1519,17 @@ def fs_load_render_dic_all(PATHS, cache_index_dic, catalog_name, category_name):
 # MAME asset cache
 # -------------------------------------------------------------------------------------------------
 def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_dic):
-    log_info('fs_build_asset_cache() Initialising ...')
+    log_info('fs_build_asset_cache() Initialising...')
 
     # --- Clean 'cache' directory JSON Asset files ---
-    log_info('Cleaning dir "{0}"'.format(PATHS.CACHE_DIR.getPath()))
+    log_info('Cleaning dir "{}"'.format(PATHS.CACHE_DIR.getPath()))
     pdialog_line1 = 'Cleaning old cache JSON files ...'
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher', pdialog_line1, ' ')
     pDialog.update(0, pdialog_line1)
     file_list = os.listdir(PATHS.CACHE_DIR.getPath())
     num_files = len(file_list)
-    log_info('Found {0} files'.format(num_files))
+    log_info('Found {} files'.format(num_files))
     processed_items = 0
     deleted_items = 0
     for file in file_list:
@@ -1538,7 +1543,7 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
     pDialog.close()
     log_info('Deleted {0} files'.format(deleted_items))
 
-    # --- Build cache ---
+    # --- Build MAME asset cache ---
     pDialog.create('Advanced MAME Launcher', ' ', ' ')
     num_catalogs = len(cache_index_dic)
     catalog_count = 1
@@ -1563,14 +1568,11 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
                 m_assets_all_dic[machine_name] = assets_dic[machine_name]
             ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
             fs_write_JSON_file(ROMs_all_FN.getPath(), m_assets_all_dic, verbose = False)
-
-            # >> Progress dialog
             item_count += 1
-        # >> Progress dialog
         catalog_count += 1
     pDialog.close()
 
-    # --- Timestamp ---
+    # Update timestamp and save control_dic.
     change_control_dic(control_dic, 't_MAME_asset_cache_build', time.time())
     fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
@@ -1588,7 +1590,7 @@ def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
 # Returns a dictionary with the context of the loaded files.
 #
 def fs_load_files(db_files):
-    log_debug('fs_load_files() Loading {0} JSON database files ...\n'.format(len(db_files)))
+    log_debug('fs_load_files() Loading {} JSON database files ...\n'.format(len(db_files)))
     db_dic = {}
     line1_str = 'Loading databases ...'
     num_items = len(db_files)
@@ -1617,9 +1619,7 @@ def fs_save_files(db_files, json_write_func = fs_write_JSON_file):
     pDialog = xbmcgui.DialogProgress()
     pDialog.create('Advanced MAME Launcher')
     for f_item in db_files:
-        dict_data = f_item[0]
-        db_name  = f_item[1]
-        db_path  = f_item[2]
+        dict_data, db_name, db_path = f_item
         pDialog.update(int((item_count*100) / num_items), line1_str, db_name)
         json_write_func(db_path, dict_data)
         item_count += 1
@@ -1634,7 +1634,7 @@ def fs_save_files(db_files, json_write_func = fs_write_JSON_file):
 def fs_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_render, assets_dic):
     log_verb('fs_export_Read_Only_Launcher() File "{0}"'.format(export_FN.getPath()))
 
-    # --- Create list of strings ---
+    # Create list of strings.
     str_list = []
     str_list.append('<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n')
     str_list.append('<!-- Exported by AML on {0} -->\n'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
@@ -1649,5 +1649,5 @@ def fs_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_rend
         str_list.append('</machine>\n')
     str_list.append('</advanced_MAME_launcher_virtual_launcher>\n')
 
-    # >> Export file. Strings in the list are Unicode. Encode to UTF-8 when writing to file.
+    # Export file. Strings in the list are Unicode. Encode to UTF-8 when writing to file.
     fs_write_str_list_to_file(str_list, export_FN)
