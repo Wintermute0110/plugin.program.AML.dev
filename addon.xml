@@ -2,10 +2,12 @@
 <addon id="plugin.program.AML.dev" name="Advanced MAME Launcher (dev version)" version="0.10.0-alpha" provider-name="Wintermute0110">
     <requires>
         <!--
-            Check addon versions in https://github.com/xbmc/xbmc/tree/master/addons
+            Check main addon versions in https://github.com/xbmc/xbmc/tree/master/addons
             Change the branch according to the Kodi version.
+            Kodi 17 Krypton | xbmc.python 2.25.0 | script.module.pil 1.1.7
+            Kodi 18 Leia    | xbmc.python 2.26.0 | script.module.pil 1.1.7
+            Kodi 19 Matrix  | xbmc.python 3.0.0  | script.module.pil 5.1.0
         -->
-        <!-- 2.25.0 Krypton 17 -->
         <import addon="xbmc.python" version="2.25.0" />
         <import addon="script.module.pil" version="1.1.7" />
     </requires>
@@ -14,8 +16,7 @@
     </extension>
     <extension point="xbmc.addon.metadata">
         <!--
-            This must be commented when releasing the addon.
-            Kodi must be restarted if this setting is changed.
+            This must be commented when releasing the addon. Kodi must be restarted if this setting is changed.
             See https://github.com/xbmc/xbmc/pull/13814
         -->
         <!-- <reuselanguageinvoker>false</reuselanguageinvoker> -->

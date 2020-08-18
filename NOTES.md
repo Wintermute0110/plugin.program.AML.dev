@@ -1,3 +1,5 @@
+[Kodi Documentation (codedocs)](https://codedocs.xyz/xbmc/xbmc/)
+
 ## AML and Python 2 (Kodi Krypton and Leia) / Python 3 (Kodi Matrix)
 
  * AML releases `0.9.x` and `0.10.x` will be **Python 2** for Kodi Krypton and Kodi Leia. **Python 2** code will be in branch `python2`.
@@ -5,6 +7,56 @@
  * AML releases `1.x.y` will be **Pyhton 3** for Kodi Matrix and up. **Pyhton 3** code will be in branch `master`.
 
  * From now on (August 2020), focus will be on release `1.x.y`. Make some features from **Pyhton 3** will be backported to **Python 2**.
+
+## Porting Python 2 to Pyhton 3 ##
+
+**Language specific issues**
+
+ * The `urlparse` module is renamed to `urllib.parse` in Python 3.
+
+ * The `StringIO` modules is gone. Use `io.StringIO` and `io.BytesIO`.
+
+ * Python 2 unicode object is str object in Python 3. Python 2 str object is bytes in Python 3.
+
+ * Python 2 dict.iteritems() must be converted to dict.items() 
+
+   [StackOverflow: When should iteritems() be used instead of items()?](https://stackoverflow.com/questions/13998492/when-should-iteritems-be-used-instead-of-items)
+
+ * Python 2 iterator method .next() is built-in function next(iterator) or .__next__() method in Python 3.
+
+ * `xml.etree.cElementTree` is deprecated. It will be used automatically by `xml.etree.ElementTree` whenever available.
+
+**Kodi specific issues**
+
+ * AML Python 2 is Krypton compatible. This means in Python 3 all the API updates can be applied.
+
+ * Kodi functions now take/return Unicode strings (str type in Python 3)
+
+   [Kodi six](https://github.com/romanvm/kodi.six)
+
+ * Leia change: Addon setting functions getSettingBool(), getSettingInt(), etc.
+
+ * Matrix change: Addon settings *should* be converted. The old settings are deprecated, quoting from the wiki: "Deprecated - Addons submitted to the Kodi 19 Matrix (and up) can use the new setting format. See Add-on_settings_conversion."
+
+   [Kodi wiki: Add-on settings](https://kodi.wiki/view/Add-on_settings) [Kodi wiki: Addon settings conversion](https://kodi.wiki/view/Add-on_settings_conversion) [Kodi Matrix alpha 1, addon settings do not show](https://forum.kodi.tv/showthread.php?tid=356245)
+
+ * Matrix change: `XBMC.RunPlugin({}?command={})` must be changed to `XBMC.RunPlugin({}?command={})`.
+
+ * Matrix change: `xbmcgui.Dialog().yesno()` add support for custom button.
+
+ * Matrix change: `xbmcgui.Dialog().yesno()`, `.cancel()`, `.ok()`, `xbmcgui.DialogProgress().create()`, `.update()`, Removed Line2, Line3.
+
+   All progress dialogs (search for `pDialog.create()` in the code) must use the new `KodiProgressDialog()` class.
+
+**References**
+
+[The Conservative Python 3 Porting Guide](https://portingguide.readthedocs.io/en/latest/index.html)
+
+[Kodi forum: Changes to the python API for Kodi Matrix](https://forum.kodi.tv/showthread.php?tid=344263)
+
+[Kodi forum: Changes to the python API for Kodi Leia](https://forum.kodi.tv/showthread.php?tid=303073)
+
+[Processing Text Files in Python 3](http://python-notes.curiousefficiency.org/en/latest/python3/text_file_processing.html)
 
 ## Installing multiple Kodi versions in Windows for development ##
 

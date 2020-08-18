@@ -1,5 +1,5 @@
-#!/usr/bin/python -B
-#
+#!/usr/bin/python2 -B
+
 import pprint
 import re
 import sys

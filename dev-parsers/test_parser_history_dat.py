@@ -1,5 +1,5 @@
-#!/usr/bin/python -B
-#
+#!/usr/bin/python2 -B
+
 import json
 import pprint
 import re
@@ -78,7 +78,7 @@ def misc_build_db_str_3(str1, str2, str3):
 #    },
 # }
 def mame_load_History_DAT(filename):
-    log_info('mame_load_History_DAT() Parsing "{0}"'.format(filename))
+    log_info('mame_load_History_DAT() Parsing "{}"'.format(filename))
     version_str = 'Not found'
     history_idx_dic = {}
     history_dic = {}
@@ -107,13 +107,13 @@ def mame_load_History_DAT(filename):
     try:
         f = open(filename, 'rt')
     except IOError:
-        log_info('mame_load_History_DAT() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_History_DAT() (IOError) opening "{}"'.format(filename))
         return (history_idx_dic, history_dic, version_str)
     for file_line in f:
         line_number += 1
         stripped_line = file_line.strip()
         line_str = stripped_line.decode('utf-8', 'replace')
-        if __debug_function: log_debug('Line "{0}"'.format(line_str))
+        if __debug_function: log_debug('Line "{}"'.format(line_str))
         if read_status == 0:
             # Skip comments: lines starting with '##'
             # Look for version string in comments
