@@ -10,6 +10,14 @@
 
 ## Porting Python 2 to Pyhton 3 ##
 
+**TODO**
+
+Remove tasks once finished.
+
+ * Create a function in `disk_IO.py` to write text files, arguments filename and slist. Use this function to write al reports and text files. Use `io.open`.
+
+ * Call function in `utils_kodi` to display text window.
+
 **Language specific issues**
 
  * The `urlparse` module is renamed to `urllib.parse` in Python 3.
@@ -25,6 +33,8 @@
  * Python 2 iterator method .next() is built-in function next(iterator) or .__next__() method in Python 3.
 
  * `xml.etree.cElementTree` is deprecated. It will be used automatically by `xml.etree.ElementTree` whenever available.
+
+ * Use `io.open()` and not built-in `open()` in Python 2. `io.open()` in Python 2 supports the `encoding` argument and it's compatible with Python 3 `io.open()`. Moreover, in Python 3 `open()` is an alias of `io.open()`.
 
 **Kodi specific issues**
 
