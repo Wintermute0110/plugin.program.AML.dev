@@ -48,10 +48,6 @@
 
    All progress dialogs (search for `pDialog.create()` in the code) must use the new `KodiProgressDialog()` class.
 
-**TODO (remove items in this list when done)**
-
- * The filter parsers must be adapted to Python 3. Currently, `Setup custom filters` -> `Build custom filter databases` is not working. Also change files in `ADDON-ROOT/dev-parsers/`.
-
 **References**
 
 [The Conservative Python 3 Porting Guide](https://portingguide.readthedocs.io/en/latest/index.html)
