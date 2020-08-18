@@ -10,6 +10,14 @@
 
 ## Porting Python 2 to Pyhton 3 ##
 
+**TODO**
+
+Remove tasks once finished.
+
+ * Create a function in `disk_IO.py` to write text files, arguments filename and slist. Use this function to write al reports and text files. Use `io.open`.
+
+ * Call function in `utils_kodi` to display text window.
+
 **Language specific issues**
 
  * The `urlparse` module is renamed to `urllib.parse` in Python 3.
