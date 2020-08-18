@@ -26,6 +26,8 @@
 
  * `xml.etree.cElementTree` is deprecated. It will be used automatically by `xml.etree.ElementTree` whenever available.
 
+ * Use `io.open()` and not built-in `open()` in Python 2. `io.open()` in Python 2 supports the `encoding` argument and it's compatible with Python 3 `io.open()`. Moreover, in Python 3 `open()` is an alias of `io.open()`.
+
 **Kodi specific issues**
 
  * AML Python 2 is Krypton compatible. This means in Python 3 all the API updates can be applied.
