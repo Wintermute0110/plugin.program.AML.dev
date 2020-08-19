@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Advanced MAME Launcher graphics plotting functions.
-
 # Copyright (c) 2016-2020 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -13,11 +11,12 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# Advanced MAME Launcher graphics plotting functions.
+
 # --- Modules/packages in this addon ---
 from .constants import *
 from .disk_IO import *
 from .utils import *
-from .utils_kodi import *
 
 # --- Python standard library ---
 import collections

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Advanced MAME Launcher PDF/CBZ/CBR manual image extraction.
-
 # Copyright (c) 2016-2020 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -13,26 +11,11 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# Advanced MAME Launcher PDF/CBZ/CBR manual image extraction.
+
 # --- Modules/packages in this plugin ---
 from .utils import *
-from .utils_kodi import *
 from .disk_IO import *
-
-# --- Python standard library ---
-# NOTE String literals are needed in this file so unicode_literals cannot be defined.
-#      Is this because of the PDF library???
-import io
-import pprint
-import struct
-import time
-import types
-import zlib
-
-try:
-    from PIL import Image
-    PYTHON_PIL_AVAILABLE = True
-except:
-    PYTHON_PIL_AVAILABLE = False
 
 # --- Kodi stuff ---
 import xbmcaddon
@@ -44,6 +27,21 @@ sys.path.insert(0, pdfrw_FN.getPath())
 from pdfrw import PdfReader
 from pdfrw.objects.pdfarray import PdfArray
 from pdfrw.objects.pdfname import BasePdfName
+
+# --- Python standard library ---
+# NOTE String literals are needed in this file so unicode_literals cannot be defined.
+#      Is this because of the PDF library???
+import io
+import pprint
+import struct
+import time
+import types
+import zlib
+try:
+    from PIL import Image
+    PYTHON_PIL_AVAILABLE = True
+except:
+    PYTHON_PIL_AVAILABLE = False
 
 # -------------------------------------------------------------------------------------------------
 # pdfrw module code

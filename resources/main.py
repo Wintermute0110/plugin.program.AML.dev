@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Advanced MAME Launcher main script file.
-
 # Copyright (c) 2016-2020 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -12,6 +10,8 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
+
+# Advanced MAME Launcher main script file.
 
 # First include modules in this package. 
 # Then include Kodi modules.
@@ -26,7 +26,6 @@
 from .constants import *
 from .assets import *
 from .utils import *
-from .utils_kodi import *
 from .disk_IO import *
 from .filters import *
 from .mame import *
