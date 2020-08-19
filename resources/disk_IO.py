@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Advanced MAME Launcher filesystem I/O functions.
-
 # Copyright (c) 2016-2020 Wintermute0110 <wintermute0110@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -13,24 +11,23 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU General Public License for more details.
 
+# Advanced MAME Launcher high-level filesystem I/O functions and database model.
+#
+# In the future this module must strictly use the FileName class for all IO operations and
+# not the Python runtime.
+
 # --- AEL packages ---
 from .constants import *
 from .utils import *
-from .utils_kodi import *
 
 # --- Python standard library ---
-import codecs
 import copy
 import io
-import json
 import re
 import subprocess
 import threading
 import time
 import xml.etree.ElementTree as ET
-
-# import gc
-# import resource # Module not available on Windows
 
 # -------------------------------------------------------------------------------------------------
 # Advanced MAME Launcher data model
@@ -952,147 +949,6 @@ def fs_locate_idx_by_SL_item_name(object_list, SL_name, SL_ROM_name):
     return object_index
 
 # -------------------------------------------------------------------------------------------------
-# JSON write/load
-# -------------------------------------------------------------------------------------------------
-def fs_load_JSON_file_dic(json_filename, verbose = True):
-    # --- If file does not exist return empty dictionary ---
-    data_dic = {}
-    if not os.path.isfile(json_filename):
-        log_warning('fs_load_JSON_file_dic() Not found "{}"'.format(json_filename))
-        return data_dic
-    if verbose:
-        log_debug('fs_load_JSON_file_dic() "{}"'.format(json_filename))
-    with open(json_filename) as file:
-        data_dic = json.load(file)
-
-    return data_dic
-
-def fs_load_JSON_file_list(json_filename, verbose = True):
-    # --- If file does not exist return empty dictionary ---
-    data_list = []
-    if not os.path.isfile(json_filename):
-        log_warning('fs_load_JSON_file_list() Not found "{}"'.format(json_filename))
-        return data_list
-    if verbose:
-        log_debug('fs_load_JSON_file_list() "{}"'.format(json_filename))
-    with open(json_filename) as file:
-        data_list = json.load(file)
-
-    return data_list
-
-#
-# This consumes a lot of memory but it is fast.
-# See https://stackoverflow.com/questions/24239613/memoryerror-using-json-dumps
-#
-def fs_write_JSON_file(json_filename, json_data, verbose = True):
-    l_start = time.time()
-    if verbose:
-        log_debug('fs_write_JSON_file() "{}"'.format(json_filename))
-    try:
-        with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
-            if OPTION_COMPACT_JSON:
-                file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True))
-            else:
-                file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
-                    indent = 1, separators = (',', ':')))
-    except OSError:
-        kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {} file (OSError)'.format(json_filename))
-    except IOError:
-        kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {} file (IOError)'.format(json_filename))
-    l_end = time.time()
-    if verbose:
-        write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file() Writing time {:f} s'.format(write_time_s))
-
-def fs_write_JSON_file_pprint(json_filename, json_data, verbose = True):
-    l_start = time.time()
-    if verbose:
-        log_debug('fs_write_JSON_file_pprint() "{}"'.format(json_filename))
-    try:
-        with io.open(json_filename, 'wt', encoding='utf-8') as file:
-            file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
-                indent = 1, separators = (', ', ' : ')))
-    except OSError:
-        kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {} file (OSError)'.format(json_filename))
-    except IOError:
-        kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {} file (IOError)'.format(json_filename))
-    l_end = time.time()
-    if verbose:
-        write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file_pprint() Writing time {:f} s'.format(write_time_s))
-
-def fs_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
-    l_start = time.time()
-    if verbose:
-        log_debug('fs_write_JSON_file_lowmem() "{}"'.format(json_filename))
-    try:
-        if OPTION_COMPACT_JSON:
-            jobj = json.JSONEncoder(ensure_ascii = False, sort_keys = True)
-        else:
-            jobj = json.JSONEncoder(ensure_ascii = False, sort_keys = True,
-                indent = 1, separators = (',', ':'))
-        # --- Chunk by chunk JSON writer ---
-        with io.open(json_filename, 'wt', encoding='utf-8') as file:
-            for chunk in jobj.iterencode(json_data):
-                file.write(str(chunk))
-    except OSError:
-        kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {} file (OSError)'.format(json_filename))
-    except IOError:
-        kodi_notify('Advanced MAME Launcher',
-                    'Cannot write {} file (IOError)'.format(json_filename))
-    l_end = time.time()
-    if verbose:
-        write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file_lowmem() Writing time {:f} s'.format(write_time_s))
-
-# -------------------------------------------------------------------------------------------------
-# Generic file writer
-# str_list is a list of Unicode strings that will be joined and written to a file encoded in UTF-8.
-# Joining command is '\n'.join()
-# -------------------------------------------------------------------------------------------------
-def fs_write_str_list_to_file(str_list, export_FN):
-    log_verb('fs_write_str_list_to_file() Exporting OP "{}"'.format(export_FN.getOriginalPath()))
-    log_verb('fs_write_str_list_to_file() Exporting  P "{}"'.format(export_FN.getPath()))
-    try:
-        file_obj = open(export_FN.getPath(), 'wt', encoding = 'utf-8')
-        file_obj.write('\n'.join(str_list))
-        file_obj.close()
-    except OSError:
-        log_error('(OSError) exception in fs_write_str_list_to_file()')
-        log_error('Cannot write {} file'.format(export_FN.getBase()))
-        raise AEL_Error('(OSError) Cannot write {} file'.format(export_FN.getBase()))
-    except IOError:
-        log_error('(IOError) exception in fs_write_str_list_to_file()')
-        log_error('Cannot write {} file'.format(export_FN.getBase()))
-        raise AEL_Error('(IOError) Cannot write {} file'.format(export_FN.getBase()))
-
-# -------------------------------------------------------------------------------------------------
-# Threaded JSON loader
-# -------------------------------------------------------------------------------------------------
-# How to use this code:
-#     render_thread = Threaded_Load_JSON(PATHS.RENDER_DB_PATH.getPath())
-#     assets_thread = Threaded_Load_JSON(PATHS.MAIN_ASSETS_DB_PATH.getPath())
-#     render_thread.start()
-#     assets_thread.start()
-#     render_thread.join()
-#     assets_thread.join()
-#     MAME_db_dic     = render_thread.output_dic
-#     MAME_assets_dic = assets_thread.output_dic
-#
-class Threaded_Load_JSON(threading.Thread):
-    def __init__(self, json_filename): 
-        threading.Thread.__init__(self) 
-        self.json_filename = json_filename
- 
-    def run(self): 
-        self.output_dic = fs_load_JSON_file_dic(self.json_filename)
-
-# -------------------------------------------------------------------------------------------------
 def fs_extract_MAME_version(PATHS, mame_prog_FN):
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
     log_info('fs_extract_MAME_version() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
@@ -1107,8 +963,7 @@ def fs_extract_MAME_version(PATHS, mame_prog_FN):
     # filesize = statinfo.st_size
 
     # --- Read version ---
-    with open(PATHS.MAME_STDOUT_VER_PATH.getPath()) as f:
-        lines = f.readlines()
+    lines = utils_load_file_to_slist(PATHS.MAME_STDOUT_VER_PATH.getPath()):
     version_str = ''
     for line in lines:
         m = re.search('^MAME v([0-9\.]+?) \(([a-z0-9]+?)\)$', line.strip())
@@ -1607,6 +1462,4 @@ def fs_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_rend
         str_list.append(XML_text('cabinet', assets_dic[m_name]['cabinet']))
         str_list.append('</machine>\n')
     str_list.append('</advanced_MAME_launcher_virtual_launcher>\n')
-
-    # Export file. Strings in the list are Unicode. Encode to UTF-8 when writing to file.
-    fs_write_str_list_to_file(str_list, export_FN)
+    utils_write_str_list_to_file(str_list, export_FN)
