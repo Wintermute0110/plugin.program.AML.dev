@@ -104,17 +104,17 @@ def perspective_coefficients(source_coords, target_coords):
         t = [float(i) for i in t]
         A.append([t[0], t[1], 1, 0, 0, 0, -s[0]*t[0], -s[0]*t[1]])
         A.append([0, 0, 0, t[0], t[1], 1, -s[1]*t[0], -s[1]*t[1]])
-    # print('A =\n{0}'.format(pprint.pformat(A)))
+    # print('A =\n{}'.format(pprint.pformat(A)))
 
     B = [float(item) for sublist in source_coords for item in sublist]
-    # print('B =\n{0}'.format(pprint.pformat(B)))
+    # print('B =\n{}'.format(pprint.pformat(B)))
 
     A_T = math_MatrixTranspose(A)
     A_T_A = math_MatrixProduct(A_T, A)
     A_T_A_inv = math_MatrixInverse(A_T_A)
     A_T_A_inv_A_T = math_MatrixProduct(A_T_A_inv, A_T)
     res = math_MatrixProduct_Column(A_T_A_inv_A_T, B)
-    # print('res =\n{0}'.format(pprint.pformat(res)))
+    # print('res =\n{}'.format(pprint.pformat(res)))
 
     return res
 
@@ -129,7 +129,7 @@ def project_texture(img_boxfront, coordinates, CANVAS_SIZE, rotate = False):
 
     # --- Info ---
     width, height = img_boxfront.size
-    # print('Image width {0}, height {1}'.format(width, height))
+    # print('Image width {}, height {}'.format(width, height))
 
     # --- Transform ---
     # Conver list of lists to list of tuples

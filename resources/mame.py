@@ -237,16 +237,16 @@ def mame_get_numerical_version(mame_version_str):
         minor = int(m_obj_old.group(2))
         beta  = int(m_obj_old.group(3))
         release_flag = 1
-        # log_verb('mame_get_numerical_version() major = {0}'.format(major))
-        # log_verb('mame_get_numerical_version() minor = {0}'.format(minor))
-        # log_verb('mame_get_numerical_version() beta  = {0}'.format(beta))
+        # log_verb('mame_get_numerical_version() major = {}'.format(major))
+        # log_verb('mame_get_numerical_version() minor = {}'.format(minor))
+        # log_verb('mame_get_numerical_version() beta  = {}'.format(beta))
         version_int = major * 1000000 + minor * 1000 + release_flag * 100 + beta
     elif m_obj_modern:
         major = int(m_obj_modern.group(1))
         minor = int(m_obj_modern.group(2))
         release_flag = 5
-        # log_verb('mame_get_numerical_version() major = {0}'.format(major))
-        # log_verb('mame_get_numerical_version() minor = {0}'.format(minor))
+        # log_verb('mame_get_numerical_version() major = {}'.format(major))
+        # log_verb('mame_get_numerical_version() minor = {}'.format(minor))
         version_int = major * 1000000 + minor * 1000 + release_flag * 100
     else:
         log_error('MAME version "{}" cannot be parsed.'.format(mame_version_str))
@@ -274,7 +274,7 @@ def mame_get_numerical_version(mame_version_str):
 #
 def mame_load_Catver_ini(filename):
     __debug_do_list_categories = False
-    log_info('mame_load_Catver_ini() Parsing "{0}"'.format(filename))
+    log_info('mame_load_Catver_ini() Parsing "{}"'.format(filename))
     catver_dic = {
         'version' : 'unknown',
         'unique_categories' : True,
@@ -303,7 +303,7 @@ def mame_load_Catver_ini(filename):
         f = open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_error('mame_load_Catver_ini() Exception IOError')
-        log_error('mame_load_Catver_ini() File "{0}"'.format(filename))
+        log_error('mame_load_Catver_ini() File "{}"'.format(filename))
         return (catver_dic, veradded_dic)
     for cat_line in f:
         stripped_line = cat_line.strip()
@@ -380,14 +380,14 @@ def mame_load_Catver_ini(filename):
             veradded_dic['data'][m_name] = veradded_dic['data'][m_name][0]
     log_info('mame_load_Catver_ini() Catver Machines   {0:6d}'.format(len(catver_dic['data'])))
     log_info('mame_load_Catver_ini() Catver Categories {0:6d}'.format(len(catver_dic['categories'])))
-    log_info('mame_load_Catver_ini() Catver Version "{0}"'.format(catver_dic['version']))
-    log_info('mame_load_Catver_ini() Catver unique_categories {0}'.format(catver_dic['unique_categories']))
-    log_info('mame_load_Catver_ini() Catver single_category   {0}'.format(catver_dic['single_category']))
+    log_info('mame_load_Catver_ini() Catver Version "{}"'.format(catver_dic['version']))
+    log_info('mame_load_Catver_ini() Catver unique_categories {}'.format(catver_dic['unique_categories']))
+    log_info('mame_load_Catver_ini() Catver single_category   {}'.format(catver_dic['single_category']))
     log_info('mame_load_Catver_ini() Veradded Machines   {0:6d}'.format(len(veradded_dic['data'])))
     log_info('mame_load_Catver_ini() Veradded Categories {0:6d}'.format(len(veradded_dic['categories'])))
-    log_info('mame_load_Catver_ini() Veradded Version "{0}"'.format(veradded_dic['version']))
-    log_info('mame_load_Catver_ini() Veradded unique_categories {0}'.format(veradded_dic['unique_categories']))
-    log_info('mame_load_Catver_ini() Veradded single_category   {0}'.format(veradded_dic['single_category']))
+    log_info('mame_load_Catver_ini() Veradded Version "{}"'.format(veradded_dic['version']))
+    log_info('mame_load_Catver_ini() Veradded unique_categories {}'.format(veradded_dic['unique_categories']))
+    log_info('mame_load_Catver_ini() Veradded single_category   {}'.format(veradded_dic['single_category']))
 
     return (catver_dic, veradded_dic)
 
@@ -403,7 +403,7 @@ def mame_load_Catver_ini(filename):
 #
 def mame_load_nplayers_ini(filename):
     __debug_do_list_categories = False
-    log_info('mame_load_nplayers_ini() Parsing "{0}"'.format(filename))
+    log_info('mame_load_nplayers_ini() Parsing "{}"'.format(filename))
     ini_dic = {
         'version' : 'unknown',
         'unique_categories' : True,
@@ -421,7 +421,7 @@ def mame_load_nplayers_ini(filename):
     try:
         f = open(filename, 'rt', encoding = 'utf-8')
     except IOError:
-        log_info('mame_load_nplayers_ini() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_nplayers_ini() (IOError) opening "{}"'.format(filename))
         return ini_dic
     for cat_line in f:
         stripped_line = cat_line.strip()
@@ -439,15 +439,15 @@ def mame_load_nplayers_ini(filename):
                 continue
             else:
                 machine_name, current_category = str(line_list[0]), str(line_list[1])
-                if __debug_do_list_categories: log_debug('"{0}" / "{1}"'.format(machine_name, current_category))
+                if __debug_do_list_categories: log_debug('"{}" / "{}"'.format(machine_name, current_category))
                 ini_dic['categories'].add(current_category)
                 if machine_name in ini_dic['data']:
                     # Force a single category to avoid nplayers.ini bugs.
                     pass
                     # ini_dic['data'][machine_name].add(current_category)
-                    # log_debug('machine "{0}"'.format(machine_name))
-                    # log_debug('current_category "{0}"'.format(current_category))
-                    # log_debug('"{0}"'.format(str(ini_dic['data'][machine_name])))
+                    # log_debug('machine "{}"'.format(machine_name))
+                    # log_debug('current_category "{}"'.format(current_category))
+                    # log_debug('"{}"'.format(str(ini_dic['data'][machine_name])))
                     # raise ValueError('unique_categories False')
                 else:
                     ini_dic['data'][machine_name] =  [current_category]
@@ -469,15 +469,15 @@ def mame_load_nplayers_ini(filename):
             ini_dic['data'][m_name] = ini_dic['data'][m_name][0]
     log_info('mame_load_nplayers_ini() Machines   {0:6d}'.format(len(ini_dic['data'])))
     log_info('mame_load_nplayers_ini() Categories {0:6d}'.format(len(ini_dic['categories'])))
-    log_info('mame_load_nplayers_ini() Version "{0}"'.format(ini_dic['version']))
-    log_info('mame_load_nplayers_ini() unique_categories {0}'.format(ini_dic['unique_categories']))
-    log_info('mame_load_nplayers_ini() single_category   {0}'.format(ini_dic['single_category']))
+    log_info('mame_load_nplayers_ini() Version "{}"'.format(ini_dic['version']))
+    log_info('mame_load_nplayers_ini() unique_categories {}'.format(ini_dic['unique_categories']))
+    log_info('mame_load_nplayers_ini() single_category   {}'.format(ini_dic['single_category']))
 
     # DEBUG: print machines with more than one category.
     # for m_name in sorted(ini_dic['data']):
     #     if len(ini_dic['data'][m_name]) > 1:
     #         for cat_name in ini_dic['data'][m_name]:
-    #             log_debug('machine {0} nplayers {1}'.format(m_name, cat_name))
+    #             log_debug('machine {} nplayers {}'.format(m_name, cat_name))
 
     return ini_dic
 
@@ -491,7 +491,7 @@ def mame_load_Mature_ini(filename):
                           # Initial status.
     FSM_FOLDER_NAME = 1   # Searching for [category_name] and/or adding machines.
 
-    log_info('mame_load_Mature_ini() Parsing "{0}"'.format(filename))
+    log_info('mame_load_Mature_ini() Parsing "{}"'.format(filename))
     ini_dic = {
         'version' : 'unknown',
         'unique_categories' : True,
@@ -509,7 +509,7 @@ def mame_load_Mature_ini(filename):
             slist.append(stripped_line)
         f.close()
     except IOError:
-        log_info('mame_load_Mature_ini() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_Mature_ini() (IOError) opening "{}"'.format(filename))
         return ini_dic
 
     fsm_status = FSM_HEADER
@@ -518,7 +518,7 @@ def mame_load_Mature_ini(filename):
             # Skip comments: lines starting with ';;'
             # Look for version string in comments
             if re.search(r'^;;', stripped_line):
-                # log_debug('mame_load_Mature_ini() Comment line "{0}"'.format(stripped_line))
+                # log_debug('mame_load_Mature_ini() Comment line "{}"'.format(stripped_line))
                 m = re.search(r';; (\w+)\.ini ([0-9\.]+) / ', stripped_line)
                 if m:
                     ini_dic['version'] = m.group(2)
@@ -535,7 +535,7 @@ def mame_load_Mature_ini(filename):
             else:
                 ini_dic['data'][machine_name] = [current_category]
         else:
-            raise ValueError('Unknown FSM fsm_status {0}'.format(fsm_status))
+            raise ValueError('Unknown FSM fsm_status {}'.format(fsm_status))
     ini_dic['single_category'] = True if len(ini_dic['categories']) == 1 else False
     for m_name in sorted(ini_dic['data']):
         if len(ini_dic['data'][m_name]) > 1:
@@ -547,9 +547,9 @@ def mame_load_Mature_ini(filename):
             ini_dic['data'][m_name] = ini_dic['data'][m_name][0]
     log_info('mame_load_Mature_ini() Machines   {0:6d}'.format(len(ini_dic['data'])))
     log_info('mame_load_Mature_ini() Categories {0:6d}'.format(len(ini_dic['categories'])))
-    log_info('mame_load_Mature_ini() Version "{0}"'.format(ini_dic['version']))
-    log_info('mame_load_Mature_ini() unique_categories {0}'.format(ini_dic['unique_categories']))
-    log_info('mame_load_Mature_ini() single_category   {0}'.format(ini_dic['single_category']))
+    log_info('mame_load_Mature_ini() Version "{}"'.format(ini_dic['version']))
+    log_info('mame_load_Mature_ini() unique_categories {}'.format(ini_dic['unique_categories']))
+    log_info('mame_load_Mature_ini() single_category   {}'.format(ini_dic['single_category']))
 
     return ini_dic
 
@@ -602,7 +602,7 @@ def mame_load_INI_datfile_simple(filename):
 
     # Read file and put it in a list of strings.
     # Strings in this list are stripped.
-    log_info('mame_load_INI_datfile_simple() Parsing "{0}"'.format(filename))
+    log_info('mame_load_INI_datfile_simple() Parsing "{}"'.format(filename))
     ini_dic = {
         'version' : 'unknown',
         'unique_categories' : True,
@@ -620,7 +620,7 @@ def mame_load_INI_datfile_simple(filename):
             slist.append(stripped_line)
         f.close()
     except IOError:
-        log_info('mame_load_INI_datfile_simple() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_INI_datfile_simple() (IOError) opening "{}"'.format(filename))
         return ini_dic
 
     # Compile regexes to increase performance => It is no necessary. According to the docs: The
@@ -629,9 +629,9 @@ def mame_load_INI_datfile_simple(filename):
     # time needn’t worry about compiling regular expressions.
     fsm_status = FSM_HEADER
     for stripped_line in slist:
-        # log_debug('{0}'.format(stripped_line))
+        # log_debug('{}'.format(stripped_line))
         if fsm_status == FSM_HEADER:
-            # log_debug('FSM_HEADER "{0}"'.format(stripped_line))
+            # log_debug('FSM_HEADER "{}"'.format(stripped_line))
             # Skip comments: lines starting with ';;'
             # Look for version string in comments
             if re.search(r'^;;', stripped_line):
@@ -645,7 +645,7 @@ def mame_load_INI_datfile_simple(filename):
             if m:
                 current_category = str(m.group(1))
                 if current_category in ini_dic['categories']:
-                    raise ValueError('Repeated category {0}'.format(current_category))
+                    raise ValueError('Repeated category {}'.format(current_category))
                 ini_dic['categories'].add(current_category)
             else:
                 machine_name = stripped_line
@@ -655,7 +655,7 @@ def mame_load_INI_datfile_simple(filename):
                 else:
                     ini_dic['data'][machine_name] = [current_category]
         else:
-            raise ValueError('Unknown FSM fsm_status {0}'.format(fsm_status))
+            raise ValueError('Unknown FSM fsm_status {}'.format(fsm_status))
     ini_dic['single_category'] = True if len(ini_dic['categories']) == 1 else False
     for m_name in sorted(ini_dic['data']):
         if len(ini_dic['data'][m_name]) > 1:
@@ -667,9 +667,9 @@ def mame_load_INI_datfile_simple(filename):
             ini_dic['data'][m_name] = ini_dic['data'][m_name][0]
     log_info('mame_load_INI_datfile_simple() Machines   {0:6d}'.format(len(ini_dic['data'])))
     log_info('mame_load_INI_datfile_simple() Categories {0:6d}'.format(len(ini_dic['categories'])))
-    log_info('mame_load_INI_datfile_simple() Version "{0}"'.format(ini_dic['version']))
-    log_info('mame_load_INI_datfile_simple() unique_categories {0}'.format(ini_dic['unique_categories']))
-    log_info('mame_load_INI_datfile_simple() single_category   {0}'.format(ini_dic['single_category']))
+    log_info('mame_load_INI_datfile_simple() Version "{}"'.format(ini_dic['version']))
+    log_info('mame_load_INI_datfile_simple() unique_categories {}'.format(ini_dic['unique_categories']))
+    log_info('mame_load_INI_datfile_simple() single_category   {}'.format(ini_dic['single_category']))
 
     return ini_dic
 
@@ -716,7 +716,7 @@ def mame_load_INI_datfile_simple(filename):
 #    },
 # }
 def mame_load_History_DAT(filename):
-    log_info('mame_load_History_DAT() Parsing "{0}"'.format(filename))
+    log_info('mame_load_History_DAT() Parsing "{}"'.format(filename))
     version_str = 'Not found'
     history_idx_dic = {}
     history_dic = {}
@@ -895,7 +895,7 @@ def mame_load_History_DAT(filename):
 # }
 #
 def mame_load_MameInfo_DAT(filename):
-    log_info('mame_load_MameInfo_DAT() Parsing "{0}"'.format(filename))
+    log_info('mame_load_MameInfo_DAT() Parsing "{}"'.format(filename))
     version_str = 'Not found'
     idx_dic = {
         'mame' : {},
@@ -913,11 +913,11 @@ def mame_load_MameInfo_DAT(filename):
     try:
         f = open(filename, 'rt', encoding = 'utf-8')
     except IOError:
-        log_info('mame_load_MameInfo_DAT() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_MameInfo_DAT() (IOError) opening "{}"'.format(filename))
         return (idx_dic, data_dic, version_str)
     for file_line in f:
         line_uni = file_line.strip()
-        # if __debug_function: log_debug('Line "{0}"'.format(line_uni))
+        # if __debug_function: log_debug('Line "{}"'.format(line_uni))
         if read_status == 0:
             # >> Skip comments: lines starting with '#'
             # >> Look for version string in comments
@@ -930,10 +930,10 @@ def mame_load_MameInfo_DAT(filename):
             m = re.search(r'^\$info=(.+?)$', line_uni)
             if m:
                 machine_name = m.group(1)
-                if __debug_function: log_debug('Machine "{1}"'.format(machine_name))
+                if __debug_function: log_debug('Machine "{}"'.format(machine_name))
                 read_status = 1
         elif read_status == 1:
-            if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
+            if __debug_function: log_debug('Second line "{}"'.format(line_uni))
             if line_uni == '$mame':
                 read_status = 2
                 info_str_list = []
@@ -945,7 +945,7 @@ def mame_load_MameInfo_DAT(filename):
                 list_name = 'drv'
                 idx_dic[list_name][machine_name] = machine_name
             else:
-                raise TypeError('Wrong second line = "{0}"'.format(line_uni))
+                raise TypeError('Wrong second line = "{}"'.format(line_uni))
         elif read_status == 2:
             if line_uni == '$end':
                 if list_name in data_dic:
@@ -957,11 +957,11 @@ def mame_load_MameInfo_DAT(filename):
             else:
                 info_str_list.append(line_uni)
         else:
-            raise TypeError('Wrong read_status = {0}'.format(read_status))
+            raise TypeError('Wrong read_status = {}'.format(read_status))
     f.close()
-    log_info('mame_load_MameInfo_DAT() Version "{0}"'.format(version_str))
-    log_info('mame_load_MameInfo_DAT() Rows in idx_dic {0}'.format(len(idx_dic)))
-    log_info('mame_load_MameInfo_DAT() Rows in data_dic {0}'.format(len(data_dic)))
+    log_info('mame_load_MameInfo_DAT() Version "{}"'.format(version_str))
+    log_info('mame_load_MameInfo_DAT() Rows in idx_dic {}'.format(len(idx_dic)))
+    log_info('mame_load_MameInfo_DAT() Rows in data_dic {}'.format(len(data_dic)))
 
     return (idx_dic, data_dic, version_str)
 
@@ -979,7 +979,7 @@ def mame_load_MameInfo_DAT(filename):
 # }
 #
 def mame_load_GameInit_DAT(filename):
-    log_info('mame_load_GameInit_DAT() Parsing "{0}"'.format(filename))
+    log_info('mame_load_GameInit_DAT() Parsing "{}"'.format(filename))
     version_str = 'Not found'
     idx_list = {}
     data_dic = {}
@@ -994,11 +994,11 @@ def mame_load_GameInit_DAT(filename):
     try:
         f = open(filename, 'rt', encoding = 'utf-8')
     except IOError:
-        log_info('mame_load_GameInit_DAT() (IOError) opening "{0}"'.format(filename))
+        log_info('mame_load_GameInit_DAT() (IOError) opening "{}"'.format(filename))
         return (idx_list, data_dic, version_str)
     for file_line in f:
         line_uni = file_line.strip()
-        if __debug_function: log_debug('read_status {0} | Line "{1}"'.format(read_status, line_uni))
+        if __debug_function: log_debug('read_status {} | Line "{}"'.format(read_status, line_uni))
         # >> Note that Gameinit.dat may have a BOM 0xEF,0xBB,0xBF
         # >> See https://en.wikipedia.org/wiki/Byte_order_mark
         # >> Remove BOM if present.
@@ -1007,7 +1007,7 @@ def mame_load_GameInit_DAT(filename):
             # >> Skip comments: lines starting with '#'
             # >> Look for version string in comments
             if re.search(r'^#', line_uni):
-                if __debug_function: log_debug('Comment | "{0}"'.format(line_uni))
+                if __debug_function: log_debug('Comment | "{}"'.format(line_uni))
                 m = re.search(r'# MAME GAMEINIT\.DAT v([0-9\.]+) ', line_uni)
                 if m: version_str = m.group(1)
                 continue
@@ -1016,16 +1016,16 @@ def mame_load_GameInit_DAT(filename):
             m = re.search(r'^\$info=(.+?)$', line_uni)
             if m:
                 machine_name = m.group(1)
-                if __debug_function: log_debug('Machine "{0}"'.format(machine_name))
+                if __debug_function: log_debug('Machine "{}"'.format(machine_name))
                 idx_list[machine_name] = machine_name
                 read_status = 1
         elif read_status == 1:
-            if __debug_function: log_debug('Second line "{0}"'.format(line_uni))
+            if __debug_function: log_debug('Second line "{}"'.format(line_uni))
             if line_uni == '$mame':
                 read_status = 2
                 info_str_list = []
             else:
-                raise TypeError('Wrong second line = "{0}"'.format(line_uni))
+                raise TypeError('Wrong second line = "{}"'.format(line_uni))
         elif read_status == 2:
             if line_uni == '$end':
                 data_dic[machine_name] = '\n'.join(info_str_list)
@@ -1034,11 +1034,11 @@ def mame_load_GameInit_DAT(filename):
             else:
                 info_str_list.append(line_uni)
         else:
-            raise TypeError('Wrong read_status = {0}'.format(read_status))
+            raise TypeError('Wrong read_status = {}'.format(read_status))
     f.close()
-    log_info('mame_load_GameInit_DAT() Version "{0}"'.format(version_str))
-    log_info('mame_load_GameInit_DAT() Rows in idx_list {0}'.format(len(idx_list)))
-    log_info('mame_load_GameInit_DAT() Rows in data_dic {0}'.format(len(data_dic)))
+    log_info('mame_load_GameInit_DAT() Version "{}"'.format(version_str))
+    log_info('mame_load_GameInit_DAT() Rows in idx_list {}'.format(len(idx_list)))
+    log_info('mame_load_GameInit_DAT() Rows in data_dic {}'.format(len(data_dic)))
 
     return (idx_list, data_dic, version_str)
 
@@ -1056,7 +1056,7 @@ def mame_load_GameInit_DAT(filename):
 # }
 #
 def mame_load_Command_DAT(filename):
-    log_info('mame_load_Command_DAT() Parsing "{0}"'.format(filename))
+    log_info('mame_load_Command_DAT() Parsing "{}"'.format(filename))
     version_str = 'Not found'
     idx_dic = {}
     data_dic = {}
@@ -1413,7 +1413,7 @@ def _mame_stat_chd(chd_path):
     }
 
     # --- Open CHD file and read first 124 bytes ---
-    if __debug_this_function: log_debug('_mame_stat_chd() Opening "{0}"'.format(chd_path))
+    if __debug_this_function: log_debug('_mame_stat_chd() Opening "{}"'.format(chd_path))
     try:
         f = open(chd_path, 'rb')
         chd_data_str = f.read(124)
@@ -1435,9 +1435,9 @@ def _mame_stat_chd(chd_path):
     length  = h_tuple[1]
     version = h_tuple[2]
     if __debug_this_function:
-        log_debug('_mame_stat_chd() Tag     "{0}"'.format(tag))
-        log_debug('_mame_stat_chd() Length  {0}'.format(length))
-        log_debug('_mame_stat_chd() Version {0}'.format(version))
+        log_debug('_mame_stat_chd() Tag     "{}"'.format(tag))
+        log_debug('_mame_stat_chd() Length  {}'.format(length))
+        log_debug('_mame_stat_chd() Version {}'.format(version))
 
     # >> Discard very old CHD that don't have SHA1 hash. Older version used MD5.
     if version == 1 or version == 2 or version == 3:
@@ -1466,19 +1466,19 @@ def _mame_stat_chd(chd_path):
         parentsha1   = binascii.b2a_hex(t[11])
 
         if __debug_this_function:
-            log_debug('V4 header size = {0}'.format(header_size))
-            log_debug('tag           "{0}"'.format(tag))
-            log_debug('length        {0}'.format(length))
-            log_debug('version       {0}'.format(version))
-            log_debug('flags         {0}'.format(flags))
-            log_debug('compression   {0}'.format(compression))
-            log_debug('totalhunks    {0}'.format(totalhunks))
-            log_debug('logicalbytes  {0}'.format(logicalbytes))
-            log_debug('metaoffset    {0}'.format(metaoffset))
-            log_debug('hunkbytes     {0}'.format(hunkbytes))
-            log_debug('rawsha1       "{0}"'.format(rawsha1))
-            log_debug('sha1          "{0}"'.format(sha1))
-            log_debug('parentsha1    "{0}"'.format(parentsha1))
+            log_debug('V4 header size = {}'.format(header_size))
+            log_debug('tag           "{}"'.format(tag))
+            log_debug('length        {}'.format(length))
+            log_debug('version       {}'.format(version))
+            log_debug('flags         {}'.format(flags))
+            log_debug('compression   {}'.format(compression))
+            log_debug('totalhunks    {}'.format(totalhunks))
+            log_debug('logicalbytes  {}'.format(logicalbytes))
+            log_debug('metaoffset    {}'.format(metaoffset))
+            log_debug('hunkbytes     {}'.format(hunkbytes))
+            log_debug('rawsha1       "{}"'.format(rawsha1))
+            log_debug('sha1          "{}"'.format(sha1))
+            log_debug('parentsha1    "{}"'.format(parentsha1))
 
         # >> The CHD SHA1 string storet in MAME -listxml is the rawsha1 field in V4 CHDs.
         chd_info['status']  = CHD_OK
@@ -1503,26 +1503,26 @@ def _mame_stat_chd(chd_path):
         parentsha1    = binascii.b2a_hex(t[11])
 
         if __debug_this_function:
-            log_debug('V5 header size = {0}'.format(header_size))
-            log_debug('tag           "{0}"'.format(tag))
-            log_debug('length        {0}'.format(length))
-            log_debug('version       {0}'.format(version))
-            log_debug('compressors   "{0}"'.format(compressors))
-            log_debug('logicalbytes  {0}'.format(logicalbytes))
-            log_debug('mapoffset     {0}'.format(mapoffset))
-            log_debug('metaoffset    {0}'.format(metaoffset))
-            log_debug('hunkbytes     {0}'.format(hunkbytes))
-            log_debug('unitbytes     {0}'.format(unitbytes))
-            log_debug('rawsha1       "{0}"'.format(rawsha1))
-            log_debug('sha1          "{0}"'.format(sha1))
-            log_debug('parentsha1    "{0}"'.format(parentsha1))
+            log_debug('V5 header size = {}'.format(header_size))
+            log_debug('tag           "{}"'.format(tag))
+            log_debug('length        {}'.format(length))
+            log_debug('version       {}'.format(version))
+            log_debug('compressors   "{}"'.format(compressors))
+            log_debug('logicalbytes  {}'.format(logicalbytes))
+            log_debug('mapoffset     {}'.format(mapoffset))
+            log_debug('metaoffset    {}'.format(metaoffset))
+            log_debug('hunkbytes     {}'.format(hunkbytes))
+            log_debug('unitbytes     {}'.format(unitbytes))
+            log_debug('rawsha1       "{}"'.format(rawsha1))
+            log_debug('sha1          "{}"'.format(sha1))
+            log_debug('parentsha1    "{}"'.format(parentsha1))
 
         # >> The CHD SHA1 string storet in MAME -listxml is the sha1 field (combined raw+meta SHA1).
         chd_info['status']  = CHD_OK
         chd_info['version'] = version
         chd_info['sha1']    = sha1
     else:
-        raise TypeError('Unsuported version = {0}'.format(version))
+        raise TypeError('Unsuported version = {}'.format(version))
 
     return chd_info
 
@@ -1533,154 +1533,154 @@ def _mame_stat_chd(chd_path):
 def _str_time(secs): return time.strftime('%a %d %b %Y %H:%M:%S', time.localtime(secs))
 
 def mame_info_MAME_print(slist, location, machine_name, machine, assets):
-    slist.append('[COLOR orange]Machine {0} / Render data[/COLOR]'.format(machine_name))
+    slist.append('[COLOR orange]Machine {} / Render data[/COLOR]'.format(machine_name))
     # Print MAME Favourites special fields
     if 'ver_mame' in machine:
-        slist.append("[COLOR slateblue]name[/COLOR]: {0}".format(machine['name']))
+        slist.append("[COLOR slateblue]name[/COLOR]: {}".format(machine['name']))
     if 'ver_mame' in machine:
-        slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(machine['ver_mame']))
+        slist.append("[COLOR slateblue]ver_mame[/COLOR]: {}".format(machine['ver_mame']))
     if 'ver_mame_str' in machine:
-        slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(machine['ver_mame_str']))
+        slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {}".format(machine['ver_mame_str']))
     # Most Played Favourites special fields
     if 'launch_count' in machine:
-        slist.append("[COLOR slateblue]launch_count[/COLOR]: {0}".format(str(machine['launch_count'])))
+        slist.append("[COLOR slateblue]launch_count[/COLOR]: {}".format(str(machine['launch_count'])))
 
     # Standard fields in Render database
-    slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(machine['cloneof']))
-    slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(machine['description']))
-    slist.append("[COLOR violet]driver_status[/COLOR]: '{0}'".format(machine['driver_status']))
-    slist.append("[COLOR violet]genre[/COLOR]: '{0}'".format(machine['genre']))
-    slist.append("[COLOR skyblue]isBIOS[/COLOR]: {0}".format(machine['isBIOS']))
-    slist.append("[COLOR skyblue]isDevice[/COLOR]: {0}".format(machine['isDevice']))
-    slist.append("[COLOR skyblue]isMature[/COLOR]: {0}".format(machine['isMature']))
-    slist.append("[COLOR violet]manufacturer[/COLOR]: '{0}'".format(machine['manufacturer']))
-    slist.append("[COLOR violet]nplayers[/COLOR]: '{0}'".format(machine['nplayers']))
-    slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(machine['year']))
+    slist.append("[COLOR violet]cloneof[/COLOR]: '{}'".format(machine['cloneof']))
+    slist.append("[COLOR violet]description[/COLOR]: '{}'".format(machine['description']))
+    slist.append("[COLOR violet]driver_status[/COLOR]: '{}'".format(machine['driver_status']))
+    slist.append("[COLOR violet]genre[/COLOR]: '{}'".format(machine['genre']))
+    slist.append("[COLOR skyblue]isBIOS[/COLOR]: {}".format(machine['isBIOS']))
+    slist.append("[COLOR skyblue]isDevice[/COLOR]: {}".format(machine['isDevice']))
+    slist.append("[COLOR skyblue]isMature[/COLOR]: {}".format(machine['isMature']))
+    slist.append("[COLOR violet]manufacturer[/COLOR]: '{}'".format(machine['manufacturer']))
+    slist.append("[COLOR violet]nplayers[/COLOR]: '{}'".format(machine['nplayers']))
+    slist.append("[COLOR violet]year[/COLOR]: '{}'".format(machine['year']))
 
     # Standard fields in Main database
     slist.append('\n[COLOR orange]Machine Main data[/COLOR]')
-    slist.append("[COLOR skyblue]alltime[/COLOR]: {0}".format(str(machine['alltime'])))
-    slist.append("[COLOR skyblue]artwork[/COLOR]: {0}".format(str(machine['artwork'])))
-    slist.append("[COLOR violet]bestgames[/COLOR]: '{0}'".format(machine['bestgames']))
-    slist.append("[COLOR skyblue]category[/COLOR]: {0}".format(str(machine['category'])))
-    slist.append("[COLOR violet]catlist[/COLOR]: '{0}'".format(machine['catlist']))
-    slist.append("[COLOR violet]catver[/COLOR]: '{0}'".format(machine['catver']))
-    slist.append("[COLOR skyblue]chip_cpu_name[/COLOR]: {0}".format(str(machine['chip_cpu_name'])))
+    slist.append("[COLOR skyblue]alltime[/COLOR]: {}".format(str(machine['alltime'])))
+    slist.append("[COLOR skyblue]artwork[/COLOR]: {}".format(str(machine['artwork'])))
+    slist.append("[COLOR violet]bestgames[/COLOR]: '{}'".format(machine['bestgames']))
+    slist.append("[COLOR skyblue]category[/COLOR]: {}".format(str(machine['category'])))
+    slist.append("[COLOR violet]catlist[/COLOR]: '{}'".format(machine['catlist']))
+    slist.append("[COLOR violet]catver[/COLOR]: '{}'".format(machine['catver']))
+    slist.append("[COLOR skyblue]chip_cpu_name[/COLOR]: {}".format(str(machine['chip_cpu_name'])))
     # --- Devices list is a special case ---
     if machine['devices']:
         for i, device in enumerate(machine['devices']):
-            slist.append("[COLOR lime]devices[/COLOR][{0}]:".format(i))
-            slist.append("  [COLOR violet]att_type[/COLOR]: {0}".format(device['att_type']))
-            slist.append("  [COLOR violet]att_tag[/COLOR]: {0}".format(device['att_tag']))
-            slist.append("  [COLOR skyblue]att_mandatory[/COLOR]: {0}".format(str(device['att_mandatory'])))
-            slist.append("  [COLOR violet]att_interface[/COLOR]: {0}".format(device['att_interface']))
-            slist.append("  [COLOR skyblue]instance[/COLOR]: {0}".format(str(device['instance'])))
-            slist.append("  [COLOR skyblue]ext_names[/COLOR]: {0}".format(str(device['ext_names'])))
+            slist.append("[COLOR lime]devices[/COLOR][{}]:".format(i))
+            slist.append("  [COLOR violet]att_type[/COLOR]: {}".format(device['att_type']))
+            slist.append("  [COLOR violet]att_tag[/COLOR]: {}".format(device['att_tag']))
+            slist.append("  [COLOR skyblue]att_mandatory[/COLOR]: {}".format(str(device['att_mandatory'])))
+            slist.append("  [COLOR violet]att_interface[/COLOR]: {}".format(device['att_interface']))
+            slist.append("  [COLOR skyblue]instance[/COLOR]: {}".format(str(device['instance'])))
+            slist.append("  [COLOR skyblue]ext_names[/COLOR]: {}".format(str(device['ext_names'])))
     else:
         slist.append("[COLOR lime]devices[/COLOR]: []")
-    slist.append("[COLOR skyblue]display_height[/COLOR]: {0}".format(str(machine['display_height'])))
-    slist.append("[COLOR skyblue]display_refresh[/COLOR]: {0}".format(str(machine['display_refresh'])))
-    slist.append("[COLOR skyblue]display_rotate[/COLOR]: {0}".format(str(machine['display_rotate'])))
-    slist.append("[COLOR skyblue]display_type[/COLOR]: {0}".format(str(machine['display_type'])))
-    slist.append("[COLOR skyblue]display_width[/COLOR]: {0}".format(str(machine['display_width'])))
-    slist.append("[COLOR violet]genre[/COLOR]: '{0}'".format(machine['genre']))
+    slist.append("[COLOR skyblue]display_height[/COLOR]: {}".format(str(machine['display_height'])))
+    slist.append("[COLOR skyblue]display_refresh[/COLOR]: {}".format(str(machine['display_refresh'])))
+    slist.append("[COLOR skyblue]display_rotate[/COLOR]: {}".format(str(machine['display_rotate'])))
+    slist.append("[COLOR skyblue]display_type[/COLOR]: {}".format(str(machine['display_type'])))
+    slist.append("[COLOR skyblue]display_width[/COLOR]: {}".format(str(machine['display_width'])))
+    slist.append("[COLOR violet]genre[/COLOR]: '{}'".format(machine['genre']))
     # --- input is a special case ---
     if machine['input']:
         # Print attributes
         slist.append("[COLOR lime]input[/COLOR]:")
-        slist.append("  [COLOR skyblue]att_coins[/COLOR]: {0}".format(str(machine['input']['att_coins'])))
-        slist.append("  [COLOR skyblue]att_players[/COLOR]: {0}".format(str(machine['input']['att_players'])))
-        slist.append("  [COLOR skyblue]att_service[/COLOR]: {0}".format(str(machine['input']['att_service'])))
-        slist.append("  [COLOR skyblue]att_tilt[/COLOR]: {0}".format(str(machine['input']['att_tilt'])))
+        slist.append("  [COLOR skyblue]att_coins[/COLOR]: {}".format(str(machine['input']['att_coins'])))
+        slist.append("  [COLOR skyblue]att_players[/COLOR]: {}".format(str(machine['input']['att_players'])))
+        slist.append("  [COLOR skyblue]att_service[/COLOR]: {}".format(str(machine['input']['att_service'])))
+        slist.append("  [COLOR skyblue]att_tilt[/COLOR]: {}".format(str(machine['input']['att_tilt'])))
         # Print control tag list
         for i, control in enumerate(machine['input']['control_list']):
-            slist.append("[COLOR lime]control[/COLOR][{0}]:".format(i))
-            slist.append("  [COLOR violet]type[/COLOR]: {0}".format(control['type']))
-            slist.append("  [COLOR skyblue]player[/COLOR]: {0}".format(str(control['player'])))
-            slist.append("  [COLOR skyblue]buttons[/COLOR]: {0}".format(str(control['buttons'])))
-            slist.append("  [COLOR skyblue]ways[/COLOR]: {0}".format(str(control['ways'])))
+            slist.append("[COLOR lime]control[/COLOR][{}]:".format(i))
+            slist.append("  [COLOR violet]type[/COLOR]: {}".format(control['type']))
+            slist.append("  [COLOR skyblue]player[/COLOR]: {}".format(str(control['player'])))
+            slist.append("  [COLOR skyblue]buttons[/COLOR]: {}".format(str(control['buttons'])))
+            slist.append("  [COLOR skyblue]ways[/COLOR]: {}".format(str(control['ways'])))
     else:
         slist.append("[COLOR lime]input[/COLOR]: []")
-    slist.append("[COLOR skyblue]isDead[/COLOR]: {0}".format(str(machine['isDead'])))
-    slist.append("[COLOR skyblue]isMechanical[/COLOR]: {0}".format(str(machine['isMechanical'])))
-    slist.append("[COLOR violet]romof[/COLOR]: '{0}'".format(machine['romof']))
-    slist.append("[COLOR violet]sampleof[/COLOR]: '{0}'".format(machine['sampleof']))
-    slist.append("[COLOR skyblue]series[/COLOR]: '{0}'".format(machine['series']))
-    slist.append("[COLOR skyblue]softwarelists[/COLOR]: {0}".format(str(machine['softwarelists'])))
-    slist.append("[COLOR violet]sourcefile[/COLOR]: '{0}'".format(machine['sourcefile']))
-    slist.append("[COLOR violet]veradded[/COLOR]: '{0}'".format(machine['veradded']))
+    slist.append("[COLOR skyblue]isDead[/COLOR]: {}".format(str(machine['isDead'])))
+    slist.append("[COLOR skyblue]isMechanical[/COLOR]: {}".format(str(machine['isMechanical'])))
+    slist.append("[COLOR violet]romof[/COLOR]: '{}'".format(machine['romof']))
+    slist.append("[COLOR violet]sampleof[/COLOR]: '{}'".format(machine['sampleof']))
+    slist.append("[COLOR skyblue]series[/COLOR]: '{}'".format(machine['series']))
+    slist.append("[COLOR skyblue]softwarelists[/COLOR]: {}".format(str(machine['softwarelists'])))
+    slist.append("[COLOR violet]sourcefile[/COLOR]: '{}'".format(machine['sourcefile']))
+    slist.append("[COLOR violet]veradded[/COLOR]: '{}'".format(machine['veradded']))
 
     slist.append('\n[COLOR orange]Machine assets/artwork[/COLOR]')
-    slist.append("[COLOR violet]3dbox[/COLOR]: '{0}'".format(assets['3dbox']))
-    slist.append("[COLOR violet]artpreview[/COLOR]: '{0}'".format(assets['artpreview']))
-    slist.append("[COLOR violet]artwork[/COLOR]: '{0}'".format(assets['artwork']))
-    slist.append("[COLOR violet]cabinet[/COLOR]: '{0}'".format(assets['cabinet']))
-    slist.append("[COLOR violet]clearlogo[/COLOR]: '{0}'".format(assets['clearlogo']))
-    slist.append("[COLOR violet]cpanel[/COLOR]: '{0}'".format(assets['cpanel']))
-    slist.append("[COLOR violet]fanart[/COLOR]: '{0}'".format(assets['fanart']))
-    slist.append("[COLOR violet]flags[/COLOR]: '{0}'".format(assets['flags']))
-    slist.append("[COLOR violet]flyer[/COLOR]: '{0}'".format(assets['flyer']))
-    slist.append("[COLOR violet]history[/COLOR]: '{0}'".format(assets['history']))
-    slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(assets['manual']))
-    slist.append("[COLOR violet]marquee[/COLOR]: '{0}'".format(assets['marquee']))
-    slist.append("[COLOR violet]PCB[/COLOR]: '{0}'".format(assets['PCB']))
-    slist.append("[COLOR violet]plot[/COLOR]: '{0}'".format(assets['plot']))
-    slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(assets['snap']))
-    slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(assets['title']))
-    slist.append("[COLOR violet]trailer[/COLOR]: '{0}'".format(assets['trailer']))
+    slist.append("[COLOR violet]3dbox[/COLOR]: '{}'".format(assets['3dbox']))
+    slist.append("[COLOR violet]artpreview[/COLOR]: '{}'".format(assets['artpreview']))
+    slist.append("[COLOR violet]artwork[/COLOR]: '{}'".format(assets['artwork']))
+    slist.append("[COLOR violet]cabinet[/COLOR]: '{}'".format(assets['cabinet']))
+    slist.append("[COLOR violet]clearlogo[/COLOR]: '{}'".format(assets['clearlogo']))
+    slist.append("[COLOR violet]cpanel[/COLOR]: '{}'".format(assets['cpanel']))
+    slist.append("[COLOR violet]fanart[/COLOR]: '{}'".format(assets['fanart']))
+    slist.append("[COLOR violet]flags[/COLOR]: '{}'".format(assets['flags']))
+    slist.append("[COLOR violet]flyer[/COLOR]: '{}'".format(assets['flyer']))
+    slist.append("[COLOR violet]history[/COLOR]: '{}'".format(assets['history']))
+    slist.append("[COLOR violet]manual[/COLOR]: '{}'".format(assets['manual']))
+    slist.append("[COLOR violet]marquee[/COLOR]: '{}'".format(assets['marquee']))
+    slist.append("[COLOR violet]PCB[/COLOR]: '{}'".format(assets['PCB']))
+    slist.append("[COLOR violet]plot[/COLOR]: '{}'".format(assets['plot']))
+    slist.append("[COLOR violet]snap[/COLOR]: '{}'".format(assets['snap']))
+    slist.append("[COLOR violet]title[/COLOR]: '{}'".format(assets['title']))
+    slist.append("[COLOR violet]trailer[/COLOR]: '{}'".format(assets['trailer']))
 
 def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL_machine_list):
     # --- ROM stuff ---
-    slist.append('[COLOR orange]Software List {0} Item {1}[/COLOR]'.format(SL_name, SL_ROM))
+    slist.append('[COLOR orange]Software List {} Item {}[/COLOR]'.format(SL_name, SL_ROM))
     if 'SL_DB_key' in rom:
-        slist.append("[COLOR slateblue]SL_DB_key[/COLOR]: '{0}'".format(rom['SL_DB_key']))
+        slist.append("[COLOR slateblue]SL_DB_key[/COLOR]: '{}'".format(rom['SL_DB_key']))
     if 'SL_ROM_name' in rom:
-        slist.append("[COLOR slateblue]SL_ROM_name[/COLOR]: '{0}'".format(rom['SL_ROM_name']))
+        slist.append("[COLOR slateblue]SL_ROM_name[/COLOR]: '{}'".format(rom['SL_ROM_name']))
     if 'SL_name' in rom:
-        slist.append("[COLOR slateblue]SL_name[/COLOR]: '{0}'".format(rom['SL_name']))
-    slist.append("[COLOR violet]cloneof[/COLOR]: '{0}'".format(rom['cloneof']))
-    slist.append("[COLOR violet]description[/COLOR]: '{0}'".format(rom['description']))
-    slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {0}".format(str(rom['hasCHDs'])))
-    slist.append("[COLOR skyblue]hasROMs[/COLOR]: {0}".format(str(rom['hasROMs'])))
+        slist.append("[COLOR slateblue]SL_name[/COLOR]: '{}'".format(rom['SL_name']))
+    slist.append("[COLOR violet]cloneof[/COLOR]: '{}'".format(rom['cloneof']))
+    slist.append("[COLOR violet]description[/COLOR]: '{}'".format(rom['description']))
+    slist.append("[COLOR skyblue]hasCHDs[/COLOR]: {}".format(str(rom['hasCHDs'])))
+    slist.append("[COLOR skyblue]hasROMs[/COLOR]: {}".format(str(rom['hasROMs'])))
     if 'launch_count' in rom:
-        slist.append("[COLOR slateblue]launch_count[/COLOR]: '{0}'".format(str(rom['launch_count'])))
+        slist.append("[COLOR slateblue]launch_count[/COLOR]: '{}'".format(str(rom['launch_count'])))
     if 'launch_machine' in rom:
-        slist.append("[COLOR slateblue]launch_machine[/COLOR]: '{0}'".format(rom['launch_machine']))
+        slist.append("[COLOR slateblue]launch_machine[/COLOR]: '{}'".format(rom['launch_machine']))
     if rom['parts']:
         for i, part in enumerate(rom['parts']):
-            slist.append("[COLOR lime]parts[/COLOR][{0}]:".format(i))
-            slist.append("  [COLOR violet]interface[/COLOR]: '{0}'".format(part['interface']))
-            slist.append("  [COLOR violet]name[/COLOR]: '{0}'".format(part['name']))
+            slist.append("[COLOR lime]parts[/COLOR][{}]:".format(i))
+            slist.append("  [COLOR violet]interface[/COLOR]: '{}'".format(part['interface']))
+            slist.append("  [COLOR violet]name[/COLOR]: '{}'".format(part['name']))
     else:
         slist.append('[COLOR lime]parts[/COLOR]: []')
-    slist.append("[COLOR violet]plot[/COLOR]: '{0}'".format(rom['plot']))
-    slist.append("[COLOR violet]publisher[/COLOR]: '{0}'".format(rom['publisher']))
-    slist.append("[COLOR violet]status_CHD[/COLOR]: '{0}'".format(rom['status_CHD']))
-    slist.append("[COLOR violet]status_ROM[/COLOR]: '{0}'".format(rom['status_ROM']))
+    slist.append("[COLOR violet]plot[/COLOR]: '{}'".format(rom['plot']))
+    slist.append("[COLOR violet]publisher[/COLOR]: '{}'".format(rom['publisher']))
+    slist.append("[COLOR violet]status_CHD[/COLOR]: '{}'".format(rom['status_CHD']))
+    slist.append("[COLOR violet]status_ROM[/COLOR]: '{}'".format(rom['status_ROM']))
     if 'ver_mame' in rom:
-        slist.append("[COLOR slateblue]ver_mame[/COLOR]: {0}".format(rom['ver_mame']))
+        slist.append("[COLOR slateblue]ver_mame[/COLOR]: {}".format(rom['ver_mame']))
     if 'ver_mame_str' in rom:
-        slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {0}".format(rom['ver_mame_str']))
-    slist.append("[COLOR violet]year[/COLOR]: '{0}'".format(rom['year']))
+        slist.append("[COLOR slateblue]ver_mame_str[/COLOR]: {}".format(rom['ver_mame_str']))
+    slist.append("[COLOR violet]year[/COLOR]: '{}'".format(rom['year']))
 
     slist.append('\n[COLOR orange]Software List assets[/COLOR]')
-    slist.append("[COLOR violet]3dbox[/COLOR]: '{0}'".format(assets['3dbox']))
-    slist.append("[COLOR violet]title[/COLOR]: '{0}'".format(assets['title']))
-    slist.append("[COLOR violet]snap[/COLOR]: '{0}'".format(assets['snap']))
-    slist.append("[COLOR violet]boxfront[/COLOR]: '{0}'".format(assets['boxfront']))
-    slist.append("[COLOR violet]fanart[/COLOR]: '{0}'".format(assets['fanart']))
-    slist.append("[COLOR violet]trailer[/COLOR]: '{0}'".format(assets['trailer']))
-    slist.append("[COLOR violet]manual[/COLOR]: '{0}'".format(assets['manual']))
+    slist.append("[COLOR violet]3dbox[/COLOR]: '{}'".format(assets['3dbox']))
+    slist.append("[COLOR violet]title[/COLOR]: '{}'".format(assets['title']))
+    slist.append("[COLOR violet]snap[/COLOR]: '{}'".format(assets['snap']))
+    slist.append("[COLOR violet]boxfront[/COLOR]: '{}'".format(assets['boxfront']))
+    slist.append("[COLOR violet]fanart[/COLOR]: '{}'".format(assets['fanart']))
+    slist.append("[COLOR violet]trailer[/COLOR]: '{}'".format(assets['trailer']))
+    slist.append("[COLOR violet]manual[/COLOR]: '{}'".format(assets['manual']))
 
-    slist.append('\n[COLOR orange]Software List {0}[/COLOR]'.format(SL_name))
-    slist.append("[COLOR violet]display_name[/COLOR]: '{0}'".format(SL_dic['display_name']))
-    slist.append("[COLOR skyblue]num_with_CHDs[/COLOR]: {0}".format(str(SL_dic['num_with_CHDs'])))
-    slist.append("[COLOR skyblue]num_with_ROMs[/COLOR]: {0}".format(str(SL_dic['num_with_ROMs'])))
-    slist.append("[COLOR violet]rom_DB_noext[/COLOR]: '{0}'".format(SL_dic['rom_DB_noext']))
+    slist.append('\n[COLOR orange]Software List {}[/COLOR]'.format(SL_name))
+    slist.append("[COLOR violet]display_name[/COLOR]: '{}'".format(SL_dic['display_name']))
+    slist.append("[COLOR skyblue]num_with_CHDs[/COLOR]: {}".format(str(SL_dic['num_with_CHDs'])))
+    slist.append("[COLOR skyblue]num_with_ROMs[/COLOR]: {}".format(str(SL_dic['num_with_ROMs'])))
+    slist.append("[COLOR violet]rom_DB_noext[/COLOR]: '{}'".format(SL_dic['rom_DB_noext']))
 
     slist.append('\n[COLOR orange]Runnable by[/COLOR]')
     for machine_dic in sorted(SL_machine_list):
-        t = "[COLOR violet]machine[/COLOR]: '{0}' [COLOR slateblue]({1})[/COLOR]"
+        t = "[COLOR violet]machine[/COLOR]: '{}' [COLOR slateblue]({})[/COLOR]"
         slist.append(t.format(machine_dic['description'], machine_dic['machine']))
 
 #
@@ -2123,11 +2123,11 @@ def mame_stats_audit_print_slist(settings, slist, control_dic, settings_dic):
                           control_dic['stats_audit_archive_less_parents'],
                           control_dic['stats_audit_archive_less_clones']))
 
-    t = "{0:6d} ROM ZIPs    in the {1} set"
+    t = "{0:6d} ROM ZIPs    in the {} set"
     slist.append(t.format(control_dic['stats_audit_MAME_ROM_ZIP_files'], rom_set))
-    t = "{0:6d} CHDs        in the {1} set"
+    t = "{0:6d} CHDs        in the {} set"
     slist.append(t.format(control_dic['stats_audit_MAME_CHD_files'], chd_set))
-    t = "{0:6d} Sample ZIPs in the {1} set"
+    t = "{0:6d} Sample ZIPs in the {} set"
     slist.append(t.format(control_dic['stats_audit_MAME_Sample_ZIP_files'], rom_set))
 
     t = "{0:6d} total ROMs, {1:6d} valid and {2:6d} invalid"
@@ -2546,8 +2546,8 @@ def mame_build_MAME_plots(PATHS, settings, control_dic,
 
 # ---------------------------------------------------------------------------------------------
 # Generate plot for Software Lists
-# Line 1) SL item has {0} parts
-# Line 2) {0} ROMs and {1} disks
+# Line 1) SL item has {} parts
+# Line 2) {} ROMs and {} disks
 # Line 3) Manual, History
 # Line 4) Machines: machine list ...
 # ---------------------------------------------------------------------------------------------
@@ -2569,7 +2569,7 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
         SL_ROM_audit_dic = fs_load_JSON_file_dic(SL_ROM_audit_FN.getPath(), verbose = False)
         History_SL_set  = {m for m in History_idx_dic[SL_name]['machines']} if SL_name in History_idx_dic else set()
         # Machine_list = [ m['machine'] for m in SL_machines_dic[SL_name] ]
-        # Machines_str = 'Machines: {0}'.format(', '.join(sorted(Machine_list)))
+        # Machines_str = 'Machines: {}'.format(', '.join(sorted(Machine_list)))
 
         # Traverse SL ROMs and make plot.
         for rom_key in sorted(SL_roms):
@@ -2661,13 +2661,13 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
         if zip_path not in z_cache_status:
             if zip_FN.exists():
                 # >> Scan files in ZIP file and put them in the cache
-                # log_debug('Caching ZIP file {0}'.format(zip_path))
+                # log_debug('Caching ZIP file {}'.format(zip_path))
                 try:
                     zip_f = z.ZipFile(zip_path, 'r')
                 except z.BadZipfile as e:
                     z_cache_status[zip_path] = BAD_ZIP_FILE
                     continue
-                # log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
+                # log_debug('ZIP {} files {}'.format(m_rom['location'], z_file_list))
                 zip_file_dic = {}
                 for zfile in zip_f.namelist():
                     # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
@@ -2676,8 +2676,8 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                     z_info_file_size = z_info.file_size
                     z_info_crc_hex_str = '{0:08x}'.format(z_info.CRC)
                     zip_file_dic[zfile] = {'size' : z_info_file_size, 'crc' : z_info_crc_hex_str}
-                    # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
-                    # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
+                    # log_debug('ZIP CRC32 {} | CRC hex {} | size {}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
+                    # log_debug('ROM CRC hex {} | size {}'.format(m_rom['crc'], 0))
                 zip_f.close()
                 z_cache[zip_path] = zip_file_dic
                 z_cache_status[zip_path] = ZIP_FILE_OK
@@ -2691,64 +2691,64 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
             split_list = m_rom['location'].split('/')
             set_name  = split_list[0]
             disk_name = split_list[1]
-            # log_debug('Testing CHD {0}'.format(m_rom['name']))
-            # log_debug('location {0}'.format(m_rom['location']))
-            # log_debug('set_name  "{0}"'.format(set_name))
-            # log_debug('disk_name "{0}"'.format(disk_name))
+            # log_debug('Testing CHD {}'.format(m_rom['name']))
+            # log_debug('location {}'.format(m_rom['location']))
+            # log_debug('set_name  "{}"'.format(set_name))
+            # log_debug('disk_name "{}"'.format(disk_name))
 
             # >> Invalid CHDs
             if not m_rom['sha1']:
                 m_rom['status'] = AUDIT_STATUS_OK_INVALID_CHD
-                m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
             # >> Test if DISK file exists
             chd_FN = FileName(settings['chd_path']).pjoin(set_name).pjoin(disk_name + '.chd')
-            # log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
+            # log_debug('chd_FN P {}'.format(chd_FN.getPath()))
             if not chd_FN.exists():
                 m_rom['status'] = AUDIT_STATUS_CHD_NO_FOUND
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
             # >> Open CHD file and check SHA1 hash.
             chd_info = _mame_stat_chd(chd_FN.getPath())
             if chd_info['status'] == CHD_BAD_CHD:
                 m_rom['status'] = AUDIT_STATUS_BAD_CHD_FILE
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
             if chd_info['status'] == CHD_BAD_VERSION:
                 m_rom['status'] = AUDIT_STATUS_CHD_BAD_VERSION
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
             if chd_info['sha1'] != m_rom['sha1']:
                 m_rom['status'] = AUDIT_STATUS_CHD_BAD_SHA1
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
             # >> DISK is OK
             m_rom['status'] = AUDIT_STATUS_OK
-            m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+            m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
         elif m_rom['type'] == ROM_TYPE_SAMPLE:
             split_list = m_rom['location'].split('/')
             set_name = split_list[0]
             sample_name = split_list[1] + '.wav'
-            # log_debug('Testing SAMPLE {0}'.format(m_rom['name']))
-            # log_debug('location       {0}'.format(m_rom['location']))
-            # log_debug('set_name       {0}'.format(set_name))
-            # log_debug('sample_name    {0}'.format(sample_name))
+            # log_debug('Testing SAMPLE {}'.format(m_rom['name']))
+            # log_debug('location       {}'.format(m_rom['location']))
+            # log_debug('set_name       {}'.format(set_name))
+            # log_debug('sample_name    {}'.format(sample_name))
 
             # >> Test if ZIP file exists (use cached data). ZIP file must be in the cache always
             # >> at this point.
             zip_FN = FileName(settings['samples_path']).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
-            # log_debug('ZIP {0}'.format(zip_FN.getPath()))
+            # log_debug('ZIP {}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
                 m_rom['status'] = AUDIT_STATUS_ZIP_NO_FOUND
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
             elif z_cache_status[zip_path] == BAD_ZIP_FILE:
                 m_rom['status'] = AUDIT_STATUS_BAD_ZIP_FILE
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
             # >> ZIP file is good and data was cached.
             zip_file_dic = z_cache[zip_path]
@@ -2758,40 +2758,40 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 # >> File not found by filename. Check if it has renamed by looking at CRC.
                 # >> ROM not in ZIP (not even under other filename)
                 m_rom['status'] = AUDIT_STATUS_SAMPLE_NOT_IN_ZIP
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
             # >> SAMPLE is OK
             m_rom['status'] = AUDIT_STATUS_OK
-            m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+            m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
 
         else:
             split_list = m_rom['location'].split('/')
             set_name = split_list[0]
             rom_name = split_list[1]
-            # log_debug('Testing ROM {0}'.format(m_rom['name']))
-            # log_debug('location    {0}'.format(m_rom['location']))
-            # log_debug('set_name    {0}'.format(set_name))
-            # log_debug('rom_name    {0}'.format(rom_name))
+            # log_debug('Testing ROM {}'.format(m_rom['name']))
+            # log_debug('location    {}'.format(m_rom['location']))
+            # log_debug('set_name    {}'.format(set_name))
+            # log_debug('rom_name    {}'.format(rom_name))
 
             # >> Invalid ROMs are not in the ZIP file
             if not m_rom['crc']:
                 m_rom['status'] = AUDIT_STATUS_OK_INVALID_ROM
-                m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
             # >> Test if ZIP file exists (use cached data). ZIP file must be in the cache always
             # >> at this point.
             zip_FN = FileName(settings['rom_path']).pjoin(set_name + '.zip')
             zip_path = zip_FN.getPath()
-            # log_debug('ZIP {0}'.format(zip_FN.getPath()))
+            # log_debug('ZIP {}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
                 m_rom['status'] = AUDIT_STATUS_ZIP_NO_FOUND
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
             elif z_cache_status[zip_path] == BAD_ZIP_FILE:
                 m_rom['status'] = AUDIT_STATUS_BAD_ZIP_FILE
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
             # >> ZIP file is good and data was cached.
             zip_file_dic = z_cache[zip_path]
@@ -2801,11 +2801,11 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 # >> File has correct name
                 if zip_file_dic[rom_name]['size'] != m_rom['size']:
                     m_rom['status'] = AUDIT_STATUS_ROM_BAD_SIZE
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                    m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                     continue
                 if zip_file_dic[rom_name]['crc'] != m_rom['crc']:
                     m_rom['status'] = AUDIT_STATUS_ROM_BAD_CRC
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                    m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                     continue
             else:
                 # >> File not found by filename. Check if it has renamed by looking at CRC.
@@ -2817,17 +2817,17 @@ def mame_audit_MAME_machine(settings, rom_list, audit_dic):
                 if rom_OK_name:
                     # >> File found by CRC
                     m_rom['status'] = AUDIT_STATUS_OK_WRONG_NAME_ROM
-                    m_rom['status_colour'] = '[COLOR orange]OK (named {0})[/COLOR]'.format(rom_OK_name)
+                    m_rom['status_colour'] = '[COLOR orange]OK (named {})[/COLOR]'.format(rom_OK_name)
                     continue
                 else:
                     # >> ROM not in ZIP (not even under other filename)
                     m_rom['status'] = AUDIT_STATUS_ROM_NOT_IN_ZIP
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                    m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                     continue
 
             # >> ROM is OK
             m_rom['status'] = AUDIT_STATUS_OK
-            m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+            m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
 
     # >> Audit results
     # >> Naive and slow code, but better safe than sorry.
@@ -2891,13 +2891,13 @@ def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, ro
         if zip_path not in z_cache_status:
             if zip_FN.exists():
                 # >> Scan files in ZIP file and put them in the cache
-                # log_debug('Caching ZIP file {0}'.format(zip_path))
+                # log_debug('Caching ZIP file {}'.format(zip_path))
                 try:
                     zip_f = z.ZipFile(zip_path, 'r')
                 except z.BadZipfile as e:
                     z_cache_status[zip_path] = BAD_ZIP_FILE
                     continue
-                # log_debug('ZIP {0} files {1}'.format(m_rom['location'], z_file_list))
+                # log_debug('ZIP {} files {}'.format(m_rom['location'], z_file_list))
                 zip_file_dic = {}
                 for zfile in zip_f.namelist():
                     # >> NOTE CRC32 in Python is a decimal number: CRC32 4225815809
@@ -2918,17 +2918,17 @@ def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, ro
                             zfile_unicode = zfile.decode('utf-8')
                     except UnicodeDecodeError:
                         log_error('mame_audit_SL_machine() Exception UnicodeDecodeError')
-                        log_error('type(zfile) = {0}'.format(type(zfile)))
-                        log_error('SL_name "{0}", item_name "{1}", rom name "{2}"'.format(SL_name, item_name, m_rom['name']))
+                        log_error('type(zfile) = {}'.format(type(zfile)))
+                        log_error('SL_name "{}", item_name "{}", rom name "{}"'.format(SL_name, item_name, m_rom['name']))
                     except UnicodeEncodeError:
                         log_error('mame_audit_SL_machine() Exception UnicodeEncodeError')
-                        log_error('type(zfile) = {0}'.format(type(zfile)))
-                        log_error('SL_name "{0}", item_name "{1}", rom name "{2}"'.format(SL_name, item_name, m_rom['name']))
+                        log_error('type(zfile) = {}'.format(type(zfile)))
+                        log_error('SL_name "{}", item_name "{}", rom name "{}"'.format(SL_name, item_name, m_rom['name']))
                     else:
                         # For now, do not add non-ASCII ROMs so the audit will fail for this ROM.
                         zip_file_dic[zfile_unicode] = {'size' : z_info_file_size, 'crc' : z_info_crc_hex_str}
-                    # log_debug('ZIP CRC32 {0} | CRC hex {1} | size {2}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
-                    # log_debug('ROM CRC hex {0} | size {1}'.format(m_rom['crc'], 0))
+                    # log_debug('ZIP CRC32 {} | CRC hex {} | size {}'.format(z_info.CRC, z_crc_hex, z_info.file_size))
+                    # log_debug('ROM CRC hex {} | size {}'.format(m_rom['crc'], 0))
                 zip_f.close()
                 z_cache[zip_path] = zip_file_dic
                 z_cache_status[zip_path] = ZIP_FILE_OK
@@ -2944,73 +2944,73 @@ def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, ro
             SL_name   = split_list[0]
             item_name = split_list[1]
             disk_name = split_list[2]
-            # log_debug('Testing CHD "{0}"'.format(m_rom['name']))
-            # log_debug('location "{0}"'.format(m_rom['location']))
-            # log_debug('SL_name   "{0}"'.format(SL_name))
-            # log_debug('item_name "{0}"'.format(item_name))
-            # log_debug('disk_name "{0}"'.format(disk_name))
+            # log_debug('Testing CHD "{}"'.format(m_rom['name']))
+            # log_debug('location "{}"'.format(m_rom['location']))
+            # log_debug('SL_name   "{}"'.format(SL_name))
+            # log_debug('item_name "{}"'.format(item_name))
+            # log_debug('disk_name "{}"'.format(disk_name))
 
             # >> Invalid CHDs
             if not m_rom['sha1']:
                 m_rom['status'] = AUDIT_STATUS_OK_INVALID_CHD
-                m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
             # >> Test if DISK file exists
             chd_FN = SL_CHD_path_FN.pjoin(SL_name).pjoin(item_name).pjoin(disk_name + '.chd')
-            # log_debug('chd_FN P {0}'.format(chd_FN.getPath()))
+            # log_debug('chd_FN P {}'.format(chd_FN.getPath()))
             if not chd_FN.exists():
                 m_rom['status'] = AUDIT_STATUS_CHD_NO_FOUND
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
             # >> Open CHD file and check SHA1 hash.
             chd_info = _mame_stat_chd(chd_FN.getPath())
             if chd_info['status'] == CHD_BAD_CHD:
                 m_rom['status'] = AUDIT_STATUS_BAD_CHD_FILE
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
             if chd_info['status'] == CHD_BAD_VERSION:
                 m_rom['status'] = AUDIT_STATUS_CHD_BAD_VERSION
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
             if chd_info['sha1'] != m_rom['sha1']:
                 m_rom['status'] = AUDIT_STATUS_CHD_BAD_SHA1
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
             # >> DISK is OK
             m_rom['status'] = AUDIT_STATUS_OK
-            m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+            m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
         else:
             # --- Audit ROM ----------------------------------------------------------------------
             split_list = m_rom['location'].split('/')
             SL_name   = split_list[0]
             item_name = split_list[1]
             rom_name  = split_list[2]
-            # log_debug('Testing ROM "{0}"'.format(m_rom['name']))
-            # log_debug('location "{0}"'.format(m_rom['location']))
-            # log_debug('SL_name   "{0}"'.format(SL_name))
-            # log_debug('item_name "{0}"'.format(item_name))
-            # log_debug('rom_name  "{0}"'.format(rom_name))
+            # log_debug('Testing ROM "{}"'.format(m_rom['name']))
+            # log_debug('location "{}"'.format(m_rom['location']))
+            # log_debug('SL_name   "{}"'.format(SL_name))
+            # log_debug('item_name "{}"'.format(item_name))
+            # log_debug('rom_name  "{}"'.format(rom_name))
 
             # >> Invalid ROMs are not in the ZIP file
             if not m_rom['crc']:
                 m_rom['status'] = AUDIT_STATUS_OK_INVALID_ROM
-                m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
                 continue
 
             # >> Test if ZIP file exists
             zip_FN = SL_ROM_path_FN.pjoin(SL_name).pjoin(item_name + '.zip')
             zip_path = zip_FN.getPath()
-            # log_debug('zip_FN P {0}'.format(zip_FN.getPath()))
+            # log_debug('zip_FN P {}'.format(zip_FN.getPath()))
             if z_cache_status[zip_path] == ZIP_NOT_FOUND:
                 m_rom['status'] = AUDIT_STATUS_ZIP_NO_FOUND
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
             elif z_cache_status[zip_path] == BAD_ZIP_FILE:
                 m_rom['status'] = AUDIT_STATUS_BAD_ZIP_FILE
-                m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                 continue
             # >> ZIP file is good and data was cached.
             zip_file_dic = z_cache[zip_path]
@@ -3020,11 +3020,11 @@ def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, ro
                 # >> File has correct name
                 if zip_file_dic[rom_name]['size'] != m_rom['size']:
                     m_rom['status'] = AUDIT_STATUS_ROM_BAD_SIZE
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                    m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                     continue
                 if zip_file_dic[rom_name]['crc'] != m_rom['crc']:
                     m_rom['status'] = AUDIT_STATUS_ROM_BAD_CRC
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                    m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                     continue
             else:
                 # >> File not found by filename. Check if it has renamed by looking at CRC.
@@ -3036,18 +3036,18 @@ def mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, item_name, ro
                 if rom_OK_name:
                     # >> File found by CRC
                     m_rom['status'] = AUDIT_STATUS_OK_WRONG_NAME_ROM
-                    m_rom['status_colour'] = '[COLOR orange]OK (named {0})[/COLOR]'.format(rom_OK_name)
+                    m_rom['status_colour'] = '[COLOR orange]OK (named {})[/COLOR]'.format(rom_OK_name)
                     continue
                 else:
                     # >> ROM not in ZIP (not even under other filename)
                     m_rom['status'] = AUDIT_STATUS_ROM_NOT_IN_ZIP
-                    m_rom['status_colour'] = '[COLOR red]{0}[/COLOR]'.format(m_rom['status'])
+                    m_rom['status_colour'] = '[COLOR red]{}[/COLOR]'.format(m_rom['status'])
                     continue
 
             # >> ROM is OK
             m_rom['status'] = AUDIT_STATUS_OK
-            m_rom['status_colour'] = '[COLOR green]{0}[/COLOR]'.format(m_rom['status'])
-            # log_debug('{0}'.format(AUDIT_STATUS_OK))
+            m_rom['status_colour'] = '[COLOR green]{}[/COLOR]'.format(m_rom['status'])
+            # log_debug('{}'.format(AUDIT_STATUS_OK))
 
     # >> Currently exactly same code as in mame_audit_MAME_machine()
     # >> Audit results
@@ -3644,7 +3644,7 @@ def mame_build_SL_names(PATHS, settings):
             m = re.search(r'<softwarelist name="([^"]+?)" description="([^"]+?)"', line)
             if not m: continue
             SL_name, SL_desc = m.group(1), m.group(2)
-            # log_debug('SL "{0}" -> "{1}"'.format(SL_name, SL_desc))
+            # log_debug('SL "{}" -> "{}"'.format(SL_name, SL_desc))
             # Substitute SL description (long name).
             if SL_desc in SL_better_name_dic:
                 old_SL_desc = SL_desc
@@ -4036,7 +4036,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
         elif event == 'start' and elem.tag == 'rom':
             # --- Research ---
             # if not 'sha1' in elem.attrib:
-            #     raise GeneralError('ROM with no sha1 (machine {0})'.format(machine_name))
+            #     raise GeneralError('ROM with no sha1 (machine {})'.format(machine_name))
 
             # --- Add BIOS to ROMS_DB_PATH ---
             rom = fs_new_rom_dic()
@@ -4192,7 +4192,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
                     # >> Stop if <device> tag has more than one <instance> tag. In MAME 0.190 no
                     # >> machines trigger this.
                     if instance_tag_found:
-                        raise GeneralError('Machine {0} has more than one <instance> inside <device>')
+                        raise GeneralError('Machine {} has more than one <instance> inside <device>')
                     inst_name      = device_child.attrib['name']
                     inst_briefname = device_child.attrib['briefname']
                     instance_tag_found = True
@@ -4202,8 +4202,8 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             # >> NOTE Some machines have no instance inside <device>, for example 2020bb
             # >>      I don't know how to launch those machines
             # if not instance_tag_found:
-                # log_warning('<instance> tag not found inside <device> tag (machine {0})'.format(m_name))
-                # device_type = '{0} (NI)'.format(device_type)
+                # log_warning('<instance> tag not found inside <device> tag (machine {})'.format(m_name))
+                # device_type = '{} (NI)'.format(device_type)
 
             # >> Add device to database
             device_dic = {
@@ -4222,18 +4222,18 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
             if settings['op_mode'] == OP_MODE_EXTERNAL:
                 # Assumption 1: isdevice = True if and only if runnable = False
                 if m_render['isDevice'] == runnable:
-                    log_error("Machine {0}: machine['isDevice'] == runnable".format(m_name))
+                    log_error("Machine {}: machine['isDevice'] == runnable".format(m_name))
                     raise ValueError
 
                 # Are there machines with more than 1 <display> tag. Answer: YES
                 # if num_displays > 1:
-                #     log_error("Machine {0}: num_displays = {1}".format(m_name, num_displays))
+                #     log_error("Machine {}: num_displays = {}".format(m_name, num_displays))
                 #     raise ValueError
 
                 # All machines with 0 displays are mechanical? NO, 24cdjuke has no screen and
                 # is not mechanical. However 24cdjuke is a preliminary driver.
                 # if num_displays == 0 and not machine['ismechanical']:
-                #     log_error("Machine {0}: num_displays == 0 and not machine['ismechanical']".format(m_name))
+                #     log_error("Machine {}: num_displays == 0 and not machine['ismechanical']".format(m_name))
                 #     raise ValueError
             # Checks in Retroarch MAME 2003 Plus
             elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
@@ -4610,14 +4610,14 @@ def _get_ROM_location(rom_set, rom, m_name, machines, machines_render, machine_r
                 # >> Clone merged ROM cannot be found in parent ROM set. This is likely a MAME
                 # >> XML bug. In this case, treat the clone marged ROM as a non-merged ROM.
                 if parent_merged_rom is None:
-                    log_warning('Clone machine "{0}" parent_merged_rom is None'.format(m_name))
-                    log_warning('ROM "{0}" MERGE "{1}"'.format(rom['name'], rom['merge']))
-                    log_warning('Cannot be found on parent "{0}" ROMs'.format(parent_name))
+                    log_warning('Clone machine "{}" parent_merged_rom is None'.format(m_name))
+                    log_warning('ROM "{}" MERGE "{}"'.format(rom['name'], rom['merge']))
+                    log_warning('Cannot be found on parent "{}" ROMs'.format(parent_name))
                     # >> Check if merged ROM is in the BIOS machine.
                     bios_name = machines[parent_name]['romof']
                     if bios_name:
-                        log_warning('Parent machine "{0}" has BIOS machine "{1}"'.format(parent_name, bios_name))
-                        log_warning('Searching for clone merged ROM "{0}" in BIOS ROMs'.format(clone_rom_merged_name))
+                        log_warning('Parent machine "{}" has BIOS machine "{}"'.format(parent_name, bios_name))
+                        log_warning('Searching for clone merged ROM "{}" in BIOS ROMs'.format(clone_rom_merged_name))
                         bios_roms = machine_roms[bios_name]['roms']
                         bios_merged_rom = _get_merged_rom(bios_roms, clone_rom_merged_name)
                         location = bios_name + '/' + bios_merged_rom['name']
@@ -4814,8 +4814,8 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     rom_set_str = ['Merged', 'Split', 'Non-merged', 'Fully Non-merged'][settings['mame_rom_set']]
     chd_set = ['MERGED', 'SPLIT', 'NONMERGED'][settings['mame_chd_set']]
     chd_set_str = ['Merged', 'Split', 'Non-merged'][settings['mame_chd_set']]
-    log_info('mame_build_ROM_audit_databases() ROM set is {0}'.format(rom_set))
-    log_info('mame_build_ROM_audit_databases() CHD set is {0}'.format(chd_set))
+    log_info('mame_build_ROM_audit_databases() ROM set is {}'.format(rom_set))
+    log_info('mame_build_ROM_audit_databases() CHD set is {}'.format(chd_set))
 
     # ---------------------------------------------------------------------------------------------
     # Audit database
@@ -6360,7 +6360,7 @@ def _mame_load_SL_XML(xml_filename):
 
     # --- Parse using cElementTree ---
     # If XML has errors (invalid characters, etc.) this will rais exception 'err'
-    # log_debug('fs_load_SL_XML() Loading XML file "{0}"'.format(xml_filename))
+    # log_debug('fs_load_SL_XML() Loading XML file "{}"'.format(xml_filename))
     try:
         xml_tree = ET.parse(xml_filename)
     except:
@@ -6374,7 +6374,7 @@ def _mame_load_SL_XML(xml_filename):
         log_debug('Substitute SL "{}" with "{}"'.format(old_SL_desc, SL_desc))
     SLData['display_name'] = SL_desc
     for root_element in xml_root:
-        if __debug_xml_parser: log_debug('Root child {0}'.format(root_element.tag))
+        if __debug_xml_parser: log_debug('Root child {}'.format(root_element.tag))
         # Only process 'software' elements
         if root_element.tag != 'software':
             log_warning('In SL {}, unrecognised XML tag <{}>'.format(SL_name, root_element.tag))
@@ -6392,7 +6392,7 @@ def _mame_load_SL_XML(xml_filename):
             # By default read strings
             xml_text = rom_child.text if rom_child.text is not None else ''
             xml_tag  = rom_child.tag
-            if __debug_xml_parser: log_debug('{0} --> {1}'.format(xml_tag, xml_text))
+            if __debug_xml_parser: log_debug('{} --> {}'.format(xml_tag, xml_text))
 
             # --- Only pick tags we want ---
             if xml_tag == 'description' or xml_tag == 'year' or xml_tag == 'publisher':
@@ -6443,14 +6443,14 @@ def _mame_load_SL_XML(xml_filename):
 
                 # --- DEBUG/Research code ---
                 # if num_dataarea > 1:
-                #     log_error('{0} -> num_dataarea = {1}'.format(item_name, num_dataarea))
+                #     log_error('{} -> num_dataarea = {}'.format(item_name, num_dataarea))
                 #     raise TypeError('DEBUG')
                 # if num_diskarea > 1:
-                #     log_error('{0} -> num_diskarea = {1}'.format(item_name, num_diskarea))
+                #     log_error('{} -> num_diskarea = {}'.format(item_name, num_diskarea))
                 #     raise TypeError('DEBUG')
                 # if num_dataarea and num_diskarea:
-                #     log_error('{0} -> num_dataarea = {1}'.format(item_name, num_dataarea))
-                #     log_error('{0} -> num_diskarea = {1}'.format(item_name, num_diskarea))
+                #     log_error('{} -> num_dataarea = {}'.format(item_name, num_dataarea))
+                #     log_error('{} -> num_diskarea = {}'.format(item_name, num_diskarea))
                 #     raise TypeError('DEBUG')
 
         # --- Finished processing of <software> element ---
@@ -6639,7 +6639,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(diag_line, FN.getBase()))
 
         # Open software list XML and parse it. Then, save data fields we want in JSON.
-        # log_debug('mame_build_SoftwareLists_databases() Processing "{0}"'.format(file))
+        # log_debug('mame_build_SoftwareLists_databases() Processing "{}"'.format(file))
         SL_path_FN = FileName(file)
         SLData = _mame_load_SL_XML(SL_path_FN.getPath())
         fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_items.json').getPath(),
@@ -6869,7 +6869,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     #     prop_dic = {'vm' : VIEW_MODE_NORMAL}
     #     SL_properties_dic[sl_name] = prop_dic
     # fs_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
-    # log_info('SL_properties_dic has {0} items'.format(len(SL_properties_dic)))
+    # log_info('SL_properties_dic has {} items'.format(len(SL_properties_dic)))
 
     # >> One of the MAME catalogs has changed, and so the property names.
     # >> Not used at the moment -> Global properties
@@ -6877,10 +6877,10 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     # for catalog_name in CATALOG_NAME_LIST:
     #     catalog_dic = fs_get_cataloged_dic_parents(PATHS, catalog_name)
     #     for category_name in sorted(catalog_dic):
-    #         prop_key = '{0} - {1}'.format(catalog_name, category_name)
+    #         prop_key = '{} - {}'.format(catalog_name, category_name)
     #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_NORMAL}
     # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
-    # log_info('mame_properties_dic has {0} items'.format(len(mame_properties_dic)))
+    # log_info('mame_properties_dic has {} items'.format(len(mame_properties_dic)))
 
     # -----------------------------------------------------------------------------
     # Update MAME control dictionary
@@ -7054,7 +7054,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     pDialog.startProgress(dial_line, total_machines)
     for key in sorted(machines_render):
         # --- Initialise machine ---
-        # log_info('mame_scan_MAME_ROMs() Checking machine {0}'.format(key))
+        # log_info('mame_scan_MAME_ROMs() Checking machine {}'.format(key))
         if machines_render[key]['isDevice']: continue # Skip Devices
         m_have_str_list = []
         m_miss_str_list = []
@@ -7124,7 +7124,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
                 # CHD_FN = CHD_path_FN.pjoin(chd_name)
                 # if CHD_FN.exists():
                 # --- New code using file cache ---
-                # log_debug('Testing CHD "{0}"'.format(chd_name))
+                # log_debug('Testing CHD "{}"'.format(chd_name))
                 CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
                 if CHD_FN:
                     has_chd_list[idx] = True
@@ -7418,17 +7418,17 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
 
     # Paths have been verified at this point
     SL_hash_dir_FN = PATHS.SL_DB_DIR
-    log_info('mame_scan_SL_ROMs() SL hash dir OP {0}'.format(SL_hash_dir_FN.getOriginalPath()))
-    log_info('mame_scan_SL_ROMs() SL hash dir  P {0}'.format(SL_hash_dir_FN.getPath()))
+    log_info('mame_scan_SL_ROMs() SL hash dir OP {}'.format(SL_hash_dir_FN.getOriginalPath()))
+    log_info('mame_scan_SL_ROMs() SL hash dir  P {}'.format(SL_hash_dir_FN.getPath()))
 
     SL_ROM_dir_FN = FileName(settings['SL_rom_path'])
-    log_info('mame_scan_SL_ROMs() SL ROM dir OP {0}'.format(SL_ROM_dir_FN.getOriginalPath()))
-    log_info('mame_scan_SL_ROMs() SL ROM dir  P {0}'.format(SL_ROM_dir_FN.getPath()))
+    log_info('mame_scan_SL_ROMs() SL ROM dir OP {}'.format(SL_ROM_dir_FN.getOriginalPath()))
+    log_info('mame_scan_SL_ROMs() SL ROM dir  P {}'.format(SL_ROM_dir_FN.getPath()))
 
     if options_dic['scan_SL_CHDs']:
         SL_CHD_path_FN = FileName(settings['SL_chd_path'])
-        log_info('mame_scan_SL_ROMs() SL CHD dir OP {0}'.format(SL_CHD_path_FN.getOriginalPath()))
-        log_info('mame_scan_SL_ROMs() SL CHD dir  P {0}'.format(SL_CHD_path_FN.getPath()))
+        log_info('mame_scan_SL_ROMs() SL CHD dir OP {}'.format(SL_CHD_path_FN.getOriginalPath()))
+        log_info('mame_scan_SL_ROMs() SL CHD dir  P {}'.format(SL_CHD_path_FN.getPath()))
     else:
         SL_CHD_path_FN = FileName('')
         log_info('Scan of SL CHDs disabled.')
@@ -7485,9 +7485,9 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
                     # ROM_path = SL_ROM_path_str + '/' + rom_file
                     if SL_ROM_FN:
                         have_rom_list[i] = True
-                        m_have_str_list.append('HAVE ROM {0}'.format(rom_file))
+                        m_have_str_list.append('HAVE ROM {}'.format(rom_file))
                     else:
-                        m_miss_str_list.append('MISS ROM {0}'.format(rom_file))
+                        m_miss_str_list.append('MISS ROM {}'.format(rom_file))
                 if all(have_rom_list):
                     rom['status_ROM'] = 'R'
                     SL_ROMs_have += 1
@@ -7508,9 +7508,9 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
                         # CHD_path = SL_CHD_path_str + '/' + chd_file
                         if SL_CHD_FN:
                             has_chd_list[idx] = True
-                            m_have_str_list.append('HAVE CHD {0}'.format(chd_file))
+                            m_have_str_list.append('HAVE CHD {}'.format(chd_file))
                         else:
-                            m_miss_str_list.append('MISS CHD {0}'.format(chd_file))
+                            m_miss_str_list.append('MISS CHD {}'.format(chd_file))
                     if all(has_chd_list):
                         rom['status_CHD'] = 'C'
                         SL_CHDs_have += 1
@@ -7526,10 +7526,10 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
             # --- Build report ---
             description = sl_roms[rom_key]['description']
             clone_name = sl_roms[rom_key]['cloneof']
-            r_all_list.append('SL {0} item {1} "{2}"'.format(SL_name, rom_key, description))
+            r_all_list.append('SL {} item {} "{}"'.format(SL_name, rom_key, description))
             if clone_name:
                 clone_description = sl_roms[clone_name]['description']
-                r_all_list.append('cloneof {0} "{1}"'.format(clone_name, clone_description))
+                r_all_list.append('cloneof {} "{}"'.format(clone_name, clone_description))
             if m_have_str_list:
                 r_all_list.extend(m_have_str_list)
             if m_miss_str_list:
@@ -7537,17 +7537,17 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
             r_all_list.append('')
 
             if m_have_str_list:
-                r_have_list.append('SL {0} item {1} "{2}"'.format(SL_name, rom_key, description))
+                r_have_list.append('SL {} item {} "{}"'.format(SL_name, rom_key, description))
                 if clone_name:
-                    r_have_list.append('cloneof {0} "{1}"'.format(clone_name, clone_description))
+                    r_have_list.append('cloneof {} "{}"'.format(clone_name, clone_description))
                 r_have_list.extend(m_have_str_list)
                 if m_miss_str_list: r_have_list.extend(m_miss_str_list)
                 r_have_list.append('')
 
             if m_miss_str_list:
-                r_miss_list.append('SL {0} item {1} "{2}"'.format(SL_name, rom_key, description))
+                r_miss_list.append('SL {} item {} "{}"'.format(SL_name, rom_key, description))
                 if clone_name:
-                    r_miss_list.append('cloneof {0} "{1}"'.format(clone_name, clone_description))
+                    r_miss_list.append('cloneof {} "{}"'.format(clone_name, clone_description))
                 r_miss_list.extend(m_miss_str_list)
                 if m_have_str_list: r_miss_list.extend(m_have_str_list)
                 r_miss_list.append('')
@@ -7875,7 +7875,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
 
     # At this point assets_path is configured and the directory exists.
     Asset_path_FN = FileName(settings['assets_path'])
-    log_info('mame_scan_SL_assets() SL asset path {0}'.format(Asset_path_FN.getPath()))
+    log_info('mame_scan_SL_assets() SL asset path {}'.format(Asset_path_FN.getPath()))
 
     # --- Traverse Software List, check if ROM exists, update and save database ---
     total_files = len(SL_index_dic)
@@ -7916,7 +7916,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
         # --- First pass: scan for on-disk assets ---
         assets_file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_assets.json'
         SL_asset_DB_FN = PATHS.SL_DB_DIR.pjoin(assets_file_name)
-        # log_info('Assets JSON "{0}"'.format(SL_asset_DB_FN.getPath()))
+        # log_info('Assets JSON "{}"'.format(SL_asset_DB_FN.getPath()))
         ondisk_assets_dic = {}
         for rom_key in sorted(SL_roms):
             SL_assets = fs_new_SL_asset()
@@ -7930,7 +7930,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
                     asset_FN = misc_search_file_cache(asset_dirs[idx], rom_key, ASSET_TRAILER_EXTS)
                 else:
                     asset_FN = misc_search_file_cache(asset_dirs[idx], rom_key, ASSET_IMAGE_EXTS)
-                # log_info('Testing P "{0}"'.format(asset_FN.getPath()))
+                # log_info('Testing P "{}"'.format(asset_FN.getPath()))
                 SL_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN else ''
             ondisk_assets_dic[rom_key] = SL_assets
 

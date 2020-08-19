@@ -153,15 +153,15 @@ while True:
     pygame.draw.line(screen, (0, 0, 255), (t[0].x, t[0].y), (t[3].x, t[3].y), 3)
 
     # --- Draw text ---
-    text_surface = myfont.render('angle X {0}'.format(angleX), True, (255, 0, 0))
+    text_surface = myfont.render('angle X {}'.format(angleX), True, (255, 0, 0))
     screen.blit(text_surface, (10, 10))
-    text_surface = myfont.render('angle Y {0}'.format(angleY), True, (255, 0, 0))
+    text_surface = myfont.render('angle Y {}'.format(angleY), True, (255, 0, 0))
     screen.blit(text_surface, (10, 30))
-    text_surface = myfont.render('angle Z {0}'.format(angleZ), True, (255, 0, 0))
+    text_surface = myfont.render('angle Z {}'.format(angleZ), True, (255, 0, 0))
     screen.blit(text_surface, (10, 50))
-    text_surface = myfont.render('FOV {0}'.format(fov), True, (255, 0, 0))
+    text_surface = myfont.render('FOV {}'.format(fov), True, (255, 0, 0))
     screen.blit(text_surface, (10, 70))
-    text_surface = myfont.render('distance {0}'.format(viewer_distance), True, (255, 0, 0))
+    text_surface = myfont.render('distance {}'.format(viewer_distance), True, (255, 0, 0))
     screen.blit(text_surface, (10, 90))
 
     # --- Refresh screen ---

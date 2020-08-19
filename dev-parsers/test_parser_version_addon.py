@@ -41,7 +41,7 @@ def log_debug(string): print(string)
 #  |------------> Major version 0, ..., infinity
 #
 def fs_AML_version_str_to_int(AML_version_str):
-    log_verb('fs_AML_version_str_to_int() AML_version_str = "{0}"'.format(AML_version_str))
+    log_verb('fs_AML_version_str_to_int() AML_version_str = "{}"'.format(AML_version_str))
     version_int = 0
     # Parse versions like "0.9.8[-|~]alpha[jj]"
     m_obj_alpha_n = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)(\d+?)$', AML_version_str)
@@ -58,12 +58,12 @@ def fs_AML_version_str_to_int(AML_version_str):
         beta   = int(m_obj_alpha_n.group(5))
         if kind_str == 'alpha':  release_flag = 0
         elif kind_str == 'beta': release_flag = 1
-        # log_debug('fs_AML_version_str_to_int() major        {0}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor        {0}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build        {0}'.format(build))
-        # log_debug('fs_AML_version_str_to_int() kind_str     {0}'.format(kind_str))
-        # log_debug('fs_AML_version_str_to_int() release_flag {0}'.format(release_flag))
-        # log_debug('fs_AML_version_str_to_int() beta         {0}'.format(beta))
+        # log_debug('fs_AML_version_str_to_int() major        {}'.format(major))
+        # log_debug('fs_AML_version_str_to_int() minor        {}'.format(minor))
+        # log_debug('fs_AML_version_str_to_int() build        {}'.format(build))
+        # log_debug('fs_AML_version_str_to_int() kind_str     {}'.format(kind_str))
+        # log_debug('fs_AML_version_str_to_int() release_flag {}'.format(release_flag))
+        # log_debug('fs_AML_version_str_to_int() beta         {}'.format(beta))
         version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100 + beta
     elif m_obj_alpha:
         major  = int(m_obj_alpha.group(1))
@@ -72,25 +72,25 @@ def fs_AML_version_str_to_int(AML_version_str):
         kind_str = m_obj_alpha.group(4)
         if kind_str == 'alpha':  release_flag = 0
         elif kind_str == 'beta': release_flag = 1
-        # log_debug('fs_AML_version_str_to_int() major        {0}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor        {0}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build        {0}'.format(build))
-        # log_debug('fs_AML_version_str_to_int() kind_str     {0}'.format(kind_str))
-        # log_debug('fs_AML_version_str_to_int() release_flag {0}'.format(release_flag))
+        # log_debug('fs_AML_version_str_to_int() major        {}'.format(major))
+        # log_debug('fs_AML_version_str_to_int() minor        {}'.format(minor))
+        # log_debug('fs_AML_version_str_to_int() build        {}'.format(build))
+        # log_debug('fs_AML_version_str_to_int() kind_str     {}'.format(kind_str))
+        # log_debug('fs_AML_version_str_to_int() release_flag {}'.format(release_flag))
         version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100
     elif m_obj_standard:
         major = int(m_obj_standard.group(1))
         minor = int(m_obj_standard.group(2))
         build = int(m_obj_standard.group(3))
         release_flag = 5
-        # log_debug('fs_AML_version_str_to_int() major {0}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor {0}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build {0}'.format(build))
+        # log_debug('fs_AML_version_str_to_int() major {}'.format(major))
+        # log_debug('fs_AML_version_str_to_int() minor {}'.format(minor))
+        # log_debug('fs_AML_version_str_to_int() build {}'.format(build))
         version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100
     else:
-        log_error('AML addon version "{0}" cannot be parsed.'.format(AML_version_str))
+        log_error('AML addon version "{}" cannot be parsed.'.format(AML_version_str))
         raise TypeError
-    log_verb('fs_AML_version_str_to_int() version_int = {0}'.format(version_int))
+    log_verb('fs_AML_version_str_to_int() version_int = {}'.format(version_int))
 
     return version_int
 

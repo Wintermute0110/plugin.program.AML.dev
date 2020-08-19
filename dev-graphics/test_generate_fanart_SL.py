@@ -14,8 +14,8 @@ def PIL_resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
     box_x_size = layout[dic_key]['width']
     box_y_size = layout[dic_key]['height']
     # log_debug('PIL_resize_proportional() Initialising ...')
-    # log_debug('img X_size = {0} | Y_size = {1}'.format(img.size[0], img.size[1]))
-    # log_debug('box X_size = {0} | Y_size = {1}'.format(box_x_size, box_y_size))
+    # log_debug('img X_size = {} | Y_size = {}'.format(img.size[0], img.size[1]))
+    # log_debug('box X_size = {} | Y_size = {}'.format(box_x_size, box_y_size))
 
     # --- First try to fit X dimension ---
     # log_debug('PIL_resize_proportional() Fitting X dimension')
@@ -25,8 +25,8 @@ def PIL_resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
     r_y_size = hsize
     x_offset = 0
     y_offset = (box_y_size - r_y_size) / 2
-    # log_debug('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
-    # log_debug('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
+    # log_debug('resize X_size = {} | Y_size = {}'.format(r_x_size, r_y_size))
+    # log_debug('resize x_offset = {} | y_offset = {}'.format(x_offset, y_offset))
 
     # --- Second try to fit Y dimension ---
     if y_offset < 0:
@@ -37,8 +37,8 @@ def PIL_resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
         r_y_size = box_y_size
         x_offset = (box_x_size - r_x_size) / 2
         y_offset = 0
-        # log_debug('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
-        # log_debug('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
+        # log_debug('resize X_size = {} | Y_size = {}'.format(r_x_size, r_y_size))
+        # log_debug('resize x_offset = {} | y_offset = {}'.format(x_offset, y_offset))
 
     # >> Create a new image and paste original image centered.
     canvas_img = Image.new('RGB', (box_x_size, box_y_size), CANVAS_COLOR)
@@ -77,7 +77,7 @@ font_mono_item = ImageFont.truetype('../fonts/Inconsolata.otf', layout['text_ite
 # --- Title and Snap (colour rectangle for placement) ---
 # img_title = Image.new('RGB', (TITLE_X_SIZE, TITLE_Y_SIZE), (25, 25, 25))
 # img_snap = Image.new('RGB', (SNAP_X_SIZE, SNAP_Y_SIZE), (0, 200, 0))
-# print('Title X_size = {0} | img Y_size = {1}'.format(img_title.size[0], img_title.size[1]))
+# print('Title X_size = {} | img Y_size = {}'.format(img_title.size[0], img_title.size[1]))
 # print(img_title.format, img_title.size, img_title.mode)
 
 # --- Title and Snap (open PNG actual screenshot) ---

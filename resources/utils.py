@@ -68,10 +68,10 @@ def text_title_to_filename_str(title_str):
 def XML_text(tag_name, tag_text, num_spaces = 2):
     if tag_text:
         tag_text = text_escape_XML(tag_text)
-        line = '{0}<{1}>{2}</{3}>\n'.format(' ' * num_spaces, tag_name, tag_text, tag_name)
+        line = '{}<{}>{}</{}>\n'.format(' ' * num_spaces, tag_name, tag_text, tag_name)
     else:
         # >> Empty tag    
-        line = '{0}<{1} />\n'.format(' ' * num_spaces, tag_name)
+        line = '{}<{} />\n'.format(' ' * num_spaces, tag_name)
 
     return line
 
@@ -99,7 +99,7 @@ def text_render_table_str(table_str):
     table_str_list.append(row_str)
     # >> Table -----
     total_size = sum(col_sizes) + 2*(cols-1)
-    table_str_list.append('{0}'.format('-' * total_size))
+    table_str_list.append('{}'.format('-' * total_size))
 
     # --- Data rows ---
     for i in range(2, rows):
@@ -161,7 +161,7 @@ def text_get_table_str_col_sizes(table_str, rows, cols):
         for i in range(1, rows):
             cell_str = re.sub(r'\[COLOR \w+?\]', '', table_str[i][j])
             cell_str = re.sub(r'\[/COLOR\]', '', cell_str)
-            str_size = len('{0}'.format(cell_str))
+            str_size = len('{}'.format(cell_str))
             if str_size > col_max_size: col_max_size = str_size
         col_sizes[j] = col_max_size
 
@@ -170,7 +170,7 @@ def text_get_table_str_col_sizes(table_str, rows, cols):
 def text_str_list_size(str_list):
     max_str_size = 0
     for str_item in str_list:
-        str_size = len('{0}'.format(str_item))
+        str_size = len('{}'.format(str_item))
         if str_size > max_str_size: max_str_size = str_size
 
     return max_str_size
@@ -178,7 +178,7 @@ def text_str_list_size(str_list):
 def text_str_dic_max_size(dictionary_list, dic_key, title_str = ''):
     max_str_size = 0
     for item in dictionary_list:
-        str_size = len('{0}'.format(item[dic_key]))
+        str_size = len('{}'.format(item[dic_key]))
         if str_size > max_str_size: max_str_size = str_size
     if title_str:
         str_size = len(title_str)
@@ -187,13 +187,13 @@ def text_str_dic_max_size(dictionary_list, dic_key, title_str = ''):
     return max_str_size
 
 def text_print_padded_left(str, str_max_size):
-    formatted_str = '{0}'.format(str)
+    formatted_str = '{}'.format(str)
     padded_str =  formatted_str + ' ' * (str_max_size - len(formatted_str))
 
     return padded_str
 
 def text_print_padded_right(str, str_max_size):
-    formatted_str = '{0}'.format(str)
+    formatted_str = '{}'.format(str)
     padded_str = ' ' * (str_max_size - len(formatted_str)) + formatted_str
 
     return padded_str
@@ -442,7 +442,7 @@ def misc_add_file_cache(dir_str, verbose = True):
         log_warning('misc_add_file_cache() Not a directory "{}"'.format(dir_str))
         return
     if verbose:
-        # log_debug('misc_add_file_cache() Scanning OP "{0}"'.format(dir_FN.getOriginalPath()))
+        # log_debug('misc_add_file_cache() Scanning OP "{}"'.format(dir_FN.getOriginalPath()))
         log_debug('misc_add_file_cache() Scanning  P "{}"'.format(dir_FN.getPath()))
     # A recursive scanning function is needed. os.listdir() is not. os.walk() is recursive
     # file_list = os.listdir(dir_FN.getPath())
@@ -452,9 +452,9 @@ def misc_add_file_cache(dir_str, verbose = True):
     # https://stackoverflow.com/questions/21772271/unicodedecodeerror-when-performing-os-walk
     for root, dirs, files in os.walk(str(root_dir_str)):
         # log_debug('----------')
-        # log_debug('root = {0}'.format(root))
-        # log_debug('dirs = {0}'.format(str(dirs)))
-        # log_debug('files = {0}'.format(str(files)))
+        # log_debug('root = {}'.format(root))
+        # log_debug('dirs = {}'.format(str(dirs)))
+        # log_debug('files = {}'.format(str(files)))
         # log_debug('\n')
         for f in files:
             my_file = os.path.join(root, f)

@@ -42,9 +42,9 @@ DISABLE_MAME_LAUNCHING = False
 # try:
 #     autoconfig_export_category(category, export_FN)
 # except Addon_Error as ex:
-#     kodi_notify_warn('{0}'.format(ex))
+#     kodi_notify_warn('{}'.format(ex))
 # else:
-#     kodi_notify('Exported Category "{0}" XML config'.format(category['m_name']))
+#     kodi_notify('Exported Category "{}" XML config'.format(category['m_name']))
 #
 # Low-level code looks like this:
 #
@@ -52,7 +52,7 @@ DISABLE_MAME_LAUNCHING = False
 #     try:
 #         do_something_that_may_fail()
 #     except OSError:
-#         log_error('(OSError) Cannot write {0} file'.format(export_FN.getBase()))
+#         log_error('(OSError) Cannot write {} file'.format(export_FN.getBase()))
 #         # >> Message to be printed in the GUI
 #         raise Addon_Error('Error writing file (OSError)')
 #

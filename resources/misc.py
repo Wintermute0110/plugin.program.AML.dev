@@ -54,18 +54,18 @@ def misc_get_mame_screen_str(machine_name, machine):
     if d_list:
         if len(d_list) == 1:
             rotation_str = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
-            screen_str = 'One {0} {1} screen'.format(d_list[0], rotation_str)
+            screen_str = 'One {} {} screen'.format(d_list[0], rotation_str)
         elif len(d_list) == 2:
             if d_list[0] == 'lcd' and d_list[1] == 'raster':
                 r_str_1 = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
                 r_str_2 = misc_get_mame_screen_rotation_str(machine['display_rotate'][1])
-                screen_str = 'One LCD {0} screen and one raster {1} screen'.format(r_str_1, r_str_2)
+                screen_str = 'One LCD {} screen and one raster {} screen'.format(r_str_1, r_str_2)
             elif d_list[0] == 'raster' and d_list[1] == 'raster':
                 r_str = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
-                screen_str = 'Two raster {0} screens'.format(r_str)
+                screen_str = 'Two raster {} screens'.format(r_str)
             elif d_list[0] == 'svg' and d_list[1] == 'svg':
                 r_str = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
-                screen_str = 'Two SVG {0} screens'.format(r_str)
+                screen_str = 'Two SVG {} screens'.format(r_str)
             elif d_list[0] == 'unknown' and d_list[1] == 'unknown':
                 screen_str = 'Two unknown screens'
             else:
@@ -73,7 +73,7 @@ def misc_get_mame_screen_str(machine_name, machine):
         elif len(d_list) == 3:
             if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster':
                 r_str = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
-                screen_str = 'Three raster {0} screens'.format(r_str)
+                screen_str = 'Three raster {} screens'.format(r_str)
             elif d_list[0] == 'raster' and d_list[1] == 'lcd' and d_list[2] == 'lcd':
                 screen_str = 'Three screens special case'
             else:
@@ -81,7 +81,7 @@ def misc_get_mame_screen_str(machine_name, machine):
         elif len(d_list) == 4:
             if d_list[0] == 'raster' and d_list[1] == 'raster' and d_list[2] == 'raster' and d_list[3] == 'raster':
                 r_str = misc_get_mame_screen_rotation_str(machine['display_rotate'][0])
-                screen_str = 'Four raster {0} screens'.format(r_str)
+                screen_str = 'Four raster {} screens'.format(r_str)
             else:
                 screen_str = 'Four unrecognised screens'
         elif len(d_list) == 5:
@@ -111,7 +111,7 @@ def misc_get_mame_display_rotation(d_str):
     elif d_str == '90' or d_str == '270':
         rotation_letter = 'Ver'
     else:
-        raise TypeError('Wrong display rotate "{1}"'.format(d_str))
+        raise TypeError('Wrong display rotate "{}"'.format(d_str))
 
     return rotation_letter
 
@@ -123,22 +123,22 @@ def misc_get_display_type_catalog_key(display_type_list, display_rotate_list):
         for dis_index in range(len(display_type_list)):
             display_name = misc_get_mame_display_type(display_type_list[dis_index])
             display_rotation = misc_get_mame_display_rotation(display_rotate_list[dis_index])
-            display_list.append('{0} {1}'.format(display_name, display_rotation))
+            display_list.append('{} {}'.format(display_name, display_rotation))
         catalog_key = " / ".join(display_list)
 
     return catalog_key
 
 def misc_get_display_resolution_catalog_key(display_width, display_height):
     if len(display_width) > 1 or len(display_height) > 1:
-        catalog_key = '{0} displays'.format(len(display_width))
+        catalog_key = '{} displays'.format(len(display_width))
     elif len(display_width) == 0 and len(display_height) == 1:
-        catalog_key = 'Empty x {0}'.format(display_height[0])
+        catalog_key = 'Empty x {}'.format(display_height[0])
     elif len(display_width) == 1 and len(display_height) == 0:
-        catalog_key = '{0} x Empty'.format(display_width[0])
+        catalog_key = '{} x Empty'.format(display_width[0])
     elif len(display_width) == 0 and len(display_height) == 0:
         catalog_key = 'Empty x Empty'
     else:
-        catalog_key = '{0} x {1}'.format(display_width[0], display_height[0])
+        catalog_key = '{} x {}'.format(display_width[0], display_height[0])
 
     return catalog_key
 
@@ -194,21 +194,21 @@ def misc_compress_mame_item_list(item_list):
     item_count = 1
     for i in range(1, num_items):
         current_item = item_list[i]
-        # log_debug('{0} | item_count {1} | previous_item "{2:>8}" | current_item "{3:>8}"'.format(i, item_count, previous_item, current_item))
+        # log_debug('{} | item_count {} | previous_item "{2:>8}" | current_item "{3:>8}"'.format(i, item_count, previous_item, current_item))
         if current_item == previous_item:
             item_count += 1
         else:
-            if item_count == 1: reduced_list.append('{0}'.format(previous_item))
-            else:               reduced_list.append('{0} {1}'.format(item_count, previous_item))
+            if item_count == 1: reduced_list.append('{}'.format(previous_item))
+            else:               reduced_list.append('{} {}'.format(item_count, previous_item))
             item_count = 1
             previous_item = current_item
         # >> Last elemnt of the list
         if i == num_items - 1:
             if current_item == previous_item:
-                if item_count == 1: reduced_list.append('{0}'.format(current_item))
-                else:               reduced_list.append('{0} {1}'.format(item_count, current_item))
+                if item_count == 1: reduced_list.append('{}'.format(current_item))
+                else:               reduced_list.append('{} {}'.format(item_count, current_item))
             else:
-               reduced_list.append('{0}'.format(current_item))
+               reduced_list.append('{}'.format(current_item))
 
     return reduced_list
 

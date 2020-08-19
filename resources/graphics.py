@@ -69,11 +69,11 @@ def ETA_update(build_OK_flag, total_processed_items, build_time):
         ETA_total_build_time += build_time
         ETA_average_build_time = ETA_total_build_time / ETA_actual_processed_items
     remaining_items = ETA_total_items - total_processed_items
-    # log_debug('build_time                 {0}'.format(build_time))
-    # log_debug('ETA_average_build_time     {0}'.format(ETA_average_build_time))
-    # log_debug('ETA_actual_processed_items {0}'.format(ETA_actual_processed_items))
-    # log_debug('total_processed_items      {0}'.format(total_processed_items))
-    # log_debug('remaining items            {0}'.format(remaining_items))
+    # log_debug('build_time                 {}'.format(build_time))
+    # log_debug('ETA_average_build_time     {}'.format(ETA_average_build_time))
+    # log_debug('ETA_actual_processed_items {}'.format(ETA_actual_processed_items))
+    # log_debug('total_processed_items      {}'.format(total_processed_items))
+    # log_debug('remaining items            {}'.format(remaining_items))
     if ETA_average_build_time > 0:
         ETA_s = remaining_items * ETA_average_build_time
         hours, minutes, seconds = int(ETA_s // 3600), int((ETA_s % 3600) // 60), int(ETA_s % 60)
@@ -153,8 +153,8 @@ def resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
     box_x_size = layout[dic_key]['width']
     box_y_size = layout[dic_key]['height']
     # log_debug('resize_proportional() Initialising ...')
-    # log_debug('img X_size = {0} | Y_size = {1}'.format(img.size[0], img.size[1]))
-    # log_debug('box X_size = {0} | Y_size = {1}'.format(box_x_size, box_y_size))
+    # log_debug('img X_size = {} | Y_size = {}'.format(img.size[0], img.size[1]))
+    # log_debug('box X_size = {} | Y_size = {}'.format(box_x_size, box_y_size))
 
     # --- First try to fit X dimension ---
     # log_debug('resize_proportional() Fitting X dimension')
@@ -164,8 +164,8 @@ def resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
     r_y_size = hsize
     x_offset = 0
     y_offset = int((box_y_size - r_y_size) / 2)
-    # log_debug('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
-    # log_debug('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
+    # log_debug('resize X_size = {} | Y_size = {}'.format(r_x_size, r_y_size))
+    # log_debug('resize x_offset = {} | y_offset = {}'.format(x_offset, y_offset))
 
     # --- Second try to fit Y dimension ---
     if y_offset < 0:
@@ -176,8 +176,8 @@ def resize_proportional(img, layout, dic_key, CANVAS_COLOR = (0, 0, 0)):
         r_y_size = box_y_size
         x_offset = int((box_x_size - r_x_size) / 2)
         y_offset = 0
-        # log_debug('resize X_size = {0} | Y_size = {1}'.format(r_x_size, r_y_size))
-        # log_debug('resize x_offset = {0} | y_offset = {1}'.format(x_offset, y_offset))
+        # log_debug('resize X_size = {} | Y_size = {}'.format(r_x_size, r_y_size))
+        # log_debug('resize x_offset = {} | y_offset = {}'.format(x_offset, y_offset))
 
     # >> Create a new image and paste original image centered.
     canvas_img = Image.new('RGB', (box_x_size, box_y_size), CANVAS_COLOR)
@@ -209,17 +209,17 @@ def perspective_coeffs(source_coords, target_coords):
         t = [float(i) for i in t]
         A.append([t[0], t[1], 1, 0, 0, 0, -s[0]*t[0], -s[0]*t[1]])
         A.append([0, 0, 0, t[0], t[1], 1, -s[1]*t[0], -s[1]*t[1]])
-    # print('A =\n{0}'.format(pprint.pformat(A)))
+    # print('A =\n{}'.format(pprint.pformat(A)))
 
     B = [float(item) for sublist in source_coords for item in sublist]
-    # print('B =\n{0}'.format(pprint.pformat(B)))
+    # print('B =\n{}'.format(pprint.pformat(B)))
 
     A_T = math_MatrixTranspose(A)
     A_T_A = math_MatrixProduct(A_T, A)
     A_T_A_inv = math_MatrixInverse(A_T_A)
     A_T_A_inv_A_T = math_MatrixProduct(A_T_A_inv, A_T)
     res = math_MatrixProduct_Column(A_T_A_inv_A_T, B)
-    # print('res =\n{0}'.format(pprint.pformat(res)))
+    # print('res =\n{}'.format(pprint.pformat(res)))
 
     return res
 
@@ -234,7 +234,7 @@ def project_texture(img_boxfront, coordinates, CANVAS_SIZE, rotate = False):
 
     # --- Info ---
     width, height = img_boxfront.size
-    # print('Image width {0}, height {1}'.format(width, height))
+    # print('Image width {}, height {}'.format(width, height))
 
     # --- Transform ---
     # Conver list of lists to list of tuples
@@ -322,7 +322,7 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
     t_color_bg = (102, 102, 0)
 
     # Quickly check if machine has valid assets, and skip fanart generation if not.
-    # log_debug('graphs_build_MAME_Fanart() Building fanart for machine {0}'.format(m_name))
+    # log_debug('graphs_build_MAME_Fanart() Building fanart for machine {}'.format(m_name))
     machine_has_valid_assets = False
     for asset_key, asset_db_name in MAME_layout_assets.items():
         m_assets = assets_dic[m_name]
@@ -334,11 +334,11 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
     # --- If font object does not exists open font an cache it. ---
     if not font_mono:
         log_debug('graphs_build_MAME_Fanart() Creating font_mono object')
-        log_debug('graphs_build_MAME_Fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        log_debug('graphs_build_MAME_Fanart() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['MachineName']['fontsize'])
     if not font_mono_debug:
         log_debug('graphs_build_MAME_Fanart() Creating font_mono_debug object')
-        log_debug('graphs_build_MAME_Fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        log_debug('graphs_build_MAME_Fanart() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 44)
 
     # --- Create fanart canvas ---
@@ -386,7 +386,7 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
                 img_asset = resize_proportional(img_asset, layout, asset_key, CANVAS_COLOR)
             except AttributeError:
                 a = 'graphs_build_MAME_Fanart() Exception AttributeError'
-                b = 'in m_name {0}, asset_key {1}'.format(m_name, asset_key)
+                b = 'in m_name {}, asset_key {}'.format(m_name, asset_key)
                 log_error(a)
                 log_error(b)
             else:
@@ -399,14 +399,14 @@ def graphs_build_MAME_Fanart(PATHS, layout, m_name, assets_dic,
                     layout[asset_key]['left'] + t_off + bg_off,
                     layout[asset_key]['top'] + t_off + bg_off)
                 t_coord = (layout[asset_key]['left'] + t_off, layout[asset_key]['top'] + t_off)
-                debug_text = '{0} {1}'.format(img_index, asset_key)
+                debug_text = '{} {}'.format(img_index, asset_key)
                 # Draw text background first, then front text to create a nice effect.
                 draw.text(t_bg_coord, debug_text, t_color_bg, font_mono_debug)
                 draw.text(t_coord, debug_text, t_color_fg, font_mono_debug)
             img_index += 1
 
     # --- Save fanart and update database ---
-    # log_debug('graphs_build_MAME_Fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
+    # log_debug('graphs_build_MAME_Fanart() Saving Fanart "{}"'.format(Fanart_FN.getPath()))
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
 
@@ -429,7 +429,7 @@ def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
     t_color_bg = (102, 102, 0)
 
     # Quickly check if machine has valid assets, and skip fanart generation if not.
-    # log_debug('graphs_build_SL_Fanart() Building fanart for SL {0} item {1}'.format(SL_name, m_name))
+    # log_debug('graphs_build_SL_Fanart() Building fanart for SL {} item {}'.format(SL_name, m_name))
     machine_has_valid_assets = False
     for asset_key, asset_db_name in SL_layout_assets.items():
         m_assets = assets_dic[m_name]
@@ -441,15 +441,15 @@ def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
     # If font object does not exists open font an cache it.
     if not font_mono_SL:
         log_debug('graphs_build_SL_Fanart() Creating font_mono_SL object')
-        log_debug('graphs_build_SL_Fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        log_debug('graphs_build_SL_Fanart() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono_SL = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['SLName']['fontsize'])
     if not font_mono_item:
         log_debug('graphs_build_SL_Fanart() Creating font_mono_item object')
-        log_debug('graphs_build_SL_Fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        log_debug('graphs_build_SL_Fanart() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono_item = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), layout['ItemName']['fontsize'])
     if not font_mono_debug:
         log_debug('graphs_build_SL_Fanart() Creating font_mono_debug object')
-        log_debug('graphs_build_SL_Fanart() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        log_debug('graphs_build_SL_Fanart() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 44)
 
     # --- Create fanart canvas ---
@@ -491,13 +491,13 @@ def graphs_build_SL_Fanart(PATHS, layout, SL_name, m_name, assets_dic,
                     layout[asset_key]['left'] + t_off + bg_off,
                     layout[asset_key]['top'] + t_off + bg_off)
                 t_coord = (layout[asset_key]['left'] + t_off, layout[asset_key]['top'] + t_off)
-                debug_text = '{0} {1}'.format(img_index, asset_key)
+                debug_text = '{} {}'.format(img_index, asset_key)
                 # Draw text background first, then front text to create a nice effect.
                 draw.text(t_bg_coord, debug_text, t_color_bg, font_mono_debug)
                 draw.text(t_coord, debug_text, t_color_fg, font_mono_debug)
             img_index += 1
     # --- Save fanart and update database ---
-    # log_debug('graphs_build_SL_Fanart() Saving Fanart "{0}"'.format(Fanart_FN.getPath()))
+    # log_debug('graphs_build_SL_Fanart() Saving Fanart "{}"'.format(Fanart_FN.getPath()))
     fanart_img.save(Fanart_FN.getPath())
     assets_dic[m_name]['fanart'] = Fanart_FN.getPath()
 
@@ -522,11 +522,11 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
     # --- If font object does not exists open font an cache it. ---
     if not font_mono:
         log_debug('graphs_build_MAME_3DBox() Creating font_mono object')
-        log_debug('graphs_build_MAME_3DBox() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        log_debug('graphs_build_MAME_3DBox() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 90)
     if test_flag and not font_mono_debug:
         log_debug('graphs_build_MAME_3DBox() Creating font_mono_debug object')
-        log_debug('graphs_build_MAME_3DBox() Loading "{0}"'.format(PATHS.MONO_FONT_PATH.getPath()))
+        log_debug('graphs_build_MAME_3DBox() Loading "{}"'.format(PATHS.MONO_FONT_PATH.getPath()))
         font_mono_debug = ImageFont.truetype(PATHS.MONO_FONT_PATH.getPath(), 40)
 
     # --- Open assets ---
@@ -582,7 +582,7 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
         canvas.paste(img_t, mask = img_t)
     except ValueError:
         log_error('graphs_build_MAME_3DBox() Exception ValueError in Front Flyer')
-        log_error('SL_name = {0}, m_name = {1}'.format(SL_name, m_name))
+        log_error('SL_name = {}, m_name = {}'.format(SL_name, m_name))
 
     # --- Spine game clearlogo ---
     # Skip Spine Clearlogo in SLs 3D Boxes.
@@ -592,7 +592,7 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
             canvas.paste(img_t, mask = img_t)
         except ValueError:
             log_error('graphs_build_MAME_3DBox() Exception ValueError in Spine Clearlogo')
-            log_error('SL_name = {0}, m_name = {1}'.format(SL_name, m_name))
+            log_error('SL_name = {}, m_name = {}'.format(SL_name, m_name))
 
     # --- MAME background ---
     img_mame = Image.open(MAME_logo_FN.getPath())
@@ -602,7 +602,7 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
     # --- Machine name ---
     img_name = Image.new('RGBA', (1000, 100), (0, 0, 0))
     draw = ImageDraw.Draw(img_name)
-    draw.text((5, 0), '{0} {1}'.format(SL_name, m_name), (255, 255, 255), font = font_mono)
+    draw.text((5, 0), '{} {}'.format(SL_name, m_name), (255, 255, 255), font = font_mono)
     img_t = project_texture(img_name, coord_dic['Front_Title'], CANVAS_SIZE)
     canvas.paste(img_t, mask = img_t)
 
@@ -615,16 +615,16 @@ def graphs_build_MAME_3DBox(PATHS, coord_dic, SL_name, m_name, assets_dic,
         PASTE_POINT = (680, 1280)
         img_name = Image.new('RGBA', BOX_SIZE, C_BLACK)
         draw = ImageDraw.Draw(img_name)
-        draw.text((10, 0), 'angleX {0}'.format(data['angleX']), C_WHITE, font = font_mono_debug)
-        draw.text((10, 35), 'angleY {0}'.format(data['angleY']), C_WHITE, font = font_mono_debug)
-        draw.text((10, 70), 'angleZ {0}'.format(data['angleZ']), C_WHITE, font = font_mono_debug)
-        draw.text((10, 105), 'FOV {0}'.format(data['fov']), C_WHITE, font = font_mono_debug)
-        draw.text((10, 140), 'd {0}'.format(data['viewer_distance']), C_WHITE, font = font_mono_debug)
+        draw.text((10, 0), 'angleX {}'.format(data['angleX']), C_WHITE, font = font_mono_debug)
+        draw.text((10, 35), 'angleY {}'.format(data['angleY']), C_WHITE, font = font_mono_debug)
+        draw.text((10, 70), 'angleZ {}'.format(data['angleZ']), C_WHITE, font = font_mono_debug)
+        draw.text((10, 105), 'FOV {}'.format(data['fov']), C_WHITE, font = font_mono_debug)
+        draw.text((10, 140), 'd {}'.format(data['viewer_distance']), C_WHITE, font = font_mono_debug)
         box = (PASTE_POINT[0], PASTE_POINT[1], PASTE_POINT[0]+BOX_SIZE[0], PASTE_POINT[1]+BOX_SIZE[1])
         canvas.paste(img_name, box, mask = img_name)
 
     # --- Save fanart and update database ---
-    # log_debug('graphs_build_MAME_3DBox() Saving Fanart "{0}"'.format(image_FN.getPath()))
+    # log_debug('graphs_build_MAME_3DBox() Saving Fanart "{}"'.format(image_FN.getPath()))
     canvas.save(image_FN.getPath())
     assets_dic[m_name]['3dbox'] = image_FN.getPath()
 
@@ -659,8 +659,8 @@ def graphs_load_MAME_Fanart_template(Template_FN):
                 if art_child.tag in art_tag_list:
                     art_dic[art_child.tag] = int(art_child.text)
                 else:
-                    log_error('Inside root tag <{0}>'.format(root_element.tag))
-                    log_error('Unknown tag <{0}>'.format(art_child.tag))
+                    log_error('Inside root tag <{}>'.format(root_element.tag))
+                    log_error('Unknown tag <{}>'.format(art_child.tag))
                     return None
             layout[root_element.tag] = art_dic
         elif root_element.tag in text_list:
@@ -669,12 +669,12 @@ def graphs_load_MAME_Fanart_template(Template_FN):
                 if art_child.tag in test_tag_list:
                     text_dic[art_child.tag] = int(art_child.text)
                 else:
-                    log_error('Inside root tag <{0}>'.format(root_element.tag))
-                    log_error('Unknown tag <{0}>'.format(art_child.tag))
+                    log_error('Inside root tag <{}>'.format(root_element.tag))
+                    log_error('Unknown tag <{}>'.format(art_child.tag))
                     return None
             layout[root_element.tag] = text_dic
         else:
-            log_error('Unknown root tag <{0}>'.format(root_element.tag))
+            log_error('Unknown root tag <{}>'.format(root_element.tag))
             return None
 
     return layout
@@ -738,7 +738,7 @@ def graphs_build_MAME_Fanart_all(PATHS, settings, data_dic):
             # kodi_dialog_OK('Fanart generation was cancelled by the user.')
             break
         # If build missing Fanarts was chosen only build fanart if file cannot be found.
-        Fanart_FN = data_dic['Fanart_path_FN'].pjoin('{0}.png'.format(m_name))
+        Fanart_FN = data_dic['Fanart_path_FN'].pjoin('{}.png'.format(m_name))
         if data_dic['BUILD_MISSING']:
             if Fanart_FN.exists():
                 data_dic['assets_dic'][m_name]['fanart'] = Fanart_FN.getPath()
@@ -809,8 +809,8 @@ def graphs_load_SL_Fanart_template(Template_FN):
                 if art_child.tag in art_tag_list:
                     art_dic[art_child.tag] = int(art_child.text)
                 else:
-                    log_error('Inside root tag <{0}>'.format(root_element.tag))
-                    log_error('Unknown tag <{0}>'.format(art_child.tag))
+                    log_error('Inside root tag <{}>'.format(root_element.tag))
+                    log_error('Unknown tag <{}>'.format(art_child.tag))
                     return None
             layout[root_element.tag] = art_dic
         elif root_element.tag in text_list:
@@ -819,12 +819,12 @@ def graphs_load_SL_Fanart_template(Template_FN):
                 if art_child.tag in test_tag_list:
                     text_dic[art_child.tag] = int(art_child.text)
                 else:
-                    log_error('Inside root tag <{0}>'.format(root_element.tag))
-                    log_error('Unknown tag <{0}>'.format(art_child.tag))
+                    log_error('Inside root tag <{}>'.format(root_element.tag))
+                    log_error('Unknown tag <{}>'.format(art_child.tag))
                     return None
             layout[root_element.tag] = text_dic
         else:
-            log_error('Unknown root tag <{0}>'.format(root_element.tag))
+            log_error('Unknown root tag <{}>'.format(root_element.tag))
             return None
 
     return layout
@@ -956,7 +956,7 @@ def graphs_load_MAME_3DBox_stuff(PATHS, settings, BUILD_MISSING):
     Asset_path_FN = FileName(settings['assets_path'])
     Boxes_path_FN = Asset_path_FN.pjoin('3dboxes')
     if not Boxes_path_FN.isdir():
-        log_info('Creating Fanart dir "{0}"'.format(Boxes_path_FN.getPath()))
+        log_info('Creating Fanart dir "{}"'.format(Boxes_path_FN.getPath()))
         Boxes_path_FN.makedirs()
     data_dic['Boxes_path_FN'] = Boxes_path_FN
 
@@ -1068,7 +1068,7 @@ def graphs_build_SL_3DBox_all(PATHS, settings, data_dic):
     SL_number, SL_count = len(data_dic['SL_index']), 1
     total_SL_items, total_processed_SL_items = control_dic['stats_SL_software_items'], 0
     ETA_str = ETA_reset(total_SL_items)
-    log_debug('graphs_build_SL_3DBox_all() total_SL_items = {0}'.format(total_SL_items))
+    log_debug('graphs_build_SL_3DBox_all() total_SL_items = {}'.format(total_SL_items))
     pDialog_canceled = False
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Advanced MAME Launcher')

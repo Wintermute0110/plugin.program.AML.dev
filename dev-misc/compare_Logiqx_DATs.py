@@ -18,4 +18,4 @@ def load_XML_DAT():
     pass
 
 # --- Main ---------------------------------------------------------------------------------------
-print('{0} {1}'.format(sys.argv[0], SCRIPT_VERSION))
+print('{} {}'.format(sys.argv[0], SCRIPT_VERSION))

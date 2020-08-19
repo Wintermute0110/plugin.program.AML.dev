@@ -640,7 +640,7 @@ def change_control_dic(control_dic, field, value):
     if field in control_dic:
         control_dic[field] = value
     else:
-        raise TypeError('Field {0} not in control_dic'.format(field))
+        raise TypeError('Field {} not in control_dic'.format(field))
 
 #
 # All version numbers must be less than 100, except the major version.
@@ -660,7 +660,7 @@ def change_control_dic(control_dic, field, value):
 #  |------------> Major version 0, ..., infinity
 #
 def fs_AML_version_str_to_int(AML_version_str):
-    log_verb('fs_AML_version_str_to_int() AML_version_str = "{0}"'.format(AML_version_str))
+    log_verb('fs_AML_version_str_to_int() AML_version_str = "{}"'.format(AML_version_str))
     version_int = 0
     # Parse versions like "0.9.8[-|~]alpha[jj]"
     m_obj_alpha_n = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)(\d+?)$', AML_version_str)
@@ -679,12 +679,12 @@ def fs_AML_version_str_to_int(AML_version_str):
             release_flag = 0
         elif kind_str == 'beta':
             release_flag = 1
-        # log_debug('fs_AML_version_str_to_int() major        {0}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor        {0}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build        {0}'.format(build))
-        # log_debug('fs_AML_version_str_to_int() kind_str     {0}'.format(kind_str))
-        # log_debug('fs_AML_version_str_to_int() release_flag {0}'.format(release_flag))
-        # log_debug('fs_AML_version_str_to_int() beta         {0}'.format(beta))
+        # log_debug('fs_AML_version_str_to_int() major        {}'.format(major))
+        # log_debug('fs_AML_version_str_to_int() minor        {}'.format(minor))
+        # log_debug('fs_AML_version_str_to_int() build        {}'.format(build))
+        # log_debug('fs_AML_version_str_to_int() kind_str     {}'.format(kind_str))
+        # log_debug('fs_AML_version_str_to_int() release_flag {}'.format(release_flag))
+        # log_debug('fs_AML_version_str_to_int() beta         {}'.format(beta))
         version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100 + beta
     elif m_obj_alpha:
         major    = int(m_obj_alpha.group(1))
@@ -695,25 +695,25 @@ def fs_AML_version_str_to_int(AML_version_str):
             release_flag = 0
         elif kind_str == 'beta':
             release_flag = 1
-        # log_debug('fs_AML_version_str_to_int() major        {0}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor        {0}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build        {0}'.format(build))
-        # log_debug('fs_AML_version_str_to_int() kind_str     {0}'.format(kind_str))
-        # log_debug('fs_AML_version_str_to_int() release_flag {0}'.format(release_flag))
+        # log_debug('fs_AML_version_str_to_int() major        {}'.format(major))
+        # log_debug('fs_AML_version_str_to_int() minor        {}'.format(minor))
+        # log_debug('fs_AML_version_str_to_int() build        {}'.format(build))
+        # log_debug('fs_AML_version_str_to_int() kind_str     {}'.format(kind_str))
+        # log_debug('fs_AML_version_str_to_int() release_flag {}'.format(release_flag))
         version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100
     elif m_obj_standard:
         major = int(m_obj_standard.group(1))
         minor = int(m_obj_standard.group(2))
         build = int(m_obj_standard.group(3))
         release_flag = 5
-        # log_debug('fs_AML_version_str_to_int() major {0}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor {0}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build {0}'.format(build))
+        # log_debug('fs_AML_version_str_to_int() major {}'.format(major))
+        # log_debug('fs_AML_version_str_to_int() minor {}'.format(minor))
+        # log_debug('fs_AML_version_str_to_int() build {}'.format(build))
         version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100
     else:
-        log_error('AML addon version "{0}" cannot be parsed.'.format(AML_version_str))
+        log_error('AML addon version "{}" cannot be parsed.'.format(AML_version_str))
         raise TypeError
-    log_verb('fs_AML_version_str_to_int() version_int = {0}'.format(version_int))
+    log_verb('fs_AML_version_str_to_int() version_int = {}'.format(version_int))
 
     return version_int
 
@@ -863,7 +863,7 @@ def fs_get_cataloged_dic_parents(PATHS, catalog_name):
     elif catalog_name == 'Year':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_YEAR_PARENT_PATH.getPath())
     else:
-        log_error('fs_get_cataloged_dic_parents() Unknown catalog_name = "{0}"'.format(catalog_name))
+        log_error('fs_get_cataloged_dic_parents() Unknown catalog_name = "{}"'.format(catalog_name))
 
     return catalog_dic
 
@@ -921,7 +921,7 @@ def fs_get_cataloged_dic_all(PATHS, catalog_name):
     elif catalog_name == 'Year':
         catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_YEAR_ALL_PATH.getPath())
     else:
-        log_error('fs_get_cataloged_dic_all() Unknown catalog_name = "{0}"'.format(catalog_name))
+        log_error('fs_get_cataloged_dic_all() Unknown catalog_name = "{}"'.format(catalog_name))
 
     return catalog_dic
 
@@ -1095,9 +1095,9 @@ class Threaded_Load_JSON(threading.Thread):
 # -------------------------------------------------------------------------------------------------
 def fs_extract_MAME_version(PATHS, mame_prog_FN):
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
-    log_info('fs_extract_MAME_version() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
-    log_debug('fs_extract_MAME_version() mame_dir     "{0}"'.format(mame_dir))
-    log_debug('fs_extract_MAME_version() mame_exec    "{0}"'.format(mame_exec))
+    log_info('fs_extract_MAME_version() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
+    log_debug('fs_extract_MAME_version() mame_dir     "{}"'.format(mame_dir))
+    log_debug('fs_extract_MAME_version() mame_exec    "{}"'.format(mame_exec))
     with open(PATHS.MAME_STDOUT_VER_PATH.getPath(), 'wb') as out, open(PATHS.MAME_STDERR_VER_PATH.getPath(), 'wb') as err:
         p = subprocess.Popen([mame_prog_FN.getPath(), '-?'], stdout=out, stderr=err, cwd=mame_dir)
         p.wait()
@@ -1223,14 +1223,14 @@ def fs_process_RETRO_MAME2003PLUS(PATHS, settings, AML_version_str, options_dic)
     log_info('fs_process_RETRO_MAME2003PLUS() Counting number of machines ...')
     total_machines = fs_count_MAME_machines_archaic(XML_path_FN)
     options_dic['total_machines'] = total_machines
-    log_info('fs_process_RETRO_MAME2003PLUS() Found {0} machines.'.format(total_machines))
+    log_info('fs_process_RETRO_MAME2003PLUS() Found {} machines.'.format(total_machines))
 
     # -----------------------------------------------------------------------------
     # Reset MAME control dictionary completely
     # -----------------------------------------------------------------------------
     AML_version_int = fs_AML_version_str_to_int(AML_version_str)
-    log_info('fs_process_RETRO_MAME2003PLUS() AML version str "{0}"'.format(AML_version_str))
-    log_info('fs_process_RETRO_MAME2003PLUS() AML version int {0}'.format(AML_version_int))
+    log_info('fs_process_RETRO_MAME2003PLUS() AML version str "{}"'.format(AML_version_str))
+    log_info('fs_process_RETRO_MAME2003PLUS() AML version int {}'.format(AML_version_int))
     control_dic = fs_new_control_dic()
     change_control_dic(control_dic, 'ver_AML', AML_version_int)
     change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
@@ -1329,7 +1329,7 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
         md5_str = hashlib.md5(key.encode('utf-8')).hexdigest()
         db_name = md5_str[0:2] # WARNING Python slicing does not work like in C/C++!
         db_main_hash_idx[key] = db_name
-        # log_debug('Machine {0:20s} / hash {1} / db file {2}'.format(key, md5_str, db_name))
+        # log_debug('Machine {:20s} / hash {} / db file {}'.format(key, md5_str, db_name))
     pDialog.endProgress()
 
     hex_digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
@@ -1341,7 +1341,7 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
     item_count = 0
     pDialog.startProgress('Building main hashed database JSON files...', num_items)
     for db_prefix in distributed_db_files:
-        # log_debug('db prefix {0}'.format(db_prefix))
+        # log_debug('db prefix {}'.format(db_prefix))
         # --- Generate dictionary in this JSON file ---
         hashed_db_dic = {}
         for key in db_main_hash_idx:
@@ -1386,7 +1386,7 @@ def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
         md5_str = hashlib.md5(key.encode('utf-8')).hexdigest()
         db_name = md5_str[0:2] # WARNING Python slicing does not work like in C/C++!
         db_main_hash_idx[key] = db_name
-        # log_debug('Machine {0:20s} / hash {1} / db file {2}'.format(key, md5_str, db_name))
+        # log_debug('Machine {:20s} / hash {} / db file {}'.format(key, md5_str, db_name))
     pDialog.endProgress()
 
     hex_digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
@@ -1417,7 +1417,7 @@ def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
 # This is very quick for retrieving individual machines, very slow for multiple machines.
 #
 def fs_get_machine_assets_db_hash(PATHS, machine_name):
-    log_debug('fs_get_machine_assets_db_hash() machine {0}'.format(machine_name))
+    log_debug('fs_get_machine_assets_db_hash() machine {}'.format(machine_name))
     md5_str = hashlib.md5(machine_name.encode('utf-8')).hexdigest()
     hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_assets.json')
     hashed_db_dic = fs_load_JSON_file_dic(hash_DB_FN.getPath())
@@ -1447,7 +1447,7 @@ def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machine
         pDialog.updateProgressInc()
         if not file.endswith('_render.json'): continue
         full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
-        # log_debug('UNLINK "{0}"'.format(full_path))
+        # log_debug('UNLINK "{}"'.format(full_path))
         os.unlink(full_path)
         deleted_items += 1
     pDialog.endProgress()
@@ -1465,8 +1465,8 @@ def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machine
         for catalog_key in catalog_index_dic:
             pDialog.updateProgressInc()
             hash_str = catalog_index_dic[catalog_key]['hash']
-            # log_verb('fs_build_ROM_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
-            # log_verb('fs_build_ROM_cache() hash {0}'.format(hash_str))
+            # log_verb('fs_build_ROM_cache() Catalog "{}" --- Key "{}"'.format(catalog_name, catalog_key))
+            # log_verb('fs_build_ROM_cache() hash {}'.format(hash_str))
 
             # Build all machines cache
             m_render_all_dic = {}
@@ -1507,7 +1507,7 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
         processed_items += 1
         if not file.endswith('_assets.json'): continue
         full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
-        # log_debug('UNLINK "{0}"'.format(full_path))
+        # log_debug('UNLINK "{}"'.format(full_path))
         os.unlink(full_path)
         deleted_items += 1
     pDialog.endProgress()
@@ -1526,8 +1526,8 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
         for catalog_key in catalog_index_dic:
             pDialog.updateProgress(item_count)
             hash_str = catalog_index_dic[catalog_key]['hash']
-            # log_verb('fs_build_asset_cache() Catalog "{0}" --- Key "{1}"'.format(catalog_name, catalog_key))
-            # log_verb('fs_build_asset_cache() hash {0}'.format(hash_str))
+            # log_verb('fs_build_asset_cache() Catalog "{}" --- Key "{}"'.format(catalog_name, catalog_key))
+            # log_verb('fs_build_asset_cache() hash {}'.format(hash_str))
 
             # Build all machines cache
             m_assets_all_dic = {}
@@ -1591,12 +1591,12 @@ def fs_save_files(db_files, json_write_func = fs_write_JSON_file):
 # Export stuff
 # -------------------------------------------------------------------------------------------------
 def fs_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_render, assets_dic):
-    log_verb('fs_export_Read_Only_Launcher() File "{0}"'.format(export_FN.getPath()))
+    log_verb('fs_export_Read_Only_Launcher() File "{}"'.format(export_FN.getPath()))
 
     # Create list of strings.
     str_list = []
     str_list.append('<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n')
-    str_list.append('<!-- Exported by AML on {0} -->\n'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
+    str_list.append('<!-- Exported by AML on {} -->\n'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
     str_list.append('<advanced_MAME_launcher_virtual_launcher>\n')
     for m_name, r_name in catalog_dic.items():
         str_list.append('<machine>\n')

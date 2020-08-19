@@ -76,8 +76,8 @@ def _get_change_tuple(text_t):
     if tuple_list:
         return tuple_list[0]
     else:
-        log_error('_get_change_tuple() text_t = "{0}"'.format(text_t))
-        m = '(Exception) Cannot parse <Change> "{0}"'.format(text_t)
+        log_error('_get_change_tuple() text_t = "{}"'.format(text_t))
+        m = '(Exception) Cannot parse <Change> "{}"'.format(text_t)
         log_error(m)
         raise Addon_Error(m)
 

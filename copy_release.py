@@ -37,14 +37,14 @@ def main():
     addons_dir = os.path.abspath(os.path.join(current_dir, '..'))
     AML_target_dir = os.path.join(addons_dir, make_release.AML_ID)
     AML_source_dir = os.path.join(current_dir, make_release.AML_ID)
-    print('Current directory is "{0}"'.format(current_dir))
-    print('Addons directory is  "{0}"'.format(addons_dir))
-    print('AML_target_dir       "{0}"'.format(AML_target_dir))
-    print('AML_source_dir       "{0}"'.format(AML_source_dir))
+    print('Current directory is "{}"'.format(current_dir))
+    print('Addons directory is  "{}"'.format(addons_dir))
+    print('AML_target_dir       "{}"'.format(AML_target_dir))
+    print('AML_source_dir       "{}"'.format(AML_source_dir))
 
     if os.path.isdir(AML_target_dir):
-        print('Target dir "{0}" exists'.format(AML_target_dir))
-        print('Purging contents in "{0}"'.format(AML_target_dir))
+        print('Target dir "{}" exists'.format(AML_target_dir))
+        print('Purging contents in "{}"'.format(AML_target_dir))
         shutil.rmtree(AML_target_dir)
 
     print('\n--- Moving AML from source to target directory ---')

@@ -310,12 +310,12 @@ def run_plugin(addon_argv):
     g_base_url = addon_argv[0]
     g_addon_handle = int(addon_argv[1])
     args = urllib.parse.parse_qs(addon_argv[2][1:])
-    # log_debug('args = {0}'.format(args))
+    # log_debug('args = {}'.format(args))
     # Interestingly, if plugin is called as type executable then args is empty.
     # However, if plugin is called as type game then Kodi adds the following
     # even for the first call: 'content_type': ['game']
     g_content_type = args['content_type'] if 'content_type' in args else None
-    log_debug('content_type = {0}'.format(g_content_type))
+    log_debug('content_type = {}'.format(g_content_type))
 
     # --- URL routing -------------------------------------------------------------------------
     # Show addon root window.
@@ -384,26 +384,26 @@ def run_plugin(addon_argv):
             category_name = args['category'][0] if 'category' in args else ''
             machine_name  = args['parent'][0] if 'parent' in args else ''
             url = misc_url_3_arg('catalog', catalog_name, 'category', category_name, 'parent', machine_name)
-            xbmc.executebuiltin('Container.Update({0})'.format(url))
+            xbmc.executebuiltin('Container.Update({})'.format(url))
 
         elif command == 'EXEC_SHOW_SL_CLONES':
             catalog_name  = args['catalog'][0] if 'catalog' in args else ''
             category_name = args['category'][0] if 'category' in args else ''
             machine_name  = args['parent'][0] if 'parent' in args else ''
             url = misc_url_3_arg('catalog', 'SL', 'category', category_name, 'parent', machine_name)
-            xbmc.executebuiltin('Container.Update({0})'.format(url))
+            xbmc.executebuiltin('Container.Update({})'.format(url))
 
         # >> If location is not present in the URL default to standard.
         elif command == 'LAUNCH':
             machine  = args['machine'][0]
             location = args['location'][0] if 'location' in args else LOCATION_STANDARD
-            log_info('Launching MAME machine "{0}" in "{1}"'.format(machine, location))
+            log_info('Launching MAME machine "{}" in "{}"'.format(machine, location))
             run_machine(machine, location)
         elif command == 'LAUNCH_SL':
             SL_name  = args['SL'][0]
             ROM_name = args['ROM'][0]
             location = args['location'][0] if 'location' in args else LOCATION_STANDARD
-            log_info('Launching SL machine "{0}" (ROM "{1}")'.format(SL_name, ROM_name))
+            log_info('Launching SL machine "{}" (ROM "{}")'.format(SL_name, ROM_name))
             run_SL_machine(SL_name, ROM_name, location)
 
         elif command == 'SETUP_PLUGIN':
@@ -506,7 +506,7 @@ def run_plugin(addon_argv):
             command_exec_report(which_report)
 
         else:
-            u = 'Unknown command "{0}"'.format(command)
+            u = 'Unknown command "{}"'.format(command)
             log_error(u)
             kodi_dialog_OK(u)
             xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -624,7 +624,7 @@ def get_settings():
     # --- Dump settings for DEBUG ---
     # log_debug('Settings dump BEGIN')
     # for key in sorted(g_settings):
-    #     log_debug('{0} --> {1:10s} {2}'.format(key.rjust(21), str(g_settings[key]), type(g_settings[key])))
+    #     log_debug('{} --> {:10s} {}'.format(key.rjust(21), str(g_settings[key]), type(g_settings[key])))
     # log_debug('Settings dump END')
 
 # ---------------------------------------------------------------------------------------------
@@ -1073,14 +1073,14 @@ def render_root_list():
             elif l_dic['num_with_ROMs'] == 0 and l_dic['num_with_CHDs'] == 0:
                 num_SL_empty += 1
             else:
-                log_error('Logical error in SL {0}'.format(l_name))
+                log_error('Logical error in SL {}'.format(l_name))
         SL_counters_available = True
         log_debug('render_root_list() SL_counters_available = True')
-        # log_debug('There are {0} SL_all lists.'.format(num_SL_all))
-        # log_debug('There are {0} SL_ROMs lists.'.format(num_SL_ROMs))
-        # log_debug('There are {0} SL_mixed lists.'.format(num_SL_mixed))
-        # log_debug('There are {0} SL_CHDs lists.'.format(num_SL_CHDs))
-        # log_debug('There are {0} SL_empty lists.'.format(num_SL_empty))
+        # log_debug('There are {} SL_all lists.'.format(num_SL_all))
+        # log_debug('There are {} SL_ROMs lists.'.format(num_SL_ROMs))
+        # log_debug('There are {} SL_mixed lists.'.format(num_SL_mixed))
+        # log_debug('There are {} SL_CHDs lists.'.format(num_SL_CHDs))
+        # log_debug('There are {} SL_empty lists.'.format(num_SL_empty))
 
     except KeyError as E:
         SL_counters_available = False
@@ -1386,7 +1386,7 @@ def render_root_catalog_row(catalog_name, catalog_key, display_name, plot_str):
         ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Utilities', URL_utils),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__)),
     ]
     listitem.addContextMenuItems(commands)
 
@@ -1412,7 +1412,7 @@ def render_root_category_row(display_name, plot_str, root_URL):
     commands = [
         ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__)),
     ]
     listitem.addContextMenuItems(commands)
     xbmcplugin.addDirectoryItem(g_addon_handle, root_URL, listitem, isFolder = True)
@@ -1432,7 +1432,7 @@ def render_root_category_row_custom_CM(display_name, plot_str, root_URL, cmenu_l
     commands = [
         ('Setup plugin', misc_url_1_arg_RunPlugin('command', 'SETUP_PLUGIN')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__)),
     ]
     cmenu_list.extend(commands)
     listitem.addContextMenuItems(cmenu_list)
@@ -1457,7 +1457,7 @@ def render_Utilities_vlaunchers():
     # --- Common context menu for all VLaunchers ---
     commands = [
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__)),
     ]
 
     # --- Check MAME version ---
@@ -1562,17 +1562,17 @@ def render_GlobalReports_vlaunchers():
     # --- Common context menu for all VLaunchers ---
     commands = [
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__)),
     ]
 
     # --- View MAME last execution output --------------------------------------------------------
     if g_PATHS.MAME_OUTPUT_PATH.exists():
         filesize = g_PATHS.MAME_OUTPUT_PATH.fileSize()
-        STD_status = '{0} bytes'.format(filesize)
+        STD_status = '{} bytes'.format(filesize)
     else:
         STD_status = 'not found'
     listitem = aux_get_generic_listitem(
-        'View MAME last execution output ({0})'.format(STD_status),
+        'View MAME last execution output ({})'.format(STD_status),
         'View MAME last execution output', commands)
     url_str = misc_url_2_arg('command', 'EXECUTE_REPORT', 'which', 'VIEW_EXEC_OUTPUT')
     xbmcplugin.addDirectoryItem(g_addon_handle, url_str, listitem, isFolder = False)
@@ -1803,7 +1803,7 @@ def render_GlobalReports_vlaunchers():
 #
 def render_catalog_list(catalog_name):
     log_debug('render_catalog_list() Starting ...')
-    log_debug('render_catalog_list() catalog_name = "{0}"'.format(catalog_name))
+    log_debug('render_catalog_list() catalog_name = "{}"'.format(catalog_name))
 
     # --- General AML plugin check ---
     # Check if databases have been built, print warning messages, etc. This function returns
@@ -1843,14 +1843,14 @@ def render_catalog_list(catalog_name):
     rendering_ticks_end = time.time()
 
     # --- DEBUG Data loading/rendering statistics ---
-    log_debug('Loading seconds   {0}'.format(loading_ticks_end - loading_ticks_start))
-    log_debug('Rendering seconds {0}'.format(rendering_ticks_end - rendering_ticks_start))
+    log_debug('Loading seconds   {}'.format(loading_ticks_end - loading_ticks_start))
+    log_debug('Rendering seconds {}'.format(rendering_ticks_end - rendering_ticks_start))
 
 def render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_str):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
-    title_str = '{0} [COLOR orange]({1} {2})[/COLOR]'.format(catalog_key, num_machines, machine_str)
-    plot_str = 'Catalog {0}\nCategory {1}'.format(catalog_name, catalog_key)
+    title_str = '{} [COLOR orange]({} {})[/COLOR]'.format(catalog_key, num_machines, machine_str)
+    plot_str = 'Catalog {}\nCategory {}'.format(catalog_name, catalog_key)
     listitem = xbmcgui.ListItem(title_str)
     listitem.setInfo('video', {'title' : title_str,      'plot' : plot_str,
                                'overlay' : ICON_OVERLAY, 'size' : num_machines})
@@ -1866,7 +1866,7 @@ def render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_str
     commands = [
         ('Utilities', URL_utils),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__)),
     ]
     listitem.addContextMenuItems(commands)
 
@@ -1882,19 +1882,19 @@ def render_catalog_list_row(catalog_name, catalog_key, num_machines, machine_str
 def render_catalog_parent_list(catalog_name, category_name):
     # When using threads the performance gain is small: from 0.76 to 0.71, just 20 ms.
     # It's not worth it.
-    log_debug('render_catalog_parent_list() catalog_name  = {0}'.format(catalog_name))
-    log_debug('render_catalog_parent_list() category_name = {0}'.format(category_name))
+    log_debug('render_catalog_parent_list() catalog_name  = {}'.format(catalog_name))
+    log_debug('render_catalog_parent_list() category_name = {}'.format(category_name))
 
     # --- Load ListItem properties (Not used at the moment) ---
-    # prop_key = '{0} - {1}'.format(catalog_name, category_name)
-    # log_debug('render_catalog_parent_list() Loading props with key "{0}"'.format(prop_key))
+    # prop_key = '{} - {}'.format(catalog_name, category_name)
+    # log_debug('render_catalog_parent_list() Loading props with key "{}"'.format(prop_key))
     # mame_properties_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_PROPERTIES_PATH.getPath())
     # prop_dic = mame_properties_dic[prop_key]
     # view_mode_property = prop_dic['vm']
 
     # --- Global properties ---
     view_mode_property = g_settings['mame_view_mode']
-    log_debug('render_catalog_parent_list() view_mode_property = {0}'.format(view_mode_property))
+    log_debug('render_catalog_parent_list() view_mode_property = {}'.format(view_mode_property))
 
     # --- General AML plugin check ---
     # Check if databases have been built, print warning messages, etc.
@@ -1910,7 +1910,7 @@ def render_catalog_parent_list(catalog_name, category_name):
     elif view_mode_property == VIEW_MODE_FLAT:
         catalog_dic = fs_get_cataloged_dic_all(g_PATHS, catalog_name)
     else:
-        kodi_dialog_OK('Wrong view_mode_property = "{0}". '.format(view_mode_property) +
+        kodi_dialog_OK('Wrong view_mode_property = "{}". '.format(view_mode_property) +
                        'This is a bug, please report it.')
         return
     l_cataloged_dic_end = time.time()
@@ -1983,16 +1983,16 @@ def render_catalog_parent_list(catalog_name, category_name):
 # hence all ROMs databases exist.
 #
 def render_catalog_clone_list(catalog_name, category_name, parent_name):
-    log_debug('render_catalog_clone_list() catalog_name  = {0}'.format(catalog_name))
-    log_debug('render_catalog_clone_list() category_name = {0}'.format(category_name))
-    log_debug('render_catalog_clone_list() parent_name   = {0}'.format(parent_name))
+    log_debug('render_catalog_clone_list() catalog_name  = {}'.format(catalog_name))
+    log_debug('render_catalog_clone_list() category_name = {}'.format(category_name))
+    log_debug('render_catalog_clone_list() parent_name   = {}'.format(parent_name))
     display_hide_Mature = g_settings['display_hide_Mature']
     display_hide_BIOS = g_settings['display_hide_BIOS']
     if catalog_name == 'None' and category_name == 'BIOS': display_hide_BIOS = False
     display_hide_nonworking = g_settings['display_hide_nonworking']
     display_hide_imperfect  = g_settings['display_hide_imperfect']
     view_mode_property = g_settings['mame_view_mode']
-    log_debug('render_catalog_clone_list() view_mode_property = {0}'.format(view_mode_property))
+    log_debug('render_catalog_clone_list() view_mode_property = {}'.format(view_mode_property))
 
     # --- Load main MAME info DB ---
     loading_ticks_start = time.time()
@@ -2252,10 +2252,10 @@ def render_commit_machines(r_list):
 #
 def command_context_display_settings(catalog_name, category_name):
     # >> Load ListItem properties
-    log_debug('command_display_settings() catalog_name  "{0}"'.format(catalog_name))
-    log_debug('command_display_settings() category_name "{0}"'.format(category_name))
-    prop_key = '{0} - {1}'.format(catalog_name, category_name)
-    log_debug('command_display_settings() Loading props with key "{0}"'.format(prop_key))
+    log_debug('command_display_settings() catalog_name  "{}"'.format(catalog_name))
+    log_debug('command_display_settings() category_name "{}"'.format(category_name))
+    prop_key = '{} - {}'.format(catalog_name, category_name)
+    log_debug('command_display_settings() Loading props with key "{}"'.format(prop_key))
     mame_properties_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_PROPERTIES_PATH.getPath())
     prop_dic = mame_properties_dic[prop_key]
     if prop_dic['vm'] == VIEW_MODE_NORMAL: dmode_str = 'Parents only'
@@ -2264,7 +2264,7 @@ def command_context_display_settings(catalog_name, category_name):
     # --- Select menu ---
     dialog = xbmcgui.Dialog()
     menu_item = dialog.select('Display settings',
-                             ['Display mode (currently {0})'.format(dmode_str),
+                             ['Display mode (currently {})'.format(dmode_str),
                               'Default Icon',   'Default Fanart',
                               'Default Banner', 'Default Poster',
                               'Default Clearlogo'])
@@ -2275,11 +2275,10 @@ def command_context_display_settings(catalog_name, category_name):
         # >> Krypton feature: preselect the current item.
         # >> NOTE Preselect must be called with named parameter, otherwise it does not work well.
         # See http://forum.kodi.tv/showthread.php?tid=250936&pid=2327011#pid2327011
-        if prop_dic['vm'] == VIEW_MODE_NORMAL: p_idx = 0
-        else:                                  p_idx = 1
-        log_debug('command_display_settings() p_idx = "{0}"'.format(p_idx))
+        p_idx = 0 if prop_dic['vm'] == VIEW_MODE_NORMAL else 1
+        log_debug('command_display_settings() p_idx = "{}"'.format(p_idx))
         idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
-        log_debug('command_display_settings() idx = "{0}"'.format(idx))
+        log_debug('command_display_settings() idx = "{}"'.format(idx))
         if idx < 0: return
         if idx == 0:   prop_dic['vm'] = VIEW_MODE_NORMAL
         elif idx == 1: prop_dic['vm'] = VIEW_MODE_ALL
@@ -2338,7 +2337,7 @@ def render_SL_list(catalog_name):
     xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_SL_ROMs(SL_name):
-    log_debug('render_SL_ROMs() SL_name "{0}"'.format(SL_name))
+    log_debug('render_SL_ROMs() SL_name "{}"'.format(SL_name))
 
     # --- General AML plugin check ---
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -2351,7 +2350,7 @@ def render_SL_ROMs(SL_name):
     # prop_dic = SL_properties_dic[SL_name]
     # Global properties
     view_mode_property = g_settings['sl_view_mode']
-    log_debug('render_SL_ROMs() view_mode_property = {0}'.format(view_mode_property))
+    log_debug('render_SL_ROMs() view_mode_property = {}'.format(view_mode_property))
 
     # Load Software List ROMs
     SL_PClone_dic = fs_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
@@ -2384,22 +2383,22 @@ def render_SL_ROMs(SL_name):
             ROM['genre'] = SL_proper_name # Add the SL name as 'genre'
             render_SL_ROM_row(SL_name, rom_name, ROM, assets)
     else:
-        kodi_dialog_OK('Wrong vm = "{0}". This is a bug, please report it.'.format(prop_dic['vm']))
+        kodi_dialog_OK('Wrong vm = "{}". This is a bug, please report it.'.format(prop_dic['vm']))
         return
     xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
 
 def render_SL_pclone_set(SL_name, parent_name):
-    log_debug('render_SL_pclone_set() SL_name     "{0}"'.format(SL_name))
-    log_debug('render_SL_pclone_set() parent_name "{0}"'.format(parent_name))
+    log_debug('render_SL_pclone_set() SL_name     "{}"'.format(SL_name))
+    log_debug('render_SL_pclone_set() parent_name "{}"'.format(parent_name))
     view_mode_property = g_settings['sl_view_mode']
-    log_debug('render_SL_pclone_set() view_mode_property = {0}'.format(view_mode_property))
+    log_debug('render_SL_pclone_set() view_mode_property = {}'.format(view_mode_property))
 
     # >> Load Software List ROMs
     SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
     SL_PClone_dic = fs_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
     file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
     SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(file_name)
-    log_debug('render_SL_pclone_set() ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+    log_debug('render_SL_pclone_set() ROMs JSON "{}"'.format(SL_DB_FN.getPath()))
     SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
 
     assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -2526,7 +2525,7 @@ def render_SL_ROM_row(SL_name, rom_name, ROM, assets, flag_parent_list = False, 
             ('Show clones', URL_show_c),
             ('Add ROM to SL Favourites', URL_fav),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__))
         ]
     else:
         commands = [
@@ -2534,7 +2533,7 @@ def render_SL_ROM_row(SL_name, rom_name, ROM, assets, flag_parent_list = False, 
             ('View / Audit', URL_view),
             ('Add ROM to SL Favourites', URL_fav),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__))
         ]
     listitem.addContextMenuItems(commands)
 
@@ -2555,7 +2554,7 @@ def render_DAT_list(catalog_name):
     commands = [
         ('View', misc_url_1_arg_RunPlugin('command', 'VIEW')),
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__)),
     ]
     # --- Unrolled variables ---
     ICON_OVERLAY = 6
@@ -2594,7 +2593,7 @@ def render_DAT_list(catalog_name):
         # Render list of machines.
         DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_IDX_PATH.getPath())
         if not DAT_idx_dic:
-            kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
+            kodi_dialog_OK('DAT database file "{}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
             return
         set_Kodi_all_sorting_methods()
@@ -2635,11 +2634,11 @@ def render_DAT_category(catalog_name, category_name):
     elif catalog_name == 'MAMEINFO':
         DAT_catalog_dic = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_IDX_PATH.getPath())
     else:
-        kodi_dialog_OK('DAT database file "{0}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
+        kodi_dialog_OK('DAT database file "{}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
         xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
         return
     if not DAT_catalog_dic:
-        kodi_dialog_OK('DAT database file "{0}" empty.'.format(catalog_name))
+        kodi_dialog_OK('DAT database file "{}" empty.'.format(catalog_name))
         xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
@@ -2664,7 +2663,7 @@ def render_DAT_category_row(catalog_name, category_name, machine_key, display_na
     listitem.setInfo('video', {'title' : display_name, 'overlay' : ICON_OVERLAY } )
     commands = [
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('Add-on Settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ('Add-on Settings', 'Addon.OpenSettings({})'.format(__addon_id__))
     ]
     listitem.addContextMenuItems(commands)
 
@@ -2673,9 +2672,9 @@ def render_DAT_category_row(catalog_name, category_name, machine_key, display_na
     xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
 
 def render_DAT_machine_info(catalog_name, category_name, machine_name):
-    log_debug('render_DAT_machine_info() catalog_name "{0}"'.format(catalog_name))
-    log_debug('render_DAT_machine_info() category_name "{0}"'.format(category_name))
-    log_debug('render_DAT_machine_info() machine_name "{0}"'.format(machine_name))
+    log_debug('render_DAT_machine_info() catalog_name "{}"'.format(catalog_name))
+    log_debug('render_DAT_machine_info() category_name "{}"'.format(category_name))
+    log_debug('render_DAT_machine_info() machine_name "{}"'.format(machine_name))
 
     if catalog_name == 'History':
         DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
@@ -2710,7 +2709,7 @@ def render_DAT_machine_info(catalog_name, category_name, machine_name):
 # Not used at the moment -> There are global display settings.
 #
 def command_context_display_settings_SL(SL_name):
-    log_debug('command_display_settings_SL() SL_name "{0}"'.format(SL_name))
+    log_debug('command_display_settings_SL() SL_name "{}"'.format(SL_name))
 
     # --- Load properties DB ---
     SL_properties_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PROP_PATH.getPath())
@@ -2721,7 +2720,7 @@ def command_context_display_settings_SL(SL_name):
     else:                                  dmode_str = 'Parents and clones'
     dialog = xbmcgui.Dialog()
     menu_item = dialog.select('Display settings',
-                             ['Display mode (currently {0})'.format(dmode_str),
+                             ['Display mode (currently {})'.format(dmode_str),
                               'Default Icon', 'Default Fanart',
                               'Default Banner', 'Default Poster', 'Default Clearlogo'])
     if menu_item < 0: return
@@ -2730,9 +2729,9 @@ def command_context_display_settings_SL(SL_name):
     if menu_item == 0:
         if prop_dic['vm'] == VIEW_MODE_NORMAL: p_idx = 0
         else:                                  p_idx = 1
-        log_debug('command_display_settings() p_idx = "{0}"'.format(p_idx))
+        log_debug('command_display_settings() p_idx = "{}"'.format(p_idx))
         idx = dialog.select('Display mode', ['Parents only', 'Parents and clones'], preselect = p_idx)
-        log_debug('command_display_settings() idx = "{0}"'.format(idx))
+        log_debug('command_display_settings() idx = "{}"'.format(idx))
         if idx < 0: return
         if idx == 0:   prop_dic['vm'] = VIEW_MODE_NORMAL
         elif idx == 1: prop_dic['vm'] = VIEW_MODE_ALL
@@ -2763,17 +2762,17 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
     ACTION_VIEW_SAME_MANUFACTURER = 900
 
     # --- Determine if we are in a category, launcher or ROM ---
-    log_debug('command_context_view_DAT() machine_name "{0}"'.format(machine_name))
-    log_debug('command_context_view_DAT() SL_name      "{0}"'.format(SL_name))
-    log_debug('command_context_view_DAT() SL_ROM       "{0}"'.format(SL_ROM))
-    log_debug('command_context_view_DAT() location     "{0}"'.format(location))
+    log_debug('command_context_view_DAT() machine_name "{}"'.format(machine_name))
+    log_debug('command_context_view_DAT() SL_name      "{}"'.format(SL_name))
+    log_debug('command_context_view_DAT() SL_ROM       "{}"'.format(SL_ROM))
+    log_debug('command_context_view_DAT() location     "{}"'.format(location))
     if machine_name:
         view_type = VIEW_MAME_MACHINE
     elif SL_name:
         view_type = VIEW_SL_ROM
     else:
         raise TypeError('Logic error in command_context_view_DAT()')
-    log_debug('command_context_view_DAT() view_type = {0}'.format(view_type))
+    log_debug('command_context_view_DAT() view_type = {}'.format(view_type))
 
     if view_type == VIEW_MAME_MACHINE:
         # --- Load DAT indices ---
@@ -2841,7 +2840,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
           'View Manual',
         ]
     else:
-        kodi_dialog_OK('Wrong view_type = {0}. This is a bug, please report it.'.format(view_type))
+        kodi_dialog_OK('Wrong view_type = {}. This is a bug, please report it.'.format(view_type))
         return
     selected_value = xbmcgui.Dialog().select('View', d_list)
     if selected_value < 0: return
@@ -2859,7 +2858,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         elif selected_value == 8: action = ACTION_VIEW_SAME_MANUFACTURER
         else:
             kodi_dialog_OK(
-                'view_type == VIEW_MAME_MACHINE and selected_value = {0}. '.format(selected_value) +
+                'view_type == VIEW_MAME_MACHINE and selected_value = {}. '.format(selected_value) +
                 'This is a bug, please report it.')
             return
     elif view_type == VIEW_SL_ROM:
@@ -2944,7 +2943,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
             m_assets = SL_asset_dic[SL_ROM]
             if not m_assets['fanart']:
-                kodi_dialog_OK('Fanart for SL item {0} not found.'.format(SL_ROM))
+                kodi_dialog_OK('Fanart for SL item {} not found.'.format(SL_ROM))
                 return
 
         # >> If manual found then display it.
@@ -2960,7 +2959,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
     # "View slideshow". Initiated this way, the slideshow has a pan/zooming effects and all
     # pictures in the list are changed every few seconds.
     #
-    # Use the builtin function SlideShow("{0}",pause) to show a set of pictures in full screen.
+    # Use the builtin function SlideShow("{}",pause) to show a set of pictures in full screen.
     # See https://forum.kodi.tv/showthread.php?tid=329349
     #
     elif action == ACTION_VIEW_MANUAL:
@@ -2969,7 +2968,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         # >> See https://github.com/xbmc/xbmc/blob/master/xbmc/interfaces/builtins/PictureBuiltins.cpp
         # >> '\' in path strings must be escaped like '\\'
         # >> Builtin function arguments can be in any order (at least for this function).
-        # xbmc.executebuiltin('SlideShow("{0}",pause)'.format(r'E:\\AML-stuff\\AML-assets\\fanarts\\'))
+        # xbmc.executebuiltin('SlideShow("{}",pause)'.format(r'E:\\AML-stuff\\AML-assets\\fanarts\\'))
 
         # >> If manual found then display it.
         # >> First, extract images from the PDF/CBZ.
@@ -2980,7 +2979,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         #      function extract. In addition to PDF extension, CBR and CBZ extensions must
         #      also be searched for manuals.
         if view_type == VIEW_MAME_MACHINE:
-            log_debug('Displaying Manual for MAME machine {0} ...'.format(machine_name))
+            log_debug('Displaying Manual for MAME machine {} ...'.format(machine_name))
             # machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
             assets_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
             if not assets_dic[machine_name]['manual']:
@@ -2989,7 +2988,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             man_file_FN = FileName(assets_dic[machine_name]['manual'])
             img_dir_FN = FileName(g_settings['assets_path']).pjoin('manuals').pjoin(machine_name + '.pages')
         elif view_type == VIEW_SL_ROM:
-            log_debug('Displaying Manual for SL {0} item {1} ...'.format(SL_name, SL_ROM))
+            log_debug('Displaying Manual for SL {} item {} ...'.format(SL_name, SL_ROM))
             SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
             assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
             SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
@@ -2999,24 +2998,24 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 return
             man_file_FN = FileName(SL_asset_dic[SL_ROM]['manual'])
             img_dir_FN = FileName(g_settings['assets_path']).pjoin('manuals_SL').pjoin(SL_name).pjoin(SL_ROM + '.pages')
-        log_debug('man_file_FN P "{0}"'.format(man_file_FN.getPath()))
-        log_debug('img_dir_FN P  "{0}"'.format(img_dir_FN.getPath()))
+        log_debug('man_file_FN P "{}"'.format(man_file_FN.getPath()))
+        log_debug('img_dir_FN P  "{}"'.format(img_dir_FN.getPath()))
 
         # --- Check for errors ---
         if not man_file_FN.exists():
-            kodi_dialog_OK('Manual "{0}" not found.'.format(man_file_FN.getPath()))
+            kodi_dialog_OK('Manual "{}" not found.'.format(man_file_FN.getPath()))
             return
 
         # --- Only PDF files supported at the moment ---
         man_ext = man_file_FN.getExt().lower()
-        log_debug('Manual file extension "{0}"'.format(man_ext))
+        log_debug('Manual file extension "{}"'.format(man_ext))
         if not man_ext == '.pdf':
             kodi_dialog_OK('Only PDF files supported at the moment.')
             return
 
         # --- If output directory does not exist create it ---
         if not img_dir_FN.exists():
-            log_info('Creating DIR "{0}"'.format(img_dir_FN.getPath()))
+            log_info('Creating DIR "{}"'.format(img_dir_FN.getPath()))
             img_dir_FN.makedirs()
 
         # OLD CODE
@@ -3035,7 +3034,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             # --- Open manual file ---
             manuals_open_PDF_file(status_dic, man_file_FN, img_dir_FN)
             if status_dic['abort_extraction']:
-                kodi_dialog_OK('Cannot extract images from file {0}'.format(man_file_FN.getPath()))
+                kodi_dialog_OK('Cannot extract images from file {}'.format(man_file_FN.getPath()))
                 return
             manuals_get_PDF_filter_list(status_dic, man_file_FN, img_dir_FN)
 
@@ -3089,19 +3088,19 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
         genre_str = machine['genre']
         url = misc_url_2_arg('catalog', 'Genre', 'category', genre_str)
-        log_debug('Container.Update URL {0}'.format(url))
-        xbmc.executebuiltin('Container.Update({0})'.format(url))
+        log_debug('Container.Update URL {}'.format(url))
+        xbmc.executebuiltin('Container.Update({})'.format(url))
 
     # --- Display machines by same Manufacturer ---
     elif action == ACTION_VIEW_SAME_MANUFACTURER:
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
         manufacturer_str = machine['manufacturer']
         url = misc_url_2_arg('catalog', 'Manufacturer', 'category', manufacturer_str)
-        log_debug('Container.Update URL {0}'.format(url))
-        xbmc.executebuiltin('Container.Update({0})'.format(url))
+        log_debug('Container.Update URL {}'.format(url))
+        xbmc.executebuiltin('Container.Update({})'.format(url))
 
     else:
-        kodi_dialog_OK('Unknown action == {0}. '.format(action) +
+        kodi_dialog_OK('Unknown action == {}. '.format(action) +
                        'This is a bug, please report it.')
 
 # ---------------------------------------------------------------------------------------------
@@ -3122,10 +3121,10 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
     ACTION_AUDIT_SL_MACHINE        = 900
 
     # --- Determine view type ---
-    log_debug('command_context_view() machine_name "{0}"'.format(machine_name))
-    log_debug('command_context_view() SL_name      "{0}"'.format(SL_name))
-    log_debug('command_context_view() SL_ROM       "{0}"'.format(SL_ROM))
-    log_debug('command_context_view() location     "{0}"'.format(location))
+    log_debug('command_context_view() machine_name "{}"'.format(machine_name))
+    log_debug('command_context_view() SL_name      "{}"'.format(SL_name))
+    log_debug('command_context_view() SL_ROM       "{}"'.format(SL_ROM))
+    log_debug('command_context_view() location     "{}"'.format(location))
     if machine_name:
         view_type = VIEW_MAME_MACHINE
     elif SL_name:
@@ -3134,7 +3133,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         kodi_dialog_OK(
             'In command_context_view(), undetermined view_type. This is a bug, please report it.')
         return
-    log_debug('command_context_view() view_type = {0}'.format(view_type))
+    log_debug('command_context_view() view_type = {}'.format(view_type))
 
     # --- Build menu base on view_type ---
     if view_type == VIEW_MAME_MACHINE:
@@ -3153,7 +3152,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
           'Audit Software List item',
         ]
     else:
-        kodi_dialog_OK('Wrong view_type = {0}. This is a bug, please report it.'.format(view_type))
+        kodi_dialog_OK('Wrong view_type = {}. This is a bug, please report it.'.format(view_type))
         return
     selected_value = xbmcgui.Dialog().select('View', d_list)
     if selected_value < 0: return
@@ -3343,14 +3342,14 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- ROM info ---
         info_text = []
         if machine['cloneof'] and machine['romof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0} / '.format(machine['cloneof']) +
-                             '[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
+            info_text.append('[COLOR violet]cloneof[/COLOR] {} / '.format(machine['cloneof']) +
+                '[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
         elif machine['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(machine['cloneof']))
+            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(machine['cloneof']))
         elif machine['romof']:
-            info_text.append('[COLOR violet]romof[/COLOR] {0}'.format(machine['romof']))
-        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {0} / '.format(str(machine['isBIOS'])) +
-                         '[COLOR skyblue]isDevice[/COLOR] {0}'.format(str(machine['isDevice'])))
+            info_text.append('[COLOR violet]romof[/COLOR] {}'.format(machine['romof']))
+        info_text.append('[COLOR skyblue]isBIOS[/COLOR] {} / '.format(str(machine['isBIOS'])) +
+            '[COLOR skyblue]isDevice[/COLOR] {}'.format(str(machine['isDevice'])))
         info_text.append('')
 
         # --- Table header ---
@@ -3505,11 +3504,11 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         rom_db_list = roms_db[SL_ROM]
 
         info_text = []
-        info_text.append('[COLOR violet]SL_name[/COLOR] {0}'.format(SL_name))
-        info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}'.format(SL_ROM))
-        info_text.append('[COLOR violet]description[/COLOR] {0}'.format(rom['description']))
+        info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
+        info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
+        info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
         if rom['cloneof']:
-            info_text.append('[COLOR violet]cloneof[/COLOR] {0}'.format(rom['cloneof']))
+            info_text.append('[COLOR violet]cloneof[/COLOR] {}'.format(rom['cloneof']))
         info_text.append('')
 
         table_str = []
@@ -3628,7 +3627,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Load machine dictionary and ROM database ---
         rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][g_settings['mame_rom_set']]
         log_debug('command_context_view() Auditing Machine ROMs\n')
-        log_debug('command_context_view() rom_set {0}\n'.format(rom_set))
+        log_debug('command_context_view() rom_set {}\n'.format(rom_set))
 
         d_text = 'Loading databases...'
         pDialog = KodiProgressDialog()
@@ -3693,8 +3692,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
     elif action == ACTION_AUDIT_SL_MACHINE:
         # --- Load machine dictionary and ROM database ---
         log_debug('command_context_view() Auditing SL Software ROMs\n')
-        log_debug('command_context_view() SL_name {0}\n'.format(SL_name))
-        log_debug('command_context_view() SL_ROM {0}\n'.format(SL_ROM))
+        log_debug('command_context_view() SL_name {}\n'.format(SL_name))
+        log_debug('command_context_view() SL_ROM {}\n'.format(SL_ROM))
 
         SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_items.json')
         SL_ROM_Audit_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
@@ -3711,9 +3710,9 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         mame_audit_SL_machine(SL_ROM_path_FN, SL_CHD_path_FN, SL_name, SL_ROM, rom_db_list, audit_dic)
 
         info_text = []
-        info_text.append('[COLOR violet]SL_name[/COLOR] {0}'.format(SL_name))
-        info_text.append('[COLOR violet]SL_ROM[/COLOR] {0}'.format(SL_ROM))
-        info_text.append('[COLOR violet]description[/COLOR] {0}'.format(rom['description']))
+        info_text.append('[COLOR violet]SL_name[/COLOR] {}'.format(SL_name))
+        info_text.append('[COLOR violet]SL_ROM[/COLOR] {}'.format(SL_ROM))
+        info_text.append('[COLOR violet]description[/COLOR] {}'.format(rom['description']))
         info_text.append('')
 
         # --- Table header and rows ---
@@ -3735,17 +3734,17 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
                 table_str.append(table_row)
         table_str_list = text_render_table_str(table_str)
         info_text.extend(table_str_list)
-        window_title = 'SL {0} Software {1} ROM audit'.format(SL_name, SL_ROM)
+        window_title = 'SL {} Software {} ROM audit'.format(SL_name, SL_ROM)
         kodi_display_text_window_mono(window_title, '\n'.join(info_text))
 
     else:
-        t = 'Wrong action == {0}. This is a bug, please report it.'.format(action)
+        t = 'Wrong action == {}. This is a bug, please report it.'.format(action)
         log_error(t)
         kodi_dialog_OK(t)
 
 def command_context_utilities(catalog_name, category_name):
-    log_debug('command_context_utilities() catalog_name  "{0}"'.format(catalog_name))
-    log_debug('command_context_utilities() category_name "{0}"'.format(category_name))
+    log_debug('command_context_utilities() catalog_name  "{}"'.format(catalog_name))
+    log_debug('command_context_utilities() category_name "{}"'.format(category_name))
 
     d_list = [
       'Export AEL Virtual Launcher',
@@ -3797,7 +3796,7 @@ def command_context_utilities(catalog_name, category_name):
 # -------------------------------------------------------------------------------------------------
 # Favourites use the main hashed database, not the main and render databases.
 def command_context_add_mame_fav(machine_name):
-    log_debug('command_add_mame_fav() Machine_name "{0}"'.format(machine_name))
+    log_debug('command_add_mame_fav() Machine_name "{}"'.format(machine_name))
 
     # >> Get Machine database entry
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -3810,18 +3809,18 @@ def command_context_add_mame_fav(machine_name):
     # >> If machine already in Favourites ask user if overwrite.
     if machine_name in fav_machines:
         ret = kodi_dialog_yesno(
-            'Machine {0} ({1}) '.format(machine['description'], machine_name) +
+            'Machine {} ({}) '.format(machine['description'], machine_name) +
             'already in MAME Favourites. Overwrite?')
         if ret < 1: return
 
     # >> Add machine. Add database version to Favourite.
     fav_machine = fs_get_MAME_Favourite_simple(machine_name, machine, assets, control_dic)
     fav_machines[machine_name] = fav_machine
-    log_info('command_add_mame_fav() Added machine "{0}"'.format(machine_name))
+    log_info('command_add_mame_fav() Added machine "{}"'.format(machine_name))
 
     # >> Save Favourites
     fs_write_JSON_file(g_PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
-    kodi_notify('Machine {0} added to MAME Favourites'.format(machine_name))
+    kodi_notify('Machine {} added to MAME Favourites'.format(machine_name))
     kodi_refresh_container()
 
 def render_fav_machine_row(m_name, machine, m_assets, location):
@@ -3830,7 +3829,7 @@ def render_fav_machine_row(m_name, machine, m_assets, location):
 
     # --- Mark Flags, BIOS, Devices, BIOS, Parent/Clone and Driver status ---
     display_name = machine['description']
-    display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(m_assets['flags'])
+    display_name += ' [COLOR skyblue]{}[/COLOR]'.format(m_assets['flags'])
     if machine['isBIOS']:   display_name += ' [COLOR cyan][BIOS][/COLOR]'
     if machine['isDevice']: display_name += ' [COLOR violet][Dev][/COLOR]'
     if machine['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
@@ -3839,9 +3838,9 @@ def render_fav_machine_row(m_name, machine, m_assets, location):
     # >> Render number of number the ROM has been launched
     if location == LOCATION_MAME_MOST_PLAYED:
         if machine['launch_count'] == 1:
-            display_name = '{0} [COLOR orange][{1} time][/COLOR]'.format(display_name, machine['launch_count'])
+            display_name = '{} [COLOR orange][{} time][/COLOR]'.format(display_name, machine['launch_count'])
         else:
-            display_name = '{0} [COLOR orange][{1} times][/COLOR]'.format(display_name, machine['launch_count'])
+            display_name = '{} [COLOR orange][{} times][/COLOR]'.format(display_name, machine['launch_count'])
 
     # --- Skin flags ---
     if machine['cloneof']: AEL_PClone_stat_value = AEL_PCLONE_STAT_VALUE_CLONE
@@ -3898,7 +3897,7 @@ def render_fav_machine_row(m_name, machine, m_assets, location):
             ('View / Audit',  URL_view),
             ('Manage Favourites', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__))
         ]
     elif location == LOCATION_MAME_MOST_PLAYED:
         URL_manage = misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_MOST_PLAYED', 'machine', m_name)
@@ -3907,7 +3906,7 @@ def render_fav_machine_row(m_name, machine, m_assets, location):
             ('View / Audit',  URL_view),
             ('Manage Most Played', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__))
         ]
     elif location == LOCATION_MAME_RECENT_PLAYED:
         URL_manage = misc_url_2_arg_RunPlugin('command', 'MANAGE_MAME_RECENT_PLAYED', 'machine', m_name)
@@ -3916,7 +3915,7 @@ def render_fav_machine_row(m_name, machine, m_assets, location):
             ('View / Audit',  URL_view),
             ('Manage Recently Played', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__))
         ]
     listitem.addContextMenuItems(commands)
 
@@ -4102,19 +4101,19 @@ def command_context_manage_mame_most_played(machine_name):
 
     # --- Determine view type ---
     log_debug('command_context_manage_mame_most_played() BEGIN ...')
-    log_debug('machine_name "{0}"'.format(machine_name))
+    log_debug('machine_name "{}"'.format(machine_name))
     if machine_name:
         view_type = VIEW_INSIDE_MENU
     else:
         view_type = VIEW_ROOT_MENU
-    log_debug('view_type = {0}'.format(view_type))
+    log_debug('view_type = {}'.format(view_type))
 
     # --- Build menu base on view_type (Polymorphic menu, determine action) ---
     d_list = [menu[0] for menu in menus_dic[view_type]]
     selected_value = xbmcgui.Dialog().select('Manage MAME Most Played machines', d_list)
     if selected_value < 0: return
     action = menus_dic[view_type][selected_value][1]
-    log_debug('action = {0}'.format(action))
+    log_debug('action = {}'.format(action))
 
     # --- Execute actions ---
     if action == ACTION_DELETE_MACHINE:
@@ -4126,17 +4125,17 @@ def command_context_manage_mame_most_played(machine_name):
 
         # --- Ask user for confirmation ---
         desc = db_dic['most_played_roms'][machine_name]['description']
-        ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
+        ret = kodi_dialog_yesno('Delete Machine {} ({})?'.format(desc, machine_name))
         if ret < 1:
             kodi_notify('MAME Most Played unchanged')
             return
 
         # --- Delete machine and save DB ---
         del db_dic['most_played_roms'][machine_name]
-        log_info('Deleted machine "{0}"'.format(machine_name))
+        log_info('Deleted machine "{}"'.format(machine_name))
         fs_write_JSON_file(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), db_dic['most_played_roms'])
         kodi_refresh_container()
-        kodi_notify('Machine {0} deleted from MAME Most Played'.format(machine_name))
+        kodi_notify('Machine {} deleted from MAME Most Played'.format(machine_name))
 
     elif action == ACTION_DELETE_ALL:
         log_debug('command_context_manage_mame_most_played() ACTION_DELETE_ALL')
@@ -4148,7 +4147,7 @@ def command_context_manage_mame_most_played(machine_name):
         # Confirm with user
         num_machines = len(db_dic['most_played_roms'])
         ret = kodi_dialog_yesno(
-            'You have {0} MAME Most Played machines. Delete them all?'.format(num_machines))
+            'You have {} MAME Most Played machines. Delete them all?'.format(num_machines))
         if ret < 1:
             kodi_notify('MAME Most Played unchanged')
             return
@@ -4234,24 +4233,24 @@ def command_context_manage_mame_recent_played(machine_name):
 
     # --- Determine view type ---
     log_debug('command_context_manage_mame_recent_played() BEGIN ...')
-    log_debug('machine_name "{0}"'.format(machine_name))
+    log_debug('machine_name "{}"'.format(machine_name))
     if machine_name:
         view_type = VIEW_INSIDE_MENU
     else:
         view_type = VIEW_ROOT_MENU
-    log_debug('view_type = {0}'.format(view_type))
+    log_debug('view_type = {}'.format(view_type))
 
     # --- Build menu base on view_type (Polymorphic menu, determine action) ---
     d_list = [menu[0] for menu in menus_dic[view_type]]
     selected_value = xbmcgui.Dialog().select('Manage MAME Recently Played machines', d_list)
     if selected_value < 0: return
     action = menus_dic[view_type][selected_value][1]
-    log_debug('action = {0}'.format(action))
+    log_debug('action = {}'.format(action))
 
     # --- Execute actions ---
     if action == ACTION_DELETE_MACHINE:
         log_debug('command_context_manage_mame_recent_played() ACTION_DELETE_MACHINE')
-        log_debug('machine_name "{0}"'.format(machine_name))
+        log_debug('machine_name "{}"'.format(machine_name))
 
         # --- Load Recently Played machine list ---
         recent_roms_list = fs_load_JSON_file_list(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath())
@@ -4259,23 +4258,23 @@ def command_context_manage_mame_recent_played(machine_name):
         # --- Search index of this machine in the list ---
         machine_index = fs_locate_idx_by_name(recent_roms_list, machine_name)
         if machine_index < 0:
-            a = 'Machine {0} cannot be located in Recently Played list. This is a bug.'
+            a = 'Machine {} cannot be located in Recently Played list. This is a bug.'
             kodi_dialog_OK(a.format(machine_name))
             return
 
         # --- Ask user for confirmation ---
         desc = recent_roms_list[machine_index]['description']
-        ret = kodi_dialog_yesno('Delete Machine {0} ({1})?'.format(desc, machine_name))
+        ret = kodi_dialog_yesno('Delete Machine {} ({})?'.format(desc, machine_name))
         if ret < 1:
             kodi_notify('MAME Recently Played unchanged')
             return
 
         # --- Delete machine and save DB ---
         recent_roms_list.pop(machine_index)
-        log_info('Deleted machine "{0}"'.format(machine_name))
+        log_info('Deleted machine "{}"'.format(machine_name))
         fs_write_JSON_file(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
         kodi_refresh_container()
-        kodi_notify('Machine {0} deleted from MAME Recently Played'.format(machine_name))
+        kodi_notify('Machine {} deleted from MAME Recently Played'.format(machine_name))
 
     elif action == ACTION_DELETE_ALL:
         log_debug('command_context_manage_mame_recent_played() ACTION_DELETE_ALL')
@@ -4284,7 +4283,7 @@ def command_context_manage_mame_recent_played(machine_name):
         # Confirm with user
         num_machines = len(recent_roms_list)
         ret = kodi_dialog_yesno(
-            'You have {0} MAME Recently Played. Delete them all?'.format(num_machines))
+            'You have {} MAME Recently Played. Delete them all?'.format(num_machines))
         if ret < 1:
             kodi_notify('MAME Recently Played unchanged')
             return
@@ -4342,8 +4341,8 @@ def command_context_manage_mame_recent_played(machine_name):
 # SL Favourites/Recently Played/Most played
 # -------------------------------------------------------------------------------------------------
 def command_context_add_sl_fav(SL_name, ROM_name):
-    log_debug('command_add_sl_fav() SL_name  "{0}"'.format(SL_name))
-    log_debug('command_add_sl_fav() ROM_name "{0}"'.format(ROM_name))
+    log_debug('command_add_sl_fav() SL_name  "{}"'.format(SL_name))
+    log_debug('command_add_sl_fav() ROM_name "{}"'.format(ROM_name))
 
     # --- Load databases ---
     control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
@@ -4358,11 +4357,11 @@ def command_context_add_sl_fav(SL_name, ROM_name):
     # >> Open Favourite Machines dictionary
     fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
     SL_fav_key = SL_name + '-' + ROM_name
-    log_debug('command_add_sl_fav() SL_fav_key "{0}"'.format(SL_fav_key))
+    log_debug('command_add_sl_fav() SL_fav_key "{}"'.format(SL_fav_key))
 
     # >> If machine already in Favourites ask user if overwrite.
     if SL_fav_key in fav_SL_roms:
-        ret = kodi_dialog_yesno('Machine {0} ({1}) '.format(ROM_name, SL_name) +
+        ret = kodi_dialog_yesno('Machine {} ({}) '.format(ROM_name, SL_name) +
                                 'already in SL Favourites. Overwrite?')
         if ret < 1: return
 
@@ -4372,11 +4371,11 @@ def command_context_add_sl_fav(SL_name, ROM_name):
     SL_assets = SL_assets_dic[ROM_name]
     fav_ROM = fs_get_SL_Favourite(SL_name, ROM_name, SL_ROM, SL_assets, control_dic)
     fav_SL_roms[SL_fav_key] = fav_ROM
-    log_info('command_add_sl_fav() Added machine "{0}" ("{1}")'.format(ROM_name, SL_name))
+    log_info('command_add_sl_fav() Added machine "{}" ("{}")'.format(ROM_name, SL_name))
 
     # >> Save Favourites
     fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
-    kodi_notify('ROM {0} added to SL Favourite ROMs'.format(ROM_name))
+    kodi_notify('ROM {} added to SL Favourite ROMs'.format(ROM_name))
 
 def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
     SL_name  = ROM['SL_name']
@@ -4384,15 +4383,15 @@ def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
     display_name = ROM['description']
 
     # --- Mark Status and Clones ---
-    status = '{0}{1}'.format(ROM['status_ROM'], ROM['status_CHD'])
-    display_name += ' [COLOR skyblue]{0}[/COLOR]'.format(status)
+    status = '{}{}'.format(ROM['status_ROM'], ROM['status_CHD'])
+    display_name += ' [COLOR skyblue]{}[/COLOR]'.format(status)
     if ROM['cloneof']:  display_name += ' [COLOR orange][Clo][/COLOR]'
     # >> Render number of number the ROM has been launched
     if location == LOCATION_SL_MOST_PLAYED:
         if ROM['launch_count'] == 1:
-            display_name = '{0} [COLOR orange][{1} time][/COLOR]'.format(display_name, ROM['launch_count'])
+            display_name = '{} [COLOR orange][{} time][/COLOR]'.format(display_name, ROM['launch_count'])
         else:
-            display_name = '{0} [COLOR orange][{1} times][/COLOR]'.format(display_name, ROM['launch_count'])
+            display_name = '{} [COLOR orange][{} times][/COLOR]'.format(display_name, ROM['launch_count'])
 
     # --- Assets/artwork ---
     icon_path   = assets[g_SL_icon] if assets[g_SL_icon] else 'DefaultProgram.png'
@@ -4432,7 +4431,7 @@ def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
             ('View / Audit', URL_view),
             ('Manage SL Favourites', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__)),
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__)),
         ]
     elif location == LOCATION_SL_MOST_PLAYED:
         URL_manage = misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_MOST_PLAYED', 'SL', SL_name, 'ROM', SL_ROM_name)
@@ -4441,7 +4440,7 @@ def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
             ('View / Audit',  URL_view),
             ('Manage SL Most Played', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__))
         ]
     elif location == LOCATION_SL_RECENT_PLAYED:
         URL_manage = misc_url_3_arg_RunPlugin('command', 'MANAGE_SL_RECENT_PLAYED', 'SL', SL_name, 'ROM', SL_ROM_name)
@@ -4450,7 +4449,7 @@ def render_sl_fav_machine_row(SL_fav_key, ROM, assets, location):
             ('View / Audit',  URL_view),
             ('Manage SL Recently Played', URL_manage),
             ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-            ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+            ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__))
         ]
     listitem.addContextMenuItems(commands)
 
@@ -4509,19 +4508,19 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
 
     # --- Determine view type ---
     log_debug('command_context_manage_sl_fav() BEGIN ...')
-    log_debug('SL_name  "{0}" / ROM_name "{1}"'.format(SL_name, ROM_name))
+    log_debug('SL_name  "{}" / ROM_name "{}"'.format(SL_name, ROM_name))
     if SL_name and ROM_name:
         view_type = VIEW_INSIDE_MENU
     else:
         view_type = VIEW_ROOT_MENU
-    log_debug('view_type = {0}'.format(view_type))
+    log_debug('view_type = {}'.format(view_type))
 
     # --- Build menu base on view_type (Polymorphic menu, determine action) ---
     d_list = [menu[0] for menu in menus_dic[view_type]]
     selected_value = xbmcgui.Dialog().select('Manage SL Favourite itmes', d_list)
     if selected_value < 0: return
     action = menus_dic[view_type][selected_value][1]
-    log_debug('action = {0}'.format(action))
+    log_debug('action = {}'.format(action))
 
     # --- Execute actions ---
     if action == ACTION_CHOOSE_DEFAULT:
@@ -4554,7 +4553,7 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         # --- Edit and save ---
         fav_SL_roms[SL_fav_key]['launch_machine'] = machine_name
         fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
-        kodi_notify('Deafult machine set to {0} ({1})'.format(machine_name, machine_desc))
+        kodi_notify('Deafult machine set to {} ({})'.format(machine_name, machine_desc))
 
     # --- Delete ROM from SL Favourites ---
     elif action == ACTION_DELETE_MACHINE:
@@ -4567,7 +4566,7 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
 
         # --- Ask user for confirmation ---
         desc = most_played_roms_dic[SL_fav_key]['description']
-        a = 'Delete SL Item {0} ({1} / {2})?'
+        a = 'Delete SL Item {} ({} / {})?'
         ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
         if ret < 1:
             kodi_notify('SL Favourites unchanged')
@@ -4575,10 +4574,10 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
 
         # --- Delete machine and save DB ---
         del fav_SL_roms[SL_fav_key]
-        log_info('Deleted machine {0} ({1})'.format(SL_name, ROM_name))
+        log_info('Deleted machine {} ({})'.format(SL_name, ROM_name))
         fs_write_JSON_file(g_PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
         kodi_refresh_container()
-        kodi_notify('SL Item {0}-{1} deleted from SL Favourites'.format(SL_name, ROM_name))
+        kodi_notify('SL Item {}-{} deleted from SL Favourites'.format(SL_name, ROM_name))
 
     elif action == ACTION_DELETE_ALL:
         log_debug('command_context_manage_sl_fav() ACTION_DELETE_ALL')
@@ -4684,7 +4683,7 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
 
     # --- Determine view type ---
     log_debug('command_context_manage_SL_most_played() BEGIN ...')
-    log_debug('SL_name  "{0}" / ROM_name "{1}"'.format(SL_name, ROM_name))
+    log_debug('SL_name  "{}" / ROM_name "{}"'.format(SL_name, ROM_name))
     if SL_name and ROM_name:
         view_type = VIEW_INSIDE_MENU
     else:
@@ -4713,7 +4712,7 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
 
         # --- Ask user for confirmation ---
         desc = most_played_roms_dic[SL_fav_key]['description']
-        a = 'Delete SL Item {0} ({1} / {2})?'
+        a = 'Delete SL Item {} ({} / {})?'
         ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
         if ret < 1:
             kodi_notify('SL Most Played unchanged')
@@ -4721,11 +4720,11 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
 
         # --- Delete machine and save DB ---
         del most_played_roms_dic[SL_fav_key]
-        a = 'Deleted SL_name "{0}" / ROM_name "{1}"'
+        a = 'Deleted SL_name "{}" / ROM_name "{}"'
         log_info(a.format(SL_name, ROM_name))
         fs_write_JSON_file(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
         kodi_refresh_container()
-        kodi_notify('Item {0}-{1} deleted from SL Most Played'.format(SL_name, ROM_name))
+        kodi_notify('Item {}-{} deleted from SL Most Played'.format(SL_name, ROM_name))
 
     elif action == ACTION_DELETE_ALL:
         log_debug('command_context_manage_sl_most_played() ACTION_DELETE_ALL')
@@ -4733,7 +4732,7 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
         # --- Open Favourite Machines dictionary ---
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
-        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
+        log_debug('SL_fav_key "{}"'.format(SL_fav_key))
 
         # --- Ask user for confirmation ---
         ret = kodi_dialog_yesno(
@@ -4829,19 +4828,19 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
 
     # --- Determine view type ---
     log_debug('command_context_manage_SL_recent_played() BEGIN ...')
-    log_debug('SL_name  "{0}" / ROM_name "{1}"'.format(SL_name, ROM_name))
+    log_debug('SL_name  "{}" / ROM_name "{}"'.format(SL_name, ROM_name))
     if SL_name and ROM_name:
         view_type = VIEW_INSIDE_MENU
     else:
         view_type = VIEW_ROOT_MENU
-    log_debug('view_type = {0}'.format(view_type))
+    log_debug('view_type = {}'.format(view_type))
 
     # --- Build menu base on view_type (Polymorphic menu, determine action) ---
     d_list = [menu[0] for menu in menus_dic[view_type]]
     selected_value = xbmcgui.Dialog().select('Manage SL Recently Played', d_list)
     if selected_value < 0: return
     action = menus_dic[view_type][selected_value][1]
-    log_debug('action = {0}'.format(action))
+    log_debug('action = {}'.format(action))
 
     # --- Execute actions ---
     if action == ACTION_CHOOSE_DEFAULT:
@@ -4855,13 +4854,13 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
         recent_roms_list = fs_load_JSON_file_list(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
         machine_index = fs_locate_idx_by_SL_item_name(recent_roms_list, SL_name, ROM_name)
         if machine_index < 0:
-            a = 'Item {0}-{1} cannot be located in SL Recently Played list. This is a bug.'
+            a = 'Item {}-{} cannot be located in SL Recently Played list. This is a bug.'
             kodi_dialog_OK(a.format(SL_name, ROM_name))
             return
 
         # --- Ask user for confirmation ---
         desc = recent_roms_list[machine_index]['description']
-        a = 'Delete SL Item {0} ({1} / {2})?'
+        a = 'Delete SL Item {} ({} / {})?'
         ret = kodi_dialog_yesno(a.format(desc, SL_name, ROM_name))
         if ret < 1:
             kodi_notify('SL Recently Played unchanged')
@@ -4869,11 +4868,11 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
 
         # --- Delete machine and save DB ---
         recent_roms_list.pop(machine_index)
-        a = 'Deleted SL_name "{0}" / ROM_name "{1}"'
+        a = 'Deleted SL_name "{}" / ROM_name "{}"'
         log_info(a.format(SL_name, ROM_name))
         fs_write_JSON_file(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
         kodi_refresh_container()
-        kodi_notify('SL Item {0}-{1} deleted from SL Recently Played'.format(SL_name, ROM_name))
+        kodi_notify('SL Item {}-{} deleted from SL Recently Played'.format(SL_name, ROM_name))
 
     elif action == ACTION_DELETE_ALL:
         log_debug('command_context_manage_SL_recent_played() ACTION_DELETE_ALL')
@@ -4881,11 +4880,11 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
         # --- Open Favourite Machines dictionary ---
         fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
-        log_debug('SL_fav_key "{0}"'.format(SL_fav_key))
+        log_debug('SL_fav_key "{}"'.format(SL_fav_key))
 
         # --- Ask user for confirmation ---
         ret = kodi_dialog_yesno(
-            'You have {0} SL Recently Played. Delete them all?'.format(len(fav_SL_roms)))
+            'You have {} SL Recently Played. Delete them all?'.format(len(fav_SL_roms)))
         if ret < 1:
             kodi_notify('SL Recently Played unchanged')
             return
@@ -5109,7 +5108,7 @@ def command_show_custom_filters():
 def render_custom_filter_item_row(f_name, num_machines, machine_str, plot):
     # --- Create listitem row ---
     ICON_OVERLAY = 6
-    title_str = '{0} [COLOR orange]({1} {2})[/COLOR]'.format(f_name, num_machines, machine_str)
+    title_str = '{} [COLOR orange]({} {})[/COLOR]'.format(f_name, num_machines, machine_str)
     listitem = xbmcgui.ListItem(title_str)
     listitem.setInfo('video', {'title' : title_str, 'plot' : plot, 'overlay' : ICON_OVERLAY})
 
@@ -5122,7 +5121,7 @@ def render_custom_filter_item_row(f_name, num_machines, machine_str, plot):
     # >> Make a list of tuples
     commands = [
         ('Kodi File Manager', 'ActivateWindow(filemanager)'),
-        ('AML addon settings', 'Addon.OpenSettings({0})'.format(__addon_id__))
+        ('AML addon settings', 'Addon.OpenSettings({})'.format(__addon_id__))
     ]
     listitem.addContextMenuItems(commands)
 
@@ -5134,11 +5133,11 @@ def render_custom_filter_item_row(f_name, num_machines, machine_str, plot):
 # Renders a custom filter list of machines, always in flat mode.
 #
 def render_custom_filter_machines(filter_name):
-    log_debug('render_custom_filter_machines() filter_name  = {0}'.format(filter_name))
+    log_debug('render_custom_filter_machines() filter_name  = {}'.format(filter_name))
 
     # >> Global properties
     view_mode_property = g_settings['mame_view_mode']
-    log_debug('render_custom_filter_machines() view_mode_property = {0}'.format(view_mode_property))
+    log_debug('render_custom_filter_machines() view_mode_property = {}'.format(view_mode_property))
 
     # >> Check id main DB exists
     if not g_PATHS.RENDER_DB_PATH.exists():
@@ -5434,7 +5433,7 @@ def command_context_setup_plugin():
             # Reset control_dic and count the number of machines.
             fs_process_RETRO_MAME2003PLUS(g_PATHS, g_settings, __addon_version__, options_dic)
         else:
-            log_error('command_context_setup_plugin() Unknown op_mode "{0}"'.format(g_settings['op_mode']))
+            log_error('command_context_setup_plugin() Unknown op_mode "{}"'.format(g_settings['op_mode']))
             kodi_notify_warn('Database not built')
             return
         if options_dic['abort']:
@@ -5574,7 +5573,7 @@ def command_context_setup_plugin():
             # Reset control_dic and count the number of machines.
             fs_process_RETRO_MAME2003PLUS(g_PATHS, g_settings, __addon_version__, options_dic)
         else:
-            log_error('command_context_setup_plugin() Unknown op_mode "{0}"'.format(g_settings['op_mode']))
+            log_error('command_context_setup_plugin() Unknown op_mode "{}"'.format(g_settings['op_mode']))
             kodi_notify_warn('Database not built')
             return
         if options_dic['abort']:
@@ -5586,7 +5585,7 @@ def command_context_setup_plugin():
         num_m = options_dic['total_machines']
         kodi_dialog_OK(
             'Extracted MAME XML database. '
-            'Size is {0} MB and there are {1} machines.'.format(size_MB, num_m))
+            'Size is {} MB and there are {} machines.'.format(size_MB, num_m))
 
     # --- Build everything ---
     elif menu_item == 3:
@@ -6411,7 +6410,7 @@ def command_context_setup_plugin():
 # Execute utilities.
 #
 def command_exec_utility(which_utility):
-    log_debug('command_exec_utility() which_utility = "{0}" starting ...'.format(which_utility))
+    log_debug('command_exec_utility() which_utility = "{}" starting ...'.format(which_utility))
 
     # Check MAME version
     # Run 'mame -?' and extract version from stdout
@@ -6432,36 +6431,36 @@ def command_exec_utility(which_utility):
         def aux_check_dir_ERR(slist, dir_str, msg):
             if dir_str:
                 if FileName(dir_str).exists():
-                    slist.append('{0} {1} "{2}"'.format(OK, msg, dir_str))
+                    slist.append('{} {} "{}"'.format(OK, msg, dir_str))
                 else:
-                    slist.append('{0} {1} not found'.format(ERR, msg))
+                    slist.append('{} {} not found'.format(ERR, msg))
             else:
-                slist.append('{0} {1} not set'.format(ERR, msg))
+                slist.append('{} {} not set'.format(ERR, msg))
 
         def aux_check_dir_WARN(slist, dir_str, msg):
             if dir_str:
                 if FileName(dir_str).exists():
-                    slist.append('{0} {1} "{2}"'.format(OK, msg, dir_str))
+                    slist.append('{} {} "{}"'.format(OK, msg, dir_str))
                 else:
-                    slist.append('{0} {1} not found'.format(WARN, msg))
+                    slist.append('{} {} not found'.format(WARN, msg))
             else:
-                slist.append('{0} {1} not set'.format(WARN, msg))
+                slist.append('{} {} not set'.format(WARN, msg))
 
         def aux_check_file_WARN(slist, file_str, msg):
             if file_str:
                 if FileName(file_str).exists():
-                    slist.append('{0} {1} "{2}"'.format(OK, msg, file_str))
+                    slist.append('{} {} "{}"'.format(OK, msg, file_str))
                 else:
-                    slist.append('{0} {1} not found'.format(WARN, msg))
+                    slist.append('{} {} not found'.format(WARN, msg))
             else:
-                slist.append('{0} {1} not set'.format(WARN, msg))
+                slist.append('{} {} not set'.format(WARN, msg))
 
         def aux_check_asset_dir(slist, dir_FN, msg):
             if dir_FN.exists():
-                slist.append('{0} Found {1} path "{2}"'.format(OK, msg, dir_FN.getPath()))
+                slist.append('{} Found {} path "{}"'.format(OK, msg, dir_FN.getPath()))
             else:
-                slist.append('{0} {1} path does not exist'.format(WARN, msg))
-                slist.append('     Tried "{0}"'.format(dir_FN.getPath()))
+                slist.append('{} {} path does not exist'.format(WARN, msg))
+                slist.append('     Tried "{}"'.format(dir_FN.getPath()))
 
         # Checks AML configuration and informs users of potential problems.
         log_info('command_exec_utility() Checking AML configuration ...')
@@ -6475,11 +6474,11 @@ def command_exec_utility(which_utility):
         # MAME executable
         if g_settings['mame_prog']:
             if FileName(g_settings['mame_prog']).exists():
-                slist.append('{0} MAME executable "{1}"'.format(OK, g_settings['mame_prog']))
+                slist.append('{} MAME executable "{}"'.format(OK, g_settings['mame_prog']))
             else:
-                slist.append('{0} MAME executable not found'.format(ERR))
+                slist.append('{} MAME executable not found'.format(ERR))
         else:
-            slist.append('{0} MAME executable not set'.format(ERR))
+            slist.append('{} MAME executable not set'.format(ERR))
         # ROM path
         aux_check_dir_ERR(slist, g_settings['rom_path'], 'MAME ROM path')
         slist.append('')
@@ -6488,7 +6487,7 @@ def command_exec_utility(which_utility):
         slist.append('[COLOR orange]MAME assets[/COLOR]')
         if g_settings['assets_path']:
             if FileName(g_settings['assets_path']).exists():
-                slist.append('{0} MAME Asset path "{1}"'.format(OK, g_settings['assets_path']))
+                slist.append('{} MAME Asset path "{}"'.format(OK, g_settings['assets_path']))
 
                 # >> Check that artwork subdirectories exist
                 Asset_path_FN = FileName(g_settings['assets_path'])
@@ -6523,9 +6522,9 @@ def command_exec_utility(which_utility):
                 aux_check_asset_dir(slist, titles_FN, 'Titles')
                 aux_check_asset_dir(slist, videosnaps_FN, 'Trailers')
             else:
-                slist.append('{0} MAME Asset path not found'.format(ERR))
+                slist.append('{} MAME Asset path not found'.format(ERR))
         else:
-            slist.append('{0} MAME Asset path not set'.format(WARN))
+            slist.append('{} MAME Asset path not set'.format(WARN))
         slist.append('')
 
         # --- CHD path ---
@@ -6546,7 +6545,7 @@ def command_exec_utility(which_utility):
         slist.append('[COLOR orange]Software Lists assets[/COLOR]')
         if g_settings['assets_path']:
             if FileName(g_settings['assets_path']).exists():
-                slist.append('{0} MAME Asset path "{1}"'.format(OK, g_settings['assets_path']))
+                slist.append('{} MAME Asset path "{}"'.format(OK, g_settings['assets_path']))
 
                 # >> Check that artwork subdirectories exist
                 Asset_path_FN = FileName(g_settings['assets_path'])
@@ -6567,16 +6566,16 @@ def command_exec_utility(which_utility):
                 aux_check_asset_dir(slist, titles_FN, 'SL Titles')
                 aux_check_asset_dir(slist, videosnaps_FN, 'SL Trailers')
             else:
-                slist.append('{0} MAME Asset path not found'.format(ERR))
+                slist.append('{} MAME Asset path not found'.format(ERR))
         else:
-            slist.append('{0} MAME Asset path not set'.format(WARN))
+            slist.append('{} MAME Asset path not set'.format(WARN))
         slist.append('')
 
         # --- Optional INI files ---
         slist.append('[COLOR orange]INI/DAT files[/COLOR]')
         if g_settings['dats_path']:
             if FileName(g_settings['dats_path']).exists():
-                slist.append('{0} MAME INI/DAT path "{1}"'.format(OK, g_settings['dats_path']))
+                slist.append('{} MAME INI/DAT path "{}"'.format(OK, g_settings['dats_path']))
 
                 DATS_dir_FN = FileName(g_settings['dats_path'])
                 ALLTIME_FN = DATS_dir_FN.pjoin(ALLTIME_INI)
@@ -7255,7 +7254,7 @@ def command_exec_report(which_report):
 
     # --- Error ----------------------------------------------------------------------------------
     else:
-        u = 'Report "{0}" not found. This is a bug, please report it.'.format(which_report)
+        u = 'Report "{}" not found. This is a bug, please report it.'.format(which_report)
         log_error(u)
         kodi_dialog_OK(u)
 
@@ -7264,8 +7263,8 @@ def command_exec_report(which_report):
 # Example: $ mame dino
 #
 def run_machine(machine_name, location):
-    log_info('run_machine() Launching MAME machine  "{0}"'.format(machine_name))
-    log_info('run_machine() Launching MAME location "{0}"'.format(location))
+    log_info('run_machine() Launching MAME machine  "{}"'.format(machine_name))
+    log_info('run_machine() Launching MAME location "{}"'.format(location))
 
     # --- Get paths ---
     mame_prog_FN = FileName(g_settings['mame_prog'])
@@ -7292,13 +7291,13 @@ def run_machine(machine_name, location):
         # >> Locate ROM in list by name
         machine_index = fs_locate_idx_by_MAME_name(recent_roms_list, machine_name)
         if machine_index < 0:
-            a = 'Machine {0} cannot be located in Recently Played list. This is a bug.'
+            a = 'Machine {} cannot be located in Recently Played list. This is a bug.'
             kodi_dialog_OK(a.format(machine_name))
             return
         machine = recent_roms_list[machine_index]
         assets = machine['assets']
     else:
-        kodi_dialog_OK('Unknown location = "{0}". This is a bug, please report it.'.format(location))
+        kodi_dialog_OK('Unknown location = "{}". This is a bug, please report it.'.format(location))
         return
 
     # >> Check if ROM exist
@@ -7311,7 +7310,7 @@ def run_machine(machine_name, location):
         return
     ROM_FN = ROM_path_FN.pjoin(machine_name + '.zip')
     # if not ROM_FN.exists():
-    #     kodi_dialog_OK('ROM "{0}" not found.'.format(ROM_FN.getBase()))
+    #     kodi_dialog_OK('ROM "{}" not found.'.format(ROM_FN.getBase()))
     #     return
 
     # >> Choose BIOS (only available for Favourite Machines)
@@ -7327,11 +7326,11 @@ def run_machine(machine_name, location):
 
     # >> Launch machine using subprocess module
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
-    log_debug('run_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
-    log_debug('run_machine() mame_dir     "{0}"'.format(mame_dir))
-    log_debug('run_machine() mame_exec    "{0}"'.format(mame_exec))
-    log_debug('run_machine() machine_name "{0}"'.format(machine_name))
-    log_debug('run_machine() BIOS_name    "{0}"'.format(BIOS_name))
+    log_debug('run_machine() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
+    log_debug('run_machine() mame_dir     "{}"'.format(mame_dir))
+    log_debug('run_machine() mame_exec    "{}"'.format(mame_exec))
+    log_debug('run_machine() machine_name "{}"'.format(machine_name))
+    log_debug('run_machine() BIOS_name    "{}"'.format(BIOS_name))
 
     # --- Compute ROM recently played list ---
     # >> If the machine is already in the list remove it and place it on the first position.
@@ -7342,8 +7341,8 @@ def run_machine(machine_name, location):
     recent_roms_list = [machine for machine in recent_roms_list if machine_name != machine['name']]
     recent_roms_list.insert(0, recent_rom)
     if len(recent_roms_list) > MAX_RECENT_PLAYED_ROMS:
-        log_debug('run_machine() len(recent_roms_list) = {0}'.format(len(recent_roms_list)))
-        log_debug('run_machine() Trimming list to {0} ROMs'.format(MAX_RECENT_PLAYED_ROMS))
+        log_debug('run_machine() len(recent_roms_list) = {}'.format(len(recent_roms_list)))
+        log_debug('run_machine() Trimming list to {} ROMs'.format(MAX_RECENT_PLAYED_ROMS))
         temp_list = recent_roms_list[:MAX_RECENT_PLAYED_ROMS]
         recent_roms_list = temp_list
     fs_write_JSON_file(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
@@ -7364,11 +7363,11 @@ def run_machine(machine_name, location):
     arg_list = [mame_prog_FN.getPath(), machine_name]
     if BIOS_name:
         arg_list.extend(['-bios', BIOS_name])
-    log_info('arg_list = {0}'.format(arg_list))
+    log_info('arg_list = {}'.format(arg_list))
 
     # --- User notification ---
     if g_settings['display_launcher_notify']:
-        kodi_notify('Launching MAME machine "{0}"'.format(machine_name))
+        kodi_notify('Launching MAME machine "{}"'.format(machine_name))
     if DISABLE_MAME_LAUNCHING:
         log_info('run_machine() MAME launching disabled. Exiting function.')
         return
@@ -7438,9 +7437,9 @@ def run_machine(machine_name, location):
 def run_SL_machine(SL_name, SL_ROM_name, location):
     SL_LAUNCH_WITH_MEDIA = 100
     SL_LAUNCH_NO_MEDIA   = 200
-    log_info('run_SL_machine() Launching SL machine (location = {0}) ...'.format(location))
-    log_info('run_SL_machine() SL_name     "{0}"'.format(SL_name))
-    log_info('run_SL_machine() SL_ROM_name "{0}"'.format(SL_ROM_name))
+    log_info('run_SL_machine() Launching SL machine (location = {}) ...'.format(location))
+    log_info('run_SL_machine() SL_name     "{}"'.format(SL_name))
+    log_info('run_SL_machine() SL_ROM_name "{}"'.format(SL_ROM_name))
 
     # --- Get paths ---
     mame_prog_FN = FileName(g_settings['mame_prog'])
@@ -7453,7 +7452,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
         log_info('run_SL_machine() SL ROM is in Standard Location')
         SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
         SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json')
-        log_info('run_SL_machine() SL ROMs JSON "{0}"'.format(SL_DB_FN.getPath()))
+        log_info('run_SL_machine() SL ROMs JSON "{}"'.format(SL_DB_FN.getPath()))
         SL_ROMs = fs_load_JSON_file_dic(SL_DB_FN.getPath())
         SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json')
         SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
@@ -7491,7 +7490,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
         recent_roms_list = fs_load_JSON_file_list(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
         machine_index = fs_locate_idx_by_SL_item_name(recent_roms_list, SL_name, SL_ROM_name)
         if machine_index < 0:
-            a = 'SL Item {0} cannot be located in Recently Played list. This is a bug.'
+            a = 'SL Item {} cannot be located in Recently Played list. This is a bug.'
             kodi_dialog_OK(a.format(SL_fav_DB_key))
             return
         SL_fav_DB_key = SL_name + '-' + SL_ROM_name
@@ -7501,10 +7500,10 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
         launch_machine_name = recent_roms_list[machine_index]['launch_machine']
         launch_machine_desc = '[ Not available ]'
     else:
-        kodi_dialog_OK('Unknown location = "{0}". This is a bug, please report it.'.format(location))
+        kodi_dialog_OK('Unknown location = "{}". This is a bug, please report it.'.format(location))
         return
-    log_info('run_SL_machine() launch_machine_name = "{0}"'.format(launch_machine_name))
-    log_info('run_SL_machine() launch_machine_desc = "{0}"'.format(launch_machine_desc))
+    log_info('run_SL_machine() launch_machine_name = "{}"'.format(launch_machine_name))
+    log_info('run_SL_machine() launch_machine_desc = "{}"'.format(launch_machine_desc))
 
     # --- Load SL machines ---
     SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
@@ -7524,7 +7523,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
         launch_machine_name    = SL_machine_names_list[m_index]
         launch_machine_desc    = SL_machine_desc_list[m_index]
         launch_machine_devices = SL_machine_devices[m_index]
-        log_info('run_SL_machine() User chose machine "{0}" ({1})'.format(launch_machine_name, launch_machine_desc))
+        log_info('run_SL_machine() User chose machine "{}" ({})'.format(launch_machine_name, launch_machine_desc))
     else:
         # >> User configured a machine to launch this SL item. Find the machine in the machine list.
         log_info('run_SL_machine() Searching configured SL item running machine ...')
@@ -7535,23 +7534,23 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
                 machine_found = True
                 break
         if machine_found:
-            log_info('run_SL_machine() Found machine "{0}"'.format(launch_machine_name))
+            log_info('run_SL_machine() Found machine "{}"'.format(launch_machine_name))
             launch_machine_desc    = SL_machine['description']
             launch_machine_devices = SL_machine['devices']
         else:
-            log_error('run_SL_machine() Machine "{0}" not found'.format(launch_machine_name))
+            log_error('run_SL_machine() Machine "{}" not found'.format(launch_machine_name))
             log_error('run_SL_machine() Aborting launch')
-            kodi_dialog_OK('Machine "{0}" not found. Aborting launch.'.format(launch_machine_name))
+            kodi_dialog_OK('Machine "{}" not found. Aborting launch.'.format(launch_machine_name))
             return
 
     # --- DEBUG ---
-    log_info('run_SL_machine() Machine "{0}" has {1} interfaces'.format(launch_machine_name, len(launch_machine_devices)))
-    log_info('run_SL_machine() SL ROM  "{0}" has {1} parts'.format(SL_ROM_name, len(part_list)))
+    log_info('run_SL_machine() Machine "{}" has {} interfaces'.format(launch_machine_name, len(launch_machine_devices)))
+    log_info('run_SL_machine() SL ROM  "{}" has {} parts'.format(SL_ROM_name, len(part_list)))
     for device_dic in launch_machine_devices:
-        u = '<device type="{1}" interface="{0}">'.format(device_dic['att_type'], device_dic['att_interface'])
+        u = '<device type="{}" interface="{}">'.format(device_dic['att_type'], device_dic['att_interface'])
         log_info(u)
     for part_dic in part_list:
-        u = '<part name="{1}" interface="{0}">'.format(part_dic['name'], part_dic['interface'])
+        u = '<part name="{}" interface="{}">'.format(part_dic['name'], part_dic['interface'])
         log_info(u)
 
     # --- Select media depending on SL launching case ---
@@ -7594,8 +7593,8 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
         if not m_interface_found:
             kodi_dialog_OK('SL launch case C), not machine interface found! Aborting launch.')
             return
-        log_info('run_SL_machine() Matched machine device interface "{0}" '.format(device['att_interface']) +
-                 'to SL ROM part "{0}"'.format(part_list[0]['interface']))
+        log_info('run_SL_machine() Matched machine device interface "{}" '.format(device['att_interface']) +
+                 'to SL ROM part "{}"'.format(part_list[0]['interface']))
         sl_launch_mode = SL_LAUNCH_WITH_MEDIA
 
     # >> Case D.
@@ -7615,19 +7614,19 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
         sl_launch_mode = SL_LAUNCH_NO_MEDIA
 
     # >> Display some DEBUG information.
-    kodi_dialog_OK('Launch case {0}. '.format(launch_case) +
-                   'Machine has {0} device interface/s and '.format(num_machine_interfaces) +
-                   'SL ROM has {0} part/s. '.format(num_SL_ROM_parts) +
-                   'Media name is "{0}"'.format(media_name))
+    kodi_dialog_OK('Launch case {}. '.format(launch_case) +
+        'Machine has {} device interface/s and '.format(num_machine_interfaces) +
+        'SL ROM has {} part/s. '.format(num_SL_ROM_parts) +
+        'Media name is "{}"'.format(media_name))
 
     # --- Launch machine using subprocess module ---
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
-    log_debug('run_SL_machine() mame_prog_FN "{0}"'.format(mame_prog_FN.getPath()))
-    log_debug('run_SL_machine() mame_dir     "{0}"'.format(mame_dir))
-    log_debug('run_SL_machine() mame_exec    "{0}"'.format(mame_exec))
-    log_debug('run_SL_machine() launch_machine_name "{0}"'.format(launch_machine_name))
-    log_debug('run_SL_machine() launch_machine_desc "{0}"'.format(launch_machine_desc))
-    log_debug('run_SL_machine() media_name          "{0}"'.format(media_name))
+    log_debug('run_SL_machine() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
+    log_debug('run_SL_machine() mame_dir     "{}"'.format(mame_dir))
+    log_debug('run_SL_machine() mame_exec    "{}"'.format(mame_exec))
+    log_debug('run_SL_machine() launch_machine_name "{}"'.format(launch_machine_name))
+    log_debug('run_SL_machine() launch_machine_desc "{}"'.format(launch_machine_desc))
+    log_debug('run_SL_machine() media_name          "{}"'.format(media_name))
 
     # --- Compute ROM recently played list ---
     # >> If the machine is already in the list remove it and place it on the first position.
@@ -7638,8 +7637,8 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
     recent_roms_list = [item for item in recent_roms_list if SL_fav_DB_key != item['SL_DB_key']]
     recent_roms_list.insert(0, recent_ROM)
     if len(recent_roms_list) > MAX_RECENT_PLAYED_ROMS:
-        log_debug('run_SL_machine() len(recent_roms_list) = {0}'.format(len(recent_roms_list)))
-        log_debug('run_SL_machine() Trimming list to {0} ROMs'.format(MAX_RECENT_PLAYED_ROMS))
+        log_debug('run_SL_machine() len(recent_roms_list) = {}'.format(len(recent_roms_list)))
+        log_debug('run_SL_machine() Trimming list to {} ROMs'.format(MAX_RECENT_PLAYED_ROMS))
         temp_list = recent_roms_list[:MAX_RECENT_PLAYED_ROMS]
         recent_roms_list = temp_list
     fs_write_JSON_file(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
@@ -7656,17 +7655,17 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
 
     # --- Build MAME arguments ---
     if sl_launch_mode == SL_LAUNCH_WITH_MEDIA:
-        arg_list = [mame_prog_FN.getPath(), launch_machine_name, '-{0}'.format(media_name), SL_ROM_name]
+        arg_list = [mame_prog_FN.getPath(), launch_machine_name, '-{}'.format(media_name), SL_ROM_name]
     elif sl_launch_mode == SL_LAUNCH_NO_MEDIA:
-        arg_list = [mame_prog_FN.getPath(), launch_machine_name, '{0}:{1}'.format(SL_name, SL_ROM_name)]
+        arg_list = [mame_prog_FN.getPath(), launch_machine_name, '{}:{}'.format(SL_name, SL_ROM_name)]
     else:
-        kodi_dialog_OK('Unknown sl_launch_mode = {0}. This is a bug, please report it.'.format(sl_launch_mode))
+        kodi_dialog_OK('Unknown sl_launch_mode = {}. This is a bug, please report it.'.format(sl_launch_mode))
         return
-    log_info('arg_list = {0}'.format(arg_list))
+    log_info('arg_list = {}'.format(arg_list))
 
     # --- User notification ---
     if g_settings['display_launcher_notify']:
-        kodi_notify('Launching MAME SL item "{0}"'.format(SL_ROM_name))
+        kodi_notify('Launching MAME SL item "{}"'.format(SL_ROM_name))
     if DISABLE_MAME_LAUNCHING:
         log_info('run_machine() MAME launching disabled. Exiting function.')
         return
@@ -7690,7 +7689,7 @@ def run_before_execution():
     g_flag_kodi_was_playing = False
     media_state_action = g_settings['media_state_action']
     media_state_str = ['Stop', 'Pause', 'Keep playing'][media_state_action]
-    a = 'run_before_execution() media_state_action is "{0}" ({1})'
+    a = 'run_before_execution() media_state_action is "{}" ({})'
     log_verb(a.format(media_state_str, media_state_action))
     kodi_is_playing = xbmc.getCondVisibility('Player.HasMedia')
     if media_state_action == 0 and kodi_is_playing:
@@ -7740,7 +7739,7 @@ def run_before_execution():
 
     # --- Pause Kodi execution some time ---
     delay_tempo_ms = g_settings['delay_tempo']
-    log_verb('run_before_execution() Pausing {0} ms'.format(delay_tempo_ms))
+    log_verb('run_before_execution() Pausing {} ms'.format(delay_tempo_ms))
     xbmc.sleep(delay_tempo_ms)
     log_debug('run_before_execution() function ENDS')
 
@@ -7780,7 +7779,7 @@ def run_after_execution():
 
     # --- Stop Kodi some time ---
     delay_tempo_ms = g_settings['delay_tempo']
-    log_verb('run_after_execution() Pausing {0} ms'.format(delay_tempo_ms))
+    log_verb('run_after_execution() Pausing {} ms'.format(delay_tempo_ms))
     xbmc.sleep(delay_tempo_ms)
 
     # --- Toggle Kodi windowed/fullscreen if requested ---
@@ -7818,9 +7817,9 @@ def run_after_execution():
     # >> id="media_state_action" default="0" values="Stop|Pause|Keep playing"
     media_state_action = g_settings['media_state_action']
     media_state_str = ['Stop', 'Pause', 'Keep playing'][media_state_action]
-    a = 'run_after_execution() media_state_action is "{0}" ({1})'
+    a = 'run_after_execution() media_state_action is "{}" ({})'
     log_verb(a.format(media_state_str, media_state_action))
-    log_verb('run_after_execution() g_flag_kodi_was_playing is {0}'.format(g_flag_kodi_was_playing))
+    log_verb('run_after_execution() g_flag_kodi_was_playing is {}'.format(g_flag_kodi_was_playing))
     if g_flag_kodi_was_playing and media_state_action == 1:
         log_verb('run_after_execution() Executing built-in PlayerControl(play)')
         # When Kodi is in "pause" mode, resume is used to continue play.
