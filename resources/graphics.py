@@ -15,8 +15,8 @@
 
 # --- Modules/packages in this addon ---
 from .constants import *
-from .disk_IO import *
 from .utils import *
+from .db import *
 
 # --- Python standard library ---
 import collections

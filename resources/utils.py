@@ -29,6 +29,9 @@
 #
 # How to report errors on the low-level filesystem functions???
 
+# --- AML modules ---
+from .constants import *
+
 # --- Kodi modules ---
 try:
     import xbmc
@@ -43,6 +46,8 @@ import io
 import json
 import math
 import os
+import threading
+import time
 
 # -------------------------------------------------------------------------------------------------
 # Filesystem helper class.
@@ -255,10 +260,10 @@ def utils_load_JSON_file_dic(json_filename, verbose = True):
     # --- If file does not exist return empty dictionary ---
     data_dic = {}
     if not os.path.isfile(json_filename):
-        log_warning('fs_load_JSON_file_dic() Not found "{}"'.format(json_filename))
+        log_warning('utils_load_JSON_file_dic() Not found "{}"'.format(json_filename))
         return data_dic
     if verbose:
-        log_debug('fs_load_JSON_file_dic() "{}"'.format(json_filename))
+        log_debug('utils_load_JSON_file_dic() "{}"'.format(json_filename))
     with io.open(json_filename) as file:
         data_dic = json.load(file)
 
@@ -268,10 +273,10 @@ def utils_load_JSON_file_list(json_filename, verbose = True):
     # --- If file does not exist return empty dictionary ---
     data_list = []
     if not os.path.isfile(json_filename):
-        log_warning('fs_load_JSON_file_list() Not found "{}"'.format(json_filename))
+        log_warning('utils_load_JSON_file_list() Not found "{}"'.format(json_filename))
         return data_list
     if verbose:
-        log_debug('fs_load_JSON_file_list() "{}"'.format(json_filename))
+        log_debug('utils_load_JSON_file_list() "{}"'.format(json_filename))
     with io.open(json_filename) as file:
         data_list = json.load(file)
 
@@ -782,7 +787,7 @@ kodi_running_version = kodi_get_Kodi_major_version()
 # 
 # Functions here in the same order as in the Function List browser.
 # -------------------------------------------------------------------------------------------------
-if KODI_RUNTIME_AVAILABLE_UTILS_KODI:
+if KODI_RUNTIME_AVAILABLE_UTILS:
     log_debug   = log_debug_KR
     log_verb    = log_verb_KR
     log_info    = log_info_KR

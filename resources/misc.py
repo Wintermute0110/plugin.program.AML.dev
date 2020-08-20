@@ -18,6 +18,9 @@
 # This module can be loaded anywhere without creating circular dependencies.
 # Optionally this module can include utils.py to use the log_*() functions but better avoid it.
 
+# --- Python standard library ---
+import re
+
 # -------------------------------------------------------------------------------------------------
 # Strings and text functions.
 # -------------------------------------------------------------------------------------------------
@@ -425,3 +428,78 @@ def misc_generate_random_SID():
     sid = base.hexdigest()
 
     return sid
+
+#
+# All version numbers must be less than 100, except the major version.
+# AML version is like this: aa.bb.cc[-|~][alpha[dd]|beta[dd]]
+# It gets converted to: aa.bb.cc Rdd -> int aab,bcc,Rdd
+# The number 2,147,483,647 is the maximum positive value for a 32-bit signed binary integer.
+#
+# aa.bb.cc.Xdd    formatted aab,bcc,Xdd
+#  |  |  | | |--> Beta/Alpha flag 0, 1, ..., 99
+#  |  |  | |----> Release kind flag 
+#  |  |  |        5 for non-beta, non-alpha, non RC versions.
+#  |  |  |        2 for RC versions
+#  |  |  |        1 for beta versions
+#  |  |  |        0 for alpha versions
+#  |  |  |------> Build version 0, 1, ..., 99
+#  |  |---------> Minor version 0, 1, ..., 99
+#  |------------> Major version 0, ..., infinity
+#
+def misc_addon_version_str_to_int(AML_version_str):
+    # log_debug('misc_addon_version_str_to_int() AML_version_str = "{}"'.format(AML_version_str))
+    version_int = 0
+    # Parse versions like "0.9.8[-|~]alpha[jj]"
+    m_obj_alpha_n = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)(\d+?)$', AML_version_str)
+    # Parse versions like "0.9.8[-|~]alpha"
+    m_obj_alpha = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)$', AML_version_str)
+    # Parse versions like "0.9.8"
+    m_obj_standard = re.search('^(\d+?)\.(\d+?)\.(\d+?)$', AML_version_str)
+
+    if m_obj_alpha_n:
+        major    = int(m_obj_alpha_n.group(1))
+        minor    = int(m_obj_alpha_n.group(2))
+        build    = int(m_obj_alpha_n.group(3))
+        kind_str = m_obj_alpha_n.group(4)
+        beta     = int(m_obj_alpha_n.group(5))
+        if kind_str == 'alpha':
+            release_flag = 0
+        elif kind_str == 'beta':
+            release_flag = 1
+        # log_debug('misc_addon_version_str_to_int() major        {}'.format(major))
+        # log_debug('fs_AML_version_str_to_int() minor        {}'.format(minor))
+        # log_debug('fs_AML_version_str_to_int() build        {}'.format(build))
+        # log_debug('fs_AML_version_str_to_int() kind_str     {}'.format(kind_str))
+        # log_debug('fs_AML_version_str_to_int() release_flag {}'.format(release_flag))
+        # log_debug('fs_AML_version_str_to_int() beta         {}'.format(beta))
+        version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100 + beta
+    elif m_obj_alpha:
+        major    = int(m_obj_alpha.group(1))
+        minor    = int(m_obj_alpha.group(2))
+        build    = int(m_obj_alpha.group(3))
+        kind_str = m_obj_alpha.group(4)
+        if kind_str == 'alpha':
+            release_flag = 0
+        elif kind_str == 'beta':
+            release_flag = 1
+        # log_debug('fs_AML_version_str_to_int() major        {}'.format(major))
+        # log_debug('fs_AML_version_str_to_int() minor        {}'.format(minor))
+        # log_debug('fs_AML_version_str_to_int() build        {}'.format(build))
+        # log_debug('fs_AML_version_str_to_int() kind_str     {}'.format(kind_str))
+        # log_debug('fs_AML_version_str_to_int() release_flag {}'.format(release_flag))
+        version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100
+    elif m_obj_standard:
+        major = int(m_obj_standard.group(1))
+        minor = int(m_obj_standard.group(2))
+        build = int(m_obj_standard.group(3))
+        release_flag = 5
+        # log_debug('fs_AML_version_str_to_int() major {}'.format(major))
+        # log_debug('fs_AML_version_str_to_int() minor {}'.format(minor))
+        # log_debug('fs_AML_version_str_to_int() build {}'.format(build))
+        version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100
+    else:
+        # log_debug('AML addon version "{}" cannot be parsed.'.format(AML_version_str))
+        raise TypeError('misc_addon_version_str_to_int() failure')
+    # log_debug('misc_addon_version_str_to_int() version_int = {}'.format(version_int))
+
+    return version_int

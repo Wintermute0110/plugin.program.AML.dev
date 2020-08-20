@@ -26,7 +26,7 @@
 from .constants import *
 from .assets import *
 from .utils import *
-from .disk_IO import *
+from .db import *
 from .filters import *
 from .mame import *
 from .manuals import *
@@ -303,7 +303,7 @@ def run_plugin(addon_argv):
 
     # --- If control_dic does not exists create an empty one ---
     # control_dic will be used for database built checks, etc.
-    if not g_PATHS.MAIN_CONTROL_PATH.exists(): fs_create_empty_control_dic(g_PATHS, __addon_version__)
+    if not g_PATHS.MAIN_CONTROL_PATH.exists(): mame_create_empty_control_dic(g_PATHS, __addon_version__)
 
     # --- Process URL ---
     g_base_url = addon_argv[0]
@@ -993,8 +993,8 @@ def render_root_list():
     set_render_root_data()
 
     # ----- Machine count -----
-    cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
-    SL_index_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    cache_index_dic = utils_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
+    SL_index_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
 
     # Do not crash if cache_index_dic is corrupted or has missing fields (may happen in
     # upgrades). This function must never crash because the user must have always access to
@@ -1807,7 +1807,7 @@ def render_catalog_list(catalog_name):
     # --- General AML plugin check ---
     # Check if databases have been built, print warning messages, etc. This function returns
     # False if no issues, True if there is issues and a dialog has been printed.
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
     if not check_MAME_DB_before_rendering_catalog(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
@@ -1816,7 +1816,7 @@ def render_catalog_list(catalog_name):
     set_Kodi_all_sorting_methods_and_size()
     mame_view_mode = g_settings['mame_view_mode']
     loading_ticks_start = time.time()
-    cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
+    cache_index_dic = utils_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
     if mame_view_mode == VIEW_MODE_FLAT:
         catalog_dic = fs_get_cataloged_dic_all(g_PATHS, catalog_name)
     elif mame_view_mode == VIEW_MODE_PCLONE:
@@ -1887,7 +1887,7 @@ def render_catalog_parent_list(catalog_name, category_name):
     # --- Load ListItem properties (Not used at the moment) ---
     # prop_key = '{} - {}'.format(catalog_name, category_name)
     # log_debug('render_catalog_parent_list() Loading props with key "{}"'.format(prop_key))
-    # mame_properties_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_PROPERTIES_PATH.getPath())
+    # mame_properties_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_PROPERTIES_PATH.getPath())
     # prop_dic = mame_properties_dic[prop_key]
     # view_mode_property = prop_dic['vm']
 
@@ -1897,7 +1897,7 @@ def render_catalog_parent_list(catalog_name, category_name):
 
     # --- General AML plugin check ---
     # Check if databases have been built, print warning messages, etc.
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
     if not check_MAME_DB_before_rendering_machines(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
         return
@@ -1915,26 +1915,26 @@ def render_catalog_parent_list(catalog_name, category_name):
     l_cataloged_dic_end = time.time()
     l_render_db_start = time.time()
     if g_settings['debug_enable_MAME_render_cache']:
-        cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
+        cache_index_dic = utils_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
         render_db_dic = fs_load_render_dic_all(g_PATHS, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME machine cache disabled.')
-        render_db_dic = fs_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
+        render_db_dic = utils_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
     l_render_db_end = time.time()
     l_assets_db_start = time.time()
     if g_settings['debug_enable_MAME_asset_cache']:
         if 'cache_index_dic' not in locals():
-            cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
+            cache_index_dic = utils_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
         assets_db_dic = fs_load_assets_all(g_PATHS, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME asset cache disabled.')
-        assets_db_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        assets_db_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
     l_assets_db_end = time.time()
     l_pclone_dic_start = time.time()
-    main_pclone_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+    main_pclone_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_PCLONE_DIC_PATH.getPath())
     l_pclone_dic_end = time.time()
     l_favs_start = time.time()
-    fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
+    fav_machines = utils_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
     l_favs_end = time.time()
 
     # --- Compute loading times ---
@@ -1997,20 +1997,20 @@ def render_catalog_clone_list(catalog_name, category_name, parent_name):
     loading_ticks_start = time.time()
     catalog_dic = fs_get_cataloged_dic_all(g_PATHS, catalog_name)
     if g_settings['debug_enable_MAME_render_cache']:
-        cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
+        cache_index_dic = utils_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
         render_db_dic = fs_load_render_dic_all(g_PATHS, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME machine cache disabled.')
-        render_db_dic = fs_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
+        render_db_dic = utils_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
     if g_settings['debug_enable_MAME_asset_cache']:
         if 'cache_index_dic' not in locals():
-            cache_index_dic = fs_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
+            cache_index_dic = utils_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
         assets_db_dic = fs_load_assets_all(g_PATHS, cache_index_dic, catalog_name, category_name)
     else:
         log_debug('MAME asset cache disabled.')
-        assets_db_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
-    main_pclone_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_PCLONE_DIC_PATH.getPath())
-    fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
+        assets_db_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
+    main_pclone_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_PCLONE_DIC_PATH.getPath())
+    fav_machines = utils_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
     loading_ticks_end = time.time()
     loading_time = loading_ticks_end - loading_ticks_start
 
@@ -2255,7 +2255,7 @@ def command_context_display_settings(catalog_name, category_name):
     log_debug('command_display_settings() category_name "{}"'.format(category_name))
     prop_key = '{} - {}'.format(catalog_name, category_name)
     log_debug('command_display_settings() Loading props with key "{}"'.format(prop_key))
-    mame_properties_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_PROPERTIES_PATH.getPath())
+    mame_properties_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_PROPERTIES_PATH.getPath())
     prop_dic = mame_properties_dic[prop_key]
     if prop_dic['vm'] == VIEW_MODE_NORMAL: dmode_str = 'Parents only'
     else:                                  dmode_str = 'Parents and clones'
@@ -2297,13 +2297,13 @@ def render_SL_list(catalog_name):
     log_debug('render_SL_list() catalog_name = {}\n'.format(catalog_name))
 
     # --- General AML plugin check ---
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
     if not check_SL_DB_before_rendering_catalog(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
     # --- Load Software List catalog and build render catalog ---
-    SL_main_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    SL_main_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
     SL_catalog_dic = {}
     if catalog_name == 'SL':
         for SL_name, SL_dic in SL_main_catalog_dic.items():
@@ -2339,27 +2339,27 @@ def render_SL_ROMs(SL_name):
     log_debug('render_SL_ROMs() SL_name "{}"'.format(SL_name))
 
     # --- General AML plugin check ---
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
     if not check_SL_DB_before_rendering_machines(g_PATHS, g_settings, control_dic):
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
     # Load ListItem properties (Not used at the moment)
-    # SL_properties_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PROP_PATH.getPath())
+    # SL_properties_dic = utils_load_JSON_file_dic(g_PATHS.SL_MACHINES_PROP_PATH.getPath())
     # prop_dic = SL_properties_dic[SL_name]
     # Global properties
     view_mode_property = g_settings['sl_view_mode']
     log_debug('render_SL_ROMs() view_mode_property = {}'.format(view_mode_property))
 
     # Load Software List ROMs
-    SL_PClone_dic = fs_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
-    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    SL_PClone_dic = utils_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
+    SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
     file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
     SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(file_name)
     assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
     SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
-    SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
-    SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+    SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
+    SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
 
     set_Kodi_all_sorting_methods()
     SL_proper_name = SL_catalog_dic[SL_name]['display_name']
@@ -2393,16 +2393,16 @@ def render_SL_pclone_set(SL_name, parent_name):
     log_debug('render_SL_pclone_set() view_mode_property = {}'.format(view_mode_property))
 
     # >> Load Software List ROMs
-    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-    SL_PClone_dic = fs_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
+    SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    SL_PClone_dic = utils_load_JSON_file_dic(g_PATHS.SL_PCLONE_DIC_PATH.getPath())
     file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
     SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(file_name)
     log_debug('render_SL_pclone_set() ROMs JSON "{}"'.format(SL_DB_FN.getPath()))
-    SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
+    SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
 
     assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
     SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
-    SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+    SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
 
     # >> Render parent first
     SL_proper_name = SL_catalog_dic[SL_name]['display_name']
@@ -2560,7 +2560,7 @@ def render_DAT_list(catalog_name):
 
     if catalog_name == 'History':
         # Render list of categories.
-        DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
+        DAT_idx_dic = utils_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
         if not DAT_idx_dic:
             kodi_dialog_OK('DAT database file "{}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -2575,7 +2575,7 @@ def render_DAT_list(catalog_name):
             xbmcplugin.addDirectoryItem(g_addon_handle, url = URL, listitem = listitem, isFolder = True)
     elif catalog_name == 'MAMEINFO':
         # Render list of categories.
-        DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_IDX_PATH.getPath())
+        DAT_idx_dic = utils_load_JSON_file_dic(g_PATHS.MAMEINFO_IDX_PATH.getPath())
         if not DAT_idx_dic:
             kodi_dialog_OK('DAT database file "{}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -2590,7 +2590,7 @@ def render_DAT_list(catalog_name):
             xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = True)
     elif catalog_name == 'Gameinit':
         # Render list of machines.
-        DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_IDX_PATH.getPath())
+        DAT_idx_dic = utils_load_JSON_file_dic(g_PATHS.GAMEINIT_IDX_PATH.getPath())
         if not DAT_idx_dic:
             kodi_dialog_OK('DAT database file "{}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -2605,7 +2605,7 @@ def render_DAT_list(catalog_name):
             xbmcplugin.addDirectoryItem(g_addon_handle, URL, listitem, isFolder = False)
     elif catalog_name == 'Command':
         # Render list of machines.
-        DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.COMMAND_IDX_PATH.getPath())
+        DAT_idx_dic = utils_load_JSON_file_dic(g_PATHS.COMMAND_IDX_PATH.getPath())
         if not DAT_idx_dic:
             kodi_dialog_OK('DAT database file "{}" empty.'.format(catalog_name))
             xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -2629,9 +2629,9 @@ def render_DAT_list(catalog_name):
 def render_DAT_category(catalog_name, category_name):
     # Load Software List catalog
     if catalog_name == 'History':
-        DAT_catalog_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
+        DAT_catalog_dic = utils_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
     elif catalog_name == 'MAMEINFO':
-        DAT_catalog_dic = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_IDX_PATH.getPath())
+        DAT_catalog_dic = utils_load_JSON_file_dic(g_PATHS.MAMEINFO_IDX_PATH.getPath())
     else:
         kodi_dialog_OK('DAT database file "{}" not found. Check out "Setup plugin" context menu.'.format(catalog_name))
         xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -2676,24 +2676,24 @@ def render_DAT_machine_info(catalog_name, category_name, machine_name):
     log_debug('render_DAT_machine_info() machine_name "{}"'.format(machine_name))
 
     if catalog_name == 'History':
-        DAT_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
-        DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
+        DAT_idx_dic = utils_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
+        DAT_dic = utils_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
         display_name, db_list, db_machine = DAT_idx_dic[category_name]['machines'][machine_name].split('|')
         t_str = ('History for [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR] '
             '(DB entry [COLOR=orange]{}[/COLOR] / [COLOR=orange]{}[/COLOR])')
         window_title = t_str.format(category_name, machine_name, db_list, db_machine)
         info_text = DAT_dic[db_list][db_machine]
     elif catalog_name == 'MAMEINFO':
-        DAT_dic = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_DB_PATH.getPath())
+        DAT_dic = utils_load_JSON_file_dic(g_PATHS.MAMEINFO_DB_PATH.getPath())
         t_str = 'MAMEINFO information for [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR]'
         window_title = t_str.format(category_name, machine_name)
         info_text = DAT_dic[category_name][machine_name]
     elif catalog_name == 'Gameinit':
-        DAT_dic = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_DB_PATH.getPath())
+        DAT_dic = utils_load_JSON_file_dic(g_PATHS.GAMEINIT_DB_PATH.getPath())
         window_title = 'Gameinit information for [COLOR=orange]{}[/COLOR]'.format(machine_name)
         info_text = DAT_dic[machine_name]
     elif catalog_name == 'Command':
-        DAT_dic = fs_load_JSON_file_dic(g_PATHS.COMMAND_DB_PATH.getPath())
+        DAT_dic = utils_load_JSON_file_dic(g_PATHS.COMMAND_DB_PATH.getPath())
         window_title = 'Command information for [COLOR=orange]{}[/COLOR]'.format(machine_name)
         info_text = DAT_dic[machine_name]
     else:
@@ -2711,7 +2711,7 @@ def command_context_display_settings_SL(SL_name):
     log_debug('command_display_settings_SL() SL_name "{}"'.format(SL_name))
 
     # --- Load properties DB ---
-    SL_properties_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PROP_PATH.getPath())
+    SL_properties_dic = utils_load_JSON_file_dic(g_PATHS.SL_MACHINES_PROP_PATH.getPath())
     prop_dic = SL_properties_dic[SL_name]
 
     # --- Show menu ---
@@ -2775,10 +2775,10 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
 
     if view_type == VIEW_MAME_MACHINE:
         # --- Load DAT indices ---
-        History_idx_dic   = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
-        Mameinfo_idx_dic  = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_IDX_PATH.getPath())
-        Gameinit_idx_list = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_IDX_PATH.getPath())
-        Command_idx_list  = fs_load_JSON_file_dic(g_PATHS.COMMAND_IDX_PATH.getPath())
+        History_idx_dic   = utils_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
+        Mameinfo_idx_dic  = utils_load_JSON_file_dic(g_PATHS.MAMEINFO_IDX_PATH.getPath())
+        Gameinit_idx_list = utils_load_JSON_file_dic(g_PATHS.GAMEINIT_IDX_PATH.getPath())
+        Command_idx_list  = utils_load_JSON_file_dic(g_PATHS.COMMAND_IDX_PATH.getPath())
 
         # --- Check if DAT information is available for this machine ---
         if History_idx_dic:
@@ -2806,7 +2806,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         # Manual_str =
 
     elif view_type == VIEW_SL_ROM:
-        History_idx_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
+        History_idx_dic = utils_load_JSON_file_dic(g_PATHS.HISTORY_IDX_PATH.getPath())
         if History_idx_dic:
             if SL_name in History_idx_dic:
                 History_str = 'Found' if SL_ROM in History_idx_dic[SL_name]['machines'] else 'Not found'
@@ -2878,7 +2878,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 return
             m_str = History_idx_dic['mame']['machines'][machine_name]
             display_name, db_list, db_machine = m_str.split('|')
-            History_DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
+            History_DAT_dic = utils_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
             t_str = ('History DAT for MAME machine [COLOR=orange]{}[/COLOR] '
                 '(DB entry [COLOR=orange]{}[/COLOR])')
             window_title = t_str.format(machine_name, db_machine)
@@ -2891,7 +2891,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
                 return
             m_str = History_idx_dic[SL_name]['machines'][SL_ROM]
             display_name, db_list, db_machine = m_str.split('|')
-            History_DAT_dic = fs_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
+            History_DAT_dic = utils_load_JSON_file_dic(g_PATHS.HISTORY_DB_PATH.getPath())
             t_str = ('History DAT for SL [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR] '
                 '(DB entry [COLOR=orange]{}[/COLOR] / [COLOR=orange]{}[/COLOR])')
             window_title = t_str.format(SL_name, SL_ROM, db_list, db_machine)
@@ -2901,7 +2901,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         if machine_name not in Mameinfo_idx_dic['mame']:
             kodi_dialog_OK('Machine {} not in Mameinfo DAT'.format(machine_name))
             return
-        DAT_dic = fs_load_JSON_file_dic(g_PATHS.MAMEINFO_DB_PATH.getPath())
+        DAT_dic = utils_load_JSON_file_dic(g_PATHS.MAMEINFO_DB_PATH.getPath())
         t_str = 'MAMEINFO information for [COLOR=orange]{}[/COLOR] item [COLOR=orange]{}[/COLOR]'
         window_title = t_str.format('mame', machine_name)
         kodi_display_text_window_mono(window_title, DAT_dic['mame'][machine_name])
@@ -2910,7 +2910,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         if machine_name not in Gameinit_idx_list:
             kodi_dialog_OK('Machine {} not in Gameinit DAT'.format(machine_name))
             return
-        DAT_dic = fs_load_JSON_file_dic(g_PATHS.GAMEINIT_DB_PATH.getPath())
+        DAT_dic = utils_load_JSON_file_dic(g_PATHS.GAMEINIT_DB_PATH.getPath())
         window_title = 'Gameinit information for [COLOR=orange]{}[/COLOR]'.format(machine_name)
         kodi_display_text_window_mono(window_title, DAT_dic[machine_name])
 
@@ -2918,7 +2918,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         if machine_name not in Command_idx_list:
             kodi_dialog_OK('Machine {} not in Command DAT'.format(machine_name))
             return
-        DAT_dic = fs_load_JSON_file_dic(g_PATHS.COMMAND_DB_PATH.getPath())
+        DAT_dic = utils_load_JSON_file_dic(g_PATHS.COMMAND_DB_PATH.getPath())
         window_title = 'Command information for [COLOR=orange]{}[/COLOR]'.format(machine_name)
         kodi_display_text_window_mono(window_title, DAT_dic[machine_name])
 
@@ -2927,19 +2927,19 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         # >> Open ROM in assets database
         if view_type == VIEW_MAME_MACHINE:
             if location == 'STANDARD':
-                assets_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
+                assets_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
                 m_assets = assets_dic[machine_name]
             else:
-                mame_favs_dic = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
+                mame_favs_dic = utils_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
                 m_assets = mame_favs_dic[machine_name]['assets']
             if not m_assets['fanart']:
                 kodi_dialog_OK('Fanart for machine {} not found.'.format(machine_name))
                 return
         elif view_type == VIEW_SL_ROM:
-            SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+            SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
             assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
             SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
-            SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+            SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
             m_assets = SL_asset_dic[SL_ROM]
             if not m_assets['fanart']:
                 kodi_dialog_OK('Fanart for SL item {} not found.'.format(SL_ROM))
@@ -2980,7 +2980,7 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
         if view_type == VIEW_MAME_MACHINE:
             log_debug('Displaying Manual for MAME machine {} ...'.format(machine_name))
             # machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
-            assets_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
+            assets_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
             if not assets_dic[machine_name]['manual']:
                 kodi_dialog_OK('Manual not found in database.')
                 return
@@ -2988,10 +2988,10 @@ def command_context_view_DAT(machine_name, SL_name, SL_ROM, location):
             img_dir_FN = FileName(g_settings['assets_path']).pjoin('manuals').pjoin(machine_name + '.pages')
         elif view_type == VIEW_SL_ROM:
             log_debug('Displaying Manual for SL {} item {} ...'.format(SL_name, SL_ROM))
-            SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+            SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
             assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
             SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
-            SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+            SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
             if not SL_asset_dic[SL_ROM]['manual']:
                 kodi_dialog_OK('Manual not found in database.')
                 return
@@ -3195,7 +3195,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
 
         elif location == LOCATION_MAME_FAVS:
             pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Favourites database'))
-            machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
+            machines = utils_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
             pDialog.endProgress()
             machine = machines[machine_name]
             assets = machine['assets']
@@ -3203,7 +3203,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
 
         elif location == LOCATION_MAME_MOST_PLAYED:
             pDialog.startProgress('{}\n{}'.format(d_text, 'MAME Most Played database'))
-            most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+            most_played_roms_dic = utils_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
             pDialog.endProgress()
             machine = most_played_roms_dic[machine_name]
             assets = machine['assets']
@@ -3240,13 +3240,13 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
     elif action == ACTION_VIEW_SL_ROM_DATA:
         if location == LOCATION_STANDARD:
             # --- Load databases ---
-            SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
-            SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+            SL_machines_dic = utils_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
+            SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
             assets_file_name = SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
             SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
-            SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+            SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
             SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_items.json')
-            roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
+            roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
 
             # --- Prepare data ---
             rom = roms[SL_ROM]
@@ -3257,9 +3257,9 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
 
         elif location == LOCATION_SL_FAVS:
             # --- Load databases ---
-            SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
-            SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-            fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+            SL_machines_dic = utils_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
+            SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+            fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
 
             # --- Prepare data ---
             fav_key = SL_name + '-' + SL_ROM
@@ -3270,9 +3270,9 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             window_title = 'Favourite Software List Item Information'
 
         elif location == LOCATION_SL_MOST_PLAYED:
-            SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
-            SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-            most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+            SL_machines_dic = utils_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
+            SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+            most_played_roms_dic = utils_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
 
             # --- Prepare data ---
             fav_key = SL_name + '-' + SL_ROM
@@ -3283,8 +3283,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
             window_title = 'Most Played SL Item Information'
 
         elif location == LOCATION_SL_RECENT_PLAYED:
-            SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
-            SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+            SL_machines_dic = utils_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
+            SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
             recent_roms_list = fs_load_JSON_file_list(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
 
             # --- Prepare data ---
@@ -3323,9 +3323,9 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machines Main'), num_items)
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine ROMs'))
-        roms_db_dic = fs_load_JSON_file_dic(g_PATHS.ROMS_DB_PATH.getPath())
+        roms_db_dic = utils_load_JSON_file_dic(g_PATHS.ROMS_DB_PATH.getPath())
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine Devices'))
-        devices_db_dic = fs_load_JSON_file_dic(g_PATHS.DEVICES_DB_PATH.getPath())
+        devices_db_dic = utils_load_JSON_file_dic(g_PATHS.DEVICES_DB_PATH.getPath())
         pDialog.endProgress()
 
         # --- Make a dictionary with device ROMs ---
@@ -3427,7 +3427,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machine hash'), num_items)
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME ROM Audit'))
-        audit_roms_dic = fs_load_JSON_file_dic(g_PATHS.ROM_AUDIT_DB_PATH.getPath())
+        audit_roms_dic = utils_load_JSON_file_dic(g_PATHS.ROM_AUDIT_DB_PATH.getPath())
         pDialog.endProgress()
 
         # --- Grab data and settings ---
@@ -3485,16 +3485,16 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
     elif action == ACTION_VIEW_SL_ROM_ROMS:
         SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_items.json')
         SL_ROMS_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
-        # SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-        # SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
+        # SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        # SL_machines_dic = utils_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
         # assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
         # SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
-        # SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+        # SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
         # SL_dic = SL_catalog_dic[SL_name]
         # SL_machine_list = SL_machines_dic[SL_name]
         # assets = SL_asset_dic[SL_ROM] if SL_ROM in SL_asset_dic else fs_new_SL_asset()
-        roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
-        roms_db = fs_load_JSON_file_dic(SL_ROMS_DB_FN.getPath())
+        roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
+        roms_db = utils_load_JSON_file_dic(SL_ROMS_DB_FN.getPath())
         rom = roms[SL_ROM]
         rom_db_list = roms_db[SL_ROM]
 
@@ -3550,8 +3550,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # SL_ROMs_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_roms.json')
         SL_ROM_Audit_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
 
-        roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
-        rom_audit_db = fs_load_JSON_file_dic(SL_ROM_Audit_DB_FN.getPath())
+        roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
+        rom_audit_db = utils_load_JSON_file_dic(SL_ROM_Audit_DB_FN.getPath())
         rom = roms[SL_ROM]
         rom_db_list = rom_audit_db[SL_ROM]
 
@@ -3625,7 +3625,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         pDialog.startProgress('{}\n{}'.format(d_text, 'MAME machine hash'), 2)
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME ROM Audit'))
-        audit_roms_dic = fs_load_JSON_file_dic(g_PATHS.ROM_AUDIT_DB_PATH.getPath())
+        audit_roms_dic = utils_load_JSON_file_dic(g_PATHS.ROM_AUDIT_DB_PATH.getPath())
         pDialog.endProgress()
 
         # --- Grab data and settings ---
@@ -3689,8 +3689,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_items.json')
         SL_ROM_Audit_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROM_audit.json')
 
-        roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
-        roms_audit_db = fs_load_JSON_file_dic(SL_ROM_Audit_DB_FN.getPath())
+        roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
+        roms_audit_db = utils_load_JSON_file_dic(SL_ROM_Audit_DB_FN.getPath())
         rom = roms[SL_ROM]
         rom_db_list = roms_audit_db[SL_ROM]
 
@@ -3766,11 +3766,11 @@ def command_context_utilities(catalog_name, category_name):
         pDialog.startProgress('{}\n{}'.format(d_text, 'Catalog dictionary'), 4)
         catalog_dic = fs_get_cataloged_dic_parents(g_PATHS, catalog_name)
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machines Main'))
-        machines = fs_load_JSON_file_dic(g_PATHS.MAIN_DB_PATH.getPath())
+        machines = utils_load_JSON_file_dic(g_PATHS.MAIN_DB_PATH.getPath())
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machines Render'))
-        machines_render = fs_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
+        machines_render = utils_load_JSON_file_dic(g_PATHS.RENDER_DB_PATH.getPath())
         pDialog.updateProgressInc('{}\n{}'.format(d_text, 'MAME machine Assets'))
-        assets_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
+        assets_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_ASSETS_DB_PATH.getPath())
         pDialog.endProgress()
 
         # --- Print error message is something goes wrong writing file ---
@@ -3790,12 +3790,12 @@ def command_context_add_mame_fav(machine_name):
     log_debug('command_add_mame_fav() Machine_name "{}"'.format(machine_name))
 
     # >> Get Machine database entry
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
     machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
     assets = fs_get_machine_assets_db_hash(g_PATHS, machine_name)
 
     # >> Open Favourite Machines dictionary
-    fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
+    fav_machines = utils_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
 
     # >> If machine already in Favourites ask user if overwrite.
     if machine_name in fav_machines:
@@ -3918,7 +3918,7 @@ def command_show_mame_fav():
     log_debug('command_show_mame_fav() Starting ...')
 
     # --- Open Favourite Machines dictionary ---
-    fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
+    fav_machines = utils_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
     if not fav_machines:
         kodi_dialog_OK('No Favourite MAME machines. Add some machines to MAME Favourites first.')
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -4017,7 +4017,7 @@ def command_context_manage_mame_fav(machine_name):
         log_debug('command_context_manage_mame_fav() ACTION_DELETE_MISSING')
 
         # --- Ensure MAME Catalog have been built ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
         if not options['condition']:
             kodi_dialog_OK(options['msg'])
@@ -4057,7 +4057,7 @@ def command_context_manage_mame_fav(machine_name):
         kodi_dialog_OK(t)
 
 def command_show_mame_most_played():
-    most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+    most_played_roms_dic = utils_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
     if not most_played_roms_dic:
         kodi_dialog_OK('No Most Played MAME machines. Play a bit and try later.')
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -4152,7 +4152,7 @@ def command_context_manage_mame_most_played(machine_name):
         log_debug('command_context_manage_mame_most_played() ACTION_DELETE_MISSING')
 
         # --- Ensure MAME Catalog have been built ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
         if not options['condition']:
             kodi_dialog_OK(options['msg'])
@@ -4288,7 +4288,7 @@ def command_context_manage_mame_recent_played(machine_name):
         log_debug('command_context_manage_mame_recent_played() ACTION_DELETE_MISSING')
 
         # --- Ensure MAME Catalog have been built ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
         if not options['condition']:
             kodi_dialog_OK(options['msg'])
@@ -4336,17 +4336,17 @@ def command_context_add_sl_fav(SL_name, ROM_name):
     log_debug('command_add_sl_fav() ROM_name "{}"'.format(ROM_name))
 
     # --- Load databases ---
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+    SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
     file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json'
     SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(file_name)
-    SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath())
+    SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath())
     assets_file_name =  SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json'
     SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(assets_file_name)
-    SL_assets_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+    SL_assets_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
 
     # >> Open Favourite Machines dictionary
-    fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+    fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
     SL_fav_key = SL_name + '-' + ROM_name
     log_debug('command_add_sl_fav() SL_fav_key "{}"'.format(SL_fav_key))
 
@@ -4452,10 +4452,10 @@ def command_show_sl_fav():
     log_debug('command_show_sl_fav() Starting ...')
 
     # >> Load Software List ROMs
-    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
 
     # >> Open Favourite Machines dictionary
-    fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+    fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
     if not fav_SL_roms:
         kodi_dialog_OK('No Favourite Software Lists ROMs. Add some ROMs to SL Favourites first.')
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -4518,11 +4518,11 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         log_debug('command_context_manage_sl_fav() ACTION_CHOOSE_DEFAULT')
 
         # --- Load Favs ---
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+        fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
 
         # --- Get a list of machines that can launch this SL ROM. User chooses. ---
-        SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
+        SL_machines_dic = utils_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
         SL_machine_list = SL_machines_dic[SL_name]
         SL_machine_names_list = []
         SL_machine_desc_list = []
@@ -4551,7 +4551,7 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         log_debug('command_context_manage_sl_fav() ACTION_DELETE_MACHINE')
 
         # --- Open Favourite Machines dictionary ---
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+        fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
         log_debug('SL_fav_key "{}"'.format(SL_fav_key))
 
@@ -4574,7 +4574,7 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         log_debug('command_context_manage_sl_fav() ACTION_DELETE_ALL')
 
         # --- Open Favourite Machines dictionary ---
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+        fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
         log_debug('SL_fav_key "{}"'.format(SL_fav_key))
 
@@ -4592,8 +4592,8 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_sl_fav() ACTION_DELETE_MISSING BEGIN...')
-        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+        SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
         if len(fav_SL_roms) < 1:
             kodi_notify('SL Favourites empty')
             return
@@ -4610,7 +4610,7 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
 
             # --- Load SL ROMs DB and assets ---
             SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json')
-            SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+            SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
 
             # --- Check ---
             if fav_ROM_name not in SL_roms:
@@ -4632,8 +4632,8 @@ def command_context_manage_sl_fav(SL_name, ROM_name):
         kodi_dialog_OK(t)
 
 def command_show_SL_most_played():
-    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-    most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+    SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    most_played_roms_dic = utils_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
     if not most_played_roms_dic:
         kodi_dialog_OK('No Most Played SL machines. Play a bit and try later.')
         xbmcplugin.endOfDirectory(g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -4697,7 +4697,7 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
         log_debug('command_context_manage_sl_most_played() ACTION_DELETE_MACHINE')
 
         # --- Load Most Played items dictionary ---
-        most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+        most_played_roms_dic = utils_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
         log_debug('SL_fav_key "{}"'.format(SL_fav_key))
 
@@ -4721,7 +4721,7 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
         log_debug('command_context_manage_sl_most_played() ACTION_DELETE_ALL')
 
         # --- Open Favourite Machines dictionary ---
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+        fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
         log_debug('SL_fav_key "{}"'.format(SL_fav_key))
 
@@ -4739,8 +4739,8 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
 
     elif action == ACTION_DELETE_MISSING:
         log_debug('command_context_manage_sl_most_played() ACTION_DELETE_MISSING')
-        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+        SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
         if len(fav_SL_roms) < 1:
             kodi_notify('SL Most Played empty')
             return
@@ -4756,7 +4756,7 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
 
             # --- Load SL ROMs DB and assets ---
             SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json')
-            SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+            SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
 
             # --- Check ---
             if fav_ROM_name not in SL_roms:
@@ -4778,7 +4778,7 @@ def command_context_manage_SL_most_played(SL_name, ROM_name):
         kodi_dialog_OK(t)
 
 def command_show_SL_recently_played():
-    SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+    SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
     recent_roms_list = fs_load_JSON_file_list(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
     if not recent_roms_list:
         kodi_dialog_OK('No Recently Played SL machines. Play a bit and try later.')
@@ -4869,7 +4869,7 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
         log_debug('command_context_manage_SL_recent_played() ACTION_DELETE_ALL')
 
         # --- Open Favourite Machines dictionary ---
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
+        fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
         SL_fav_key = SL_name + '-' + ROM_name
         log_debug('SL_fav_key "{}"'.format(SL_fav_key))
 
@@ -4888,8 +4888,8 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
     elif action == ACTION_DELETE_MISSING:
         # Careful because here fav_SL_roms is a list and not a dictionary.
         log_debug('command_context_manage_SL_recent_played() ACTION_DELETE_MISSING')
-        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
+        SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath())
         if len(fav_SL_roms) < 1:
             kodi_notify_warn('SL Recently Played empty')
             return
@@ -4907,7 +4907,7 @@ def command_context_manage_SL_recent_played(SL_name, ROM_name):
 
             # --- Load SL ROMs DB and assets ---
             SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[fav_SL_name]['rom_DB_noext'] + '_items.json')
-            SL_roms = fs_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
+            SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
 
             # --- Check ---
             if fav_ROM_name not in SL_roms:
@@ -4948,7 +4948,7 @@ def command_context_setup_custom_filters():
     # --- Build custom filter databases ---
     if menu_item == 0:
         # Open main ROM databases
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         db_files = [
             ['machines', 'MAME machines main', g_PATHS.MAIN_DB_PATH.getPath()],
             ['render', 'MAME machines render', g_PATHS.RENDER_DB_PATH.getPath()],
@@ -5073,14 +5073,14 @@ def command_show_custom_filters():
     log_debug('command_show_custom_filters() Starting ...')
 
     # >> Open Custom filter count database and index
-    filter_index_dic = fs_load_JSON_file_dic(g_PATHS.FILTERS_INDEX_PATH.getPath())
+    filter_index_dic = utils_load_JSON_file_dic(g_PATHS.FILTERS_INDEX_PATH.getPath())
     if not filter_index_dic:
         kodi_dialog_OK('MAME custom filter index is empty. Please rebuild your filters.')
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
         return
 
     # >> Check if filters need to be rebuilt
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
     if control_dic['t_Custom_Filter_build'] < control_dic['t_MAME_Catalog_build']:
         kodi_dialog_OK('MAME custom filters need to be rebuilt.')
         xbmcplugin.endOfDirectory(handle = g_addon_handle, succeeded = True, cacheToDisc = False)
@@ -5138,17 +5138,17 @@ def render_custom_filter_machines(filter_name):
 
     # >> Load main MAME info DB and catalog
     l_cataloged_dic_start = time.time()
-    Filters_index_dic = fs_load_JSON_file_dic(g_PATHS.FILTERS_INDEX_PATH.getPath())
+    Filters_index_dic = utils_load_JSON_file_dic(g_PATHS.FILTERS_INDEX_PATH.getPath())
     rom_DB_noext = Filters_index_dic[filter_name]['rom_DB_noext']
     l_cataloged_dic_end = time.time()
     l_render_db_start = time.time()
-    render_db_dic = fs_load_JSON_file_dic(g_PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_render.json').getPath())
+    render_db_dic = utils_load_JSON_file_dic(g_PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_render.json').getPath())
     l_render_db_end = time.time()
     l_assets_db_start = time.time()
-    assets_db_dic = fs_load_JSON_file_dic(g_PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json').getPath())
+    assets_db_dic = utils_load_JSON_file_dic(g_PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json').getPath())
     l_assets_db_end = time.time()
     l_favs_start = time.time()
-    fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
+    fav_machines = utils_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
     l_favs_end = time.time()
 
     # >> Compute loading times.
@@ -5432,7 +5432,7 @@ def command_context_setup_plugin():
             return
 
         # --- Build main MAME database, PClone list and MAME hashed database (mandatory) ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         options_dic = mame_check_before_build_MAME_main_database(g_PATHS, g_settings, control_dic)
         if options_dic['abort']: return
         db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, control_dic, __addon_version__)
@@ -5583,7 +5583,7 @@ def command_context_setup_plugin():
         log_info('command_context_setup_plugin() Build everything starting ...')
 
         # --- Build main MAME database, PClone list and hashed database (mandatory) ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         options_dic = mame_check_before_build_MAME_main_database(g_PATHS, g_settings, control_dic)
         if options_dic['abort']: return
         db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, control_dic, __addon_version__)
@@ -5775,7 +5775,7 @@ def command_context_setup_plugin():
         log_info('command_context_setup_plugin() Audit MAME machines ROMs/CHDs ...')
 
         # --- Check for requirements/errors ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
 
         # --- Load machines, ROMs and CHDs databases ---
         db_files = [
@@ -5796,8 +5796,8 @@ def command_context_setup_plugin():
         log_info('command_context_setup_plugin() Audit SL ROMs/CHDs ...')
 
         # --- Check for requirements/errors ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        SL_index = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        SL_index = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
 
         # --- Audit all Software List items ---
         # 1) Updates control_dic statistics and timestamps and saves it.
@@ -5826,7 +5826,7 @@ def command_context_setup_plugin():
             log_info('command_context_setup_plugin() Generating MAME main database and PClone list ...')
 
             # --- Check for requirements/errors ---
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+            control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_build_MAME_main_database(g_PATHS, g_settings, control_dic)
             if options_dic['abort']: return
 
@@ -5850,7 +5850,7 @@ def command_context_setup_plugin():
             log_info('command_context_setup_plugin() Generating ROM audit/scanner databases ...')
 
             # --- Check for requirements/errors ---
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+            control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_build_ROM_audit_databases(g_PATHS, g_settings, control_dic)
             if options_dic['abort']: return
 
@@ -5874,7 +5874,7 @@ def command_context_setup_plugin():
             log_info('command_context_setup_plugin() Building MAME catalogs ...')
 
             # --- Check for requirements/errors ---
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+            control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_build_MAME_catalogs(g_PATHS, g_settings, control_dic)
             if options_dic['abort']: return
 
@@ -5912,7 +5912,7 @@ def command_context_setup_plugin():
             log_info('command_context_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
 
             # --- Check for requirements/errors ---
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+            control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
             if options_dic['abort']: return
 
@@ -5934,7 +5934,7 @@ def command_context_setup_plugin():
             log_info('command_context_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
 
             # --- Check for requirements/errors ---
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+            control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_scan_MAME_ROMs(g_PATHS, g_settings, control_dic)
             if options_dic['abort']: return
 
@@ -5978,7 +5978,7 @@ def command_context_setup_plugin():
             log_info('command_context_setup_plugin() Scanning MAME assets/artwork ...')
 
             # --- Check for requirements/errors ---
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+            control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_scan_MAME_assets(g_PATHS, g_settings, control_dic)
             if options_dic['abort']: return
 
@@ -6009,7 +6009,7 @@ def command_context_setup_plugin():
             log_info('command_context_setup_plugin() Scanning SL ROMs/CHDs ...')
 
             # --- Check for requirements/errors ---
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+            control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_scan_SL_ROMs(g_PATHS, g_settings, control_dic)
             if options_dic['abort']: return
 
@@ -6031,7 +6031,7 @@ def command_context_setup_plugin():
             log_info('command_context_setup_plugin() Scanning SL assets/artwork ...')
 
             # --- Check for requirements/errors ---
-            control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+            control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
             options_dic = mame_check_before_scan_SL_assets(g_PATHS, g_settings, control_dic)
             if options_dic['abort']: return
 
@@ -6236,7 +6236,7 @@ def command_context_setup_plugin():
             log_debug('TProjection_FN "{}"'.format(TProjection_FN.getPath()))
 
             # Load 3D texture projection matrix
-            t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
+            t_projection = utils_load_JSON_file_dic(TProjection_FN.getPath())
 
             # Create fake asset dictionaries
             # m_name = 'dino'
@@ -6278,7 +6278,7 @@ def command_context_setup_plugin():
             log_debug('Asset_path_FN  "{}"'.format(Asset_path_FN.getPath()))
 
             # Load 3D texture projection matrix
-            t_projection = fs_load_JSON_file_dic(TProjection_FN.getPath())
+            t_projection = utils_load_JSON_file_dic(TProjection_FN.getPath())
 
             # Create fake asset dictionaries
             # SL items in AML don't have clearlogo, but for testing is OK.
@@ -6617,7 +6617,7 @@ def command_exec_utility(which_utility):
         log_debug('command_exec_utility() Executing CHECK_ALL_FAV_OBJECTS...')
 
         # --- Ensure databases are built and assets scanned before updating Favourites ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         options = check_MAME_DB_status(MAME_ASSETS_SCANNED, control_dic)
         if not options['condition']:
             kodi_dialog_OK(options['msg'])
@@ -6651,7 +6651,7 @@ def command_exec_utility(which_utility):
         log_info('command_check_MAME_CRC_collisions() Initialising ...')
 
         # --- Check database ---
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         options = check_MAME_DB_status(MAME_CATALOG_BUILT, control_dic)
         if not options['condition']:
             kodi_dialog_OK(options['msg'])
@@ -6720,7 +6720,7 @@ def command_exec_utility(which_utility):
         log_info('command_exec_utility() Initialising CHECK_SL_COLLISIONS ...')
 
         # --- Load SL catalog and check for errors ---
-        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
 
         # --- Process all SLs ---
         d_text = 'Scanning Sofware Lists ROMs/CHDs...'
@@ -6738,9 +6738,9 @@ def command_exec_utility(which_utility):
 
             # Load SL databases
             # SL_SETS_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '.json')
-            # sl_sets = fs_load_JSON_file_dic(SL_SETS_DB_FN.getPath(), verbose = False)
+            # sl_sets = utils_load_JSON_file_dic(SL_SETS_DB_FN.getPath(), verbose = False)
             SL_ROMS_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_name + '_ROMs.json')
-            sl_roms = fs_load_JSON_file_dic(SL_ROMS_DB_FN.getPath(), verbose = False)
+            sl_roms = utils_load_JSON_file_dic(SL_ROMS_DB_FN.getPath(), verbose = False)
 
             # First step: make a SHA1 dictionary of all SL item hashes.
             for set_name in sorted(sl_roms):
@@ -6875,7 +6875,7 @@ def command_exec_utility(which_utility):
     # Export MAME information in Billyc999 XML format to use with RCB.
     elif which_utility == 'EXPORT_MAME_INFO_BILLYC999_XML':
         log_info('command_exec_utility() Initialising EXPORT_MAME_INFO_BILLYC999_XML...')
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         dir_path = kodi_dialog_get_wdirectory('Chose directory to write MAME info XML')
         if not dir_path: return
         db_files = [
@@ -6890,7 +6890,7 @@ def command_exec_utility(which_utility):
     # AML database.
     elif which_utility == 'EXPORT_MAME_ROM_DAT':
         log_info('command_exec_utility() Initialising EXPORT_MAME_ROM_DAT...')
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
 
         # Choose output directory (writable directory).
         dir_path = kodi_dialog_get_wdirectory('Chose directory to write MAME ROMs DAT')
@@ -6911,7 +6911,7 @@ def command_exec_utility(which_utility):
     elif which_utility == 'EXPORT_MAME_CHD_DAT':
         log_info('command_exec_utility() Initialising EXPORT_MAME_CHD_DAT ...')
         log_info('command_exec_utility() Initialising EXPORT_MAME_ROM_DAT ...')
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
 
         # Choose output directory (writable directory).
         # DAT filename: AML 0.xxx ROMs (merged|split|non-merged|fully non-merged).xml
@@ -6960,7 +6960,7 @@ def command_exec_report(which_report):
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_main_print_slist(g_settings, info_text, control_dic, __addon_version__)
         kodi_display_text_window_mono('Database main statistics', '\n'.join(info_text))
@@ -6969,7 +6969,7 @@ def command_exec_report(which_report):
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
         kodi_display_text_window_mono('Scanner statistics', '\n'.join(info_text))
@@ -6978,7 +6978,7 @@ def command_exec_report(which_report):
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_audit_print_slist(g_settings, info_text, control_dic, g_settings)
         kodi_display_text_window_mono('Database information and statistics', '\n'.join(info_text))
@@ -6988,7 +6988,7 @@ def command_exec_report(which_report):
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
         info_text = []
         mame_stats_main_print_slist(g_settings, info_text, control_dic, __addon_version__)
         info_text.append('')
@@ -7001,7 +7001,7 @@ def command_exec_report(which_report):
         if not g_PATHS.MAIN_CONTROL_PATH.exists():
             kodi_dialog_OK('MAME database not found. Please setup the addon first.')
             return
-        control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
 
         # --- Generate stats string and remove Kodi colours ---
         info_text = []
@@ -7257,19 +7257,19 @@ def run_machine(machine_name, location):
     mame_prog_FN = FileName(g_settings['mame_prog'])
 
     # --- Load databases ---
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
     if location == LOCATION_STANDARD:
         log_debug('Reading info from hashed DBs')
         machine = fs_get_machine_main_db_hash(g_PATHS, machine_name)
         assets = fs_get_machine_assets_db_hash(g_PATHS, machine_name)
     elif location == LOCATION_MAME_FAVS:
         log_debug('Reading info from MAME Favourites')
-        fav_machines = fs_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
+        fav_machines = utils_load_JSON_file_dic(g_PATHS.FAV_MACHINES_PATH.getPath())
         machine = fav_machines[machine_name]
         assets = machine['assets']
     elif location == LOCATION_MAME_MOST_PLAYED:
         log_debug('Reading info from MAME Most Played DB')
-        most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+        most_played_roms_dic = utils_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
         machine = most_played_roms_dic[machine_name]
         assets = machine['assets']
     elif location == LOCATION_MAME_RECENT_PLAYED:
@@ -7335,7 +7335,7 @@ def run_machine(machine_name, location):
     fs_write_JSON_file(g_PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
 
     # --- Compute most played ROM statistics ---
-    most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
+    most_played_roms_dic = utils_load_JSON_file_dic(g_PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath())
     if recent_rom['name'] in most_played_roms_dic:
         rom_name = recent_rom['name']
         most_played_roms_dic[rom_name]['launch_count'] += 1
@@ -7433,16 +7433,16 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
 
     # --- Get a list of launch machine <devices> and SL ROM <parts> ---
     # --- Load SL ROMs and SL assets databases ---
-    control_dic = fs_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+    control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
     if location == LOCATION_STANDARD:
         # >> Load DBs
         log_info('run_SL_machine() SL ROM is in Standard Location')
-        SL_catalog_dic = fs_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        SL_catalog_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
         SL_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[SL_name]['rom_DB_noext'] + '_items.json')
         log_info('run_SL_machine() SL ROMs JSON "{}"'.format(SL_DB_FN.getPath()))
-        SL_ROMs = fs_load_JSON_file_dic(SL_DB_FN.getPath())
+        SL_ROMs = utils_load_JSON_file_dic(SL_DB_FN.getPath())
         SL_asset_DB_FN = g_PATHS.SL_DB_DIR.pjoin(SL_catalog_dic[SL_name]['rom_DB_noext'] + '_assets.json')
-        SL_asset_dic = fs_load_JSON_file_dic(SL_asset_DB_FN.getPath())
+        SL_asset_dic = utils_load_JSON_file_dic(SL_asset_DB_FN.getPath())
         # >> Get ROM and assets
         SL_fav_DB_key = SL_name + '-' + SL_ROM_name
         SL_ROM = SL_ROMs[SL_ROM_name]
@@ -7454,7 +7454,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
     elif location == LOCATION_SL_FAVS:
         # >> Load DBs
         log_info('run_SL_machine() SL ROM is in Favourites')
-        fav_SL_roms = fs_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
+        fav_SL_roms = utils_load_JSON_file_dic(g_PATHS.FAV_SL_ROMS_PATH.getPath())
         # >> Get ROM and assets
         SL_fav_DB_key = SL_name + '-' + SL_ROM_name
         SL_ROM = fav_SL_roms[SL_fav_DB_key]
@@ -7465,7 +7465,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
         launch_machine_desc = '[ Not available ]'
     elif location == LOCATION_SL_MOST_PLAYED:
         log_debug('Reading info from MAME Most Played DB')
-        most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+        most_played_roms_dic = utils_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
         SL_fav_DB_key = SL_name + '-' + SL_ROM_name
         SL_ROM = most_played_roms_dic[SL_fav_DB_key]
         SL_assets = SL_ROM['assets']
@@ -7493,7 +7493,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
     log_info('run_SL_machine() launch_machine_desc = "{}"'.format(launch_machine_desc))
 
     # --- Load SL machines ---
-    SL_machines_dic = fs_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
+    SL_machines_dic = utils_load_JSON_file_dic(g_PATHS.SL_MACHINES_PATH.getPath())
     SL_machine_list = SL_machines_dic[SL_name]
     if not launch_machine_name:
         # >> Get a list of machines that can launch this SL ROM. User chooses in a select dialog
@@ -7631,7 +7631,7 @@ def run_SL_machine(SL_name, SL_ROM_name, location):
     fs_write_JSON_file(g_PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
 
     # --- Compute most played ROM statistics ---
-    most_played_roms_dic = fs_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
+    most_played_roms_dic = utils_load_JSON_file_dic(g_PATHS.SL_MOST_PLAYED_FILE_PATH.getPath())
     if SL_fav_DB_key in most_played_roms_dic:
         most_played_roms_dic[SL_fav_DB_key]['launch_count'] += 1
     else:

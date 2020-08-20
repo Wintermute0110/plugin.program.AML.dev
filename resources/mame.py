@@ -17,8 +17,11 @@
 from .constants import *
 from .utils import *
 from .misc import *
-from .disk_IO import *
+from .db import *
 from .filters import *
+
+# --- Kodi modules ---
+import xbmcgui
 
 # --- Python standard library ---
 import binascii
@@ -253,6 +256,190 @@ def mame_get_numerical_version(mame_version_str):
     log_verb('mame_get_numerical_version() version_int = {}'.format(version_int))
 
     return version_int
+
+def mame_create_empty_control_dic(PATHS, AML_version_str):
+    log_info('mame_create_empty_control_dic() Creating empty control_dic')
+    AML_version_int = misc_addon_version_str_to_int(AML_version_str)
+    log_info('mame_create_empty_control_dic() AML version str "{}"'.format(AML_version_str))
+    log_info('mame_create_empty_control_dic() AML version int {}'.format(AML_version_int))
+    main_window = xbmcgui.Window(10000)
+    AML_LOCK_PROPNAME = 'AML_instance_lock'
+    AML_LOCK_VALUE_LOCKED = 'True'
+    AML_LOCK_VALUE_RELEASED = ''
+
+    # Use Kodi properties to protect the file writing by several threads.
+    infinite_loop = True
+    num_waiting_cycles = 0
+    while infinite_loop and not xbmc.Monitor().abortRequested():
+        if main_window.getProperty(AML_LOCK_PROPNAME) == AML_LOCK_VALUE_LOCKED:
+            log_debug('mame_create_empty_control_dic() AML is locked')
+            # Wait some time so other AML threads finish writing the file.
+            xbmc.sleep(250)
+            num_waiting_cycles += 1
+            if num_waiting_cycles > 10:
+                # Force release lock
+                log_debug('mame_create_empty_control_dic() Releasing lock')
+                main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_RELEASED)
+        else:
+            log_debug('mame_create_empty_control_dic() AML not locked. Writing control_dic')
+            # Get the lock
+            main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_LOCKED)
+
+            # Write control_dic
+            control_dic = fs_new_control_dic()
+            change_control_dic(control_dic, 'ver_AML', AML_version_int)
+            change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
+            utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+
+            # Release lock and exit
+            log_debug('mame_create_empty_control_dic() Releasing lock')
+            main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_RELEASED)
+            infinite_loop = False
+    log_debug('mame_create_empty_control_dic() Exiting function')
+
+def mame_extract_MAME_version(PATHS, mame_prog_FN):
+    (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
+    log_info('mame_extract_MAME_version() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
+    log_info('mame_extract_MAME_version() mame_dir     "{}"'.format(mame_dir))
+    log_info('mame_extract_MAME_version() mame_exec    "{}"'.format(mame_exec))
+    with open(PATHS.MAME_STDOUT_VER_PATH.getPath(), 'wb') as out, open(PATHS.MAME_STDERR_VER_PATH.getPath(), 'wb') as err:
+        p = subprocess.Popen([mame_prog_FN.getPath(), '-?'], stdout=out, stderr=err, cwd=mame_dir)
+        p.wait()
+
+    # --- Check if everything OK ---
+    # statinfo = os.stat(PATHS.MAME_XML_PATH.getPath())
+    # filesize = statinfo.st_size
+
+    # --- Read version ---
+    lines = utils_load_file_to_slist(PATHS.MAME_STDOUT_VER_PATH.getPath())
+    version_str = ''
+    for line in lines:
+        m = re.search('^MAME v([0-9\.]+?) \(([a-z0-9]+?)\)$', line.strip())
+        if m:
+            version_str = m.group(1)
+            break
+
+    return version_str
+
+#
+# Counts MAME machines in a modern MAME XML file.
+#
+def mame_count_MAME_machines_modern(XML_path_FN):
+    log_debug('mame_count_MAME_machines_modern() BEGIN...')
+    log_debug('XML "{}"'.format(XML_path_FN.getPath()))
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Counting number of MAME machines...')
+    num_machines = 0
+    with open(XML_path_FN.getPath(), 'rt') as f:
+        for line in f:
+            if line.find('<machine name=') > 0: num_machines += 1
+    pDialog.endProgress()
+
+    return num_machines
+
+#
+# Older versions of MAME use <game> instead of <machine>
+#
+def mame_count_MAME_machines_archaic(XML_path_FN):
+    log_debug('mame_count_MAME_machines_archaic() BEGIN...')
+    log_debug('XML "{}"'.format(XML_path_FN.getPath()))
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Counting number of MAME machines...')
+    num_machines = 0
+    with open(XML_path_FN.getPath(), 'rt') as f:
+        for line in f:
+            if line.find('<game name=') > 0: num_machines += 1
+    pDialog.endProgress()
+
+    return num_machines
+
+#
+# Creates a new control_dic and updates the number of machines.
+# Returns:
+# options_dic['abort']
+# options_dic['msg']            Only valid if options_dic['abort'] is True
+# options_dic['filesize']       In bytes
+# options_dic['total_machines'] Integer
+#
+def mame_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
+    options_dic['abort'] = False
+
+    # --- Check for errors ---
+    if not settings['mame_prog']:
+        options_dic['abort'] = True
+        options_dic['msg'] = 'MAME executable is not set.'
+        return
+
+    # Extract XML from MAME executable.
+    mame_prog_FN = FileName(settings['mame_prog'])
+    (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
+    log_info('mame_extract_MAME_XML() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
+    log_info('mame_extract_MAME_XML() Saving XML   "{}"'.format(PATHS.MAME_XML_PATH.getPath()))
+    log_info('mame_extract_MAME_XML() mame_dir     "{}"'.format(mame_dir))
+    log_info('mame_extract_MAME_XML() mame_exec    "{}"'.format(mame_exec))
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress('Extracting MAME XML database. Progress bar is not accurate.')
+    with open(PATHS.MAME_XML_PATH.getPath(), 'wb') as out, open(PATHS.MAME_STDERR_PATH.getPath(), 'wb') as err:
+        p = subprocess.Popen([mame_prog_FN.getPath(), '-listxml'], stdout=out, stderr=err, cwd=mame_dir)
+        count = 0
+        while p.poll() is None:
+            time.sleep(1)
+            count += 1
+            pDialog.updateProgress(count)
+    pDialog.endProgress()
+
+    # --- Check if everything OK ---
+    statinfo = os.stat(PATHS.MAME_XML_PATH.getPath())
+    filesize = statinfo.st_size
+    options_dic['filesize'] = filesize
+
+    # --- Count number of machines. Useful for progress dialogs ---
+    log_info('mame_extract_MAME_XML() Counting number of machines ...')
+    total_machines = fs_count_MAME_machines_modern(PATHS.MAME_XML_PATH)
+    options_dic['total_machines'] = total_machines
+    log_info('mame_extract_MAME_XML() Found {} machines.'.format(total_machines))
+
+    # -----------------------------------------------------------------------------
+    # Reset MAME control dictionary completely
+    # -----------------------------------------------------------------------------
+    AML_version_int = fs_AML_version_str_to_int(AML_version_str)
+    log_info('mame_extract_MAME_XML() AML version str "{}"'.format(AML_version_str))
+    log_info('mame_extract_MAME_XML() AML version int {}'.format(AML_version_int))
+    control_dic = fs_new_control_dic()
+    change_control_dic(control_dic, 'ver_AML', AML_version_int)
+    change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
+    change_control_dic(control_dic, 'stats_total_machines', total_machines)
+    change_control_dic(control_dic, 't_XML_extraction', time.time())
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
+
+def mame_process_RETRO_MAME2003PLUS(PATHS, settings, AML_version_str, options_dic):
+    options_dic['abort'] = False
+
+    # --- Check for errors ---
+    if not settings['xml_2003_path']:
+        options_dic['abort'] = True
+        kodi_dialog_OK('MAME 2003 Plus XML path is not set.')
+        return
+
+    # --- Count number of machines. Useful for progress dialogs ---
+    XML_path_FN = FileName(settings['xml_2003_path'])
+    log_info('mame_process_RETRO_MAME2003PLUS() Counting number of machines ...')
+    total_machines = fs_count_MAME_machines_archaic(XML_path_FN)
+    options_dic['total_machines'] = total_machines
+    log_info('mame_process_RETRO_MAME2003PLUS() Found {} machines.'.format(total_machines))
+
+    # -----------------------------------------------------------------------------
+    # Reset MAME control dictionary completely
+    # -----------------------------------------------------------------------------
+    AML_version_int = fs_AML_version_str_to_int(AML_version_str)
+    log_info('mame_process_RETRO_MAME2003PLUS() AML version str "{}"'.format(AML_version_str))
+    log_info('mame_process_RETRO_MAME2003PLUS() AML version int {}'.format(AML_version_int))
+    control_dic = fs_new_control_dic()
+    change_control_dic(control_dic, 'ver_AML', AML_version_int)
+    change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
+    change_control_dic(control_dic, 'stats_total_machines', total_machines)
+    change_control_dic(control_dic, 't_XML_extraction', time.time())
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
 
 # -------------------------------------------------------------------------------------------------
 # Loading of data files
@@ -2225,7 +2412,7 @@ def mame_update_MAME_Fav_objects(PATHS, control_dic, machines, machines_render, 
         log_debug('Updated machine "{}"'.format(fav_key))
         iteration += 1
         pDialog.updateProgress(iteration)
-    fs_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
+    utils_write_JSON_file(PATHS.FAV_MACHINES_PATH.getPath(), fav_machines)
     pDialog.endProgress()
 
 def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic):
@@ -2260,7 +2447,7 @@ def mame_update_MAME_MostPlay_objects(PATHS, control_dic, machines, machines_ren
         log_debug('Updated machine "{}"'.format(fav_key))
         iteration += 1
         pDialog.updateProgress(iteration)
-    fs_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+    utils_write_JSON_file(PATHS.MAME_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
     pDialog.endProgress()
 
 def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_render, assets_dic):
@@ -2291,7 +2478,7 @@ def mame_update_MAME_RecentPlay_objects(PATHS, control_dic, machines, machines_r
         log_debug('Updated machine "{}"'.format(fav_key))
         iteration += 1
         pDialog.updateProgress(iteration)
-    fs_write_JSON_file(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+    utils_write_JSON_file(PATHS.MAME_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
     pDialog.endProgress()
 
 def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
@@ -2338,7 +2525,7 @@ def mame_update_SL_Fav_objects(PATHS, control_dic, SL_catalog_dic):
         new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
         fav_SL_roms[fav_SL_key] = new_fav_ROM
         log_debug('Updated SL Favourite "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
-    fs_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
+    utils_write_JSON_file(PATHS.FAV_SL_ROMS_PATH.getPath(), fav_SL_roms)
     pDialog.endProgress()
 
 def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
@@ -2389,7 +2576,7 @@ def mame_update_SL_MostPlay_objects(PATHS, control_dic, SL_catalog_dic):
         new_fav_ROM['launch_count'] = launch_count
         most_played_roms_dic[fav_SL_key] = new_fav_ROM
         log_debug('Updated SL Most Played "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
-    fs_write_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
+    utils_write_JSON_file(PATHS.SL_MOST_PLAYED_FILE_PATH.getPath(), most_played_roms_dic)
     pDialog.endProgress()
 
 def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
@@ -2433,7 +2620,7 @@ def mame_update_SL_RecentPlay_objects(PATHS, control_dic, SL_catalog_dic):
         new_fav_ROM = fs_get_SL_Favourite(fav_SL_name, fav_ROM_name, SL_ROM, SL_assets, control_dic)
         recent_roms_list[i] = new_fav_ROM
         log_debug('Updated SL Recently Played  "{}" / "{}"'.format(fav_SL_name, fav_ROM_name))
-    fs_write_JSON_file(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
+    utils_write_JSON_file(PATHS.SL_RECENT_PLAYED_FILE_PATH.getPath(), recent_roms_list)
     pDialog.endProgress()
 
 # ------------------------------------------------------------------------------------------------
@@ -2558,12 +2745,12 @@ def mame_build_SL_plots(PATHS, settings, control_dic,
             Flag_str = ', '.join(Flag_list)
             # SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str, Machines_str])
             SL_roms[rom_key]['plot'] = '\n'.join([parts_str, roms_str, Flag_str])
-        fs_write_JSON_file(SL_ROMs_FN.getPath(), SL_roms, verbose = False)
+        utils_write_JSON_file(SL_ROMs_FN.getPath(), SL_roms, verbose = False)
     pDialog.endProgress()
 
     # --- Timestamp ---
     change_control_dic(control_dic, 't_SL_plots_build', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
 # MAME ROM/CHD audit code
@@ -3327,7 +3514,7 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
 
     # Update timestamp of ROM audit.
     change_control_dic(control_dic, 't_MAME_audit', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     log_debug('mame_audit_SL_all() Initialising ...')
@@ -3531,7 +3718,7 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
 
     # Update timestamp and save control_dic.
     change_control_dic(control_dic, 't_SL_audit', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 # -------------------------------------------------------------------------------------------------
 # MAME database building
@@ -3554,7 +3741,7 @@ def mame_build_SL_names(PATHS, settings):
     if not hash_dir_FN.exists():
         log_info('mame_build_SL_names() MAME hash path does not exists.')
         log_info('mame_build_SL_names() Creating empty SL_NAMES_PATH')
-        fs_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
+        utils_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
         return
 
     # MAME hash path exists. Carry on.
@@ -3604,7 +3791,7 @@ def mame_build_SL_names(PATHS, settings):
             break
     # Save database
     log_debug('mame_build_SL_names() Extracted {} Software List names'.format(len(SL_names_dic)))
-    fs_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
+    utils_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
 
 # Checks for errors before scanning for SL ROMs.
 # Display a Kodi dialog if an error is found.
@@ -4403,11 +4590,11 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # --- Save databases ---
     log_info('Saving database JSON files ...')
     if OPTION_LOWMEM_WRITE_JSON:
-        json_write_func = fs_write_JSON_file_lowmem
-        log_debug('Using fs_write_JSON_file_lowmem() JSON writer')
+        json_write_func = utils_write_JSON_file_lowmem
+        log_debug('Using utils_write_JSON_file_lowmem() JSON writer')
     else:
-        json_write_func = fs_write_JSON_file
-        log_debug('Using fs_write_JSON_file() JSON writer')
+        json_write_func = utils_write_JSON_file
+        log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
         [machines, 'MAME machines Main', PATHS.MAIN_DB_PATH.getPath()],
         [machines_render, 'MAME machines Render', PATHS.RENDER_DB_PATH.getPath()],
@@ -4989,11 +5176,11 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
 
     # --- Save databases ---
     if OPTION_LOWMEM_WRITE_JSON:
-        json_write_func = fs_write_JSON_file_lowmem
-        log_debug('Using fs_write_JSON_file_lowmem() JSON writer')
+        json_write_func = utils_write_JSON_file_lowmem
+        log_debug('Using utils_write_JSON_file_lowmem() JSON writer')
     else:
-        json_write_func = fs_write_JSON_file
-        log_debug('Using fs_write_JSON_file() JSON writer')
+        json_write_func = utils_write_JSON_file
+        log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
         [audit_roms_dic, 'MAME ROM Audit', PATHS.ROM_AUDIT_DB_PATH.getPath()],
         [machine_archives_dic, 'Machine file list', PATHS.ROM_SET_MACHINE_FILES_DB_PATH.getPath()],
@@ -5435,8 +5622,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # --- Build ROM cache index and save Main catalog JSON file ---
     _cache_index_builder('Main', cache_index_dic, main_catalog_all, main_catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_MAIN_ALL_PATH.getPath(), main_catalog_all)
-    fs_write_JSON_file(PATHS.CATALOG_MAIN_PARENT_PATH.getPath(), main_catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_MAIN_ALL_PATH.getPath(), main_catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_MAIN_PARENT_PATH.getPath(), main_catalog_parents)
     processed_filters += 1
 
     # ---------------------------------------------------------------------------------------------
@@ -5502,8 +5689,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
 
     # Build cache index and save Binary catalog JSON file
     _cache_index_builder('Binary', cache_index_dic, binary_catalog_all, binary_catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_BINARY_ALL_PATH.getPath(), binary_catalog_all)
-    fs_write_JSON_file(PATHS.CATALOG_BINARY_PARENT_PATH.getPath(), binary_catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_BINARY_ALL_PATH.getPath(), binary_catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_BINARY_PARENT_PATH.getPath(), binary_catalog_parents)
     processed_filters += 1
 
     # ---------------------------------------------------------------------------------------------
@@ -5516,8 +5703,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Catver)
     _cache_index_builder('Catver', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CATVER_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_CATVER_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_CATVER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Catlist catalog ---
@@ -5527,8 +5714,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Catlist)
     _cache_index_builder('Catlist', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CATLIST_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_CATLIST_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Genre catalog ---
@@ -5538,8 +5725,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Genre)
     _cache_index_builder('Genre', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_GENRE_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_GENRE_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_GENRE_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_GENRE_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Category catalog ---
@@ -5549,8 +5736,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Category)
     _cache_index_builder('Category', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CATEGORY_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CATEGORY_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_CATEGORY_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_CATEGORY_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Nplayers catalog ---
@@ -5560,8 +5747,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines_render, machines_render, main_pclone_dic, _aux_catalog_key_NPlayers)
     _cache_index_builder('NPlayers', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Bestgames catalog ---
@@ -5571,8 +5758,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Bestgames)
     _cache_index_builder('Bestgames', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Series catalog ---
@@ -5582,8 +5769,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Series)
     _cache_index_builder('Series', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_SERIES_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_SERIES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Alltime catalog ---
@@ -5593,8 +5780,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Alltime)
     _cache_index_builder('Alltime', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_ALLTIME_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_ALLTIME_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_ALLTIME_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_ALLTIME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Artwork catalog ---
@@ -5604,8 +5791,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Artwork)
     _cache_index_builder('Artwork', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Version catalog ---
@@ -5615,8 +5802,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_VerAdded)
     _cache_index_builder('Version', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_VERADDED_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_VERADDED_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_VERADDED_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_VERADDED_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Control catalog (Expanded) ---
@@ -5626,8 +5813,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Controls_Expanded)
     _cache_index_builder('Controls_Expanded', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Control catalog (Compact) ---
@@ -5639,8 +5826,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Controls_Compact)
     _cache_index_builder('Controls_Compact', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- <device> / Device Expanded catalog ---
@@ -5650,8 +5837,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Devices_Expanded)
     _cache_index_builder('Devices_Expanded', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- <device> / Device Compact catalog ---
@@ -5661,8 +5848,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Devices_Compact)
     _cache_index_builder('Devices_Compact', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Display Type catalog ---
@@ -5672,8 +5859,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Display_Type)
     _cache_index_builder('Display_Type', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Display VSync catalog ---
@@ -5683,8 +5870,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Display_VSync)
     _cache_index_builder('Display_VSync', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Display Resolution catalog ---
@@ -5694,8 +5881,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Display_Resolution)
     _cache_index_builder('Display_Resolution', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_RES_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DISPLAY_RES_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_RES_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_DISPLAY_RES_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- CPU catalog ---
@@ -5705,8 +5892,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_CPU)
     _cache_index_builder('CPU', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CPU_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_CPU_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_CPU_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_CPU_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Driver catalog ---
@@ -5716,8 +5903,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Driver)
     _cache_index_builder('Driver', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_DRIVER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Manufacturer catalog ---
@@ -5727,8 +5914,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Manufacturer)
     _cache_index_builder('Manufacturer', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- MAME short name catalog ---
@@ -5753,8 +5940,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
             t = '{} "{}"'.format(clone_name, machines_render[clone_name]['description'])
             catalog_all[catalog_key][clone_name] = t
     _cache_index_builder('ShortName', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- MAME long name catalog ---
@@ -5764,8 +5951,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_LongName)
     _cache_index_builder('LongName', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Software List (BySL) catalog ---
@@ -5791,8 +5978,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
                 catalog_all[catalog_key] = { parent_name : machine_render['description'] }
             _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all[catalog_key])
     _cache_index_builder('BySL', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_SL_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_SL_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # --- Year catalog ---
@@ -5802,8 +5989,8 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     _build_catalog_helper_new(catalog_parents, catalog_all,
         machines, machines_render, main_pclone_dic, _aux_catalog_key_Year)
     _cache_index_builder('Year', cache_index_dic, catalog_all, catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
-    fs_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
+    utils_write_JSON_file(PATHS.CATALOG_YEAR_PARENT_PATH.getPath(), catalog_parents)
+    utils_write_JSON_file(PATHS.CATALOG_YEAR_ALL_PATH.getPath(), catalog_all)
     processed_filters += 1
 
     # Close progress dialog.
@@ -5819,7 +6006,7 @@ def mame_build_MAME_catalogs(PATHS, settings, control_dic,
     #     for category_name in sorted(catalog_dic):
     #         prop_key = '{} - {}'.format(catalog_name, category_name)
     #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_PCLONE}
-    # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
+    # utils_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
     # log_info('mame_properties_dic has {} entries'.format(len(mame_properties_dic)))
 
     # --- Compute main filter statistics ---
@@ -6592,9 +6779,9 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
         # log_debug('mame_build_SoftwareLists_databases() Processing "{}"'.format(file))
         SL_path_FN = FileName(file)
         SLData = _mame_load_SL_XML(SL_path_FN.getPath())
-        fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_items.json').getPath(),
+        utils_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_items.json').getPath(),
             SLData['items'], verbose = False)
-        fs_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(),
+        utils_write_JSON_file(PATHS.SL_DB_DIR.pjoin(FN.getBase_noext() + '_ROMs.json').getPath(),
             SLData['SL_roms'], verbose = False)
 
         # Add software list to catalog
@@ -6726,8 +6913,8 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
             if SL_Item_Archives_dic[SL_item_name]['CHDs']: stats_audit_SL_items_with_CHD += 1
 
         # --- Save databases ---
-        fs_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs_dic, verbose = False)
-        fs_write_JSON_file(SL_Soft_Archives_DB_FN.getPath(), SL_Item_Archives_dic, verbose = False)
+        utils_write_JSON_file(SL_ROM_Audit_DB_FN.getPath(), SL_Audit_ROMs_dic, verbose = False)
+        utils_write_JSON_file(SL_Soft_Archives_DB_FN.getPath(), SL_Item_Archives_dic, verbose = False)
         processed_files += 1
     pDialog.endProgress()
 
@@ -6805,7 +6992,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
             SL_assets_dic[rom_key] = fs_new_SL_asset()
 
         # --- Write SL asset JSON ---
-        fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
+        utils_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
         processed_SL += 1
     pDialog.endProgress()
 
@@ -6818,7 +7005,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     #     # 'vm' : VIEW_MODE_NORMAL or VIEW_MODE_ALL
     #     prop_dic = {'vm' : VIEW_MODE_NORMAL}
     #     SL_properties_dic[sl_name] = prop_dic
-    # fs_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
+    # utils_write_JSON_file(PATHS.SL_MACHINES_PROP_PATH.getPath(), SL_properties_dic)
     # log_info('SL_properties_dic has {} items'.format(len(SL_properties_dic)))
 
     # >> One of the MAME catalogs has changed, and so the property names.
@@ -6829,7 +7016,7 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
     #     for category_name in sorted(catalog_dic):
     #         prop_key = '{} - {}'.format(catalog_name, category_name)
     #         mame_properties_dic[prop_key] = {'vm' : VIEW_MODE_NORMAL}
-    # fs_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
+    # utils_write_JSON_file(PATHS.MAIN_PROPERTIES_PATH.getPath(), mame_properties_dic)
     # log_info('mame_properties_dic has {} items'.format(len(mame_properties_dic)))
 
     # -----------------------------------------------------------------------------
@@ -6852,11 +7039,11 @@ def mame_build_SoftwareLists_databases(PATHS, settings, control_dic, machines, m
 
     # --- Save modified/created stuff in this function ---
     if OPTION_LOWMEM_WRITE_JSON:
-        json_write_func = fs_write_JSON_file_lowmem
-        log_debug('Using fs_write_JSON_file_lowmem() JSON writer')
+        json_write_func = utils_write_JSON_file_lowmem
+        log_debug('Using utils_write_JSON_file_lowmem() JSON writer')
     else:
-        json_write_func = fs_write_JSON_file
-        log_debug('Using fs_write_JSON_file() JSON writer')
+        json_write_func = utils_write_JSON_file
+        log_debug('Using utils_write_JSON_file() JSON writer')
     db_files = [
         # Fix this list of files!!!
         [SL_catalog_dic, 'Software Lists index', PATHS.SL_INDEX_PATH.getPath()],
@@ -7478,7 +7665,7 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
                 if m_have_str_list: r_miss_list.extend(m_have_str_list)
                 r_miss_list.append('')
         # Save SL database to update flags and update progress.
-        fs_write_JSON_file(SL_DB_FN.getPath(), sl_roms, verbose = False)
+        utils_write_JSON_file(SL_DB_FN.getPath(), sl_roms, verbose = False)
     pDialog.endProgress()
 
     # Write SL scanner reports
@@ -7498,7 +7685,7 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
     log_info('Writing SL ROM ZIPs and/or CHDs HAVE report')
     log_info('Report file "{}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
     sl = [
-        '*** Advanced MAME Launcher Software Lists scanner report ***'.
+        '*** Advanced MAME Launcher Software Lists scanner report ***',
         'This reports shows the SL items with ROM ZIPs and/or CHDs with HAVE status',
         '',
     ]
@@ -7531,7 +7718,7 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
     change_control_dic(control_dic, 'scan_SL_archives_CHD_have', SL_CHDs_have)
     change_control_dic(control_dic, 'scan_SL_archives_CHD_missing', SL_CHDs_missing)
     change_control_dic(control_dic, 't_SL_ROMs_scan', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 #
 # Checks for errors before scanning for SL assets.
@@ -7899,7 +8086,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
             table_row = [SL_name, rom_key] + asset_row
             table_str.append(table_row)
         # --- Write SL asset JSON ---
-        fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
+        utils_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
     pDialog.endProgress()
 
     # Asset statistics and report.
@@ -7953,4 +8140,4 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     change_control_dic(control_dic, 'assets_SL_manuals_missing', Man[1])
     change_control_dic(control_dic, 'assets_SL_manuals_alternate', Man[2])
     change_control_dic(control_dic, 't_SL_assets_scan', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)

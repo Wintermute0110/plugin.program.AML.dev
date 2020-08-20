@@ -17,7 +17,7 @@
 from .constants import *
 from .utils import *
 from .misc import *
-from .disk_IO import *
+from .db import *
 
 # --- Python standard library ---
 import xml.etree.ElementTree as ET

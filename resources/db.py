@@ -640,121 +640,6 @@ def change_control_dic(control_dic, field, value):
         raise TypeError('Field {} not in control_dic'.format(field))
 
 #
-# All version numbers must be less than 100, except the major version.
-# AML version is like this: aa.bb.cc[-|~][alpha[dd]|beta[dd]]
-# It gets converted to: aa.bb.cc Rdd -> int aab,bcc,Rdd
-# The number 2,147,483,647 is the maximum positive value for a 32-bit signed binary integer.
-#
-# aa.bb.cc.Xdd    formatted aab,bcc,Xdd
-#  |  |  | | |--> Beta/Alpha flag 0, 1, ..., 99
-#  |  |  | |----> Release kind flag 
-#  |  |  |        5 for non-beta, non-alpha, non RC versions.
-#  |  |  |        2 for RC versions
-#  |  |  |        1 for beta versions
-#  |  |  |        0 for alpha versions
-#  |  |  |------> Build version 0, 1, ..., 99
-#  |  |---------> Minor version 0, 1, ..., 99
-#  |------------> Major version 0, ..., infinity
-#
-def fs_AML_version_str_to_int(AML_version_str):
-    log_verb('fs_AML_version_str_to_int() AML_version_str = "{}"'.format(AML_version_str))
-    version_int = 0
-    # Parse versions like "0.9.8[-|~]alpha[jj]"
-    m_obj_alpha_n = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)(\d+?)$', AML_version_str)
-    # Parse versions like "0.9.8[-|~]alpha"
-    m_obj_alpha = re.search('^(\d+?)\.(\d+?)\.(\d+?)[\-\~](alpha|beta)$', AML_version_str)
-    # Parse versions like "0.9.8"
-    m_obj_standard = re.search('^(\d+?)\.(\d+?)\.(\d+?)$', AML_version_str)
-
-    if m_obj_alpha_n:
-        major    = int(m_obj_alpha_n.group(1))
-        minor    = int(m_obj_alpha_n.group(2))
-        build    = int(m_obj_alpha_n.group(3))
-        kind_str = m_obj_alpha_n.group(4)
-        beta     = int(m_obj_alpha_n.group(5))
-        if kind_str == 'alpha':
-            release_flag = 0
-        elif kind_str == 'beta':
-            release_flag = 1
-        # log_debug('fs_AML_version_str_to_int() major        {}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor        {}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build        {}'.format(build))
-        # log_debug('fs_AML_version_str_to_int() kind_str     {}'.format(kind_str))
-        # log_debug('fs_AML_version_str_to_int() release_flag {}'.format(release_flag))
-        # log_debug('fs_AML_version_str_to_int() beta         {}'.format(beta))
-        version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100 + beta
-    elif m_obj_alpha:
-        major    = int(m_obj_alpha.group(1))
-        minor    = int(m_obj_alpha.group(2))
-        build    = int(m_obj_alpha.group(3))
-        kind_str = m_obj_alpha.group(4)
-        if kind_str == 'alpha':
-            release_flag = 0
-        elif kind_str == 'beta':
-            release_flag = 1
-        # log_debug('fs_AML_version_str_to_int() major        {}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor        {}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build        {}'.format(build))
-        # log_debug('fs_AML_version_str_to_int() kind_str     {}'.format(kind_str))
-        # log_debug('fs_AML_version_str_to_int() release_flag {}'.format(release_flag))
-        version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100
-    elif m_obj_standard:
-        major = int(m_obj_standard.group(1))
-        minor = int(m_obj_standard.group(2))
-        build = int(m_obj_standard.group(3))
-        release_flag = 5
-        # log_debug('fs_AML_version_str_to_int() major {}'.format(major))
-        # log_debug('fs_AML_version_str_to_int() minor {}'.format(minor))
-        # log_debug('fs_AML_version_str_to_int() build {}'.format(build))
-        version_int = major * 10000000 + minor * 100000 + build * 1000 + release_flag * 100
-    else:
-        log_error('AML addon version "{}" cannot be parsed.'.format(AML_version_str))
-        raise TypeError
-    log_verb('fs_AML_version_str_to_int() version_int = {}'.format(version_int))
-
-    return version_int
-
-def fs_create_empty_control_dic(PATHS, AML_version_str):
-    log_info('fs_create_empty_control_dic() Creating empty control_dic')
-    AML_version_int = fs_AML_version_str_to_int(AML_version_str)
-    log_info('fs_create_empty_control_dic() AML version str "{}"'.format(AML_version_str))
-    log_info('fs_create_empty_control_dic() AML version int {}'.format(AML_version_int))
-    main_window = xbmcgui.Window(10000)
-    AML_LOCK_PROPNAME = 'AML_instance_lock'
-    AML_LOCK_VALUE_LOCKED = 'True'
-    AML_LOCK_VALUE_RELEASED = ''
-
-    # Use Kodi properties to protect the file writing by several threads.
-    infinite_loop = True
-    num_waiting_cycles = 0
-    while infinite_loop and not xbmc.Monitor().abortRequested():
-        if main_window.getProperty(AML_LOCK_PROPNAME) == AML_LOCK_VALUE_LOCKED:
-            log_debug('fs_create_empty_control_dic() AML is locked')
-            # Wait some time so other AML threads finish writing the file.
-            xbmc.sleep(250)
-            num_waiting_cycles += 1
-            if num_waiting_cycles > 10:
-                # Force release lock
-                log_debug('fs_create_empty_control_dic() Releasing lock')
-                main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_RELEASED)
-        else:
-            log_debug('fs_create_empty_control_dic() AML not locked. Writing control_dic')
-            # Get the lock
-            main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_LOCKED)
-
-            # Write control_dic
-            control_dic = fs_new_control_dic()
-            change_control_dic(control_dic, 'ver_AML', AML_version_int)
-            change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
-            fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
-
-            # Release lock and exit
-            log_debug('fs_create_empty_control_dic() Releasing lock')
-            main_window.setProperty(AML_LOCK_PROPNAME, AML_LOCK_VALUE_RELEASED)
-            infinite_loop = False
-    log_debug('fs_create_empty_control_dic() Exiting function')
-
-#
 # Favourite MAME object creation.
 # Simple means the main data and assets are used to created the Favourite.
 # Full means that the main data, the render data and the assets are used to create the Favourite.
@@ -1283,7 +1168,7 @@ def fs_load_files(db_files):
 
     return db_dic
 
-def fs_save_files(db_files, json_write_func = fs_write_JSON_file):
+def fs_save_files(db_files, json_write_func = utils_write_JSON_file):
     log_debug('fs_save_files() Saving {} JSON database files...\n'.format(len(db_files)))
     line1_str = 'Saving databases...'
     num_items = len(db_files)
