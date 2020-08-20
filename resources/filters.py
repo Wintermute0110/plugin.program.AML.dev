@@ -1193,8 +1193,8 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
     pdevices_drivers_dic = {}
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Building filter database...', len(machine_main_dic))
-    item_count = 0
     for m_name in machine_main_dic:
+        pDialog.updateProgressInc()
         if 'att_coins' in machine_main_dic[m_name]['input']:
             coins = machine_main_dic[m_name]['input']['att_coins']
         else:
@@ -1292,48 +1292,41 @@ def filter_get_filter_DB(PATHS, machine_main_dic, machine_render_dic, assets_dic
                 pdevices_drivers_dic[device] += 1
             else:
                 pdevices_drivers_dic[device] = 1
-
-        # Progress dialog.
-        item_count += 1
-        pDialog.updateProgress(item_count)
     pDialog.endProgress()
 
     # --- Write statistics report ---
     log_info('Writing report "{}"'.format(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath()))
-    with open(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        rslist = [
-            '*** Advanced MAME Launcher MAME histogram report ***',
-            '',
-        ]
+    rslist = [
+        '*** Advanced MAME Launcher MAME histogram report ***',
+        '',
+    ]
+    table_str = [
+        ['right', 'right'],
+        ['Genre', 'Number of machines'],
+    ]
+    for dname, dnumber in sorted(genres_drivers_dic.items(), key = lambda x: x[1], reverse = True):
+        table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
+    rslist.extend(text_render_table_str(table_str))
+    rslist.append('')
 
-        table_str = [
-            ['right', 'right'],
-            ['Genre', 'Number of machines'],
-        ]
-        for dname, dnumber in sorted(genres_drivers_dic.items(), key = lambda x: x[1], reverse = True):
-            table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
-        rslist.extend(text_render_table_str(table_str))
-        rslist.append('')
+    table_str = [
+        ['right', 'right'],
+        ['Control', 'Number of machines'],
+    ]
+    for dname, dnumber in sorted(controls_drivers_dic.items(), key = lambda x: x[1], reverse = True):
+        table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
+    rslist.extend(text_render_table_str(table_str))
+    rslist.append('')
 
-        table_str = [
-            ['right', 'right'],
-            ['Control', 'Number of machines'],
-        ]
-        for dname, dnumber in sorted(controls_drivers_dic.items(), key = lambda x: x[1], reverse = True):
-            table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
-        rslist.extend(text_render_table_str(table_str))
-        rslist.append('')
-
-        table_str = [
-            ['right', 'right'],
-            ['Device', 'Number of machines'],
-        ]
-        for dname, dnumber in sorted(pdevices_drivers_dic.items(), key = lambda x: x[1], reverse = True):
-            table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
-        rslist.extend(text_render_table_str(table_str))
-        rslist.append('')
-
-        file.write('\n'.join(rslist))
+    table_str = [
+        ['right', 'right'],
+        ['Device', 'Number of machines'],
+    ]
+    for dname, dnumber in sorted(pdevices_drivers_dic.items(), key = lambda x: x[1], reverse = True):
+        table_str.append(['{}'.format(dname), '{}'.format(dnumber)])
+    rslist.extend(text_render_table_str(table_str))
+    rslist.append('')
+    utils_write_slist_to_file(PATHS.REPORT_CF_HISTOGRAMS_PATH.getPath(), rslist)
 
     sets_dic = {
         'drivers_set' : drivers_set,
@@ -1450,15 +1443,14 @@ def filter_custom_filters_load_XML(PATHS, settings, control_dic, main_filter_dic
 
     # --- Write MAME scanner reports ---
     log_info('Writing report "{}"'.format(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath()))
-    with open(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        report_slist = [
-            '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
-            'There are {} custom filters defined.'.format(len(filter_list)),
-            'XML "{}"'.format(XML_FN.getOriginalPath()),
-            '',
-        ]
-        report_slist.extend(r_full)
-        file.write('\n'.join(report_slist))
+    report_slist = [
+        '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
+        'There are {} custom filters defined.'.format(len(filter_list)),
+        'XML "{}"'.format(XML_FN.getOriginalPath()),
+        '',
+    ]
+    report_slist.extend(r_full)
+    utils_write_slist_to_file(PATHS.REPORT_CF_XML_SYNTAX_PATH.getPath(), report_slist)
 
     return (filter_list, options_dic)
 
@@ -1571,11 +1563,10 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
 
     # --- Write MAME scanner reports ---
     log_info('Writing report "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()))
-    with open(PATHS.REPORT_CF_DB_BUILD_PATH.getPath(), 'wt') as file:
-        report_slist = [
-            '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
-            'File "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()),
-            '',
-        ]
-        report_slist.extend(r_full)
-        file.write('\n'.join(report_slist))
+    report_slist = [
+        '*** Advanced MAME Launcher MAME custom filter XML syntax report ***',
+        'File "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()),
+        '',
+    ]
+    report_slist.extend(r_full)
+    utils_write_slist_to_file(PATHS.REPORT_CF_DB_BUILD_PATH.getPath(), report_slist)

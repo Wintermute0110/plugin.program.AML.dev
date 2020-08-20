@@ -205,11 +205,11 @@ def _extract_image_from_XObject(xobj_dic):
         log_debug('type(tiff_header) = {}'.format(type(tiff_header)))
         log_debug('type(xobj_dic.stream) = {}'.format(type(xobj_dic.stream)))
 
-        # >> DEBUG file write
-        # with open('test.tiff', 'wb') as img_file:
+        # DEBUG file write
+        # with io.open('test.tiff', 'wb') as img_file:
         #     img_file.write(tiff_header + xobj_dic.stream)
 
-        # >> Open memory file with PIL
+        # Open memory file with PIL
         # img = Image.open(StringIO.StringIO(tiff_header + xobj_dic.stream))
 
     else:

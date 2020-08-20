@@ -299,7 +299,7 @@ def mame_load_Catver_ini(filename):
     # 4 -> END
     read_status = 0
     try:
-        f = open(filename, 'rt', encoding = 'utf-8')
+        f = io.open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_error('mame_load_Catver_ini() Exception IOError')
         log_error('mame_load_Catver_ini() File "{}"'.format(filename))
@@ -377,13 +377,13 @@ def mame_load_Catver_ini(filename):
     if veradded_dic['unique_categories']:
         for m_name in veradded_dic['data']:
             veradded_dic['data'][m_name] = veradded_dic['data'][m_name][0]
-    log_info('mame_load_Catver_ini() Catver Machines   {0:6d}'.format(len(catver_dic['data'])))
-    log_info('mame_load_Catver_ini() Catver Categories {0:6d}'.format(len(catver_dic['categories'])))
+    log_info('mame_load_Catver_ini() Catver Machines   {:6d}'.format(len(catver_dic['data'])))
+    log_info('mame_load_Catver_ini() Catver Categories {:6d}'.format(len(catver_dic['categories'])))
     log_info('mame_load_Catver_ini() Catver Version "{}"'.format(catver_dic['version']))
     log_info('mame_load_Catver_ini() Catver unique_categories {}'.format(catver_dic['unique_categories']))
     log_info('mame_load_Catver_ini() Catver single_category   {}'.format(catver_dic['single_category']))
-    log_info('mame_load_Catver_ini() Veradded Machines   {0:6d}'.format(len(veradded_dic['data'])))
-    log_info('mame_load_Catver_ini() Veradded Categories {0:6d}'.format(len(veradded_dic['categories'])))
+    log_info('mame_load_Catver_ini() Veradded Machines   {:6d}'.format(len(veradded_dic['data'])))
+    log_info('mame_load_Catver_ini() Veradded Categories {:6d}'.format(len(veradded_dic['categories'])))
     log_info('mame_load_Catver_ini() Veradded Version "{}"'.format(veradded_dic['version']))
     log_info('mame_load_Catver_ini() Veradded unique_categories {}'.format(veradded_dic['unique_categories']))
     log_info('mame_load_Catver_ini() Veradded single_category   {}'.format(veradded_dic['single_category']))
@@ -418,7 +418,7 @@ def mame_load_nplayers_ini(filename):
     # 2 -> Categories finished. STOP
     read_status = 0
     try:
-        f = open(filename, 'rt', encoding = 'utf-8')
+        f = io.open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_info('mame_load_nplayers_ini() (IOError) opening "{}"'.format(filename))
         return ini_dic
@@ -501,7 +501,7 @@ def mame_load_Mature_ini(filename):
     }
     slist = []
     try:
-        f = open(filename, 'rt', encoding = 'utf-8')
+        f = io.open(filename, 'rt', encoding = 'utf-8')
         for file_line in f:
             stripped_line = file_line.strip()
             if stripped_line == '': continue # Skip blanks
@@ -612,7 +612,7 @@ def mame_load_INI_datfile_simple(filename):
     }
     slist = []
     try:
-        f = open(filename, 'rt', encoding = 'utf-8')
+        f = io.open(filename, 'rt', encoding = 'utf-8')
         for file_line in f:
             stripped_line = file_line.strip()
             if stripped_line == '': continue # Skip blanks
@@ -740,7 +740,7 @@ def mame_load_History_DAT(filename):
     # 2 -> Add information to database if no errors. Then go to 0.
     read_status = 0
     try:
-        f = open(filename, 'rt', encoding = 'utf-8')
+        f = io.open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_info('mame_load_History_DAT() (IOError) opening "{}"'.format(filename))
         return (history_idx_dic, history_dic, version_str)
@@ -910,7 +910,7 @@ def mame_load_MameInfo_DAT(filename):
     # 3 -> Ignoring information. If '$end' found go to 0.
     read_status = 0
     try:
-        f = open(filename, 'rt', encoding = 'utf-8')
+        f = io.open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_info('mame_load_MameInfo_DAT() (IOError) opening "{}"'.format(filename))
         return (idx_dic, data_dic, version_str)
@@ -991,7 +991,7 @@ def mame_load_GameInit_DAT(filename):
     # 3 -> Ignoring information. If '$end' found go to 0.
     read_status = 0
     try:
-        f = open(filename, 'rt', encoding = 'utf-8')
+        f = io.open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_info('mame_load_GameInit_DAT() (IOError) opening "{}"'.format(filename))
         return (idx_list, data_dic, version_str)
@@ -1069,7 +1069,7 @@ def mame_load_Command_DAT(filename):
     # 2 -> Reading information. If '$end' found go to 0.
     read_status = 0
     try:
-        f = open(filename, 'rt', encoding = 'utf-8')
+        f = io.open(filename, 'rt', encoding = 'utf-8')
     except IOError:
         log_info('mame_load_Command_DAT() (IOError) opening "{}"'.format(filename))
         return (proper_idx_dic, proper_data_dic, version_str)
@@ -1196,16 +1196,7 @@ def mame_write_MAME_ROM_Billyc999_XML(PATHS, settings, control_dic, out_dir_FN, 
 
     # Open output file name.
     pDialog.startProgress('Writing MAME Billyc999 XML...')
-    try:
-        file_obj = open(DAT_FN.getPath(), 'wt', encoding = 'utf-8')
-        file_obj.write('\n'.join(sl))
-        file_obj.close()
-    except OSError:
-        log_error('(OSError) Cannot write file')
-        kodi_notify_warn('(OSError) Cannot write file')
-    except IOError:
-        log_error('(IOError) Cannot write file')
-        kodi_notify_warn('(IOError) Cannot write file')
+    utils_write_slist_to_file(DAT_FN.getPath(), sl)
     pDialog.endProgress()
 
 #
@@ -1246,10 +1237,10 @@ def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
     slist.append('</header>')
 
     # Traverse ROMs and write DAT.
-    machine_counter = 0
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Creating MAME ROMs XML DAT...', len(audit_roms))
     for m_name in sorted(audit_roms):
+        pDialog.updateProgressInc()
         # If machine has no ROMs then skip it
         rom_list, actual_rom_list, num_ROMs = audit_roms[m_name], [], 0
         for rom in rom_list:
@@ -1280,23 +1271,12 @@ def mame_write_MAME_ROM_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
                 rom['name'], rom['size'], rom['crc'], rom['sha1'])
             slist.append(t)
         slist.append('</machine>')
-        machine_counter += 1
-        pDialog.updateProgress(machine_counter)
     slist.append('</datafile>')
     pDialog.endProgress()
 
     # Open output file name.
     pDialog.startProgress('Writing MAME ROMs XML DAT...')
-    try:
-        file_obj = open(DAT_FN.getPath(), 'wt', encoding = 'utf-8')
-        file_obj.write('\n'.join(slist))
-        file_obj.close()
-    except OSError:
-        log_error('(OSError) Cannot write DAT XML file')
-        kodi_notify_warn('(OSError) Cannot write DAT XML file')
-    except IOError:
-        log_error('(IOError) Cannot write DAT XML file')
-        kodi_notify_warn('(IOError) Cannot write DAT XML file')
+    utils_write_slist_to_file(DAT_FN.getPath(), slist)
     pDialog.endProgress()
 
 #
@@ -1337,10 +1317,10 @@ def mame_write_MAME_CHD_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
     slist.append('</header>')
 
     # Traverse ROMs and write DAT.
-    machine_counter = 0
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Creating MAME CHDs XML DAT...', len(audit_roms))
     for m_name in sorted(audit_roms):
+        pDialog.updateProgressInc()
         # If machine has no ROMs then skip it
         chd_list, actual_chd_list, num_CHDs = audit_roms[m_name], [], 0
         for chd in chd_list:
@@ -1366,23 +1346,12 @@ def mame_write_MAME_CHD_XML_DAT(PATHS, settings, control_dic, out_dir_FN, db_dic
             t = '    <rom name="{}" sha1="{}"/>'.format(chd['name'], chd['sha1'])
             slist.append(t)
         slist.append('</machine>')
-        machine_counter += 1
-        pDialog.updateProgress(machine_counter)
     slist.append('</datafile>')
     pDialog.endProgress()
 
     # Open output file name.
     pDialog.startProgress('Creating MAME ROMs XML DAT...')
-    try:
-        file_obj = open(DAT_FN.getPath(), 'wt', encoding = 'utf-8')
-        file_obj.write('\n'.join(slist))
-        file_obj.close()
-    except OSError:
-        log_error('(OSError) Cannot write DAT XML file')
-        kodi_notify_warn('(OSError) Cannot write DAT XML file')
-    except IOError:
-        log_error('(IOError) Cannot write DAT XML file')
-        kodi_notify_warn('(IOError) Cannot write DAT XML file')
+    utils_write_slist_to_file(DAT_FN.getPath(), slist)
     pDialog.endProgress()
 
 #
@@ -1414,7 +1383,7 @@ def _mame_stat_chd(chd_path):
     # --- Open CHD file and read first 124 bytes ---
     if __debug_this_function: log_debug('_mame_stat_chd() Opening "{}"'.format(chd_path))
     try:
-        f = open(chd_path, 'rb')
+        f = io.open(chd_path, 'rb')
         chd_data_str = f.read(124)
         f.close()
     except IOError as E:
@@ -1428,24 +1397,22 @@ def _mame_stat_chd(chd_path):
         return chd_info
 
     # --- Parse CHD header ---
-    # >> All values in the CHD header are stored in big endian!
+    # All values in the CHD header are stored in big endian!
     h_tuple = struct.unpack('>8sII', chd_data_str[0:16])
-    tag     = h_tuple[0]
-    length  = h_tuple[1]
-    version = h_tuple[2]
+    tag, length, version = h_tuple
     if __debug_this_function:
         log_debug('_mame_stat_chd() Tag     "{}"'.format(tag))
         log_debug('_mame_stat_chd() Length  {}'.format(length))
         log_debug('_mame_stat_chd() Version {}'.format(version))
 
-    # >> Discard very old CHD that don't have SHA1 hash. Older version used MD5.
+    # Discard very old CHD that don't have SHA1 hash. Older version used MD5.
     if version == 1 or version == 2 or version == 3:
         chd_info['status'] = CHD_BAD_VERSION
         chd_info['version'] = version
         return chd_info
 
-    # >> Read the whole header (must consider V3, V4 and V5)
-    # >> NOTE In MAME 0.196 some CHDs have version 4, most have version 5, version 3 is obsolete
+    # Read the whole header (must consider V3, V4 and V5)
+    # NOTE In MAME 0.196 some CHDs have version 4, most have version 5, version 3 is obsolete
     if version == 4:
         if __debug_this_function: log_debug('Reading V4 CHD header')
         chd_header_v4_str = '>8sIIIIIQQI20s20s20s'
@@ -1479,7 +1446,7 @@ def _mame_stat_chd(chd_path):
             log_debug('sha1          "{}"'.format(sha1))
             log_debug('parentsha1    "{}"'.format(parentsha1))
 
-        # >> The CHD SHA1 string storet in MAME -listxml is the rawsha1 field in V4 CHDs.
+        # The CHD SHA1 string storet in MAME -listxml is the rawsha1 field in V4 CHDs.
         chd_info['status']  = CHD_OK
         chd_info['version'] = version
         chd_info['sha1']    = rawsha1
@@ -1516,7 +1483,7 @@ def _mame_stat_chd(chd_path):
             log_debug('sha1          "{}"'.format(sha1))
             log_debug('parentsha1    "{}"'.format(parentsha1))
 
-        # >> The CHD SHA1 string storet in MAME -listxml is the sha1 field (combined raw+meta SHA1).
+        # The CHD SHA1 string storet in MAME -listxml is the sha1 field (combined raw+meta SHA1).
         chd_info['status']  = CHD_OK
         chd_info['version'] = version
         chd_info['sha1']    = sha1
@@ -3321,32 +3288,23 @@ def mame_audit_MAME_all(PATHS, settings, control_dic, machines, machines_render,
     # --- Write reports ---
     num_items = 9
     pDialog.startProgress('Writing report files...', num_items)
-    with open(PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(report_full_list))
+    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), report_full_list)
     pDialog.updateProgress(1)
-    with open(PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(report_good_list))
+    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), report_good_list)
     pDialog.updateProgress(2)
-    with open(PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(report_error_list))
+    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), report_error_list)
     pDialog.updateProgress(3)
-    with open(PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(ROM_report_good_list))
+    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), ROM_report_good_list)
     pDialog.updateProgress(4)
-    with open(PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(ROM_report_error_list))
+    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), ROM_report_error_list)
     pDialog.updateProgress(5)
-    with open(PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(SAMPLES_report_good_list))
+    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), SAMPLES_report_good_list)
     pDialog.updateProgress(6)
-    with open(PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(SAMPLES_report_error_list))
+    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), SAMPLES_report_error_list)
     pDialog.updateProgress(7)
-    with open(PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(CHD_report_good_list))
+    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), CHD_report_good_list)
     pDialog.updateProgress(8)
-    with open(PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(CHD_report_error_list))
+    utils_write_slist_to_file(PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), CHD_report_error_list)
     pDialog.endProgress()
 
     # Update MAME audit statistics.
@@ -3541,26 +3499,19 @@ def mame_audit_SL_all(PATHS, settings, control_dic, SL_catalog_dic):
     # Write reports.
     num_items = 7
     pDialog.startProgress('Writing SL audit reports...', num_items)
-    with open(PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(report_full_list))
+    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), report_full_list)
     pDialog.updateProgress(1)
-    with open(PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(report_good_list))
+    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), report_good_list)
     pDialog.updateProgress(2)
-    with open(PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(report_error_list))
+    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), report_error_list)
     pDialog.updateProgress(3)
-    with open(PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(ROM_report_good_list))
+    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), ROM_report_good_list)
     pDialog.updateProgress(4)
-    with open(PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(ROM_report_error_list))
+    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), ROM_report_error_list)
     pDialog.updateProgress(5)
-    with open(PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(CHD_report_good_list))
+    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), CHD_report_good_list)
     pDialog.updateProgress(6)
-    with open(PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(CHD_report_error_list))
+    utils_write_slist_to_file(PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), CHD_report_error_list)
     pDialog.endProgress()
 
     # Update SL audit statistics.
@@ -3618,7 +3569,7 @@ def mame_build_SL_names(PATHS, settings):
         # log_debug('Inspecting file "{}"'.format(XML_FN.getPath()))
         # Read first XML_READ_LINES lines
         try:
-            f = open(XML_FN.getPath(), 'r', encoding = 'utf-8')
+            f = io.open(XML_FN.getPath(), 'r', encoding = 'utf-8')
         except IOError:
             log_error('(IOError) Exception opening {}'.format(XML_FN.getPath()))
             continue
@@ -7035,8 +6986,6 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
 
     # --- Scan machine archives ---
     # Traverses all machines and scans if all required files exist. 
-    total_machines = len(machines_render)
-    processed_machines = 0
     scan_march_ROM_total = 0
     scan_march_ROM_have = 0
     scan_march_ROM_missing = 0
@@ -7050,8 +6999,10 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     r_have_list = []
     r_miss_list = []
     dial_line = 'Scanning MAME machine archives (ROMs, CHDs and Samples)...'
-    pDialog.startProgress(dial_line, total_machines)
+    pDialog.startProgress(dial_line, len(machines_render))
     for key in sorted(machines_render):
+        pDialog.updateProgressInc()
+
         # --- Initialise machine ---
         # log_info('mame_scan_MAME_ROMs() Checking machine {}'.format(key))
         if machines_render[key]['isDevice']: continue # Skip Devices
@@ -7175,74 +7126,62 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             r_miss_list.extend(m_have_str_list)
             r_miss_list.extend(m_miss_str_list)
             r_miss_list.append('')
-
-        # Progress dialog
-        processed_machines += 1
-        pDialog.updateProgress(processed_machines)
     pDialog.endProgress()
 
     # Write MAME scanner reports
     reports_total = 3
-    reports_processed = 0
     pDialog.startProgress('Saving scanner reports...', reports_total)
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        report_slist = [
-            '*** Advanced MAME Launcher MAME machines scanner report ***',
-            'This report shows all the scanned MAME machines.',
-            '',
-            'MAME ROM path     "{}"'.format(ROM_path_str),
-            'MAME Samples path "{}"'.format(Samples_path_str),
-            'MAME CHD path     "{}"'.format(CHD_path_str),
-            '',
-        ]
-        report_slist.extend(r_full_list)
-        file.write('\n'.join(report_slist))
-    reports_processed += 1
-    pDialog.updateProgress(reports_processed)
+    report_slist = [
+        '*** Advanced MAME Launcher MAME machines scanner report ***',
+        'This report shows all the scanned MAME machines.',
+        '',
+        'MAME ROM path     "{}"'.format(ROM_path_str),
+        'MAME Samples path "{}"'.format(Samples_path_str),
+        'MAME CHD path     "{}"'.format(CHD_path_str),
+        '',
+    ]
+    report_slist.extend(r_full_list)
+    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), report_slist)
 
+    pDialog.updateProgress(1)
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        report_slist = [
-            '*** Advanced MAME Launcher MAME machines scanner report ***',
-            'This reports shows MAME machines that have all the required',
-            'ROM ZIP files, Sample ZIP files and CHD files.',
-            'Machines that no require files are not listed.',
-            '',
-            'MAME ROM path     "{}"'.format(ROM_path_str),
-            'MAME Samples path "{}"'.format(Samples_path_str),
-            'MAME CHD path     "{}"'.format(CHD_path_str),
-            '',
-        ]
-        if not r_have_list:
-            r_have_list.append('Ouch!!! You do not have any ROM ZIP files and/or CHDs.')
-        report_slist.extend(r_have_list)
-        file.write('\n'.join(report_slist))
-    reports_processed += 1
-    pDialog.updateProgress(reports_processed)
-
+    report_slist = [
+        '*** Advanced MAME Launcher MAME machines scanner report ***',
+        'This reports shows MAME machines that have all the required',
+        'ROM ZIP files, Sample ZIP files and CHD files.',
+        'Machines that no require files are not listed.',
+        '',
+        'MAME ROM path     "{}"'.format(ROM_path_str),
+        'MAME Samples path "{}"'.format(Samples_path_str),
+        'MAME CHD path     "{}"'.format(CHD_path_str),
+        '',
+    ]
+    if not r_have_list:
+        r_have_list.append('Ouch!!! You do not have any ROM ZIP files and/or CHDs.')
+    report_slist.extend(r_have_list)
+    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), report_slist)
+  
+    pDialog.updateProgress(2)
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        report_slist = [
-            '*** Advanced MAME Launcher MAME machines scanner report ***',
-            'This reports shows MAME machines that miss all or some of the required',
-            'ROM ZIP files, Sample ZIP files or CHD files.',
-            'Machines that no require files are not listed.',
-            '',
-            'MAME ROM path     "{}"'.format(ROM_path_str),
-            'MAME Samples path "{}"'.format(Samples_path_str),
-            'MAME CHD path     "{}"'.format(CHD_path_str),
-            '',
-        ]
-        if not r_miss_list:
-            r_miss_list.append('Congratulations!!! You have no missing ROM ZIP and/or CHDs files.')
-        report_slist.extend(r_miss_list)
-        file.write('\n'.join(report_slist))
+    report_slist = [
+        '*** Advanced MAME Launcher MAME machines scanner report ***',
+        'This reports shows MAME machines that miss all or some of the required',
+        'ROM ZIP files, Sample ZIP files or CHD files.',
+        'Machines that no require files are not listed.',
+        '',
+        'MAME ROM path     "{}"'.format(ROM_path_str),
+        'MAME Samples path "{}"'.format(Samples_path_str),
+        'MAME CHD path     "{}"'.format(CHD_path_str),
+        '',
+    ]
+    if not r_miss_list:
+        r_miss_list.append('Congratulations!!! You have no missing ROM ZIP and/or CHDs files.')
+    report_slist.extend(r_miss_list)
+    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), report_slist)
     pDialog.endProgress()
 
     # --- ROM ZIP file list ---
-    total_machines = len(machines_render)
-    processed_machines = 0
     scan_ROM_ZIP_files_total = 0
     scan_ROM_ZIP_files_have = 0
     scan_ROM_ZIP_files_missing = 0
@@ -7256,8 +7195,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
-    pDialog.startProgress('Scanning MAME ROM ZIPs...', total_machines)
+    pDialog.startProgress('Scanning MAME ROM ZIPs...', len(machines_render))
     for rom_name in ROM_ZIP_list:
+        pDialog.updateProgressInc()
         scan_ROM_ZIP_files_total += 1
         ROM_FN = misc_search_file_cache(ROM_path_str, rom_name, MAME_ROM_EXTS)
         if ROM_FN:
@@ -7265,18 +7205,13 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         else:
             scan_ROM_ZIP_files_missing += 1
             r_list.append('Missing ROM {}'.format(rom_name))
-        processed_machines += 1
-        pDialog.updateProgress(processed_machines)
     pDialog.endProgress()
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        if scan_ROM_ZIP_files_missing == 0:
-            r_list.append('Congratulations!!! You have no missing ROM ZIP files.')
-        file.write('\n'.join(r_list))
+    if scan_ROM_ZIP_files_missing == 0:
+        r_list.append('Congratulations!!! You have no missing ROM ZIP files.')
+    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), r_list)
 
     # --- Sample ZIP file list ---
-    total_machines = len(machines_render)
-    processed_machines = 0
     scan_Samples_ZIP_total = 0
     scan_Samples_ZIP_have = 0
     scan_Samples_ZIP_missing = 0
@@ -7290,8 +7225,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
-    pDialog.startProgress('Scanning MAME Sample ZIPs...', total_machines)
+    pDialog.startProgress('Scanning MAME Sample ZIPs...', len(machines_render))
     for sample_name in Sample_ZIP_list:
+        pDialog.updateProgressInc()
         scan_Samples_ZIP_total += 1
         Sample_FN = misc_search_file_cache(Samples_path_str, sample_name, MAME_SAMPLE_EXTS)
         if Sample_FN:
@@ -7299,18 +7235,13 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         else:
             scan_Samples_ZIP_missing += 1
             r_list.append('Missing Sample {}'.format(sample_name))
-        processed_machines += 1
-        pDialog.updateProgress(processed_machines)
     pDialog.endProgress()
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        if scan_Samples_ZIP_missing == 0:
-            r_list.append('Congratulations!!! You have no missing Sample ZIP files.')
-        file.write('\n'.join(r_list))
+    if scan_Samples_ZIP_missing == 0:
+        r_list.append('Congratulations!!! You have no missing Sample ZIP files.')
+    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), r_list)
 
     # --- CHD file list ---
-    total_machines = len(machines_render)
-    processed_machines = 0
     scan_CHD_files_total = 0
     scan_CHD_files_have = 0
     scan_CHD_files_missing = 0
@@ -7324,8 +7255,9 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         'MAME CHD path     "{}"'.format(CHD_path_str),
         '',
     ]
-    pDialog.startProgress('Scanning MAME CHDs...', total_machines)
+    pDialog.startProgress('Scanning MAME CHDs...', len(machines_render))
     for chd_name in CHD_list:
+        pDialog.updateProgressInc()
         scan_CHD_files_total += 1
         CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
         if CHD_FN:
@@ -7333,14 +7265,11 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         else:
             scan_CHD_files_missing += 1
             r_list.append('Missing CHD {}'.format(chd_name))
-        processed_machines += 1
-        pDialog.updateProgress(processed_machines)
     pDialog.endProgress()
     log_info('Writing report "{}"'.format(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        if scan_CHD_files_missing == 0:
-            r_list.append('Congratulations!!! You have no missing CHD files.')
-        file.write('\n'.join(r_list))
+    if scan_CHD_files_missing == 0:
+        r_list.append('Congratulations!!! You have no missing CHD files.')
+    utils_write_slist_to_file(PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), r_list)
 
     # --- Update statistics ---
     change_control_dic(control_dic, 'scan_machine_archives_ROM_total', scan_march_ROM_total)
@@ -7446,8 +7375,6 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
     # --- SL ROM ZIP archives and CHDs ---
     # Traverse the Software Lists, check if ROMs ZIPs and CHDs exists for every SL item, 
     # update and save database.
-    total_files = len(SL_catalog_dic)
-    processed_files = 0
     SL_ROMs_have = 0
     SL_ROMs_missing = 0
     SL_ROMs_total = 0
@@ -7458,9 +7385,9 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
     r_have_list = []
     r_miss_list = []
     d_text = 'Scanning Sofware Lists ROM ZIPs and CHDs ...'
-    pDialog.startProgress(d_text, total_files)
+    pDialog.startProgress(d_text, len(SL_catalog_dic))
     for SL_name in sorted(SL_catalog_dic):
-        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(d_text, SL_name))
+        pDialog.updateProgressInc('{}\nSoftware List {}'.format(d_text, SL_name))
 
         # Load SL databases
         SL_DB_FN = SL_hash_dir_FN.pjoin(SL_name + '_items.json')
@@ -7550,52 +7477,50 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
                 r_miss_list.extend(m_miss_str_list)
                 if m_have_str_list: r_miss_list.extend(m_have_str_list)
                 r_miss_list.append('')
-
         # Save SL database to update flags and update progress.
         fs_write_JSON_file(SL_DB_FN.getPath(), sl_roms, verbose = False)
-        processed_files += 1
     pDialog.endProgress()
 
     # Write SL scanner reports
     reports_total = 3
-    reports_processed = 0
     pDialog.startProgress('Writing scanner reports...', reports_total)
     log_info('Writing SL ROM ZIPs/CHDs FULL report')
     log_info('Report file "{}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath()))
-    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n')
-        file.write('This report shows all the scanned SL items\n')
-        file.write('\n')
-        if r_all_list:
-            file.write('\n'.join(r_all_list))
-        else:
-            raise TypeError
-    reports_processed += 1
-    pDialog.updateProgress(reports_processed)
+    sl = [
+        '*** Advanced MAME Launcher Software Lists scanner report ***',
+        'This report shows all the scanned SL items',
+        '',
+    ]
+    sl.extend(r_all_list)
+    utils_write_slist_to_file(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), sl)
 
+    pDialog.updateProgressInc()
     log_info('Writing SL ROM ZIPs and/or CHDs HAVE report')
     log_info('Report file "{}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath()))
-    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n')
-        file.write('This reports shows the SL items with ROM ZIPs and/or CHDs with HAVE status\n')
-        file.write('\n')
-        if r_have_list:
-            file.write('\n'.join(r_have_list))
-        else:
-            file.write('You do not have any ROM ZIP or CHD files!\n')
-    reports_processed += 1
-    pDialog.updateProgress(reports_processed)
+    sl = [
+        '*** Advanced MAME Launcher Software Lists scanner report ***'.
+        'This reports shows the SL items with ROM ZIPs and/or CHDs with HAVE status',
+        '',
+    ]
+    if r_have_list:
+        sl.extend(r_have_list)
+    else:
+        sl.append('You do not have any ROM ZIP or CHD files!')
+    utils_write_slist_to_file(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), sl)
 
+    pDialog.updateProgressInc()
     log_info('Writing SL ROM ZIPs/CHDs MISS report')
     log_info('Report file "{}"'.format(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath()))
-    with open(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('*** Advanced MAME Launcher Software Lists scanner report ***\n')
-        file.write('This reports shows the SL items with ROM ZIPs and/or CHDs with MISSING status\n')
-        file.write('\n')
-        if r_miss_list:
-            file.write('\n'.join(r_miss_list))
-        else:
-            file.write('Congratulations! No missing SL ROM ZIP or CHD files.')
+    sl = [
+        '*** Advanced MAME Launcher Software Lists scanner report ***',
+        'This reports shows the SL items with ROM ZIPs and/or CHDs with MISSING status',
+        '',
+    ]
+    if r_miss_list:
+        sl.extend(r_miss_list)
+    else:
+        sl.append('Congratulations! No missing SL ROM ZIP or CHD files.')
+    utils_write_slist_to_file(PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), sl)
     pDialog.endProgress()
 
     # Update statistics, timestamp and save control_dic.
@@ -7617,7 +7542,7 @@ def mame_check_before_scan_MAME_assets(PATHS, settings, control_dic):
     options_dic = {}
     options_dic['abort'] = False
 
-    # >> Get assets directory. Abort if not configured/found.
+    # Get assets directory. Abort if not configured/found.
     if not settings['assets_path']:
         kodi_dialog_OK('Asset directory not configured. Aborting.')
         options_dic['abort'] = True
@@ -7655,25 +7580,23 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
         'Fly',  'Man',  'Mar',  'PCB',  'Snp',  'Tit',  'Tra'])
 
     # --- Create a cache of assets ---
-    num_assets = len(ASSET_MAME_T_LIST)
-    asset_dirs = [''] * num_assets
+    asset_dirs = [''] * len(ASSET_MAME_T_LIST)
     pDialog = KodiProgressDialog()
-    pDialog.startProgress('Listing files in asset directories...', num_assets)
+    pDialog.startProgress('Listing files in asset directories...', len(ASSET_MAME_T_LIST))
     for i, asset_tuple in enumerate(ASSET_MAME_T_LIST):
+        pDialog.updateProgressInc()
         asset_dir = asset_tuple[1]
         full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir)
         asset_dir_str = full_asset_dir_FN.getPath()
         asset_dirs[i] = asset_dir_str
         misc_add_file_cache(asset_dir_str)
-        pDialog.updateProgress(i)
     pDialog.endProgress()
 
     # --- First pass: search for on-disk assets ---
-    total_machines = len(machines_render)
-    processed_machines = 0
     ondisk_assets_dic = {}
-    pDialog.startProgress('Scanning MAME assets/artwork (first pass)...', total_machines)
+    pDialog.startProgress('Scanning MAME assets/artwork (first pass)...', len(machines_render))
     for m_name in sorted(machines_render):
+        pDialog.updateProgressInc()
         machine_assets = fs_new_MAME_asset()
         for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
             asset_key = asset_tuple[0]
@@ -7694,17 +7617,14 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
             #     log_debug('asset_FN        "{}"'.format(asset_FN))
             machine_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN else ''
         ondisk_assets_dic[m_name] = machine_assets
-        processed_machines += 1
-        pDialog.updateProgress(processed_machines)
     pDialog.endProgress()
 
     # --- Second pass: substitute artwork ---
     have_count_list = [0] * len(ASSET_MAME_T_LIST)
     alternate_count_list = [0] * len(ASSET_MAME_T_LIST)
-    total_machines = len(machines_render)
-    processed_machines = 0
-    pDialog.startProgress('Scanning MAME assets/artwork (second pass)...', total_machines)
+    pDialog.startProgress('Scanning MAME assets/artwork (second pass)...', len(machines_render))
     for m_name in sorted(machines_render):
+        pDialog.updateProgressInc()
         asset_row = ['---'] * len(ASSET_MAME_T_LIST)
         for idx, asset_tuple in enumerate(ASSET_MAME_T_LIST):
             asset_key = asset_tuple[0]
@@ -7748,11 +7668,10 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
                                 break
         table_row = [m_name] + asset_row
         table_str.append(table_row)
-        processed_machines += 1
-        pDialog.updateProgress(processed_machines)
     pDialog.endProgress()
 
     # --- Asset statistics and report ---
+    total_machines = len(machines_render)
     # This must match the order of ASSET_MAME_T_LIST defined in disk_IO.py
     box3D = (have_count_list[0],  total_machines - have_count_list[0],  alternate_count_list[0])
     Artp  = (have_count_list[1],  total_machines - have_count_list[1],  alternate_count_list[1])
@@ -7789,9 +7708,8 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
     report_slist.append('')
     table_str_list = text_render_table_str(table_str)
     report_slist.extend(table_str_list)
-    log_info('Opening MAME asset report file "{}"'.format(PATHS.REPORT_MAME_ASSETS_PATH.getPath()))
-    with open(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(report_slist))
+    log_info('Writing MAME asset report file "{}"'.format(PATHS.REPORT_MAME_ASSETS_PATH.getPath()))
+    utils_write_slist_to_file(PATHS.REPORT_MAME_ASSETS_PATH.getPath(), report_slist)
     pDialog.endProgress()
 
     # Update control_dic by assigment (will be saved in caller)
@@ -7877,24 +7795,22 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     log_info('mame_scan_SL_assets() SL asset path {}'.format(Asset_path_FN.getPath()))
 
     # --- Traverse Software List, check if ROM exists, update and save database ---
-    total_files = len(SL_index_dic)
-    processed_files = 0
     table_str = []
     table_str.append(['left', 'left', 'left', 'left', 'left', 'left', 'left', 'left', 'left'])
     table_str.append(['Soft', 'Name', '3DB',  'Tit',  'Snap', 'Bft',  'Fan',  'Tra',  'Man'])
     have_count_list = [0] * len(ASSET_SL_T_LIST)
     alternate_count_list = [0] * len(ASSET_SL_T_LIST)
     SL_item_count = 0
-    # >> DEBUG code
+    # DEBUG code
     # SL_index_dic = {
     #     "32x" :
     #     { "display_name" : "Sega 32X cartridges", "num_with_CHDs" : 0, "num_with_ROMs" : 203, "rom_DB_noext" : "32x" }
     # }
-    pDialog = KodiProgressDialog()
     d_text = 'Scanning Sofware Lists assets/artwork...'
-    pDialog.startProgress(d_text, total_files)
+    pDialog = KodiProgressDialog()
+    pDialog.startProgress(d_text, len(SL_index_dic))
     for SL_name in sorted(SL_index_dic):
-        pDialog.updateProgress(processed_files, '{}\nSoftware List {}'.format(d_text, SL_name))
+        pDialog.updateProgressInc('{}\nSoftware List {}'.format(d_text, SL_name))
 
         # --- Load SL databases ---
         file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_items.json'
@@ -7984,7 +7900,6 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
             table_str.append(table_row)
         # --- Write SL asset JSON ---
         fs_write_JSON_file(SL_asset_DB_FN.getPath(), SL_assets_dic, verbose = False)
-        processed_files += 1
     pDialog.endProgress()
 
     # Asset statistics and report.
@@ -7999,20 +7914,19 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
     report_slist = []
     report_slist.append('*** Advanced MAME Launcher Software List asset scanner report ***')
     report_slist.append('Total SL items {}'.format(SL_item_count))
-    report_slist.append('Have 3D Boxes  {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*_3db))
-    report_slist.append('Have Titles    {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Tit))
-    report_slist.append('Have Snaps     {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Snap))
-    report_slist.append('Have Boxfronts {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Boxf))
-    report_slist.append('Have Fanarts   {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Fan))
-    report_slist.append('Have Trailers  {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Tra))
-    report_slist.append('Have Manuals   {0:6d} (Missing {1:6d}, Alternate {2:6d})'.format(*Man))
+    report_slist.append('Have 3D Boxes  {:6d} (Missing {:6d}, Alternate {:6d})'.format(*_3db))
+    report_slist.append('Have Titles    {:6d} (Missing {:6d}, Alternate {:6d})'.format(*Tit))
+    report_slist.append('Have Snaps     {:6d} (Missing {:6d}, Alternate {:6d})'.format(*Snap))
+    report_slist.append('Have Boxfronts {:6d} (Missing {:6d}, Alternate {:6d})'.format(*Boxf))
+    report_slist.append('Have Fanarts   {:6d} (Missing {:6d}, Alternate {:6d})'.format(*Fan))
+    report_slist.append('Have Trailers  {:6d} (Missing {:6d}, Alternate {:6d})'.format(*Tra))
+    report_slist.append('Have Manuals   {:6d} (Missing {:6d}, Alternate {:6d})'.format(*Man))
     report_slist.append('')
     table_str_list = text_render_table_str(table_str)
     report_slist.extend(table_str_list)
-    log_info('Opening SL asset report file "{}"'.format(PATHS.REPORT_SL_ASSETS_PATH.getPath()))
+    log_info('Writing SL asset report file "{}"'.format(PATHS.REPORT_SL_ASSETS_PATH.getPath()))
     pDialog.startProgress('Creating SL asset report...')
-    with open(PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-        file.write('\n'.join(report_slist))
+    utils_write_slist_to_file(PATHS.REPORT_SL_ASSETS_PATH.getPath(), report_slist)
     pDialog.endProgress()
 
     # Update control_dic by assigment (will be saved in caller) and save JSON.

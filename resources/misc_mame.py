@@ -260,10 +260,10 @@ def misc_extract_MAME_version(PATHS, mame_prog_FN):
 # Counts MAME machines in a modern MAME XML file.
 #
 def misc_count_MAME_machines_modern(XML_path_FN):
-    log_debug('fs_count_MAME_machines_modern() BEGIN ...')
+    log_debug('fs_count_MAME_machines_modern() BEGIN...')
     log_debug('XML "{}"'.format(XML_path_FN.getPath()))
     pDialog = KodiProgressDialog()
-    pDialog.startProgress('Counting number of MAME machines...', )
+    pDialog.startProgress('Counting number of MAME machines...')
     num_machines = 0
     with open(XML_path_FN.getPath(), 'rt') as f:
         for line in f:
@@ -273,13 +273,13 @@ def misc_count_MAME_machines_modern(XML_path_FN):
     return num_machines
 
 #
-# Older version fo MAME use <game> instead of <machine>
+# Older versions of MAME use <game> instead of <machine>
 #
 def misc_count_MAME_machines_archaic(XML_path_FN):
-    log_debug('fs_count_MAME_machines_archaic() BEGIN ...')
+    log_debug('fs_count_MAME_machines_archaic() BEGIN...')
     log_debug('XML "{}"'.format(XML_path_FN.getPath()))
     pDialog = KodiProgressDialog()
-    pDialog.startProgress('Counting number of MAME machines...', )
+    pDialog.startProgress('Counting number of MAME machines...')
     num_machines = 0
     with open(XML_path_FN.getPath(), 'rt') as f:
         for line in f:

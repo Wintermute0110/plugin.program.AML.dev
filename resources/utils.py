@@ -202,38 +202,50 @@ class FileName:
     def rename(self, to):
         os.rename(self.path, to.getPath())
 
+#
+# How to report errors in these IO functions? That's the eternal question.
+# 1) Raise an exception and make the addon crash? Crashes are always reported in the GUI.
+# 2) Use AEL approach and report status in a control dictionary? Caller code is responsible
+#    to report the error in the GUI.
+#
 # -------------------------------------------------------------------------------------------------
 # Low level filesystem functions.
 # -------------------------------------------------------------------------------------------------
-def utils_dump_str_to_file(filename, full_string):
+def utils_write_str_to_file(filename, full_string):
+    log_debug('utils_write_str_to_file() File "{}"'.format(filename))
     with io.open(filename, 'wt', encoding = 'utf-8') as f:
         f.write(full_string)
 
+def utils_load_file_to_str(filename):
+    log_debug('utils_load_file_to_str() File "{}"'.format(filename))
+    with io.open(filename, 'rt', encoding = 'utf-8') as f:
+        string = f.read()
+    return string
+
 # -------------------------------------------------------------------------------------------------
-# Generic file writer
-# str_list is a list of Unicode strings that will be joined and written to a file encoded in UTF-8.
+# Generic text file writer.
+# slist is a list of Unicode strings that will be joined and written to a file encoded in UTF-8.
 # Joining command is '\n'.join()
 # -------------------------------------------------------------------------------------------------
-def utils_write_slist_to_file(str_list, export_FN):
-    log_verb('utils_write_str_list_to_file() Exporting OP "{}"'.format(export_FN.getOriginalPath()))
-    log_verb('utils_write_str_list_to_file() Exporting  P "{}"'.format(export_FN.getPath()))
+def utils_write_slist_to_file(filename, slist):
+    log_debug('utils_write_slist_to_file() File "{}"'.format(filename))
     try:
-        file_obj = open(export_FN.getPath(), 'wt', encoding = 'utf-8')
-        file_obj.write('\n'.join(str_list))
+        file_obj = io.open(filename, 'wt', encoding = 'utf-8')
+        file_obj.write('\n'.join(slist))
         file_obj.close()
     except OSError:
-        log_error('(OSError) exception in utils_write_str_list_to_file()')
-        log_error('Cannot write {} file'.format(export_FN.getBase()))
-        raise AEL_Error('(OSError) Cannot write {} file'.format(export_FN.getBase()))
+        log_error('(OSError) exception in utils_write_slist_to_file()')
+        log_error('Cannot write {} file'.format(filename))
+        raise AEL_Error('(OSError) Cannot write {} file'.format(filename))
     except IOError:
-        log_error('(IOError) exception in utils_write_str_list_to_file()')
-        log_error('Cannot write {} file'.format(export_FN.getBase()))
-        raise AEL_Error('(IOError) Cannot write {} file'.format(export_FN.getBase()))
+        log_error('(IOError) exception in utils_write_slist_to_file()')
+        log_error('Cannot write {} file'.format(filename))
+        raise AEL_Error('(IOError) Cannot write {} file'.format(filename))
 
-def utils_load_file_to_slist(filename_str):
-    with io.open(filename_str) as f:
+def utils_load_file_to_slist(filename):
+    log_debug('utils_load_file_to_slist() File "{}"'.format(filename))
+    with io.open(filename, 'rt', encoding = 'utf-8') as f:
         slist = f.readlines()
-
     return slist
 
 # -------------------------------------------------------------------------------------------------
@@ -247,7 +259,7 @@ def utils_load_JSON_file_dic(json_filename, verbose = True):
         return data_dic
     if verbose:
         log_debug('fs_load_JSON_file_dic() "{}"'.format(json_filename))
-    with open(json_filename) as file:
+    with io.open(json_filename) as file:
         data_dic = json.load(file)
 
     return data_dic
@@ -260,7 +272,7 @@ def utils_load_JSON_file_list(json_filename, verbose = True):
         return data_list
     if verbose:
         log_debug('fs_load_JSON_file_list() "{}"'.format(json_filename))
-    with open(json_filename) as file:
+    with io.open(json_filename) as file:
         data_list = json.load(file)
 
     return data_list

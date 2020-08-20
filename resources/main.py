@@ -3233,9 +3233,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_item_data']:
             log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-                text_remove_color_tags_slist(slist)
-                file.write('\n'.join(slist))
+            text_remove_color_tags_slist(slist)
+            utils_write_slist_to_file(g_PATHS.REPORT_DEBUG_MAME_ITEM_DATA_PATH.getPath(), slist)
 
     # --- View Software List ROM Machine data ---
     elif action == ACTION_VIEW_SL_ROM_DATA:
@@ -3312,9 +3311,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_item_data']:
             log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-                text_remove_color_tags_slist(slist)
-                file.write('\n'.join(slist))
+            text_remove_color_tags_slist(slist)
+            utils_write_slist_to_file(g_PATHS.REPORT_DEBUG_SL_ITEM_DATA_PATH.getPath(), slist)
 
     # --- View MAME machine ROMs (ROMs database) ---
     elif action == ACTION_VIEW_MACHINE_ROMS:
@@ -3413,9 +3411,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_ROM_DB_data']:
             log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-                text_remove_color_tags_slist(info_text)
-                file.write('\n'.join(info_text))
+            text_remove_color_tags_slist(info_text)
+            utils_write_slist_to_file(g_PATHS.REPORT_DEBUG_MAME_ITEM_ROM_DATA_PATH.getPath(), info_text)
 
     # --- View MAME machine ROMs (Audit ROM database) ---
     elif action == ACTION_VIEW_MACHINE_AUDIT_ROMS:
@@ -3481,9 +3478,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Write DEBUG TXT file ---
         if g_settings['debug_MAME_Audit_DB_data']:
             log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-                text_remove_color_tags_slist(info_text)
-                file.write('\n'.join(info_text))
+            text_remove_color_tags_slist(info_text)
+            utils_write_slist_to_file(g_PATHS.REPORT_DEBUG_MAME_ITEM_AUDIT_DATA_PATH.getPath(), info_text)
 
     # --- View SL ROMs ---
     elif action == ACTION_VIEW_SL_ROM_ROMS:
@@ -3545,9 +3541,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_ROM_DB_data']:
             log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-                text_remove_color_tags_slist(info_text)
-                file.write('\n'.join(info_text))
+            text_remove_color_tags_slist(info_text)
+            utils_write_slist_to_file(g_PATHS.REPORT_DEBUG_SL_ITEM_ROM_DATA_PATH.getPath(), info_text)
 
     # --- View SL ROM Audit ROMs ---
     elif action == ACTION_VIEW_SL_ROM_AUDIT_ROMS:
@@ -3589,9 +3584,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         # --- Write DEBUG TXT file ---
         if g_settings['debug_SL_Audit_DB_data']:
             log_info('Writing file "{}"'.format(g_PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath()))
-            with open(g_PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-                text_remove_color_tags_slist(info_text)
-                file.write('\n'.join(info_text))
+            text_remove_color_tags_slist(info_text)
+            utils_write_slist_to_file(g_PATHS.REPORT_DEBUG_SL_ITEM_AUDIT_DATA_PATH.getPath(), info_text)
 
     # --- View manual JSON INFO file of a MAME machine ---
     elif action == ACTION_VIEW_MANUAL_JSON:
@@ -3616,9 +3610,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
 
         # --- Read stdout and put into a string ---
         window_title = 'MAME machine manual JSON INFO file'
-        info_text = ''
-        with open(info_FN.getPath(), 'r') as myfile:
-            info_text = myfile.read()
+        info_text = utils_load_file_to_str(info_FN.getPath())
         kodi_display_text_window_mono(window_title, info_text)
 
     # --- Audit ROMs of a single machine ---
@@ -5040,42 +5032,42 @@ def command_context_setup_custom_filters():
         else:
             log_debug('Using user-defined in addon settings XML custom filter.')
             XML_FN = FileName(cf_XML_path_str)
-        log_debug('command_context_setup_custom_filters() Reading XML OP "{}"'.format(XML_FN.getOriginalPath()))
+        log_debug('command_context_setup_custom_filters() Displaying "{}"'.format(XML_FN.getOriginalPath()))
         if not XML_FN.exists():
             kodi_dialog_OK('Custom filter XML file not found.')
             return
-        with open(XML_FN.getPath(), 'rt', encoding = 'utf-8') as myfile:
-            kodi_display_text_window_mono('Custom filter XML', myfile.read())
+        fstring =  utils_load_file_to_str(XML_FN.getPath())
+        kodi_display_text_window_mono('Custom filter XML', fstring)
 
     # --- View filter histogram report ---
     elif menu_item == 3:
-        XML_FN = g_PATHS.REPORT_CF_HISTOGRAMS_PATH
-        log_debug('command_context_setup_custom_filters() Reading XML OP "{}"'.format(XML_FN.getOriginalPath()))
-        if not XML_FN.exists():
+        filename_FN = g_PATHS.REPORT_CF_HISTOGRAMS_PATH
+        log_debug('command_context_setup_custom_filters() Displaying "{}"'.format(filename_FN.getOriginalPath()))
+        if not filename_FN.exists():
             kodi_dialog_OK('Filter histogram report not found.')
             return
-        with open(XML_FN.getPath(), 'rt', encoding = 'utf-8') as myfile:
-            kodi_display_text_window_mono('Filter histogram report', myfile.read())
+        fstring =  utils_load_file_to_str(filename_FN.getPath())
+        kodi_display_text_window_mono('Filter histogram report', fstring)
 
     # --- View filter XML syntax report ---
     elif menu_item == 4:
-        XML_FN = g_PATHS.REPORT_CF_XML_SYNTAX_PATH
-        log_debug('command_context_setup_custom_filters() Reading XML OP "{}"'.format(XML_FN.getOriginalPath()))
-        if not XML_FN.exists():
+        filename_FN = g_PATHS.REPORT_CF_XML_SYNTAX_PATH
+        log_debug('command_context_setup_custom_filters() Displaying "{}"'.format(filename_FN.getOriginalPath()))
+        if not filename_FN.exists():
             kodi_dialog_OK('Filter XML filter syntax report not found.')
             return
-        with open(XML_FN.getPath(), 'rt', encoding = 'utf-8') as myfile:
-            kodi_display_text_window_mono('Custom filter XML syntax report', myfile.read())
+        fstring =  utils_load_file_to_str(filename_FN.getPath())
+        kodi_display_text_window_mono('Custom filter XML syntax report', fstring)
 
     # --- View filter report ---
     elif menu_item == 5:
-        XML_FN = g_PATHS.REPORT_CF_DB_BUILD_PATH
-        log_debug('command_context_setup_custom_filters() Reading XML OP "{}"'.format(XML_FN.getOriginalPath()))
-        if not XML_FN.exists():
+        filename_FN = g_PATHS.REPORT_CF_DB_BUILD_PATH
+        log_debug('command_context_setup_custom_filters() Displaying "{}"'.format(filename_FN.getOriginalPath()))
+        if not filename_FN.exists():
             kodi_dialog_OK('Custom filter database report not found.')
             return
-        with open(XML_FN.getPath(), 'rt', encoding = 'utf-8') as myfile:
-            kodi_display_text_window_mono('Custom filter XML syntax report', myfile.read())
+        fstring =  utils_load_file_to_str(filename_FN.getPath())
+        kodi_display_text_window_mono('Custom filter XML syntax report', fstring)
 
 def command_show_custom_filters():
     log_debug('command_show_custom_filters() Starting ...')
@@ -6712,17 +6704,17 @@ def command_exec_utility(which_utility):
         log_debug('There are {} CRC32 collisions'.format(num_collisions))
 
         # --- Write report and debug file ---
-        slist = []
-        slist.append('*** AML MAME ROMs CRC32 hash collision report ***')
-        slist.append('MAME has {:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])))
-        slist.append('There are {} CRC32 collisions'.format(num_collisions))
-        slist.append('')
+        slist = [
+            '*** AML MAME ROMs CRC32 hash collision report ***',
+            'MAME has {:,d} valid ROMs in total'.format(len(db_dic['roms_sha1_dic'])),
+            'There are {} CRC32 collisions'.format(num_collisions),
+            '',
+        ]
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
         kodi_display_text_window_mono('AML MAME CRC32 hash collision report', '\n'.join(slist))
         log_info('Writing "{}"'.format(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath()))
-        with open(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-            file.write('\n'.join(slist))
+        utils_write_slist_to_file(g_PATHS.REPORT_DEBUG_MAME_COLLISIONS_PATH.getPath(), slist)
 
     elif which_utility == 'CHECK_SL_COLLISIONS':
         log_info('command_exec_utility() Initialising CHECK_SL_COLLISIONS ...')
@@ -6800,17 +6792,17 @@ def command_exec_utility(which_utility):
         log_debug('There are {} CRC32 collisions'.format(num_collisions))
 
         # --- Write report ---
-        slist = []
-        slist.append('*** AML SL ROMs CRC32 hash collision report ***')
-        slist.append('The Software Lists have {:,d} valid ROMs in total'.format(len(roms_sha1_dic)))
-        slist.append('There are {} CRC32 collisions'.format(num_collisions))
-        slist.append('')
+        slist = [
+            '*** AML SL ROMs CRC32 hash collision report ***',
+            'The Software Lists have {:,d} valid ROMs in total'.format(len(roms_sha1_dic)),
+            'There are {} CRC32 collisions'.format(num_collisions),
+            '',
+        ]
         table_str_list = text_render_table_str(table_str)
         slist.extend(table_str_list)
         kodi_display_text_window_mono('AML Software Lists CRC32 hash collision report', '\n'.join(slist))
         log_info('Writing "{}"'.format(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath()))
-        with open(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), 'wt', encoding = 'utf-8') as file:
-            file.write('\n'.join(slist))
+        utils_write_slist_to_file(g_PATHS.REPORT_DEBUG_SL_COLLISIONS_PATH.getPath(), slist)
 
     # Open the ROM audit database and calculate the size of all ROMs.
     # Sort the list by size and print it.
@@ -6960,9 +6952,7 @@ def command_exec_report(which_report):
         if not g_PATHS.MAME_OUTPUT_PATH.exists():
             kodi_dialog_OK('MAME output file not found. Execute MAME and try again.')
             return
-        info_text = ''
-        with open(g_PATHS.MAME_OUTPUT_PATH.getPath(), 'r') as myfile:
-            info_text = myfile.read()
+        info_text = utils_load_file_to_str(g_PATHS.MAME_OUTPUT_PATH.getPath())
         kodi_display_text_window_mono('MAME last execution output', info_text)
 
     # --- View database information and statistics stored in control dictionary ------------------
@@ -7020,14 +7010,12 @@ def command_exec_report(which_report):
         mame_stats_scanner_print_slist(g_settings, info_text, control_dic)
         info_text.append('')
         mame_stats_audit_print_slist(g_settings, info_text, control_dic, g_settings)
-        # text_remove_slist_colours(info_text)
 
         # --- Write file to disk and inform user ---
         log_info('Writing AML statistics report...')
         log_info('File "{}"'.format(g_PATHS.REPORT_STATS_PATH.getPath()))
-        with open(g_PATHS.REPORT_STATS_PATH.getPath(), 'wt', encoding = 'utf-8') as f:
-            text_remove_color_tags_slist(info_text)
-            f.write('\n'.join(info_text))
+        text_remove_color_tags_slist(info_text)
+        utils_write_slist_to_file(g_PATHS.REPORT_STATS_PATH.getPath(), info_text)
         kodi_notify('Exported AML statistics')
 
     # --- MAME scanner reports -------------------------------------------------------------------
@@ -7036,48 +7024,48 @@ def command_exec_report(which_report):
             kodi_dialog_OK('Full MAME machines archives scanner report not found. '
                 'Please scan MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('Full MAME machines archives scanner report', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_FULL_PATH.getPath())
+        kodi_display_text_window_mono('Full MAME machines archives scanner report', fstring)
 
     elif which_report == 'VIEW_SCANNER_MAME_ARCH_HAVE':
         if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
             kodi_dialog_OK('Have MAME machines archives scanner report not found. '
                            'Please scan MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('Have MAME machines archives scanner report', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_HAVE_PATH.getPath())
+        kodi_display_text_window_mono('Have MAME machines archives scanner report', fstring)
 
     elif which_report == 'VIEW_SCANNER_MAME_ARCH_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.exists():
             kodi_dialog_OK('Missing MAME machines archives scanner report not found. '
                            'Please scan MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('Missing MAME machines archives scanner report', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_SCAN_MACHINE_ARCH_MISS_PATH.getPath())
+        kodi_display_text_window_mono('Missing MAME machines archives scanner report', fstring)
 
     elif which_report == 'VIEW_SCANNER_MAME_ROM_LIST_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.exists():
             kodi_dialog_OK('Missing MAME ROM ZIP list scanner report not found. '
                            'Please scan MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('Missing MAME ROM ZIP list scanner report', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_SCAN_ROM_LIST_MISS_PATH.getPath())
+        kodi_display_text_window_mono('Missing MAME ROM ZIP list scanner report', fstring)
 
     elif which_report == 'VIEW_SCANNER_MAME_SAM_LIST_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.exists():
             kodi_dialog_OK('Missing MAME Sample ZIP list scanner report not found. '
                            'Please scan MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('Missing MAME Sample ZIP list scanner report', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_SCAN_SAM_LIST_MISS_PATH.getPath())
+        kodi_display_text_window_mono('Missing MAME Sample ZIP list scanner report', fstring)
 
     elif which_report == 'VIEW_SCANNER_MAME_CHD_LIST_MISS':
         if not g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.exists():
             kodi_dialog_OK('Missing MAME CHD list scanner report not found. '
                            'Please scan MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('Missing MAME CHD list scanner report', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_SCAN_CHD_LIST_MISS_PATH.getPath())
+        kodi_display_text_window_mono('Missing MAME CHD list scanner report', fstring)
 
     # --- SL scanner reports ---------------------------------------------------------------------
     elif which_report == 'VIEW_SCANNER_SL_FULL':
@@ -7085,24 +7073,24 @@ def command_exec_report(which_report):
             kodi_dialog_OK('Full Software Lists item archives scanner report not found. '
                            'Please scan SL ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('Full Software Lists item archives scanner report', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_FULL_PATH.getPath())
+        kodi_display_text_window_mono('Full Software Lists item archives scanner report', fstring)
 
     elif which_report == 'VIEW_SCANNER_SL_HAVE':
         if not g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.exists():
             kodi_dialog_OK('Have Software Lists item archives scanner report not found. '
                            'Please scan SL ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('Have Software Lists item archives scanner report', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_HAVE_PATH.getPath())
+        kodi_display_text_window_mono('Have Software Lists item archives scanner report', fstring)
 
     elif which_report == 'VIEW_SCANNER_SL_MISS':
         if not g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.exists():
             kodi_dialog_OK('Missing Software Lists item archives scanner report not found. '
                            'Please scan SL ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('Missing Software Lists item archives scanner report', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_SCAN_MACHINE_ARCH_MISS_PATH.getPath())
+        kodi_display_text_window_mono('Missing Software Lists item archives scanner report', fstring)
 
     # --- Asset scanner reports ------------------------------------------------------------------
     elif which_report == 'VIEW_SCANNER_MAME_ASSETS':
@@ -7110,16 +7098,16 @@ def command_exec_report(which_report):
             kodi_dialog_OK('MAME asset report report not found. '
                            'Please scan MAME assets and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_ASSETS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME asset report', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_ASSETS_PATH.getPath())
+        kodi_display_text_window_mono('MAME asset report', fstring)
 
     elif which_report == 'VIEW_SCANNER_SL_ASSETS':
-            if not g_PATHS.REPORT_SL_ASSETS_PATH.exists():
-                kodi_dialog_OK('Software Lists asset report not found. '
-                               'Please scan Software List assets and try again.')
-                return
-            with open(g_PATHS.REPORT_SL_ASSETS_PATH.getPath(), 'r') as myfile:
-                kodi_display_text_window_mono('Software Lists asset report', myfile.read())
+        if not g_PATHS.REPORT_SL_ASSETS_PATH.exists():
+            kodi_dialog_OK('Software Lists asset report not found. '
+                           'Please scan Software List assets and try again.')
+            return
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_ASSETS_PATH.getPath())
+        kodi_display_text_window_mono('Software Lists asset report', fstring)
 
     # --- MAME audit reports ---------------------------------------------------------------------
     elif which_report == 'VIEW_AUDIT_MAME_FULL':
@@ -7127,72 +7115,72 @@ def command_exec_report(which_report):
             kodi_dialog_OK('MAME audit report (Full) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (Full)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_AUDIT_FULL_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (Full)', fstring)
 
     elif which_report == 'VIEW_AUDIT_MAME_GOOD':
         if not g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.exists():
             kodi_dialog_OK('MAME audit report (Good) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (Good)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_AUDIT_GOOD_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (Good)', fstring)
 
     elif which_report == 'VIEW_AUDIT_MAME_BAD':
         if not g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.exists():
             kodi_dialog_OK('MAME audit report (Errors) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (Errors)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_AUDIT_ERRORS_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (Errors)', fstring)
 
     elif which_report == 'VIEW_AUDIT_MAME_ROM_GOOD':
         if not g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.exists():
             kodi_dialog_OK('MAME audit report (ROMs Good) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (ROMs Good)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_AUDIT_ROM_GOOD_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (ROMs Good)', fstring)
 
     elif which_report == 'VIEW_AUDIT_MAME_ROM_BAD':
         if not g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.exists():
             kodi_dialog_OK('MAME audit report (ROM Errors) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (ROM Errors)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_AUDIT_ROM_ERRORS_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (ROM Errors)', fstring)
 
     elif which_report == 'VIEW_AUDIT_MAME_SAM_GOOD':
         if not g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.exists():
             kodi_dialog_OK('MAME audit report (Samples Good) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (Samples Good)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_GOOD_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (Samples Good)', fstring)
 
     elif which_report == 'VIEW_AUDIT_MAME_SAM_BAD':
         if not g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.exists():
             kodi_dialog_OK('MAME audit report (Sample Errors) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (Sample Errors)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_AUDIT_SAMPLES_ERRORS_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (Sample Errors)', fstring)
 
     elif which_report == 'VIEW_AUDIT_MAME_CHD_GOOD':
         if not g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.exists():
             kodi_dialog_OK('MAME audit report (CHDs Good) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (CHDs Good)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_AUDIT_CHD_GOOD_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (CHDs Good)', fstring)
 
     elif which_report == 'VIEW_AUDIT_MAME_CHD_BAD':
         if not g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.exists():
             kodi_dialog_OK('MAME audit report (CHD Errors) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (CHD Errors)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_MAME_AUDIT_CHD_ERRORS_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (CHD Errors)', fstring)
 
     # --- SL audit reports -----------------------------------------------------------------------
     elif which_report == 'VIEW_AUDIT_SL_FULL':
@@ -7200,56 +7188,56 @@ def command_exec_report(which_report):
             kodi_dialog_OK('SL audit report (Full) not found. '
                            'Please audit your SL ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('SL audit report (Full)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_AUDIT_FULL_PATH.getPath())
+        kodi_display_text_window_mono('SL audit report (Full)', fstring)
 
     elif which_report == 'VIEW_AUDIT_SL_GOOD':
         if not g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.exists():
             kodi_dialog_OK('SL audit report (Good) not found. '
                            'Please audit your SL ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('SL audit report (Good)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_AUDIT_GOOD_PATH.getPath())
+        kodi_display_text_window_mono('SL audit report (Good)', fstring)
 
     elif which_report == 'VIEW_AUDIT_SL_BAD':
         if not g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.exists():
             kodi_dialog_OK('SL audit report (Errors) not found. '
                            'Please audit your SL ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('SL audit report (Errors)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_AUDIT_ERRORS_PATH.getPath())
+        kodi_display_text_window_mono('SL audit report (Errors)', fstring)
 
     elif which_report == 'VIEW_AUDIT_SL_ROM_GOOD':
         if not g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.exists():
             kodi_dialog_OK('MAME audit report (ROM Good) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (ROM Good)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_AUDIT_ROMS_GOOD_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (ROM Good)', fstring)
 
     elif which_report == 'VIEW_AUDIT_SL_ROM_BAD':
         if not g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.exists():
             kodi_dialog_OK('MAME audit report (ROM Errors) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (ROM Errors)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_AUDIT_ROMS_ERRORS_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (ROM Errors)', fstring)
 
     elif which_report == 'VIEW_AUDIT_SL_CHD_GOOD':
         if not g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.exists():
             kodi_dialog_OK('MAME audit report (CHD Good) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (CHD Good)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_AUDIT_CHDS_GOOD_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (CHD Good)', fstring)
 
     elif which_report == 'VIEW_AUDIT_SL_CHD_BAD':
         if not g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.exists():
             kodi_dialog_OK('MAME audit report (CHD Errors) not found. '
                            'Please audit your MAME ROMs and try again.')
             return
-        with open(g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath(), 'r') as myfile:
-            kodi_display_text_window_mono('MAME audit report (CHD Errors)', myfile.read())
+        fstring = utils_load_file_to_str(g_PATHS.REPORT_SL_AUDIT_CHDS_ERRORS_PATH.getPath())
+        kodi_display_text_window_mono('MAME audit report (CHD Errors)', fstring)
 
     # --- Error ----------------------------------------------------------------------------------
     else:
@@ -7743,7 +7731,7 @@ def run_before_execution():
     log_debug('run_before_execution() function ENDS')
 
 def run_process(g_PATHS, arg_list, mame_dir):
-    log_info('run_process() Function BEGIN ...')
+    log_info('run_process() Function BEGIN...')
 
     # --- Prevent a console window to be shown in Windows. Not working yet! ---
     if sys.platform == 'win32':
@@ -7752,25 +7740,25 @@ def run_process(g_PATHS, arg_list, mame_dir):
         _info.dwFlags = subprocess.STARTF_USESHOWWINDOW
         # See https://msdn.microsoft.com/en-us/library/ms633548(v=vs.85).aspx
         # See https://docs.python.org/2/library/subprocess.html#subprocess.STARTUPINFO
-        # >> SW_HIDE = 0
-        # >> Does not work: MAME console window is not shown, graphical window not shonw either,
-        # >> process run in background.
+        # SW_HIDE = 0
+        # Does not work: MAME console window is not shown, graphical window not shown either,
+        # process run in background.
         # _info.wShowWindow = subprocess.SW_HIDE
-        # >> SW_SHOWMINIMIZED = 2
-        # >> Both MAME console and graphical window minimized.
+        # SW_SHOWMINIMIZED = 2
+        # Both MAME console and graphical window minimized.
         # _info.wShowWindow = 2
-        # >> SW_SHOWNORMAL = 1
-        # >> MAME console window is shown, MAME graphical window on top, Kodi on bottom.
+        # SW_SHOWNORMAL = 1
+        # MAME console window is shown, MAME graphical window on top, Kodi on bottom.
         _info.wShowWindow = 1
     else:
         log_info('run_process() _info is None')
         _info = None
 
     # --- Run MAME ---
-    with open(g_PATHS.MAME_OUTPUT_PATH.getPath(), 'wb') as f:
-        p = subprocess.Popen(arg_list, cwd = mame_dir, startupinfo = _info,
-            stdout = f, stderr = subprocess.STDOUT)
-        p.wait()
+    f = io.open(g_PATHS.MAME_OUTPUT_PATH.getPath(), 'wb')
+    p = subprocess.Popen(arg_list, cwd=mame_dir, startupinfo=_info, stdout=f, stderr=subprocess.STDOUT)
+    p.wait()
+    f.close()
     log_debug('run_process() function ENDS')
 
 def run_after_execution():
