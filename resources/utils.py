@@ -35,6 +35,7 @@ from .constants import *
 # --- Kodi modules ---
 try:
     import xbmc
+    import xbmcgui
     KODI_RUNTIME_AVAILABLE_UTILS = True
 except:
     KODI_RUNTIME_AVAILABLE_UTILS = False

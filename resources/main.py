@@ -5558,11 +5558,11 @@ def command_context_setup_plugin():
         if g_settings['op_mode'] == OP_MODE_EXTERNAL:
             # Extract MAME.xml from MAME exectuable.
             # Reset control_dic and count the number of MAME machines.
-            fs_extract_MAME_XML(g_PATHS, g_settings, __addon_version__, options_dic)
+            mame_extract_MAME_XML(g_PATHS, g_settings, __addon_version__, options_dic)
         elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
             # For MAME 2003 Plus the XML is already there.
             # Reset control_dic and count the number of machines.
-            fs_process_RETRO_MAME2003PLUS(g_PATHS, g_settings, __addon_version__, options_dic)
+            mame_process_RETRO_MAME2003PLUS(g_PATHS, g_settings, __addon_version__, options_dic)
         else:
             log_error('command_context_setup_plugin() Unknown op_mode "{}"'.format(g_settings['op_mode']))
             kodi_notify_warn('Database not built')
@@ -6413,7 +6413,7 @@ def command_exec_utility(which_utility):
 
         # --- Check MAME version ---
         mame_prog_FN = FileName(g_settings['mame_prog'])
-        mame_version_str = fs_extract_MAME_version(g_PATHS, mame_prog_FN)
+        mame_version_str = mame_extract_MAME_version(g_PATHS, mame_prog_FN)
         kodi_dialog_OK('MAME version is {}'.format(mame_version_str))
 
     # Check AML configuration

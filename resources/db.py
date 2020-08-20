@@ -693,57 +693,57 @@ def fs_get_SL_Favourite(SL_name, ROM_name, ROM, assets, control_dic):
 #
 def fs_get_cataloged_dic_parents(PATHS, catalog_name):
     if catalog_name == 'Main':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MAIN_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_MAIN_PARENT_PATH.getPath())
     elif catalog_name == 'Binary':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BINARY_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_BINARY_PARENT_PATH.getPath())
     elif catalog_name == 'Catver':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATVER_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATVER_PARENT_PATH.getPath())
     elif catalog_name == 'Catlist':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATLIST_PARENT_PATH.getPath())
     elif catalog_name == 'Genre':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_GENRE_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_GENRE_PARENT_PATH.getPath())
     elif catalog_name == 'Category':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATEGORY_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATEGORY_PARENT_PATH.getPath())
     elif catalog_name == 'NPlayers':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_NPLAYERS_PARENT_PATH.getPath())
     elif catalog_name == 'Bestgames':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_PARENT_PATH.getPath())
     elif catalog_name == 'Series':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SERIES_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SERIES_PARENT_PATH.getPath())
     elif catalog_name == 'Alltime':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_ALLTIME_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_ALLTIME_PARENT_PATH.getPath())
     elif catalog_name == 'Artwork':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_ARTWORK_PARENT_PATH.getPath())
     elif catalog_name == 'Version':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_VERADDED_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_VERADDED_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_PARENT_PATH.getPath())
     elif catalog_name == 'Controls_Compact':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CONTROL_COMPACT_PARENT_PATH.getPath())
     elif catalog_name == 'Devices_Expanded':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DEVICE_EXPANDED_PARENT_PATH.getPath())
     elif catalog_name == 'Devices_Compact':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DEVICE_COMPACT_PARENT_PATH.getPath())
     elif catalog_name == 'Display_Type':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_PARENT_PATH.getPath())
     elif catalog_name == 'Display_VSync':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_VSYNC_PARENT_PATH.getPath())
     elif catalog_name == 'Display_Resolution':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_RES_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_RES_PARENT_PATH.getPath())
     elif catalog_name == 'CPU':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CPU_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CPU_PARENT_PATH.getPath())
     elif catalog_name == 'Driver':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DRIVER_PARENT_PATH.getPath())
     elif catalog_name == 'Manufacturer':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_PARENT_PATH.getPath())
     elif catalog_name == 'ShortName':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SHORTNAME_PARENT_PATH.getPath())
     elif catalog_name == 'LongName':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_LONGNAME_PARENT_PATH.getPath())
     elif catalog_name == 'BySL':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SL_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SL_PARENT_PATH.getPath())
     elif catalog_name == 'Year':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_YEAR_PARENT_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_YEAR_PARENT_PATH.getPath())
     else:
         log_error('fs_get_cataloged_dic_parents() Unknown catalog_name = "{}"'.format(catalog_name))
 
@@ -751,57 +751,57 @@ def fs_get_cataloged_dic_parents(PATHS, catalog_name):
 
 def fs_get_cataloged_dic_all(PATHS, catalog_name):
     if catalog_name == 'Main':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MAIN_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_MAIN_ALL_PATH.getPath())
     elif catalog_name == 'Binary':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BINARY_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_BINARY_ALL_PATH.getPath())
     elif catalog_name == 'Catver':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATVER_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATVER_ALL_PATH.getPath())
     elif catalog_name == 'Catlist':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATLIST_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATLIST_ALL_PATH.getPath())
     elif catalog_name == 'Genre':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_GENRE_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_GENRE_ALL_PATH.getPath())
     elif catalog_name == 'Category':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CATEGORY_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CATEGORY_ALL_PATH.getPath())
     elif catalog_name == 'NPlayers':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_NPLAYERS_ALL_PATH.getPath())
     elif catalog_name == 'Bestgames':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_BESTGAMES_ALL_PATH.getPath())
     elif catalog_name == 'Series':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SERIES_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SERIES_ALL_PATH.getPath())
     elif catalog_name == 'Alltime':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_ALLTIME_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_ALLTIME_ALL_PATH.getPath())
     elif catalog_name == 'Artwork':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_ARTWORK_ALL_PATH.getPath())
     elif catalog_name == 'Version':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_VERADDED_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_VERADDED_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Expanded':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CONTROL_EXPANDED_ALL_PATH.getPath())
     elif catalog_name == 'Controls_Compact':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CONTROL_COMPACT_ALL_PATH.getPath())
     elif catalog_name == 'Devices_Expanded':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DEVICE_EXPANDED_ALL_PATH.getPath())
     elif catalog_name == 'Devices_Compact':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DEVICE_COMPACT_ALL_PATH.getPath())
     elif catalog_name == 'Display_Type':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_TYPE_ALL_PATH.getPath())
     elif catalog_name == 'Display_VSync':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_VSYNC_ALL_PATH.getPath())
     elif catalog_name == 'Display_Resolution':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_RES_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DISPLAY_RES_ALL_PATH.getPath())
     elif catalog_name == 'CPU':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_CPU_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_CPU_ALL_PATH.getPath())
     elif catalog_name == 'Driver':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_DRIVER_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_DRIVER_ALL_PATH.getPath())
     elif catalog_name == 'Manufacturer':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_MANUFACTURER_ALL_PATH.getPath())
     elif catalog_name == 'ShortName':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SHORTNAME_ALL_PATH.getPath())
     elif catalog_name == 'LongName':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_LONGNAME_ALL_PATH.getPath())
     elif catalog_name == 'BySL':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_SL_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_SL_ALL_PATH.getPath())
     elif catalog_name == 'Year':
-        catalog_dic = fs_load_JSON_file_dic(PATHS.CATALOG_YEAR_ALL_PATH.getPath())
+        catalog_dic = utils_load_JSON_file_dic(PATHS.CATALOG_YEAR_ALL_PATH.getPath())
     else:
         log_error('fs_get_cataloged_dic_all() Unknown catalog_name = "{}"'.format(catalog_name))
 
@@ -965,7 +965,7 @@ def fs_get_machine_main_db_hash(PATHS, machine_name):
     md5_str = hashlib.md5(machine_name.encode('utf-8')).hexdigest()
     # WARNING Python slicing does not work like in C/C++!
     hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_machines.json')
-    hashed_db_dic = fs_load_JSON_file_dic(hash_DB_FN.getPath())
+    hashed_db_dic = utils_load_JSON_file_dic(hash_DB_FN.getPath())
 
     return hashed_db_dic[machine_name]
 
@@ -1015,7 +1015,7 @@ def fs_get_machine_assets_db_hash(PATHS, machine_name):
     log_debug('fs_get_machine_assets_db_hash() machine {}'.format(machine_name))
     md5_str = hashlib.md5(machine_name.encode('utf-8')).hexdigest()
     hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(md5_str[0:2] + '_assets.json')
-    hashed_db_dic = fs_load_JSON_file_dic(hash_DB_FN.getPath())
+    hashed_db_dic = utils_load_JSON_file_dic(hash_DB_FN.getPath())
 
     return hashed_db_dic[machine_name]
 
@@ -1080,7 +1080,7 @@ def fs_load_render_dic_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
     ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_render.json')
 
-    return fs_load_JSON_file_dic(ROMs_all_FN.getPath())
+    return utils_load_JSON_file_dic(ROMs_all_FN.getPath())
 
 # -------------------------------------------------------------------------------------------------
 # MAME asset cache
@@ -1142,7 +1142,7 @@ def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
     ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
 
-    return fs_load_JSON_file_dic(ROMs_all_FN.getPath())
+    return utils_load_JSON_file_dic(ROMs_all_FN.getPath())
 
 # -------------------------------------------------------------------------------------------------
 # Load and save a bunch of JSON files
@@ -1162,7 +1162,7 @@ def fs_load_files(db_files):
     for f_item in db_files:
         dict_key, db_name, db_path = f_item
         pDialog.updateProgress(item_count, '{}\nDatabase {}'.format(line1_str, db_name))
-        db_dic[dict_key] = fs_load_JSON_file_dic(db_path)
+        db_dic[dict_key] = utils_load_JSON_file_dic(db_path)
         item_count += 1
     pDialog.endProgress()
 
