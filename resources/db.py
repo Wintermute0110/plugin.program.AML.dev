@@ -22,6 +22,7 @@ from .utils import *
 
 # --- Python standard library ---
 import copy
+import hashlib
 import io
 import re
 import subprocess
@@ -918,9 +919,10 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
     #    db_main_hash_idx = { 'machine_name' : 'aa', ... }
     # B) Then traverse a list [0, 1, ..., f] and write the machines in that sub database section.
     pDialog = KodiProgressDialog()
-    pDialog.startProgress('Building main hashed database...')
+    pDialog.startProgress('Building main hashed database...', len(machines))
     db_main_hash_idx = {}
     for key in machines:
+        pDialog.updateProgressInc()
         md5_str = hashlib.md5(key.encode('utf-8')).hexdigest()
         db_name = md5_str[0:2] # WARNING Python slicing does not work like in C/C++!
         db_main_hash_idx[key] = db_name
@@ -932,10 +934,9 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
     for u in range(len(hex_digits)):
         for v in range(len(hex_digits)):
             distributed_db_files.append('{}{}'.format(hex_digits[u], hex_digits[v]))
-    num_items = len(distributed_db_files)
-    item_count = 0
-    pDialog.startProgress('Building main hashed database JSON files...', num_items)
+    pDialog.startProgress('Building main hashed database JSON files...', len(distributed_db_files))
     for db_prefix in distributed_db_files:
+        pDialog.updateProgressInc()
         # log_debug('db prefix {}'.format(db_prefix))
         # --- Generate dictionary in this JSON file ---
         hashed_db_dic = {}
@@ -947,14 +948,12 @@ def fs_build_main_hashed_db(PATHS, settings, control_dic, machines, machines_ren
                 hashed_db_dic[key] = machine_dic
         # --- Save JSON file ---
         hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '_machines.json')
-        fs_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic, verbose = False)
-        item_count += 1
-        pDialog.updateProgress(item_count)
+        utils_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic, verbose = False)
     pDialog.endProgress()
 
     # Update timestamp in control_dic.
     change_control_dic(control_dic, 't_MAME_machine_hash', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 #
 # Retrieves machine from distributed database.
@@ -975,9 +974,10 @@ def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
 
     # machine_name -> MD5 -> take two letters -> aa.json, ab.json, ...
     pDialog = KodiProgressDialog()
-    pDialog.startProgress('Building asset hashed database...')
+    pDialog.startProgress('Building asset hashed database...', len(assets_dic))
     db_main_hash_idx = {}
     for key in assets_dic:
+        pDialog.updateProgressInc()
         md5_str = hashlib.md5(key.encode('utf-8')).hexdigest()
         db_name = md5_str[0:2] # WARNING Python slicing does not work like in C/C++!
         db_main_hash_idx[key] = db_name
@@ -989,23 +989,20 @@ def fs_build_asset_hashed_db(PATHS, settings, control_dic, assets_dic):
     for u in range(len(hex_digits)):
         for v in range(len(hex_digits)):
             distributed_db_files.append('{}{}'.format(hex_digits[u], hex_digits[v]))
-    num_items = len(distributed_db_files)
-    item_count = 0
-    pDialog.startProgress('Building asset hashed database JSON files...', num_items)
+    pDialog.startProgress('Building asset hashed database JSON files...', len(distributed_db_files))
     for db_prefix in distributed_db_files:
+        pDialog.updateProgressInc()
         hashed_db_dic = {}
         for key in db_main_hash_idx:
             if db_main_hash_idx[key] == db_prefix:
                 hashed_db_dic[key] = assets_dic[key]
         hash_DB_FN = PATHS.MAIN_DB_HASH_DIR.pjoin(db_prefix + '_assets.json')
-        fs_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic, verbose = False)
-        item_count += 1
-        pDialog.updateProgress(item_count)
+        utils_write_JSON_file(hash_DB_FN.getPath(), hashed_db_dic, verbose = False)
     pDialog.endProgress()
 
     # --- Timestamp ---
     change_control_dic(control_dic, 't_MAME_asset_hash', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 #
 # Retrieves machine from distributed database.
@@ -1068,13 +1065,13 @@ def fs_build_render_cache(PATHS, settings, control_dic, cache_index_dic, machine
             for machine_name in catalog_all[catalog_key]:
                 m_render_all_dic[machine_name] = machines_render[machine_name]
             ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_render.json')
-            fs_write_JSON_file(ROMs_all_FN.getPath(), m_render_all_dic, verbose = False)
+            utils_write_JSON_file(ROMs_all_FN.getPath(), m_render_all_dic, verbose = False)
         catalog_count += 1
     pDialog.endProgress()
 
     # --- Timestamp ---
     change_control_dic(control_dic, 't_MAME_render_cache_build', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 def fs_load_render_dic_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
@@ -1094,12 +1091,10 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
     pDialog.startProgress('Listing asset cache JSON files...')
     file_list = os.listdir(PATHS.CACHE_DIR.getPath())
     log_info('Found {} files'.format(len(file_list)))
-    processed_items = 0
     deleted_items = 0
     pDialog.resetProgress('Cleaning asset cache JSON files...', len(file_list))
     for file in file_list:
-        pDialog.updateProgress(processed_items)
-        processed_items += 1
+        pDialog.updateProgressInc()
         if not file.endswith('_assets.json'): continue
         full_path = os.path.join(PATHS.CACHE_DIR.getPath(), file)
         # log_debug('UNLINK "{}"'.format(full_path))
@@ -1115,11 +1110,10 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
     for catalog_name in sorted(cache_index_dic):
         catalog_index_dic = cache_index_dic[catalog_name]
         catalog_all = fs_get_cataloged_dic_all(PATHS, catalog_name)
-        item_count = 0
         diag_t = 'Building MAME {} asset cache ({} of {})...'.format(catalog_name, catalog_count, num_catalogs)
         pDialog.resetProgress(diag_t, len(catalog_index_dic))
         for catalog_key in catalog_index_dic:
-            pDialog.updateProgress(item_count)
+            pDialog.updateProgressInc()
             hash_str = catalog_index_dic[catalog_key]['hash']
             # log_verb('fs_build_asset_cache() Catalog "{}" --- Key "{}"'.format(catalog_name, catalog_key))
             # log_verb('fs_build_asset_cache() hash {}'.format(hash_str))
@@ -1129,14 +1123,13 @@ def fs_build_asset_cache(PATHS, settings, control_dic, cache_index_dic, assets_d
             for machine_name in catalog_all[catalog_key]:
                 m_assets_all_dic[machine_name] = assets_dic[machine_name]
             ROMs_all_FN = PATHS.CACHE_DIR.pjoin(hash_str + '_assets.json')
-            fs_write_JSON_file(ROMs_all_FN.getPath(), m_assets_all_dic, verbose = False)
-            item_count += 1
+            utils_write_JSON_file(ROMs_all_FN.getPath(), m_assets_all_dic, verbose = False)
         catalog_count += 1
     pDialog.endProgress()
 
     # Update timestamp and save control_dic.
     change_control_dic(control_dic, 't_MAME_asset_cache_build', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
 def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
     hash_str = cache_index_dic[catalog_name][category_name]['hash']
@@ -1154,32 +1147,26 @@ def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
 def fs_load_files(db_files):
     log_debug('fs_load_files() Loading {} JSON database files ...\n'.format(len(db_files)))
     db_dic = {}
-    line1_str = 'Loading databases...'
-    num_items = len(db_files)
-    item_count = 0
+    d_text = 'Loading databases...'
     pDialog = KodiProgressDialog()
-    pDialog.startProgress(line1_str, num_items)
+    pDialog.startProgress(d_text, len(db_files))
     for f_item in db_files:
         dict_key, db_name, db_path = f_item
-        pDialog.updateProgress(item_count, '{}\nDatabase {}'.format(line1_str, db_name))
+        pDialog.updateProgressInc('{}\nDatabase {}'.format(d_text, db_name))
         db_dic[dict_key] = utils_load_JSON_file_dic(db_path)
-        item_count += 1
     pDialog.endProgress()
 
     return db_dic
 
 def fs_save_files(db_files, json_write_func = utils_write_JSON_file):
     log_debug('fs_save_files() Saving {} JSON database files...\n'.format(len(db_files)))
-    line1_str = 'Saving databases...'
-    num_items = len(db_files)
-    item_count = 0
+    d_text = 'Saving databases...'
     pDialog = KodiProgressDialog()
-    pDialog.startProgress(line1_str, num_items)
+    pDialog.startProgress(d_text, len(db_files))
     for f_item in db_files:
         dict_data, db_name, db_path = f_item
-        pDialog.updateProgress(item_count, '{}\nDatabase {}'.format(line1_str, db_name))
+        pDialog.updateProgressInc('{}\nDatabase {}'.format(d_text, db_name))
         json_write_func(db_path, dict_data)
-        item_count += 1
     pDialog.endProgress()
 
 # -------------------------------------------------------------------------------------------------

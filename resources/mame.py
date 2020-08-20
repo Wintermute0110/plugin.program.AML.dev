@@ -19,7 +19,7 @@ from .utils import *
 from .misc import *
 from .db import *
 from .filters import *
-from .mame_misc
+from .mame_misc import *
 
 # --- Kodi modules ---
 import xbmcgui
@@ -6422,32 +6422,32 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
             if loadflag == 'continue':
                 # This ROM is not valid (not a valid ROM file).
                 # Size must be added to previous ROM.
-                log_debug('SL {} / Item {} / loadflag="continue" case. Adding size {} to previous ROM.'.format(
-                    SL_name, item_name, rom_dic['size']))
+                # log_debug('SL {} / Item {} / loadflag="continue" case. Adding size {} to previous ROM.'.format(
+                #     SL_name, item_name, rom_dic['size']))
                 previous_rom = dataarea_dic['roms'][-1]
                 previous_rom['size'] += rom_dic['size']
                 continue
             elif loadflag == 'ignore':
                 if rom_dic['size'] > 0:
-                    log_debug('SL {}, Item {}, loadflag="ignore" case. Adding size {} to previous ROM.'.format(
-                        SL_name, item_name, rom_dic['size']))
+                    # log_debug('SL {}, Item {}, loadflag="ignore" case. Adding size {} to previous ROM.'.format(
+                    #     SL_name, item_name, rom_dic['size']))
                     previous_rom = dataarea_dic['roms'][-1]
                     previous_rom['size'] += rom_dic['size']
-                else:
-                    log_debug('SL {}, Item {}, loadflag="ignore" case and size = 0. Skipping ROM.'.format(
-                        SL_name, item_name))
+                # else:
+                    # log_debug('SL {}, Item {}, loadflag="ignore" case and size = 0. Skipping ROM.'.format(
+                    #     SL_name, item_name))
                 continue
             elif loadflag == 'reload':
-                log_debug('SL {}, Item {}, loadflag="reload" case. Skipping ROM.'.format(
-                    SL_name, item_name))
+                # log_debug('SL {}, Item {}, loadflag="reload" case. Skipping ROM.'.format(
+                #     SL_name, item_name))
                 continue
             elif loadflag == 'reload_plain':
-                log_debug('SL {}, Item {}, loadflag="reload_plain" case. Skipping ROM.'.format(
-                    SL_name, item_name))
+                # log_debug('SL {}, Item {}, loadflag="reload_plain" case. Skipping ROM.'.format(
+                #     SL_name, item_name))
                 continue
             elif loadflag == 'fill':
-                log_debug('SL {}, Item {}, loadflag="fill" case. Skipping ROM.'.format(
-                    SL_name, item_name))
+                # log_debug('SL {}, Item {}, loadflag="fill" case. Skipping ROM.'.format(
+                #     SL_name, item_name))
                 continue
             elif loadflag == 'load16_word_swap':
                 pass
@@ -6460,8 +6460,8 @@ def _get_SL_dataarea_ROMs(SL_name, item_name, part_child, dataarea_dic):
             elif loadflag == 'load32_word_swap':
                 pass
             else:
-                log_error('SL {}, Item {}, Unknown loadflag = "{}"'.format(
-                    SL_name, item_name, loadflag))
+                # log_error('SL {}, Item {}, Unknown loadflag = "{}"'.format(
+                #     SL_name, item_name, loadflag))
                 raise CriticalError('DEBUG')
 
         # --- Add ROM to DB ---
@@ -7157,19 +7157,20 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
         log_info('Scan of Samples disabled.')
 
     # --- Create a cache of assets ---
-    # >> misc_add_file_cache() creates a set with all files in a given directory.
+    # >> utils_file_cache_add_dir() creates a set with all files in a given directory.
     # >> That set is stored in a function internal cache associated with the path.
     # >> Files in the cache can be searched with misc_search_file_cache()
-    # >> misc_add_file_cache() accepts invalid/empty paths, just do not add them to the cache.
+    # >> utils_file_cache_add_dir() accepts invalid/empty paths, just do not add them to the cache.
     ROM_path_str = ROM_path_FN.getPath()
     CHD_path_str = CHD_path_FN.getPath()
     Samples_path_str = Samples_path_FN.getPath()
     STUFF_PATH_LIST = [ROM_path_str, CHD_path_str, Samples_path_str]
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Listing files in ROM/CHD/Samples directories...', len(STUFF_PATH_LIST))
-    for i, asset_dir in enumerate(STUFF_PATH_LIST):
-        misc_add_file_cache(asset_dir)
-        pDialog.updateProgress(i)
+    utils_file_cache_clear()
+    for asset_dir in STUFF_PATH_LIST:
+        pDialog.updateProgressInc()
+        utils_file_cache_add_dir(asset_dir)
     pDialog.endProgress()
 
     # --- Scan machine archives ---
@@ -7208,7 +7209,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
                 # ROM_FN = ROM_path_FN.pjoin(archive_name)
                 # if ROM_FN.exists():
                 # --- New code using file cache ---
-                ROM_FN = misc_search_file_cache(ROM_path_str, rom, MAME_ROM_EXTS)
+                ROM_FN = utils_file_cache_search(ROM_path_str, rom, MAME_ROM_EXTS)
                 if ROM_FN:
                     have_rom_list[i] = True
                     m_have_str_list.append('HAVE ROM {}'.format(rom))
@@ -7231,7 +7232,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             scan_march_SAM_total += 1
             have_sample_list = [False] * len(sample_list)
             for i, sample in enumerate(sample_list):
-                Sample_FN = misc_search_file_cache(Samples_path_str, sample, MAME_SAMPLE_EXTS)
+                Sample_FN = utils_file_cache_search(Samples_path_str, sample, MAME_SAMPLE_EXTS)
                 if ROM_FN:
                     have_sample_list[i] = True
                     m_have_str_list.append('HAVE SAM {}'.format(sample))
@@ -7263,7 +7264,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
                 # if CHD_FN.exists():
                 # --- New code using file cache ---
                 # log_debug('Testing CHD "{}"'.format(chd_name))
-                CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
+                CHD_FN = utils_file_cache_search(CHD_path_str, chd_name, MAME_CHD_EXTS)
                 if CHD_FN:
                     has_chd_list[idx] = True
                     m_have_str_list.append('HAVE CHD {}'.format(chd_name))
@@ -7387,7 +7388,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     for rom_name in ROM_ZIP_list:
         pDialog.updateProgressInc()
         scan_ROM_ZIP_files_total += 1
-        ROM_FN = misc_search_file_cache(ROM_path_str, rom_name, MAME_ROM_EXTS)
+        ROM_FN = utils_file_cache_search(ROM_path_str, rom_name, MAME_ROM_EXTS)
         if ROM_FN:
             scan_ROM_ZIP_files_have += 1
         else:
@@ -7417,7 +7418,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     for sample_name in Sample_ZIP_list:
         pDialog.updateProgressInc()
         scan_Samples_ZIP_total += 1
-        Sample_FN = misc_search_file_cache(Samples_path_str, sample_name, MAME_SAMPLE_EXTS)
+        Sample_FN = utils_file_cache_search(Samples_path_str, sample_name, MAME_SAMPLE_EXTS)
         if Sample_FN:
             scan_Samples_ZIP_have += 1
         else:
@@ -7447,7 +7448,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
     for chd_name in CHD_list:
         pDialog.updateProgressInc()
         scan_CHD_files_total += 1
-        CHD_FN = misc_search_file_cache(CHD_path_str, chd_name, MAME_CHD_EXTS)
+        CHD_FN = utils_file_cache_search(CHD_path_str, chd_name, MAME_CHD_EXTS)
         if CHD_FN:
             scan_CHD_files_have += 1
         else:
@@ -7555,9 +7556,10 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
     pDialog = KodiProgressDialog()
     d_text = 'Listing Sofware Lists ROM ZIPs and CHDs...'
     pDialog.startProgress('{}\n{}'.format(d_text, 'Listing SL ROM ZIP path'), 2)
-    misc_add_file_cache(SL_ROM_path_str, verbose = True)
+    utils_file_cache_clear()
+    utils_file_cache_add_dir(SL_ROM_path_str, verbose = True)
     pDialog.updateProgress(1, '{}\n{}'.format(d_text, 'Listing SL CHD path'))
-    misc_add_file_cache(SL_CHD_path_str, verbose = True)
+    utils_file_cache_add_dir(SL_CHD_path_str, verbose = True)
     pDialog.endProgress()
 
     # --- SL ROM ZIP archives and CHDs ---
@@ -7595,7 +7597,7 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
                 have_rom_list = [False] * len(rom_list)
                 for i, rom_file in enumerate(rom_list):
                     SL_ROMs_total += 1
-                    SL_ROM_FN = misc_search_file_cache(SL_ROM_path_str, rom_file, SL_ROM_EXTS)
+                    SL_ROM_FN = utils_file_cache_search(SL_ROM_path_str, rom_file, SL_ROM_EXTS)
                     # ROM_path = SL_ROM_path_str + '/' + rom_file
                     if SL_ROM_FN:
                         have_rom_list[i] = True
@@ -7618,7 +7620,7 @@ def mame_scan_SL_ROMs(PATHS, settings, control_dic, options_dic, SL_catalog_dic)
                     SL_CHDs_total += 1
                     has_chd_list = [False] * len(chd_list)
                     for idx, chd_file in enumerate(chd_list):
-                        SL_CHD_FN = misc_search_file_cache(SL_CHD_path_str, chd_file, SL_CHD_EXTS)
+                        SL_CHD_FN = utils_file_cache_search(SL_CHD_path_str, chd_file, SL_CHD_EXTS)
                         # CHD_path = SL_CHD_path_str + '/' + chd_file
                         if SL_CHD_FN:
                             has_chd_list[idx] = True
@@ -7771,13 +7773,14 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
     asset_dirs = [''] * len(ASSET_MAME_T_LIST)
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Listing files in asset directories...', len(ASSET_MAME_T_LIST))
+    utils_file_cache_clear()
     for i, asset_tuple in enumerate(ASSET_MAME_T_LIST):
         pDialog.updateProgressInc()
         asset_dir = asset_tuple[1]
         full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir)
         asset_dir_str = full_asset_dir_FN.getPath()
         asset_dirs[i] = asset_dir_str
-        misc_add_file_cache(asset_dir_str)
+        utils_file_cache_add_dir(asset_dir_str)
     pDialog.endProgress()
 
     # --- First pass: search for on-disk assets ---
@@ -7790,13 +7793,13 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
             asset_key = asset_tuple[0]
             asset_dir = asset_tuple[1]
             if asset_key == 'artwork':
-                asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_ARTWORK_EXTS)
+                asset_FN = utils_file_cache_search(asset_dirs[idx], m_name, ASSET_ARTWORK_EXTS)
             elif asset_key == 'manual':
-                asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_MANUAL_EXTS)
+                asset_FN = utils_file_cache_search(asset_dirs[idx], m_name, ASSET_MANUAL_EXTS)
             elif asset_key == 'trailer':
-                asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_TRAILER_EXTS)
+                asset_FN = utils_file_cache_search(asset_dirs[idx], m_name, ASSET_TRAILER_EXTS)
             else:
-                asset_FN = misc_search_file_cache(asset_dirs[idx], m_name, ASSET_IMAGE_EXTS)
+                asset_FN = utils_file_cache_search(asset_dirs[idx], m_name, ASSET_IMAGE_EXTS)
             # Low level debug.
             # if m_name == '005':
             #     log_debug('asset_key       "{}"'.format(asset_key))
@@ -7879,20 +7882,20 @@ def mame_scan_MAME_assets(PATHS, settings, control_dic,
     report_slist = []
     report_slist.append('*** Advanced MAME Launcher MAME machines asset scanner report ***')
     report_slist.append('Total MAME machines {}'.format(total_machines))
-    report_slist.append('Have 3D Boxes   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*box3D))
-    report_slist.append('Have Artpreview {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Artp))
-    report_slist.append('Have Artwork    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Art))
-    report_slist.append('Have Cabinets   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Cab))
-    report_slist.append('Have Clearlogos {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Clr))
-    report_slist.append('Have CPanels    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*CPan))
-    report_slist.append('Have Fanarts    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Fan))
-    report_slist.append('Have Flyers     {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Fly))
-    report_slist.append('Have Manuals    {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Man))
-    report_slist.append('Have Marquees   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Mar))
-    report_slist.append('Have PCBs       {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*PCB))
-    report_slist.append('Have Snaps      {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Snap))
-    report_slist.append('Have Titles     {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Tit))
-    report_slist.append('Have Trailers   {0:5d} (Missing {1:5d}, Alternate {2:5d})'.format(*Tra))
+    report_slist.append('Have 3D Boxes   {:5d} (Missing {:5d}, Alternate {:5d})'.format(*box3D))
+    report_slist.append('Have Artpreview {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Artp))
+    report_slist.append('Have Artwork    {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Art))
+    report_slist.append('Have Cabinets   {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Cab))
+    report_slist.append('Have Clearlogos {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Clr))
+    report_slist.append('Have CPanels    {:5d} (Missing {:5d}, Alternate {:5d})'.format(*CPan))
+    report_slist.append('Have Fanarts    {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Fan))
+    report_slist.append('Have Flyers     {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Fly))
+    report_slist.append('Have Manuals    {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Man))
+    report_slist.append('Have Marquees   {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Mar))
+    report_slist.append('Have PCBs       {:5d} (Missing {:5d}, Alternate {:5d})'.format(*PCB))
+    report_slist.append('Have Snaps      {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Snap))
+    report_slist.append('Have Titles     {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Tit))
+    report_slist.append('Have Trailers   {:5d} (Missing {:5d}, Alternate {:5d})'.format(*Tra))
     report_slist.append('')
     table_str_list = text_render_table_str(table_str)
     report_slist.extend(table_str_list)
@@ -8006,7 +8009,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
         SL_roms = utils_load_JSON_file_dic(SL_DB_FN.getPath(), verbose = False)
 
         # --- Cache files ---
-        misc_clear_file_cache(verbose = False)
+        utils_file_cache_clear(verbose = False)
         num_assets = len(ASSET_SL_T_LIST)
         asset_dirs = [''] * num_assets
         for i, asset_tuple in enumerate(ASSET_SL_T_LIST):
@@ -8014,7 +8017,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
             full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir).pjoin(SL_name)
             asset_dir_str = full_asset_dir_FN.getPath()
             asset_dirs[i] = asset_dir_str
-            misc_add_file_cache(asset_dir_str, verbose = False)
+            utils_file_cache_add_dir(asset_dir_str, verbose = False)
 
         # --- First pass: scan for on-disk assets ---
         assets_file_name = SL_index_dic[SL_name]['rom_DB_noext'] + '_assets.json'
@@ -8028,11 +8031,11 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
                 asset_dir = asset_tuple[1]
                 full_asset_dir_FN = Asset_path_FN.pjoin(asset_dir).pjoin(SL_name)
                 if asset_key == 'manual':
-                    asset_FN = misc_search_file_cache(asset_dirs[idx], rom_key, ASSET_MANUAL_EXTS)
+                    asset_FN = utils_file_cache_search(asset_dirs[idx], rom_key, ASSET_MANUAL_EXTS)
                 elif asset_key == 'trailer':
-                    asset_FN = misc_search_file_cache(asset_dirs[idx], rom_key, ASSET_TRAILER_EXTS)
+                    asset_FN = utils_file_cache_search(asset_dirs[idx], rom_key, ASSET_TRAILER_EXTS)
                 else:
-                    asset_FN = misc_search_file_cache(asset_dirs[idx], rom_key, ASSET_IMAGE_EXTS)
+                    asset_FN = utils_file_cache_search(asset_dirs[idx], rom_key, ASSET_IMAGE_EXTS)
                 # log_info('Testing P "{}"'.format(asset_FN.getPath()))
                 SL_assets[asset_key] = asset_FN.getOriginalPath() if asset_FN else ''
             ondisk_assets_dic[rom_key] = SL_assets
@@ -8049,6 +8052,7 @@ def mame_scan_SL_assets(PATHS, settings, control_dic, SL_index_dic, SL_pclone_di
                 asset_dir = asset_tuple[1]
                 # >> Reset asset
                 SL_assets_dic[rom_key][asset_key] = ''
+                # TODO Refactor this to reduce indentation.
                 # >> If artwork exists on disk set it on database
                 if ondisk_assets_dic[rom_key][asset_key]:
                     SL_assets_dic[rom_key][asset_key] = ondisk_assets_dic[rom_key][asset_key]

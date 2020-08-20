@@ -18,6 +18,7 @@ from .constants import *
 from .utils import *
 from .misc import *
 from .db import *
+from .mame_misc import *
 
 # --- Python standard library ---
 import xml.etree.ElementTree as ET
@@ -1541,9 +1542,9 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         # --- Save filter database ---
         writing_ticks_start = time.time()
         output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_render.json')
-        fs_write_JSON_file(output_FN.getPath(), filtered_render_dic, verbose = False)
+        utils_write_JSON_file(output_FN.getPath(), filtered_render_dic, verbose = False)
         output_FN = PATHS.FILTERS_DB_DIR.pjoin(rom_DB_noext + '_assets.json')
-        fs_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
+        utils_write_JSON_file(output_FN.getPath(), filtered_assets_dic, verbose = False)
         writing_ticks_end = time.time()
         writing_time = writing_ticks_end - writing_ticks_start
         log_debug('JSON writing time {:.4f} s'.format(writing_time))
@@ -1554,12 +1555,12 @@ def filter_build_custom_filters(PATHS, settings, control_dic,
         r_full.append('')
 
     # --- Save custom filter index ---
-    fs_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
+    utils_write_JSON_file(PATHS.FILTERS_INDEX_PATH.getPath(), Filters_index_dic)
     pDialog.endProgress()
 
     # --- Update timestamp ---
     change_control_dic(control_dic, 't_Custom_Filter_build', time.time())
-    fs_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
+    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic)
 
     # --- Write MAME scanner reports ---
     log_info('Writing report "{}"'.format(PATHS.REPORT_CF_DB_BUILD_PATH.getPath()))
