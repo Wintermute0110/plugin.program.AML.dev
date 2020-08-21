@@ -9,7 +9,7 @@
 
     <setting id="separator" type="lsep" label="Retroarch MAME 2003 Plus" />
     <setting label="Retroarch executable path" type="file" id="retroarch_prog" />
-    <setting label="Libretro path" type="file" id="libretro_dir" />
+    <setting label="Libretro path" type="folder" id="libretro_dir" source="" />
     <setting label="MAME XML path" type="file" id="xml_2003_path" />
 </category>
 <category label="Optional paths">

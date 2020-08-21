@@ -4,7 +4,7 @@ WIP      [CORE] JSON database files (specially MAME_DB_main.json, MAME_DB_render
          MAME_assets.json) could be compressed with DEFLATE to reduce the size on disk. They
          will decompressed on the fly. I have to test if this is faster than no compression at all.
          Use low values of compression in the deflate algorithm. Maximum compression is very
-         slow but less compression is fast and may reduce the XML file size a lot.
+         slow but less compression is fast and may reduce the JSON file size a lot.
 
 WIP      [AUDIT] Samples distributed with MAME are uncompressed and not stored into ZIP files.
          The MAME audit engine must take this into account.
@@ -20,7 +20,7 @@ WIP      [CORE] AML/AEL must report the aspect ratio of artwork to the skin.
 
 WIP      [CORE] Implement the "Read-only launchers". ROLs are XML files that include the
          launcher information as well as the ROMs information. ROLs are generated with AML,
-         can be exported as XML and then used with AEL. AEL will trear ROLs are read-only
+         can be exported as XML and then used with AEL. AEL will handle ROLs as read-only
          (cannot be edited). If a ROL should be changed, then the XML is edited or regenerated
          and then imported again into AML.
 
@@ -58,17 +58,21 @@ WIP      Retroarch core MAME 2003 Plus allows to save the MAME XML file needed b
          See https://github.com/libretro/mame2010-libretro/pull/123
          See https://github.com/libretro/mame2010-libretro/tree/master/metadata
 
-[B]Advanced MAME Launcher | version 1.0.0 | xx August 2020[/B]
-
-WIP      [CORE] Port the addon to Kodi Matrix and Python 3.
-
 WIP      [DOCS] Improve the AML wiki in Github and move documentation from Kodi forum to
          Github wiki.
 
 
+[B]Advanced MAME Launcher | version 1.0.0 | xx August 2020[/B]
+
+FEATURE  [CORE] Port the addon to Kodi Matrix and Python 3. This version of the addon is
+         feature synched with version 0.10.0
+
+
 [B]Advanced MAME Launcher | version 0.10.0 | xx August 2020[/B]
 
-WIP      [CORE] Create branch python2 and place series 0.10.x into this branch.
+FEATURE  [CORE] Create branch python2 and place series 0.10.x into this branch.
+
+WIP      [CORE] Support Retroarch MAME 2003 Plus.
 
 FEATURE  [FILTERS] Implement filtering options NoMissingROMs, NoMissingCHDs
          and NoMissingSamples.

@@ -287,7 +287,12 @@ def run_plugin(addon_argv):
     for i in range(len(addon_argv)): log_debug('addon_argv[{}] = "{}"'.format(i, addon_argv[i]))
     # Timestamp to see if this submodule is reinterpreted or not (interpreter uses a cached instance).
     log_debug('submodule global timestamp {}'.format(g_time_str))
-    log_debug('recursionlimit {}'.format(sys.getrecursionlimit()))
+    # log_debug('recursionlimit {}'.format(sys.getrecursionlimit()))
+
+    # --- Secondary setting processing ---
+    get_settings_log_enabled()
+    log_debug('Operation mode "{}"'.format(g_settings['op_mode']))
+    log_debug('SL global enable is {}'.format(g_settings['global_enable_SL']))
 
     # --- Playground and testing code ---
     # kodi_get_screensaver_mode()
@@ -519,14 +524,9 @@ def run_plugin(addon_argv):
     log_debug('Advanced MAME Launcher exit')
 
 #
-# Get Addon Settings
-#
+# Get Addon Settings. log_*() functions cannot be used here during normal operation.
 def get_settings():
     global g_settings
-    global g_mame_icon
-    global g_mame_fanart
-    global g_SL_icon
-    global g_SL_fanart
     o = __addon__
 
     # --- Main operation ---
@@ -612,19 +612,40 @@ def get_settings():
     g_settings['debug_SL_ROM_DB_data'] = o.getSettingBool('debug_SL_ROM_DB_data')
     g_settings['debug_SL_Audit_DB_data'] = o.getSettingBool('debug_SL_Audit_DB_data')
 
-    # --- Transform settings data ---
-    g_settings['op_mode'] = OP_MODE_LIST[g_settings['op_mode_raw']]
-
-    g_mame_icon   = assets_get_asset_key_MAME_icon(g_settings['artwork_mame_icon'])
-    g_mame_fanart = assets_get_asset_key_MAME_fanart(g_settings['artwork_mame_fanart'])
-    g_SL_icon     = assets_get_asset_key_SL_icon(g_settings['artwork_SL_icon'])
-    g_SL_fanart   = assets_get_asset_key_SL_fanart(g_settings['artwork_SL_fanart'])
-
-    # --- Dump settings for DEBUG ---
+    # --- Dump settings for DEBUG. Requires changes in run_plugin() to work ---
     # log_debug('Settings dump BEGIN')
     # for key in sorted(g_settings):
     #     log_debug('{} --> {:10s} {}'.format(key.rjust(21), str(g_settings[key]), type(g_settings[key])))
     # log_debug('Settings dump END')
+
+#
+# Called after log is enabled. Process secondary settings.
+#
+def get_settings_log_enabled():
+    global g_settings
+    global g_mame_icon
+    global g_mame_fanart
+    global g_SL_icon
+    global g_SL_fanart
+
+    # --- Transform settings data ---
+    g_settings['op_mode'] = OP_MODE_LIST[g_settings['op_mode_raw']]
+
+    # Map AML artwork to Kodi standard artwork.
+    g_mame_icon = assets_get_asset_key_MAME_icon(g_settings['artwork_mame_icon'])
+    g_mame_fanart = assets_get_asset_key_MAME_fanart(g_settings['artwork_mame_fanart'])
+    g_SL_icon = assets_get_asset_key_SL_icon(g_settings['artwork_SL_icon'])
+    g_SL_fanart = assets_get_asset_key_SL_fanart(g_settings['artwork_SL_fanart'])
+
+    # Enable or disable Software List depending on settings.
+    if g_settings['op_mode'] == OP_MODE_VANILLA and g_settings['enable_SL'] == True:
+        g_settings['global_enable_SL'] = True
+    elif g_settings['op_mode'] == OP_MODE_VANILLA and g_settings['enable_SL'] == False:
+        g_settings['global_enable_SL'] = False
+    elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        g_settings['global_enable_SL'] = False
+    else:
+        raise TypeError('Wrong g_settings["op_mode"] = {}'.format(g_settings['op_mode']))
 
 # ---------------------------------------------------------------------------------------------
 # Root menu rendering
@@ -992,9 +1013,8 @@ def render_root_list():
     mame_view_mode = g_settings['mame_view_mode']
     set_render_root_data()
 
-    # ----- Machine count -----
+    # ----- MAME machine count -----
     cache_index_dic = utils_load_JSON_file_dic(g_PATHS.CACHE_INDEX_PATH.getPath())
-    SL_index_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
 
     # Do not crash if cache_index_dic is corrupted or has missing fields (may happen in
     # upgrades). This function must never crash because the user must have always access to
@@ -1048,47 +1068,48 @@ def render_root_list():
         num_cat_BySL = len(cache_index_dic['BySL'])
         num_cat_Year = len(cache_index_dic['Year'])
 
-        counters_available = True
-        log_debug('render_root_list() counters_available = True')
+        MAME_counters_available = True
+    except KeyError:
+        MAME_counters_available = False
+    log_debug('render_root_list() MAME_counters_available = {}'.format(MAME_counters_available))
 
-    except KeyError as E:
-        counters_available = False
-        log_debug('render_root_list() counters_available = False')
-
-    try:
-        num_SL_all = 0
-        num_SL_ROMs = 0
-        num_SL_CHDs = 0
-        num_SL_mixed = 0
-        num_SL_empty = 0
-        for l_name, l_dic in SL_index_dic.items():
-            num_SL_all += 1
-            if l_dic['num_with_ROMs'] > 0 and l_dic['num_with_CHDs'] == 0:
-                num_SL_ROMs += 1
-            elif l_dic['num_with_ROMs'] == 0 and l_dic['num_with_CHDs'] > 0:
-                num_SL_CHDs += 1
-            elif l_dic['num_with_ROMs'] > 0 and l_dic['num_with_CHDs'] > 0:
-                num_SL_mixed += 1
-            elif l_dic['num_with_ROMs'] == 0 and l_dic['num_with_CHDs'] == 0:
-                num_SL_empty += 1
-            else:
-                log_error('Logical error in SL {}'.format(l_name))
-        SL_counters_available = True
-        log_debug('render_root_list() SL_counters_available = True')
-        # log_debug('There are {} SL_all lists.'.format(num_SL_all))
-        # log_debug('There are {} SL_ROMs lists.'.format(num_SL_ROMs))
-        # log_debug('There are {} SL_mixed lists.'.format(num_SL_mixed))
-        # log_debug('There are {} SL_CHDs lists.'.format(num_SL_CHDs))
-        # log_debug('There are {} SL_empty lists.'.format(num_SL_empty))
-
-    except KeyError as E:
+    # --- SL item count ---
+    if g_settings['display_main_filters']:
+        SL_index_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
+        try:
+            num_SL_all = 0
+            num_SL_ROMs = 0
+            num_SL_CHDs = 0
+            num_SL_mixed = 0
+            num_SL_empty = 0
+            for l_name, l_dic in SL_index_dic.items():
+                num_SL_all += 1
+                if l_dic['num_with_ROMs'] > 0 and l_dic['num_with_CHDs'] == 0:
+                    num_SL_ROMs += 1
+                elif l_dic['num_with_ROMs'] == 0 and l_dic['num_with_CHDs'] > 0:
+                    num_SL_CHDs += 1
+                elif l_dic['num_with_ROMs'] > 0 and l_dic['num_with_CHDs'] > 0:
+                    num_SL_mixed += 1
+                elif l_dic['num_with_ROMs'] == 0 and l_dic['num_with_CHDs'] == 0:
+                    num_SL_empty += 1
+                else:
+                    log_error('Logical error in SL {}'.format(l_name))
+            SL_counters_available = True
+            # log_debug('There are {} SL_all lists.'.format(num_SL_all))
+            # log_debug('There are {} SL_ROMs lists.'.format(num_SL_ROMs))
+            # log_debug('There are {} SL_mixed lists.'.format(num_SL_mixed))
+            # log_debug('There are {} SL_CHDs lists.'.format(num_SL_CHDs))
+            # log_debug('There are {} SL_empty lists.'.format(num_SL_empty))
+        except KeyError as E:
+            SL_counters_available = False
+            # num_SL_empty always used to control visibility. If 0 then 'SL empty' is not visible.
+            num_SL_empty = 0
+    else:
         SL_counters_available = False
-        # num_SL_empty always used to control visibility. If 0 then 'SL empty' is not visible.
-        num_SL_empty = 0
-        log_debug('render_root_list() SL_counters_available = False')
+    log_debug('render_root_list() SL_counters_available = {}'.format(SL_counters_available))
 
     # --- Machine counters ---
-    if counters_available:
+    if MAME_counters_available:
         if mame_view_mode == VIEW_MODE_FLAT:
             a = ' [COLOR orange]({} machines)[/COLOR]'
             root_Main['Main_Normal'][2] += a.format(num_m_Main_Normal)
@@ -1152,9 +1173,9 @@ def render_root_list():
 
     # If everything deactivated render the main filters so user has access to the context menu.
     big_OR = g_settings['display_main_filters'] or g_settings['display_binary_filters'] or \
-             g_settings['display_catalog_filters'] or g_settings['display_DAT_browser'] or \
-             g_settings['display_SL_browser'] or g_settings['display_MAME_favs'] or \
-             g_settings['display_SL_favs'] or g_settings['display_custom_filters']
+        g_settings['display_catalog_filters'] or g_settings['display_DAT_browser'] or \
+        g_settings['display_SL_browser'] or g_settings['display_MAME_favs'] or \
+        g_settings['display_SL_favs'] or g_settings['display_custom_filters']
     if not big_OR:
         g_settings['display_main_filters'] = True
 
@@ -1211,7 +1232,10 @@ def render_root_list():
         render_root_category_row(*root_special['Command'])
 
     # --- Software lists ---
-    if g_settings['display_SL_browser'] and g_settings['enable_SL']:
+    # If SL are globally disabled do not render SL browser.
+    # If SL are globally enabled, SL databases are built but the user may choose to not
+    # render the SL browser.
+    if g_settings['display_SL_browser'] and g_settings['global_enable_SL']:
         render_root_category_row(*root_SL['SL'])
         render_root_category_row(*root_SL['SL_ROM'])
         render_root_category_row(*root_SL['SL_ROM_CHD'])
@@ -1239,14 +1263,14 @@ def render_root_list():
         render_root_category_row_custom_CM(*root_special_CM['MAME_Recent'])
 
     # --- SL Favourite stuff ---
-    if g_settings['display_SL_favs']:
+    if g_settings['display_SL_favs'] and g_settings['global_enable_SL']:
         render_root_category_row_custom_CM(*root_special_CM['SL_Favs'])
-    if g_settings['display_SL_most']:
+    if g_settings['display_SL_most'] and g_settings['global_enable_SL']:
         render_root_category_row_custom_CM(*root_special_CM['SL_Most'])
-    if g_settings['display_SL_recent']:
+    if g_settings['display_SL_recent'] and g_settings['global_enable_SL']:
         render_root_category_row_custom_CM(*root_special_CM['SL_Recent'])
 
-    # --- Always render these two ---
+    # Utilities and Reports special menus.
     if g_settings['display_utilities']:
         Utilities_plot = ('Execute several [COLOR orange]Utilities[/COLOR]. For example, to '
             'check you AML configuration.')

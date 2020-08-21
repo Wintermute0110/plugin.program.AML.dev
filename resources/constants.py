@@ -68,12 +68,12 @@ class Addon_Error(Exception):
 # -------------------------------------------------------------------------------------------------
 # Operational modes
 # This must match setting op_mode_raw in settings.xml or bad things will happen.
-OP_MODE_EXTERNAL           = 'External MAME'
+OP_MODE_VANILLA            = 'Vanilla MAME'
 OP_MODE_RETRO_MAME2003PLUS = 'Retroarch MAME 2003 Plus'
 OP_MODE_RETRO_MAME2010     = 'Retroarch MAME 2010'
 OP_MODE_RETRO_MAME2014     = 'Retroarch MAME 2014'
 OP_MODE_LIST = [
-    OP_MODE_EXTERNAL,
+    OP_MODE_VANILLA,
     OP_MODE_RETRO_MAME2003PLUS,
     OP_MODE_RETRO_MAME2010,
     OP_MODE_RETRO_MAME2014,
