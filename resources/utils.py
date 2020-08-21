@@ -290,7 +290,7 @@ def utils_load_JSON_file_list(json_filename, verbose = True):
 def utils_write_JSON_file(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
-        log_debug('fs_write_JSON_file() "{}"'.format(json_filename))
+        log_debug('utils_write_JSON_file() "{}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding = 'utf-8') as file:
             if OPTION_COMPACT_JSON:
@@ -307,12 +307,12 @@ def utils_write_JSON_file(json_filename, json_data, verbose = True):
     l_end = time.time()
     if verbose:
         write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file() Writing time {:f} s'.format(write_time_s))
+        log_debug('utils_write_JSON_file() Writing time {:f} s'.format(write_time_s))
 
 def utils_write_JSON_file_pprint(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
-        log_debug('fs_write_JSON_file_pprint() "{}"'.format(json_filename))
+        log_debug('utils_write_JSON_file_pprint() "{}"'.format(json_filename))
     try:
         with io.open(json_filename, 'wt', encoding='utf-8') as file:
             file.write(json.dumps(json_data, ensure_ascii = False, sort_keys = True,
@@ -326,12 +326,12 @@ def utils_write_JSON_file_pprint(json_filename, json_data, verbose = True):
     l_end = time.time()
     if verbose:
         write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file_pprint() Writing time {:f} s'.format(write_time_s))
+        log_debug('utils_write_JSON_file_pprint() Writing time {:f} s'.format(write_time_s))
 
 def utils_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
     l_start = time.time()
     if verbose:
-        log_debug('fs_write_JSON_file_lowmem() "{}"'.format(json_filename))
+        log_debug('utils_write_JSON_file_lowmem() "{}"'.format(json_filename))
     try:
         if OPTION_COMPACT_JSON:
             jobj = json.JSONEncoder(ensure_ascii = False, sort_keys = True)
@@ -351,7 +351,7 @@ def utils_write_JSON_file_lowmem(json_filename, json_data, verbose = True):
     l_end = time.time()
     if verbose:
         write_time_s = l_end - l_start
-        log_debug('fs_write_JSON_file_lowmem() Writing time {:f} s'.format(write_time_s))
+        log_debug('utils_write_JSON_file_lowmem() Writing time {:f} s'.format(write_time_s))
 
 # -------------------------------------------------------------------------------------------------
 # Threaded JSON loader

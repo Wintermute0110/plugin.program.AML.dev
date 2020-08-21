@@ -75,14 +75,16 @@ class AML_Paths:
         self.CUSTOM_FILTER_PATH   = self.ADDON_CODE_DIR.pjoin('filters/AML-MAME-filters.xml')
 
         # --- MAME XML, main database and main PClone list ---
-        self.MAME_XML_PATH        = self.ADDON_DATA_DIR.pjoin('MAME.xml')
-        self.MAIN_ASSETS_DB_PATH  = self.ADDON_DATA_DIR.pjoin('MAME_assets.json')
-        self.MAIN_CONTROL_PATH    = self.ADDON_DATA_DIR.pjoin('MAME_control_dic.json')
-        self.DEVICES_DB_PATH      = self.ADDON_DATA_DIR.pjoin('MAME_DB_devices.json')
-        self.MAIN_DB_PATH         = self.ADDON_DATA_DIR.pjoin('MAME_DB_main.json')
-        self.RENDER_DB_PATH       = self.ADDON_DATA_DIR.pjoin('MAME_DB_render.json')
-        self.ROMS_DB_PATH         = self.ADDON_DATA_DIR.pjoin('MAME_DB_roms.json')
-        self.SHA1_HASH_DB_PATH    = self.ADDON_DATA_DIR.pjoin('MAME_DB_SHA1_hashes.json')
+        self.MAME_XML_PATH = self.ADDON_DATA_DIR.pjoin('MAME.xml')
+        self.MAME_XML_CONTROL_PATH = self.ADDON_DATA_DIR.pjoin('MAME_control.json')
+        self.MAME_2003_PLUS_XML_CONTROL_PATH = self.ADDON_DATA_DIR.pjoin('MAME_2003_plus_control.json')
+        self.MAIN_ASSETS_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_assets.json')
+        self.MAIN_CONTROL_PATH = self.ADDON_DATA_DIR.pjoin('MAME_control_dic.json')
+        self.DEVICES_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_DB_devices.json')
+        self.MAIN_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_DB_main.json')
+        self.RENDER_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_DB_render.json')
+        self.ROMS_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_DB_roms.json')
+        self.SHA1_HASH_DB_PATH = self.ADDON_DATA_DIR.pjoin('MAME_DB_SHA1_hashes.json')
         self.MAIN_PCLONE_DIC_PATH = self.ADDON_DATA_DIR.pjoin('MAME_DB_pclone_dic.json')
 
         # --- ROM set databases ---
@@ -5437,29 +5439,14 @@ def command_context_setup_plugin():
         log_info('Operation mode {}'.format(g_settings['op_mode']))
         log_info('DO_AUDIT {}'.format(DO_AUDIT))
 
-        # Errors are checked inside the fs_extract*() or fs_process*() functions.
+        # --- Build main MAME database, PClone list and MAME hashed database (mandatory) ---
+        # control_dic is created or resseted in this function.
         options_dic = {}
-        if g_settings['op_mode'] == OP_MODE_EXTERNAL:
-            # Extract MAME.xml from MAME exectuable.
-            # Reset control_dic and count the number of MAME machines.
-            mame_extract_MAME_XML(g_PATHS, g_settings, __addon_version__, options_dic)
-        elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-            # For MAME 2003 Plus the XML is already there.
-            # Reset control_dic and count the number of machines.
-            mame_process_RETRO_MAME2003PLUS(g_PATHS, g_settings, __addon_version__, options_dic)
-        else:
-            log_error('command_context_setup_plugin() Unknown op_mode "{}"'.format(g_settings['op_mode']))
-            kodi_notify_warn('Database not built')
-            return
+        db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, __addon_version__, options_dic)
         if options_dic['abort']:
             kodi_dialog_OK(options_dic['msg'])
             return
-
-        # --- Build main MAME database, PClone list and MAME hashed database (mandatory) ---
         control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        options_dic = mame_check_before_build_MAME_main_database(g_PATHS, g_settings, control_dic)
-        if options_dic['abort']: return
-        db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, control_dic, __addon_version__)
 
         # --- Build ROM audit/scanner databases (mandatory) ---
         options_dic = mame_check_before_build_ROM_audit_databases(g_PATHS, g_settings, control_dic)

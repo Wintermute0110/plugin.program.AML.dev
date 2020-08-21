@@ -298,7 +298,15 @@ def mame_create_empty_control_dic(PATHS, AML_version_str):
             infinite_loop = False
     log_debug('mame_create_empty_control_dic() Exiting function')
 
-def mame_extract_MAME_version(PATHS, mame_prog_FN):
+def mame_new_XML_control_dic():
+    return {
+        'ver_AML_int' : 0,
+        'ver_AML_str' : '',
+        'stats_total_machines' : 0,
+        't_XML_extraction' : 0,
+    }
+
+def mame_get_MAME_exe_version(PATHS, mame_prog_FN):
     (mame_dir, mame_exec) = os.path.split(mame_prog_FN.getPath())
     log_info('mame_extract_MAME_version() mame_prog_FN "{}"'.format(mame_prog_FN.getPath()))
     log_info('mame_extract_MAME_version() mame_dir     "{}"'.format(mame_dir))
@@ -325,16 +333,29 @@ def mame_extract_MAME_version(PATHS, mame_prog_FN):
 #
 # Counts MAME machines in a modern MAME XML file.
 #
-def mame_count_MAME_machines_modern(XML_path_FN):
+def mame_count_MAME_machines(XML_path_FN):
     log_debug('mame_count_MAME_machines_modern() BEGIN...')
     log_debug('XML "{}"'.format(XML_path_FN.getPath()))
     pDialog = KodiProgressDialog()
     pDialog.startProgress('Counting number of MAME machines...')
-    num_machines = 0
+    num_machines_modern = 0
+    num_machines_legacy = 0
     with open(XML_path_FN.getPath(), 'rt') as f:
         for line in f:
-            if line.find('<machine name=') > 0: num_machines += 1
+            if line.find('<machine name=') > 0:
+                num_machines_modern += 1
+                continue
+            if line.find('<game name=') > 0:
+                num_machines_legacy += 1
+                continue
     pDialog.endProgress()
+    if num_machines_modern and num_machines_legacy:
+        log_error('num_machines_modern = {}'.format(num_machines_modern))
+        log_error('num_machines_legacy = {}'.format(num_machines_legacy))
+        log_error('Both cannot be > 0!')
+        raise TypeError
+        
+    num_machines = num_machines_modern if num_machines_modern > num_machines_legacy else num_machines_legacy
 
     return num_machines
 
@@ -413,14 +434,9 @@ def mame_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
     change_control_dic(control_dic, 't_XML_extraction', time.time())
     utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
 
-def mame_process_RETRO_MAME2003PLUS(PATHS, settings, AML_version_str, options_dic):
+# Check that MAME XML file exists before calling this function.
+def mame_preprocess_RETRO_MAME2003PLUS(PATHS, settings, AML_version_str, options_dic):
     options_dic['abort'] = False
-
-    # --- Check for errors ---
-    if not settings['xml_2003_path']:
-        options_dic['abort'] = True
-        kodi_dialog_OK('MAME 2003 Plus XML path is not set.')
-        return
 
     # --- Count number of machines. Useful for progress dialogs ---
     XML_path_FN = FileName(settings['xml_2003_path'])
@@ -3794,22 +3810,6 @@ def mame_build_SL_names(PATHS, settings):
     log_debug('mame_build_SL_names() Extracted {} Software List names'.format(len(SL_names_dic)))
     utils_write_JSON_file(PATHS.SL_NAMES_PATH.getPath(), SL_names_dic)
 
-# Checks for errors before scanning for SL ROMs.
-# Display a Kodi dialog if an error is found.
-# Returns a dictionary of settings:
-# options_dic['abort'] is always present.
-def mame_check_before_build_MAME_main_database(PATHS, settings, control_dic):
-    options_dic = {}
-    options_dic['abort'] = False
-
-    # --- Check for errors ---
-    if not PATHS.MAME_XML_PATH.exists():
-        kodi_dialog_OK('MAME XML not found. Execute "Extract MAME.xml" first.')
-        options_dic['abort'] = True
-        return options_dic
-
-    return options_dic
-
 # -------------------------------------------------------------------------------------------------
 # Reads and processes MAME.xml
 #
@@ -3916,9 +3916,14 @@ def _update_stats(stats, machine, m_render, runnable):
             else:
                 stats['dead_parents'] += 1
 
+# Use for debug purposes.
 STOP_AFTER_MACHINES = 250000
 
-def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str):
+def mame_build_MAME_main_database(PATHS, settings, AML_version_str, options_dic):
+    # By default return success.
+    options_dic['abort'] = False
+    options_dic['msg'] = None
+
     DATS_dir_FN = FileName(settings['dats_path'])
     ALLTIME_FN = DATS_dir_FN.pjoin(ALLTIME_INI)
     ARTWORK_FN = DATS_dir_FN.pjoin(ARTWORK_INI)
@@ -3936,7 +3941,7 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     MAMEINFO_FN = DATS_dir_FN.pjoin(MAMEINFO_DAT)
 
     # --- Print user configuration for debug ---
-    log_info('mame_build_MAME_main_database() Starting ...')
+    log_info('mame_build_MAME_main_database() Starting...')
     log_info('--- Paths ---')
     log_info('mame_prog      = "{}"'.format(settings['mame_prog']))
     log_info('ROM_path       = "{}"'.format(settings['rom_path']))
@@ -3964,7 +3969,56 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     log_info('history_path   = "{}"'.format(HISTORY_FN.getPath()))
     log_info('mameinfo_path  = "{}"'.format(MAMEINFO_FN.getPath()))
 
-    # --- Progress dialog ---
+    # --- Automatically extract and/or process MAME XML ---
+    if settings['op_mode'] == OP_MODE_VANILLA:
+        # Check that MAME XML exists. If not extract and process.
+        MAME_XML_path = PATHS.MAME_XML_PATH
+        if not MAME_XML_path.exists():
+            # Extract MAME XML.
+            mame_extract_MAME_XML(PATHS, settings, __addon_version__, options_dic)
+            if options_dic['abort']: return
+            # Create MAME XML JSON control file.
+            mame_preprocess_MAME_XML()
+            if options_dic['abort']: return
+        else:
+            # If MAME XML exists check if MAME exec version and XML control JSON version match.
+            version_str = mame_get_MAME_exe_version(mame_prog_FN)
+            
+
+            # Extract MAME.xml from MAME exectuable.
+            # Reset control_dic and count the number of MAME machines.
+            mame_extract_MAME_XML(PATHS, settings, __addon_version__, options_dic)
+    elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        # Check that MAME 2003 Plus XML exists.
+        if not settings['xml_2003_path']:
+            options_dic['abort'] = True
+            options_dic['msg'] = 'MAME 2003 Plus XML path is not set.'
+            return
+        MAME_XML_path = FileName(settings['xml_2003_path'])
+        if not MAME_XML_path.exists():
+            options_dic['abort'] = True
+            options_dic['msg'] = 'MAME 2003 Plus XML file not found.'
+            return
+        # Open the XML control JSON file and check if mtime of current file is older than
+        # the one stored in the XML control file.
+        XML_control_FN = PATHS.MAME_2003_PLUS_XML_CONTROL_PATH
+        if XML_control_FN.exists():
+            XML_control_data = utils_load_JSON_file_dic(XML_control_FN.getPath())
+            
+        else:
+            # Count number of machines and create XML control JSON file.
+            mame_preprocess_RETRO_MAME2003PLUS(PATHS, settings, __addon_version__, options_dic)
+            if options_dic['abort']: return
+    else:
+        log_error('mame_build_MAME_main_database() Unknown op_mode "{}"'.format(settings['op_mode']))
+        options_dic['abort'] = True
+        options_dic['msg'] = 'Unknown operation mode {}'.format(settings['op_mode'])
+        return
+
+    # Create a new control_dic. This effectively resets AML.
+
+    
+    # Main progress dialog.
     pDialog = KodiProgressDialog()
 
     # --- Build SL_NAMES_PATH if available, to be used later in the catalog building ---
@@ -4033,16 +4087,10 @@ def mame_build_MAME_main_database(PATHS, settings, control_dic, AML_version_str)
     # Do not load whole MAME XML into memory! Use an iterative parser to
     # grab only the information we want and discard the rest.
     # See [1] http://effbot.org/zone/element-iterparse.htm
-    if settings['op_mode'] == OP_MODE_EXTERNAL:
-        MAME_XML_path = PATHS.MAME_XML_PATH
-    elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-        MAME_XML_path = FileName(settings['xml_2003_path'])
-    else:
-        raise ValueError
     log_info('Loading XML "{}"'.format(MAME_XML_path.getPath()))
     xml_iter = ET.iterparse(MAME_XML_path.getPath(), events = ("start", "end"))
     event, root = next(xml_iter)
-    if settings['op_mode'] == OP_MODE_EXTERNAL:
+    if settings['op_mode'] == OP_MODE_VANILLA:
         mame_version_raw = root.attrib['build']
         mame_version_int = mame_get_numerical_version(mame_version_raw)
     elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
