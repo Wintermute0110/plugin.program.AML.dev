@@ -50,6 +50,27 @@ import os
 import threading
 import time
 
+# --- Determine interpreter running platform ---
+# Cache all possible platform values in global variables for maximum speed.
+# See http://stackoverflow.com/questions/446209/possible-values-from-sys-platform
+cached_sys_platform = sys.platform
+def _aux_is_android():
+    if not cached_sys_platform.startswith('linux'): return False
+    return 'ANDROID_ROOT' in os.environ or 'ANDROID_DATA' in os.environ or 'XBMC_ANDROID_APK' in os.environ
+
+is_windows_bool = cached_sys_platform == 'win32' or cached_sys_platform == 'win64' or cached_sys_platform == 'cygwin'
+is_osx_bool = cached_sys_platform.startswith('darwin')
+is_android_bool = _aux_is_android()
+is_linux_bool = cached_sys_platform.startswith('linux') and not is_android_bool
+
+def is_windows(): return is_windows_bool
+
+def is_osx(): return is_osx_bool
+
+def is_android(): return is_android_bool
+
+def is_linux(): return is_linux_bool
+
 # -------------------------------------------------------------------------------------------------
 # Filesystem helper class.
 # The addon must not use any Python IO functions, only this class. This class can be changed
@@ -800,3 +821,47 @@ else:
     log_info    = log_info_Python
     log_warning = log_warning_Python
     log_error   = log_error_Python
+
+# -------------------------------------------------------------------------------------------------
+# Kodi GUI error reporting.
+# Errors can be reported up in the function backtrace with `if not st_dic['status']: return` after
+# every function call.
+# How to use:
+# def high_level_function():
+#     st_dic = kodi_new_status_dic()
+#     function_that_does_something_that_may_fail(..., st_dic)
+#     if kodi_display_status_message(st_dic): return # Abort and finish addon execution.
+# -------------------------------------------------------------------------------------------------
+KODI_MESSAGE_NONE        = 100
+# Kodi notifications must be short.
+KODI_MESSAGE_NOTIFY      = 200
+KODI_MESSAGE_NOTIFY_WARN = 300
+# Kodi OK dialog to display a message.
+KODI_MESSAGE_DIALOG      = 400
+
+# If status_dic['status'] is True then everything is OK. If status_dic['status'] is False,
+# then display the notification.
+def kodi_new_status_dic(message):
+    return {
+        'status' : True,
+        'dialog' : KODI_MESSAGE_NOTIFY,
+        'msg'    : message,
+    }
+
+# Display an error message in the GUI.
+# Returns True in case of error and addon must abort inmmediately.
+# Returns False if no error.
+def kodi_display_status_message(op_dic):
+    if op_dic['dialog'] == KODI_MESSAGE_NONE:
+        return False
+    elif op_dic['dialog'] == KODI_MESSAGE_NOTIFY:
+        kodi_notify(op_dic['msg'])
+        return True
+    elif op_dic['dialog'] == KODI_MESSAGE_NOTIFY_WARN:
+        kodi_notify(op_dic['msg'])
+        return True
+    elif op_dic['dialog'] == KODI_MESSAGE_DIALOG:
+        kodi_dialog_OK(op_dic['msg'])
+        return True
+    else:
+        raise TypeError('op_dic["dialog"] = {}'.format(op_dic['dialog']))
