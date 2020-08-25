@@ -1,5 +1,11 @@
 [Kodi Documentation (codedocs)](https://codedocs.xyz/xbmc/xbmc/)
 
+[RA buildbot cores](https://buildbot.libretro.com/nightly/)
+
+[RA MAME 2003 core controls](https://docs.libretro.com/library/mame_2003/)
+
+MAME 2003 Plus RA core write the file `mame2003-plus.xml` in `SAVES_DIR/mame2003-plus/` directory.
+
 ## AML and Python 2 (Kodi Krypton and Leia) / Python 3 (Kodi Matrix)
 
  * AML releases `0.9.x` and `0.10.x` will be **Python 2** for Kodi Krypton and Kodi Leia. **Python 2** code will be in branch `python2`.
