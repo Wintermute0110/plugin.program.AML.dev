@@ -47,6 +47,7 @@ import io
 import json
 import math
 import os
+import sys
 import threading
 import time
 
@@ -830,7 +831,8 @@ else:
 # def high_level_function():
 #     st_dic = kodi_new_status_dic()
 #     function_that_does_something_that_may_fail(..., st_dic)
-#     if kodi_display_status_message(st_dic): return # Abort and finish addon execution.
+#     if kodi_display_status_message(st_dic): return # Display error message and abort addon execution.
+#     if not st_dic['status']: return # Alternative code to return to caller function.
 #
 # def function_that_does_something_that_may_fail(..., st_dic):
 #     code_that_fails
