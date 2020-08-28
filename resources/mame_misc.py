@@ -17,6 +17,11 @@
 # This module can be loaded anywhere without creating circular dependencies.
 # Optionally this module can include utils.py to use the log_*() functions.
 
+# --- AEL packages ---
+
+# --- Python standard library ---
+import hashlib
+
 # -------------------------------------------------------------------------------------------------
 # Functions
 # -------------------------------------------------------------------------------------------------
@@ -241,14 +246,17 @@ def mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, catal
     for clone_name in main_pclone_dic[parent_name]:
         catalog_all_dic[clone_name] = machines_render[clone_name]['description']
 
-# Do not store the number if categories in a catalog. If necessary, calculate it on the fly.
-# I think Python len() on dictionaries is very fast
+# Do not store the number of categories in a catalog. If necessary, calculate it on the fly.
+# I think Python len() on dictionaries is very fast.
+# [August 2020] Why???
 def mame_cache_index_builder(cat_name, cache_index_dic, catalog_all, catalog_parents):
     for cat_key in catalog_all:
+        key_str = '{} - {}'.format(cat_name, cat_key)
         cache_index_dic[cat_name][cat_key] = {
             'num_parents'  : len(catalog_parents[cat_key]),
             'num_machines' : len(catalog_all[cat_key]),
-            'hash'         : fs_render_cache_get_hash(cat_name, cat_key)
+            # Make sure this key is the same as fs_render_cache_get_hash()
+            'hash'         : hashlib.md5(key_str.encode('utf-8')).hexdigest(),
         }
 
 # Helper functions to get the catalog key.
@@ -276,7 +284,7 @@ def mame_catalog_key_Series(parent_name, machines, machines_render):
     return machines[parent_name]['series']
 
 def mame_catalog_key_Alltime(parent_name, machines, machines_render):
-    log_debug('Machine {}, key {}'.format(parent_name, machines[parent_name]['alltime']))
+    # log_debug('Machine {}, key {}'.format(parent_name, machines[parent_name]['alltime']))
     return [ machines[parent_name]['alltime'] ]
 
 def mame_catalog_key_Artwork(parent_name, machines, machines_render):
@@ -339,7 +347,7 @@ def mame_catalog_key_Devices_Expanded(parent_name, machines, machines_render):
 def mame_catalog_key_Devices_Compact(parent_name, machines, machines_render):
     machine = machines[parent_name]
     machine_render = machines_render[parent_name]
-    # >> Order alphabetically the list
+    # Order alphabetically the list
     device_list = [ device['att_type'] for device in machine['devices'] ]
     pretty_device_list = misc_improve_mame_device_list(device_list)
     sorted_device_list = sorted(pretty_device_list)
@@ -381,13 +389,12 @@ def mame_catalog_key_CPU(parent_name, machines, machines_render):
     # machine['chip_cpu_name'] is a list.
     return machines[parent_name]['chip_cpu_name']
 
-def mame_catalog_key_Driver(parent_name, machines, machines_render):
-    catalog_key = machines[parent_name]['sourcefile']
-    # Some drivers get a prettier name.
-    if catalog_key in mame_driver_name_dic:
-        catalog_key = mame_driver_name_dic[catalog_key]
-
-    return [catalog_key]
+# Some drivers get a prettier name.
+# def mame_catalog_key_Driver(parent_name, machines, machines_render):
+#     c_key = machines[parent_name]['sourcefile']
+#     c_key = mame_driver_name_dic[c_key] if c_key in mame_driver_name_dic else c_key
+#
+#     return [c_key]
 
 def mame_catalog_key_Manufacturer(parent_name, machines, machines_render):
     return [machines_render[parent_name]['manufacturer']]
@@ -414,8 +421,7 @@ def mame_build_catalog_helper(catalog_parents, catalog_all,
     machines, machines_render, main_pclone_dic, catalog_key_function):
     for parent_name in main_pclone_dic:
         render = machines_render[parent_name]
-        # Skip device machines in catalogs.
-        if render['isDevice']: continue
+        if render['isDevice']: continue # Skip device machines in catalogs.
         catalog_key_list = catalog_key_function(parent_name, machines, machines_render)
         for catalog_key in catalog_key_list:
             if catalog_key in catalog_parents:

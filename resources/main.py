@@ -1197,7 +1197,8 @@ def render_root_list():
         render_root_catalog_row(*root_Binary['BIOS'])
         render_root_catalog_row(*root_Binary['CHD'])
         render_root_catalog_row(*root_Binary['Samples'])
-        render_root_catalog_row(*root_Binary['SoftwareLists'])
+        if g_settings['global_enable_SL']:
+            render_root_catalog_row(*root_Binary['SoftwareLists'])
 
     if g_settings['display_catalog_filters']:
         # Optional cataloged filters (depend on a INI file)
@@ -1225,7 +1226,8 @@ def render_root_list():
         render_root_category_row(*root_categories['Manufacturer'])
         render_root_category_row(*root_categories['ShortName'])
         render_root_category_row(*root_categories['LongName'])
-        render_root_category_row(*root_categories['BySL'])
+        if g_settings['global_enable_SL']:
+            render_root_category_row(*root_categories['BySL'])
         render_root_category_row(*root_categories['Year'])
 
     # --- DAT browsers ---
