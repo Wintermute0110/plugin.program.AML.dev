@@ -16,7 +16,7 @@
 # -------------------------------------------------------------------------------------------------
 # Addon configuration options
 # -------------------------------------------------------------------------------------------------
-# Compat, smaller size, non-human readable JSON.
+# Compact, smaller size, non-human readable JSON.
 # This setting must be True when releasing.
 OPTION_COMPACT_JSON = True
 

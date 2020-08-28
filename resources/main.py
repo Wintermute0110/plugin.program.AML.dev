@@ -630,8 +630,10 @@ def get_settings_log_enabled():
     global g_SL_icon
     global g_SL_fanart
 
-    # --- Transform settings data ---
+    # Additional settings.
     g_settings['op_mode'] = OP_MODE_LIST[g_settings['op_mode_raw']]
+    g_settings['__addon_id__'] = __addon_id__
+    g_settings['__addon_version__'] = __addon_version__
 
     # Map AML artwork to Kodi standard artwork.
     g_mame_icon = assets_get_asset_key_MAME_icon(g_settings['artwork_mame_icon'])
@@ -1076,7 +1078,7 @@ def render_root_list():
     log_debug('render_root_list() MAME_counters_available = {}'.format(MAME_counters_available))
 
     # --- SL item count ---
-    if g_settings['display_main_filters']:
+    if g_settings['global_enable_SL']:
         SL_index_dic = utils_load_JSON_file_dic(g_PATHS.SL_INDEX_PATH.getPath())
         try:
             num_SL_all = 0
@@ -5233,26 +5235,27 @@ def render_custom_filter_machines(filter_name):
 # options_dic['msg']        if condition is not met a message to print to the user.
 #
 def check_MAME_DB_status(condition, control_dic):
-    if condition == MAME_XML_EXTRACTED:
-        test_XML_EXTRACTED = True if control_dic['t_XML_extraction'] > 0 else False
-        if not test_XML_EXTRACTED:
-            t = 'MAME.XML has not been extracted. Use the context menu "Setup plugin" in root window.'
-            options_dic = {'msg' : t, 'condition' : False }
-            log_debug('check_MAME_DB_status() MAME_XML_EXTRACTED fails.')
-        else:
-            options_dic = {'msg' : '', 'condition' : True }
-            log_debug('check_MAME_DB_status() Everything OK')
-        return options_dic
+    # if condition == MAME_XML_EXTRACTED:
+    #     test_XML_EXTRACTED = True if control_dic['t_XML_extraction'] > 0 else False
+    #     if not test_XML_EXTRACTED:
+    #         t = 'MAME.XML has not been extracted. Use the context menu "Setup plugin" in root window.'
+    #         options_dic = {'msg' : t, 'condition' : False }
+    #         log_debug('check_MAME_DB_status() MAME_XML_EXTRACTED fails.')
+    #     else:
+    #         options_dic = {'msg' : '', 'condition' : True }
+    #         log_debug('check_MAME_DB_status() Everything OK')
+    #     return options_dic
 
-    elif condition == MAME_MAIN_DB_BUILT:
-        test_MAIN_DB_BUILT = True if control_dic['t_MAME_DB_build'] > control_dic['t_XML_extraction'] else False
+    if condition == MAME_MAIN_DB_BUILT:
+        test_MAIN_DB_BUILT = True if control_dic['t_MAME_DB_build'] > 0.0 else False
         if not test_MAIN_DB_BUILT:
             t = 'MAME Main database needs to be built. Use the context menu "Setup plugin" in root window.'
             options_dic = {'msg' : t, 'condition' : False }
             log_debug('check_MAME_DB_status() MAME_MAIN_DB_BUILT fails.')
-            return options_dic
         else:
-            return check_MAME_DB_status(MAME_XML_EXTRACTED, control_dic)
+            options_dic = {'msg' : '', 'condition' : True }
+            log_debug('check_MAME_DB_status() Everything OK')
+        return options_dic
 
     elif condition == MAME_AUDIT_DB_BUILT:
         test_AUDIT_DB_BUILT = True if control_dic['t_MAME_Audit_DB_build'] > control_dic['t_MAME_DB_build'] else False
@@ -5295,7 +5298,7 @@ def check_MAME_DB_status(condition, control_dic):
             return check_MAME_DB_status(MAME_MACHINES_SCANNED, control_dic)
 
     else:
-        raise ValueError('check_MAME_DB_status() Recursive logic error')
+        raise ValueError('check_MAME_DB_status() Recursive logic error. condition = {}'.format(condition))
 
 #
 # Look at check_MAME_DB_status()
@@ -5418,9 +5421,8 @@ def check_SL_DB_before_rendering_machines(g_PATHS, g_settings, control_dic):
 # -------------------------------------------------------------------------------------------------
 def command_context_setup_plugin():
     menu_item = xbmcgui.Dialog().select('Setup plugin', [
-        'All in one (Extract, Build, Scan, Artwork, Filters)',
-        'All in one (Extract, Build, Scan, Artwork, Filters, Audit)',
-        'Extract/Process MAME.xml',
+        'All in one (Build, Scan, Plots, Filters)',
+        'All in one (Build, Scan, Plots, Filters, Audit)',
         'Build all databases',
         'Scan everything and build plots',
         'Build missing Fanarts and 3D boxes',
@@ -5431,8 +5433,8 @@ def command_context_setup_plugin():
     ])
     if menu_item < 0: return
 
-    # --- All in one (Extract, Build, Scan, Filters) ---
-    # --- All in one (Extract, Build, Scan, Filters, Audit) ---
+    # --- All in one (Build, Scan, Plots, Filters) ---
+    # --- All in one (Build, Scan, Plots, Filters, Audit) ---
     if menu_item == 0 or menu_item == 1:
         DO_AUDIT = True if menu_item == 1 else False
         log_info('command_context_setup_plugin() All in one step starting ...')
@@ -5440,15 +5442,15 @@ def command_context_setup_plugin():
         log_info('DO_AUDIT {}'.format(DO_AUDIT))
 
         # --- Build main MAME database, PClone list and MAME hashed database (mandatory) ---
-        # control_dic is created or resseted in this function.
-        options_dic = {}
-        db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, __addon_version__, options_dic)
-        if options_dic['abort']:
-            kodi_dialog_OK(options_dic['msg'])
-            return
-        control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
+        # control_dic is created or reseted in this function.
+        # This uses the modern GUI error reporting functions.
+        st_dic = kodi_new_status_dic()
+        db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, __addon_version__, st_dic)
+        if kodi_display_status_message(st_dic): return
+        control_dic = db_dic['control']
 
         # --- Build ROM audit/scanner databases (mandatory) ---
+        options_dic = {}
         options_dic = mame_check_before_build_ROM_audit_databases(g_PATHS, g_settings, control_dic)
         if options_dic['abort']: return
         audit_dic = mame_build_ROM_audit_databases(g_PATHS, g_settings, control_dic,
@@ -5562,42 +5564,16 @@ def command_context_setup_plugin():
         else:
             kodi_notify('Finished extracting, DB build, scanning and filters')
 
-    # --- Extract MAME.xml ---
-    elif menu_item == 2:
-        log_info('command_context_setup_plugin() Extract/Process MAME.xml starting ...')
-        options_dic = {}
-        if g_settings['op_mode'] == OP_MODE_EXTERNAL:
-            # Extract MAME.xml from MAME exectuable.
-            # Reset control_dic and count the number of MAME machines.
-            mame_extract_MAME_XML(g_PATHS, g_settings, __addon_version__, options_dic)
-        elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-            # For MAME 2003 Plus the XML is already there.
-            # Reset control_dic and count the number of machines.
-            mame_process_RETRO_MAME2003PLUS(g_PATHS, g_settings, __addon_version__, options_dic)
-        else:
-            log_error('command_context_setup_plugin() Unknown op_mode "{}"'.format(g_settings['op_mode']))
-            kodi_notify_warn('Database not built')
-            return
-        if options_dic['abort']:
-            kodi_dialog_OK(options_dic['msg'])
-            return
-
-        # Inform user everything went well.
-        size_MB = options_dic['filesize'] / 1000000
-        num_m = options_dic['total_machines']
-        kodi_dialog_OK(
-            'Extracted MAME XML database. '
-            'Size is {} MB and there are {} machines.'.format(size_MB, num_m))
-
     # --- Build everything ---
-    elif menu_item == 3:
-        log_info('command_context_setup_plugin() Build everything starting ...')
+    elif menu_item == 2:
+        log_info('command_context_setup_plugin() Build everything starting...')
+        st_dic = kodi_new_status_dic()
 
         # --- Build main MAME database, PClone list and hashed database (mandatory) ---
+        # Extract/process MAME.xml, creates XML control file and resets control_dic.
+        db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, st_dic)
+        if kodi_display_status_message(st_dic): return
         control_dic = utils_load_JSON_file_dic(g_PATHS.MAIN_CONTROL_PATH.getPath())
-        options_dic = mame_check_before_build_MAME_main_database(g_PATHS, g_settings, control_dic)
-        if options_dic['abort']: return
-        db_dic = mame_build_MAME_main_database(g_PATHS, g_settings, control_dic, __addon_version__)
 
         # --- Build ROM audit/scanner databases (mandatory) ---
         options_dic = mame_check_before_build_ROM_audit_databases(g_PATHS, g_settings, control_dic)
@@ -5639,7 +5615,7 @@ def command_context_setup_plugin():
         del db_dic['cache_index']
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs (optional) ---
-        if g_settings['enable_SL']:
+        if g_settings['global_enable_SL']:
             options_dic = mame_check_before_build_SL_databases(g_PATHS, g_settings, control_dic)
             if not options_dic['abort']:
                 SL_dic = mame_build_SoftwareLists_databases(g_PATHS, g_settings, control_dic,
@@ -5647,13 +5623,13 @@ def command_context_setup_plugin():
             else:
                 log_info('Skipping mame_build_SoftwareLists_databases()')
         else:
-            log_info('SL disabled. Skipping mame_build_SoftwareLists_databases()')
+            log_info('SL globally disabled. Skipping mame_build_SoftwareLists_databases()')
 
         # --- So long and thanks for all the fish ---
         kodi_notify('All databases built')
 
     # --- Scan everything ---
-    elif menu_item == 4:
+    elif menu_item == 3:
         log_info('command_setup_plugin() Scanning everything starting ...')
 
         # --- MAME -------------------------------------------------------------------------------
@@ -5751,7 +5727,7 @@ def command_context_setup_plugin():
         kodi_notify('All ROM/asset scanning finished')
 
     # --- Build missing Fanarts and 3D boxes ---
-    elif menu_item == 5:
+    elif menu_item == 4:
         BUILD_MISSING = True
         log_info('command_context_setup_plugin() Building missing Fanarts and 3D boxes...')
 
@@ -5780,9 +5756,9 @@ def command_context_setup_plugin():
         graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
 
     # --- Audit MAME machine ROMs/CHDs ---
-    # NOTE It is likekely that this function will take a looong time. It is important that the
-    #      audit process can be canceled and a partial report is written.
-    elif menu_item == 6:
+    # It is likely that this function will take a looong time. It is important that the
+    # audit process can be canceled and a partial report is written.
+    elif menu_item == 5:
         log_info('command_context_setup_plugin() Audit MAME machines ROMs/CHDs ...')
 
         # --- Check for requirements/errors ---
@@ -5803,7 +5779,7 @@ def command_context_setup_plugin():
         kodi_notify('ROM and CHD audit finished')
 
     # --- Audit SL ROMs/CHDs ---
-    elif menu_item == 7:
+    elif menu_item == 6:
         log_info('command_context_setup_plugin() Audit SL ROMs/CHDs ...')
 
         # --- Check for requirements/errors ---
@@ -5816,8 +5792,9 @@ def command_context_setup_plugin():
         kodi_notify('Software Lists audit finished')
 
     # --- Build Step by Step (database and scanner) ---
-    elif menu_item == 8:
+    elif menu_item == 7:
         submenu = xbmcgui.Dialog().select('Setup plugin (step by step)', [
+            'Extract/Process MAME.xml',
             'Build MAME databases',
             'Build MAME Audit/Scanner databases',
             'Build MAME Catalogs',
@@ -5832,8 +5809,36 @@ def command_context_setup_plugin():
         ])
         if submenu < 0: return
 
+        # --- Extract/Process MAME.xml ---
+        # This piece of code is the beginning of mame_build_MAME_main_database()
+        if menu_item == 0:
+            log_info('command_context_setup_plugin() Extract/Process MAME.xml starting ...')
+            options_dic = {}
+            if g_settings['op_mode'] == OP_MODE_EXTERNAL:
+                # Extract MAME.xml from MAME executable.
+                # Reset control_dic and count the number of MAME machines.
+                mame_extract_MAME_XML(g_PATHS, g_settings, __addon_version__, options_dic)
+            elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+                # For MAME 2003 Plus the XML is already there.
+                # Reset control_dic and count the number of machines.
+                mame_process_RETRO_MAME2003PLUS(g_PATHS, g_settings, __addon_version__, options_dic)
+            else:
+                log_error('command_context_setup_plugin() Unknown op_mode "{}"'.format(g_settings['op_mode']))
+                kodi_notify_warn('Database not built')
+                return
+            if options_dic['abort']:
+                kodi_dialog_OK(options_dic['msg'])
+                return
+
+            # Inform user everything went well.
+            size_MB = options_dic['filesize'] / 1000000
+            num_m = options_dic['total_machines']
+            kodi_dialog_OK(
+                'Extracted MAME XML database. '
+                'Size is {} MB and there are {} machines.'.format(size_MB, num_m))
+
         # --- Build main MAME database, PClone list and hashed database ---
-        if submenu == 0:
+        elif submenu == 1:
             log_info('command_context_setup_plugin() Generating MAME main database and PClone list ...')
 
             # --- Check for requirements/errors ---
@@ -5857,7 +5862,7 @@ def command_context_setup_plugin():
             kodi_notify('Main MAME databases built')
 
         # --- Build ROM audit/scanner databases ---
-        elif submenu == 1:
+        elif submenu == 2:
             log_info('command_context_setup_plugin() Generating ROM audit/scanner databases ...')
 
             # --- Check for requirements/errors ---
@@ -5881,7 +5886,7 @@ def command_context_setup_plugin():
             kodi_notify('ROM audit/scanner databases built')
 
         # --- Build MAME catalogs ---
-        elif submenu == 2:
+        elif submenu == 3:
             log_info('command_context_setup_plugin() Building MAME catalogs ...')
 
             # --- Check for requirements/errors ---
@@ -5919,7 +5924,7 @@ def command_context_setup_plugin():
             kodi_notify('MAME Catalogs built')
 
         # --- Build Software Lists ROM/CHD databases, SL indices and SL catalogs ---
-        elif submenu == 3:
+        elif submenu == 4:
             log_info('command_context_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
 
             # --- Check for requirements/errors ---
@@ -5941,7 +5946,7 @@ def command_context_setup_plugin():
             kodi_notify('Software Lists database built')
 
         # --- Scan ROMs/CHDs/Samples and updates ROM status ---
-        elif submenu == 4:
+        elif submenu == 5:
             log_info('command_context_setup_plugin() Scanning MAME ROMs/CHDs/Samples ...')
 
             # --- Check for requirements/errors ---
@@ -5985,7 +5990,7 @@ def command_context_setup_plugin():
             kodi_notify('Scanning of ROMs, CHDs and Samples finished')
 
         # --- Scans MAME assets/artwork ---
-        elif submenu == 5:
+        elif submenu == 6:
             log_info('command_context_setup_plugin() Scanning MAME assets/artwork ...')
 
             # --- Check for requirements/errors ---
@@ -6016,7 +6021,7 @@ def command_context_setup_plugin():
             kodi_notify('Scanning of assets/artwork finished')
 
         # --- Scan SL ROMs/CHDs ---
-        elif submenu == 6:
+        elif submenu == 7:
             log_info('command_context_setup_plugin() Scanning SL ROMs/CHDs ...')
 
             # --- Check for requirements/errors ---
@@ -6038,7 +6043,7 @@ def command_context_setup_plugin():
         # --- Scan SL assets/artwork ---
         # >> Database format: ADDON_DATA_DIR/db_SoftwareLists/32x_assets.json
         # >> { 'ROM_name' : {'asset1' : 'path', 'asset2' : 'path', ... }, ... }
-        elif submenu == 7:
+        elif submenu == 8:
             log_info('command_context_setup_plugin() Scanning SL assets/artwork ...')
 
             # --- Check for requirements/errors ---
@@ -6059,7 +6064,7 @@ def command_context_setup_plugin():
             kodi_notify('Scanning of SL assets finished')
 
         # --- Build MAME machines plot ---
-        elif submenu == 8:
+        elif submenu == 9:
             log_debug('Rebuilding MAME machine plots ...')
 
             # --- Check for requirements/errors ---
@@ -6093,7 +6098,7 @@ def command_context_setup_plugin():
             kodi_notify('MAME machines plot generation finished')
 
         # --- Buils Software List items plot ---
-        elif submenu == 9:
+        elif submenu == 10:
             log_debug('Rebuilding Software List items plots ...')
 
             # --- Load databases ---
@@ -6116,7 +6121,7 @@ def command_context_setup_plugin():
             kodi_notify('SL item plot generation finished')
 
         # --- Regenerate MAME machine render and assets cache ---
-        elif submenu == 10:
+        elif submenu == 11:
             log_debug('Rebuilding MAME machine and assets cache ...')
 
             # --- Load databases ---
@@ -6135,8 +6140,11 @@ def command_context_setup_plugin():
                 db_dic['cache_index'], db_dic['assets'])
             kodi_notify('MAME machine and asset caches rebuilt')
 
+        else:
+            kodi_dialog_OK('In command_context_setup_plugin() wrong submenu = {}'.format(submenu))
+
     # --- Build Fanarts/3D boxes ---
-    elif menu_item == 9:
+    elif menu_item == 8:
         submenu = xbmcgui.Dialog().select('Build Fanarts', [
             'Test MAME Fanart',
             'Test Software List item Fanart',
@@ -6408,6 +6416,12 @@ def command_context_setup_plugin():
             if data_dic['abort']: return
             graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
 
+        else:
+            kodi_dialog_OK('In command_context_setup_plugin() wrong submenu = {}'.format(submenu))
+
+    else:
+        kodi_dialog_OK('In command_context_setup_plugin() wrong menu_item = {}'.format(menu_item))
+
 #
 # Execute utilities.
 #
@@ -6472,6 +6486,13 @@ def command_exec_utility(which_utility):
         slist = []
 
         # --- Check mandatory stuff ---
+        slist.append('Operation mode [COLOR orange]{}[/COLOR]'.format(g_settings['op_mode']))
+        if g_settings['global_enable_SL']:
+            slist.append('Software lists [COLOR orange]enabled[/COLOR]')
+        else:
+            slist.append('Software lists [COLOR orange]disabled[/COLOR]')
+        slist.append('')
+
         slist.append('[COLOR orange]Mandatory stuff[/COLOR]')
         # MAME executable
         if g_settings['mame_prog']:
@@ -6538,40 +6559,41 @@ def command_exec_utility(which_utility):
         slist.append('')
 
         # --- Software Lists paths ---
-        slist.append('[COLOR orange]Software List paths[/COLOR]')
-        aux_check_dir_WARN(slist, g_settings['SL_hash_path'], 'SL hash path')
-        aux_check_dir_WARN(slist, g_settings['SL_rom_path'], 'SL ROM path')
-        aux_check_dir_WARN(slist, g_settings['SL_chd_path'], 'SL CHD path')
-        slist.append('')
+        if g_settings['global_enable_SL']:
+            slist.append('[COLOR orange]Software List paths[/COLOR]')
+            aux_check_dir_WARN(slist, g_settings['SL_hash_path'], 'SL hash path')
+            aux_check_dir_WARN(slist, g_settings['SL_rom_path'], 'SL ROM path')
+            aux_check_dir_WARN(slist, g_settings['SL_chd_path'], 'SL CHD path')
+            slist.append('')
 
-        slist.append('[COLOR orange]Software Lists assets[/COLOR]')
-        if g_settings['assets_path']:
-            if FileName(g_settings['assets_path']).exists():
-                slist.append('{} MAME Asset path "{}"'.format(OK, g_settings['assets_path']))
+            slist.append('[COLOR orange]Software Lists assets[/COLOR]')
+            if g_settings['assets_path']:
+                if FileName(g_settings['assets_path']).exists():
+                    slist.append('{} MAME Asset path "{}"'.format(OK, g_settings['assets_path']))
 
-                # >> Check that artwork subdirectories exist
-                Asset_path_FN = FileName(g_settings['assets_path'])
+                    # >> Check that artwork subdirectories exist
+                    Asset_path_FN = FileName(g_settings['assets_path'])
 
-                _3dboxes_FN = Asset_path_FN.pjoin('3dboxes_SL')
-                covers_FN = Asset_path_FN.pjoin('covers_SL')
-                fanarts_FN = Asset_path_FN.pjoin('fanarts_SL')
-                manuals_FN = Asset_path_FN.pjoin('manuals_SL')
-                snaps_FN = Asset_path_FN.pjoin('snaps_SL')
-                titles_FN = Asset_path_FN.pjoin('titles_SL')
-                videosnaps_FN = Asset_path_FN.pjoin('videosnaps_SL')
+                    _3dboxes_FN = Asset_path_FN.pjoin('3dboxes_SL')
+                    covers_FN = Asset_path_FN.pjoin('covers_SL')
+                    fanarts_FN = Asset_path_FN.pjoin('fanarts_SL')
+                    manuals_FN = Asset_path_FN.pjoin('manuals_SL')
+                    snaps_FN = Asset_path_FN.pjoin('snaps_SL')
+                    titles_FN = Asset_path_FN.pjoin('titles_SL')
+                    videosnaps_FN = Asset_path_FN.pjoin('videosnaps_SL')
 
-                aux_check_asset_dir(slist, _3dboxes_FN, '3D Boxes')
-                aux_check_asset_dir(slist, covers_FN, 'SL Covers')
-                aux_check_asset_dir(slist, fanarts_FN, 'SL Fanarts')
-                aux_check_asset_dir(slist, manuals_FN, 'SL Manuals')
-                aux_check_asset_dir(slist, snaps_FN, 'SL Snaps')
-                aux_check_asset_dir(slist, titles_FN, 'SL Titles')
-                aux_check_asset_dir(slist, videosnaps_FN, 'SL Trailers')
+                    aux_check_asset_dir(slist, _3dboxes_FN, '3D Boxes')
+                    aux_check_asset_dir(slist, covers_FN, 'SL Covers')
+                    aux_check_asset_dir(slist, fanarts_FN, 'SL Fanarts')
+                    aux_check_asset_dir(slist, manuals_FN, 'SL Manuals')
+                    aux_check_asset_dir(slist, snaps_FN, 'SL Snaps')
+                    aux_check_asset_dir(slist, titles_FN, 'SL Titles')
+                    aux_check_asset_dir(slist, videosnaps_FN, 'SL Trailers')
+                else:
+                    slist.append('{} MAME Asset path not found'.format(ERR))
             else:
-                slist.append('{} MAME Asset path not found'.format(ERR))
-        else:
-            slist.append('{} MAME Asset path not set'.format(WARN))
-        slist.append('')
+                slist.append('{} MAME Asset path not set'.format(WARN))
+            slist.append('')
 
         # --- Optional INI files ---
         slist.append('[COLOR orange]INI/DAT files[/COLOR]')

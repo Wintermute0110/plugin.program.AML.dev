@@ -195,7 +195,8 @@ def misc_compress_mame_item_list(item_list):
     item_count = 1
     for i in range(1, num_items):
         current_item = item_list[i]
-        # log_debug('{} | item_count {} | previous_item "{2:>8}" | current_item "{3:>8}"'.format(i, item_count, previous_item, current_item))
+        # log_debug('{} | item_count {} | previous_item "{2:>8}" | current_item "{3:>8}"'.format(
+        #     i, item_count, previous_item, current_item))
         if current_item == previous_item:
             item_count += 1
         else:
@@ -230,3 +231,198 @@ def misc_compress_mame_item_list_compact(item_list):
     reduced_list_sorted = sorted(reduced_list)
 
     return reduced_list_sorted
+
+# -------------------------------------------------------------------------------------------------
+# Helper functions to build catalogs.
+# -------------------------------------------------------------------------------------------------
+# Add clones to the all catalog dictionary catalog_all_dic.
+# catalog_all_dic is modified by refence.
+def mame_catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all_dic):
+    for clone_name in main_pclone_dic[parent_name]:
+        catalog_all_dic[clone_name] = machines_render[clone_name]['description']
+
+# Do not store the number if categories in a catalog. If necessary, calculate it on the fly.
+# I think Python len() on dictionaries is very fast
+def mame_cache_index_builder(cat_name, cache_index_dic, catalog_all, catalog_parents):
+    for cat_key in catalog_all:
+        cache_index_dic[cat_name][cat_key] = {
+            'num_parents'  : len(catalog_parents[cat_key]),
+            'num_machines' : len(catalog_all[cat_key]),
+            'hash'         : fs_render_cache_get_hash(cat_name, cat_key)
+        }
+
+# Helper functions to get the catalog key.
+def mame_catalog_key_Catver(parent_name, machines, machines_render):
+    return [ machines[parent_name]['catver'] ]
+
+def mame_catalog_key_Catlist(parent_name, machines, machines_render):
+    return [ machines[parent_name]['catlist'] ]
+
+def mame_catalog_key_Genre(parent_name, machines, machines_render):
+    return [ machines[parent_name]['genre'] ]
+
+def mame_catalog_key_Category(parent_name, machines, machines_render):
+    # Already a list.
+    return machines[parent_name]['category']
+
+def mame_catalog_key_NPlayers(parent_name, machines, machines_render):
+    return [ machines[parent_name]['nplayers'] ]
+
+def mame_catalog_key_Bestgames(parent_name, machines, machines_render):
+    return [ machines[parent_name]['bestgames'] ]
+
+def mame_catalog_key_Series(parent_name, machines, machines_render):
+    # Already a list.
+    return machines[parent_name]['series']
+
+def mame_catalog_key_Alltime(parent_name, machines, machines_render):
+    log_debug('Machine {}, key {}'.format(parent_name, machines[parent_name]['alltime']))
+    return [ machines[parent_name]['alltime'] ]
+
+def mame_catalog_key_Artwork(parent_name, machines, machines_render):
+    # Already a list.
+    return machines[parent_name]['artwork']
+
+def mame_catalog_key_VerAdded(parent_name, machines, machines_render):
+    return [ machines[parent_name]['veradded'] ]
+
+def mame_catalog_key_Controls_Expanded(parent_name, machines, machines_render):
+    machine = machines[parent_name]
+    machine_render = machines_render[parent_name]
+    # Order alphabetically the list
+    if machine['input']:
+        control_list = [ctrl_dic['type'] for ctrl_dic in machine['input']['control_list']]
+    else:
+        control_list = []
+    pretty_control_type_list = misc_improve_mame_control_type_list(control_list)
+    sorted_control_type_list = sorted(pretty_control_type_list)
+    # Maybe a setting should be added for compact or non-compact control list.
+    # sorted_control_type_list = misc_compress_mame_item_list(sorted_control_type_list)
+    sorted_control_type_list = misc_compress_mame_item_list_compact(sorted_control_type_list)
+    catalog_key_list = [ " / ".join(sorted_control_type_list) ]
+
+    return catalog_key_list
+
+def mame_catalog_key_Controls_Compact(parent_name, machines, machines_render):
+    machine = machines[parent_name]
+    machine_render = machines_render[parent_name]
+    # Order alphabetically the list
+    if machine['input']:
+        control_list = [ctrl_dic['type'] for ctrl_dic in machine['input']['control_list']]
+    else:
+        control_list = []
+    pretty_control_type_list = misc_improve_mame_control_type_list(control_list)
+    sorted_control_type_list = sorted(pretty_control_type_list)
+    catalog_key_list = misc_compress_mame_item_list_compact(sorted_control_type_list)
+    if not catalog_key_list:
+        catalog_key_list = [ '[ No controls ]' ]
+
+    return catalog_key_list
+
+def mame_catalog_key_Devices_Expanded(parent_name, machines, machines_render):
+    machine = machines[parent_name]
+    machine_render = machines_render[parent_name]
+    # Order alphabetically the list
+    device_list = [device['att_type'] for device in machine['devices']]
+    pretty_device_list = misc_improve_mame_device_list(device_list)
+    sorted_device_list = sorted(pretty_device_list)
+    # Maybe a setting should be added for compact or non-compact control list
+    # sorted_device_list = misc_compress_mame_item_list(sorted_device_list)
+    sorted_device_list = misc_compress_mame_item_list_compact(sorted_device_list)
+    catalog_key = " / ".join(sorted_device_list)
+    # Change category name for machines with no devices
+    if catalog_key == '':
+        catalog_key = '[ No devices ]'
+
+    return [catalog_key]
+
+def mame_catalog_key_Devices_Compact(parent_name, machines, machines_render):
+    machine = machines[parent_name]
+    machine_render = machines_render[parent_name]
+    # >> Order alphabetically the list
+    device_list = [ device['att_type'] for device in machine['devices'] ]
+    pretty_device_list = misc_improve_mame_device_list(device_list)
+    sorted_device_list = sorted(pretty_device_list)
+    compressed_device_list = misc_compress_mame_item_list_compact(sorted_device_list)
+    if not compressed_device_list:
+        compressed_device_list = [ '[ No devices ]' ]
+
+    return compressed_device_list
+
+def mame_catalog_key_Display_Type(parent_name, machines, machines_render):
+    # Compute the catalog_key. display_type and display_rotate main DB entries used.
+    catalog_key = misc_get_display_type_catalog_key(
+        machines[parent_name]['display_type'], machines[parent_name]['display_rotate'])
+
+    return [catalog_key]
+
+def mame_catalog_key_Display_VSync(parent_name, machines, machines_render):
+    catalog_list = []
+    # machine['display_refresh'] is a list.
+    # Change string '60.12346' to 1 decimal only to avoid having a log of keys in this catalog.
+    # An empty machine['display_refresh'] means no display.
+    if len(machines[parent_name]['display_refresh']) == 0:
+        catalog_list.append('No display')
+    else:
+        for display_str in machines[parent_name]['display_refresh']:
+            vsync = float(display_str)
+            catalog_list.append('{0:.1f} Hz'.format(vsync))
+
+    return catalog_list
+
+def mame_catalog_key_Display_Resolution(parent_name, machines, machines_render):
+    # Move code of this function here???
+    catalog_key = misc_get_display_resolution_catalog_key(
+        machines[parent_name]['display_width'], machines[parent_name]['display_height'])
+
+    return [catalog_key]
+
+def mame_catalog_key_CPU(parent_name, machines, machines_render):
+    # machine['chip_cpu_name'] is a list.
+    return machines[parent_name]['chip_cpu_name']
+
+def mame_catalog_key_Driver(parent_name, machines, machines_render):
+    catalog_key = machines[parent_name]['sourcefile']
+    # Some drivers get a prettier name.
+    if catalog_key in mame_driver_name_dic:
+        catalog_key = mame_driver_name_dic[catalog_key]
+
+    return [catalog_key]
+
+def mame_catalog_key_Manufacturer(parent_name, machines, machines_render):
+    return [machines_render[parent_name]['manufacturer']]
+
+# This is a special catalog, not easy to automatise.
+# def mame_catalog_key_ShortName(parent_name, machines, machines_render):
+#     return [machines_render[parent_name]['year']]
+
+def mame_catalog_key_LongName(parent_name, machines, machines_render):
+    return [machines_render[parent_name]['description'][0]]
+
+# This is a special catalog, not easy to automatise.
+# def mame_catalog_key_BySL(parent_name, machines, machines_render):
+#     return [machines_render[parent_name]['year']]
+
+def mame_catalog_key_Year(parent_name, machines, machines_render):
+    return [machines_render[parent_name]['year']]
+
+# Uses a "function pointer" to obtain the catalog_key.
+# catalog_key is a list that has one element for most catalogs.
+# In some catalogs (Controls_Compact) this list has sometimes more than one item, for example
+# one parent machine may have more than one control.
+def mame_build_catalog_helper(catalog_parents, catalog_all,
+    machines, machines_render, main_pclone_dic, catalog_key_function):
+    for parent_name in main_pclone_dic:
+        render = machines_render[parent_name]
+        # Skip device machines in catalogs.
+        if render['isDevice']: continue
+        catalog_key_list = catalog_key_function(parent_name, machines, machines_render)
+        for catalog_key in catalog_key_list:
+            if catalog_key in catalog_parents:
+                catalog_parents[catalog_key][parent_name] = render['description']
+                catalog_all[catalog_key][parent_name] = render['description']
+            else:
+                catalog_parents[catalog_key] = { parent_name : render['description'] }
+                catalog_all[catalog_key] = { parent_name : render['description'] }
+            for clone_name in main_pclone_dic[parent_name]:
+                catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']

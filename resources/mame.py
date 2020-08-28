@@ -359,32 +359,11 @@ def mame_count_MAME_machines(XML_path_FN):
 
     return num_machines
 
-#
-# Older versions of MAME use <game> instead of <machine>
-#
-def mame_count_MAME_machines_archaic(XML_path_FN):
-    log_debug('mame_count_MAME_machines_archaic() BEGIN...')
-    log_debug('XML "{}"'.format(XML_path_FN.getPath()))
-    pDialog = KodiProgressDialog()
-    pDialog.startProgress('Counting number of MAME machines...')
-    num_machines = 0
-    with open(XML_path_FN.getPath(), 'rt') as f:
-        for line in f:
-            if line.find('<game name=') > 0: num_machines += 1
-    pDialog.endProgress()
-
-    return num_machines
-
-#
-# Creates a new control_dic and updates the number of machines.
-# Returns:
-# options_dic['abort']
-# options_dic['msg']            Only valid if options_dic['abort'] is True
-# options_dic['filesize']       In bytes
-# options_dic['total_machines'] Integer
-#
-def mame_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
-    options_dic['abort'] = False
+# 1) Extracts MAME XML.
+# 2) Counts number of MAME machines.
+# 3) Gets MAME version from the XML file.
+# 4) Creates MAME XML control file.
+def mame_extract_MAME_XML(PATHS, settings, st_dic):
 
     # --- Check for errors ---
     if not settings['mame_prog']:
@@ -421,42 +400,36 @@ def mame_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic):
     options_dic['total_machines'] = total_machines
     log_info('mame_extract_MAME_XML() Found {} machines.'.format(total_machines))
 
-    # -----------------------------------------------------------------------------
     # Reset MAME control dictionary completely
-    # -----------------------------------------------------------------------------
-    AML_version_int = misc_addon_version_str_to_int(AML_version_str)
-    log_info('mame_extract_MAME_XML() AML version str "{}"'.format(AML_version_str))
-    log_info('mame_extract_MAME_XML() AML version int {}'.format(AML_version_int))
-    control_dic = fs_new_control_dic()
-    change_control_dic(control_dic, 'ver_AML', AML_version_int)
-    change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
-    change_control_dic(control_dic, 'stats_total_machines', total_machines)
     change_control_dic(control_dic, 't_XML_extraction', time.time())
     utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
 
-# Check that MAME XML file exists before calling this function.
-def mame_preprocess_RETRO_MAME2003PLUS(PATHS, settings, AML_version_str, options_dic):
-    options_dic['abort'] = False
-
-    # --- Count number of machines. Useful for progress dialogs ---
-    XML_path_FN = FileName(settings['xml_2003_path'])
+# 1) Counts number of MAME machines
+# 2) Creates MAME XML control file.
+def mame_preprocess_RETRO_MAME2003PLUS(PATHS, settings, st_dic):
+    # Count number of machines. Useful for progress dialogs and statistics.
     log_info('mame_process_RETRO_MAME2003PLUS() Counting number of machines ...')
-    total_machines = mame_count_MAME_machines_archaic(XML_path_FN)
-    options_dic['total_machines'] = total_machines
+    XML_path_FN = FileName(settings['xml_2003_path'])
+    total_machines = mame_count_MAME_machines(XML_path_FN)
     log_info('mame_process_RETRO_MAME2003PLUS() Found {} machines.'.format(total_machines))
 
-    # -----------------------------------------------------------------------------
-    # Reset MAME control dictionary completely
-    # -----------------------------------------------------------------------------
-    AML_version_int = misc_addon_version_str_to_int(AML_version_str)
-    log_info('mame_process_RETRO_MAME2003PLUS() AML version str "{}"'.format(AML_version_str))
-    log_info('mame_process_RETRO_MAME2003PLUS() AML version int {}'.format(AML_version_int))
-    control_dic = fs_new_control_dic()
-    change_control_dic(control_dic, 'ver_AML', AML_version_int)
-    change_control_dic(control_dic, 'ver_AML_str', AML_version_str)
-    change_control_dic(control_dic, 'stats_total_machines', total_machines)
-    change_control_dic(control_dic, 't_XML_extraction', time.time())
-    utils_write_JSON_file(PATHS.MAIN_CONTROL_PATH.getPath(), control_dic, verbose = True)
+    # Get MAME version from the XML (although we know is MAME 2003 Plus).
+    ver_mame = 0
+    ver_mame_str = ''
+
+    # Get XML file stat info.
+    # See https://docs.python.org/3/library/os.html#os.stat_result
+    statinfo = os.stat(XML_path_FN.getPath())
+
+    # Create the MAME XML control file. Only change used fields.
+    XML_control_dic = db_new_MAME_XML_control_dic()
+    change_control_dic(XML_control_dic, 't_XML_preprocessing', time.time())
+    change_control_dic(XML_control_dic, 'total_machines', total_machines)
+    change_control_dic(XML_control_dic, 'st_size', statinfo.st_size)
+    change_control_dic(XML_control_dic, 'st_mtime', statinfo.st_mtime)
+    change_control_dic(XML_control_dic, 'ver_mame', ver_mame)
+    change_control_dic(XML_control_dic, 'ver_mame_str', ver_mame_str)
+    utils_write_JSON_file(PATHS.MAME_2003_PLUS_XML_CONTROL_PATH.getPath(), XML_control_dic, verbose = True)
 
 # -------------------------------------------------------------------------------------------------
 # Loading of data files
@@ -3916,14 +3889,10 @@ def _update_stats(stats, machine, m_render, runnable):
             else:
                 stats['dead_parents'] += 1
 
-# Use for debug purposes.
-STOP_AFTER_MACHINES = 250000
-
-def mame_build_MAME_main_database(PATHS, settings, AML_version_str, options_dic):
-    # By default return success.
-    options_dic['abort'] = False
-    options_dic['msg'] = None
-
+def mame_build_MAME_main_database(PATHS, settings, st_dic):
+    # Use for debug purposes. This number must be much bigger than the actual number of machines
+    # when releasing.
+    STOP_AFTER_MACHINES = 250000
     DATS_dir_FN = FileName(settings['dats_path'])
     ALLTIME_FN = DATS_dir_FN.pjoin(ALLTIME_INI)
     ARTWORK_FN = DATS_dir_FN.pjoin(ARTWORK_INI)
@@ -3970,61 +3939,91 @@ def mame_build_MAME_main_database(PATHS, settings, AML_version_str, options_dic)
     log_info('mameinfo_path  = "{}"'.format(MAMEINFO_FN.getPath()))
 
     # --- Automatically extract and/or process MAME XML ---
+    # After this block of code we have:
+    # 1) a valid XML_control_dic 
+    # 2) valid and verified for existence MAME_XML_path.
+    log_info('Beginning extract/process of MAME.xml...')
     if settings['op_mode'] == OP_MODE_VANILLA:
-        # Check that MAME XML exists. If not extract and process.
+        # Check that MAME XML and the XML control file exist.
         MAME_XML_path = PATHS.MAME_XML_PATH
+        
         if not MAME_XML_path.exists():
+            # If MAME XML or the XML control file does not exists then:
+            # a) extract it.
+            # b) process it and create the XML control file.
+            
             # Extract MAME XML.
-            mame_extract_MAME_XML(PATHS, settings, __addon_version__, options_dic)
+            mame_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic)
             if options_dic['abort']: return
             # Create MAME XML JSON control file.
             mame_preprocess_MAME_XML()
             if options_dic['abort']: return
         else:
-            # If MAME XML exists check if MAME exec version and XML control JSON version match.
+            # If MAME XML exists check if MAME executable version and XML control JSON version match.
             version_str = mame_get_MAME_exe_version(mame_prog_FN)
             
 
-            # Extract MAME.xml from MAME exectuable.
+            # Extract MAME.xml from MAME executable.
             # Reset control_dic and count the number of MAME machines.
-            mame_extract_MAME_XML(PATHS, settings, __addon_version__, options_dic)
+            mame_extract_MAME_XML(PATHS, settings, AML_version_str, options_dic)
+
     elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+        process_XML_flag = False
+
         # Check that MAME 2003 Plus XML exists.
         if not settings['xml_2003_path']:
-            options_dic['abort'] = True
-            options_dic['msg'] = 'MAME 2003 Plus XML path is not set.'
+            log_info('MAME 2003 Plus XML path is not set. Aborting.')
+            kodi_set_error_status(st_dic, 'MAME 2003 Plus XML path is not set.')
             return
         MAME_XML_path = FileName(settings['xml_2003_path'])
         if not MAME_XML_path.exists():
-            options_dic['abort'] = True
-            options_dic['msg'] = 'MAME 2003 Plus XML file not found.'
+            log_info('MAME 2003 Plus XML file not found. Aborting.')
+            kodi_set_error_status(st_dic, 'MAME 2003 Plus XML file not found.')
             return
-        # Open the XML control JSON file and check if mtime of current file is older than
-        # the one stored in the XML control file.
+        log_info('MAME 2003 Plus XML found.')
         XML_control_FN = PATHS.MAME_2003_PLUS_XML_CONTROL_PATH
         if XML_control_FN.exists():
-            XML_control_data = utils_load_JSON_file_dic(XML_control_FN.getPath())
-            
+            # Open the XML control file and check if mtime of current file is older than
+            # the one stored in the XML control file. If so reset everything, if not
+            # use the cached information in the XML control file.
+            log_info('MAME 2003 XML control file found.')
+            XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())
+            statinfo = os.stat(MAME_XML_path.getPath())
+            log_debug('XML_control_dic["st_mtime"] {}'.format(XML_control_dic['st_mtime']))
+            log_debug('statinfo.st_mtime {}'.format(statinfo.st_mtime))
+            if statinfo.st_mtime > XML_control_dic['st_mtime']:
+                log_info('XML file is more recent than last preprocessing. Forcing new preprocessing.')
+                process_XML_flag = True
+            else:
+                log_info('XML control up to date.')
+                process_XML_flag = False
         else:
-            # Count number of machines and create XML control JSON file.
-            mame_preprocess_RETRO_MAME2003PLUS(PATHS, settings, __addon_version__, options_dic)
-            if options_dic['abort']: return
+            log_info('XML control file not found. Forcing XML preprocessing.')
+            process_XML_flag = True
+
+        if process_XML_flag:
+            # Count number of machines and create XML control file.
+            mame_preprocess_RETRO_MAME2003PLUS(PATHS, settings, st_dic)
+            if not st_dic['status']: return
+        else:
+            log_info('Reusing previosly preprocessed MAME 2003 XML.')
     else:
         log_error('mame_build_MAME_main_database() Unknown op_mode "{}"'.format(settings['op_mode']))
-        options_dic['abort'] = True
-        options_dic['msg'] = 'Unknown operation mode {}'.format(settings['op_mode'])
+        kodi_set_error_status(st_dic, 'Unknown operation mode {}'.format(settings['op_mode']))
         return
+    # Ensure that XML_control_dic that has been newly created or reused exists.
+    XML_control_dic = utils_load_JSON_file_dic(XML_control_FN.getPath())            
 
-    # Create a new control_dic. This effectively resets AML.
-
-    
     # Main progress dialog.
     pDialog = KodiProgressDialog()
 
     # --- Build SL_NAMES_PATH if available, to be used later in the catalog building ---
-    pDialog.startProgress('Creating list of Software List names...')
-    mame_build_SL_names(PATHS, settings)
-    pDialog.endProgress()
+    if settings['global_enable_SL']:
+        pDialog.startProgress('Creating list of Software List names...')
+        mame_build_SL_names(PATHS, settings)
+        pDialog.endProgress()
+    else:
+        log_info('SL globally disabled, not creating SL names.')
 
     # --- Load INI files to include category information ---
     num_items = 10
@@ -4054,7 +4053,7 @@ def mame_build_MAME_main_database(PATHS, settings, AML_version_str, options_dic)
 
     # --- Load DAT files to include category information ---
     num_items = 4
-    pd_line1 = 'Processing DAT files ...'
+    pd_line1 = 'Processing DAT files...'
     pDialog.startProgress(pd_line1, num_items)
     pDialog.updateProgress(0, '{}\nFile {}'.format(pd_line1, COMMAND_DAT))
     (command_idx_dic, command_dic, command_version) = mame_load_Command_DAT(COMMAND_FN.getPath())
@@ -4102,9 +4101,9 @@ def mame_build_MAME_main_database(PATHS, settings, AML_version_str, options_dic)
     log_info('mame_build_MAME_main_database() MAME numerical version {}'.format(mame_version_int))
 
     # --- Process MAME XML ---
-    total_machines = control_dic['stats_total_machines']
+    total_machines = XML_control_dic['total_machines']
     processed_machines = 0
-    pDialog.startProgress('Building main MAME database ...', total_machines)
+    pDialog.startProgress('Building main MAME database...', total_machines)
     stats = _get_stats_dic()
     log_info('mame_build_MAME_main_database() total_machines {:,}'.format(total_machines))
     machines, machines_render, machines_roms, machines_devices = {}, {}, {}, {}
@@ -4117,7 +4116,7 @@ def mame_build_MAME_main_database(PATHS, settings, AML_version_str, options_dic)
         # print('elem.tag "{}" | elem.text "{}" | elem.attrib "{}"'.format(elem.tag, elem.text, str(elem.attrib)))
 
         # <machine> tag start event includes <machine> attributes
-        if (event == 'start' and elem.tag == 'machine') or (event == 'start' and elem.tag == 'game'):
+        if event == 'start' and (elem.tag == 'machine' or elem.tag == 'game'):
             processed_machines += 1
             machine  = fs_new_machine_dic()
             m_render = fs_new_machine_render_dic()
@@ -4134,14 +4133,14 @@ def mame_build_MAME_main_database(PATHS, settings, AML_version_str, options_dic)
             m_name = elem.attrib['name']
 
             # In modern MAME sourcefile attribute is always present
-            if settings['op_mode'] == OP_MODE_EXTERNAL:
+            if settings['op_mode'] == OP_MODE_VANILLA:
                 # sourcefile #IMPLIED attribute
                 if 'sourcefile' not in elem.attrib:
                     log_error('sourcefile attribute not found in <machine> tag.')
                     raise ValueError('sourcefile attribute not found in <machine> tag.')
                 # Remove trailing '.cpp' from driver name
                 machine['sourcefile'] = elem.attrib['sourcefile']
-            # In MAME 2003 Plus sourcefile does not exists.
+            # In MAME 2003 Plus sourcefile attribute does not exists.
             elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
                 machine['sourcefile'] = ''
             else:
@@ -4402,10 +4401,10 @@ def mame_build_MAME_main_database(PATHS, settings, AML_version_str, options_dic)
             }
             machine['devices'].append(device_dic)
 
-        # --- <machine> tag closing. Add new machine to database ---
-        elif (event == 'end' and elem.tag == 'machine') or (event == 'end' and elem.tag == 'game'):
+        # --- <machine>/<game> tag closing. Add new machine to database ---
+        elif event == 'end' and (elem.tag == 'machine' or elem.tag == 'game'):
             # Checks in modern MAME
-            if settings['op_mode'] == OP_MODE_EXTERNAL:
+            if settings['op_mode'] == OP_MODE_VANILLA:
                 # Assumption 1: isdevice = True if and only if runnable = False
                 if m_render['isDevice'] == runnable:
                     log_error("Machine {}: machine['isDevice'] == runnable".format(m_name))
@@ -4572,11 +4571,26 @@ def mame_build_MAME_main_database(PATHS, settings, AML_version_str, options_dic)
             command_idx_dic[machine_key] = machines_render[machine_key]['description']
 
     # ---------------------------------------------------------------------------------------------
-    # Update MAME control dictionary
+    # Update/Reset MAME control dictionary
+    # Create a new control_dic. This effectively resets AML status.
+    # The XML control file is required to create the new control_dic.
     # ---------------------------------------------------------------------------------------------
-    # Version strings
-    change_control_dic(control_dic, 'ver_mame', mame_version_int)
+    log_info('Creating new control_dic.')
+    AML_version_int = misc_addon_version_str_to_int(settings['__addon_version__'])
+    log_info('AML version str "{}"'.format(settings['__addon_version__']))
+    log_info('AML version int {}'.format(AML_version_int))
+    control_dic = db_new_control_dic()
+    change_control_dic(control_dic, 'op_mode_raw', settings['op_mode_raw'])
+    change_control_dic(control_dic, 'op_mode', settings['op_mode'])
+
+    # Information from the XML control file.
+    change_control_dic(control_dic, 'stats_total_machines', total_machines)
+
+    # Addon and MAME version strings
+    change_control_dic(control_dic, 'ver_AML_str', settings['__addon_version__'])
+    change_control_dic(control_dic, 'ver_AML_int', AML_version_int)
     change_control_dic(control_dic, 'ver_mame_str', mame_version_raw)
+    change_control_dic(control_dic, 'ver_mame_int', mame_version_int)
     # INI files
     change_control_dic(control_dic, 'ver_alltime', alltime_dic['version'])
     change_control_dic(control_dic, 'ver_artwork', artwork_dic['version'])
@@ -5252,207 +5266,6 @@ def mame_build_ROM_audit_databases(PATHS, settings, control_dic,
     }
 
     return audit_dic
-
-# -------------------------------------------------------------------------------------------------
-#
-# Add clones to the all catalog dictionary catalog_all_dic.
-# catalog_all_dic is modified by refence.
-#
-def _catalog_add_clones(parent_name, main_pclone_dic, machines_render, catalog_all_dic):
-    for clone_name in main_pclone_dic[parent_name]:
-        catalog_all_dic[clone_name] = machines_render[clone_name]['description']
-
-#
-# Do not store the number if categories in a catalog. If necessary, calculate it on the fly.
-# I think Python len() on dictionaries is very fast
-#
-def _cache_index_builder(cat_name, cache_index_dic, catalog_all, catalog_parents):
-    for cat_key in catalog_all:
-        cache_index_dic[cat_name][cat_key] = {
-            'num_parents'  : len(catalog_parents[cat_key]),
-            'num_machines' : len(catalog_all[cat_key]),
-            'hash'         : fs_render_cache_get_hash(cat_name, cat_key)
-        }
-
-#
-# Helper functions to get the catalog key.
-#
-def _aux_catalog_key_Catver(parent_name, machines, machines_render):
-    return [ machines[parent_name]['catver'] ]
-
-def _aux_catalog_key_Catlist(parent_name, machines, machines_render):
-    return [ machines[parent_name]['catlist'] ]
-
-def _aux_catalog_key_Genre(parent_name, machines, machines_render):
-    return [ machines[parent_name]['genre'] ]
-
-def _aux_catalog_key_Category(parent_name, machines, machines_render):
-    # Already a list.
-    return machines[parent_name]['category']
-
-def _aux_catalog_key_NPlayers(parent_name, machines, machines_render):
-    return [ machines[parent_name]['nplayers'] ]
-
-def _aux_catalog_key_Bestgames(parent_name, machines, machines_render):
-    return [ machines[parent_name]['bestgames'] ]
-
-def _aux_catalog_key_Series(parent_name, machines, machines_render):
-    # Already a list.
-    return machines[parent_name]['series']
-
-def _aux_catalog_key_Alltime(parent_name, machines, machines_render):
-    log_debug('Machine {}, key {}'.format(parent_name, machines[parent_name]['alltime']))
-    return [ machines[parent_name]['alltime'] ]
-
-def _aux_catalog_key_Artwork(parent_name, machines, machines_render):
-    # Already a list.
-    return machines[parent_name]['artwork']
-
-def _aux_catalog_key_VerAdded(parent_name, machines, machines_render):
-    return [ machines[parent_name]['veradded'] ]
-
-def _aux_catalog_key_Controls_Expanded(parent_name, machines, machines_render):
-    machine = machines[parent_name]
-    machine_render = machines_render[parent_name]
-    # Order alphabetically the list
-    if machine['input']:
-        control_list = [ctrl_dic['type'] for ctrl_dic in machine['input']['control_list']]
-    else:
-        control_list = []
-    pretty_control_type_list = misc_improve_mame_control_type_list(control_list)
-    sorted_control_type_list = sorted(pretty_control_type_list)
-    # Maybe a setting should be added for compact or non-compact control list.
-    # sorted_control_type_list = misc_compress_mame_item_list(sorted_control_type_list)
-    sorted_control_type_list = misc_compress_mame_item_list_compact(sorted_control_type_list)
-    catalog_key_list = [ " / ".join(sorted_control_type_list) ]
-
-    return catalog_key_list
-
-def _aux_catalog_key_Controls_Compact(parent_name, machines, machines_render):
-    machine = machines[parent_name]
-    machine_render = machines_render[parent_name]
-    # Order alphabetically the list
-    if machine['input']:
-        control_list = [ctrl_dic['type'] for ctrl_dic in machine['input']['control_list']]
-    else:
-        control_list = []
-    pretty_control_type_list = misc_improve_mame_control_type_list(control_list)
-    sorted_control_type_list = sorted(pretty_control_type_list)
-    catalog_key_list = misc_compress_mame_item_list_compact(sorted_control_type_list)
-    if not catalog_key_list:
-        catalog_key_list = [ '[ No controls ]' ]
-
-    return catalog_key_list
-
-def _aux_catalog_key_Devices_Expanded(parent_name, machines, machines_render):
-    machine = machines[parent_name]
-    machine_render = machines_render[parent_name]
-    # Order alphabetically the list
-    device_list = [device['att_type'] for device in machine['devices']]
-    pretty_device_list = misc_improve_mame_device_list(device_list)
-    sorted_device_list = sorted(pretty_device_list)
-    # Maybe a setting should be added for compact or non-compact control list
-    # sorted_device_list = misc_compress_mame_item_list(sorted_device_list)
-    sorted_device_list = misc_compress_mame_item_list_compact(sorted_device_list)
-    catalog_key = " / ".join(sorted_device_list)
-    # Change category name for machines with no devices
-    if catalog_key == '':
-        catalog_key = '[ No devices ]'
-
-    return [catalog_key]
-
-def _aux_catalog_key_Devices_Compact(parent_name, machines, machines_render):
-    machine = machines[parent_name]
-    machine_render = machines_render[parent_name]
-    # >> Order alphabetically the list
-    device_list = [ device['att_type'] for device in machine['devices'] ]
-    pretty_device_list = misc_improve_mame_device_list(device_list)
-    sorted_device_list = sorted(pretty_device_list)
-    compressed_device_list = misc_compress_mame_item_list_compact(sorted_device_list)
-    if not compressed_device_list:
-        compressed_device_list = [ '[ No devices ]' ]
-
-    return compressed_device_list
-
-def _aux_catalog_key_Display_Type(parent_name, machines, machines_render):
-    # Compute the catalog_key. display_type and display_rotate main DB entries used.
-    catalog_key = misc_get_display_type_catalog_key(
-        machines[parent_name]['display_type'], machines[parent_name]['display_rotate'])
-
-    return [catalog_key]
-
-def _aux_catalog_key_Display_VSync(parent_name, machines, machines_render):
-    catalog_list = []
-    # machine['display_refresh'] is a list.
-    # Change string '60.12346' to 1 decimal only to avoid having a log of keys in this catalog.
-    # An empty machine['display_refresh'] means no display.
-    if len(machines[parent_name]['display_refresh']) == 0:
-        catalog_list.append('No display')
-    else:
-        for display_str in machines[parent_name]['display_refresh']:
-            vsync = float(display_str)
-            catalog_list.append('{0:.1f} Hz'.format(vsync))
-
-    return catalog_list
-
-def _aux_catalog_key_Display_Resolution(parent_name, machines, machines_render):
-    # Move code of this function here???
-    catalog_key = misc_get_display_resolution_catalog_key(
-        machines[parent_name]['display_width'], machines[parent_name]['display_height'])
-
-    return [catalog_key]
-
-def _aux_catalog_key_CPU(parent_name, machines, machines_render):
-    # machine['chip_cpu_name'] is a list.
-    return machines[parent_name]['chip_cpu_name']
-
-def _aux_catalog_key_Driver(parent_name, machines, machines_render):
-    catalog_key = machines[parent_name]['sourcefile']
-    # Some drivers get a prettier name.
-    if catalog_key in mame_driver_name_dic:
-        catalog_key = mame_driver_name_dic[catalog_key]
-
-    return [catalog_key]
-
-def _aux_catalog_key_Manufacturer(parent_name, machines, machines_render):
-    return [machines_render[parent_name]['manufacturer']]
-
-# This is a special catalog, not easy to automatise.
-# def _aux_catalog_key_ShortName(parent_name, machines, machines_render):
-#     return [machines_render[parent_name]['year']]
-
-def _aux_catalog_key_LongName(parent_name, machines, machines_render):
-    return [machines_render[parent_name]['description'][0]]
-
-# This is a special catalog, not easy to automatise.
-# def _aux_catalog_key_BySL(parent_name, machines, machines_render):
-#     return [machines_render[parent_name]['year']]
-
-def _aux_catalog_key_Year(parent_name, machines, machines_render):
-    return [machines_render[parent_name]['year']]
-
-#
-# Uses a "function pointer" to obtain the catalog_key.
-# catalog_key is a list that has one element for most catalogs.
-# In some catalogs (Controls_Compact) this list has sometimes more than one item, for example
-# one parent machine may have more than one control.
-#
-def _build_catalog_helper_new(catalog_parents, catalog_all,
-    machines, machines_render, main_pclone_dic, catalog_key_function):
-    for parent_name in main_pclone_dic:
-        render = machines_render[parent_name]
-        # Skip device machines in catalogs.
-        if render['isDevice']: continue
-        catalog_key_list = catalog_key_function(parent_name, machines, machines_render)
-        for catalog_key in catalog_key_list:
-            if catalog_key in catalog_parents:
-                catalog_parents[catalog_key][parent_name] = render['description']
-                catalog_all[catalog_key][parent_name] = render['description']
-            else:
-                catalog_parents[catalog_key] = { parent_name : render['description'] }
-                catalog_all[catalog_key] = { parent_name : render['description'] }
-            for clone_name in main_pclone_dic[parent_name]:
-                catalog_all[catalog_key][clone_name] = machines_render[clone_name]['description']
 
 #
 # Checks for errors before scanning for SL ROMs.

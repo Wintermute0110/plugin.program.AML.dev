@@ -308,49 +308,62 @@ def fs_new_SL_asset():
         'manual'   : '',
     }
 
-def fs_new_control_dic():
+# Some fields are used in all working modes.
+# Some fields are used in Vanilla MAME mode.
+# Some fields are used in MAME 2003 Plus mode.
+def db_new_MAME_XML_control_dic():
     return {
-        # --- Filed in when extracting MAME XML ---
+        't_XML_extraction' : 0,       # Result of time.time() [float]
+        't_XML_preprocessing' : 0,    # Result of time.time() [float]
+        'total_machines' : 0,         # [integer]
+        'st_size' : 0,                # Bytes [integer]
+        'st_mtime' : 0.0,             # seconds [float]
+        'ver_mame' : 0,               # Allows version comparisons [integer]
+        'ver_mame_str' : 'undefined', # [str]
+    }
+
+def db_new_control_dic():
+    return {
+        # --- Filed in when extracting/preprocessing MAME XML ---
         # Operation mode when the database is created. If the OP mode is changed database
         # must be rebuilt.
-        'op_mode_raw'          : 0,
-        'op_mode'              : '',
+        'op_mode_raw' : 0,
+        'op_mode' : '',
         'stats_total_machines' : 0,
 
         # --- Timestamps ---
         # MAME
-        't_XML_extraction'          : 0,
-        't_MAME_DB_build'           : 0,
-        't_MAME_Audit_DB_build'     : 0,
-        't_MAME_Catalog_build'      : 0,
-        't_MAME_ROMs_scan'          : 0,
-        't_MAME_assets_scan'        : 0,
-        't_MAME_plots_build'        : 0,
-        't_MAME_fanart_build'       : 0,
-        't_MAME_3dbox_build'        : 0,
-        't_MAME_machine_hash'       : 0,
-        't_MAME_asset_hash'         : 0,
-        't_MAME_render_cache_build' : 0,
-        't_MAME_asset_cache_build'  : 0,
+        't_MAME_DB_build' : 0.0,
+        't_MAME_Audit_DB_build' : 0.0,
+        't_MAME_Catalog_build' : 0.0,
+        't_MAME_ROMs_scan' : 0.0,
+        't_MAME_assets_scan' : 0.0,
+        't_MAME_plots_build' : 0.0,
+        't_MAME_fanart_build' : 0.0,
+        't_MAME_3dbox_build' : 0.0,
+        't_MAME_machine_hash' : 0.0,
+        't_MAME_asset_hash' : 0.0,
+        't_MAME_render_cache_build' : 0.0,
+        't_MAME_asset_cache_build' : 0.0,
         # Software Lists
-        't_SL_DB_build'             : 0,
-        't_SL_ROMs_scan'            : 0,
-        't_SL_assets_scan'          : 0,
-        't_SL_plots_build'          : 0,
-        't_SL_fanart_build'         : 0,
-        't_SL_3dbox_build'          : 0,
+        't_SL_DB_build' : 0.0,
+        't_SL_ROMs_scan' : 0.0,
+        't_SL_assets_scan' : 0.0,
+        't_SL_plots_build' : 0.0,
+        't_SL_fanart_build' : 0.0,
+        't_SL_3dbox_build' : 0.0,
         # Misc
-        't_Custom_Filter_build'     : 0,
-        't_MAME_audit'              : 0,
-        't_SL_audit'                : 0,
+        't_Custom_Filter_build' : 0.0,
+        't_MAME_audit' : 0.0,
+        't_SL_audit' : 0.0,
 
         # --- Filed in when building main MAME database ---
-        'ver_AML'       : 0,
-        'ver_AML_str'   : 'Undefined',
+        'ver_AML_int' : 0,
+        'ver_AML_str' : 'Undefined',
         # Numerical MAME version. Allows for comparisons like ver_mame >= MAME_VERSION_0190
         # MAME string version, as reported by the executable stdout. Example: '0.194 (mame0194)'
-        'ver_mame'      : 0,
-        'ver_mame_str'  : 'Undefined',
+        'ver_mame_int' : 0,
+        'ver_mame_str' : 'Undefined',
         # INI files
         'ver_alltime'   : 'MAME database not built',
         'ver_artwork'   : 'MAME database not built',
@@ -630,10 +643,7 @@ def fs_new_control_dic():
         'assets_SL_manuals_alternate'   : 0,
     }
 
-#
-# This function must be called concurrently, for example when skins call AML to show the widgets.
-# Use Kodi properties to lock the file creation.
-#
+# Safe way of edit control_dic to avoid creating new fields not defined in db_new_control_dic().
 def change_control_dic(control_dic, field, value):
     if field in control_dic:
         control_dic[field] = value
