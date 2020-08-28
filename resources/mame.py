@@ -4137,7 +4137,7 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
                 machine['sourcefile'] = elem.attrib['sourcefile']
             # In MAME 2003 Plus sourcefile attribute does not exists.
             elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-                machine['sourcefile'] = ''
+                machine['sourcefile'] = '[ Not set ]'
             else:
                 raise ValueError
 
@@ -4191,7 +4191,7 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
         elif event == 'start' and elem.tag == 'manufacturer':
             m_render['manufacturer'] = str(elem.text)
 
-        # >> Check in machine has BIOS
+        # Check in machine has BIOS
         # <biosset> name and description attributes are mandatory
         elif event == 'start' and elem.tag == 'biosset':
             # --- Add BIOS to ROMS_DB_PATH ---
@@ -4200,7 +4200,7 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
             bios['description'] = str(elem.attrib['description'])
             m_roms['bios'].append(bios)
 
-        # >> Check in machine has ROMs
+        # Check in machine has ROMs
         # A) ROM is considered to be valid if SHA1 has exists. 
         #    Are there ROMs with no sha1? There are a lot, for example 
         #    machine 1941j <rom name="yi22b.1a" size="279" status="nodump" region="bboardplds" />
@@ -4212,7 +4212,6 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
         #    snespal -> <rom name="spc700.rom" merge="spc700.rom" size="64" crc="44bb3a40" ... >
         #
         # C) In AML, hasROM actually means "machine has it own ROMs not found somewhere else".
-        #
         elif event == 'start' and elem.tag == 'rom':
             # --- Research ---
             # if not 'sha1' in elem.attrib:
@@ -4229,40 +4228,39 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
 
             # --- ROMs SHA1 database ---
             sha1 = str(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
-            # >> Only add valid ROMs, ignore invalid.
+            # Only add valid ROMs, ignore invalid.
             if sha1:
                 rom_nonmerged_location = m_name + '/' + rom['name']
                 roms_sha1_dic[rom_nonmerged_location] = sha1
 
-        # >> Check in machine has CHDs
+        # Check in machine has CHDs
         # A) CHD is considered valid if and only if SHA1 hash exists.
         #    Keep in mind that there can be multiple disks per machine, some valid, some invalid.
         #    Just one valid CHD is OK.
         # B) A CHD is unique to a machine if the <disk> tag does not have the 'merge' attribute.
         #    See comments for ROMs avobe.
-        #
         elif event == 'start' and elem.tag == 'disk':
             # <!ATTLIST disk name CDATA #REQUIRED>
-            # if 'sha1' in elem.attrib and 'merge' in elem.attrib:     machine['CHDs_merged'].append(elem.attrib['name'])
+            # if 'sha1' in elem.attrib and 'merge' in elem.attrib: machine['CHDs_merged'].append(elem.attrib['name'])
             # if 'sha1' in elem.attrib and 'merge' not in elem.attrib: machine['CHDs'].append(elem.attrib['name'])
 
-            # --- Add BIOS to ROMS_DB_PATH ---
+            # Add BIOS to ROMS_DB_PATH.
             disk = fs_new_disk_dic()
             disk['name']  = str(elem.attrib['name'])
             disk['merge'] = str(elem.attrib['merge']) if 'merge' in elem.attrib else ''
             disk['sha1']  = str(elem.attrib['sha1']) if 'sha1' in elem.attrib else ''
             m_roms['disks'].append(disk)
 
-        # >> Machine devices
+        # Machine devices
         elif event == 'start' and elem.tag == 'device_ref':
             device_list.append(str(elem.attrib['name']))
 
-        # >> Machine samples
+        # Machine samples
         elif event == 'start' and elem.tag == 'sample':
             sample = { 'name' : str(elem.attrib['name']) }
             m_roms['samples'].append(sample)
 
-        # >> Chips define CPU and audio circuits.
+        # Chips define CPU and audio circuits.
         elif event == 'start' and elem.tag == 'chip':
             if elem.attrib['type'] == 'cpu':
                 machine['chip_cpu_name'].append(elem.attrib['name'])
@@ -4293,10 +4291,10 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
         #     'att_tilt'    (yes|no) "no"
         #     'control_list' : [
         #         {
-        #         'type'       : string, CDATA #REQUIRED
-        #         'player'     : int, CDATA #IMPLIED
-        #         'buttons'    : int, CDATA #IMPLIED
-        #         'ways'       : [ ways string, ways2 string, ways3 string ] CDATA #IMPLIED
+        #             'type'    : string CDATA #REQUIRED
+        #             'player'  : int CDATA #IMPLIED
+        #             'buttons' : int CDATA #IMPLIED
+        #             'ways'    : [ ways string, ways2 string, ways3 string ] CDATA #IMPLIED
         #         }, ...
         #     ]
         # }
@@ -4353,22 +4351,21 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
             else:
                 # Create a control_list
                 for i in range(att_players):
-                    ctrl_dic = {'type' : '', 'player' : -1, 'buttons' : -1, 'ways' : []}
-                    ctrl_dic['type'] = att_control
-                    ctrl_dic['player'] = i + 1
-                    ctrl_dic['buttons'] = att_buttons
-                    ctrl_dic['ways'] = []
-                    control_list.append(ctrl_dic)
+                    control_list.append({
+                        'type' : att_control,
+                        'player' : i + 1,
+                        'buttons' : att_buttons,
+                        'ways' : [],
+                    })
 
             # Add new input dictionary.
-            input_dic = {
+            machine['input'] = {
                 'att_service'  : att_service,
                 'att_tilt'     : att_tilt,
                 'att_players'  : att_players,
                 'att_coins'    : att_coins,
                 'control_list' : control_list,
             }
-            machine['input'] = input_dic
 
         elif event == 'start' and elem.tag == 'driver':
             # status is #REQUIRED attribute
@@ -4378,25 +4375,25 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
             # name is #REQUIRED attribute
             machine['softwarelists'].append(elem.attrib['name'])
 
-        # >> Device tag for machines that support loading external files
+        # Device tag for machines that support loading external files
         elif event == 'start' and elem.tag == 'device':
             att_type      = elem.attrib['type'] # The only mandatory attribute
             att_tag       = elem.attrib['tag']       if 'tag'       in elem.attrib else ''
             att_mandatory = elem.attrib['mandatory'] if 'mandatory' in elem.attrib else ''
             att_interface = elem.attrib['interface'] if 'interface' in elem.attrib else ''
-            # >> Transform device_mandatory into bool
+            # Transform device_mandatory into bool
             if att_mandatory and att_mandatory == '1': att_mandatory = True
             else:                                      att_mandatory = False
 
-            # >> Iterate children of <device> and search for <instance> tags
+            # Iterate children of <device> and search for <instance> tags
             instance_tag_found = False
             inst_name = ''
             inst_briefname = ''
             ext_names = []
             for device_child in elem:
                 if device_child.tag == 'instance':
-                    # >> Stop if <device> tag has more than one <instance> tag. In MAME 0.190 no
-                    # >> machines trigger this.
+                    # Stop if <device> tag has more than one <instance> tag. In MAME 0.190 no
+                    # machines trigger this.
                     if instance_tag_found:
                         raise GeneralError('Machine {} has more than one <instance> inside <device>')
                     inst_name      = device_child.attrib['name']
@@ -4405,13 +4402,13 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
                 elif device_child.tag == 'extension':
                     ext_names.append(device_child.attrib['name'])
 
-            # >> NOTE Some machines have no instance inside <device>, for example 2020bb
-            # >>      I don't know how to launch those machines
+            # NOTE Some machines have no instance inside <device>, for example 2020bb
+            #      I don't know how to launch those machines
             # if not instance_tag_found:
                 # log_warning('<instance> tag not found inside <device> tag (machine {})'.format(m_name))
                 # device_type = '{} (NI)'.format(device_type)
 
-            # >> Add device to database
+            # Add device to database
             device_dic = {
                 'att_type'      : att_type,
                 'att_tag'       : att_tag,
@@ -4443,11 +4440,13 @@ def mame_build_MAME_main_database(PATHS, settings, st_dic):
                 #     raise ValueError
             # Checks in Retroarch MAME 2003 Plus
             elif settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
-                pass
+                # In MAME 2003 Plus XML some <year> tags are empty.
+                # Set a default value.
+                if not m_render['year']: m_render['year'] = '[ Not set ]'
             else:
                 raise ValueError
 
-            # >> Mark dead machines. A machine is dead if Status is preliminary AND have no controls.
+            # Mark dead machines. A machine is dead if Status is preliminary AND have no controls.
             if m_render['driver_status'] == 'preliminary' and not machine['input']['control_list']:
                 machine['isDead'] = True
 
@@ -7143,7 +7142,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             else:
                 scan_march_SAM_missing += 1
                 Sample_flag = 's'
-        elif chd_list and not options_dic['scan_Samples']:
+        elif sample_list and not options_dic['scan_Samples']:
             scan_march_SAM_total += 1
             scan_march_SAM_missing += 1
             Sample_flag = 's'
@@ -7183,7 +7182,7 @@ def mame_scan_MAME_ROMs(PATHS, settings, control_dic, options_dic,
             CHD_flag = '-'
         fs_set_CHD_flag(assets_dic[key], CHD_flag)
 
-        # >> Build FULL, HAVE and MISSING reports.
+        # Build FULL, HAVE and MISSING reports.
         r_full_list.append('Machine {} "{}"'.format(key, machines_render[key]['description']))
         if machines_render[key]['cloneof']:
             cloneof = machines_render[key]['cloneof']

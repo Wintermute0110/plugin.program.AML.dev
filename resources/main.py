@@ -3448,8 +3448,8 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
     elif action == ACTION_VIEW_MACHINE_AUDIT_ROMS:
         # --- Load machine dictionary and ROM database ---
         rom_set = ['MERGED', 'SPLIT', 'NONMERGED'][g_settings['mame_rom_set']]
-        log_debug('command_context_view() View Machine ROMs (Audit database)\n')
-        log_debug('command_context_view() rom_set {}\n'.format(rom_set))
+        log_debug('command_context_view() View Machine ROMs (Audit database)')
+        log_debug('command_context_view() rom_set {}'.format(rom_set))
 
         d_text = 'Loading databases...'
         num_items = 2
@@ -3464,9 +3464,9 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         rom_list = audit_roms_dic[machine_name]
         cloneof = machine['cloneof']
         romof = machine['romof']
-        log_debug('command_context_view() machine {}\n'.format(machine_name))
-        log_debug('command_context_view() cloneof {}\n'.format(cloneof))
-        log_debug('command_context_view() romof   {}\n'.format(romof))
+        log_debug('command_context_view() machine {}'.format(machine_name))
+        log_debug('command_context_view() cloneof {}'.format(cloneof))
+        log_debug('command_context_view() romof   {}'.format(romof))
 
         # --- Generate report ---
         info_text = []
@@ -3539,7 +3539,7 @@ def command_context_view(machine_name, SL_name, SL_ROM, location):
         table_str = []
         table_str.append(['left',      'left',       'left',      'left',   'left',         'left', 'left'])
         table_str.append(['Part name', 'Part iface', 'Area type', 'A name', 'ROM/CHD name', 'Size', 'CRC/SHA1'])
-        # >> Iterate Parts
+        # Iterate Parts
         for part_dic in rom_db_list:
             part_name = part_dic['part_name']
             part_interface = part_dic['part_interface']
@@ -5694,7 +5694,7 @@ def command_context_setup_plugin():
                 db_dic['cache_index'], db_dic['assets'])
 
         # --- Software Lists ---------------------------------------------------------------------
-        if g_settings['enable_SL']:
+        if g_settings['global_enable_SL']:
             # --- Load databases ---
             db_files = [
                 ['SL_index', 'Software Lists index', g_PATHS.SL_INDEX_PATH.getPath()],
@@ -5723,7 +5723,7 @@ def command_context_setup_plugin():
             mame_build_SL_plots(g_PATHS, g_settings, control_dic,
                 SL_dic['SL_index'], SL_dic['SL_machines'], db_dic['history_idx_dic'])
         else:
-            log_info('SL disabled. Skipping SL scanning and plot building.')
+            log_info('SL globally disabled. Skipping SL scanning and plot building.')
 
         # --- So long and thanks for all the fish ---
         kodi_notify('All ROM/asset scanning finished')
@@ -5745,17 +5745,23 @@ def command_context_setup_plugin():
         if data_dic['abort']: return
         graphs_build_MAME_Fanart_all(g_PATHS, g_settings, data_dic)
 
-        data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
-        if data_dic['abort']: return
-        graphs_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
+        if g_settings['global_enable_SL']:
+            data_dic = graphs_load_SL_Fanart_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_SL_Fanart_all(g_PATHS, g_settings, data_dic)
+        else:
+            log_info('SL globally disabled. Skipping SL Fanart generation.')
 
         data_dic = graphs_load_MAME_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
         if data_dic['abort']: return
         graphs_build_MAME_3DBox_all(g_PATHS, g_settings, data_dic)
 
-        data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
-        if data_dic['abort']: return
-        graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
+        if g_settings['global_enable_SL']:
+            data_dic = graphs_load_SL_3DBox_stuff(g_PATHS, g_settings, BUILD_MISSING)
+            if data_dic['abort']: return
+            graphs_build_SL_3DBox_all(g_PATHS, g_settings, data_dic)
+        else:
+            log_info('SL globally disabled. Skipping SL 3DBox generation.')
 
     # --- Audit MAME machine ROMs/CHDs ---
     # It is likely that this function will take a looong time. It is important that the
