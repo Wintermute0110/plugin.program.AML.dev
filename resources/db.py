@@ -1155,7 +1155,7 @@ def fs_load_assets_all(PATHS, cache_index_dic, catalog_name, category_name):
 # Returns a dictionary with the context of the loaded files.
 #
 def fs_load_files(db_files):
-    log_debug('fs_load_files() Loading {} JSON database files ...\n'.format(len(db_files)))
+    log_debug('fs_load_files() Loading {} JSON database files...'.format(len(db_files)))
     db_dic = {}
     d_text = 'Loading databases...'
     pDialog = KodiProgressDialog()
@@ -1169,7 +1169,7 @@ def fs_load_files(db_files):
     return db_dic
 
 def fs_save_files(db_files, json_write_func = utils_write_JSON_file):
-    log_debug('fs_save_files() Saving {} JSON database files...\n'.format(len(db_files)))
+    log_debug('fs_save_files() Saving {} JSON database files...'.format(len(db_files)))
     d_text = 'Saving databases...'
     pDialog = KodiProgressDialog()
     pDialog.startProgress(d_text, len(db_files))
@@ -1186,17 +1186,17 @@ def fs_export_Read_Only_Launcher(export_FN, catalog_dic, machines, machines_rend
     log_verb('fs_export_Read_Only_Launcher() File "{}"'.format(export_FN.getPath()))
 
     # Create list of strings.
-    str_list = []
-    str_list.append('<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n')
-    str_list.append('<!-- Exported by AML on {} -->\n'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
-    str_list.append('<advanced_MAME_launcher_virtual_launcher>\n')
+    slist = []
+    slist.append('<?xml version="1.0" encoding="utf-8" standalone="yes"?>')
+    slist.append('<!-- Exported by AML on {} -->'.format(time.strftime("%Y-%m-%d %H:%M:%S")))
+    slist.append('<advanced_MAME_launcher_virtual_launcher>')
     for m_name, r_name in catalog_dic.items():
-        str_list.append('<machine>\n')
-        str_list.append(XML_text('name', m_name))
-        str_list.append(XML_text('description', machines_render[m_name]['description']))
-        str_list.append(XML_text('genre', machines_render[m_name]['genre']))
-        str_list.append(XML_text('year', machines_render[m_name]['year']))
-        str_list.append(XML_text('cabinet', assets_dic[m_name]['cabinet']))
-        str_list.append('</machine>\n')
-    str_list.append('</advanced_MAME_launcher_virtual_launcher>\n')
-    utils_write_str_list_to_file(str_list, export_FN)
+        slist.append('<machine>')
+        slist.append(XML_text('name', m_name))
+        slist.append(XML_text('description', machines_render[m_name]['description']))
+        slist.append(XML_text('genre', machines_render[m_name]['genre']))
+        slist.append(XML_text('year', machines_render[m_name]['year']))
+        slist.append(XML_text('cabinet', assets_dic[m_name]['cabinet']))
+        slist.append('</machine>')
+    slist.append('</advanced_MAME_launcher_virtual_launcher>')
+    utils_write_str_list_to_file(slist, export_FN)
