@@ -1826,34 +1826,35 @@ def mame_info_SL_print(slist, location, SL_name, SL_ROM, rom, assets, SL_dic, SL
         t = "[COLOR violet]machine[/COLOR]: '{}' [COLOR slateblue]({})[/COLOR]"
         slist.append(t.format(machine_dic['description'], machine_dic['machine']))
 
-#
 # slist is a list of strings that will be joined like '\n'.join(slist)
 # slist is a list, so it is mutable and can be changed by reference.
-#
-def mame_stats_main_print_slist(settings, slist, control_dic, AML_version_str):
-    AML_version_int = misc_addon_version_str_to_int(AML_version_str)
+def mame_stats_main_print_slist(settings, slist, control_dic, XML_ctrl_dic):
+    ctrl = control_dic
+    AML_ver_str = settings['__addon_version__']
+    AML_ver_int = misc_addon_version_str_to_int(AML_ver_str)
+    SL_str = 'enabled' if settings['global_enable_SL'] else 'disabled'
 
     slist.append('[COLOR orange]Main information[/COLOR]')
-    slist.append("AML version           {:,} (str [COLOR violet]{}[/COLOR])".format(
-        AML_version_int, AML_version_str))
-    slist.append("Database version      {:,} (str [COLOR violet]{}[/COLOR])".format(
-        control_dic['ver_AML_int'], control_dic['ver_AML_str']))
-    slist.append("MAME version          {:,} (str [COLOR violet]{}[/COLOR])".format(
-        control_dic['ver_mame_int'], control_dic['ver_mame_str']))
-    slist.append("Alltime.ini version   {}".format(control_dic['ver_alltime']))
-    slist.append("Artwork.ini version   {}".format(control_dic['ver_artwork']))
-    slist.append("bestgames.ini version {}".format(control_dic['ver_bestgames']))
-    slist.append("Category.ini version  {}".format(control_dic['ver_category']))
-    slist.append("catlist.ini version   {}".format(control_dic['ver_catlist']))
-    slist.append("catver.ini version    {}".format(control_dic['ver_catver']))
-    slist.append("command.dat version   {}".format(control_dic['ver_command']))
-    slist.append("gameinit.dat version  {}".format(control_dic['ver_gameinit']))
-    slist.append("genre.ini version     {}".format(control_dic['ver_genre']))
-    slist.append("history.dat version   {}".format(control_dic['ver_history']))
-    slist.append("mameinfo.dat version  {}".format(control_dic['ver_mameinfo']))
-    slist.append("mature.ini version    {}".format(control_dic['ver_mature']))
-    slist.append("nplayers.ini version  {}".format(control_dic['ver_nplayers']))
-    slist.append("series.ini version    {}".format(control_dic['ver_series']))
+    slist.append('AML version            {:,} [COLOR violet]{}[/COLOR]'.format(AML_ver_int, AML_ver_str))
+    slist.append('Database version       {:,} [COLOR violet]{}[/COLOR]'.format(ctrl['ver_AML_int'], ctrl['ver_AML_str']))
+    slist.append('MAME version           {:,} [COLOR violet]{}[/COLOR]'.format(ctrl['ver_mame_int'], ctrl['ver_mame_str']))
+    slist.append('Operation mode         [COLOR violet]{:s}[/COLOR]'.format(settings['op_mode']))
+    slist.append('Software Lists         [COLOR violet]{:s}[/COLOR]'.format(SL_str))
+    # Information in the MAME XML control file.
+    if XML_ctrl_dic['t_XML_extraction']:
+        slist.append('XML extraction time    {}'.format(_str_time(XML_ctrl_dic['t_XML_extraction'])))
+    else:
+        slist.append('XML extraction time    {}'.format('no extracted'))
+    if XML_ctrl_dic['st_mtime']:
+        slist.append('XML modification time  {}'.format(_str_time(XML_ctrl_dic['st_mtime'])))
+    else:
+        slist.append('XML extraction time    {}'.format('undefined'))
+    if XML_ctrl_dic['t_XML_preprocessing']:
+        slist.append('XML preprocess time    {}'.format(_str_time(XML_ctrl_dic['t_XML_preprocessing'])))
+    else:
+        slist.append('XML extraction time    {}'.format('undefined'))
+    slist.append('XML size               {:,} bytes'.format(XML_ctrl_dic['st_size']))
+    slist.append('XML machine count      {:,} machines'.format(XML_ctrl_dic['total_machines']))
 
     slist.append('')
     slist.append('[COLOR orange]MAME machine count[/COLOR]')
@@ -1920,326 +1921,266 @@ def mame_stats_main_print_slist(settings, slist, control_dic, AML_version_str):
     slist.append('')
     slist.append('[COLOR orange]MAME machine statistics[/COLOR]')
     table_str = []
-    table_str.append(['left', 'right', 'right', 'right', 'right'])
-    table_str.append(['Type (parents/total)', 'Total', 'Good',  'Imperfect', 'Nonworking'])
-    table_str.append([
-        'Coin slot (Normal)',
-        '{:6,d} / {:6,d}'.format(control_dic['stats_MF_Normal_Total_parents'],control_dic['stats_MF_Normal_Total']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Normal_Good_parents'], control_dic['stats_MF_Normal_Good']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Normal_Imperfect_parents'], control_dic['stats_MF_Normal_Imperfect']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Normal_Nonworking_parents'], control_dic['stats_MF_Normal_Nonworking']),
+    table_str.append(['left', 'right', 'right', 'right', 'right', 'right', 'right', 'right', 'right'])
+    table_str.append(['Type (parents/total)', 'Total', '', 'Good', '', 'Imperfect', '', 'Nonworking', ''])
+    table_str.append(['Coin slot (Normal)',
+        '{}'.format(control_dic['stats_MF_Normal_Total_parents']),
+        '{}'.format(control_dic['stats_MF_Normal_Total']),
+        '{}'.format(control_dic['stats_MF_Normal_Good_parents']),
+        '{}'.format(control_dic['stats_MF_Normal_Good']),
+        '{}'.format(control_dic['stats_MF_Normal_Imperfect_parents']),
+        '{}'.format(control_dic['stats_MF_Normal_Imperfect']),
+        '{}'.format(control_dic['stats_MF_Normal_Nonworking_parents']),
+        '{}'.format(control_dic['stats_MF_Normal_Nonworking']),
     ])
-    table_str.append([
-        'Coin slot (Unusual)',
-        '{:6,d} / {:6,d}'.format(control_dic['stats_MF_Unusual_Total_parents'], control_dic['stats_MF_Unusual_Total']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Unusual_Good_parents'], control_dic['stats_MF_Unusual_Good']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Unusual_Imperfect_parents'], control_dic['stats_MF_Unusual_Imperfect']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Unusual_Nonworking_parents'], control_dic['stats_MF_Unusual_Nonworking']),
+    table_str.append(['Coin slot (Unusual)',
+        '{}'.format(control_dic['stats_MF_Unusual_Total_parents']),
+        '{}'.format(control_dic['stats_MF_Unusual_Total']),
+        '{}'.format(control_dic['stats_MF_Unusual_Good_parents']),
+        '{}'.format(control_dic['stats_MF_Unusual_Good']),
+        '{}'.format(control_dic['stats_MF_Unusual_Imperfect_parents']),
+        '{}'.format(control_dic['stats_MF_Unusual_Imperfect']),
+        '{}'.format(control_dic['stats_MF_Unusual_Nonworking_parents']),
+        '{}'.format(control_dic['stats_MF_Unusual_Nonworking']),
     ])
-    table_str.append([
-        'No coin slot',
-        '{:6,d} / {:6,d}'.format(control_dic['stats_MF_Nocoin_Total_parents'], control_dic['stats_MF_Nocoin_Total']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Nocoin_Good_parents'], control_dic['stats_MF_Nocoin_Good']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Nocoin_Imperfect_parents'], control_dic['stats_MF_Nocoin_Imperfect']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Nocoin_Nonworking_parents'], control_dic['stats_MF_Nocoin_Nonworking']),
+    table_str.append(['No coin slot',
+        '{}'.format(control_dic['stats_MF_Nocoin_Total_parents']),
+        '{}'.format(control_dic['stats_MF_Nocoin_Total']),
+        '{}'.format(control_dic['stats_MF_Nocoin_Good_parents']),
+        '{}'.format(control_dic['stats_MF_Nocoin_Good']),
+        '{}'.format(control_dic['stats_MF_Nocoin_Imperfect_parents']),
+        '{}'.format(control_dic['stats_MF_Nocoin_Imperfect']),
+        '{}'.format(control_dic['stats_MF_Nocoin_Nonworking_parents']),
+        '{}'.format(control_dic['stats_MF_Nocoin_Nonworking']),
     ])
-    table_str.append([
-        'Mechanical machines',
-        '{:6,d} / {:6,d}'.format(control_dic['stats_MF_Mechanical_Total_parents'], control_dic['stats_MF_Mechanical_Total']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Mechanical_Good_parents'], control_dic['stats_MF_Mechanical_Good']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Mechanical_Imperfect_parents'], control_dic['stats_MF_Mechanical_Imperfect']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Mechanical_Nonworking_parents'], control_dic['stats_MF_Mechanical_Nonworking']),
+    table_str.append(['Mechanical machines',
+        '{}'.format(control_dic['stats_MF_Mechanical_Total_parents']),
+        '{}'.format(control_dic['stats_MF_Mechanical_Total']),
+        '{}'.format(control_dic['stats_MF_Mechanical_Good_parents']),
+        '{}'.format(control_dic['stats_MF_Mechanical_Good']),
+        '{}'.format(control_dic['stats_MF_Mechanical_Imperfect_parents']),
+        '{}'.format(control_dic['stats_MF_Mechanical_Imperfect']),
+        '{}'.format(control_dic['stats_MF_Mechanical_Nonworking_parents']),
+        '{}'.format(control_dic['stats_MF_Mechanical_Nonworking']),
     ])
-    table_str.append([
-        'Dead machines',
-        '{:6,d} / {:6,d}'.format(control_dic['stats_MF_Dead_Total_parents'], control_dic['stats_MF_Dead_Total']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Dead_Good_parents'], control_dic['stats_MF_Dead_Good']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Dead_Imperfect_parents'], control_dic['stats_MF_Dead_Imperfect']),
-        '{:5,d} / {:5,d}'.format(control_dic['stats_MF_Dead_Nonworking_parents'], control_dic['stats_MF_Dead_Nonworking']),
+    table_str.append(['Dead machines',
+        '{}'.format(control_dic['stats_MF_Dead_Total_parents']),
+        '{}'.format(control_dic['stats_MF_Dead_Total']),
+        '{}'.format(control_dic['stats_MF_Dead_Good_parents']),
+        '{}'.format(control_dic['stats_MF_Dead_Good']),
+        '{}'.format(control_dic['stats_MF_Dead_Imperfect_parents']),
+        '{}'.format(control_dic['stats_MF_Dead_Imperfect']),
+        '{}'.format(control_dic['stats_MF_Dead_Nonworking_parents']),
+        '{}'.format(control_dic['stats_MF_Dead_Nonworking']),
     ])
-    table_str.append([
-        'Device machines',
-        '{:6,d} / {:6,d}'.format(control_dic['stats_devices_parents'], control_dic['stats_devices']),
-        'N/A', 'N/A', 'N/A'])
+    table_str.append(['Device machines',
+        '{}'.format(control_dic['stats_devices_parents']),
+        '{}'.format(control_dic['stats_devices']),
+        'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A'])
     slist.extend(text_render_table_str(table_str))
 
-    slist.append('')
-    slist.append('[COLOR orange]Software Lists item count[/COLOR]')
-    if settings['enable_SL']:
+    if settings['global_enable_SL']:
+        slist.append('\n[COLOR orange]Software Lists item count[/COLOR]')
         slist.append("SL XML files        {:7,d}".format(control_dic['stats_SL_XML_files']))
         slist.append("SL software items   {:7,d}".format(control_dic['stats_SL_software_items']))
         slist.append("SL items with ROMs  {:7,d}".format(control_dic['stats_SL_items_with_ROMs']))
         slist.append("SL items with CHDs  {:7,d}".format(control_dic['stats_SL_items_with_CHDs']))
-    else:
-        slist.append('Software Lists disabled')
-
-    # Timestamps ordered if user selects "All in one step"
-    slist.append('')
-    slist.append('[COLOR orange]Timestamps[/COLOR]')
-    # MAME and SL databases.
-    if control_dic['t_MAME_DB_build']:
-        slist.append("MAME DB built on            {}".format(
-            _str_time(control_dic['t_MAME_DB_build'])))
-    else:
-        slist.append("MAME DB never built")
-    if control_dic['t_MAME_Audit_DB_build']:
-        slist.append("MAME Audit DB built on      {}".format(
-            _str_time(control_dic['t_MAME_Audit_DB_build'])))
-    else:
-        slist.append("MAME Audit DB never built")
-    if control_dic['t_MAME_Catalog_build']:
-        slist.append("MAME Catalog built on       {}".format(
-            _str_time(control_dic['t_MAME_Catalog_build'])))
-    else:
-        slist.append("MAME Catalog never built")
-    if control_dic['t_SL_DB_build']:
-        slist.append("SL DB built on              {}".format(
-            _str_time(control_dic['t_SL_DB_build'])))
-    else:
-        slist.append("SL DB never built")
-
-    # MAME and SL scanner.
-    if control_dic['t_MAME_ROMs_scan']:
-        slist.append("MAME ROMs scaned on         {}".format(
-            _str_time(control_dic['t_MAME_ROMs_scan'])))
-    else:
-        slist.append("MAME ROMs never scaned")
-    if control_dic['t_MAME_assets_scan']:
-        slist.append("MAME assets scaned on       {}".format(
-            _str_time(control_dic['t_MAME_assets_scan'])))
-    else:
-        slist.append("MAME assets never scaned")
-
-    if control_dic['t_SL_ROMs_scan']:
-        slist.append("SL ROMs scaned on           {}".format(
-            _str_time(control_dic['t_SL_ROMs_scan'])))
-    else:
-        slist.append("SL ROMs never scaned")
-    if control_dic['t_SL_assets_scan']:
-        slist.append("SL assets scaned on         {}".format(
-            _str_time(control_dic['t_SL_assets_scan'])))
-    else:
-        slist.append("SL assets never scaned")
-
-    # Plots, Fanarts and 3D Boxes.
-    if control_dic['t_MAME_plots_build']:
-        slist.append("MAME Plots built on         {}".format(
-            _str_time(control_dic['t_MAME_plots_build'])))
-    else:
-        slist.append("MAME Plots never built")
-    if control_dic['t_SL_plots_build']:
-        slist.append("SL Plots built on           {}".format(
-            _str_time(control_dic['t_SL_plots_build'])))
-    else:
-        slist.append("SL Plots never built")
-
-    if control_dic['t_MAME_fanart_build']:
-        slist.append("MAME Fanarts built on       {}".format(
-            _str_time(control_dic['t_MAME_fanart_build'])))
-    else:
-        slist.append("MAME Fanarts never built")
-    if control_dic['t_SL_fanart_build']:
-        slist.append("SL Fanarts built on         {}".format(
-            _str_time(control_dic['t_SL_fanart_build'])))
-    else:
-        slist.append("SL Fanarts never built")
-
-    if control_dic['t_MAME_3dbox_build']:
-        slist.append("MAME 3D Boxes built on      {}".format(
-            _str_time(control_dic['t_MAME_3dbox_build'])))
-    else:
-        slist.append("MAME 3D Boxes never built")
-    if control_dic['t_SL_3dbox_build']:
-        slist.append("SL 3D Boxes built on        {}".format(
-            _str_time(control_dic['t_SL_3dbox_build'])))
-    else:
-        slist.append("SL 3D Boxes never built")
-
-    # MAME machine hash, asset hash, render cache and asset cache.
-    if control_dic['t_MAME_machine_hash']:
-        slist.append("MAME machine hash built on  {}".format(
-            _str_time(control_dic['t_MAME_machine_hash'])))
-    else:
-        slist.append("MAME machine hash never built")
-    if control_dic['t_MAME_asset_hash']:
-        slist.append("MAME asset hash built on    {}".format(
-            _str_time(control_dic['t_MAME_asset_hash'])))
-    else:
-        slist.append("MAME asset hash never built")
-    if control_dic['t_MAME_render_cache_build']:
-        slist.append("MAME render cache built on  {}".format(
-            _str_time(control_dic['t_MAME_render_cache_build'])))
-    else:
-        slist.append("MAME render cache never built")
-    if control_dic['t_MAME_asset_cache_build']:
-        slist.append("MAME asset cache built on   {}".format(
-            _str_time(control_dic['t_MAME_asset_cache_build'])))
-    else:
-        slist.append("MAME asset cache never built")
-
-    # Custsom filters.
-    if control_dic['t_Custom_Filter_build']:
-        slist.append("Custom filters built on     {}".format(
-            _str_time(control_dic['t_Custom_Filter_build'])))
-    else:
-        slist.append("Custom filters never built")
-
-    # Audit stuff.
-    if control_dic['t_MAME_audit']:
-        slist.append("MAME ROMs audited on        {}".format(
-            _str_time(control_dic['t_MAME_audit'])))
-    else:
-        slist.append("MAME ROMs never audited")
-    if control_dic['t_SL_audit']:
-        slist.append("SL ROMs audited on          {}".format(
-            _str_time(control_dic['t_SL_audit'])))
-    else:
-        slist.append("SL ROMs never audited")
 
 def mame_stats_scanner_print_slist(settings, slist, control_dic):
-    # >> MAME statistics
+    # MAME statistics
     slist.append('[COLOR orange]MAME scanner information[/COLOR]')
-    ta = "You have {:5d} ROM ZIP files    out of  {:5d}, missing    {:5d}"
-    tb = "You have {:5d} Sample ZIP files out of  {:5d}, missing    {:5d}"
-    tc = "You have {:5d} CHDs file        out of  {:5d}, missing    {:5d}"
-    slist.append(ta.format(control_dic['scan_ROM_ZIP_files_have'],
-                           control_dic['scan_ROM_ZIP_files_total'],
-                           control_dic['scan_ROM_ZIP_files_missing']))
-    slist.append(tb.format(control_dic['scan_Samples_ZIP_have'],
-                           control_dic['scan_Samples_ZIP_total'],
-                           control_dic['scan_Samples_ZIP_missing']))
-    slist.append(tc.format(control_dic['scan_CHD_files_have'],
-                           control_dic['scan_CHD_files_total'],
-                           control_dic['scan_CHD_files_missing']))
+    t_str = [
+        ['left', 'right', 'right',  'right'],
+        ['Stat', 'Total', 'Have', 'Missing'],
+    ]
+    t_str.append(['ROM ZIP files',
+        '{}'.format(control_dic['scan_ROM_ZIP_files_total']),
+        '{}'.format(control_dic['scan_ROM_ZIP_files_have']),
+        '{}'.format(control_dic['scan_ROM_ZIP_files_missing']),
+    ])
+    t_str.append(['Sample ZIP files',
+        '{}'.format(control_dic['scan_Samples_ZIP_total']),
+        '{}'.format(control_dic['scan_Samples_ZIP_have']),
+        '{}'.format(control_dic['scan_Samples_ZIP_missing']),
+    ])
+    t_str.append(['CHD files',
+        '{}'.format(control_dic['scan_CHD_files_total']),
+        '{}'.format(control_dic['scan_CHD_files_have']),
+        '{}'.format(control_dic['scan_CHD_files_missing']),
+    ])
+    slist.extend(text_render_table_str(t_str))
 
-    ta = "Can run  {:5d} ROM machines     out of  {:5d}, unrunnable {:5d}"
-    tb = "Can run  {:5d} Sample machines  out of  {:5d}, unrunnable {:5d}"
-    tc = "Can run  {:5d} CHD machines     out of  {:5d}, unrunnable {:5d}"
-    slist.append(ta.format(control_dic['scan_machine_archives_ROM_have'],
-                           control_dic['scan_machine_archives_ROM_total'],
-                           control_dic['scan_machine_archives_ROM_missing']))
-    slist.append(tb.format(control_dic['scan_machine_archives_Samples_have'],
-                           control_dic['scan_machine_archives_Samples_total'],
-                           control_dic['scan_machine_archives_Samples_missing']))
-    slist.append(tc.format(control_dic['scan_machine_archives_CHD_have'],
-                           control_dic['scan_machine_archives_CHD_total'],
-                           control_dic['scan_machine_archives_CHD_missing']))
-
-    # >> SL statistics
     slist.append('')
-    slist.append('[COLOR orange]Software List scanner information[/COLOR]')
-    if settings['enable_SL']:
-        ta = "You have {0:6d} SL ROMs out of {1:6d}, missing {2:6d}"
-        tb = "You have {0:6d} SL CHDs out of {1:6d}, missing {2:6d}"
-        slist.append(ta.format(control_dic['scan_SL_archives_ROM_have'],
-                               control_dic['scan_SL_archives_ROM_total'],
-                               control_dic['scan_SL_archives_ROM_missing']))
-        slist.append(tb.format(control_dic['scan_SL_archives_CHD_have'],
-                               control_dic['scan_SL_archives_CHD_total'],
-                               control_dic['scan_SL_archives_CHD_missing']))
-    else:
-        slist.append('Software Lists disabled')
+    t_str = [
+        ['left', 'right', 'right',  'right'],
+        ['Stat', 'Can run', 'Out of', 'Unrunnable'],
+    ]
+    t_str.append(['ROM machines',
+        '{}'.format(control_dic['scan_machine_archives_ROM_have']),
+        '{}'.format(control_dic['scan_machine_archives_ROM_total']),
+        '{}'.format(control_dic['scan_machine_archives_ROM_missing']),
+    ])
+    t_str.append(['Sample machines',
+        '{}'.format(control_dic['scan_machine_archives_Samples_have']),
+        '{}'.format(control_dic['scan_machine_archives_Samples_total']),
+        '{}'.format(control_dic['scan_machine_archives_Samples_missing']),
+    ])
+    t_str.append(['CHD machines',
+        '{}'.format(control_dic['scan_machine_archives_CHD_have']),
+        '{}'.format(control_dic['scan_machine_archives_CHD_total']),
+        '{}'.format(control_dic['scan_machine_archives_CHD_missing']),
+    ])
+    slist.extend(text_render_table_str(t_str))
+
+    # SL scanner statistics
+    if settings['global_enable_SL']:
+        slist.append('')
+        slist.append('[COLOR orange]Software List scanner information[/COLOR]')
+        t_str = [
+            ['left', 'right', 'right',  'right'],
+            ['Stat', 'Total', 'Have', 'Missing'],
+        ]
+        t_str.append(['SL ROMs',
+            '{}'.format(control_dic['scan_SL_archives_ROM_total']),
+            '{}'.format(control_dic['scan_SL_archives_ROM_have']),
+            '{}'.format(control_dic['scan_SL_archives_ROM_missing']),
+        ])
+        t_str.append(['SL CHDs',
+            '{}'.format(control_dic['scan_SL_archives_CHD_total']),
+            '{}'.format(control_dic['scan_SL_archives_CHD_have']),
+            '{}'.format(control_dic['scan_SL_archives_CHD_missing']),
+        ])
+        slist.extend(text_render_table_str(t_str))
 
     # --- MAME asset scanner ---
     slist.append('')
     slist.append('[COLOR orange]MAME asset scanner information[/COLOR]')
     # slist.append('Total number of MAME machines {0:,d}'.format(control_dic['assets_num_MAME_machines']))
-    t = "You have {0:6d} MAME 3D Boxes   , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_3dbox_have'],
-                          control_dic['assets_3dbox_missing'],
-                          control_dic['assets_3dbox_alternate']))
-    t = "You have {0:6d} MAME Artpreviews, missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_artpreview_have'],
-                          control_dic['assets_artpreview_missing'],
-                          control_dic['assets_artpreview_alternate']))
-    t = "You have {0:6d} MAME Artwork    , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_artwork_have'],
-                          control_dic['assets_artwork_missing'],
-                          control_dic['assets_artwork_alternate']))
-    t = "You have {0:6d} MAME Cabinets   , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_cabinets_have'],
-                          control_dic['assets_cabinets_missing'],
-                          control_dic['assets_cabinets_alternate']))
-    t = "You have {0:6d} MAME Clearlogos , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_clearlogos_have'],
-                          control_dic['assets_clearlogos_missing'],
-                          control_dic['assets_clearlogos_alternate']))
-    t = "You have {0:6d} MAME CPanels    , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_cpanels_have'],
-                          control_dic['assets_cpanels_missing'],
-                          control_dic['assets_cpanels_alternate']))
-    t = "You have {0:6d} MAME Fanart     , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_fanarts_have'],
-                          control_dic['assets_fanarts_missing'],
-                          control_dic['assets_fanarts_alternate']))
-    t = "You have {0:6d} MAME Flyers     , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_flyers_have'],
-                          control_dic['assets_flyers_missing'],
-                          control_dic['assets_flyers_alternate']))
-    t = "You have {0:6d} MAME Manuals    , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_manuals_have'],
-                          control_dic['assets_manuals_missing'],
-                          control_dic['assets_manuals_alternate']))
-    t = "You have {0:6d} MAME Marquees   , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_marquees_have'],
-                          control_dic['assets_marquees_missing'],
-                          control_dic['assets_marquees_alternate']))
-    t = "You have {0:6d} MAME PCBs       , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_PCBs_have'],
-                          control_dic['assets_PCBs_missing'],
-                          control_dic['assets_PCBs_alternate']))
-    t = "You have {0:6d} MAME Snaps      , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_snaps_have'],
-                          control_dic['assets_snaps_missing'],
-                          control_dic['assets_snaps_alternate']))
-    t = "You have {0:6d} MAME Titles     , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_titles_have'],
-                          control_dic['assets_titles_missing'],
-                          control_dic['assets_titles_alternate']))
-    t = "You have {0:6d} MAME Trailers   , missing {1:6d}, alternate {2:6d}"
-    slist.append(t.format(control_dic['assets_trailers_have'],
-                          control_dic['assets_trailers_missing'],
-                          control_dic['assets_trailers_alternate']))
+    t_str = [
+        ['left', 'right', 'right',  'right'],
+        ['Stat', 'Have', 'Missing', 'Alternate'],
+    ]
+    t_str.append(['MAME 3D Boxes',
+        '{}'.format(control_dic['assets_3dbox_have']),
+        '{}'.format(control_dic['assets_3dbox_missing']),
+        '{}'.format(control_dic['assets_3dbox_alternate']),
+    ])
+    t_str.append(['MAME Artpreviews',
+        '{}'.format(control_dic['assets_artpreview_have']),
+        '{}'.format(control_dic['assets_artpreview_missing']),
+        '{}'.format(control_dic['assets_artpreview_alternate']),
+    ])
+    t_str.append(['MAME Artwork',
+        '{}'.format(control_dic['assets_artwork_have']),
+        '{}'.format(control_dic['assets_artwork_missing']),
+        '{}'.format(control_dic['assets_artwork_alternate']),
+    ])
+    t_str.append(['MAME Cabinets',
+        '{}'.format(control_dic['assets_cabinets_have']),
+        '{}'.format(control_dic['assets_cabinets_missing']),
+        '{}'.format(control_dic['assets_cabinets_alternate']),
+    ])
+    t_str.append(['MAME Clearlogos',
+        '{}'.format(control_dic['assets_clearlogos_have']),
+        '{}'.format(control_dic['assets_clearlogos_missing']),
+        '{}'.format(control_dic['assets_clearlogos_alternate']),
+    ])
+    t_str.append(['MAME CPanels',
+        '{}'.format(control_dic['assets_cpanels_have']),
+        '{}'.format(control_dic['assets_cpanels_missing']),
+        '{}'.format(control_dic['assets_cpanels_alternate']),
+    ])
+    t_str.append(['MAME Fanart',
+        '{}'.format(control_dic['assets_fanarts_have']),
+        '{}'.format(control_dic['assets_fanarts_missing']),
+        '{}'.format(control_dic['assets_fanarts_alternate']),
+    ])
+    t_str.append(['MAME Flyers',
+        '{}'.format(control_dic['assets_flyers_have']),
+        '{}'.format(control_dic['assets_flyers_missing']),
+        '{}'.format(control_dic['assets_flyers_alternate']),
+    ])
+    t_str.append(['MAME Manuals',
+        '{}'.format(control_dic['assets_manuals_have']),
+        '{}'.format(control_dic['assets_manuals_missing']),
+        '{}'.format(control_dic['assets_manuals_alternate']),
+    ])
+    t_str.append(['MAME Marquees',
+        '{}'.format(control_dic['assets_marquees_have']),
+        '{}'.format(control_dic['assets_marquees_missing']),
+        '{}'.format(control_dic['assets_marquees_alternate']),
+    ])
+    t_str.append(['MAME PCBs',
+        '{}'.format(control_dic['assets_PCBs_have']),
+        '{}'.format(control_dic['assets_PCBs_missing']),
+        '{}'.format(control_dic['assets_PCBs_alternate']),
+    ])
+    t_str.append(['MAME Snaps',
+        '{}'.format(control_dic['assets_snaps_have']),
+        '{}'.format(control_dic['assets_snaps_missing']),
+        '{}'.format(control_dic['assets_snaps_alternate']),
+    ])
+    t_str.append(['MAME Titles',
+        '{}'.format(control_dic['assets_titles_have']),
+        '{}'.format(control_dic['assets_titles_missing']),
+        '{}'.format(control_dic['assets_titles_alternate']),
+    ])
+    t_str.append(['MAME Trailers',
+        '{}'.format(control_dic['assets_trailers_have']),
+        '{}'.format(control_dic['assets_trailers_missing']),
+        '{}'.format(control_dic['assets_trailers_alternate']),
+    ])
+    slist.extend(text_render_table_str(t_str))
 
     # --- Software List scanner ---
-    slist.append('')
-    slist.append('[COLOR orange]Software List asset scanner information[/COLOR]')
-    if settings['enable_SL']:
+    if settings['global_enable_SL']:
+        slist.append('')
+        slist.append('[COLOR orange]Software List asset scanner information[/COLOR]')
         # slist.append('Total number of SL items {0:,d}'.format(control_dic['assets_SL_num_items']))
-        t = "You have {0:6d} SL 3D Boxes , missing {1:6d}, alternate {2:6d}"
-        slist.append(t.format(control_dic['assets_SL_3dbox_have'],
-                              control_dic['assets_SL_3dbox_missing'],
-                              control_dic['assets_SL_3dbox_alternate']))
-        t = "You have {0:6d} SL Titles   , missing {1:6d}, alternate {2:6d}"
-        slist.append(t.format(control_dic['assets_SL_titles_have'],
-                              control_dic['assets_SL_titles_missing'],
-                              control_dic['assets_SL_titles_alternate']))
-        t = "You have {0:6d} SL Snaps    , missing {1:6d}, alternate {2:6d}"
-        slist.append(t.format(control_dic['assets_SL_snaps_have'],
-                              control_dic['assets_SL_snaps_missing'],
-                              control_dic['assets_SL_snaps_alternate']))
-        t = "You have {0:6d} SL Boxfronts, missing {1:6d}, alternate {2:6d}"
-        slist.append(t.format(control_dic['assets_SL_boxfronts_have'],
-                              control_dic['assets_SL_boxfronts_missing'],
-                              control_dic['assets_SL_boxfronts_alternate']))
-        t = "You have {0:6d} SL Fanarts  , missing {1:6d}, alternate {2:6d}"
-        slist.append(t.format(control_dic['assets_SL_fanarts_have'],
-                              control_dic['assets_SL_fanarts_missing'],
-                              control_dic['assets_SL_fanarts_alternate']))
-        t = "You have {0:6d} SL Trailers , missing {1:6d}, alternate {2:6d}"
-        slist.append(t.format(control_dic['assets_SL_trailers_have'],
-                              control_dic['assets_SL_trailers_missing'],
-                              control_dic['assets_SL_trailers_alternate']))
-        t = "You have {0:6d} SL Manuals  , missing {1:6d}, alternate {2:6d}"
-        slist.append(t.format(control_dic['assets_SL_manuals_have'],
-                              control_dic['assets_SL_manuals_missing'],
-                              control_dic['assets_SL_manuals_alternate']))
-    else:
-        slist.append('Software Lists disabled')
+        t_str = [
+            ['left', 'right', 'right',  'right'],
+            ['Stat', 'Have', 'Missing', 'Alternate'],
+        ]
+        t_str.append(['SL 3D Boxes',
+            '{}'.format(control_dic['assets_SL_3dbox_have']),
+            '{}'.format(control_dic['assets_SL_3dbox_missing']),
+            '{}'.format(control_dic['assets_SL_3dbox_alternate']),
+        ])
+        t_str.append(['SL Titles',
+            '{}'.format(control_dic['assets_SL_titles_have']),
+            '{}'.format(control_dic['assets_SL_titles_missing']),
+            '{}'.format(control_dic['assets_SL_titles_alternate']),
+        ])
+        t_str.append(['SL Snaps',
+            '{}'.format(control_dic['assets_SL_snaps_have']),
+            '{}'.format(control_dic['assets_SL_snaps_missing']),
+            '{}'.format(control_dic['assets_SL_snaps_alternate']),
+        ])
+        t_str.append(['SL Boxfronts',
+            '{}'.format(control_dic['assets_SL_boxfronts_have']),
+            '{}'.format(control_dic['assets_SL_boxfronts_missing']),
+            '{}'.format(control_dic['assets_SL_boxfronts_alternate']),
+        ])
+        t_str.append(['SL Fanarts',
+            '{}'.format(control_dic['assets_SL_fanarts_have']),
+            '{}'.format(control_dic['assets_SL_fanarts_missing']),
+            '{}'.format(control_dic['assets_SL_fanarts_alternate']),
+        ])
+        t_str.append(['SL Trailers',
+            '{}'.format(control_dic['assets_SL_trailers_have']),
+            '{}'.format(control_dic['assets_SL_trailers_missing']),
+            '{}'.format(control_dic['assets_SL_trailers_alternate']),
+        ])
+        t_str.append(['SL Manuals',
+            '{}'.format(control_dic['assets_SL_manuals_have']),
+            '{}'.format(control_dic['assets_SL_manuals_missing']),
+            '{}'.format(control_dic['assets_SL_manuals_alternate']),
+        ])
+        slist.extend(text_render_table_str(t_str))
 
-def mame_stats_audit_print_slist(settings, slist, control_dic, settings_dic):
-    rom_set = ['Merged', 'Split', 'Non-merged'][settings_dic['mame_rom_set']]
-    chd_set = ['Merged', 'Split', 'Non-merged'][settings_dic['mame_chd_set']]
+def mame_stats_audit_print_slist(settings, slist, control_dic):
+    rom_set = ['Merged', 'Split', 'Non-merged'][settings['mame_rom_set']]
+    chd_set = ['Merged', 'Split', 'Non-merged'][settings['mame_chd_set']]
 
     slist.append('[COLOR orange]MAME ROM audit database statistics[/COLOR]')
     t = "{:6d} runnable MAME machines"
@@ -2248,15 +2189,15 @@ def mame_stats_audit_print_slist(settings, slist, control_dic, settings_dic):
     slist.append(t.format(control_dic['stats_audit_machine_archives_ROM'],
                           control_dic['stats_audit_machine_archives_ROM_parents'],
                           control_dic['stats_audit_machine_archives_ROM_clones']))
-    t = "{:6d} machines require CHDs    , {:5d} parents and {:5d} clones"
+    t = "{:6d} machines require CHDs,     {:5d} parents and {:5d} clones"
     slist.append(t.format(control_dic['stats_audit_machine_archives_CHD'],
                           control_dic['stats_audit_machine_archives_CHD_parents'],
                           control_dic['stats_audit_machine_archives_CHD_clones']))
-    t = "{:6d} machines require Samples , {:5d} parents and {:5d} clones"
+    t = "{:6d} machines require Samples,  {:5d} parents and {:5d} clones"
     slist.append(t.format(control_dic['stats_audit_machine_archives_Samples'],
                           control_dic['stats_audit_machine_archives_Samples_parents'],
                           control_dic['stats_audit_machine_archives_Samples_clones']))
-    t = "{:6d} machines require nothing , {:5d} parents and {:5d} clones"
+    t = "{:6d} machines require nothing,  {:5d} parents and {:5d} clones"
     slist.append(t.format(control_dic['stats_audit_archive_less'],
                           control_dic['stats_audit_archive_less_parents'],
                           control_dic['stats_audit_archive_less_clones']))
@@ -2281,10 +2222,9 @@ def mame_stats_audit_print_slist(settings, slist, control_dic, settings_dic):
         control_dic['stats_audit_CHDs_invalid'],
     ))
 
-    # --- SL item audit database statistics ---
-    slist.append('')
-    slist.append('[COLOR orange]SL audit database statistics[/COLOR]')
-    if settings['enable_SL']:
+    # SL item audit database statistics
+    if settings['global_enable_SL']:
+        slist.append('\n[COLOR orange]SL audit database statistics[/COLOR]')
         t = "{0:6d} runnable Software List items"
         slist.append(t.format(control_dic['stats_audit_SL_items_runnable']))
         t = "{0:6d} SL items require ROM ZIPs and/or CHDs"
@@ -2293,10 +2233,8 @@ def mame_stats_audit_print_slist(settings, slist, control_dic, settings_dic):
         slist.append(t.format(control_dic['stats_audit_SL_items_with_arch_ROM']))
         t = "{0:6d} SL items require CHDs"
         slist.append(t.format(control_dic['stats_audit_SL_items_with_CHD']))
-    else:
-        slist.append('Software Lists disabled')
 
-    # --- MAME audit info ---
+    # MAME audit summary.
     slist.append('\n[COLOR orange]MAME ROM audit information[/COLOR]')
     table_str = []
     table_str.append(['left', 'right', 'right',  'right'])
@@ -2331,9 +2269,9 @@ def mame_stats_audit_print_slist(settings, slist, control_dic, settings_dic):
     table_str.append(table_row)
     slist.extend(text_render_table_str(table_str))
 
-    # --- SL audit info ---
-    slist.append('\n[COLOR orange]SL audit information[/COLOR]')
-    if settings['enable_SL']:
+    # SL audit summary.
+    if settings['global_enable_SL']:
+        slist.append('\n[COLOR orange]SL audit information[/COLOR]')
         table_str = []
         table_str.append(['left', 'right', 'right',  'right'])
         table_str.append(['Type', 'Total', 'Good',   'Bad'])
@@ -2359,8 +2297,126 @@ def mame_stats_audit_print_slist(settings, slist, control_dic, settings_dic):
         ]
         table_str.append(table_row)
         slist.extend(text_render_table_str(table_str))
+
+def mame_stats_timestamps_slist(settings, slist, control_dic):
+    # DAT/INI file versions. Note than in some DAT/INIs the version is not available.
+    slist.append('[COLOR orange]DAT/INI versions[/COLOR]')
+    slist.append("Alltime.ini version   {}".format(control_dic['ver_alltime']))
+    slist.append("Artwork.ini version   {}".format(control_dic['ver_artwork']))
+    slist.append("bestgames.ini version {}".format(control_dic['ver_bestgames']))
+    slist.append("Category.ini version  {}".format(control_dic['ver_category']))
+    slist.append("catlist.ini version   {}".format(control_dic['ver_catlist']))
+    slist.append("catver.ini version    {}".format(control_dic['ver_catver']))
+    slist.append("command.dat version   {}".format(control_dic['ver_command']))
+    slist.append("gameinit.dat version  {}".format(control_dic['ver_gameinit']))
+    slist.append("genre.ini version     {}".format(control_dic['ver_genre']))
+    slist.append("history.dat version   {}".format(control_dic['ver_history']))
+    slist.append("mameinfo.dat version  {}".format(control_dic['ver_mameinfo']))
+    slist.append("mature.ini version    {}".format(control_dic['ver_mature']))
+    slist.append("nplayers.ini version  {}".format(control_dic['ver_nplayers']))
+    slist.append("series.ini version    {}".format(control_dic['ver_series']))
+
+    # Timestamps ordered if user selects "All in one step"
+    slist.append('')
+    slist.append('[COLOR orange]Timestamps[/COLOR]')
+    # MAME and SL databases.
+    if control_dic['t_MAME_DB_build']:
+        slist.append("MAME DB built on            {}".format(_str_time(control_dic['t_MAME_DB_build'])))
     else:
-        slist.append('Software Lists disabled')
+        slist.append("MAME DB never built")
+    if control_dic['t_MAME_Audit_DB_build']:
+        slist.append("MAME Audit DB built on      {}".format(_str_time(control_dic['t_MAME_Audit_DB_build'])))
+    else:
+        slist.append("MAME Audit DB never built")
+    if control_dic['t_MAME_Catalog_build']:
+        slist.append("MAME Catalog built on       {}".format(_str_time(control_dic['t_MAME_Catalog_build'])))
+    else:
+        slist.append("MAME Catalog never built")
+    if control_dic['t_SL_DB_build']:
+        slist.append("SL DB built on              {}".format(_str_time(control_dic['t_SL_DB_build'])))
+    else:
+        slist.append("SL DB never built")
+
+    # MAME and SL scanner.
+    if control_dic['t_MAME_ROMs_scan']:
+        slist.append("MAME ROMs scaned on         {}".format(_str_time(control_dic['t_MAME_ROMs_scan'])))
+    else:
+        slist.append("MAME ROMs never scaned")
+    if control_dic['t_MAME_assets_scan']:
+        slist.append("MAME assets scaned on       {}".format(_str_time(control_dic['t_MAME_assets_scan'])))
+    else:
+        slist.append("MAME assets never scaned")
+
+    if control_dic['t_SL_ROMs_scan']:
+        slist.append("SL ROMs scaned on           {}".format(_str_time(control_dic['t_SL_ROMs_scan'])))
+    else:
+        slist.append("SL ROMs never scaned")
+    if control_dic['t_SL_assets_scan']:
+        slist.append("SL assets scaned on         {}".format(_str_time(control_dic['t_SL_assets_scan'])))
+    else:
+        slist.append("SL assets never scaned")
+
+    # Plots, Fanarts and 3D Boxes.
+    if control_dic['t_MAME_plots_build']:
+        slist.append("MAME Plots built on         {}".format(_str_time(control_dic['t_MAME_plots_build'])))
+    else:
+        slist.append("MAME Plots never built")
+    if control_dic['t_SL_plots_build']:
+        slist.append("SL Plots built on           {}".format(_str_time(control_dic['t_SL_plots_build'])))
+    else:
+        slist.append("SL Plots never built")
+
+    if control_dic['t_MAME_fanart_build']:
+        slist.append("MAME Fanarts built on       {}".format(_str_time(control_dic['t_MAME_fanart_build'])))
+    else:
+        slist.append("MAME Fanarts never built")
+    if control_dic['t_SL_fanart_build']:
+        slist.append("SL Fanarts built on         {}".format(_str_time(control_dic['t_SL_fanart_build'])))
+    else:
+        slist.append("SL Fanarts never built")
+
+    if control_dic['t_MAME_3dbox_build']:
+        slist.append("MAME 3D Boxes built on      {}".format(_str_time(control_dic['t_MAME_3dbox_build'])))
+    else:
+        slist.append("MAME 3D Boxes never built")
+    if control_dic['t_SL_3dbox_build']:
+        slist.append("SL 3D Boxes built on        {}".format(_str_time(control_dic['t_SL_3dbox_build'])))
+    else:
+        slist.append("SL 3D Boxes never built")
+
+    # MAME machine hash, asset hash, render cache and asset cache.
+    if control_dic['t_MAME_machine_hash']:
+        slist.append("MAME machine hash built on  {}".format(_str_time(control_dic['t_MAME_machine_hash'])))
+    else:
+        slist.append("MAME machine hash never built")
+    if control_dic['t_MAME_asset_hash']:
+        slist.append("MAME asset hash built on    {}".format(_str_time(control_dic['t_MAME_asset_hash'])))
+    else:
+        slist.append("MAME asset hash never built")
+    if control_dic['t_MAME_render_cache_build']:
+        slist.append("MAME render cache built on  {}".format(_str_time(control_dic['t_MAME_render_cache_build'])))
+    else:
+        slist.append("MAME render cache never built")
+    if control_dic['t_MAME_asset_cache_build']:
+        slist.append("MAME asset cache built on   {}".format(_str_time(control_dic['t_MAME_asset_cache_build'])))
+    else:
+        slist.append("MAME asset cache never built")
+
+    # Custsom filters.
+    if control_dic['t_Custom_Filter_build']:
+        slist.append("Custom filters built on     {}".format(_str_time(control_dic['t_Custom_Filter_build'])))
+    else:
+        slist.append("Custom filters never built")
+
+    # Audit stuff.
+    if control_dic['t_MAME_audit']:
+        slist.append("MAME ROMs audited on        {}".format(_str_time(control_dic['t_MAME_audit'])))
+    else:
+        slist.append("MAME ROMs never audited")
+    if control_dic['t_SL_audit']:
+        slist.append("SL ROMs audited on          {}".format(_str_time(control_dic['t_SL_audit'])))
+    else:
+        slist.append("SL ROMs never audited")
 
 # -------------------------------------------------------------------------------------------------
 # Check/Update/Repair Favourite ROM objects
