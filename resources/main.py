@@ -6493,25 +6493,58 @@ def command_exec_utility(which_utility):
         ERR  = '[COLOR red]ERR [/COLOR]'
         slist = []
 
-        # --- Check mandatory stuff ---
+        # --- Check main stuff ---
         slist.append('Operation mode [COLOR orange]{}[/COLOR]'.format(g_settings['op_mode']))
         if g_settings['global_enable_SL']:
-            slist.append('Software lists [COLOR orange]enabled[/COLOR]')
+            slist.append('Software Lists [COLOR orange]enabled[/COLOR]')
         else:
-            slist.append('Software lists [COLOR orange]disabled[/COLOR]')
+            slist.append('Software Lists [COLOR orange]disabled[/COLOR]')
         slist.append('')
 
-        slist.append('[COLOR orange]Mandatory stuff[/COLOR]')
-        # MAME executable
-        if g_settings['mame_prog']:
-            if FileName(g_settings['mame_prog']).exists():
-                slist.append('{} MAME executable "{}"'.format(OK, g_settings['mame_prog']))
+        slist.append('[COLOR orange]MAME executable[/COLOR]')
+        if g_settings['op_mode'] == OP_MODE_VANILLA:
+            # Vanilla MAME checks.
+            if g_settings['mame_prog']:
+                if FileName(g_settings['mame_prog']).exists():
+                    slist.append('{} MAME executable "{}"'.format(OK, g_settings['mame_prog']))
+                else:
+                    slist.append('{} MAME executable not found'.format(ERR))
             else:
-                slist.append('{} MAME executable not found'.format(ERR))
+                slist.append('{} MAME executable not set'.format(ERR))
+        elif g_settings['op_mode'] == OP_MODE_RETRO_MAME2003PLUS:
+            # MAME 2003 Plus checks.
+            # Retroarch executable.
+            if g_settings['retroarch_prog']:
+                if FileName(g_settings['retroarch_prog']).exists():
+                    slist.append('{} Retroarch executable "{}"'.format(OK, g_settings['retroarch_prog']))
+                else:
+                    slist.append('{} Retroarch executable not found'.format(ERR))
+            else:
+                slist.append('{} Retroarch executable not set'.format(ERR))
+            # Libretro directory.
+            if g_settings['libretro_dir']:
+                if FileName(g_settings['libretro_dir']).exists():
+                    slist.append('{} Libretro directory "{}"'.format(OK, g_settings['libretro_dir']))
+                else:
+                    slist.append('{} Libretro directory not found'.format(ERR))
+            else:
+                slist.append('{} Libretro directory not set'.format(ERR))
+            # MAME XML path.
+            if g_settings['xml_2003_path']:
+                if FileName(g_settings['xml_2003_path']).exists():
+                    slist.append('{} MAME 2003 Plus XML "{}"'.format(OK, g_settings['xml_2003_path']))
+                else:
+                    slist.append('{} MAME 2003 Plus XML not found'.format(ERR))
+            else:
+                slist.append('{} MAME 2003 Plus XML not set'.format(ERR))
         else:
-            slist.append('{} MAME executable not set'.format(ERR))
-        # ROM path
+            slist.append('{} Unknown op_mode {}'.format(ERR, g_settings['op_mode']))
+        slist.append('')
+
+        slist.append('[COLOR orange]MAME optional paths[/COLOR]')
         aux_check_dir_ERR(slist, g_settings['rom_path'], 'MAME ROM path')
+        aux_check_dir_WARN(slist, g_settings['chd_path'], 'MAME CHD path')
+        aux_check_dir_WARN(slist, g_settings['samples_path'], 'MAME Samples path')
         slist.append('')
 
         # --- MAME assets ---
@@ -6556,14 +6589,6 @@ def command_exec_utility(which_utility):
                 slist.append('{} MAME Asset path not found'.format(ERR))
         else:
             slist.append('{} MAME Asset path not set'.format(WARN))
-        slist.append('')
-
-        # --- CHD path ---
-        slist.append('[COLOR orange]MAME optional paths[/COLOR]')
-        aux_check_dir_WARN(slist, g_settings['chd_path'], 'MAME CHD path')
-
-        # --- Samples path ---
-        aux_check_dir_WARN(slist, g_settings['samples_path'], 'MAME Samples path')
         slist.append('')
 
         # --- Software Lists paths ---
