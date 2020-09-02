@@ -644,11 +644,19 @@ def db_new_control_dic():
     }
 
 # Safe way of edit control_dic to avoid creating new fields not defined in db_new_control_dic().
+# NOTE Deprecated, use db_safe_edit_dic()
 def change_control_dic(control_dic, field, value):
     if field in control_dic:
         control_dic[field] = value
     else:
         raise TypeError('Field {} not in control_dic'.format(field))
+
+# Safe way of change a dictionary without adding new fields.
+def db_safe_edit_dic(my_dic, field, value):
+    if field in my_dic:
+        my_dic[field] = value
+    else:
+        raise TypeError('Field {} not in dictionary'.format(field))
 
 #
 # Favourite MAME object creation.
